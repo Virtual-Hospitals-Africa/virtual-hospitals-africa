@@ -11,8 +11,8 @@ import {
   buildReferenceRanges,
   MEASUREMENTS_ORDERED,
   triageLevelFromTEWSTotal,
-  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
   vitalAssessmentFromSnomedConceptId,
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
@@ -122,10 +122,10 @@ async function sortedVitals(
       patient_id,
       patient_encounter_id,
       measurement_snomed_concept_ids: Object.values(
-        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
       ),
       assessment_snomed_concept_ids: Object.values(
-        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
       ),
     })
 
@@ -176,7 +176,7 @@ async function sortedVitals(
   ).map((finding) => {
     const evaluation_snomed_concept_ids = intersection(
       finding.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id),
-      Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS),
+      Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS),
     )
     const previous = previous_vitals.assessments.find((a) => {
       a.evaluations.some((e) =>
@@ -207,7 +207,7 @@ async function sortedVitals(
     other_measurements_unsorted,
     (m) =>
       m.finding.specific_snomed_concept.snomed_concept_id ===
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.blood_pressure_diastolic
         ? 0
         : 1,
     (m) => m.finding.created_at,

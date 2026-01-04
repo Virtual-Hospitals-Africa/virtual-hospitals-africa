@@ -13,7 +13,7 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { setupTriage } from './_setup.ts'
 import {
   assessmentOptionSExpression,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
   VITAL_MEASUREMENTS_UNITS,
   VitalAssessment,
   VitalMeasurement,
@@ -428,15 +428,15 @@ describeParallel('triage/measure_vitals', () => {
           {
             patient_id: encounter.patient.id,
             s_expression: `
-            (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
-                 (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight})))
+            (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.height}))
+                 (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.weight})))
           `,
           },
         )
 
         const respiratory_rate_measurement = measurements.find((m) =>
           m.specific_snomed_concept.snomed_concept_id ===
-            VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate
+            VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.respiratory_rate
         )!
 
         assertMatches(respiratory_rate_measurement, {

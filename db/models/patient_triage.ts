@@ -1,12 +1,10 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_triage.ts'
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import {
   PRIORITY_SNOMED_CODES,
-  PRIORITY_SNOMED_CONCEPT_ID,
   TARGET_TIME_TO_TREATMENT_MINUTES,
   TriageLevel,
 } from '../../shared/priorities.ts'
@@ -14,10 +12,11 @@ import { base } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression } from './s_expression.ts'
 import {
-  EVALUATION_ACTION_SNOMED_CONCEPT_ID,
-  PROCEDURE_SNOMED_CONCEPT_ID,
+  EVALUATION_ACTION,
+  PRIORITY,
+  PROCEDURE,
+  TRIAGE_PROCEDURE,
 } from '../../shared/snomed_concepts.ts'
-
 export function insertProcedure(
   trx: TrxOrDb,
   {
@@ -40,8 +39,8 @@ export function insertProcedure(
           id: triage_procedure_id,
           patient_id,
           patient_encounter_id,
-          root_snomed_concept_id: PROCEDURE_SNOMED_CONCEPT_ID,
-          specific_snomed_concept_id: TRIAGE_PROCEDURE_SNOMED_CONCEPT_ID,
+          root_snomed_concept_id: PROCEDURE.id,
+          specific_snomed_concept_id: TRIAGE_PROCEDURE.id,
         }),
   ).with('inserting_procedure', (qb) =>
     qb.insertInto('patient_procedures')
@@ -92,8 +91,8 @@ export function insertLevel(
           id: triage_level_evaluation_id,
           patient_id,
           patient_encounter_id,
-          root_snomed_concept_id: EVALUATION_ACTION_SNOMED_CONCEPT_ID,
-          specific_snomed_concept_id: PRIORITY_SNOMED_CONCEPT_ID,
+          root_snomed_concept_id: EVALUATION_ACTION.id,
+          specific_snomed_concept_id: PRIORITY.id,
           value_snomed_concept_id,
         }),
   ).with('inserting_evaluations', (qb) =>

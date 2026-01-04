@@ -60,12 +60,9 @@ import { makeAssertion } from '../../util/makeAssertion.ts'
 import matching from '../../util/matching.ts'
 import { exists } from '../../util/exists.ts'
 import { organization_rooms } from './organization_rooms.ts'
-import {
-  isPriority,
-  PRIORITY_SNOMED_CODES,
-  PRIORITY_SNOMED_CONCEPT_ID,
-} from '../../shared/priorities.ts'
+import { isPriority, PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
+import { PRIORITY } from '../../shared/snomed_concepts.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -459,7 +456,7 @@ function asPriority(
   const { name, specific_snomed_concept_id, value_snomed_concept_id, ...rest } =
     priority
   assert(isPriority(name))
-  assertEquals(specific_snomed_concept_id, PRIORITY_SNOMED_CONCEPT_ID)
+  assertEquals(specific_snomed_concept_id, PRIORITY.id)
   assert(value_snomed_concept_id)
   return { name, value_snomed_concept_id, ...rest }
 }

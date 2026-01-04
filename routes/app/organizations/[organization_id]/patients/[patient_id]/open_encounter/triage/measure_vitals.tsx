@@ -14,10 +14,9 @@ import {
   getScoreForAssessment,
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
-  SEVERITY_SCORE_SNOMED_CONCEPT_ID,
   triageLevelFromTEWSTotal,
-  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
 } from '../../../../../../../../shared/vitals.ts'
 import {
   parseExpressionExpectingAtom,
@@ -45,13 +44,14 @@ import {
 } from '../../../../../../../../types.ts'
 import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
 import {
-  EVALUATION_ACTION_SNOMED_CONCEPT_ID,
+  EVALUATION_ACTION,
+  SEVERITY_SCORE,
 } from '../../../../../../../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
-    z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)),
+    z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS)),
     z.object({
       value: positive_decimal.optional(),
       units: z.string().min(1),
@@ -60,7 +60,7 @@ const TriageMeasureVitalsSchema = z.object({
     ),
   ).default({}),
   assessments: z.partialRecord(
-    z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
+    z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS)),
     z.object({
       s_expression: sExpressionZodValidator('finding'),
     }).strict(),
@@ -124,7 +124,7 @@ export const handler = postHandler(
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             health_worker_id: ctx.state.health_worker.id,
             snomed_concept_ids: Object.values(
-              VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+              VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
             ),
           },
         ),
@@ -136,7 +136,7 @@ export const handler = postHandler(
             patient_encounter_id: ctx.state.encounter.patient_encounter_id,
             health_worker_id: ctx.state.health_worker.id,
             snomed_concept_ids: Object.values(
-              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
             ),
           },
         ),
@@ -200,7 +200,8 @@ export const handler = postHandler(
         async ([vital, measurement]) => {
           if (!measurement) return
 
-          const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
+          const snomed_concept_id =
+            VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS[vital]
           const measurement_equality = parseExpressionExpectingAtom(
             `(= (measurement ${snomed_concept_id}) (units ${measurement.value} ${measurement.units}))`,
             '=',
@@ -226,7 +227,7 @@ export const handler = postHandler(
               by_system: true,
               evaluates_record_id: result.measurement_id,
               evaluation:
-                `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
+                `(evaluation ${EVALUATION_ACTION.id} ${SEVERITY_SCORE.id})`,
             })
           }
         },
@@ -251,7 +252,7 @@ export const handler = postHandler(
           )
           if (score != null) {
             const evaluation_snomed_concept_id =
-              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital]
+              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS[vital]
 
             await patient_evaluation_scores.insertOneNested(trx, {
               score,
@@ -260,7 +261,7 @@ export const handler = postHandler(
               by_system: true,
               evaluates_record_id: result.finding_id,
               evaluation:
-                `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${evaluation_snomed_concept_id})`,
+                `(evaluation ${EVALUATION_ACTION.id} ${evaluation_snomed_concept_id})`,
             })
           }
         },
@@ -278,8 +279,7 @@ export const handler = postHandler(
         patient_encounter_id,
         by_system: true,
         evaluates_record_id: procedure_id,
-        evaluation:
-          `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${SEVERITY_SCORE_SNOMED_CONCEPT_ID})`,
+        evaluation: `(evaluation ${EVALUATION_ACTION.id} ${SEVERITY_SCORE.id})`,
       },
     )
 

@@ -13,6 +13,7 @@ import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { isMeasurement } from '../../shared/vitals.ts'
+import { MEASUREMENT_FINDING } from '../../shared/snomed_concepts.ts'
 
 type MeasurementInsert = {
   patient_id: string
@@ -109,7 +110,7 @@ export const patient_measurements = base({
             id: measurement_id,
             patient_id,
             patient_encounter_id,
-            root_snomed_concept_id: MEASUREMENT_FINDING_SNOMED_CONCEPT_ID,
+            root_snomed_concept_id: MEASUREMENT_FINDING.id,
             specific_snomed_concept_id: snomedConceptBase(trx, snomed_concept),
             value_snomed_concept_id: null,
           }),

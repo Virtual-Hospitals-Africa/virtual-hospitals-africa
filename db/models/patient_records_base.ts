@@ -7,15 +7,16 @@ import {
   literalString,
   success_true,
 } from '../helpers.ts'
-import { EVALUATION_ACTION_SNOMED_CONCEPT_ID } from '../../shared/snomed_concepts.ts'
+import {
+  ALTERED,
+  ENTERED_IN_ERROR,
+  EVALUATION_ACTION,
+} from '../../shared/snomed_concepts.ts'
 
-export const RECORD_NOW_INVALID_CONCEPT_ID = [
-  ALTERED_SNOMED_CONCEPT_ID,
-  ENTERED_IN_ERROR_SNOMED_CONCEPT_ID,
-]
-
-export type RecordNowInvalidConceptId =
-  (typeof RECORD_NOW_INVALID_CONCEPT_ID)[number]
+export const RECORD_NOW_INVALID = {
+  ALTERED,
+  ENTERED_IN_ERROR,
+}
 
 function markInvalid(
   trx: TrxOrDb,
@@ -25,14 +26,14 @@ function markInvalid(
     employment_id,
     procedure_id,
     altered_record_id,
-    snomed_concept_id,
+    snomed_concept,
   }: {
     patient_id: string
     patient_encounter_id: string
     employment_id: string
     procedure_id: string
     altered_record_id: string
-    snomed_concept_id: RecordNowInvalidConceptId
+    snomed_concept: keyof typeof RECORD_NOW_INVALID
   },
 ) {
   const id = generateUUID()
@@ -43,8 +44,8 @@ function markInvalid(
         id,
         patient_id,
         patient_encounter_id,
-        root_snomed_concept_id: EVALUATION_ACTION_SNOMED_CONCEPT_ID,
-        specific_snomed_concept_id: snomed_concept_id,
+        root_snomed_concept_id: EVALUATION_ACTION.id,
+        specific_snomed_concept_id: RECORD_NOW_INVALID[snomed_concept].id,
       })).with(
       'inserting_evaluation',
       (qb) =>
@@ -72,7 +73,7 @@ export function markAltered(
 ) {
   return markInvalid(trx, {
     ...opts,
-    snomed_concept_id: ALTERED_SNOMED_CONCEPT_ID,
+    snomed_concept: 'ALTERED',
   })
 }
 
@@ -88,7 +89,7 @@ export function markEnteredInError(
 ) {
   return markInvalid(trx, {
     ...opts,
-    snomed_concept_id: ENTERED_IN_ERROR_SNOMED_CONCEPT_ID,
+    snomed_concept: 'ENTERED_IN_ERROR',
   })
 }
 
@@ -106,7 +107,7 @@ export function nowInvalidRecords(
     .where(
       'now_invalid_patient_records.specific_snomed_concept_id',
       'in',
-      RECORD_NOW_INVALID_CONCEPT_ID,
+      [ALTERED.id, ENTERED_IN_ERROR.id],
     )
     .select('now_invalid_patient_evaluations.evaluates_record_id')
 }

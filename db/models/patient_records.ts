@@ -12,9 +12,7 @@ import { assert } from 'std/assert/assert.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import {
-  QUALIFIER_VALUE_SNOMED_CONCEPT_ID,
-} from '../../shared/snomed_concepts.ts'
+import { QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
 import {
   IntermediateBaseRecord,
   nonGroupedBaseQuery,
@@ -217,7 +215,7 @@ export function baseInsert(
             id: qualifier_id,
             patient_id,
             patient_encounter_id,
-            root_snomed_concept_id: QUALIFIER_VALUE_SNOMED_CONCEPT_ID,
+            root_snomed_concept_id: QUALIFIER_VALUE.id,
             specific_snomed_concept_id: snomedConceptBase(
               trx,
               qualifier.specific_snomed_concept,

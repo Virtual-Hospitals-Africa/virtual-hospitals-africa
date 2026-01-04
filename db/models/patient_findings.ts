@@ -24,14 +24,11 @@ import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
-  ATTRIBUTE_SNOMED_CONCEPT_ID,
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-  EVENT_SNOMED_CONCEPT_ID,
-  NO_QUALIFIER_SNOMED_CONCEPT_ID,
-  SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
-  STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
-  UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
-  YES_QUALIFIER_SNOMED_CONCEPT_ID,
+  ATTRIBUTE,
+  EVENT,
+  NO_QUALIFIER,
+  UNKNOWN_QUALIFIER,
+  YES_QUALIFIER,
 } from '../../shared/snomed_concepts.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 
@@ -299,7 +296,7 @@ export const patient_findings = base({
               id: attribute_id,
               patient_id,
               patient_encounter_id,
-              root_snomed_concept_id: ATTRIBUTE_SNOMED_CONCEPT_ID,
+              root_snomed_concept_id: ATTRIBUTE.id,
               specific_snomed_concept_id: snomedConceptBase(
                 trx,
                 attribute.specific_snomed_concept,
@@ -333,7 +330,7 @@ export const patient_findings = base({
               id: event_id,
               patient_id,
               patient_encounter_id,
-              root_snomed_concept_id: EVENT_SNOMED_CONCEPT_ID,
+              root_snomed_concept_id: EVENT.id,
               specific_snomed_concept_id: snomedConceptBase(
                 trx,
                 event.specific_snomed_concept,
@@ -382,12 +379,9 @@ export const patient_findings = base({
 
     return patient_findings.insertOneNested(trx, insert)
   },
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-  STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
-  SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
   QUALIFIERS_BY_EXISTENCE: {
-    Yes: YES_QUALIFIER_SNOMED_CONCEPT_ID,
-    No: NO_QUALIFIER_SNOMED_CONCEPT_ID,
-    Unknown: UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
+    Yes: YES_QUALIFIER.id,
+    No: NO_QUALIFIER.id,
+    Unknown: UNKNOWN_QUALIFIER.id,
   },
 })

@@ -42,7 +42,7 @@ import {
   isWorkflow,
   lastStep,
   prettyStepName,
-  WORKFLOW_SNOMED_CONCEPT_IDS,
+  WORKFLOW_SNOMED_CONCEPT_ZZ_IDS,
   WORKFLOW_STEPS,
   workflowStepSnomedConceptId,
 } from '../../../../../../../shared/workflow.ts'
@@ -66,7 +66,7 @@ import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
 import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
-import { PROCEDURE_SNOMED_CONCEPT_ID } from '../../../../../../../shared/snomed_concepts.ts'
+import { PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -259,7 +259,7 @@ export async function workflowHandler(
   const { patient_encounter_id } = encounter
   const { patient_encounter_employee_id } = encounter_employee_presence
 
-  const workflow_snomed_concept_id = WORKFLOW_SNOMED_CONCEPT_IDS[workflow]
+  const workflow_snomed_concept_id = WORKFLOW_SNOMED_CONCEPT_ZZ_IDS[workflow]
 
   const workflow_step_snomed_concept_id = workflowStepSnomedConceptId(
     workflow,
@@ -305,7 +305,7 @@ export async function workflowHandler(
     patient_encounter_employee_id,
     workflow_step_snomed_concept_id,
     previously_completed_procedures,
-    workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS[workflow],
+    workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_ZZ_IDS[workflow],
   }
 
   Object.assign(ctx.state, workflow_props)
@@ -601,7 +601,7 @@ export function createProcedureIfNotAlreadyCompleted(
     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
     employment_id: ctx.state.encounter_employee_presence.employee_id,
     procedure: parseExpressionExpectingAtom(
-      `(procedure ${PROCEDURE_SNOMED_CONCEPT_ID} ${procedure_snomed_concept_id})`,
+      `(procedure ${PROCEDURE.id} ${procedure_snomed_concept_id})`,
       'procedure',
     ),
   })

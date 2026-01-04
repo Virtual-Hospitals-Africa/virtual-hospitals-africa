@@ -29,14 +29,14 @@ import {
 import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
-import {
-  CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-  SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID,
-} from '../../../../../../../../shared/patient_findings.ts'
 import { assertArrayEmpty } from '../../../../../../../../util/arraySize.ts'
 import first from '../../../../../../../../util/first.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
+import {
+  CHIEF_COMPLAINT,
+  CLINICAL_FINDING,
+  SELF_REPORTED_QUALIFIER,
+} from '../../../../../../../../shared/snomed_concepts.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -139,9 +139,9 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
   ).join(' ')
 
   const s_expression = `
-    (and (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID})
-             (finding ${CHIEF_COMPLAINT_SNOMED_CONCEPT_ID}))
-         (not (finding (qualifier ${SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID})))
+    (and (or (finding ${CLINICAL_FINDING.id})
+             (finding ${CHIEF_COMPLAINT.id}))
+         (not (finding (qualifier ${SELF_REPORTED_QUALIFIER.id})))
          ${not_expressions})
   `
 
@@ -154,7 +154,7 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
   return other_clinical_findings.map((finding) => {
     // assert(
     //   finding.root_snomed_concept.snomed_concept_id ===
-    //     CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+    //     CLINICAL_FINDING.id,
     // )
     assertArrayEmpty(finding.attributes)
 
@@ -165,7 +165,7 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
     return {
       key: finding.specific_snomed_concept.name,
       clinical_finding_s_expression:
-        `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${finding.specific_snomed_concept.snomed_concept_id})`,
+        `(finding ${CLINICAL_FINDING.id} ${finding.specific_snomed_concept.snomed_concept_id})`,
       sats_primary_name: finding.specific_snomed_concept.name,
       sats_secondary_text: finding.specific_snomed_concept.category,
       sats_priority: finding.priority || 'Non-urgent',

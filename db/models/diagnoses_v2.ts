@@ -1,3 +1,4 @@
+import { DIAGNOSIS } from '../../shared/snomed_concepts.ts'
 import { TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
@@ -31,7 +32,7 @@ export function insertOne(
           patient_id,
           patient_encounter_id,
           specific_snomed_concept_id,
-          root_snomed_concept_id: DIAGNOSIS_SNOMED_CONCEPT_ID,
+          root_snomed_concept_id: DIAGNOSIS.id,
         }),
   ).with('inserting_evaluations', (qb) =>
     qb.insertInto('patient_evaluations')

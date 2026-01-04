@@ -9,7 +9,7 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
+import { WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS } from '../../shared/workflow.ts'
 import {
   buildExpression,
   satisfyingSExpression,
@@ -20,10 +20,7 @@ import { assertMatches } from '../../util/assertMatches.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { debugLog } from '../../db/helpers.ts'
-import {
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-  PROCEDURE_SNOMED_CONCEPT_ID,
-} from '../../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING, PROCEDURE } from '../../shared/snomed_concepts.ts'
 import assertLength from '../../util/assertLength.ts'
 import { asNormalFormSExpression } from '../../shared/patient_records.ts'
 
@@ -54,14 +51,14 @@ describeParallel('db/models/patient_findings.ts', () => {
         employment_id: nurse.employee_id,
         procedure: parseExpressionExpectingAtom(
           `(procedure ${
-            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
+            WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS.triage!.measure_vitals
           })`,
           'procedure',
         ),
       })
 
       const burn_of_left_arm_by_attribute_s_expression = `
-      (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID}
+      (finding ${CLINICAL_FINDING.id}
         (snomed_concept "Burn" "disorder")
         (attribute (snomed_concept "Finding site" "attribute")
                    (snomed_concept "Left upper arm structure" "body structure")))
@@ -140,7 +137,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       })
 
       console.log(parseExpression(`
-          (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 
+          (finding ${CLINICAL_FINDING.id} 
             (snomed_concept "Burn" "disorder")
             (attribute (snomed_concept "Finding site" "attribute") 
                         (snomed_concept "Right upper arm structure" "body structure")))
@@ -150,7 +147,7 @@ describeParallel('db/models/patient_findings.ts', () => {
           db,
           { patient_id },
           `
-          (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 
+          (finding ${CLINICAL_FINDING.id} 
             (snomed_concept "Burn" "disorder")
             (attribute (snomed_concept "Finding site" "attribute") 
                         (snomed_concept "Right upper arm structure" "body structure")))
@@ -164,7 +161,7 @@ describeParallel('db/models/patient_findings.ts', () => {
           patient_id,
           // Right arm != Left arm
           s_expression: `
-          (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} 
+          (finding ${CLINICAL_FINDING.id} 
             (snomed_concept "Burn" "disorder")
             (attribute (snomed_concept "Finding site" "attribute") 
                         (snomed_concept "Right upper arm structure" "body structure")))
@@ -200,8 +197,8 @@ describeParallel('db/models/patient_findings.ts', () => {
       patient_encounter_id: encounter.patient_encounter_id,
       employment_id: nurse.employee_id,
       procedure: parseExpressionExpectingAtom(
-        `(procedure ${PROCEDURE_SNOMED_CONCEPT_ID} ${
-          WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
+        `(procedure ${PROCEDURE.id} ${
+          WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS.triage!.measure_vitals
         })`,
         'procedure',
       ),
@@ -209,7 +206,7 @@ describeParallel('db/models/patient_findings.ts', () => {
 
     // 263501003 |Time of onset (observable entity)|
     const common_cold_attribute_s_expression = `
-      (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID}
+      (finding ${CLINICAL_FINDING.id}
         (snomed_concept "Common cold" "disorder")
         (event (snomed_concept "Time of onset" "observable entity")
                    "2025-12-28 19:51:18.275362-05"))
@@ -293,8 +290,8 @@ describeParallel('db/models/patient_findings.ts', () => {
         patient_encounter_id: encounter.patient_encounter_id,
         employment_id: nurse.employee_id,
         procedure: parseExpressionExpectingAtom(
-          `(procedure ${PROCEDURE_SNOMED_CONCEPT_ID} ${
-            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
+          `(procedure ${PROCEDURE.id} ${
+            WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS.triage!.measure_vitals
           })`,
           'procedure',
         ),
@@ -303,7 +300,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       // Normal For Age Ability to move
       const normal_for_age_s_expression = `
         (finding
-          ${CLINICAL_FINDING_SNOMED_CONCEPT_ID}
+          ${CLINICAL_FINDING.id}
           (snomed_concept "Ability to move" "observable entity")
           (snomed_concept "Normal" "qualifier value")
           (qualifier (snomed_concept "For" "qualifier value")

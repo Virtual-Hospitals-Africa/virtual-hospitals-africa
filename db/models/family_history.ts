@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { base } from './_base.ts'
+import { FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT } from '../../shared/snomed_concepts.ts'
 
 export default base({
   top_level_table: 'snomed_inferred_canonical_name_and_category',
@@ -21,7 +22,7 @@ export default base({
       .where((eb) =>
         sql<boolean>`is_descendant(${
           eb.ref('snomed_inferred_canonical_name_and_category.id')
-        }, ${FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT_SNOMED_CONCEPT_ID}::bigint)`
+        }, ${FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT.id}::bigint)`
       ),
   formatResult: (x) => x,
   handleSearch(

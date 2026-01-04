@@ -10,12 +10,12 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assert } from 'std/assert/assert.ts'
-import { WORKFLOW_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
+import { WORKFLOW_SNOMED_CONCEPT_ZZ_IDS } from '../../shared/workflow.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
-import { PROCEDURE_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
+import { PROCEDURE } from '../../shared/patient_findings.ts'
 
 describe('db/models/s_expression.ts', () => {
   afterAll(() => db.destroy())
@@ -45,7 +45,7 @@ describe('db/models/s_expression.ts', () => {
       patient_encounter_id: encounter.patient_encounter_id,
       employment_id: encounter.employee.employee_id,
       procedure: parseExpressionExpectingAtom(
-        `(procedure ${PROCEDURE_SNOMED_CONCEPT_ID} ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
+        `(procedure ${PROCEDURE.id} ${WORKFLOW_SNOMED_CONCEPT_ZZ_IDS.triage})`,
         'procedure',
       ),
     })

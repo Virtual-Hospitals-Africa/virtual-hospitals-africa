@@ -67,22 +67,94 @@ export const PROCEDURE = {
   category: 'procedure',
 }
 
-export const ACTION_STATUS = { id: '385641008', name: 'Action status', category: 'attribute' }
-export const TO_BE_DONE = { id: '385643006', name: 'To be done', category: 'qualifier value' }
+export const ACTION_STATUS = {
+  id: '385641008',
+  name: 'Action status',
+  category: 'attribute',
+}
+export const TO_BE_DONE = {
+  id: '385643006',
+  name: 'To be done',
+  category: 'qualifier value',
+}
 export const DUE_TO = { id: '42752001', name: 'Due to', category: 'attribute' }
-export const DIAGNOSIS = { id: '439401001', name: 'Diagnosis', category: 'observable entity' }
-export const TRANSFER_OF_CARE_PROCEDURE = { id: '308292007', name: 'Transfer of care', category: 'procedure' }
-export const PATIENT_TRANSFER_PROCEDURE = { id: '107724000', name: 'Patient transfer', category: 'procedure' }
-export const ALTERED = { id: '18307000', name: 'Altered', category: 'qualifier value' }
-export const ENTERED_IN_ERROR = { id: '723510000', name: 'Entered in error', category: 'qualifier value' }
-export const TRIAGE_PROCEDURE = { id: '225390008', name: 'Triage', category: 'procedure' }
-export const TAKING_PATIENT_VITAL_SIGNS = { id: '61746007', name: 'Taking patient vital signs', category: 'procedure' }
-export const SEVERITY_SCORE = { id: '278305009', name: 'Severity score', category: 'qualifier value' }
-export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS = { id: '409060008', name: 'Evaluation for signs and symptoms of physical health problems', category: 'procedure' }
-export const AUDIO_RECORDING_OF_SUBJECT_INTERVIEW = { id: '431315003', name: 'Audio recording of subject interview', category: 'procedure' }
-export const PRIORITY = { id: '260870009', name: 'Priority', category: 'attribute' }
-export const PATIENT_FAMILY_HISTORY_TAKING = { id: '410551005', name: 'Family history taking', category: 'procedure' }
-export const FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT = { id: '57177007', name: 'Family history with explicit context', category: 'situation' }
-export const MEASUREMENT_FINDING = { id: '118245000', name: 'Measurement finding', category: 'finding' }
-export const NATIONAL_EARLY_WARNING_SCORE = { id: '1287358002', name: 'National Early Warning Score', category: 'assessment scale' }
-export const SOUTH_AFRICA = { id: '223549008', name: 'South Africa', category: 'geographic location' }
+export const DIAGNOSIS = {
+  id: '439401001',
+  name: 'Diagnosis',
+  category: 'observable entity',
+}
+export const TRANSFER_OF_CARE_PROCEDURE = {
+  id: '308292007',
+  name: 'Transfer of care',
+  category: 'procedure',
+}
+export const PATIENT_TRANSFER_PROCEDURE = {
+  id: '107724000',
+  name: 'Patient transfer',
+  category: 'procedure',
+}
+export const ALTERED = {
+  id: '18307000',
+  name: 'Altered',
+  category: 'qualifier value',
+}
+export const ENTERED_IN_ERROR = {
+  id: '723510000',
+  name: 'Entered in error',
+  category: 'qualifier value',
+}
+export const TRIAGE_PROCEDURE = {
+  id: '225390008',
+  name: 'Triage',
+  category: 'procedure',
+}
+export const TAKING_PATIENT_VITAL_SIGNS = {
+  id: '61746007',
+  name: 'Taking patient vital signs',
+  category: 'procedure',
+}
+export const SEVERITY_SCORE = {
+  id: '278305009',
+  name: 'Severity score',
+  category: 'qualifier value',
+}
+export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS = {
+  id: '409060008',
+  name: 'Evaluation for signs and symptoms of physical health problems',
+  category: 'procedure',
+}
+export const AUDIO_RECORDING_OF_SUBJECT_INTERVIEW = {
+  id: '431315003',
+  name: 'Audio recording of subject interview',
+  category: 'procedure',
+}
+export const PRIORITY = {
+  id: '260870009',
+  name: 'Priority',
+  category: 'attribute',
+}
+export const PATIENT_FAMILY_HISTORY_TAKING = {
+  id: '410551005',
+  name: 'Family history taking',
+  category: 'procedure',
+}
+export const FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT = {
+  id: '57177007',
+  name: 'Family history with explicit context',
+  category: 'situation',
+}
+export const MEASUREMENT_FINDING = {
+  id: '118245000',
+  name: 'Measurement finding',
+  category: 'finding',
+}
+export const NATIONAL_EARLY_WARNING_SCORE = {
+  id: '1287358002',
+  name: 'National Early Warning Score',
+  category: 'assessment scale',
+}
+export const SOUTH_AFRICA = {
+  id: '223549008',
+  name: 'South Africa',
+  category: 'geographic location',
+}

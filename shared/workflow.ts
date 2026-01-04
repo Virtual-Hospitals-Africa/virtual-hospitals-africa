@@ -21,7 +21,7 @@ export const WORKFLOWS = [
 
 export type Workflow = (typeof WORKFLOWS)[number]
 
-export const WORKFLOW_SNOMED_CONCEPT_IDS = {
+export const WORKFLOW_SNOMED_CONCEPT_ZZ_IDS = {
   registration: '184047000', // Patient registration
   triage: '225390008',
   stabilization: '115979005', // |Stabilization (procedure)|
@@ -92,7 +92,7 @@ export const WORKFLOW_STEPS = {
   [w in Workflow]: string[]
 }
 
-export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS: {
+export const WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS: {
   [w in Workflow]?: Record<string, string>
 } = {
   triage: {
@@ -122,7 +122,7 @@ export function workflowStepSnomedConceptId(
   workflow: Workflow,
   step: string,
 ): string | null {
-  const concepts = WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]
+  const concepts = WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS[workflow]
   return (concepts && concepts[step]) || null
 }
 

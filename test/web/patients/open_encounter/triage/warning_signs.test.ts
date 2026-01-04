@@ -24,9 +24,7 @@ import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import entries from '../../../../../util/entries.ts'
-import {
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-} from '../../../../../shared/patient_findings.ts'
+import { CLINICAL_FINDING } from '../../../../../shared/snomed_concepts.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -263,7 +261,7 @@ describeParallel('triage/warning_signs', () => {
             'root_snomed_concept': {
               'name': 'Clinical finding',
               'category': 'finding',
-              'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+              'snomed_concept_id': CLINICAL_FINDING.id,
             },
             'specific_snomed_concept': {
               'snomed_concept_id': '410429000',
@@ -340,7 +338,7 @@ describeParallel('triage/warning_signs', () => {
             'record_id': z.string().uuid(),
             'created_at': z.date(),
             'root_snomed_concept': {
-              'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+              'snomed_concept_id': CLINICAL_FINDING.id,
               'name': 'Clinical finding',
               'category': 'finding',
             },
@@ -459,7 +457,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(cardiac_arrest_finding, {
           'root_snomed_concept': {
-            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'snomed_concept_id': CLINICAL_FINDING.id,
             'name': 'Clinical finding',
           },
           'specific_snomed_concept': {
@@ -469,7 +467,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(chest_pain_finding, {
           'root_snomed_concept': {
-            'snomed_concept_id': CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            'snomed_concept_id': CLINICAL_FINDING.id,
             'name': 'Clinical finding',
           },
           'specific_snomed_concept': {
@@ -763,7 +761,7 @@ describeParallel('triage/warning_signs', () => {
             body: asFormData({
               warning_signs: {
                 'Pain of ear':
-                  `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Pain of ear" "finding"))`,
+                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Pain of ear" "finding"))`,
               },
             }),
           },
@@ -778,7 +776,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(finding, {
           root_snomed_concept: {
-            snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+            snomed_concept_id: CLINICAL_FINDING.id,
           },
           specific_snomed_concept: {
             name: 'Pain of ear',
@@ -803,7 +801,7 @@ describeParallel('triage/warning_signs', () => {
             body: asFormData({
               warning_signs: {
                 'Pain of ear':
-                  `(finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} (snomed_concept "Pain of ear" "finding"))`,
+                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Pain of ear" "finding"))`,
               },
             }),
           },

@@ -8,11 +8,11 @@
 // import { addTestEmployee } from '../_helpers/employees.ts'
 // import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 // import {
-//   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+//   CLINICAL_FINDING,
 //   patient_findings,
 // } from '../../db/models/patient_findings.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
-// import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
+// import { WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS } from '../../shared/workflow.ts'
 // import {
 //   buildExpression,
 //   satisfyingSExpression,

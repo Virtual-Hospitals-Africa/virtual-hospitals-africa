@@ -2,7 +2,7 @@
 // import { PatientFindings } from '../../db.d.ts'
 // import {
 //   relation_from_snomed_id,
-//   SEXED_RELATION_SNOMED_CONCEPT_IDS,
+//   SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS,
 // } from '../../shared/family.ts'
 // import {
 //   InsertShape,
@@ -59,7 +59,7 @@
 //     .where(
 //       'patient_records.snomed_concept_id',
 //       '=',
-//       PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID,
+//       PATIENT_FAMILY_HISTORY_TAKING.id,
 //     )
 //     .select(['patient_procedures.id'])
 //     .executeTakeFirst()
@@ -86,9 +86,9 @@
 //   > = family_members
 //     .map((member) => {
 //       const id = generateUUID()
-//       assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_IDS)
+//       assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS)
 //       const specific_snomed_concept_id =
-//         SEXED_RELATION_SNOMED_CONCEPT_IDS[member.relation_sexed]
+//         SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS[member.relation_sexed]
 
 //       return {
 //         id,
@@ -109,7 +109,7 @@
 //             id: procedure_id,
 //             patient_id,
 //             patient_encounter_id,
-//             snomed_concept_id: PATIENT_FAMILY_HISTORY_TAKING_SNOMED_CONCEPT_ID,
+//             snomed_concept_id: PATIENT_FAMILY_HISTORY_TAKING.id,
 //           })
 //         : blankSelection(qb),
 //   ).with(
@@ -130,7 +130,7 @@
 //         patient_id,
 //         patient_encounter_id,
 //         snomed_concept_id:
-//           FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT_SNOMED_CONCEPT_ID,
+//           FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT.id,
 //       })).with('inserting_findings', (qb) =>
 //       qb.insertInto('patient_findings')
 //         .values({

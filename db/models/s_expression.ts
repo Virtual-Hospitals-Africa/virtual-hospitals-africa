@@ -3,18 +3,18 @@ import { SelectQueryBuilder, sql } from 'kysely'
 import { nowInvalidRecords } from './patient_records_base.ts'
 import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  ATTRIBUTE_SNOMED_CONCEPT_ID,
-  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
-  QUALIFIER_VALUE_SNOMED_CONCEPT_ID,
-  STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID,
-  YES_QUALIFIER_SNOMED_CONCEPT_ID,
-} from '../../shared/snomed_concepts.ts'
 import isString from '../../util/isString.ts'
 import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import {
+  ATTRIBUTE,
+  CLINICAL_FINDING,
+  QUALIFIER_VALUE,
+  STATUS_ATTRIBUTE,
+  YES_QUALIFIER,
+} from '../../shared/snomed_concepts.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -302,7 +302,7 @@ const EXPRESSION_BUILDERS = {
       root_snomed_concept: {
         atom: 'snomed_concept',
         type: 'id',
-        id: QUALIFIER_VALUE_SNOMED_CONCEPT_ID,
+        id: QUALIFIER_VALUE.id,
       },
       specific_snomed_concept,
       qualifiers,
@@ -328,7 +328,7 @@ const EXPRESSION_BUILDERS = {
       root_snomed_concept: {
         atom: 'snomed_concept',
         type: 'id',
-        id: ATTRIBUTE_SNOMED_CONCEPT_ID,
+        id: ATTRIBUTE.id,
       },
     })
       .innerJoin(
@@ -392,8 +392,8 @@ const EXPRESSION_BUILDERS = {
       trx,
       patient,
       parseExpression(`
-        (or (finding ${CLINICAL_FINDING_SNOMED_CONCEPT_ID} ${snomed_concept_s_expression})
-            (finding ${STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID} ${snomed_concept_s_expression} ${YES_QUALIFIER_SNOMED_CONCEPT_ID}))
+        (or (finding ${CLINICAL_FINDING.id} ${snomed_concept_s_expression})
+            (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
       `),
     )
   },

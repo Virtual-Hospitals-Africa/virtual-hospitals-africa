@@ -10,7 +10,7 @@ import { patient_measurements } from '../../../../../../../../db/models/patient_
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../../../../../../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS } from '../../../../../../../../shared/vitals.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import { pMap } from '../../../../../../../../util/inParallel.ts'
 import entries from '../../../../../../../../util/entries.ts'
@@ -32,7 +32,8 @@ const TriageHeightAndWeightSchema = z.object({
       ) => {
         assert(measurement)
         const { value, units } = measurement
-        const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
+        const snomed_concept_id =
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS[vital]
         const measurement_equality_expression = parseExpressionExpectingAtom(
           `(= (measurement ${snomed_concept_id}) (units ${value} ${units}))`,
           '=',
@@ -79,8 +80,8 @@ export async function TriageHeightAndWeightPage(
         health_worker_id: ctx.state.health_worker.id,
         patient_id: ctx.state.patient.id,
         snomed_concept_ids: [
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight,
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.height,
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.weight,
         ],
       },
     )
@@ -90,13 +91,13 @@ export async function TriageHeightAndWeightPage(
       vital_measurements_for_this_encounter={[
         {
           vital: 'height',
-          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
+          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.height,
           required: true,
           units: 'cm',
         },
         {
           vital: 'weight',
-          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight,
+          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.weight,
           required: true,
           units: 'kg',
         },

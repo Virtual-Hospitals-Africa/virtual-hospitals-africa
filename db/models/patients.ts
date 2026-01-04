@@ -22,7 +22,7 @@ import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS } from '../../shared/vitals.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 
 export const avatar_url_sql = sql<string | null>`
@@ -86,7 +86,7 @@ export function baseQuery(trx: TrxOrDb) {
         .where(
           'patient_records.specific_snomed_concept_id',
           '=',
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.height,
         )
         .where(
           'patient_records.id',

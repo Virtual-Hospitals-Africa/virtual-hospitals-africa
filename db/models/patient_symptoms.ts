@@ -14,10 +14,10 @@
 // import { markAltered } from './patient_records_base.ts'
 // import { patient_findings } from './patient_findings.ts'
 
-// export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
+// export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS.id =
 //   '409060008'
 
-// export const FINDING_REPORTED_BY_SUBJECT_OR_HISTORY_PROVIDER_SNOMED_CONCEPT_ID =
+// export const FINDING_REPORTED_BY_SUBJECT_OR_HISTORY_PROVIDER.id =
 //   '418799008' // |Finding reported by subject or history provider (finding)|
 
 // // TODO: get this into a single round trip with the DB
@@ -65,7 +65,7 @@
 //     .where(
 //       'patient_records.specific_snomed_concept_id',
 //       '=',
-//       EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
+//       EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS.id,
 //     )
 //     .select(['patient_procedures.id'])
 //     .executeTakeFirst()
@@ -94,7 +94,7 @@
 //             patient_id,
 //             patient_encounter_id,
 //             snomed_concept_id:
-//               EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
+//               EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS.id,
 //           })
 //         : blankSelection(qb),
 //   ).with(
@@ -115,7 +115,7 @@
 //         patient_id,
 //         patient_encounter_id,
 //         snomed_concept_id:
-//           FINDING_REPORTED_BY_SUBJECT_OR_HISTORY_PROVIDER_SNOMED_CONCEPT_ID,
+//           FINDING_REPORTED_BY_SUBJECT_OR_HISTORY_PROVIDER.id,
 //       })).with('inserting_findings', (qb) =>
 //       qb.insertInto('patient_findings')
 //         .values({

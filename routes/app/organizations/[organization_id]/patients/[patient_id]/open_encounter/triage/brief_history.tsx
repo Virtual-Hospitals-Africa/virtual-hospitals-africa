@@ -37,6 +37,10 @@ import {
   commonConditionSnomedConceptId,
 } from '../../../../../../../../shared/brief_history.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
+import {
+  SELF_REPORTED_QUALIFIER,
+  STATUS_ATTRIBUTE,
+} from '../../../../../../../../shared/snomed_concepts.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -133,12 +137,12 @@ export const handler = postHandler(
             procedure_id,
             finding: parseExpressionExpectingAtom(
               `(finding
-                 ${patient_findings.STATUS_ATTRIBUTE_SNOMED_CONCEPT_ID}
+                 ${STATUS_ATTRIBUTE.id}
                  ${condition_snomed_concept_id}
                  ${
                 patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]
               }
-                  (qualifier ${patient_findings.SELF_REPORTED_QUALIFIER_SNOMED_CONCEPT_ID})
+                  (qualifier ${SELF_REPORTED_QUALIFIER.id})
               )`,
               'finding',
             ),

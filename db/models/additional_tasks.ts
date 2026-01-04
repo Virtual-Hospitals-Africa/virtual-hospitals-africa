@@ -18,8 +18,11 @@ import { groupBy } from '../../util/groupBy.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
 import { patient_vitals } from './patient_vitals.ts'
 import {
-  EVALUATION_ACTION_SNOMED_CONCEPT_ID,
-  RELATIONSHIP_SNOMED_CONCEPT_ID,
+  ACTION_STATUS,
+  DUE_TO,
+  EVALUATION_ACTION,
+  RELATIONSHIP,
+  TO_BE_DONE,
 } from '../../shared/snomed_concepts.ts'
 
 export async function insertTasksIfNotAlreadyIdentified(
@@ -71,7 +74,7 @@ export async function insertTasksIfNotAlreadyIdentified(
           by_system: true,
           evaluates_record_id: procedure.procedure_id,
           evaluation:
-            `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
+            `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
         },
       ).with(
         'inserting_relation_patient_records',
@@ -80,8 +83,8 @@ export async function insertTasksIfNotAlreadyIdentified(
             patient_id,
             patient_encounter_id,
             id: relation_id,
-            root_snomed_concept_id: RELATIONSHIP_SNOMED_CONCEPT_ID,
-            specific_snomed_concept_id: DUE_TO_SNOMED_CONCEPT_ID,
+            root_snomed_concept_id: RELATIONSHIP.id,
+            specific_snomed_concept_id: DUE_TO.id,
           }),
       ).with(
         'inserting_relations',
@@ -110,7 +113,7 @@ export async function getTasksGroups(
     patient_id,
     patient_encounter_id: encounter.patient_encounter_id,
     s_expression:
-      `(evaluation ${EVALUATION_ACTION_SNOMED_CONCEPT_ID} ${ACTION_STATUS_SNOMED_CONCEPT_ID} ${TO_BE_DONE_SNOMED_CONCEPT_ID})`,
+      `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
   })
 
   if (arrayIsEmpty(evaluations)) {
@@ -123,7 +126,7 @@ export async function getTasksGroups(
     assertLength(evaluation.destination_relations, 1)
     assertEquals(
       evaluation.destination_relations[0].specific_snomed_concept_id,
-      DUE_TO_SNOMED_CONCEPT_ID,
+      DUE_TO.id,
     )
     return evaluation.destination_relations[0].destination_id
   })
@@ -187,8 +190,8 @@ export async function getTasksGroups(
 // function additionalTaskSExpression() {
 //   return `
 //     (evaluation
-//       ${ACTION_STATUS_SNOMED_CONCEPT_ID}
-//       ${TO_BE_DONE_SNOMED_CONCEPT_ID}
+//       ${ACTION_STATUS.id}
+//       ${TO_BE_DONE.id}
 //       (evaluates ...)
 //       (qualifier )
 //     )
@@ -201,4 +204,4 @@ export async function getTasksGroups(
 // to the site of trauma and
 // cover open wounds
 
-// (referral ${PATIENT_TRANSFER_PROCEDURE_SNOMED_CONCEPT_ID} (room (department "Emergency")))
+// (referral ${PATIENT_TRANSFER_PROCEDURE.id} (room (department "Emergency")))
