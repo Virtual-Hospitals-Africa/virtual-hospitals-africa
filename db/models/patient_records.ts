@@ -20,6 +20,7 @@ import {
   nonGroupedBaseQuery,
 } from './patient_records_base.ts'
 import { sql } from 'kysely'
+import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,

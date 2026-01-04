@@ -3457,15 +3457,6 @@ export type AsPartOfProcedure = {
   specific_snomed_concept: RenderedSnomedConcept
 }
 
-export type RenderedQualifierRelativeToHealthWorker = {
-  record_id: string
-  snomed_concept_id: string
-  name: string
-  value_name: string | null
-  category: SnomedCategory
-  qualifiers: RenderedQualifierRelativeToHealthWorker[]
-}
-
 export type RecordDisplays = {
   finding: string
   value: string | null
@@ -3521,6 +3512,7 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
   & IntermediateBaseRecord
   & {
     type: Type
+    modifiers: IntermediateBaseRecord[]
     attributes: RenderedAttribute[]
     displays: RecordDisplays
     evaluations: Array<
@@ -3628,12 +3620,7 @@ export type IntermediateProcedureRecord = {
   snomed_concept_id: string
   name: string
   patient_encounter_id: string
-  // patient_encounter_employee_id: string
-  // pertaining_to_key: PertainingToKey
-  // as_part_of_procedure: AsPartOfProcedure
-  // qualifiers: QualifierIntermediate[]
   value_snomed_concept_id: null | string
-  // value_name: null | string
 }
 
 export type RenderedRoom = {

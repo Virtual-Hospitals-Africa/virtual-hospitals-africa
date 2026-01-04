@@ -4,6 +4,8 @@ import {
   RecordDisplays,
   RenderedAttribute,
   RenderedEvaluation,
+  RenderedRecordRelativeToHealthWorker,
+  RenderedRecordRelativeToHealthWorkerDef,
   RenderedSnomedConcept,
 } from '../types.ts'
 import compact from '../util/compact.ts'
@@ -15,6 +17,8 @@ import { assertAll } from '../util/assertAll.ts'
 import omit from '../util/omit.ts'
 import assertOneOf from '../util/assertOneOf.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
+import { inverseSExpression } from './s_expression_inverse.ts'
+import { Lang } from './s_expression_schemas.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -167,6 +171,7 @@ function addDisplay<DR extends DisplayableRecord>(
 } {
   return {
     ...omit(record, ['qualifiers']),
+    modifiers: record.qualifiers,
     displays: buildDisplays(record),
   }
 }
@@ -177,10 +182,11 @@ export function formatRecord<
   },
 >(record: DR): Omit<DR, 'qualifiers'> & {
   displays: RecordDisplays
+  modifiers: IntermediateBaseRecord[]
   attributes: RenderedAttribute[]
   evaluations: RenderedEvaluation[]
 } {
-  const [qualifiers, unformatted_attributes] = partition(
+  const [modifiers, unformatted_attributes] = partition(
     record.qualifiers || [],
     (qualifier) => qualifier.root_snomed_concept.name === 'Qualifier value',
   )
@@ -198,8 +204,107 @@ export function formatRecord<
   const evaluations = record.evaluations.map(addDisplay)
 
   return {
-    ...addDisplay({ ...record, qualifiers }),
+    ...addDisplay({ ...record, qualifiers: modifiers }),
+    modifiers,
     attributes,
     evaluations,
+  }
+}
+
+function toSnomedConcept(
+  rendered: RenderedSnomedConcept,
+): Lang['snomed_concept'] {
+  return {
+    atom: 'snomed_concept',
+    type: 'name_and_category',
+    name: rendered.name,
+    category: rendered.category,
+  }
+}
+
+function toQualifier(modifier: IntermediateBaseRecord): Lang['qualifier'] {
+  return {
+    atom: 'qualifier',
+    specific_snomed_concept: toSnomedConcept(modifier.specific_snomed_concept),
+    qualifiers: [],
+  }
+}
+
+export function asNormalFormSExpression<Rest>(
+  record: RenderedRecordRelativeToHealthWorkerDef<'finding' | 'procedure' | 'evaluation', Rest>,
+): string {
+  const qualifiers = record.modifiers.map(toQualifier)
+
+  // Partition attributes into events and actual attributes
+  const [eventAttributes, nonEventAttributes] = partition(
+    record.attributes,
+    (attr) => attr.value?.type === 'event',
+  )
+
+  const events: Lang['event'][] = eventAttributes.map((attr) => {
+    const value = attr.value as { type: 'event'; datetime: Date | string }
+    return {
+      atom: 'event',
+      specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+      value: {
+        datetime: isDate(value.datetime)
+          ? value.datetime.toISOString()
+          : value.datetime,
+        location: null,
+      },
+    }
+  })
+
+  const attributes: Lang['attribute'][] = nonEventAttributes.map((attr) => ({
+    atom: 'attribute',
+    specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+    value: attr.value?.type === 'snomed_concept'
+      ? toSnomedConcept(attr.value)
+      : null,
+  }))
+
+  const root_snomed_concept = toSnomedConcept(record.root_snomed_concept)
+  const specific_snomed_concept = toSnomedConcept(record.specific_snomed_concept)
+  const value_snomed_concept = record.value?.type === 'snomed_concept'
+    ? toSnomedConcept(record.value)
+    : null
+
+  switch (record.type) {
+    case 'finding': {
+      const node: Lang['finding'] = {
+        atom: 'finding',
+        root_snomed_concept,
+        specific_snomed_concept,
+        value_snomed_concept,
+        events,
+        qualifiers,
+        attributes,
+      }
+      return inverseSExpression(node)
+    }
+    case 'evaluation': {
+      const node: Lang['evaluation'] = {
+        atom: 'evaluation',
+        root_snomed_concept,
+        specific_snomed_concept,
+        value_snomed_concept,
+        evaluates: null,
+        events,
+        qualifiers,
+        attributes,
+      }
+      return inverseSExpression(node)
+    }
+    case 'procedure': {
+      const node: Lang['procedure'] = {
+        atom: 'procedure',
+        root_snomed_concept,
+        specific_snomed_concept,
+        events,
+        qualifiers,
+        attributes,
+      }
+      return inverseSExpression(node)
+    }
   }
 }
