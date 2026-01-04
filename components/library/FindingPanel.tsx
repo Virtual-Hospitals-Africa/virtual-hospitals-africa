@@ -79,7 +79,8 @@ export function FindingPanel(
                   </svg>
                 </div>
                 <p className='text-sm font-medium text-gray-900'>
-                  during {finding.as_part_of_procedure.name}
+                  during{' '}
+                  {finding.as_part_of_procedure.specific_snomed_concept.name}
                 </p>
               </div>
             )}

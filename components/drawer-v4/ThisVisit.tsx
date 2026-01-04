@@ -39,7 +39,8 @@ function groupRecordsByWorkflows(
 }[] {
   const records_by_procedure = groupBy(
     this_visit_findings,
-    (record) => record.as_part_of_procedure.snomed_concept_id,
+    (record) =>
+      record.as_part_of_procedure.specific_snomed_concept.snomed_concept_id,
   )
 
   const grouped_records = compact(WORKFLOWS.map((workflow) => {

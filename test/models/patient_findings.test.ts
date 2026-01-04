@@ -238,7 +238,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       'Common cold Clinical finding',
     )
 
-    assertMatches(finding.events, [
+    assertMatches(finding.attributes, [
       {
         'record_id': z.string().uuid(),
         'root_snomed_concept': {

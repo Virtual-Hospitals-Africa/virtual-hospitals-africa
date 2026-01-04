@@ -23,7 +23,7 @@ import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
-import { nowInvalidRecords } from './patient_records.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL

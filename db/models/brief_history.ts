@@ -18,7 +18,7 @@ import {
   commonConditionSnomedConceptId,
 } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
-import { nowInvalidRecords } from './patient_records.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 import { hydrateIntermediateRecords } from './patient_record_providers.ts'
 import { formatRecord } from '../../shared/patient_records.ts'

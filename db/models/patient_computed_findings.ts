@@ -110,7 +110,8 @@ export function insertComputedFinding(
           id: computed_finding_id,
           patient_id,
           patient_encounter_id,
-          snomed_concept_id: MEASUREMENT_FINDING_SNOMED_CONCEPT_ID,
+          root_snomed_concept_id: MEASUREMENT_FINDING_SNOMED_CONCEPT_ID,
+          specific_snomed_concept_id: snomed_concept_id,
         }),
   ).with(
     'inserting_computed_finding_finding',
@@ -120,7 +121,6 @@ export function insertComputedFinding(
           id: computed_finding_id,
           patient_encounter_employee_id,
           procedure_id,
-          specific_snomed_concept_id: snomed_concept_id,
         }),
   ).with(
     'inserting_computed_finding',

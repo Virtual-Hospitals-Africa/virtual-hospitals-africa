@@ -1,20 +1,20 @@
 import {
-  Maybe,
+  IntermediateBaseRecord,
   RecordDisplays,
-  RecordValue,
-  RecordValueSnomedConcept,
+  RenderedAttribute,
   RenderedSnomedConcept,
 } from '../types.ts'
 import compact from '../util/compact.ts'
 import { positive_decimal } from '../util/validators.ts'
 import isDate from '../util/isDate.ts'
+import partition from '../util/partition.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertAll } from '../util/assertAll.ts'
+import omit from '../util/omit.ts'
+import assertOneOf from '../util/assertOneOf.ts'
 
-type DisplayableRecord = {
-  root_snomed_concept: RenderedSnomedConcept
-  specific_snomed_concept?: Maybe<RenderedSnomedConcept>
-  value?: Maybe<RecordValue>
-  prefixes?: DisplayableRecord[]
-  // Attributes are not included as part of the display, but listed here for completeness
+type DisplayableRecord = IntermediateBaseRecord & {
+  qualifiers?: DisplayableRecord[]
 }
 
 function measurementValueDisplay(
@@ -86,10 +86,13 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
     root_snomed_concept,
     specific_snomed_concept,
     value,
-    prefixes = [],
+    qualifiers = [],
   } = record
 
-  const prefix_displays = prefixes.map((prefix) => buildDisplays(prefix).full)
+  for (const qualifier of qualifiers) {
+    assert(!qualifier.value)
+  }
+  const prefix_displays = qualifiers.map((prefix) => buildDisplays(prefix).full)
 
   const finding_display = compact([
     ...prefix_displays,
@@ -115,34 +118,40 @@ function buildDisplays(record: DisplayableRecord): RecordDisplays {
   }
 }
 
-type RenderedDisplayableRecord<DR extends DisplayableRecord> =
-  & Omit<DR, 'value_snomed_concept'>
-  & { displays: RecordDisplays; value: RecordValue | null }
-
-function mergeValuesAddDisplay<DR extends DisplayableRecord>(
+function addDisplay<DR extends DisplayableRecord>(
   record: DR,
-): RenderedDisplayableRecord<DR> {
+): Omit<DR, 'qualifiers'> & {
+  displays: RecordDisplays
+} {
   return {
     ...record,
-    value: record.value || null,
     displays: buildDisplays(record),
   }
 }
 
 export function formatRecord<
-  DR extends DisplayableRecord & {
-    value_snomed_concept?: null | RecordValueSnomedConcept
-    attributes: DisplayableRecord[]
-    events: DisplayableRecord[]
-  },
->(record: DR): RenderedDisplayableRecord<DR> & {
-  value: RecordValue | null
-  attributes: RenderedDisplayableRecord<DR['attributes'][number]>[]
-  events: RenderedDisplayableRecord<DR['events'][number]>[]
+  DR extends DisplayableRecord,
+>(record: DR): Omit<DR, 'qualifiers'> & {
+  displays: RecordDisplays
+  attributes: RenderedAttribute[]
 } {
+  const [unformatted_attributes, prefixes] = partition(
+    record.qualifiers || [],
+    (qualifier) => !!qualifier.value,
+  )
+
+  const attributes = unformatted_attributes.map(addDisplay)
+  assertAll(attributes, (attribute): asserts attribute is RenderedAttribute => {
+    assert(attribute.value)
+    assertOneOf(attribute.value.type, [
+      'event' as const,
+      'snomed_concept' as const,
+    ])
+  })
+
   return {
-    ...mergeValuesAddDisplay(record),
-    attributes: record.attributes.map(mergeValuesAddDisplay),
-    events: record.events.map(mergeValuesAddDisplay),
+    ...omit(record, ['qualifiers']),
+    displays: buildDisplays({ ...record, qualifiers: prefixes }),
+    attributes,
   }
 }

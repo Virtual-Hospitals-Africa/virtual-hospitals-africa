@@ -1,8 +1,11 @@
 import { Maybe, TrxOrDb } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { markAltered, nowInvalidRecords } from './patient_records.ts'
-import { CLINICAL_FINDING_SNOMED_CONCEPT_ID } from '../../shared/patient_findings.ts'
+import {
+  CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+  PROCEDURE_SNOMED_CONCEPT_ID,
+} from '../../shared/patient_findings.ts'
+import { markAltered, nowInvalidRecords } from './patient_records_base.ts'
 
 export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID =
   '409060008'
@@ -58,7 +61,7 @@ export async function upsertOne(
       patient_encounter_id,
     )
     .where(
-      'patient_records.snomed_concept_id',
+      'patient_records.specific_snomed_concept_id',
       '=',
       EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
     )
@@ -89,7 +92,8 @@ export async function upsertOne(
             id: procedure_id,
             patient_id,
             patient_encounter_id,
-            snomed_concept_id:
+            root_snomed_concept_id: PROCEDURE_SNOMED_CONCEPT_ID,
+            specific_snomed_concept_id:
               EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS_SNOMED_CONCEPT_ID,
           })
         : blankSelection(qb),
@@ -111,14 +115,14 @@ export async function upsertOne(
         patient_id,
         patient_encounter_id,
         // TODO: pick a better concept?
-        snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+        root_snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+        specific_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
       })).with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: chief_complaint_id,
           procedure_id,
           patient_encounter_employee_id,
-          specific_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
         }))
     .with(
       'inserting_chief_complaint',
@@ -139,7 +143,9 @@ export async function upsertOne(
               id: speech_record_id,
               patient_id,
               patient_encounter_id,
-              snomed_concept_id:
+              // TODO pick a better concept?
+              root_snomed_concept_id: CLINICAL_FINDING_SNOMED_CONCEPT_ID,
+              specific_snomed_concept_id:
                 AUDIO_RECORDING_OF_SUBJECT_INTERVIEW_SNOMED_CONCEPT_ID,
             })
           : blankSelection(qb),
@@ -153,8 +159,6 @@ export async function upsertOne(
               id: speech_record_id,
               patient_encounter_employee_id,
               procedure_id,
-              // TODO pick a better concept?
-              specific_snomed_concept_id: CHIEF_COMPLAINT_SNOMED_CONCEPT_ID,
             })
           : blankSelection(qb),
     )
@@ -197,7 +201,7 @@ export function getEncounter(
     )
     .innerJoin(
       'snomed_inferred_canonical_name_and_category',
-      'patient_records.snomed_concept_id',
+      'patient_records.specific_snomed_concept_id',
       'snomed_inferred_canonical_name_and_category.id',
     )
     .where('patient_records.patient_id', '=', patient_id)

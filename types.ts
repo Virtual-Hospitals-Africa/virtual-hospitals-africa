@@ -2494,6 +2494,9 @@ export type PatientSymptomUpsert = PatientSymptomInsertShared & {
 export type RenderedPatientSymptom =
   & PatientSymptomInsertShared
   & {
+    id: string
+    name: string
+    snomed_concept_id?: string
     media: {
       mime_type: string
       url: string
@@ -3468,14 +3471,9 @@ export type RenderedSnomedConcept = {
   name: string
   category: SnomedCategory
 }
-export type RenderedAttribute<Value> = {
-  record_id: string
-  root_snomed_concept: RenderedSnomedConcept
-  specific_snomed_concept: RenderedSnomedConcept
-  patient_encounter_employee_id: string
-  procedure_id: string
+export type RenderedAttribute = IntermediateBaseRecord & {
   displays: RecordDisplays
-  value: Value
+  value: RecordValueSnomedConcept | RecordValueEvent
 }
 
 export type RecordValueEvent = { type: 'event'; datetime: Date | string }
@@ -3493,25 +3491,23 @@ export type RecordValue =
   | RecordValueSnomedConcept
   | RecordValueMeasurement
 
+export type IntermediateBaseRecord = {
+  record_id: string
+  created_at: Date | string
+  patient_encounter_id: string
+  root_snomed_concept: RenderedSnomedConcept
+  specific_snomed_concept: RenderedSnomedConcept
+  value: null | RecordValue
+}
+
 export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
   & Rest
+  & IntermediateBaseRecord
   & {
     type: Type
-    record_id: string
-    patient_encounter_id: string
-    root_snomed_concept: RenderedSnomedConcept
-    specific_snomed_concept: RenderedSnomedConcept
+    attributes: RenderedAttribute[]
     displays: RecordDisplays
-    created_at: Date | string
-    attributes: RenderedAttribute<RecordValueSnomedConcept>[]
-    events: RenderedAttribute<RecordValueEvent>[]
-    value: null | RecordValue
-    evaluations: {
-      record_id: string
-      patient_encounter_id: string
-      root_snomed_concept: RenderedSnomedConcept
-      specific_snomed_concept: RenderedSnomedConcept
-    }[]
+    evaluations: IntermediateBaseRecord[]
   }
 
 export type RenderedEvaluationEvaluatedBy =

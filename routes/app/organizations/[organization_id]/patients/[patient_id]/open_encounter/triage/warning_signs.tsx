@@ -28,7 +28,6 @@ import {
 } from '../../../../../../../../types.ts'
 import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-import { markEnteredInError } from '../../../../../../../../db/models/patient_records.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import {
   CLINICAL_FINDING_SNOMED_CONCEPT_ID,
@@ -36,6 +35,7 @@ import {
 } from '../../../../../../../../shared/patient_findings.ts'
 import { assertArrayEmpty } from '../../../../../../../../util/arraySize.ts'
 import first from '../../../../../../../../util/first.ts'
+import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(

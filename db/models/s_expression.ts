@@ -1,6 +1,6 @@
 import { IdSelection, Maybe, TrxOrDb } from '../../types.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
-import { nowInvalidRecords } from './patient_records.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
 import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
@@ -235,18 +235,18 @@ const EXPRESSION_BUILDERS = {
     trx,
     { patient_id, patient_encounter_id },
     {
-      root_snomed_concept,
+      // root_snomed_concept,
       specific_snomed_concept,
-      value_snomed_concept,
+      // value_snomed_concept,
       qualifiers, /* attributes */
     },
   ) {
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      root_snomed_concept,
+      // root_snomed_concept,
       specific_snomed_concept,
-      value_snomed_concept,
+      // value_snomed_concept,
       qualifiers,
     })
       .innerJoin(

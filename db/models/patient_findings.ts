@@ -7,7 +7,7 @@ import {
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { nowInvalidRecords, patient_records } from './patient_records.ts'
+import { patient_records } from './patient_records.ts'
 import { sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -32,6 +32,7 @@ import {
   UNKNOWN_QUALIFIER_SNOMED_CONCEPT_ID,
   YES_QUALIFIER_SNOMED_CONCEPT_ID,
 } from '../../shared/patient_findings.ts'
+import { nowInvalidRecords } from './patient_records_base.ts'
 
 type FindingInsert = {
   patient_id: string
