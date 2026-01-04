@@ -2,7 +2,7 @@
 // import { PatientFindings } from '../../db.d.ts'
 // import {
 //   relation_from_snomed_id,
-//   SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS,
+//   SEXED_RELATION_SNOMED_CONCEPT_IDS,
 // } from '../../shared/family.ts'
 // import {
 //   InsertShape,
@@ -86,9 +86,9 @@
 //   > = family_members
 //     .map((member) => {
 //       const id = generateUUID()
-//       assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS)
+//       assert(member.relation_sexed in SEXED_RELATION_SNOMED_CONCEPT_IDS)
 //       const specific_snomed_concept_id =
-//         SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS[member.relation_sexed]
+//         SEXED_RELATION_SNOMED_CONCEPT_IDS[member.relation_sexed]
 
 //       return {
 //         id,

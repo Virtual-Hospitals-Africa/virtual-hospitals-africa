@@ -23,7 +23,7 @@ import {
   Workflow,
 } from './db.d.ts'
 import db from './db/db.ts'
-import { SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS } from './shared/family.ts'
+import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Department } from './shared/departments.ts'
 import { type DietFrequency } from './shared/diet.ts'
 import { type Priority } from './shared/priorities.ts'
@@ -3340,7 +3340,7 @@ export type ExtantProcedureOrCreationIntent = {
 export type PatientFamilyHistoryShared = {
   snomed_concept_id: string
   family_members: Array<{
-    relation_sexed: keyof typeof SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS
+    relation_sexed: keyof typeof SEXED_RELATION_SNOMED_CONCEPT_IDS
   }>
 }
 

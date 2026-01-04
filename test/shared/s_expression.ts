@@ -1,17 +1,11 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
-  firstPass,
   parseExpression,
   parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
-import {
-  evaluates,
-  evaluation,
-  finding,
-} from '../../shared/s_expression_schemas.ts'
 
 describe('shared/s_expression.ts', () => {
   it('can parse a simple finding expression', () => {

@@ -103,7 +103,7 @@ export const PATIENT_COHABITATIONS: PatientCohabitation[] = [
   'Orphanage',
 ]
 
-export const SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS = {
+export const SEXED_RELATION_SNOMED_CONCEPT_IDS = {
   'aunt': '25211005',
   'uncle': '38048003',
   'foster mother': '38265003',
@@ -130,7 +130,7 @@ export const SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS = {
 
 export const SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS = fromEntries(
   entries(
-    SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS,
+    SEXED_RELATION_SNOMED_CONCEPT_IDS,
   ).map(
     ([relation_sexed, snomed_concept_id]) => [
       snomed_concept_id,
@@ -139,10 +139,9 @@ export const SNOMED_CONCEPT_IDS_TO_sexED_RELATIONS = fromEntries(
   ),
 )
 
-export type SexedRelationKey = keyof typeof SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS
+export type SexedRelationKey = keyof typeof SEXED_RELATION_SNOMED_CONCEPT_IDS
 
-type SexedSnomedId =
-  typeof SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS[SexedRelationKey]
+type SexedSnomedId = typeof SEXED_RELATION_SNOMED_CONCEPT_IDS[SexedRelationKey]
 
 function enumFromObjKeys<const O extends Record<string, unknown>>(obj: O) {
   type K = Extract<keyof O, string>
@@ -151,7 +150,7 @@ function enumFromObjKeys<const O extends Record<string, unknown>>(obj: O) {
 }
 
 export const FamilyMemberSchema = z.object({
-  relation_sexed: enumFromObjKeys(SEXED_RELATION_SNOMED_CONCEPT_ZZ_IDS),
+  relation_sexed: enumFromObjKeys(SEXED_RELATION_SNOMED_CONCEPT_IDS),
 })
 
 export const relation_from_snomed_id = (snomed_id: string) => {

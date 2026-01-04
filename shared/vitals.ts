@@ -29,10 +29,12 @@ import { CLINICAL_FINDING } from './snomed_concepts.ts'
 import { normalForm } from './s_expression.ts'
 import { Lang } from './s_expression_schemas.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
+import assertOneOf from '../util/assertOneOf.ts'
 
-export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS = {
+export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS = {
   height: '1153637007',
-  weight: '363808001',
+  weight: '27113001',
   temperature: '386725007',
   blood_pressure_systolic: '271649006',
   blood_pressure_diastolic: '271650006',
@@ -45,13 +47,13 @@ export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS = {
   head_circumference: '363812007',
 }
 
-export const VITALS_COMPUTED_SNOMED_CONCEPT_ZZ_IDS = {
+export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
   body_mass_index: '698094009',
   mean_arterial_pressure: '6797001',
   blood_pressure: '75367002',
 }
 
-export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS = {
+export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS = {
   mobility_assessment: '430481008', // |Assessment of mobility (procedure)|
   consciousness: '1104441000000107', // |Alert Confusion Voice Pain Unresponsive scale score (observable entity)|
   trauma_presence: '273884004', // |Trauma score (assessment scale)|',
@@ -61,7 +63,7 @@ export const vitalMeasurementFromSnomedConceptId = memoize(
   (snomed_concept_id: string) => {
     for (
       const [vital, concept_id] of entries(
-        VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
       )
     ) {
       if (concept_id === snomed_concept_id) {
@@ -78,8 +80,8 @@ export function vitalAssessmentOrder(
   f: RenderedFindingRelativeToHealthWorker,
 ): number {
   for (
-    const [i, evaluation_snomed_concept_id] of Object.values(
-      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
+    const [i, [_vital, evaluation_snomed_concept_id]] of entries(
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
     ).entries()
   ) {
     if (isAssessmentFor(f, evaluation_snomed_concept_id)) {
@@ -87,14 +89,14 @@ export function vitalAssessmentOrder(
     }
   }
 
-  throw new Error(`Finding not an assessment ${f.record_id}`)
+  throw new Error(`Finding not an assessment \n${humanReadableJson(f)}`)
 }
 
-export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_ZZ_IDS
+export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_IDS
 export type VitalMeasurement =
-  keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS
+  keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS
 export type VitalAssessment =
-  keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS
+  keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
 export type Vital = VitalMeasurement | VitalAssessment
 
 export const ADULT_TEWS_COMPONENTS = [
@@ -374,12 +376,12 @@ export function measureVitalsInputDefinitions(
 
   const measurements: VitalMeasurementFormInputDefition[] = compact(
     // iterate over measurements for the sort order
-    keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS)
+    keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)
       .map((vital) => (measurement_vitals.includes(vital) && {
         vital,
         required: true,
         units: VITAL_MEASUREMENTS_UNITS[vital],
-        snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS[vital],
+        snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital],
       })),
   )
 
@@ -389,7 +391,7 @@ export function measureVitalsInputDefinitions(
     vital,
     required: true,
     evaluation_snomed_concept_id:
-      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS[vital],
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital],
     options: options.filter((option) =>
       option.available_to_ages.includes(age_determination)
     ),
@@ -398,7 +400,13 @@ export function measureVitalsInputDefinitions(
   return { measurements, assessments }
 }
 
-export function triageLevelFromTEWSTotal(total_score: number): TriageLevel {
+export function triageLevelFromTEWSTotal(
+  total_score: number,
+  age_determination: AgeDetermination,
+): TriageLevel {
+  if (total_score > 14) {
+    assertEquals(age_determination, 'adult', 'The max score for children is 14')
+  }
   switch (total_score) {
     case 0:
     case 1:
@@ -414,6 +422,24 @@ export function triageLevelFromTEWSTotal(total_score: number): TriageLevel {
     case 8:
     case 9:
     case 10:
+    case 11:
+    case 12:
+      return 'Emergency'
+    case 13:
+    case 14:
+      assertOneOf(
+        age_determination,
+        ['adult', 'younger child'],
+        'The max score for an older child is 12',
+      )
+      return 'Emergency'
+    case 15:
+    case 16:
+      assertEquals(
+        age_determination,
+        'adult',
+        'The max score for children is 14',
+      )
       return 'Emergency'
     default:
       throw new Error(`Unexpected total TEWS score ${total_score}`)
@@ -469,7 +495,7 @@ export function buildReferenceRanges(
   }
 
   const vital = vitalMeasurementFromSnomedConceptId(snomed_concept_id)
-  if (!isKeyOf(vital, VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS)) {
+  if (!isKeyOf(vital, VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)) {
     return null
   }
 
@@ -538,7 +564,7 @@ export function isAssessmentFor(
   evaluation_snomed_concept_id: string,
 ): boolean {
   const has_matching_evaluation = f.evaluations.some((e) =>
-    e.root_snomed_concept.snomed_concept_id === evaluation_snomed_concept_id
+    e.specific_snomed_concept.snomed_concept_id === evaluation_snomed_concept_id
   )
   if (!has_matching_evaluation) return false
 
@@ -559,13 +585,13 @@ export function isAssessmentFor(
 export function matchingAssessment(
   f: RenderedFindingRelativeToHealthWorker,
 ): null | {
-  vital: keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS
+  vital: keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
   evaluation_snomed_concept_id: string
   specific_snomed_concept_id: string
 } {
   for (
     const [vital, evaluation_snomed_concept_id] of entries(
-      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
     )
   ) {
     for (const evaluation of f.evaluations) {

@@ -42,7 +42,7 @@ import {
   isWorkflow,
   lastStep,
   prettyStepName,
-  WORKFLOW_SNOMED_CONCEPT_ZZ_IDS,
+  WORKFLOW_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEPS,
   workflowStepSnomedConceptId,
 } from '../../../../../../../shared/workflow.ts'
@@ -259,7 +259,7 @@ export async function workflowHandler(
   const { patient_encounter_id } = encounter
   const { patient_encounter_employee_id } = encounter_employee_presence
 
-  const workflow_snomed_concept_id = WORKFLOW_SNOMED_CONCEPT_ZZ_IDS[workflow]
+  const workflow_snomed_concept_id = WORKFLOW_SNOMED_CONCEPT_IDS[workflow]
 
   const workflow_step_snomed_concept_id = workflowStepSnomedConceptId(
     workflow,
@@ -305,7 +305,7 @@ export async function workflowHandler(
     patient_encounter_employee_id,
     workflow_step_snomed_concept_id,
     previously_completed_procedures,
-    workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_ZZ_IDS[workflow],
+    workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS[workflow],
   }
 
   Object.assign(ctx.state, workflow_props)

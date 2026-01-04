@@ -12,7 +12,7 @@
 //   patient_findings,
 // } from '../../db/models/patient_findings.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
-// import { WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS } from '../../shared/workflow.ts'
+// import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
 // import {
 //   buildExpression,
 //   satisfyingSExpression,

@@ -6,12 +6,12 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_measurements } from '../../db/models/patient_measurements.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS } from '../../shared/workflow.ts'
+import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
 import { satisfyingSExpression } from '../../db/models/s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
-import { PROCEDURE } from '../../shared/patient_findings.ts'
+import { PROCEDURE } from '../../shared/snomed_concepts.ts'
 
 describeParallel('db/models/patient_measurements.ts', () => {
   afterAll(() => db.destroy())
@@ -48,7 +48,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
             `(procedure ${PROCEDURE.id} ${
-              WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS.triage!.measure_vitals
+              WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
             })`,
             'procedure',
           ),
@@ -151,7 +151,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
             `(procedure ${PROCEDURE.id} ${
-              WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS.triage!.measure_vitals
+              WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
             })`,
             'procedure',
           ),
@@ -201,7 +201,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
             `(procedure ${PROCEDURE.id} ${
-              WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS.triage!.measure_vitals
+              WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
             })`,
             'procedure',
           ),

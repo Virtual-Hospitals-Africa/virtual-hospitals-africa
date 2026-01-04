@@ -15,8 +15,8 @@ import {
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
   triageLevelFromTEWSTotal,
-  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/vitals.ts'
 import {
   parseExpressionExpectingAtom,
@@ -51,7 +51,7 @@ import { inverseSExpression } from '../../../../../../../../shared/s_expression_
 
 const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
-    z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS)),
+    z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)),
     z.object({
       value: positive_decimal.optional(),
       units: z.string().min(1),
@@ -60,7 +60,7 @@ const TriageMeasureVitalsSchema = z.object({
     ),
   ).default({}),
   assessments: z.partialRecord(
-    z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS)),
+    z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
     z.object({
       s_expression: sExpressionZodValidator('finding'),
     }).strict(),
@@ -102,11 +102,11 @@ export const handler = postHandler(
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const {
       trx,
-      patient,
-      encounter: { patient_encounter_id },
-      encounter_employee_presence: { patient_encounter_employee_id },
+      health_worker_id,
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
     } = ctx.state
-    const patient_id = patient.id
 
     const {
       procedure: { procedure_id },
@@ -118,25 +118,25 @@ export const handler = postHandler(
       shared: sharedVitalsDeterminations(ctx),
       previous_measurements_this_encounter: patient_vitals
         .getMostRecentMeasurements(
-          ctx.state.trx,
+          trx,
           {
-            patient_id: ctx.state.patient.id,
-            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-            health_worker_id: ctx.state.health_worker.id,
+            patient_id,
+            patient_encounter_id,
+            health_worker_id,
             snomed_concept_ids: Object.values(
-              VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
+              VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
             ),
           },
         ),
       previous_assessments_this_encounter: patient_vitals
         .getMostRecentAssessments(
-          ctx.state.trx,
+          trx,
           {
-            patient_id: ctx.state.patient.id,
-            patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-            health_worker_id: ctx.state.health_worker.id,
+            patient_id,
+            patient_encounter_id,
+            health_worker_id,
             snomed_concept_ids: Object.values(
-              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
+              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
             ),
           },
         ),
@@ -200,8 +200,7 @@ export const handler = postHandler(
         async ([vital, measurement]) => {
           if (!measurement) return
 
-          const snomed_concept_id =
-            VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS[vital]
+          const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
           const measurement_equality = parseExpressionExpectingAtom(
             `(= (measurement ${snomed_concept_id}) (units ${measurement.value} ${measurement.units}))`,
             '=',
@@ -252,7 +251,7 @@ export const handler = postHandler(
           )
           if (score != null) {
             const evaluation_snomed_concept_id =
-              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS[vital]
+              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital]
 
             await patient_evaluation_scores.insertOneNested(trx, {
               score,
@@ -289,7 +288,7 @@ export const handler = postHandler(
       procedure_id,
       by_system: true,
       evaluates_record_id: score_evaluation.evaluation_id,
-      triage_level: triageLevelFromTEWSTotal(total_score),
+      triage_level: triageLevelFromTEWSTotal(total_score, age_determination),
     })
 
     await insertTasksIfNotAlreadyIdentified(trx, {

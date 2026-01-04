@@ -5,7 +5,7 @@ import { LocalTime } from '../../islands/LocalTime.tsx'
 import { PencilIcon } from '../library/icons/heroicons/solid.tsx'
 import { Label } from '../library/Label.tsx'
 import PriorityDropdown from '../../islands/vitals/PriorityDropdown.tsx'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS } from '../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
@@ -30,7 +30,7 @@ export default function VitalInputWithEvaluation({
   const has_existing_note = !!existingEvaluation?.note
 
   const getVitalName = (snomedCode: string) => {
-    const vital_key = Object.entries(VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS)
+    const vital_key = Object.entries(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)
       .find(
         ([_, code]) => code === snomedCode,
       )?.[0]

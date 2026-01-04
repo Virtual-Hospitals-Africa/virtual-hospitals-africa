@@ -36,19 +36,13 @@ export function firstPass(
   if (parsed instanceof Error) {
     throw parsed
   }
-
   return recursiveTreePass(parsed)
 }
 
 export function parseExpression(
   expression: string,
 ) {
-  const parsed = s_expression(expression) as SExpressionSimpleNode
-  if (parsed instanceof Error) {
-    throw parsed
-  }
-
-  const first_pass = recursiveTreePass(parsed)
+  const first_pass = firstPass(expression)
   try {
     return schemas.any_expression.parse(first_pass)
   } catch (_err) {
@@ -117,17 +111,10 @@ export function asNode<
 export function sExpressionZodValidator<T extends Atom>(atom: T) {
   return z.string()
     .transform((expression) => {
-      const parsed = s_expression(expression) as SExpressionSimpleNode
-      if (parsed instanceof Error) {
-        throw parsed
-      }
-      const first_pass = recursiveTreePass(parsed)
+      const first_pass = firstPass(expression)
       const schema = schemaByAtom(atom)
-
       const second_pass = parseWithValues(schema, first_pass)
-
       assert(isAtom(second_pass, atom))
-
       return second_pass
     })
 }

@@ -7,12 +7,11 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import {
-  ASESSMENTS_ORDERED,
   buildReferenceRanges,
   MEASUREMENTS_ORDERED,
   triageLevelFromTEWSTotal,
-  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
   vitalAssessmentOrder,
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
@@ -39,6 +38,7 @@ import sumBy from '../../../../../../../../util/sumBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 import { intersection } from '../../../../../../../../util/intersection.ts'
+import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -87,11 +87,15 @@ async function totalScore(
   {
     state: {
       trx,
+      patient,
       patient_id,
       patient_encounter_id,
     },
   }: OpenEncounterWorkflowContext,
 ) {
+  assert(completedPersonal(patient))
+  const age_determination = patientAgeDetermination(patient)
+
   const { score } = await patient_evaluation_scores.findFirst(
     trx,
     {
@@ -103,7 +107,7 @@ async function totalScore(
 
   return {
     score,
-    priority: triageLevelFromTEWSTotal(score),
+    priority: triageLevelFromTEWSTotal(score, age_determination),
   }
 }
 
@@ -122,10 +126,10 @@ async function sortedVitals(
       patient_id,
       patient_encounter_id,
       measurement_snomed_concept_ids: Object.values(
-        VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS,
+        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
       ),
       assessment_snomed_concept_ids: Object.values(
-        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS,
+        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
       ),
     })
 
@@ -170,7 +174,7 @@ async function sortedVitals(
   ).map((finding) => {
     const evaluation_snomed_concept_ids = intersection(
       finding.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id),
-      Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_ZZ_IDS),
+      Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS),
     )
     const previous = previous_vitals.assessments.find((a) => {
       a.evaluations.some((e) =>
@@ -201,7 +205,7 @@ async function sortedVitals(
     other_measurements_unsorted,
     (m) =>
       m.finding.specific_snomed_concept.snomed_concept_id ===
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.blood_pressure_diastolic
+          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic
         ? 0
         : 1,
     (m) => m.finding.created_at,
@@ -230,6 +234,14 @@ export async function TriageAssignPriorityPage(
       total_score: totalScore(ctx),
       with_triage_level_findings: withTriageLevelFindings(ctx),
     })
+
+  Deno.writeTextFileSync(
+    '/Users/willweiss/Desktop/foo.json',
+    humanReadableJson({
+      total_score,
+      vitals,
+    }),
+  )
 
   assertEquals(
     total_score.score,

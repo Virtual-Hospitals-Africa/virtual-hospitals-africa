@@ -1557,12 +1557,12 @@ export interface SatsTriageScoringRules {
   age_min_days: number | null
   assessment_option_id: string | null
   created_at: Generated<Timestamp>
-  finding_snomed_concept_id: Int8 | null
   height_max_cm: number | null
   height_min_cm: number | null
   id: string
   score_value: number
   scoring_system: string
+  specific_snomed_concept_id: Int8 | null
   updated_at: Generated<Timestamp>
   value_max: Numeric | null
   value_min: Numeric | null

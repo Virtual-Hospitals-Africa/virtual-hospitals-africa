@@ -258,8 +258,8 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 //       {
 //         patient_id: encounter.patient.id,
 //         s_expression: `
-//           (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.height}))
-//                (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_ZZ_IDS.weight})))
+//           (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
+//                (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight})))
 //         `,
 //       },
 //     )

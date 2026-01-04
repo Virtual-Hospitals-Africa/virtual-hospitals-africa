@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../../db.d.ts'
 import {
   prettyStepName,
-  WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS,
+  WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
   WORKFLOW_STEPS,
   WORKFLOWS,
 } from '../../shared/workflow.ts'
@@ -55,7 +55,7 @@ function groupRecordsByWorkflows(
       status: workflow_status.status,
       steps: workflow_steps.map((workflow_step) => {
         const workflow_step_snomed_concept_id =
-          WORKFLOW_STEP_SNOMED_CONCEPT_ZZ_IDS[workflow]?.[workflow_step]
+          WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]?.[workflow_step]
 
         const records_of_concept = (workflow_step_snomed_concept_id &&
           records_by_procedure.get(workflow_step_snomed_concept_id)) || []

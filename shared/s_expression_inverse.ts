@@ -1,6 +1,8 @@
 import { AnyNode, Lang } from './s_expression_schemas.ts'
-import * as snomed_concepts from './snomed_concepts.ts'
 
+// TODO: come back to this idea maybe.
+// As it stands two s_expressions could refer to the same snomed concept,
+// but if one uses id and the other uses name/category they won't match exactly
 // function lookupSnomedConceptById(node: Lang['snomed_concept'])
 
 function snomedConceptToString(node: Lang['snomed_concept']): string {
