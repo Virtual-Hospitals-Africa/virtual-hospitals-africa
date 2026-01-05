@@ -8,7 +8,7 @@ import waitUntilTestServerUp from 'test/_helpers/waitUntilTestServerUp.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
 import asFormData from '../../../../util/asFormData.ts'
 
-describeParallel('snomed-warning-sitns', () => {
+describeParallel('snomed-warning-signs', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
@@ -39,7 +39,7 @@ describeParallel('snomed-warning-sitns', () => {
 
         assertEquals(first_page, {
           'page': 1,
-          'rows_per_page': 10,
+          'rows_per_page': 20,
           'results': [
             {
               'id': '301354004',

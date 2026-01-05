@@ -283,6 +283,7 @@ export function asNormalFormSExpression<Rest>(
         events,
         qualifiers,
         attributes,
+        exact: false,
       }
       return inverseSExpression(node)
     }
