@@ -1,5 +1,7 @@
 import { KeyedWarningSign, WarningSign } from '../types.ts'
 import entries from '../util/entries.ts'
+import sortBy from '../util/sortBy.ts'
+import { ORDERED_PRIORITIES } from './priorities.ts'
 
 export const WARNING_SIGNS = {
   'Obstructed airway': {
@@ -249,11 +251,14 @@ export const WARNING_SIGNS = {
   },
 } satisfies Record<string, WarningSign>
 
-export const KEYED_WARNING_SIGNS: KeyedWarningSign[] = entries(WARNING_SIGNS)
-  .map(([key, sign]) => ({
-    key,
-    ...sign,
-  }))
+export const KEYED_WARNING_SIGNS: KeyedWarningSign[] = sortBy(
+  entries(WARNING_SIGNS)
+    .map(([key, sign]) => ({
+      key,
+      ...sign,
+    })),
+  (sign) => ORDERED_PRIORITIES.indexOf(sign.sats_priority),
+)
 
 export function findingQueryExpression(
   { excluding_s_expression, clinical_finding_s_expression }: WarningSign,

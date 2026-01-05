@@ -1209,8 +1209,6 @@ describeParallel('triage/brief_history', () => {
           conditions: COMMON_CONDITIONS,
         })
 
-        console.log({ most_recent_findings })
-
         assertMatches(most_recent_findings.pregnancy, {
           'type': 'finding',
           'record_id': z.string().uuid(),
