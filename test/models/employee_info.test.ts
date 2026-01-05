@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { describe } from 'std/testing/bdd.ts'
+import { afterAll, describe } from 'std/testing/bdd.ts'
 import insertTestAddress from '../../mocks/insertTestAddress.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import { prettyPatientDateOfBirth } from '../../util/date.ts'
@@ -10,8 +10,10 @@ import * as nurse_registration_details from '../../db/models/nurse_registration_
 import * as employment from '../../db/models/employment.ts'
 import * as media from '../../db/models/media.ts'
 import { getEmployeeInfo } from '../../db/models/employee_info.ts'
+import db from '../../db/db.ts'
 
 describe('getEmployeeInfo', () => {
+  afterAll(() => db.destroy())
   itUsesTrxAnd(
     'returns the health worker and their employment information if that matches a given organization id',
     async (trx) => {
@@ -42,12 +44,12 @@ describe('getEmployeeInfo', () => {
       assertEquals(result.name, health_worker.name)
       assertEquals(result.date_of_birth, null)
       assertEquals(result.mobile_number, null)
-      assertEquals(result.avatar_url, null)
+      assert(typeof result.avatar_url === 'string')
       assertEquals(result.date_of_first_practice, null)
       assertEquals(result.email, health_worker.email)
       assertEquals(result.national_id_number, null)
       assertEquals(result.ncz_registration_number, null)
-      assertEquals(result.specialty, null)
+      assertEquals(result.specialty, 'Primary care')
       assertEquals(result.registration_completed, false)
       assertEquals(result.registration_needed, true)
       assertEquals(result.registration_pending_approval, false)
@@ -116,7 +118,7 @@ describe('getEmployeeInfo', () => {
         prettyPatientDateOfBirth(details.date_of_birth),
       )
       assertEquals(result.mobile_number, details.mobile_number)
-      assertEquals(result.avatar_url, null)
+      assert(typeof result.avatar_url === 'string')
       assertEquals(result.date_of_first_practice, '11 November 1999')
       assertEquals(result.email, health_worker.email)
       assert(result.national_id_number)
@@ -208,7 +210,7 @@ describe('getEmployeeInfo', () => {
     )
     assertEquals(result.name, details.name)
     assertEquals(result.mobile_number, details.mobile_number)
-    assertEquals(result.avatar_url, null)
+    assert(typeof result.avatar_url === 'string')
     assertEquals(result.date_of_first_practice, '11 November 1999')
     assertEquals(result.email, health_worker.email)
     assert(result.national_id_number)

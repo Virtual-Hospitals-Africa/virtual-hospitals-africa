@@ -8,23 +8,16 @@ import { SnomedCategory } from '../../db.d.ts'
 
 type SearchTerms = {
   search: string
+  patient_id: string
   categories?: SnomedCategory[]
 }
 
-// KEYED_WARNING_SIGNS.map(
-//   ({ excluding_s_expression, clinical_finding_s_expression }) => {
-//     const s_expression = excluding_s_expression
-//       ? `(and ${clinical_finding_s_expression}
-//           (not ${excluding_s_expression}))
-//     `
-//       : clinical_finding_s_expression
-
-//     const expr = parseExpressionExpectingAtom(s_expression)
-//   },
-// )
-
 function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
   assertOr400(terms.search, 'Must be searching for a term')
+  assertOr400(
+    terms.patient_id,
+    'Must be searching with respect to a particular patient (in order to ascertain the priority level)',
+  )
 
   const descriptions_with_similarity = trx
     .selectFrom('snomed_description')
@@ -42,6 +35,8 @@ function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
       'snomed_description.concept_id',
       sql<number>`similarity(term, ${terms.search})`.as('similarity'),
     ])
+    .orderBy(sql<number>`similarity(term, ${terms.search})`, 'desc')
+    .limit(100)
     .as('descriptions_with_similarity')
 
   const snomed_concepts = trx.selectFrom(
