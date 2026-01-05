@@ -130,7 +130,6 @@ export async function setupTriage(
   }
 
   if (vitals) {
-    console.log({ vitals })
     $ = await nurse.fetchCheerio(
       `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
       {

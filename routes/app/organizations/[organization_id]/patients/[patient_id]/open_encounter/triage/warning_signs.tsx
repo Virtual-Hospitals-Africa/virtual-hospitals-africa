@@ -255,8 +255,8 @@ export async function TriageWarningSignsPage(
     <WarningSigns
       search_route={hrefFromCtx(ctx, (url) => {
         url.pathname = url.pathname.replace(
-          'triage/warning_signs',
-          'snomed-warning-signs',
+          '/triage/warning_signs',
+          '/snomed-warning-signs',
         )
       })}
       warning_signs={await getAllClinicalFindingsAsWarningSignsForThisEncounter(
