@@ -18,12 +18,14 @@ import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
-import { PROCEDURE } from '../../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING, PROCEDURE } from '../../shared/snomed_concepts.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import assertLength from '../../util/assertLength.ts'
 
-describe('db/models/s_expression.ts', () => {
+describeParallel('db/models/s_expression.ts', () => {
   afterAll(() => db.destroy())
 
-  it("can insert a Burn Circumferential finding which isn't later then considered a Burn Other finding", async () => {
+  itParallel("can insert a Burn Circumferential finding which isn't later then considered a Burn Other finding", async () => {
     const nurse = await addTestEmployee(db, {
       profession: 'nurse',
       registration_status: 'approved',
@@ -139,5 +141,60 @@ describe('db/models/s_expression.ts', () => {
 
     const result = await query.execute()
     assertArrayEmpty(result)
+  })
+
+  itParallel("can insert a Nasal discharge finding which then matches for a query for ", async () => {
+    const nurse = await addTestEmployee(db, {
+      profession: 'nurse',
+      registration_status: 'approved',
+    })
+
+    const encounter =
+      await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+        db,
+        nurse.organization_id,
+        {
+          employment_id: nurse.employee_id,
+        },
+      )
+
+    const { procedure_id } = await patient_procedures.insertOneNested(db, {
+      patient_id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+      employment_id: encounter.employee.employee_id,
+      procedure: parseExpressionExpectingAtom(
+        `(procedure ${PROCEDURE.id} ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
+        'procedure',
+      ),
+    })
+
+    await patient_findings.insertOneNested(db, {
+      patient_id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+      patient_encounter_employee_id:
+        encounter.employee.patient_encounter_employee_id,
+      procedure_id,
+      finding: `(finding ${CLINICAL_FINDING.id} (snomed_concept "Nasal discharge" "finding"))`,
+    })
+
+    const findings = await patient_findings.findAll(db, {
+      patient_id: encounter.patient.id,
+      s_expression: `
+        (finding ${CLINICAL_FINDING.id} 
+          (attribute (snomed_concept "Finding site" "attribute")
+                     (snomed_concept "Nasal structure" "body structure")))
+      `,
+    })
+
+    assertLength(findings, 1)
+    assertMatches(findings[0], 
+      {
+        'record_id': z.string().uuid(),
+        'specific_snomed_concept': {
+          'name': 'Nasal discharge',
+          'category': 'finding',
+        },
+      },
+    )
   })
 })
