@@ -143,7 +143,7 @@ function baseQuery(
   }
 
   for (const attribute of attributes) {
-    query = query.where(eb =>
+    query = query.where((eb) =>
       eb.or([
         eb(
           'patient_records.id',
@@ -155,17 +155,29 @@ function baseQuery(
             .clearSelect()
             .select('patient_record_qualifiers.qualifies_record_id'),
         ),
-        attribute.value ?
-          eb.exists(
+        attribute.value
+          ? eb.exists(
             trx.selectFrom('snomed_relationship')
               .where('snomed_relationship.active', '=', true)
-              .where('snomed_relationship.type_id', '=', snomedConceptBase(trx, attribute.specific_snomed_concept))
-              .where('snomed_relationship.source_id', '=', eb.ref('patient_records.specific_snomed_concept_id'))
               .where(
-                sql<boolean>`is_descendant(snomed_relationship.destination_id, ${snomedConceptBase(trx, attribute.value)}::bigint)`
+                'snomed_relationship.type_id',
+                '=',
+                snomedConceptBase(trx, attribute.specific_snomed_concept),
               )
+              .where(
+                'snomed_relationship.source_id',
+                '=',
+                eb.ref('patient_records.specific_snomed_concept_id'),
+              )
+              .where(
+                sql<
+                  boolean
+                >`is_descendant(snomed_relationship.destination_id, ${
+                  snomedConceptBase(trx, attribute.value)
+                }::bigint)`,
+              ),
           )
-        : sql<boolean>`false`
+          : sql<boolean>`false`,
       ])
     )
   }

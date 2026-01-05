@@ -372,6 +372,10 @@ export const event: z.ZodType<Lang['event']> = z.lazy(() =>
 ).describe('event')
 
 export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
+  z.union([attribute_base, finding_site])
+).describe('attribute')
+
+const attribute_base: z.ZodType<Lang['attribute']> = z.lazy(() =>
   z.object({
     atom: z.literal('attribute'),
     args: z.tuple([snomed_concept, snomed_concept.optional()]),
@@ -382,7 +386,25 @@ export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
     specific_snomed_concept,
     value,
   }))
-).describe('attribute')
+).describe('attribute_base')
+
+const finding_site: z.ZodType<Lang['attribute']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('finding_site'),
+    args: z.tuple([snomed_concept]),
+  }).transform((
+    { args: [value] },
+  ) => ({
+    atom: 'attribute' as const,
+    specific_snomed_concept: {
+      atom: 'snomed_concept' as const,
+      type: 'name_and_category' as const,
+      name: 'Finding site',
+      category: 'attribute' as const,
+    },
+    value,
+  }))
+).describe('finding_site')
 
 export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
   z.object({
@@ -549,6 +571,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     evaluation,
     procedure,
     attribute,
+    finding_site,
     measurement,
     active_condition,
     comparator,
