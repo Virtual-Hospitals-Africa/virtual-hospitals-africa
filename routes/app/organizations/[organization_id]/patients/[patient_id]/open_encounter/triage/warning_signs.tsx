@@ -11,6 +11,7 @@ import entries from '../../../../../../../../util/entries.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import {
+  findingQueryExpression,
   KEYED_WARNING_SIGNS,
   WARNING_SIGNS,
 } from '../../../../../../../../shared/warning_signs.ts'
@@ -37,6 +38,7 @@ import {
   CLINICAL_FINDING,
   SELF_REPORTED_QUALIFIER,
 } from '../../../../../../../../shared/snomed_concepts.ts'
+import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -152,10 +154,6 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
   })
 
   return other_clinical_findings.map((finding) => {
-    // assert(
-    //   finding.root_snomed_concept.snomed_concept_id ===
-    //     CLINICAL_FINDING.id,
-    // )
     assertArrayEmpty(finding.attributes)
 
     const presence: WarningSignPresence = finding.record_id
@@ -195,21 +193,16 @@ function getWarningSignsFromThisEncounter(
   }
 
   function clinicalFinding(
-    { excluding_s_expression, clinical_finding_s_expression }: KeyedWarningSign,
+    sign: KeyedWarningSign,
   ) {
     if (!workflow_step_record_id) {
       return Promise.resolve({ satisfies: false, record_ids: [] })
     }
-    const s_expression = excluding_s_expression
-      ? `(and ${clinical_finding_s_expression}
-            (not ${excluding_s_expression}))
-      `
-      : clinical_finding_s_expression
 
     return satisfyingSExpression(trx, {
       patient_id,
       patient_encounter_id,
-      s_expression,
+      s_expression: findingQueryExpression(sign),
       procedure_id: workflow_step_record_id,
     })
   }
@@ -260,6 +253,12 @@ export async function TriageWarningSignsPage(
 ) {
   return (
     <WarningSigns
+      search_route={hrefFromCtx(ctx, (url) => {
+        url.pathname = url.pathname.replace(
+          'triage/warning_signs',
+          'snomed-warning-signs',
+        )
+      })}
       warning_signs={await getAllClinicalFindingsAsWarningSignsForThisEncounter(
         ctx,
       )}

@@ -128,8 +128,10 @@ function KeyedWarningSignsPriorityGrid({
 }
 
 export default function KeyedWarningSigns({
+  search_route,
   warning_signs,
 }: {
+  search_route: string
   warning_signs: CheckedWarningSign[]
 }) {
   const checked_signs = useSignal<CheckedWarningSign[]>(
@@ -137,8 +139,6 @@ export default function KeyedWarningSigns({
   )
   const query = useSignal<string>('')
   const search_results_as_signs = useSignal<CheckedWarningSign[]>([])
-
-  console.log(checked_signs.value)
 
   const grouped = computed(() => {
     console.log({
@@ -162,8 +162,8 @@ export default function KeyedWarningSigns({
     ], 'sats_priority')
   })
 
-  const x = useAsyncSearch({
-    search_route: '/app/snomed/warning-signs',
+  const snomed_warning_signs_async_search = useAsyncSearch({
+    search_route,
     skip_blank_search: true,
     value: null,
     onSearchResults(results) {
@@ -205,12 +205,14 @@ export default function KeyedWarningSigns({
   return (
     <div class='flex flex-col gap-4 w-full'>
       <Search
+        id='warning-signs-search'
         do_not_render_built_in_options
-        options={x.results}
+        options={snomed_warning_signs_async_search.results}
         onQuery={(query) => {
-          x.setQuery(query)
+          snomed_warning_signs_async_search.setQuery(query)
         }}
         placeholder='Chief complaint'
+        data-searchroute={search_route}
       />
       {grouped.value.size === 0 && (
         <EmptyState
@@ -239,7 +241,7 @@ export default function KeyedWarningSigns({
                 )
 
               query.value = ''
-              x.setQuery('')
+              snomed_warning_signs_async_search.setQuery('')
             }}
           />
         )
