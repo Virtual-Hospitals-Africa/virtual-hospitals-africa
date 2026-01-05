@@ -25,6 +25,7 @@ import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts
 import {
   CheckedWarningSign,
   KeyedWarningSign,
+  Priority,
   WarningSignPresence,
 } from '../../../../../../../../types.ts'
 import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
@@ -39,6 +40,8 @@ import {
   SELF_REPORTED_QUALIFIER,
 } from '../../../../../../../../shared/snomed_concepts.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
+import { getPriorityOfSnomedConcept } from '../../../../../../../../db/models/snomed.ts'
+import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -89,25 +92,38 @@ export const handler = postHandler(
             },
           )
         assert(finding_insert.success)
+        if (!finding_insert.inserted_new) return
 
-        // TODO This is not quite right if/when snomed concepts we search for (descendants)
-        // Have priority levels. Those will need to be inserted as well
-        if (finding_insert.inserted_new) {
-          const triage_level = isKeyOf(key, WARNING_SIGNS)
-            ? WARNING_SIGNS[key].sats_priority
-            : 'Non-urgent'
+        const triage_level = isKeyOf(key, WARNING_SIGNS)
+          ? WARNING_SIGNS[key].sats_priority
+          : await getPriorityByRecordId()
 
-          await insertLevel(
-            trx,
-            {
-              patient_id,
-              patient_encounter_id,
-              procedure_id,
-              triage_level,
-              by_system: true,
-              evaluates_record_id: finding_insert.finding_id,
-            },
-          )
+        return insertLevel(
+          trx,
+          {
+            patient_id,
+            patient_encounter_id,
+            procedure_id,
+            triage_level,
+            by_system: true,
+            evaluates_record_id: finding_insert.finding_id,
+          },
+        )
+
+        async function getPriorityByRecordId(): Promise<Priority> {
+          const { priority } = await trx.selectFrom('patient_records')
+            .where('patient_records.id', '=', finding_insert.finding_id)
+            .select((eb) =>
+              getPriorityOfSnomedConcept(
+                eb,
+                'patient_records.specific_snomed_concept_id',
+                patient_id,
+                trx,
+              )
+            )
+            .executeTakeFirstOrThrow()
+
+          return priority?.name || 'Non-urgent'
         }
       },
     )
@@ -137,7 +153,7 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
 ): Promise<CheckedWarningSign[]> {
   const { trx, patient_id, patient_encounter_id } = state
   const not_expressions = KEYED_WARNING_SIGNS.map((sign) =>
-    `(not ${sign.clinical_finding_s_expression})`
+    `(not (exact ${sign.clinical_finding_s_expression}))`
   ).join(' ')
 
   const s_expression = `
@@ -162,8 +178,7 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
 
     return {
       key: finding.specific_snomed_concept.name,
-      clinical_finding_s_expression:
-        `(finding ${CLINICAL_FINDING.id} ${finding.specific_snomed_concept.snomed_concept_id})`,
+      clinical_finding_s_expression: asNormalFormSExpression(finding),
       sats_primary_name: finding.specific_snomed_concept.name,
       sats_secondary_text: finding.specific_snomed_concept.category,
       sats_priority: finding.priority || 'Non-urgent',

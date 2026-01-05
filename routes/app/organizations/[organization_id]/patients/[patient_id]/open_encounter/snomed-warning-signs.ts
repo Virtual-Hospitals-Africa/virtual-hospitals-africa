@@ -14,5 +14,6 @@ export const handler = jsonSearchHandler(
   }),
   {
     verbose: true,
+    rows_per_page: 20,
   },
 )

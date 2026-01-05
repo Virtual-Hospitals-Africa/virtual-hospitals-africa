@@ -13,7 +13,7 @@ export function jsonSearchHandler<
     search(
       trx: TrxOrDb,
       search_terms: SearchTerms,
-      opts: { page: number },
+      opts: { page: number; rows_per_page?: number },
     ): Promise<SearchResults<SearchTerms, RenderedResult>>
   },
   default_search_terms?:
@@ -21,7 +21,7 @@ export function jsonSearchHandler<
     | ((
       ctx: Ctx,
     ) => Partial<SearchTerms>),
-  opts?: { verbose?: boolean | string },
+  opts?: { verbose?: boolean | string; rows_per_page?: number },
 ) {
   return {
     GET(ctx: Ctx) {

@@ -37,6 +37,7 @@ type BaseLang =
       events: Lang['event'][]
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
+      exact: boolean
     }
     procedure: {
       root_snomed_concept: Lang['snomed_concept'] | null
@@ -251,6 +252,7 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
         qualifiers,
         attributes,
         events,
+        exact: false,
       }
     },
   )
@@ -485,6 +487,16 @@ export const comparator: z.ZodType<Lang[Comparisons]> = z.lazy(() =>
   }))
 ).describe('comparator')
 
+export const exact: z.ZodType<Lang['finding'] & { exact: true }> = z.lazy(() =>
+  z.object({
+    atom: z.literal('exact'),
+    args: z.tuple([finding]),
+  }).transform(({ args: [finding] }) => ({
+    ...finding,
+    exact: true as const,
+  }))
+).describe('exact')
+
 export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   z.object({
     atom: z.literal('task'),
@@ -542,6 +554,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     comparator,
     qualifier,
     task,
+    exact,
     or,
     and,
     not,

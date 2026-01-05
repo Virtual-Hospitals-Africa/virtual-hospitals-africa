@@ -1,5 +1,5 @@
 import { computed, useSignal } from '@preact/signals'
-import { CheckedWarningSign } from '../types.ts'
+import { CheckedWarningSign, KeyedWarningSign } from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
 import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
@@ -141,11 +141,6 @@ export default function KeyedWarningSigns({
   const search_results_as_signs = useSignal<CheckedWarningSign[]>([])
 
   const grouped = computed(() => {
-    console.log({
-      'query.value': query.value,
-      'search_results_as_signs.value': search_results_as_signs.value,
-      'checked_signs.value': checked_signs.value,
-    })
     if (!query.value) {
       return groupBy(
         uniqBy(
@@ -178,11 +173,16 @@ export default function KeyedWarningSigns({
           assert('category' in r)
           assert(isString(r.category))
           assert(r.name)
+          assert('priority' in r)
+          assert('priority' in r)
           return {
             satisfied_by_record_id: null,
             checked: false,
-            key: r.id,
-            sats_priority: 'Non-urgent', // TODO actually get this from the server
+            key: 's' + r.id,
+            sats_priority: (r.priority && typeof r.priority === 'object' &&
+                'name' in r.priority)
+              ? r.priority.name as KeyedWarningSign['sats_priority']
+              : 'Non-urgent', // TODO actually get this from the server
             clinical_finding_s_expression:
               `(finding ${CHIEF_COMPLAINT.id} ${r.id})`,
             sats_primary_name: r.name,

@@ -1,8 +1,8 @@
-import { sql } from 'kysely'
+import { ExpressionBuilder, sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { SnomedCategory } from '../../db.d.ts'
+import { DB, SnomedCategory } from '../../db.d.ts'
 import {
   findingQueryExpression,
   KEYED_WARNING_SIGNS,
@@ -16,6 +16,73 @@ type SearchTerms = {
   search: string
   patient_id: string
   categories?: SnomedCategory[]
+}
+
+export function getPriorityOfSnomedConcept<
+  // deno-lint-ignore no-explicit-any
+  EB extends ExpressionBuilder<DB, any>,
+>(
+  eb: EB,
+  column_ref: Parameters<EB['ref']>[0],
+  patient_id: string,
+  trx: TrxOrDb,
+) {
+  const [first_sign, ...rest] = KEYED_WARNING_SIGNS
+
+  // Build the predicate for a warning sign, including prompt_when check if present
+  const buildSignPredicate = (sign: typeof first_sign) => {
+    const finding_predicate = buildExpressionPredicate(
+      eb,
+      column_ref,
+      findingQueryExpression(sign),
+    )
+
+    if (!sign.prompt_when_s_expression) {
+      return finding_predicate
+    }
+
+    // TODO: probably move this idea into db/models/s_expression.ts
+    // Build the prompt_when check for the patient
+    // Handle 'not' expressions specially: use NOT EXISTS instead of EXISTS on the negated query
+    const parsed = parseExpression(sign.prompt_when_s_expression)
+
+    const prompt_when = isAtom(parsed, 'not')
+      ? eb.not(eb.exists(buildExpression(
+        trx,
+        { patient_id },
+        parsed.expression,
+      )))
+      : eb.exists(
+        buildExpression(
+          trx,
+          { patient_id },
+          parsed,
+        ),
+      )
+
+    return eb.and([finding_predicate, prompt_when])
+  }
+
+  let case_builder = eb.case().when(
+    buildSignPredicate(first_sign),
+  )
+    .then(jsonBuildObject({
+      name: literalString(first_sign.sats_priority),
+      warning_sign: literalString(first_sign.key),
+    }))
+
+  for (const sign of rest) {
+    case_builder = case_builder
+      .when(
+        buildSignPredicate(sign),
+      )
+      .then(jsonBuildObject({
+        name: literalString(sign.sats_priority),
+        warning_sign: literalString(sign.key),
+      }))
+  }
+
+  return case_builder.end().as('priority')
 }
 
 function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
@@ -57,9 +124,6 @@ function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
     .groupBy('descriptions_with_similarity.concept_id')
     .as('snomed_concepts')
 
-  // Use the patient_id to get the prompt_when
-  //
-
   return trx.selectFrom('snomed_inferred_canonical_name_and_category')
     .innerJoin(
       snomed_concepts,
@@ -77,64 +141,14 @@ function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
         ),
     )
     .select('snomed_concepts.best_similarity')
-    .select((eb) => {
-      const [first_sign, ...rest] = KEYED_WARNING_SIGNS
-
-      // Build the predicate for a warning sign, including prompt_when check if present
-      const buildSignPredicate = (sign: typeof first_sign) => {
-        const finding_predicate = buildExpressionPredicate(
-          eb,
-          'snomed_inferred_canonical_name_and_category.id',
-          findingQueryExpression(sign),
-        )
-
-        if (!sign.prompt_when_s_expression) {
-          return finding_predicate
-        }
-
-        // TODO: probably move this idea into db/models/s_expression.ts
-        // Build the prompt_when check for the patient
-        // Handle 'not' expressions specially: use NOT EXISTS instead of EXISTS on the negated query
-        const parsed = parseExpression(sign.prompt_when_s_expression)
-
-        const prompt_when = isAtom(parsed, 'not')
-          ? eb.not(eb.exists(buildExpression(
-            trx,
-            { patient_id: terms.patient_id },
-            parsed.expression,
-          )))
-          : eb.exists(
-            buildExpression(
-              trx,
-              { patient_id: terms.patient_id },
-              parsed,
-            ),
-          )
-
-        return eb.and([finding_predicate, prompt_when])
-      }
-
-      let case_builder = eb.case().when(
-        buildSignPredicate(first_sign),
+    .select((eb) =>
+      getPriorityOfSnomedConcept(
+        eb,
+        'snomed_inferred_canonical_name_and_category.id',
+        terms.patient_id,
+        trx,
       )
-        .then(jsonBuildObject({
-          name: literalString(first_sign.sats_priority),
-          warning_sign: literalString(first_sign.key),
-        }))
-
-      for (const sign of rest) {
-        case_builder = case_builder
-          .when(
-            buildSignPredicate(sign),
-          )
-          .then(jsonBuildObject({
-            name: literalString(sign.sats_priority),
-            warning_sign: literalString(sign.key),
-          }))
-      }
-
-      return [case_builder.end().as('priority')]
-    })
+    )
     .orderBy('snomed_concepts.best_similarity', 'desc')
 }
 
