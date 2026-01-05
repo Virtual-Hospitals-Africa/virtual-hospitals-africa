@@ -1,7 +1,6 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import {
   asText,
-  debugLog,
   jsonBuildObject,
   literalString,
   success_true,
@@ -276,7 +275,6 @@ export const patient_findings = base({
       literalString(finding_id).as('finding_id'),
     ])
 
-    debugLog(select_query)
     return select_query
       .executeTakeFirstOrThrow()
 
