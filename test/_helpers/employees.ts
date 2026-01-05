@@ -216,6 +216,20 @@ export async function addTestEmployeeWithSession(
     return response
   }
 
+  const fetchJson = async (
+    url: string | URL,
+    init?: RequestInit,
+  ) => {
+    const response = await fetchOk(url, {
+      ...init,
+      headers: {
+        ...init?.headers,
+        Accept: 'application/json',
+      },
+    })
+    return response.json()
+  }
+
   const fetchCheerio = async (url: string | URL, init?: RequestInit) => {
     const response = await fetchOk(url, init)
     const html = await response.text()
@@ -237,6 +251,7 @@ export async function addTestEmployeeWithSession(
     health_worker,
     fetch: fetchWithSession,
     fetchOk,
+    fetchJson,
     fetchCheerio,
   }
 }

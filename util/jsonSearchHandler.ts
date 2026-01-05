@@ -1,5 +1,4 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-
 import { json } from '../util/responses.ts'
 import type { LoggedInHealthWorkerContext, TrxOrDb } from '../types.ts'
 import type { SearchResults } from '../db/models/_base.ts'
@@ -21,12 +20,11 @@ export function jsonSearchHandler<
     | Partial<SearchTerms>
     | ((
       ctx: Ctx,
-    ) => SearchTerms),
+    ) => Partial<SearchTerms>),
   opts?: { verbose?: boolean | string },
 ) {
   return {
     GET(ctx: Ctx) {
-      console.log('mmmmmz')
       if (opts?.verbose) {
         console.log('Searching', {
           url: ctx.url,

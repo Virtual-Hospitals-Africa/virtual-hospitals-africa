@@ -55,6 +55,14 @@ describeParallel('triage/warning_signs', () => {
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
         )
 
+        const search_route = $warning_signs('#warning-signs-search').attr(
+          'data-searchroute',
+        )
+        assertEquals(
+          search_route,
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs`,
+        )
+
         const form_labels = getFormLabels($warning_signs)
         assertEquals(form_labels, {
           'warning_signs': {

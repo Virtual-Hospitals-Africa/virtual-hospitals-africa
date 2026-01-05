@@ -254,3 +254,11 @@ export const KEYED_WARNING_SIGNS: KeyedWarningSign[] = entries(WARNING_SIGNS)
     key,
     ...sign,
   }))
+
+export function findingQueryExpression(
+  { excluding_s_expression, clinical_finding_s_expression }: WarningSign,
+): string {
+  if (!excluding_s_expression) return clinical_finding_s_expression
+  return `(and ${clinical_finding_s_expression}
+            (not ${excluding_s_expression}))`
+}

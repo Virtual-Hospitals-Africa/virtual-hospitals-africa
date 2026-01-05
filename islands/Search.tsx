@@ -122,6 +122,7 @@ export default function Search<
   ignore_option_href,
   do_not_render_built_in_options,
   placeholder = '',
+  ...props
 }: SearchProps<T>) {
   if (multi) {
     assert(signal)
@@ -196,6 +197,7 @@ export default function Search<
         if (already_selected) return
         selected_multi.value = [...selected_multi.value, value]
       }}
+      {...props}
     >
       <div className='grow'>
         {label && (

@@ -4,7 +4,10 @@ import {
   parseExpression,
   parseExpressionExpectingAtom,
 } from '../../shared/s_expression.ts'
-import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
+import {
+  findingQueryExpression,
+  WARNING_SIGNS,
+} from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
@@ -67,43 +70,70 @@ describe('db/models/s_expression.ts', () => {
       {
         'record_id': z.string().uuid(),
         'created_at': z.date(),
-        'snomed_concept_id': '404684003',
-        'patient_encounter_id': encounter.patient_encounter_id,
-        'patient_encounter_employee_id':
-          encounter.employee.patient_encounter_employee_id,
-        'name': 'Clinical finding',
-        'value_snomed_concept_id': null,
-
+        'patient_encounter_id': z.string().uuid(),
+        'root_snomed_concept': {
+          'snomed_concept_id': '404684003',
+          'name': 'Clinical finding',
+          'category': 'finding',
+        },
+        'specific_snomed_concept': {
+          'snomed_concept_id': '125666000',
+          'name': 'Burn',
+          'category': 'disorder',
+        },
+        'value': null,
+        'evaluations': [],
+        'destination_relations': [],
+        'source_relations': [],
+        'type': 'finding',
+        'patient_encounter_employee_id': z.string().uuid(),
         'as_part_of_procedure': {
           'record_id': z.string().uuid(),
-          'snomed_concept_id': '225390008',
-          'name': 'Triage',
+          'root_snomed_concept': {
+            'snomed_concept_id': '71388002',
+            'name': 'Procedure',
+            'category': 'procedure',
+          },
+          'specific_snomed_concept': {
+            'snomed_concept_id': '225390008',
+            'name': 'Triage',
+            'category': 'procedure',
+          },
         },
-        'qualifiers': [
+        'priority': null,
+        'score': null,
+        'modifiers': [
           {
             'record_id': z.string().uuid(),
-            'snomed_concept_id': '125666000',
-            'name': 'Burn',
-
-            'qualifiers': [
-              {
-                'record_id': z.string().uuid(),
-                'snomed_concept_id': '255593009',
-                'name': 'Circumferential',
-
-                'qualifiers': [],
-              },
-            ],
+            'created_at': z.iso.datetime({ offset: true }),
+            'patient_encounter_id': z.string().uuid(),
+            'root_snomed_concept': {
+              'snomed_concept_id': '362981000',
+              'name': 'Qualifier value',
+              'category': 'qualifier value',
+            },
+            'specific_snomed_concept': {
+              'snomed_concept_id': '255593009',
+              'name': 'Circumferential',
+              'category': 'qualifier value',
+            },
+            'value': null,
+            'qualifiers': [],
           },
         ],
+        'displays': {
+          'value': null,
+          'finding': 'Circumferential Burn',
+          'full': 'Circumferential Burn',
+        },
+        'attributes': [],
       },
     ])
-
     const query = buildExpression(
       db,
       { patient_id: encounter.patient.id },
       parseExpression(
-        WARNING_SIGNS['Burn Other'].clinical_finding_s_expression,
+        findingQueryExpression(WARNING_SIGNS['Burn Other']),
       ),
     )
 
