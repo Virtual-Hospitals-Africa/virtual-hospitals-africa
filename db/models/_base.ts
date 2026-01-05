@@ -248,10 +248,10 @@ export function base<
 
       return {
         page,
-        rows_per_page,
         results,
-        has_next_page,
         search_terms,
+        rows_per_page,
+        has_next_page,
       }
     },
     async findFirst(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {

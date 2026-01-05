@@ -57,6 +57,7 @@ function baseQuery(
     value_snomed_concept,
     qualifiers = [],
     attributes = [],
+    exact = false,
   }: PatientIdentifiers & {
     root_snomed_concept?: Maybe<Lang['snomed_concept']>
     specific_snomed_concept?: Maybe<Lang['snomed_concept']>
@@ -67,6 +68,7 @@ function baseQuery(
     attributes?: Array<
       Lang['attribute']
     >
+    exact?: boolean
   },
 ) {
   let query = trx.selectFrom('patient_records')
@@ -92,23 +94,38 @@ function baseQuery(
     .$if(
       !!specific_snomed_concept,
       (qb) =>
-        qb.where((eb) =>
-          sql<boolean>`is_descendant(${
-            eb.ref('patient_records.specific_snomed_concept_id')
-          }, ${snomedConceptBase(trx, specific_snomed_concept!)}::bigint)`
-        ),
+        qb.where((eb) => {
+          const snomed_concept = snomedConceptBase(
+            trx,
+            specific_snomed_concept!,
+          )
+          return exact
+            ? eb(
+              'patient_records.specific_snomed_concept_id',
+              '=',
+              snomed_concept,
+            )
+            : sql<boolean>`is_descendant(${
+              eb.ref('patient_records.specific_snomed_concept_id')
+            }, ${snomed_concept}::bigint)`
+        }),
     )
     .$if(
       !!value_snomed_concept,
       (qb) =>
-        qb.where((eb) =>
-          eb.and([
-            eb('patient_records.value_snomed_concept_id', 'is not', null),
-            sql<boolean>`is_descendant(${
+        qb.where((eb) => {
+          const snomed_concept = snomedConceptBase(trx, value_snomed_concept!)
+          const matches = exact
+            ? eb('patient_records.value_snomed_concept_id', '=', snomed_concept)
+            : sql<boolean>`is_descendant(${
               eb.ref('patient_records.value_snomed_concept_id')
-            }, ${snomedConceptBase(trx, value_snomed_concept!)}::bigint)`,
+            }, ${snomed_concept}::bigint)`
+
+          return eb.and([
+            eb('patient_records.value_snomed_concept_id', 'is not', null),
+            matches,
           ])
-        ),
+        }),
     )
     .select('patient_records.id')
 
@@ -210,6 +227,7 @@ const EXPRESSION_BUILDERS = {
       specific_snomed_concept,
       qualifiers,
       attributes,
+      exact,
     },
   ) {
     return baseQuery(trx, {
@@ -220,6 +238,7 @@ const EXPRESSION_BUILDERS = {
       value_snomed_concept,
       qualifiers,
       attributes,
+      exact,
     })
       .innerJoin(
         'patient_findings',
