@@ -1,5 +1,5 @@
 import { useSignal } from '@preact/signals'
-import FormRow from '../components/library/FormRow.tsx'
+import FormGrid from '../components/library/FormGrid.tsx'
 import OrganizationSearch from './OrganizationSearch.tsx'
 import PersonSearch from './PersonSearch.tsx'
 import FormSection from '../components/library/FormSection.tsx'
@@ -19,13 +19,14 @@ export function NearestHealthCareSection(
   }
 
   return (
-    <FormSection header='Nearest Health Care'>
-      <FormRow>
+    <FormSection header='Primary Care'>
+      <FormGrid columns={2}>
         {/* TODO point to organization's nearest organizations  */}
         <OrganizationSearch
           name='nearest_organization'
           filters={{ is_physical: true }}
-          label='Nearest Health Facility'
+          label='Nearest Public Facility'
+          placeholder='Search for a clinic'
           // deno-lint-ignore no-explicit-any
           value={nearest_health_facility_signal.value as any}
           sort={{ by: OrganizationSortOptions.closest, direction: 'asc' }}
@@ -33,11 +34,10 @@ export function NearestHealthCareSection(
             nearest_health_facility_signal.value = organization}
           required
         />
-      </FormRow>
-      <FormRow>
         <PersonSearch
           name='primary_doctor'
-          label='Primary/Family Doctor'
+          label='Primary Care Doctor'
+          placeholder='Search for a doctor name'
           search_route={doctor_search_href}
           required
           value={primary_doctor && {
@@ -46,7 +46,7 @@ export function NearestHealthCareSection(
           }}
           addable
         />
-      </FormRow>
+      </FormGrid>
     </FormSection>
   )
 }
