@@ -9,6 +9,7 @@ export default function OrganizationSearch(
     filters = {},
     sort,
     label,
+    placeholder = 'Find an organization',
     value,
     required,
     do_not_render_built_in_options,
@@ -17,6 +18,7 @@ export default function OrganizationSearch(
     name?: string
     url?: string
     label?: string
+    placeholder?: string
     value?: Maybe<NearestOrganizationSearchResult>
     filters?: {
       specialties?: Array<string>
@@ -62,7 +64,7 @@ export default function OrganizationSearch(
       do_not_render_built_in_options={do_not_render_built_in_options}
       onSearchResults={onSearchResults}
       label={label}
-      placeholder='Find an organization'
+      placeholder={placeholder}
       value={value}
     />
   )
