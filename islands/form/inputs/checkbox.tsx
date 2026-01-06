@@ -1,7 +1,6 @@
 import { JSX } from 'preact'
 import { WrapperInputProps } from './_internal.tsx'
 import cls from '../../../util/cls.ts'
-import { LabelSpan } from './labelled.tsx'
 
 export function CheckboxInput({
   name,
@@ -28,12 +27,12 @@ export function CheckboxInput({
     value?: string
   }) {
   return (
-    <label>
+    <label className='flex items-center gap-2'>
       <input
         type='checkbox'
         {...(name && { name })}
         className={cls(
-          'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600',
+          'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 shrink-0',
           disabled && 'bg-gray-300',
         )}
         required={required}
@@ -45,8 +44,10 @@ export function CheckboxInput({
         onBlur={onBlur}
         value={value}
       />
-      <LabelSpan label={label} required={required} />
-      {/* <Label label={label} required={required} /> */}
+      <span className='text-sm font-medium text-gray-600'>
+        {label}
+        {required && <span className='text-gray-600'>*</span>}
+      </span>
     </label>
   )
 }

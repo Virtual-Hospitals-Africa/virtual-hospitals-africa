@@ -59,6 +59,8 @@ export default function AsyncSearch<
   return (
     <Search
       {...rest}
+      // deno-lint-ignore no-explicit-any
+      value={value as any}
       loading_options={loading}
       loadMoreOptions={loadMore}
       options={results}
