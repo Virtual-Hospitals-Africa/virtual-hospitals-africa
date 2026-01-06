@@ -458,7 +458,7 @@ export function OpenEncounterWorkflowLayout({
         : undefined}
     >
       <Form method='POST' className='min-h-full relative'>
-        <div className='pr-4 min-h-full'>
+        <div className='pr-4 min-h-full flex flex-col gap-16'>
           {children}
         </div>
         <ButtonsContainer className='absolute bottom-0 left-0 right-0'>
