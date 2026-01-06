@@ -101,7 +101,7 @@ export function start(
 
 export function insert(
   trx: TrxOrDb,
-  to_insert: InsertShape<PatientWorkflows>,
+  to_insert: InsertShape<PatientWorkflows> | InsertShape<PatientWorkflows>[],
 ) {
   return trx.insertInto('patient_workflows')
     .values(to_insert).execute()

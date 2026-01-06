@@ -9,7 +9,7 @@ import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
 import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'
 
-const PatientRegistrationContactsSchema = z.object({
+export const PatientRegistrationContactsSchema = z.object({
   address: z.object({
     street: z.string().optional(),
     locality: z.string(),

@@ -8,6 +8,7 @@ import {
 import { Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { PatientPresence } from '../../db.d.ts'
 import { blankSelection } from '../helpers.ts'
+import { humanReadableJson } from '../../util/humanReadableJson.ts'
 
 /**
  * Move the patient to the waiting room if the health worker doesn't do the next workflow
@@ -18,6 +19,7 @@ export function updateForOpenEncounterAfterCompletingWorkflow(
   encounter: RenderedPatientOpenEncounter,
   organization_employment: HealthWorkerOrganization,
 ) {
+  console.log(humanReadableJson(encounter))
   const { next_workflow } = encounter.status.patient_presence
   assert(next_workflow, 'Expected next_workflow to exist')
   const next_department: Department = WORKFLOW_DEPARTMENTS[next_workflow]
@@ -91,6 +93,7 @@ export function set(
   updates: UpdateShape<PatientPresence>,
 ) {
   return trx.updateTable('patient_presence')
-    .set(updates).where('id', '=', patient_id)
+    .set(updates)
+    .where('id', '=', patient_id)
     .executeTakeFirstOrThrow()
 }
