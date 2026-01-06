@@ -101,6 +101,7 @@ export function baseQuery(
 type PatientEvaluationsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
+  evaluates_record_id?: string | IdSelection
   s_expression?: string | Lang['evaluation']
   search?: string
 }
@@ -138,6 +139,13 @@ export const patient_evaluations = base({
         'patient_records.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
+      )
+    }
+    if (opts.evaluates_record_id) {
+      qb = qb.where(
+        'patient_evaluations.evaluates_record_id',
+        '=',
+        opts.evaluates_record_id,
       )
     }
     if (opts.s_expression) {

@@ -19,7 +19,6 @@ import {
 } from '../../../../../../../../db/models/brief_history.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
-import { inBackground } from '../../../../../../../../util/inBackground.ts'
 import {
   Existence,
   Maybe,
@@ -36,11 +35,12 @@ import {
   CommonConditionKey,
   commonConditionSnomedConceptId,
 } from '../../../../../../../../shared/brief_history.ts'
-import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import {
   SELF_REPORTED_QUALIFIER,
   STATUS_ATTRIBUTE,
 } from '../../../../../../../../shared/snomed_concepts.ts'
+import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
+import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -89,72 +89,93 @@ function mostRecentFindings(ctx: OpenEncounterWorkflowContext) {
   )
 }
 
+function selfReportedStatusSExpression(
+  condition_snomed_concept_id: string,
+  existence: Existence,
+): string {
+  return `
+    (finding 
+      ${STATUS_ATTRIBUTE.id}
+      ${condition_snomed_concept_id}
+      ${patient_findings.QUALIFIERS_BY_EXISTENCE[existence]}
+      (qualifier ${SELF_REPORTED_QUALIFIER.id}))
+  `.trim()
+}
+
 export const handler = postHandler(
   TriageBriefHistorySchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const { trx, encounter, encounter_employee_presence } = ctx.state
-    const { patient } = encounter
-    const patient_id = patient.id
+    const {
+      trx,
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      employment_id,
+    } = ctx.state
+    const { response } = await promiseProps({
+      response: completeAndProceedToNextStep(ctx),
+      _: insertBriefHistory(),
+    })
+    return response
 
-    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
+    async function insertBriefHistory() {
+      const { procedure: { procedure_id }, most_recent_findings } =
+        await promiseProps({
+          procedure: createProcedureIfNotAlreadyCompleted(ctx),
+          most_recent_findings: mostRecentFindings(ctx),
+        })
 
-    const most_recent_findings = await mostRecentFindings(ctx)
+      return forEach(
+        entries(form_values),
+        ([condition_key, condition]): Promise<unknown> => {
+          if (condition?.existence === undefined) {
+            return Promise.resolve('Nothing to insert')
+          }
 
-    const inserting_findings = forEach(
-      entries(form_values),
-      ([condition_key, condition]) => {
-        if (!condition) return Promise.resolve()
-        if (condition.existence === undefined) return Promise.resolve()
+          const condition_snomed_concept_id = commonConditionSnomedConceptId(
+            condition_key,
+          )
 
-        const condition_snomed_concept_id = commonConditionSnomedConceptId(
-          condition_key,
-        )
+          const prior_matching_finding = most_recent_findings[condition_key]
 
-        const existing_finding = most_recent_findings[condition_key]
+          if (prior_matching_finding?.existence === condition.existence) {
+            return Promise.resolve(
+              'Prior matching finding already has same existence, so no need to insert',
+            )
+          }
 
-        if (
-          condition.existence === 'Yes' && existing_finding?.existence === 'Yes'
-        ) {
-          return Promise.resolve()
-        }
+          const prior_from_this_encounter =
+            prior_matching_finding?.patient_encounter_id ===
+              patient_encounter_id
 
-        if (
-          existing_finding &&
-          existing_finding.patient_encounter_id ===
-            encounter.patient_encounter_id &&
-          existing_finding.existence
-        ) {
-          return Promise.resolve()
-        }
+          const maybe_marking_prior_finding_in_error =
+            prior_from_this_encounter &&
+            markEnteredInError(trx, {
+              patient_id,
+              procedure_id,
+              employment_id,
+              patient_encounter_id,
+              altered_record_id: prior_matching_finding.record_id,
+            })
 
-        return patient_findings.insertOneNested(
-          trx,
-          {
-            patient_id,
-            patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id:
-              encounter_employee_presence.patient_encounter_employee_id,
-            procedure_id,
-            finding: parseExpressionExpectingAtom(
-              `(finding
-                 ${STATUS_ATTRIBUTE.id}
-                 ${condition_snomed_concept_id}
-                 ${
-                patient_findings.QUALIFIERS_BY_EXISTENCE[condition.existence]
-              }
-                  (qualifier ${SELF_REPORTED_QUALIFIER.id})
-              )`,
-              'finding',
-            ),
-          },
-        )
-      },
-    )
+          const inserting = patient_findings.insertOneNested(
+            trx,
+            {
+              patient_id,
+              procedure_id,
+              patient_encounter_id,
+              patient_encounter_employee_id,
+              finding: selfReportedStatusSExpression(
+                condition_snomed_concept_id,
+                condition.existence,
+              ),
+            },
+          )
 
-    return inBackground(
-      inserting_findings,
-      () => completeAndProceedToNextStep(ctx),
-    )
+          return Promise.all([maybe_marking_prior_finding_in_error, inserting])
+        },
+      )
+    }
   },
 )
 

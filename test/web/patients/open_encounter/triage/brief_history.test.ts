@@ -27,6 +27,7 @@ import { renderedMostRecentFindings } from '../../../../../db/models/brief_histo
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
+import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
 
 describeParallel('triage/brief_history', () => {
   before(waitUntilTestServerUp)
@@ -590,6 +591,7 @@ describeParallel('triage/brief_history', () => {
 
         const waiting_room_table_after_subsequent_encounter_start =
           getTableDisplay($waiting_room_after_subsequent_encounter_start)
+
         assertEquals(waiting_room_table_after_subsequent_encounter_start, [
           {
             Patient:
@@ -1258,6 +1260,159 @@ describeParallel('triage/brief_history', () => {
             'is_me': true,
             'id': nurse.health_worker.id,
             'employee_id': nurse.health_worker.employee_id,
+          },
+        })
+      },
+    )
+
+    itParallel(
+      'marks findings for the same condition as entered in error if part of this encounter, but then can override them in a subsequent encounter',
+      async () => {
+        const clinic = await createTestOrganization(db, { category: 'Clinic' })
+        const nurse = await addTestEmployeeWithSession(db, {
+          organization_id: clinic.id,
+          profession: 'nurse',
+          registration_status: 'approved',
+        })
+
+        const initial_encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.health_worker.organization_id,
+            {
+              patient_demographics: randomDemographics('ZA', 'male'),
+              employment_id: nurse.health_worker.employee_id,
+            },
+          )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const prior_to_fix_findings = await renderedMostRecentFindings(db, {
+          patient_id: initial_encounter.patient.id,
+          encounter: initial_encounter,
+          health_worker_id: nurse.health_worker.id,
+          conditions: COMMON_CONDITIONS,
+        })
+
+        assert(prior_to_fix_findings.pregnancy)
+
+        assertArrayEmpty(
+          await patient_evaluations.findAll(db, {
+            patient_id: initial_encounter.patient.id,
+            evaluates_record_id: prior_to_fix_findings.pregnancy.record_id,
+          }),
+        )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const entered_in_error = await patient_evaluations.findOne(db, {
+          patient_id: initial_encounter.patient.id,
+          evaluates_record_id: prior_to_fix_findings.pregnancy.record_id,
+        })
+        assertMatches(entered_in_error, {
+          specific_snomed_concept: {
+            snomed_concept_id: '723510000', // ENTERED_IN_ERROR
+          },
+          evaluates_record_id: prior_to_fix_findings.pregnancy.record_id,
+        })
+
+        const initial_most_recent_findings = await renderedMostRecentFindings(
+          db,
+          {
+            patient_id: initial_encounter.patient.id,
+            encounter: initial_encounter,
+            health_worker_id: nurse.health_worker.id,
+            conditions: COMMON_CONDITIONS,
+          },
+        )
+
+        assertMatches(initial_most_recent_findings.pregnancy, {
+          'displays': {
+            'value': 'No',
+          },
+        })
+
+        await patient_encounters.close(db, {
+          patient_encounter_id: initial_encounter.patient_encounter_id,
+        })
+
+        const subsequent_encounter =
+          await insertReturningSeekingTreatmentWithEmployeeForTest(
+            db,
+            nurse.health_worker.organization_id,
+            {
+              patient_id: initial_encounter.patient.id,
+              employment_id: nurse.health_worker.employee_id,
+            },
+          )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const subsequent_most_recent_findings =
+          await renderedMostRecentFindings(db, {
+            patient_id: subsequent_encounter.patient.id,
+            encounter: subsequent_encounter,
+            health_worker_id: nurse.health_worker.id,
+            conditions: COMMON_CONDITIONS,
+          })
+
+        assertMatches(subsequent_most_recent_findings.pregnancy, {
+          'displays': {
+            'value': 'Yes',
           },
         })
       },
