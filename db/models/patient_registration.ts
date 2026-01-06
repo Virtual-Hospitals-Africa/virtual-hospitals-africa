@@ -154,12 +154,18 @@ export async function getSummaryById(
       'patients.id',
       jsonBuildObject({
         name: eb.ref('patients.name').$notNull(),
+        first_names: eb.ref('patients.first_names').$notNull(),
+        preferred_name: eb.ref('patients.preferred_name'),
+        surname: eb.ref('patients.surname'),
         phone_number: eb.ref('patients.phone_number'),
         sex: eb.ref('patients.sex'),
         gender: eb.ref('patients.gender'),
         ethnicity: eb.ref('patients.ethnicity'),
         date_of_birth: isoDate(eb.ref('patients.date_of_birth')),
         national_id_number: eb.ref('patients.national_id_number'),
+        preferred_language_code_iso_639_2_b: eb.ref(
+          'patients.preferred_language_code_iso_639_2_b',
+        ),
         description: description_sql,
       }).as('personal'),
       jsonBuildObject({
