@@ -58,7 +58,6 @@ export default function AsyncSearch<
   return (
     <Search
       {...rest}
-      skip_blank_search={skip_blank_search}
       // deno-lint-ignore no-explicit-any
       value={value as any}
       loading_options={loading}
