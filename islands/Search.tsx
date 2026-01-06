@@ -58,6 +58,7 @@ export type SearchPropsCommon<
   ignore_option_href?: boolean
   do_not_render_built_in_options?: boolean
   placeholder?: string
+  skip_blank_search?: boolean
 }
 
 type SearchOptionsProps<T> = {
@@ -122,6 +123,7 @@ export default function Search<
   ignore_option_href,
   do_not_render_built_in_options,
   placeholder = '',
+  skip_blank_search,
   ...props
 }: SearchProps<T>) {
   if (multi) {
@@ -170,6 +172,7 @@ export default function Search<
 
   return (
     <Combobox
+      by='id'
       id={id}
       value={selected_singular?.value}
       onChange={(value) => {
@@ -303,100 +306,105 @@ export default function Search<
             />
           </Combobox.Button>
 
-          {!do_not_render_built_in_options && (
-            <ComboboxOptions
-              onScroll={(event) => {
-                const scrolled_to_bottom = event.currentTarget.scrollTop +
-                    event.currentTarget.clientHeight >=
-                  event.currentTarget.scrollHeight
-                if (!scrolled_to_bottom) return
-                if (loading_options) return
-                loadMoreOptions?.()
-              }}
-              className='absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
-            >
-              {all_options.map((option) => (
-                <ComboboxOption
-                  key={option.id}
-                  value={option}
-                  // as={Fragment}
-                  className='relative cursor-default select-none py-2 pl-3 pr-9'
-                  // ({ active }) =>
-                  // cls(
-                  //   ,
-                  //   active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                  // )
-                >
-                  {(
-                    { focus, selected }: { focus: boolean; selected: boolean },
-                  ) => {
-                    const use_selected = multi
-                      ? selected_multi!.value.some(
-                        (selected_option) =>
-                          (option === selected_option) ||
-                          (!!option.id && option.id === selected_option.id),
+          {!do_not_render_built_in_options && !(skip_blank_search && !query) &&
+            (
+              <ComboboxOptions
+                onScroll={(event: Event) => {
+                  const target = event.currentTarget as HTMLElement
+                  const scrolled_to_bottom = target.scrollTop +
+                      target.clientHeight >=
+                    target.scrollHeight
+                  if (!scrolled_to_bottom) return
+                  if (loading_options) return
+                  loadMoreOptions?.()
+                }}
+                className='absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+              >
+                {all_options.map((option) => (
+                  <ComboboxOption
+                    key={option.id}
+                    value={option}
+                    className={({ focus }: { focus: boolean }) =>
+                      cls(
+                        'relative cursor-default select-none py-2 pl-3 pr-9',
+                        focus ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                      )}
+                  >
+                    {(
+                      { focus, selected }: {
+                        focus: boolean
+                        selected: boolean
+                      },
+                    ) => {
+                      const use_selected = multi
+                        ? selected_multi!.value.some(
+                          (selected_option) =>
+                            (option === selected_option) ||
+                            (!!option.id && option.id === selected_option.id),
+                        )
+                        : selected
+                      const fragment = (
+                        <>
+                          <Option
+                            option={option}
+                            active={focus}
+                            selected={use_selected}
+                          />
+                          {use_selected && (
+                            <span
+                              className={cls(
+                                'absolute inset-y-0 right-0 flex items-center pr-4',
+                                focus ? 'text-white' : 'text-indigo-600',
+                              )}
+                            >
+                              <CheckIcon
+                                className='w-5 h-5'
+                                aria-hidden='true'
+                              />
+                            </span>
+                          )}
+                        </>
                       )
-                      : selected
-                    const fragment = (
-                      <>
-                        <Option
-                          option={option}
-                          active={focus}
-                          selected={use_selected}
-                        />
-                        {use_selected && (
-                          <span
-                            className={cls(
-                              'absolute inset-y-0 right-0 flex items-center pr-4',
-                              focus ? 'text-white' : 'text-indigo-600',
-                            )}
+                      if (ignore_option_href) return fragment
+                      if (
+                        option.id === 'add' &&
+                        query &&
+                        addable &&
+                        typeof addable === 'object' &&
+                        'href' in addable
+                      ) {
+                        return (
+                          <a
+                            href={`${addable.href}${encodeURIComponent(query)}`}
                           >
-                            <CheckIcon className='w-5 h-5' aria-hidden='true' />
-                          </span>
-                        )}
-                      </>
-                    )
-                    if (ignore_option_href) return fragment
-                    if (
-                      option.id === 'add' &&
-                      query &&
-                      addable &&
-                      typeof addable === 'object' &&
-                      'href' in addable
-                    ) {
-                      return (
-                        <a href={`${addable.href}${encodeURIComponent(query)}`}>
-                          {fragment}
-                        </a>
-                      )
-                    }
-                    if ('href' in option && typeof option.href === 'string') {
-                      return <a href={option.href}>{fragment}</a>
-                    }
-                    if (typeof optionHref === 'function') {
-                      return <a href={optionHref(option)}>{fragment}</a>
-                    }
-                    return fragment
-                  }}
-                </ComboboxOption>
-              ))}
-              {loading_options || loadMoreOptions
-                ? (
-                  <Combobox.Option key='loading' value={null} disabled>
-                    <i className={cls('ml-3', !loading_options && 'opacity-0')}>
+                            {fragment}
+                          </a>
+                        )
+                      }
+                      if ('href' in option && typeof option.href === 'string') {
+                        return <a href={option.href}>{fragment}</a>
+                      }
+                      if (typeof optionHref === 'function') {
+                        return <a href={optionHref(option)}>{fragment}</a>
+                      }
+                      return fragment
+                    }}
+                  </ComboboxOption>
+                ))}
+                {loading_options && (
+                  <div className='relative cursor-default select-none py-2 pl-3 pr-9 text-gray-500'>
+                    <i className='ml-3'>
                       {all_options.length ? 'Loading more...' : 'Loading...'}
                     </i>
-                  </Combobox.Option>
-                )
-                : (
-                  !all_options.length && (
-                    <Combobox.Option key='no_options' value={null} disabled>
-                      <i className='ml-3'>No options available</i>
-                    </Combobox.Option>
-                  )
+                  </div>
                 )}
-            </ComboboxOptions>
-          )}
+                {!loading_options && !all_options.length && (
+                  <div className='relative cursor-default select-none py-2 pl-3 pr-9 text-gray-500'>
+                    <i className='ml-3'>No options available</i>
+                  </div>
+                )}
+              </ComboboxOptions>
+            )}
         </div>
         {selected_singular && (
           selected_singular.value?.id && selected_singular.value.id !== 'add' &&
