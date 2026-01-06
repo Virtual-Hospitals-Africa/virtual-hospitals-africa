@@ -73,20 +73,14 @@ const TriageBriefHistorySchema = z.object(
   },
 )
 
-function mostRecentFindings(ctx: OpenEncounterWorkflowContext) {
-  const { trx, encounter, health_worker } = ctx.state
-  const { patient } = encounter
-  const patient_id = patient.id
-
-  return renderedMostRecentFindings(
-    trx,
-    {
-      patient_id,
-      encounter,
-      health_worker_id: health_worker.id,
-      conditions: COMMON_CONDITIONS,
-    },
-  )
+function mostRecentFindings({ state }: OpenEncounterWorkflowContext) {
+  const { trx, encounter, patient_id, health_worker_id } = state
+  return renderedMostRecentFindings(trx, {
+    encounter,
+    patient_id,
+    health_worker_id,
+    conditions: COMMON_CONDITIONS,
+  })
 }
 
 function selfReportedStatusSExpression(
