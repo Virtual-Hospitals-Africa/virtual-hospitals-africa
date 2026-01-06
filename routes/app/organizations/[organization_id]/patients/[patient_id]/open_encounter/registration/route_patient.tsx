@@ -65,7 +65,7 @@ export const handler = postHandler(
         const patient_presence_updates = {
           current_workflow: 'triage' as const,
           department_name: 'triage' as const,
-          next_workflow: 'registration' as const,
+          next_workflow: 'consultation' as const,
         }
 
         await patient_presence.set(trx, patient.id, patient_presence_updates)

@@ -45,6 +45,7 @@ export function NearestHealthCareSection(
             name: primary_doctor.name,
           }}
           addable
+          skip_blank_search
         />
       </FormGrid>
     </FormSection>
