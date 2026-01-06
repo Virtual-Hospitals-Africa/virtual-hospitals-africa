@@ -1,0 +1,198 @@
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
+import db from '../../../../../db/db.ts'
+import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
+import { createTestOrganization } from '../../../../_helpers/organizations.ts'
+import randomDemographics from '../../../../../mocks/randomDemographics.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { route } from '../../../../route.ts'
+import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
+import asFormData from '../../../../../util/asFormData.ts'
+import { assert } from 'std/assert/assert.ts'
+
+describeParallel(
+  '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/confirm_details',
+  () => {
+    before(waitUntilTestServerUp)
+    afterAll(() => db.destroy())
+
+    itParallel(
+      'is accessed after contacts and displays patient summary',
+      async () => {
+        const organization = await createTestOrganization(db)
+        const { fetchCheerio } = await addTestEmployeeWithSession(db, {
+          profession: 'receptionist',
+          registration_status: 'approved',
+          organization_id: organization.id,
+        })
+
+        // Start registration
+        const $personal = await fetchCheerio(
+          `/app/organizations/${organization.id}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+        const patient_id =
+          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+
+        // Submit personal info
+        const $this_visit = await fetchCheerio(
+          $personal.url,
+          {
+            method: 'POST',
+            body: asFormData(randomDemographics('ZA')),
+          },
+        )
+
+        // Submit this_visit with continue_with_registration
+        const $primary_care = await fetchCheerio(
+          $this_visit.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              next_workflow: 'continue_with_registration',
+            }),
+          },
+        )
+
+        // Submit primary_care with no insurance
+        const $contacts = await fetchCheerio(
+          $primary_care.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              primary_doctor_name: 'Dr. Smith',
+              nearest_organization_id: organization.id,
+              insurance: {
+                has_no_insurance: true,
+              },
+            }),
+          },
+        )
+
+        // Submit contacts with emergency contact
+        const $confirm_details = await fetchCheerio(
+          $contacts.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              address: {
+                street: '123 Main Street',
+                locality: 'Johannesburg',
+                country: 'ZA',
+              },
+              emergency_contacts: [
+                {
+                  name: 'Jane Doe',
+                  relationship: 'Spouse',
+                  phone_number: '+27821234567',
+                },
+              ],
+            }),
+          },
+        )
+
+        assertEquals(
+          $confirm_details.url,
+          `${route}/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/registration/confirm_details`,
+        )
+
+        // Verify form exists
+        assert($confirm_details('form').length === 1)
+      },
+    )
+
+    itParallel(
+      'can submit and proceed to terms_and_conditions',
+      async () => {
+        const organization = await createTestOrganization(db)
+        const { fetchCheerio } = await addTestEmployeeWithSession(db, {
+          profession: 'receptionist',
+          registration_status: 'approved',
+          organization_id: organization.id,
+        })
+
+        // Start registration
+        const $personal = await fetchCheerio(
+          `/app/organizations/${organization.id}/patients/start-registration`,
+          {
+            method: 'POST',
+          },
+        )
+        const patient_id =
+          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+
+        // Submit personal info
+        const $this_visit = await fetchCheerio(
+          $personal.url,
+          {
+            method: 'POST',
+            body: asFormData(randomDemographics('ZA')),
+          },
+        )
+
+        // Submit this_visit with continue_with_registration
+        const $primary_care = await fetchCheerio(
+          $this_visit.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              next_workflow: 'continue_with_registration',
+            }),
+          },
+        )
+
+        // Submit primary_care with no insurance
+        const $contacts = await fetchCheerio(
+          $primary_care.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              primary_doctor_name: 'Dr. Smith',
+              nearest_organization_id: organization.id,
+              insurance: {
+                has_no_insurance: true,
+              },
+            }),
+          },
+        )
+
+        // Submit contacts with emergency contact
+        const $confirm_details = await fetchCheerio(
+          $contacts.url,
+          {
+            method: 'POST',
+            body: asFormData({
+              address: {
+                locality: 'Cape Town',
+                country: 'ZA',
+              },
+              emergency_contacts: [
+                {
+                  name: 'John Smith',
+                  relationship: 'Father',
+                  phone_number: '+27829876543',
+                },
+              ],
+            }),
+          },
+        )
+
+        // Submit confirm_details (empty body, just confirmation)
+        const $terms_and_conditions = await fetchCheerio(
+          $confirm_details.url,
+          {
+            method: 'POST',
+            body: asFormData({}),
+          },
+        )
+
+        assertEquals(
+          $terms_and_conditions.url,
+          `${route}/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/registration/terms_and_conditions`,
+        )
+      },
+    )
+  },
+)
