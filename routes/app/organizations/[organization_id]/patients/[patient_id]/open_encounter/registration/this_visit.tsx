@@ -8,9 +8,9 @@ import { z } from 'zod'
 import ThisVisitSection from '../../../../../../../../components/patient-registration/ThisVisitSection.tsx'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import * as patient_workflows from '../../../../../../../../db/models/patient_workflows.ts'
+import * as events from '../../../../../../../../db/models/events.ts'
 import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
 import * as patient_presence from '../../../../../../../../db/models/patient_presence.ts'
-import * as events from '../../../../../../../../db/models/events.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { success, warning } from '../../../../../../../../util/alerts.ts'
@@ -27,7 +27,7 @@ import { completedPersonal } from '../../../../../../../../shared/patient_regist
 // TODO not hard code this
 const senior_health_worker_name = 'Nomsa Moyo'
 
-const PatientRegistrationThisVisitSchema = z.object({
+export const PatientRegistrationThisVisitSchema = z.object({
   next_workflow: z.enum([
     'continue_with_registration',
     'immediate_triage',

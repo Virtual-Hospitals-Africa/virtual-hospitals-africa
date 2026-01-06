@@ -6,7 +6,7 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 
-const PatientRegistrationTermsAndConditionsSchema = z.object({})
+export const PatientRegistrationTermsAndConditionsSchema = z.object({})
 
 export const handler = postHandler(
   PatientRegistrationTermsAndConditionsSchema,
