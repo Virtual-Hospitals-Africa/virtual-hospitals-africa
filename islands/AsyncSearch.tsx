@@ -12,7 +12,6 @@ export type AsyncSearchProps<
   & SearchPropsCommon<T>
   & {
     search_route: string
-    skip_blank_search?: boolean
     onQuery?(query: string): void
     onSearchResults?(values: {
       query: string
@@ -59,6 +58,7 @@ export default function AsyncSearch<
   return (
     <Search
       {...rest}
+      skip_blank_search={skip_blank_search}
       // deno-lint-ignore no-explicit-any
       value={value as any}
       loading_options={loading}
