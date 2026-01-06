@@ -86,13 +86,13 @@ export async function PatientRegistrationPrimaryCarePage(
   })
 
   return (
-    <div className='flex flex-col gap-16'>
+    <>
       <NearestHealthCareSection {...primary_care} />
       <HealthInsuranceSection
         current_insurance={current_insurance}
         previously_completed_form={previously_completed_step}
       />
-    </div>
+    </>
   )
 }
 

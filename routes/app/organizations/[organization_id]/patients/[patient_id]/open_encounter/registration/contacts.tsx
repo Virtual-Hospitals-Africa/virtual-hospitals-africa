@@ -50,11 +50,11 @@ export async function PatientRegistrationContactsPage(
     patient_id: ctx.state.patient.id,
   })
   return (
-    <div>
+    <>
       {/* <AddressSection address={address} /> */}
       <PatientContactInformationSection address={address} />
       <EmergencyContactSection />
-    </div>
+    </>
   )
 }
 
