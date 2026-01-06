@@ -8,7 +8,7 @@ import * as patient_registration from '../../../../../../../../db/models/patient
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import PatientRegistrationSummary from '../../../../../../../../components/patients/registration/Summary.tsx'
 
-const PatientRegistrationConfirmDetailsSchema = z.object({})
+export const PatientRegistrationConfirmDetailsSchema = z.object({})
 
 export const handler = postHandler(
   PatientRegistrationConfirmDetailsSchema,
