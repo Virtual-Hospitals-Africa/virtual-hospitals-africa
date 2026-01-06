@@ -25,6 +25,7 @@ export const PatientRegistrationContactsSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationContactsSchema,
+  // deno-lint-ignore require-await
   async (
     ctx: OpenEncounterWorkflowContext,
     { emergency_contacts },
