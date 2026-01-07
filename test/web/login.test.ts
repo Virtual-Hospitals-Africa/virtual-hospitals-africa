@@ -10,7 +10,7 @@ import {
   withTestOrganization,
 } from '../_helpers/organizations.ts'
 import sample from '../../util/sample.ts'
-import { route } from '../route.ts'
+import { route } from '../_route.ts'
 import selfUrl from '../../util/selfUrl.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 

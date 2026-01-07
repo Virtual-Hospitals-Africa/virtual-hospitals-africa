@@ -9,7 +9,7 @@ import {
   addTestEmployee,
   addTestEmployeeWithSession,
 } from '../../../_helpers/employees.ts'
-import { route } from '../../../route.ts'
+import { route } from '../../../_route.ts'
 import randomDemographics from '../../../../mocks/randomDemographics.ts'
 import createTestAddress from '../../../../mocks/createTestAddress.ts'
 import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'

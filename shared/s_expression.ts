@@ -46,7 +46,7 @@ export function parseExpression(
   try {
     return schemas.any_expression.parse(first_pass)
   } catch (_err) {
-    console.log(expression)
+    console.log(expression, _err)
     throw new Error('failure to parse')
   }
 }

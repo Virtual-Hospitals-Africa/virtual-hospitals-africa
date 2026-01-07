@@ -215,7 +215,7 @@ function toSnomedConcept(
 ): Lang['snomed_concept'] {
   return {
     atom: 'snomed_concept',
-    type: 'name_and_category',
+    type: 'snomed_concept_name_and_category',
     name: rendered.name,
     category: rendered.category,
   }
@@ -237,33 +237,31 @@ export function asNormalFormSExpression<Rest>(
 ): string {
   const qualifiers = record.modifiers.map(toQualifier)
 
-  // Partition attributes into events and actual attributes
-  const [eventAttributes, nonEventAttributes] = partition(
-    record.attributes,
-    (attr) => attr.value?.type === 'event',
-  )
-
-  const events: Lang['event'][] = eventAttributes.map((attr) => {
-    const value = attr.value as { type: 'event'; datetime: Date | string }
+  const attributes: Lang['attribute'][] = record.attributes.map((attr) => {
+    // Event-type attribute
+    if (attr.value?.type === 'event') {
+      const value = attr.value as { type: 'event'; datetime: Date | string }
+      return {
+        atom: 'attribute',
+        specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+        value: {
+          type: 'event' as const,
+          datetime: isDate(value.datetime)
+            ? value.datetime.toISOString()
+            : value.datetime,
+          location: null,
+        },
+      }
+    }
+    // Regular attribute (snomed concept value or null)
     return {
-      atom: 'event',
+      atom: 'attribute',
       specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
-      value: {
-        datetime: isDate(value.datetime)
-          ? value.datetime.toISOString()
-          : value.datetime,
-        location: null,
-      },
+      value: attr.value?.type === 'snomed_concept'
+        ? toSnomedConcept(attr.value)
+        : null,
     }
   })
-
-  const attributes: Lang['attribute'][] = nonEventAttributes.map((attr) => ({
-    atom: 'attribute',
-    specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
-    value: attr.value?.type === 'snomed_concept'
-      ? toSnomedConcept(attr.value)
-      : null,
-  }))
 
   const root_snomed_concept = toSnomedConcept(record.root_snomed_concept)
   const specific_snomed_concept = toSnomedConcept(
@@ -280,7 +278,6 @@ export function asNormalFormSExpression<Rest>(
         root_snomed_concept,
         specific_snomed_concept,
         value_snomed_concept,
-        events,
         qualifiers,
         attributes,
         exact: false,
@@ -294,7 +291,6 @@ export function asNormalFormSExpression<Rest>(
         specific_snomed_concept,
         value_snomed_concept,
         evaluates: null,
-        events,
         qualifiers,
         attributes,
       }
@@ -305,7 +301,6 @@ export function asNormalFormSExpression<Rest>(
         atom: 'procedure',
         root_snomed_concept,
         specific_snomed_concept,
-        events,
         qualifiers,
         attributes,
       }

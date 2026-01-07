@@ -1,12 +1,18 @@
-import { AnyNode, Lang } from './s_expression_schemas.ts'
+import { AnyNode, EventValue, Lang } from './s_expression_schemas.ts'
 
 // TODO: come back to this idea maybe.
 // As it stands two s_expressions could refer to the same snomed concept,
 // but if one uses id and the other uses name/category they won't match exactly
 // function lookupSnomedConceptById(node: Lang['snomed_concept'])
 
+function isEventValue(
+  value: Lang['snomed_concept'] | EventValue,
+): value is EventValue {
+  return value.type === 'event'
+}
+
 function snomedConceptToString(node: Lang['snomed_concept']): string {
-  if (node.type === 'id') {
+  if (node.type === 'snomed_concept_id') {
     return node.id
   }
   return `(snomed_concept "${node.name}" "${node.category}")`
@@ -29,26 +35,27 @@ export function inverseSExpression(node: AnyNode): string {
         parts.push(snomedConceptToString(node.value_snomed_concept))
       }
       for (const attr of node.attributes) parts.push(inverseSExpression(attr))
-      for (const event of node.events) parts.push(inverseSExpression(event))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       return `(${parts.join(' ')})`
     }
 
     case 'attribute': {
+      const { value } = node
+      // Event-type attribute
+      if (value && isEventValue(value)) {
+        return `(event ${
+          snomedConceptToString(node.specific_snomed_concept)
+        } "${value.datetime}")`
+      }
+      // Regular attribute
       const parts: string[] = [
         'attribute',
         snomedConceptToString(node.specific_snomed_concept),
       ]
-      if (node.value) {
-        parts.push(snomedConceptToString(node.value))
+      if (value) {
+        parts.push(snomedConceptToString(value))
       }
       return `(${parts.join(' ')})`
-    }
-
-    case 'event': {
-      return `(event ${
-        snomedConceptToString(node.specific_snomed_concept)
-      } "${node.value.datetime}")`
     }
 
     case 'qualifier': {
@@ -69,7 +76,6 @@ export function inverseSExpression(node: AnyNode): string {
         parts.push(snomedConceptToString(node.specific_snomed_concept))
       }
       for (const attr of node.attributes) parts.push(inverseSExpression(attr))
-      for (const event of node.events) parts.push(inverseSExpression(event))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       return `(${parts.join(' ')})`
     }
@@ -86,7 +92,6 @@ export function inverseSExpression(node: AnyNode): string {
         parts.push(snomedConceptToString(node.value_snomed_concept))
       }
       for (const attr of node.attributes) parts.push(inverseSExpression(attr))
-      for (const event of node.events) parts.push(inverseSExpression(event))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))
       if (node.evaluates) parts.push(inverseSExpression(node.evaluates))
       return `(${parts.join(' ')})`
@@ -135,7 +140,7 @@ export function inverseSExpression(node: AnyNode): string {
       const parts = node.expressions.map(inverseSExpression)
       return `(or ${parts.join(' ')})`
     }
-    
+
     case 'any': {
       const parts = node.findings.map(inverseSExpression)
       return `(any ${parts.join(' ')})`

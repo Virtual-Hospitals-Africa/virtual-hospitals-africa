@@ -6,7 +6,7 @@ import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
 import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
-import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
+import { AnyNode, EventValue, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import {
   ATTRIBUTE,
@@ -32,7 +32,7 @@ export function snomedConceptBase(
   snomed_concept: Lang['snomed_concept'],
 ) {
   assert(isAtom(snomed_concept, 'snomed_concept'))
-  if (snomed_concept.type === 'id') return snomed_concept.id
+  if (snomed_concept.type === 'snomed_concept_id') return snomed_concept.id
 
   return trx
     .selectFrom('snomed_inferred_canonical_name_and_category')
@@ -144,6 +144,10 @@ function baseQuery(
   }
 
   for (const attribute of attributes) {
+    // Event-type attribute values are not queryable in SNOMED relationships
+    const snomedValue = attribute.value && attribute.value.type !== 'event'
+      ? attribute.value
+      : null
     query = query.where((eb) =>
       eb.or([
         eb(
@@ -156,7 +160,7 @@ function baseQuery(
             .clearSelect()
             .select('patient_record_qualifiers.qualifies_record_id'),
         ),
-        attribute.value
+        snomedValue
           ? eb.exists(
             trx.selectFrom('snomed_relationship')
               .where('snomed_relationship.active', '=', true)
@@ -174,7 +178,7 @@ function baseQuery(
                 sql<
                   boolean
                 >`is_descendant(snomed_relationship.destination_id, ${
-                  snomedConceptBase(trx, attribute.value)
+                  snomedConceptBase(trx, snomedValue)
                 }::bigint)`,
               ),
           )
@@ -224,7 +228,7 @@ function measurement(
     ...patient,
     root_snomed_concept: {
       atom: 'snomed_concept',
-      type: 'id',
+      type: 'snomed_concept_id',
       id: '118245000',
     },
   })
@@ -348,7 +352,7 @@ const EXPRESSION_BUILDERS = {
       patient_encounter_id,
       root_snomed_concept: {
         atom: 'snomed_concept',
-        type: 'id',
+        type: 'snomed_concept_id',
         id: QUALIFIER_VALUE.id,
       },
       specific_snomed_concept,
@@ -365,8 +369,13 @@ const EXPRESSION_BUILDERS = {
     { patient_id, patient_encounter_id },
     { specific_snomed_concept, value },
   ) {
-    // Only snomed_concept values are queryable
-    const value_snomed_concept = value?.atom === 'snomed_concept' ? value : null
+    // Only snomed_concept values are queryable (not event values)
+    function isEventValue(
+      v: Lang['snomed_concept'] | EventValue,
+    ): v is EventValue {
+      return v.type === 'event'
+    }
+    const value_snomed_concept = value && !isEventValue(value) ? value : null
     return baseQuery(trx, {
       patient_id,
       patient_encounter_id,
@@ -374,7 +383,7 @@ const EXPRESSION_BUILDERS = {
       specific_snomed_concept,
       root_snomed_concept: {
         atom: 'snomed_concept',
-        type: 'id',
+        type: 'snomed_concept_id',
         id: ATTRIBUTE.id,
       },
     })
