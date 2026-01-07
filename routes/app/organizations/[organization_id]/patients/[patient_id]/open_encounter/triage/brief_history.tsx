@@ -132,9 +132,12 @@ export const handler = postHandler(
 
           const prior_matching_finding = most_recent_findings[condition_key]
 
-          if (prior_matching_finding?.existence === condition.existence) {
+          if (
+            prior_matching_finding?.existence === 'Yes' &&
+            condition.existence === 'Yes'
+          ) {
             return Promise.resolve(
-              'Prior matching finding already has same existence, so no need to insert',
+              'This condition was already known',
             )
           }
 
