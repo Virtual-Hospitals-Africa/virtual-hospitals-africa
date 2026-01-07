@@ -29,6 +29,7 @@ import {
   STATUS_ATTRIBUTE,
 } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
+import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 
 
 describeParallel('triage/warning_signs', () => {
@@ -917,7 +918,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
 
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchOk, fetchCheerio } =
+        const { health_worker: nurse, fetchOk } =
           await addTestEmployeeWithSession(db, {
             profession: 'nurse',
             registration_status: 'approved',
@@ -978,19 +979,19 @@ describeParallel('triage/warning_signs', () => {
             snomed_concept_id: CLINICAL_FINDING.id,
           },
           specific_snomed_concept: {
-            name: 'Appendicular pain',
+            name: 'Nasal discharge',
           },
-          priority: 'Very urgent',
+          priority: 'Non-urgent'
         })
 
-        const $ = await fetchCheerio(
-          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-        )
+        const task_groups = await getTasksGroups(db, {
+          encounter,
+          health_worker_id: nurse.id,
+        })
+    
+        assertLength(task_groups, 1)
 
-        assertIncludes(
-          $('#priority-grid-very-urgent').text(),
-          'Appendicular pain',
-        )
+        
       },
     )
 

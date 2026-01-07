@@ -21,27 +21,6 @@ export const TASKS: Task[] = [
       'task',
     ),
   },
-  {
-    if_description: 'If any nose symptoms',
-    tasks_description: 'check for head injury with watery discharge',
-    task_s_expression: parseExpressionExpectingAtom(
-      `(
-    )`,
-      'task',
-    ),
-  },
-  {
-    if_description: 'If severe burn',
-    tasks_description: 'administer analgesia',
-    task_s_expression: parseExpressionExpectingAtom(
-      `(
-      task
-        (< (measurement 103228002) (units 92 %))
-        (procedure ${PROCEDURE.id} 57485005)
-    )`,
-      'task',
-    ),
-  },
 ]
 
 // Separate function for permission around tasks
