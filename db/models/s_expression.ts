@@ -15,6 +15,7 @@ import {
   STATUS_ATTRIBUTE,
   YES_QUALIFIER,
 } from '../../shared/snomed_concepts.ts'
+import isKeyOf from '../../util/isKeyOf.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -468,23 +469,8 @@ const EXPRESSION_BUILDERS = {
       .where('patient_measurements.units', '=', right.units)
       .where('patient_measurements.value', '=', String(right.value))
   },
-  evaluates() {
-    throw new Error('evalutes is not directly queryable')
-  },
-  task() {
-    throw new Error('task is not directly queryable')
-  },
-  units() {
-    throw new Error('units is not directly queryable')
-  },
-  snomed_concept() {
-    throw new Error('snomed_concept is not directly queryable')
-  },
-  event() {
-    throw new Error('event is not directly queryable')
-  },
 } satisfies {
-  [T in Atom]: (
+  [T in Atom]?: (
     trx: TrxOrDb,
     patient: PatientIdentifiers,
     node: AnyNode & { atom: T },
@@ -498,6 +484,10 @@ export function buildExpression(
 ): SelectQueryBuilder<DB, 'patient_records', { id: string }> {
   if (typeof node === 'string') {
     node = parseExpression(node)
+  }
+
+  if (!isKeyOf(node.atom, EXPRESSION_BUILDERS)) {
+    throw new Error(`${node.atom} is not directly queryable`)
   }
 
   // deno-lint-ignore ban-types

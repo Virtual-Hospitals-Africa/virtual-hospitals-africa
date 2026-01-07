@@ -73,6 +73,15 @@ type BaseLang =
     active_condition: {
       snomed_concept: Lang['snomed_concept']
     }
+    check_for: {
+      finding: Lang['finding']
+    }
+    any: {
+      findings: Lang[Comparisons | 'finding'][]
+    }
+    all: {
+      findings: Lang[Comparisons | 'finding'][]
+    }
     units: {
       value: Decimal
       units: string
@@ -87,8 +96,8 @@ type BaseLang =
       expressions: AnyNode[]
     }
     task: {
-      left: AnyNode
-      right: Lang['procedure']
+      when: Lang[Comparisons | 'finding' | 'any' | 'all']
+      procedure: Lang['procedure' | 'check_for']
     }
   }
   & {
@@ -481,6 +490,17 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
     })),
 ).describe('active_condition')
 
+export const check_for: z.ZodType<Lang['check_for']> = z.lazy(
+  () =>
+    z.object({
+      atom: z.literal('check_for'),
+      args: z.tuple([finding]),
+    }).transform(({ atom, args: [finding] }) => ({
+      atom,
+      finding,
+    })),
+).describe('check_for')
+
 export const units: z.ZodType<Lang['units']> = z.lazy(() =>
   z.object({
     atom: z.literal('units'),
@@ -523,13 +543,13 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   z.object({
     atom: z.literal('task'),
     args: z.tuple([
-      any_expression,
-      procedure,
+      comparator.or(finding).or(any).or(all),
+      procedure.or(check_for),
     ]),
-  }).transform(({ atom, args: [left, right] }) => ({
+  }).transform(({ atom, args: [when, procedure] }) => ({
     atom,
-    left,
-    right,
+    when,
+    procedure,
   }))
 ).describe('task')
 
@@ -563,6 +583,26 @@ export const and: z.ZodType<Lang['and']> = z.lazy(() =>
   }))
 ).describe('and')
 
+export const any: z.ZodType<Lang['any']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('any'),
+    args: z.array(comparator.or(finding)),
+  }).transform(({ atom, args }) => ({
+    atom,
+    findings: args,
+  }))
+).describe('any')
+
+export const all: z.ZodType<Lang['all']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('all'),
+    args: z.array(comparator.or(finding)),
+  }).transform(({ atom, args }) => ({
+    atom,
+    findings: args,
+  }))
+).describe('all')
+
 export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
   z.union([
     snomed_concept,
@@ -574,6 +614,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     finding_site,
     measurement,
     active_condition,
+    check_for,
     comparator,
     qualifier,
     task,
@@ -581,5 +622,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     or,
     and,
     not,
+    any,
+    all,
   ])
 )

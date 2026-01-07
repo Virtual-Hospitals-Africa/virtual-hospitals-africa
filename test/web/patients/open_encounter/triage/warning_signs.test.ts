@@ -31,7 +31,6 @@ import {
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 
-
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
@@ -916,7 +915,6 @@ describeParallel('triage/warning_signs', () => {
     itParallel.only(
       'creates an additional task to check for a head injury with watery discharge ',
       async () => {
-
         const clinic = await createTestOrganization(db)
         const { health_worker: nurse, fetchOk } =
           await addTestEmployeeWithSession(db, {
@@ -981,17 +979,15 @@ describeParallel('triage/warning_signs', () => {
           specific_snomed_concept: {
             name: 'Nasal discharge',
           },
-          priority: 'Non-urgent'
+          priority: 'Non-urgent',
         })
 
         const task_groups = await getTasksGroups(db, {
           encounter,
           health_worker_id: nurse.id,
         })
-    
-        assertLength(task_groups, 1)
 
-        
+        assertLength(task_groups, 1)
       },
     )
 
