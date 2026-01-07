@@ -10,7 +10,7 @@ import {
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { createTestOrganization } from '../../../../_helpers/organizations.ts'
-import { route } from '../../../../route.ts'
+import { route } from '../../../../_route.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'

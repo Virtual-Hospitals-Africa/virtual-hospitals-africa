@@ -18,7 +18,7 @@ function snomedConceptIdPredicate(
   snomed_concept: Lang['snomed_concept'],
 ): string | RawBuilder<string> {
   assert(isAtom(snomed_concept, 'snomed_concept'))
-  if (snomed_concept.type === 'id') return snomed_concept.id
+  if (snomed_concept.type === 'snomed_concept_id') return snomed_concept.id
   // For name-based lookups, we need a subquery
   return sql<string>`(
     SELECT id FROM snomed_inferred_canonical_name_and_category

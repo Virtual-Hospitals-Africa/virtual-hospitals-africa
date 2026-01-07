@@ -225,7 +225,8 @@ export function nonGroupedBaseQuery(
           eb.ref('maybe_s_expressions.id'),
           {
             type: literalString('s_expression' as const),
-            s_expression: asText(eb, 'maybe_s_expressions.s_expression').$notNull(),
+            s_expression: asText(eb, 'maybe_s_expressions.s_expression')
+              .$notNull(),
           },
         ),
       ).as('value'),

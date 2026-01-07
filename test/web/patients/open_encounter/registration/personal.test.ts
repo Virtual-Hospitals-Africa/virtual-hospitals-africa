@@ -8,7 +8,7 @@ import { isUUID } from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { route } from '../../../../route.ts'
+import { route } from '../../../../_route.ts'
 import { PatientRegistrationPersonalSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 

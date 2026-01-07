@@ -14,10 +14,11 @@ export async function up(db: Kysely<DB>) {
       qb.addColumn(
         's_expression',
         'text',
-        (col) => col.notNull().check(sql`
+        (col) =>
+          col.notNull().check(sql`
           left(s_expression, 1) = '(' AND right(s_expression, 1) = ')'
         `),
-      )
+      ),
   )
 }
 

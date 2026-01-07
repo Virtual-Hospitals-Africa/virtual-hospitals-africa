@@ -27,17 +27,17 @@ export const TASKS = [
         (procedure ${PROCEDURE.id} 57485005)
     )`,
   },
-  {
-    if_description: 'If oxygen saturation below 92%',
-    tasks_description: 'give oxygen and move to resuscitation area',
-    task_s_expression: `(
-      task
-        (finding ${CLINICAL_FINDING.id}
-          (finding_site (snomed_concept "Nasal structure" "body structure")))
-        (check_for
-          (finding ${CLINICAL_FINDING.id} (snomed_concept "Injury of head" "disorder")))
-    )`,
-  },
+  // {
+  //   if_description: 'If oxygen saturation below 92%',
+  //   tasks_description: 'give oxygen and move to resuscitation area',
+  //   task_s_expression: `(
+  //     task
+  //       (finding ${CLINICAL_FINDING.id}
+  //         (finding_site (snomed_concept "Nasal structure" "body structure")))
+  //       (check_for
+  //         (finding ${CLINICAL_FINDING.id} (snomed_concept "Injury of head" "disorder")))
+  //   )`,
+  // },
 ].map(asTask)
 
 // Separate function for permission around tasks

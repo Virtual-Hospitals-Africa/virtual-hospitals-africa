@@ -6,7 +6,7 @@ import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../db/db.ts'
 import { addTestRegulatorWithSession } from '../../../_helpers/regulators.ts'
-import { route } from '../../../route.ts'
+import { route } from '../../../_route.ts'
 import waitUntilTestServerUp from '../../../_helpers/waitUntilTestServerUp.ts'
 
 describeParallel(

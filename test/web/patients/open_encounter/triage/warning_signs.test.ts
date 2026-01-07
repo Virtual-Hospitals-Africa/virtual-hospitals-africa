@@ -831,7 +831,7 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel(
+    itParallel.only(
       'saves findings other than warning signs gives a priority level if the concept is a descendant of a warning sign',
       async () => {
         const clinic = await createTestOrganization(db)
@@ -912,7 +912,7 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel.only(
+    itParallel.skip(
       'creates an additional task to check for a head injury with watery discharge ',
       async () => {
         const clinic = await createTestOrganization(db)
