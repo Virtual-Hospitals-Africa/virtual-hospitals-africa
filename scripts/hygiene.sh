@@ -14,4 +14,20 @@ camel_case_const_pattern='const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaul
 ! rg --pcre2 "$camel_case_const_pattern"
 
 # TODO: rename script and/or parallelize rules?
-! rg --pcre2 "node:console" --glob '!scripts/grep_camelCase_variables.sh'
+! rg --pcre2 "node:console" --glob '!scripts/hygiene.sh'
+
+in_test_dir_but_not_tests=$(
+  find test -type f \
+    ! -name '*test.ts' \
+    ! -name '*test.tsx' \
+    ! -path 'test/_helpers/*' \
+    ! -name '_setup.ts' \
+    ! -name '.DS_Store' \
+    ! -path 'test/_route.ts'
+)
+
+if [[ -n "$in_test_dir_but_not_tests" ]]; then
+  echo "Files in /test that aren't tests nor helpers:"
+  echo "$in_test_dir_but_not_tests"
+  exit 1
+fi

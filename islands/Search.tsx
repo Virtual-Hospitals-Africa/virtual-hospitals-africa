@@ -238,7 +238,7 @@ export default function Search<
                 <Combobox.Input
                   ref={input_ref}
                   name={search_field}
-                  className='flex-1 min-w-[200px] border-none outline-none focus:ring-0 p-0 bg-transparent text-black-900 placeholder:text-gray-400 sm:text-sm/6 dark:focus:text-black-900'
+                  className='flex-1 min-w-50 border-none outline-none focus:ring-0 p-0 bg-transparent text-black-900 placeholder:text-gray-400 sm:text-sm/6 dark:focus:text-black-900'
                   onChange={(event) => {
                     const query = event.currentTarget.value
                     onSelect?.(undefined)

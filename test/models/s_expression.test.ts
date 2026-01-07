@@ -147,7 +147,7 @@ describeParallel('db/models/s_expression.ts', () => {
   )
 
   itParallel(
-    'can insert a Nasal discharge finding which then matches for a query for ',
+    'can insert a Nasal discharge finding which then matches for a query for finding site: nasal structure',
     async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',

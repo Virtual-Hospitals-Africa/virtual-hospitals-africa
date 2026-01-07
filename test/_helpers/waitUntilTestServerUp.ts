@@ -1,5 +1,5 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { route } from '../route.ts'
+import { route } from '../_route.ts'
 
 export default function waitUntilTestServerUp(): Promise<void> {
   return new Promise((resolve, reject) => {

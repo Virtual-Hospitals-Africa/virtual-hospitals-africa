@@ -14,7 +14,7 @@ import asFormData from '../../../../../util/asFormData.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-import { route } from '../../../../route.ts'
+import { route } from '../../../../_route.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
@@ -29,6 +29,7 @@ import {
   STATUS_ATTRIBUTE,
 } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
+
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -830,7 +831,7 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel.only(
+    itParallel(
       'saves findings other than warning signs gives a priority level if the concept is a descendant of a warning sign',
       async () => {
         const clinic = await createTestOrganization(db)
@@ -876,6 +877,88 @@ describeParallel('triage/warning_signs', () => {
               warning_signs: {
                 's275406005':
                   `(finding ${CLINICAL_FINDING.id} (snomed_concept "Appendicular pain" "finding"))`,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const findings = await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
+          s_expression: `(not (finding ${STATUS_ATTRIBUTE.id}))`,
+        })
+        assertLength(findings, 1)
+
+        assertMatches(findings[0], {
+          root_snomed_concept: {
+            snomed_concept_id: CLINICAL_FINDING.id,
+          },
+          specific_snomed_concept: {
+            name: 'Appendicular pain',
+          },
+          priority: 'Very urgent',
+        })
+
+        const $ = await fetchCheerio(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        )
+
+        assertIncludes(
+          $('#priority-grid-very-urgent').text(),
+          'Appendicular pain',
+        )
+      },
+    )
+
+    itParallel.only(
+      'creates an additional task to check for a head injury with watery discharge ',
+      async () => {
+
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                's275406005':
+                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Nasal discharge" "finding"))`,
               },
             }),
           },
