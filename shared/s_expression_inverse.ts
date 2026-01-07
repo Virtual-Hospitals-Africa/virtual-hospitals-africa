@@ -104,6 +104,10 @@ export function inverseSExpression(node: AnyNode): string {
       return `(active_condition ${snomedConceptToString(node.snomed_concept)})`
     }
 
+    case 'check_for': {
+      return `(check_for ${inverseSExpression(node.finding)})`
+    }
+
     case 'units': {
       return `(units ${node.value} ${node.units})`
     }
@@ -131,10 +135,20 @@ export function inverseSExpression(node: AnyNode): string {
       const parts = node.expressions.map(inverseSExpression)
       return `(or ${parts.join(' ')})`
     }
+    
+    case 'any': {
+      const parts = node.findings.map(inverseSExpression)
+      return `(any ${parts.join(' ')})`
+    }
+
+    case 'all': {
+      const parts = node.findings.map(inverseSExpression)
+      return `(all ${parts.join(' ')})`
+    }
 
     case 'task': {
-      return `(task ${inverseSExpression(node.left)} ${
-        inverseSExpression(node.right)
+      return `(task ${inverseSExpression(node.when)} ${
+        inverseSExpression(node.procedure)
       })`
     }
 

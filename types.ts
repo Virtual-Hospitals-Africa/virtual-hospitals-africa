@@ -3488,11 +3488,17 @@ export type RecordValueScore = {
   score: string
 }
 
+export type RecordValueSExpression = {
+  type: 's_expression'
+  s_expression: string
+}
+
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
   | RecordValueScore
+  | RecordValueSExpression
 
 export type IntermediateBaseRecord = {
   record_id: string

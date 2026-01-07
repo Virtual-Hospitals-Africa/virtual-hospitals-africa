@@ -38,7 +38,7 @@ export async function insertTasksIfNotAlreadyIdentified(
       {
         patient_id,
         patient_encounter_id,
-        s_expression: task.task_s_expression.left,
+        s_expression: task.node.when,
       },
     )
 
@@ -50,6 +50,8 @@ export async function insertTasksIfNotAlreadyIdentified(
       first(records_for_which_task_should_be_done.record_ids),
     )
 
+
+    
     const procedure = await patient_procedures
       .insertOneIfNotAlreadyExistsForThisEncounter(
         trx,
@@ -57,7 +59,7 @@ export async function insertTasksIfNotAlreadyIdentified(
           patient_id,
           patient_encounter_id,
           by_system: true,
-          procedure: task.task_s_expression.right,
+          procedure: task.node.procedure,
         },
       )
 
