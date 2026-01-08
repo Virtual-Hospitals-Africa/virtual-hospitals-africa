@@ -988,7 +988,7 @@ describeParallel('triage/warning_signs', () => {
           health_worker_id: nurse.id,
         })
 
-        console.log((humanReadableJson(task_groups)))
+        console.log(humanReadableJson(task_groups))
 
         assertLength(task_groups, 1)
       },
