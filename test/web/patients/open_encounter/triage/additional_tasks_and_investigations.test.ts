@@ -8,6 +8,7 @@ import { route } from '../../../../_route.ts'
 import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
+import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
@@ -226,6 +227,68 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
               'by_system': true,
               'employment_id': null,
               'full_display': 'Oxygen therapy',
+            },
+            'completed': false,
+          },
+        ],
+      },
+    ])
+  })
+
+  itParallel('prompts for Nausea Vomiting Pallor Sweating', async () => {
+    const { $, clinic, encounter, nurse } = await setupTriage({
+      patient_demographics: { date_of_birth: '2001-01-01' },
+      conditions: [],
+      warning_signs: ['Chest pain'],
+      height_and_weight: {
+        height: {
+          value: 160,
+          units: 'cm',
+        },
+        weight: {
+          value: 80,
+          units: 'kg',
+        },
+      },
+      vitals: {
+        measurements: asVitalMeasurementFormValues({
+          respiratory_rate: 12, // 9-14 -> score 0
+          heart_rate: 60, // 51-100 -> score 0
+          blood_pressure_systolic: 120, // 101-199 -> score 0
+          blood_pressure_diastolic: 80,
+          temperature: 36.6, // 35-38.4 -> score 0
+        }),
+        assessments: asVitalAssessmentFormValues({
+          mobility_assessment: 'Walking', // score 0
+          consciousness: 'Alert', // score 0
+          trauma_presence: 'No', // score 0
+        }),
+      },
+    })
+
+    assertEquals(
+      $.url,
+      `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/additional_tasks_and_investigations`,
+    )
+
+    const result = await getTasksGroups(db, {
+      encounter,
+      health_worker_id: nurse.health_worker.id,
+    })
+
+    assertMatches(result, [
+      {
+        'due_to': [{ 'displays': { 'full': 'Chest pain'} }],
+        'tasks': [
+          {
+            'procedure': {
+              "value": {
+                  "type": "s_expression",
+                  "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))"
+              },
+              'displays': {
+                'value': 'Nausea'
+              }
             },
             'completed': false,
           },

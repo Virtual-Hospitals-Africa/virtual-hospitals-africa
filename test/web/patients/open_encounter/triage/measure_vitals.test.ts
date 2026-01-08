@@ -28,6 +28,8 @@ import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { AgeDetermination } from '../../../../../types.ts'
 import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
+import { asVitalMeasurementFormValues, asVitalAssessmentFormValues } from '../../../../../shared/vitals.ts'
+
 
 describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -634,16 +636,8 @@ describeParallel('triage/measure_vitals', () => {
             },
           },
           vitals: {
-            measurements: mapEntries(measurement_values, (value, vital) => ({
-              value,
-              units: VITAL_MEASUREMENTS_UNITS[vital],
-            })),
-            assessments: mapEntries(assessment_values, (value, vital) => ({
-              s_expression: assessmentOptionSExpression(
-                vital,
-                value,
-              ),
-            })),
+            measurements: asVitalMeasurementFormValues(measurement_values),
+            assessments: asVitalAssessmentFormValues(assessment_values),
           },
         })
 
