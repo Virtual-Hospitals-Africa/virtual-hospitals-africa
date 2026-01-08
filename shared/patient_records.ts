@@ -19,6 +19,7 @@ import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
+import { logArgsOnError } from '../util/decorators.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -58,6 +59,79 @@ function formatEventDatetime(datetime: Date | string): string {
   return `${time_str} SAST | ${date_str}`
 }
 
+function toRenderedSnomedConcept(
+  snomed_concept: Lang['snomed_concept'],
+): RenderedSnomedConcept {
+  assert(
+    snomed_concept.type === 'snomed_concept_name_and_category',
+    'Expected snomed_concept_name_and_category',
+  )
+  return {
+    snomed_concept_id: '',
+    name: snomed_concept.name,
+    category: snomed_concept.category,
+  }
+}
+
+const findingToDisplayableRecord = logArgsOnError(
+  function findingToDisplayableRecord(
+    finding: Lang['finding'],
+  ): DisplayableRecord {
+    assert(finding.root_snomed_concept, 'Expected root_snomed_concept')
+    assert(finding.specific_snomed_concept, 'Expected specific_snomed_concept')
+
+    return {
+      record_id: '',
+      created_at: '',
+      patient_encounter_id: '',
+      root_snomed_concept: toRenderedSnomedConcept(finding.root_snomed_concept),
+      specific_snomed_concept: toRenderedSnomedConcept(
+        finding.specific_snomed_concept,
+      ),
+      value: finding.value_snomed_concept
+        ? {
+          type: 'snomed_concept',
+          ...toRenderedSnomedConcept(finding.value_snomed_concept),
+        }
+        : null,
+      qualifiers: finding.qualifiers.map((q) => ({
+        record_id: '',
+        created_at: '',
+        patient_encounter_id: '',
+        root_snomed_concept: {
+          snomed_concept_id: '',
+          name: 'Qualifier value',
+          category: 'qualifier value' as const,
+        },
+        specific_snomed_concept: toRenderedSnomedConcept(
+          q.specific_snomed_concept,
+        ),
+        value: null,
+        qualifiers: q.qualifiers.map((nested) => ({
+          record_id: '',
+          created_at: '',
+          patient_encounter_id: '',
+          root_snomed_concept: {
+            snomed_concept_id: '',
+            name: 'Qualifier value',
+            category: 'qualifier value' as const,
+          },
+          specific_snomed_concept: toRenderedSnomedConcept(
+            nested.specific_snomed_concept,
+          ),
+          value: null,
+        })),
+      })),
+    }
+  },
+)
+
+function findingSExpressionDisplay(
+  finding_s_expression: Lang['finding'],
+): string {
+  return buildDisplays(findingToDisplayableRecord(finding_s_expression)).full
+}
+
 function valueDisplay(
   value: Exclude<NonNullable<DisplayableRecord['value']>, string>,
 ): string {
@@ -71,11 +145,10 @@ function valueDisplay(
     case 'score':
       return value.score
     case 's_expression': {
-      const finding = parseExpressionExpectingAtom(
+      return findingSExpressionDisplay(parseExpressionExpectingAtom(
         value.s_expression,
         'finding',
-      )
-      return buildDisplays(finding as any).full
+      ))
     }
     default: {
       throw new Error(`Unexpected type in ${humanReadableJson(value)}`)
@@ -178,7 +251,6 @@ function addDisplay<DR extends DisplayableRecord>(
 } {
   return {
     ...omit(record, ['qualifiers']),
-    modifiers: record.qualifiers,
     displays: buildDisplays(record),
   }
 }
@@ -246,8 +318,10 @@ export function asNormalFormSExpression<Rest>(
   const qualifiers = record.modifiers.map(toQualifier)
 
   const attributes: Lang['attribute'][] = record.attributes.map((attr) => {
+    assert(attr.value, 'At this point ')
+
     // Event-type attribute
-    if (attr.value?.type === 'event') {
+    if (attr.value.type === 'event') {
       const value = attr.value as { type: 'event'; datetime: Date | string }
       return {
         atom: 'attribute',
@@ -265,9 +339,7 @@ export function asNormalFormSExpression<Rest>(
     return {
       atom: 'attribute',
       specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
-      value: attr.value?.type === 'snomed_concept'
-        ? toSnomedConcept(attr.value)
-        : null,
+      value: toSnomedConcept(attr.value),
     }
   })
 

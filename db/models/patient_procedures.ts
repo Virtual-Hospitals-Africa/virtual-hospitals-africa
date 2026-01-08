@@ -51,12 +51,7 @@ export function baseQuery(
 export const patient_procedures = base({
   top_level_table: 'patient_procedures',
   baseQuery,
-  formatResult: x => {
-    console.log('x', x)
-    const y = formatRecord(x)
-    console.log('y', y)
-    return y
-  },
+  formatResult: formatRecord,
   handleSearch(
     qb,
     opts: { search?: string; patient_id: string | IdSelection },

@@ -26,7 +26,7 @@ import { Stub, stub } from 'std/testing/mock.ts'
 import { GCalEvent } from '../../../../../../../../types.ts'
 import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
-import { mockWhatsApp } from '../../../../../../mockWhatsApp.ts'
+import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
 import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 
 describe.skip('patient chatbot', () => {

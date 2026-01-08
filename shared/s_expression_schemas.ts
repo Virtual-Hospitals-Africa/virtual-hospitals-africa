@@ -68,8 +68,7 @@ type BaseLang =
     }
     attribute: {
       specific_snomed_concept: Lang['snomed_concept']
-      // qualifiers: Lang['qualifier'][]
-      value: Lang['snomed_concept'] | EventValue | null
+      value: Lang['snomed_concept'] | EventValue
     }
     qualifier: {
       specific_snomed_concept: Lang['snomed_concept']
@@ -384,9 +383,9 @@ export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
 const attribute_base: z.ZodType<Lang['attribute']> = z.lazy(() =>
   z.object({
     atom: z.literal('attribute'),
-    args: z.tuple([snomed_concept, snomed_concept.optional()]),
+    args: z.tuple([snomed_concept, snomed_concept]),
   }).transform((
-    { atom, args: [specific_snomed_concept, value = null] },
+    { atom, args: [specific_snomed_concept, value] },
   ) => ({
     atom,
     specific_snomed_concept,

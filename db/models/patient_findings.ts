@@ -19,7 +19,7 @@ import {
 import { Priority } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
-import { EventValue, Lang } from '../../shared/s_expression_schemas.ts'
+import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
@@ -284,7 +284,7 @@ export const patient_findings = base({
       const { value } = attribute
 
       // Event-type attribute
-      if (value && value.type === 'event') {
+      if (value?.type === 'event') {
         return qb.with(
           `inserting_event_record_${id_token}`,
           (qb) =>
@@ -319,13 +319,6 @@ export const patient_findings = base({
         ) as unknown as typeof query
       }
 
-      // Regular attribute (snomed concept value or null)
-      function isEventValue(
-        v: Lang['snomed_concept'] | EventValue,
-      ): v is EventValue {
-        return v.type === 'event'
-      }
-      const snomedValue = value && !isEventValue(value) ? value : null
       return qb.with(
         `inserting_attribute_record_${id_token}`,
         (qb) =>
@@ -339,7 +332,7 @@ export const patient_findings = base({
                 trx,
                 attribute.specific_snomed_concept,
               ),
-              value_snomed_concept_id: maybeSnomedConceptBase(trx, snomedValue),
+              value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
             }),
       ).with(
         `inserting_attribute_qualifier_${id_token}`,

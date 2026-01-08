@@ -7,7 +7,7 @@ import * as patients from '../../../../../db/models/patients.ts'
 
 import generateUUID from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
-import { mockWhatsApp } from '../../../mockWhatsApp.ts'
+import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
 import { getPatientLastConversationState } from '../../../../../db/models/patient_chatbot_users.ts'
 
 describe('patient chatbot', () => {

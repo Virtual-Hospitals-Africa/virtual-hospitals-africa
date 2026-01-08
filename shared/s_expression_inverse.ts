@@ -109,10 +109,6 @@ export function inverseSExpression(node: AnyNode): string {
       return `(active_condition ${snomedConceptToString(node.snomed_concept)})`
     }
 
-    case 'check_for': {
-      return `(check_for ${inverseSExpression(node.finding)})`
-    }
-
     case 'units': {
       return `(units ${node.value} ${node.units})`
     }

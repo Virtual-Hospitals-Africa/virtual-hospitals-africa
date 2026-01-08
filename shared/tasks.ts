@@ -32,10 +32,10 @@ export const TASKS = [
     tasks_description: 'check for head injury',
     task_s_expression: `(
       task
-        (finding ${CLINICAL_FINDING.id}
+        (finding ${CLINICAL_FINDING.lang}
           (finding_site (snomed_concept "Nasal structure" "body structure")))
         (check_for
-          (finding ${CLINICAL_FINDING.id} (snomed_concept "Injury of head" "disorder")))
+          (finding ${CLINICAL_FINDING.lang} (snomed_concept "Injury of head" "disorder")))
     )`,
   },
 ].map(asTask)

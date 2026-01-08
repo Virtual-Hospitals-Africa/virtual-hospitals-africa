@@ -7,10 +7,11 @@ import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import { getPatientLastConversationState } from '../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../util/uuid.ts'
-import { mockWhatsApp } from '../../mockWhatsApp.ts'
+
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
 import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
 import randomDemographics from '../../../../mocks/randomDemographics.ts'
+import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())

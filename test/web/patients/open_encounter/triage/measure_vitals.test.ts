@@ -100,27 +100,32 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Alert',
-                  'value': '(finding 404684003 248234008)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 248234008)',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to voice',
-                  'value': '(finding 404684003 422768004)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 422768004)',
                   'selected': false,
                 },
                 {
                   'label': 'Confused',
-                  'value': '(finding 404684003 40917007)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 40917007)',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to pain',
-                  'value': '(finding 404684003 450847001)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 450847001)',
                   'selected': false,
                 },
                 {
                   'label': 'Unresponsive',
-                  'value': '(finding 404684003 422107003)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 422107003)',
                   'selected': false,
                 },
               ],
@@ -134,17 +139,20 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Walking',
-                  'value': '(finding 404684003 282144007)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 282144007)',
                   'selected': false,
                 },
                 {
                   'label': 'Difficulty walking',
-                  'value': '(finding 404684003 719232003)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 719232003)',
                   'selected': false,
                 },
                 {
                   'label': 'Stretcher/Immobile',
-                  'value': '(finding 404684003 282145008)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 282145008)',
                   'selected': false,
                 },
               ],
@@ -158,12 +166,14 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'No',
-                  'value': '(finding 404684003 1149217004)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 1149217004)',
                   'selected': false,
                 },
                 {
                   'label': 'Yes',
-                  'value': '(finding 404684003 417746004)',
+                  'value':
+                    '(finding (snomed_concept "Clinical finding" "finding") 417746004)',
                   'selected': false,
                 },
               ],
