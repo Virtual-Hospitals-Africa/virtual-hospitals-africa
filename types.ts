@@ -3645,7 +3645,9 @@ export type RenderedTask = {
   completed: boolean
 }
 
-export type CheckForTask = RenderedTask & { procedure: { value: RecordValueSExpression } }
+export type CheckForTask = RenderedTask & {
+  procedure: { value: RecordValueSExpression }
+}
 
 export type TaskGroup = {
   due_to: RenderedFindingRelativeToHealthWorker[]

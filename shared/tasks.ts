@@ -22,21 +22,21 @@ export const TASKS = [
       (snomed_concept "Chest pain" "finding"))
     (check_for
       (finding ${CLINICAL_FINDING.lang} (snomed_concept "Nausea" "finding"))))`,
-  `(task
-    (finding ${CLINICAL_FINDING.lang}
-      (snomed_concept "Chest pain" "finding"))
-    (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Vomiting" "finding"))))`,
-  `(task
-    (finding ${CLINICAL_FINDING.lang}
-      (snomed_concept "Chest pain" "finding"))
-    (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Pallor of skin of face" "finding"))))`,
-  `(task
-    (finding ${CLINICAL_FINDING.lang}
-      (snomed_concept "Chest pain" "finding"))
-    (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Sweating" "finding"))))`,
+  // `(task
+  //   (finding ${CLINICAL_FINDING.lang}
+  //     (snomed_concept "Chest pain" "finding"))
+  //   (check_for
+  //     (finding ${CLINICAL_FINDING.lang} (snomed_concept "Vomiting" "finding"))))`,
+  // `(task
+  //   (finding ${CLINICAL_FINDING.lang}
+  //     (snomed_concept "Chest pain" "finding"))
+  //   (check_for
+  //     (finding ${CLINICAL_FINDING.lang} (snomed_concept "Pallor of skin of face" "finding"))))`,
+  // `(task
+  //   (finding ${CLINICAL_FINDING.lang}
+  //     (snomed_concept "Chest pain" "finding"))
+  //   (check_for
+  //     (finding ${CLINICAL_FINDING.lang} (snomed_concept "Sweating" "finding"))))`,
 ].map(asTask)
 
 // TODO Separate function for permission around tasks
