@@ -311,6 +311,7 @@ export function asNormalFormSExpression<Rest>(
         specific_snomed_concept,
         qualifiers,
         attributes,
+        value: null, // TODO: huh?
       }
       return inverseSExpression(node)
     }

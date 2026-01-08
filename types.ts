@@ -3551,7 +3551,7 @@ export type RenderedFindingRelativeToHealthWorker =
 
 export type RenderedProcedureRelativeToHealthWorker =
   RenderedRecordRelativeToHealthWorkerDef<'procedure', {
-    provider: RenderedRecordProvider
+    provider?: RenderedRecordProvider
   }>
 
 export type RenderedRecordRelativeToHealthWorker =
@@ -3643,7 +3643,7 @@ export type RenderedRoom = {
 export type TaskGroup = {
   due_to: RenderedFindingRelativeToHealthWorker[]
   tasks: {
-    task: IntermediateProcedureRecord
+    procedure: RenderedRecordRelativeToHealthWorker
     completed: boolean
   }[]
 }

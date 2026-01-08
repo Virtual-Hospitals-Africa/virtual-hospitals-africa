@@ -9,7 +9,9 @@ function TaskCheckbox({
   group_index: number
   task: TaskGroup['tasks'][number]
 }) {
-  const name = `tasks.${group_index}.${task.task.record_id}`
+  const name = `tasks.${group_index}.${task.procedure.record_id}`
+
+  console.log('task.procedure', task.procedure)
 
   return (
     <label class='flex gap-4 items-center cursor-pointer p-4 rounded-lg border border-gray-300 bg-white hover:border-gray-400 transition-colors'>
@@ -27,7 +29,7 @@ function TaskCheckbox({
       </div>
       <div class='flex flex-col gap-1'>
         <span class='text-sm font-medium text-gray-600 leading-5'>
-          {task.task.name}
+          {task.procedure.displays.full}
         </span>
       </div>
     </label>
@@ -64,7 +66,7 @@ function TaskGroupCard({
       <div class='flex flex-col gap-2'>
         {group.tasks.map((task) => (
           <TaskCheckbox
-            key={task.task.record_id}
+            key={task.procedure.record_id}
             group_index={group_index}
             task={task}
           />

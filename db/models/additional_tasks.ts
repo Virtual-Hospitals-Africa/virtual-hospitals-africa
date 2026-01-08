@@ -158,16 +158,7 @@ export async function getTasksGroups(
         )
         // Convert to IntermediateProcedureRecord format
         return {
-          task: {
-            created_at: procedure.created_at,
-            record_id: procedure.record_id,
-            snomed_concept_id: procedure.root_snomed_concept.snomed_concept_id,
-            name: procedure.root_snomed_concept.name,
-            patient_encounter_id: procedure.patient_encounter_id,
-            value_snomed_concept_id: procedure.value?.type === 'snomed_concept'
-              ? procedure.value.snomed_concept_id
-              : null,
-          },
+          procedure,
           completed: false,
         }
       })
