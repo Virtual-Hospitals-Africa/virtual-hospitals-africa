@@ -8,7 +8,10 @@ import { route } from '../../../../_route.ts'
 import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
+import {
+  asVitalAssessmentFormValues,
+  asVitalMeasurementFormValues,
+} from '../../../../../shared/vitals.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
@@ -278,29 +281,30 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
     assertMatches(result, [
       {
-        'due_to': [{ 'displays': { 'full': 'Chest pain'} }],
+        'due_to': [{ 'displays': { 'full': 'Chest pain' } }],
         'tasks': [
           {
             'procedure': {
-              "value": {
-                  "type": "s_expression",
-                  "s_expression": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\"))"
+              'value': {
+                'type': 's_expression',
+                's_expression':
+                  '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
               },
               'displays': {
-                'value': 'Nausea'
-              }
+                'value': 'Nausea',
+              },
             },
             'completed': false,
           },
           {
             'procedure': {
-              "value": {
-                  "type": "s_expression",
-                  "s_expression": z.string()
+              'value': {
+                'type': 's_expression',
+                's_expression': z.string(),
               },
               'displays': {
-                'value': 'Vomiting'
-              }
+                'value': 'Vomiting',
+              },
             },
             'completed': false,
           },

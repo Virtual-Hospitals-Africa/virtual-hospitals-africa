@@ -38,7 +38,7 @@ export async function insertTasksIfNotAlreadyIdentified(
       {
         patient_id,
         patient_encounter_id,
-        s_expression: task.node.when,
+        s_expression: task.when,
       },
     )
 
@@ -57,7 +57,7 @@ export async function insertTasksIfNotAlreadyIdentified(
           patient_id,
           patient_encounter_id,
           by_system: true,
-          procedure: task.node.procedure,
+          procedure: task.procedure,
         },
       )
 

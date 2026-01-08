@@ -28,8 +28,10 @@ import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { AgeDetermination } from '../../../../../types.ts'
 import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
-import { asVitalMeasurementFormValues, asVitalAssessmentFormValues } from '../../../../../shared/vitals.ts'
-
+import {
+  asVitalAssessmentFormValues,
+  asVitalMeasurementFormValues,
+} from '../../../../../shared/vitals.ts'
 
 describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
