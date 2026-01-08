@@ -38,6 +38,17 @@ export const TASKS = [
           (finding ${CLINICAL_FINDING.lang} (snomed_concept "Injury of head" "disorder")))
     )`,
   },
+  {
+    if_description: 'If nose symptoms',
+    tasks_description: 'check for head injury',
+    task_s_expression: `(
+      task
+        (finding ${CLINICAL_FINDING.lang}
+          (snomed_concept "Chest pain" "finding"))
+        (check_for
+          (finding ${CLINICAL_FINDING.lang} (snomed_concept "Nausea" "finding")))
+    )`,
+  },
 ].map(asTask)
 
 // TODO Separate function for permission around tasks
