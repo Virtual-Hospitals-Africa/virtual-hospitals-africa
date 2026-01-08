@@ -22,7 +22,7 @@ export function ButtonsContainer(
   return (
     <div
       className={cls(
-        'sticky bottom-0 bg-white flex gap-6 w-full justify-end px-12 py-5 border-t border-gray-200',
+        'bg-white flex gap-6 w-full justify-end px-12 border-t border-gray-200',
         className,
       )}
     >

@@ -34,7 +34,7 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
           </div>
         </section>
         {drawer && (
-          <div className='h-full w-[400px] border-l border-gray-200 overflow-visible'>
+          <div className='h-full w-100 border-l border-gray-200 overflow-visible'>
             {drawer}
           </div>
         )}
