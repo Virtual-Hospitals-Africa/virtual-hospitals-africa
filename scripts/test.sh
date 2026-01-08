@@ -11,9 +11,9 @@ if [[ "${CI:-}" == "true" ]]; then
   :
 elif [ -f .env.local ] && [ -f .env.docker ]; then
   cmp --silent .env .env.local || cmp --silent .env .env.docker || fail $'.env differs from .env.local and .env.docker\nrun deno task switch:local before running tests'
-elif [ -f .env.local ]; then 
+elif [ -f .env.local ]; then
   cmp --silent .env .env.local || fail $'.env differs from .env.local\nrun deno task switch:local before running tests'
-elif [ -f .env.docker ]; then 
+elif [ -f .env.docker ]; then
   cmp --silent .env .env.docker || fail $'.env differs from .env.docker\nrun deno task switch:docker before running tests'
 fi
 
@@ -32,6 +32,28 @@ while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
   fi
   shift
 done
+
+# Resolve arguments: if an arg doesn't look like a file path, try to find a matching test file
+# by searching for describe/describeParallel blocks with that name
+resolved_args=()
+for arg in "$@"; do
+  # If arg is an existing file or directory, or starts with -- (flag), use it as-is
+  if [[ -e "$arg" || "$arg" == --* ]]; then
+    resolved_args+=("$arg")
+  else
+    # Try to find a test file with a matching describe/describeParallel block
+    match=$(grep -rl "describe\(Parallel\)\?(['\"]${arg}['\"]" test/ 2>/dev/null | head -1 || true)
+    if [[ -n "$match" ]]; then
+      resolved_args+=("$match")
+    else
+      # Fall back to original arg (let deno test handle the error)
+      resolved_args+=("$arg")
+    fi
+  fi
+done
+
+# Replace positional parameters with resolved args
+set -- "${resolved_args[@]}"
 
 if [[ $# -eq 0 ]]; then
   use_test_servers=true

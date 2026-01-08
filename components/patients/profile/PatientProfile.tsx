@@ -1,12 +1,10 @@
-import { getSummaryById } from '../../../db/models/patient_registration.ts'
+import { RegistrationPatientSummary } from '../../../types.ts'
 import {
   DescriptionList,
   DescriptionListCellAction,
   type DescriptionListRows,
 } from '../../library/DescriptionList.tsx'
 import { nonEmptyRows } from '../registration/Summary.tsx'
-
-type RegistrationPatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
 export default function PatientSummary(
   { patient }: {

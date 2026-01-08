@@ -1,6 +1,9 @@
-import { Maybe, OrganizationSortOptions } from '../types.ts'
+import {
+  Maybe,
+  NearestOrganizationSearchResult,
+  OrganizationSortOptions,
+} from '../types.ts'
 import AsyncSearch from './AsyncSearch.tsx'
-import { NearestOrganizationSearchResult } from '../db/models/nearest_organizations.ts'
 
 export default function OrganizationSearch(
   {

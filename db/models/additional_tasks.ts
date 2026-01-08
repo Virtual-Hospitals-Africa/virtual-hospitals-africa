@@ -24,7 +24,6 @@ import {
   RELATIONSHIP,
   TO_BE_DONE,
 } from '../../shared/snomed_concepts.ts'
-import { assert } from 'std/assert/assert.ts'
 
 export async function insertTasksIfNotAlreadyIdentified(
   trx: TrxOrDb,
@@ -51,7 +50,6 @@ export async function insertTasksIfNotAlreadyIdentified(
       first(records_for_which_task_should_be_done.record_ids),
     )
 
-    assert(task.node.procedure.atom === 'procedure', 'TODO implement check_for')
     const procedure = await patient_procedures
       .insertOneIfNotAlreadyExistsForThisEncounter(
         trx,

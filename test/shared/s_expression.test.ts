@@ -6,6 +6,8 @@ import {
 } from '../../shared/s_expression.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
+import { assertMatches } from '../../util/assertMatches.ts'
+import { positive_decimal } from '../../util/validators.ts'
 
 describe('shared/s_expression.ts', () => {
   it('can parse a simple finding expression', () => {
@@ -1009,6 +1011,29 @@ describe('shared/s_expression.ts', () => {
           },
         },
       ],
+    })
+  })
+
+  it('can parse a measurement', () => {
+    const parsed = parseExpressionExpectingAtom(
+      `(< (measurement 103228002) (units 92 %))`,
+      '<',
+    )
+    assertMatches(parsed, {
+      atom: '<',
+      left: {
+        atom: 'measurement',
+        snomed_concept: {
+          atom: 'snomed_concept',
+          id: '103228002',
+          type: 'snomed_concept_id',
+        },
+      },
+      right: {
+        atom: 'units',
+        units: '%',
+        value: positive_decimal.parse(92),
+      },
     })
   })
 })

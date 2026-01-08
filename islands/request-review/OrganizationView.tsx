@@ -2,11 +2,11 @@ import { useSignal } from '@preact/signals'
 import {
   DOCTOR_SPECIALTIES,
   DoctorSpecialty,
+  NearestOrganizationSearchResult,
   OrganizationSortOptions,
   RenderedPatientCompletedRegistration,
 } from '../../types.ts'
 import OrganizationSearch from '../OrganizationSearch.tsx'
-import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
 import { useEffect } from 'preact/hooks'
 import { RequestingOrganizationDialog } from './OrganizationDialog.tsx'
 import { Button } from '../../components/library/Button.tsx'

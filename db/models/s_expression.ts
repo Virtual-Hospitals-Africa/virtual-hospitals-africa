@@ -290,6 +290,7 @@ const EXPRESSION_BUILDERS = {
       specific_snomed_concept,
       // value_snomed_concept,
       qualifiers, /* attributes */
+      value,
     },
   ) {
     return baseQuery(trx, {
@@ -297,13 +298,26 @@ const EXPRESSION_BUILDERS = {
       patient_encounter_id,
       // root_snomed_concept,
       specific_snomed_concept,
-      // value_snomed_concept,
       qualifiers,
     })
       .innerJoin(
         'patient_procedures',
         'patient_records.id',
         'patient_procedures.id',
+      )
+      .$if(
+        !!value,
+        (qb) =>
+          qb.innerJoin(
+            'patient_record_s_expressions',
+            'patient_record_s_expressions.id',
+            'patient_records.id',
+          )
+            .where(
+              'patient_record_s_expressions.s_expression',
+              '=',
+              inverseSExpression(value!.finding_s_expression),
+            ),
       )
   },
   evaluation(

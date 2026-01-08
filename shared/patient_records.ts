@@ -18,6 +18,7 @@ import assertOneOf from '../util/assertOneOf.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
+import { parseExpressionExpectingAtom } from './s_expression.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -69,6 +70,13 @@ function valueDisplay(
       return measurementValueDisplay(value)
     case 'score':
       return value.score
+    case 's_expression': {
+      const finding = parseExpressionExpectingAtom(
+        value.s_expression,
+        'finding',
+      )
+      return buildDisplays(finding as any).full
+    }
     default: {
       throw new Error(`Unexpected type in ${humanReadableJson(value)}`)
     }

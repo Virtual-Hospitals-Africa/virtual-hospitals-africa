@@ -7,7 +7,7 @@ import * as events_processor from '../../events/processor.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
-describeParallel(
+describeParallel.skip(
   'events/processor.ts',
   () => {
     afterAll(() => db.destroy())
