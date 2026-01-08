@@ -156,7 +156,6 @@ export async function getTasksGroups(
             matching({ record_id: evaluation.evaluates_record_id }),
           ),
         )
-        // Convert to IntermediateProcedureRecord format
         return {
           procedure,
           completed: false,
@@ -165,34 +164,4 @@ export async function getTasksGroups(
       return { due_to: [due_to], tasks }
     }),
   )
-
-  // return { evaluations, procedures }
 }
-
-// Being organized (qualifier value)
-// Not to be done (qualifier value)
-// Organized (qualifier value)
-// Schedule rejected (qualifier value)
-// To be done (qualifier value)
-// Under consideration (qualifier value)
-// Unplanned (qualifier value)
-// Was not started (qualifier value)
-
-// function additionalTaskSExpression() {
-//   return `
-//     (evaluation
-//       ${ACTION_STATUS.id}
-//       ${TO_BE_DONE.id}
-//       (evaluates ...)
-//       (qualifier )
-//     )
-//   `
-// }
-
-// `remove`
-
-// apply pressure
-// to the site of trauma and
-// cover open wounds
-
-// (referral ${PATIENT_TRANSFER_PROCEDURE.id} (room (department "Emergency")))

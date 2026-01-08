@@ -913,7 +913,7 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel.only(
+    itParallel(
       'creates an additional task to check for a head injury with watery discharge',
       async () => {
         const clinic = await createTestOrganization(db)

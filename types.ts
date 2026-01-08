@@ -3640,12 +3640,18 @@ export type RenderedRoom = {
   // employees: RenderedEmployee[]
 }
 
+export type RenderedTask = {
+  procedure: RenderedProcedureRelativeToHealthWorker
+  completed: boolean
+}
+
+export type CheckForTask = RenderedTask & {
+  procedure: { value: RecordValueSExpression }
+}
+
 export type TaskGroup = {
   due_to: RenderedFindingRelativeToHealthWorker[]
-  tasks: {
-    procedure: RenderedRecordRelativeToHealthWorker
-    completed: boolean
-  }[]
+  tasks: RenderedTask[]
 }
 
 export type AgeDetermination =

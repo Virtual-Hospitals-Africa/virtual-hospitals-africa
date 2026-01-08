@@ -104,6 +104,7 @@ export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS: {
     'warning_signs': '245581009', // chief complaint + emergency signs + urgent signs |Emergency examination for triage (procedure)|
     'height_and_weight': '54709006', // |Body measurement (procedure)|'
     'measure_vitals': '410188000', // |Taking patient vital signs assessment (procedure)|
+    'additional_tasks_and_investigations': '386053000', // Evaluation procedure (procedure)
     // 'assign_priority': '',
   },
 }

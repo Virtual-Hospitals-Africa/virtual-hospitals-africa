@@ -14,6 +14,7 @@ import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import compact from '../../util/compact.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { RecordChips } from '../../islands/RecordChip.tsx'
+import { humanReadableJson } from '../../util/humanReadableJson.ts'
 
 type DrawerThisVisitProps = Pick<
   PatientDrawerV4Props,
@@ -92,8 +93,8 @@ function groupRecordsByWorkflows(
 
   assert(
     !remaining_records.size,
-    `Expected all records to be accounted for ${
-      JSON.stringify(Array.from(remaining_records))
+    `Expected all records to be accounted for\n${
+      humanReadableJson(Array.from(remaining_records))
     }`,
   )
 
