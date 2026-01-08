@@ -59,7 +59,7 @@ function AppLayoutContents({
           <div className='pl-6 grow'>{children}</div>
         </section>
         {drawer && (
-          <div className='h-full w-[400px] border-l border-gray-200'>
+          <div className='h-full w-100 border-l border-gray-200'>
             {drawer}
           </div>
         )}
@@ -78,7 +78,7 @@ function JustLogoLayoutContents({
   return (
     <>
       <Header title={title} variant='just logo' />
-      <section className='flex flex-col justify-between flex-grow min-h-full p-6 align-center'>
+      <section className='flex flex-col justify-between grow min-h-full p-6 align-center'>
         {children}
       </section>
       <SimpleFooter />
