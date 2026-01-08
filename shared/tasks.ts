@@ -39,14 +39,25 @@ export const TASKS = [
     )`,
   },
   {
-    if_description: 'If nose symptoms',
-    tasks_description: 'check for head injury',
+    if_description: 'If chest pain',
+    tasks_description: 'check for nausea',
     task_s_expression: `(
       task
         (finding ${CLINICAL_FINDING.lang}
           (snomed_concept "Chest pain" "finding"))
         (check_for
           (finding ${CLINICAL_FINDING.lang} (snomed_concept "Nausea" "finding")))
+    )`,
+  },
+  {
+    if_description: 'If chest pain',
+    tasks_description: 'check for vomiting',
+    task_s_expression: `(
+      task
+        (finding ${CLINICAL_FINDING.lang}
+          (snomed_concept "Chest pain" "finding"))
+        (check_for
+          (finding ${CLINICAL_FINDING.lang} (snomed_concept "Vomiting" "finding")))
     )`,
   },
 ].map(asTask)

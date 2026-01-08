@@ -292,6 +292,18 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
             },
             'completed': false,
           },
+          {
+            'procedure': {
+              "value": {
+                  "type": "s_expression",
+                  "s_expression": z.string()
+              },
+              'displays': {
+                'value': 'Vomiting'
+              }
+            },
+            'completed': false,
+          },
         ],
       },
     ])
