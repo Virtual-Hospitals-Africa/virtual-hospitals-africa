@@ -167,7 +167,6 @@ export function baseInsert(
   trx: TrxOrDb,
   insert: RecordInsert,
 ) {
-  console.log('zz', insert)
   const {
     patient_id,
     patient_encounter_id,

@@ -1,12 +1,14 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
+import {
+  NearestOrganizationSearchResult,
+  RenderedPatientCompletedRegistration,
+} from '../../types.ts'
 import ViewIconWithBackground from './ViewIconWithBackground.tsx'
 import { H2 } from '../../components/library/typography/H2.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
 import { Person } from '../../components/library/Person.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { RenderedPatientCompletedRegistration } from '../../types.ts'
 import { TextArea } from '../form/inputs/textarea.tsx'
 import { Fragment } from 'preact'
 
@@ -45,7 +47,7 @@ export function RequestingOrganizationDialog(
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='transform rounded-lg shadow-xl transition-all max-h-screen max-w-screen min-w-[450px] relative'>
+              <Dialog.Panel className='transform rounded-lg shadow-xl transition-all max-h-screen max-w-screen min-w-112.5 relative'>
                 {requesting_organization && (
                   <DialogContents
                     requesting_organization={requesting_organization}

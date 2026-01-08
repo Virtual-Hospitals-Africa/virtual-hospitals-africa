@@ -9,7 +9,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 import testCalendars from '../../mocks/testCalendars.ts'
 import { insertHealthWorker, testHealthWorker } from './health_workers.ts'
-import { route } from '../route.ts'
+import { route } from '../_route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import omit from '../../util/omit.ts'
 import {

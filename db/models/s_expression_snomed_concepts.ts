@@ -18,7 +18,7 @@ function snomedConceptIdPredicate(
   snomed_concept: Lang['snomed_concept'],
 ): string | RawBuilder<string> {
   assert(isAtom(snomed_concept, 'snomed_concept'))
-  if (snomed_concept.type === 'id') return snomed_concept.id
+  if (snomed_concept.type === 'snomed_concept_id') return snomed_concept.id
   // For name-based lookups, we need a subquery
   return sql<string>`(
     SELECT id FROM snomed_inferred_canonical_name_and_category
@@ -35,10 +35,10 @@ function basePredicate(
   if (!specific_snomed_concept) {
     return sql<boolean>`true`
   }
-  const parentId = snomedConceptIdPredicate(specific_snomed_concept)
+  const parent_id = snomedConceptIdPredicate(specific_snomed_concept)
   return sql<boolean>`is_descendant(${
     sql.ref(column_ref)
-  }, ${parentId}::bigint)`
+  }, ${parent_id}::bigint)`
 }
 
 type PredicateAtom =
@@ -94,11 +94,11 @@ const PREDICATE_BUILDERS = {
   },
   active_condition(column_ref, { snomed_concept }) {
     const snomed_concept_s_expression = inverseSExpression(snomed_concept)
-    const expandedExpression = parseExpression(`
-      (or (finding ${CLINICAL_FINDING.id} ${snomed_concept_s_expression})
+    const expanded_expression = parseExpression(`
+      (or (finding ${CLINICAL_FINDING.lang} ${snomed_concept_s_expression})
           (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
     `)
-    return internalBuildExpressionPredicate(column_ref, expandedExpression)
+    return internalBuildExpressionPredicate(column_ref, expanded_expression)
   },
 } satisfies {
   [T in PredicateAtom]: (

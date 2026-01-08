@@ -49,7 +49,7 @@
     "tmux": "./scripts/tmux.sh",
     "preview": "deno serve -A _fresh/server.js",
     "check": "./scripts/check.sh",
-    "camel": "./scripts/grep_camelCase_variables.sh",
+    "hygiene": "./scripts/hygiene.sh",
     "util": "deno task run:trusted ./util.ts"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },

@@ -75,7 +75,7 @@ export default function PatientFamilyForm({
         <input type='hidden' name='family.under_18' value='on' />
       )}
       {show_next_of_kin && (
-        <NextOfKinFormSection next_of_kin={family.next_of_kin} />
+        <NextOfKinFormSection next_of_kin={family.next_of_kin ?? undefined} />
       )}
 
       {show_guardians &&

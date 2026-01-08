@@ -2,7 +2,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { json } from '../util/responses.ts'
 import type { LoggedInHealthWorkerContext, TrxOrDb } from '../types.ts'
 import type { SearchResults } from '../db/models/_base.ts'
-import { delay } from './delay.ts'
 
 export function jsonSearchHandler<
   SearchTerms,
@@ -25,14 +24,13 @@ export function jsonSearchHandler<
   opts?: { verbose?: boolean | string; rows_per_page?: number },
 ) {
   return {
-    async GET(ctx: Ctx) {
+    GET(ctx: Ctx) {
       if (opts?.verbose) {
         console.log('Searching', {
           url: ctx.url,
           state: ctx.state,
         })
       }
-      await delay(5000)
       assertEquals(ctx.req.headers.get('accept'), 'application/json')
       let page = 1
       // deno-lint-ignore no-explicit-any

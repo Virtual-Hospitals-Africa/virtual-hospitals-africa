@@ -1,19 +1,16 @@
 // deno-lint-ignore-file no-irregular-whitespace
-import { getSummaryById } from '../../../db/models/patient_registration.ts'
 import {
   DescriptionList,
   DescriptionListCell,
   DescriptionListCellAction,
   type DescriptionListRows,
 } from '../../library/DescriptionList.tsx'
-import type { Maybe } from '../../../types.ts'
+import type { Maybe, RegistrationPatientSummary } from '../../../types.ts'
 // import { registrationFrequencyText } from '../../../shared/medication.ts'
 // import { international_phone_number } from '../../../util/validators.ts'
 // import { dosageDisplay, strengthDisplay } from '../../../shared/medication.ts'
 import omit from '../../../util/omit.ts'
 import { EncounterReason } from '../../../db.d.ts'
-
-type RegistrationPatientSummary = Awaited<ReturnType<typeof getSummaryById>>
 
 export type MaybeCell = {
   value: Maybe<string>

@@ -1,31 +1,31 @@
 import {
   completeLastStep,
-  completeStep,
-  nextRouteAfterCompletingWorkflow,
+  // completeStep,
+  // nextRouteAfterCompletingWorkflow,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
-import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import { updateForOpenEncounterAfterCompletingWorkflow } from '../../../../../../../../db/models/patient_presence.ts'
+// import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+// import { updateForOpenEncounterAfterCompletingWorkflow } from '../../../../../../../../db/models/patient_presence.ts'
 import * as patient_workflows from '../../../../../../../../db/models/patient_workflows.ts'
-import * as events from '../../../../../../../../db/models/events.ts'
-import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
+// import * as events from '../../../../../../../../db/models/events.ts'
+// import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
 import * as patient_presence from '../../../../../../../../db/models/patient_presence.ts'
 import { canPerform } from '../../../../../../../../shared/workflow.ts'
 
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import RegistrationRoutePatientSection from '../../../../../../../../components/patient-registration/RoutePatientSection.tsx'
 import { success, warning } from '../../../../../../../../util/alerts.ts'
-import { startWorkflow } from '../start-workflow.tsx'
+// import { startWorkflow } from '../start-workflow.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import assert from 'assert'
-import { organization_rooms } from '../../../../../../../../db/models/organization_rooms.ts'
+// import { organization_rooms } from '../../../../../../../../db/models/organization_rooms.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { UpdateShape } from '../../../../../../../../types.ts'
-import generateUUID from '../../../../../../../../util/uuid.ts'
+// import generateUUID from '../../../../../../../../util/uuid.ts'
 import { DB } from '../../../../../../../../db.d.ts'
 import { pronoun } from '../../../../../../../../shared/sex_and_gender.ts'
 

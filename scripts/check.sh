@@ -16,7 +16,7 @@ run_in_background() {
 run_in_background deno check
 run_in_background deno fmt --check
 run_in_background deno lint
-run_in_background deno task camel
+run_in_background deno task hygiene
 
 success=true
 for pid in "${!logs[@]}"; do

@@ -16,7 +16,7 @@ export default function Form(
       {...props}
       className={cls('flex gap-2 md:gap-4 items-start w-full', className)}
     >
-      <SectionHeader className='w-[120px] md:w-[200px] lg:w-[285px] shrink-0'>
+      <SectionHeader className='w-30 md:w-50 lg:w-71.25 shrink-0'>
         {header}
       </SectionHeader>
       <div className='flex flex-col gap-8 flex-1 min-w-0'>

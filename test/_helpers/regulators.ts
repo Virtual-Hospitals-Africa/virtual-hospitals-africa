@@ -4,7 +4,7 @@ import * as sessions from '../../db/models/sessions.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
-import { route } from '../route.ts'
+import { route } from '../_route.ts'
 import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
 
 export function testRegulator() {

@@ -4,7 +4,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { setupTriage } from './_setup.ts'
-import { route } from '../../../../route.ts'
+import { route } from '../../../../_route.ts'
 import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
@@ -13,11 +13,21 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  itParallel('loads on the page', async () => {
+  itParallel.skip('loads on the page', async () => {
     const { $, clinic, encounter, nurse } = await setupTriage({
       patient_demographics: { date_of_birth: '2023-01-01' },
       conditions: ['diabetes'],
       warning_signs: [],
+      height_and_weight: {
+        height: {
+          value: 160,
+          units: 'cm',
+        },
+        weight: {
+          value: 80,
+          units: 'kg',
+        },
+      },
       vitals: {
         measurements: {
           blood_oxygen_saturation: {

@@ -455,7 +455,7 @@ export type Address = {
 export type PatientFamily = {
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
-  next_of_kin?: NextOfKin
+  next_of_kin: Maybe<NextOfKin>
   religion: Maybe<string>
   family_type: Maybe<FamilyType>
   marital_status: Maybe<MaritalStatus>
@@ -3470,7 +3470,7 @@ export type RenderedSnomedConcept = {
 }
 export type RenderedAttribute = IntermediateBaseRecord & {
   displays: RecordDisplays
-  value: RecordValueSnomedConcept | RecordValueEvent | null
+  value: RecordValueSnomedConcept | RecordValueEvent
 }
 
 export type RecordValueEvent = { type: 'event'; datetime: Date | string }
@@ -3488,11 +3488,17 @@ export type RecordValueScore = {
   score: string
 }
 
+export type RecordValueSExpression = {
+  type: 's_expression'
+  s_expression: string
+}
+
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
   | RecordValueScore
+  | RecordValueSExpression
 
 export type IntermediateBaseRecord = {
   record_id: string
@@ -3545,7 +3551,7 @@ export type RenderedFindingRelativeToHealthWorker =
 
 export type RenderedProcedureRelativeToHealthWorker =
   RenderedRecordRelativeToHealthWorkerDef<'procedure', {
-    provider: RenderedRecordProvider
+    provider?: RenderedRecordProvider
   }>
 
 export type RenderedRecordRelativeToHealthWorker =
@@ -3637,7 +3643,7 @@ export type RenderedRoom = {
 export type TaskGroup = {
   due_to: RenderedFindingRelativeToHealthWorker[]
   tasks: {
-    task: IntermediateProcedureRecord
+    procedure: RenderedRecordRelativeToHealthWorker
     completed: boolean
   }[]
 }
@@ -3670,4 +3676,90 @@ export type TriageAssignPriorityTableVital = {
   finding: RenderedFindingRelativeToHealthWorker
   previous: RenderedFindingRelativeToHealthWorker | null
   reference_ranges?: Maybe<ReferenceRangeX[]>
+}
+
+type OrganizationWait = {
+  status: 'open (short wait)'
+  minutes: number
+  display: string
+} | {
+  status: 'open (long wait)'
+  minutes: number
+  display: string
+} | {
+  status: 'closing soon'
+  minutes: number
+  display: string
+} | {
+  status: 'closed'
+}
+
+type NearestOrganizationEmployee = {
+  id: string
+  name: string
+  profession: string | null
+}
+
+type OrganizationDepartment = {
+  id: string
+  name: string
+  requires_triage: boolean
+}
+
+export type NearestOrganizationSearchResult = {
+  id: string
+  name: string
+  category: string | null
+  address: string | null
+  locality: string | null
+  location: Coordinates
+  distance_meters: number
+  google_maps_link: string
+  status: string
+  admins: NearestOrganizationEmployee[]
+  doctors: NearestOrganizationEmployee[]
+  departments: OrganizationDepartment[]
+  business_hours: string
+  wait: OrganizationWait
+  re_opens: {
+    display: string
+  }
+}
+
+export type RegistrationPatientSummary = {
+  id: string
+  personal: {
+    name: string
+    first_names: string
+    preferred_name: string | null
+    surname: string | null
+    phone_number: string | null
+    sex: string | null
+    gender: string | null
+    ethnicity: string | null
+    date_of_birth: string | null
+    national_id_number: string | null
+    preferred_language_code_iso_639_2_b: string | null
+    description: string | null
+  }
+  nearest_health_care: {
+    primary_doctor_name: string | null
+    nearest_organization_id: string | null
+    nearest_organization_name: string | null
+  }
+  address: {
+    street: string | null
+    locality: string | null
+    administrative_area_level_1: string | null
+    administrative_area_level_2: string | null
+  }
+  age: RenderedPatientAge | null
+  completed_registration: boolean | null
+  family: PatientFamily
+  occupation: Maybe<Occupation>
+  allergies: Allergy[]
+  pre_existing_conditions:
+    import('./db/models/patient_conditions.ts').PreExistingConditionSummary[]
+  past_medical_conditions: PastMedicalCondition[]
+  major_surgeries: MajorSurgery[]
 }

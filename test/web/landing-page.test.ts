@@ -1,7 +1,7 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll, before, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
-import { route } from '../route.ts'
+import { route } from '../_route.ts'
 import * as cheerio from 'cheerio'
 import db from '../../db/db.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'

@@ -10,7 +10,7 @@ import {
   removeTestPharmacist,
 } from '../../_helpers/pharmacists.ts'
 import { addTestRegulatorWithSession } from '../../_helpers/regulators.ts'
-import { route } from '../../route.ts'
+import { route } from '../../_route.ts'
 import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
 
 describeParallel.skip(

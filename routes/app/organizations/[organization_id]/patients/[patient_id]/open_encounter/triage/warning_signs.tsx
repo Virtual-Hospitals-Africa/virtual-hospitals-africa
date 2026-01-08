@@ -42,6 +42,7 @@ import {
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
 import { getPriorityOfSnomedConcept } from '../../../../../../../../db/models/snomed.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
+import { insertTasksIfNotAlreadyIdentified } from '../../../../../../../../db/models/additional_tasks.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -63,6 +64,7 @@ export const handler = postHandler(
     const {
       trx,
       patient_id,
+      employment_id,
       patient_encounter_id,
       encounter_employee_presence,
     } = ctx.state
@@ -133,16 +135,21 @@ export const handler = postHandler(
 
     for (const record of now_invalid) {
       await markEnteredInError(
-        ctx.state.trx,
+        trx,
         {
           patient_id,
-          patient_encounter_id,
           procedure_id,
-          employment_id: ctx.state.encounter_employee_presence.employee_id,
+          employment_id,
+          patient_encounter_id,
           altered_record_id: exists(record.satisfied_by_record_id),
         },
       )
     }
+
+    await insertTasksIfNotAlreadyIdentified(
+      trx,
+      { patient_id, patient_encounter_id },
+    )
 
     return completeAndProceedToNextStep(ctx)
   },
@@ -157,7 +164,7 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
   ).join(' ')
 
   const s_expression = `
-    (and (or (finding ${CLINICAL_FINDING.id})
+    (and (or (finding ${CLINICAL_FINDING.lang})
              (finding ${CHIEF_COMPLAINT.id}))
          (not (finding (qualifier ${SELF_REPORTED_QUALIFIER.id})))
          ${not_expressions})

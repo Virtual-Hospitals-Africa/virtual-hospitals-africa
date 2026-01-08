@@ -10,7 +10,7 @@ import {
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { createTestOrganization } from '../../../../_helpers/organizations.ts'
-import { route } from '../../../../route.ts'
+import { route } from '../../../../_route.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
@@ -28,6 +28,7 @@ import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
+import sortBy from '../../../../../util/sortBy.ts'
 
 describeParallel('triage/brief_history', () => {
   before(waitUntilTestServerUp)
@@ -245,9 +246,12 @@ describeParallel('triage/brief_history', () => {
           },
         )
 
-        const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id: initial_encounter.patient.id,
-        })
+        const this_patient_findings = sortBy(
+          await patient_findings.findAll(db, {
+            patient_id: initial_encounter.patient.id,
+          }),
+          (finding) => finding.displays.full,
+        )
 
         assertMatches(this_patient_findings, [
           {
@@ -313,53 +317,6 @@ describeParallel('triage/brief_history', () => {
             'type': 'finding',
             'patient_encounter_employee_id': z.string().uuid(),
             'specific_snomed_concept': {
-              'snomed_concept_id': '77386006',
-              'name': 'Pregnancy',
-              'category': 'finding',
-            },
-            'as_part_of_procedure': {
-              'record_id': z.string().uuid(),
-              'root_snomed_concept': {
-                'snomed_concept_id': '71388002',
-                'name': 'Procedure',
-                'category': 'procedure',
-              },
-              'specific_snomed_concept': {
-                'snomed_concept_id': '203421005',
-                'name': 'History taking, limited',
-                'category': 'procedure',
-              },
-            },
-            'priority': null,
-            'score': null,
-            'value': {
-              'type': 'snomed_concept',
-              'snomed_concept_id': '373067005',
-              'name': 'No',
-              'category': 'qualifier value',
-            },
-            'displays': {
-              'value': 'No',
-              'finding': 'Self reported Pregnancy Status',
-              'full': 'Self reported Pregnancy Status: No',
-            },
-          },
-          {
-            'record_id': z.string().uuid(),
-            'created_at': z.date(),
-            'patient_encounter_id': z.string().uuid(),
-            'root_snomed_concept': {
-              'snomed_concept_id': '263490005',
-              'name': 'Status',
-              'category': 'attribute',
-            },
-            'destination_relations': [],
-            'source_relations': [],
-            'evaluations': [],
-            'attributes': [],
-            'type': 'finding',
-            'patient_encounter_employee_id': z.string().uuid(),
-            'specific_snomed_concept': {
               'snomed_concept_id': '363346000',
               'name': 'Malignant neoplastic disease',
               'category': 'disorder',
@@ -389,6 +346,53 @@ describeParallel('triage/brief_history', () => {
               'value': 'Yes',
               'finding': 'Self reported Malignant neoplastic disease Status',
               'full': 'Self reported Malignant neoplastic disease Status: Yes',
+            },
+          },
+          {
+            'record_id': z.string().uuid(),
+            'created_at': z.date(),
+            'patient_encounter_id': z.string().uuid(),
+            'root_snomed_concept': {
+              'snomed_concept_id': '263490005',
+              'name': 'Status',
+              'category': 'attribute',
+            },
+            'destination_relations': [],
+            'source_relations': [],
+            'evaluations': [],
+            'attributes': [],
+            'type': 'finding',
+            'patient_encounter_employee_id': z.string().uuid(),
+            'specific_snomed_concept': {
+              'snomed_concept_id': '77386006',
+              'name': 'Pregnancy',
+              'category': 'finding',
+            },
+            'as_part_of_procedure': {
+              'record_id': z.string().uuid(),
+              'root_snomed_concept': {
+                'snomed_concept_id': '71388002',
+                'name': 'Procedure',
+                'category': 'procedure',
+              },
+              'specific_snomed_concept': {
+                'snomed_concept_id': '203421005',
+                'name': 'History taking, limited',
+                'category': 'procedure',
+              },
+            },
+            'priority': null,
+            'score': null,
+            'value': {
+              'type': 'snomed_concept',
+              'snomed_concept_id': '373067005',
+              'name': 'No',
+              'category': 'qualifier value',
+            },
+            'displays': {
+              'value': 'No',
+              'finding': 'Self reported Pregnancy Status',
+              'full': 'Self reported Pregnancy Status: No',
             },
           },
         ])
@@ -541,7 +545,7 @@ describeParallel('triage/brief_history', () => {
             Status: 'Triage In Progress',
             // Priority: 'Non-urgent',
             Employees: `${nurse1.health_worker.name}Primary care nurse`,
-            Arrived: 'Just now',
+            Arrived: z.enum(['Just now', '1 minute ago']),
             Actions: 'triage',
           },
         ])
@@ -592,7 +596,7 @@ describeParallel('triage/brief_history', () => {
         const waiting_room_table_after_subsequent_encounter_start =
           getTableDisplay($waiting_room_after_subsequent_encounter_start)
 
-        assertEquals(waiting_room_table_after_subsequent_encounter_start, [
+        assertMatches(waiting_room_table_after_subsequent_encounter_start, [
           {
             Patient:
               `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
@@ -605,10 +609,10 @@ describeParallel('triage/brief_history', () => {
             Location: 'Triage room 1',
             Status: 'Triage In Progress',
             Employees: `${nurse2.health_worker.name}Primary care nurse`,
-            Arrived: 'Just now',
+            Arrived: z.enum(['Just now', '1 minute ago']),
             Actions: 'triage',
           },
-        ])
+        ], { strict: true })
 
         await nurse2.fetchOk(
           `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,

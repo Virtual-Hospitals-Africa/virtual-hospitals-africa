@@ -265,9 +265,6 @@ export const patient_findings = base({
     for (const attribute of finding_node.attributes) {
       query = attributeCte(query, attribute)
     }
-    for (const event of finding_node.events) {
-      query = eventCte(query, event)
-    }
 
     const select_query = query.selectNoFrom([
       success_true,
@@ -285,6 +282,42 @@ export const patient_findings = base({
       const attribute_id = generateUUID()
       const id_token = attribute_id.replaceAll('-', '_')
       const { value } = attribute
+
+      // Event-type attribute
+      if (value?.type === 'event') {
+        return qb.with(
+          `inserting_event_record_${id_token}`,
+          (qb) =>
+            qb.insertInto('patient_records')
+              .values({
+                id: attribute_id,
+                patient_id,
+                patient_encounter_id,
+                root_snomed_concept_id: EVENT.id,
+                specific_snomed_concept_id: snomedConceptBase(
+                  trx,
+                  attribute.specific_snomed_concept,
+                ),
+                value_snomed_concept_id: null,
+              }),
+        ).with(
+          `inserting_event_qualifier_${id_token}`,
+          (qb) =>
+            qb.insertInto('patient_record_qualifiers')
+              .values({
+                id: attribute_id,
+                qualifies_record_id: finding_id,
+              }),
+        ).with(
+          `inserting_event_${id_token}`,
+          (qb) =>
+            qb.insertInto('patient_events')
+              .values({
+                id: attribute_id,
+                datetime: new Date(value.datetime),
+              }),
+        ) as unknown as typeof query
+      }
 
       return qb.with(
         `inserting_attribute_record_${id_token}`,
@@ -308,48 +341,6 @@ export const patient_findings = base({
             .values({
               id: attribute_id,
               qualifies_record_id: finding_id,
-            }),
-      ) as unknown as typeof query
-    }
-
-    function eventCte(
-      qb: typeof query,
-      event: Lang['event'],
-    ) {
-      const event_id = generateUUID()
-      const id_token = event_id.replaceAll('-', '_')
-      const { value } = event
-
-      return qb.with(
-        `inserting_event_record_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_records')
-            .values({
-              id: event_id,
-              patient_id,
-              patient_encounter_id,
-              root_snomed_concept_id: EVENT.id,
-              specific_snomed_concept_id: snomedConceptBase(
-                trx,
-                event.specific_snomed_concept,
-              ),
-              value_snomed_concept_id: null,
-            }),
-      ).with(
-        `inserting_event_qualifier_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_record_qualifiers')
-            .values({
-              id: event_id,
-              qualifies_record_id: finding_id,
-            }),
-      ).with(
-        `inserting_event_${id_token}`,
-        (qb) =>
-          qb.insertInto('patient_events')
-            .values({
-              id: event_id,
-              datetime: new Date(value.datetime),
             }),
       ) as unknown as typeof query
     }

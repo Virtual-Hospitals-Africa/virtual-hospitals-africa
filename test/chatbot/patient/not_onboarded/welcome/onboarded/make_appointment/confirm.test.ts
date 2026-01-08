@@ -26,7 +26,7 @@ import { resetInTest } from '../../../../../../../db/meta.ts'
 import { Stub, stub } from 'std/testing/mock.ts'
 import randomPhoneNumber from '../../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../../_helpers/employees.ts'
-import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
+import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
 import randomDemographics from '../../../../../../../mocks/randomDemographics.ts'
 
 describe.skip('patient chatbot', () => {

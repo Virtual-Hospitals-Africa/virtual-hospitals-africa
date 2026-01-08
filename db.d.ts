@@ -1306,6 +1306,11 @@ export interface PatientRecords {
   value_snomed_concept_id: Int8 | null
 }
 
+export interface PatientRecordSExpressions {
+  id: string
+  s_expression: string
+}
+
 export interface PatientReferrals {
   employment_id: string | null
   id: string
@@ -2000,6 +2005,7 @@ export interface DB {
   patient_procedures: PatientProcedures
   patient_record_qualifiers: PatientRecordQualifiers
   patient_record_relations: PatientRecordRelations
+  patient_record_s_expressions: PatientRecordSExpressions
   patient_records: PatientRecords
   patient_referrals: PatientReferrals
   patient_registration: PatientRegistration

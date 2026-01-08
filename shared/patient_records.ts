@@ -18,6 +18,8 @@ import assertOneOf from '../util/assertOneOf.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
+import { parseExpressionExpectingAtom } from './s_expression.ts'
+import { logArgsOnError } from '../util/decorators.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -57,6 +59,79 @@ function formatEventDatetime(datetime: Date | string): string {
   return `${time_str} SAST | ${date_str}`
 }
 
+function toRenderedSnomedConcept(
+  snomed_concept: Lang['snomed_concept'],
+): RenderedSnomedConcept {
+  assert(
+    snomed_concept.type === 'snomed_concept_name_and_category',
+    'Expected snomed_concept_name_and_category',
+  )
+  return {
+    snomed_concept_id: '',
+    name: snomed_concept.name,
+    category: snomed_concept.category,
+  }
+}
+
+const findingToDisplayableRecord = logArgsOnError(
+  function findingToDisplayableRecord(
+    finding: Lang['finding'],
+  ): DisplayableRecord {
+    assert(finding.root_snomed_concept, 'Expected root_snomed_concept')
+    assert(finding.specific_snomed_concept, 'Expected specific_snomed_concept')
+
+    return {
+      record_id: '',
+      created_at: '',
+      patient_encounter_id: '',
+      root_snomed_concept: toRenderedSnomedConcept(finding.root_snomed_concept),
+      specific_snomed_concept: toRenderedSnomedConcept(
+        finding.specific_snomed_concept,
+      ),
+      value: finding.value_snomed_concept
+        ? {
+          type: 'snomed_concept',
+          ...toRenderedSnomedConcept(finding.value_snomed_concept),
+        }
+        : null,
+      qualifiers: finding.qualifiers.map((q) => ({
+        record_id: '',
+        created_at: '',
+        patient_encounter_id: '',
+        root_snomed_concept: {
+          snomed_concept_id: '',
+          name: 'Qualifier value',
+          category: 'qualifier value' as const,
+        },
+        specific_snomed_concept: toRenderedSnomedConcept(
+          q.specific_snomed_concept,
+        ),
+        value: null,
+        qualifiers: q.qualifiers.map((nested) => ({
+          record_id: '',
+          created_at: '',
+          patient_encounter_id: '',
+          root_snomed_concept: {
+            snomed_concept_id: '',
+            name: 'Qualifier value',
+            category: 'qualifier value' as const,
+          },
+          specific_snomed_concept: toRenderedSnomedConcept(
+            nested.specific_snomed_concept,
+          ),
+          value: null,
+        })),
+      })),
+    }
+  },
+)
+
+function findingSExpressionDisplay(
+  finding_s_expression: Lang['finding'],
+): string {
+  return buildDisplays(findingToDisplayableRecord(finding_s_expression)).full
+}
+
 function valueDisplay(
   value: Exclude<NonNullable<DisplayableRecord['value']>, string>,
 ): string {
@@ -69,6 +144,12 @@ function valueDisplay(
       return measurementValueDisplay(value)
     case 'score':
       return value.score
+    case 's_expression': {
+      return findingSExpressionDisplay(parseExpressionExpectingAtom(
+        value.s_expression,
+        'finding',
+      ))
+    }
     default: {
       throw new Error(`Unexpected type in ${humanReadableJson(value)}`)
     }
@@ -170,7 +251,6 @@ function addDisplay<DR extends DisplayableRecord>(
 } {
   return {
     ...omit(record, ['qualifiers']),
-    modifiers: record.qualifiers,
     displays: buildDisplays(record),
   }
 }
@@ -215,7 +295,7 @@ function toSnomedConcept(
 ): Lang['snomed_concept'] {
   return {
     atom: 'snomed_concept',
-    type: 'name_and_category',
+    type: 'snomed_concept_name_and_category',
     name: rendered.name,
     category: rendered.category,
   }
@@ -237,33 +317,31 @@ export function asNormalFormSExpression<Rest>(
 ): string {
   const qualifiers = record.modifiers.map(toQualifier)
 
-  // Partition attributes into events and actual attributes
-  const [eventAttributes, nonEventAttributes] = partition(
-    record.attributes,
-    (attr) => attr.value?.type === 'event',
-  )
+  const attributes: Lang['attribute'][] = record.attributes.map((attr) => {
+    assert(attr.value, 'At this point ')
 
-  const events: Lang['event'][] = eventAttributes.map((attr) => {
-    const value = attr.value as { type: 'event'; datetime: Date | string }
+    // Event-type attribute
+    if (attr.value.type === 'event') {
+      const value = attr.value as { type: 'event'; datetime: Date | string }
+      return {
+        atom: 'attribute',
+        specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+        value: {
+          type: 'event' as const,
+          datetime: isDate(value.datetime)
+            ? value.datetime.toISOString()
+            : value.datetime,
+          location: null,
+        },
+      }
+    }
+    // Regular attribute (snomed concept value or null)
     return {
-      atom: 'event',
+      atom: 'attribute',
       specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
-      value: {
-        datetime: isDate(value.datetime)
-          ? value.datetime.toISOString()
-          : value.datetime,
-        location: null,
-      },
+      value: toSnomedConcept(attr.value),
     }
   })
-
-  const attributes: Lang['attribute'][] = nonEventAttributes.map((attr) => ({
-    atom: 'attribute',
-    specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
-    value: attr.value?.type === 'snomed_concept'
-      ? toSnomedConcept(attr.value)
-      : null,
-  }))
 
   const root_snomed_concept = toSnomedConcept(record.root_snomed_concept)
   const specific_snomed_concept = toSnomedConcept(
@@ -280,7 +358,6 @@ export function asNormalFormSExpression<Rest>(
         root_snomed_concept,
         specific_snomed_concept,
         value_snomed_concept,
-        events,
         qualifiers,
         attributes,
         exact: false,
@@ -294,7 +371,6 @@ export function asNormalFormSExpression<Rest>(
         specific_snomed_concept,
         value_snomed_concept,
         evaluates: null,
-        events,
         qualifiers,
         attributes,
       }
@@ -305,9 +381,9 @@ export function asNormalFormSExpression<Rest>(
         atom: 'procedure',
         root_snomed_concept,
         specific_snomed_concept,
-        events,
         qualifiers,
         attributes,
+        value: null, // TODO: huh?
       }
       return inverseSExpression(node)
     }

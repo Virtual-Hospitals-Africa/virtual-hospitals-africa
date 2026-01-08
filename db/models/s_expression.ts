@@ -11,10 +11,12 @@ import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import {
   ATTRIBUTE,
   CLINICAL_FINDING,
+  EVENT,
   QUALIFIER_VALUE,
   STATUS_ATTRIBUTE,
   YES_QUALIFIER,
 } from '../../shared/snomed_concepts.ts'
+import isKeyOf from '../../util/isKeyOf.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -31,7 +33,7 @@ export function snomedConceptBase(
   snomed_concept: Lang['snomed_concept'],
 ) {
   assert(isAtom(snomed_concept, 'snomed_concept'))
-  if (snomed_concept.type === 'id') return snomed_concept.id
+  if (snomed_concept.type === 'snomed_concept_id') return snomed_concept.id
 
   return trx
     .selectFrom('snomed_inferred_canonical_name_and_category')
@@ -71,7 +73,7 @@ function baseQuery(
     exact?: boolean
   },
 ) {
-  let query = trx.selectFrom('patient_records')
+  const query = trx.selectFrom('patient_records')
     .where('patient_id', '=', patient_id)
     .where(
       'patient_records.id',
@@ -129,8 +131,8 @@ function baseQuery(
     )
     .select('patient_records.id')
 
-  for (const qualifier of qualifiers) {
-    query = query.where(
+  const with_qualifiers: typeof query = qualifiers.reduce((qb, qualifier) => (
+    qb.where(
       'patient_records.id',
       'in',
       EXPRESSION_BUILDERS.qualifier(trx, {
@@ -140,49 +142,53 @@ function baseQuery(
         .clearSelect()
         .select('patient_record_qualifiers.qualifies_record_id'),
     )
-  }
+  ), query)
 
-  for (const attribute of attributes) {
-    query = query.where((eb) =>
+  return attributes.reduce((qb, attribute): typeof query => {
+    const attribute_query = EXPRESSION_BUILDERS.attribute(trx, {
+      patient_id,
+      patient_encounter_id,
+    }, attribute)
+      .clearSelect()
+      .select('patient_record_qualifiers.qualifies_record_id')
+
+    const { value } = attribute
+
+    if (value.type === 'event') {
+      return qb.where(
+        'patient_records.id',
+        'in',
+        attribute_query,
+      )
+    }
+
+    return qb.where((eb) =>
       eb.or([
-        eb(
-          'patient_records.id',
-          'in',
-          EXPRESSION_BUILDERS.attribute(trx, {
-            patient_id,
-            patient_encounter_id,
-          }, attribute)
-            .clearSelect()
-            .select('patient_record_qualifiers.qualifies_record_id'),
+        eb('patient_records.id', 'in', attribute_query),
+        eb.exists(
+          trx.selectFrom('snomed_relationship')
+            .where('snomed_relationship.active', '=', true)
+            .where(
+              'snomed_relationship.type_id',
+              '=',
+              snomedConceptBase(trx, attribute.specific_snomed_concept),
+            )
+            .where(
+              'snomed_relationship.source_id',
+              '=',
+              eb.ref('patient_records.specific_snomed_concept_id'),
+            )
+            .where(
+              sql<
+                boolean
+              >`is_descendant(snomed_relationship.destination_id, ${
+                snomedConceptBase(trx, value)
+              }::bigint)`,
+            ),
         ),
-        attribute.value
-          ? eb.exists(
-            trx.selectFrom('snomed_relationship')
-              .where('snomed_relationship.active', '=', true)
-              .where(
-                'snomed_relationship.type_id',
-                '=',
-                snomedConceptBase(trx, attribute.specific_snomed_concept),
-              )
-              .where(
-                'snomed_relationship.source_id',
-                '=',
-                eb.ref('patient_records.specific_snomed_concept_id'),
-              )
-              .where(
-                sql<
-                  boolean
-                >`is_descendant(snomed_relationship.destination_id, ${
-                  snomedConceptBase(trx, attribute.value)
-                }::bigint)`,
-              ),
-          )
-          : sql<boolean>`false`,
       ])
     )
-  }
-
-  return query
+  }, with_qualifiers)
 }
 
 export const satisfyingSExpression = deduplicate(
@@ -223,7 +229,7 @@ function measurement(
     ...patient,
     root_snomed_concept: {
       atom: 'snomed_concept',
-      type: 'id',
+      type: 'snomed_concept_id',
       id: '118245000',
     },
   })
@@ -285,6 +291,7 @@ const EXPRESSION_BUILDERS = {
       specific_snomed_concept,
       // value_snomed_concept,
       qualifiers, /* attributes */
+      value,
     },
   ) {
     return baseQuery(trx, {
@@ -292,13 +299,26 @@ const EXPRESSION_BUILDERS = {
       patient_encounter_id,
       // root_snomed_concept,
       specific_snomed_concept,
-      // value_snomed_concept,
       qualifiers,
     })
       .innerJoin(
         'patient_procedures',
         'patient_records.id',
         'patient_procedures.id',
+      )
+      .$if(
+        !!value,
+        (qb) =>
+          qb.innerJoin(
+            'patient_record_s_expressions',
+            'patient_record_s_expressions.id',
+            'patient_records.id',
+          )
+            .where(
+              'patient_record_s_expressions.s_expression',
+              '=',
+              inverseSExpression(value!.finding_s_expression),
+            ),
       )
   },
   evaluation(
@@ -347,7 +367,7 @@ const EXPRESSION_BUILDERS = {
       patient_encounter_id,
       root_snomed_concept: {
         atom: 'snomed_concept',
-        type: 'id',
+        type: 'snomed_concept_id',
         id: QUALIFIER_VALUE.id,
       },
       specific_snomed_concept,
@@ -364,17 +384,15 @@ const EXPRESSION_BUILDERS = {
     { patient_id, patient_encounter_id },
     { specific_snomed_concept, value },
   ) {
-    // Only snomed_concept values are queryable
-    const value_snomed_concept = value?.atom === 'snomed_concept' ? value : null
-    return baseQuery(trx, {
+    const matches_attr = baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      value_snomed_concept,
       specific_snomed_concept,
+      value_snomed_concept: value.type === 'event' ? undefined : value,
       root_snomed_concept: {
         atom: 'snomed_concept',
-        type: 'id',
-        id: ATTRIBUTE.id,
+        type: 'snomed_concept_id',
+        id: value.type === 'event' ? EVENT.id : ATTRIBUTE.id,
       },
     })
       .innerJoin(
@@ -382,6 +400,18 @@ const EXPRESSION_BUILDERS = {
         'patient_records.id',
         'patient_record_qualifiers.id',
       )
+
+    if (value.type !== 'event') {
+      return matches_attr
+    }
+
+    return matches_attr
+      .innerJoin(
+        'patient_events',
+        'patient_events.id',
+        'patient_record_qualifiers.id',
+      )
+      .where('patient_events.datetime', '=', new Date(value.datetime))
   },
   not(trx, { patient_id, patient_encounter_id }, { expression }) {
     return baseQuery(trx, {
@@ -438,7 +468,7 @@ const EXPRESSION_BUILDERS = {
       trx,
       patient,
       parseExpression(`
-        (or (finding ${CLINICAL_FINDING.id} ${snomed_concept_s_expression})
+        (or (finding ${CLINICAL_FINDING.lang} ${snomed_concept_s_expression})
             (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
       `),
     )
@@ -468,23 +498,8 @@ const EXPRESSION_BUILDERS = {
       .where('patient_measurements.units', '=', right.units)
       .where('patient_measurements.value', '=', String(right.value))
   },
-  evaluates() {
-    throw new Error('evalutes is not directly queryable')
-  },
-  task() {
-    throw new Error('task is not directly queryable')
-  },
-  units() {
-    throw new Error('units is not directly queryable')
-  },
-  snomed_concept() {
-    throw new Error('snomed_concept is not directly queryable')
-  },
-  event() {
-    throw new Error('event is not directly queryable')
-  },
 } satisfies {
-  [T in Atom]: (
+  [T in Atom]?: (
     trx: TrxOrDb,
     patient: PatientIdentifiers,
     node: AnyNode & { atom: T },
@@ -498,6 +513,10 @@ export function buildExpression(
 ): SelectQueryBuilder<DB, 'patient_records', { id: string }> {
   if (typeof node === 'string') {
     node = parseExpression(node)
+  }
+
+  if (!isKeyOf(node.atom, EXPRESSION_BUILDERS)) {
+    throw new Error(`${node.atom} is not directly queryable`)
   }
 
   // deno-lint-ignore ban-types
