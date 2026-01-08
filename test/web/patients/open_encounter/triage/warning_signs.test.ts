@@ -30,6 +30,7 @@ import {
 } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
+import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -912,8 +913,8 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel(
-      'creates an additional task to check for a head injury with watery discharge ',
+    itParallel.only(
+      'creates an additional task to check for a head injury with watery discharge',
       async () => {
         const clinic = await createTestOrganization(db)
         const { health_worker: nurse, fetchOk } =
@@ -986,6 +987,8 @@ describeParallel('triage/warning_signs', () => {
           encounter,
           health_worker_id: nurse.id,
         })
+
+        console.log(humanReadableJson(task_groups))
 
         assertLength(task_groups, 1)
       },

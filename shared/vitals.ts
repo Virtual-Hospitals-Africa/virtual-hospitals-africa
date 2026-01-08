@@ -31,6 +31,7 @@ import { Lang } from './s_expression_schemas.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import assertOneOf from '../util/assertOneOf.ts'
+import mapEntries from '../util/mapEntries.ts'
 
 export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS = {
   height: '1153637007',
@@ -611,4 +612,24 @@ export function matchingAssessment(
   }
 
   return null
+}
+
+export function asVitalMeasurementFormValues(
+  measurement_values: Partial<Record<VitalMeasurement, number>>,
+) {
+  return mapEntries(measurement_values, (value, vital) => ({
+    value,
+    units: VITAL_MEASUREMENTS_UNITS[vital],
+  }))
+}
+
+export function asVitalAssessmentFormValues(
+  assessment_values: { [v in VitalAssessment]: string },
+) {
+  return mapEntries(assessment_values, (value, vital) => ({
+    s_expression: assessmentOptionSExpression(
+      vital,
+      value,
+    ),
+  }))
 }
