@@ -9,6 +9,10 @@ import { isAtom } from './s_expression.ts'
 import { Coordinates, Maybe } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
+import {
+  EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS,
+  PROCEDURE,
+} from './snomed_concepts.ts'
 
 type Node<Atom, Rest> = {
   atom: Atom
@@ -44,6 +48,10 @@ type BaseLang =
     procedure: {
       root_snomed_concept: Lang['snomed_concept'] | null
       specific_snomed_concept: Lang['snomed_concept'] | null
+      value: null | {
+        type: 'finding_s_expression'
+        finding_s_expression: Lang['finding']
+      }
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
     }
@@ -73,9 +81,6 @@ type BaseLang =
     active_condition: {
       snomed_concept: Lang['snomed_concept']
     }
-    check_for: {
-      finding: Lang['finding']
-    }
     any: {
       findings: Lang[Comparisons | 'finding'][]
     }
@@ -97,7 +102,7 @@ type BaseLang =
     }
     task: {
       when: Lang[Comparisons | 'finding' | 'any' | 'all']
-      procedure: Lang['procedure' | 'check_for']
+      procedure: Lang['procedure']
     }
   }
   & {
@@ -450,6 +455,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
             specific_snomed_concept,
             qualifiers,
             attributes,
+            value: null,
           }
         },
       ),
@@ -480,14 +486,29 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
     })),
 ).describe('active_condition')
 
-export const check_for: z.ZodType<Lang['check_for']> = z.lazy(
+export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
   () =>
     z.object({
       atom: z.literal('check_for'),
       args: z.tuple([finding]),
-    }).transform(({ atom, args: [finding] }) => ({
-      atom,
-      finding,
+    }).transform(({ args: [finding_s_expression] }) => ({
+      atom: 'procedure' as const,
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        type: 'snomed_concept_name_and_category' as const,
+        ...PROCEDURE,
+      },
+      specific_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        type: 'snomed_concept_name_and_category' as const,
+        ...EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS,
+      },
+      qualifiers: [],
+      attributes: [],
+      value: {
+        type: 'finding_s_expression' as const,
+        finding_s_expression,
+      },
     })),
 ).describe('check_for')
 

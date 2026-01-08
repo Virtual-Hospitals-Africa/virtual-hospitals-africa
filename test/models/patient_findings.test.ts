@@ -267,7 +267,7 @@ describeParallel('db/models/patient_findings.ts', () => {
     }, { strict: true })
   })
 
-  itParallel.only(
+  itParallel(
     'can insert/find a finding with a complex display involving nested qualifiers',
     async () => {
       const nurse = await addTestEmployee(db, {

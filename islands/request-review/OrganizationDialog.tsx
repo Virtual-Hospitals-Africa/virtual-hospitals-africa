@@ -1,12 +1,14 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { NearestOrganizationSearchResult } from '../../db/models/nearest_organizations.ts'
+import {
+  NearestOrganizationSearchResult,
+  RenderedPatientCompletedRegistration,
+} from '../../types.ts'
 import ViewIconWithBackground from './ViewIconWithBackground.tsx'
 import { H2 } from '../../components/library/typography/H2.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
 import { Person } from '../../components/library/Person.tsx'
 import FormButtons from '../form/buttons.tsx'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { RenderedPatientCompletedRegistration } from '../../types.ts'
 import { TextArea } from '../form/inputs/textarea.tsx'
 import { Fragment } from 'preact'
 

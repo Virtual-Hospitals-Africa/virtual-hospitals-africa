@@ -27,20 +27,19 @@ export const TASKS = [
         (procedure ${PROCEDURE.id} 57485005)
     )`,
   },
-  // {
-  //   if_description: 'If oxygen saturation below 92%',
-  //   tasks_description: 'give oxygen and move to resuscitation area',
-  //   task_s_expression: `(
-  //     task
-  //       (finding ${CLINICAL_FINDING.id}
-  //         (finding_site (snomed_concept "Nasal structure" "body structure")))
-  //       (check_for
-  //         (finding ${CLINICAL_FINDING.id} (snomed_concept "Injury of head" "disorder")))
-  //   )`,
-  // },
+  {
+    if_description: 'If nose symptoms',
+    tasks_description: 'check for head injury',
+    task_s_expression: `(
+      task
+        (finding ${CLINICAL_FINDING.id}
+          (finding_site (snomed_concept "Nasal structure" "body structure")))
+        (check_for
+          (finding ${CLINICAL_FINDING.id} (snomed_concept "Injury of head" "disorder")))
+    )`,
+  },
 ].map(asTask)
 
-// Separate function for permission around tasks
-
-//
-//
+// TODO Separate function for permission around tasks
+// That is, put the task in for analgesia, but there's separate logic to
+// say who has permissions to prescribe what

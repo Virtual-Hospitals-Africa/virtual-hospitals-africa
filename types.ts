@@ -3677,3 +3677,139 @@ export type TriageAssignPriorityTableVital = {
   previous: RenderedFindingRelativeToHealthWorker | null
   reference_ranges?: Maybe<ReferenceRangeX[]>
 }
+
+type OrganizationWait = {
+  status: 'open (short wait)'
+  minutes: number
+  display: string
+} | {
+  status: 'open (long wait)'
+  minutes: number
+  display: string
+} | {
+  status: 'closing soon'
+  minutes: number
+  display: string
+} | {
+  status: 'closed'
+}
+
+type NearestOrganizationEmployee = {
+  id: string
+  name: string
+  profession: string | null
+}
+
+type OrganizationDepartment = {
+  id: string
+  name: string
+  requires_triage: boolean
+}
+
+export type NearestOrganizationSearchResult = {
+  id: string
+  name: string
+  category: string | null
+  address: string | null
+  locality: string | null
+  location: Coordinates
+  distance_meters: number
+  google_maps_link: string
+  status: string
+  admins: NearestOrganizationEmployee[]
+  doctors: NearestOrganizationEmployee[]
+  departments: OrganizationDepartment[]
+  business_hours: string
+  wait: OrganizationWait
+  re_opens: {
+    display: string
+  }
+}
+
+export type RegistrationPatientSummary = {
+  id: string
+  personal: {
+    name: string
+    first_names: string
+    preferred_name: string | null
+    surname: string | null
+    phone_number: string | null
+    sex: string | null
+    gender: string | null
+    ethnicity: string | null
+    date_of_birth: string | null
+    national_id_number: string | null
+    preferred_language_code_iso_639_2_b: string | null
+    description: string | null
+  }
+  nearest_health_care: {
+    primary_doctor_name: string | null
+    nearest_organization_id: string | null
+    nearest_organization_name: string | null
+  }
+  address: {
+    street: string | null
+    locality: string | null
+    administrative_area_level_1: string | null
+    administrative_area_level_2: string | null
+  }
+  age: RenderedPatientAge | null
+  completed_registration: boolean | null
+  family: {
+    next_of_kin: {
+      patient_name: string | null
+      relation: string | null
+    } | null
+    dependents: {
+      patient_name: string | null
+      patient_phone_number: string | null
+      family_relation_sexed: string | null
+    }[]
+    guardians: {
+      patient_name: string | null
+      patient_phone_number: string | null
+      family_relation_sexed: string | null
+    }[]
+    family_type: string | null
+    marital_status: string | null
+    religion: string | null
+  }
+  occupation: {
+    school: {
+      status: string
+      current?: {
+        grade: string | null
+      }
+    }
+    job?: {
+      profession: string | null
+    }
+  } | null
+  allergies: {
+    snomed_english_term: string
+  }[]
+  pre_existing_conditions: {
+    name: string
+    start_date: string | null
+    medications: {
+      name: string
+      form: string | null
+      strength_numerator_unit: string | null
+      start_date: string | null
+      special_instructions: string | null
+      schedules: {
+        dosage: number
+        frequency: string
+      }[]
+    }[]
+  }[]
+  past_medical_conditions: {
+    name: string
+    start_date: string | null
+    end_date: string | null
+  }[]
+  major_surgeries: {
+    name: string
+    start_date: string | null
+  }[]
+}

@@ -31,3 +31,11 @@ if [[ -n "$in_test_dir_but_not_tests" ]]; then
   echo "$in_test_dir_but_not_tests"
   exit 1
 fi
+
+# components/ and islands/ should never import from db/
+db_imports_in_frontend=$(rg --pcre2 "from ['\"].*db/" components islands 2>/dev/null || true)
+if [[ -n "$db_imports_in_frontend" ]]; then
+  echo "components/ and islands/ should never import from db/:"
+  echo "$db_imports_in_frontend"
+  exit 1
+fi

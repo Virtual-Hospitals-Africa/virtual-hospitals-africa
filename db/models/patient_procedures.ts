@@ -5,7 +5,7 @@ import {
   PreviouslyCompletedProcedures,
   TrxOrDb,
 } from '../../types.ts'
-import { literalString, success_true } from '../helpers.ts'
+import { blankSelection, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records } from './patient_records.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -13,6 +13,8 @@ import { formatRecord } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
+import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 type ProcedureInsert =
   & {
@@ -49,10 +51,7 @@ export function baseQuery(
 export const patient_procedures = base({
   top_level_table: 'patient_procedures',
   baseQuery,
-  formatResult: (procedure) => ({
-    ...procedure,
-    ...formatRecord(procedure),
-  }),
+  formatResult: formatRecord,
   handleSearch(
     qb,
     opts: { search?: string; patient_id: string | IdSelection },
@@ -115,15 +114,18 @@ export const patient_procedures = base({
     trx: TrxOrDb,
     {
       patient_id,
+      employment_id,
       patient_encounter_id,
       procedure,
-      employment_id,
       by_system,
     }: ProcedureInsert,
   ) {
     assertHasProperty(procedure, 'root_snomed_concept')
     assertHasProperty(procedure, 'specific_snomed_concept')
     const procedure_id = generateUUID()
+    if (procedure.value) {
+      assertEquals(procedure.value.type, 'finding_s_expression')
+    }
 
     return patient_records.baseInsert(
       trx,
@@ -144,6 +146,19 @@ export const patient_procedures = base({
             by_system: by_system || false,
           }),
     )
+      .with(
+        'inserting_record_s_expression',
+        (qb) =>
+          procedure.value
+            ? qb.insertInto('patient_record_s_expressions')
+              .values({
+                id: procedure_id,
+                s_expression: inverseSExpression(
+                  procedure.value.finding_s_expression,
+                ),
+              })
+            : blankSelection(qb),
+      )
       .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),
