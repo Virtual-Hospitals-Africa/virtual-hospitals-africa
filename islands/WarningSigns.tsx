@@ -5,7 +5,7 @@ import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 import { assert } from 'std/assert/assert.ts'
 import isString from '../util/isString.ts'
-import { CHIEF_COMPLAINT } from '../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING } from '../shared/snomed_concepts.ts'
 import { EmptyState } from '../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
 import sortBy from '../util/sortBy.ts'
@@ -184,7 +184,7 @@ export default function KeyedWarningSigns({
               ? r.priority.name as KeyedWarningSign['sats_priority']
               : 'Non-urgent', // TODO actually get this from the server
             clinical_finding_s_expression:
-              `(finding ${CHIEF_COMPLAINT.id} ${r.id})`,
+              `(finding ${CLINICAL_FINDING.id} ${r.id})`,
             sats_primary_name: r.name,
             sats_secondary_text: r.category, /* + ' ' + (r.best_similarity), */
           }
