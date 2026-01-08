@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { MostRecentFinding } from '../components/library/MostRecentFinding.tsx'
-import type { CheckForTask, RecordValueSExpression, RenderedTask, TaskGroup } from '../types.ts'
-import assertLength from '../util/assertLength.ts'
+import type { CheckForTask, RenderedTask, TaskGroup } from '../types.ts'
 import partition from '../util/partition.ts'
 import { YesNoGrid, YesNoQuestion } from './form/inputs/yes_no.tsx'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
@@ -11,7 +10,7 @@ function TaskCheckbox({
 }: {
   task: RenderedTask
 }) {
-  const name = `tasks.${task.procedure.record_id}`
+  const name = `just_do_it_tasks.${task.procedure.record_id}`
 
   console.log('task.procedure', task.procedure)
 
@@ -67,7 +66,11 @@ function CheckForTaskInput({
 
   return (
     <>
-      <HiddenInput name={`${name}.s_expression`} value={task.procedure.value.s_expression}></HiddenInput>
+      <HiddenInput
+        name={`${name}.s_expression`}
+        value={task.procedure.value.s_expression}
+      >
+      </HiddenInput>
       <YesNoQuestion
         name={`${name}.existence`}
         value={value}
@@ -84,8 +87,6 @@ function TaskGroupCard({
   group: TaskGroup
   organization_id: string
 }) {
-  assertLength(group.due_to, 1)
-
   const [check_for_tasks, just_do_it_tasks] = partition(group.tasks, isCheckFor)
 
   return (
@@ -94,13 +95,13 @@ function TaskGroupCard({
       <div class='flex items-start justify-between'>
         <div class='flex flex-col gap-1'>
           <p class='text-sm leading-5'>
-            <span class='font-semibold text-gray-600'>Due to: </span>
-            {group.due_to.map(finding => (
-            <MostRecentFinding
-              key={finding.record_id}
-              finding={finding}
-              organization_id={organization_id}
-            />
+            <span class='font-semibold text-gray-600'>Due to:</span>
+            {group.due_to.map((finding) => (
+              <MostRecentFinding
+                key={finding.record_id}
+                finding={finding}
+                organization_id={organization_id}
+              />
             ))}
           </p>
         </div>
