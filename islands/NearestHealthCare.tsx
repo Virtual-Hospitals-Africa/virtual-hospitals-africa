@@ -3,11 +3,15 @@ import FormGrid from '../components/library/FormGrid.tsx'
 import OrganizationSearch from './OrganizationSearch.tsx'
 import PersonSearch from './PersonSearch.tsx'
 import FormSection from '../components/library/FormSection.tsx'
-import { OrganizationSortOptions } from '../types.ts'
+import { Maybe, OrganizationSortOptions } from '../types.ts'
 
 export function NearestHealthCareSection(
   { nearest_health_facility, primary_doctor }: {
-    nearest_health_facility?: { id: string; name: string; address?: string }
+    nearest_health_facility?: {
+      id: string
+      name: string
+      address?: Maybe<string>
+    }
     primary_doctor?: { id: string | null; name: string }
   },
 ) {

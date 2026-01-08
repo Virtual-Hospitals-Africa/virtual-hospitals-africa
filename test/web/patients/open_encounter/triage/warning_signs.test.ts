@@ -775,7 +775,7 @@ describeParallel('triage/warning_signs', () => {
             body: asFormData({
               warning_signs: {
                 'Pain of ear':
-                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Pain of ear" "finding"))`,
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Pain of ear" "finding"))`,
               },
             }),
           },
@@ -815,7 +815,7 @@ describeParallel('triage/warning_signs', () => {
             body: asFormData({
               warning_signs: {
                 'Pain of ear':
-                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Pain of ear" "finding"))`,
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Pain of ear" "finding"))`,
               },
             }),
           },
@@ -876,7 +876,7 @@ describeParallel('triage/warning_signs', () => {
             body: asFormData({
               warning_signs: {
                 's275406005':
-                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Appendicular pain" "finding"))`,
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Appendicular pain" "finding"))`,
               },
             }),
           },
@@ -912,7 +912,7 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel.only(
+    itParallel(
       'creates an additional task to check for a head injury with watery discharge ',
       async () => {
         const clinic = await createTestOrganization(db)
@@ -957,7 +957,7 @@ describeParallel('triage/warning_signs', () => {
             body: asFormData({
               warning_signs: {
                 's275406005':
-                  `(finding ${CLINICAL_FINDING.id} (snomed_concept "Nasal discharge" "finding"))`,
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Nasal discharge" "finding"))`,
               },
             }),
           },

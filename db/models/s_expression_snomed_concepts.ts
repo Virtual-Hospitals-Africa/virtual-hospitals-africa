@@ -95,7 +95,7 @@ const PREDICATE_BUILDERS = {
   active_condition(column_ref, { snomed_concept }) {
     const snomed_concept_s_expression = inverseSExpression(snomed_concept)
     const expanded_expression = parseExpression(`
-      (or (finding ${CLINICAL_FINDING.id} ${snomed_concept_s_expression})
+      (or (finding ${CLINICAL_FINDING.lang} ${snomed_concept_s_expression})
           (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
     `)
     return internalBuildExpressionPredicate(column_ref, expanded_expression)

@@ -455,7 +455,7 @@ export type Address = {
 export type PatientFamily = {
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
-  next_of_kin?: NextOfKin
+  next_of_kin: Maybe<NextOfKin>
   religion: Maybe<string>
   family_type: Maybe<FamilyType>
   marital_status: Maybe<MaritalStatus>
@@ -3470,7 +3470,7 @@ export type RenderedSnomedConcept = {
 }
 export type RenderedAttribute = IntermediateBaseRecord & {
   displays: RecordDisplays
-  value: RecordValueSnomedConcept | RecordValueEvent | null
+  value: RecordValueSnomedConcept | RecordValueEvent
 }
 
 export type RecordValueEvent = { type: 'event'; datetime: Date | string }
@@ -3755,61 +3755,11 @@ export type RegistrationPatientSummary = {
   }
   age: RenderedPatientAge | null
   completed_registration: boolean | null
-  family: {
-    next_of_kin: {
-      patient_name: string | null
-      relation: string | null
-    } | null
-    dependents: {
-      patient_name: string | null
-      patient_phone_number: string | null
-      family_relation_sexed: string | null
-    }[]
-    guardians: {
-      patient_name: string | null
-      patient_phone_number: string | null
-      family_relation_sexed: string | null
-    }[]
-    family_type: string | null
-    marital_status: string | null
-    religion: string | null
-  }
-  occupation: {
-    school: {
-      status: string
-      current?: {
-        grade: string | null
-      }
-    }
-    job?: {
-      profession: string | null
-    }
-  } | null
-  allergies: {
-    snomed_english_term: string
-  }[]
-  pre_existing_conditions: {
-    name: string
-    start_date: string | null
-    medications: {
-      name: string
-      form: string | null
-      strength_numerator_unit: string | null
-      start_date: string | null
-      special_instructions: string | null
-      schedules: {
-        dosage: number
-        frequency: string
-      }[]
-    }[]
-  }[]
-  past_medical_conditions: {
-    name: string
-    start_date: string | null
-    end_date: string | null
-  }[]
-  major_surgeries: {
-    name: string
-    start_date: string | null
-  }[]
+  family: PatientFamily
+  occupation: Maybe<Occupation>
+  allergies: Allergy[]
+  pre_existing_conditions:
+    import('./db/models/patient_conditions.ts').PreExistingConditionSummary[]
+  past_medical_conditions: PastMedicalCondition[]
+  major_surgeries: MajorSurgery[]
 }

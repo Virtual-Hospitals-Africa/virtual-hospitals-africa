@@ -164,7 +164,7 @@ async function getAllOtherClinicalFindingsFromThisEncounter(
   ).join(' ')
 
   const s_expression = `
-    (and (or (finding ${CLINICAL_FINDING.id})
+    (and (or (finding ${CLINICAL_FINDING.lang})
              (finding ${CHIEF_COMPLAINT.id}))
          (not (finding (qualifier ${SELF_REPORTED_QUALIFIER.id})))
          ${not_expressions})

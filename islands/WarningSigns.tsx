@@ -184,7 +184,7 @@ export default function KeyedWarningSigns({
               ? r.priority.name as KeyedWarningSign['sats_priority']
               : 'Non-urgent', // TODO actually get this from the server
             clinical_finding_s_expression:
-              `(finding ${CLINICAL_FINDING.id} ${r.id})`,
+              `(finding ${CLINICAL_FINDING.lang} ${r.id})`,
             sats_primary_name: r.name,
             sats_secondary_text: r.category, /* + ' ' + (r.best_similarity), */
           }

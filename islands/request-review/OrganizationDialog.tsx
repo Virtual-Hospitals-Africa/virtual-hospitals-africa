@@ -47,7 +47,7 @@ export function RequestingOrganizationDialog(
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='transform rounded-lg shadow-xl transition-all max-h-screen max-w-screen min-w-[450px] relative'>
+              <Dialog.Panel className='transform rounded-lg shadow-xl transition-all max-h-screen max-w-screen min-w-112.5 relative'>
                 {requesting_organization && (
                   <DialogContents
                     requesting_organization={requesting_organization}

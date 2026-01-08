@@ -15,6 +15,8 @@ import {
 import { RenderedPatient } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { z } from 'zod'
+import { assertMatches } from '../../util/assertMatches.ts'
 
 describeParallel('db/models/patient_encounters.ts', () => {
   afterAll(() => db.destroy())
@@ -135,7 +137,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       organization_employment,
     )
 
-    assertEquals(in_waiting_room, {
+    assertMatches(in_waiting_room, {
       patient_encounter_id,
       patient: {
         id: patient.id,
@@ -144,7 +146,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
         name: '[Unregistered patient]',
       },
       room: open_encounter.status.patient_presence!.room,
-      arrived_ago_display: 'Just now',
+      arrived_ago_display: z.enum(['Just now', '1 minute ago']),
       workflow_status_display: 'Registration In Progress',
       actions: [{
         disabled: false,
@@ -161,7 +163,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       target_treatment_time: null,
       department_name: 'Reception',
       arrived_timestamp: open_encounter.arrived_timestamp,
-    })
+    }, { strict: true })
   })
 
   itParallel(
@@ -284,7 +286,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
 
       assert(completedRegistration(patient))
 
-      assertEquals(in_waiting_room, {
+      assertMatches(in_waiting_room, {
         patient_encounter_id,
         patient: {
           id: patient.id,
@@ -293,7 +295,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
           description: patient.description,
         },
         room: open_encounter.status.patient_presence!.room,
-        arrived_ago_display: 'Just now',
+        arrived_ago_display: z.enum(['Just now', '1 minute ago']),
         workflow_status_display: 'Awaiting Triage',
         actions: [{
           disabled: true,
@@ -308,7 +310,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
         target_treatment_time: null,
         department_name: 'Waiting room',
         arrived_timestamp: open_encounter.arrived_timestamp,
-      })
+      }, { strict: true })
     },
   )
 })

@@ -10,7 +10,7 @@ import { getPatientLastConversationState } from '../../../../../../../db/models/
 import generateUUID from '../../../../../../../util/uuid.ts'
 import randomNationalId from '../../../../../../../mocks/randomNationalId.ts'
 import randomPhoneNumber from '../../../../../../../mocks/randomPhoneNumber.ts'
-import { mockWhatsApp } from '../../../../../mockWhatsApp.ts'
+import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
 import randomDemographics from '../../../../../../../mocks/randomDemographics.ts'
 
 describe('patient chatbot', () => {

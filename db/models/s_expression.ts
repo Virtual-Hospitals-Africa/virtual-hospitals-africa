@@ -6,11 +6,12 @@ import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
 import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
-import { AnyNode, EventValue, Lang } from '../../shared/s_expression_schemas.ts'
+import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import {
   ATTRIBUTE,
   CLINICAL_FINDING,
+  EVENT,
   QUALIFIER_VALUE,
   STATUS_ATTRIBUTE,
   YES_QUALIFIER,
@@ -72,7 +73,7 @@ function baseQuery(
     exact?: boolean
   },
 ) {
-  let query = trx.selectFrom('patient_records')
+  const query = trx.selectFrom('patient_records')
     .where('patient_id', '=', patient_id)
     .where(
       'patient_records.id',
@@ -130,8 +131,8 @@ function baseQuery(
     )
     .select('patient_records.id')
 
-  for (const qualifier of qualifiers) {
-    query = query.where(
+  const with_qualifiers: typeof query = qualifiers.reduce((qb, qualifier) => (
+    qb.where(
       'patient_records.id',
       'in',
       EXPRESSION_BUILDERS.qualifier(trx, {
@@ -141,53 +142,53 @@ function baseQuery(
         .clearSelect()
         .select('patient_record_qualifiers.qualifies_record_id'),
     )
-  }
+  ), query)
 
-  for (const attribute of attributes) {
-    // Event-type attribute values are not queryable in SNOMED relationships
-    const snomedValue = attribute.value && attribute.value.type !== 'event'
-      ? attribute.value
-      : null
-    query = query.where((eb) =>
+  return attributes.reduce((qb, attribute): typeof query => {
+    const attribute_query = EXPRESSION_BUILDERS.attribute(trx, {
+      patient_id,
+      patient_encounter_id,
+    }, attribute)
+      .clearSelect()
+      .select('patient_record_qualifiers.qualifies_record_id')
+
+    const { value } = attribute
+
+    if (value.type === 'event') {
+      return qb.where(
+        'patient_records.id',
+        'in',
+        attribute_query,
+      )
+    }
+
+    return qb.where((eb) =>
       eb.or([
-        eb(
-          'patient_records.id',
-          'in',
-          EXPRESSION_BUILDERS.attribute(trx, {
-            patient_id,
-            patient_encounter_id,
-          }, attribute)
-            .clearSelect()
-            .select('patient_record_qualifiers.qualifies_record_id'),
+        eb('patient_records.id', 'in', attribute_query),
+        eb.exists(
+          trx.selectFrom('snomed_relationship')
+            .where('snomed_relationship.active', '=', true)
+            .where(
+              'snomed_relationship.type_id',
+              '=',
+              snomedConceptBase(trx, attribute.specific_snomed_concept),
+            )
+            .where(
+              'snomed_relationship.source_id',
+              '=',
+              eb.ref('patient_records.specific_snomed_concept_id'),
+            )
+            .where(
+              sql<
+                boolean
+              >`is_descendant(snomed_relationship.destination_id, ${
+                snomedConceptBase(trx, value)
+              }::bigint)`,
+            ),
         ),
-        snomedValue
-          ? eb.exists(
-            trx.selectFrom('snomed_relationship')
-              .where('snomed_relationship.active', '=', true)
-              .where(
-                'snomed_relationship.type_id',
-                '=',
-                snomedConceptBase(trx, attribute.specific_snomed_concept),
-              )
-              .where(
-                'snomed_relationship.source_id',
-                '=',
-                eb.ref('patient_records.specific_snomed_concept_id'),
-              )
-              .where(
-                sql<
-                  boolean
-                >`is_descendant(snomed_relationship.destination_id, ${
-                  snomedConceptBase(trx, snomedValue)
-                }::bigint)`,
-              ),
-          )
-          : sql<boolean>`false`,
       ])
     )
-  }
-
-  return query
+  }, with_qualifiers)
 }
 
 export const satisfyingSExpression = deduplicate(
@@ -383,22 +384,15 @@ const EXPRESSION_BUILDERS = {
     { patient_id, patient_encounter_id },
     { specific_snomed_concept, value },
   ) {
-    // Only snomed_concept values are queryable (not event values)
-    function isEventValue(
-      v: Lang['snomed_concept'] | EventValue,
-    ): v is EventValue {
-      return v.type === 'event'
-    }
-    const value_snomed_concept = value && !isEventValue(value) ? value : null
-    return baseQuery(trx, {
+    const matches_attr = baseQuery(trx, {
       patient_id,
       patient_encounter_id,
-      value_snomed_concept,
       specific_snomed_concept,
+      value_snomed_concept: value.type === 'event' ? undefined : value,
       root_snomed_concept: {
         atom: 'snomed_concept',
         type: 'snomed_concept_id',
-        id: ATTRIBUTE.id,
+        id: value.type === 'event' ? EVENT.id : ATTRIBUTE.id,
       },
     })
       .innerJoin(
@@ -406,6 +400,18 @@ const EXPRESSION_BUILDERS = {
         'patient_records.id',
         'patient_record_qualifiers.id',
       )
+
+    if (value.type !== 'event') {
+      return matches_attr
+    }
+
+    return matches_attr
+      .innerJoin(
+        'patient_events',
+        'patient_events.id',
+        'patient_record_qualifiers.id',
+      )
+      .where('patient_events.datetime', '=', new Date(value.datetime))
   },
   not(trx, { patient_id, patient_encounter_id }, { expression }) {
     return baseQuery(trx, {
@@ -462,7 +468,7 @@ const EXPRESSION_BUILDERS = {
       trx,
       patient,
       parseExpression(`
-        (or (finding ${CLINICAL_FINDING.id} ${snomed_concept_s_expression})
+        (or (finding ${CLINICAL_FINDING.lang} ${snomed_concept_s_expression})
             (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
       `),
     )

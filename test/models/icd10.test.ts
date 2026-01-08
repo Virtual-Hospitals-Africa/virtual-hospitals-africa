@@ -13,7 +13,7 @@
 // describe('db/models/icd10.ts', () => {
 // afterAll(() => db.destroy())
 //   describe('search', () => {
-//     itUsesTrxAnd.only(
+//     itUsesTrxAnd(
 //       'can return sane results, even with a misspelling',
 //       async (trx) => {
 //         const results = await searchTree(trx, {
