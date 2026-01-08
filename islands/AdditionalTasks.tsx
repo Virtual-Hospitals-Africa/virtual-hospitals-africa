@@ -1,15 +1,17 @@
+import { assert } from 'std/assert/assert.ts'
 import { MostRecentFinding } from '../components/library/MostRecentFinding.tsx'
-import type { TaskGroup } from '../types.ts'
+import type { CheckForTask, RecordValueSExpression, RenderedTask, TaskGroup } from '../types.ts'
 import assertLength from '../util/assertLength.ts'
+import partition from '../util/partition.ts'
+import { YesNoGrid, YesNoQuestion } from './form/inputs/yes_no.tsx'
+import { HiddenInput } from '../components/library/HiddenInput.tsx'
 
 function TaskCheckbox({
-  group_index,
   task,
 }: {
-  group_index: number
-  task: TaskGroup['tasks'][number]
+  task: RenderedTask
 }) {
-  const name = `tasks.${group_index}.${task.procedure.record_id}`
+  const name = `tasks.${task.procedure.record_id}`
 
   console.log('task.procedure', task.procedure)
 
@@ -36,16 +38,55 @@ function TaskCheckbox({
   )
 }
 
+function isCheckFor(task: RenderedTask): task is CheckForTask {
+  return task.procedure.value?.type === 's_expression'
+}
+
+function CheckForTaskInput({
+  task,
+}: {
+  task: CheckForTask
+}) {
+  assert(task.procedure.displays.value)
+  const name = `check_for.${task.procedure.record_id}`
+
+  // Parse the current value from the s-expression if it exists
+  let value: 'Yes' | 'No' | 'Unknown' | undefined
+  if (task.completed && task.procedure.value) {
+    // Extract the value from the s-expression
+    // The s-expression contains qualifiers that tell us if something was found or not
+    const sexp = task.procedure.value.s_expression
+    if (sexp.includes('(qualifier 410515003)')) { // Known present
+      value = 'Yes'
+    } else if (sexp.includes('(qualifier 410516002)')) { // Known absent
+      value = 'No'
+    } else if (sexp.includes('(qualifier 261665006)')) { // Unknown
+      value = 'Unknown'
+    }
+  }
+
+  return (
+    <>
+      <HiddenInput name={`${name}.s_expression`} value={task.procedure.value.s_expression}></HiddenInput>
+      <YesNoQuestion
+        name={`${name}.existence`}
+        value={value}
+        label={task.procedure.displays.value}
+      />
+    </>
+  )
+}
+
 function TaskGroupCard({
   group,
-  group_index,
   organization_id,
 }: {
   group: TaskGroup
-  group_index: number
   organization_id: string
 }) {
   assertLength(group.due_to, 1)
+
+  const [check_for_tasks, just_do_it_tasks] = partition(group.tasks, isCheckFor)
 
   return (
     <div class='flex flex-col gap-4 p-4 md:p-6 rounded-xl border border-gray-200 bg-white'>
@@ -53,25 +94,41 @@ function TaskGroupCard({
       <div class='flex items-start justify-between'>
         <div class='flex flex-col gap-1'>
           <p class='text-sm leading-5'>
-            <span class='font-semibold text-gray-600'>Due to:</span>
+            <span class='font-semibold text-gray-600'>Due to: </span>
+            {group.due_to.map(finding => (
             <MostRecentFinding
-              finding={group.due_to[0]}
+              key={finding.record_id}
+              finding={finding}
               organization_id={organization_id}
             />
+            ))}
           </p>
         </div>
       </div>
 
-      {/* Tasks */}
-      <div class='flex flex-col gap-2'>
-        {group.tasks.map((task) => (
-          <TaskCheckbox
-            key={task.procedure.record_id}
-            group_index={group_index}
-            task={task}
-          />
-        ))}
-      </div>
+      {/* Check-for Tasks (YesNoGrid) */}
+      {check_for_tasks.length > 0 && (
+        <YesNoGrid>
+          {check_for_tasks.map((task) => (
+            <CheckForTaskInput
+              key={task.procedure.record_id}
+              task={task}
+            />
+          ))}
+        </YesNoGrid>
+      )}
+
+      {/* Just-do-it Tasks (Checkboxes) */}
+      {just_do_it_tasks.length > 0 && (
+        <div class='flex flex-col gap-2'>
+          {just_do_it_tasks.map((task) => (
+            <TaskCheckbox
+              key={task.procedure.record_id}
+              task={task}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -160,9 +217,6 @@ export default function AdditionalTasks({
 
   return (
     <div class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
-      <a href='/medical-resources/adult-primary-care.pdf#page=132'>
-        FOEIWELW
-      </a>
       <ProgressHeader
         completed_count={completed_tasks}
         total_count={total_tasks}
@@ -173,7 +227,6 @@ export default function AdditionalTasks({
           <TaskGroupCard
             key={index}
             group={group}
-            group_index={index}
             organization_id={organization_id}
           />
         ))}
