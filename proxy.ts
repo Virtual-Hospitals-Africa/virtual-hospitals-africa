@@ -2,8 +2,7 @@ import {
   readBooleanEnvironmentVariable,
   readPositiveIntegerEnvironmentVariable,
 } from './util/env.ts'
-import { onProduction } from './util/onProduction.ts'
-import { opts as db_opts } from './db/db.ts'
+import { onProduction, opts as db_opts } from './db/db.ts'
 import { bgRgb8, bold, cyan, rgb8 } from 'std/fmt/colors.ts'
 
 const VERBOSE = readBooleanEnvironmentVariable('VERBOSE')

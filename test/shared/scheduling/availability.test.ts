@@ -4,7 +4,7 @@ import { TimeWindow } from '../../../types.ts'
 import {
   overlaps,
   windowsOverlap,
-} from '../../../shared/scheduling/availability.tsx'
+} from '../../../backend/scheduling/availability.tsx'
 
 describe('availability', () => {
   describe('windowsOverlap', () => {

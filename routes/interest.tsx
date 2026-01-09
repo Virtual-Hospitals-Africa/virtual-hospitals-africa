@@ -1,4 +1,4 @@
-import { parseRequestAsserts } from '../util/parseForm.ts'
+import { parseRequestAsserts } from '../backend/parseForm.ts'
 import * as slack from '../external-clients/slack.ts'
 import redirect from '../util/redirect.ts'
 import { assertOr400 } from '../util/assertOr.ts'

@@ -11,7 +11,7 @@ import {
   setPrimaryDoctor,
   setUnregisteredPrimaryDoctor,
 } from '../../../../../../../../db/models/patient_primary_care.ts'
-import { postHandler } from '../../../../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import * as patient_primary_care from '../../../../../../../../db/models/patient_primary_care.ts'
 import * as patient_insurance from '../../../../../../../../db/models/patient_insurance.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'

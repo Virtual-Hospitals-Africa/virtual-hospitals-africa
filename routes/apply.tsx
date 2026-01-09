@@ -5,7 +5,7 @@ import { json } from '../util/responses.ts'
 
 import FormRow from '../components/library/FormRow.tsx'
 import { TextInput } from '../islands/form/inputs/text.tsx'
-import { postHandler } from '../util/postHandler.ts'
+import { postHandler } from '../backend/postHandler.ts'
 import z from 'zod'
 
 export const handler = postHandler(

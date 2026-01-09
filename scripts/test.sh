@@ -6,9 +6,14 @@ fail() {
   exit 1
 }
 
+MAX_PARALLEL_TESTS=8
+parallel_opts="--parallel"
+
+# On CI builds set MAX_PARALLEL_TESTS=2
 # On non-CI builds ensure the .env matches either .env.local or .env.docker
 if [[ "${CI:-}" == "true" ]]; then
-  :
+  MAX_PARALLEL_TESTS=2
+  parallel_opts=""
 elif [ -f .env.local ] && [ -f .env.docker ]; then
   cmp --silent .env .env.local || cmp --silent .env .env.docker || fail $'.env differs from .env.local and .env.docker\nrun deno task switch:local before running tests'
 elif [ -f .env.local ]; then
@@ -85,13 +90,14 @@ run_tests() {
   DENO_TLS_CA_STORE=system \
   IS_TEST=true \
   HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
+  MAX_PARALLEL_TESTS=$MAX_PARALLEL_TESTS \
   deno test \
     -A \
     --unstable-temporal \
     --env \
     --unsafely-ignore-certificate-errors \
     --ignore=test/chatbot \
-    --parallel \
+    $parallel_opts \
     "$@"
 }
 

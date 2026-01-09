@@ -4,7 +4,7 @@ import {
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'

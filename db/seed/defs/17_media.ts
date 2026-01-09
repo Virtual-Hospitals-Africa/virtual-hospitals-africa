@@ -3,7 +3,8 @@ import { InsertShape } from '../../../types.ts'
 import { define } from '../define.ts'
 import range from '../../../util/range.ts'
 import { pMap } from '../../../util/inParallel.ts'
-import { padLeft } from '../../../util/pad.ts'
+import { predefinedAvatarMediaUUID } from '../../../backend/predefinedAvatarMediaUUID.ts'
+
 
 function* avatars() {
   for (const sex of ['female' as const, 'male' as const]) {
@@ -15,12 +16,6 @@ function* avatars() {
       }
     }
   }
-}
-
-export function predefinedAvatarMediaUUID(sex: 'male' | 'female', int: number) {
-  return `050f4d63-3cda-4571-a226-29a173eff${sex === 'male' ? '0' : '1'}${
-    padLeft(String(int), 2, '0')
-  }`
 }
 
 export default define(['media'], async (trx) => {

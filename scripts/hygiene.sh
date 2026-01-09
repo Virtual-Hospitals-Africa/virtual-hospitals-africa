@@ -32,7 +32,7 @@ rule_test_files_naming() {
 }
 
 rule_no_db_imports_in_frontend() {
-  ! rg -n --pcre2 "from ['\"].*db/" components islands
+  ! rg -n --pcre2 "from ['\"].*db/" components islands util shared
 }
 
 rule_no_only_in_tests() {

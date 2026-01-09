@@ -16,7 +16,7 @@
 // import * as nearest_organizations from './nearest_organizations.ts'
 
 // // import { getMany } from './providers.ts'
-// // import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
+// // import { getAllProviderAvailability } from '../../backend/scheduling/getProviderAvailability.ts'
 // import { promiseProps } from '../../util/promiseProps.ts'
 // import * as organizations from './organizations.ts'
 // import * as patients from './patients.ts'

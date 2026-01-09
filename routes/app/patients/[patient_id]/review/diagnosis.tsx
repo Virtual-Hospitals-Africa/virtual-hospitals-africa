@@ -1,7 +1,7 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 import { DiagnosesCollaboration, Diagnosis } from '../../../../../types.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import * as diagnoses from '../../../../../db/models/diagnoses.ts'

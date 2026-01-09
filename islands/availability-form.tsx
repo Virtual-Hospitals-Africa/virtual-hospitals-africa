@@ -9,7 +9,7 @@ import {
   findDaysWithOverlap,
   hours,
   minutes,
-} from '../shared/scheduling/availability.tsx'
+} from '../backend/scheduling/availability.tsx'
 import Form from '../components/library/Form.tsx'
 import {
   PlusIcon,

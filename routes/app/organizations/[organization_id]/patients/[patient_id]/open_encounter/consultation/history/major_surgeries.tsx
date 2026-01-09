@@ -2,7 +2,7 @@ import * as patient_conditions from '../../../../../../../../../db/models/patien
 import * as examinations from '../../../../../../../../../db/models/examinations.ts'
 import { z } from 'zod'
 import MajorSurgeriesForm from '../../../../../../../../../islands/major-surgeries/Form.tsx'
-import { parseRequest } from '../../../../../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
 import {
   completeAssessment,
   HistoryContext,

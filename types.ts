@@ -3771,3 +3771,11 @@ export type RegistrationPatientSummary = {
   past_medical_conditions: PastMedicalCondition[]
   major_surgeries: MajorSurgery[]
 }
+
+export type SearchResults<SearchTerms, RenderedResult> = {
+  page: number
+  rows_per_page: number
+  results: RenderedResult[]
+  has_next_page: boolean
+  search_terms: SearchTerms
+}

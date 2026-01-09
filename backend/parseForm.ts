@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
-import set from './set.ts'
 import { Maybe } from '../types.ts'
-import { assertOr400 } from './assertOr.ts'
-import deepRemoveHoles from './deepRemoveHoles.ts'
+import set from '../util/set.ts'
+import { assertOr400 } from '../util/assertOr.ts'
+import deepRemoveHoles from '../util/deepRemoveHoles.ts'
 
 type Primitive = string | number | boolean
 
