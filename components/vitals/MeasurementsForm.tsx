@@ -19,30 +19,31 @@ export function VitalsMeasurementsForm({
   most_recent_patient_vitals: RenderedFindingRelativeToHealthWorker[]
   organization_id: string
 }) {
-  assert(triage_assessments.length)
   assert(vital_measurements_for_this_encounter.length)
 
   return (
-    <div className='grid grid-cols-1 xl:grid-cols-2 gap-8'>
-      <div className='flex flex-col gap-4'>
-        <h2 className='text-lg font-semibold text-gray-900'>
-          Assessments
-        </h2>
-        {triage_assessments.map((assessment) => (
-          <DatabaseDrivenCategoricalInput
-            key={assessment.evaluation_snomed_concept_id}
-            assessment={assessment}
-            most_recent_patient_finding={most_recent_patient_vitals.find(
-              (patient_vital) =>
-                isAssessmentFor(
-                  patient_vital,
-                  assessment.evaluation_snomed_concept_id,
-                ),
-            )}
-            organization_id={organization_id}
-          />
-        ))}
-      </div>
+    <div className='grid grid-cols-1 gap-8 xl:grid-cols-2'>
+      {!!triage_assessments.length && (
+        <div className='flex flex-col gap-4'>
+          <h2 className='text-lg font-semibold text-gray-900'>
+            Assessments
+          </h2>
+          {triage_assessments.map((assessment) => (
+            <DatabaseDrivenCategoricalInput
+              key={assessment.evaluation_snomed_concept_id}
+              assessment={assessment}
+              most_recent_patient_finding={most_recent_patient_vitals.find(
+                (patient_vital) =>
+                  isAssessmentFor(
+                    patient_vital,
+                    assessment.evaluation_snomed_concept_id,
+                  ),
+              )}
+              organization_id={organization_id}
+            />
+          ))}
+        </div>
+      )}
 
       <div className='flex flex-col gap-4'>
         <h2 className='text-lg font-semibold text-gray-900'>

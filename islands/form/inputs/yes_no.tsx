@@ -67,7 +67,7 @@ export function YesNoGrid(
   { title, children }: { title: string; children: ComponentChildren },
 ) {
   return (
-    <div className='overflow-hidden border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-3 items-start pb-4'>
+    <div className='overflow-hidden border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-3 xl:gap-y-5 items-start pb-4'>
       <div className='text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-b border-gray-300 pl-4 py-4'>
         {title}
       </div>
