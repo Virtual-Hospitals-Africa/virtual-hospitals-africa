@@ -6,6 +6,7 @@ import {
 import VitalsMeasurementsInput from './VitalsMeasurementsInput.tsx'
 import DatabaseDrivenCategoricalInput from './DatabaseDrivenCategoricalInput.tsx'
 import { isAssessmentFor } from '../../shared/vitals.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export function VitalsMeasurementsForm({
   vital_measurements_for_this_encounter,
@@ -18,60 +19,48 @@ export function VitalsMeasurementsForm({
   most_recent_patient_vitals: RenderedFindingRelativeToHealthWorker[]
   organization_id: string
 }) {
-  const regular_vitals = vital_measurements_for_this_encounter
+  assert(triage_assessments.length)
+  assert(vital_measurements_for_this_encounter.length)
 
   return (
-    <div className='flex flex-col gap-4'>
-      {!!triage_assessments.length && (
-        <div className='border-b'>
-          <div className='mb-4'>
-            <h2 className='text-lg font-semibold text-gray-900'>
-              Assessments
-            </h2>
-          </div>
-          <div className='mb-2'>
-            <h3 className='text-base font-semibold text-gray-900'>
-              Triage Assessment (Required for TEWS Score)
-            </h3>
-          </div>
-          {triage_assessments.map((assessment) => (
-            <DatabaseDrivenCategoricalInput
-              key={assessment.evaluation_snomed_concept_id}
-              assessment={assessment}
-              most_recent_patient_finding={most_recent_patient_vitals.find(
-                (patient_vital) =>
-                  isAssessmentFor(
-                    patient_vital,
-                    assessment.evaluation_snomed_concept_id,
-                  ),
-              )}
-              organization_id={organization_id}
-            />
-          ))}
-        </div>
-      )}
+    <div className='grid grid-cols-1 xl:grid-cols-2 gap-8'>
+      <div className='flex flex-col gap-4'>
+        <h2 className='text-lg font-semibold text-gray-900'>
+          Assessments
+        </h2>
+        {triage_assessments.map((assessment) => (
+          <DatabaseDrivenCategoricalInput
+            key={assessment.evaluation_snomed_concept_id}
+            assessment={assessment}
+            most_recent_patient_finding={most_recent_patient_vitals.find(
+              (patient_vital) =>
+                isAssessmentFor(
+                  patient_vital,
+                  assessment.evaluation_snomed_concept_id,
+                ),
+            )}
+            organization_id={organization_id}
+          />
+        ))}
+      </div>
 
-      {regular_vitals.length && (
-        <>
-          <div className='mt-6 mb-2 pt-4'>
-            <h3 className='text-base font-semibold text-gray-900'>
-              Measurements
-            </h3>
-          </div>
-          {regular_vitals.map((vital) => (
-            <VitalsMeasurementsInput
-              key={vital.vital}
-              vital={vital}
-              most_recent_patient_finding={most_recent_patient_vitals.find(
-                (patient_vital) =>
-                  patient_vital.specific_snomed_concept.snomed_concept_id ===
-                    vital.snomed_concept_id,
-              )}
-              organization_id={organization_id}
-            />
-          ))}
-        </>
-      )}
+      <div className='flex flex-col gap-4'>
+        <h2 className='text-lg font-semibold text-gray-900'>
+          Measurements
+        </h2>
+        {vital_measurements_for_this_encounter.map((vital) => (
+          <VitalsMeasurementsInput
+            key={vital.vital}
+            vital={vital}
+            most_recent_patient_finding={most_recent_patient_vitals.find(
+              (patient_vital) =>
+                patient_vital.specific_snomed_concept.snomed_concept_id ===
+                  vital.snomed_concept_id,
+            )}
+            organization_id={organization_id}
+          />
+        ))}
+      </div>
     </div>
   )
 }

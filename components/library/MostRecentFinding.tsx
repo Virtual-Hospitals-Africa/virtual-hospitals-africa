@@ -1,3 +1,4 @@
+import { twMerge } from 'tailwind-merge'
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import {
   Existence,
@@ -8,7 +9,7 @@ import { cls } from '../../util/cls.ts'
 import { FindingPanel } from './FindingPanel.tsx'
 
 export function MostRecentFinding(
-  { finding, organization_id }: {
+  { finding, organization_id, className }: {
     finding: Maybe<
       (
         | RenderedFindingRelativeToHealthWorker
@@ -19,12 +20,13 @@ export function MostRecentFinding(
       }
     >
     organization_id: string
+    className?: string
   },
 ) {
   if (!finding) return null
   return (
     <span
-      className='relative text-gray-500 group pb-2'
+      className={twMerge('relative text-gray-500 group pb-2', className)}
       id={`most-recent-finding-${
         finding.pertaining_to_key || finding.record_id
       }`}

@@ -6,7 +6,7 @@ import {
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../util/postHandler.ts'
-import AdditionalTasks from '../../../../../../../../islands/AdditionalTasks.tsx'
+import AdditionalTasks from '../../../../../../../../components/triage/AdditionalTasks.tsx'
 import { getTasksGroups } from '../../../../../../../../db/models/additional_tasks.ts'
 import { yes_no_unknown } from '../../../../../../../../util/validators.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'

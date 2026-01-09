@@ -29,7 +29,7 @@ export default function AlcoholSection(
 
   return (
     <FormSection header='Alcohol Questions'>
-      <YesNoGrid>
+      <YesNoGrid title='question'>
         <YesNoQuestion
           name='lifestyle.alcohol.has_ever_drank'
           label='Has the patient ever drank alcohol?'

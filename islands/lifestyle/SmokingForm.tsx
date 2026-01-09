@@ -33,7 +33,7 @@ export default function SmokingSection(
 
   return (
     <FormSection header='Smoking Questions'>
-      <YesNoGrid>
+      <YesNoGrid title='question'>
         <YesNoQuestion
           name='lifestyle.smoking.has_ever_smoked'
           label='Has the patient ever smoked?'

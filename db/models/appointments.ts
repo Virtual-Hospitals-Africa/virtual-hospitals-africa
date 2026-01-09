@@ -316,7 +316,7 @@ function baseQuery(trx: TrxOrDb, opts: AppointmentQuery) {
   }
 
   if (opts.patient_id) {
-    q = q.where('appointments.patient_id', '=', 'patient_id')
+    q = q.whereRef('appointments.patient_id', '=', 'patient_id')
   }
 
   switch (opts.time_range) {

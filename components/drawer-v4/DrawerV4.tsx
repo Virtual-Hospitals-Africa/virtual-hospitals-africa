@@ -16,25 +16,21 @@ export default function PatientDrawerV4({
   return (
     <div
       id='patient-drawer'
-      className='bg-white box-border content-stretch flex flex-col gap-2.5 items-center justify-start p-4 relative size-full overflow-y-scroll'
+      className='bg-white box-border content-stretch flex flex-col gap-2.5 items-stretch justify-start relative size-full overflow-y-scroll w-84 h-full border-l border-gray-200'
     >
-      <div className='absolute border-[0px_0px_0px_1.5px] border-gray-200 border-solid inset-0 pointer-events-none shadow-[0px_60px_90px_0px_rgba(75,85,99,0.1)]' />
-      <div className='box-border content-stretch flex flex-col gap-6 items-center justify-start pb-20 pt-0 px-0 relative shrink-0'>
-        <div className='content-stretch flex flex-col gap-6 items-start justify-start relative shrink-0'>
-          <DrawerPatientCard
-            patient={patient}
-            priority={encounter.priority?.name}
-          />
-          <DrawerThisVisit
-            this_visit_findings={this_visit_findings}
-            encounter={encounter}
-            current_workflow_state={current_workflow_state}
-            organization_id={organization_id}
-          />
-          <DrawerHistory history={patient_history} />
-          <DrawerCareTeam care_team={care_team} />
-        </div>
-      </div>
+      <DrawerPatientCard
+        patient={patient}
+        organization_id={organization_id}
+        priority={encounter.priority?.name}
+      />
+      <DrawerThisVisit
+        this_visit_findings={this_visit_findings}
+        encounter={encounter}
+        current_workflow_state={current_workflow_state}
+        organization_id={organization_id}
+      />
+      <DrawerHistory history={patient_history} />
+      <DrawerCareTeam care_team={care_team} />
     </div>
   )
 }

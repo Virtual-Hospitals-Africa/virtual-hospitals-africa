@@ -214,7 +214,7 @@ function BriefHistorySection(
 ) {
   return (
     <FormSection header='Confirm Pre-existing Conditions'>
-      <YesNoGrid>
+      <YesNoGrid title='Condition'>
         {COMMON_CONDITIONS.map((condition) => (
           <CommonConditionRow
             key={condition.key}

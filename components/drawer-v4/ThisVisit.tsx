@@ -24,20 +24,24 @@ type DrawerThisVisitProps = Pick<
   | 'organization_id'
 >
 
+type RenderedSidebarWorkflowStep = {
+  workflow_step: string
+  title: string
+  status: 'not started' | 'in progress' | 'completed'
+  records: RenderedFindingRelativeToHealthWorker[]
+}
+
+type RenderedSidebarWorkflow = {
+  workflow: Workflow
+  status: 'not started' | 'incomplete' | 'in progress' | 'completed'
+  steps: RenderedSidebarWorkflowStep[]
+}
+
 // TODO: move to models?
 function groupRecordsByWorkflows(
   { this_visit_findings, encounter, current_workflow_state }:
     DrawerThisVisitProps,
-): {
-  workflow: Workflow
-  status: 'not started' | 'incomplete' | 'in progress' | 'completed'
-  steps: {
-    workflow_step: string
-    title: string
-    status: 'not started' | 'in progress' | 'completed'
-    records: RenderedFindingRelativeToHealthWorker[]
-  }[]
-}[] {
+): RenderedSidebarWorkflow[] {
   const records_by_procedure = groupBy(
     this_visit_findings,
     (record) =>
@@ -78,7 +82,7 @@ function groupRecordsByWorkflows(
             : 'not started' as const,
           records: records_of_concept,
         }
-      }),
+      }).filter((step) => step.status !== 'not started'),
     }
   }))
 
@@ -101,6 +105,57 @@ function groupRecordsByWorkflows(
   return grouped_records
 }
 
+function WorkflowStep(
+  { step, organization_id }: {
+    step: RenderedSidebarWorkflowStep
+    organization_id: string
+  },
+) {
+  return (
+    <div
+      key={step.workflow_step}
+      className='box-border content-stretch flex flex-col gap-1 items-start justify-start relative shrink-0 w-full'
+    >
+      <div className='content-stretch flex gap-2 items-center justify-center relative shrink-0'>
+        <p
+          className={`font-['Inter:Medium',sans-serif] font-medium leading-5 not-italic relative shrink-0 text-[14px] text-nowrap whitespace-pre ${
+            step.status === 'completed' ? 'text-gray-600' : 'text-[#959ca9]'
+          }`}
+        >
+          {step.title}
+        </p>
+        {step.status === 'in progress' && (
+          <p className="font-['Inter:Medium_Italic',sans-serif] font-medium italic leading-4 relative shrink-0 text-[#959ca9] text-[12px] text-nowrap whitespace-pre">
+            In Progress
+          </p>
+        )}
+      </div>
+      <RecordChips
+        records={step.records}
+        organization_id={organization_id}
+      />
+    </div>
+  )
+}
+
+function WorkflowX(
+  { workflow, organization_id }: {
+    workflow: RenderedSidebarWorkflow
+    organization_id: string
+  },
+) {
+  return (
+    <div>
+      {/* <h3 className='capitalize'>{workflow.workflow}</h3> */}
+      <div className='flex flex-col gap-2.5'>
+        {workflow.steps.map((step) => (
+          <WorkflowStep step={step} organization_id={organization_id} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // This Visit component showing encounter steps
 export function DrawerThisVisit(
   { this_visit_findings, encounter, current_workflow_state, organization_id }:
@@ -114,51 +169,12 @@ export function DrawerThisVisit(
   })
 
   return (
-    <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 w-92'>
-      <div className='content-stretch flex flex-col h-11.5 items-start justify-start relative shrink-0 w-full'>
-        <div className='box-border content-stretch flex gap-4 h-11.5 isolate items-center justify-start px-4 py-2 relative shrink-0 w-full'>
-          <h2 className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-5.5 not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-2">
-            This Visit
-          </h2>
-        </div>
-      </div>
-      {grouped_records.map((workflow_group) => (
-        <div>
-          <h3 className='capitalize'>{workflow_group.workflow}</h3>
-          {workflow_group.steps.map((step) => (
-            <div
-              key={step.workflow_step}
-              className='box-border content-stretch flex flex-col gap-2 items-start justify-start px-4 py-2 relative shrink-0 w-92'
-            >
-              <div className='box-border content-stretch flex flex-col gap-2 items-start justify-start pb-4 pt-0 px-0 relative shrink-0 w-85.5'>
-                <div className='content-stretch flex gap-2 items-center justify-center relative shrink-0'>
-                  <p
-                    className={`font-['Inter:Medium',sans-serif] font-medium leading-5 not-italic relative shrink-0 text-[14px] text-nowrap whitespace-pre ${
-                      step.status === 'completed'
-                        ? 'text-gray-600'
-                        : 'text-[#959ca9]'
-                    }`}
-                  >
-                    {step.title}
-                  </p>
-                  {step.status === 'in progress' && (
-                    <div className='relative flex items-start justify-start content-stretch shrink-0'>
-                      <div className='box-border content-stretch flex gap-2 items-center justify-start px-0 py-0.5 relative rounded-[60px] shrink-0 w-23.25'>
-                        <p className="font-['Inter:Medium_Italic',sans-serif] font-medium italic leading-4 relative shrink-0 text-[#959ca9] text-[12px] text-nowrap whitespace-pre">
-                          In Progress
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <RecordChips
-                  records={step.records}
-                  organization_id={organization_id}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 px-3 w-full'>
+      <h2 className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-5.5 not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-2 pb-1">
+        This Visit
+      </h2>
+      {grouped_records.map((workflow) => (
+        <WorkflowX workflow={workflow} organization_id={organization_id} />
       ))}
     </div>
   )

@@ -58,11 +58,7 @@ function AppLayoutContents({
           />
           <div className='pl-6 grow'>{children}</div>
         </section>
-        {drawer && (
-          <div className='h-full w-100 border-l border-gray-200'>
-            {drawer}
-          </div>
-        )}
+        {drawer}
       </div>
     </div>
   )

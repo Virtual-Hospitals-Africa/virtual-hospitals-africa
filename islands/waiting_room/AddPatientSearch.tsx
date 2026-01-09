@@ -61,6 +61,7 @@ export function AddPatientSearch({
       search_route='/app/patients'
       label=''
       Option={PatientOption}
+      placeholder='Search existing patients'
     />
   )
 }

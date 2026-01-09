@@ -1,5 +1,6 @@
 import { CLINICAL_FINDING, PROCEDURE } from './snomed_concepts.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
+import { CheckForTask, RenderedTask } from '../types.ts'
 
 function asTask(task_s_expression: string) {
   return parseExpressionExpectingAtom(
@@ -22,22 +23,26 @@ export const TASKS = [
       (snomed_concept "Chest pain" "finding"))
     (check_for
       (finding ${CLINICAL_FINDING.lang} (snomed_concept "Nausea" "finding"))))`,
-  // `(task
-  //   (finding ${CLINICAL_FINDING.lang}
-  //     (snomed_concept "Chest pain" "finding"))
-  //   (check_for
-  //     (finding ${CLINICAL_FINDING.lang} (snomed_concept "Vomiting" "finding"))))`,
-  // `(task
-  //   (finding ${CLINICAL_FINDING.lang}
-  //     (snomed_concept "Chest pain" "finding"))
-  //   (check_for
-  //     (finding ${CLINICAL_FINDING.lang} (snomed_concept "Pallor of skin of face" "finding"))))`,
-  // `(task
-  //   (finding ${CLINICAL_FINDING.lang}
-  //     (snomed_concept "Chest pain" "finding"))
-  //   (check_for
-  //     (finding ${CLINICAL_FINDING.lang} (snomed_concept "Sweating" "finding"))))`,
+  `(task
+    (finding ${CLINICAL_FINDING.lang}
+      (snomed_concept "Chest pain" "finding"))
+    (check_for
+      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Vomiting" "disorder"))))`,
+  `(task
+    (finding ${CLINICAL_FINDING.lang}
+      (snomed_concept "Chest pain" "finding"))
+    (check_for
+      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Pallor of skin of face" "finding"))))`,
+  `(task
+    (finding ${CLINICAL_FINDING.lang}
+      (snomed_concept "Chest pain" "finding"))
+    (check_for
+      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Sweating" "finding"))))`,
 ].map(asTask)
+
+export function isCheckFor(task: RenderedTask): task is CheckForTask {
+  return task.procedure.value?.type === 's_expression'
+}
 
 // TODO Separate function for permission around tasks
 // That is, put the task in for analgesia, but there's separate logic to

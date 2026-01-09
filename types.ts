@@ -31,6 +31,7 @@ import { type MessageTargetCategory } from './shared/message_targets.ts'
 import { type CommonConditionKey } from './shared/brief_history.ts'
 import { VitalAssessment, VitalMeasurement } from './shared/vitals.ts'
 import { WARNING_SIGNS } from './shared/warning_signs.ts'
+import { type Decimal } from './util/decimal.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -81,6 +82,7 @@ export type JsonSerializable =
 
 export type MostlyJsonSerializable =
   | Date // eh, dates are fine
+  | Decimal
   | JsonSerializable
   | MostlyJsonSerializable[]
   | { [key: string]: MostlyJsonSerializable }

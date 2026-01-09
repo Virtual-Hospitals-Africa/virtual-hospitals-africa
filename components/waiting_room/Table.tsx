@@ -20,7 +20,7 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Reason for visit',
     data(row) {
-      return row.reason ? capitalize(row.reason) : 'Reason not yet determined'
+      return row.reason ? capitalize(row.reason) : 'Undetermined'
     },
   },
   {

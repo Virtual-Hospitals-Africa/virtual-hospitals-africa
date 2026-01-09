@@ -9,8 +9,8 @@ import cls from '../../util/cls.ts'
 const size_styles = {
   sm: 'h-8 px-3 text-sm leading-6',
   md: 'h-9 px-4 text-base leading-6',
-  lg: 'h-10 px-5 text-base leading-6',
-  xl: 'h-11 px-6 text-base leading-6',
+  lg: 'h-10 px-5 text-lg leading-6',
+  xl: 'h-11 px-6 text-xl leading-6',
 }
 
 const variant_styles = {
@@ -67,7 +67,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   className = cls(
-    'inline-flex items-center tracking-tight focus:outline-none',
+    'inline-flex items-center tracking-tight focus:outline-none flex gap-1',
     variant_styles[variant],
     size_styles[size],
     variant !== 'ghost' && 'justify-center',
