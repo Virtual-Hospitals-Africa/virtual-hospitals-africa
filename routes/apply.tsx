@@ -1,7 +1,4 @@
-import { EmployedHealthWorker } from '../types.ts'
-import { PageProps } from 'fresh'
-import Layout from '../components/library/Layout.tsx'
-import { OrganizationAdmin } from '../db/models/employment.ts'
+import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import { json } from '../util/responses.ts'
@@ -11,11 +8,6 @@ import { TextInput } from '../islands/form/inputs/text.tsx'
 import { postHandler } from '../util/postHandler.ts'
 import z from 'zod'
 
-type PendingApprovalPageProps = {
-  health_worker: EmployedHealthWorker
-  organization_admin: OrganizationAdmin
-}
-
 export const handler = postHandler(
   z.object({}),
   (_ctx) => {
@@ -24,15 +16,9 @@ export const handler = postHandler(
   },
 )
 
-export default function ApplyPage(
-  props: PageProps<PendingApprovalPageProps>,
-) {
+export default function ApplyPage() {
   return (
-    <Layout
-      title='Virtual Hospitals Africa'
-      url={props.url}
-      variant='just logo'
-    >
+    <JustLogoLayout title='Virtual Hospitals Africa'>
       <div class='overflow-hidden bg-white py-32'>
         <div class='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>
           <div class='mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>
@@ -71,6 +57,6 @@ export default function ApplyPage(
           </div>
         </div>
       </div>
-    </Layout>
+    </JustLogoLayout>
   )
 }

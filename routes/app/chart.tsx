@@ -1,18 +1,11 @@
-import { Context } from 'fresh'
-import Layout from '../../components/library/Layout.tsx'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
 import { SparklinesExample } from '../../islands/SparklinesExample.tsx'
 
 // deno-lint-ignore require-await
-export default async function ICD10SearchPage(
-  ctx: Context<unknown>,
-) {
+export default async function ICD10SearchPage() {
   return (
-    <Layout
-      title='Virtual Hospitals Africa'
-      url={ctx.url}
-      variant='just logo'
-    >
+    <JustLogoLayout title='Virtual Hospitals Africa'>
       <SparklinesExample />
-    </Layout>
+    </JustLogoLayout>
   )
 }

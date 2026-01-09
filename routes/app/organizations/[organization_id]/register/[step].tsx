@@ -17,7 +17,7 @@ import {
 import NurseRegistrationForm from '../../../../../islands/nurse-registration-form.tsx'
 import { OrganizationContext } from '../_middleware.ts'
 import omit from '../../../../../util/omit.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
+import JustLogoLayout from '../../../../../components/library/JustLogoLayout.tsx'
 import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
 
 export type FormState =
@@ -147,11 +147,7 @@ export default async function RegisterPage(
   const step_state = get_nurse_registration_steps(ctx)
 
   return (
-    <Layout
-      variant='just logo'
-      title='Register as a nurse'
-      url={ctx.url}
-    >
+    <JustLogoLayout title='Register as a nurse'>
       <SectionHeader>
         Registration
       </SectionHeader>
@@ -160,6 +156,6 @@ export default async function RegisterPage(
         current_step={step_state.current_step}
         form_data={form_state}
       />
-    </Layout>
+    </JustLogoLayout>
   )
 }

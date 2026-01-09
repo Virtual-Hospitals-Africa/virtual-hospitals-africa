@@ -284,7 +284,7 @@ export default function CountrySelect({
       name={name}
       label={label}
       required={required}
-      value={value}
+      value={value || 'ZA'}
       blank_option={blank_option}
       onChange={onChange}
       options={COUNTRIES}

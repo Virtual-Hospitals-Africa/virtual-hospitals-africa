@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import Layout from '../../components/library/Layout.tsx'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
 import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as prescription_medications from '../../db/models/prescription_medications.ts'
@@ -62,11 +62,7 @@ export default async function PrescriptionPage(
     })
 
     return (
-      <Layout
-        title='Prescription'
-        url={ctx.url}
-        variant='just logo'
-      >
+      <JustLogoLayout title='Prescription'>
         <div className='flex items-center justify-center pt-20 pb-20 font-sans bg-gray-100'>
           <div
             className='p-5 bg-white'
@@ -161,7 +157,7 @@ export default async function PrescriptionPage(
             </div>
           </div>
         </div>
-      </Layout>
+      </JustLogoLayout>
     )
   })
 }

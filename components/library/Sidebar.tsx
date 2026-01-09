@@ -118,8 +118,8 @@ export function GenericSidebar(
   urlSearchParams.forEach((value, key) => all_params[key] = value)
   const active_link = matchActiveLink(nav_links, route)
   return (
-    <div className='fixed inset-y-0 z-40 hidden w-44 md:flex md:flex-col'>
-      <div className='flex flex-col flex-auto bg-white border-r border-gray-200 overflow-visible'>
+    <div className='inset-y-0 h-full w-44'>
+      <div className='flex flex-col flex-auto bg-white border-r border-gray-200 overflow-visible h-full'>
         <div
           style={{
             height: HEADER_HEIGHT_PX,

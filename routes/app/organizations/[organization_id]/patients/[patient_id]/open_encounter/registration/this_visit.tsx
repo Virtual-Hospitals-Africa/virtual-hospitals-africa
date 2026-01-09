@@ -164,8 +164,22 @@ export async function PatientRegistrationThisVisitPage(
       senior_health_worker_name={senior_health_worker_name}
       can_do_triage={can_do_triage}
       staff_availability={[
-        { name: 'Sarah Ndlovu', role: 'Nurse', activity: 'Assessing routine case', location: 'Patient room 2', estimated_minutes: 2, status: 'available_soon' },
-        { name: 'Nomsa Moyo', role: 'Nurse', activity: 'Initial assessment in progress', location: 'Patient Room 1', estimated_minutes: 8, status: 'busy' },
+        {
+          name: 'Sarah Ndlovu',
+          role: 'Nurse',
+          activity: 'Assessing routine case',
+          location: 'Patient room 2',
+          estimated_minutes: 2,
+          status: 'available_soon',
+        },
+        {
+          name: 'Nomsa Moyo',
+          role: 'Nurse',
+          activity: 'Initial assessment in progress',
+          location: 'Patient Room 1',
+          estimated_minutes: 8,
+          status: 'busy',
+        },
       ]}
     />
   )

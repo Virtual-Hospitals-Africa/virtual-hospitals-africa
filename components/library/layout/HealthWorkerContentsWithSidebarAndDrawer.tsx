@@ -20,11 +20,11 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
   }: HealthWorkerContentsWithSidebarAndDrawerProps<T>,
 ) {
   return (
-    <div className='max-w-screen h-screen flex flex-col overflow-hidden'>
+    <div className='max-w-screen h-screen flex flex-row overflow-hidden'>
       <AlertListener initial_url={url} />
       {sidebar}
       <div className='flex flex-row flex-1 overflow-hidden'>
-        <section className='flex flex-col flex-1 md:pl-48 overflow-hidden'>
+        <section className='flex flex-col flex-1 overflow-hidden'>
           <Header
             title={title}
             variant='home page'
