@@ -2,12 +2,6 @@
 # shellcheck disable=SC2329
 set -uo pipefail
 
-which rg > /dev/null || {
-  echo "Install ripgrep"
-  echo "$ brew install ripgrep"
-  exit 1
-}
-
 declare -A rules=(
   [rule_no_camel_case_const]="Found camelCase const declarations:"
   [rule_no_node_imports]="Found node imports:"
@@ -19,11 +13,11 @@ declare -A rules=(
 rule_no_camel_case_const() {
   # Note that we can ignore specific variable names like onClick at the front
   # and we can ignore functions/patterns that return functions at the back like const getById = model.getById
-  ! rg --pcre2 "const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! logArgsOnError)(?! deduplicate)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s"
+  ! rg -n --pcre2 "const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! logArgsOnError)(?! deduplicate)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s"
 }
 
 rule_no_node_imports() {
-  ! rg --pcre2 "from 'node:" --glob '!scripts/hygiene.sh'
+  ! rg -n --pcre2 "from 'node:" --glob '!scripts/hygiene.sh'
 }
 
 rule_test_files_naming() {
@@ -38,20 +32,28 @@ rule_test_files_naming() {
 }
 
 rule_no_db_imports_in_frontend() {
-  ! rg --pcre2 "from ['\"].*db/" components islands
+  ! rg -n --pcre2 "from ['\"].*db/" components islands
 }
 
 rule_no_only_in_tests() {
-  ! rg --pcre2 '\.only\(' test
+  ! rg -n --pcre2 '\.only\(' test
 }
 
 # Main: run all rules in parallel and collect results
 main() {
+
+  # Ensure ripgrep installed
+  which rg > /dev/null || {
+    echo "Install ripgrep"
+    echo "$ brew install ripgrep"
+    exit 1
+  }
+
   # Verify all non-main functions are registered
   local defined_fns
   defined_fns=$(declare -F | awk '{print $3}' | grep -v 'main')
   for fn in $defined_fns; do
-    if [[ -z "${rules[$fn]:-}" ]]; then
+    if ! [[ -v rules[$fn] ]]; then
       echo "ERROR: Rule function '$fn' has no entry in rules array"
       exit 1
     fi
@@ -64,26 +66,21 @@ main() {
   # Run each rule in background, capturing output to temp files
   local pids=()
   for rule in "${!rules[@]}"; do
-    (
-      if ! output=$($rule 2>&1); then
-        echo "$output" > "$tmpdir/$rule"
-        exit 1
-      fi
-    ) &
+    $rule > "$tmpdir/$rule" 2>&1 &
     pids+=($!)
   done
 
   # Wait for all and collect exit codes
   local failed=0
-  for i in "${!pids[@]}"; do
-    if ! wait "${pids[$i]}"; then
+  for pid in "${pids[@]}"; do
+    if ! wait "$pid"; then
       failed=1
     fi
   done
 
-  # Print output from any failed rules
+  # Print output from any failed rules (non-empty files)
   for rule in "${!rules[@]}"; do
-    if [[ -f "$tmpdir/$rule" ]]; then
+    if [[ -s "$tmpdir/$rule" ]]; then
       echo "${rules[$rule]}"
       cat "$tmpdir/$rule"
       echo

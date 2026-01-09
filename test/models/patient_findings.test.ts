@@ -249,7 +249,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       },
       'displays': {
         'finding': 'Time of onset',
-        'value': '2:51:18 am SAST | Monday, December 29, 2025', // Converted from EST (-05) to SAST (+02)
+        'value': '2:51:18 am SAST | Monday, December 29, 2025', // The display is converted from EST (-05) to SAST (+02)
         'full': 'Time of onset: 2:51:18 am SAST | Monday, December 29, 2025',
       },
       'created_at': z.iso.datetime({ offset: true }),
@@ -261,7 +261,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       },
       'value': {
         'type': 'event',
-        'datetime': '2025-12-28T19:51:18.275-05:00',
+        'datetime': '2025-12-28T19:51:18.275362-05:00', // The value in the DB has the same timezone as whatever was inserted
       },
     }, { strict: true })
   })

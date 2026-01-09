@@ -314,7 +314,7 @@ export const patient_findings = base({
             qb.insertInto('patient_events')
               .values({
                 id: attribute_id,
-                datetime: new Date(value.datetime),
+                datetime: value.datetime,
               }),
         ) as unknown as typeof query
       }

@@ -113,13 +113,10 @@ jobs:
         run: deno task db:migrate all
 
       - name: Run build
-        run: |
-          lsof vite.config.ts || echo "No processes have vite.config.ts open"
-          ps aux | grep -E "(deno|node|vite)" || true
-          deno task build
+        run: deno task build
 
       - name: Run tests
-        run: deno task test --use-build
+        run: deno task test --use-build test/models/patient_findings.test.ts
 
 
   test_chatbot:
@@ -173,10 +170,8 @@ jobs:
           key: git-lfs
           restore-keys: git-lfs
 
-      # TODO Turn this back on later. LFS expired 2025-12-18 because of a cache issue
-      # Certainly we will need this if we update SNOMED
-      # - name: Git lfs pull
-      #   run: git lfs pull
+      - name: Git lfs pull
+        run: git lfs pull
 
       - name: Deno install
         run: deno install --allow-scripts
@@ -194,7 +189,7 @@ jobs:
         run: deno task db:migrate all
 
       - name: Run tests
-        run: deno task test:chatbot test/chatbot/patient/find_nearest_organization/share_location.test.ts
+        run: deno task test:chatbot
 
   test_migrations:
     runs-on: ubuntu-latest
@@ -247,10 +242,8 @@ jobs:
           key: git-lfs
           restore-keys: git-lfs
 
-      # TODO Turn this back on later. LFS expired 2025-12-18 because of a cache issue
-      # Certainly we will need this if we update SNOMED
-      # - name: Git lfs pull
-      #   run: git lfs pull
+      - name: Git lfs pull
+        run: git lfs pull
 
       - name: Deno install
         run: deno install --allow-scripts

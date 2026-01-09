@@ -7,7 +7,7 @@ import {
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
-import { basename } from "std/path/mod.ts";
+import { basename } from 'std/path/mod.ts'
 import * as pdf from '../util/pdf.ts'
 import { delay } from '../util/delay.ts'
 
