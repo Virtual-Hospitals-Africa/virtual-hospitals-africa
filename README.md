@@ -6,6 +6,8 @@
 
 🛠️ Check out our [Engineering](https://virtualhospitalsafrica.notion.site/Engineering-bd877fee6c2f477e9f8b33550162304e?source=copy_link) documentation to learn how the system is architected and how to run it
 
+[![Made with Fresh](https://fresh.deno.dev/fresh-badge-dark.svg)](https://fresh.deno.dev)
+
 # Quickstart
 
 You'll need deno, docker, and git-lfs
