@@ -55,7 +55,6 @@ export const handler = {
   async POST(ctx: OpenEncounterWorkflowContext) {
     const req = ctx.req
     const data = await parseRequestAsserts(
-      ctx.state.trx,
       req,
       assertIsDiagnoses,
     )

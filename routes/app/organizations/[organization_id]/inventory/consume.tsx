@@ -33,7 +33,6 @@ export const handler = {
     const organization_id = ctx.state.organization.id
 
     const to_add = await parseRequestAsserts(
-      ctx.state.trx,
       req,
       assertIsUpsert,
     )

@@ -8,6 +8,7 @@ export type TrxContext = Context<
     trx: TrxOrDb
   }
 >
+
 export function attachTrx(
   ctx: TrxContext,
 ) {
@@ -19,18 +20,13 @@ export function attachTrx(
     return ctx.next()
   }
 
-  // TODO, when we ensure GETs are non-mutative, implement this
+  // TODO, make a separate read-replica connection for GETs when we ensure GETs are non-mutative, implement this
   // connecting to a read replica
-  // if (req.method === 'GET') {
-  //   ctx.state.trx = db
-  //   return ctx.next()
-  // }
+  if (ctx.req.method === 'GET') {
+    ctx.state.trx = db
+    return ctx.next()
+  }
 
-  return db
-    .transaction()
-    .setIsolationLevel('read committed')
-    .execute((trx) => {
-      ctx.state.trx = trx
-      return ctx.next()
-    })
+  ctx.state.trx = db
+  return ctx.next()
 }

@@ -25,20 +25,19 @@ export const get_nurse_registration_steps = getSteps(NurseRegistrationStepNames)
 
 export function getStepFormData(
   current_step: string,
-  trx: TrxOrDb,
+  _trx: TrxOrDb,
   req: Request,
 ) {
   switch (current_step) {
     case NurseRegistrationStepNames[0]:
-      return parseRequest(trx, req, PersonalFormFields.parse)
+      return parseRequest(req, PersonalFormFields.parse)
     case NurseRegistrationStepNames[1]:
       return parseRequest(
-        trx,
         req,
         ProfessionalInformationFields.parse,
       )
     case NurseRegistrationStepNames[2]:
-      return parseRequest(trx, req, DocumentsFormFields.parse)
+      return parseRequest(req, DocumentsFormFields.parse)
     default:
       throw new Error('No step found')
   }

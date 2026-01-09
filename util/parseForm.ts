@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import set from './set.ts'
-import * as media from '../db/models/media.ts'
-import { Maybe, TrxOrDb } from '../types.ts'
+import { Maybe } from '../types.ts'
 import { assertOr400 } from './assertOr.ts'
 import deepRemoveHoles from './deepRemoveHoles.ts'
 
@@ -53,7 +52,6 @@ function isBlank(form_data: Maybe<FormData>) {
 }
 
 export async function parseRequest<T extends Record<string, unknown>>(
-  trx: TrxOrDb,
   req: Request,
   parse: (obj: unknown) => T,
 ): Promise<T> {
@@ -94,18 +92,16 @@ export async function parseRequest<T extends Record<string, unknown>>(
 
   const parsed = parseFormWithoutFilesNoTypeCheck(values_map)
 
+  // We could write to a file instead of to memory. Either way, better than lugging around the db/trx just for this
   await Promise.all(
     Object.entries(files).map(async ([key, value]) => {
       const buffer = await value.arrayBuffer()
       const binary_data = new Uint8Array(buffer)
-      const inserted = await media.insert(trx, {
-        mime_type: value.type,
-        binary_data,
-      })
 
       set(parsed, key, {
-        ...inserted,
+        binary_data,
         name: value.name,
+        mime_type: value.type,
       })
     }),
   )
@@ -118,11 +114,10 @@ export async function parseRequest<T extends Record<string, unknown>>(
 }
 
 export function parseRequestAsserts<T extends Record<string, unknown>>(
-  trx: TrxOrDb,
   req: Request,
   typeCheck: (obj: unknown) => asserts obj is T,
 ): Promise<T> {
-  return parseRequest(trx, req, (obj) => {
+  return parseRequest(req, (obj) => {
     typeCheck(obj)
     return obj
   })

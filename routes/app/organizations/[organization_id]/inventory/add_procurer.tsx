@@ -27,7 +27,6 @@ export const handler = {
     const { organization_id } = ctx.params
 
     const to_upsert = await parseRequestAsserts(
-      ctx.state.trx,
       req,
       assertIsUpsertProcurer,
     )

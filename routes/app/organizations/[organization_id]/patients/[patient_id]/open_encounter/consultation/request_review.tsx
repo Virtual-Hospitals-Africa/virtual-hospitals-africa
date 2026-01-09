@@ -82,7 +82,6 @@ export const handler = {
     const { completing_step, made_request } = await promiseProps({
       completing_step: completeAndProceedToNextStep(ctx),
       made_request: parseRequest(
-        ctx.state.trx,
         req,
         PostSchema.parse,
       ).then(async (body) => {

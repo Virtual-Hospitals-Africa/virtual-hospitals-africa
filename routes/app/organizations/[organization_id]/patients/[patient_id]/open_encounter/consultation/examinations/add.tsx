@@ -18,7 +18,6 @@ export const handler = {
     const { trx, encounter, encounter_employee_presence } = ctx.state
 
     const form_values = await parseRequest(
-      trx,
       req,
       AddExaminationsSchema.parse,
     )

@@ -43,7 +43,6 @@ export const handler = {
     const { completing_assessment } = await promiseProps({
       completing_assessment: completeAssessment(ctx),
       upserting_findings: parseRequest(
-        ctx.state.trx,
         req,
         ExaminationFindingsSchema.parse,
       ).then((form_values) =>

@@ -13,7 +13,6 @@ export const handler = {
     const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
     const to_update = await parseRequest(
-      ctx.state.trx,
       req,
       pharmacists.parse_upsert,
     )
