@@ -1,4 +1,4 @@
-import { PageProps } from 'fresh'
+import { Context } from 'fresh'
 import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 import { Button } from '../components/library/Button.tsx'
 
@@ -9,16 +9,18 @@ import SelectWithOther from '../islands/SelectWithOther.tsx'
 import { TextInput } from '../islands/form/inputs/text.tsx'
 import { TextArea } from '../islands/form/inputs/textarea.tsx'
 
-export default function PartnerPage(
-  props: PageProps,
-) {
-  const entrypoint = props.url.searchParams.get('entrypoint') || 'general'
+// deno-lint-ignore require-await
+export default async function PartnerPage(ctx: Context<unknown>) {
+  const entrypoint = ctx.url.searchParams.get('entrypoint') || 'general'
 
   const already_know_role = entrypoint === 'health-workers' ||
     entrypoint === 'research'
 
   return (
-    <JustLogoLayout title='Schedule a demo | Virtual Hospitals Africa'>
+    <JustLogoLayout
+      url={ctx.url}
+      title='Schedule a demo | Virtual Hospitals Africa'
+    >
       <SideBySide
         image='https://live.staticflickr.com/8877/29095571713_eb20065354_b.jpg'
         h1='Schedule a demo'

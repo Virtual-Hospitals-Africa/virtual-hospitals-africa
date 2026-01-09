@@ -62,7 +62,7 @@ export default async function PrescriptionPage(
     })
 
     return (
-      <JustLogoLayout title='Prescription'>
+      <JustLogoLayout url={ctx.url} title='Prescription'>
         <div className='flex items-center justify-center pt-20 pb-20 font-sans bg-gray-100'>
           <div
             className='p-5 bg-white'

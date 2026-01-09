@@ -147,7 +147,7 @@ export default async function RegisterPage(
   const step_state = get_nurse_registration_steps(ctx)
 
   return (
-    <JustLogoLayout title='Register as a nurse'>
+    <JustLogoLayout url={ctx.url} title='Register as a nurse'>
       <SectionHeader>
         Registration
       </SectionHeader>
