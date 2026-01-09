@@ -25,9 +25,9 @@ export default function WaitingRoomView(
             type='submit'
             method='POST'
             action={`/app/organizations/${organization_id}/patients/start-registration`}
-            className='w-max h-full rounded-lg border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:leading-5 p-2 self-end whitespace-nowrap grid place-items-center'
+            className='w-max h-full rounded-lg border-0 text-gray-900  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:leading-5 p-2 self-end whitespace-nowrap grid place-items-center'
           >
-            <PlusIcon /> Register patient
+            <PlusIcon className='-ml-1' /> Register patient
           </Button>
         )}
       </FormRow>

@@ -230,7 +230,7 @@ export function HealthWorkerHomePageLayout<
         }
         drawer={drawer}
       >
-        {rendered}
+        <div className='px-4'>{rendered}</div>
       </HealthWorkerContentsWithSidebarAndDrawer>
     )
   }
