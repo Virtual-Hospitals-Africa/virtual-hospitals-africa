@@ -1,4 +1,4 @@
-import Layout from './Layout.tsx'
+import JustLogoLayout from './JustLogoLayout.tsx'
 import { Button } from './Button.tsx'
 
 import FormRow from './FormRow.tsx'
@@ -22,10 +22,8 @@ export default function ContactPage(
   const entrypoint = last(props.url.toString().split('/'))!
 
   return (
-    <Layout
+    <JustLogoLayout
       title={`${props.title} | Virtual Hospitals Africa`}
-      url={props.url}
-      variant='just logo'
     >
       <div class='overflow-hidden bg-white py-32'>
         <div class='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>
@@ -70,6 +68,6 @@ export default function ContactPage(
           </div>
         </div>
       </div>
-    </Layout>
+    </JustLogoLayout>
   )
 }

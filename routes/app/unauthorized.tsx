@@ -1,15 +1,11 @@
-import Layout from '../../components/library/Layout.tsx'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
 import { PageProps } from 'fresh'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
-export default function UnauthorizedPage(props: PageProps) {
+export default function UnauthorizedPage(_props: PageProps) {
   return (
-    <Layout
-      title='Virtual Hospitals Africa'
-      url={props.url}
-      variant='just logo'
-    >
+    <JustLogoLayout title='Virtual Hospitals Africa'>
       <main class='grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8'>
         <div class='text-center'>
           <PageHeader className='h1'>Unauthorized</PageHeader>
@@ -25,6 +21,6 @@ export default function UnauthorizedPage(props: PageProps) {
           </div>
         </div>
       </main>
-    </Layout>
+    </JustLogoLayout>
   )
 }

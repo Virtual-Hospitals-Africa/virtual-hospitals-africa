@@ -31,12 +31,14 @@ export function SexAndGenderInputs(
   const gender_options = useSignal(genderOptions(initial_values.sex))
 
   useSignalEffect(() => {
+    console.log('useSignalEffect', sex.value, gender.value)
     if (!sex.value) return
     gender_options.value = genderOptions(sex.value)
     if (gender_dirty.value) return
     gender.value = gender_options.value[0]
   })
 
+  console.log({ initial_values, x: gender.value })
   return (
     <>
       <SelectWithOptions
@@ -59,7 +61,7 @@ export function SexAndGenderInputs(
         placeholder='Gender'
         label='Gender'
         name='gender'
-        signal={gender}
+        value={initial_values.gender ?? undefined}
         onSelect={(value) => {
           gender.value = value ?? null
           gender_dirty.value = true

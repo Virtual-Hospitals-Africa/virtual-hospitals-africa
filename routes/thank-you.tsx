@@ -1,10 +1,9 @@
-import { PageProps } from 'fresh'
-import Layout from '../components/library/Layout.tsx'
+import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 
-export default function ThankYouPage(props: PageProps) {
+export default function ThankYouPage() {
   return (
-    <Layout title='Virtual Hospitals Africa' url={props.url} variant='empty'>
+    <JustLogoLayout title='Virtual Hospitals Africa'>
       <div />
-    </Layout>
+    </JustLogoLayout>
   )
 }

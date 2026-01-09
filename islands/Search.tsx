@@ -150,7 +150,10 @@ export default function Search<
     display_name: formatDisplay(query),
   } as unknown as T
   const all_options = [...options]
-  if (addable && query) {
+  if (
+    addable && query &&
+    (!just_name || !options.some((option) => option.name === query))
+  ) {
     all_options.push(add_option)
   }
 

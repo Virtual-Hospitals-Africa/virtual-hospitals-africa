@@ -29,7 +29,7 @@ function HeaderBase(
 ) {
   return (
     <nav
-      className="self-stretch justify-between items-center gap-2.5 text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10 flex flex-row w-full grow"
+      className="self-stretch justify-between items-center pl-4 gap-2.5 text-Netural-Colors-primary text-3xl font-bold font-['Inter'] leading-10 flex flex-row w-full grow"
       style={{
         height: HEADER_HEIGHT_PX,
         maxHeight: HEADER_HEIGHT_PX,

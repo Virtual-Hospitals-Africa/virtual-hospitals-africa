@@ -8,10 +8,11 @@ import * as cookie from '../../shared/cookie.ts'
 import { loginHref } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
-import Layout from '../../components/library/Layout.tsx'
 import { attachTrx } from '../../shared/attachTrx.ts'
 import { warning } from '../../util/alerts.ts'
 import db from '../../db/db.ts'
+import HealthWorkerContentsWithSidebarAndDrawer from '../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
+import { RegulatorHomePageSidebar } from '../../components/library/Sidebar.tsx'
 
 export default [
   ensureCookiePresent,
@@ -92,7 +93,7 @@ export function RegulatorHomePageLayout<
   return async function (
     ctx: Context,
   ) {
-    const { regulator } = ctx.state
+    // const { regulator } = ctx.state
     if (typeof title === 'function') {
       // deno-lint-ignore no-explicit-any
       render = title as any
@@ -122,16 +123,19 @@ export function RegulatorHomePageLayout<
     }
 
     return (
-      <Layout
-        variant='regulator home page'
+      <HealthWorkerContentsWithSidebarAndDrawer
         title={title as string}
-        route={ctx.route!}
         url={ctx.url}
-        regulator={regulator}
-        params={ctx.params}
+        sidebar={
+          <RegulatorHomePageSidebar
+            route={ctx.route!}
+            params={ctx.params || {}}
+            urlSearchParams={ctx.url.searchParams}
+          />
+        }
       >
         {rendered}
-      </Layout>
+      </HealthWorkerContentsWithSidebarAndDrawer>
     )
   }
 }

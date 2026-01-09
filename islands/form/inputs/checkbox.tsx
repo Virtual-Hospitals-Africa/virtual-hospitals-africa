@@ -32,7 +32,7 @@ export function CheckboxInput({
         type='checkbox'
         {...(name && { name })}
         className={cls(
-          'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600 shrink-0',
+          'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-0 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 shrink-0',
           disabled && 'bg-gray-300',
         )}
         required={required}
