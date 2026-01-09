@@ -19,6 +19,7 @@ fi
 
 HTTP_SERVER_PORT=8004
 HTTPS_PROXY_SERVER_PORT=8005
+https_proxy_server_pid=""
 
 mktemp_with_suffix() {
   local suffix="$1"
@@ -61,6 +62,7 @@ print_server_log_info() {
 }
 
 cleanup() {
+  kill $https_proxy_server_pid || true
   if [[ "${CI:-}" == "true" ]]; then
     echo "Server output:"
     cat "$test_http_server_output"
@@ -101,13 +103,9 @@ ensure_test_servers_not_already_running
 
 trap cleanup EXIT
 
-start_http_server &
-http_server_pid="$!"
-
 start_https_proxy_server &
-https_proxy_server="$!"
+https_proxy_server_pid="$!"
 
 print_server_log_info
 
-wait $http_server_pid
-wait $https_proxy_server
+start_http_server

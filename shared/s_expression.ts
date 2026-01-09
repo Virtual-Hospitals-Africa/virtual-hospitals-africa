@@ -1,3 +1,4 @@
+// @deno-types="../types/s-expression.d.ts"
 import s_expression from 's-expression'
 import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'

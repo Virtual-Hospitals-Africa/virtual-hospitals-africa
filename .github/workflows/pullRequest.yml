@@ -305,6 +305,9 @@ jobs:
           key: deno-modules
           restore-keys: deno-modules
 
+      - name: Deno install
+        run: deno install --allow-scripts
+
       - name: Compile chatbot
         run: deno task compile:chatbot
 
@@ -329,6 +332,9 @@ jobs:
           path: ~/.cache/deno
           key: deno-modules
           restore-keys: deno-modules
+
+      - name: Deno install
+        run: deno install --allow-scripts
 
       - name: Build web
         run: deno task build

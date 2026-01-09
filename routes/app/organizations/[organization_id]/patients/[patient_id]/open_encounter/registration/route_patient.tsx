@@ -21,7 +21,7 @@ import RegistrationRoutePatientSection from '../../../../../../../../components/
 import { success, warning } from '../../../../../../../../util/alerts.ts'
 // import { startWorkflow } from '../start-workflow.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import assert from 'assert'
+import { assert } from 'std/assert/assert.ts'
 // import { organization_rooms } from '../../../../../../../../db/models/organization_rooms.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { UpdateShape } from '../../../../../../../../types.ts'
