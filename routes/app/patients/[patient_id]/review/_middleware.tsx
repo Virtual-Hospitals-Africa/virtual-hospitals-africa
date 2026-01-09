@@ -1,7 +1,6 @@
 import { ComponentChildren, JSX } from 'preact'
 import { Context } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
-import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../components/library/Form.tsx'
 import * as doctor_reviews from '../../../../../db/models/doctor_reviews.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
@@ -14,6 +13,7 @@ import { LoggedInHealthWorkerContext } from '../../../../../types.ts'
 import { RenderedDoctorReview } from '../../../../../types.ts'
 import { replaceParams } from '../../../../../util/replaceParams.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
+import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 
 export type ReviewContext = LoggedInHealthWorkerContext<
   {
@@ -95,7 +95,7 @@ export function ReviewLayout({
   children,
 }: { ctx: ReviewContext; children: ComponentChildren }): JSX.Element {
   return (
-    <Layout
+    <HealthWorkerContentsWithSidebarAndDrawer
       title={capitalize(ctx.state.doctor_review.encounter.reason) + ' Review'}
       sidebar={
         <StepsSidebar
@@ -105,11 +105,10 @@ export function ReviewLayout({
         />
       }
       url={ctx.url}
-      variant='form'
     >
       <Form method='POST'>
         {children}
       </Form>
-    </Layout>
+    </HealthWorkerContentsWithSidebarAndDrawer>
   )
 }

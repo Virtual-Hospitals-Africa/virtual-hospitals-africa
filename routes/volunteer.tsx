@@ -1,5 +1,4 @@
-import { PageProps } from 'fresh'
-import Layout from '../components/library/Layout.tsx'
+import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 
 // import {
 //   CalendarDaysIcon,
@@ -147,15 +146,9 @@ import SideBySide from '../components/library/SideBySide.tsx'
 //   // },
 // ]
 
-export default function VolunteerPage(
-  props: PageProps,
-) {
+export default function VolunteerPage() {
   return (
-    <Layout
-      title='Volunteer Opportunities | Virtual Hospitals Africa'
-      url={props.url}
-      variant='just logo'
-    >
+    <JustLogoLayout title='Volunteer Opportunities | Virtual Hospitals Africa'>
       <SideBySide
         image='https://images.unsplash.com/photo-1670272502246-768d249768ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1152&q=80'
         h1='Volunteer Opportunities'
@@ -165,6 +158,6 @@ export default function VolunteerPage(
         </p>
         {/* {jobs.map((job) => <JobPost {...job} />)} */}
       </SideBySide>
-    </Layout>
+    </JustLogoLayout>
   )
 }

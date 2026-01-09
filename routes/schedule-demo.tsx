@@ -1,5 +1,5 @@
 import { PageProps } from 'fresh'
-import Layout from '../components/library/Layout.tsx'
+import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 import { Button } from '../components/library/Button.tsx'
 
 import FormRow from '../components/library/FormRow.tsx'
@@ -18,11 +18,7 @@ export default function PartnerPage(
     entrypoint === 'research'
 
   return (
-    <Layout
-      title='Schedule a demo | Virtual Hospitals Africa'
-      url={props.url}
-      variant='just logo'
-    >
+    <JustLogoLayout title='Schedule a demo | Virtual Hospitals Africa'>
       <SideBySide
         image='https://live.staticflickr.com/8877/29095571713_eb20065354_b.jpg'
         h1='Schedule a demo'
@@ -76,6 +72,6 @@ export default function PartnerPage(
           </FormRow>
         </Form>
       </SideBySide>
-    </Layout>
+    </JustLogoLayout>
   )
 }

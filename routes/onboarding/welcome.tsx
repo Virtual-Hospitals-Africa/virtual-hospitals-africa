@@ -1,4 +1,4 @@
-import Layout from '../../components/library/Layout.tsx'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
 import * as organizations from '../../db/models/organizations.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -96,15 +96,11 @@ export default async function OnboardingPage(
   })
 
   return (
-    <Layout
-      title='Virtual Hospitals Africa'
-      url={ctx.url}
-      variant='just logo'
-    >
+    <JustLogoLayout title='Virtual Hospitals Africa'>
       <Onboarding
         health_worker={ctx.state.health_worker}
         organizations={test_organizations.results}
       />
-    </Layout>
+    </JustLogoLayout>
   )
 }

@@ -4,9 +4,25 @@ import { EncounterReason } from '../../db.d.ts'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 import { VerticalRadioButtons } from '../library/VerticalRadioButtons.tsx'
 import compact from '../../util/compact.ts'
+import StaffAvailabilityColumn from './StaffAvailabilityColumn.tsx'
+
+type StaffMember = {
+  name: string
+  role: string
+  activity: string
+  location: string
+  estimated_minutes: number
+  status: 'available_soon' | 'busy' | 'unavailable'
+}
 
 export default function ThisVisitSection(
-  { this_visit, can_do_triage, patient_names, senior_health_worker_name }: {
+  {
+    this_visit,
+    can_do_triage,
+    patient_names,
+    senior_health_worker_name,
+    staff_availability,
+  }: {
     this_visit: {
       reason: Maybe<EncounterReason>
       notes?: Maybe<string>
@@ -14,11 +30,12 @@ export default function ThisVisitSection(
     patient_names: Names
     can_do_triage: boolean
     senior_health_worker_name: string
+    staff_availability: Array<StaffMember>
   },
 ) {
   return (
-    <>
-      <FormSection header='This Visit' className='max-w-150'>
+    <div className='flex gap-14 items-start w-full'>
+      <FormSection header='This Visit' className='max-w-250'>
         <VerticalRadioButtons
           name='next_workflow'
           defaultValue='continue_with_registration'
@@ -59,6 +76,9 @@ export default function ThisVisitSection(
           className='max-w-full pl-6'
         />
       </FormSection>
-    </>
+      {staff_availability.length > 0 && (
+        <StaffAvailabilityColumn staff={staff_availability} />
+      )}
+    </div>
   )
 }
