@@ -373,10 +373,34 @@ export function baseQuery(trx: TrxOrDb) {
                   '=',
                   'patient_encounters.id',
                 )
+                .where('employment_presence.with_patient_id', 'is not', null)
                 .select(
                   'patient_encounter_employees.id as patient_encounter_employee_id',
                 ),
             ).as('present_with_patient_encounter_employee_ids'),
+            jsonArrayFrom(
+              eb_patient_presence.selectFrom('employment_presence')
+                .innerJoin(
+                  'patient_encounter_employees',
+                  'employment_presence.id',
+                  'patient_encounter_employees.employment_id',
+                )
+                .whereRef(
+                  'employment_presence.with_patient_id',
+                  '=',
+                  'patient_presence.id',
+                )
+                .whereRef(
+                  'patient_encounter_employees.patient_encounter_id',
+                  '=',
+                  'patient_encounters.id',
+                )
+                .where('employment_presence.with_patient_id', 'is not', null)
+                .select([
+                  'patient_encounter_employees.id as patient_encounter_employee_id',
+                  'patient_encounter_employees.employment_id',
+                ]),
+            ).as('xyz'),
             jsonObjectFrom(
               eb_patient_presence.selectFrom('organization_rooms as room')
                 .whereRef(
@@ -630,6 +654,7 @@ const model = base({
       ...patient_encounter
     },
   ): RenderedPatientEncounter => {
+    console.log({ patient_presence })
     assert(organization)
     assertAll(
       all_employees_seen,

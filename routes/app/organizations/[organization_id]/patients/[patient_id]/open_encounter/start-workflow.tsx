@@ -12,6 +12,9 @@ import * as patient_workflows from '../../../../../../../db/models/patient_workf
 import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
+import * as patient_presence from '../../../../../../../db/models/patient_presence.ts'
+import { UpdateShape } from '../../../../../../../types.ts'
+import { DB } from '../../../../../../../db.d.ts'
 
 const StartWorkflowSchema = z.object({
   workflow: z.enum([
@@ -34,7 +37,7 @@ export async function startWorkflow<T>(
   const department_handling_workflow = WORKFLOW_DEPARTMENTS[workflow]
 
   const employed_in_department_handling_workflow = organization_employment
-    .departments.some(
+    .departments.find(
       (department) => department.name === department_handling_workflow,
     )
 
@@ -58,6 +61,7 @@ export async function startWorkflow<T>(
       (employee) => employee.employee_id === employment_id,
     )?.patient_encounter_employee_id || null
 
+  console.log('mwkelwke')
   await patient_workflows.start(
     trx,
     {
@@ -66,6 +70,17 @@ export async function startWorkflow<T>(
       existing_patient_encounter_employee_id,
       patient_workflow_id: workflow_status.patient_workflow_id,
     },
+  )
+
+  const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
+    current_workflow: workflow,
+    department_name: employed_in_department_handling_workflow.name,
+    next_workflow: null,
+  }
+  await patient_presence.set(
+    ctx.state.trx,
+    encounter.patient.id,
+    patient_presence_updates,
   )
 
   const first_incomplete_step = WORKFLOW_STEPS[workflow].find((s) => {

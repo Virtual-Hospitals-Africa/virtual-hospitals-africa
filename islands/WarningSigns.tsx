@@ -44,7 +44,7 @@ function KeyedWarningSignCheckbox(
 ) {
   const name = `warning_signs.${sign.key}`
   return (
-    <label class='flex gap-3 items-start cursor-pointer flex-1 p-3 min-w-0'>
+    <label class='flex gap-1.5 2xl:gap-3 py-2 2xl:py-3 items-start cursor-pointer flex-1 p-1 min-w-0'>
       <div class='pt-0.5'>
         <input
           id={hyphenate(name)}
@@ -52,20 +52,20 @@ function KeyedWarningSignCheckbox(
           name={name}
           value={sign.clinical_finding_s_expression}
           checked={!!sign.checked}
-          class='w-5 h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
+          class='w-4 h-4 2xl:w-5 2xl:h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
           onInput={(event) => onToggle(sign, event.currentTarget.checked)}
         />
       </div>
-      <label class='flex flex-col gap-1' for={name}>
-        <span class='text-sm font-medium text-gray-600 leading-5'>
+      <div class='flex flex-col gap-0.75 2xl:gap-1 pt-0.5'>
+        <span class='text-xs 2xl:text-sm font-medium text-gray-600 leading-4 2xl:leading-5'>
           {sign.sats_primary_name}
         </span>
         {sign.sats_secondary_text && (
-          <span class='text-xs text-gray-500 leading-4'>
+          <span class='text-[8pt] 2xl:text-xs text-gray-500 leading-3 2xl:leading-4'>
             {sign.sats_secondary_text}
           </span>
         )}
-      </label>
+      </div>
     </label>
   )
 }
@@ -79,21 +79,14 @@ function KeyedWarningSignsPriorityGrid({
   signs: CheckedWarningSign[]
   onToggle: OnToggle
 }) {
-  const columns = 5
-  const rows: CheckedWarningSign[][] = []
-
-  for (let i = 0; i < signs.length; i += columns) {
-    rows.push(signs.slice(i, i + columns))
-  }
-
   return (
     <div
-      class='flex flex-col w-full overflow-hidden rounded-xl border border-gray-200'
+      class='w-full overflow-hidden rounded-xl border border-gray-200'
       id={`priority-grid-${hyphenate(priority_config.priority)}`}
     >
       {/* Header */}
       <div
-        class='py-3 flex items-center justify-center'
+        class='py-1.5 2xl:py-3 flex items-center justify-center'
         style={{ backgroundColor: priority_config.header_bg }}
       >
         <span
@@ -104,23 +97,9 @@ function KeyedWarningSignsPriorityGrid({
         </span>
       </div>
       {/* Content rows */}
-      <div class='flex flex-col bg-white'>
-        {rows.map((row, rowIndex) => (
-          <div key={rowIndex} class='flex'>
-            {row.map((sign) => (
-              <div
-                key={sign.key}
-                class='flex-1 p-3 min-w-0'
-              >
-                <KeyedWarningSignCheckbox sign={sign} onToggle={onToggle} />
-              </div>
-            ))}
-            {/* Fill remaining columns with empty cells */}
-            {row.length < columns &&
-              Array.from({ length: columns - row.length }).map((_, i) => (
-                <div key={`empty-${i}`} class='flex-1 p-3 min-w-0' />
-              ))}
-          </div>
+      <div class='grid grid-cols-5 bg-white px-1 2xl:gap-4'>
+        {signs.map((sign) => (
+          <KeyedWarningSignCheckbox sign={sign} onToggle={onToggle} />
         ))}
       </div>
     </div>
@@ -203,7 +182,7 @@ export default function KeyedWarningSigns({
   )
 
   return (
-    <div class='flex flex-col gap-4 w-full'>
+    <div class='flex flex-col gap-2 2xl:gap-4 w-full'>
       <Search
         id='warning-signs-search'
         do_not_render_built_in_options
