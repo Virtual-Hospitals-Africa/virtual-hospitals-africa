@@ -1,9 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
-import { MostRecentFinding } from '../components/library/MostRecentFinding.tsx'
-import type { CheckForTask, RenderedTask, TaskGroup } from '../types.ts'
-import partition from '../util/partition.ts'
-import { YesNoGrid, YesNoQuestion } from './form/inputs/yes_no.tsx'
-import { HiddenInput } from '../components/library/HiddenInput.tsx'
+import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
+import type { CheckForTask, RenderedTask, TaskGroup } from '../../types.ts'
+import partition from '../../util/partition.ts'
+import { HiddenInput } from '../library/HiddenInput.tsx'
+import { isCheckFor } from '../../shared/tasks.ts'
+import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
 
 function TaskCheckbox({
   task,
@@ -11,8 +12,6 @@ function TaskCheckbox({
   task: RenderedTask
 }) {
   const name = `just_do_it_tasks.${task.procedure.record_id}`
-
-  console.log('task.procedure', task.procedure)
 
   return (
     <label class='flex gap-4 items-center cursor-pointer p-4 rounded-lg border border-gray-300 bg-white hover:border-gray-400 transition-colors'>
@@ -35,10 +34,6 @@ function TaskCheckbox({
       </div>
     </label>
   )
-}
-
-function isCheckFor(task: RenderedTask): task is CheckForTask {
-  return task.procedure.value?.type === 's_expression'
 }
 
 function CheckForTaskInput({
@@ -75,6 +70,7 @@ function CheckForTaskInput({
         name={`${name}.existence`}
         value={value}
         label={task.procedure.displays.value}
+        required
       />
     </>
   )
@@ -90,12 +86,12 @@ function TaskGroupCard({
   const [check_for_tasks, just_do_it_tasks] = partition(group.tasks, isCheckFor)
 
   return (
-    <div class='flex flex-col gap-4 p-4 md:p-6 rounded-xl border border-gray-200 bg-white'>
+    <div class='flex flex-col gap-4'>
       {/* Header */}
       <div class='flex items-start justify-between'>
         <div class='flex flex-col gap-1'>
           <p class='text-sm leading-5'>
-            <span class='font-semibold text-gray-600'>Due to:</span>
+            <span class='font-semibold text-gray-600'>Due to:&nbsp;</span>
             {group.due_to.map((finding) => (
               <MostRecentFinding
                 key={finding.record_id}
@@ -109,7 +105,7 @@ function TaskGroupCard({
 
       {/* Check-for Tasks (YesNoGrid) */}
       {check_for_tasks.length > 0 && (
-        <YesNoGrid>
+        <YesNoGrid title='Findings'>
           {check_for_tasks.map((task) => (
             <CheckForTaskInput
               key={task.procedure.record_id}
@@ -223,15 +219,13 @@ export default function AdditionalTasks({
         total_count={total_tasks}
       />
 
-      <div class='flex flex-col gap-4'>
-        {task_groups.map((group, index) => (
-          <TaskGroupCard
-            key={index}
-            group={group}
-            organization_id={organization_id}
-          />
-        ))}
-      </div>
+      {task_groups.map((group, index) => (
+        <TaskGroupCard
+          key={index}
+          group={group}
+          organization_id={organization_id}
+        />
+      ))}
     </div>
   )
 }

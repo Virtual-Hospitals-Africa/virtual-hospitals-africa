@@ -211,7 +211,7 @@ export default function ExerciseSection(
   )
   return (
     <FormSection header='Exercise Questions'>
-      <YesNoGrid>
+      <YesNoGrid title='question'>
         <YesNoQuestion
           name='lifestyle.exercise.currently_exercises'
           label='Does the patient currently exercise?'

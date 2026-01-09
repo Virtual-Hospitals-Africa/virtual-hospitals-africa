@@ -67,6 +67,7 @@ import { HealthWorkerSidebarBottom } from '../../../../../../../components/libra
 import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
 import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
 import { PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
+import { ArrowRightIcon } from '../../../../../../../components/library/icons/heroicons/solid.tsx'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -458,16 +459,22 @@ export function OpenEncounterWorkflowLayout({
         : undefined}
     >
       <Form method='POST' className='h-full flex flex-col'>
-        <div className='pr-4 flex-1 overflow-y-auto pb-6'>
+        <div className='pr-4 flex-1 overflow-y-auto pb-6 flex flex-col gap-8'>
           {children}
         </div>
         <ButtonsContainer className='h-16 mt-auto flex flex-row items-center'>
           {buttons || (
             <Button
               type='submit'
-              className='flex-1 max-w-xl'
+              size='xl'
+              // className='flex-1 max-w-xl'
             >
-              {next_step_text || 'Next'}
+              {next_step_text || (
+                <span className='flex gap-2 items-center'>
+                  Next
+                  <ArrowRightIcon />
+                </span>
+              )}
             </Button>
           )}
         </ButtonsContainer>

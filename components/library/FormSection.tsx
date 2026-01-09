@@ -14,12 +14,15 @@ export default function Form(
   return (
     <section
       {...props}
-      className={cls('flex gap-2 md:gap-4 items-start w-full', className)}
+      className={cls(
+        'flex flex-col xl:flex-row gap-4 xl:gap-12 items-start w-full',
+        className,
+      )}
     >
-      <SectionHeader className='w-30 md:w-50 lg:w-71.25 shrink-0'>
+      <SectionHeader className='w-full xl:w-60'>
         {header}
       </SectionHeader>
-      <div className='flex flex-col gap-8 flex-1 min-w-0'>
+      <div className='flex flex-col gap-8 grow min-w-0 w-full'>
         {children}
       </div>
     </section>

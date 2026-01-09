@@ -17,10 +17,8 @@ export function YesNoQuestion({
   onChange?(value: Existence | null): void
 }) {
   return (
-    <div
-      className={`bg-white px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center`}
-    >
-      <div className='flex flex-col gap-2'>
+    <>
+      <div className='flex flex-col gap-0.5 pl-4'>
         <label for={name} className='text-sm font-medium text-gray-600'>
           {label}
           {required ? '*' : ''}
@@ -28,9 +26,8 @@ export function YesNoQuestion({
         {most_recent_finding}
       </div>
 
-      <div className='flex justify-center'>
+      <div className='flex justify-center align-top'>
         <input
-          id={name}
           name={name}
           type='radio'
           checked={value === 'Yes'}
@@ -40,9 +37,8 @@ export function YesNoQuestion({
           onChange={() => onChange?.('Yes')}
         />
       </div>
-      <div className='flex justify-center'>
+      <div className='flex justify-center align-top'>
         <input
-          id={name}
           name={name}
           type='radio'
           checked={value === 'No'}
@@ -52,9 +48,8 @@ export function YesNoQuestion({
           onChange={() => onChange?.('No')}
         />
       </div>
-      <div className='flex justify-center'>
+      <div className='flex justify-center align-top pr-4'>
         <input
-          id={name}
           name={name}
           type='radio'
           checked={value === 'Unknown'}
@@ -64,26 +59,26 @@ export function YesNoQuestion({
           onChange={() => onChange?.('Unknown')}
         />
       </div>
-    </div>
+    </>
   )
 }
 
-export function YesNoGrid({ children }: { children: ComponentChildren }) {
+export function YesNoGrid(
+  { title, children }: { title: string; children: ComponentChildren },
+) {
   return (
-    <div className='overflow-visible border border-b border-gray-300 rounded-lg'>
-      <div className='bg-indigo-50 border-b border-gray-300 px-4 py-4 grid grid-cols-[1fr_132px_132px_132px] gap-4 items-center'>
-        <div className='text-sm font-medium text-indigo-900'>
-          Conditions
-        </div>
-        <div className='text-sm font-medium text-center text-indigo-900'>
-          Yes
-        </div>
-        <div className='text-sm font-medium text-center text-indigo-900'>
-          No
-        </div>
-        <div className='text-sm font-medium text-center text-indigo-900'>
-          Unknown
-        </div>
+    <div className='overflow-hidden border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-3 items-start pb-4'>
+      <div className='text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-b border-gray-300 pl-4 py-4'>
+        {title}
+      </div>
+      <div className='text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'>
+        Yes
+      </div>
+      <div className='text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'>
+        No
+      </div>
+      <div className='text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4 pr-4'>
+        Unknown
       </div>
       {children}
     </div>
