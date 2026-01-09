@@ -48,7 +48,7 @@ export function DrawerPatientCard(
           priority_color.text,
         )}
       >
-        {priority || 'Priority to be determined'}
+        {priority || 'Undetermined'}
       </div>
     </div>
   )
