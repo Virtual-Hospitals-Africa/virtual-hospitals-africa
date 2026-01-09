@@ -1,6 +1,6 @@
 import { Combobox, ComboboxOption, ComboboxOptions } from '@headlessui/react'
 import { JSX } from 'preact'
-import { useRef, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
 import {
   CheckIcon,
@@ -169,6 +169,20 @@ export default function Search<
 
   const input_ref = useRef<HTMLInputElement>(null)
   const button_ref = useRef<HTMLButtonElement>(null)
+  const options_ref = useRef<HTMLDivElement>(null)
+  const prev_options_count = useRef(options.length)
+
+  // After loading more options, focus on the first new option
+  useEffect(() => {
+    const prev_count = prev_options_count.current
+    if (options.length > prev_count && options_ref.current) {
+      const new_option = options_ref.current.querySelector(
+        `[data-option-index="${prev_count}"]`,
+      ) as HTMLElement | null
+      new_option?.scrollIntoView({ block: 'nearest' })
+    }
+    prev_options_count.current = options.length
+  }, [options.length])
 
   return (
     <Combobox
@@ -309,21 +323,16 @@ export default function Search<
           {!do_not_render_built_in_options && !(skip_blank_search && !query) &&
             (
               <ComboboxOptions
-                onScroll={(event: Event) => {
-                  const target = event.currentTarget as HTMLElement
-                  const scrolled_to_bottom = target.scrollTop +
-                      target.clientHeight >=
-                    target.scrollHeight
-                  if (!scrolled_to_bottom) return
-                  if (loading_options) return
-                  loadMoreOptions?.()
-                }}
-                className='absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+                ref={options_ref}
+                key={options.length}
+                anchor={{ to: 'bottom start', padding: 8 }}
+                className='z-10 w-(--input-width) py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
               >
-                {all_options.map((option) => (
+                {all_options.map((option, index) => (
                   <ComboboxOption
                     key={option.id}
                     value={option}
+                    data-option-index={index}
                     className={({ focus }: { focus: boolean }) =>
                       cls(
                         'relative cursor-default select-none py-2 pl-3 pr-9',
@@ -391,6 +400,20 @@ export default function Search<
                     }}
                   </ComboboxOption>
                 ))}
+                {loadMoreOptions && !loading_options &&
+                  all_options.length > 0 && (
+                  <button
+                    type='button'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      loadMoreOptions()
+                    }}
+                    className='w-full cursor-pointer py-2 pl-3 pr-9 text-indigo-600 hover:bg-indigo-50 text-left'
+                  >
+                    Load more...
+                  </button>
+                )}
                 {loading_options && (
                   <div className='relative cursor-default select-none py-2 pl-3 pr-9 text-gray-500'>
                     <i className='ml-3'>

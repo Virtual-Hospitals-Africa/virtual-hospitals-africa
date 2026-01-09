@@ -73,7 +73,7 @@
 
 //   return (
 //     <>
-//       <YesNoGrid>
+//       <YesNoGrid title="question">
 //         <YesNoQuestion
 //           name='omit.patient_goes_to_school'
 //           label='Is the patient advancing their education?'

@@ -42,7 +42,7 @@ export default function SubstanceUseSection(
 
   return (
     <FormSection header='Substance Use Questions'>
-      <YesNoGrid>
+      <YesNoGrid title='question'>
         <YesNoQuestion
           name='lifestyle.substance_use.has_ever_used_substance'
           label='Has the patient ever used substances?'
@@ -95,7 +95,7 @@ export default function SubstanceUseSection(
       {substance_use.value.has_ever_used_substance === 'Yes' &&
         !!substance_use.value.substances_used.length &&
         substance_use.value.substances_used && (
-        <YesNoGrid>
+        <YesNoGrid title='question'>
           {substance_use.value.substances_used.map((substance, index) => (
             <>
               <div key={substance.name}></div>

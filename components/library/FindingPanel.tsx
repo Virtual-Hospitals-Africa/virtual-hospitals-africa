@@ -9,7 +9,7 @@ import {
   CalendarIcon,
   ChatBubbleLeftIcon,
   UserIcon,
-  XMarkIcon,
+  // XMarkIcon,
 } from './icons/heroicons/outline.tsx'
 
 export function FindingPanel(
@@ -30,11 +30,13 @@ export function FindingPanel(
               {finding.displays.full}
             </h3>
           </div>
-          <div className='flex gap-2'>
+          {
+            /* <div className='flex gap-2'>
             <button type='button' className='p-1 rounded-full'>
               <XMarkIcon className='w-3 h-3 text-gray-400' />
             </button>
-          </div>
+          </div> */
+          }
         </div>
 
         {/* Details section */}

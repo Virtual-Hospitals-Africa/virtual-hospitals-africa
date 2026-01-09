@@ -115,12 +115,11 @@ export function InternalInput({
             id={id}
             {...(name && { name })}
             className={cls(
-              'h-full block w-full bg-transparent px-4 py-1.5 outline-none placeholder:text-gray-400 sm:text-sm/6',
+              'h-full block w-full bg-transparent px-3 py-1.5 outline-none placeholder:text-gray-400 sm:text-sm/6',
               inputClassName,
               {
                 'pl-3': !!leftIcon,
                 'pr-3': !!rightIcon && !suffix,
-                'text-right': !!suffix,
               },
               errorText
                 ? 'text-red-900 dark:text-red-400 dark:placeholder:text-red-400/70'

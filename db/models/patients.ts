@@ -34,7 +34,9 @@ export const avatar_url_sql = sql<string | null>`
 
 export const description_sql = sql<string | null>`
   CASE 
-    WHEN NOT patients.completed_registration THEN NULL
+    WHEN patients.sex IS NULL THEN NULL
+    WHEN patients.gender IS NULL THEN NULL
+    WHEN patients.date_of_birth IS NULL THEN NULL
     WHEN (
       (patients.sex = 'female' AND patients.gender = 'woman') OR
       (patients.sex = 'male' AND patients.gender = 'man')
