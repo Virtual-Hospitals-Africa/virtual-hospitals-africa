@@ -1,9 +1,13 @@
-import { patient_conditions } from '../../../../../../../../../db/models/patient_conditions.ts'
-import { examinations } from '../../../../../../../../../db/models/examinations.ts'
+import * as patient_conditions from '../../../../../../../../../db/models/patient_conditions.ts'
+import * as examinations from '../../../../../../../../../db/models/examinations.ts'
 import { z } from 'zod'
 import MajorSurgeriesForm from '../../../../../../../../../islands/major-surgeries/Form.tsx'
 import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
-import { completeAssessment, HistoryContext, HistoryPage } from './_middleware.tsx'
+import {
+  completeAssessment,
+  HistoryContext,
+  HistoryPage,
+} from './_middleware.tsx'
 
 export const MajorSurgeriesSchema = z.object({
   major_surgeries: z.array(
@@ -30,8 +34,10 @@ export const handler = {
       {
         patient_id: ctx.state.patient.id,
         patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-        patient_encounter_employee_id: ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-        examination_identifier: ctx.state.current_assessment.examination_identifier,
+        patient_encounter_employee_id:
+          ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+        examination_identifier:
+          ctx.state.current_assessment.examination_identifier,
       },
     )
 

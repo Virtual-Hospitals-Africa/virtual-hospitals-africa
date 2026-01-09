@@ -1,12 +1,14 @@
-import { ensureCookiePresent, getLoggedInHealthWorker } from '../app/_middleware.tsx'
+import {
+  ensureCookiePresent,
+  getLoggedInHealthWorker,
+} from '../app/_middleware.tsx'
 import { PossiblyEmployedHealthWorker } from '../../types.ts'
 import { attachTrx, TrxContext } from '../../backend/attachTrx.ts'
-import { health_workers } from '../../db/models/health_workers.ts'
+import { isEmployed } from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
 
 export type OnboardingContext = TrxContext & {
   state: {
-    session_id: string
     health_worker: PossiblyEmployedHealthWorker
   }
 }
@@ -21,5 +23,5 @@ export const handler = [
 function redirectToAppIfEmployedAlready(
   ctx: OnboardingContext,
 ) {
-  return health_workers.isEmployed(ctx.state.health_worker) ? redirect('/app') : ctx.next()
+  return isEmployed(ctx.state.health_worker) ? redirect('/app') : ctx.next()
 }

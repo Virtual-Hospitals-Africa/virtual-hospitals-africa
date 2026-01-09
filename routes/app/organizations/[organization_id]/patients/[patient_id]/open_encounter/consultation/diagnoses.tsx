@@ -1,13 +1,20 @@
-import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import { DiagnosesCollaboration, Diagnosis } from '../../../../../../../../types.ts'
+import {
+  completeAndProceedToNextStep,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../_middleware.tsx'
+import {
+  DiagnosesCollaboration,
+  Diagnosis,
+} from '../../../../../../../../types.ts'
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../../../../islands/diagnoses/Form.tsx'
-import { diagnoses } from '../../../../../../../../db/models/diagnoses.ts'
+import * as diagnoses from '../../../../../../../../db/models/diagnoses.ts'
 import { parseRequestAsserts } from '../../../../../../../../backend/parseForm.ts'
 import isObjectLike from '../../../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
-// import { patient_symptoms } from '../../../../../../../../db/models/patient_symptoms.ts'
+// import * as patient_symptoms from '../../../../../../../../db/models/patient_symptoms.ts'
 
 type DiagnosisData = {
   diagnoses: Diagnosis[]

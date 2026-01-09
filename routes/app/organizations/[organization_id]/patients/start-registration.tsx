@@ -1,6 +1,6 @@
 import z from 'zod'
 import { assert } from 'std/assert/assert.ts'
-import { patient_registration } from '../../../../../db/models/patient_registration.ts'
+import * as patient_registration from '../../../../../db/models/patient_registration.ts'
 import { postHandler } from '../../../../../backend/postHandler.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import redirect from '../../../../../util/redirect.ts'
@@ -9,8 +9,9 @@ import { assertNoPresentEncounter } from '../../../../../db/models/patient_workf
 export const handler = postHandler(
   z.object({}),
   async (ctx: OrganizationContext) => {
-    const { trx, organization, present_encounter, organization_employment } = ctx.state
-    assertNoPresentEncounter(present_encounter, organization_employment)
+    const { trx, organization, present_encounter, organization_employment } =
+      ctx.state
+    assertNoPresentEncounter(present_encounter)
     const { success, patient_id } = await patient_registration.start(
       trx,
       organization,

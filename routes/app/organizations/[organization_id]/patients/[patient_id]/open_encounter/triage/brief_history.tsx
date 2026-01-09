@@ -8,17 +8,37 @@ import {
 import { z } from 'zod'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-import { YesNoGrid, YesNoQuestion } from '../../../../../../../../islands/form/inputs/yes_no.tsx'
+import {
+  YesNoGrid,
+  YesNoQuestion,
+} from '../../../../../../../../islands/form/inputs/yes_no.tsx'
+import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import { yes_no_unknown } from '../../../../../../../../util/validators.ts'
-import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
+import {
+  renderedMostRecentFindings,
+} from '../../../../../../../../db/models/brief_history.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
-import { Existence, Maybe, MostRecentBriefHistoryFindings, RenderedBriefHistoryRelativeToHealthWorker, Sex } from '../../../../../../../../types.ts'
+import {
+  Existence,
+  Maybe,
+  MostRecentBriefHistoryFindings,
+  RenderedBriefHistoryRelativeToHealthWorker,
+  Sex,
+} from '../../../../../../../../types.ts'
 import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
-import { COMMON_CONDITIONS, CommonCondition, CommonConditionKey, commonConditionSnomedConceptId } from '../../../../../../../../shared/brief_history.ts'
-import { SELF_REPORTED_QUALIFIER, STATUS_ATTRIBUTE } from '../../../../../../../../shared/snomed_concepts.ts'
+import {
+  COMMON_CONDITIONS,
+  CommonCondition,
+  CommonConditionKey,
+  commonConditionSnomedConceptId,
+} from '../../../../../../../../shared/brief_history.ts'
+import {
+  SELF_REPORTED_QUALIFIER,
+  STATUS_ATTRIBUTE,
+} from '../../../../../../../../shared/snomed_concepts.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
@@ -34,7 +54,7 @@ const ConditionSchemaRequired = z.object(
   },
 )
 
-export const TriageBriefHistorySchema = z.object(
+const TriageBriefHistorySchema = z.object(
   {
     diabetes: ConditionSchemaRequired,
     pregnancy: ConditionSchemaRequired,
@@ -55,7 +75,7 @@ export const TriageBriefHistorySchema = z.object(
 
 function mostRecentFindings({ state }: OpenEncounterWorkflowContext) {
   const { trx, encounter, patient_id, health_worker_id } = state
-  return brief_history.renderedMostRecentFindings(trx, {
+  return renderedMostRecentFindings(trx, {
     encounter,
     patient_id,
     health_worker_id,
@@ -93,10 +113,11 @@ export const handler = postHandler(
     return response
 
     async function insertBriefHistory() {
-      const { procedure: { procedure_id }, most_recent_findings } = await promiseProps({
-        procedure: createProcedureIfNotAlreadyCompleted(ctx),
-        most_recent_findings: mostRecentFindings(ctx),
-      })
+      const { procedure: { procedure_id }, most_recent_findings } =
+        await promiseProps({
+          procedure: createProcedureIfNotAlreadyCompleted(ctx),
+          most_recent_findings: mostRecentFindings(ctx),
+        })
 
       return forEach(
         entries(form_values),
@@ -120,10 +141,12 @@ export const handler = postHandler(
             )
           }
 
-          const prior_from_this_encounter = prior_matching_finding?.patient_encounter_id ===
-            patient_encounter_id
+          const prior_from_this_encounter =
+            prior_matching_finding?.patient_encounter_id ===
+              patient_encounter_id
 
-          const maybe_marking_prior_finding_in_error = prior_from_this_encounter &&
+          const maybe_marking_prior_finding_in_error =
+            prior_from_this_encounter &&
             markEnteredInError(trx, {
               patient_id,
               procedure_id,
@@ -161,7 +184,10 @@ function CommonConditionRow(
     organization_id: string
   },
 ) {
-  const value: Existence | undefined = !most_recent_finding && condition.key === 'pregnancy' && sex === 'male' ? 'No' : most_recent_finding?.existence
+  const value: Existence | undefined =
+    !most_recent_finding && condition.key === 'pregnancy' && sex === 'male'
+      ? 'No'
+      : most_recent_finding?.existence
 
   return (
     <YesNoQuestion
@@ -187,17 +213,19 @@ function BriefHistorySection(
   },
 ) {
   return (
-    <YesNoGrid title='Condition'>
-      {COMMON_CONDITIONS.map((condition) => (
-        <CommonConditionRow
-          key={condition.key}
-          condition={condition}
-          sex={sex}
-          organization_id={organization_id}
-          most_recent_finding={most_recent_findings[condition.key]}
-        />
-      ))}
-    </YesNoGrid>
+    <FormSection header='Confirm Pre-existing Conditions'>
+      <YesNoGrid title='Condition'>
+        {COMMON_CONDITIONS.map((condition) => (
+          <CommonConditionRow
+            key={condition.key}
+            condition={condition}
+            sex={sex}
+            organization_id={organization_id}
+            most_recent_finding={most_recent_findings[condition.key]}
+          />
+        ))}
+      </YesNoGrid>
+    </FormSection>
   )
 }
 

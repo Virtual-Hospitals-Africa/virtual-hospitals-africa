@@ -1,6 +1,6 @@
 import redirect from '../util/redirect.ts'
 import * as cookie from '../shared/cookie.ts'
-import { sessions } from '../db/models/sessions.ts'
+import * as sessions from '../db/models/sessions.ts'
 import db, { onProduction } from '../db/db.ts'
 import { deleteCookie, setCookie } from 'std/http/cookie.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -10,9 +10,12 @@ import { TrxOrDb } from '../types.ts'
 import randomNamesAndSex from '../mocks/randomNamesAndSex.ts'
 import { Context } from 'fresh'
 import memoize from '../util/memoize.ts'
-import { readBooleanEnvironmentVariable, readMandatoryStringEnvironmentVariable } from '../util/env.ts'
+import {
+  readBooleanEnvironmentVariable,
+  readMandatoryStringEnvironmentVariable,
+} from '../util/env.ts'
 import { redirectUri } from '../external-clients/google.ts'
-import { health_worker_google_tokens } from '../db/models/health_worker_google_tokens.ts'
+import { upsertWithGoogleCredentials } from '../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../mocks/randomAvatar.ts'
 
 const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
@@ -28,7 +31,8 @@ export const loginHref = memoize(() => {
     prompt: 'consent',
     response_type: 'code',
     client_id,
-    scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+    scope:
+      'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
     access_type: 'offline',
     service: 'lso',
     o2v: '2',
@@ -46,18 +50,16 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
   const refresh_token = generateUUID()
   const expires_at = new Date()
   expires_at.setDate(expires_at.getDate() + 60)
-  const health_worker = await health_worker_google_tokens
-    .insertWithGoogleCredentials(trx, {
-      ...names,
-      email,
-      avatar_media_id,
-      access_token,
-      refresh_token,
-      expires_at,
-    })
+  const health_worker = await upsertWithGoogleCredentials(trx, {
+    ...names,
+    email,
+    avatar_media_id,
+    access_token,
+    refresh_token,
+    expires_at,
+  })
 
-  const session_id = await sessions.insertOne(trx, {
-    entity_type: 'health_worker',
+  const session = await sessions.create(trx, 'health_worker', {
     entity_id: health_worker.id,
   })
 
@@ -65,7 +67,7 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
 
   setCookie(response.headers, {
     name: cookie.session_key,
-    value: session_id,
+    value: session.id,
   })
 
   return response
@@ -80,10 +82,11 @@ export const handler = {
       return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref())
     }
 
-    const session = await sessions.getByIdOptional(db, session_id)
+    const session = await sessions.getBySessionId(db, session_id)
 
     if (!session) {
-      const response = await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))
+      const response =
+        await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))
       deleteCookie(response.headers, cookie.session_key)
       return response
     }

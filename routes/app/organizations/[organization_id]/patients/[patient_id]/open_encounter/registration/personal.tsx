@@ -1,7 +1,15 @@
-import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import {
+  completeAndProceedToNextStep,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../_middleware.tsx'
 import { z } from 'zod'
-import { patients } from '../../../../../../../../db/models/patients.ts'
-import { sex, string_or_number_as_string, varchar255 } from '../../../../../../../../util/validators.ts'
+import * as patients from '../../../../../../../../db/models/patients.ts'
+import {
+  sex,
+  string_or_number_as_string,
+  varchar255,
+} from '../../../../../../../../util/validators.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import PersonalSection from '../../../../../../../../islands/patient-registration/PersonalSection.tsx'

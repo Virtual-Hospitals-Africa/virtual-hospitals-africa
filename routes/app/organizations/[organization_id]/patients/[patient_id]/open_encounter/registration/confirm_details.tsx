@@ -1,6 +1,10 @@
-import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import {
+  completeAndProceedToNextStep,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../_middleware.tsx'
 import { z } from 'zod'
-import { patient_registration } from '../../../../../../../../db/models/patient_registration.ts'
+import * as patient_registration from '../../../../../../../../db/models/patient_registration.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import PatientRegistrationSummary from '../../../../../../../../components/patients/registration/Summary.tsx'
 
@@ -21,7 +25,6 @@ export async function PatientRegistrationConfirmPage(
       ctx.state.trx,
       ctx.state.patient.id,
     )
-
   return (
     <PatientRegistrationSummary
       organization_id={ctx.state.organization.id}

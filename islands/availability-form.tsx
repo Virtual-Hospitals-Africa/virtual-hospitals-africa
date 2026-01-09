@@ -3,9 +3,18 @@ import { padTime } from '../util/pad.ts'
 import { AvailabilityJSON, Time, TimeWindow } from '../types.ts'
 import WarningModal from '../components/library/modals/Warning.tsx'
 import FormButtons from './form/buttons.tsx'
-import { days, default_time_window, findDaysWithOverlap, hours, minutes } from '../backend/scheduling/availability.tsx'
+import {
+  days,
+  defaultTimeWindow,
+  findDaysWithOverlap,
+  hours,
+  minutes,
+} from '../backend/scheduling/availability.tsx'
 import Form from '../components/library/Form.tsx'
-import { PlusIcon, TrashIcon } from '../components/library/icons/heroicons/outline.tsx'
+import {
+  PlusIcon,
+  TrashIcon,
+} from '../components/library/icons/heroicons/outline.tsx'
 
 function HourInput({ name, current }: { name: string; current: number }) {
   return (
@@ -90,7 +99,7 @@ function TimeInput(
           className='ml-2 sz-2'
           title='add'
           onClick={() => {
-            const next_end_time: Time = time_window.end.hour === 12
+            const nextEndTime: Time = time_window.end.hour === 12
               ? {
                 hour: 1,
                 minute: time_window.end.minute,
@@ -104,7 +113,7 @@ function TimeInput(
 
             addTimeWindow({
               start: time_window.end,
-              end: next_end_time,
+              end: nextEndTime,
             })
           }}
         >
@@ -133,10 +142,11 @@ function DayInput(
 ) {
   const [checked, setChecked] = useState(!!initialTimeWindows.length)
   const [time_windows, setTimeWindows] = useState(
-    initialTimeWindows.length ? initialTimeWindows : [default_time_window],
+    initialTimeWindows.length ? initialTimeWindows : [defaultTimeWindow],
   )
 
-  const addTimeWindow = (time_window: TimeWindow) => setTimeWindows([...time_windows, time_window])
+  const addTimeWindow = (time_window: TimeWindow) =>
+    setTimeWindows([...time_windows, time_window])
 
   return (
     <>
@@ -203,14 +213,18 @@ export default function AvailabilityForm(
           gridTemplateColumns: 'max-content 1fr',
         }}
       >
-        {days.map((day) => <DayInput key={day} day={day} time_windows={availability[day]} />)}
+        {days.map((day) => (
+          <DayInput key={day} day={day} time_windows={availability[day]} />
+        ))}
       </div>
       {overlappingDays.length
         ? (
           <WarningModal
             title='Time Slots Overlap'
             onConfirm={() => setOverlappingDays([])}
-            message={`There are some overlapping time slots on the following days, please update them accordingly: ${overlappingDays.join(', ')}`}
+            message={`There are some overlapping time slots on the following days, please update them accordingly: ${
+              overlappingDays.join(', ')
+            }`}
           />
         )
         : null}
