@@ -4,7 +4,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import { postHandler } from '../../../../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 
 export const PatientRegistrationTermsAndConditionsSchema = z.object({})
 

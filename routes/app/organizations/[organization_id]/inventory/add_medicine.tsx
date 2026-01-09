@@ -7,7 +7,7 @@ import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInJohannesburg } from '../../../../../util/date.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
-import { postHandler } from '../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 import z from 'zod'
 import {
   positive_decimal,

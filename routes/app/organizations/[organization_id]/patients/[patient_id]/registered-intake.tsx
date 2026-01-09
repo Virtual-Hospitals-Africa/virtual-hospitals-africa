@@ -2,7 +2,7 @@ import {
   insertSeekingTreatmentForRegisteredPatient,
 } from '../../../../../../db/models/patient_encounters.ts'
 import { OrganizationContext } from '../../_middleware.ts'
-import { postHandler } from '../../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
 import { WORKFLOW_STEPS } from '../../../../../../shared/workflow.ts'

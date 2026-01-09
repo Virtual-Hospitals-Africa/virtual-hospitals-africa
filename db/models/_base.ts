@@ -1,5 +1,10 @@
 import type { Generated, ReferenceExpression, SelectQueryBuilder } from 'kysely'
-import type { IdSelection, InsertShape, TrxOrDb } from '../../types.ts'
+import type {
+  IdSelection,
+  InsertShape,
+  SearchResults,
+  TrxOrDb,
+} from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
@@ -7,14 +12,6 @@ import { bindAll } from '../../util/bindAll.ts'
 import { asCompiledSql, debugLog } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import isString from '../../util/isString.ts'
-
-export type SearchResults<SearchTerms, RenderedResult> = {
-  page: number
-  rows_per_page: number
-  results: RenderedResult[]
-  has_next_page: boolean
-  search_terms: SearchTerms
-}
 
 // deno-lint-ignore no-explicit-any
 export type QueryResult<Func extends (...args: any[]) => any> =

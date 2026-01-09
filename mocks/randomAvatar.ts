@@ -1,4 +1,4 @@
-import { predefinedAvatarMediaUUID } from '../db/seed/defs/17_media.ts'
+import { predefinedAvatarMediaUUID } from '../backend/predefinedAvatarMediaUUID.ts'
 import sample from '../util/sample.ts'
 
 export default function randomAvatarMediaId(

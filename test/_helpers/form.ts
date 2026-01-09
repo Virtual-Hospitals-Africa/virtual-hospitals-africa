@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
 import set from '../../util/set.ts'
-import { parseParam } from '../../util/parseForm.ts'
+import { parseParam } from '../../backend/parseForm.ts'
 import last from '../../util/last.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
 

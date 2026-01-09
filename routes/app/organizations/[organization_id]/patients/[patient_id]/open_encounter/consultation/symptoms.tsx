@@ -8,7 +8,7 @@ import {
 import SymptomSection from '../../../../../../../../islands/symptoms/Section.tsx'
 // import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { todayISOInJohannesburg } from '../../../../../../../../util/date.ts'
-import { postHandler } from '../../../../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { snomed_concept_id } from '../../../../../../../../util/validators.ts'

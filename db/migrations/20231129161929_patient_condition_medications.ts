@@ -77,7 +77,7 @@ export async function up(db: Kysely<DB>) {
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_condition_medications').execute()
   await db.schema.dropType('medication_schedule').execute()
-  await sql`DROP DOMAIN decimal_text`.execute(db)
+  await sql`DROP DOMAIN IF EXISTS decimal_text`.execute(db)
   await db.schema.dropType('duration_units').execute()
   await db.schema.dropType('registration_frequency').execute()
 }

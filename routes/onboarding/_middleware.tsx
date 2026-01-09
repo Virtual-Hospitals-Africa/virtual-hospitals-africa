@@ -3,7 +3,7 @@ import {
   getLoggedInHealthWorker,
 } from '../app/_middleware.tsx'
 import { PossiblyEmployedHealthWorker } from '../../types.ts'
-import { attachTrx, TrxContext } from '../../shared/attachTrx.ts'
+import { attachTrx, TrxContext } from '../../backend/attachTrx.ts'
 import { isEmployed } from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
 

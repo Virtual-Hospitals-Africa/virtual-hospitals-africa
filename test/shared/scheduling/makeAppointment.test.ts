@@ -2,7 +2,7 @@ import { afterAll, describe } from 'std/testing/bdd.ts'
 import { itUsesTrxAnd } from '../../_helpers/transaction.ts'
 import { addTestEmployee } from '../../_helpers/employees.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as makeAppointment from '../../../shared/scheduling/makeAppointment.ts'
+import * as makeAppointment from '../../../backend/scheduling/makeAppointment.ts'
 import * as appointments from '../../../db/models/appointments.ts'
 import * as patients from '../../../db/models/patients.ts'
 

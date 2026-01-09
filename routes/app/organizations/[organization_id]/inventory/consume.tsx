@@ -1,5 +1,5 @@
 import redirect from '../../../../../util/redirect.ts'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'

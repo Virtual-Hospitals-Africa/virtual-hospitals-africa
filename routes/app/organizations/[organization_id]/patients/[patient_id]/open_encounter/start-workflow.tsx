@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { assertOr400, assertOr403 } from '../../../../../../../util/assertOr.ts'
-import { postHandler } from '../../../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 import { OpenEncounterContext } from './_middleware.tsx'
