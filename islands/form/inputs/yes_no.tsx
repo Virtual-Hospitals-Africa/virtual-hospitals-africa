@@ -19,7 +19,10 @@ export function YesNoQuestion({
   return (
     <>
       <div className='flex flex-col gap-0.5 pl-4'>
-        <label for={name} className='text-sm font-medium text-gray-600'>
+        <label
+          id={`${name}-label`}
+          className='text-sm font-medium text-gray-600'
+        >
           {label}
           {required ? '*' : ''}
         </label>
@@ -28,34 +31,40 @@ export function YesNoQuestion({
 
       <div className='flex justify-center align-top'>
         <input
+          id={`${name}-yes`}
           name={name}
           type='radio'
           checked={value === 'Yes'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
           value='Yes'
           required={required}
+          aria-labelledby={`${name}-label`}
           onChange={() => onChange?.('Yes')}
         />
       </div>
       <div className='flex justify-center align-top'>
         <input
+          id={`${name}-no`}
           name={name}
           type='radio'
           checked={value === 'No'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
           value='No'
           required={required}
+          aria-labelledby={`${name}-label`}
           onChange={() => onChange?.('No')}
         />
       </div>
       <div className='flex justify-center align-top pr-4'>
         <input
+          id={`${name}-unknown`}
           name={name}
           type='radio'
           checked={value === 'Unknown'}
           className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
           value='Unknown'
           required={required}
+          aria-labelledby={`${name}-label`}
           onChange={() => onChange?.('Unknown')}
         />
       </div>

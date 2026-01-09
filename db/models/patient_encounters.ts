@@ -654,7 +654,6 @@ const model = base({
       ...patient_encounter
     },
   ): RenderedPatientEncounter => {
-    console.log({ patient_presence })
     assert(organization)
     assertAll(
       all_employees_seen,

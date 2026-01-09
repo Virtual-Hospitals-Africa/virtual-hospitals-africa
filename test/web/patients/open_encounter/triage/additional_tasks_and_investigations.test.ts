@@ -294,7 +294,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
                 'value': 'Nausea',
               },
             },
-            'completed': false,
           },
           {
             'procedure': {
@@ -306,7 +305,28 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
                 'value': 'Vomiting',
               },
             },
-            'completed': false,
+          },
+          {
+            'procedure': {
+              'value': {
+                'type': 's_expression',
+                's_expression': z.string(),
+              },
+              'displays': {
+                'value': 'Pallor of skin of face',
+              },
+            },
+          },
+          {
+            'procedure': {
+              'value': {
+                'type': 's_expression',
+                's_expression': z.string(),
+              },
+              'displays': {
+                'value': 'Sweating',
+              },
+            },
           },
         ],
       },
