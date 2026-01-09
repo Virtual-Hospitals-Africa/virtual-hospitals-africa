@@ -18,7 +18,7 @@ export default function SexualActivitySection(
 
   return (
     <FormSection header='Sexual Activity Questions'>
-      <YesNoGrid>
+      <YesNoGrid title='question'>
         <YesNoQuestion
           name='lifestyle.sexual_activity.ever_been_sexually_active'
           label='Has the patient ever been sexually active?'

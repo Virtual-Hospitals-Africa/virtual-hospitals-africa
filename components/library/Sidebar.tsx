@@ -118,8 +118,8 @@ export function GenericSidebar(
   urlSearchParams.forEach((value, key) => all_params[key] = value)
   const active_link = matchActiveLink(nav_links, route)
   return (
-    <div className='fixed inset-y-0 z-40 hidden w-48 md:flex md:flex-col'>
-      <div className='flex flex-col flex-auto bg-white border-r border-gray-200 gap-y-5 overflow-visible'>
+    <div className='fixed inset-y-0 z-40 hidden w-44 md:flex md:flex-col'>
+      <div className='flex flex-col flex-auto bg-white border-r border-gray-200 overflow-visible'>
         <div
           style={{
             height: HEADER_HEIGHT_PX,
@@ -130,12 +130,12 @@ export function GenericSidebar(
         >
           <a
             href={top.href}
-            className='flex items-center h-20 max-w-full gap-3 shrink-0 '
+            className='flex items-center max-w-full gap-3 shrink-0 px-2'
           >
             {top.child}
           </a>
         </div>
-        <nav className='flex flex-col flex-1 px-5'>
+        <nav className='flex flex-col flex-1 px-3'>
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
               <NavItem
@@ -163,12 +163,12 @@ export function GenericSidebar(
 
 export const HealthWorkerDefaultTop = {
   href: '/app',
-  child: <LogoWithFullText variant='indigo' className='h-16' />,
+  child: <LogoWithFullText variant='indigo' className='w-full' />,
 }
 
 export const RegulatorDefaultTop = {
   href: '/regulator',
-  child: <LogoWithFullText variant='indigo' className='h-16' />,
+  child: <LogoWithFullText variant='indigo' className='w-full' />,
 }
 
 export function HealthWorkerHomePageSidebar(

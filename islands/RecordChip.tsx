@@ -13,7 +13,7 @@ export function RecordChips(
 ) {
   if (!records.length) return null
   return (
-    <div className='box-border content-center flex flex-wrap gap-[8px] items-center justify-start px-px py-0 shrink-0 w-full'>
+    <div className='box-border content-center flex flex-wrap gap-1 items-center justify-start px-px py-0 shrink-0 w-full'>
       {records.map((record) => (
         <RecordChip
           key={record.record_id}

@@ -36,13 +36,13 @@ export const Select = forwardRef(
         label={label}
         required={required}
         disabled={disabled}
-        className={cls('flex-grow min-w-0', className)}
+        className={cls('grow min-w-0', className)}
       >
         <select
           {...(name && { name })}
           id={id}
           className={cls(
-            'h-12 block w-full max-w-full rounded-md bg-white px-4 py-1.5 outline outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 text-black-900 dark:bg-white/5 dark:focus:text-black-900 truncate',
+            'h-12 block w-full max-w-full rounded-md bg-white pl-2 pr-6 py-1.5 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 text-black-900 dark:bg-white/5 dark:focus:text-black-900 truncate',
             selectClassName,
             disabled && 'bg-gray-300',
           )}

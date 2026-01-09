@@ -350,10 +350,11 @@ export async function TriageMeasureVitalsPage(
     def: Def,
   ): Def {
     if (!def.required) return def
+
     const already_done_this_encounter = most_recent_patient_assessments.some(
       (v) =>
         v.evaluations.some((e) =>
-          e.root_snomed_concept.snomed_concept_id ===
+          e.specific_snomed_concept.snomed_concept_id ===
             def.evaluation_snomed_concept_id
         ) &&
         v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,

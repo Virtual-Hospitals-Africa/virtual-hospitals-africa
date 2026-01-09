@@ -29,15 +29,11 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
             title={title}
             variant='home page'
           />
-          <div className='pl-6 flex-1 flex flex-col overflow-y-auto'>
+          <div className='flex-1 flex flex-col overflow-y-auto'>
             {children}
           </div>
         </section>
-        {drawer && (
-          <div className='h-full w-100 border-l border-gray-200 overflow-visible'>
-            {drawer}
-          </div>
-        )}
+        {drawer}
       </div>
     </div>
   )

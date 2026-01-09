@@ -11,7 +11,7 @@ export function EmergencyCallButton({ organization_id }: {
       href={`/app/organizations/${organization_id}/emergency_call`}
       left_icon={<PhoneIcon />}
     >
-      Emergency Call
+      Emergency
     </Button>
   )
 }

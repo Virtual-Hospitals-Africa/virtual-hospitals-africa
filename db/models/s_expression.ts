@@ -28,18 +28,27 @@ type SatisfyingResult = {
   record_ids: string[]
 }
 
-export function snomedConceptBase(
+export function nameAndCategorySnomedConceptBase(
   trx: TrxOrDb,
-  snomed_concept: Lang['snomed_concept'],
+  snomed_concept: Lang['snomed_concept'] & {
+    type: 'snomed_concept_name_and_category'
+  },
 ) {
-  assert(isAtom(snomed_concept, 'snomed_concept'))
-  if (snomed_concept.type === 'snomed_concept_id') return snomed_concept.id
-
   return trx
     .selectFrom('snomed_inferred_canonical_name_and_category')
     .where('name', '=', snomed_concept.name)
     .where('category', '=', snomed_concept.category)
     .select('id')
+}
+
+export function snomedConceptBase(
+  trx: TrxOrDb,
+  snomed_concept: Lang['snomed_concept'],
+) {
+  assert(isAtom(snomed_concept, 'snomed_concept'))
+  return snomed_concept.type === 'snomed_concept_id'
+    ? snomed_concept.id
+    : nameAndCategorySnomedConceptBase(trx, snomed_concept)
 }
 
 export function maybeSnomedConceptBase(
