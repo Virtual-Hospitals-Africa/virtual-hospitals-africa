@@ -18,7 +18,7 @@ export default function ThisVisitSection(
 ) {
   return (
     <>
-      <FormSection header='This Visit' className='max-w-150'>
+      <FormSection header='This Visit' className='max-w-250'>
         <VerticalRadioButtons
           name='next_workflow'
           defaultValue='continue_with_registration'

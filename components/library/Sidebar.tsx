@@ -130,7 +130,7 @@ export function GenericSidebar(
         >
           <a
             href={top.href}
-            className='flex items-center h-20 max-w-full gap-3 shrink-0 '
+            className='flex items-center max-w-full gap-3 shrink-0 px-2'
           >
             {top.child}
           </a>
@@ -163,12 +163,12 @@ export function GenericSidebar(
 
 export const HealthWorkerDefaultTop = {
   href: '/app',
-  child: <LogoWithFullText variant='indigo' className='h-12 lg:h-16' />,
+  child: <LogoWithFullText variant='indigo' className='w-full' />,
 }
 
 export const RegulatorDefaultTop = {
   href: '/regulator',
-  child: <LogoWithFullText variant='indigo' className='h-12 lg:h-16' />,
+  child: <LogoWithFullText variant='indigo' className='w-full' />,
 }
 
 export function HealthWorkerHomePageSidebar(
