@@ -52,7 +52,35 @@
     "hygiene": "./scripts/hygiene.sh",
     "util": "deno task run:trusted ./util.ts"
   },
-  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "compilerOptions": { 
+    "lib": [
+      "dom",
+      "dom.asynciterable",
+      "dom.iterable",
+      "deno.ns"
+    ],
+    "jsx": "precompile",
+    "jsxImportSource": "preact",
+    "jsxPrecompileSkipElements": [
+      "a",
+      "img",
+      "source",
+      "body",
+      "html",
+      "head",
+      "title",
+      "meta",
+      "script",
+      "link",
+      "style",
+      "base",
+      "noscript",
+      "template"
+    ],
+    "types": [
+      "vite/client"
+    ]
+  },
   "fmt": {
     "indentWidth": 2,
     "semiColons": false,
@@ -66,7 +94,7 @@
   "imports": {
     "test/_helpers/": "./test/_helpers/",
     "@headlessui/react": "npm:@headlessui/react@2.2.9",
-    "@preact/signals": "npm:@preact/signals@2.3.2",
+    "@preact/signals": "npm:@preact/signals@^2.5.0",
     "@std/cli": "jsr:@std/cli@0.224.7",
     "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
     "awesome-phonenumber": "npm:awesome-phonenumber@7.2.0",
@@ -74,12 +102,15 @@
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
     "decimal": "npm:decimal.js-light@2.5.1",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
+    "@types/fast-levenshtein": "npm:@types/fast-levenshtein@0.0.4",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
     "fracturedjsonjs": "npm:fracturedjsonjs@5.0.1",
     "kysely": "npm:kysely@0.28.8",
     "natural": "npm:natural@6.10.4",
     "pg": "npm:pg@8.16.0",
+    "@types/pg": "npm:@types/pg@8.15.4",
     "pg-cursor": "npm:pg-cursor@2.15.3",
+    "@types/pg-cursor": "npm:@types/pg-cursor@2.7.2",
     "preact": "npm:preact@10.27.2",
     "preact/": "npm:/preact@10.27.2/",
     "prompt": "jsr:@cliffy/prompt@1.0.0-rc.7",
@@ -92,10 +123,10 @@
     "sql-formatter": "npm:sql-formatter@15.6.9",
     "tailwind-merge": "npm:tailwind-merge@2.6.0",
     "zod": "npm:zod@4.2.1",
-    "fresh": "jsr:@fresh/core@2.2.0",
-    "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@1.0.8",
+    "fresh": "jsr:@fresh/core@^2.2.0",
+    "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@^1.0.8",
     "s-expression": "npm:s-expression@3.1.1",
-    "vite": "npm:vite@7.1.3",
+    "vite": "npm:vite@^7.1.3",
     "tailwindcss": "npm:tailwindcss@4.1.18",
     "tailwindcss/plugin": "npm:/tailwindcss@4.1.10/plugin.js",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@4.1.12",
@@ -103,5 +134,5 @@
     "rollup": "npm:rollup@4.53.0"
   },
   "exclude": ["**/_fresh/*"],
-  "nodeModulesDir": "auto"
+  "nodeModulesDir": "manual"
 }
