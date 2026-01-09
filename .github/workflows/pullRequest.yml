@@ -173,10 +173,8 @@ jobs:
           key: git-lfs
           restore-keys: git-lfs
 
-      # TODO Turn this back on later. LFS expired 2025-12-18 because of a cache issue
-      # Certainly we will need this if we update SNOMED
-      # - name: Git lfs pull
-      #   run: git lfs pull
+      - name: Git lfs pull
+        run: git lfs pull
 
       - name: Deno install
         run: deno install --allow-scripts
@@ -247,10 +245,8 @@ jobs:
           key: git-lfs
           restore-keys: git-lfs
 
-      # TODO Turn this back on later. LFS expired 2025-12-18 because of a cache issue
-      # Certainly we will need this if we update SNOMED
-      # - name: Git lfs pull
-      #   run: git lfs pull
+      - name: Git lfs pull
+        run: git lfs pull
 
       - name: Deno install
         run: deno install --allow-scripts

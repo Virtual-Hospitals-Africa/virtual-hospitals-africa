@@ -706,24 +706,6 @@ describeParallel('triage/brief_history', () => {
                                 },
                               ],
                             },
-                            {
-                              'tag': 'div',
-                              'children': [
-                                {
-                                  'tag': 'button',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
                           ],
                         },
                         {

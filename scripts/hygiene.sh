@@ -13,11 +13,11 @@ declare -A rules=(
 rule_no_camel_case_const() {
   # Note that we can ignore specific variable names like onClick at the front
   # and we can ignore functions/patterns that return functions at the back like const getById = model.getById
-  ! rg --pcre2 "const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! logArgsOnError)(?! deduplicate)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s"
+  ! rg -n --pcre2 "const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! logArgsOnError)(?! deduplicate)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s"
 }
 
 rule_no_node_imports() {
-  ! rg --pcre2 "from 'node:" --glob '!scripts/hygiene.sh'
+  ! rg -n --pcre2 "from 'node:" --glob '!scripts/hygiene.sh'
 }
 
 rule_test_files_naming() {
@@ -32,11 +32,11 @@ rule_test_files_naming() {
 }
 
 rule_no_db_imports_in_frontend() {
-  ! rg --pcre2 "from ['\"].*db/" components islands
+  ! rg -n --pcre2 "from ['\"].*db/" components islands
 }
 
 rule_no_only_in_tests() {
-  ! rg --pcre2 '\.only\(' test
+  ! rg -n --pcre2 '\.only\(' test
 }
 
 # Main: run all rules in parallel and collect results
@@ -50,9 +50,9 @@ main() {
   }
 
   # Verify all non-main functions are registered
-  local -a fns
-  readarray -t fns < <(declare -F | awk '$3 != "main" { print $3 }')
-  for fn in "${fns[@]}"; do
+  local defined_fns
+  defined_fns=$(declare -F | awk '{print $3}' | grep -v 'main')
+  for fn in $defined_fns; do
     if ! [[ -v rules[$fn] ]]; then
       echo "ERROR: Rule function '$fn' has no entry in rules array"
       exit 1

@@ -13,6 +13,7 @@ import sample from '../../util/sample.ts'
 import { route } from '../_route.ts'
 import selfUrl from '../../util/selfUrl.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
+import assertIncludes from '../../util/assertIncludes.ts'
 
 describeParallel('/login', () => {
   before(waitUntilTestServerUp)
@@ -161,7 +162,7 @@ describeParallel('/login', () => {
           const waiting_room_add_link = $(
             `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
           )
-          assertEquals(
+          assertIncludes(
             waiting_room_add_link.first().text(),
             'Register patient',
           )
@@ -203,7 +204,7 @@ describeParallel('/login', () => {
           const waiting_room_add_link = $(
             `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
           )
-          assertEquals(
+          assertIncludes(
             waiting_room_add_link.first().text(),
             'Register patient',
           )

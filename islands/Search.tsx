@@ -189,8 +189,6 @@ export default function Search<
 
   return (
     <Combobox
-      by='id'
-      id={id}
       value={selected_singular?.value}
       onChange={(value) => {
         onSelect?.(value ?? undefined)
@@ -217,9 +215,8 @@ export default function Search<
         if (already_selected) return
         selected_multi.value = [...selected_multi.value, value]
       }}
-      {...props}
     >
-      <div className='grow'>
+      <div className='grow' id={id} {...props}>
         {label && (
           <Combobox.Label>
             <Label>
@@ -257,6 +254,7 @@ export default function Search<
                   name={search_field}
                   className='flex-1 min-w-50 border-none outline-none focus:ring-0 p-0 bg-transparent text-black-900 placeholder:text-gray-400 sm:text-sm/6 dark:focus:text-black-900'
                   onChange={(event) => {
+                    console.log('onChange', event)
                     const query = event.currentTarget.value
                     onSelect?.(undefined)
                     setQuery(query)
