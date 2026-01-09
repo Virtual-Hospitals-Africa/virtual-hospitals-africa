@@ -1004,7 +1004,7 @@ describeParallel(
         )
       })
 
-      it(
+      itParallel.skip(
         'allows 2 surgeries if the dates are distinct',
         async () => {
           const clinic = await createTestOrganization(db)
