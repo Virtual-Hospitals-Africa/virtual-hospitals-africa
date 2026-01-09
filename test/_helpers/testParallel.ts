@@ -28,7 +28,7 @@ function casesToRun(
 
 async function runTestCases(
   cases_to_run: TestCase[],
-  { fail_fast, concurrency = Infinity }: {
+  { fail_fast, concurrency = 7 }: {
     fail_fast?: boolean
     concurrency?: number
   } = {},
