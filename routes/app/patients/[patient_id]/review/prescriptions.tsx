@@ -110,7 +110,6 @@ export const handler = {
   async POST(ctx: ReviewContext) {
     const req = ctx.req
     const form_values = await parseRequest(
-      ctx.state.trx,
       req,
       PrescriptionsSchema.parse,
     )

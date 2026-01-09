@@ -69,7 +69,6 @@ async function draftFromFormValues(
   ctx: OrganizationContext,
 ): Promise<RenderedMessageDraft> {
   const form_values = await parseRequest(
-    ctx.state.trx,
     ctx.req,
     PartialMessageDraftSchema.parse,
   )

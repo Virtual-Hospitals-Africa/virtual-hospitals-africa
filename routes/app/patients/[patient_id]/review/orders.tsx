@@ -19,7 +19,6 @@ export const handler = {
   async POST(ctx: ReviewContext) {
     const req = ctx.req
     const _form_values = await parseRequestAsserts(
-      ctx.state.trx,
       req,
       assertIsOrders,
     )

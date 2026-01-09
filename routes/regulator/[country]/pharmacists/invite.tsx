@@ -16,7 +16,6 @@ export const handler = {
     const req = ctx.req
     const { country } = ctx.params
     const to_insert = await parseRequest(
-      ctx.state.trx,
       req,
       pharmacists.parse_upsert,
     )

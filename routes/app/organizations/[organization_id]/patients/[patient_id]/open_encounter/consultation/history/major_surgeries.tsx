@@ -25,7 +25,6 @@ export const handler = {
     // TODO, parallelize
     const completing_assessment = await completeAssessment(ctx)
     const form_values = await parseRequest(
-      ctx.state.trx,
       req,
       MajorSurgeriesSchema.parse,
     )

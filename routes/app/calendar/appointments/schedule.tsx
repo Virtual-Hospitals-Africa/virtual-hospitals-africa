@@ -51,7 +51,6 @@ export default HealthWorkerHomePageLayout(
     ctx,
   ) {
     const search = await parseRequest(
-      ctx.state.trx,
       ctx.req,
       SearchSchema.parse,
     )

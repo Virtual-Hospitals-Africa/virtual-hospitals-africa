@@ -1,6 +1,7 @@
 import z from 'zod'
 import { parseRequest } from './parseForm.ts'
 import { LoggedInHealthWorkerContext } from '../types.ts'
+import db from '../db/db.ts'
 
 export function postHandler<
   // deno-lint-ignore no-explicit-any
@@ -16,11 +17,16 @@ export function postHandler<
   return {
     async POST(ctx: Ctx) {
       const form_values = await parseRequest(
-        ctx.state.trx,
         ctx.req,
         schema.parse,
       )
-      return callback(ctx, form_values)
+      return db
+        .transaction()
+        .setIsolationLevel('read committed')
+        .execute((trx) => {
+          ctx.state.trx = trx
+          return Promise.resolve(callback(ctx, form_values))
+        })
     },
   }
 }

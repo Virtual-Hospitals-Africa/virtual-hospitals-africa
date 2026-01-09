@@ -36,7 +36,6 @@ export const handler = {
     const { country } = ctx.params
     const { trx } = ctx.state
     const pharmacy = await parseRequest(
-      trx,
       req,
       UpsertPharmacySchema.parse,
     )
