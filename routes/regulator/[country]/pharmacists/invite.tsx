@@ -1,7 +1,7 @@
 import { Context } from 'fresh'
 import PharmacistForm from '../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../util/redirect.ts'
-import { parseRequest } from '../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../backend/parseForm.ts'
 import * as pharmacists from '../../../../db/models/pharmacists.ts'
 import {
   LoggedInRegulator,
@@ -16,7 +16,6 @@ export const handler = {
     const req = ctx.req
     const { country } = ctx.params
     const to_insert = await parseRequest(
-      ctx.state.trx,
       req,
       pharmacists.parse_upsert,
     )

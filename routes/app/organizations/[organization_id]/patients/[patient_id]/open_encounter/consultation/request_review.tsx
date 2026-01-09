@@ -13,7 +13,7 @@ import * as doctor_reviews from '../../../../../../../../db/models/doctor_review
 import * as events from '../../../../../../../../db/models/events.ts'
 import { OrganizationView } from '../../../../../../../../islands/request-review/OrganizationView.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import { parseRequest } from '../../../../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../../../../backend/parseForm.ts'
 import z from 'zod'
 import redirect from '../../../../../../../../util/redirect.ts'
 import {
@@ -82,7 +82,6 @@ export const handler = {
     const { completing_step, made_request } = await promiseProps({
       completing_step: completeAndProceedToNextStep(ctx),
       made_request: parseRequest(
-        ctx.state.trx,
         req,
         PostSchema.parse,
       ).then(async (body) => {

@@ -1,7 +1,7 @@
 import { LoggedInHealthWorkerContext } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
@@ -40,7 +40,6 @@ export const handler = {
     const { organization_id } = ctx.params
 
     const to_add = await parseRequestAsserts(
-      ctx.state.trx,
       req,
       assertIsUpsertConsumer,
     )

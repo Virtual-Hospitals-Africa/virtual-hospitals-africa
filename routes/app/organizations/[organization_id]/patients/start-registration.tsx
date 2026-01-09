@@ -1,7 +1,7 @@
 import z from 'zod'
 import { assert } from 'std/assert/assert.ts'
 import * as patient_registration from '../../../../../db/models/patient_registration.ts'
-import { postHandler } from '../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertNoPresentEncounter } from '../../../../../db/models/patient_workflows.ts'

@@ -2,7 +2,7 @@ import * as patient_conditions from '../../../../../../../../../db/models/patien
 import * as examinations from '../../../../../../../../../db/models/examinations.ts'
 import { z } from 'zod'
 import MajorSurgeriesForm from '../../../../../../../../../islands/major-surgeries/Form.tsx'
-import { parseRequest } from '../../../../../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
 import {
   completeAssessment,
   HistoryContext,
@@ -25,7 +25,6 @@ export const handler = {
     // TODO, parallelize
     const completing_assessment = await completeAssessment(ctx)
     const form_values = await parseRequest(
-      ctx.state.trx,
       req,
       MajorSurgeriesSchema.parse,
     )

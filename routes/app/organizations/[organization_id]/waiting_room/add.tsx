@@ -8,7 +8,7 @@ import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.t
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../_middleware.ts'
-import { postHandler } from '../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 
 const AddPatientFormSchema = z.object({

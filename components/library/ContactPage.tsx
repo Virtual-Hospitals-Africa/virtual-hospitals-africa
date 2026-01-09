@@ -23,6 +23,7 @@ export default function ContactPage(
 
   return (
     <JustLogoLayout
+      url={props.url}
       title={`${props.title} | Virtual Hospitals Africa`}
     >
       <div class='overflow-hidden bg-white py-32'>

@@ -2,4 +2,15 @@
 temp_files/
 /_fresh
 /binaries
-deno.lock
+.git/
+
+# Ignore scripts, except web.sh
+scripts/**
+!scripts/web.sh
+
+# Ignore everything in db except models, db.ts, and helpers.ts
+db/**
+!db/models/
+!db/models/*
+!db/db.ts
+!db/helpers.ts

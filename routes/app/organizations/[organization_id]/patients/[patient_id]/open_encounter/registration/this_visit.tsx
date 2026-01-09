@@ -6,7 +6,7 @@ import {
 } from '../_middleware.tsx'
 import { z } from 'zod'
 import ThisVisitSection from '../../../../../../../../components/patient-registration/ThisVisitSection.tsx'
-import { postHandler } from '../../../../../../../../util/postHandler.ts'
+import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import * as patient_workflows from '../../../../../../../../db/models/patient_workflows.ts'
 import * as events from '../../../../../../../../db/models/events.ts'
 import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'

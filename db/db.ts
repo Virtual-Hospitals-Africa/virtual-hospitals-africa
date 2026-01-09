@@ -106,4 +106,8 @@ const db = (NO_EXTERNAL_CONNECT ? undefined : new Kysely<DB>({
   },
 }))!
 
+export function onProduction() {
+  return !!opts && opts.host !== 'localhost'
+}
+
 export default db

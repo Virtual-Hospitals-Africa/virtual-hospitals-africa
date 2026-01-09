@@ -1,3 +1,4 @@
+import { Context } from 'fresh'
 import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
@@ -5,7 +6,7 @@ import { json } from '../util/responses.ts'
 
 import FormRow from '../components/library/FormRow.tsx'
 import { TextInput } from '../islands/form/inputs/text.tsx'
-import { postHandler } from '../util/postHandler.ts'
+import { postHandler } from '../backend/postHandler.ts'
 import z from 'zod'
 
 export const handler = postHandler(
@@ -16,9 +17,10 @@ export const handler = postHandler(
   },
 )
 
-export default function ApplyPage() {
+// deno-lint-ignore require-await
+export default async function ApplyPage(ctx: Context<unknown>) {
   return (
-    <JustLogoLayout title='Virtual Hospitals Africa'>
+    <JustLogoLayout url={ctx.url} title='Virtual Hospitals Africa'>
       <div class='overflow-hidden bg-white py-32'>
         <div class='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>
           <div class='mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>

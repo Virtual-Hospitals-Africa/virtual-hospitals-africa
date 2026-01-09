@@ -10,7 +10,7 @@ import {
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../../../../islands/diagnoses/Form.tsx'
 import * as diagnoses from '../../../../../../../../db/models/diagnoses.ts'
-import { parseRequestAsserts } from '../../../../../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../../../../../backend/parseForm.ts'
 import isObjectLike from '../../../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
@@ -55,7 +55,6 @@ export const handler = {
   async POST(ctx: OpenEncounterWorkflowContext) {
     const req = ctx.req
     const data = await parseRequestAsserts(
-      ctx.state.trx,
       req,
       assertIsDiagnoses,
     )

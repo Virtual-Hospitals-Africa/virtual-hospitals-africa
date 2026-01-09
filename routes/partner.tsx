@@ -1,3 +1,4 @@
+import { Context } from 'fresh'
 import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 import { Button } from '../components/library/Button.tsx'
 import FormRow from '../components/library/FormRow.tsx'
@@ -7,9 +8,13 @@ import SelectWithOther from '../islands/SelectWithOther.tsx'
 import { TextInput } from '../islands/form/inputs/text.tsx'
 import { TextArea } from '../islands/form/inputs/textarea.tsx'
 
-export default function PartnerPage() {
+// deno-lint-ignore require-await
+export default async function PartnerPage(ctx: Context<unknown>) {
   return (
-    <JustLogoLayout title='Partner With Us | Virtual Hospitals Africa'>
+    <JustLogoLayout
+      url={ctx.url}
+      title='Partner With Us | Virtual Hospitals Africa'
+    >
       <SideBySide
         image='https://live.staticflickr.com/8877/29095571713_eb20065354_b.jpg'
         h1='Partner With Us'

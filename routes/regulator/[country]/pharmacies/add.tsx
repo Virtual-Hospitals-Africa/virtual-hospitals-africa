@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { Context } from 'fresh'
 import PharmacyForm from '../../../../islands/regulator/PharmacyForm.tsx'
 import redirect from '../../../../util/redirect.ts'
-import { parseRequest } from '../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../backend/parseForm.ts'
 import * as pharmacies from '../../../../db/models/pharmacies.ts'
 import { LoggedInRegulator } from '../../../../types.ts'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
@@ -36,7 +36,6 @@ export const handler = {
     const { country } = ctx.params
     const { trx } = ctx.state
     const pharmacy = await parseRequest(
-      trx,
       req,
       UpsertPharmacySchema.parse,
     )

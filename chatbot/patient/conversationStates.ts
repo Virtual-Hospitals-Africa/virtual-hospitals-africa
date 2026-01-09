@@ -21,9 +21,9 @@ import * as patients from '../../db/models/patients.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as employees from '../../db/models/employees.ts'
 
-import { availableSlots } from '../../shared/scheduling/getProviderAvailability.ts'
-import { cancelAppointment } from '../../shared/scheduling/cancelAppointment.ts'
-import { makeAppointmentChatbot } from '../../shared/scheduling/makeAppointment.ts'
+import { availableSlots } from '../../backend/scheduling/getProviderAvailability.ts'
+import { cancelAppointment } from '../../backend/scheduling/cancelAppointment.ts'
+import { makeAppointmentChatbot } from '../../backend/scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
 import {
   capLengthAtWhatsAppDescription,

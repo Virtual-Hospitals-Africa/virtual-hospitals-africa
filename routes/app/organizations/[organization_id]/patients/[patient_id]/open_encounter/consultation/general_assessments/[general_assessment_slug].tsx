@@ -5,7 +5,7 @@ import {
 } from './_middleware.tsx'
 import {} from '../../../../../../../../../types.ts'
 import * as findings from '../../../../../../../../../db/models/examination_findings.ts'
-import { parseRequest } from '../../../../../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
 import { PatientExaminationForm } from '../../../../../../../../../components/examinations/Form.tsx'
 import { z } from 'zod'
 import { promiseProps } from '../../../../../../../../../util/promiseProps.ts'
@@ -43,7 +43,6 @@ export const handler = {
     const { completing_assessment } = await promiseProps({
       completing_assessment: completeAssessment(ctx),
       upserting_findings: parseRequest(
-        ctx.state.trx,
         req,
         ExaminationFindingsSchema.parse,
       ).then((form_values) =>

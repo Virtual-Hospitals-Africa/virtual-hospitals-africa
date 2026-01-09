@@ -6,7 +6,7 @@ import * as message_thread_participants from '../../../../db/models/message_thre
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { ChatThread } from '../../../../islands/messages/ChatThread.tsx'
-import { postHandler } from '../../../../util/postHandler.ts'
+import { postHandler } from '../../../../backend/postHandler.ts'
 import { assert } from 'std/assert/assert.ts'
 
 const MessageSchema = z.object({

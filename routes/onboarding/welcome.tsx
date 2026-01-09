@@ -6,7 +6,7 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import { OnboardingContext } from './_middleware.tsx'
 import { Onboarding } from '../../islands/Onboarding.tsx'
 import { z } from 'zod'
-import { postHandler } from '../../util/postHandler.ts'
+import { postHandler } from '../../backend/postHandler.ts'
 import redirect from '../../util/redirect.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
@@ -96,7 +96,7 @@ export default async function OnboardingPage(
   })
 
   return (
-    <JustLogoLayout title='Virtual Hospitals Africa'>
+    <JustLogoLayout url={ctx.url} title='Virtual Hospitals Africa'>
       <Onboarding
         health_worker={ctx.state.health_worker}
         organizations={test_organizations.results}

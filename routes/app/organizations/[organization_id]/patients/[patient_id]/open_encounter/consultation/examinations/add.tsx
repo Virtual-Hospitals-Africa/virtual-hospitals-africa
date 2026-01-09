@@ -1,7 +1,7 @@
 import { ExaminationContext, ExaminationPage } from './_middleware.tsx'
 import {} from '../../../../../../../../../types.ts'
 import * as examinations from '../../../../../../../../../db/models/examinations.ts'
-import { parseRequest } from '../../../../../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
 import redirect from '../../../../../../../../../util/redirect.ts'
 import { z } from 'zod'
@@ -18,7 +18,6 @@ export const handler = {
     const { trx, encounter, encounter_employee_presence } = ctx.state
 
     const form_values = await parseRequest(
-      trx,
       req,
       AddExaminationsSchema.parse,
     )

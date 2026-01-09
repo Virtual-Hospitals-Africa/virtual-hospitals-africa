@@ -1,8 +1,8 @@
 import memoize from '../util/memoize.ts'
-import { surnames as za_surnames } from '../db/resources/demographics/surnames/za.ts'
-import { first_names as za_first_names } from '../db/resources/demographics/first_names/za.ts'
-import { surnames as zw_surnames } from '../db/resources/demographics/surnames/zw.ts'
-import { first_names as zw_first_names } from '../db/resources/demographics/first_names/zw.ts'
+import { surnames as za_surnames } from '../shared/demographics/surnames/za.ts'
+import { first_names as za_first_names } from '../shared/demographics/first_names/za.ts'
+import { surnames as zw_surnames } from '../shared/demographics/surnames/zw.ts'
+import { first_names as zw_first_names } from '../shared/demographics/first_names/zw.ts'
 
 const names = {
   ZA: {

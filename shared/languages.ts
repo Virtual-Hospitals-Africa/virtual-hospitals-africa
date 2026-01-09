@@ -1,5 +1,5 @@
 import { LanguageType } from '../db.d.ts'
-import wikipediaIsoLanguages from '../db/resources/languages/wikipedia-iso-languages.ts'
+import { WIKIPEDIA_ISO_LANGUAGES } from './wikipedia-iso-languages.ts'
 
 const living_language_types = new Set<LanguageType>([
   'Living',
@@ -7,7 +7,7 @@ const living_language_types = new Set<LanguageType>([
   'Genetic-like',
 ])
 
-export const LIVING_LANGUAGES = wikipediaIsoLanguages.filter((lang) =>
+export const LIVING_LANGUAGES = WIKIPEDIA_ISO_LANGUAGES.filter((lang) =>
   living_language_types.has(lang.type)
 )
 

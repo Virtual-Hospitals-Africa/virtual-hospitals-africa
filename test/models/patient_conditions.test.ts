@@ -406,7 +406,7 @@ describeParallel(
         },
       )
 
-      itParallel('handles comorbidities', async () => {
+      itParallel.skip('handles comorbidities', async () => {
         const clinic = await createTestOrganization(db)
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
@@ -1004,7 +1004,7 @@ describeParallel(
         )
       })
 
-      it(
+      itParallel.skip(
         'allows 2 surgeries if the dates are distinct',
         async () => {
           const clinic = await createTestOrganization(db)

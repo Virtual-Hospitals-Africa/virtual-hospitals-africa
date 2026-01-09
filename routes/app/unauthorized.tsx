@@ -1,11 +1,12 @@
+import { Context } from 'fresh'
 import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
-import { PageProps } from 'fresh'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
-export default function UnauthorizedPage(_props: PageProps) {
+// deno-lint-ignore require-await
+export default async function UnauthorizedPage(ctx: Context<unknown>) {
   return (
-    <JustLogoLayout title='Virtual Hospitals Africa'>
+    <JustLogoLayout url={ctx.url} title='Virtual Hospitals Africa'>
       <main class='grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8'>
         <div class='text-center'>
           <PageHeader className='h1'>Unauthorized</PageHeader>

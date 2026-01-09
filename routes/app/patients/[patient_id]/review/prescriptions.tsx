@@ -6,7 +6,7 @@ import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { assertAllUniqueBy } from '../../../../../util/assertAllUniqueBy.ts'
 import PrescriptionsForm from '../../../../../islands/prescriptions/Form.tsx'
-import { parseRequest } from '../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../backend/parseForm.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { z } from 'zod'
@@ -110,7 +110,6 @@ export const handler = {
   async POST(ctx: ReviewContext) {
     const req = ctx.req
     const form_values = await parseRequest(
-      ctx.state.trx,
       req,
       PrescriptionsSchema.parse,
     )

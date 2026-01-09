@@ -116,7 +116,7 @@ jobs:
         run: deno task build
 
       - name: Run tests
-        run: deno task test --use-build test/models/patient_findings.test.ts
+        run: deno task test --use-build
 
 
   test_chatbot:

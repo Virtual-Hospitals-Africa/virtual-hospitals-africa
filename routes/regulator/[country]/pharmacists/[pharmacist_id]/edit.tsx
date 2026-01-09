@@ -2,7 +2,7 @@ import { Context } from 'fresh'
 import { LoggedInRegulator } from '../../../../../types.ts'
 import PharmacistForm from '../../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../../util/redirect.ts'
-import { parseRequest } from '../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../backend/parseForm.ts'
 import * as pharmacists from '../../../../../db/models/pharmacists.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
@@ -13,7 +13,6 @@ export const handler = {
     const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
     const to_update = await parseRequest(
-      ctx.state.trx,
       req,
       pharmacists.parse_upsert,
     )

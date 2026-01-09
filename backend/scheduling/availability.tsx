@@ -2,7 +2,7 @@ import range from '../../util/range.ts'
 import { AvailabilityJSON, DayOfWeek, TimeWindow } from '../../types.ts'
 import timeToMin from '../../util/timeToMin.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { parseFormWithoutFiles } from '../../util/parseForm.ts'
+import { parseFormWithoutFiles } from '../../backend/parseForm.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 

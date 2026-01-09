@@ -1,7 +1,7 @@
-import { Languages } from '../../../db.d.ts'
-import { InsertShape } from '../../../types.ts'
+import { Languages } from '../db.d.ts'
+import { InsertShape } from '../types.ts'
 
-export default [
+export const WIKIPEDIA_ISO_LANGUAGES = [
   {
     'iso_639_2_b': 'aar',
     'iso_639_2_t': 'aar',
