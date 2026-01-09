@@ -96,7 +96,7 @@ export default async function OnboardingPage(
   })
 
   return (
-    <JustLogoLayout title='Virtual Hospitals Africa'>
+    <JustLogoLayout url={ctx.url} title='Virtual Hospitals Africa'>
       <Onboarding
         health_worker={ctx.state.health_worker}
         organizations={test_organizations.results}

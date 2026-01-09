@@ -1,3 +1,4 @@
+import { Context } from 'fresh'
 import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 
 // import {
@@ -146,9 +147,13 @@ import SideBySide from '../components/library/SideBySide.tsx'
 //   // },
 // ]
 
-export default function VolunteerPage() {
+// deno-lint-ignore require-await
+export default async function VolunteerPage(ctx: Context<unknown>) {
   return (
-    <JustLogoLayout title='Volunteer Opportunities | Virtual Hospitals Africa'>
+    <JustLogoLayout
+      url={ctx.url}
+      title='Volunteer Opportunities | Virtual Hospitals Africa'
+    >
       <SideBySide
         image='https://images.unsplash.com/photo-1670272502246-768d249768ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1152&q=80'
         h1='Volunteer Opportunities'
