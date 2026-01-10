@@ -43,7 +43,10 @@ describeParallel('triage/measure_vitals', () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '1990-01-01' },
           warning_signs: [],
-          conditions: [],
+          conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
             height: {
               value: 160,
@@ -192,7 +195,10 @@ describeParallel('triage/measure_vitals', () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '1990-01-01' },
           warning_signs: [],
-          conditions: ['diabetes'],
+          conditions: {
+            diabetes: { existence: 'Yes' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
             height: {
               value: 160,
@@ -231,7 +237,10 @@ describeParallel('triage/measure_vitals', () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '2020-01-01' },
           warning_signs: [],
-          conditions: [],
+          conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
             height: {
               value: 100,
@@ -267,7 +276,10 @@ describeParallel('triage/measure_vitals', () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '2020-01-01' },
           warning_signs: [],
-          conditions: ['diabetes'],
+          conditions: {
+            diabetes: { existence: 'Yes' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
             height: {
               value: 100,
@@ -307,7 +319,10 @@ describeParallel('triage/measure_vitals', () => {
           setupTriage({
             patient_demographics: { date_of_birth: '2023-01-01' },
             warning_signs: [],
-            conditions: ['diabetes'],
+            conditions: {
+              diabetes: { existence: 'Yes' },
+              pregnancy: { existence: 'No' },
+            },
             height_and_weight: {
               height: {
                 value: 160,
@@ -379,7 +394,10 @@ describeParallel('triage/measure_vitals', () => {
         const { encounter } = await setupTriage({
           patient_demographics: { date_of_birth: '2023-01-01' },
           warning_signs: [],
-          conditions: [],
+          conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
             height: {
               value: 160,
@@ -625,7 +643,10 @@ describeParallel('triage/measure_vitals', () => {
             date_of_birth: dateOfBirth(age_determination),
           },
           warning_signs: [],
-          conditions: [],
+          conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
             height: {
               value: heightOf(age_determination),

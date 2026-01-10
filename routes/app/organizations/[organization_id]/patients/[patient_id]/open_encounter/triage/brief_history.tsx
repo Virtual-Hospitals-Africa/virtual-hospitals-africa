@@ -54,7 +54,7 @@ const ConditionSchemaRequired = z.object(
   },
 )
 
-const TriageBriefHistorySchema = z.object(
+export const TriageBriefHistorySchema = z.object(
   {
     diabetes: ConditionSchemaRequired,
     pregnancy: ConditionSchemaRequired,

@@ -49,7 +49,7 @@ import {
 } from '../../../../../../../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 
-const TriageMeasureVitalsSchema = z.object({
+export const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
     z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)),
     z.object({

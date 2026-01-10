@@ -20,7 +20,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   itParallel.skip('loads on the page', async () => {
     const { $, clinic, encounter, nurse } = await setupTriage({
       patient_demographics: { date_of_birth: '2023-01-01' },
-      conditions: ['diabetes'],
+      conditions: {
+        diabetes: { existence: 'Yes' },
+        pregnancy: { existence: 'No' },
+      },
       warning_signs: [],
       height_and_weight: {
         height: {
@@ -241,7 +244,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   itParallel('prompts for Nausea Vomiting Pallor Sweating', async () => {
     const { $, clinic, encounter, nurse } = await setupTriage({
       patient_demographics: { date_of_birth: '2001-01-01' },
-      conditions: [],
+      conditions: {
+        diabetes: { existence: 'No' },
+        pregnancy: { existence: 'No' },
+      },
       warning_signs: ['Chest pain'],
       height_and_weight: {
         height: {
