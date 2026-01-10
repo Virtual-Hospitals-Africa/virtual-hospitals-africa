@@ -4,7 +4,7 @@ import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
 import { conversations } from '../../../../../db/models/conversations.ts'
 import { patients } from '../../../../../db/models/patients.ts'
-import { patient_chatbot_users } from '../../../../../db/models/patient_chatbot_users.ts'
+import { getPatientLastConversationState } from '../../../../../db/models/patient_chatbot_users.ts'
 
 import generateUUID from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
@@ -17,7 +17,8 @@ describe('patient chatbot', () => {
     const phone_number = randomPhoneNumber('ZW')
     const { national_id_number, ...demographics } = randomDemographics()
     await patients.insert(db, {
-      conversation_state: 'not_onboarded:make_appointment:enter_national_id_number',
+      conversation_state:
+        'not_onboarded:make_appointment:enter_national_id_number',
       phone_number,
       ...demographics,
       national_id_number: null,
@@ -40,14 +41,15 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          message_body: 'What is the reason you want to schedule an appointment?',
+          message_body:
+            'What is the reason you want to schedule an appointment?',
           type: 'string',
         },
         phone_number,
       },
     ])
-    const { conversation_state, patient_id } = await patient_chatbot_users
-      .getPatientLastConversationState(
+    const { conversation_state, patient_id } =
+      await getPatientLastConversationState(
         db,
         {
           phone_number,

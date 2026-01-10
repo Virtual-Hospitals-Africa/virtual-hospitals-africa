@@ -9,7 +9,7 @@ import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import { nurse_registration_details } from '../../db/models/nurse_registration_details.ts'
 import { employment } from '../../db/models/employment.ts'
 import { media } from '../../db/models/media.ts'
-import { employee_info } from '../../db/models/employee_info.ts'
+import { getEmployeeInfo } from '../../db/models/employee_info.ts'
 import db from '../../db/db.ts'
 
 describe('getEmployeeInfo', () => {
@@ -30,7 +30,7 @@ describe('getEmployeeInfo', () => {
         organization_id: '00000000-0000-1000-8000-000000000002',
       }])
 
-      const result = await employee_info.getEmployeeInfo(
+      const result = await getEmployeeInfo(
         trx,
         {
           health_worker_id: health_worker.id,
@@ -100,7 +100,7 @@ describe('getEmployeeInfo', () => {
       })
       await nurse_registration_details.add(trx, details)
 
-      const result = await employee_info.getEmployeeInfo(
+      const result = await getEmployeeInfo(
         trx,
         {
           health_worker_id: health_worker.id,
@@ -192,7 +192,7 @@ describe('getEmployeeInfo', () => {
 
     await nurse_registration_details.add(trx, details)
 
-    const result = await employee_info.getEmployeeInfo(
+    const result = await getEmployeeInfo(
       trx,
       {
         health_worker_id: health_worker.id,
@@ -225,19 +225,23 @@ describe('getEmployeeInfo', () => {
     assertEquals(result.documents, [
       {
         name: 'Face Picture',
-        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${face_picture_media.id}`,
+        href:
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${face_picture_media.id}`,
       },
       {
         name: 'National ID',
-        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${national_id_media.id}`,
+        href:
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${national_id_media.id}`,
       },
       {
         name: 'Nurse Practicing Certificate',
-        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${nurse_practicing_cert_media.id}`,
+        href:
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${nurse_practicing_cert_media.id}`,
       },
       {
         name: 'Registration Card',
-        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${registration_card_media.id}`,
+        href:
+          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${registration_card_media.id}`,
       },
     ])
     assertEquals(

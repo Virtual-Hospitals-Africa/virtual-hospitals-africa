@@ -4,7 +4,7 @@ import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
 import { conversations } from '../../../../../db/models/conversations.ts'
 import { patients } from '../../../../../db/models/patients.ts'
-import { patient_chatbot_users } from '../../../../../db/models/patient_chatbot_users.ts'
+import { getPatientLastConversationState } from '../../../../../db/models/patient_chatbot_users.ts'
 
 import generateUUID from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
@@ -17,7 +17,8 @@ describe('patient chatbot', () => {
     async () => {
       const phone_number = randomPhoneNumber('ZW')
       await patients.insert(db, {
-        conversation_state: 'not_onboarded:make_appointment:enter_date_of_birth',
+        conversation_state:
+          'not_onboarded:make_appointment:enter_date_of_birth',
         phone_number,
         name: 'Test Patient',
         sex: 'female',
@@ -48,8 +49,8 @@ describe('patient chatbot', () => {
           phone_number,
         },
       ])
-      const { conversation_state, patient_id } = await patient_chatbot_users
-        .getPatientLastConversationState(
+      const { conversation_state, patient_id } =
+        await getPatientLastConversationState(
           db,
           {
             phone_number,

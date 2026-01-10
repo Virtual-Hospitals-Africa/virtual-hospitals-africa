@@ -1,23 +1,23 @@
 import { assert } from 'std/assert/assert.ts'
 import { PatientChatbotUserState, TrxOrDb } from '../../types.ts'
 import { appointments } from '../../db/models/appointments.ts'
-import { patient_appointments } from '../../db/models/patient_appointments.ts'
+import { schedulingAppointmentRequest } from '../../db/models/patient_appointments.ts'
 
 export async function receiveMedia(
   trx: TrxOrDb,
   patientState: PatientChatbotUserState,
 ) {
   assert(patientState.chatbot_user.entity_id)
-  const scheduling_appointment_request = await patient_appointments
-    .schedulingAppointmentRequest(
-      trx,
-      patientState.chatbot_user.entity_id,
-    )
+  const scheduling_appointment_request = await schedulingAppointmentRequest(
+    trx,
+    patientState.chatbot_user.entity_id,
+  )
   assert(scheduling_appointment_request)
 
   assert(patientState.unhandled_message.media_id)
   await appointments.insertRequestMedia(trx, {
-    patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
+    patient_appointment_request_id:
+      scheduling_appointment_request.patient_appointment_request_id,
     media_id: patientState.unhandled_message.media_id,
   })
   return 'onboarded:make_appointment:subsequent_ask_for_media' as const

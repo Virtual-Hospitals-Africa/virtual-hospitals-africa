@@ -1,4 +1,9 @@
-import { HealthWorkerOrganization, LoggedInHealthWorkerContext, RenderedEmployee, RenderedOrganization } from '../../../../types.ts'
+import {
+  HealthWorkerOrganization,
+  LoggedInHealthWorkerContext,
+  RenderedEmployee,
+  RenderedOrganization,
+} from '../../../../types.ts'
 import { organizations } from '../../../../db/models/organizations.ts'
 import { assertOr403 } from '../../../../util/assertOr.ts'
 
@@ -11,7 +16,8 @@ export type OrganizationState = {
   is_admin_at_organization: boolean
 }
 
-export type OrganizationContext<T = Record<never, never>> = LoggedInHealthWorkerContext<OrganizationState & T>
+export type OrganizationContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<OrganizationState & T>
 
 export async function handler(
   ctx: OrganizationContext,
@@ -19,7 +25,9 @@ export async function handler(
   const { health_worker } = ctx.state
   const { organization_id } = ctx.params
 
-  const organization_employment = health_worker.organizations.find((o) => o.id === organization_id)
+  const organization_employment = health_worker.organizations.find((o) =>
+    o.id === organization_id
+  )
 
   assertOr403(
     organization_employment,

@@ -11,7 +11,11 @@ import {
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../../types.ts'
-import { convertToTimeString, formatJohannesburg, prettyAppointmentTime } from '../../util/date.ts'
+import {
+  convertToTimeString,
+  formatJohannesburg,
+  prettyAppointmentTime,
+} from '../../util/date.ts'
 import { appointments } from '../../db/models/appointments.ts'
 import { patients } from '../../db/models/patients.ts'
 import { conversations } from '../../db/models/conversations.ts'
@@ -21,35 +25,45 @@ import { availableSlots } from '../../backend/scheduling/getProviderAvailability
 import { cancelAppointment } from '../../backend/scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../backend/scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
-import { capLengthAtWhatsAppDescription, capLengthAtWhatsAppTitle } from '../../util/capLengthAt.ts'
+import {
+  capLengthAtWhatsAppDescription,
+  capLengthAtWhatsAppTitle,
+} from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { GoogleClient } from '../../external-clients/google.ts'
 import { receiveMedia } from './receiveMedia.ts'
 import { SERVER_COUNTRY } from '../../db/models/countries.ts'
-import { patient_nearest_facilities } from '../../db/models/patient_nearest_facilities.ts'
-import { patient_appointments } from '../../db/models/patient_appointments.ts'
+import { nearestFacilities } from '../../db/models/patient_nearest_facilities.ts'
+import {
+  scheduledAppointments,
+  schedulingAppointmentRequest,
+} from '../../db/models/patient_appointments.ts'
 
-const conversation_states: ConversationStates<
+const conversationStates: ConversationStates<
   PatientChatbotUserState
 > = {
   'initial_message': {
     type: 'select',
-    prompt: 'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    prompt:
+      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
     options: mainMenuOptions,
   },
   'not_onboarded:welcome': {
     type: 'select',
-    prompt: 'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    prompt:
+      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
     options: mainMenuOptions,
   },
   'onboarded:main_menu': {
     type: 'select',
-    prompt: 'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    prompt:
+      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
     options: mainMenuOptions,
   },
   'not_onboarded:make_appointment:enter_name': {
     type: 'string',
-    prompt: 'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
+    prompt:
+      'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
     async onExit(trx, patientState) {
       const patient = await patients.insert(trx, {
         name: patientState.unhandled_message.trimmed_body!,
@@ -130,20 +144,21 @@ const conversation_states: ConversationStates<
   },
   'find_nearest_facilities:share_location': {
     type: 'get_location',
-    prompt: 'Sure, we can find your nearest organization. Can you share your location?',
+    prompt:
+      'Sure, we can find your nearest organization. Can you share your location?',
     async onExit(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
       assert(patientState.unhandled_message.trimmed_body)
-      const location_message: Coordinates = JSON.parse(
+      const locationMessage: Coordinates = JSON.parse(
         patientState.unhandled_message.trimmed_body,
       )
-      const current_location: Coordinates = {
-        longitude: location_message.longitude,
-        latitude: location_message.latitude,
+      const currentLocation: Coordinates = {
+        longitude: locationMessage.longitude,
+        latitude: locationMessage.latitude,
       }
       await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
-        location: current_location,
+        location: currentLocation,
       })
 
       return 'find_nearest_facilities:got_location' as const
@@ -160,21 +175,23 @@ const conversation_states: ConversationStates<
     ) {
       assert(patientState.chatbot_user.entity_id)
 
-      const nearest_facilities = await patient_nearest_facilities
-        .nearestFacilities(
-          trx,
-          patientState.chatbot_user.entity_id,
-        )
+      const nearest_facilities = await nearestFacilities(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       if (!nearest_facilities?.length) {
         return {
           type: 'select',
-          prompt: "We're sorry that no organizations were found in your area. Our team has been notified and will follow up with you soon.",
+          prompt:
+            "We're sorry that no organizations were found in your area. Our team has been notified and will follow up with you soon.",
           options: [
             {
               id: 'main_menu',
               title: 'Main Menu',
               onExit() {
-                return patientState.chatbot_user.entity_id ? 'onboarded:main_menu' as const : 'not_onboarded:welcome' as const
+                return patientState.chatbot_user.entity_id
+                  ? 'onboarded:main_menu' as const
+                  : 'not_onboarded:welcome' as const
               },
             },
           ],
@@ -184,16 +201,21 @@ const conversation_states: ConversationStates<
       const organizations = nearest_facilities.map((organization) => {
         const distance_in_km = organization.walking_distance ||
           (organization.distance_meters / 1000).toFixed(1) + ' km'
-        const description = distance_in_km ? `${organization.address} (${distance_in_km})` : organization.address
+        const description = distance_in_km
+          ? `${organization.address} (${distance_in_km})`
+          : organization.address
 
-        const organization_name = organization.admins.length ? `${organization.name} (VHA)` : organization.name
+        const organization_name = organization.admins.length
+          ? `${organization.name} (VHA)`
+          : organization.name
         return {
           section: organization.locality || '[Unknown Location]',
           row: {
             id: organization.id,
             title: capLengthAtWhatsAppTitle(organization_name),
             description: capLengthAtWhatsAppDescription(description),
-            onExit: 'find_nearest_facilities:send_organization_location' as const,
+            onExit:
+              'find_nearest_facilities:send_organization_location' as const,
           },
         }
       })
@@ -225,11 +247,10 @@ const conversation_states: ConversationStates<
     async getMessages(trx, patientState): Promise<WhatsAppSendable> {
       assert(patientState.chatbot_user.entity_id)
 
-      const nearest_facilities = await patient_nearest_facilities
-        .nearestFacilities(
-          trx,
-          patientState.chatbot_user.entity_id,
-        )
+      const nearest_facilities = await nearestFacilities(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
 
       const selected_organization = nearest_facilities
         ?.find(
@@ -243,7 +264,7 @@ const conversation_states: ConversationStates<
         'selected_organization should be available in the patientState',
       )
 
-      const location_message: WhatsAppSingleSendable = {
+      const locationMessage: WhatsAppSingleSendable = {
         type: 'location',
         message_body: selected_organization.name,
         location: {
@@ -254,7 +275,7 @@ const conversation_states: ConversationStates<
         },
       }
 
-      const button_message: WhatsAppSingleSendable = {
+      const buttonMessage: WhatsAppSingleSendable = {
         type: 'buttons',
         message_body: 'Click below to go back to main menu.',
         buttonText: 'Back to main menu',
@@ -263,11 +284,13 @@ const conversation_states: ConversationStates<
           title: 'Back to Menu',
         }],
       }
-      return [location_message, button_message]
+      return [locationMessage, buttonMessage]
     },
     type: 'send_location',
     onExit(_trx, patientState): PatientConversationState {
-      return patientState.chatbot_user.entity_id ? 'onboarded:main_menu' : 'not_onboarded:welcome'
+      return patientState.chatbot_user.entity_id
+        ? 'onboarded:main_menu'
+        : 'not_onboarded:welcome'
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {
@@ -278,11 +301,10 @@ const conversation_states: ConversationStates<
       patientState,
     ) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduling_appointment_request = await patient_appointments
-        .schedulingAppointmentRequest(
-          trx,
-          patientState.chatbot_user.entity_id,
-        )
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
       await appointments.upsertRequest(trx, {
         id: scheduling_appointment_request.patient_appointment_request_id,
@@ -294,7 +316,8 @@ const conversation_states: ConversationStates<
   },
   'onboarded:make_appointment:initial_ask_for_media': {
     type: 'expect_media',
-    prompt: 'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
+    prompt:
+      'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
     onExit: receiveMedia,
     options: [
       {
@@ -306,7 +329,8 @@ const conversation_states: ConversationStates<
   },
   'onboarded:make_appointment:subsequent_ask_for_media': {
     type: 'expect_media',
-    prompt: 'Thanks for sending that. To send another image, video, or voice note, click the + button. Otherwise, click Done.',
+    prompt:
+      'Thanks for sending that. To send another image, video, or voice note, click the + button. Otherwise, click Done.',
     onExit: receiveMedia,
     options: [
       {
@@ -324,11 +348,10 @@ const conversation_states: ConversationStates<
         trx,
         patientState.chatbot_user.entity_id,
       )
-      const scheduling_appointment_request = await patient_appointments
-        .schedulingAppointmentRequest(
-          trx,
-          patientState.chatbot_user.entity_id,
-        )
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
       assert(scheduling_appointment_request.reason)
       return `Got it, ${scheduling_appointment_request.reason}. In summary, your name is ${patient.name}, you are a ${patient.sex} born on ${patient.dob_formatted} with national id number ${patient.national_id_number} and you want to schedule an appointment for ${scheduling_appointment_request.reason}. Is this correct?`
@@ -339,19 +362,18 @@ const conversation_states: ConversationStates<
         title: 'Yes',
         async onExit(trx, patientState) {
           assert(patientState.chatbot_user.entity_id)
-          const scheduling_appointment_request = await patient_appointments
-            .schedulingAppointmentRequest(
+          const scheduling_appointment_request =
+            await schedulingAppointmentRequest(
               trx,
               patientState.chatbot_user.entity_id,
             )
           assert(scheduling_appointment_request)
 
           // TODO this is getting closer to the truth, but still isn't quite right
-          const nearest_facilities = await patient_nearest_facilities
-            .nearestFacilities(
-              trx,
-              patientState.chatbot_user.entity_id,
-            )
+          const nearest_facilities = await nearestFacilities(
+            trx,
+            patientState.chatbot_user.entity_id,
+          )
 
           const doctors = await employees.distinctIds(trx, {
             professions: ['doctor'],
@@ -370,7 +392,8 @@ const conversation_states: ConversationStates<
           )
 
           await appointments.addOfferedTime(trx, {
-            patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
+            patient_appointment_request_id:
+              scheduling_appointment_request.patient_appointment_request_id,
             provider_id: first_available[0].provider.employee_id,
             start: first_available[0].start,
             end: first_available[0].end,
@@ -390,11 +413,10 @@ const conversation_states: ConversationStates<
     type: 'select',
     async prompt(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduling_appointment_request = await patient_appointments
-        .schedulingAppointmentRequest(
-          trx,
-          patientState.chatbot_user.entity_id,
-        )
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
       return `Great, the next available appointment is on ${
         prettyAppointmentTime(
@@ -428,8 +450,8 @@ const conversation_states: ConversationStates<
         title: 'Other times',
         async onExit(trx, patientState) {
           assert(patientState.chatbot_user.entity_id)
-          const scheduling_appointment_request = await patient_appointments
-            .schedulingAppointmentRequest(
+          const scheduling_appointment_request =
+            await schedulingAppointmentRequest(
               trx,
               patientState.chatbot_user.entity_id,
             )
@@ -453,11 +475,10 @@ const conversation_states: ConversationStates<
             tomorrow.getTime() + (24 * 60 * 60 * 1000),
           )
 
-          const nearest_facilities = await patient_nearest_facilities
-            .nearestFacilities(
-              trx,
-              patientState.chatbot_user.entity_id,
-            )
+          const nearest_facilities = await nearestFacilities(
+            trx,
+            patientState.chatbot_user.entity_id,
+          )
           const doctors = await employees.distinctIds(trx, {
             professions: ['doctor'],
             organization_id: nearest_facilities.map((o) => o.id),
@@ -468,7 +489,9 @@ const conversation_states: ConversationStates<
             trx,
             {
               employment_ids,
-              declined_times: declined_times.map((time) => formatJohannesburg(time)),
+              declined_times: declined_times.map((time) =>
+                formatJohannesburg(time)
+              ),
               count: 9,
               dates: [
                 formatJohannesburg(today).substring(0, 10),
@@ -482,7 +505,8 @@ const conversation_states: ConversationStates<
           await Promise.all(filtered_available_times.map(
             (timeslot) =>
               appointments.addOfferedTime(trx, {
-                patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
+                patient_appointment_request_id:
+                  scheduling_appointment_request.patient_appointment_request_id,
                 provider_id: timeslot.provider.employee_id,
                 start: timeslot.start,
                 end: timeslot.end,
@@ -503,17 +527,17 @@ const conversation_states: ConversationStates<
   'onboarded:make_appointment:other_scheduling_options': {
     type: 'action',
     headerText: 'Other Appointment Times',
-    prompt: 'OK here are the other available time, please choose from the list.',
+    prompt:
+      'OK here are the other available time, please choose from the list.',
     async action(
       trx,
       patientState,
     ) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduling_appointment_request = await patient_appointments
-        .schedulingAppointmentRequest(
-          trx,
-          patientState.chatbot_user.entity_id,
-        )
+      const scheduling_appointment_request = await schedulingAppointmentRequest(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assert(scheduling_appointment_request)
 
       const non_declined_times = scheduling_appointment_request
@@ -521,7 +545,7 @@ const conversation_states: ConversationStates<
           (offered_time) => !offered_time.declined,
         )
 
-      const appointments_by_date: {
+      const appointmentsByDate: {
         [date: string]: SchedulingAppointmentOfferedTime[]
       } = non_declined_times.reduce((acc, appointment) => {
         const date = formatJohannesburg(appointment.start).substring(0, 10)
@@ -536,10 +560,10 @@ const conversation_states: ConversationStates<
         PatientChatbotUserState
       >[] = []
 
-      for (const date in appointments_by_date) {
+      for (const date in appointmentsByDate) {
         sections.push({
           title: date,
-          rows: appointments_by_date[date].map((offered_time) => {
+          rows: appointmentsByDate[date].map((offered_time) => {
             return {
               id: String(offered_time.id),
               title: convertToTimeString(
@@ -571,8 +595,8 @@ const conversation_states: ConversationStates<
           description: 'Show other time slots',
           async onExit(trx, patientState) {
             assert(patientState.chatbot_user.entity_id)
-            const scheduling_appointment_request = await patient_appointments
-              .schedulingAppointmentRequest(
+            const scheduling_appointment_request =
+              await schedulingAppointmentRequest(
                 trx,
                 patientState.chatbot_user.entity_id,
               )
@@ -598,11 +622,10 @@ const conversation_states: ConversationStates<
     type: 'select',
     async prompt(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
-      const scheduled_appointments = await patient_appointments
-        .scheduledAppointments(
-          trx,
-          patientState.chatbot_user.entity_id,
-        )
+      const scheduled_appointments = await scheduledAppointments(
+        trx,
+        patientState.chatbot_user.entity_id,
+      )
       assertEquals(scheduled_appointments.length, 1)
       const [scheduled_appointment] = scheduled_appointments
       assert(scheduled_appointment.gcal_event_id)
@@ -628,7 +651,8 @@ const conversation_states: ConversationStates<
   },
   'onboarded:appointment_cancelled': {
     type: 'select',
-    prompt: 'Your appointment has been cancelled. What can I help you with today?',
+    prompt:
+      'Your appointment has been cancelled. What can I help you with today?',
     options: mainMenuOptions,
   },
   end_of_demo: {
@@ -655,4 +679,4 @@ const conversation_states: ConversationStates<
   },
 }
 
-export default conversation_states
+export default conversationStates

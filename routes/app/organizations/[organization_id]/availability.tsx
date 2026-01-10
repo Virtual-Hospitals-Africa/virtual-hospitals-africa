@@ -1,9 +1,20 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
-import { AvailabilityJSON, DayOfWeek, DeepPartial, GCalEvent, Time } from '../../../../types.ts'
+import {
+  AvailabilityJSON,
+  DayOfWeek,
+  DeepPartial,
+  GCalEvent,
+  Time,
+} from '../../../../types.ts'
 import SetAvailabilityForm from '../../../../islands/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../../external-clients/google.ts'
-import { assertAllJohannesburg, convertToTime, formatJohannesburg, todayISOInJohannesburg } from '../../../../util/date.ts'
+import {
+  assertAllJohannesburg,
+  convertToTime,
+  formatJohannesburg,
+  todayISOInJohannesburg,
+} from '../../../../util/date.ts'
 import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
 import { parseDateTime } from '../../../../util/date.ts'
@@ -15,7 +26,10 @@ import z from 'zod'
 import { promiseProps } from '../../../../util/promiseProps.ts'
 import { OrganizationContext } from './_middleware.ts'
 import { employment_calendars } from '../../../../db/models/employment_calendars.ts'
-import { nonnegative_integer, positive_integer } from '../../../../util/validators.ts'
+import {
+  nonnegative_integer,
+  positive_integer,
+} from '../../../../util/validators.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -131,11 +145,12 @@ async function writeCalendarsToGoogle(
   )
 
   if (!gcal_availability_calendar_id) {
-    const [calendars] = await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
-      ctx.state.trx,
-      google_client,
-      [ctx.state.organization.id],
-    )
+    const [calendars] =
+      await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
+        ctx.state.trx,
+        google_client,
+        [ctx.state.organization.id],
+      )
     await employment_calendars.add(
       ctx.state.trx,
       [{
@@ -156,7 +171,8 @@ async function writeCalendarsToGoogle(
   // TODO: revisit whether to clear all these out
   await forEach(
     existing_availability_events,
-    (event) => google_client.deleteEvent(gcal_availability_calendar_id, event.id),
+    (event) =>
+      google_client.deleteEvent(gcal_availability_calendar_id, event.id),
   )
 
   await forEach(

@@ -5,7 +5,7 @@ import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import { conversations } from '../../../../db/models/conversations.ts'
 import { patients } from '../../../../db/models/patients.ts'
-import { patient_chatbot_users } from '../../../../db/models/patient_chatbot_users.ts'
+import { getPatientLastConversationState } from '../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../mocks/randomPhoneNumber.ts'
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
@@ -57,8 +57,12 @@ describe('patient chatbot', () => {
 
     assertEquals(message.action.sections[0].title, 'Nqweba')
 
-    const addo = organizations.value.find((o) => o.name === 'Addo Enon Satellite Clinic')!
-    const moses = organizations.value.find((o) => o.name === 'Moses Mabida Clinic')!
+    const addo = organizations.value.find((o) =>
+      o.name === 'Addo Enon Satellite Clinic'
+    )!
+    const moses = organizations.value.find((o) =>
+      o.name === 'Moses Mabida Clinic'
+    )!
 
     assertEquals(
       message.action.sections[0].rows[0].id,
@@ -80,12 +84,9 @@ describe('patient chatbot', () => {
 
     assertEquals(first_call_args.phone_number, phone_number)
 
-    const patient = await patient_chatbot_users.getPatientLastConversationState(
-      db,
-      {
-        phone_number,
-      },
-    )
+    const patient = await getPatientLastConversationState(db, {
+      phone_number,
+    })
 
     assert(patient)
     assertEquals(

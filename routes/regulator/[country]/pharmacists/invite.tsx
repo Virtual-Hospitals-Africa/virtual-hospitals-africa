@@ -2,7 +2,7 @@ import { Context } from 'fresh'
 import PharmacistForm from '../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../util/redirect.ts'
 import { parseRequest } from '../../../../backend/parseForm.ts'
-import * as pharmacists from '../../../../db/models/pharmacists.ts'
+import { pharmacists } from '../../../../db/models/pharmacists.ts'
 import {
   LoggedInRegulator,
   LoggedInRegulatorContext,

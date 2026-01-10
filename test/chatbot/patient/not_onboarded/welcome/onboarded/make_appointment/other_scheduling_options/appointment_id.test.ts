@@ -7,8 +7,9 @@ import * as google from '../../../../../../../../external-clients/google.ts'
 import { conversations } from '../../../../../../../../db/models/conversations.ts'
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../../../db/models/appointments.ts'
-import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
+import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import { prettyAppointmentTime } from '../../../../../../../../util/date.ts'
+import { declineOfferedTimes } from '../../../../../../../../db/models/appointments.ts'
 
 import generateUUID from '../../../../../../../../util/uuid.ts'
 
@@ -30,7 +31,8 @@ describe.skip('patient chatbot', () => {
     async () => {
       const phone_number = randomPhoneNumber('ZW')
       const patient_before = await patients.insert(db, {
-        conversation_state: 'onboarded:make_appointment:other_scheduling_options',
+        conversation_state:
+          'onboarded:make_appointment:other_scheduling_options',
         phone_number,
         name: 'Test Patient',
         gender: 'female',
@@ -68,7 +70,7 @@ describe.skip('patient chatbot', () => {
         end,
         duration_minutes,
       })
-      await appointments.declineOfferedTimes(db, [first_offered_time.id])
+      await declineOfferedTimes(db, [first_offered_time.id])
 
       const other_time = new Date(first_time)
       other_time.setHours(10, 0, 0, 0)
@@ -109,7 +111,8 @@ describe.skip('patient chatbot', () => {
         {
           chatbot_name: 'patient',
           messages: {
-            message_body: `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+            message_body:
+              `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
               prettyAppointmentTime(other_time),
             type: 'buttons',
             buttonText: 'Menu',
@@ -118,10 +121,9 @@ describe.skip('patient chatbot', () => {
           phone_number,
         },
       ])
-      const patient = await patient_chatbot_users
-        .getPatientLastConversationState(db, {
-          phone_number,
-        })
+      const patient = await getPatientLastConversationState(db, {
+        phone_number,
+      })
 
       assert(patient)
       assertEquals(

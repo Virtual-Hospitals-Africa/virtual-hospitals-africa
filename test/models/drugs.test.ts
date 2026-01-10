@@ -1,7 +1,7 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { drugs } from '../../db/models/drugs.ts'
-import { manufactured_medications } from '../../db/models/manufactured_medications.ts'
+import manufactured_medications from '../../db/models/manufactured_medications.ts'
 import deepOmit from '../../util/deepOmit.ts'
 import db from '../../db/db.ts'
 import { withTestRegulator } from '../_helpers/regulators.ts'
@@ -71,7 +71,8 @@ describe('db/models/drugs.ts', () => {
         const recalling = NIFEDIPINE.medications[0].manufacturers.map(
           (manufacturer) =>
             manufactured_medications.recall(trx, {
-              manufactured_medication_id: manufacturer.manufactured_medication_id,
+              manufactured_medication_id:
+                manufacturer.manufactured_medication_id,
               regulator_id: regulator.id,
             }),
         )

@@ -1,9 +1,10 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
-import { InsertObject, sql } from 'kysely'
+import { sql } from 'kysely'
 import {
   HealthWorkerOrganization,
   IdSelection,
+  InsertShape,
   Maybe,
   PostgresInterval,
   RenderedOrganization,
@@ -32,12 +33,25 @@ import {
   orderByArrayPosition,
   success_true,
 } from '../helpers.ts'
-import { DB, EncounterReason, PatientPresence, Workflow } from '../../db.d.ts'
+import {
+  EmploymentPresence,
+  EncounterReason,
+  PatientPresence,
+  Workflow,
+} from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID, { isUUID } from '../../util/uuid.ts'
 import { base, QueryResult } from './_base.ts'
-import { assertDepartment, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
-import { arrayIsEmpty, arrayIsNonEmpty, assertArrayEmpty, assertArrayNonEmpty } from '../../util/arraySize.ts'
+import {
+  assertDepartment,
+  WORKFLOW_DEPARTMENTS,
+} from '../../shared/departments.ts'
+import {
+  arrayIsEmpty,
+  arrayIsNonEmpty,
+  assertArrayEmpty,
+  assertArrayNonEmpty,
+} from '../../util/arraySize.ts'
 import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import first from '../../util/first.ts'
@@ -298,7 +312,8 @@ function asPriority(
   priority: IntermediatePatientEncounterResult['priority'],
 ): RenderedPatientEncounter['priority'] {
   if (!priority) return priority
-  const { name, specific_snomed_concept_id, value_snomed_concept_id, ...rest } = priority
+  const { name, specific_snomed_concept_id, value_snomed_concept_id, ...rest } =
+    priority
   assert(isPriority(name))
   assertEquals(specific_snomed_concept_id, PRIORITY.id)
   assert(value_snomed_concept_id)
@@ -565,17 +580,21 @@ export const patient_encounters = base({
       'Can only add encounters for organizations with a location',
     )
 
-    const patient_encounter_employee_id = encounter.create ? generateUUID() : patient_encounter_employees.seenPatientEncounterEmployeeId(
-      encounter.existing,
-      organization_employment,
-    )
+    const patient_encounter_employee_id = encounter.create
+      ? generateUUID()
+      : patient_encounter_employees.seenPatientEncounterEmployeeId(
+        encounter.existing,
+        organization_employment,
+      )
 
     assert(
       patient_encounter_employee_id,
       'Caller must supply patient_encounter_employee_id if not created',
     )
 
-    const { reason } = encounter.create ? encounter.to_create : encounter.existing
+    const { reason } = encounter.create
+      ? encounter.to_create
+      : encounter.existing
     assertEquals(
       reason,
       'seeking treatment',
@@ -599,7 +618,7 @@ export const patient_encounters = base({
       )
 
     let with_patient_id: string | null = null
-    let patient_presence: InsertObject<DB, 'patient_presence'> = {
+    let patient_presence: InsertShape<PatientPresence> = {
       id: patient_id,
       organization_id,
       patient_encounter_id,
@@ -628,7 +647,7 @@ export const patient_encounters = base({
       }
     }
 
-    const employment_presence: InsertObject<DB, 'employment_presence'> = {
+    const employment_presence: InsertShape<EmploymentPresence> = {
       id: organization_employment.employment_id,
       at_work: true,
       with_patient_id,
@@ -682,13 +701,17 @@ export const patient_encounters = base({
         'inserting_patient_presence',
         (qb) =>
           qb.insertInto('patient_presence')
-            .values(patient_presence).onConflict((oc) => oc.column('id').doUpdateSet(patient_presence)).returningAll(),
+            .values(patient_presence).onConflict((oc) =>
+              oc.column('id').doUpdateSet(patient_presence)
+            ).returningAll(),
       )
       .with(
         'employment_presence',
         (qb) =>
           qb.insertInto('employment_presence')
-            .values(employment_presence).onConflict((oc) => oc.column('id').doUpdateSet(employment_presence)),
+            .values(employment_presence).onConflict((oc) =>
+              oc.column('id').doUpdateSet(employment_presence)
+            ),
       )
       .selectFrom('inserting_patient_presence')
       .selectAll('inserting_patient_presence')

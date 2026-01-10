@@ -1,182 +1,223 @@
-import { describeParallel, itParallel, TestOpts } from 'test/_helpers/testParallel.ts'
+import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
-import { insertReturningSeekingTreatmentWithEmployeeForTest } from '../../../../_helpers/workflows.ts'
+import {
+  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
+  insertReturningSeekingTreatmentWithEmployeeForTest,
+} from '../../../../_helpers/workflows.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { createTestOrganization } from '../../../../_helpers/organizations.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { getFormValues } from '../../../../_helpers/form.ts'
+import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
+import asFormData from '../../../../../util/asFormData.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
+import { route } from '../../../../_route.ts'
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
-import { KEYED_WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
-import { brief_history } from '../../../../../db/models/brief_history.ts'
+import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
+import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'
 import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
-import { CLINICAL_FINDING, STATUS_ATTRIBUTE } from '../../../../../shared/snomed_concepts.ts'
+import entries from '../../../../../util/entries.ts'
+import {
+  CLINICAL_FINDING,
+  STATUS_ATTRIBUTE,
+} from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
-import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
-import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
-import { hyphenate } from '../../../../../util/hyphenate.ts'
-import { events } from '../../../../../db/models/events.ts'
-import { asResultAsync } from '../../../../../util/asResult.ts'
-import values from '../../../../../util/values.ts'
+import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
 import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
-import keys from '../../../../../util/keys.ts'
-import { getGridDisplay } from 'test/_helpers/grid.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
-  afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
   describeParallel('GET', () => {
     itParallel(
       'renders a warning signs page when patient not known to be pregnant',
       async () => {
-        const { $ } = await setupTriageNewPatient({
-          patient_demographics: {},
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        const $warning_signs = await fetchCheerio(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        )
+
+        const search_route = $warning_signs('#warning-signs-search').attr(
+          'data-searchroute',
+        )
+        assertEquals(
+          search_route,
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs`,
+        )
+
+        const form_labels = getFormLabels($warning_signs)
+        assertEquals(form_labels, {
+          'warning_signs': {
+            'Obstructed airway': 'Obstructed airwayNot breathing',
+            'Seizure': 'SeizureCurrent',
+            'Burn Facial': 'BurnFacial',
+            'Burn Inhalation': 'BurnInhalation',
+            'Cardiac arrest': 'Cardiac arrest',
+            'High energy transfer':
+              'High energy transferSevere mechanism of injury',
+            'Focal neurology — acute': 'Focal neurology — acuteStroke',
+            'Fracture': 'FractureClosed (no break in the skin)',
+            'Burn Circumferential': 'BurnCircumferential',
+            'Shortness of breath - acute': 'Shortness of breath - acute',
+            'Aggression': 'Aggression',
+            'Burn Chemical': 'BurnChemical',
+            'Threatened limb': 'Threatened limb',
+            'Poisoning': 'Poisoning',
+            'Overdose': 'Overdose',
+            'Coughing blood': 'Coughing blood',
+            'Eye injury': 'Eye injury',
+            'Chest pain': 'Chest pain',
+            'Dislocation of larger joint':
+              'Dislocation of larger jointnot finger or toe',
+            'Vomiting fresh blood': 'Vomiting fresh blood',
+            'Stabbed neck': 'Stabbed neck',
+            'Fractured - compound': 'Fractured - compoundwith a break in skin',
+            'Hemorrhage Uncontrolled': 'Hemorrhage Uncontrolledarterial bleed',
+            'Seizure - post ictal': 'Seizure - post ictal',
+            'Severe pain': 'Severe pain',
+            'Burn Moderate severity': 'BurnModerate severity',
+            'Haemorrhage Controlled': 'HaemorrhageControlled',
+            'Dislocation of finger': 'Dislocation of finger',
+            'Dislocation of toe joint': 'Dislocation of toe joint',
+            'Burn Other': 'BurnOther',
+            'Abdominal pain': 'Abdominal pain',
+            'Persistent vomiting': 'Persistent vomiting',
+            'Moderate pain': 'Moderate pain',
+          },
         })
-
-        const expected = {
-          'Emergency': [
-            'Obstructed airwayNot breathing',
-            'Cardiac arrestHeart attack',
-            'SeizureCurrent',
-            'BurnFacial',
-            'BurnInhalation',
-          ],
-          'Very urgent': [
-            'Shortness of breathacute',
-            'Chest pain',
-            'SeizurePost ictal',
-            'Focal neurologyacute; Stroke',
-            'BurnChemical',
-            'Coughing blood',
-            'PoisoningOverdose',
-            'Aggression',
-            'Severe limb ischemiaThreatened limb',
-            'BurnCircumferential',
-            'Vomiting fresh blood',
-            'High energy transferSevere mechanism of injury',
-            'Stabbed neck',
-            'Eye injury',
-            'BurnOver 20%',
-            'HaemorrhageUncontrolled',
-            'Dislocation of larger jointnot finger or toe',
-            'Compound fracturewith a break in the skin',
-            'Severe pain',
-            'BurnModerate severity',
-          ],
-          'Urgent': [
-            'Persistent vomiting',
-            'Dislocation of finger',
-            'Closed fractureno break in the skin',
-            'Moderate pain',
-            'BurnOther',
-            'HaemorrhageControlled',
-            'Dislocation of toe joint',
-            'Abdominal pain',
-          ],
-          'Common Symptoms': [
-            'Nasal discharge',
-            'Fever',
-            'Cough',
-            'Sore throat',
-            'Headache',
-            'Fatigue',
-            'Shortness of breath',
-            'Nausea',
-            'Vomiting',
-            'Diarrhea',
-            'Dizziness',
-            'Muscle pain',
-            'Pain of joint',
-            'Back pain',
-            'Constipation',
-          ],
-        }
-
-        assertEquals($('.priority-table').length, Object.keys(expected).length)
-
-        const actual: typeof expected = {} as unknown as typeof expected
-        for (const category of keys(expected)) {
-          const grid_display = getGridDisplay($, `.priority-table[data-category="${category}"] > .grid`)
-          actual[category] = grid_display
-        }
-
-        assertEquals(actual, expected)
       },
     )
 
     itParallel(
       'renders the pregnancy-specific signs when the patient is pregnant',
       async () => {
-        const { nurse, encounter, patient_id, patient_encounter_id, getStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          early_brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'Yes' },
-          },
-        })
-
-        const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
-            patient_id,
-            encounter,
-            health_worker_id: nurse.health_worker.id,
-            conditions: COMMON_CONDITIONS,
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
           })
+
+        const initial_encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        const patient_id = initial_encounter.patient.id
+
+        await fetchOk(
+          `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const most_recent_findings = await renderedMostRecentFindings(db, {
+          patient_id: initial_encounter.patient.id,
+          encounter: initial_encounter,
+          health_worker_id: nurse.id,
+          conditions: COMMON_CONDITIONS,
+        })
         assert(most_recent_findings.pregnancy)
 
         await patient_encounters.close(db, {
-          patient_encounter_id,
+          patient_encounter_id: initial_encounter.patient_encounter_id,
         })
-
-        const result = await asResultAsync(() => getStep('warning_signs'))
-        assert(
-          !result.success,
-          'Because we closed the earlier patient_id, we expect this to fail. But when we open a new one below we expect that to succeed',
-        )
-        assertIncludes(
-          result.error.message,
-          '[404]: No open encounter for this patient at this organization',
-        )
 
         await insertReturningSeekingTreatmentWithEmployeeForTest(
           db,
-          nurse.health_worker.organization_id,
+          nurse.organization_id,
           {
-            patient_id,
-            employment_id: nurse.health_worker.employee_id,
+            patient_id: patient_id,
+            employment_id: nurse.employee_id,
           },
         )
 
-        const $warning_signs = await getStep('warning_signs')
+        const $warning_signs = await fetchCheerio(
+          `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/triage/warning_signs`,
+        )
 
-        const form_values = getFormValues($warning_signs)
-        assertMatches(form_values, {
+        const form_labels = getFormLabels($warning_signs)
+        assertEquals(form_labels, {
           'warning_signs': {
-            'very-urgent-pregnancy-and-abdominal-trauma': {
-              'existence': 'No',
-              's_expression': KEYED_WARNING_SIGNS['Pregnancy and abdominal trauma'].clinical_finding_s_expression,
-            },
-            'very-urgent-pregnancy-and-abdominal-pain': {
-              'existence': 'No',
-              's_expression': KEYED_WARNING_SIGNS['Pregnancy and abdominal pain'].clinical_finding_s_expression,
-            },
-            'very-urgent-severe-limb-ischemia': {
-              'existence': 'No',
-              's_expression': KEYED_WARNING_SIGNS['Severe limb ischemia'].clinical_finding_s_expression,
-            },
+            'Obstructed airway': 'Obstructed airwayNot breathing',
+            'Seizure': 'SeizureCurrent',
+            'Burn Facial': 'BurnFacial',
+            'Burn Inhalation': 'BurnInhalation',
+            'Cardiac arrest': 'Cardiac arrest',
+            'High energy transfer':
+              'High energy transferSevere mechanism of injury',
+            'Focal neurology — acute': 'Focal neurology — acuteStroke',
+            'Fracture': 'FractureClosed (no break in the skin)',
+            'Burn Circumferential': 'BurnCircumferential',
+            'Shortness of breath - acute': 'Shortness of breath - acute',
+            'Aggression': 'Aggression',
+            'Burn Chemical': 'BurnChemical',
+            'Threatened limb': 'Threatened limb',
+            'Poisoning': 'Poisoning',
+            'Overdose': 'Overdose',
+            'Coughing blood': 'Coughing blood',
+            'Eye injury': 'Eye injury',
+            'Chest pain': 'Chest pain',
+            'Dislocation of larger joint':
+              'Dislocation of larger jointnot finger or toe',
+            'Vomiting fresh blood': 'Vomiting fresh blood',
+            'Stabbed neck': 'Stabbed neck',
+            'Fractured - compound': 'Fractured - compoundwith a break in skin',
+            'Hemorrhage Uncontrolled': 'Hemorrhage Uncontrolledarterial bleed',
+            'Seizure - post ictal': 'Seizure - post ictal',
+            'Severe pain': 'Severe pain',
+            'Burn Moderate severity': 'BurnModerate severity',
+            'Haemorrhage Controlled': 'HaemorrhageControlled',
+            'Dislocation of finger': 'Dislocation of finger',
+            'Dislocation of toe joint': 'Dislocation of toe joint',
+            'Burn Other': 'BurnOther',
+            'Pregnancy and abdominal trauma': 'Pregnancy and abdominal trauma',
+            'Pregnancy and abdominal pain': 'Pregnancy and abdominal pain',
+            'Persistent vomiting': 'Persistent vomiting',
+            'Moderate pain': 'Moderate pain',
           },
         })
-
-        assert(!form_values['warning_signs']['urgent-abdominal-pain'])
       },
     )
   })
@@ -185,13 +226,46 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts a simple warning sign finding without qualifiers',
       async () => {
-        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Cardiac arrest'], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        const response = await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Cardiac arrest':
+                  WARNING_SIGNS['Cardiac arrest'].clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        assertEquals(
+          response.url,
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        )
 
         const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
         })
 
         assertMatches(this_patient_findings, [
@@ -206,7 +280,7 @@ describeParallel('triage/warning_signs', () => {
             'specific_snomed_concept': {
               'snomed_concept_id': '410429000',
             },
-            'patient_encounter_id': patient_encounter_id,
+            'patient_encounter_id': encounter.patient_encounter_id,
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
               'root_snomed_concept': {
@@ -228,13 +302,49 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
-        const { patient_id, patient_encounter_id, getStep, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Seizure'], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        // Submit with "Seizure" selected
+        // 91175000 = Seizure (canonical name in SNOMED)
+        // 15240007 = Current
+        const response = await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Seizure':
+                  WARNING_SIGNS['Seizure'].clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        assertEquals(
+          response.url,
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        )
 
         const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
         })
 
         assertMatches(this_patient_findings, [
@@ -246,7 +356,7 @@ describeParallel('triage/warning_signs', () => {
               'name': 'Clinical finding',
               'category': 'finding',
             },
-            'patient_encounter_id': patient_encounter_id,
+            'patient_encounter_id': encounter.patient_encounter_id,
             'patient_encounter_employee_id': z.string().uuid(),
             'type': 'finding',
             'value': null,
@@ -271,8 +381,8 @@ describeParallel('triage/warning_signs', () => {
             'priority': 'Emergency',
             'score': null,
             'displays': {
-              'finding': 'Seizure',
-              'full': 'Seizure',
+              'finding': 'Current Seizure',
+              'full': 'Current Seizure',
               'value': null,
             },
             'modifiers': z.array(z.any()),
@@ -280,39 +390,27 @@ describeParallel('triage/warning_signs', () => {
             'source_relations': [],
             'evaluations': z.array(z.any()),
             'attributes': [],
-            'existence': 'Yes',
           },
         ], { strict: true })
 
-        const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-        assertMatches(form_values, {
-          'warning_signs': {
-            'emergency-seizure': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
-              'warning_sign_key': 'Seizure',
-              'priority_level': 'Emergency',
-              'existing_record': {
-                'id': z.string().uuid(),
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Seizure':
+                  WARNING_SIGNS['Seizure'].clinical_finding_s_expression,
               },
-              'existence': 'Yes',
-            },
-            'very-urgent-dislocation-of-larger-joint': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
-              'warning_sign_key': 'Dislocation of larger joint',
-              'priority_level': 'Very urgent',
-            },
+            }),
           },
-        })
-
-        // Repost without modification
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: form_values as any,
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const this_patient_findings2 = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
         })
 
         assertLength(this_patient_findings2, 1)
@@ -322,20 +420,55 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts multiple warning sign findings when multiple are selected',
       async () => {
-        const { patient_id } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Cardiac arrest', 'Chest pain'], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        // Submit with both "Cardiac arrest" and "Chest pain" selected
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Cardiac arrest':
+                  WARNING_SIGNS['Cardiac arrest'].clinical_finding_s_expression,
+                'Chest pain':
+                  WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
         })
 
         assertEquals(this_patient_findings.length, 2)
 
         // Both should be Clinical findings with the appropriate qualifiers
-        const cardiac_arrest_finding = this_patient_findings.find((f) => f.specific_snomed_concept.snomed_concept_id === '410429000')
-        const chest_pain_finding = this_patient_findings.find((f) => f.specific_snomed_concept.snomed_concept_id === '29857009')
+        const cardiac_arrest_finding = this_patient_findings.find((f) =>
+          f.specific_snomed_concept.snomed_concept_id === '410429000'
+        )
+        const chest_pain_finding = this_patient_findings.find((f) =>
+          f.specific_snomed_concept.snomed_concept_id === '29857009'
+        )
 
         assertMatches(cardiac_arrest_finding, {
           'root_snomed_concept': {
@@ -360,61 +493,61 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
-      'marks a warning sign as having been entered in error if a second POST on the same page modifies it',
+      'marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Chest pain':
+                  WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         assertLength(
           await patient_findings.findAll(db, {
-            patient_id,
+            patient_id: encounter.patient.id,
           }),
           1,
         )
 
-        const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-high-energy-transfer': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
-              'warning_sign_key': 'High energy transfer',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-            },
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-              'existence': 'Yes',
-            },
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
           },
-        })
-
-        const next_form_submission = structuredClone(form_values)
-        // @ts-ignore the frontend sends this back blank
-        delete next_form_submission.warning_signs['very-urgent-chest-pain'].existence
-        next_form_submission.warning_signs['very-urgent-chest-pain'].existing_record
-          .altered = true
-
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: next_form_submission as any,
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
 
         assertLength(
           await patient_findings.findAll(db, {
-            patient_id,
+            patient_id: encounter.patient.id,
           }),
           0,
         )
@@ -422,193 +555,112 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
-      '409s if the client fails to include previously submitted records',
+      'does not insert any findings when no warning signs are selected',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
-        })
-
-        assertLength(
-          await patient_findings.findAll(db, {
-            patient_id,
-          }),
-          1,
-        )
-
-        const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-high-energy-transfer': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
-              'warning_sign_key': 'High energy transfer',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-            },
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-              'existence': 'Yes',
-            },
-          },
-        })
-
-        const next_form_submission = structuredClone(form_values)
-        // @ts-ignore deleting chest-pain entirely
-        delete next_form_submission.warning_signs['very-urgent-chest-pain']
-
-        const result = await asResultAsync(() =>
-          postStep({
-            // deno-lint-ignore no-explicit-any
-            warning_signs: next_form_submission as any,
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
           })
-        )
 
-        assert(!result.success)
-        assertIncludes(
-          result.error.message,
-          '[409]: It is expected that the frontend resubmit previously submitted records',
-        )
-      },
-    )
-
-    itParallel(
-      '409s if the client fails to mark records as altered when they were',
-      async () => {
-        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
-        })
-
-        assertLength(
-          await patient_findings.findAll(db, {
-            patient_id,
-          }),
-          1,
-        )
-
-        const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-high-energy-transfer': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
-              'warning_sign_key': 'High energy transfer',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
             },
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-              'existence': 'Yes',
-            },
-          },
-        })
+          )
 
-        const next_form_submission = structuredClone(form_values)
-        Object.assign(
-          next_form_submission.warning_signs['very-urgent-high-energy-transfer'],
+        // Submit with no warning signs selected
+        const response = await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
           {
-            existence: 'Yes',
+            method: 'POST',
+            body: asFormData({}),
+          },
+          {
+            cancel_response_body: true,
           },
         )
 
-        const result = await asResultAsync(() =>
-          postStep({
-            // deno-lint-ignore no-explicit-any
-            warning_signs: next_form_submission as any,
-          })
-        )
-
-        assert(!result.success)
         assertEquals(
-          result.error.message.split('\n')[0],
-          `[409]: It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${
-            form_values.warning_signs['very-urgent-high-energy-transfer'].existing_record.id
-          } which had existence: No, but just_submitted.existence: Yes`,
+          response.url,
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
         )
-      },
-    )
 
-    itParallel(
-      'does not insert any positive findings when no warning signs are selected, but still inserts negative findings',
-      async () => {
-        const { patient_id } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns([], { pregnant: false }),
+        const this_patient_findings = await patient_findings.findAll(db, {
+          patient_id: encounter.patient.id,
         })
 
-        const positive_findings_count = await patient_findings.countAll(db, { patient_id })
-        assertEquals(positive_findings_count, 0)
-
-        const negative_findings_count = await patient_findings.countAll(db, { patient_id, include_negative: true })
-        const number_of_pregnancy_related_signs = 2
-        assertEquals(negative_findings_count, keys(KEYED_WARNING_SIGNS).length - number_of_pregnancy_related_signs)
+        assertEquals(this_patient_findings.length, 0)
       },
     )
 
     itParallel(
       'does not save warning signs already made during the encounter',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Chest pain':
+                  WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const findings_count_after_first_insertion = await patient_findings
-          .findAll(db, { patient_id })
+          .findAll(db, {
+            patient_id: encounter.patient.id,
+          })
 
         assertEquals(findings_count_after_first_insertion.length, 1)
 
-        const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Chest pain':
+                  WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
               },
-              'existence': 'Yes',
-            },
-            'very-urgent-dislocation-of-larger-joint': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
-              'warning_sign_key': 'Dislocation of larger joint',
-              'priority_level': 'Very urgent',
-            },
+            }),
           },
-        })
-
-        // Repost without modification
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: form_values as any,
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const findings_count_after_second_insertion = await patient_findings
           .countAll(db, {
-            patient_id,
+            patient_id: encounter.patient.id,
           })
 
         assertEquals(findings_count_after_second_insertion, 1)
@@ -618,35 +670,80 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'does save identical warning concepts made during different encounters',
       async () => {
-        const { nurse, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const initial_encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Chest pain':
+                  WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const findings_count_after_first_insertion = await patient_findings
           .findAll(db, {
-            patient_id,
+            patient_id: initial_encounter.patient.id,
           })
 
         assertEquals(findings_count_after_first_insertion.length, 1)
 
-        await patient_encounters.close(db, { patient_encounter_id })
+        await patient_encounters.close(db, {
+          patient_encounter_id: initial_encounter.patient_encounter_id,
+        })
 
-        await insertReturningSeekingTreatmentWithEmployeeForTest(
-          db,
-          nurse.health_worker.organization_id,
+        const subsequent_encounter =
+          await insertReturningSeekingTreatmentWithEmployeeForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_id: initial_encounter.patient.id,
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
           {
-            patient_id,
-            employment_id: nurse.health_worker.employee_id,
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Chest pain':
+                  WARNING_SIGNS['Chest pain'].clinical_finding_s_expression,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
           },
         )
 
-        await postStep({
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
-        })
-
         const findings_count_after_second_insertion = await patient_findings
-          .countAll(db, { patient_id })
+          .countAll(db, {
+            patient_id: initial_encounter.patient.id,
+          })
 
         assertEquals(findings_count_after_second_insertion, 2)
       },
@@ -655,22 +752,41 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs (those selected via search)',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: {
-            warning_signs: {
-              ...asWarningSigns([], { pregnant: false }).warning_signs,
-              'Pain of ear': {
-                existence: 'Yes' as const,
-                priority_level: 'Non-urgent' as const,
-                s_expression: `(clinical_finding (snomed_concept "Pain of ear" "finding"))`,
-              },
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
             },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Pain of ear':
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Pain of ear" "finding"))`,
+              },
+            }),
           },
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const [finding] = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
         })
 
         assertMatches(finding, {
@@ -683,75 +799,95 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Non-urgent',
         })
 
-        const $ = await getStep('warning_signs')
+        const $ = await fetchCheerio(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        )
 
         assertEquals(
-          $('#warning-signs-selected-chips').text(),
-          'Pain of ear',
+          $('#priority-grid-non-urgent').text(),
+          'Non-urgentPain of earfinding',
         )
 
         // Posting again has no effect
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: getFormValues($) as any,
-        })
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                'Pain of ear':
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Pain of ear" "finding"))`,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const subsequent_findings = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
         })
         assertLength(subsequent_findings, 1)
       },
     )
 
     itParallel(
-      'saves findings other than warning signs, including a priority level if the concept is a descendant of a warning sign',
+      'saves findings other than warning signs gives a priority level if the concept is a descendant of a warning sign',
       async () => {
-        const { $, clinic, nurse, patient_id, getStep, postStep } = await setupTriageNewPatient({
-          patient_demographics: {},
-          early_brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'Yes' },
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
           },
-        })
-
-        const search_route = $('#warning-signs-search').attr(
-          'data-searchroute',
+          {
+            cancel_response_body: true,
+          },
         )
 
-        assertEquals(
-          search_route,
-          `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/snomed-warning-signs`,
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                's275406005':
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Appendicular pain" "finding"))`,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
         )
-
-        const { results } = await nurse.fetchJson(
-          `${search_route}?search=appendicular+pain`,
-        )
-        assertEquals(results[0], {
-          category: 'Search Results',
-          clinical_finding_s_expression: '(clinical_finding (snomed_concept "Appendicular pain" "finding"))',
-          snomed_concept_id: '275406005',
-          primary_name: 'Appendicular pain',
-          secondary_text: 'finding',
-          sats_priority: 'Very urgent',
-          sats_priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
-          similarity: 1,
-        })
-
-        // deno-lint-ignore no-explicit-any
-        const form_values = getFormValues($) as any
-
-        form_values.warning_signs['s275406005'] = {
-          existence: 'Yes',
-          priority_level: results[0].sats_priority,
-          s_expression: results[0].clinical_finding_s_expression,
-        }
-
-        await postStep({
-          warning_signs: form_values,
-        })
 
         const findings = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
           s_expression: `(not (finding ${STATUS_ATTRIBUTE.id}))`,
         })
         assertLength(findings, 1)
@@ -766,10 +902,12 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Very urgent',
         })
 
-        const $reload = await getStep('warning_signs')
+        const $ = await fetchCheerio(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+        )
 
         assertIncludes(
-          $reload('#warning-signs-selected-chips').text(),
+          $('#priority-grid-very-urgent').text(),
           'Appendicular pain',
         )
       },
@@ -778,22 +916,60 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'creates an additional task to check for a head injury with watery discharge',
       async () => {
-        const { nurse, encounter, patient_id, patient_encounter_id } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: {
-            warning_signs: {
-              ...asWarningSigns([], { pregnant: false }).warning_signs,
-              's275406005': {
-                existence: 'Yes',
-                priority_level: 'Non-urgent',
-                s_expression: `(clinical_finding (snomed_concept "Nasal discharge" "finding"))`,
-              },
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
             },
+          )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
           },
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        await fetchOk(
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+            body: asFormData({
+              warning_signs: {
+                's275406005':
+                  `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Nasal discharge" "finding"))`,
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const findings = await patient_findings.findAll(db, {
-          patient_id,
+          patient_id: encounter.patient.id,
+          s_expression: `(not (finding ${STATUS_ATTRIBUTE.id}))`,
         })
         assertLength(findings, 1)
 
@@ -807,32 +983,26 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Non-urgent',
         })
 
-        await events.allProcessedForEncounter(db, {
-          patient_encounter_id,
+        const task_groups = await getTasksGroups(db, {
+          encounter,
+          health_worker_id: nurse.id,
         })
 
-        const task_groups = await additional_tasks.getTasksGroups(db, {
-          encounter,
-          health_worker_id: nurse.health_worker.id,
-        })
+        console.log(humanReadableJson(task_groups))
 
         assertLength(task_groups, 1)
       },
     )
 
-    function testRoundTrip(sign: WarningSign, pregnant: boolean, opts?: TestOpts) {
+    function testRoundTrip(key: string, sign: WarningSign, pregnant: boolean) {
       itParallel(
-        `renders the page with the ${sign.key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
+        `renders the page with the ${key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
         async () => {
-          const { clinic, $, getStep } = await setupTriageNewPatient({
-            patient_demographics: {},
-            early_brief_history: pregnant
-              ? {
-                diabetes: { existence: 'No' },
-                pregnancy: { existence: 'Yes' },
-              }
-              : undefined,
-            warning_signs: asWarningSigns([sign.key], { pregnant }),
+          const clinic = await createTestOrganization(db)
+          const nurse = await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
           })
 
           const receptionist = await addTestEmployeeWithSession(db, {
@@ -841,23 +1011,63 @@ describeParallel('triage/warning_signs', () => {
             organization_id: clinic.id,
           })
 
-          assertEquals(
-            $('#patient-drawer-priority').text(),
-            sign.sats_priority,
-            `mismatch for ${humanReadableJson(sign)}`,
+          const encounter =
+            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+              db,
+              nurse.health_worker.organization_id,
+              {
+                employment_id: nurse.health_worker.employee_id,
+              },
+            )
+
+          if (pregnant) {
+            await nurse.fetchOk(
+              `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+              {
+                method: 'POST',
+                body: asFormData({
+                  diabetes: {
+                    existence: 'No',
+                  },
+                  pregnancy: {
+                    existence: 'Yes',
+                  },
+                }),
+              },
+              {
+                cancel_response_body: true,
+              },
+            )
+          }
+
+          await nurse.fetchOk(
+            `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+            {
+              method: 'POST',
+              body: asFormData({
+                warning_signs: {
+                  [key]: sign.clinical_finding_s_expression,
+                },
+              }),
+            },
+            {
+              cancel_response_body: true,
+            },
           )
 
-          const $warning_signs = await getStep('warning_signs')
+          const $warning_signs = await nurse.fetchCheerio(
+            `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          )
+
+          assertEquals(
+            $warning_signs('#patient-drawer-priority').text(),
+            sign.sats_priority,
+          )
 
           const form_values = getFormValues($warning_signs)
-          const hyphenated_key = hyphenate(sign.sats_priority + '-' + sign.key.toLowerCase())
-          assertMatches(form_values, {
+          assertEquals(form_values, {
             warning_signs: {
-              [hyphenated_key]: {
-                warning_sign_key: sign.key,
-                priority_level: sign.sats_priority,
-                s_expression: sign.clinical_finding_s_expression,
-              },
+              [key]: sign.clinical_finding_s_expression,
             },
           })
 
@@ -870,25 +1080,19 @@ describeParallel('triage/warning_signs', () => {
             Priority: sign.sats_priority,
           }])
         },
-        opts,
       )
     }
 
-    for (const sign of values(KEYED_WARNING_SIGNS)) {
+    for (const [key, sign] of entries(WARNING_SIGNS)) {
       const pregnant = [
         'Pregnancy and abdominal pain',
         'Pregnancy and abdominal trauma',
-      ].includes(sign.key)
+      ].includes(key)
 
-      testRoundTrip(sign, pregnant)
+      testRoundTrip(key, sign, pregnant)
     }
 
-    /* Singletons to test */
-
-    // Exercises s_expression
-    // testRoundTrip(KEYED_WARNING_SIGNS['Burn Other'], false, { only: true })
-
-    // Pregnancy
-    // testRoundTrip(KEYED_WARNING_SIGNS['Pregnancy and abdominal pain'], true, { only: true })
+    // When you just want to test one. This is a good test to exercise s_expression
+    // testRoundTrip('Burn Other', WARNING_SIGNS['Burn Other'], false)
   })
 })

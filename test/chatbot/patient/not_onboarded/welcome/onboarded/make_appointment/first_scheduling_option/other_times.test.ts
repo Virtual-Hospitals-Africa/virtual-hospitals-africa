@@ -1,4 +1,10 @@
-import { afterAll, afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import {
+  afterAll,
+  afterEach,
+  beforeEach,
+  describe,
+  it,
+} from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../../db/db.ts'
@@ -7,7 +13,10 @@ import * as google from '../../../../../../../../external-clients/google.ts'
 import { conversations } from '../../../../../../../../db/models/conversations.ts'
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../../../db/models/appointments.ts'
-import { convertToTimeString, formatJohannesburg } from '../../../../../../../../util/date.ts'
+import {
+  convertToTimeString,
+  formatJohannesburg,
+} from '../../../../../../../../util/date.ts'
 
 import generateUUID from '../../../../../../../../util/uuid.ts'
 
@@ -18,7 +27,7 @@ import { GCalEvent } from '../../../../../../../../types.ts'
 import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
 import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
-import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
+import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 
 describe.skip('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -35,7 +44,8 @@ describe.skip('patient chatbot', () => {
     async () => {
       const phone_number = randomPhoneNumber('ZW')
       const patient_before = await patients.insert(db, {
-        conversation_state: 'onboarded:make_appointment:first_scheduling_option',
+        conversation_state:
+          'onboarded:make_appointment:first_scheduling_option',
         phone_number,
         name: 'Test Patient',
         sex: 'female',
@@ -191,10 +201,9 @@ describe.skip('patient chatbot', () => {
         },
       )
 
-      const patient = await patient_chatbot_users
-        .getPatientLastConversationState(db, {
-          phone_number,
-        })
+      const patient = await getPatientLastConversationState(db, {
+        phone_number,
+      })
 
       assert(patient)
       assertEquals(

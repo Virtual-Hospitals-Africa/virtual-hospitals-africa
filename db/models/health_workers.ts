@@ -1,10 +1,21 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-import { EmployedHealthWorker, IdSelection, Maybe, NonEmptyArray, PossiblyEmployedHealthWorker, TrxOrDb } from '../../types.ts'
+import {
+  EmployedHealthWorker,
+  IdSelection,
+  Maybe,
+  NonEmptyArray,
+  PossiblyEmployedHealthWorker,
+  TrxOrDb,
+} from '../../types.ts'
 import { organizations } from './organizations.ts'
-import { jsonArrayFrom, jsonArrayFromColumn, orderByArrayPosition } from '../helpers.ts'
+import {
+  jsonArrayFrom,
+  jsonArrayFromColumn,
+  orderByArrayPosition,
+} from '../helpers.ts'
 import { Profession } from '../../db.d.ts'
-import { NameInputs } from '../../util/asNames.ts'
+import { NameInputs } from './asNames.ts'
 import { base } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -152,7 +163,9 @@ export const health_workers = base({
           .where(
             'organization_id',
             'in',
-            isString(opts.organization_id) ? [opts.organization_id] : opts.organization_id,
+            isString(opts.organization_id)
+              ? [opts.organization_id]
+              : opts.organization_id,
           )
           .select('health_worker_id'),
       )

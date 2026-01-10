@@ -5,7 +5,7 @@ import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import { conversations } from '../../../../db/models/conversations.ts'
 import { patients } from '../../../../db/models/patients.ts'
-import { patient_chatbot_users } from '../../../../db/models/patient_chatbot_users.ts'
+import { getPatientLastConversationState } from '../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../util/uuid.ts'
 
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
@@ -45,8 +45,12 @@ describe('patient chatbot', () => {
       const whatsapp_one = mockWhatsApp()
 
       await respond(whatsapp_one, 'patient')
-      const addo = organizations.value.find((o) => o.name === 'Addo Enon Satellite Clinic')!
-      const moses = organizations.value.find((o) => o.name === 'Moses Mabida Clinic')!
+      const addo = organizations.value.find((o) =>
+        o.name === 'Addo Enon Satellite Clinic'
+      )!
+      const moses = organizations.value.find((o) =>
+        o.name === 'Moses Mabida Clinic'
+      )!
 
       const message = whatsapp_one.sendMessages.calls[0].args[0].messages
       assert(!Array.isArray(message))
@@ -78,7 +82,8 @@ describe('patient chatbot', () => {
               type: 'location',
               message_body: 'Moses Mabida Clinic',
               location: {
-                address: 'Nqweba, Sarah Baartman District Municipality, Eastern Cape, South Africa',
+                address:
+                  'Nqweba, Sarah Baartman District Municipality, Eastern Cape, South Africa',
                 latitude: -33.3973,
                 longitude: 25.4808,
                 name: 'Moses Mabida Clinic',
@@ -97,10 +102,9 @@ describe('patient chatbot', () => {
           phone_number,
         },
       ])
-      const patient = await patient_chatbot_users
-        .getPatientLastConversationState(db, {
-          phone_number,
-        })
+      const patient = await getPatientLastConversationState(db, {
+        phone_number,
+      })
 
       assert(patient)
       assertEquals(

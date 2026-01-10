@@ -1,4 +1,8 @@
-import { PharmacistChatbotUserState, PharmacistConversationState, TrxOrDb } from '../../types.ts'
+import {
+  PharmacistChatbotUserState,
+  PharmacistConversationState,
+  TrxOrDb,
+} from '../../types.ts'
 import { conversations } from '../../db/models/conversations.ts'
 import { pharmacists } from '../../db/models/pharmacists.ts'
 import { pharmacies } from '../../db/models/pharmacies.ts'
@@ -62,7 +66,9 @@ export async function handlePharmacyLicenceInput(
     'The chatbot should not have let the pharmacist proceed with a licence number not corresponding with an extant pharmacist',
   )
 
-  const works_at_pharmacy = pharmacist.pharmacies.some((p) => p.id === pharmacy.id)
+  const works_at_pharmacy = pharmacist.pharmacies.some((p) =>
+    p.id === pharmacy.id
+  )
 
   if (!works_at_pharmacy) {
     return 'not_onboarded:incorrect_pharmacy_licence'

@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { pharmacy_employment } from './pharmacy_employment.ts'
 import { base } from './_base.ts'
 
-export const PharmacistUpsertSchema = z.object({
+export const PharmacistUpsert = z.object({
   licence_number: z.string(),
   prefix: z.enum(['Mr', 'Mrs', 'Ms', 'Miss', 'Dr']),
   given_name: z.string(),
@@ -26,10 +26,13 @@ export const PharmacistUpsertSchema = z.object({
   }))),
 })
 
-export type PharmacistUpsert = z.infer<typeof PharmacistUpsertSchema>
+export const parse_upsert = PharmacistUpsert.parse
+export type PharmacistUpsert = z.infer<typeof PharmacistUpsert>
 
 export function nameSql(table: string) {
-  return sql<string>`concat(${sql.ref(`${table}.prefix`)}, '. ', ${sql.ref(`${table}.given_name`)}, ' ', ${
+  return sql<string>`concat(${sql.ref(`${table}.prefix`)}, '. ', ${
+    sql.ref(`${table}.given_name`)
+  }, ' ', ${
     sql.ref(
       `${table}.family_name`,
     )
@@ -110,7 +113,8 @@ function baseQuery(trx: TrxOrDb) {
     .orderBy('pharmacists.family_name', 'asc')
 }
 
-const isLicenceLike = (search: string) => /^[A-Z]\d{2}-\d{4}-\d{4}$/.test(search.toUpperCase())
+const isLicenceLike = (search: string) =>
+  /^[A-Z]\d{2}-\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
   country?: Maybe<string>
@@ -211,7 +215,9 @@ export const pharmacists = base({
       .selectAll()
       .execute()
     for (const existing_pharmacy_employment of existing_pharmacy_employments) {
-      const selected_pharmacy = pharmacies.find((pharmacy) => pharmacy.id === existing_pharmacy_employment.pharmacy_id)
+      const selected_pharmacy = pharmacies.find((pharmacy) =>
+        pharmacy.id === existing_pharmacy_employment.pharmacy_id
+      )
       if (selected_pharmacy) {
         await pharmacy_employment.updateIsSupervisor(
           trx,
@@ -226,7 +232,9 @@ export const pharmacists = base({
           existing_pharmacy_employment.pharmacy_id,
         )
       }
-      pharmacies = pharmacies.filter((pharmacy) => pharmacy.id !== existing_pharmacy_employment.pharmacy_id)
+      pharmacies = pharmacies.filter((pharmacy) =>
+        pharmacy.id !== existing_pharmacy_employment.pharmacy_id
+      )
     }
     const pharmacy_employments = pharmacies.map((pharmacy_employee) => ({
       pharmacist_id,

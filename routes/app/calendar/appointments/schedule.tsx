@@ -1,5 +1,5 @@
 import ScheduleForm from '../../../../components/calendar/ScheduleForm.tsx'
-import * as patients from '../../../../db/models/patients.ts'
+import { patients } from '../../../../db/models/patients.ts'
 import { parseRequest } from '../../../../backend/parseForm.ts'
 import { availableSlots } from '../../../../backend/scheduling/getProviderAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'

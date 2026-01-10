@@ -1,8 +1,15 @@
 import { JSX } from 'preact'
 import { examinations } from '../../../../../../../../../db/models/examinations.ts'
-import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../../_middleware.tsx'
+import {
+  completeAndProceedToNextStep,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../../_middleware.tsx'
 import { RenderedPatientExamination } from '../../../../../../../../../types.ts'
-import { TabProps, Tabs } from '../../../../../../../../../components/library/Tabs.tsx'
+import {
+  TabProps,
+  Tabs,
+} from '../../../../../../../../../components/library/Tabs.tsx'
 import { Progress } from '../../../../../../../../../components/library/icons/progress.tsx'
 import redirect from '../../../../../../../../../util/redirect.ts'
 
@@ -29,11 +36,17 @@ export async function handler(
     },
   )
 
-  const next_incomplete_assessment = patient_general_assessments.find((a) => !a.completed)
+  const next_incomplete_assessment = patient_general_assessments.find((a) =>
+    !a.completed
+  )
 
   const { general_assessment_slug } = ctx.params
 
-  const current_assessment = general_assessment_slug ? patient_general_assessments.find((a) => a.slug === general_assessment_slug) : undefined
+  const current_assessment = general_assessment_slug
+    ? patient_general_assessments.find((a) =>
+      a.slug === general_assessment_slug
+    )
+    : undefined
 
   Object.assign(
     ctx.state,

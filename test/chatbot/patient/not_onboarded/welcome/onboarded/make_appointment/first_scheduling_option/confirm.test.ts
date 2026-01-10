@@ -7,7 +7,7 @@ import * as google from '../../../../../../../../external-clients/google.ts'
 import { conversations } from '../../../../../../../../db/models/conversations.ts'
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../../../db/models/appointments.ts'
-import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
+import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import { prettyAppointmentTime } from '../../../../../../../../util/date.ts'
 
 import generateUUID from '../../../../../../../../util/uuid.ts'
@@ -31,7 +31,8 @@ describe('patient chatbot', () => {
     async () => {
       const phone_number = randomPhoneNumber('ZW')
       const patient_before = await patients.insert(db, {
-        conversation_state: 'onboarded:make_appointment:first_scheduling_option',
+        conversation_state:
+          'onboarded:make_appointment:first_scheduling_option',
         phone_number,
         name: 'Test Patient',
         gender: 'female',
@@ -93,7 +94,8 @@ describe('patient chatbot', () => {
         {
           chatbot_name: 'patient',
           messages: {
-            message_body: `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+            message_body:
+              `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
               prettyAppointmentTime(start),
             type: 'buttons',
             buttonText: 'Menu',
@@ -105,10 +107,9 @@ describe('patient chatbot', () => {
           phone_number,
         },
       ])
-      const patient = await patient_chatbot_users
-        .getPatientLastConversationState(db, {
-          phone_number,
-        })
+      const patient = await getPatientLastConversationState(db, {
+        phone_number,
+      })
 
       assert(patient)
       assertEquals(

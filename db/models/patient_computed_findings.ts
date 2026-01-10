@@ -413,7 +413,8 @@ export const patient_computed_findings = {
           patient_encounter_id,
           patient_encounter_employee_id,
           procedure_id: source_procedure_id,
-          snomed_concept_id: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
+          snomed_concept_id:
+            VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
           value: map_value,
           units: VITAL_COMPUTED_UNITS.mean_arterial_pressure,
           algorithm_version: 'MAP_v1.0',
@@ -435,7 +436,8 @@ export const patient_computed_findings = {
       computed_findings.push(map_result.computed_finding_id)
       computed_measurements.push({
         record_id: map_result.computed_finding_id,
-        snomed_concept_id: VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
+        snomed_concept_id:
+          VITALS_COMPUTED_SNOMED_CONCEPT_IDS.mean_arterial_pressure,
         value: map_value,
         units: VITAL_COMPUTED_UNITS.mean_arterial_pressure,
       })

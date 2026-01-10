@@ -1,6 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { differenceInMinutes, formatJohannesburg, isIsoJohannesburg } from '../../util/date.ts'
+import {
+  differenceInMinutes,
+  formatJohannesburg,
+  isIsoJohannesburg,
+} from '../../util/date.ts'
 import { employees } from '../../db/models/employees.ts'
 import { appointments } from '../../db/models/appointments.ts'
 import { employment_calendars } from '../../db/models/employment_calendars.ts'
@@ -16,7 +20,7 @@ import {
 } from '../../types.ts'
 import { assertOr400, assertOr401 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { patient_appointments } from '../../db/models/patient_appointments.ts'
+import { schedulingAppointmentRequest } from '../../db/models/patient_appointments.ts'
 
 function gcal({ start, end }: {
   start: string
@@ -70,11 +74,10 @@ export async function makeAppointmentChatbot(
   insertEvent: InsertEvent,
 ) {
   assert(patientState.chatbot_user.entity_id)
-  const scheduling_appointment_request = await patient_appointments
-    .schedulingAppointmentRequest(
-      trx,
-      patientState.chatbot_user.entity_id,
-    )
+  const scheduling_appointment_request = await schedulingAppointmentRequest(
+    trx,
+    patientState.chatbot_user.entity_id,
+  )
   assert(scheduling_appointment_request)
   const details = gcalAppointmentDetails(scheduling_appointment_request)
 

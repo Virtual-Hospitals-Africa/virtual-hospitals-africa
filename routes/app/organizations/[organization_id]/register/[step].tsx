@@ -8,8 +8,12 @@ import {
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import redirect from '../../../../../util/redirect.ts'
 import { employment } from '../../../../../db/models/employment.ts'
-import { nurse_registration_details, type UpsertableNurseRegistrationDetails } from '../../../../../db/models/nurse_registration_details.ts'
-import { DocumentFormFields, PersonalFormFields, ProfessionalInformationFields } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
+import { nurse_registration_details } from '../../../../../db/models/nurse_registration_details.ts'
+import {
+  DocumentFormFields,
+  PersonalFormFields,
+  ProfessionalInformationFields,
+} from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import NurseRegistrationForm from '../../../../../islands/nurse-registration-form.tsx'
 import { OrganizationContext } from '../_middleware.ts'
 import omit from '../../../../../util/omit.ts'
@@ -32,13 +36,14 @@ export const handler = {
 
     const { step } = ctx.params
 
-    const prior_form_state: Partial<FormState> = await nurse_registration_details
-      .getInProgress(
-        ctx.state.trx,
-        {
-          health_worker_id: ctx.state.health_worker.id,
-        },
-      )
+    const prior_form_state: Partial<FormState> =
+      await nurse_registration_details
+        .getInProgress(
+          ctx.state.trx,
+          {
+            health_worker_id: ctx.state.health_worker.id,
+          },
+        )
 
     const new_form_state = await getStepFormData(
       step,
@@ -51,7 +56,9 @@ export const handler = {
       ...new_form_state,
     }
 
-    const step_index = NurseRegistrationStepNames.findIndex((name) => name === step)
+    const step_index = NurseRegistrationStepNames.findIndex((name) =>
+      name === step
+    )
 
     if (step_index < NurseRegistrationStepNames.length - 1) {
       await nurse_registration_details.setInProgress(
@@ -100,7 +107,7 @@ function getRegistrationDetails(
     nurse_practicing_cert,
     ...rest
   }: FormState,
-): UpsertableNurseRegistrationDetails {
+): nurse_registration_details.UpsertableNurseRegistrationDetails {
   return {
     health_worker_id: health_worker.id,
     face_picture_media_id: face_picture?.id,

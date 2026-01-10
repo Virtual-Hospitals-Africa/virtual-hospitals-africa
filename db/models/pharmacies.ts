@@ -4,7 +4,7 @@ import { addressDisplaySql, nameSql } from './pharmacists.ts'
 import { RenderedPharmacy } from '../../types.ts'
 import { TrxOrDb } from '../../types.ts'
 import { PharmaciesTypes } from '../../db.d.ts'
-import { pharmacy_employment } from './pharmacy_employment.ts'
+import { insert as insertPharmacyEmployment } from './pharmacy_employment.ts'
 import { base } from './_base.ts'
 
 const view_sql = sql<
@@ -59,7 +59,8 @@ function baseQuery(trx: TrxOrDb) {
     .orderBy('pharmacies.name', 'asc')
 }
 
-const isLicenceLike = (search: string) => /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
+const isLicenceLike = (search: string) =>
+  /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
   country: string
@@ -146,7 +147,7 @@ export const pharmacies = base({
       pharmacy_id: pharmacy.id,
       is_supervisor: true,
     }))
-    await pharmacy_employment.insert(trx, pharmacy_employments)
+    await insertPharmacyEmployment(trx, pharmacy_employments)
     return pharmacy
   },
 })

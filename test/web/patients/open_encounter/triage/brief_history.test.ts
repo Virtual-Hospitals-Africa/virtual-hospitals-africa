@@ -3,9 +3,15 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
-
+import {
+  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
+  insertReturningSeekingTreatmentWithEmployeeForTest,
+} from '../../../../_helpers/workflows.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { createTestOrganization } from '../../../../_helpers/organizations.ts'
+import { route } from '../../../../_route.ts'
+import asFormData from '../../../../../util/asFormData.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
 import { getDOMTree } from '../../../../_helpers/dom.ts'
@@ -17,16 +23,12 @@ import assertLength from '../../../../../util/assertLength.ts'
 import { assertArrayEmpty } from '../../../../../util/arraySize.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-import { brief_history } from '../../../../../db/models/brief_history.ts'
+import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
 import sortBy from '../../../../../util/sortBy.ts'
-import { asWarningSigns, setupTriageNewPatient, setupTriageReturningPatient } from './_setup.ts'
-import { patient_procedures } from '../../../../../db/models/patient_procedures.ts'
-import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../../../../shared/workflow.ts'
-import assertIncludes from '../../../../../util/assertIncludes.ts'
 
 describeParallel('triage/brief_history', () => {
   before(waitUntilTestServerUp)
@@ -36,10 +38,33 @@ describeParallel('triage/brief_history', () => {
     itParallel(
       'renders the brief history page for a female patient',
       async () => {
-        const { $ } = await setupTriageNewPatient({
-          patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics('ZA', 'female'),
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        const $ = await fetchCheerio(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        )
 
         const form_values = getFormValues($)
         const form_labels = getFormLabels($)
@@ -89,11 +114,36 @@ describeParallel('triage/brief_history', () => {
     itParallel(
       'renders the brief history page for a male patient',
       async () => {
-        const { $ } = await setupTriageNewPatient({
-          patient_demographics: randomDemographics('ZA', 'male'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
-        })
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk, fetchCheerio } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
+          })
 
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics('ZA', 'male'),
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          {
+            method: 'POST',
+          },
+          { cancel_response_body: true },
+        )
+        const $ = await fetchCheerio(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+        )
+
+        // const form_labels = getFormLabels($)
         const form_values = getFormValues($)
         const form_labels = getFormLabels($)
 
@@ -146,36 +196,59 @@ describeParallel('triage/brief_history', () => {
     itParallel(
       'renders the brief history page for a patient with a pre-existing condition',
       async () => {
-        const { nurse, clinic, encounter, patient_id, patient_encounter_id } = await setupTriageNewPatient({
-          patient_demographics: {},
-          warning_signs: asWarningSigns([], { pregnant: false }),
-          brief_history: {
-            cancer: {
-              existence: 'Yes',
-            },
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
-            },
-          },
-        })
-
-        const other_nurse = await addTestEmployeeWithSession(db, {
+        const clinic = await createTestOrganization(db, { category: 'Clinic' })
+        const nurse1 = await addTestEmployeeWithSession(db, {
+          organization_id: clinic.id,
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: clinic.id,
         })
+
+        const nurse2 = await addTestEmployeeWithSession(db, {
+          organization_id: clinic.id,
+          profession: 'nurse',
+          registration_status: 'approved',
+        })
+
+        const initial_encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse1.health_worker.organization_id,
+            {
+              patient_demographics: randomDemographics('ZA', 'male'),
+              employment_id: nurse1.health_worker.employee_id,
+            },
+          )
+
+        await nurse1.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        await nurse1.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              cancer: {
+                existence: 'Yes',
+              },
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const this_patient_findings = sortBy(
           await patient_findings.findAll(db, {
-            patient_id,
-            include_negative: true,
-            procedure_id: patient_procedures.distinctIds(db, {
-              patient_id,
-              specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.brief_history,
-            }),
+            patient_id: initial_encounter.patient.id,
           }),
           (finding) => finding.displays.full,
         )
@@ -324,19 +397,18 @@ describeParallel('triage/brief_history', () => {
           },
         ])
 
-        const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
-            patient_id,
-            encounter,
-            health_worker_id: nurse.health_worker.id,
-            conditions: COMMON_CONDITIONS,
-          })
+        const most_recent_findings = await renderedMostRecentFindings(db, {
+          patient_id: initial_encounter.patient.id,
+          encounter: initial_encounter,
+          health_worker_id: nurse1.health_worker.id,
+          conditions: COMMON_CONDITIONS,
+        })
 
         assertMatches(most_recent_findings.cancer, {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'patient_encounter_id': patient_encounter_id,
+          'patient_encounter_id': initial_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
           'root_snomed_concept': {
             'snomed_concept_id': '263490005',
@@ -394,7 +466,7 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'patient_encounter_id': patient_encounter_id,
+          'patient_encounter_id': initial_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
           'root_snomed_concept': {
             'snomed_concept_id': '263490005',
@@ -448,41 +520,47 @@ describeParallel('triage/brief_history', () => {
 
         assertEquals(most_recent_findings.copd, undefined)
 
-        const $waiting_room_before_encounter_close = await other_nurse
+        const $waiting_room_before_initial_encounter_close = await nurse2
           .fetchCheerio(
             `/app/organizations/${clinic.id}/waiting_room`,
           )
 
-        const waiting_room_table_before_initial_encounter_close = getTableDisplay(
-          $waiting_room_before_encounter_close,
-        )
+        const waiting_room_table_before_initial_encounter_close =
+          getTableDisplay(
+            $waiting_room_before_initial_encounter_close,
+          )
 
         assertMatches(waiting_room_table_before_initial_encounter_close, [
           {
-            Patient: `${encounter.patient.name}${encounter.patient.sex} • ${
-              prettyPatientDateOfBirth(
-                encounter.patient.date_of_birth!,
-              )
-            }`,
+            Patient:
+              `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
+                prettyPatientDateOfBirth(
+                  initial_encounter.patient.date_of_birth!,
+                )
+              }`,
             'Reason for visit': 'Seeking Treatment',
             // Department: 'Triage',
             // 'Target time': z.string().regex(/^\d{1,2}:\d{2} [AP]M( tomorrow)?/),
             Location: 'Triage room 1',
             Status: 'Triage In Progress',
             // Priority: 'Non-urgent',
-            Employees: `${nurse.health_worker.name}Primary care nurse`,
+            Employees: `${nurse1.health_worker.name}Primary care nurse`,
             Arrived: z.enum(['Just now', '1 minute ago']),
             Actions: 'triage',
           },
         ])
 
-        await patient_encounters.close(db, { patient_encounter_id })
+        await patient_encounters.close(db, {
+          patient_encounter_id: initial_encounter.patient_encounter_id,
+        })
 
-        const open_encounters = await patient_encounters.getOpen(db, { patient_id })
+        const open_encounters = await patient_encounters.getOpen(db, {
+          patient_id: initial_encounter.patient.id,
+        })
 
         assertArrayEmpty(open_encounters)
 
-        const $waiting_room_after_initial_encounter_close = await other_nurse
+        const $waiting_room_after_initial_encounter_close = await nurse2
           .fetchCheerio(
             `/app/organizations/${clinic.id}/waiting_room`,
           )
@@ -493,51 +571,62 @@ describeParallel('triage/brief_history', () => {
           ),
         )
 
-        const returning = await setupTriageReturningPatient(
-          {
-            patient_id,
-            nurse: other_nurse,
-            clinic,
-          },
-        )
+        const subsequent_encounter =
+          await insertReturningSeekingTreatmentWithEmployeeForTest(
+            db,
+            nurse2.health_worker.organization_id,
+            {
+              patient_id: initial_encounter.patient.id,
+              employment_id: nurse2.health_worker.employee_id,
+            },
+          )
 
         assertNotEquals(
-          encounter.patient_encounter_id,
-          returning.patient_encounter_id,
+          subsequent_encounter.patient_encounter_id,
+          initial_encounter.patient_encounter_id,
         )
 
-        assertLength(returning.encounter.all_employees_seen, 1)
+        assertLength(subsequent_encounter.all_employees_seen, 1)
 
-        const $waiting_room_after_returning_start = await other_nurse
+        const $waiting_room_after_subsequent_encounter_start = await nurse2
           .fetchCheerio(
             `/app/organizations/${clinic.id}/waiting_room`,
           )
 
-        const waiting_room_table_after_returning_start = getTableDisplay($waiting_room_after_returning_start)
+        const waiting_room_table_after_subsequent_encounter_start =
+          getTableDisplay($waiting_room_after_subsequent_encounter_start)
 
-        assertMatches(waiting_room_table_after_returning_start, [
+        assertMatches(waiting_room_table_after_subsequent_encounter_start, [
           {
-            Patient: `${encounter.patient.name}${encounter.patient.sex} • ${
-              prettyPatientDateOfBirth(
-                encounter.patient.date_of_birth!,
-              )
-            }`,
+            Patient:
+              `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
+                prettyPatientDateOfBirth(
+                  initial_encounter.patient.date_of_birth!,
+                )
+              }`,
             'Reason for visit': 'Seeking Treatment',
             // Department: 'Triage',
             Location: 'Triage room 1',
             Status: 'Triage In Progress',
-            Employees: `${other_nurse.health_worker.name}Primary care nurse`,
+            Employees: `${nurse2.health_worker.name}Primary care nurse`,
             Arrived: z.enum(['Just now', '1 minute ago']),
             Actions: 'triage',
           },
         ], { strict: true })
 
-        const $brief_history_after_returning_encounter_start = await returning.postStep({
-          warning_signs: asWarningSigns([], { pregnant: false }),
-        })
+        await nurse2.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        const $brief_history_after_subsequent_encounter_start = await nurse2
+          .fetchCheerio(
+            `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,
+          )
 
         const form_values = getFormValues(
-          $brief_history_after_returning_encounter_start,
+          $brief_history_after_subsequent_encounter_start,
         )
         assertEquals(form_values, {
           'cancer': {
@@ -554,27 +643,27 @@ describeParallel('triage/brief_history', () => {
         const findings_from_initial_encounter = await satisfyingSExpression(
           db,
           {
-            patient_id,
-            patient_encounter_id,
+            patient_id: initial_encounter.patient.id,
+            patient_encounter_id: initial_encounter.patient_encounter_id,
             s_expression: '(active_condition 363346000)',
           },
         )
 
         assert(findings_from_initial_encounter.satisfies)
 
-        const findings_from_returning_encounter = await satisfyingSExpression(
+        const findings_from_subsequent_encounter = await satisfyingSExpression(
           db,
           {
-            patient_id,
-            patient_encounter_id: returning.patient_encounter_id,
+            patient_id: initial_encounter.patient.id,
+            patient_encounter_id: subsequent_encounter.patient_encounter_id,
             s_expression: '(active_condition 363346000)',
           },
         )
 
-        assert(!findings_from_returning_encounter.satisfies)
+        assert(!findings_from_subsequent_encounter.satisfies)
 
         const most_recent_finding = getDOMTree(
-          $brief_history_after_returning_encounter_start,
+          $brief_history_after_subsequent_encounter_start,
           '#most-recent-finding-cancer',
         )
 
@@ -586,11 +675,12 @@ describeParallel('triage/brief_history', () => {
               'children': [
                 {
                   'tag': 'a',
-                  'text': 'Self reported Malignant neoplastic disease Status: Yes',
+                  'text':
+                    'Self reported Malignant neoplastic disease Status: Yes',
                 },
                 {
                   'tag': 'span',
-                  'text': z.string().regex(/^recorded at \d{1,2}:\d{2}/),
+                  'text': z.string().regex(/^at \d{1,2}:\d{2}/),
                 },
               ],
             },
@@ -611,7 +701,8 @@ describeParallel('triage/brief_history', () => {
                               'children': [
                                 {
                                   'tag': 'h3',
-                                  'text': 'Self reported Malignant neoplastic disease Status: Yes',
+                                  'text':
+                                    'Self reported Malignant neoplastic disease Status: Yes',
                                 },
                               ],
                             },
@@ -640,7 +731,7 @@ describeParallel('triage/brief_history', () => {
                                     },
                                     {
                                       'tag': 'p',
-                                      'text': encounter.employee.name,
+                                      'text': initial_encounter.employee.name,
                                     },
                                   ],
                                 },
@@ -682,7 +773,8 @@ describeParallel('triage/brief_history', () => {
                                     },
                                     {
                                       'tag': 'p',
-                                      'text': `at ${returning.encounter.organization.name}`,
+                                      'text':
+                                        `at ${subsequent_encounter.organization.name}`,
                                     },
                                   ],
                                 },
@@ -703,7 +795,7 @@ describeParallel('triage/brief_history', () => {
                                         {
                                           'tag': 'span',
                                           'text': z.string().regex(
-                                            /^at \d{1,2}:\d{2}/,
+                                            /^at \d{1,2}:\d{2}/,
                                           ),
                                         },
                                       ],
@@ -748,28 +840,58 @@ describeParallel('triage/brief_history', () => {
     itParallel(
       'inserts positive & negative findings, redirecting to the measure_vitals page',
       async () => {
-        const { $, nurse, encounter, patient_id, triageRoute } = await setupTriageNewPatient({
-          patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
-          brief_history: {
-            diabetes: {
-              existence: 'Yes',
-            },
-            pregnancy: {
-              existence: 'No',
-            },
-          },
-        })
-
-        assertIncludes($.url, triageRoute('height_and_weight'))
-
-        const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
-            patient_id,
-            encounter,
-            health_worker_id: nurse.health_worker.id,
-            conditions: COMMON_CONDITIONS,
+        const clinic = await createTestOrganization(db)
+        const { health_worker: nurse, fetchOk } =
+          await addTestEmployeeWithSession(db, {
+            profession: 'nurse',
+            registration_status: 'approved',
+            organization_id: clinic.id,
           })
+
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              employment_id: nurse.employee_id,
+            },
+          )
+
+        await fetchOk(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        const response = await fetchOk(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'Yes',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        assertEquals(
+          response.url,
+          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/height_and_weight`,
+        )
+
+        const most_recent_findings = await renderedMostRecentFindings(db, {
+          patient_id: encounter.patient.id,
+          encounter: encounter,
+          health_worker_id: nurse.id,
+          conditions: COMMON_CONDITIONS,
+        })
 
         assertMatches(most_recent_findings.diabetes, {
           'type': 'finding',
@@ -819,8 +941,8 @@ describeParallel('triage/brief_history', () => {
           'existence': 'Yes',
           'provider': {
             'is_me': true,
-            'id': nurse.health_worker.id,
-            'employee_id': nurse.health_worker.employee_id,
+            'id': nurse.id,
+            'employee_id': nurse.employee_id,
           },
         })
       },
@@ -829,63 +951,109 @@ describeParallel('triage/brief_history', () => {
     itParallel(
       'does not insert the same positive finding again if a condition is already known, but does insert negative records each time',
       async () => {
-        const initial = await setupTriageNewPatient({
-          patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
-          brief_history: {
-            cancer: {
-              existence: 'Yes',
-            },
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
-            },
-          },
-        })
-
-        const other_nurse = await addTestEmployeeWithSession(db, {
+        const clinic = await createTestOrganization(db, { category: 'Clinic' })
+        const nurse1 = await addTestEmployeeWithSession(db, {
+          organization_id: clinic.id,
           profession: 'nurse',
           registration_status: 'approved',
-          organization_id: initial.clinic.id,
         })
+
+        const nurse2 = await addTestEmployeeWithSession(db, {
+          organization_id: clinic.id,
+          profession: 'nurse',
+          registration_status: 'approved',
+        })
+
+        const initial_encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse1.health_worker.organization_id,
+            {
+              patient_demographics: randomDemographics('ZA', 'male'),
+              employment_id: nurse1.health_worker.employee_id,
+            },
+          )
+
+        await nurse1.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        await nurse1.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              cancer: {
+                existence: 'Yes',
+              },
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
 
         await patient_encounters.close(db, {
-          patient_encounter_id: initial.patient_encounter_id,
+          patient_encounter_id: initial_encounter.patient_encounter_id,
         })
 
-        const returning = await setupTriageReturningPatient({
-          patient_id: initial.patient_id,
-          clinic: initial.clinic,
-          nurse: other_nurse,
-          warning_signs: asWarningSigns([], { pregnant: false }),
-          brief_history: {
-            cancer: {
-              existence: 'Yes',
+        const subsequent_encounter =
+          await insertReturningSeekingTreatmentWithEmployeeForTest(
+            db,
+            nurse2.health_worker.organization_id,
+            {
+              patient_id: initial_encounter.patient.id,
+              employment_id: nurse2.health_worker.employee_id,
             },
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
-            },
+          )
+
+        await nurse2.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        await nurse2.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              cancer: {
+                existence: 'Yes',
+              },
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
+            }),
           },
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
 
-        const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
-            patient_id: initial.patient_id,
-            encounter: returning.encounter,
-            health_worker_id: other_nurse.health_worker.id,
-            conditions: COMMON_CONDITIONS,
-          })
+        const most_recent_findings = await renderedMostRecentFindings(db, {
+          patient_id: subsequent_encounter.patient.id,
+          encounter: subsequent_encounter,
+          health_worker_id: nurse2.health_worker.id,
+          conditions: COMMON_CONDITIONS,
+        })
 
         assertMatches(most_recent_findings.cancer, {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'patient_encounter_id': initial.patient_encounter_id,
+          'patient_encounter_id': initial_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
           'root_snomed_concept': {
             'snomed_concept_id': '263490005',
@@ -923,8 +1091,8 @@ describeParallel('triage/brief_history', () => {
           'existence': 'Yes',
           'provider': {
             'is_me': false,
-            'id': initial.nurse.health_worker.id,
-            'employee_id': initial.nurse.health_worker.employee_id,
+            'id': nurse1.health_worker.id,
+            'employee_id': nurse1.health_worker.employee_id,
           },
           'attributes': [],
         })
@@ -933,7 +1101,7 @@ describeParallel('triage/brief_history', () => {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'patient_encounter_id': returning.patient_encounter_id,
+          'patient_encounter_id': subsequent_encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
           'root_snomed_concept': {
             'snomed_concept_id': '263490005',
@@ -969,8 +1137,8 @@ describeParallel('triage/brief_history', () => {
           'attributes': [],
           'provider': {
             'is_me': true,
-            'id': other_nurse.health_worker.id,
-            'employee_id': other_nurse.health_worker.employee_id,
+            'id': nurse2.health_worker.id,
+            'employee_id': nurse2.health_worker.employee_id,
           },
           'source_relations': [],
           'destination_relations': [],
@@ -981,32 +1149,59 @@ describeParallel('triage/brief_history', () => {
     itParallel(
       'has a full_display of Status Not Known for unknown answers',
       async () => {
-        const { nurse, patient_id, patient_encounter_id, encounter } = await setupTriageNewPatient({
-          patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
-          brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'Unknown',
-            },
-          },
+        const clinic = await createTestOrganization(db, { category: 'Clinic' })
+        const nurse = await addTestEmployeeWithSession(db, {
+          organization_id: clinic.id,
+          profession: 'nurse',
+          registration_status: 'approved',
         })
 
-        const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
-            patient_id,
-            encounter,
-            health_worker_id: nurse.health_worker.id,
-            conditions: COMMON_CONDITIONS,
-          })
+        const encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.health_worker.organization_id,
+            {
+              patient_demographics: randomDemographics('ZA', 'male'),
+              employment_id: nurse.health_worker.employee_id,
+            },
+          )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Unknown',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const most_recent_findings = await renderedMostRecentFindings(db, {
+          patient_id: encounter.patient.id,
+          encounter: encounter,
+          health_worker_id: nurse.health_worker.id,
+          conditions: COMMON_CONDITIONS,
+        })
 
         assertMatches(most_recent_findings.pregnancy, {
           'type': 'finding',
           'record_id': z.string().uuid(),
           'created_at': z.date(),
-          'patient_encounter_id': patient_encounter_id,
+          'patient_encounter_id': encounter.patient_encounter_id,
           'patient_encounter_employee_id': z.string().uuid(),
           'root_snomed_concept': {
             'snomed_concept_id': '263490005',
@@ -1057,51 +1252,85 @@ describeParallel('triage/brief_history', () => {
     )
 
     itParallel(
-      'marks findings for the same condition as entered in error if part of this encounter, but then can override them in a returning encounter',
+      'marks findings for the same condition as entered in error if part of this encounter, but then can override them in a subsequent encounter',
       async () => {
-        const initial = await setupTriageNewPatient({
-          patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
-          brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'Yes',
-            },
-          },
+        const clinic = await createTestOrganization(db, { category: 'Clinic' })
+        const nurse = await addTestEmployeeWithSession(db, {
+          organization_id: clinic.id,
+          profession: 'nurse',
+          registration_status: 'approved',
         })
 
-        const prior_to_fix_findings = await brief_history
-          .renderedMostRecentFindings(db, {
-            patient_id: initial.encounter.patient.id,
-            encounter: initial.encounter,
-            health_worker_id: initial.nurse.health_worker.id,
-            conditions: COMMON_CONDITIONS,
-          })
+        const initial_encounter =
+          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.health_worker.organization_id,
+            {
+              patient_demographics: randomDemographics('ZA', 'male'),
+              employment_id: nurse.health_worker.employee_id,
+            },
+          )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
+          { method: 'POST' },
+          { cancel_response_body: true },
+        )
+
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
+          },
+          {
+            cancel_response_body: true,
+          },
+        )
+
+        const prior_to_fix_findings = await renderedMostRecentFindings(db, {
+          patient_id: initial_encounter.patient.id,
+          encounter: initial_encounter,
+          health_worker_id: nurse.health_worker.id,
+          conditions: COMMON_CONDITIONS,
+        })
 
         assert(prior_to_fix_findings.pregnancy)
 
         assertArrayEmpty(
           await patient_evaluations.findAll(db, {
-            patient_id: initial.encounter.patient.id,
+            patient_id: initial_encounter.patient.id,
             evaluates_record_id: prior_to_fix_findings.pregnancy.record_id,
           }),
         )
 
-        await initial.postStep({
-          brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
-            },
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
+            }),
           },
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
 
         const entered_in_error = await patient_evaluations.findOne(db, {
-          patient_id: initial.encounter.patient.id,
+          patient_id: initial_encounter.patient.id,
           evaluates_record_id: prior_to_fix_findings.pregnancy.record_id,
         })
         assertMatches(entered_in_error, {
@@ -1111,16 +1340,15 @@ describeParallel('triage/brief_history', () => {
           evaluates_record_id: prior_to_fix_findings.pregnancy.record_id,
         })
 
-        const initial_most_recent_findings = await brief_history
-          .renderedMostRecentFindings(
-            db,
-            {
-              patient_id: initial.encounter.patient.id,
-              encounter: initial.encounter,
-              health_worker_id: initial.nurse.health_worker.id,
-              conditions: COMMON_CONDITIONS,
-            },
-          )
+        const initial_most_recent_findings = await renderedMostRecentFindings(
+          db,
+          {
+            patient_id: initial_encounter.patient.id,
+            encounter: initial_encounter,
+            health_worker_id: nurse.health_worker.id,
+            conditions: COMMON_CONDITIONS,
+          },
+        )
 
         assertMatches(initial_most_recent_findings.pregnancy, {
           'displays': {
@@ -1129,35 +1357,46 @@ describeParallel('triage/brief_history', () => {
         })
 
         await patient_encounters.close(db, {
-          patient_encounter_id: initial.patient_encounter_id,
+          patient_encounter_id: initial_encounter.patient_encounter_id,
         })
 
-        const returning = await setupTriageReturningPatient({
-          nurse: initial.nurse,
-          clinic: initial.clinic,
-          patient_id: initial.patient_id,
-        })
+        const subsequent_encounter =
+          await insertReturningSeekingTreatmentWithEmployeeForTest(
+            db,
+            nurse.health_worker.organization_id,
+            {
+              patient_id: initial_encounter.patient.id,
+              employment_id: nurse.health_worker.employee_id,
+            },
+          )
 
-        await returning.postStep({
-          brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'Yes',
-            },
+        await nurse.fetchOk(
+          `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,
+          {
+            method: 'POST',
+            body: asFormData({
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
+            }),
           },
-        })
+          {
+            cancel_response_body: true,
+          },
+        )
 
-        const returning_most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
-            patient_id: returning.patient_id,
-            encounter: returning.encounter,
-            health_worker_id: returning.nurse.health_worker.id,
+        const subsequent_most_recent_findings =
+          await renderedMostRecentFindings(db, {
+            patient_id: subsequent_encounter.patient.id,
+            encounter: subsequent_encounter,
+            health_worker_id: nurse.health_worker.id,
             conditions: COMMON_CONDITIONS,
           })
 
-        assertMatches(returning_most_recent_findings.pregnancy, {
+        assertMatches(subsequent_most_recent_findings.pregnancy, {
           'displays': {
             'value': 'Yes',
           },

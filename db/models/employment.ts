@@ -1,5 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
-import { HasStringId, IdSelection, Maybe, Profession, TrxOrDb } from '../../types.ts'
+import {
+  HasStringId,
+  IdSelection,
+  Maybe,
+  Profession,
+  TrxOrDb,
+} from '../../types.ts'
 import { SqlBool } from 'kysely'
 import generateUUID from '../../util/uuid.ts'
 import { pMap } from '../../util/inParallel.ts'
@@ -56,20 +62,35 @@ export const employment = {
           : blankSelection(qb),
     ).with(
       'receptionist_insert',
-      (qb) => (profession === 'receptionist') ? qb.insertInto('receptionists').values({ id }) : blankSelection(qb),
+      (qb) =>
+        (profession === 'receptionist')
+          ? qb.insertInto('receptionists').values({ id })
+          : blankSelection(qb),
     )
       .with(
         'organization_admin_insert',
-        (qb) => is_admin ? qb.insertInto('organization_admins').values({ id }) : blankSelection(qb),
+        (qb) =>
+          is_admin
+            ? qb.insertInto('organization_admins').values({ id })
+            : blankSelection(qb),
       ).with(
         'provider_insert',
-        (qb) => (profession === 'doctor' || profession === 'nurse') ? qb.insertInto('providers').values({ id }) : blankSelection(qb),
+        (qb) =>
+          (profession === 'doctor' || profession === 'nurse')
+            ? qb.insertInto('providers').values({ id })
+            : blankSelection(qb),
       ).with(
         'doctor_insert',
-        (qb) => (profession === 'doctor') ? qb.insertInto('doctors').values({ id }) : blankSelection(qb),
+        (qb) =>
+          (profession === 'doctor')
+            ? qb.insertInto('doctors').values({ id })
+            : blankSelection(qb),
       ).with(
         'nurse_insert',
-        (qb) => (profession === 'nurse') ? qb.insertInto('nurses').values({ id }) : blankSelection(qb),
+        (qb) =>
+          (profession === 'nurse')
+            ? qb.insertInto('nurses').values({ id })
+            : blankSelection(qb),
       )
       .selectFrom('employment_insert')
       .selectAll('employment_insert')
@@ -89,7 +110,7 @@ export const employment = {
     employees: Employee[],
   ): Promise<HasStringId<Employee>[]> {
     assert(employees.length)
-    return pMap(employees, (employee) => employment.addOne(trx, employee))
+    return pMap(employees, (employee) => addOne(trx, employee))
   },
   async addIgnoreDuplicate(
     trx: TrxOrDb,
@@ -102,7 +123,7 @@ export const employment = {
       .selectAll()
       .executeTakeFirst()
 
-    return existing_employee || await employment.addOne(trx, employee)
+    return existing_employee || await addOne(trx, employee)
   },
   getEmployee(
     trx: TrxOrDb,

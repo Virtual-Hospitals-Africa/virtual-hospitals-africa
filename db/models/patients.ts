@@ -1,9 +1,24 @@
-import { InsertObject, sql, UpdateObject } from 'kysely'
-import { Coordinates, IdSelection, InsertShapeLiteral, Maybe, RenderedPatient, RenderedPatientCompletedRegistration, TrxOrDb } from '../../types.ts'
-import { isoDate, jsonBuildNullableObject, literalLocation, longFormattedDate } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
+import { sql } from 'kysely'
+import {
+  Coordinates,
+  IdSelection,
+  InsertShape,
+  InsertShapeLiteral,
+  Maybe,
+  RenderedPatient,
+  RenderedPatientCompletedRegistration,
+  TrxOrDb,
+  UpdateShape,
+} from '../../types.ts'
+import {
+  isoDate,
+  jsonBuildNullableObject,
+  literalLocation,
+  longFormattedDate,
+} from '../helpers.ts'
+import { Patients } from '../../db.d.ts'
 import { base } from './_base.ts'
-import { asMaybeNames, asNames, NameInputs } from '../../util/asNames.ts'
+import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
@@ -92,7 +107,7 @@ function baseQuery(trx: TrxOrDb) {
 }
 
 type PatientUpsert =
-  & Omit<Partial<InsertShapeLiteral<InsertObject<DB, 'patients'>>>, 'location'>
+  & Omit<Partial<InsertShape<Patients>>, 'location'>
   & NameInputs
   & {
     location?: Coordinates
@@ -129,7 +144,7 @@ export const patients = base({
     trx: TrxOrDb,
     { conversation_state, country, location, ...to_insert }:
       & Omit<
-        InsertShapeLiteral<InsertObject<DB, 'patients'>>,
+        InsertShapeLiteral<Patients>,
         'id' | 'phone_number' | 'country' | 'location'
       >
       & {
@@ -169,7 +184,7 @@ export const patients = base({
     trx: TrxOrDb,
     patient: PatientUpsert,
   ) {
-    const to_upsert: InsertObject<DB, 'patients'> = {
+    const to_upsert: InsertShape<Patients> = {
       ...patient,
       ...asNames(patient),
       country: patient.country || SERVER_COUNTRY,
@@ -191,7 +206,7 @@ export const patients = base({
         id: string
       },
   ) {
-    const to_update: UpdateObject<DB, 'patients'> = {
+    const to_update: UpdateShape<Patients> = {
       ...patient,
       ...asMaybeNames({ name, first_names, surname, preferred_name }),
       location: location && literalLocation(location),

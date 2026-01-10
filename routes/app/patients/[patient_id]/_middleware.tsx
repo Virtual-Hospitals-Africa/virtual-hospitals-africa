@@ -1,5 +1,8 @@
 import { patients } from '../../../../db/models/patients.ts'
-import type { LoggedInHealthWorkerContext, RenderedPatient } from '../../../../types.ts'
+import type {
+  LoggedInHealthWorkerContext,
+  RenderedPatient,
+} from '../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 
 export type PatientContext = LoggedInHealthWorkerContext<

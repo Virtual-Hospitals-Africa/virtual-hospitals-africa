@@ -13,8 +13,8 @@ import {
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
 import { patient_encounters } from '../../../../../../../db/models/patient_encounters.ts'
-import { this_visit_findings } from '../../../../../../../db/models/this_visit_findings.ts'
-import { patient_history } from '../../../../../../../db/models/patient_history.ts'
+import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_findings.ts'
+import { get as getPatientHistory } from '../../../../../../../db/models/patient_history.ts'
 import { events } from '../../../../../../../db/models/events.ts'
 
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
@@ -27,7 +27,12 @@ import { Button } from '../../../../../../../components/library/Button.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 
-import { assertOr400, assertOr404, assertOr405, assertOrRedirect } from '../../../../../../../util/assertOr.ts'
+import {
+  assertOr400,
+  assertOr404,
+  assertOr405,
+  assertOrRedirect,
+} from '../../../../../../../util/assertOr.ts'
 
 import { PatientPresence, Workflow } from '../../../../../../../db.d.ts'
 import {
@@ -42,7 +47,11 @@ import {
   workflowStepSnomedConceptId,
 } from '../../../../../../../shared/workflow.ts'
 import mapEntries from '../../../../../../../util/mapEntries.ts'
-import { patient_workflows, PresentWithAnotherPatientError } from '../../../../../../../db/models/patient_workflows.ts'
+import {
+  completedStep,
+  completedWorkflow,
+  PresentWithAnotherPatientError,
+} from '../../../../../../../db/models/patient_workflows.ts'
 import last from '../../../../../../../util/last.ts'
 import compact from '../../../../../../../util/compact.ts'
 import { OrganizationContext, OrganizationState } from '../../../_middleware.ts'
@@ -84,13 +93,15 @@ type WorkflowState = {
 
 type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState
 
-export type OpenEncounterContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
-  OpenEncounterState & T
->
+export type OpenEncounterContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<
+    OpenEncounterState & T
+  >
 
-export type OpenEncounterWorkflowContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
-  OpenEncounterWorkflowState & T
->
+export type OpenEncounterWorkflowContext<T = Record<never, never>> =
+  LoggedInHealthWorkerContext<
+    OpenEncounterWorkflowState & T
+  >
 
 const nav_links: {
   [w in Workflow]: {
@@ -101,12 +112,14 @@ const nav_links: {
 } = mapEntries(WORKFLOW_STEPS, (steps, workflow) =>
   steps.map((step) => ({
     step,
-    route: `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${step}`,
+    route:
+      `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${step}`,
     title: prettyStepName(step),
   })))
 
 export function completeLastStep(
-  { state: { trx, workflow, step, workflow_status } }: OpenEncounterWorkflowContext,
+  { state: { trx, workflow, step, workflow_status } }:
+    OpenEncounterWorkflowContext,
 ) {
   assertEquals(
     step,
@@ -123,12 +136,12 @@ export function completeLastStep(
   const { patient_workflow_id } = workflow_status
 
   return promiseProps({
-    completed_step: patient_workflows.completedStep(trx, {
+    completed_step: completedStep(trx, {
       workflow,
       step,
       patient_workflow_id,
     }),
-    completed_workflow: patient_workflows.completedWorkflow(trx, {
+    completed_workflow: completedWorkflow(trx, {
       patient_workflow_id,
     }),
   })
@@ -151,14 +164,16 @@ export async function completeStep(
   const steps_completed_previously: string[] = workflow_status.steps_completed
   const already_completed = steps_completed_previously.includes(step)
   if (!already_completed) {
-    await patient_workflows.completedStep(ctx.state.trx, {
+    await completedStep(ctx.state.trx, {
       workflow,
       step,
       patient_workflow_id: workflow_status.patient_workflow_id,
     })
   }
 
-  const steps_completed = already_completed ? steps_completed_previously : steps_completed_previously.concat([step])
+  const steps_completed = already_completed
+    ? steps_completed_previously
+    : steps_completed_previously.concat([step])
 
   const first_incomplete_step = firstIncompleteStep(workflow, steps_completed)
   assert(first_incomplete_step)
@@ -252,14 +267,19 @@ export async function workflowHandler(
     step,
   )
 
-  const fetched = await promiseProps({
-    this_visit_findings: this_visit_findings.get(trx, {
+  const {
+    this_visit_findings,
+    patient_history,
+    previously_completed_procedures,
+  } = await promiseProps({
+    this_visit_findings: getThisVisitRecords(trx, {
       encounter,
       health_worker_id: ctx.state.health_worker.id,
     }),
-    patient_history: patient_history.get(trx, {
+    patient_history: getPatientHistory(trx, {
       patient_encounter_id,
-      patient_encounter_employee_id: encounter_employee_presence.patient_encounter_employee_id,
+      patient_encounter_employee_id:
+        encounter_employee_presence.patient_encounter_employee_id,
     }),
     previously_completed_procedures: patient_procedures.previouslyCompleted(
       trx,
@@ -279,12 +299,14 @@ export async function workflowHandler(
     workflow,
     step,
     workflow_status,
+    patient_history,
+    this_visit_findings,
     previously_completed_step,
     encounter_employee_presence,
     patient_encounter_employee_id,
     workflow_step_snomed_concept_id,
+    previously_completed_procedures,
     workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS[workflow],
-    ...fetched,
   }
 
   Object.assign(ctx.state, workflow_props)
@@ -296,10 +318,10 @@ async function findPatientOpenEncounter(
   ctx: OrganizationContext,
 ): Promise<RenderedPatientOpenEncounter> {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-  const { trx, present_encounter, organization_employment } = ctx.state
+  const { present_encounter, trx } = ctx.state
   if (present_encounter) {
     if (present_encounter.patient.id !== patient_id) {
-      throw new PresentWithAnotherPatientError(present_encounter, organization_employment)
+      throw new PresentWithAnotherPatientError(present_encounter)
     }
     return present_encounter
   }
@@ -363,7 +385,9 @@ export function assertAllPriorStepsCompleted(
   const prior_workflow_steps = workflow_steps.slice(0, this_workflow_step_index)
   const steps_completed = new Set(workflow_status.steps_completed)
 
-  const incomplete_step = prior_workflow_steps.find((step) => !steps_completed.has(step))
+  const incomplete_step = prior_workflow_steps.find((step) =>
+    !steps_completed.has(step)
+  )
 
   if (!incomplete_step) return
   // const is_plural = incomplete_step.endsWith('s')
@@ -374,7 +398,9 @@ export function assertAllPriorStepsCompleted(
     ' and ',
     ' & ',
   )
-  const next_step = attempting_to_complete_workflow ? `completing ${words(workflow).join(' ')}` : 'continuing'
+  const next_step = attempting_to_complete_workflow
+    ? `completing ${words(workflow).join(' ')}`
+    : 'continuing'
   const warning = encodeURIComponent(
     `Please fill out the ${pretty_name} form before ${next_step}.`,
   )
@@ -420,7 +446,8 @@ export function OpenEncounterWorkflowLayout({
               workflow: ctx.state.workflow,
               step: ctx.state.step,
               workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
-              workflow_step_snomed_concept_id: ctx.state.workflow_step_snomed_concept_id,
+              workflow_step_snomed_concept_id:
+                ctx.state.workflow_step_snomed_concept_id,
               workflow_status: ctx.state.workflow_status,
             }}
             care_team={[]}
@@ -432,7 +459,7 @@ export function OpenEncounterWorkflowLayout({
         : undefined}
     >
       <Form method='POST' className='h-full flex flex-col'>
-        <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>
+        <div className='px-4 flex-1 overflow-y-auto pb-6 flex flex-col gap-8'>
           {children}
         </div>
         <ButtonsContainer className='h-16 mt-auto flex flex-row items-center'>
@@ -529,12 +556,15 @@ export function nextRouteAfterCompletingWorkflow(
   const next_current_workflow = next_patient_presence.current_workflow
 
   if (next_current_workflow) {
-    const success_message = `${capitalize(workflow, { splitHyphen: true })} is complete. Continuing with ${
+    const success_message = `${
+      capitalize(workflow, { splitHyphen: true })
+    } is complete. Continuing with ${
       capitalize(next_current_workflow, { splitHyphen: true })
     }`
-    const next_route = `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/${next_current_workflow}/${
-      firstStep(next_current_workflow)
-    }`
+    const next_route =
+      `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/${next_current_workflow}/${
+        firstStep(next_current_workflow)
+      }`
     return success(success_message, next_route)
   }
 
@@ -545,36 +575,32 @@ export function nextRouteAfterCompletingWorkflow(
   assert(
     next_patient_presence.next_workflow,
   )
-  const success_message = `${capitalize(workflow)} is complete. Please guide the patient to the waiting room to await ${
+  const success_message = `${
+    capitalize(workflow)
+  } is complete. Please guide the patient to the waiting room to await ${
     capitalize(next_patient_presence.next_workflow, { splitHyphen: true })
   }`
-  const next_route = `/app/organizations/${organization.id}/waiting_room?just_encountered_patient_id=${patient.id}`
+  const next_route =
+    `/app/organizations/${organization.id}/waiting_room?just_encountered_patient_id=${patient.id}`
   return success(success_message, next_route)
-}
-
-export function completedProcedure(
-  ctx: OpenEncounterWorkflowContext,
-) {
-  const previously_completed_procedure_record_id = ctx.state.workflow_step_snomed_concept_id
-    ? ctx.state.previously_completed_procedures.workflow_step_record_id
-    : ctx.state.previously_completed_procedures.workflow_record_id
-
-  if (previously_completed_procedure_record_id) {
-    return {
-      procedure_id: previously_completed_procedure_record_id,
-    }
-  }
-
-  return null
 }
 
 export function createProcedureIfNotAlreadyCompleted(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const completed_procedure = completedProcedure(ctx)
-  if (completed_procedure) return Promise.resolve(completed_procedure)
+  const previously_completed_procedure_record_id =
+    ctx.state.workflow_step_snomed_concept_id
+      ? ctx.state.previously_completed_procedures.workflow_step_record_id
+      : ctx.state.previously_completed_procedures.workflow_record_id
 
-  const procedure_snomed_concept_id = ctx.state.workflow_step_snomed_concept_id ||
+  if (previously_completed_procedure_record_id) {
+    return Promise.resolve({
+      procedure_id: previously_completed_procedure_record_id,
+    })
+  }
+
+  const procedure_snomed_concept_id =
+    ctx.state.workflow_step_snomed_concept_id ||
     ctx.state.workflow_snomed_concept_id
 
   return patient_procedures.insertOneNested(ctx.state.trx, {
