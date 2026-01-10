@@ -1,6 +1,6 @@
 import redirect from '../util/redirect.ts'
 import * as cookie from '../shared/cookie.ts'
-import * as sessions from '../db/models/sessions.ts'
+import { sessions } from '../db/models/sessions.ts'
 import db, { onProduction } from '../db/db.ts'
 import { deleteCookie, setCookie } from 'std/http/cookie.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -59,7 +59,8 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
     expires_at,
   })
 
-  const session = await sessions.create(trx, 'health_worker', {
+  const session_id = await sessions.insertOne(trx, {
+    entity_type: 'health_worker',
     entity_id: health_worker.id,
   })
 
@@ -67,7 +68,7 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
 
   setCookie(response.headers, {
     name: cookie.session_key,
-    value: session.id,
+    value: session_id,
   })
 
   return response
@@ -82,7 +83,7 @@ export const handler = {
       return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref())
     }
 
-    const session = await sessions.getBySessionId(db, session_id)
+    const session = await sessions.getByIdOptional(db, session_id)
 
     if (!session) {
       const response =

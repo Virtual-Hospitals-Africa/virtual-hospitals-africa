@@ -72,8 +72,15 @@ const SIMPLE_BASE_QUERY = Symbol('simpleBaseQuery')
  */
 export function simpleBaseQuery<TableName extends StandardTables>(
   table_name: TableName,
-): ((trx: TrxOrDb) => SelectQueryBuilder<DB, TableName, SelectShape<DB[TableName]>>) {
-  const fn = (trx: TrxOrDb) => trx.selectFrom(table_name).selectAll() as unknown as SelectQueryBuilder<DB, TableName, SelectShape<DB[TableName]>>
+): (
+  trx: TrxOrDb,
+) => SelectQueryBuilder<DB, TableName, SelectShape<DB[TableName]>> {
+  const fn = (trx: TrxOrDb) =>
+    trx.selectFrom(table_name).selectAll() as unknown as SelectQueryBuilder<
+      DB,
+      TableName,
+      SelectShape<DB[TableName]>
+    >
   ;(fn as { [SIMPLE_BASE_QUERY]?: true })[SIMPLE_BASE_QUERY] = true
   return fn
 }
@@ -233,8 +240,14 @@ export function base<
 
   const cache_writes = !!caching?.cache_writes
   if (cache_writes) {
-    assert(formatResult === identity, 'In order to cache_writes there can be no transformation of the object returned from the DB')
-    assert(isSimpleBaseQuery(baseQuery), 'In order to cache_writes there can be no joins, just returnAll from the DB')
+    assert(
+      formatResult === identity,
+      'In order to cache_writes there can be no transformation of the object returned from the DB',
+    )
+    assert(
+      isSimpleBaseQuery(baseQuery),
+      'In order to cache_writes there can be no joins, just returnAll from the DB',
+    )
   }
 
   const _lru: null | LRU = caching
@@ -431,7 +444,7 @@ export function base<
       const result = await update_query
         .returningAll()
         .executeTakeFirstOrThrow()
-      
+
       lru.set(id, result as unknown as RenderedResult)
     },
     async getByIds(
@@ -461,15 +474,17 @@ export function base<
       trx: TrxOrDb,
       to_insert: InsertShape<DB[TopLevelTable]>,
     ) {
-      // deno-lint-ignore no-explicit-any
-      const insert_query = trx.insertInto(top_level_table).values(to_insert as any)
+      const insert_query = trx.insertInto(top_level_table).values(
+        // deno-lint-ignore no-explicit-any
+        to_insert as any,
+      )
       if (!cache_writes) {
         const { id } = await insert_query
           .returning('id')
           .executeTakeFirstOrThrow() as unknown as { id: string }
         return id
       }
-      
+
       const result = await insert_query
         .returningAll()
         .executeTakeFirstOrThrow() as unknown as RenderedResult & { id: string }

@@ -3,7 +3,6 @@ import { sql } from 'kysely'
 import {
   EmployedHealthWorker,
   IdSelection,
-  InsertShape,
   Maybe,
   NonEmptyArray,
   PossiblyEmployedHealthWorker,
@@ -15,15 +14,13 @@ import {
   jsonArrayFromColumn,
   orderByArrayPosition,
 } from '../helpers.ts'
-import pick from '../../util/pick.ts'
-import { HealthWorkers, Profession } from '../../db.d.ts'
-import { asNames, NameInputs } from './asNames.ts'
+import { Profession } from '../../db.d.ts'
+import { NameInputs } from './asNames.ts'
 import { base } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DEPARTMENTS } from '../../shared/departments.ts'
 import isString from '../../util/isString.ts'
-import generateUUID from '../../util/uuid.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN health_workers.avatar_media_id IS NOT NULL
@@ -39,21 +36,6 @@ export type HealthWorkerUpsert =
     email: string
   }
   & NameInputs
-
-function asHealthWorkerValues(
-  health_worker: HealthWorkerUpsert,
-): InsertShape<HealthWorkers> {
-  return {
-    ...health_worker,
-    ...asNames(health_worker),
-  }
-}
-
-export const pickHealthWorkerDetails = pick([
-  'name',
-  'email',
-  'avatar_media_id',
-])
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
@@ -212,40 +194,14 @@ export const health_workers = base({
     return qb
   },
 
-  async upsert(
-    trx: TrxOrDb,
-    details: HealthWorkerUpsert,
-  ) {
-    const to_upsert = asHealthWorkerValues(details)
-    const health_worker = await trx
-      .insertInto('health_workers')
-      .values(to_upsert)
-      .onConflict((oc) => oc.column('email').doUpdateSet(details))
-      .returning([
-        'id',
-        'name',
-        'first_names',
-        'surname',
-        'preferred_name',
-        'email',
-        'avatar_media_id',
-      ])
-      .executeTakeFirstOrThrow()
-
-    health_workers.invalidateCacheOne(health_worker.id)
-    return health_worker
-  },
-
-  async getIdByEmailOrGenerateNew(
+  getIdByEmail(
     trx: TrxOrDb,
     email: string,
   ) {
-    const health_worker = await trx.selectFrom('health_workers')
+    return trx.selectFrom('health_workers')
       .where('email', '=', email)
       .select('id')
       .executeTakeFirst()
-
-    return health_worker?.id || generateUUID()
   },
 
   isHealthWorker(

@@ -8,7 +8,7 @@ import {
 import * as employees from '../../db/models/employees.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as employment_calendars from '../../db/models/employment_calendars.ts'
-import * as google_tokens from '../../db/models/google_tokens.ts'
+import { google_tokens } from '../../db/models/google_tokens.ts'
 import {
   DeepPartial,
   GCalEvent,

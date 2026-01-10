@@ -13,7 +13,7 @@ import {
   LoggedInHealthWorkerContext,
   TrxOrDb,
 } from '../types.ts'
-import * as google_tokens from '../db/models/google_tokens.ts'
+import { google_tokens } from '../db/models/google_tokens.ts'
 import { formatJohannesburg } from '../util/date.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 import memoize from '../util/memoize.ts'
