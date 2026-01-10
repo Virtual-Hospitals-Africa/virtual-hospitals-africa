@@ -17,7 +17,7 @@ import { z } from 'zod'
 import { route } from '../../../../_route.ts'
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
-import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
+import { brief_history } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'
 import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
@@ -29,7 +29,7 @@ import {
   STATUS_ATTRIBUTE,
 } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
-import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
+import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 
 describeParallel('triage/warning_signs', () => {
@@ -152,12 +152,13 @@ describeParallel('triage/warning_signs', () => {
           },
         )
 
-        const most_recent_findings = await renderedMostRecentFindings(db, {
-          patient_id: initial_encounter.patient.id,
-          encounter: initial_encounter,
-          health_worker_id: nurse.id,
-          conditions: COMMON_CONDITIONS,
-        })
+        const most_recent_findings = await brief_history
+          .renderedMostRecentFindings(db, {
+            patient_id: initial_encounter.patient.id,
+            encounter: initial_encounter,
+            health_worker_id: nurse.id,
+            conditions: COMMON_CONDITIONS,
+          })
         assert(most_recent_findings.pregnancy)
 
         await patient_encounters.close(db, {
@@ -983,7 +984,7 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Non-urgent',
         })
 
-        const task_groups = await getTasksGroups(db, {
+        const task_groups = await additional_tasks.getTasksGroups(db, {
           encounter,
           health_worker_id: nurse.id,
         })

@@ -5,7 +5,7 @@ import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import { conversations } from '../../../../db/models/conversations.ts'
 import { patients } from '../../../../db/models/patients.ts'
-import { getPatientLastConversationState } from '../../../../db/models/patient_chatbot_users.ts'
+import { patient_chatbot_users } from '../../../../db/models/patient_chatbot_users.ts'
 import generateUUID from '../../../../util/uuid.ts'
 
 import { readSeedDump } from '../../../_helpers/readSeedDump.ts'
@@ -102,9 +102,10 @@ describe('patient chatbot', () => {
           phone_number,
         },
       ])
-      const patient = await getPatientLastConversationState(db, {
-        phone_number,
-      })
+      const patient = await patient_chatbot_users
+        .getPatientLastConversationState(db, {
+          phone_number,
+        })
 
       assert(patient)
       assertEquals(

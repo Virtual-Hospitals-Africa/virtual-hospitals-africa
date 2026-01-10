@@ -8,7 +8,7 @@ import { patients } from '../../../../../db/models/patients.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
-import { getPatientLastConversationState } from '../../../../../db/models/patient_chatbot_users.ts'
+import { patient_chatbot_users } from '../../../../../db/models/patient_chatbot_users.ts'
 
 describe('patient chatbot', () => {
   afterAll(() => db.destroy())
@@ -47,8 +47,8 @@ describe('patient chatbot', () => {
         phone_number,
       },
     ])
-    const { conversation_state, patient_id } =
-      await getPatientLastConversationState(
+    const { conversation_state, patient_id } = await patient_chatbot_users
+      .getPatientLastConversationState(
         db,
         {
           phone_number,
