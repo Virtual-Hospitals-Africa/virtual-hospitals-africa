@@ -1,17 +1,15 @@
 import { computed, useSignal } from '@preact/signals'
-import { WarningSignWithMaybeRecord, WarningSign, SnomedConceptSearchResult } from '../types.ts'
+import { WarningSignWithMaybeRecord, SnomedConceptSearchResult } from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
 import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
-import { assert } from 'std/assert/assert.ts'
-import isString from '../util/isString.ts'
 import { asConceptSExpression, CLINICAL_FINDING } from '../shared/snomed_concepts.ts'
 import { EmptyState } from '../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
 import sortBy from '../util/sortBy.ts'
 import { hyphenate } from '../util/hyphenate.ts'
-import { uniqBy } from '../util/uniqBy.ts'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
+import compact from '../util/compact.ts'
 
 const PRIORITIES = [
   {
@@ -41,7 +39,8 @@ type PriorityConfig = typeof PRIORITIES[number]
 type OnToggle = (sign: CheckedWarningSign) => void
 
 function uniqueIdentifier(sign: CheckedWarningSign) {
-  return hyphenate((sign.key || sign.existing_record?.id || sign.clinical_finding_s_expression).toLowerCase())
+  const first_unique = sign.key || compact([sign.sats_primary_name + sign.sats_secondary_text]).join('-')
+  return hyphenate(first_unique.toLowerCase())
 }
 
 function KeyedWarningSignCheckbox(
@@ -57,6 +56,7 @@ function KeyedWarningSignCheckbox(
           value={{
             s_expression: sign.clinical_finding_s_expression,
             warning_sign_key: sign.key,
+            priority_level: sign.sats_priority,
             existing_record: sign.existing_record && {
               id: sign.existing_record.id,
               modified: sign.existing_record.existence !== (sign.checked ? 'Yes' : 'No')
@@ -148,7 +148,6 @@ export default function KeyedWarningSigns({
       checked: sign.existing_record?.existence === 'Yes'
     })),
   )
-  const query = useSignal<string>('')
   const search_results = useSignal<null | SnomedConceptSearchResult[]>(null)
 
   const search_results_as_signs = computed(() => 
@@ -163,8 +162,6 @@ export default function KeyedWarningSigns({
       existing_record: null,
     }))
   )
-
-  console.log(search_results.value)
 
   const grouped = computed(() => 
     groupBy(
@@ -188,9 +185,8 @@ export default function KeyedWarningSigns({
     skip_blank_search: true,
     value: null,
     onSearchResults(results) {
-      const all_results = results.pages.flatMap((page) => page.results) as unknown as SnomedConceptSearchResult[]
-      query.value = results.query
-      search_results.value = all_results
+      search_results.value = results.pages.flatMap((page) => 
+        page.results) as unknown as SnomedConceptSearchResult[]
     },
   })
 
@@ -215,7 +211,6 @@ export default function KeyedWarningSigns({
       )}
       {sorted_priorities.value.map((priority_config) => {
         const signs = grouped.value.get(priority_config.priority)
-        console.log('a', priority_config.priority, signs)
         if (!signs?.length) return null
         return (
           <KeyedWarningSignsPriorityGrid
@@ -248,20 +243,3 @@ export default function KeyedWarningSigns({
     </div>
   )
 }
-
-/*
-.map(
-        (r): WarningSignWithMaybeRecord => {
-          assert('id' in r)
-          assert(isString(r.id))
-          assert('category' in r)
-          assert(isString(r.category))
-          assert(r.name)
-          assert('priority' in r)
-          assert('priority' in r)
-          return 
-        },
-      )
-      */
-
-      /* + ' ' + (r.best_similarity), */

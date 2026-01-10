@@ -18,7 +18,7 @@ import { organizationOf } from '../shared/employees.ts'
 import { promiseProps } from '../util/promiseProps.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { WORKFLOWS } from '../shared/workflow.ts'
-// import { insertTasksIfNotAlreadyIdentified } from '../db/models/additional_tasks.ts'
+import { additional_tasks } from '../db/models/additional_tasks.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -63,6 +63,20 @@ export const EVENTS = {
       async insertTasksIfNotAlreadyIdentified(_trx, _payload) {
         // TODO: decide whether to do this as part of handling the request or in the background via events
         // await insertTasksIfNotAlreadyIdentified(trx, payload.data)
+      },
+    },
+  ),
+  ProcedureCompleted: defineEvent(
+    z.object({
+      patient_id: z.string().uuid(),
+      patient_encounter_id: z.string().uuid(),
+      procedure_id: z.string().uuid(),
+      finding_ids: z.string().uuid().array(),
+    }),
+    {
+      async insertTasksIfNotAlreadyIdentified(trx, payload) {
+        // TODO: decide whether to do this as part of handling the request or in the background via events
+        await insertTasksIfNotAlreadyIdentified(trx, payload.data)
       },
     },
   ),

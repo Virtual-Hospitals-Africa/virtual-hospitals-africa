@@ -8,14 +8,11 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
-import entries from '../../../../../../../../util/entries.ts'
 import {
-  IntermediateFinding,
   patient_findings,
 } from '../../../../../../../../db/models/patient_findings.ts'
-import { filter, forEach } from '../../../../../../../../util/inParallel.ts'
+import { filter, forEach, pMap } from '../../../../../../../../util/inParallel.ts'
 import {
-  findingQueryExpression,
   KEYED_WARNING_SIGNS,
   WARNING_SIGNS,
 } from '../../../../../../../../shared/warning_signs.ts'
@@ -24,34 +21,21 @@ import compact from '../../../../../../../../util/compact.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
-import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import {
   WarningSignWithMaybeRecord,
   WarningSign,
-  Priority,
-  RenderedFindingRelativeToHealthWorker,
-  WarningSign,
-  WarningSignPresence,
 } from '../../../../../../../../types.ts'
-import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
-import { exists } from '../../../../../../../../util/exists.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
-import { assertArrayEmpty } from '../../../../../../../../util/arraySize.ts'
-import first from '../../../../../../../../util/first.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
-import {
-  CHIEF_COMPLAINT,
-  CLINICAL_FINDING,
-  SELF_REPORTED_QUALIFIER,
-} from '../../../../../../../../shared/snomed_concepts.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
-import { snomed_model } from '../../../../../../../../db/models/snomed.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
-import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import keys from '../../../../../../../../util/keys.ts'
 import partition from '../../../../../../../../util/partition.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
+import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
+import values from '../../../../../../../../util/values.ts'
+import { events } from '../../../../../../../../db/models/events.ts'
 
 const WarningSignSchema = z.object({
   s_expression: z.string().transform((
@@ -61,6 +45,7 @@ const WarningSignSchema = z.object({
     existence || 'No'
   ),
   warning_sign_key: z.enum(keys(WARNING_SIGNS)).optional(),
+  priority_level: z.enum(ORDERED_PRIORITIES),
   existing_record: z.object({
     id: z.string(),
     modified: z.boolean(),
@@ -71,7 +56,7 @@ const WarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
     WarningSignSchema,
-  ),
+  ).transform(values),
 }).strict()
 
 export const handler = postHandler(
@@ -82,92 +67,100 @@ export const handler = postHandler(
       patient_id,
       employment_id,
       patient_encounter_id,
-      encounter_employee_presence,
+      patient_encounter_employee_id,
     } = ctx.state
-    const warning_signs_previously_entered = groupByUniq(
-      await getAllClinicalFindingsAsWarningSignsForThisEncounter(ctx),
-      (sign) => sign.key,
-    )
+    
+    // TODO: match against what we already have and fail the transaction if the client was lying
+    // const warning_signs_previously_entered = groupByUniq(
+    //   await getAllClinicalFindingsAsWarningSignsForThisEncounter(ctx),
+    //   (sign) => sign.key,
+    // )
 
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
     assert(procedure_id)
 
-    await forEach(
-      form_values.warning_signs,
-      async ({ key, finding }) => {
-        warning_signs_previously_entered.delete(key)
+    const { response } = await promiseProps({
+      response: completeAndProceedToNextStep(ctx),
+      mark_modified_as_invalid: markRecordsInvalid(),
+      inserted_signs: insertSigns().then(dispatchEvent),
+    })
 
-        const finding_insert = await patient_findings
-          .insertOneIfNotAlreadyExistsForThisEncounter(
+    return response
+
+    function insertSigns() {
+      return pMap(
+        form_values.warning_signs,
+        async (sign) => {
+          // TODO handle negative findings
+          if (sign.existence === 'No') {
+            return
+          }
+          if (sign.existing_record && !sign.existing_record.modified) {
+            return
+          }
+          
+          // insertOneIfNotAlreadyExistsForThisEncounter
+          const finding_insert = await patient_findings
+            .insertOneNested(
+              trx,
+              {
+                patient_id,
+                procedure_id,
+                patient_encounter_id,
+                patient_encounter_employee_id,
+                finding: sign.s_expression,
+              },
+            )
+          assert(finding_insert.success)
+          if (!finding_insert.inserted_new) return
+
+          await patient_triage.insertLevel(
             trx,
             {
               patient_id,
               patient_encounter_id,
-              patient_encounter_employee_id: encounter_employee_presence
-                .patient_encounter_employee_id,
               procedure_id,
-              finding,
+              triage_level: sign.priority_level,
+              by_system: true,
+              evaluates_record_id: finding_insert.finding_id,
             },
           )
-        assert(finding_insert.success)
-        if (!finding_insert.inserted_new) return
 
-        const triage_level = isKeyOf(key, WARNING_SIGNS)
-          ? WARNING_SIGNS[key].sats_priority
-          : await getPriorityByRecordId()
-
-        return patient_triage.insertLevel(
-          trx,
-          {
-            patient_id,
-            patient_encounter_id,
-            procedure_id,
-            triage_level,
-            by_system: true,
-            evaluates_record_id: finding_insert.finding_id,
-          },
-        )
-
-        async function getPriorityByRecordId(): Promise<Priority> {
-          const { priority } = await trx.selectFrom('patient_records')
-            .where('patient_records.id', '=', finding_insert.finding_id)
-            .select((eb) =>
-              snomed_model.getPriorityOfSnomedConcept(
-                eb,
-                'patient_records.specific_snomed_concept_id',
-                patient_id,
-                trx,
-              )
-            )
-            .executeTakeFirstOrThrow()
-
-          return priority?.name || 'Non-urgent'
-        }
-      },
-    )
-
-    const now_invalid = Array.from(warning_signs_previously_entered.values())
-      .filter((record) => record.satisfied_by_record_id)
-
-    for (const record of now_invalid) {
-      await markEnteredInError(
-        trx,
-        {
-          patient_id,
-          procedure_id,
-          employment_id,
-          patient_encounter_id,
-          altered_record_id: exists(record.satisfied_by_record_id),
+          return finding_insert.finding_id
         },
-      )
+      ).then(compact)
     }
 
-    await additional_tasks.insertTasksIfNotAlreadyIdentified(
-      trx,
-      { patient_id, patient_encounter_id },
-    )
+    function dispatchEvent(finding_ids: string[]) {
+      return events.insert(trx, {
+        type: 'ProcedureCompleted',
+        data: {
+          patient_id,
+          patient_encounter_id,
+          procedure_id,
+          finding_ids,
+        }
+      })
+    }
 
-    return completeAndProceedToNextStep(ctx)
+    function markRecordsInvalid() {
+      return forEach(
+        form_values.warning_signs,
+        async (sign) => {
+          if (!sign.existing_record?.modified) return
+          await markEnteredInError(
+            trx,
+            {
+              patient_id,
+              procedure_id,
+              employment_id,
+              patient_encounter_id,
+              altered_record_id: sign.existing_record.id,
+            },
+          )
+        }
+      )
+    }
   },
 )
 
