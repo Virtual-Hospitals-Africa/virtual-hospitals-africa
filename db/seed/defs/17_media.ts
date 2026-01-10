@@ -5,7 +5,6 @@ import range from '../../../util/range.ts'
 import { pMap } from '../../../util/inParallel.ts'
 import { predefinedAvatarMediaUUID } from '../../../backend/predefinedAvatarMediaUUID.ts'
 
-
 function* avatars() {
   for (const sex of ['female' as const, 'male' as const]) {
     for (const int of range(1, 11)) {

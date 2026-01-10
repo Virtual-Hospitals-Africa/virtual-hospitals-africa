@@ -1,7 +1,7 @@
 import { Context } from 'fresh'
 import { deleteCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
+import { health_workers } from '../../db/models/health_workers.ts'
 import * as employees from '../../db/models/employees.ts'
 import * as health_worker_registration_status from '../../db/models/health_worker_registration_status.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'

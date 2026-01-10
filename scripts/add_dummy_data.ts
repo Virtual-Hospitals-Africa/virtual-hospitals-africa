@@ -1,6 +1,6 @@
 // // deno-lint-ignore-file
 // import db from '../db/db.ts'
-// import * as health_workers from '../db/models/health_workers.ts'
+// import { health_workers } from '../db/models/health_workers.ts'
 // import * as organizations from '../db/models/organizations.ts'
 // import * as patients from '../db/models/patients.ts'
 // import * as patient_encounters from '../db/models/patient_encounters.ts'

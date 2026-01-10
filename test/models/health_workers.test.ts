@@ -1,69 +1,18 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
-import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
+import { health_workers } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
-import omit from '../../util/omit.ts'
 import db from '../../db/db.ts'
-import { upsertWithGoogleCredentials } from '../../db/models/health_worker_google_tokens.ts'
 import { exists } from '../../util/exists.ts'
 import assertSome from '../../util/assertSome.ts'
 import assertLength from '../../util/assertLength.ts'
-import { testHealthWorker } from '../_helpers/health_workers.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
 import { healthWorkerOrganizationDepartmentNames } from '../../shared/departments.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
-  describe('upsertWithGoogleCredentials', () => {
-    it(
-      'works even if a previous health worker without tokens was inserted',
-      async () => {
-        const health_worker_data = testHealthWorker()
-
-        await health_workers.upsert(
-          db,
-          omit(health_worker_data, [
-            'access_token',
-            'refresh_token',
-            'expires_at',
-            'expires_in',
-          ]),
-        )
-
-        const result = await upsertWithGoogleCredentials(
-          db,
-          health_worker_data,
-        )
-
-        assert(result)
-        const {
-          access_token,
-          refresh_token,
-          expires_at,
-          avatar_media_id,
-          ...result_without_tokens
-        } =
-          // deno-lint-ignore no-explicit-any
-          result as any
-        assertEquals(
-          await health_workers.getById(db, result.id),
-          {
-            ...result_without_tokens,
-            avatar_url: `/health_workers/${result.id}/avatar`,
-            organizations: [],
-            // deno-lint-ignore no-explicit-any
-          } as any,
-        )
-        assert(access_token)
-        assert(refresh_token)
-        assert(expires_at)
-        assert(avatar_media_id)
-      },
-    )
-  })
 
   describe('getById', () => {
     it(

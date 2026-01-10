@@ -3,7 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import * as addresses from './addresses.ts'
 import { isoDate } from '../helpers.ts'
 import { asMaybeNames } from './asNames.ts'
-import { updateNames } from './health_workers.ts'
+import { health_workers } from './health_workers.ts'
 
 export type UpsertableNurseRegistrationDetails =
   & {
@@ -47,7 +47,11 @@ export async function add(
   }
   const names = asMaybeNames({ name, first_names, surname, preferred_name })
   if (names) {
-    await updateNames(trx, registration_details.health_worker_id, names)
+    await health_workers.updateById(
+      trx,
+      registration_details.health_worker_id,
+      names,
+    )
   }
   assert(address_id, 'address_id must be defined')
   return trx

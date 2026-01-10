@@ -1,6 +1,6 @@
 import { TrxOrDb } from '../types.ts'
 import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
-import * as health_workers from '../db/models/health_workers.ts'
+import { health_workers } from '../db/models/health_workers.ts'
 import * as employees from '../db/models/employees.ts'
 import * as patient_encounters from '../db/models/patient_encounters.ts'
 

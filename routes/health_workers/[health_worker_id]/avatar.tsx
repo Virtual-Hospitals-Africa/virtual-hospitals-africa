@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import * as health_workers from '../../../db/models/health_workers.ts'
+import { health_workers } from '../../../db/models/health_workers.ts'
 import { file } from '../../../util/responses.ts'
 import { getRequiredUUIDParam } from '../../../util/getParam.ts'
 import { assertOr404 } from '../../../util/assertOr.ts'
