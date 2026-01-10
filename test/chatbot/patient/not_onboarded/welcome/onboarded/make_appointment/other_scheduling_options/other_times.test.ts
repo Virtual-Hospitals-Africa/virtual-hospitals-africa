@@ -13,7 +13,7 @@ import * as google from '../../../../../../../../external-clients/google.ts'
 import { conversations } from '../../../../../../../../db/models/conversations.ts'
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../../../db/models/appointments.ts'
-import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
+import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import {
   convertToTimeString,
   formatJohannesburg,
@@ -207,9 +207,10 @@ describe.skip('patient chatbot', () => {
         },
       )
 
-      const patient = await getPatientLastConversationState(trx, {
-        phone_number,
-      })
+      const patient = await patient_chatbot_users
+        .getPatientLastConversationState(trx, {
+          phone_number,
+        })
 
       assert(patient)
       assertEquals(
