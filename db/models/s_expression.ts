@@ -477,7 +477,7 @@ const EXPRESSION_BUILDERS = {
       trx,
       patient,
       parseExpression(`
-        (or (finding ${CLINICAL_FINDING.lang} ${snomed_concept_s_expression})
+        (or (finding ${CLINICAL_FINDING.s_expression} ${snomed_concept_s_expression})
             (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
       `),
     )
