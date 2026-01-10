@@ -31,13 +31,6 @@ import {
 } from '../../shared/snomed_concepts.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 
-type FindingInsert = {
-  patient_id: string
-  patient_encounter_id: string
-  patient_encounter_employee_id: string
-  procedure_id: string
-  finding: Lang['finding'] | string
-}
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -166,6 +159,14 @@ export type PatientFindingsSearch = {
   not_measurements?: boolean
 }
 
+type FindingInsert = {
+  patient_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
+  procedure_id: string
+  finding: Lang['finding'] | string
+}
+
 export const patient_findings = base({
   top_level_table: 'patient_findings',
   baseQuery,
@@ -208,7 +209,7 @@ export const patient_findings = base({
     }
     if (opts.procedure_id) {
       qb = qb.where(
-        'patient_records.as_part_of_procedure_id',
+        'patient_findings.procedure_id',
         '=',
         opts.procedure_id,
       )

@@ -163,3 +163,22 @@ export const snomed_model = base({
 })
 
 export type SnomedConceptSearchResult = SearchResult<typeof snomed_model>
+
+// Unused, but stashing because it's an interesting idea.
+// The idea is to get the triage level of a finding already in the database based on
+// The warning signs.
+// async function getPriorityByRecordId(): Promise<Priority> {
+//   const { priority } = await trx.selectFrom('patient_records')
+//     .where('patient_records.id', '=', finding_insert.finding_id)
+//     .select((eb) =>
+//       snomed_model.getPriorityOfSnomedConcept(
+//         eb,
+//         'patient_records.specific_snomed_concept_id',
+//         patient_id,
+//         trx,
+//       )
+//     )
+//     .executeTakeFirstOrThrow()
+
+//   return priority?.name || 'Non-urgent'
+// }
