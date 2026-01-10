@@ -4,7 +4,7 @@ import {
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
-import * as patient_chief_complaints from '../../../../../../../../db/models/patient_chief_complaints.ts'
+import { patient_chief_complaints } from '../../../../../../../../db/models/patient_chief_complaints.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { ChiefComplaintSection } from '../../../../../../../../islands/chief-complaint/Section.tsx'

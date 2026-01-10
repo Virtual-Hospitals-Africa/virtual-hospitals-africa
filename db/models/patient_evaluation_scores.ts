@@ -13,30 +13,6 @@ import {
 type PatientEvaluationScoreInsert = PatientEvaluationInsert & {
   score: number
 }
-export function insertOneNested(
-  trx: TrxOrDb,
-  {
-    score,
-    evaluation_id = generateUUID(),
-    ...to_insert
-  }: PatientEvaluationScoreInsert,
-) {
-  return patient_evaluations.insertOneNestedQuery(trx, {
-    evaluation_id,
-    ...to_insert,
-  }).with(
-    'inserting_patient_evaluation_score',
-    (qb) =>
-      qb.insertInto('patient_evaluation_scores')
-        .values({ id: evaluation_id, score }),
-  )
-    .selectNoFrom([
-      success_true,
-      sql<true>`true`.as('inserted_new'),
-      literalString(evaluation_id).as('evaluation_id'),
-    ])
-    .executeTakeFirstOrThrow()
-}
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -115,7 +91,30 @@ export const patient_evaluation_scores = base({
 
     return qb
   },
-  insertOneNested,
+  insertOneNested(
+    trx: TrxOrDb,
+    {
+      score,
+      evaluation_id = generateUUID(),
+      ...to_insert
+    }: PatientEvaluationScoreInsert,
+  ) {
+    return patient_evaluations.insertOneNestedQuery(trx, {
+      evaluation_id,
+      ...to_insert,
+    }).with(
+      'inserting_patient_evaluation_score',
+      (qb) =>
+        qb.insertInto('patient_evaluation_scores')
+          .values({ id: evaluation_id, score }),
+    )
+      .selectNoFrom([
+        success_true,
+        sql<true>`true`.as('inserted_new'),
+        literalString(evaluation_id).as('evaluation_id'),
+      ])
+      .executeTakeFirstOrThrow()
+  },
   totalTEWSEncounterScore(
     trx: TrxOrDb,
     { patient_encounter_id }: {

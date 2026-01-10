@@ -8,7 +8,7 @@ import {
   WhatsAppSingleSendable,
 } from '../types.ts'
 import * as defs from './defs.ts'
-import * as conversations from '../db/models/conversations.ts'
+import { conversations } from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 

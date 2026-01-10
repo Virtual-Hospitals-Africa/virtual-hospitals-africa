@@ -20,14 +20,14 @@ import {
 import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
-import { hydrateIntermediateRecords } from './patient_record_providers.ts'
+import { patient_record_providers } from './patient_record_providers.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 
 type IntermediateBriefHistory = IntermediateFinding & {
   pertaining_to_key: CommonConditionKey
 }
 
-export function mostRecentFindings(
+function mostRecentFindings(
   trx: TrxOrDb,
   { patient_id, conditions }: {
     patient_id: string
@@ -158,52 +158,55 @@ function mostRecentFinding<
     findings_of_condition[0]
 }
 
-export async function renderedMostRecentFindings(
-  trx: TrxOrDb,
-  { patient_id, encounter, health_worker_id, conditions }: {
-    patient_id: string
-    encounter: RenderedPatientEncounter
-    health_worker_id: string
-    conditions: CommonCondition[]
-  },
-): Promise<MostRecentBriefHistoryFindings> {
-  const most_recent_findings = await mostRecentFindings(trx, {
-    patient_id,
-    conditions,
-  })
-
-  const most_recent_findings_with_existence = most_recent_findings.map(
-    (finding) => ({
-      ...formatRecord(finding),
-      existence: findingExistence(finding),
-    }),
-  )
-
-  most_recent_findings_with_existence[0]
-
-  const records = groupBy(
-    most_recent_findings_with_existence,
-    'pertaining_to_key',
-  )
-    .values()
-    .map(mostRecentFinding)
-    .toArray()
-
-  const with_providers: RenderedBriefHistoryRelativeToHealthWorker[] =
-    await hydrateIntermediateRecords(trx, {
-      records,
-      health_worker_id,
-      encounter,
+export const brief_history = {
+  mostRecentFindings,
+  async renderedMostRecentFindings(
+    trx: TrxOrDb,
+    { patient_id, encounter, health_worker_id, conditions }: {
+      patient_id: string
+      encounter: RenderedPatientEncounter
+      health_worker_id: string
+      conditions: CommonCondition[]
+    },
+  ): Promise<MostRecentBriefHistoryFindings> {
+    const most_recent_findings = await mostRecentFindings(trx, {
+      patient_id,
+      conditions,
     })
 
-  return fromEntries(
-    conditions.map(
-      (condition) => [
-        condition.key,
-        with_providers.find((finding) =>
-          finding.pertaining_to_key === condition.key
-        ),
-      ],
-    ),
-  )
+    const most_recent_findings_with_existence = most_recent_findings.map(
+      (finding) => ({
+        ...formatRecord(finding),
+        existence: findingExistence(finding),
+      }),
+    )
+
+    most_recent_findings_with_existence[0]
+
+    const records = groupBy(
+      most_recent_findings_with_existence,
+      'pertaining_to_key',
+    )
+      .values()
+      .map(mostRecentFinding)
+      .toArray()
+
+    const with_providers: RenderedBriefHistoryRelativeToHealthWorker[] =
+      await patient_record_providers.hydrateIntermediateRecords(trx, {
+        records,
+        health_worker_id,
+        encounter,
+      })
+
+    return fromEntries(
+      conditions.map(
+        (condition) => [
+          condition.key,
+          with_providers.find((finding) =>
+            finding.pertaining_to_key === condition.key
+          ),
+        ],
+      ),
+    )
+  },
 }

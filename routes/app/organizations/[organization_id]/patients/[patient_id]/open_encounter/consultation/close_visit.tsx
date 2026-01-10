@@ -5,7 +5,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 
-import * as patient_encounters from '../../../../../../../../db/models/patient_encounters.ts'
+import { patient_encounters } from '../../../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 

@@ -8,11 +8,11 @@ import {
   Workflow,
   WORKFLOW_STEPS,
 } from '../../../../../../../shared/workflow.ts'
-import * as patient_workflows from '../../../../../../../db/models/patient_workflows.ts'
+import { patient_workflows } from '../../../../../../../db/models/patient_workflows.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
-import * as patient_presence from '../../../../../../../db/models/patient_presence.ts'
+import { patient_presence } from '../../../../../../../db/models/patient_presence.ts'
 import { UpdateShape } from '../../../../../../../types.ts'
 import { DB } from '../../../../../../../db.d.ts'
 

@@ -22,6 +22,35 @@ export type QueryResult<Func extends (...args: any[]) => any> =
   ReturnType<Func> extends SelectQueryBuilder<any, any, infer Result> ? Result
     : never
 
+export type BaseModelInputBaseQueryConsumesSearch<
+  SearchTerms extends Partial<Record<string, unknown>>,
+  Tables,
+  SelectingFrom extends keyof Tables,
+  IntermediateResult,
+> = {
+  baseQuery: (
+    trx: TrxOrDb,
+    terms: SearchTerms,
+  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  handleSearch?: never
+}
+
+export type BaseModelInputBaseQueryDoesNotConsumeSearch<
+  SearchTerms extends Partial<Record<string, unknown>>,
+  Tables,
+  SelectingFrom extends keyof Tables,
+  IntermediateResult,
+> = {
+  baseQuery: (
+    trx: TrxOrDb,
+  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  handleSearch: (
+    qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
+    terms: SearchTerms,
+    trx: TrxOrDb,
+  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+}
+
 export type BaseModelInput<
   SearchTerms extends Partial<Record<string, unknown>>,
   Tables,
@@ -29,24 +58,30 @@ export type BaseModelInput<
   TopLevelTable extends StandardTables,
   IntermediateResult,
   RenderedResult,
-> = {
-  top_level_table: TopLevelTable & SelectingFrom
-  baseQuery: (
-    trx: TrxOrDb,
-    terms: SearchTerms,
-  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-  handleSearch?: (
-    qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
-    terms: SearchTerms,
-    trx: TrxOrDb,
-  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-  formatResult: (result: IntermediateResult) => RenderedResult
-  verbose?: boolean
-  caching?: {
-    number_of_items: number
-    cache_writes?: boolean
+> =
+  & {
+    top_level_table: TopLevelTable
+    formatResult: (result: IntermediateResult) => RenderedResult
+    verbose?: boolean
+    caching?: {
+      number_of_items: number
+      cache_writes?: boolean
+    }
   }
-}
+  & (
+    | BaseModelInputBaseQueryConsumesSearch<
+      SearchTerms,
+      Tables,
+      SelectingFrom,
+      IntermediateResult
+    >
+    | BaseModelInputBaseQueryDoesNotConsumeSearch<
+      SearchTerms,
+      Tables,
+      SelectingFrom,
+      IntermediateResult
+    >
+  )
 
 export function identity<T>(obj: T) {
   return obj

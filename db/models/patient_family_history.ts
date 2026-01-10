@@ -15,7 +15,7 @@
 // import { markAltered, nowInvalidRecords } from './patient_records_base.ts'
 
 // // TODO: get this into a single round trip with the DB
-// export async function upsertOne(
+// ,async upsertOne(
 //   trx: TrxOrDb,
 //   {
 //     patient_id,
@@ -179,7 +179,7 @@
 //     .executeTakeFirstOrThrow()
 // }
 
-// export async function getEncounter(
+// ,async getEncounter(
 //   trx: TrxOrDb,
 //   { patient_id, patient_encounter_id }: {
 //     patient_id: string

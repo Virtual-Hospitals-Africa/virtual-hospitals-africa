@@ -1,4 +1,4 @@
-import * as notifications from '../../db/models/notifications.ts'
+import { notifications } from '../../db/models/notifications.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import upgradeWebsocket from '../../util/websocket.ts'
 import last from '../../util/last.ts'

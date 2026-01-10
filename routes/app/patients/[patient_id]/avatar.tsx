@@ -1,4 +1,4 @@
-import * as patients from '../../../../db/models/patients.ts'
+import { patients } from '../../../../db/models/patients.ts'
 
 import { file } from '../../../../util/responses.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'

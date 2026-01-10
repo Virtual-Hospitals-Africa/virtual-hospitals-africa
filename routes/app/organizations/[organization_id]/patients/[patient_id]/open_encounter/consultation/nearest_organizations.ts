@@ -1,4 +1,4 @@
-import * as nearest_organizations from '../../../../../../../../db/models/nearest_organizations.ts'
+import { nearest_organizations } from '../../../../../../../../db/models/nearest_organizations.ts'
 import { BlankRecord } from '../../../../../../../../types.ts'
 import { jsonSearchHandler } from '../../../../../../../../util/jsonSearchHandler.ts'
 import { OpenEncounterWorkflowContext } from '../_middleware.tsx'

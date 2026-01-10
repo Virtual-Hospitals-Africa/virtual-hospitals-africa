@@ -18,7 +18,7 @@ type SearchTerms = {
   categories?: SnomedCategory[]
 }
 
-export function getPriorityOfSnomedConcept<
+function getPriorityOfSnomedConcept<
   // deno-lint-ignore no-explicit-any
   EB extends ExpressionBuilder<DB, any>,
 >(
@@ -156,6 +156,7 @@ export const snomed_model = base({
   verbose: true,
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery,
+  getPriorityOfSnomedConcept,
   formatResult(result) {
     return result
   },

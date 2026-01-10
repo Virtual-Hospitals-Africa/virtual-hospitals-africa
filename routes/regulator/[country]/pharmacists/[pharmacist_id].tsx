@@ -1,7 +1,7 @@
 import PharmacistDetailedCard from '../../../../components/regulator/DetailedCard.tsx'
 import { LoggedInRegulatorContext } from '../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
-import * as pharmacists from '../../../../db/models/pharmacists.ts'
+import { pharmacists } from '../../../../db/models/pharmacists.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 

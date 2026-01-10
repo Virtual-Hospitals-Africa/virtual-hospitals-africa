@@ -35,7 +35,3 @@ export const conditions = base({
     return qb.where('is_procedure', '=', opts.is_procedure)
   },
 })
-
-
-
-

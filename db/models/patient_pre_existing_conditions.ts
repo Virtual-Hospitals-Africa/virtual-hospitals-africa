@@ -13,7 +13,7 @@
 
 // }
 
-// export function get(
+// ,get(
 //   trx: TrxOrDb,
 //   { patient_encounter_id, patient_encounter_employee_id }: {
 //     patient_encounter_id: string

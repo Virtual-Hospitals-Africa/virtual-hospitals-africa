@@ -3,9 +3,9 @@ import {
   PharmacistConversationState,
   TrxOrDb,
 } from '../../types.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as pharmacists from '../../db/models/pharmacists.ts'
-import * as pharmacies from '../../db/models/pharmacies.ts'
+import { conversations } from '../../db/models/conversations.ts'
+import { pharmacists } from '../../db/models/pharmacists.ts'
+import { pharmacies } from '../../db/models/pharmacies.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export async function handleLicenceInput(

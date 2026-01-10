@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import Appointments from '../../../../../../../components/calendar/Appointments.tsx'
-import * as appointments from '../../../../../../../db/models/appointments.ts'
+import { appointments } from '../../../../../../../db/models/appointments.ts'
 import { google_tokens } from '../../../../../../../db/models/google_tokens.ts'
 import type { RenderableAppointment } from '../../../../../../../types.ts'
 import { PatientProfilePage } from './_middleware.tsx'

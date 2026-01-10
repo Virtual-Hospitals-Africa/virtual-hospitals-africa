@@ -17,10 +17,10 @@ import {
   TrxOrDb,
   WorkflowStatus,
 } from '../../types.ts'
-import * as patients from './patients.ts'
-import * as employees from './employees.ts'
-import * as patient_encounter_employees from './patient_encounter_employees.ts'
-import * as organizations from './organizations.ts'
+import { patients } from './patients.ts'
+import { employees } from './employees.ts'
+import { patient_encounter_employees } from './patient_encounter_employees.ts'
+import { organizations } from './organizations.ts'
 
 import {
   asText,
@@ -78,172 +78,7 @@ type EncounterExistingOrToCreate = {
   }
 }
 
-export async function insertSeekingTreatmentForRegisteredPatient(
-  trx: TrxOrDb,
-  organization: RenderedOrganization,
-  organization_employment: HealthWorkerOrganization,
-  {
-    patient_id,
-    encounter,
-  }: {
-    patient_id: string
-    encounter: EncounterExistingOrToCreate
-  },
-): Promise<SelectShape<PatientPresence>> {
-  const { patient_encounter_id } = encounter
-  assert(isUUID(patient_encounter_id), 'Caller must supply uuid upon creation')
-
-  const { location, id: organization_id } = organization
-  assert(
-    location,
-    'Can only add encounters for organizations with a location',
-  )
-
-  const patient_encounter_employee_id = encounter.create
-    ? generateUUID()
-    : patient_encounter_employees.seenPatientEncounterEmployeeId(
-      encounter.existing,
-      organization_employment,
-    )
-
-  assert(
-    patient_encounter_employee_id,
-    'Caller must supply patient_encounter_employee_id if not created',
-  )
-
-  const { reason } = encounter.create ? encounter.to_create : encounter.existing
-  assertEquals(
-    reason,
-    'seeking treatment',
-    'Only seeking treatment supported for now!',
-  )
-
-  const workflows: Workflow[] = ['triage', 'consultation']
-  const patient_workflows = workflows.map((workflow) => ({
-    id: generateUUID(),
-    patient_encounter_id,
-    workflow,
-  }))
-
-  const department_name = WORKFLOW_DEPARTMENTS[workflows[0]]
-
-  const employed_in_workflow_department = organization_employment.department_ids
-    .some((department_id) =>
-      organization_employment.departments.find((d) => d.id === department_id)
-        ?.name === department_name
-    )
-
-  let with_patient_id: string | null = null
-  let patient_presence: InsertShape<PatientPresence> = {
-    id: patient_id,
-    organization_id,
-    patient_encounter_id,
-    current_workflow: null,
-    next_workflow: workflows[0],
-    department_name: 'Waiting room',
-    organization_room_id: exists(organization.waiting_room_id),
-  }
-
-  if (employed_in_workflow_department) {
-    const first_available_room = await organization_rooms.findFirstOptional(
-      trx,
-      { organization_id, department_name, is_available: true },
-    )
-    if (first_available_room) {
-      with_patient_id = patient_id
-      patient_presence = {
-        id: patient_id,
-        organization_id,
-        patient_encounter_id,
-        current_workflow: workflows[0],
-        next_workflow: workflows[1],
-        department_name,
-        organization_room_id: first_available_room.id,
-      }
-    }
-  }
-
-  const employment_presence: InsertShape<EmploymentPresence> = {
-    id: organization_employment.employment_id,
-    at_work: true,
-    with_patient_id,
-  }
-
-  const { completed_registration, ...inserted_patient_presence } = await trx
-    .with(
-      'inserting_patient_encounter',
-      (qb) =>
-        encounter.create
-          ? qb.insertInto('patient_encounters')
-            .values({
-              patient_id,
-              reason,
-              id: patient_encounter_id,
-              notes: encounter.to_create.notes,
-              appointment_id: encounter.to_create.appointment_id,
-              organization_id: organization.id,
-              location: literalLocation(location),
-            })
-          : blankSelection(qb),
-    ).with(
-      'inserting_patient_encounter_employee',
-      (qb) =>
-        encounter.create
-          ? qb.insertInto('patient_encounter_employees')
-            .values({
-              patient_encounter_id,
-              id: patient_encounter_employee_id,
-              employment_id: organization_employment.employment_id,
-            })
-          : blankSelection(qb),
-    ).with(
-      'inserting_patient_workflows',
-      (qb) =>
-        qb.insertInto('patient_workflows')
-          .values(patient_workflows),
-    )
-    .with(
-      'inserting_patient_workflows_started',
-      (qb) =>
-        employed_in_workflow_department
-          ? qb.insertInto('patient_workflows_started')
-            .values({
-              patient_workflow_id: patient_workflows[0].id,
-              patient_encounter_employee_id,
-            })
-          : blankSelection(qb),
-    )
-    .with(
-      'inserting_patient_presence',
-      (qb) =>
-        qb.insertInto('patient_presence')
-          .values(patient_presence).onConflict((oc) =>
-            oc.column('id').doUpdateSet(patient_presence)
-          ).returningAll(),
-    )
-    .with(
-      'employment_presence',
-      (qb) =>
-        qb.insertInto('employment_presence')
-          .values(employment_presence).onConflict((oc) =>
-            oc.column('id').doUpdateSet(employment_presence)
-          ),
-    )
-    .selectFrom('inserting_patient_presence')
-    .selectAll('inserting_patient_presence')
-    .innerJoin('patients', 'inserting_patient_presence.id', 'patients.id')
-    .select(['patients.completed_registration'])
-    .executeTakeFirstOrThrow()
-
-  // Optimistic update rather than check for this up front
-  assert(
-    completed_registration,
-    "Supplied patient_id for patient that hasn't completed registration",
-  )
-  return inserted_patient_presence
-}
-
-export function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('patient_encounters')
     .select((eb_encounters) => [
@@ -721,117 +556,276 @@ export const patient_encounters = base({
 
     return qb
   },
-})
-
-
-
-
-
-
-
-
-
-/*
-  Does not ensure that workflows are done.
-  Any employees that are with the patient are no longer (employment_presence)
-  and the patient is no longer at the organization (patient_presence)
-*/
-export async function close(
-  trx: TrxOrDb,
-  { patient_encounter_id }: {
-    patient_encounter_id: string
-  },
-) {
-  const encounter = await getById(trx, patient_encounter_id)
-
-  assert(encounter.status.open, 'Encounter already closed')
-
-  const present_with_patient = encounter.status.patient_presence
-    .present_with_patient_encounter_employee_ids.map(
-      (patient_encounter_employee_id) =>
-        exists(encounter.all_employees_seen.find(matching({
-          patient_encounter_employee_id,
-        }))),
+  async insertSeekingTreatmentForRegisteredPatient(
+    trx: TrxOrDb,
+    organization: RenderedOrganization,
+    organization_employment: HealthWorkerOrganization,
+    {
+      patient_id,
+      encounter,
+    }: {
+      patient_id: string
+      encounter: EncounterExistingOrToCreate
+    },
+  ): Promise<SelectShape<PatientPresence>> {
+    const { patient_encounter_id } = encounter
+    assert(
+      isUUID(patient_encounter_id),
+      'Caller must supply uuid upon creation',
     )
 
-  await trx.with(
-    'updating_employment_presence',
-    (qb) =>
-      present_with_patient.length
-        ? qb.updateTable('employment_presence')
-          .set({
-            at_work: true,
-            with_patient_id: null,
-          })
-          .where(
-            'employment_presence.id',
-            'in',
-            present_with_patient.map((e) => e.employee_id),
-          )
-        : blankSelection(qb),
-  ).with(
-    'deleting_patient_presence',
-    (qb) =>
-      qb.deleteFrom('patient_presence')
-        .where('id', '=', encounter.patient.id),
-  ).with(
-    'updating_patient_encounter',
-    (qb) =>
-      qb.updateTable('patient_encounters')
-        .set({
-          closed_at: now,
-        })
-        .where('id', '=', patient_encounter_id),
-  )
-    .selectNoFrom([success_true])
-    .executeTakeFirstOrThrow()
-}
+    const { location, id: organization_id } = organization
+    assert(
+      location,
+      'Can only add encounters for organizations with a location',
+    )
 
-export function isOpen(
-  encounter: RenderedPatientEncounter,
-): encounter is RenderedPatientOpenEncounter {
-  return encounter.status.open
-}
+    const patient_encounter_employee_id = encounter.create
+      ? generateUUID()
+      : patient_encounter_employees.seenPatientEncounterEmployeeId(
+        encounter.existing,
+        organization_employment,
+      )
 
-export function assertIsOpen(
-  encounter: RenderedPatientEncounter,
-): asserts encounter is RenderedPatientOpenEncounter {
-  assert(encounter.status.open)
-}
+    assert(
+      patient_encounter_employee_id,
+      'Caller must supply patient_encounter_employee_id if not created',
+    )
 
-export async function getOpen(
-  trx: TrxOrDb,
-  search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
-): Promise<RenderedPatientOpenEncounter[]> {
-  const results = await findAll(trx, {
-    ...search_terms,
-    is_open: true,
-  })
-  assertAll(results, assertIsOpen)
-  return results
-}
+    const { reason } = encounter.create
+      ? encounter.to_create
+      : encounter.existing
+    assertEquals(
+      reason,
+      'seeking treatment',
+      'Only seeking treatment supported for now!',
+    )
 
-export async function getFirstOpen(
-  trx: TrxOrDb,
-  search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
-): Promise<RenderedPatientOpenEncounter | undefined> {
-  const results = await getOpen(trx, search_terms)
-  if (results.length > 1) {
-    throw new Error('Multiple open encounters found for the same patient')
-  }
-  return first(results)
-}
+    const workflows: Workflow[] = ['triage', 'consultation']
+    const patient_workflows = workflows.map((workflow) => ({
+      id: generateUUID(),
+      patient_encounter_id,
+      workflow,
+    }))
 
-export function updateOne(
-  trx: TrxOrDb,
-  patient_encounter_id: string,
-  updates: {
-    reason: EncounterReason
-    notes?: Maybe<string>
+    const department_name = WORKFLOW_DEPARTMENTS[workflows[0]]
+
+    const employed_in_workflow_department = organization_employment
+      .department_ids
+      .some((department_id) =>
+        organization_employment.departments.find((d) => d.id === department_id)
+          ?.name === department_name
+      )
+
+    let with_patient_id: string | null = null
+    let patient_presence: InsertShape<PatientPresence> = {
+      id: patient_id,
+      organization_id,
+      patient_encounter_id,
+      current_workflow: null,
+      next_workflow: workflows[0],
+      department_name: 'Waiting room',
+      organization_room_id: exists(organization.waiting_room_id),
+    }
+
+    if (employed_in_workflow_department) {
+      const first_available_room = await organization_rooms.findFirstOptional(
+        trx,
+        { organization_id, department_name, is_available: true },
+      )
+      if (first_available_room) {
+        with_patient_id = patient_id
+        patient_presence = {
+          id: patient_id,
+          organization_id,
+          patient_encounter_id,
+          current_workflow: workflows[0],
+          next_workflow: workflows[1],
+          department_name,
+          organization_room_id: first_available_room.id,
+        }
+      }
+    }
+
+    const employment_presence: InsertShape<EmploymentPresence> = {
+      id: organization_employment.employment_id,
+      at_work: true,
+      with_patient_id,
+    }
+
+    const { completed_registration, ...inserted_patient_presence } = await trx
+      .with(
+        'inserting_patient_encounter',
+        (qb) =>
+          encounter.create
+            ? qb.insertInto('patient_encounters')
+              .values({
+                patient_id,
+                reason,
+                id: patient_encounter_id,
+                notes: encounter.to_create.notes,
+                appointment_id: encounter.to_create.appointment_id,
+                organization_id: organization.id,
+                location: literalLocation(location),
+              })
+            : blankSelection(qb),
+      ).with(
+        'inserting_patient_encounter_employee',
+        (qb) =>
+          encounter.create
+            ? qb.insertInto('patient_encounter_employees')
+              .values({
+                patient_encounter_id,
+                id: patient_encounter_employee_id,
+                employment_id: organization_employment.employment_id,
+              })
+            : blankSelection(qb),
+      ).with(
+        'inserting_patient_workflows',
+        (qb) =>
+          qb.insertInto('patient_workflows')
+            .values(patient_workflows),
+      )
+      .with(
+        'inserting_patient_workflows_started',
+        (qb) =>
+          employed_in_workflow_department
+            ? qb.insertInto('patient_workflows_started')
+              .values({
+                patient_workflow_id: patient_workflows[0].id,
+                patient_encounter_employee_id,
+              })
+            : blankSelection(qb),
+      )
+      .with(
+        'inserting_patient_presence',
+        (qb) =>
+          qb.insertInto('patient_presence')
+            .values(patient_presence).onConflict((oc) =>
+              oc.column('id').doUpdateSet(patient_presence)
+            ).returningAll(),
+      )
+      .with(
+        'employment_presence',
+        (qb) =>
+          qb.insertInto('employment_presence')
+            .values(employment_presence).onConflict((oc) =>
+              oc.column('id').doUpdateSet(employment_presence)
+            ),
+      )
+      .selectFrom('inserting_patient_presence')
+      .selectAll('inserting_patient_presence')
+      .innerJoin('patients', 'inserting_patient_presence.id', 'patients.id')
+      .select(['patients.completed_registration'])
+      .executeTakeFirstOrThrow()
+
+    // Optimistic update rather than check for this up front
+    assert(
+      completed_registration,
+      "Supplied patient_id for patient that hasn't completed registration",
+    )
+    return inserted_patient_presence
   },
-) {
-  return trx.updateTable('patient_encounters')
-    .where('id', '=', patient_encounter_id)
-    .set(updates)
-    .execute()
-}
+  /*
+    Does not ensure that workflows are done.
+    Any employees that are with the patient are no longer (employment_presence)
+    and the patient is no longer at the organization (patient_presence)
+  */
+  async close(
+    trx: TrxOrDb,
+    { patient_encounter_id }: {
+      patient_encounter_id: string
+    },
+  ) {
+    const encounter = await patient_encounters.getById(
+      trx,
+      patient_encounter_id,
+    )
+
+    assert(encounter.status.open, 'Encounter already closed')
+
+    const present_with_patient = encounter.status.patient_presence
+      .present_with_patient_encounter_employee_ids.map(
+        (patient_encounter_employee_id) =>
+          exists(encounter.all_employees_seen.find(matching({
+            patient_encounter_employee_id,
+          }))),
+      )
+
+    await trx.with(
+      'updating_employment_presence',
+      (qb) =>
+        present_with_patient.length
+          ? qb.updateTable('employment_presence')
+            .set({
+              at_work: true,
+              with_patient_id: null,
+            })
+            .where(
+              'employment_presence.id',
+              'in',
+              present_with_patient.map((e) => e.employee_id),
+            )
+          : blankSelection(qb),
+    ).with(
+      'deleting_patient_presence',
+      (qb) =>
+        qb.deleteFrom('patient_presence')
+          .where('id', '=', encounter.patient.id),
+    ).with(
+      'updating_patient_encounter',
+      (qb) =>
+        qb.updateTable('patient_encounters')
+          .set({
+            closed_at: now,
+          })
+          .where('id', '=', patient_encounter_id),
+    )
+      .selectNoFrom([success_true])
+      .executeTakeFirstOrThrow()
+  },
+  isOpen(
+    encounter: RenderedPatientEncounter,
+  ): encounter is RenderedPatientOpenEncounter {
+    return encounter.status.open
+  },
+  assertIsOpen(
+    encounter: RenderedPatientEncounter,
+  ): asserts encounter is RenderedPatientOpenEncounter {
+    assert(encounter.status.open)
+  },
+  async getOpen(
+    trx: TrxOrDb,
+    search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
+  ): Promise<RenderedPatientOpenEncounter[]> {
+    const results = await patient_encounters.findAll(trx, {
+      ...search_terms,
+      is_open: true,
+    })
+    assertAll(results, patient_encounters.assertIsOpen)
+    return results
+  },
+  async getFirstOpen(
+    trx: TrxOrDb,
+    search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
+  ): Promise<RenderedPatientOpenEncounter | undefined> {
+    const results = await patient_encounters.getOpen(trx, search_terms)
+    if (results.length > 1) {
+      throw new Error('Multiple open encounters found for the same patient')
+    }
+    return first(results)
+  },
+  updateOne(
+    trx: TrxOrDb,
+    patient_encounter_id: string,
+    updates: {
+      reason: EncounterReason
+      notes?: Maybe<string>
+    },
+  ) {
+    return trx.updateTable('patient_encounters')
+      .where('id', '=', patient_encounter_id)
+      .set(updates)
+      .execute()
+  },
+})

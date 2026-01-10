@@ -1,53 +1,10 @@
 import { IdSelection, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import * as events from './events.ts'
+import { events } from './events.ts'
 import { base, QueryResult } from './_base.ts'
 import isString from '../../util/isString.ts'
 
-export async function send(
-  trx: TrxOrDb,
-  { thread_id, sender_participant_id, body }: {
-    thread_id: string
-    body: string
-    sender_participant_id: string | IdSelection
-  },
-) {
-  const message = await trx.insertInto('messages')
-    .values({
-      thread_id,
-      body,
-      sender_participant_id,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
-
-  await events.insert(trx, {
-    type: 'MessageSend',
-    data: {
-      message_id: message.id,
-    },
-  })
-  return message
-}
-
-export function sendFromSystem(
-  trx: TrxOrDb,
-  values: {
-    thread_id: string
-    body: string
-    created_at?: Date
-  },
-) {
-  return trx.insertInto('messages')
-    .values({
-      ...values,
-      is_from_system: true,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
-}
-
-export function baseQuery(
+function baseQuery(
   trx: TrxOrDb,
 ) {
   return trx
@@ -84,5 +41,46 @@ export const messages = base({
       )
     }
     return qb
+  },
+  async send(
+    trx: TrxOrDb,
+    { thread_id, sender_participant_id, body }: {
+      thread_id: string
+      body: string
+      sender_participant_id: string | IdSelection
+    },
+  ) {
+    const message = await trx.insertInto('messages')
+      .values({
+        thread_id,
+        body,
+        sender_participant_id,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow()
+
+    await events.insert(trx, {
+      type: 'MessageSend',
+      data: {
+        message_id: message.id,
+      },
+    })
+    return message
+  },
+  sendFromSystem(
+    trx: TrxOrDb,
+    values: {
+      thread_id: string
+      body: string
+      created_at?: Date
+    },
+  ) {
+    return trx.insertInto('messages')
+      .values({
+        ...values,
+        is_from_system: true,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow()
   },
 })

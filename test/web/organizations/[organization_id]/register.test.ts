@@ -3,7 +3,7 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
+import { nurse_registration_details } from '../../../../db/models/nurse_registration_details.ts'
 import db from '../../../../db/db.ts'
 import {
   addTestEmployee,

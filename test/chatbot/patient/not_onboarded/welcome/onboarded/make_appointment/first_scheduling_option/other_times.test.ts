@@ -10,9 +10,9 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../../db/db.ts'
 import respond from '../../../../../../../../chatbot/respond.ts'
 import * as google from '../../../../../../../../external-clients/google.ts'
-import * as conversations from '../../../../../../../../db/models/conversations.ts'
-import * as patients from '../../../../../../../../db/models/patients.ts'
-import * as appointments from '../../../../../../../../db/models/appointments.ts'
+import { conversations } from '../../../../../../../../db/models/conversations.ts'
+import { patients } from '../../../../../../../../db/models/patients.ts'
+import { appointments } from '../../../../../../../../db/models/appointments.ts'
 import {
   convertToTimeString,
   formatJohannesburg,

@@ -6,9 +6,9 @@ import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetail
 import { prettyPatientDateOfBirth } from '../../util/date.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
-import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import * as employment from '../../db/models/employment.ts'
-import * as media from '../../db/models/media.ts'
+import { nurse_registration_details } from '../../db/models/nurse_registration_details.ts'
+import { employment } from '../../db/models/employment.ts'
+import { media } from '../../db/models/media.ts'
 import { getEmployeeInfo } from '../../db/models/employee_info.ts'
 import db from '../../db/db.ts'
 

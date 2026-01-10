@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as media from '../../db/models/media.ts'
+import { conversations } from '../../db/models/conversations.ts'
+import { media } from '../../db/models/media.ts'
 import * as whatsapp from '../../external-clients/whatsapp.ts'
 import {
   WhatsAppIncomingMessage,

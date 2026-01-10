@@ -33,15 +33,15 @@ export const avatar_url_sql = sql<string | null>`
 `
 
 export const description_sql = sql<string | null>`
-  CASE 
+  CASE
     WHEN patients.sex IS NULL THEN NULL
     WHEN patients.gender IS NULL THEN NULL
     WHEN patients.date_of_birth IS NULL THEN NULL
     WHEN (
       (patients.sex = 'female' AND patients.gender = 'woman') OR
       (patients.sex = 'male' AND patients.gender = 'man')
-    ) THEN patients.sex || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY') 
-    ELSE patients.sex || ' • ' || patients.gender || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY') 
+    ) THEN patients.sex || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')
+    ELSE patients.sex || ' • ' || patients.gender || ' • ' || TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')
   END
 `
 
@@ -49,7 +49,7 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-export function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDb) {
   return trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
@@ -106,116 +106,12 @@ export function baseQuery(trx: TrxOrDb) {
     )
 }
 
-export async function insert(
-  trx: TrxOrDb,
-  { conversation_state, country, location, ...to_insert }:
-    & Omit<
-      InsertShapeLiteral<Patients>,
-      'id' | 'phone_number' | 'country' | 'location'
-    >
-    & {
-      country?: string
-      phone_number?: string
-      conversation_state?: string
-      location?: Coordinates
-    },
-) {
-  const patient = await trx
-    .insertInto('patients')
-    .values({
-      ...to_insert,
-      ...asMaybeNames(to_insert),
-      country: country || SERVER_COUNTRY,
-      location: location && literalLocation(location),
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
-
-  if (conversation_state) {
-    assert(Deno.env.get('IS_TEST'))
-    assert(to_insert.phone_number)
-    await trx.insertInto('patient_chatbot_users')
-      .values({
-        entity_id: patient.id,
-        phone_number: to_insert.phone_number,
-        conversation_state,
-        data: '{}',
-      })
-      .execute()
-  }
-
-  return patient
-}
-
 type PatientUpsert =
   & Omit<Partial<InsertShape<Patients>>, 'location'>
   & NameInputs
   & {
     location?: Coordinates
   }
-
-export function upsert(
-  trx: TrxOrDb,
-  patient: PatientUpsert,
-) {
-  const to_upsert: InsertShape<Patients> = {
-    ...patient,
-    ...asNames(patient),
-    country: patient.country || SERVER_COUNTRY,
-    location: patient.location && literalLocation(patient.location),
-  }
-  return trx
-    .insertInto('patients')
-    .values(to_upsert)
-    .onConflict((oc) => oc.column('phone_number').doUpdateSet(to_upsert))
-    .onConflict((oc) => oc.column('id').doUpdateSet(to_upsert))
-    .returningAll()
-    .executeTakeFirstOrThrow()
-}
-
-export function update(
-  trx: TrxOrDb,
-  { id, name, first_names, surname, preferred_name, location, ...patient }:
-    & Partial<PatientUpsert>
-    & {
-      id: string
-    },
-) {
-  const to_update: UpdateShape<Patients> = {
-    ...patient,
-    ...asMaybeNames({ name, first_names, surname, preferred_name }),
-    location: location && literalLocation(location),
-  }
-
-  return trx.updateTable('patients')
-    .where('id', '=', id)
-    .set(to_update)
-    .returningAll()
-    .executeTakeFirstOrThrow()
-}
-
-export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
-  return trx
-    .selectFrom('media')
-    .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
-    .select(['media.mime_type', 'media.binary_data'])
-    .where('patients.id', '=', opts.patient_id)
-    .executeTakeFirst()
-}
-
-export async function getPreferredLanguage(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  const patient = await trx.selectFrom('patients')
-    .where('id', '=', patient_id)
-    .select([
-      'preferred_language_code_iso_639_2_b',
-    ])
-    .executeTakeFirst()
-
-  return patient?.preferred_language_code_iso_639_2_b || null
-}
 
 export const patients = base({
   top_level_table: 'patients',
@@ -244,17 +140,111 @@ export const patients = base({
     }
     return qb
   },
+  async insert(
+    trx: TrxOrDb,
+    { conversation_state, country, location, ...to_insert }:
+      & Omit<
+        InsertShapeLiteral<Patients>,
+        'id' | 'phone_number' | 'country' | 'location'
+      >
+      & {
+        country?: string
+        phone_number?: string
+        conversation_state?: string
+        location?: Coordinates
+      },
+  ) {
+    const patient = await trx
+      .insertInto('patients')
+      .values({
+        ...to_insert,
+        ...asMaybeNames(to_insert),
+        country: country || SERVER_COUNTRY,
+        location: location && literalLocation(location),
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow()
+
+    if (conversation_state) {
+      assert(Deno.env.get('IS_TEST'))
+      assert(to_insert.phone_number)
+      await trx.insertInto('patient_chatbot_users')
+        .values({
+          entity_id: patient.id,
+          phone_number: to_insert.phone_number,
+          conversation_state,
+          data: '{}',
+        })
+        .execute()
+    }
+
+    return patient
+  },
+  upsert(
+    trx: TrxOrDb,
+    patient: PatientUpsert,
+  ) {
+    const to_upsert: InsertShape<Patients> = {
+      ...patient,
+      ...asNames(patient),
+      country: patient.country || SERVER_COUNTRY,
+      location: patient.location && literalLocation(patient.location),
+    }
+    return trx
+      .insertInto('patients')
+      .values(to_upsert)
+      .onConflict((oc) => oc.column('phone_number').doUpdateSet(to_upsert))
+      .onConflict((oc) => oc.column('id').doUpdateSet(to_upsert))
+      .returningAll()
+      .executeTakeFirstOrThrow()
+  },
+  update(
+    trx: TrxOrDb,
+    { id, name, first_names, surname, preferred_name, location, ...patient }:
+      & Partial<PatientUpsert>
+      & {
+        id: string
+      },
+  ) {
+    const to_update: UpdateShape<Patients> = {
+      ...patient,
+      ...asMaybeNames({ name, first_names, surname, preferred_name }),
+      location: location && literalLocation(location),
+    }
+
+    return trx.updateTable('patients')
+      .where('id', '=', id)
+      .set(to_update)
+      .returningAll()
+      .executeTakeFirstOrThrow()
+  },
+  getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
+    return trx
+      .selectFrom('media')
+      .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
+      .select(['media.mime_type', 'media.binary_data'])
+      .where('patients.id', '=', opts.patient_id)
+      .executeTakeFirst()
+  },
+  async getPreferredLanguage(
+    trx: TrxOrDb,
+    patient_id: string,
+  ) {
+    const patient = await trx.selectFrom('patients')
+      .where('id', '=', patient_id)
+      .select([
+        'preferred_language_code_iso_639_2_b',
+      ])
+      .executeTakeFirst()
+
+    return patient?.preferred_language_code_iso_639_2_b || null
+  },
+  async getByIdCompletedRegistration(
+    trx: TrxOrDb,
+    patient_id: string | IdSelection,
+  ): Promise<undefined | RenderedPatientCompletedRegistration> {
+    const patient = await patients.getById(trx, patient_id)
+    assert(completedRegistration(patient))
+    return patient
+  },
 })
-
-
-
-
-
-export async function getByIdCompletedRegistration(
-  trx: TrxOrDb,
-  patient_id: string | IdSelection,
-): Promise<undefined | RenderedPatientCompletedRegistration> {
-  const patient = await getById(trx, patient_id)
-  assert(completedRegistration(patient))
-  return patient
-}

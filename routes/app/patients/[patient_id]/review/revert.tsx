@@ -1,7 +1,7 @@
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 
 import FormButtons from '../../../../../islands/form/buttons.tsx'
-import * as events from '../../../../../db/models/events.ts'
+import { events } from '../../../../../db/models/events.ts'
 import { complete } from '../../../../../db/models/doctor_reviews.ts'
 import redirect from '../../../../../util/redirect.ts'
 

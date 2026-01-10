@@ -4,7 +4,7 @@ import range from '../../util/range.ts'
 import generateUUID from '../../util/uuid.ts'
 import { OrganizationInsert } from '../../db/models/organizations.ts'
 import { Department } from '../../shared/departments.ts'
-import * as organizations from '../../db/models/organizations.ts'
+import { organizations } from '../../db/models/organizations.ts'
 
 export const TEST_ORGANIZATION_UUIDS = {
   ZA: {

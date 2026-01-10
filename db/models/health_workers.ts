@@ -8,7 +8,7 @@ import {
   PossiblyEmployedHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
-import * as organizations from './organizations.ts'
+import { organizations } from './organizations.ts'
 import {
   jsonArrayFrom,
   jsonArrayFromColumn,

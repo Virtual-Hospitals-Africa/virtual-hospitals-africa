@@ -1,6 +1,6 @@
 import { PharmaciesTable } from '../../../components/regulator/PharmaciesTable.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
-import * as pharmacies from '../../../db/models/pharmacies.ts'
+import { pharmacies } from '../../../db/models/pharmacies.ts'
 import { Context } from 'fresh'
 import FormRow from '../../../components/library/FormRow.tsx'
 import { Button } from '../../../components/library/Button.tsx'

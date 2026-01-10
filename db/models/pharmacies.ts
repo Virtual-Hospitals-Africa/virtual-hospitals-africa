@@ -59,7 +59,7 @@ function baseQuery(trx: TrxOrDb) {
     .orderBy('pharmacies.name', 'asc')
 }
 
-export const isLicenceLike = (search: string) =>
+const isLicenceLike = (search: string) =>
   /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
@@ -68,7 +68,7 @@ type SearchTerms = {
   licence_number_search: string | null
 }
 
-export function toSearchTerms(
+function toSearchTerms(
   country: string,
   search: string | null,
 ): SearchTerms {
@@ -83,6 +83,23 @@ export function toSearchTerms(
     }
   }
   return { country, name_search: search, licence_number_search: null }
+}
+
+type PharmacySupervisorInsert = {
+  id: string
+  name: string
+}
+
+export type PharmacyInsert = {
+  address: string | null
+  town: string | null
+  expiry_date: string
+  licence_number: string
+  licensee: string
+  name: string
+  country: string
+  pharmacies_types: PharmaciesTypes
+  supervisors?: PharmacySupervisorInsert[]
 }
 
 export const pharmacies = base({
@@ -107,47 +124,30 @@ export const pharmacies = base({
     }
     return qb
   },
+  isLicenceLike,
+  toSearchTerms,
+  getByLicenceNumber(trx: TrxOrDb, licence_number: string) {
+    return baseQuery(trx)
+      .where('licence_number', '=', licence_number)
+      .executeTakeFirst()
+  },
+  async insert(
+    trx: TrxOrDb,
+    data: PharmacyInsert,
+  ): Promise<{ id: string }> {
+    const { supervisors, ...pharmacyData } = data
+    const pharmacy = await trx
+      .insertInto('pharmacies')
+      .values(pharmacyData)
+      .returning('id')
+      .executeTakeFirstOrThrow()
+    if (!supervisors) return pharmacy
+    const pharmacy_employments = supervisors.map((supervisor) => ({
+      pharmacist_id: supervisor.id,
+      pharmacy_id: pharmacy.id,
+      is_supervisor: true,
+    }))
+    await insertPharmacyEmployment(trx, pharmacy_employments)
+    return pharmacy
+  },
 })
-
-export function getByLicenceNumber(trx: TrxOrDb, licence_number: string) {
-  return baseQuery(trx)
-    .where('licence_number', '=', licence_number)
-    .executeTakeFirst()
-}
-
-type PharmacySupervisorInsert = {
-  id: string
-  name: string
-}
-
-export type PharmacyInsert = {
-  address: string | null
-  town: string | null
-  expiry_date: string
-  licence_number: string
-  licensee: string
-  name: string
-  country: string
-  pharmacies_types: PharmaciesTypes
-  supervisors?: PharmacySupervisorInsert[]
-}
-
-export async function insert(
-  trx: TrxOrDb,
-  data: PharmacyInsert,
-): Promise<{ id: string }> {
-  const { supervisors, ...pharmacyData } = data
-  const pharmacy = await trx
-    .insertInto('pharmacies')
-    .values(pharmacyData)
-    .returning('id')
-    .executeTakeFirstOrThrow()
-  if (!supervisors) return pharmacy
-  const pharmacy_employments = supervisors.map((supervisor) => ({
-    pharmacist_id: supervisor.id,
-    pharmacy_id: pharmacy.id,
-    is_supervisor: true,
-  }))
-  await insertPharmacyEmployment(trx, pharmacy_employments)
-  return pharmacy
-}

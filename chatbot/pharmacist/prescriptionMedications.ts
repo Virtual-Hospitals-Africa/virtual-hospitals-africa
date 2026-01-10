@@ -1,12 +1,12 @@
-import * as prescriptions from '../../db/models/prescriptions.ts'
-import * as prescription_medications from '../../db/models/prescription_medications.ts'
+import { prescriptions } from '../../db/models/prescriptions.ts'
+import { prescription_medications } from '../../db/models/prescription_medications.ts'
 import {
   PharmacistChatbotUserState,
   PrescriptionMedication,
   TrxOrDb,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import * as conversations from '../../db/models/conversations.ts'
+import { conversations } from '../../db/models/conversations.ts'
 import omit from '../../util/omit.ts'
 import { scheduleDisplay, strengthDisplay } from '../../shared/medication.ts'
 
