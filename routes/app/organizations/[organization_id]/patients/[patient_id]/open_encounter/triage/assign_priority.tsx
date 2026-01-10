@@ -235,14 +235,6 @@ export async function TriageAssignPriorityPage(
       with_triage_level_findings: withTriageLevelFindings(ctx),
     })
 
-  Deno.writeTextFileSync(
-    '/Users/willweiss/Desktop/foo.json',
-    humanReadableJson({
-      total_score,
-      vitals,
-    }),
-  )
-
   assertEquals(
     total_score.score,
     sumBy(vitals, (vital) => vital.finding.score || 0),
