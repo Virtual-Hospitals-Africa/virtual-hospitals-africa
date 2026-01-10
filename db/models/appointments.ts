@@ -365,15 +365,15 @@ export const appointments = {
 
     if (opts.id) query = query.where('appointments.id', '=', opts.id)
 
-    const appointments = await query.execute()
+    const provider_appointments = await query.execute()
 
-    if (!appointments.length) return []
+    if (!provider_appointments.length) return []
 
-    const patient_ids = uniq(appointments.map((a) => a.patient_id))
+    const patient_ids = uniq(provider_appointments.map((a) => a.patient_id))
 
     const patients_of_appointments = await patients.getByIds(trx, patient_ids)
 
-    return appointments.map((appointment) => {
+    return provider_appointments.map((appointment) => {
       const patient = patients_of_appointments.find((p) =>
         p.id === appointment.patient_id
       )

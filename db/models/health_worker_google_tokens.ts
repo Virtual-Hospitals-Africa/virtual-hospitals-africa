@@ -7,7 +7,7 @@ import { google_tokens } from './google_tokens.ts'
 import { combine } from '../../util/combine.ts'
 import { type HealthWorkerUpsert } from './health_workers.ts'
 import { assert } from 'std/assert/assert.ts'
-import { NameInputs } from './asNames.ts'
+import { asNames, NameInputs } from './asNames.ts'
 
 export type HealthWorkerWithGoogleTokens = Awaited<
   ReturnType<typeof insertWithGoogleCredentials>
@@ -32,7 +32,10 @@ async function insertWithGoogleCredentials(
   assert(!health_worker_details.id)
   const id = await health_workers.insertOne(
     trx,
-    health_worker_details,
+    {
+      ...health_worker_details,
+      ...asNames(health_worker_details),
+    },
   )
   const tokens = {
     access_token,

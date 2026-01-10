@@ -1,7 +1,7 @@
 import { parseTsvTyped } from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
 import { define } from '../define.ts'
-import * as organizations from '../../models/organizations.ts'
+import { organizations } from '../../models/organizations.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { TrxOrDb } from '../../../types.ts'
 import { assert } from 'std/assert/assert.ts'

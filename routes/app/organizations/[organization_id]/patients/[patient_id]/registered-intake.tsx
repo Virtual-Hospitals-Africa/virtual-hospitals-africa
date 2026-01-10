@@ -1,6 +1,3 @@
-import {
-  insertSeekingTreatmentForRegisteredPatient,
-} from '../../../../../../db/models/patient_encounters.ts'
 import { OrganizationContext } from '../../_middleware.ts'
 import { postHandler } from '../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../util/redirect.ts'
@@ -31,8 +28,8 @@ export const handler = postHandler(
   InsertForRegisteredPatientSchema,
   async (ctx: OrganizationContext, form_values) => {
     const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-    const { current_workflow } =
-      await insertSeekingTreatmentForRegisteredPatient(
+    const { current_workflow } = await patient_encounters
+      .insertSeekingTreatmentForRegisteredPatient(
         ctx.state.trx,
         ctx.state.organization,
         ctx.state.organization_employment,

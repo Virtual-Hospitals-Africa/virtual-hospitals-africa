@@ -1,5 +1,5 @@
 import Table, { TableColumn } from '../library/Table.tsx'
-import { RenderedManufacturedMedication } from '../../types.ts'
+import { Maybe, RenderedManufacturedMedication } from '../../types.ts'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { path } from '../../util/path.ts'
 import { Plussable } from '../library/icons/Plussable.tsx'
@@ -37,7 +37,7 @@ type MedicinesTableProps = {
   page: number
   has_next_page: boolean
   search_terms: {
-    search: string | null
+    search?: Maybe<string>
   }
 }
 

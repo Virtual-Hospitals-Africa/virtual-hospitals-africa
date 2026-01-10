@@ -146,7 +146,7 @@ type PatientEvaluationTriageSearch = {
   search?: string
 }
 
-export const patient_triage_level = base({
+export const patient_triage = base({
   top_level_table: 'patient_triage_level',
   baseQuery,
   insertLevel,

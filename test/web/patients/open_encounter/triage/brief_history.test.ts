@@ -23,7 +23,7 @@ import assertLength from '../../../../../util/assertLength.ts'
 import { assertArrayEmpty } from '../../../../../util/arraySize.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-import { renderedMostRecentFindings } from '../../../../../db/models/brief_history.ts'
+import { brief_history } from '../../../../../db/models/brief_history.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
@@ -397,12 +397,13 @@ describeParallel('triage/brief_history', () => {
           },
         ])
 
-        const most_recent_findings = await renderedMostRecentFindings(db, {
-          patient_id: initial_encounter.patient.id,
-          encounter: initial_encounter,
-          health_worker_id: nurse1.health_worker.id,
-          conditions: COMMON_CONDITIONS,
-        })
+        const most_recent_findings = await brief_history
+          .renderedMostRecentFindings(db, {
+            patient_id: initial_encounter.patient.id,
+            encounter: initial_encounter,
+            health_worker_id: nurse1.health_worker.id,
+            conditions: COMMON_CONDITIONS,
+          })
 
         assertMatches(most_recent_findings.cancer, {
           'type': 'finding',
@@ -886,12 +887,13 @@ describeParallel('triage/brief_history', () => {
           `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/height_and_weight`,
         )
 
-        const most_recent_findings = await renderedMostRecentFindings(db, {
-          patient_id: encounter.patient.id,
-          encounter: encounter,
-          health_worker_id: nurse.id,
-          conditions: COMMON_CONDITIONS,
-        })
+        const most_recent_findings = await brief_history
+          .renderedMostRecentFindings(db, {
+            patient_id: encounter.patient.id,
+            encounter: encounter,
+            health_worker_id: nurse.id,
+            conditions: COMMON_CONDITIONS,
+          })
 
         assertMatches(most_recent_findings.diabetes, {
           'type': 'finding',
@@ -1042,12 +1044,13 @@ describeParallel('triage/brief_history', () => {
           },
         )
 
-        const most_recent_findings = await renderedMostRecentFindings(db, {
-          patient_id: subsequent_encounter.patient.id,
-          encounter: subsequent_encounter,
-          health_worker_id: nurse2.health_worker.id,
-          conditions: COMMON_CONDITIONS,
-        })
+        const most_recent_findings = await brief_history
+          .renderedMostRecentFindings(db, {
+            patient_id: subsequent_encounter.patient.id,
+            encounter: subsequent_encounter,
+            health_worker_id: nurse2.health_worker.id,
+            conditions: COMMON_CONDITIONS,
+          })
 
         assertMatches(most_recent_findings.cancer, {
           'type': 'finding',
@@ -1190,12 +1193,13 @@ describeParallel('triage/brief_history', () => {
           },
         )
 
-        const most_recent_findings = await renderedMostRecentFindings(db, {
-          patient_id: encounter.patient.id,
-          encounter: encounter,
-          health_worker_id: nurse.health_worker.id,
-          conditions: COMMON_CONDITIONS,
-        })
+        const most_recent_findings = await brief_history
+          .renderedMostRecentFindings(db, {
+            patient_id: encounter.patient.id,
+            encounter: encounter,
+            health_worker_id: nurse.health_worker.id,
+            conditions: COMMON_CONDITIONS,
+          })
 
         assertMatches(most_recent_findings.pregnancy, {
           'type': 'finding',
@@ -1295,12 +1299,13 @@ describeParallel('triage/brief_history', () => {
           },
         )
 
-        const prior_to_fix_findings = await renderedMostRecentFindings(db, {
-          patient_id: initial_encounter.patient.id,
-          encounter: initial_encounter,
-          health_worker_id: nurse.health_worker.id,
-          conditions: COMMON_CONDITIONS,
-        })
+        const prior_to_fix_findings = await brief_history
+          .renderedMostRecentFindings(db, {
+            patient_id: initial_encounter.patient.id,
+            encounter: initial_encounter,
+            health_worker_id: nurse.health_worker.id,
+            conditions: COMMON_CONDITIONS,
+          })
 
         assert(prior_to_fix_findings.pregnancy)
 
@@ -1340,15 +1345,16 @@ describeParallel('triage/brief_history', () => {
           evaluates_record_id: prior_to_fix_findings.pregnancy.record_id,
         })
 
-        const initial_most_recent_findings = await renderedMostRecentFindings(
-          db,
-          {
-            patient_id: initial_encounter.patient.id,
-            encounter: initial_encounter,
-            health_worker_id: nurse.health_worker.id,
-            conditions: COMMON_CONDITIONS,
-          },
-        )
+        const initial_most_recent_findings = await brief_history
+          .renderedMostRecentFindings(
+            db,
+            {
+              patient_id: initial_encounter.patient.id,
+              encounter: initial_encounter,
+              health_worker_id: nurse.health_worker.id,
+              conditions: COMMON_CONDITIONS,
+            },
+          )
 
         assertMatches(initial_most_recent_findings.pregnancy, {
           'displays': {
@@ -1388,8 +1394,8 @@ describeParallel('triage/brief_history', () => {
           },
         )
 
-        const subsequent_most_recent_findings =
-          await renderedMostRecentFindings(db, {
+        const subsequent_most_recent_findings = await brief_history
+          .renderedMostRecentFindings(db, {
             patient_id: subsequent_encounter.patient.id,
             encounter: subsequent_encounter,
             health_worker_id: nurse.health_worker.id,

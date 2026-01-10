@@ -1,9 +1,6 @@
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  insertSpeech,
-  insertSpeechTranscription,
-} from '../../db/models/media.ts'
+import { media } from '../../db/models/media.ts'
 import upgradeWebsocket from '../../util/websocket.ts'
 import {
   supported_language_codes,
@@ -137,11 +134,11 @@ export default upgradeWebsocket((
   socket.onclose = pipeline.cleanup
   socket.onerror = pipeline.cleanup
 
-  pipeline.deferred_media.then((media) =>
-    insertSpeech(ctx.state.trx, {
+  pipeline.deferred_media.then((media_data) =>
+    media.insertSpeech(ctx.state.trx, {
       media_speech_id: pipeline.media_speech_id,
       language_code,
-      ...media,
+      ...media_data,
     })
   )
 
@@ -151,7 +148,7 @@ export default upgradeWebsocket((
       media_speech_id: pipeline.media_speech_id,
       transcription,
     }))
-    await insertSpeechTranscription(ctx.state.trx, {
+    await media.insertSpeechTranscription(ctx.state.trx, {
       transcription,
       media_speech_id: pipeline.media_speech_id,
       model: pipeline.transcription_model,

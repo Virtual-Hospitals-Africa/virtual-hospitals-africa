@@ -1,7 +1,7 @@
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
-import { getOrganizationAdmin } from '../../db/models/employment.ts'
+import { employment } from '../../db/models/employment.ts'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
@@ -11,9 +11,12 @@ export default async function PendingApprovalPage(
 ) {
   const { health_worker } = ctx.state
 
-  const organization_admin = await getOrganizationAdmin(ctx.state.trx, {
-    organization_id: defaultOrganizationId(health_worker),
-  })
+  const organization_admin = await employment.getOrganizationAdmin(
+    ctx.state.trx,
+    {
+      organization_id: defaultOrganizationId(health_worker),
+    },
+  )
 
   assert(organization_admin)
   const organization_display_name = organization_admin.organization_name ||

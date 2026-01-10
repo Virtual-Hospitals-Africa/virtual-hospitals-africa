@@ -20,7 +20,6 @@ import {
 import roleByProfession from '../../shared/roleByProfession.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
-import { ensureDoctorId } from './doctor.ts'
 import { avatar_url_sql, description_sql } from './patients.ts'
 import { patient_encounter_employees } from './patient_encounter_employees.ts'
 import { exists } from '../../util/exists.ts'

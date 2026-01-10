@@ -9,7 +9,6 @@ import { patients } from '../../../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../../../db/models/appointments.ts'
 import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import { prettyAppointmentTime } from '../../../../../../../../util/date.ts'
-import { declineOfferedTimes } from '../../../../../../../../db/models/appointments.ts'
 
 import generateUUID from '../../../../../../../../util/uuid.ts'
 
@@ -70,7 +69,7 @@ describe.skip('patient chatbot', () => {
         end,
         duration_minutes,
       })
-      await declineOfferedTimes(db, [first_offered_time.id])
+      await appointments.declineOfferedTimes(db, [first_offered_time.id])
 
       const other_time = new Date(first_time)
       other_time.setHours(10, 0, 0, 0)

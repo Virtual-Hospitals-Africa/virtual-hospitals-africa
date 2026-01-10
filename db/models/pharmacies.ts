@@ -4,7 +4,7 @@ import { addressDisplaySql, nameSql } from './pharmacists.ts'
 import { RenderedPharmacy } from '../../types.ts'
 import { TrxOrDb } from '../../types.ts'
 import { PharmaciesTypes } from '../../db.d.ts'
-import { insert as insertPharmacyEmployment } from './pharmacy_employment.ts'
+import { pharmacy_employment } from './pharmacy_employment.ts'
 import { base } from './_base.ts'
 
 const view_sql = sql<
@@ -147,7 +147,7 @@ export const pharmacies = base({
       pharmacy_id: pharmacy.id,
       is_supervisor: true,
     }))
-    await insertPharmacyEmployment(trx, pharmacy_employments)
+    await pharmacy_employment.insert(trx, pharmacy_employments)
     return pharmacy
   },
 })

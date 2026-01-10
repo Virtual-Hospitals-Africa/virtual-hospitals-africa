@@ -1,11 +1,7 @@
 import db from '../db/db.ts'
-import {
-  getUnhandledMessages,
-  markChatbotError,
-} from '../db/models/conversations.ts'
 import { ChatbotName, TrxOrDb, UnhandledMessage, WhatsApp } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
-import { insertMessageSent } from '../db/models/conversations.ts'
+import { conversations } from '../db/models/conversations.ts'
 import { sendToEngineeringChannel } from '../external-clients/slack.ts'
 import capitalize from '../util/capitalize.ts'
 import generateUUID from '../util/uuid.ts'
@@ -41,7 +37,7 @@ async function respondToMessage(
         throw new Error(whatsapp_response.error.details)
       }
 
-      await insertMessageSent(db, {
+      await conversations.insertMessageSent(db, {
         chatbot_name: unhandled_message.chatbot_name,
         sent_by_phone_number: whatsapp.phone_number,
         sent_to_phone_number: unhandled_message.sent_by_phone_number,
@@ -67,7 +63,7 @@ async function respondToMessage(
       phone_number: unhandled_message.sent_by_phone_number,
     })
 
-    await markChatbotError(db, {
+    await conversations.markChatbotError(db, {
       chatbot_name,
       commitHash: error_family,
       whatsapp_message_received_id: unhandled_message.message_received_id,
@@ -100,7 +96,7 @@ export default async function respond(
   chatbot_name: ChatbotName,
   sent_by_phone_number?: string,
 ) {
-  const unhandled_messages = await getUnhandledMessages(db, {
+  const unhandled_messages = await conversations.getUnhandledMessages(db, {
     chatbot_name,
     commitHash: error_family,
     sent_by_phone_number,

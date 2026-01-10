@@ -21,7 +21,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
-import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
+import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import {
   CheckedWarningSign,
   KeyedWarningSign,
@@ -40,9 +40,9 @@ import {
   SELF_REPORTED_QUALIFIER,
 } from '../../../../../../../../shared/snomed_concepts.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
-import { getPriorityOfSnomedConcept } from '../../../../../../../../db/models/snomed.ts'
+import { snomed_model } from '../../../../../../../../db/models/snomed.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
-import { insertTasksIfNotAlreadyIdentified } from '../../../../../../../../db/models/additional_tasks.ts'
+import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -100,7 +100,7 @@ export const handler = postHandler(
           ? WARNING_SIGNS[key].sats_priority
           : await getPriorityByRecordId()
 
-        return insertLevel(
+        return patient_triage.insertLevel(
           trx,
           {
             patient_id,
@@ -116,7 +116,7 @@ export const handler = postHandler(
           const { priority } = await trx.selectFrom('patient_records')
             .where('patient_records.id', '=', finding_insert.finding_id)
             .select((eb) =>
-              getPriorityOfSnomedConcept(
+              snomed_model.getPriorityOfSnomedConcept(
                 eb,
                 'patient_records.specific_snomed_concept_id',
                 patient_id,
@@ -146,7 +146,7 @@ export const handler = postHandler(
       )
     }
 
-    await insertTasksIfNotAlreadyIdentified(
+    await additional_tasks.insertTasksIfNotAlreadyIdentified(
       trx,
       { patient_id, patient_encounter_id },
     )

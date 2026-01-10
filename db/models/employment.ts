@@ -110,7 +110,7 @@ export const employment = {
     employees: Employee[],
   ): Promise<HasStringId<Employee>[]> {
     assert(employees.length)
-    return pMap(employees, (employee) => addOne(trx, employee))
+    return pMap(employees, (employee) => employment.addOne(trx, employee))
   },
   async addIgnoreDuplicate(
     trx: TrxOrDb,
@@ -123,7 +123,7 @@ export const employment = {
       .selectAll()
       .executeTakeFirst()
 
-    return existing_employee || await addOne(trx, employee)
+    return existing_employee || await employment.addOne(trx, employee)
   },
   getEmployee(
     trx: TrxOrDb,

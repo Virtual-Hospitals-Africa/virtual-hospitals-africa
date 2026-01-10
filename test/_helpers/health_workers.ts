@@ -1,7 +1,7 @@
 import { asNames, NameInputs } from '../../db/models/asNames.ts'
 import {
-  HealthWorkerWithGoogleTokens,
-  insertWithGoogleCredentials,
+  health_worker_google_tokens,
+  type HealthWorkerWithGoogleTokens,
 } from '../../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
 import { TrxOrDb } from '../../types.ts'
@@ -35,5 +35,5 @@ export function insertHealthWorker(
     ...opts,
     ...asNames(opts),
   }
-  return insertWithGoogleCredentials(trx, to_insert)
+  return health_worker_google_tokens.insertWithGoogleCredentials(trx, to_insert)
 }

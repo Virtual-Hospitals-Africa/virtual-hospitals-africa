@@ -52,7 +52,7 @@ export default async function ApplyPage(ctx: Context<unknown>) {
                 <img
                   src='https://images.unsplash.com/photo-1670272502246-768d249768ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1152&q=80'
                   alt='Pending Approval'
-                  className='aspect-[7/5] w-[37rem] max-w-none rounded-2xl bg-gray-50 object-cover'
+                  className='aspect-7/5 w-148 max-w-none rounded-2xl bg-gray-50 object-cover'
                 />
               </div>
             </div>

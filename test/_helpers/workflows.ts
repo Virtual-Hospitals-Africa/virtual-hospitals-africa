@@ -15,7 +15,7 @@ import {
   workflowStepKey,
 } from '../../shared/workflow.ts'
 import { PatientWorkflowStepsCompleted, Sex } from '../../db.d.ts'
-import { completedWorkflow } from '../../db/models/patient_workflows.ts'
+import { patient_workflows } from '../../db/models/patient_workflows.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 import assertLength from '../../util/assertLength.ts'
 
@@ -113,7 +113,7 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
       'registration',
       patient_workflow_id,
     ),
-    completedWorkflow(trx, { patient_workflow_id }),
+    patient_workflows.completedWorkflow(trx, { patient_workflow_id }),
     patient_encounters.updateOne(trx, patient_encounter_id, {
       reason: 'seeking treatment',
     }),
