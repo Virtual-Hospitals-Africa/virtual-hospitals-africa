@@ -117,106 +117,106 @@ export const WARNING_SIGN_SNOMED_CONCEPTS = [
     'name': 'Circumferential',
     'category': 'qualifier value' as const,
   },
-  	{
-		"id": '79688008',
-		"name": "Respiratory obstruction",
-		"category": "disorder" as const
-	},
   {
-		"id": '263030002',
-		"name": "Dislocation of toe joint",
-		"category": "disorder" as const
-	},
-	{
-		"id": '66857006',
-		"name": "Hemoptysis",
-		"category": "finding" as const
-	},
-	{
-		"id": '423125000',
-		"name": "Closed fracture of bone",
-		"category": "disorder" as const
-	},
-	{
-		"id": '77386006',
-		"name": "Pregnancy",
-		"category": "finding" as const
-	},
-	{
-		"id": '267036007',
-		"name": "Dyspnea",
-		"category": "finding" as const
-	},
-	{
-		"id": '267051003',
-		"name": "Vomiting blood - fresh",
-		"category": "disorder" as const
-	},
-	{
-		"id": '283457003',
-		"name": "Stab wound of neck",
-		"category": "disorder" as const
-	},
-	{
-		"id": '21522001',
-		"name": "Abdominal pain",
-		"category": "finding" as const
-	},
-	{
-		"id": '29707007',
-		"name": "Toe structure",
-		"category": "body structure" as const
-	},
-	{
-		"id": '363698007',
-		"name": "Finding site",
-		"category": "attribute" as const
-	},
-	{
-		"id": '61372001',
-		"name": "Aggressive behavior",
-		"category": "finding" as const
-	},
-	{
-		"id": '75478009',
-		"name": "Poisoning",
-		"category": "disorder" as const
-	},
-	{
-		"id": '7569003',
-		"name": "Finger structure",
-		"category": "body structure" as const
-	},
-	{
-		"id": '76948002',
-		"name": "Severe pain",
-		"category": "finding" as const
-	},
-	{
-		"id": '87642003',
-		"name": "Dislocation",
-		"category": "morphologic abnormality" as const
-	},
-	{
-		"id": '417746004',
-		"name": "Traumatic injury",
-		"category": "disorder" as const
-	},
+    'id': '79688008',
+    'name': 'Respiratory obstruction',
+    'category': 'disorder' as const,
+  },
   {
-		"id": '262582004',
-		"name": "Burn of face injury",
-		"category": "disorder" as const
-	},
+    'id': '263030002',
+    'name': 'Dislocation of toe joint',
+    'category': 'disorder' as const,
+  },
   {
-		"id": '425082000',
-		"name": "Inhalation burn due to hot gas",
-		"category": "disorder" as const
-	},
+    'id': '66857006',
+    'name': 'Hemoptysis',
+    'category': 'finding' as const,
+  },
   {
-		"id": '827108008',
-		"name": "Dislocation of digit of hand",
-		"category": "disorder" as const
-	},
+    'id': '423125000',
+    'name': 'Closed fracture of bone',
+    'category': 'disorder' as const,
+  },
+  {
+    'id': '77386006',
+    'name': 'Pregnancy',
+    'category': 'finding' as const,
+  },
+  {
+    'id': '267036007',
+    'name': 'Dyspnea',
+    'category': 'finding' as const,
+  },
+  {
+    'id': '267051003',
+    'name': 'Vomiting blood - fresh',
+    'category': 'disorder' as const,
+  },
+  {
+    'id': '283457003',
+    'name': 'Stab wound of neck',
+    'category': 'disorder' as const,
+  },
+  {
+    'id': '21522001',
+    'name': 'Abdominal pain',
+    'category': 'finding' as const,
+  },
+  {
+    'id': '29707007',
+    'name': 'Toe structure',
+    'category': 'body structure' as const,
+  },
+  {
+    'id': '363698007',
+    'name': 'Finding site',
+    'category': 'attribute' as const,
+  },
+  {
+    'id': '61372001',
+    'name': 'Aggressive behavior',
+    'category': 'finding' as const,
+  },
+  {
+    'id': '75478009',
+    'name': 'Poisoning',
+    'category': 'disorder' as const,
+  },
+  {
+    'id': '7569003',
+    'name': 'Finger structure',
+    'category': 'body structure' as const,
+  },
+  {
+    'id': '76948002',
+    'name': 'Severe pain',
+    'category': 'finding' as const,
+  },
+  {
+    'id': '87642003',
+    'name': 'Dislocation',
+    'category': 'morphologic abnormality' as const,
+  },
+  {
+    'id': '417746004',
+    'name': 'Traumatic injury',
+    'category': 'disorder' as const,
+  },
+  {
+    'id': '262582004',
+    'name': 'Burn of face injury',
+    'category': 'disorder' as const,
+  },
+  {
+    'id': '425082000',
+    'name': 'Inhalation burn due to hot gas',
+    'category': 'disorder' as const,
+  },
+  {
+    'id': '827108008',
+    'name': 'Dislocation of digit of hand',
+    'category': 'disorder' as const,
+  },
 ].map(asConcept)
 
 function sExpressionById(id: string): string {

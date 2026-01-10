@@ -25,7 +25,9 @@ export type TriageScenario = {
   patient_demographics: PartialPatientDemographics
   warning_signs: WarningSignKey[]
   conditions?: z.input<typeof TriageBriefHistorySchema>
-  height_and_weight?: z.input<typeof TriageHeightAndWeightSchema>['measurements']
+  height_and_weight?: z.input<
+    typeof TriageHeightAndWeightSchema
+  >['measurements']
   vitals?: z.input<typeof TriageMeasureVitalsSchema>
 }
 
