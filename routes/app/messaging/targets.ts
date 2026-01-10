@@ -9,7 +9,7 @@ import {
   MESSAGE_TARGET_CATEGORIES,
   MessageTargetCategory,
 } from '../../../shared/message_targets.ts'
-import * as message_targets from '../../../db/models/message_targets.ts'
+import { message_targets } from '../../../db/models/message_targets.ts'
 
 export const handler = jsonSearchHandler<
   { message_target_category: MessageTargetCategory; search: string },

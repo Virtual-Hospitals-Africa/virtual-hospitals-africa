@@ -1,6 +1,6 @@
 import { Context } from 'fresh'
 import { LoggedInRegulatorContext } from '../../types.ts'
-import * as regulators from '../../db/models/regulators.ts'
+import { regulators } from '../../db/models/regulators.ts'
 import redirect from '../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
 import { deleteCookie } from 'std/http/cookie.ts'

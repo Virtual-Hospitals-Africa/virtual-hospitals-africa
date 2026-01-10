@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import * as examinations from '../../../../../../../../../db/models/examinations.ts'
+import { examinations } from '../../../../../../../../../db/models/examinations.ts'
 import { RenderedPatientExamination } from '../../../../../../../../../types.ts'
 import {
   TabProps,

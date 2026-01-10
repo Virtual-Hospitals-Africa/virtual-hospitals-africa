@@ -111,7 +111,7 @@ function* strengthNumerators(medication: BaseQueryReturn['medications'][0]) {
   }
 }
 
-export function formStrengthDisplay(
+function formStrengthDisplay(
   strength_numerators: string,
   strength_numerator_unit: string,
   strength_denominator: string,
@@ -188,8 +188,5 @@ export const drugs = base({
     )
       .orderBy(sql`similarity('drugs.name', ${terms.search})`, 'desc')
   },
+  formStrengthDisplay,
 })
-
-
-
-

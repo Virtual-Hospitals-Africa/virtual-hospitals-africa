@@ -1,6 +1,6 @@
 import { PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as prescriptions from '../../db/models/prescriptions.ts'
+import { conversations } from '../../db/models/conversations.ts'
+import { prescriptions } from '../../db/models/prescriptions.ts'
 
 export async function handlePrescriptionCode(
   trx: TrxOrDb,

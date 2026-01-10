@@ -3,7 +3,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../../_middleware.tsx'
 import { z } from 'zod'
-// import * as vitals from '../../../../../../../../../db/models/patient_vitals.ts'
+// import { vitals } from '../../../../../../../../../db/models/patient_vitals.ts'
 // import { patient_measurements } from '../../../../../../../../../db/models/patient_measurements.ts'
 // import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../../backend/postHandler.ts'

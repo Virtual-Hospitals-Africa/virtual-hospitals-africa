@@ -9,7 +9,7 @@ import { route } from '../../../../_route.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import { assert } from 'std/assert/assert.ts'
-import * as patient_primary_care from '../../../../../db/models/patient_primary_care.ts'
+import { patient_primary_care } from '../../../../../db/models/patient_primary_care.ts'
 
 describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/primary_care',

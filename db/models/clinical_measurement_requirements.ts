@@ -23,45 +23,47 @@ export interface MeasurementRequirementsResult {
   }
 }
 
-/**
- * Determines required measurements for a patient based on age and medical conditions
- * Pure function that combines age-based and condition-based requirements
- */
-export async function determineMeasurementsForPatient(
-  trx: TrxOrDb,
-  {
-    age_days,
-    active_condition_snomed_codes,
-  }: {
-    patient_id: string
-    age_days: number
-    sex: Sex
-    active_condition_snomed_codes: readonly string[]
-    pregnancy_status?: boolean
-  },
-): Promise<MeasurementRequirementsResult> {
-  const age_requirements = await getAgeMeasurementRequirements(
-    trx,
-    age_days,
-  )
-
-  const condition_requirements = await getConditionMeasurementRequirements(
-    trx,
-    active_condition_snomed_codes,
-  )
-
-  const all_requirements = [...age_requirements, ...condition_requirements]
-  const merged_measurements = mergeMeasurementRequirements(all_requirements)
-
-  return {
-    measurements: merged_measurements,
-    applied_requirements: all_requirements,
-    audit_info: {
-      age_based_count: age_requirements.length,
-      condition_based_count: condition_requirements.length,
-      total_requirements: all_requirements.length,
+export const clinical_measurement_requirements = {
+  /**
+   * Determines required measurements for a patient based on age and medical conditions
+   * Pure function that combines age-based and condition-based requirements
+   */
+  async determineMeasurementsForPatient(
+    trx: TrxOrDb,
+    {
+      age_days,
+      active_condition_snomed_codes,
+    }: {
+      patient_id: string
+      age_days: number
+      sex: Sex
+      active_condition_snomed_codes: readonly string[]
+      pregnancy_status?: boolean
     },
-  }
+  ): Promise<MeasurementRequirementsResult> {
+    const age_requirements = await getAgeMeasurementRequirements(
+      trx,
+      age_days,
+    )
+
+    const condition_requirements = await getConditionMeasurementRequirements(
+      trx,
+      active_condition_snomed_codes,
+    )
+
+    const all_requirements = [...age_requirements, ...condition_requirements]
+    const merged_measurements = mergeMeasurementRequirements(all_requirements)
+
+    return {
+      measurements: merged_measurements,
+      applied_requirements: all_requirements,
+      audit_info: {
+        age_based_count: age_requirements.length,
+        condition_based_count: condition_requirements.length,
+        total_requirements: all_requirements.length,
+      },
+    }
+  },
 }
 
 async function getAgeMeasurementRequirements(

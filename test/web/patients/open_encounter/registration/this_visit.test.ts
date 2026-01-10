@@ -1,9 +1,9 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
-import * as employees from '../../../../../db/models/employees.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-// import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
+import { employees } from '../../../../../db/models/employees.ts'
+import { patients } from '../../../../../db/models/patients.ts'
+// import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import {
   createTestOrganization,

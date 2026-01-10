@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import db from '../db/db.ts'
-import * as icd10 from '../db/models/icd10.ts'
+import { icd10 } from '../db/models/icd10.ts'
 import parseCsv from '../util/parseCsv.ts'
 
 const symptoms_candidates = parseCsv(

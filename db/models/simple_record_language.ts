@@ -69,7 +69,7 @@
 // const FINDING_LIKE = ['finding', 'disorder', 'morphologic abnormality']
 
 // // This is somewhat suspect, not for production use
-// export async function fromFindingDescription(
+// ,async fromFindingDescription(
 //   description: string,
 // ): Promise<ParsedFindingExpressionWithDescription> {
 //   const description_words = words(description)

@@ -1,7 +1,7 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
-import * as events from '../../db/models/events.ts'
+import { events } from '../../db/models/events.ts'
 import db from '../../db/db.ts'
 import * as events_processor from '../../events/processor.ts'
 import generateUUID from '../../util/uuid.ts'

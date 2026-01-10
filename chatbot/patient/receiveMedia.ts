@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { PatientChatbotUserState, TrxOrDb } from '../../types.ts'
-import * as appointments from '../../db/models/appointments.ts'
+import { appointments } from '../../db/models/appointments.ts'
 import { schedulingAppointmentRequest } from '../../db/models/patient_appointments.ts'
 
 export async function receiveMedia(

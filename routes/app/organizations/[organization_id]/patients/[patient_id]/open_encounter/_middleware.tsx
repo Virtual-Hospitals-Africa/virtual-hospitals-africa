@@ -12,10 +12,10 @@ import {
   WorkflowStatus,
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
-import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
+import { patient_encounters } from '../../../../../../../db/models/patient_encounters.ts'
 import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_findings.ts'
 import { get as getPatientHistory } from '../../../../../../../db/models/patient_history.ts'
-import * as events from '../../../../../../../db/models/events.ts'
+import { events } from '../../../../../../../db/models/events.ts'
 
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../../../components/library/Sidebar.tsx'

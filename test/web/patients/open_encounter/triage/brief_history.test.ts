@@ -2,7 +2,7 @@ import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
-import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
+import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
 import {
   insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
   insertReturningSeekingTreatmentWithEmployeeForTest,

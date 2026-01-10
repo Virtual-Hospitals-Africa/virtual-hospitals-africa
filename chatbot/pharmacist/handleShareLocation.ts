@@ -3,8 +3,8 @@ import {
   PharmacistChatbotUserState,
   TrxOrDb,
 } from '../../types.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as pharmacists from '../../db/models/pharmacists.ts'
+import { conversations } from '../../db/models/conversations.ts'
+import { pharmacists } from '../../db/models/pharmacists.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertIsConversationState } from './conversationStates.ts'
 

@@ -1,5 +1,5 @@
 import { TrxOrDb } from '../types.ts'
-import * as addresses from '../db/models/addresses.ts'
+import { addresses } from '../db/models/addresses.ts'
 import createTestAddress from './createTestAddress.ts'
 
 export default function insertTestAddress(

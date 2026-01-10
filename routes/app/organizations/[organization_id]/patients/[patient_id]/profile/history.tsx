@@ -1,5 +1,5 @@
 import { PatientProfilePage } from './_middleware.tsx'
-import * as patient_registration from '../../../../../../../db/models/patient_registration.ts'
+import { patient_registration } from '../../../../../../../db/models/patient_registration.ts'
 import PatientHistory from '../../../../../../../components/patients/profile/PatientHistory.tsx'
 
 export default PatientProfilePage(

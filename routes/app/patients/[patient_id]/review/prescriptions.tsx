@@ -1,5 +1,5 @@
-import * as diagnoses from '../../../../../db/models/diagnoses.ts'
-import * as prescriptions from '../../../../../db/models/prescriptions.ts'
+import { diagnoses } from '../../../../../db/models/diagnoses.ts'
+import { prescriptions } from '../../../../../db/models/prescriptions.ts'
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 
 import FormButtons from '../../../../../islands/form/buttons.tsx'

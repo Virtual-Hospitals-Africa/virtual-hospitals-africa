@@ -25,7 +25,7 @@ import { postHandler } from '../../../../backend/postHandler.ts'
 import z from 'zod'
 import { promiseProps } from '../../../../util/promiseProps.ts'
 import { OrganizationContext } from './_middleware.ts'
-import * as employment_calendars from '../../../../db/models/employment_calendars.ts'
+import { employment_calendars } from '../../../../db/models/employment_calendars.ts'
 import {
   nonnegative_integer,
   positive_integer,

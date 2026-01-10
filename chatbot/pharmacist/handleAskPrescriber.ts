@@ -4,10 +4,10 @@ import {
   PharmacistConversationState,
   TrxOrDb,
 } from '../../types.ts'
-import * as message_threads from '../../db/models/message_threads.ts'
-import * as messages from '../../db/models/messages.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as prescriptions from '../../db/models/prescriptions.ts'
+import { message_threads } from '../../db/models/message_threads.ts'
+import { messages } from '../../db/models/messages.ts'
+import { conversations } from '../../db/models/conversations.ts'
+import { prescriptions } from '../../db/models/prescriptions.ts'
 import { handleDispense } from './prescriptionMedications.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 

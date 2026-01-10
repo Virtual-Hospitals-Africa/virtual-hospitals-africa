@@ -11,8 +11,8 @@ import {
   RenderedOrganization,
   TrxOrDb,
 } from '../../types.ts'
-import * as organizations from './organizations.ts'
-import * as employees from './employees.ts'
+import { organizations } from './organizations.ts'
+import { employees } from './employees.ts'
 import isString from '../../util/isString.ts'
 import { ProfessionSchema } from '../../shared/profession.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
@@ -22,11 +22,7 @@ import {
 } from '../../shared/message_targets.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { SERVER_COUNTRY } from './countries.ts'
-import {
-  distinctAdministrativeAreaLevels1,
-  distinctAdministrativeAreaLevels2,
-  distinctLocalities,
-} from './addresses.ts'
+import { addresses } from './addresses.ts'
 import { pluralize } from '../../util/pluralize.ts'
 import { pMap } from '../../util/inParallel.ts'
 import entries from '../../util/entries.ts'
@@ -275,49 +271,6 @@ const TARGET_GETTERS = {
   ) => Promise<RenderedMessageTargets[T]>)
 }
 
-export async function getTarget<TargetType extends MessageTargetType>(
-  trx: TrxOrDb,
-  target: IntermediateTargetResult<TargetType>,
-): Promise<RenderedMessageTargets[TargetType]> {
-  // deno-lint-ignore no-explicit-any
-  return TARGET_GETTERS[target.target_type](trx, target as any) as Promise<
-    RenderedMessageTargets[TargetType]
-  >
-}
-
-export async function getMany(
-  trx: TrxOrDb,
-  targets_record: {
-    organization?: string[]
-    employee?: string[]
-    profession?: string[]
-    organization_category?: string[]
-    locality?: string[]
-    administrative_area_level_1?: string[]
-    administrative_area_level_2?: string[]
-  },
-): Promise<RenderedMessageTarget[]> {
-  const rendered_targets = await pMap(
-    entries(targets_record),
-    async ([target_type, target_values = []]) => {
-      const by_uuid = BY_TARGET_UUID.has(target_type)
-      const target_entities = target_values.map(
-        (target_string) => ({
-          target_type,
-          target_uuid: by_uuid ? target_string : undefined,
-          target_value: by_uuid ? undefined : target_string,
-        }),
-      )
-
-      return pMap(target_entities, async (target) => {
-        return getTarget(trx, target)
-      })
-    },
-  )
-
-  return rendered_targets.flat()
-}
-
 const MESSAGE_CATEGORY_SEARCH = {
   async regions(trx: TrxOrDb, search: string): Promise<
     Array<
@@ -332,17 +285,27 @@ const MESSAGE_CATEGORY_SEARCH = {
       administrative_areas_level_1,
       administrative_areas_level_2,
     } = await promiseProps({
-      localities: distinctLocalities(trx, { country, search, limit: 20 }),
-      administrative_areas_level_1: distinctAdministrativeAreaLevels1(trx, {
+      localities: addresses.distinctLocalities(trx, {
         country,
         search,
         limit: 20,
       }),
-      administrative_areas_level_2: distinctAdministrativeAreaLevels2(trx, {
-        country,
-        search,
-        limit: 20,
-      }),
+      administrative_areas_level_1: addresses.distinctAdministrativeAreaLevels1(
+        trx,
+        {
+          country,
+          search,
+          limit: 20,
+        },
+      ),
+      administrative_areas_level_2: addresses.distinctAdministrativeAreaLevels2(
+        trx,
+        {
+          country,
+          search,
+          limit: 20,
+        },
+      ),
     })
 
     return [
@@ -418,12 +381,55 @@ const MESSAGE_CATEGORY_SEARCH = {
   },
 }
 
-export async function searchTargetCategory<
-  TargetCategory extends MessageTargetCategory,
->(
-  trx: TrxOrDb,
-  target_category: TargetCategory,
-  { search }: { search: string },
-): Promise<RenderedMessageTarget[]> {
-  return MESSAGE_CATEGORY_SEARCH[target_category](trx, search)
+export const message_targets = {
+  async getTarget<TargetType extends MessageTargetType>(
+    trx: TrxOrDb,
+    target: IntermediateTargetResult<TargetType>,
+  ): Promise<RenderedMessageTargets[TargetType]> {
+    // deno-lint-ignore no-explicit-any
+    return TARGET_GETTERS[target.target_type](trx, target as any) as Promise<
+      RenderedMessageTargets[TargetType]
+    >
+  },
+  async getMany(
+    trx: TrxOrDb,
+    targets_record: {
+      organization?: string[]
+      employee?: string[]
+      profession?: string[]
+      organization_category?: string[]
+      locality?: string[]
+      administrative_area_level_1?: string[]
+      administrative_area_level_2?: string[]
+    },
+  ): Promise<RenderedMessageTarget[]> {
+    const rendered_targets = await pMap(
+      entries(targets_record),
+      async ([target_type, target_values = []]) => {
+        const by_uuid = BY_TARGET_UUID.has(target_type)
+        const target_entities = target_values.map(
+          (target_string) => ({
+            target_type,
+            target_uuid: by_uuid ? target_string : undefined,
+            target_value: by_uuid ? undefined : target_string,
+          }),
+        )
+
+        return pMap(target_entities, async (target) => {
+          return message_targets.getTarget(trx, target)
+        })
+      },
+    )
+
+    return rendered_targets.flat()
+  },
+  async searchTargetCategory<
+    TargetCategory extends MessageTargetCategory,
+  >(
+    trx: TrxOrDb,
+    target_category: TargetCategory,
+    { search }: { search: string },
+  ): Promise<RenderedMessageTarget[]> {
+    return MESSAGE_CATEGORY_SEARCH[target_category](trx, search)
+  },
 }

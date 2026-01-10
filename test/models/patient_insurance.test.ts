@@ -1,7 +1,7 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { afterAll } from 'std/testing/bdd.ts'
-import * as patient_insurance from '../../db/models/patient_insurance.ts'
+import { patient_insurance } from '../../db/models/patient_insurance.ts'
 import db from '../../db/db.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'

@@ -4,7 +4,7 @@ import {
   RenderedEmployee,
   RenderedOrganization,
 } from '../../../../types.ts'
-import * as organizations from '../../../../db/models/organizations.ts'
+import { organizations } from '../../../../db/models/organizations.ts'
 import { assertOr403 } from '../../../../util/assertOr.ts'
 
 export type OrganizationState = {

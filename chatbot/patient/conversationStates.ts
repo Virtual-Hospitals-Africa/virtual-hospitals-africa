@@ -16,10 +16,10 @@ import {
   formatJohannesburg,
   prettyAppointmentTime,
 } from '../../util/date.ts'
-import * as appointments from '../../db/models/appointments.ts'
-import * as patients from '../../db/models/patients.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as employees from '../../db/models/employees.ts'
+import { appointments } from '../../db/models/appointments.ts'
+import { patients } from '../../db/models/patients.ts'
+import { conversations } from '../../db/models/conversations.ts'
+import { employees } from '../../db/models/employees.ts'
 
 import { availableSlots } from '../../backend/scheduling/getProviderAvailability.ts'
 import { cancelAppointment } from '../../backend/scheduling/cancelAppointment.ts'

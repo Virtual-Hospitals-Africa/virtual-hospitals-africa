@@ -1,7 +1,7 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as inventory from '../../db/models/inventory.ts'
+import { inventory } from '../../db/models/inventory.ts'
 import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'

@@ -1,4 +1,4 @@
-import * as media from '../../../db/models/media.ts'
+import { media } from '../../../db/models/media.ts'
 
 import { file } from '../../../util/responses.ts'
 import { assertOr404 } from '../../../util/assertOr.ts'

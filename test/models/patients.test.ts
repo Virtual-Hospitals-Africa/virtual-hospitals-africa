@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as patients from '../../db/models/patients.ts'
+import { patients } from '../../db/models/patients.ts'
 import pick from '../../util/pick.ts'
 import db from '../../db/db.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'

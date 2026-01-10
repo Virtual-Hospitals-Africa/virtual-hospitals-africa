@@ -5,10 +5,10 @@ import {
   TrxOrDb,
   WhatsAppSingleSendable,
 } from '../../types.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as pharmacists from '../../db/models/pharmacists.ts'
-import * as pharmacies from '../../db/models/pharmacies.ts'
-import * as prescription_medications from '../../db/models/prescription_medications.ts'
+import { conversations } from '../../db/models/conversations.ts'
+import { pharmacists } from '../../db/models/pharmacists.ts'
+import { pharmacies } from '../../db/models/pharmacies.ts'
+import { prescription_medications } from '../../db/models/prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
 import { generate } from '../../util/pdf.ts'
 import {

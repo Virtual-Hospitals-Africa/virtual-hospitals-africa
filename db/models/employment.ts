@@ -35,193 +35,187 @@ export type OrganizationAdmin = {
   organization_name: string
 } & Employee
 
-export function addOne(
-  trx: TrxOrDb,
-  { department_ids, profession, is_admin, ...rest }: Employee & {
-    department_ids?: string[]
-  },
-) {
-  const id = generateUUID()
+export const employment = {
+  addOne(
+    trx: TrxOrDb,
+    { department_ids, profession, is_admin, ...rest }: Employee & {
+      department_ids?: string[]
+    },
+  ) {
+    const id = generateUUID()
 
-  return trx.with(
-    'employment_insert',
-    (qb) =>
-      qb.insertInto('employment')
-        .values({ id, profession, is_admin, ...rest })
-        .returningAll(),
-  ).with(
-    'department_insert',
-    (qb) =>
-      department_ids?.length
-        ? qb.insertInto('department_employment')
-          .values(department_ids.map((department_id) => ({
-            department_id,
-            employment_id: id,
-          })))
-        : blankSelection(qb),
-  ).with(
-    'receptionist_insert',
-    (qb) =>
-      (profession === 'receptionist')
-        ? qb.insertInto('receptionists').values({ id })
-        : blankSelection(qb),
-  )
-    .with(
-      'organization_admin_insert',
+    return trx.with(
+      'employment_insert',
       (qb) =>
-        is_admin
-          ? qb.insertInto('organization_admins').values({ id })
+        qb.insertInto('employment')
+          .values({ id, profession, is_admin, ...rest })
+          .returningAll(),
+    ).with(
+      'department_insert',
+      (qb) =>
+        department_ids?.length
+          ? qb.insertInto('department_employment')
+            .values(department_ids.map((department_id) => ({
+              department_id,
+              employment_id: id,
+            })))
           : blankSelection(qb),
     ).with(
-      'provider_insert',
+      'receptionist_insert',
       (qb) =>
-        (profession === 'doctor' || profession === 'nurse')
-          ? qb.insertInto('providers').values({ id })
-          : blankSelection(qb),
-    ).with(
-      'doctor_insert',
-      (qb) =>
-        (profession === 'doctor')
-          ? qb.insertInto('doctors').values({ id })
-          : blankSelection(qb),
-    ).with(
-      'nurse_insert',
-      (qb) =>
-        (profession === 'nurse')
-          ? qb.insertInto('nurses').values({ id })
+        (profession === 'receptionist')
+          ? qb.insertInto('receptionists').values({ id })
           : blankSelection(qb),
     )
-    .selectFrom('employment_insert')
-    .selectAll('employment_insert')
-    .executeTakeFirstOrThrow()
-}
-
-export function markAdmin(
-  trx: TrxOrDb,
-  employment_id: string | IdSelection,
-) {
-  return trx.updateTable('employment')
-    .set({ 'is_admin': true })
-    .where('employment.id', '=', employment_id)
-    .executeTakeFirstOrThrow()
-}
-
-export function add(
-  trx: TrxOrDb,
-  employees: Employee[],
-): Promise<HasStringId<Employee>[]> {
-  assert(employees.length)
-  return pMap(employees, (employee) => addOne(trx, employee))
-}
-
-export async function addIgnoreDuplicate(
-  trx: TrxOrDb,
-  employee: Employee,
-): Promise<HasStringId<Employee>> {
-  const existing_employee = await trx.selectFrom('employment')
-    .where('health_worker_id', '=', employee.health_worker_id)
-    .where('organization_id', '=', employee.organization_id)
-    .where('profession', '=', employee.profession)
-    .selectAll()
-    .executeTakeFirst()
-
-  return existing_employee || await addOne(trx, employee)
-}
-
-export function getEmployee(
-  trx: TrxOrDb,
-  opts: {
-    organization_id: string
-    health_worker_id: string
+      .with(
+        'organization_admin_insert',
+        (qb) =>
+          is_admin
+            ? qb.insertInto('organization_admins').values({ id })
+            : blankSelection(qb),
+      ).with(
+        'provider_insert',
+        (qb) =>
+          (profession === 'doctor' || profession === 'nurse')
+            ? qb.insertInto('providers').values({ id })
+            : blankSelection(qb),
+      ).with(
+        'doctor_insert',
+        (qb) =>
+          (profession === 'doctor')
+            ? qb.insertInto('doctors').values({ id })
+            : blankSelection(qb),
+      ).with(
+        'nurse_insert',
+        (qb) =>
+          (profession === 'nurse')
+            ? qb.insertInto('nurses').values({ id })
+            : blankSelection(qb),
+      )
+      .selectFrom('employment_insert')
+      .selectAll('employment_insert')
+      .executeTakeFirstOrThrow()
   },
-) {
-  return trx
-    .selectFrom('employment')
-    .selectAll()
-    .where('organization_id', '=', opts.organization_id)
-    .where('health_worker_id', '=', opts.health_worker_id)
-    .executeTakeFirst()
-}
-
-export function getName(
-  trx: TrxOrDb,
-  opts: {
-    employment_id: string
+  markAdmin(
+    trx: TrxOrDb,
+    employment_id: string | IdSelection,
+  ) {
+    return trx.updateTable('employment')
+      .set({ 'is_admin': true })
+      .where('employment.id', '=', employment_id)
+      .executeTakeFirstOrThrow()
   },
-): Promise<{ name: string }> {
-  return trx
-    .selectFrom('employment')
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .select('health_workers.name')
-    .where('employment.id', '=', opts.employment_id)
-    .executeTakeFirstOrThrow()
-}
-
-export function getOrganizationAdmin(
-  trx: TrxOrDb,
-  opts: {
-    organization_id: string
+  add(
+    trx: TrxOrDb,
+    employees: Employee[],
+  ): Promise<HasStringId<Employee>[]> {
+    assert(employees.length)
+    return pMap(employees, (employee) => addOne(trx, employee))
   },
-): Promise<Maybe<OrganizationAdmin>> {
-  return trx
-    .selectFrom('employment')
-    .where('organization_id', '=', opts.organization_id)
-    .where('is_admin', '=', true)
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'organizations',
-      'organizations.id',
-      'employment.organization_id',
-    )
-    .select([
-      'employment.id',
-      'health_worker_id',
-      'health_workers.name',
-      'email',
-      'profession',
-      'is_admin',
-      'specialty',
-      'organization_id',
-      'organizations.name as organization_name',
-    ])
-    .executeTakeFirst()
-}
+  async addIgnoreDuplicate(
+    trx: TrxOrDb,
+    employee: Employee,
+  ): Promise<HasStringId<Employee>> {
+    const existing_employee = await trx.selectFrom('employment')
+      .where('health_worker_id', '=', employee.health_worker_id)
+      .where('organization_id', '=', employee.organization_id)
+      .where('profession', '=', employee.profession)
+      .selectAll()
+      .executeTakeFirst()
 
-export function getEmploymentLocationName(
-  trx: TrxOrDb,
-  opts: {
-    employee_id: string
+    return existing_employee || await addOne(trx, employee)
   },
-) {
-  return trx
-    .selectFrom('employment')
-    .innerJoin(
-      'organizations',
-      'organizations.id',
-      'employment.organization_id',
-    )
-    .select('organizations.name')
-    .where('employment.id', '=', opts.employee_id)
-    .executeTakeFirstOrThrow()
-}
-
-export function updateSpecialty(
-  trx: TrxOrDb,
-  opts: {
-    employee_id: string
-    specialty: string
+  getEmployee(
+    trx: TrxOrDb,
+    opts: {
+      organization_id: string
+      health_worker_id: string
+    },
+  ) {
+    return trx
+      .selectFrom('employment')
+      .selectAll()
+      .where('organization_id', '=', opts.organization_id)
+      .where('health_worker_id', '=', opts.health_worker_id)
+      .executeTakeFirst()
   },
-) {
-  return trx.updateTable('employment')
-    .where('employment.id', '=', opts.employee_id)
-    .set({ specialty: opts.specialty })
-    .executeTakeFirstOrThrow()
+  getName(
+    trx: TrxOrDb,
+    opts: {
+      employment_id: string
+    },
+  ): Promise<{ name: string }> {
+    return trx
+      .selectFrom('employment')
+      .innerJoin(
+        'health_workers',
+        'health_workers.id',
+        'employment.health_worker_id',
+      )
+      .select('health_workers.name')
+      .where('employment.id', '=', opts.employment_id)
+      .executeTakeFirstOrThrow()
+  },
+  getOrganizationAdmin(
+    trx: TrxOrDb,
+    opts: {
+      organization_id: string
+    },
+  ): Promise<Maybe<OrganizationAdmin>> {
+    return trx
+      .selectFrom('employment')
+      .where('organization_id', '=', opts.organization_id)
+      .where('is_admin', '=', true)
+      .innerJoin(
+        'health_workers',
+        'health_workers.id',
+        'employment.health_worker_id',
+      )
+      .innerJoin(
+        'organizations',
+        'organizations.id',
+        'employment.organization_id',
+      )
+      .select([
+        'employment.id',
+        'health_worker_id',
+        'health_workers.name',
+        'email',
+        'profession',
+        'is_admin',
+        'specialty',
+        'organization_id',
+        'organizations.name as organization_name',
+      ])
+      .executeTakeFirst()
+  },
+  getEmploymentLocationName(
+    trx: TrxOrDb,
+    opts: {
+      employee_id: string
+    },
+  ) {
+    return trx
+      .selectFrom('employment')
+      .innerJoin(
+        'organizations',
+        'organizations.id',
+        'employment.organization_id',
+      )
+      .select('organizations.name')
+      .where('employment.id', '=', opts.employee_id)
+      .executeTakeFirstOrThrow()
+  },
+  updateSpecialty(
+    trx: TrxOrDb,
+    opts: {
+      employee_id: string
+      specialty: string
+    },
+  ) {
+    return trx.updateTable('employment')
+      .where('employment.id', '=', opts.employee_id)
+      .set({ specialty: opts.specialty })
+      .executeTakeFirstOrThrow()
+  },
 }

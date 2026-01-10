@@ -21,7 +21,7 @@
 //   '418799008' // |Finding reported by subject or history provider (finding)|
 
 // // TODO: get this into a single round trip with the DB
-// export async function upsertOne(
+// ,async upsertOne(
 //   trx: TrxOrDb,
 //   {
 //     patient_id,
@@ -141,7 +141,7 @@
 //     .executeTakeFirstOrThrow()
 // }
 
-// export function getEncounter(
+// ,getEncounter(
 //   trx: TrxOrDb,
 //   { patient_id, patient_encounter_id }: {
 //     patient_id: string

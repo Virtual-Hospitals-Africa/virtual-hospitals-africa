@@ -4,7 +4,7 @@ import {
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
-// import * as patient_symptoms from '../../../../../../../../db/models/patient_symptoms.ts'
+// import { patient_symptoms } from '../../../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../../../islands/symptoms/Section.tsx'
 // import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { todayISOInJohannesburg } from '../../../../../../../../util/date.ts'

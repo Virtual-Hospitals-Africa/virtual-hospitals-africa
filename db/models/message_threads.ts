@@ -11,11 +11,9 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom, success_true } from '../helpers.ts'
-// import * as events from './events.ts'
-import * as employees from './employees.ts'
-import * as pharmacists from './pharmacists.ts'
-
-import * as messages from './messages.ts'
+import { employees } from './employees.ts'
+import { pharmacists } from './pharmacists.ts'
+import { type IntermediateMessage, messages } from './messages.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import { base, QueryResult } from './_base.ts'
@@ -57,6 +55,71 @@ function baseQuery(
 }
 
 type IntermediateMessageThread = QueryResult<typeof baseQuery>
+
+function renderedParticipants(
+  participants: IntermediateMessageThread['participants'],
+  my_participant: IntermediateMessageThread['participants'][0],
+  employees_list: RenderedEmployee[],
+  pharmacists_list: RenderedPharmacist[],
+): RenderedMessageThreadParticipant[] {
+  return participants.map((participant) => {
+    if (participant.table_name === 'employment') {
+      const employee = exists(
+        employees_list.find(matching({ id: participant.row_id })),
+      )
+      return {
+        participant_type: 'employee',
+        participant_id: participant.participant_id,
+        href: employee.href,
+        is_me: participant === my_participant,
+        is_system: false,
+        ...employeeDisplay(employee),
+      }
+    }
+    if (participant.table_name === 'pharmacists') {
+      const pharmacist = exists(
+        pharmacists_list.find(matching({ id: participant.row_id })),
+      )
+      return {
+        participant_type: 'pharmacist',
+        participant_id: participant.participant_id,
+        href: '/app/pharmacists',
+        is_me: false,
+        is_system: false,
+        ...pharmacistDisplay(pharmacist),
+      }
+    }
+    throw new Error(`Unrecognized table name ${participant.table_name}`)
+  })
+}
+
+function renderedMessage(
+  { reads, is_from_system, sender_participant_id, ...message }:
+    IntermediateMessage,
+  my_participant: IntermediateMessageThread['participants'][0],
+  rendered_participants: RenderedMessageThreadParticipant[],
+): RenderedMessage {
+  return {
+    ...message,
+    read_by_me_at:
+      reads.find((read) =>
+        read.participant_id === my_participant.participant_id
+      )
+        ?.read_at || null,
+    read_by_others: reads.filter((read) =>
+      read.participant_id !== my_participant.participant_id
+    ),
+    sender: is_from_system
+      ? {
+        is_system: true as const,
+        display_name: 'System',
+        participant_type: 'system' as const,
+      }
+      : rendered_participants.find((p) =>
+        p.participant_id === sender_participant_id
+      )!,
+  }
+}
 
 export const message_threads = base({
   top_level_table: 'message_threads' as const,
@@ -117,294 +180,220 @@ export const message_threads = base({
     }
     return qb
   },
-})
+  async create(
+    trx: TrxOrDb,
+    { sender, recipient, subjects, initial_message }: {
+      sender: {
+        table_name: string
+        row_id: string
+      }
+      recipient: {
+        table_name: string
+        row_id: string
+      }
+      subjects: {
+        table_name: string
+        row_id: string
+      }[]
+      initial_message: {
+        body: string
+      }
+    },
+  ) {
+    const thread_id = generateUUID()
+    const sender_participant_id = generateUUID()
+    const recipient_participant_id = generateUUID()
+    const initial_message_id = generateUUID()
 
+    const { success } = await trx.with(
+      'inserting_thread',
+      (qb) =>
+        qb.insertInto('message_threads')
+          .values({ id: thread_id }),
+    ).with(
+      'inserting_thread_subjects',
+      (qb) =>
+        qb.insertInto('message_thread_subjects')
+          .values(subjects.map((s) => ({
+            ...s,
+            thread_id,
+          }))),
+    ).with(
+      'inserting_sender',
+      (qb) =>
+        qb.insertInto('message_thread_participants')
+          .values({
+            thread_id,
+            ...sender,
+            id: sender_participant_id,
+          }),
+    ).with('inserting_recipient', (qb) =>
+      qb.insertInto(
+        'message_thread_participants',
+      )
+        .values({
+          thread_id,
+          ...recipient,
+        })).with('inserting_message', (qb) =>
+        qb.insertInto('messages')
+          .values({
+            id: initial_message_id,
+            thread_id,
+            sender_participant_id: sender_participant_id,
+            body: initial_message.body,
+          })).selectNoFrom([
+        success_true,
+      ])
+      .executeTakeFirstOrThrow()
 
+    assert(success)
 
-
-
-
-
-export async function create(
-  trx: TrxOrDb,
-  { sender, recipient, subjects, initial_message }: {
-    sender: {
-      table_name: string
-      row_id: string
-    }
-    recipient: {
-      table_name: string
-      row_id: string
-    }
-    subjects: {
-      table_name: string
-      row_id: string
-    }[]
-    initial_message: {
-      body: string
+    return {
+      thread_id,
+      sender_participant_id,
+      recipient_participant_id,
+      initial_message_id,
     }
   },
-) {
-  const thread_id = generateUUID()
-  const sender_participant_id = generateUUID()
-  const recipient_participant_id = generateUUID()
-  const initial_message_id = generateUUID()
+  async getOneForHealthWorker(
+    trx: TrxOrDb,
+    health_worker: EmployedHealthWorker,
+    message_thread_id: string | IdSelection,
+  ): Promise<RenderedMessageThreadWithAllMessages> {
+    const employee_ids = health_worker.organizations.map((e) => e.employment_id)
 
-  const { success } = await trx.with(
-    'inserting_thread',
-    (qb) =>
-      qb.insertInto('message_threads')
-        .values({ id: thread_id }),
-  ).with(
-    'inserting_thread_subjects',
-    (qb) =>
-      qb.insertInto('message_thread_subjects')
-        .values(subjects.map((s) => ({
-          ...s,
-          thread_id,
-        }))),
-  ).with(
-    'inserting_sender',
-    (qb) =>
-      qb.insertInto('message_thread_participants')
-        .values({
-          thread_id,
-          ...sender,
-          id: sender_participant_id,
+    assert(employee_ids.length, 'Must complete onboarding first')
+
+    const { thread, raw_messages, raw_employees, raw_pharmacists } =
+      await promiseProps({
+        thread: message_threads.findOne(trx, {
+          employee_ids,
+          thread_id: message_thread_id,
         }),
-  ).with('inserting_recipient', (qb) =>
-    qb.insertInto(
-      'message_thread_participants',
+        raw_messages: messages.findAll(trx, {
+          thread_id: message_thread_id,
+        }),
+        raw_employees: employees.getByIds(
+          trx,
+          trx.selectFrom('message_thread_participants')
+            .where(
+              'message_thread_participants.thread_id',
+              '=',
+              message_thread_id,
+            )
+            .where('message_thread_participants.table_name', '=', 'employment')
+            .select('message_thread_participants.row_id as id')
+            .distinct(),
+        ),
+        raw_pharmacists: pharmacists.getByIds(
+          trx,
+          trx.selectFrom('message_thread_participants')
+            .where(
+              'message_thread_participants.thread_id',
+              '=',
+              message_thread_id,
+            )
+            .where('message_thread_participants.table_name', '=', 'pharmacists')
+            .select('message_thread_participants.row_id as id')
+            .distinct(),
+        ),
+      })
+
+    assertOr404(thread, `No thread ${message_thread_id}`)
+
+    const my_participant = exists(thread.participants.find(
+      (participant) => employee_ids.includes(participant.row_id),
+    ))
+
+    const rendered_participants_list = renderedParticipants(
+      thread.participants,
+      my_participant,
+      raw_employees,
+      raw_pharmacists,
     )
-      .values({
-        thread_id,
-        ...recipient,
-      })).with('inserting_message', (qb) =>
-      qb.insertInto('messages')
-        .values({
-          id: initial_message_id,
-          thread_id,
-          sender_participant_id: sender_participant_id,
-          body: initial_message.body,
-        })).selectNoFrom([
-      success_true,
-    ])
-    .executeTakeFirstOrThrow()
 
-  assert(success)
+    const rendered_messages = raw_messages.map(
+      (message) =>
+        renderedMessage(message, my_participant, rendered_participants_list),
+    )
 
-  return {
-    thread_id,
-    sender_participant_id,
-    recipient_participant_id,
-    initial_message_id,
-  }
-}
+    const last_message_read_by_everyone_else = rendered_messages.find((m) =>
+      m.read_by_others.length === thread.participants.length - 1
+    )
 
-function renderedParticipants(
-  participants: IntermediateMessageThread['participants'],
-  my_participant: IntermediateMessageThread['participants'][0],
-  employees: RenderedEmployee[],
-  pharmacists: RenderedPharmacist[],
-): RenderedMessageThreadParticipant[] {
-  return participants.map((participant) => {
-    if (participant.table_name === 'employment') {
-      const employee = exists(
-        employees.find(matching({ id: participant.row_id })),
-      )
-      return {
-        participant_type: 'employee',
-        participant_id: participant.participant_id,
-        href: employee.href,
-        is_me: participant === my_participant,
-        is_system: false,
-        ...employeeDisplay(employee),
-      }
+    return {
+      ...thread,
+      participant_id: my_participant.participant_id,
+      participants: rendered_participants_list,
+      messages: rendered_messages,
+      last_message_read_by_everyone_else_id: last_message_read_by_everyone_else
+        ?.id,
     }
-    if (participant.table_name === 'pharmacists') {
-      const pharmacist = exists(
-        pharmacists.find(matching({ id: participant.row_id })),
-      )
-      return {
-        participant_type: 'pharmacist',
-        participant_id: participant.participant_id,
-        href: '/app/pharmacists',
-        is_me: false,
-        is_system: false,
-        ...pharmacistDisplay(pharmacist),
-      }
-    }
-    throw new Error(`Unrecognized table name ${participant.table_name}`)
-  })
-}
+  },
+  async getForHealthWorker(
+    trx: TrxOrDb,
+    health_worker: EmployedHealthWorker,
+  ): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
+    const employee_ids = health_worker.organizations.map((e) => e.employment_id)
 
-function renderedMessage(
-  { reads, is_from_system, sender_participant_id, ...message }:
-    messages.IntermediateMessage,
-  my_participant: IntermediateMessageThread['participants'][0],
-  rendered_participants: RenderedMessageThreadParticipant[],
-): RenderedMessage {
-  return {
-    ...message,
-    read_by_me_at:
-      reads.find((read) =>
-        read.participant_id === my_participant.participant_id
-      )
-        ?.read_at || null,
-    read_by_others: reads.filter((read) =>
-      read.participant_id !== my_participant.participant_id
-    ),
-    sender: is_from_system
-      ? {
-        is_system: true as const,
-        display_name: 'System',
-        participant_type: 'system' as const,
-      }
-      : rendered_participants.find((p) =>
-        p.participant_id === sender_participant_id
-      )!,
-  }
-}
+    assert(employee_ids.length, 'Must complete onboarding first')
 
-export async function getOneForHealthWorker(
-  trx: TrxOrDb,
-  health_worker: EmployedHealthWorker,
-  message_thread_id: string | IdSelection,
-): Promise<RenderedMessageThreadWithAllMessages> {
-  const employee_ids = health_worker.organizations.map((e) => e.employment_id)
+    const threads = await message_threads.findAll(trx, { employee_ids })
+    const thread_ids = threads.map((t) => t.id)
 
-  assert(employee_ids.length, 'Must complete onboarding first')
+    const { most_recent_messages_raw, raw_employees, raw_pharmacists } =
+      await promiseProps({
+        // TODO: do this via rank and get all of this down to one round trip
+        most_recent_messages_raw: pMap(
+          threads,
+          (thread) => messages.findFirst(trx, { thread_id: thread.id }),
+        ),
+        raw_employees: employees.getByIds(
+          trx,
+          trx.selectFrom('message_thread_participants')
+            .where('message_thread_participants.thread_id', 'in', thread_ids)
+            .where('message_thread_participants.table_name', '=', 'employment')
+            .select('message_thread_participants.row_id as id')
+            .distinct(),
+        ),
+        raw_pharmacists: pharmacists.getByIds(
+          trx,
+          trx.selectFrom('message_thread_participants')
+            .where('message_thread_participants.thread_id', 'in', thread_ids)
+            .where('message_thread_participants.table_name', '=', 'pharmacists')
+            .select('message_thread_participants.row_id as id')
+            .distinct(),
+        ),
+      })
 
-  const { thread, raw_messages, raw_employees, raw_pharmacists } =
-    await promiseProps({
-      thread: message_threads.findOne(trx, {
-        employee_ids,
-        thread_id: message_thread_id,
-      }),
-      raw_messages: messages.findAll(trx, {
-        thread_id: message_thread_id,
-      }),
-      raw_employees: employees.getByIds(
-        trx,
-        trx.selectFrom('message_thread_participants')
-          .where(
-            'message_thread_participants.thread_id',
-            '=',
-            message_thread_id,
+    return Array.from(
+      zip(threads, most_recent_messages_raw).map(
+        ([thread, message]): RenderedMessageThreadWithMostRecentMessage => {
+          const my_participant = exists(thread.participants.find(
+            (participant) => employee_ids.includes(participant.row_id),
+          ))
+
+          const rendered_participants_list = renderedParticipants(
+            thread.participants,
+            my_participant,
+            raw_employees,
+            raw_pharmacists,
           )
-          .where('message_thread_participants.table_name', '=', 'employment')
-          .select('message_thread_participants.row_id as id')
-          .distinct(),
-      ),
-      raw_pharmacists: pharmacists.getByIds(
-        trx,
-        trx.selectFrom('message_thread_participants')
-          .where(
-            'message_thread_participants.thread_id',
-            '=',
-            message_thread_id,
+
+          const most_recent_message = renderedMessage(
+            message,
+            my_participant,
+            rendered_participants_list,
           )
-          .where('message_thread_participants.table_name', '=', 'pharmacists')
-          .select('message_thread_participants.row_id as id')
-          .distinct(),
+
+          return {
+            ...thread,
+            participant_id: my_participant.participant_id,
+            participants: rendered_participants_list,
+            most_recent_message,
+          }
+        },
       ),
-    })
-
-  assertOr404(thread, `No thread ${message_thread_id}`)
-
-  const my_participant = exists(thread.participants.find(
-    (participant) => employee_ids.includes(participant.row_id),
-  ))
-
-  const rendered_participants = renderedParticipants(
-    thread.participants,
-    my_participant,
-    raw_employees,
-    raw_pharmacists,
-  )
-
-  const rendered_messages = raw_messages.map(
-    (message) =>
-      renderedMessage(message, my_participant, rendered_participants),
-  )
-
-  const last_message_read_by_everyone_else = rendered_messages.find((m) =>
-    m.read_by_others.length === thread.participants.length - 1
-  )
-
-  return {
-    ...thread,
-    participant_id: my_participant.participant_id,
-    participants: rendered_participants,
-    messages: rendered_messages,
-    last_message_read_by_everyone_else_id: last_message_read_by_everyone_else
-      ?.id,
-  }
-}
-
-export async function getForHealthWorker(
-  trx: TrxOrDb,
-  health_worker: EmployedHealthWorker,
-): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
-  const employee_ids = health_worker.organizations.map((e) => e.employment_id)
-
-  assert(employee_ids.length, 'Must complete onboarding first')
-
-  const threads = await message_threads.findAll(trx, { employee_ids })
-  const thread_ids = threads.map((t) => t.id)
-
-  const { most_recent_messages_raw, raw_employees, raw_pharmacists } =
-    await promiseProps({
-      // TODO: do this via rank and get all of this down to one round trip
-      most_recent_messages_raw: pMap(
-        threads,
-        (thread) => messages.findFirst(trx, { thread_id: thread.id }),
-      ),
-      raw_employees: employees.getByIds(
-        trx,
-        trx.selectFrom('message_thread_participants')
-          .where('message_thread_participants.thread_id', 'in', thread_ids)
-          .where('message_thread_participants.table_name', '=', 'employment')
-          .select('message_thread_participants.row_id as id')
-          .distinct(),
-      ),
-      raw_pharmacists: pharmacists.getByIds(
-        trx,
-        trx.selectFrom('message_thread_participants')
-          .where('message_thread_participants.thread_id', 'in', thread_ids)
-          .where('message_thread_participants.table_name', '=', 'pharmacists')
-          .select('message_thread_participants.row_id as id')
-          .distinct(),
-      ),
-    })
-
-  return Array.from(
-    zip(threads, most_recent_messages_raw).map(
-      ([thread, message]): RenderedMessageThreadWithMostRecentMessage => {
-        const my_participant = exists(thread.participants.find(
-          (participant) => employee_ids.includes(participant.row_id),
-        ))
-
-        const rendered_participants = renderedParticipants(
-          thread.participants,
-          my_participant,
-          raw_employees,
-          raw_pharmacists,
-        )
-
-        const most_recent_message = renderedMessage(
-          message,
-          my_participant,
-          rendered_participants,
-        )
-
-        return {
-          ...thread,
-          participant_id: my_participant.participant_id,
-          participants: rendered_participants,
-          most_recent_message,
-        }
-      },
-    ),
-  )
-}
+    )
+  },
+})

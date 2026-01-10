@@ -1,5 +1,5 @@
 import { file } from '../../../../../../util/responses.ts'
-import * as media from '../../../../../../db/models/media.ts'
+import { media } from '../../../../../../db/models/media.ts'
 import { LoggedInHealthWorkerContext } from '../../../../../../types.ts'
 
 export const handler = {

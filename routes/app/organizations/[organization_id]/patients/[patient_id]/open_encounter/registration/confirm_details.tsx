@@ -4,7 +4,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import * as patient_registration from '../../../../../../../../db/models/patient_registration.ts'
+import { patient_registration } from '../../../../../../../../db/models/patient_registration.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import PatientRegistrationSummary from '../../../../../../../../components/patients/registration/Summary.tsx'
 

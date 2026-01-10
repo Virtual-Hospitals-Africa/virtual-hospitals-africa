@@ -2,10 +2,10 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { Coordinates, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
-import { base, SearchResult } from './_base.ts'
-import * as employees from './employees.ts'
+import { base } from './_base.ts'
+import { employees } from './employees.ts'
 
-export type SearchOpts = {
+type SearchOpts = {
   location: Coordinates
   excluding_id?: string
   search?: Maybe<string>
@@ -14,7 +14,7 @@ export type SearchOpts = {
   has_doctors?: boolean
 }
 
-export function baseQuery(
+function baseQuery(
   trx: TrxOrDb,
   search: SearchOpts,
 ) {
@@ -163,5 +163,3 @@ export const nearest_organizations = base({
     },
   }),
 })
-
-export type NearestOrganizationSearchResult = SearchResult<typeof model>

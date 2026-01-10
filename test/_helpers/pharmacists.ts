@@ -1,5 +1,5 @@
 import { TrxOrDb } from '../../types.ts'
-import * as pharmacists from '../../db/models/pharmacists.ts'
+import { pharmacists } from '../../db/models/pharmacists.ts'
 import generateUUID from '../../util/uuid.ts'
 
 export function testPharmacist() {

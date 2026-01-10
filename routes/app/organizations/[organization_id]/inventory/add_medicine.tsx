@@ -1,6 +1,6 @@
 import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../components/inventory/MedicineForm.tsx'
-import * as inventory from '../../../../../db/models/inventory.ts'
+import { inventory } from '../../../../../db/models/inventory.ts'
 import manufactured_medications from '../../../../../db/models/manufactured_medications.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { assertOr403 } from '../../../../../util/assertOr.ts'

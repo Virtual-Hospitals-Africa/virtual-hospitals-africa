@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
-// import * as patient_family_history from '../../../../../../../../../db/models/patient_family_history.ts'
+// import { patient_family_history } from '../../../../../../../../../db/models/patient_family_history.ts'
 import { FamilyHistoryPage } from '../../../../../../../../../islands/FamilyHistoryPage.tsx'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from '../../../../../../../../../shared/family.ts'
 import keys from '../../../../../../../../../util/keys.ts'

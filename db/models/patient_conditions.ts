@@ -10,7 +10,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import * as drugs from './drugs.ts'
+import { drugs } from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
@@ -45,6 +45,41 @@ export type PastMedicalConditionUpsert = {
 export type MajorSurgeryUpsert = {
   id: string
   start_date: string
+}
+
+export type MedicationSummary = {
+  id: string
+  name: string
+  medication_id: string
+  manufactured_medication_id: Maybe<string>
+  patient_condition_medication_id: string
+
+  strength: string
+  route: string
+  schedules: MedicationSchedule[]
+  start_date: string
+
+  form: string
+  strength_numerator_unit: string
+  strength_denominator: string
+  strength_denominator_unit: string
+  strength_denominator_is_units: boolean
+
+  special_instructions: string | null
+}
+
+export type PreExistingConditionSummary = {
+  id: string
+  patient_condition_id: string
+  start_date: string
+  name: string
+  comorbidities: {
+    id: string
+    comorbidity_id: string
+    start_date: string
+    name: string
+  }[]
+  medications: MedicationSummary[]
 }
 
 function assertPreExistingConditions(
@@ -180,191 +215,63 @@ async function upsertPreExistingCondition(
   await Promise.all([inserting_comorbidities, inserting_medications])
 }
 
-export async function upsertPreExisting(
-  trx: TrxOrDb,
-  { patient_id, patient_examination_id, patient_conditions }: {
-    patient_id: string
-    patient_examination_id: string
-    patient_conditions: PreExistingConditionUpsert[]
-  },
-): Promise<void> {
-  assertPreExistingConditions(patient_conditions)
+export const patient_conditions = {
+  async upsertPreExisting(
+    trx: TrxOrDb,
+    { patient_id, patient_examination_id, patient_conditions }: {
+      patient_id: string
+      patient_examination_id: string
+      patient_conditions: PreExistingConditionUpsert[]
+    },
+  ): Promise<void> {
+    assertPreExistingConditions(patient_conditions)
 
-  const getting_procedures = patient_conditions.length
-    ? trx.selectFrom('conditions').where(
-      'id',
-      'in',
-      patient_conditions.map((condition) => condition.id),
-    ).where('is_procedure', '=', true).select('id').execute()
-    : Promise.resolve([])
-
-  const removing = trx.deleteFrom(
-    'patient_conditions',
-  )
-    .where('patient_id', '=', patient_id)
-    .where('end_date', 'is', null)
-    .where(
-      'condition_id',
-      'in',
-      trx.selectFrom('conditions').where('is_procedure', '=', false).select(
+    const getting_procedures = patient_conditions.length
+      ? trx.selectFrom('conditions').where(
         'id',
-      ),
+        'in',
+        patient_conditions.map((condition) => condition.id),
+      ).where('is_procedure', '=', true).select('id').execute()
+      : Promise.resolve([])
+
+    const removing = trx.deleteFrom(
+      'patient_conditions',
     )
-    .where('created_at', '<=', now)
-    .execute()
-
-  await Promise.all(
-    patient_conditions.map((condition) => (
-      upsertPreExistingCondition(
-        trx,
-        { patient_id, patient_examination_id, condition },
+      .where('patient_id', '=', patient_id)
+      .where('end_date', 'is', null)
+      .where(
+        'condition_id',
+        'in',
+        trx.selectFrom('conditions').where('is_procedure', '=', false).select(
+          'id',
+        ),
       )
-    )),
-  )
-  await removing
+      .where('created_at', '<=', now)
+      .execute()
 
-  const procedures = await getting_procedures
-  assertOr400(
-    procedures.length === 0,
-    'Pre-Existing Condition cannot be a surgery or procedure',
-  )
-}
-
-export type MedicationSummary = {
-  id: string
-  name: string
-  medication_id: string
-  manufactured_medication_id: Maybe<string>
-  patient_condition_medication_id: string
-
-  strength: string
-  route: string
-  schedules: MedicationSchedule[]
-  start_date: string
-
-  form: string
-  strength_numerator_unit: string
-  strength_denominator: string
-  strength_denominator_unit: string
-  strength_denominator_is_units: boolean
-
-  special_instructions: string | null
-}
-
-export type PreExistingConditionSummary = {
-  id: string
-  patient_condition_id: string
-  start_date: string
-  name: string
-  comorbidities: {
-    id: string
-    comorbidity_id: string
-    start_date: string
-    name: string
-  }[]
-  medications: MedicationSummary[]
-}
-
-export function getPreExistingConditionsSummary(
-  trx: TrxOrDb,
-  opts: {
-    patient_id: string
-  },
-): Promise<PreExistingConditionSummary[]> {
-  return trx
-    .selectFrom('patient_conditions')
-    .innerJoin(
-      'conditions',
-      'conditions.id',
-      'patient_conditions.condition_id',
+    await Promise.all(
+      patient_conditions.map((condition) => (
+        upsertPreExistingCondition(
+          trx,
+          { patient_id, patient_examination_id, condition },
+        )
+      )),
     )
-    .where('conditions.is_procedure', '=', false)
-    .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .where('patient_conditions.end_date', 'is', null)
-    .where('patient_conditions.comorbidity_of_condition_id', 'is', null)
-    .select((eb) => [
-      'conditions.id',
-      'conditions.name',
-      'patient_conditions.id as patient_condition_id',
-      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
-      jsonArrayFrom(
-        eb
-          .selectFrom('patient_condition_medications')
-          .leftJoin(
-            'manufactured_medications',
-            'manufactured_medications.id',
-            'patient_condition_medications.manufactured_medication_id',
-          )
-          .innerJoin('medications', (join) =>
-            join.on(
-              'medications.id',
-              '=',
-              sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
-            ))
-          .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-          .whereRef(
-            'patient_condition_medications.patient_condition_id',
-            '=',
-            'patient_conditions.id',
-          )
-          .select((eb_med) => [
-            'drugs.id',
-            'drugs.generic_name as name',
-            'medications.id as medication_id',
-            'medications.form',
-            'medications.strength_numerator_unit',
-            'medications.strength_denominator',
-            'medications.strength_denominator_unit',
-            'medications.strength_denominator_is_units',
-            'patient_condition_medications.manufactured_medication_id',
-            'patient_condition_medications.id as patient_condition_medication_id',
-            'patient_condition_medications.strength',
-            'patient_condition_medications.route',
-            'patient_condition_medications.special_instructions',
-            sql<
-              MedicationSchedule[]
-            >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-            isoDate(eb_med.ref('patient_condition_medications.start_date'))
-              .$notNull().as(
-                'start_date',
-              ),
-          ]),
-      ).as('medications'),
-      jsonArrayFrom(
-        eb
-          .selectFrom('patient_conditions as comorbidities')
-          .innerJoin(
-            'conditions',
-            'conditions.id',
-            'comorbidities.condition_id',
-          )
-          .whereRef(
-            'comorbidities.comorbidity_of_condition_id',
-            '=',
-            'patient_conditions.id',
-          )
-          .select((eb_com) => [
-            'conditions.id',
-            'conditions.name',
-            'comorbidities.id as comorbidity_id',
-            isoDate(eb_com.ref('comorbidities.start_date')).as('start_date'),
-            isoDate(eb_com.ref('comorbidities.end_date')).as('end_date'),
-          ]),
-      )
-        .as('comorbidities'),
-    ])
-    .execute()
-}
+    await removing
 
-// Note: Pre-existing conditions are just conditions that have not ended yet
-export async function getPreExistingConditions(
-  trx: TrxOrDb,
-  opts: {
-    patient_id: string
+    const procedures = await getting_procedures
+    assertOr400(
+      procedures.length === 0,
+      'Pre-Existing Condition cannot be a surgery or procedure',
+    )
   },
-): Promise<PreExistingCondition[]> {
-  const { patient_conditions, patient_medications } = await promiseProps({
-    patient_conditions: trx
+  getPreExistingConditionsSummary(
+    trx: TrxOrDb,
+    opts: {
+      patient_id: string
+    },
+  ): Promise<PreExistingConditionSummary[]> {
+    return trx
       .selectFrom('patient_conditions')
       .innerJoin(
         'conditions',
@@ -374,265 +281,355 @@ export async function getPreExistingConditions(
       .where('conditions.is_procedure', '=', false)
       .where('patient_conditions.patient_id', '=', opts.patient_id)
       .where('patient_conditions.end_date', 'is', null)
+      .where('patient_conditions.comorbidity_of_condition_id', 'is', null)
       .select((eb) => [
         'conditions.id',
         'conditions.name',
         'patient_conditions.id as patient_condition_id',
         isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
-        'patient_conditions.comorbidity_of_condition_id',
+        jsonArrayFrom(
+          eb
+            .selectFrom('patient_condition_medications')
+            .leftJoin(
+              'manufactured_medications',
+              'manufactured_medications.id',
+              'patient_condition_medications.manufactured_medication_id',
+            )
+            .innerJoin('medications', (join) =>
+              join.on(
+                'medications.id',
+                '=',
+                sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
+              ))
+            .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+            .whereRef(
+              'patient_condition_medications.patient_condition_id',
+              '=',
+              'patient_conditions.id',
+            )
+            .select((eb_med) => [
+              'drugs.id',
+              'drugs.generic_name as name',
+              'medications.id as medication_id',
+              'medications.form',
+              'medications.strength_numerator_unit',
+              'medications.strength_denominator',
+              'medications.strength_denominator_unit',
+              'medications.strength_denominator_is_units',
+              'patient_condition_medications.manufactured_medication_id',
+              'patient_condition_medications.id as patient_condition_medication_id',
+              'patient_condition_medications.strength',
+              'patient_condition_medications.route',
+              'patient_condition_medications.special_instructions',
+              sql<
+                MedicationSchedule[]
+              >`TO_JSON(patient_condition_medications.schedules)`.as(
+                'schedules',
+              ),
+              isoDate(eb_med.ref('patient_condition_medications.start_date'))
+                .$notNull().as(
+                  'start_date',
+                ),
+            ]),
+        ).as('medications'),
+        jsonArrayFrom(
+          eb
+            .selectFrom('patient_conditions as comorbidities')
+            .innerJoin(
+              'conditions',
+              'conditions.id',
+              'comorbidities.condition_id',
+            )
+            .whereRef(
+              'comorbidities.comorbidity_of_condition_id',
+              '=',
+              'patient_conditions.id',
+            )
+            .select((eb_com) => [
+              'conditions.id',
+              'conditions.name',
+              'comorbidities.id as comorbidity_id',
+              isoDate(eb_com.ref('comorbidities.start_date')).as('start_date'),
+              isoDate(eb_com.ref('comorbidities.end_date')).as('end_date'),
+            ]),
+        )
+          .as('comorbidities'),
       ])
-      .execute(),
-    patient_medications: trx
-      .selectFrom('patient_condition_medications')
-      .leftJoin(
-        'manufactured_medications',
-        'manufactured_medications.id',
-        'patient_condition_medications.manufactured_medication_id',
-      )
-      .innerJoin('medications', (join) =>
-        join.on(
-          'medications.id',
-          '=',
-          sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
-        ))
-      .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+      .execute()
+  },
+  async getPreExistingConditions(
+    trx: TrxOrDb,
+    opts: {
+      patient_id: string
+    },
+  ): Promise<PreExistingCondition[]> {
+    const { patient_conditions, patient_medications } = await promiseProps({
+      patient_conditions: trx
+        .selectFrom('patient_conditions')
+        .innerJoin(
+          'conditions',
+          'conditions.id',
+          'patient_conditions.condition_id',
+        )
+        .where('conditions.is_procedure', '=', false)
+        .where('patient_conditions.patient_id', '=', opts.patient_id)
+        .where('patient_conditions.end_date', 'is', null)
+        .select((eb) => [
+          'conditions.id',
+          'conditions.name',
+          'patient_conditions.id as patient_condition_id',
+          isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+          'patient_conditions.comorbidity_of_condition_id',
+        ])
+        .execute(),
+      patient_medications: trx
+        .selectFrom('patient_condition_medications')
+        .leftJoin(
+          'manufactured_medications',
+          'manufactured_medications.id',
+          'patient_condition_medications.manufactured_medication_id',
+        )
+        .innerJoin('medications', (join) =>
+          join.on(
+            'medications.id',
+            '=',
+            sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
+          ))
+        .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+        .innerJoin(
+          'patient_conditions',
+          'patient_conditions.id',
+          'patient_condition_medications.patient_condition_id',
+        )
+        .where('patient_conditions.patient_id', '=', opts.patient_id)
+        .select((eb) => [
+          'drugs.id',
+          'medications.id as medication_id',
+          'patient_condition_medications.manufactured_medication_id',
+          'patient_condition_medications.id as patient_condition_medication_id',
+          'patient_condition_medications.patient_condition_id',
+          'patient_condition_medications.strength',
+          'patient_condition_medications.route',
+          'patient_condition_medications.special_instructions',
+          sql<
+            MedicationSchedule[]
+          >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
+          'drugs.generic_name as name',
+          isoDate(eb.ref('patient_condition_medications.start_date')).as(
+            'start_date',
+          ),
+        ])
+        .execute(),
+    })
+
+    return patient_conditions
+      .filter((condition) => !condition.comorbidity_of_condition_id)
+      .map((parent_condition) => ({
+        id: parent_condition.id,
+        patient_condition_id: parent_condition.patient_condition_id,
+        start_date: parent_condition.start_date,
+        name: parent_condition.name,
+        comorbidities: patient_conditions
+          .filter(
+            (comorbidity) =>
+              comorbidity.comorbidity_of_condition_id ===
+                parent_condition.patient_condition_id,
+          )
+          .map((comorbidity) => ({
+            id: comorbidity.id,
+            patient_condition_id: comorbidity.patient_condition_id,
+            start_date: comorbidity.start_date,
+            name: comorbidity.name,
+          })),
+        medications: patient_medications
+          .filter((m) =>
+            m.patient_condition_id === parent_condition.patient_condition_id
+          )
+          .map(({ schedules, ...medication }) => {
+            assertEquals(schedules.length, 1)
+            assert(medication.start_date)
+            const [schedule] = schedules
+            return {
+              ...omit(medication, ['patient_condition_id']),
+              start_date: medication.start_date,
+              registration_frequency: schedule.frequency,
+              end_date: durationEndDate(
+                parseDate(medication.start_date),
+                schedule,
+              ),
+              dosage: schedule.dosage,
+              strength: medication.strength,
+            }
+          }),
+      }))
+  },
+  async getPreExistingConditionsWithDrugs(
+    trx: TrxOrDb,
+    opts: { patient_id: string },
+  ): Promise<PreExistingConditionWithDrugs[]> {
+    const pre_existing_conditions = await patient_conditions
+      .getPreExistingConditions(trx, opts)
+    const drug_ids = uniq(
+      pre_existing_conditions.flatMap((c) =>
+        c.medications.map((medication) => medication.id)
+      ),
+    )
+    const matching_drugs = drug_ids.length
+      ? await drugs.getByIds(trx, drug_ids)
+      : []
+
+    return pre_existing_conditions.map((c) => ({
+      ...c,
+      medications: c.medications.map((m) => {
+        const drug = matching_drugs.find((d) => d.id === m.id)
+        assert(drug, `Could not find drug with id ${m.id}`)
+        return { ...m, drug }
+      }),
+    }))
+  },
+  async getPastMedicalConditions(
+    trx: TrxOrDb,
+    opts: {
+      patient_id: string
+    },
+  ): Promise<PastMedicalCondition[]> {
+    const results = await trx
+      .selectFrom('patient_conditions')
       .innerJoin(
-        'patient_conditions',
-        'patient_conditions.id',
-        'patient_condition_medications.patient_condition_id',
+        'conditions',
+        'conditions.id',
+        'patient_conditions.condition_id',
+      )
+      .where('conditions.is_procedure', '=', false)
+      .where('patient_conditions.patient_id', '=', opts.patient_id)
+      .where('patient_conditions.end_date', 'is not', null)
+      .select((eb) => [
+        'conditions.id',
+        'conditions.name',
+        'patient_conditions.id as patient_condition_id',
+        isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+        isoDate(eb.ref('patient_conditions.end_date')).as('end_date'),
+      ])
+      .execute()
+
+    assertAllNotNull(results, 'end_date')
+    return results
+  },
+  async upsertPastMedical(
+    trx: TrxOrDb,
+    { patient_id, patient_examination_id, patient_conditions }: {
+      patient_id: string
+      patient_examination_id: string
+      patient_conditions: PastMedicalConditionUpsert[]
+    },
+  ): Promise<void> {
+    assertPreExistingConditions(patient_conditions)
+    for (const condition of patient_conditions) {
+      assertOr400(
+        isISODateString(condition.end_date),
+        'Condition end_date must be an ISO Date',
+      )
+    }
+    const removing = trx.deleteFrom(
+      'patient_conditions',
+    )
+      .where('patient_id', '=', patient_id)
+      .where('end_date', 'is not', null)
+      .where(
+        'condition_id',
+        'in',
+        trx.selectFrom('conditions').where('is_procedure', '=', false).select(
+          'id',
+        ),
+      )
+      .where('created_at', '<=', now)
+      .execute()
+
+    const to_insert = patient_conditions.map((condition) => ({
+      patient_id,
+      patient_examination_id,
+      condition_id: condition.id,
+      start_date: condition.start_date,
+      end_date: condition.end_date,
+    }))
+
+    to_insert.length && await trx
+      .insertInto('patient_conditions')
+      .values(to_insert)
+      .execute()
+
+    await removing
+  },
+  getMajorSurgeries(
+    trx: TrxOrDb,
+    opts: {
+      patient_id: string
+    },
+  ): Promise<MajorSurgery[]> {
+    return trx
+      .selectFrom('patient_conditions')
+      .innerJoin(
+        'conditions',
+        'conditions.id',
+        'patient_conditions.condition_id',
       )
       .where('patient_conditions.patient_id', '=', opts.patient_id)
+      .where('conditions.is_procedure', '=', true)
       .select((eb) => [
-        'drugs.id',
-        'medications.id as medication_id',
-        'patient_condition_medications.manufactured_medication_id',
-        'patient_condition_medications.id as patient_condition_medication_id',
-        'patient_condition_medications.patient_condition_id',
-        'patient_condition_medications.strength',
-        'patient_condition_medications.route',
-        'patient_condition_medications.special_instructions',
-        sql<
-          MedicationSchedule[]
-        >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-        'drugs.generic_name as name',
-        isoDate(eb.ref('patient_condition_medications.start_date')).as(
-          'start_date',
-        ),
+        'conditions.id',
+        'conditions.name',
+        'patient_conditions.id as patient_condition_id',
+        isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
       ])
-      .execute(),
-  })
+      .execute()
+  },
+  async upsertMajorSurgeries(
+    trx: TrxOrDb,
+    { patient_id, patient_examination_id, major_surgeries }: {
+      patient_id: string
+      patient_examination_id: string
+      major_surgeries: MajorSurgeryUpsert[]
+    },
+  ): Promise<void> {
+    assertPreExistingConditions(major_surgeries)
 
-  return patient_conditions
-    .filter((condition) => !condition.comorbidity_of_condition_id)
-    .map((parent_condition) => ({
-      id: parent_condition.id,
-      patient_condition_id: parent_condition.patient_condition_id,
-      start_date: parent_condition.start_date,
-      name: parent_condition.name,
-      comorbidities: patient_conditions
-        .filter(
-          (comorbidity) =>
-            comorbidity.comorbidity_of_condition_id ===
-              parent_condition.patient_condition_id,
-        )
-        .map((comorbidity) => ({
-          id: comorbidity.id,
-          patient_condition_id: comorbidity.patient_condition_id,
-          start_date: comorbidity.start_date,
-          name: comorbidity.name,
-        })),
-      medications: patient_medications
-        .filter((m) =>
-          m.patient_condition_id === parent_condition.patient_condition_id
-        )
-        .map(({ schedules, ...medication }) => {
-          assertEquals(schedules.length, 1)
-          assert(medication.start_date)
-          const [schedule] = schedules
-          return {
-            ...omit(medication, ['patient_condition_id']),
-            start_date: medication.start_date,
-            registration_frequency: schedule.frequency,
-            end_date: durationEndDate(
-              parseDate(medication.start_date),
-              schedule,
-            ),
-            dosage: schedule.dosage,
-            strength: medication.strength,
-          }
-        }),
+    const getting_non_procedures = major_surgeries.length
+      ? trx.selectFrom('conditions').where(
+        'id',
+        'in',
+        major_surgeries.map((surgery) => surgery.id),
+      ).where('is_procedure', '=', false).select('id').execute()
+      : Promise.resolve([])
+
+    const removing = trx.deleteFrom(
+      'patient_conditions',
+    )
+      .where('patient_id', '=', patient_id)
+      .where(
+        'condition_id',
+        'in',
+        trx.selectFrom('conditions').where('is_procedure', '=', true).select(
+          'id',
+        ),
+      )
+      .where('created_at', '<=', now)
+      .execute()
+
+    const to_insert = major_surgeries.map((surgery) => ({
+      patient_id,
+      patient_examination_id,
+      condition_id: surgery.id,
+      start_date: surgery.start_date,
     }))
-}
 
-export async function getPreExistingConditionsWithDrugs(
-  trx: TrxOrDb,
-  opts: { patient_id: string },
-): Promise<PreExistingConditionWithDrugs[]> {
-  const pre_existing_conditions = await getPreExistingConditions(trx, opts)
-  const drug_ids = uniq(
-    pre_existing_conditions.flatMap((c) =>
-      c.medications.map((medication) => medication.id)
-    ),
-  )
-  const matching_drugs = drug_ids.length
-    ? await drugs.getByIds(trx, drug_ids)
-    : []
+    to_insert.length && await trx
+      .insertInto('patient_conditions')
+      .values(to_insert)
+      .execute()
 
-  return pre_existing_conditions.map((c) => ({
-    ...c,
-    medications: c.medications.map((m) => {
-      const drug = matching_drugs.find((d) => d.id === m.id)
-      assert(drug, `Could not find drug with id ${m.id}`)
-      return { ...m, drug }
-    }),
-  }))
-}
+    await removing
 
-export async function getPastMedicalConditions(
-  trx: TrxOrDb,
-  opts: {
-    patient_id: string
+    const non_procedures = await getting_non_procedures
+    assertOr400(non_procedures.length === 0, 'Condition is not a major surgery')
   },
-): Promise<PastMedicalCondition[]> {
-  const results = await trx
-    .selectFrom('patient_conditions')
-    .innerJoin(
-      'conditions',
-      'conditions.id',
-      'patient_conditions.condition_id',
-    )
-    .where('conditions.is_procedure', '=', false)
-    .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .where('patient_conditions.end_date', 'is not', null)
-    .select((eb) => [
-      'conditions.id',
-      'conditions.name',
-      'patient_conditions.id as patient_condition_id',
-      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
-      isoDate(eb.ref('patient_conditions.end_date')).as('end_date'),
-    ])
-    .execute()
-
-  assertAllNotNull(results, 'end_date')
-  return results
-}
-
-export async function upsertPastMedical(
-  trx: TrxOrDb,
-  { patient_id, patient_examination_id, patient_conditions }: {
-    patient_id: string
-    patient_examination_id: string
-    patient_conditions: PastMedicalConditionUpsert[]
-  },
-): Promise<void> {
-  assertPreExistingConditions(patient_conditions)
-  for (const condition of patient_conditions) {
-    assertOr400(
-      isISODateString(condition.end_date),
-      'Condition end_date must be an ISO Date',
-    )
-  }
-  const removing = trx.deleteFrom(
-    'patient_conditions',
-  )
-    .where('patient_id', '=', patient_id)
-    .where('end_date', 'is not', null)
-    .where(
-      'condition_id',
-      'in',
-      trx.selectFrom('conditions').where('is_procedure', '=', false).select(
-        'id',
-      ),
-    )
-    .where('created_at', '<=', now)
-    .execute()
-
-  const to_insert = patient_conditions.map((condition) => ({
-    patient_id,
-    patient_examination_id,
-    condition_id: condition.id,
-    start_date: condition.start_date,
-    end_date: condition.end_date,
-  }))
-
-  to_insert.length && await trx
-    .insertInto('patient_conditions')
-    .values(to_insert)
-    .execute()
-
-  await removing
-}
-
-export function getMajorSurgeries(
-  trx: TrxOrDb,
-  opts: {
-    patient_id: string
-  },
-): Promise<MajorSurgery[]> {
-  return trx
-    .selectFrom('patient_conditions')
-    .innerJoin(
-      'conditions',
-      'conditions.id',
-      'patient_conditions.condition_id',
-    )
-    .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .where('conditions.is_procedure', '=', true)
-    .select((eb) => [
-      'conditions.id',
-      'conditions.name',
-      'patient_conditions.id as patient_condition_id',
-      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
-    ])
-    .execute()
-}
-
-export async function upsertMajorSurgeries(
-  trx: TrxOrDb,
-  { patient_id, patient_examination_id, major_surgeries }: {
-    patient_id: string
-    patient_examination_id: string
-    major_surgeries: MajorSurgeryUpsert[]
-  },
-): Promise<void> {
-  assertPreExistingConditions(major_surgeries)
-
-  const getting_non_procedures = major_surgeries.length
-    ? trx.selectFrom('conditions').where(
-      'id',
-      'in',
-      major_surgeries.map((surgery) => surgery.id),
-    ).where('is_procedure', '=', false).select('id').execute()
-    : Promise.resolve([])
-
-  const removing = trx.deleteFrom(
-    'patient_conditions',
-  )
-    .where('patient_id', '=', patient_id)
-    .where(
-      'condition_id',
-      'in',
-      trx.selectFrom('conditions').where('is_procedure', '=', true).select(
-        'id',
-      ),
-    )
-    .where('created_at', '<=', now)
-    .execute()
-
-  const to_insert = major_surgeries.map((surgery) => ({
-    patient_id,
-    patient_examination_id,
-    condition_id: surgery.id,
-    start_date: surgery.start_date,
-  }))
-
-  to_insert.length && await trx
-    .insertInto('patient_conditions')
-    .values(to_insert)
-    .execute()
-
-  await removing
-
-  const non_procedures = await getting_non_procedures
-  assertOr400(non_procedures.length === 0, 'Condition is not a major surgery')
 }

@@ -4,7 +4,7 @@ import {
   GeneralAssessmentsPage,
 } from './_middleware.tsx'
 import {} from '../../../../../../../../../types.ts'
-import * as findings from '../../../../../../../../../db/models/examination_findings.ts'
+import { findings } from '../../../../../../../../../db/models/examination_findings.ts'
 import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
 import { PatientExaminationForm } from '../../../../../../../../../components/examinations/Form.tsx'
 import { z } from 'zod'

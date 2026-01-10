@@ -1,5 +1,5 @@
 import { LoggedInHealthWorkerContext } from '../../types.ts'
-import * as message_threads from '../../db/models/message_threads.ts'
+import { message_threads } from '../../db/models/message_threads.ts'
 import ThreadList from '../../islands/messages/ThreadList.tsx'
 import { HealthWorkerHomePageLayout } from './_middleware.tsx'
 

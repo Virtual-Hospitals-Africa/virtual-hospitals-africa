@@ -1,5 +1,5 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
-import * as addresses from '../../db/models/addresses.ts'
+import { addresses } from '../../db/models/addresses.ts'
 
 import omit from '../../util/omit.ts'
 

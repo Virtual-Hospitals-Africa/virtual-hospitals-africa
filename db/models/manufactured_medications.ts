@@ -7,24 +7,24 @@ import {
 import { isoDate, now } from '../helpers.ts'
 import { base } from './_base.ts'
 
-export function strengthDisplay(
+function strengthDisplay(
   builder: RawBuilder<string>,
 ): RawBuilder<string> {
   return sql<string>`
-    ${builder} || strength_numerator_unit || (
-      CASE WHEN strength_denominator_unit NOT IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
-        THEN ''
-        ELSE (
-          '/' || (
-            CASE WHEN strength_denominator = 1 
-              THEN ''
-              ELSE strength_denominator::text
-            END
-          ) || strength_denominator_unit
-        )
-      END
-    )
-  `
+      ${builder} || strength_numerator_unit || (
+        CASE WHEN strength_denominator_unit NOT IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
+          THEN ''
+          ELSE (
+            '/' || (
+              CASE WHEN strength_denominator = 1 
+                THEN ''
+                ELSE strength_denominator::text
+              END
+            ) || strength_denominator_unit
+          )
+        END
+      )
+    `
 }
 
 function strengthSummary(base_table: string) {
@@ -35,49 +35,73 @@ function strengthSummary(base_table: string) {
   ).as('strength_summary')
 }
 
-function baseQuery(opts: { include_recalled: boolean }) {
-  return function (trx: TrxOrDb) {
-    return trx
-      .selectFrom('manufactured_medications')
-      .innerJoin(
-        'medications',
-        'medications.id',
-        'manufactured_medications.medication_id',
-      )
-      .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-      .leftJoin(
-        'manufactured_medication_recalls',
-        'manufactured_medication_recalls.manufactured_medication_id',
-        'manufactured_medications.id',
-      )
-      .select((eb) => [
-        'manufactured_medications.id',
-        'drugs.generic_name',
-        'manufactured_medications.trade_name',
-        'manufactured_medications.applicant_name',
-        'medications.form',
-        'medications.strength_numerators',
-        'medications.strength_numerator_unit',
-        'medications.strength_denominator',
-        'medications.strength_denominator_unit',
-        'medications.strength_denominator_is_units',
-        strengthSummary('manufactured_medications'),
-        isoDate(eb.ref('manufactured_medication_recalls.recalled_at'))
-          .as('recalled_at'),
-      ])
-      .$if(
-        !opts.include_recalled,
-        (eb) =>
-          eb.where('manufactured_medication_recalls.recalled_at', 'is', null),
-      )
-      .orderBy('drugs.generic_name', 'asc')
-      .orderBy('manufactured_medications.trade_name', 'asc')
+function baseQuery(trx: TrxOrDb, opts: {
+  include_recalled?: boolean
+  search?: string | null
+  country?: Maybe<string>
+}) {
+  let qb = trx
+    .selectFrom('manufactured_medications')
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .leftJoin(
+      'manufactured_medication_recalls',
+      'manufactured_medication_recalls.manufactured_medication_id',
+      'manufactured_medications.id',
+    )
+    .select((eb) => [
+      'manufactured_medications.id',
+      'drugs.generic_name',
+      'manufactured_medications.trade_name',
+      'manufactured_medications.applicant_name',
+      'medications.form',
+      'medications.strength_numerators',
+      'medications.strength_numerator_unit',
+      'medications.strength_denominator',
+      'medications.strength_denominator_unit',
+      'medications.strength_denominator_is_units',
+      strengthSummary('manufactured_medications'),
+      isoDate(eb.ref('manufactured_medication_recalls.recalled_at'))
+        .as('recalled_at'),
+    ])
+    .$if(
+      !opts.include_recalled,
+      (eb) =>
+        eb.where('manufactured_medication_recalls.recalled_at', 'is', null),
+    )
+    .orderBy('drugs.generic_name', 'asc')
+    .orderBy('manufactured_medications.trade_name', 'asc')
+
+  if (opts.country) {
+    qb = qb.where(
+      'manufactured_medications.id',
+      'in',
+      trx.selectFrom('manufactured_medication_availabilities')
+        .select('manufactured_medication_id').where(
+          'country',
+          '=',
+          opts.country!,
+        ),
+    )
   }
+
+  if (!opts.search) return qb
+
+  return qb.where((eb) =>
+    eb.or([
+      eb('drugs.generic_name', 'ilike', `%${opts.search}%`),
+      eb('manufactured_medications.trade_name', 'ilike', `%${opts.search}%`),
+    ])
+  )
 }
 
-export default base({
+export const manufactured_medications = base({
   top_level_table: 'manufactured_medications',
-  baseQuery: baseQuery({ include_recalled: false }),
+  baseQuery,
   formatResult(result): RenderedManufacturedMedication {
     return {
       ...result,
@@ -90,36 +114,6 @@ export default base({
           : `/regulator/medicines/${result.id}/recall`,
       },
     }
-  },
-  handleSearch(
-    qb,
-    opts: {
-      search: string | null
-      country?: Maybe<string>
-    },
-    trx,
-  ) {
-    if (opts.country) {
-      qb = qb.where(
-        'manufactured_medications.id',
-        'in',
-        trx.selectFrom('manufactured_medication_availabilities')
-          .select('manufactured_medication_id').where(
-            'country',
-            '=',
-            opts.country!,
-          ),
-      )
-    }
-
-    if (!opts.search) return qb
-
-    return qb.where((eb) =>
-      eb.or([
-        eb('drugs.generic_name', 'ilike', `%${opts.search}%`),
-        eb('manufactured_medications.trade_name', 'ilike', `%${opts.search}%`),
-      ])
-    )
   },
 
   recall(
@@ -143,4 +137,6 @@ export default base({
       .where('id', '=', data.id)
       .execute()
   },
+  strengthDisplay,
+  strengthSummary,
 })

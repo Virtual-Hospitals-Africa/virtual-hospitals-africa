@@ -1,9 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as google from '../../external-clients/google.ts'
-import * as employees from '../../db/models/employees.ts'
+import { employees } from '../../db/models/employees.ts'
 import { google_tokens } from '../../db/models/google_tokens.ts'
-import * as employment_calendars from '../../db/models/employment_calendars.ts'
+import { employment_calendars } from '../../db/models/employment_calendars.ts'
 import {
   Availability,
   GCalFreeBusy,
