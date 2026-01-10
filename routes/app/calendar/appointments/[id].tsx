@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import * as appointments from '../../../../db/models/appointments.ts'
+import { appointments } from '../../../../db/models/appointments.ts'
 import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'

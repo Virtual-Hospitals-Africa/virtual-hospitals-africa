@@ -4,7 +4,7 @@ import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { OrganizationContext } from '../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
-import { getEmployeeInfo } from '../../../../../db/models/employee_info.ts'
+import { employee_info } from '../../../../../db/models/employee_info.ts'
 
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeePage(
@@ -13,7 +13,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
     const { trx, organization, is_admin_at_organization } = ctx.state
     const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
-    const employee = await getEmployeeInfo(
+    const employee = await employee_info.getEmployeeInfo(
       trx,
       {
         health_worker_id,

@@ -1,7 +1,7 @@
 // import { Profession } from '../../../../../types.ts'
 // import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 // import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
-// import * as organizations from '../../../../../db/models/organizations.ts'
+// import { organizations } from '../../../../../db/models/organizations.ts'
 // import isObjectLike from '../../../../../util/isObjectLike.ts'
 // import redirect from '../../../../../util/redirect.ts'
 // import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'

@@ -1,74 +1,75 @@
 import { type Allergy, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 
-export async function upsert(
-  trx: TrxOrDb,
-  patient_id: string,
-  allergies: {
-    patient_allergy_id: string
+export const patient_allergies = {
+  async upsert(
+    trx: TrxOrDb,
+    patient_id: string,
+    allergies: {
+      patient_allergy_id: string
+      snomed_concept_id: string
+      snomed_english_term: string
+    }[],
+  ): Promise<{
+    id: string
     snomed_concept_id: string
-    snomed_english_term: string
-  }[],
-): Promise<{
-  id: string
-  snomed_concept_id: string
-}[]> {
-  assertOr400(
-    allergies.length ===
-      new Set(allergies.map((item) => item.snomed_concept_id)).size,
-    'Allergy ids must be unique',
-  )
-
-  const removing_allergies = trx
-    .deleteFrom('patient_allergies')
-    .where('patient_id', '=', patient_id)
-    .$if(
-      allergies.length > 0,
-      (qb) =>
-        qb.where(
-          'snomed_concept_id',
-          'not in',
-          allergies.map(({ snomed_concept_id }) => snomed_concept_id),
-        ),
+  }[]> {
+    assertOr400(
+      allergies.length ===
+        new Set(allergies.map((item) => item.snomed_concept_id)).size,
+      'Allergy ids must be unique',
     )
-    .execute()
 
-  const adding_allergies = allergies.length
-    ? trx
-      .insertInto('patient_allergies')
-      .values(allergies.map(({ snomed_concept_id, patient_allergy_id }) => ({
-        id: patient_allergy_id,
-        patient_id,
-        snomed_concept_id,
-      })))
-      .onConflict((oc) => oc.doNothing())
-      .returningAll()
+    const removing_allergies = trx
+      .deleteFrom('patient_allergies')
+      .where('patient_id', '=', patient_id)
+      .$if(
+        allergies.length > 0,
+        (qb) =>
+          qb.where(
+            'snomed_concept_id',
+            'not in',
+            allergies.map(({ snomed_concept_id }) => snomed_concept_id),
+          ),
+      )
       .execute()
-    : Promise.resolve([])
 
-  const [, inserted_allergies] = await Promise.all([
-    removing_allergies,
-    adding_allergies,
-  ])
-  return inserted_allergies
-}
+    const adding_allergies = allergies.length
+      ? trx
+        .insertInto('patient_allergies')
+        .values(allergies.map(({ snomed_concept_id, patient_allergy_id }) => ({
+          id: patient_allergy_id,
+          patient_id,
+          snomed_concept_id,
+        })))
+        .onConflict((oc) => oc.doNothing())
+        .returningAll()
+        .execute()
+      : Promise.resolve([])
 
-export function getWithName(
-  trx: TrxOrDb,
-  patient_id: string,
-): Promise<Allergy[]> {
-  return trx
-    .selectFrom('patient_allergies')
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category',
-      'patient_allergies.snomed_concept_id',
-      'snomed_inferred_canonical_name_and_category.id',
-    )
-    .where('patient_allergies.patient_id', '=', patient_id)
-    .select([
-      'patient_allergies.id',
-      'snomed_inferred_canonical_name_and_category.name',
-      'snomed_inferred_canonical_name_and_category.id as snomed_concept_id',
+    const [, inserted_allergies] = await Promise.all([
+      removing_allergies,
+      adding_allergies,
     ])
-    .execute()
+    return inserted_allergies
+  },
+  getWithName(
+    trx: TrxOrDb,
+    patient_id: string,
+  ): Promise<Allergy[]> {
+    return trx
+      .selectFrom('patient_allergies')
+      .innerJoin(
+        'snomed_inferred_canonical_name_and_category',
+        'patient_allergies.snomed_concept_id',
+        'snomed_inferred_canonical_name_and_category.id',
+      )
+      .where('patient_allergies.patient_id', '=', patient_id)
+      .select([
+        'patient_allergies.id',
+        'snomed_inferred_canonical_name_and_category.name',
+        'snomed_inferred_canonical_name_and_category.id as snomed_concept_id',
+      ])
+      .execute()
+  },
 }

@@ -3,9 +3,9 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../db/db.ts'
 import respond from '../../../../../../../chatbot/respond.ts'
-import * as conversations from '../../../../../../../db/models/conversations.ts'
-import * as patients from '../../../../../../../db/models/patients.ts'
-import { getPatientLastConversationState } from '../../../../../../../db/models/patient_chatbot_users.ts'
+import { conversations } from '../../../../../../../db/models/conversations.ts'
+import { patients } from '../../../../../../../db/models/patients.ts'
+import { patient_chatbot_users } from '../../../../../../../db/models/patient_chatbot_users.ts'
 
 import generateUUID from '../../../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../../../mocks/randomPhoneNumber.ts'
@@ -49,9 +49,10 @@ describe('patient chatbot', () => {
           phone_number,
         },
       ])
-      const patient = await getPatientLastConversationState(db, {
-        phone_number,
-      })
+      const patient = await patient_chatbot_users
+        .getPatientLastConversationState(db, {
+          phone_number,
+        })
 
       assert(patient)
       assertEquals(

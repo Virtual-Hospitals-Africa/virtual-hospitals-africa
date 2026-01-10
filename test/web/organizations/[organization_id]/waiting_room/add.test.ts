@@ -7,7 +7,7 @@
 // } from '../../../utilities.ts'
 // import * as cheerio from 'cheerio'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
-// import * as patients from '../../../../../db/models/patients.ts'
+// import { patients } from '../../../../../db/models/patients.ts'
 // import db from '../../../../../db/db.ts'
 // import generateUUID from '../../../../../util/uuid.ts'
 

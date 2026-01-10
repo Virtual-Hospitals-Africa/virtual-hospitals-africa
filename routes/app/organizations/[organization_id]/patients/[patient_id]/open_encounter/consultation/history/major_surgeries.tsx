@@ -1,5 +1,5 @@
-import * as patient_conditions from '../../../../../../../../../db/models/patient_conditions.ts'
-import * as examinations from '../../../../../../../../../db/models/examinations.ts'
+import { patient_conditions } from '../../../../../../../../../db/models/patient_conditions.ts'
+import { examinations } from '../../../../../../../../../db/models/examinations.ts'
 import { z } from 'zod'
 import MajorSurgeriesForm from '../../../../../../../../../islands/major-surgeries/Form.tsx'
 import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'

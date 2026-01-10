@@ -6,8 +6,8 @@
 //   getFormValues,
 //   route,
 // } from '../utilities.ts'
-// import * as patients from '../../../db/models/patients.ts'
-// import * as patient_encounters from '../../../db/models/patient_encounters.ts'
+// import { patients } from '../../../db/models/patients.ts'
+// import { patient_encounters } from '../../../db/models/patient_encounters.ts'
 // import { patient_measurements } from '../../../db/models/patient_measurements.ts'
 // import db from '../../../db/db.ts'
 // import { VITALS_SNOMED_CODE, VITALS_UNITS } from '../../../shared/vitals.ts'

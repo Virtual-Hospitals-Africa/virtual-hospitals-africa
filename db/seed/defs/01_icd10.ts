@@ -10,8 +10,7 @@ import natural from 'natural'
 import { assert } from 'std/assert/assert.ts'
 // import partition from '../../../util/partition.ts'
 import { forEach } from '../../../util/inParallel.ts'
-import { byCodeWithSimilarity } from '../../models/icd10.ts'
-import { searchFlat } from '../../models/icd10.ts'
+import { icd10 } from '../../models/icd10.ts'
 import { define } from '../define.ts'
 
 export default define([
@@ -630,7 +629,11 @@ async function loadIndexData(trx: TrxOrDb) {
   const icd10_index = await readICD10Index()
   await forEach(parse(icd10_index), async (parsed) => {
     if (parsed.type === 'code') {
-      const diag = await byCodeWithSimilarity(trx, parsed.code, parsed.note)
+      const diag = await icd10.byCodeWithSimilarity(
+        trx,
+        parsed.code,
+        parsed.note,
+      )
       assert(diag)
       if (diag.best_similarity >= 0.85) return
       return trx.insertInto('icd10_diagnoses_includes')
@@ -643,7 +646,10 @@ async function loadIndexData(trx: TrxOrDb) {
     }
     if (parsed.type === 'see') {
       if (parsed.see.toLowerCase() === 'condition') return
-      const [candidate] = await searchFlat(trx, { term: parsed.see, limit: 1 })
+      const [candidate] = await icd10.searchFlat(trx, {
+        term: parsed.see,
+        limit: 1,
+      })
       if (!candidate) {
         console.log('No match found for see: ', parsed)
         return

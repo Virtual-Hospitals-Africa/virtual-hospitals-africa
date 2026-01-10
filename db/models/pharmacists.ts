@@ -3,14 +3,10 @@ import { jsonArrayFrom, jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
 import { PharmacistType } from '../../db.d.ts'
 import { z } from 'zod'
-import {
-  insert as insertPharmacyEmployment,
-  remove as removePharmacyEmployment,
-  updateIsSupervisor,
-} from './pharmacy_employment.ts'
+import { pharmacy_employment } from './pharmacy_employment.ts'
 import { base } from './_base.ts'
 
-export const PharmacistUpsert = z.object({
+export const PharmacistUpsertSchema = z.object({
   licence_number: z.string(),
   prefix: z.enum(['Mr', 'Mrs', 'Ms', 'Miss', 'Dr']),
   given_name: z.string(),
@@ -30,55 +26,7 @@ export const PharmacistUpsert = z.object({
   }))),
 })
 
-export const parse_upsert = PharmacistUpsert.parse
-export type PharmacistUpsert = z.infer<typeof PharmacistUpsert>
-
-export async function update(
-  trx: TrxOrDb,
-  pharmacist_id: string,
-  data: PharmacistUpsert,
-) {
-  let { pharmacies = [], ...pharmacistData } = data
-  await trx
-    .updateTable('pharmacists')
-    .set(pharmacistData)
-    .where('id', '=', pharmacist_id)
-    .execute()
-  const existing_pharmacy_employments = await trx
-    .selectFrom('pharmacy_employment')
-    .where('pharmacist_id', '=', pharmacist_id)
-    .selectAll()
-    .execute()
-  for (const existing_pharmacy_employment of existing_pharmacy_employments) {
-    const selected_pharmacy = pharmacies.find((pharmacy) =>
-      pharmacy.id === existing_pharmacy_employment.pharmacy_id
-    )
-    if (selected_pharmacy) {
-      await updateIsSupervisor(
-        trx,
-        pharmacist_id,
-        existing_pharmacy_employment.pharmacy_id,
-        selected_pharmacy.is_supervisor,
-      )
-    } else {
-      await removePharmacyEmployment(
-        trx,
-        pharmacist_id,
-        existing_pharmacy_employment.pharmacy_id,
-      )
-    }
-    pharmacies = pharmacies.filter((pharmacy) =>
-      pharmacy.id !== existing_pharmacy_employment.pharmacy_id
-    )
-  }
-  const pharmacy_employments = pharmacies.map((pharmacy_employee) => ({
-    pharmacist_id,
-    pharmacy_id: pharmacy_employee.id,
-    is_supervisor: pharmacy_employee.is_supervisor,
-  }))
-  if (!pharmacy_employments.length) return
-  await insertPharmacyEmployment(trx, pharmacy_employments)
-}
+export type PharmacistUpsert = z.infer<typeof PharmacistUpsertSchema>
 
 export function nameSql(table: string) {
   return sql<string>`concat(${sql.ref(`${table}.prefix`)}, '. ', ${
@@ -175,7 +123,7 @@ type SearchTerms = {
   include_revoked?: boolean
 }
 
-export function toSearchTerms(
+function toSearchTerms(
   country: string,
   search: string | null,
 ): SearchTerms {
@@ -192,7 +140,25 @@ export function toSearchTerms(
   return { country, name_search: search, licence_number_search: null }
 }
 
-const model = base({
+type PharmacyEmploymentInsert = {
+  is_supervisor: boolean
+  id: string
+}
+
+export type PharmacistInsert = {
+  licence_number: string
+  prefix: Prefix
+  given_name: string
+  family_name: string
+  address: string
+  town: string
+  expiry_date: string
+  pharmacist_type: PharmacistType
+  country: string
+  pharmacies?: PharmacyEmploymentInsert[]
+}
+
+export const pharmacists = base({
   top_level_table: 'pharmacists',
   baseQuery,
   formatResult: (x: RenderedPharmacist): RenderedPharmacist => x,
@@ -230,75 +196,96 @@ const model = base({
     }
     return qb
   },
-})
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-
-export function getByLicenceNumber(
-  trx: TrxOrDb,
-  licence_number: string,
-): Promise<RenderedPharmacist | undefined> {
-  return baseQuery(trx)
-    .where('pharmacists.licence_number', '=', licence_number)
-    .executeTakeFirst()
-}
-
-export function revoke(
-  trx: TrxOrDb,
-  data: {
-    pharmacist_id: string
-    regulator_id: string
+  toSearchTerms,
+  async update(
+    trx: TrxOrDb,
+    pharmacist_id: string,
+    data: PharmacistUpsert,
+  ) {
+    let { pharmacies = [], ...pharmacistData } = data
+    await trx
+      .updateTable('pharmacists')
+      .set(pharmacistData)
+      .where('id', '=', pharmacist_id)
+      .execute()
+    const existing_pharmacy_employments = await trx
+      .selectFrom('pharmacy_employment')
+      .where('pharmacist_id', '=', pharmacist_id)
+      .selectAll()
+      .execute()
+    for (const existing_pharmacy_employment of existing_pharmacy_employments) {
+      const selected_pharmacy = pharmacies.find((pharmacy) =>
+        pharmacy.id === existing_pharmacy_employment.pharmacy_id
+      )
+      if (selected_pharmacy) {
+        await pharmacy_employment.updateIsSupervisor(
+          trx,
+          pharmacist_id,
+          existing_pharmacy_employment.pharmacy_id,
+          selected_pharmacy.is_supervisor,
+        )
+      } else {
+        await pharmacy_employment.remove(
+          trx,
+          pharmacist_id,
+          existing_pharmacy_employment.pharmacy_id,
+        )
+      }
+      pharmacies = pharmacies.filter((pharmacy) =>
+        pharmacy.id !== existing_pharmacy_employment.pharmacy_id
+      )
+    }
+    const pharmacy_employments = pharmacies.map((pharmacy_employee) => ({
+      pharmacist_id,
+      pharmacy_id: pharmacy_employee.id,
+      is_supervisor: pharmacy_employee.is_supervisor,
+    }))
+    if (!pharmacy_employments.length) return
+    await pharmacy_employment.insert(trx, pharmacy_employments)
   },
-) {
-  return trx.updateTable('pharmacists').set({
-    revoked_at: now,
-    revoked_by: data.regulator_id,
-  }).where('id', '=', data.pharmacist_id).execute()
-}
-
-export function remove(trx: TrxOrDb, pharmacist_id: string) {
-  return trx
-    .deleteFrom('pharmacists')
-    .where('id', '=', pharmacist_id)
-    .execute()
-}
-
-type PharmacyEmploymentInsert = {
-  is_supervisor: boolean
-  id: string
-}
-
-export type PharmacistInsert = {
-  licence_number: string
-  prefix: Prefix
-  given_name: string
-  family_name: string
-  address: string
-  town: string
-  expiry_date: string
-  pharmacist_type: PharmacistType
-  country: string
-  pharmacies?: PharmacyEmploymentInsert[]
-}
-
-export async function insert(
-  trx: TrxOrDb,
-  data: PharmacistInsert,
-): Promise<{ id: string }> {
-  const { pharmacies, ...pharmacistData } = data
-  const pharmacist = await trx
-    .insertInto('pharmacists')
-    .values(pharmacistData)
-    .returning('id')
-    .executeTakeFirstOrThrow()
-  if (!pharmacies) return pharmacist
-  const pharmacy_employments = pharmacies.map((pharmacyEmployee) => ({
-    pharmacist_id: pharmacist.id,
-    pharmacy_id: pharmacyEmployee.id,
-    is_supervisor: pharmacyEmployee.is_supervisor,
-  }))
-  await insertPharmacyEmployment(trx, pharmacy_employments)
-  return pharmacist
-}
+  getByLicenceNumber(
+    trx: TrxOrDb,
+    licence_number: string,
+  ): Promise<RenderedPharmacist | undefined> {
+    return baseQuery(trx)
+      .where('pharmacists.licence_number', '=', licence_number)
+      .executeTakeFirst()
+  },
+  revoke(
+    trx: TrxOrDb,
+    data: {
+      pharmacist_id: string
+      regulator_id: string
+    },
+  ) {
+    return trx.updateTable('pharmacists').set({
+      revoked_at: now,
+      revoked_by: data.regulator_id,
+    }).where('id', '=', data.pharmacist_id).execute()
+  },
+  remove(trx: TrxOrDb, pharmacist_id: string) {
+    return trx
+      .deleteFrom('pharmacists')
+      .where('id', '=', pharmacist_id)
+      .execute()
+  },
+  async insert(
+    trx: TrxOrDb,
+    data: PharmacistInsert,
+  ): Promise<{ id: string }> {
+    const { pharmacies, ...pharmacistData } = data
+    const pharmacist = await trx
+      .insertInto('pharmacists')
+      .values(pharmacistData)
+      .returning('id')
+      .executeTakeFirstOrThrow()
+    if (!pharmacies) return pharmacist
+    const pharmacy_employments = pharmacies.map((pharmacyEmployee) => ({
+      pharmacist_id: pharmacist.id,
+      pharmacy_id: pharmacyEmployee.id,
+      is_supervisor: pharmacyEmployee.is_supervisor,
+    }))
+    await pharmacy_employment.insert(trx, pharmacy_employments)
+    return pharmacist
+  },
+})

@@ -1,4 +1,4 @@
-import manufactured_medications from '../../../../../db/models/manufactured_medications.ts'
+import { manufactured_medications } from '../../../../../db/models/manufactured_medications.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { LoggedInRegulator } from '../../../../../types.ts'

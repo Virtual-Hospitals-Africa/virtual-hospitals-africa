@@ -10,10 +10,10 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../../db/db.ts'
 import respond from '../../../../../../../../chatbot/respond.ts'
 import * as google from '../../../../../../../../external-clients/google.ts'
-import * as conversations from '../../../../../../../../db/models/conversations.ts'
-import * as patients from '../../../../../../../../db/models/patients.ts'
-import * as appointments from '../../../../../../../../db/models/appointments.ts'
-import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
+import { conversations } from '../../../../../../../../db/models/conversations.ts'
+import { patients } from '../../../../../../../../db/models/patients.ts'
+import { appointments } from '../../../../../../../../db/models/appointments.ts'
+import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import {
   convertToTimeString,
   formatJohannesburg,
@@ -207,9 +207,10 @@ describe.skip('patient chatbot', () => {
         },
       )
 
-      const patient = await getPatientLastConversationState(trx, {
-        phone_number,
-      })
+      const patient = await patient_chatbot_users
+        .getPatientLastConversationState(trx, {
+          phone_number,
+        })
 
       assert(patient)
       assertEquals(

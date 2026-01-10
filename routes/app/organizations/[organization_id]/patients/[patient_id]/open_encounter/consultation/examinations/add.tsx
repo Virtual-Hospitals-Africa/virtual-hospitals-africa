@@ -1,6 +1,6 @@
 import { ExaminationContext, ExaminationPage } from './_middleware.tsx'
 import {} from '../../../../../../../../../types.ts'
-import * as examinations from '../../../../../../../../../db/models/examinations.ts'
+import { examinations } from '../../../../../../../../../db/models/examinations.ts'
 import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
 import redirect from '../../../../../../../../../util/redirect.ts'

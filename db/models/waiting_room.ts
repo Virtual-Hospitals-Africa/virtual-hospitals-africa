@@ -6,7 +6,7 @@ import {
   RenderedWaitingRoom,
   TrxOrDb,
 } from '../../types.ts'
-import * as patient_encounters from './patient_encounters.ts'
+import { patient_encounters } from './patient_encounters.ts'
 import sortBy from '../../util/sortBy.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -19,7 +19,7 @@ import {
 import { assertAll } from '../../util/assertAll.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 
-export function asWaitingRoom(
+function asWaitingRoom(
   patient_encounter: RenderedPatientOpenEncounter,
   organization_employment: HealthWorkerOrganization,
 ): RenderedWaitingRoom {
@@ -133,33 +133,36 @@ export function asWaitingRoom(
   }
 }
 
-export async function get(
-  trx: TrxOrDb,
-  organization_employment: HealthWorkerOrganization,
-): Promise<RenderedWaitingRoom[]> {
-  const open_encounters = await patient_encounters.getOpen(
-    trx,
-    {
-      organization_id: organization_employment.id,
-    },
-  )
-
-  assertAll(open_encounters, (encounter) => {
-    assertEquals(
-      encounter.organization.id,
-      organization_employment.id,
+export const waiting_room = {
+  asWaitingRoom,
+  async get(
+    trx: TrxOrDb,
+    organization_employment: HealthWorkerOrganization,
+  ): Promise<RenderedWaitingRoom[]> {
+    const open_encounters = await patient_encounters.getOpen(
+      trx,
+      {
+        organization_id: organization_employment.id,
+      },
     )
-  })
 
-  const waiting_room_unsorted = open_encounters.map((encounter) =>
-    asWaitingRoom(encounter, organization_employment)
-  )
+    assertAll(open_encounters, (encounter) => {
+      assertEquals(
+        encounter.organization.id,
+        organization_employment.id,
+      )
+    })
 
-  return sortBy(
-    waiting_room_unsorted,
-    (row) => row.present_employees.length ? 1 : 0,
-    (row) =>
-      row.target_treatment_time ? row.target_treatment_time.valueOf() : -1,
-    (row) => row.arrived_timestamp.valueOf(),
-  )
+    const waiting_room_unsorted = open_encounters.map((encounter) =>
+      asWaitingRoom(encounter, organization_employment)
+    )
+
+    return sortBy(
+      waiting_room_unsorted,
+      (row) => row.present_employees.length ? 1 : 0,
+      (row) =>
+        row.target_treatment_time ? row.target_treatment_time.valueOf() : -1,
+      (row) => row.arrived_timestamp.valueOf(),
+    )
+  },
 }

@@ -14,8 +14,8 @@
 //   RenderedOrganization,
 //   TrxOrDb,
 // } from '../../types.ts'
-// import * as employment from './employment.ts'
-// import * as addresses from './addresses.ts'
+// import { employment } from './employment.ts'
+// import { addresses } from './addresses.ts'
 // import partition from '../../util/partition.ts'
 // import {
 //   blankSelection,
@@ -45,7 +45,7 @@
 //   exclude_health_worker_id?: string
 // }
 
-// export function getEmploymentQuery(
+// ,getEmploymentQuery(
 //   trx: TrxOrDb,
 //   opts: {
 //     organization_id?: string
@@ -110,7 +110,7 @@
 //   })
 // }
 
-// export function getEmployeesQuery(
+// ,getEmployeesQuery(
 //   trx: TrxOrDb,
 //   organization_id: string,
 //   opts: EmployeeQueryOpts,
@@ -190,7 +190,7 @@
 //   )
 // }
 
-// export function getAllEmployeesWithoutActionQuery(
+// ,getAllEmployeesWithoutActionQuery(
 //   trx: TrxOrDb,
 //   opts: EmployeeQueryOpts,
 // ) {
@@ -263,7 +263,7 @@
 //   )
 // }
 
-// export function getDoctorsWithoutAction(
+// ,getDoctorsWithoutAction(
 //   trx: TrxOrDb,
 //   opts: EmployeeQueryOpts = {},
 // ): Promise<OrganizationEmployeeWithActions[]> {
@@ -273,7 +273,7 @@
 //   return employees
 // }
 
-// export async function getApprovedDoctorsWithoutAction(
+// ,async getApprovedDoctorsWithoutAction(
 //   trx: TrxOrDb,
 //   opts: Omit<EmployeeQueryOpts, 'is_approved' | 'professions' | 'actions'> = {},
 // ): Promise<DoctorsWithoutAction[]> {
@@ -298,7 +298,7 @@
 //   })
 // }
 
-// export function getEmployees(
+// ,getEmployees(
 //   trx: TrxOrDb,
 //   organization_id: string,
 //   opts: EmployeeQueryOpts = {},
@@ -308,7 +308,7 @@
 //   ).selectAll('organization_employees').execute()
 // }
 
-// export async function getApprovedProviders(
+// ,async getApprovedProviders(
 //   trx: TrxOrDb,
 //   organization_id: string,
 //   opts: Omit<EmployeeQueryOpts, 'is_approved' | 'professions'> = {},
@@ -334,7 +334,7 @@
 //   })
 // }
 
-// export function getEmployeesAndInvitees(
+// ,getEmployeesAndInvitees(
 //   trx: TrxOrDb,
 //   organization_id: string,
 //   opts: {
@@ -383,7 +383,7 @@
 //   return hw_query.unionAll(inviteeQuery as any).execute()
 // }
 
-// export async function invite(
+// ,async invite(
 //   trx: TrxOrDb,
 //   organization_id: string,
 //   invites: {
@@ -433,7 +433,7 @@
 //   )
 // }
 
-// export function addInvitees(
+// ,addInvitees(
 //   trx: TrxOrDb,
 //   organization_id: string,
 //   invites: {
@@ -453,7 +453,7 @@
 //     .execute()
 // }
 
-// export function approveInvitee(
+// ,approveInvitee(
 //   trx: TrxOrDb,
 //   { admin_id, approving_id }: { admin_id: string; approving_id: string },
 // ) {
@@ -463,7 +463,7 @@
 //     .execute()
 // }
 
-// export function getInvitees(
+// ,getInvitees(
 //   trx: TrxOrDb,
 //   opts: {
 //     email: string
@@ -476,7 +476,7 @@
 //     .execute()
 // }
 
-// export function removeInvitees(
+// ,removeInvitees(
 //   trx: TrxOrDb,
 //   ids: string[],
 // ) {

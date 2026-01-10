@@ -111,7 +111,7 @@ function* strengthNumerators(medication: BaseQueryReturn['medications'][0]) {
   }
 }
 
-export function formStrengthDisplay(
+function formStrengthDisplay(
   strength_numerators: string,
   strength_numerator_unit: string,
   strength_denominator: string,
@@ -131,7 +131,7 @@ export function formStrengthDisplay(
   return result
 }
 
-const model = base({
+export const drugs = base({
   top_level_table: 'drugs',
   baseQuery: baseQuery({ include_recalled: false }),
   formatResult({ medications, ...rest }): DrugSearchResult {
@@ -188,8 +188,5 @@ const model = base({
     )
       .orderBy(sql`similarity('drugs.name', ${terms.search})`, 'desc')
   },
+  formStrengthDisplay,
 })
-
-export const getById = model.getById
-export const search = model.search
-export const getByIds = model.getByIds

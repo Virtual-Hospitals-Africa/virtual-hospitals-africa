@@ -1,4 +1,4 @@
-import * as pharmacists from '../../../../../db/models/pharmacists.ts'
+import { pharmacists } from '../../../../../db/models/pharmacists.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { LoggedInRegulator } from '../../../../../types.ts'

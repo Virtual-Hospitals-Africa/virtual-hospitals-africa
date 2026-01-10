@@ -7,8 +7,11 @@ import {
   NurseRegistrationStepNames,
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import redirect from '../../../../../util/redirect.ts'
-import * as employment from '../../../../../db/models/employment.ts'
-import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
+import { employment } from '../../../../../db/models/employment.ts'
+import {
+  nurse_registration_details,
+  type UpsertableNurseRegistrationDetails,
+} from '../../../../../db/models/nurse_registration_details.ts'
 import {
   DocumentFormFields,
   PersonalFormFields,
@@ -107,7 +110,7 @@ function getRegistrationDetails(
     nurse_practicing_cert,
     ...rest
   }: FormState,
-): nurse_registration_details.UpsertableNurseRegistrationDetails {
+): UpsertableNurseRegistrationDetails {
   return {
     health_worker_id: health_worker.id,
     face_picture_media_id: face_picture?.id,

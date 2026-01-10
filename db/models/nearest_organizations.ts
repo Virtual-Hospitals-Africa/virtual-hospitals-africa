@@ -3,7 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import { Coordinates, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { base, SearchResult } from './_base.ts'
-import * as employees from './employees.ts'
+import { employees } from './employees.ts'
 
 export type SearchOpts = {
   location: Coordinates
@@ -14,7 +14,11 @@ export type SearchOpts = {
   has_doctors?: boolean
 }
 
-export function baseQuery(
+export type NearestOrganizationSearchResult = SearchResult<
+  typeof nearest_organizations
+>
+
+function baseQuery(
   trx: TrxOrDb,
   search: SearchOpts,
 ) {
@@ -151,7 +155,7 @@ function randomWait(): Wait {
   }
 }
 
-const model = base({
+export const nearest_organizations = base({
   top_level_table: 'organizations',
   baseQuery,
   formatResult: (organization) => ({
@@ -163,9 +167,3 @@ const model = base({
     },
   }),
 })
-
-export type NearestOrganizationSearchResult = SearchResult<typeof model>
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds

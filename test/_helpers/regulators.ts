@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio'
 import { HasStringId, Regulator, TrxOrDb } from '../../types.ts'
 import { sessions } from '../../db/models/sessions.ts'
-import * as regulators from '../../db/models/regulators.ts'
+import { regulators } from '../../db/models/regulators.ts'
 import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
 import { route } from '../_route.ts'

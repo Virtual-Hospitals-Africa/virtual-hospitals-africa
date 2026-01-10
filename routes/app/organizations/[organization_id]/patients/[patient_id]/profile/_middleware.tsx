@@ -1,9 +1,9 @@
 import { JSX } from 'preact'
-import * as appointments from '../../../../../../../db/models/appointments.ts'
-import * as patients from '../../../../../../../db/models/patients.ts'
-import * as patient_primary_doctor from '../../../../../../../db/models/patient_primary_doctor.ts'
-import * as patient_nearest_organization from '../../../../../../../db/models/patient_nearest_organization.ts'
-import * as patient_encounters from '../../../../../../../db/models/patient_encounters.ts'
+import { appointments } from '../../../../../../../db/models/appointments.ts'
+import { patients } from '../../../../../../../db/models/patients.ts'
+import { patient_primary_doctor } from '../../../../../../../db/models/patient_primary_doctor.ts'
+import { patient_nearest_organization } from '../../../../../../../db/models/patient_nearest_organization.ts'
+import { patient_encounters } from '../../../../../../../db/models/patient_encounters.ts'
 import { Person } from '../../../../../../../components/library/Person.tsx'
 import { Tabs } from '../../../../../../../components/library/Tabs.tsx'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
@@ -12,7 +12,7 @@ import { HealthWorkerHomePageLayout } from '../../../../../_middleware.tsx'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../../../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
-import { asWaitingRoom } from '../../../../../../../db/models/waiting_room.ts'
+import { waiting_room } from '../../../../../../../db/models/waiting_room.ts'
 import { RenderedPatient } from '../../../../../../../types.ts'
 import { ActionButton } from '../../../../../../../components/library/ActionButton.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -86,7 +86,7 @@ export const PatientProfilePage = (
       assert(hasName(patient))
 
       const as_waiting_room = open_encounter
-        ? asWaitingRoom(open_encounter, organization_employment)
+        ? waiting_room.asWaitingRoom(open_encounter, organization_employment)
         : null
 
       const action = as_waiting_room?.actions[0]

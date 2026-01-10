@@ -6,7 +6,7 @@ import {
 } from '../../types.ts'
 import { groupByUniq } from '../../util/groupBy.ts'
 import uniq from '../../util/uniq.ts'
-import * as patient_encounters from './patient_encounters.ts'
+import { patient_encounters } from './patient_encounters.ts'
 import { patient_findings } from './patient_findings.ts'
 import { SearchResult } from './_base.ts'
 
@@ -15,7 +15,7 @@ import { SearchResult } from './_base.ts'
  * Fetches the corresponding encounters to do so, which can be skipped if the caller provides
  * an encounter and all the findings are from that encounter.
  */
-export async function hydrateIntermediateRecords<
+async function hydrateIntermediateRecords<
   IntermediateRecord extends SearchResult<typeof patient_findings>,
 >(
   trx: TrxOrDb,
@@ -84,4 +84,8 @@ export async function hydrateIntermediateRecords<
       },
     }
   }
+}
+
+export const patient_record_providers = {
+  hydrateIntermediateRecords,
 }

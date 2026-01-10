@@ -9,207 +9,204 @@ import { assert } from 'std/assert/assert.ts'
 import { allHaveStringField } from '../../util/haveNames.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 
-export function addGuardian(
-  trx: TrxOrDb,
-  guardian: PatientGuardian,
-): Promise<{ id: string }> {
-  return trx
-    .insertInto('patient_guardians')
-    .values(guardian)
-    .returning('id')
-    .executeTakeFirstOrThrow()
+export const family = {
+  async getGuardiansOfPatient(
+    trx: TrxOrDb,
+    patient_id: string,
+  ) {
+    const guardians = await trx
+      .selectFrom('patient_guardians')
+      .innerJoin(
+        'guardian_relations',
+        'patient_guardians.guardian_relation',
+        'guardian_relations.guardian',
+      )
+      .innerJoin(
+        'patients as guardian',
+        'patient_guardians.guardian_patient_id',
+        'guardian.id',
+      )
+      .innerJoin(
+        'patients as dependent',
+        'patient_guardians.dependent_patient_id',
+        'dependent.id',
+      )
+      .leftJoin('patient_kin as kin', (join) =>
+        join
+          .on('kin.patient_id', '=', patient_id)
+          .onRef('kin.next_of_kin_patient_id', '=', 'guardian.id'))
+      .where('dependent.id', '=', patient_id)
+      .where('guardian.name', 'is not', null)
+      .select(({ eb, and }) => [
+        'patient_guardians.id as relation_id',
+        'guardian_relations.guardian as family_relation',
+        'guardian_relations.guardian as guardian_relation',
+        'guardian.id as patient_id',
+        'guardian.name as patient_name',
+        'guardian.sex as patient_sex',
+        'guardian.phone_number as patient_phone_number',
+        eb('kin.next_of_kin_patient_id', 'is not', null).as('next_of_kin'),
+        eb
+          .case()
+          .when(
+            and([
+              eb('guardian.sex', '=', 'female'),
+              eb('guardian_relations.female_guardian', 'is not', null),
+            ]),
+          )
+          .then(eb.ref('guardian_relations.female_guardian'))
+          .when(
+            and([
+              eb('guardian.sex', '=', 'male'),
+              eb('guardian_relations.male_guardian', 'is not', null),
+            ]),
+          )
+          .then(eb.ref('guardian_relations.male_guardian'))
+          .else(sql<string>`guardian_relations.guardian::text`)
+          .end()
+          .as('family_relation_sexed'),
+      ])
+      .orderBy('family_relation_sexed', 'desc')
+      .execute()
+
+    assert(allHaveStringField(guardians, 'patient_name'))
+    return guardians
+  },
+
+  addGuardian(
+    trx: TrxOrDb,
+    guardian: PatientGuardian,
+  ): Promise<{ id: string }> {
+    return trx
+      .insertInto('patient_guardians')
+      .values(guardian)
+      .returning('id')
+      .executeTakeFirstOrThrow()
+  },
+  async getDependentsOfPatient(
+    trx: TrxOrDb,
+    patient_id: string,
+  ) {
+    const dependents = await trx
+      .selectFrom('patient_guardians')
+      .innerJoin(
+        'guardian_relations',
+        'patient_guardians.guardian_relation',
+        'guardian_relations.guardian',
+      )
+      .innerJoin(
+        'patients as guardian',
+        'patient_guardians.guardian_patient_id',
+        'guardian.id',
+      )
+      .innerJoin(
+        'patients as dependent',
+        'patient_guardians.dependent_patient_id',
+        'dependent.id',
+      )
+      .where('guardian.id', '=', patient_id)
+      .where('dependent.name', 'is not', null)
+      .select(({ eb, and }) => [
+        'patient_guardians.id as relation_id',
+        'dependent.id as patient_id',
+        'dependent.name as patient_name',
+        'dependent.phone_number as patient_phone_number',
+        'guardian_relations.dependent as family_relation',
+        'guardian_relations.guardian as guardian_relation',
+        'dependent.sex as patient_sex',
+        eb
+          .case()
+          .when(
+            and([
+              eb('dependent.sex', '=', 'female'),
+              eb('guardian_relations.female_dependent', 'is not', null),
+            ]),
+          )
+          .then(eb.ref('guardian_relations.female_dependent'))
+          .when(
+            and([
+              eb('dependent.sex', '=', 'male'),
+              eb('guardian_relations.male_dependent', 'is not', null),
+            ]),
+          )
+          .then(eb.ref('guardian_relations.male_dependent'))
+          .else(eb.ref('guardian_relations.dependent'))
+          .end()
+          .as('family_relation_sexed'),
+      ])
+      .execute()
+
+    assert(allHaveStringField(dependents, 'patient_name'))
+    return dependents
+  },
+  getOtherNextOfKinOfPatient(
+    trx: TrxOrDb,
+    patient_id: string,
+  ) {
+    return trx
+      .selectFrom('patient_kin')
+      .innerJoin(
+        'patients as kin',
+        'patient_kin.next_of_kin_patient_id',
+        'kin.id',
+      )
+      .leftJoin('patient_guardians', (join) =>
+        join
+          .onRef(
+            'patient_guardians.dependent_patient_id',
+            '=',
+            'patient_kin.patient_id',
+          )
+          .onRef(
+            'patient_guardians.guardian_patient_id',
+            '=',
+            'patient_kin.next_of_kin_patient_id',
+          ))
+      .where('patient_kin.patient_id', '=', patient_id)
+      .where('patient_guardians.id', 'is', null)
+      .select([
+        'patient_kin.id as id',
+        'patient_kin.relationship as relation',
+        'kin.id as patient_id',
+        'kin.name as patient_name',
+        'kin.phone_number as patient_phone_number',
+        'kin.sex as patient_sex',
+      ])
+      .executeTakeFirst()
+  },
+  getPatientFamily(
+    trx: TrxOrDb,
+    patient_id: string,
+  ) {
+    return trx
+      .selectFrom('patient_family')
+      .selectAll()
+      .where('patient_id', '=', patient_id)
+      .executeTakeFirst()
+  },
+  async get(
+    trx: TrxOrDb,
+    { patient_id }: { patient_id: string },
+  ): Promise<PatientFamily> {
+    const { patient_family, guardians, dependents, next_of_kin } =
+      await promiseProps({
+        patient_family: family.getPatientFamily(trx, patient_id),
+        guardians: family.getGuardiansOfPatient(trx, patient_id),
+        dependents: family.getDependentsOfPatient(trx, patient_id),
+        next_of_kin: family.getOtherNextOfKinOfPatient(trx, patient_id),
+      })
+
+    return {
+      marital_status: patient_family?.marital_status,
+      religion: patient_family?.religion,
+      family_type: patient_family?.family_type,
+      patient_cohabitation: patient_family?.patient_cohabitation,
+      guardians,
+      dependents,
+      next_of_kin,
+    }
+  },
 }
-
-async function getGuardiansOfPatient(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  const guardians = await trx
-    .selectFrom('patient_guardians')
-    .innerJoin(
-      'guardian_relations',
-      'patient_guardians.guardian_relation',
-      'guardian_relations.guardian',
-    )
-    .innerJoin(
-      'patients as guardian',
-      'patient_guardians.guardian_patient_id',
-      'guardian.id',
-    )
-    .innerJoin(
-      'patients as dependent',
-      'patient_guardians.dependent_patient_id',
-      'dependent.id',
-    )
-    .leftJoin('patient_kin as kin', (join) =>
-      join
-        .on('kin.patient_id', '=', patient_id)
-        .onRef('kin.next_of_kin_patient_id', '=', 'guardian.id'))
-    .where('dependent.id', '=', patient_id)
-    .where('guardian.name', 'is not', null)
-    .select(({ eb, and }) => [
-      'patient_guardians.id as relation_id',
-      'guardian_relations.guardian as family_relation',
-      'guardian_relations.guardian as guardian_relation',
-      'guardian.id as patient_id',
-      'guardian.name as patient_name',
-      'guardian.sex as patient_sex',
-      'guardian.phone_number as patient_phone_number',
-      eb('kin.next_of_kin_patient_id', 'is not', null).as('next_of_kin'),
-      eb
-        .case()
-        .when(
-          and([
-            eb('guardian.sex', '=', 'female'),
-            eb('guardian_relations.female_guardian', 'is not', null),
-          ]),
-        )
-        .then(eb.ref('guardian_relations.female_guardian'))
-        .when(
-          and([
-            eb('guardian.sex', '=', 'male'),
-            eb('guardian_relations.male_guardian', 'is not', null),
-          ]),
-        )
-        .then(eb.ref('guardian_relations.male_guardian'))
-        .else(sql<string>`guardian_relations.guardian::text`)
-        .end()
-        .as('family_relation_sexed'),
-    ])
-    .orderBy('family_relation_sexed', 'desc')
-    .execute()
-
-  assert(allHaveStringField(guardians, 'patient_name'))
-  return guardians
-}
-
-export async function getDependentsOfPatient(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  const dependents = await trx
-    .selectFrom('patient_guardians')
-    .innerJoin(
-      'guardian_relations',
-      'patient_guardians.guardian_relation',
-      'guardian_relations.guardian',
-    )
-    .innerJoin(
-      'patients as guardian',
-      'patient_guardians.guardian_patient_id',
-      'guardian.id',
-    )
-    .innerJoin(
-      'patients as dependent',
-      'patient_guardians.dependent_patient_id',
-      'dependent.id',
-    )
-    .where('guardian.id', '=', patient_id)
-    .where('dependent.name', 'is not', null)
-    .select(({ eb, and }) => [
-      'patient_guardians.id as relation_id',
-      'dependent.id as patient_id',
-      'dependent.name as patient_name',
-      'dependent.phone_number as patient_phone_number',
-      'guardian_relations.dependent as family_relation',
-      'guardian_relations.guardian as guardian_relation',
-      'dependent.sex as patient_sex',
-      eb
-        .case()
-        .when(
-          and([
-            eb('dependent.sex', '=', 'female'),
-            eb('guardian_relations.female_dependent', 'is not', null),
-          ]),
-        )
-        .then(eb.ref('guardian_relations.female_dependent'))
-        .when(
-          and([
-            eb('dependent.sex', '=', 'male'),
-            eb('guardian_relations.male_dependent', 'is not', null),
-          ]),
-        )
-        .then(eb.ref('guardian_relations.male_dependent'))
-        .else(eb.ref('guardian_relations.dependent'))
-        .end()
-        .as('family_relation_sexed'),
-    ])
-    .execute()
-
-  assert(allHaveStringField(dependents, 'patient_name'))
-  return dependents
-}
-
-function getOtherNextOfKinOfPatient(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  return trx
-    .selectFrom('patient_kin')
-    .innerJoin(
-      'patients as kin',
-      'patient_kin.next_of_kin_patient_id',
-      'kin.id',
-    )
-    .leftJoin('patient_guardians', (join) =>
-      join
-        .onRef(
-          'patient_guardians.dependent_patient_id',
-          '=',
-          'patient_kin.patient_id',
-        )
-        .onRef(
-          'patient_guardians.guardian_patient_id',
-          '=',
-          'patient_kin.next_of_kin_patient_id',
-        ))
-    .where('patient_kin.patient_id', '=', patient_id)
-    .where('patient_guardians.id', 'is', null)
-    .select([
-      'patient_kin.id as id',
-      'patient_kin.relationship as relation',
-      'kin.id as patient_id',
-      'kin.name as patient_name',
-      'kin.phone_number as patient_phone_number',
-      'kin.sex as patient_sex',
-    ])
-    .executeTakeFirst()
-}
-
-function getPatientFamily(
-  trx: TrxOrDb,
-  patient_id: string,
-) {
-  return trx
-    .selectFrom('patient_family')
-    .selectAll()
-    .where('patient_id', '=', patient_id)
-    .executeTakeFirst()
-}
-
-export async function get(
-  trx: TrxOrDb,
-  { patient_id }: { patient_id: string },
-): Promise<PatientFamily> {
-  const { patient_family, guardians, dependents, next_of_kin } =
-    await promiseProps({
-      patient_family: getPatientFamily(trx, patient_id),
-      guardians: getGuardiansOfPatient(trx, patient_id),
-      dependents: getDependentsOfPatient(trx, patient_id),
-      next_of_kin: getOtherNextOfKinOfPatient(trx, patient_id),
-    })
-
-  return {
-    marital_status: patient_family?.marital_status,
-    religion: patient_family?.religion,
-    family_type: patient_family?.family_type,
-    patient_cohabitation: patient_family?.patient_cohabitation,
-    guardians,
-    dependents,
-    next_of_kin,
-  }
-}
-
 // const inverseGuardianRelation = memoize((family_relation_sexed: string) => {
 //   for (const relation of GUARDIAN_RELATIONS) {
 //     if (relation.male_guardian === family_relation_sexed) {
@@ -270,7 +267,7 @@ export async function get(
 // 3. Insert: The relation doesn't exist in the db as given by its patient_id
 //   a. The patient already exists
 //   b. The patient is new
-// export async function upsert(
+// ,async upsert(
 //   trx: TrxOrDb,
 //   patient_id: string,
 //   family_to_upsert: FamilyUpsert,
@@ -619,7 +616,7 @@ export async function get(
 //   ])
 // }
 
-// export async function setNextOfKin(
+// ,async setNextOfKin(
 //   trx: TrxOrDb,
 //   patient_id: string,
 //   next_of_kin: NonNullable<FamilyUpsert['next_of_kin']>,

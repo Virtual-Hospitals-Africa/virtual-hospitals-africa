@@ -16,7 +16,7 @@ function name(table_name: string) {
 
 // Yield the tree of sub_diagnoses
 // We need not do this recursively, as we know the maximum depth of the tree
-export function tree(trx: TrxOrDb) {
+function tree(trx: TrxOrDb) {
   return trx.with(
     'icd10_diagnoses_tree',
     (qb) =>
@@ -65,7 +65,7 @@ export function tree(trx: TrxOrDb) {
   )
 }
 
-export function searchBaseQuery(
+function searchBaseQuery(
   trx: TrxOrDb,
   { term, code_range }: {
     term: string
@@ -130,186 +130,6 @@ export function searchBaseQuery(
 
 const code_regex = /^[A-Z][A-Z0-9][A-Z0-9]\.?\d?\d?\d?\d?$/
 
-export function searchTree(
-  trx: TrxOrDb,
-  { term, code_range, limit = 20 }: {
-    term: string
-    code_range?: string | string[]
-    limit?: number
-  },
-): Promise<RenderedICD10DiagnosisTreeWithOptionalIncludes[]> {
-  const is_code = code_regex.test(term)
-
-  if (is_code) {
-    return tree(trx)
-      .selectFrom('icd10_diagnoses_tree')
-      .where('icd10_diagnoses_tree.code', '=', term)
-      .selectAll('icd10_diagnoses_tree')
-      .select((eb) => [
-        jsonArrayFrom(
-          eb.selectFrom('icd10_diagnoses_includes')
-            .whereRef(
-              'icd10_diagnoses_includes.code',
-              '=',
-              'icd10_diagnoses_tree.code',
-            )
-            .select('icd10_diagnoses_includes.note'),
-        ).as('includes'),
-      ])
-      .execute()
-  }
-
-  const base = searchBaseQuery(trx, { term, code_range })
-
-  const parents = base.with(
-    'with_ancestors',
-    (qb) =>
-      qb.selectFrom('matches as descendant_matches')
-        .innerJoin(
-          'icd10_diagnoses as descendants',
-          'descendants.code',
-          'descendant_matches.code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors0',
-          'ancestors0.code',
-          'descendants.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors1',
-          'ancestors1.code',
-          'ancestors0.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors2',
-          'ancestors2.code',
-          'ancestors1.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors3',
-          'ancestors3.code',
-          'ancestors2.parent_code',
-        )
-        .select([
-          'descendants.code as code',
-          'ancestors0.code as ancestor0',
-          'ancestors1.code as ancestor1',
-          'ancestors2.code as ancestor2',
-          'ancestors3.code as ancestor3',
-        ]),
-  ).with('has_parent_in_matches', (qb) =>
-    qb.selectFrom('with_ancestors')
-      .innerJoin(
-        'matches',
-        (join) =>
-          join.on((eb) =>
-            eb.or([
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor0')),
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor1')),
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor2')),
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor3')),
-            ])
-          ),
-      )
-      .select('with_ancestors.code'))
-    .selectFrom('matches')
-    .leftJoin(
-      'has_parent_in_matches',
-      'has_parent_in_matches.code',
-      'matches.code',
-    )
-    .where('has_parent_in_matches.code', 'is', null)
-    .select('matches.code')
-
-  const with_includes = tree(trx)
-    .selectFrom('icd10_diagnoses_tree')
-    .where('icd10_diagnoses_tree.code', 'in', parents)
-    .selectAll('icd10_diagnoses_tree')
-    .select(
-      sql<number>`
-        ts_rank(description_vector, plainto_tsquery(${term}))
-      `.as('similarity'),
-    ).select((eb) => [
-      jsonArrayFrom(
-        eb.selectFrom('icd10_diagnoses_includes')
-          .whereRef(
-            'icd10_diagnoses_includes.code',
-            '=',
-            'icd10_diagnoses_tree.code',
-          )
-          .select('icd10_diagnoses_includes.note')
-          .select(sql<number>`
-            ts_rank(note_vector, plainto_tsquery(${term}))
-          `.as('similarity')),
-      ).as('includes'),
-    ])
-    .as('with_includes')
-
-  return trx.selectFrom(with_includes)
-    .selectAll('with_includes')
-    .select([
-      sql<number>`
-        GREATEST(
-          with_includes.similarity,
-          (SELECT max((include->>'similarity')::real)
-             FROM json_array_elements(includes) AS include)
-        )
-      `.as('best_similarity'),
-    ])
-    .orderBy('best_similarity', 'desc')
-    .limit(limit)
-    .execute()
-}
-
-export function searchFlat(
-  trx: TrxOrDb,
-  { term, code_range, limit = 20 }: {
-    term: string
-    code_range?: string | string[]
-    limit?: number
-  },
-) {
-  const with_includes = searchBaseQuery(trx, { term, code_range })
-    .selectFrom('matches')
-    .innerJoin(
-      'icd10_diagnoses',
-      'icd10_diagnoses.code',
-      'matches.code',
-    )
-    .selectAll('icd10_diagnoses')
-    .select(
-      sql<number>`
-        ts_rank(icd10_diagnoses.description_vector, plainto_tsquery(${term}))
-      `.as('similarity'),
-    )
-    .select((eb) => [
-      jsonArrayFrom(
-        eb.selectFrom('icd10_diagnoses_includes')
-          .whereRef('icd10_diagnoses_includes.code', '=', 'matches.code')
-          .select('icd10_diagnoses_includes.note')
-          .select(sql<number>`
-            ts_rank(note_vector, plainto_tsquery(${term}))
-          `.as('similarity')),
-      ).as('includes'),
-    ]).as('with_includes')
-
-  return trx.selectFrom(with_includes)
-    .selectAll('with_includes')
-    // Maximum similarity of the description or any of the includes notes
-    .select([
-      sql<number>`
-        GREATEST(
-          with_includes.similarity,
-          (SELECT max((include->>'similarity')::real)
-             FROM json_array_elements(includes) AS include)
-        )
-      `.as('best_similarity'),
-    ])
-    .orderBy('best_similarity', 'desc')
-    .limit(limit)
-    .execute()
-}
-
 // deno-fmt-ignore
 const symptoms_chapter = [
   'R00', 'R01', 'R02', 'R03', 'R04', 'R05', 'R06', 'R07', 'R08', 'R09', 'R10', 'R11',
@@ -353,54 +173,232 @@ const symptoms_code_ranges = [
   ...other_symptoms,
 ]
 
-export function searchSymptoms(
-  trx: TrxOrDb,
-  term: string,
-) {
-  return searchTree(trx, { term, code_range: symptoms_code_ranges })
-}
+export const icd10 = {
+  searchTree(
+    trx: TrxOrDb,
+    { term, code_range, limit = 20 }: {
+      term: string
+      code_range?: string | string[]
+      limit?: number
+    },
+  ): Promise<RenderedICD10DiagnosisTreeWithOptionalIncludes[]> {
+    const is_code = code_regex.test(term)
 
-export function byCode(trx: TrxOrDb, code: string) {
-  return trx.selectFrom('icd10_diagnoses')
-    .where('code', '=', code)
-    .selectAll()
-    .executeTakeFirst()
-}
+    if (is_code) {
+      return tree(trx)
+        .selectFrom('icd10_diagnoses_tree')
+        .where('icd10_diagnoses_tree.code', '=', term)
+        .selectAll('icd10_diagnoses_tree')
+        .select((eb) => [
+          jsonArrayFrom(
+            eb.selectFrom('icd10_diagnoses_includes')
+              .whereRef(
+                'icd10_diagnoses_includes.code',
+                '=',
+                'icd10_diagnoses_tree.code',
+              )
+              .select('icd10_diagnoses_includes.note'),
+          ).as('includes'),
+        ])
+        .execute()
+    }
 
-export function byCodeWithSimilarity(trx: TrxOrDb, code: string, term: string) {
-  const with_includes = trx.selectFrom('icd10_diagnoses')
-    .where('code', '=', code)
-    .selectAll()
-    .select(
-      sql<number>`
+    const base = searchBaseQuery(trx, { term, code_range })
+
+    const parents = base.with(
+      'with_ancestors',
+      (qb) =>
+        qb.selectFrom('matches as descendant_matches')
+          .innerJoin(
+            'icd10_diagnoses as descendants',
+            'descendants.code',
+            'descendant_matches.code',
+          )
+          .leftJoin(
+            'icd10_diagnoses as ancestors0',
+            'ancestors0.code',
+            'descendants.parent_code',
+          )
+          .leftJoin(
+            'icd10_diagnoses as ancestors1',
+            'ancestors1.code',
+            'ancestors0.parent_code',
+          )
+          .leftJoin(
+            'icd10_diagnoses as ancestors2',
+            'ancestors2.code',
+            'ancestors1.parent_code',
+          )
+          .leftJoin(
+            'icd10_diagnoses as ancestors3',
+            'ancestors3.code',
+            'ancestors2.parent_code',
+          )
+          .select([
+            'descendants.code as code',
+            'ancestors0.code as ancestor0',
+            'ancestors1.code as ancestor1',
+            'ancestors2.code as ancestor2',
+            'ancestors3.code as ancestor3',
+          ]),
+    ).with('has_parent_in_matches', (qb) =>
+      qb.selectFrom('with_ancestors')
+        .innerJoin(
+          'matches',
+          (join) =>
+            join.on((eb) =>
+              eb.or([
+                eb('matches.code', '=', eb.ref('with_ancestors.ancestor0')),
+                eb('matches.code', '=', eb.ref('with_ancestors.ancestor1')),
+                eb('matches.code', '=', eb.ref('with_ancestors.ancestor2')),
+                eb('matches.code', '=', eb.ref('with_ancestors.ancestor3')),
+              ])
+            ),
+        )
+        .select('with_ancestors.code'))
+      .selectFrom('matches')
+      .leftJoin(
+        'has_parent_in_matches',
+        'has_parent_in_matches.code',
+        'matches.code',
+      )
+      .where('has_parent_in_matches.code', 'is', null)
+      .select('matches.code')
+
+    const with_includes = tree(trx)
+      .selectFrom('icd10_diagnoses_tree')
+      .where('icd10_diagnoses_tree.code', 'in', parents)
+      .selectAll('icd10_diagnoses_tree')
+      .select(
+        sql<number>`
         ts_rank(description_vector, plainto_tsquery(${term}))
       `.as('similarity'),
-    ).select((eb) => [
-      jsonArrayFrom(
-        eb.selectFrom('icd10_diagnoses_includes')
-          .whereRef(
-            'icd10_diagnoses_includes.code',
-            '=',
-            'icd10_diagnoses.code',
-          )
-          .select('icd10_diagnoses_includes.note')
-          .select(sql<number>`
+      ).select((eb) => [
+        jsonArrayFrom(
+          eb.selectFrom('icd10_diagnoses_includes')
+            .whereRef(
+              'icd10_diagnoses_includes.code',
+              '=',
+              'icd10_diagnoses_tree.code',
+            )
+            .select('icd10_diagnoses_includes.note')
+            .select(sql<number>`
             ts_rank(note_vector, plainto_tsquery(${term}))
           `.as('similarity')),
-      ).as('includes'),
-    ]).as('with_includes')
+        ).as('includes'),
+      ])
+      .as('with_includes')
 
-  return trx.selectFrom(with_includes)
-    .selectAll('with_includes')
-    // Maximum similarity of the description or any of the includes notes
-    .select([
-      sql<number>`
+    return trx.selectFrom(with_includes)
+      .selectAll('with_includes')
+      .select([
+        sql<number>`
+        GREATEST(
+          with_includes.similarity,
+          (SELECT max((include->>'similarity')::real)
+             FROM json_array_elements(includes) AS include)
+        )
+      `.as('best_similarity'),
+      ])
+      .orderBy('best_similarity', 'desc')
+      .limit(limit)
+      .execute()
+  },
+  searchFlat(
+    trx: TrxOrDb,
+    { term, code_range, limit = 20 }: {
+      term: string
+      code_range?: string | string[]
+      limit?: number
+    },
+  ) {
+    const with_includes = searchBaseQuery(trx, { term, code_range })
+      .selectFrom('matches')
+      .innerJoin(
+        'icd10_diagnoses',
+        'icd10_diagnoses.code',
+        'matches.code',
+      )
+      .selectAll('icd10_diagnoses')
+      .select(
+        sql<number>`
+        ts_rank(icd10_diagnoses.description_vector, plainto_tsquery(${term}))
+      `.as('similarity'),
+      )
+      .select((eb) => [
+        jsonArrayFrom(
+          eb.selectFrom('icd10_diagnoses_includes')
+            .whereRef('icd10_diagnoses_includes.code', '=', 'matches.code')
+            .select('icd10_diagnoses_includes.note')
+            .select(sql<number>`
+            ts_rank(note_vector, plainto_tsquery(${term}))
+          `.as('similarity')),
+        ).as('includes'),
+      ]).as('with_includes')
+
+    return trx.selectFrom(with_includes)
+      .selectAll('with_includes')
+      // Maximum similarity of the description or any of the includes notes
+      .select([
+        sql<number>`
+        GREATEST(
+          with_includes.similarity,
+          (SELECT max((include->>'similarity')::real)
+             FROM json_array_elements(includes) AS include)
+        )
+      `.as('best_similarity'),
+      ])
+      .orderBy('best_similarity', 'desc')
+      .limit(limit)
+      .execute()
+  },
+  searchSymptoms(
+    trx: TrxOrDb,
+    term: string,
+  ) {
+    return icd10.searchTree(trx, { term, code_range: symptoms_code_ranges })
+  },
+  byCode(trx: TrxOrDb, code: string) {
+    return trx.selectFrom('icd10_diagnoses')
+      .where('code', '=', code)
+      .selectAll()
+      .executeTakeFirst()
+  },
+  byCodeWithSimilarity(trx: TrxOrDb, code: string, term: string) {
+    const with_includes = trx.selectFrom('icd10_diagnoses')
+      .where('code', '=', code)
+      .selectAll()
+      .select(
+        sql<number>`
+        ts_rank(description_vector, plainto_tsquery(${term}))
+      `.as('similarity'),
+      ).select((eb) => [
+        jsonArrayFrom(
+          eb.selectFrom('icd10_diagnoses_includes')
+            .whereRef(
+              'icd10_diagnoses_includes.code',
+              '=',
+              'icd10_diagnoses.code',
+            )
+            .select('icd10_diagnoses_includes.note')
+            .select(sql<number>`
+            ts_rank(note_vector, plainto_tsquery(${term}))
+          `.as('similarity')),
+        ).as('includes'),
+      ]).as('with_includes')
+
+    return trx.selectFrom(with_includes)
+      .selectAll('with_includes')
+      // Maximum similarity of the description or any of the includes notes
+      .select([
+        sql<number>`
         GREATEST(
           with_includes.similarity,
           (SELECT max((include->>'similarity')::real)
               FROM json_array_elements(includes) AS include)
         )
       `.as('best_similarity'),
-    ])
-    .executeTakeFirst()
+      ])
+      .executeTakeFirst()
+  },
 }

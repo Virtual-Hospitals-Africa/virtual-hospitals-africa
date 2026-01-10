@@ -5,7 +5,7 @@
 //   getFormValues,
 //   route,
 // } from '../utilities.ts'
-// import * as patient_encounters from '../../../db/models/patient_encounters.ts'
+// import { patient_encounters } from '../../../db/models/patient_encounters.ts'
 // import db from '../../../db/db.ts'
 
 // describe(

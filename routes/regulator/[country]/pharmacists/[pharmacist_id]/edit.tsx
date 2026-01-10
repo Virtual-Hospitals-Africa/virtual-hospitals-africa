@@ -2,22 +2,21 @@ import { Context } from 'fresh'
 import { LoggedInRegulator } from '../../../../../types.ts'
 import PharmacistForm from '../../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../../util/redirect.ts'
-import { parseRequest } from '../../../../../backend/parseForm.ts'
-import * as pharmacists from '../../../../../db/models/pharmacists.ts'
+import {
+  pharmacists,
+  PharmacistUpsertSchema,
+} from '../../../../../db/models/pharmacists.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
 
-export const handler = {
-  async POST(ctx: Context<LoggedInRegulator>) {
-    const req = ctx.req
+export const handler = postHandler(
+  PharmacistUpsertSchema,
+  async (ctx, form_values) => {
     const { country } = ctx.params
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
-    const to_update = await parseRequest(
-      req,
-      pharmacists.parse_upsert,
-    )
 
-    await pharmacists.update(ctx.state.trx, pharmacist_id, to_update)
+    await pharmacists.update(ctx.state.trx, pharmacist_id, form_values)
 
     const success = encodeURIComponent(
       `Pharmacist updated`,
@@ -27,7 +26,7 @@ export const handler = {
       `/regulator/${country}/pharmacists?success=${success}`,
     )
   },
-}
+)
 
 export default RegulatorHomePageLayout(
   'Pharmacists',

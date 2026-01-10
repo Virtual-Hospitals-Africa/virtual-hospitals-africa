@@ -4,7 +4,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import * as patient_address from '../../../../../../../../db/models/patient_address.ts'
+import { patient_address } from '../../../../../../../../db/models/patient_address.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
 import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'

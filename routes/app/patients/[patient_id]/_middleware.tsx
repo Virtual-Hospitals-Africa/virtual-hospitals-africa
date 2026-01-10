@@ -1,4 +1,4 @@
-import * as patients from '../../../../db/models/patients.ts'
+import { patients } from '../../../../db/models/patients.ts'
 import type {
   LoggedInHealthWorkerContext,
   RenderedPatient,

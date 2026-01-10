@@ -4,7 +4,7 @@ import {
   GeneralAssessmentsPage,
 } from './_middleware.tsx'
 import {} from '../../../../../../../../../types.ts'
-import * as findings from '../../../../../../../../../db/models/examination_findings.ts'
+import { examination_findings } from '../../../../../../../../../db/models/examination_findings.ts'
 import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
 import { PatientExaminationForm } from '../../../../../../../../../components/examinations/Form.tsx'
 import { z } from 'zod'
@@ -46,7 +46,7 @@ export const handler = {
         req,
         ExaminationFindingsSchema.parse,
       ).then((form_values) =>
-        findings.upsertForPatientExamination(ctx.state.trx, {
+        examination_findings.upsertForPatientExamination(ctx.state.trx, {
           patient_id: ctx.state.patient.id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
           patient_encounter_employee_id:
@@ -66,7 +66,7 @@ export const handler = {
 export default GeneralAssessmentsPage(async (ctx) => (
   <PatientExaminationForm
     patient_examination={ctx.state.current_assessment}
-    findings={await findings.forPatientEncounter(ctx.state.trx, {
+    findings={await examination_findings.forPatientEncounter(ctx.state.trx, {
       patient_id: ctx.state.patient.id,
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
     })}

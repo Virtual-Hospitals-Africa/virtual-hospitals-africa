@@ -13,13 +13,13 @@
 //   getApprovedProviders,
 // } from './organizations.ts'
 
-// import * as nearest_organizations from './nearest_organizations.ts'
+// import { nearest_organizations } from './nearest_organizations.ts'
 
 // // import { getMany } from './providers.ts'
 // // import { getAllProviderAvailability } from '../../backend/scheduling/getProviderAvailability.ts'
 // import { promiseProps } from '../../util/promiseProps.ts'
-// import * as organizations from './organizations.ts'
-// import * as patients from './patients.ts'
+// import { organizations } from './organizations.ts'
+// import { patients } from './patients.ts'
 // import { getEmploymentLocationName } from './employment.ts'
 // import { assert } from 'std/assert/assert.ts'
 // import { completedRegistration } from '../../shared/patient_registration.ts'
@@ -98,7 +98,7 @@
 //   return processed_employees
 // }
 
-// export async function forPatientRegistration(
+// ,async forPatientRegistration(
 //   trx: TrxOrDb,
 //   patient_id: string,
 //   location: Coordinates,
@@ -255,7 +255,7 @@
 //   ]
 // }
 
-// export async function forPatientEncounter(
+// ,async forPatientEncounter(
 //   trx: TrxOrDb,
 //   patient_id: string,
 //   location: Coordinates,

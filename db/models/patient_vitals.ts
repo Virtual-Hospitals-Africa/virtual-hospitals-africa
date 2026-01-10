@@ -1,5 +1,5 @@
 // Perhaps a misnomer, this is a more general way of getting findings whether they be measurements or not
-import * as clinical_measurement_requirements from './clinical_measurement_requirements.ts'
+import { clinical_measurement_requirements } from './clinical_measurement_requirements.ts'
 import {
   RenderedFindingRelativeToHealthWorker,
   RenderedMeasurementRelativeToHealthWorker,
@@ -14,7 +14,7 @@ import { jsonObjectFrom } from '../helpers.ts'
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { patient_findings } from './patient_findings.ts'
-import * as patient_encounter_employees from './patient_encounter_employees.ts'
+import { patient_encounter_employees } from './patient_encounter_employees.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 
 import { buildExpression } from './s_expression.ts'
@@ -264,26 +264,25 @@ export const patient_vitals = base({
         ]).execute()
     }
   },
+  async measurementsNeededForTriageEncounter(
+    trx: TrxOrDb,
+    patient_record: RenderedPatient,
+    active_condition_snomed_codes: readonly string[],
+  ): Promise<VitalMeasurementFormInputDefition[]> {
+    // Get regular vital measurements based on clinical context
+    // AVPU/Mobility/Trauma are now handled by database-driven categorical assessments
+
+    assert(completedPersonal(patient_record))
+
+    const requirements_result = await clinical_measurement_requirements
+      .determineMeasurementsForPatient(trx, {
+        patient_id: patient_record.id,
+        age_days: patient_record.age_days ?? 0,
+        sex: patient_record.sex,
+        active_condition_snomed_codes,
+        pregnancy_status: active_condition_snomed_codes.includes('77386006'),
+      })
+
+    return requirements_result.measurements
+  },
 })
-
-export async function measurementsNeededForTriageEncounter(
-  trx: TrxOrDb,
-  patient_record: RenderedPatient,
-  active_condition_snomed_codes: readonly string[],
-): Promise<VitalMeasurementFormInputDefition[]> {
-  // Get regular vital measurements based on clinical context
-  // AVPU/Mobility/Trauma are now handled by database-driven categorical assessments
-
-  assert(completedPersonal(patient_record))
-
-  const requirements_result = await clinical_measurement_requirements
-    .determineMeasurementsForPatient(trx, {
-      patient_id: patient_record.id,
-      age_days: patient_record.age_days ?? 0,
-      sex: patient_record.sex,
-      active_condition_snomed_codes,
-      pregnancy_status: active_condition_snomed_codes.includes('77386006'),
-    })
-
-  return requirements_result.measurements
-}

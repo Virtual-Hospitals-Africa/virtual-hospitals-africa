@@ -4,31 +4,38 @@ import {
   RenderedPatientEncounter,
   TrxOrDb,
 } from '../../types.ts'
-import * as employees from './employees.ts'
+import { employees } from './employees.ts'
+import { base, identity } from './_base.ts'
 
-export function seenPatientEncounterEmployeeId(
-  encounter: RenderedPatientEncounter,
-  organization_employment: HealthWorkerOrganization,
-) {
-  const employee = encounter.all_employees_seen.find((employee) =>
-    employee.employee_id === organization_employment.employment_id
-  )
-  assert(
-    employee,
-    'If the encounter exists and the health worker is manipulating it, the health worker must have seen the patient at least once',
-  )
-  return employee.patient_encounter_employee_id
-}
-
-export function baseQuery(trx: TrxOrDb) {
-  return employees.baseQuery(trx)
-    .innerJoin(
-      'patient_encounter_employees',
-      'employment.id',
-      'patient_encounter_employees.employment_id',
+export const patient_encounter_employees = base({
+  top_level_table: 'patient_encounter_employees' as const,
+  baseQuery(trx: TrxOrDb) {
+    return employees.baseQuery(trx)
+      .innerJoin(
+        'patient_encounter_employees',
+        'employment.id',
+        'patient_encounter_employees.employment_id',
+      )
+      .select([
+        'patient_encounter_employees.id as patient_encounter_employee_id',
+        'patient_encounter_employees.seen_at',
+      ])
+  },
+  handleSearch(qb, _search_terms: { foo?: string }) {
+    return qb
+  },
+  formatResult: identity,
+  seenPatientEncounterEmployeeId(
+    encounter: RenderedPatientEncounter,
+    organization_employment: HealthWorkerOrganization,
+  ) {
+    const employee = encounter.all_employees_seen.find((employee) =>
+      employee.employee_id === organization_employment.employment_id
     )
-    .select([
-      'patient_encounter_employees.id as patient_encounter_employee_id',
-      'patient_encounter_employees.seen_at',
-    ])
-}
+    assert(
+      employee,
+      'If the encounter exists and the health worker is manipulating it, the health worker must have seen the patient at least once',
+    )
+    return employee.patient_encounter_employee_id
+  },
+})

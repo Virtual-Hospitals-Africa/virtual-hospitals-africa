@@ -1,6 +1,6 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
-import * as icd10 from '../../db/models/icd10.ts'
+import { icd10 } from '../../db/models/icd10.ts'
 import { json } from '../../util/responses.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 

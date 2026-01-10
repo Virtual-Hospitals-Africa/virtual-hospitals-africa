@@ -15,7 +15,7 @@ import {
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import { yes_no_unknown } from '../../../../../../../../util/validators.ts'
 import {
-  renderedMostRecentFindings,
+  brief_history,
 } from '../../../../../../../../db/models/brief_history.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
@@ -75,7 +75,7 @@ const TriageBriefHistorySchema = z.object(
 
 function mostRecentFindings({ state }: OpenEncounterWorkflowContext) {
   const { trx, encounter, patient_id, health_worker_id } = state
-  return renderedMostRecentFindings(trx, {
+  return brief_history.renderedMostRecentFindings(trx, {
     encounter,
     patient_id,
     health_worker_id,

@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { afterAll, describe } from 'std/testing/bdd.ts'
-import * as patient_occupations from '../../db/models/patient_occupations.ts'
-import * as patients from '../../db/models/patients.ts'
+import { patient_occupations } from '../../db/models/patient_occupations.ts'
+import { patients } from '../../db/models/patients.ts'
 
 import db from '../../db/db.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'

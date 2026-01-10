@@ -1,6 +1,5 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-
-import { searchSymptoms } from '../../db/models/icd10.ts'
+import { icd10 } from '../../db/models/icd10.ts'
 import { json } from '../../util/responses.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 
@@ -11,7 +10,7 @@ export const handler = {
     assertEquals(req.headers.get('accept'), 'application/json')
     const search = ctx.url.searchParams.get('search')
     if (!search) return json([])
-    const results = await searchSymptoms(ctx.state.trx, search)
+    const results = await icd10.searchSymptoms(ctx.state.trx, search)
     return json(results)
   },
 }

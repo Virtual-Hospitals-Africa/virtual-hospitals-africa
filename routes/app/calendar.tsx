@@ -4,7 +4,7 @@ import type {
   LoggedInHealthWorkerContext,
   ProviderAppointment,
 } from '../../types.ts'
-import { getWithPatientInfo as getAppointments } from '../../db/models/appointments.ts'
+import { appointments } from '../../db/models/appointments.ts'
 import { parseDateTime, todayISOInJohannesburg } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { promiseProps } from '../../util/promiseProps.ts'
@@ -65,9 +65,12 @@ export default HealthWorkerHomePageLayout(
     )
 
     const { appointmentsOfHealthWorker, calendar_events } = await promiseProps({
-      appointmentsOfHealthWorker: getAppointments(ctx.state.trx, {
-        health_worker_id: ctx.state.health_worker.id,
-      }),
+      appointmentsOfHealthWorker: appointments.getWithPatientInfo(
+        ctx.state.trx,
+        {
+          health_worker_id: ctx.state.health_worker.id,
+        },
+      ),
       calendar_events: Promise.all(
         appointment_calendars.map((calendar_id) =>
           google_client.getActiveEvents(calendar_id, {
@@ -91,7 +94,7 @@ export default HealthWorkerHomePageLayout(
           ),
         )
 
-    const appointments: ProviderAppointment[] =
+    const provider_appointments: ProviderAppointment[] =
       appointments_of_provider_with_gcal_event_ids.map(
         (appt) => {
           const gcal_item = events.find((event) =>
@@ -123,9 +126,9 @@ export default HealthWorkerHomePageLayout(
     return (
       <AppointmentsCalendar
         url={ctx.url}
-        appointments={appointments}
         day={day}
         today={today}
+        appointments={provider_appointments}
       />
     )
   },

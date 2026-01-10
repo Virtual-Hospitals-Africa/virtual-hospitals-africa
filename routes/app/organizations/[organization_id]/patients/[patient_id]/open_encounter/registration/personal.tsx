@@ -4,7 +4,7 @@ import {
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import * as patients from '../../../../../../../../db/models/patients.ts'
+import { patients } from '../../../../../../../../db/models/patients.ts'
 import {
   sex,
   string_or_number_as_string,

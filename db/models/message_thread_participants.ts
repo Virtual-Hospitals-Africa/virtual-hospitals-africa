@@ -16,7 +16,7 @@ function baseQuery(
 
 type IntermediateMessageThreadParticipant = QueryResult<typeof baseQuery>
 
-const model = base({
+export const message_thread_participants = base({
   top_level_table: 'message_thread_participants' as const,
   baseQuery,
   formatResult: (
@@ -50,10 +50,3 @@ const model = base({
     return qb
   },
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const findAll = model.findAll
-export const findOne = model.findOne
-export const distinctIds = model.distinctIds

@@ -3,7 +3,7 @@ import { Context } from 'fresh'
 import PharmacyForm from '../../../../islands/regulator/PharmacyForm.tsx'
 import redirect from '../../../../util/redirect.ts'
 import { parseRequest } from '../../../../backend/parseForm.ts'
-import * as pharmacies from '../../../../db/models/pharmacies.ts'
+import { pharmacies } from '../../../../db/models/pharmacies.ts'
 import { LoggedInRegulator } from '../../../../types.ts'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 

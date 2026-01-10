@@ -5,7 +5,7 @@ import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { setupTriage } from './_setup.ts'
 import { route } from '../../../../_route.ts'
-import { getTasksGroups } from '../../../../../db/models/additional_tasks.ts'
+import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import {
@@ -48,7 +48,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/additional_tasks_and_investigations`,
     )
 
-    const result = await getTasksGroups(db, {
+    const result = await additional_tasks.getTasksGroups(db, {
       encounter,
       health_worker_id: nurse.health_worker.id,
     })
@@ -274,7 +274,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/additional_tasks_and_investigations`,
     )
 
-    const result = await getTasksGroups(db, {
+    const result = await additional_tasks.getTasksGroups(db, {
       encounter,
       health_worker_id: nurse.health_worker.id,
     })

@@ -1,10 +1,10 @@
 import * as cheerio from 'cheerio'
 import { Maybe, Names, TrxOrDb } from '../../types.ts'
 import { sessions } from '../../db/models/sessions.ts'
-import * as employment from '../../db/models/employment.ts'
-import * as organizations from '../../db/models/organizations.ts'
-import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import * as employment_calendars from '../../db/models/employment_calendars.ts'
+import { employment } from '../../db/models/employment.ts'
+import { organizations } from '../../db/models/organizations.ts'
+import { nurse_registration_details } from '../../db/models/nurse_registration_details.ts'
+import { employment_calendars } from '../../db/models/employment_calendars.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 import testCalendars from '../../mocks/testCalendars.ts'
@@ -13,8 +13,8 @@ import { route } from '../_route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import omit from '../../util/omit.ts'
 import {
-  HealthWorkerWithGoogleTokens,
-  insertWithGoogleCredentials,
+  health_worker_google_tokens,
+  type HealthWorkerWithGoogleTokens,
 } from '../../db/models/health_worker_google_tokens.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
@@ -136,7 +136,7 @@ export async function addTestEmployee(
   )
 
   if (profession === 'nurse' && registration_status !== 'not started') {
-    const admin = await insertWithGoogleCredentials(
+    const admin = await health_worker_google_tokens.insertWithGoogleCredentials(
       trx,
       testHealthWorker(),
     )

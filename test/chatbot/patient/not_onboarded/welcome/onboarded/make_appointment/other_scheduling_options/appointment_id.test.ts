@@ -4,12 +4,11 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../../db/db.ts'
 import respond from '../../../../../../../../chatbot/respond.ts'
 import * as google from '../../../../../../../../external-clients/google.ts'
-import * as conversations from '../../../../../../../../db/models/conversations.ts'
-import * as patients from '../../../../../../../../db/models/patients.ts'
-import * as appointments from '../../../../../../../../db/models/appointments.ts'
-import { getPatientLastConversationState } from '../../../../../../../../db/models/patient_chatbot_users.ts'
+import { conversations } from '../../../../../../../../db/models/conversations.ts'
+import { patients } from '../../../../../../../../db/models/patients.ts'
+import { appointments } from '../../../../../../../../db/models/appointments.ts'
+import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 import { prettyAppointmentTime } from '../../../../../../../../util/date.ts'
-import { declineOfferedTimes } from '../../../../../../../../db/models/appointments.ts'
 
 import generateUUID from '../../../../../../../../util/uuid.ts'
 
@@ -70,7 +69,7 @@ describe.skip('patient chatbot', () => {
         end,
         duration_minutes,
       })
-      await declineOfferedTimes(db, [first_offered_time.id])
+      await appointments.declineOfferedTimes(db, [first_offered_time.id])
 
       const other_time = new Date(first_time)
       other_time.setHours(10, 0, 0, 0)
@@ -121,9 +120,10 @@ describe.skip('patient chatbot', () => {
           phone_number,
         },
       ])
-      const patient = await getPatientLastConversationState(db, {
-        phone_number,
-      })
+      const patient = await patient_chatbot_users
+        .getPatientLastConversationState(db, {
+          phone_number,
+        })
 
       assert(patient)
       assertEquals(

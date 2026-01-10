@@ -17,6 +17,7 @@ import {
   PROCEDURE,
   TRIAGE_PROCEDURE,
 } from '../../shared/snomed_concepts.ts'
+
 export function insertProcedure(
   trx: TrxOrDb,
   {
@@ -58,7 +59,7 @@ export function insertProcedure(
     .executeTakeFirstOrThrow()
 }
 
-export function insertLevel(
+function insertLevel(
   trx: TrxOrDb,
   {
     patient_id,
@@ -145,9 +146,10 @@ type PatientEvaluationTriageSearch = {
   search?: string
 }
 
-export const patient_triage_level = base({
+export const patient_triage = base({
   top_level_table: 'patient_triage_level',
   baseQuery,
+  insertLevel,
   formatResult: (x) => x,
   handleSearch(
     qb,

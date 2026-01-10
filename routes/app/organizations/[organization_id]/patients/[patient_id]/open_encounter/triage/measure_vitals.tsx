@@ -29,9 +29,9 @@ import {
 import keys from '../../../../../../../../util/keys.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { assert } from 'std/assert/assert.ts'
-import { insertTasksIfNotAlreadyIdentified } from '../../../../../../../../db/models/additional_tasks.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
-import { renderedMostRecentFindings } from '../../../../../../../../db/models/brief_history.ts'
+import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
+import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
@@ -42,7 +42,7 @@ import {
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
 } from '../../../../../../../../types.ts'
-import { insertLevel } from '../../../../../../../../db/models/patient_triage.ts'
+import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import {
   EVALUATION_ACTION,
   SEVERITY_SCORE,
@@ -77,7 +77,7 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
 
   const age_determination = patientAgeDetermination(patient)
   const patient_id = patient.id
-  const { diabetes } = await renderedMostRecentFindings(
+  const { diabetes } = await brief_history.renderedMostRecentFindings(
     trx,
     {
       patient_id,
@@ -282,7 +282,7 @@ export const handler = postHandler(
       },
     )
 
-    await insertLevel(trx, {
+    await patient_triage.insertLevel(trx, {
       patient_id,
       patient_encounter_id,
       procedure_id,
@@ -291,7 +291,7 @@ export const handler = postHandler(
       triage_level: triageLevelFromTEWSTotal(total_score, age_determination),
     })
 
-    await insertTasksIfNotAlreadyIdentified(trx, {
+    await additional_tasks.insertTasksIfNotAlreadyIdentified(trx, {
       patient_id,
       patient_encounter_id,
     })

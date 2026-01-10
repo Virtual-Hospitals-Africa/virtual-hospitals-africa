@@ -4,7 +4,7 @@ import { success_true } from '../helpers.ts'
 import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
 import { base } from './_base.ts'
 
-export function insertSpeech(
+function insertSpeech(
   trx: TrxOrDb,
   { media_speech_id, binary_data, mime_type, language_code }: {
     media_speech_id?: string
@@ -33,7 +33,7 @@ export function insertSpeech(
     .executeTakeFirstOrThrow()
 }
 
-export function insertSpeechTranscription(
+function insertSpeechTranscription(
   trx: TrxOrDb,
   { media_speech_id, transcription, model }: {
     media_speech_id: string
@@ -51,7 +51,7 @@ export function insertSpeechTranscription(
     .executeTakeFirstOrThrow()
 }
 
-export function insert(
+function insert(
   trx: TrxOrDb,
   opts: { binary_data: Uint8Array; mime_type: string },
 ): Promise<{
@@ -78,7 +78,7 @@ function baseQuery(trx: TrxOrDb) {
     ])
 }
 
-const model = base({
+export const media = base({
   top_level_table: 'media' as const,
   baseQuery,
   formatResult: (x) => x,
@@ -102,10 +102,7 @@ const model = base({
     }
     return qb
   },
+  insertSpeech,
+  insertSpeechTranscription,
+  insert,
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const findAll = model.findAll
-export const findOne = model.findOne

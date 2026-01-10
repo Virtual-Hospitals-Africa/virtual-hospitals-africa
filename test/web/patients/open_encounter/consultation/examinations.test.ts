@@ -1,8 +1,8 @@
 // import { describe, it } from 'std/testing/bdd.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 // import { addTestEmployeeWithSession, route } from '../utilities.ts'
-// import * as patient_encounters from '../../../db/models/patient_encounters.ts'
-// import * as patients from '../../../db/models/patients.ts'
+// import { patient_encounters } from '../../../db/models/patient_encounters.ts'
+// import { patients } from '../../../db/models/patients.ts'
 // import {
 //   forPatientEncounter,
 //   getPatientExamination,

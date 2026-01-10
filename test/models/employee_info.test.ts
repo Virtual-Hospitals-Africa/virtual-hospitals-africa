@@ -6,10 +6,10 @@ import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetail
 import { prettyPatientDateOfBirth } from '../../util/date.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
-import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import * as employment from '../../db/models/employment.ts'
-import * as media from '../../db/models/media.ts'
-import { getEmployeeInfo } from '../../db/models/employee_info.ts'
+import { nurse_registration_details } from '../../db/models/nurse_registration_details.ts'
+import { employment } from '../../db/models/employment.ts'
+import { media } from '../../db/models/media.ts'
+import { employee_info } from '../../db/models/employee_info.ts'
 import db from '../../db/db.ts'
 
 describe('getEmployeeInfo', () => {
@@ -30,7 +30,7 @@ describe('getEmployeeInfo', () => {
         organization_id: '00000000-0000-1000-8000-000000000002',
       }])
 
-      const result = await getEmployeeInfo(
+      const result = await employee_info.getEmployeeInfo(
         trx,
         {
           health_worker_id: health_worker.id,
@@ -100,7 +100,7 @@ describe('getEmployeeInfo', () => {
       })
       await nurse_registration_details.add(trx, details)
 
-      const result = await getEmployeeInfo(
+      const result = await employee_info.getEmployeeInfo(
         trx,
         {
           health_worker_id: health_worker.id,
@@ -192,7 +192,7 @@ describe('getEmployeeInfo', () => {
 
     await nurse_registration_details.add(trx, details)
 
-    const result = await getEmployeeInfo(
+    const result = await employee_info.getEmployeeInfo(
       trx,
       {
         health_worker_id: health_worker.id,

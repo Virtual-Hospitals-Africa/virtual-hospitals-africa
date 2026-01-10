@@ -62,7 +62,7 @@ export default function ContactPage(
                 <img
                   src='https://live.staticflickr.com/8877/29095571713_eb20065354_b.jpg'
                   alt=''
-                  className='aspect-[7/5] w-[37rem] max-w-none rounded-2xl bg-gray-50 object-cover'
+                  className='aspect-7/5 w-148 max-w-none rounded-2xl bg-gray-50 object-cover'
                 />
               </div>
             </div>

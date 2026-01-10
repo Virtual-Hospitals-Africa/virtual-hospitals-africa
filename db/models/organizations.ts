@@ -8,7 +8,7 @@ import {
   RenderedOrganization,
   TrxOrDb,
 } from '../../types.ts'
-import * as addresses from './addresses.ts'
+import { addresses, type AddressInsert } from './addresses.ts'
 import {
   blankSelection,
   jsonArrayFrom,
@@ -24,7 +24,7 @@ import { SERVER_COUNTRY } from './countries.ts'
 import { DB } from '../../db.d.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 
-export function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('organizations')
     .leftJoin('addresses', 'organizations.address_id', 'addresses.id')
@@ -87,56 +87,6 @@ export function baseQuery(trx: TrxOrDb) {
     ])
 }
 
-const model = base({
-  top_level_table: 'organizations',
-  caching: {
-    number_of_items: 100,
-  },
-  baseQuery,
-  formatResult: (x): RenderedOrganization => x,
-  handleSearch(
-    qb,
-    opts: {
-      search?: string | null
-      kind?: 'physical' | 'virtual' | null
-      is_test?: boolean
-      category?: string
-      country?: string
-      include_all_countries?: boolean
-    },
-  ) {
-    if (opts.search) {
-      qb = qb.where('organizations.name', 'ilike', `%${opts.search}%`)
-    }
-    if (opts.kind) {
-      qb = qb.where(
-        'address_id',
-        opts.kind === 'physical' ? 'is not' : 'is',
-        null,
-      )
-    }
-    if (opts.is_test != null) {
-      qb = qb.where('organizations.is_test', '=', opts.is_test)
-    }
-    if (!opts.include_all_countries) {
-      qb = qb.where('organizations.country', '=', SERVER_COUNTRY)
-    }
-    if (opts.category) {
-      qb = qb.where('organizations.category', '=', opts.category)
-    }
-    if (opts.country) {
-      qb = qb.where('organizations.country', '=', opts.country)
-    }
-    return qb
-  },
-})
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-
-export type OrganizationSearchResult = SearchResult<typeof model>
-
 export type OrganizationInsert = {
   id?: string
   name: string
@@ -144,7 +94,7 @@ export type OrganizationInsert = {
   ownership?: Maybe<string>
   category?: Maybe<string>
   inactive_reason?: string
-  address?: Maybe<addresses.AddressInsert>
+  address?: Maybe<AddressInsert>
   location?: Coordinates
   is_test?: boolean
   departments?: {
@@ -154,7 +104,7 @@ export type OrganizationInsert = {
   most_common_language_code?: string
 }
 
-export async function addDepartments(
+async function addDepartments(
   trx: TrxOrDb,
   organization_id: string,
   departments: {
@@ -211,7 +161,7 @@ export async function addDepartments(
     ]).executeTakeFirstOrThrow()
 }
 
-export async function add(
+async function add(
   trx: TrxOrDb,
   {
     id,
@@ -254,7 +204,7 @@ export async function add(
   return { id: organization_id, address_id }
 }
 
-export function remove(
+function remove(
   trx: TrxOrDb,
   opts: {
     id: string
@@ -263,3 +213,52 @@ export function remove(
   assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
   return trx.deleteFrom('organizations').where('id', '=', opts.id).execute()
 }
+
+export const organizations = base({
+  top_level_table: 'organizations',
+  caching: {
+    number_of_items: 100,
+  },
+  baseQuery,
+  formatResult: (x): RenderedOrganization => x,
+  handleSearch(
+    qb,
+    opts: {
+      search?: string | null
+      kind?: 'physical' | 'virtual' | null
+      is_test?: boolean
+      category?: string
+      country?: string
+      include_all_countries?: boolean
+    },
+  ) {
+    if (opts.search) {
+      qb = qb.where('organizations.name', 'ilike', `%${opts.search}%`)
+    }
+    if (opts.kind) {
+      qb = qb.where(
+        'address_id',
+        opts.kind === 'physical' ? 'is not' : 'is',
+        null,
+      )
+    }
+    if (opts.is_test != null) {
+      qb = qb.where('organizations.is_test', '=', opts.is_test)
+    }
+    if (!opts.include_all_countries) {
+      qb = qb.where('organizations.country', '=', SERVER_COUNTRY)
+    }
+    if (opts.category) {
+      qb = qb.where('organizations.category', '=', opts.category)
+    }
+    if (opts.country) {
+      qb = qb.where('organizations.country', '=', opts.country)
+    }
+    return qb
+  },
+  addDepartments,
+  add,
+  remove,
+})
+
+export type OrganizationSearchResult = SearchResult<typeof organizations>

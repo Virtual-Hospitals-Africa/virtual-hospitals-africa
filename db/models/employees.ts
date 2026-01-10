@@ -1,21 +1,16 @@
-import { SelectQueryBuilder, sql } from 'kysely'
+import { sql } from 'kysely'
 import { EmployedHealthWorker, RenderedEmployee, TrxOrDb } from '../../types.ts'
 import { health_workers, type HealthWorkerSearch } from './health_workers.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
-import { DB } from '../../db.d.ts'
 import isString from '../../util/isString.ts'
 import { Workflow } from '../../shared/workflow.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { exists } from '../../util/exists.ts'
 import matching from '../../util/matching.ts'
 
-export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
-  DB,
-  'health_workers' | 'employment',
-  RenderedEmployee
-> {
+function baseQuery(trx: TrxOrDb) {
   return health_workers.baseQuery(trx)
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
     .select([
@@ -30,7 +25,28 @@ export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
     ])
 }
 
-const model = base({
+function fromHealthWorker(
+  health_worker: EmployedHealthWorker,
+  organization_id: string | undefined,
+): RenderedEmployee {
+  const organization_employment = organization_id
+    ? exists(health_worker.organizations.find(matching({
+      id: organization_id,
+    })))
+    : health_worker.organizations[0]
+  return {
+    ...health_worker,
+    organization_id: organization_employment.id,
+    employee_id: organization_employment.employment_id,
+    profession: organization_employment.profession,
+    is_admin: organization_employment.is_admin,
+    specialty: organization_employment.specialty,
+    href:
+      `/app/organizations/${organization_employment.id}/employees/${health_worker.id}`,
+  }
+}
+
+export const employees = base({
   top_level_table: 'employment',
   baseQuery,
   formatResult: (
@@ -102,35 +118,5 @@ const model = base({
 
     return qb
   },
+  fromHealthWorker,
 })
-
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const getByIdOptional = model.getByIdOptional
-export const search = model.search
-export const findAll = model.findAll
-export const findOne = model.findOne
-export const findOneOptional = model.findOneOptional
-export const formatResult = model.formatResult
-export const distinctIds = model.distinctIds
-
-export function fromHealthWorker(
-  health_worker: EmployedHealthWorker,
-  organization_id: string | undefined,
-): RenderedEmployee {
-  const organization_employment = organization_id
-    ? exists(health_worker.organizations.find(matching({
-      id: organization_id,
-    })))
-    : health_worker.organizations[0]
-  return {
-    ...health_worker,
-    organization_id: organization_employment.id,
-    employee_id: organization_employment.employment_id,
-    profession: organization_employment.profession,
-    is_admin: organization_employment.is_admin,
-    specialty: organization_employment.specialty,
-    href:
-      `/app/organizations/${organization_employment.id}/employees/${health_worker.id}`,
-  }
-}

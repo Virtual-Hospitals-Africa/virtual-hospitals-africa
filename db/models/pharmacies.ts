@@ -4,7 +4,7 @@ import { addressDisplaySql, nameSql } from './pharmacists.ts'
 import { RenderedPharmacy } from '../../types.ts'
 import { TrxOrDb } from '../../types.ts'
 import { PharmaciesTypes } from '../../db.d.ts'
-import { insert as insertPharmacyEmployment } from './pharmacy_employment.ts'
+import { pharmacy_employment } from './pharmacy_employment.ts'
 import { base } from './_base.ts'
 
 const view_sql = sql<
@@ -59,7 +59,7 @@ function baseQuery(trx: TrxOrDb) {
     .orderBy('pharmacies.name', 'asc')
 }
 
-export const isLicenceLike = (search: string) =>
+const isLicenceLike = (search: string) =>
   /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
@@ -68,7 +68,7 @@ type SearchTerms = {
   licence_number_search: string | null
 }
 
-export function toSearchTerms(
+function toSearchTerms(
   country: string,
   search: string | null,
 ): SearchTerms {
@@ -85,7 +85,24 @@ export function toSearchTerms(
   return { country, name_search: search, licence_number_search: null }
 }
 
-const model = base({
+type PharmacySupervisorInsert = {
+  id: string
+  name: string
+}
+
+export type PharmacyInsert = {
+  address: string | null
+  town: string | null
+  expiry_date: string
+  licence_number: string
+  licensee: string
+  name: string
+  country: string
+  pharmacies_types: PharmaciesTypes
+  supervisors?: PharmacySupervisorInsert[]
+}
+
+export const pharmacies = base({
   top_level_table: 'pharmacies',
   baseQuery,
   formatResult(result): RenderedPharmacy {
@@ -107,51 +124,30 @@ const model = base({
     }
     return qb
   },
+  isLicenceLike,
+  toSearchTerms,
+  getByLicenceNumber(trx: TrxOrDb, licence_number: string) {
+    return baseQuery(trx)
+      .where('licence_number', '=', licence_number)
+      .executeTakeFirst()
+  },
+  async insert(
+    trx: TrxOrDb,
+    data: PharmacyInsert,
+  ): Promise<{ id: string }> {
+    const { supervisors, ...pharmacyData } = data
+    const pharmacy = await trx
+      .insertInto('pharmacies')
+      .values(pharmacyData)
+      .returning('id')
+      .executeTakeFirstOrThrow()
+    if (!supervisors) return pharmacy
+    const pharmacy_employments = supervisors.map((supervisor) => ({
+      pharmacist_id: supervisor.id,
+      pharmacy_id: pharmacy.id,
+      is_supervisor: true,
+    }))
+    await pharmacy_employment.insert(trx, pharmacy_employments)
+    return pharmacy
+  },
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-
-export function getByLicenceNumber(trx: TrxOrDb, licence_number: string) {
-  return baseQuery(trx)
-    .where('licence_number', '=', licence_number)
-    .executeTakeFirst()
-}
-
-type PharmacySupervisorInsert = {
-  id: string
-  name: string
-}
-
-export type PharmacyInsert = {
-  address: string | null
-  town: string | null
-  expiry_date: string
-  licence_number: string
-  licensee: string
-  name: string
-  country: string
-  pharmacies_types: PharmaciesTypes
-  supervisors?: PharmacySupervisorInsert[]
-}
-
-export async function insert(
-  trx: TrxOrDb,
-  data: PharmacyInsert,
-): Promise<{ id: string }> {
-  const { supervisors, ...pharmacyData } = data
-  const pharmacy = await trx
-    .insertInto('pharmacies')
-    .values(pharmacyData)
-    .returning('id')
-    .executeTakeFirstOrThrow()
-  if (!supervisors) return pharmacy
-  const pharmacy_employments = supervisors.map((supervisor) => ({
-    pharmacist_id: supervisor.id,
-    pharmacy_id: pharmacy.id,
-    is_supervisor: true,
-  }))
-  await insertPharmacyEmployment(trx, pharmacy_employments)
-  return pharmacy
-}

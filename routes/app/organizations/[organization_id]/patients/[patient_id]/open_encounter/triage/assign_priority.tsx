@@ -28,8 +28,8 @@ import sortBy from '../../../../../../../../util/sortBy.ts'
 import partition from '../../../../../../../../util/partition.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
-import { hydrateIntermediateRecords } from '../../../../../../../../db/models/patient_record_providers.ts'
-import { patient_triage_level } from '../../../../../../../../db/models/patient_triage.ts'
+import { patient_record_providers } from '../../../../../../../../db/models/patient_record_providers.ts'
+import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import { assertAllNotNull } from '../../../../../../../../util/assertAll.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
@@ -38,7 +38,6 @@ import sumBy from '../../../../../../../../util/sumBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 import { intersection } from '../../../../../../../../util/intersection.ts'
-import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -63,7 +62,7 @@ async function withTriageLevelFindings(
 ): Promise<WithTriageLevelFinding[]> {
   const findings = await patient_findings.getByIds(
     trx,
-    patient_triage_level.distinctIds(
+    patient_triage.distinctIds(
       trx,
       {
         patient_id,
@@ -76,7 +75,7 @@ async function withTriageLevelFindings(
 
   assertAllNotNull(findings, 'priority')
 
-  return hydrateIntermediateRecords(trx, {
+  return patient_record_providers.hydrateIntermediateRecords(trx, {
     records: findings,
     health_worker_id,
     encounter,

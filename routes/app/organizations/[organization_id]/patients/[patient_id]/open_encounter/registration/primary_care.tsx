@@ -6,14 +6,9 @@ import {
 import { z } from 'zod'
 import { NearestHealthCareSection } from '../../../../../../../../islands/NearestHealthCare.tsx'
 import { HealthInsuranceSection } from '../../../../../../../../islands/HealthInsurance.tsx'
-import {
-  setNearestHealthFacility,
-  setPrimaryDoctor,
-  setUnregisteredPrimaryDoctor,
-} from '../../../../../../../../db/models/patient_primary_care.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-import * as patient_primary_care from '../../../../../../../../db/models/patient_primary_care.ts'
-import * as patient_insurance from '../../../../../../../../db/models/patient_insurance.ts'
+import { patient_primary_care } from '../../../../../../../../db/models/patient_primary_care.ts'
+import { patient_insurance } from '../../../../../../../../db/models/patient_insurance.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { string_or_number_as_string } from '../../../../../../../../util/validators.ts'
 
@@ -47,18 +42,21 @@ export const handler = postHandler(
 
     const { response } = await promiseProps({
       setting_primary_doctor: primary_doctor_id
-        ? setPrimaryDoctor(trx, {
+        ? patient_primary_care.setPrimaryDoctor(trx, {
           patient_id,
           primary_doctor_id,
         })
-        : setUnregisteredPrimaryDoctor(trx, {
+        : patient_primary_care.setUnregisteredPrimaryDoctor(trx, {
           patient_id,
           primary_doctor_name,
         }),
-      setting_nearest_facility: setNearestHealthFacility(trx, {
-        patient_id,
-        nearest_organization_id,
-      }),
+      setting_nearest_facility: patient_primary_care.setNearestHealthFacility(
+        trx,
+        {
+          patient_id,
+          nearest_organization_id,
+        },
+      ),
       updating_insurance: insurance.has_no_insurance
         ? patient_insurance.clearCurrent(trx, { patient_id })
         : patient_insurance.setCurrent(trx, {

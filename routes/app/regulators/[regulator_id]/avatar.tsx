@@ -1,4 +1,4 @@
-import * as regulators from '../../../../db/models/regulators.ts'
+import { regulators } from '../../../../db/models/regulators.ts'
 
 import { file } from '../../../../util/responses.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'

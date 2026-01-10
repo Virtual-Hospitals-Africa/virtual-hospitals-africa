@@ -20,12 +20,12 @@ Read these files when working in this codebase. They are the source of truth for
 ```bash
 # Development
 deno task start                    # Start dev server
-deno task local db:rebuild         # Rebuild databases (preferred)
+deno task local db:rebuild         # Rebuild databases (leave this to human devs to do generally)
 
 # Testing
 deno task test                     # Run all tests
 deno task test ./test/path/to.ts   # Run specific test
-deno task check                    # Type check
+deno task check                    # Type check. Pipe to tail not head as errors are at the bottom
 
 # Database
 deno task db:codegen               # Regenerate db.d.ts types

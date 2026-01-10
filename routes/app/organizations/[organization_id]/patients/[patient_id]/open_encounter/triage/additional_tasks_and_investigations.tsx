@@ -7,7 +7,7 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import AdditionalTasks from '../../../../../../../../components/triage/AdditionalTasks.tsx'
-import { getTasksGroups } from '../../../../../../../../db/models/additional_tasks.ts'
+import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { yes_no_unknown } from '../../../../../../../../util/validators.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import entries from '../../../../../../../../util/entries.ts'
@@ -120,7 +120,7 @@ export const handler = postHandler(
 export async function TriageAdditionalTasksAndInvestigationsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const task_groups = await getTasksGroups(ctx.state.trx, {
+  const task_groups = await additional_tasks.getTasksGroups(ctx.state.trx, {
     health_worker_id: ctx.state.health_worker.id,
     encounter: ctx.state.encounter,
   })

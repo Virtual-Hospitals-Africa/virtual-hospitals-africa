@@ -1,17 +1,18 @@
 import { assert } from 'std/assert/assert.ts'
 import { PatientChatbotUserState, TrxOrDb } from '../../types.ts'
-import * as appointments from '../../db/models/appointments.ts'
-import { schedulingAppointmentRequest } from '../../db/models/patient_appointments.ts'
+import { appointments } from '../../db/models/appointments.ts'
+import { patient_appointments } from '../../db/models/patient_appointments.ts'
 
 export async function receiveMedia(
   trx: TrxOrDb,
   patientState: PatientChatbotUserState,
 ) {
   assert(patientState.chatbot_user.entity_id)
-  const scheduling_appointment_request = await schedulingAppointmentRequest(
-    trx,
-    patientState.chatbot_user.entity_id,
-  )
+  const scheduling_appointment_request = await patient_appointments
+    .schedulingAppointmentRequest(
+      trx,
+      patientState.chatbot_user.entity_id,
+    )
   assert(scheduling_appointment_request)
 
   assert(patientState.unhandled_message.media_id)

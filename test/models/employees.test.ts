@@ -1,7 +1,7 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as employment from '../../db/models/employment.ts'
-import * as organizations from '../../db/models/organizations.ts'
+import { employment } from '../../db/models/employment.ts'
+import { organizations } from '../../db/models/organizations.ts'
 import db from '../../db/db.ts'
 import { exists } from '../../util/exists.ts'
 import assertLength from '../../util/assertLength.ts'
@@ -10,7 +10,7 @@ import {
   createTestOrganization,
   TEST_ORGANIZATION_UUIDS,
 } from '../_helpers/organizations.ts'
-import * as employees from '../../db/models/employees.ts'
+import { employees } from '../../db/models/employees.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'

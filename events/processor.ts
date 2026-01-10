@@ -1,6 +1,6 @@
 import db from '../db/db.ts'
 import { EVENTS, isEventType } from './handlers.ts'
-import * as events from '../db/models/events.ts'
+import { events } from '../db/models/events.ts'
 import { forEach } from '../util/inParallel.ts'
 import { TrxOrDb } from '../types.ts'
 import { now } from '../db/helpers.ts'

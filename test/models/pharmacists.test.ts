@@ -1,6 +1,6 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as pharmacists from '../../db/models/pharmacists.ts'
+import { pharmacists } from '../../db/models/pharmacists.ts'
 
 import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'

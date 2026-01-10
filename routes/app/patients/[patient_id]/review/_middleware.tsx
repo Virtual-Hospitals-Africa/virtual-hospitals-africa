@@ -2,11 +2,10 @@ import { ComponentChildren, JSX } from 'preact'
 import { Context } from 'fresh'
 import { assert } from 'std/assert/assert.ts'
 import Form from '../../../../../components/library/Form.tsx'
-import * as doctor_reviews from '../../../../../db/models/doctor_reviews.ts'
+import { doctor_reviews } from '../../../../../db/models/doctor_reviews.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../util/capitalize.ts'
-import { completedStep } from '../../../../../db/models/doctor_reviews.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../../../../shared/review.ts'
 import { LoggedInHealthWorkerContext } from '../../../../../types.ts'
@@ -82,7 +81,7 @@ export const nextLink = ({ route, params }: Context<any>) => {
 export async function completeStep(ctx: ReviewContext) {
   const step = nav_links.find((link) => link.route === ctx.route)?.step
   assert(step)
-  await completedStep(ctx.state.trx, {
+  await doctor_reviews.completedStep(ctx.state.trx, {
     doctor_review_id: ctx.state.doctor_review.review_id,
     step,
   })

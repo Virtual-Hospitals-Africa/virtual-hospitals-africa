@@ -9,12 +9,12 @@ import {
 } from '../../../../../../../../types.ts'
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../../../../islands/diagnoses/Form.tsx'
-import * as diagnoses from '../../../../../../../../db/models/diagnoses.ts'
+import { diagnoses } from '../../../../../../../../db/models/diagnoses.ts'
 import { parseRequestAsserts } from '../../../../../../../../backend/parseForm.ts'
 import isObjectLike from '../../../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
-// import * as patient_symptoms from '../../../../../../../../db/models/patient_symptoms.ts'
+// import { patient_symptoms } from '../../../../../../../../db/models/patient_symptoms.ts'
 
 type DiagnosisData = {
   diagnoses: Diagnosis[]

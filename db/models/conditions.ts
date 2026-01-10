@@ -20,7 +20,7 @@ function baseQuery(
     ])
 }
 
-const model = base({
+export const conditions = base({
   top_level_table: 'conditions',
   baseQuery,
   formatResult: (x: Condition): Condition => x,
@@ -35,7 +35,3 @@ const model = base({
     return qb.where('is_procedure', '=', opts.is_procedure)
   },
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds

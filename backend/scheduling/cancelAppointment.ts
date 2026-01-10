@@ -1,11 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
 import { PatientChatbotUserState, TrxOrDb } from '../../types.ts'
 import * as google from '../../external-clients/google.ts'
-import { scheduledAppointments } from '../../db/models/patient_appointments.ts'
-import { getById } from '../../db/models/employees.ts'
-import * as employment_calendars from '../../db/models/employment_calendars.ts'
+import { patient_appointments } from '../../db/models/patient_appointments.ts'
+import { employees } from '../../db/models/employees.ts'
+import { employment_calendars } from '../../db/models/employment_calendars.ts'
 import { google_tokens } from '../../db/models/google_tokens.ts'
-import { remove } from '../../db/models/appointments.ts'
+import { appointments } from '../../db/models/appointments.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 
 // This should remove the scheduled appointment from the database and from google calendar
@@ -17,18 +17,19 @@ export async function cancelAppointment(
     patientState.chatbot_user.entity_id,
     'No entity_id found in patientState',
   )
-  const scheduled_appointments = await scheduledAppointments(
-    trx,
-    patientState.chatbot_user.entity_id,
-  )
+  const scheduled_appointments = await patient_appointments
+    .scheduledAppointments(
+      trx,
+      patientState.chatbot_user.entity_id,
+    )
   const scheduled_appointment = scheduled_appointments[0]
   assert(
     scheduled_appointment,
     'No scheduling_appointment_id found in patientState',
   )
-  await remove(trx, scheduled_appointment.id)
+  await appointments.remove(trx, scheduled_appointment.id)
 
-  const matching_provider = await getById(
+  const matching_provider = await employees.getById(
     trx,
     scheduled_appointment.provider_id,
   )
