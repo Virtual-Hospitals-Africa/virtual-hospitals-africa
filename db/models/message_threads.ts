@@ -58,7 +58,7 @@ function baseQuery(
 
 type IntermediateMessageThread = QueryResult<typeof baseQuery>
 
-const model = base({
+export const message_threads = base({
   top_level_table: 'message_threads' as const,
   baseQuery,
   formatResult: (x: IntermediateMessageThread): IntermediateMessageThread => x,
@@ -119,11 +119,11 @@ const model = base({
   },
 })
 
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const findAll = model.findAll
-export const findOne = model.findOne
+
+
+
+
+
 
 export async function create(
   trx: TrxOrDb,
@@ -277,7 +277,7 @@ export async function getOneForHealthWorker(
 
   const { thread, raw_messages, raw_employees, raw_pharmacists } =
     await promiseProps({
-      thread: findOne(trx, {
+      thread: message_threads.findOne(trx, {
         employee_ids,
         thread_id: message_thread_id,
       }),
@@ -350,7 +350,7 @@ export async function getForHealthWorker(
 
   assert(employee_ids.length, 'Must complete onboarding first')
 
-  const threads = await findAll(trx, { employee_ids })
+  const threads = await message_threads.findAll(trx, { employee_ids })
   const thread_ids = threads.map((t) => t.id)
 
   const { most_recent_messages_raw, raw_employees, raw_pharmacists } =

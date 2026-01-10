@@ -103,7 +103,7 @@ export function baseQuery(
     ])
 }
 
-const model = base({
+export const doctor_reviews = base({
   top_level_table: 'doctor_reviews',
   baseQuery,
   formatResult: (x: RenderedDoctorReview): RenderedDoctorReview => x,
@@ -115,7 +115,7 @@ const model = base({
   },
 })
 
-export const getById = model.getById
+
 
 export function ofHealthWorker(
   trx: TrxOrDb,

@@ -151,7 +151,7 @@ function randomWait(): Wait {
   }
 }
 
-const model = base({
+export const nearest_organizations = base({
   top_level_table: 'organizations',
   baseQuery,
   formatResult: (organization) => ({
@@ -165,7 +165,3 @@ const model = base({
 })
 
 export type NearestOrganizationSearchResult = SearchResult<typeof model>
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds

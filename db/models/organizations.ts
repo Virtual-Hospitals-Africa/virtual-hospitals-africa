@@ -87,7 +87,7 @@ export function baseQuery(trx: TrxOrDb) {
     ])
 }
 
-const model = base({
+export const organizations = base({
   top_level_table: 'organizations',
   caching: {
     number_of_items: 100,
@@ -131,9 +131,9 @@ const model = base({
   },
 })
 
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
+
+
+
 
 export type OrganizationSearchResult = SearchResult<typeof model>
 

@@ -30,7 +30,7 @@ export function baseQuery(trx: TrxOrDb): SelectQueryBuilder<
     ])
 }
 
-const model = base({
+export const employees = base({
   top_level_table: 'employment',
   baseQuery,
   formatResult: (
@@ -104,15 +104,15 @@ const model = base({
   },
 })
 
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const getByIdOptional = model.getByIdOptional
-export const search = model.search
-export const findAll = model.findAll
-export const findOne = model.findOne
-export const findOneOptional = model.findOneOptional
-export const formatResult = model.formatResult
-export const distinctIds = model.distinctIds
+
+
+
+
+
+
+
+
+
 
 export function fromHealthWorker(
   health_worker: EmployedHealthWorker,

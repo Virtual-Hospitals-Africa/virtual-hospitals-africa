@@ -217,7 +217,7 @@ export async function getPreferredLanguage(
   return patient?.preferred_language_code_iso_639_2_b || null
 }
 
-const model = base({
+export const patients = base({
   top_level_table: 'patients',
   baseQuery,
   formatResult: (x: RenderedPatient): RenderedPatient => x,
@@ -246,9 +246,9 @@ const model = base({
   },
 })
 
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const search = model.search
+
+
+
 
 export async function getByIdCompletedRegistration(
   trx: TrxOrDb,

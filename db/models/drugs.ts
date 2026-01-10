@@ -131,7 +131,7 @@ export function formStrengthDisplay(
   return result
 }
 
-const model = base({
+export const drugs = base({
   top_level_table: 'drugs',
   baseQuery: baseQuery({ include_recalled: false }),
   formatResult({ medications, ...rest }): DrugSearchResult {
@@ -190,6 +190,6 @@ const model = base({
   },
 })
 
-export const getById = model.getById
-export const search = model.search
-export const getByIds = model.getByIds
+
+
+
