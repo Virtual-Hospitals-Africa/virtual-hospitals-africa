@@ -19,6 +19,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { asMaybeNames, asNames } from '../../db/models/asNames.ts'
+import { health_workers } from '../../db/models/health_workers.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
