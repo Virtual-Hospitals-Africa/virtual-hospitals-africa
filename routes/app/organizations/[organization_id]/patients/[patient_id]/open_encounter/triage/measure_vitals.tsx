@@ -291,10 +291,10 @@ export const handler = postHandler(
       triage_level: triageLevelFromTEWSTotal(total_score, age_determination),
     })
 
-    await additional_tasks.insertTasksIfNotAlreadyIdentified(trx, {
-      patient_id,
-      patient_encounter_id,
-    })
+    // await additional_tasks.insertTasksIfNotAlreadyIdentified(trx, {
+    //   patient_id,
+    //   patient_encounter_id,
+    // })
 
     return completeAndProceedToNextStep(ctx)
   },
