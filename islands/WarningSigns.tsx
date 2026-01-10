@@ -1,9 +1,15 @@
 import { computed, useSignal } from '@preact/signals'
-import { WarningSignWithMaybeRecord, SnomedConceptSearchResult } from '../types.ts'
+import {
+  SnomedConceptSearchResult,
+  WarningSignWithMaybeRecord,
+} from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
 import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
-import { asConceptSExpression, CLINICAL_FINDING } from '../shared/snomed_concepts.ts'
+import {
+  asConceptSExpression,
+  CLINICAL_FINDING,
+} from '../shared/snomed_concepts.ts'
 import { EmptyState } from '../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
 import sortBy from '../util/sortBy.ts'
@@ -39,12 +45,17 @@ type PriorityConfig = typeof PRIORITIES[number]
 type OnToggle = (sign: CheckedWarningSign) => void
 
 function uniqueIdentifier(sign: CheckedWarningSign) {
-  const first_unique = sign.key || compact([sign.sats_primary_name + sign.sats_secondary_text]).join('-')
+  const first_unique = sign.key ||
+    compact([sign.sats_primary_name + sign.sats_secondary_text]).join('-')
   return hyphenate(first_unique.toLowerCase())
 }
 
 function KeyedWarningSignCheckbox(
-  { sign, onCheck, onUncheck }: { sign: CheckedWarningSign; onCheck: OnToggle; onUncheck: OnToggle },
+  { sign, onCheck, onUncheck }: {
+    sign: CheckedWarningSign
+    onCheck: OnToggle
+    onUncheck: OnToggle
+  },
 ) {
   console.log('m', { sign })
   const name = `warning_signs.${uniqueIdentifier(sign)}`
@@ -59,8 +70,9 @@ function KeyedWarningSignCheckbox(
             priority_level: sign.sats_priority,
             existing_record: sign.existing_record && {
               id: sign.existing_record.id,
-              modified: sign.existing_record.existence !== (sign.checked ? 'Yes' : 'No')
-            }
+              modified: sign.existing_record.existence !==
+                (sign.checked ? 'Yes' : 'No'),
+            },
           }}
         />
         <input
@@ -70,7 +82,8 @@ function KeyedWarningSignCheckbox(
           value='Yes'
           checked={!!sign.checked}
           class='w-4 h-4 2xl:w-5 2xl:h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
-          onInput={(event) => event.currentTarget.checked ? onCheck(sign): onUncheck(sign)}
+          onInput={(event) =>
+            event.currentTarget.checked ? onCheck(sign) : onUncheck(sign)}
         />
       </div>
       <div class='flex flex-col gap-0.75 2xl:gap-1 pt-0.5'>
@@ -121,9 +134,9 @@ function KeyedWarningSignsPriorityGrid({
         {signs.map((sign) => (
           <KeyedWarningSignCheckbox
             key={uniqueIdentifier(sign)}
-            sign={sign} 
-            onCheck={onCheck} 
-            onUncheck={onUncheck} 
+            sign={sign}
+            onCheck={onCheck}
+            onUncheck={onUncheck}
           />
         ))}
       </div>
@@ -145,48 +158,51 @@ export default function KeyedWarningSigns({
   const checked_signs = useSignal<CheckedWarningSign[]>(
     warning_signs.map((sign) => ({
       ...sign,
-      checked: sign.existing_record?.existence === 'Yes'
+      checked: sign.existing_record?.existence === 'Yes',
     })),
   )
   const search_results = useSignal<null | SnomedConceptSearchResult[]>(null)
 
-  const search_results_as_signs = computed(() => 
-    search_results.value && search_results.value.map(result => ({
+  const search_results_as_signs = computed(() =>
+    search_results.value && search_results.value.map((result) => ({
       key: null,
       checked: false,
       sats_priority: result.priority?.name || ('Non-urgent' as const),
       clinical_finding_s_expression:
-        `(finding ${CLINICAL_FINDING.s_expression} ${(asConceptSExpression(result))})`,
+        `(finding ${CLINICAL_FINDING.s_expression} ${(asConceptSExpression(
+          result,
+        ))})`,
       sats_primary_name: result.name,
-      sats_secondary_text: result.category, 
+      sats_secondary_text: result.category,
       existing_record: null,
     }))
   )
 
-  const grouped = computed(() => 
+  const grouped = computed(() =>
     groupBy(
       search_results_as_signs.value || checked_signs.value,
       'sats_priority',
     )
   )
 
-  const sorted_priorities = computed(() => 
-  sortBy(
-    PRIORITIES,
-    ({ priority }) =>
-      -(grouped.value.get(priority) || []).filter((sign) =>
-        sign.checked
-      ).length,
-    (_config, index) => index,
-  ))
+  const sorted_priorities = computed(() =>
+    sortBy(
+      PRIORITIES,
+      ({ priority }) =>
+        -(grouped.value.get(priority) || []).filter((sign) => sign.checked)
+          .length,
+      (_config, index) => index,
+    )
+  )
 
   const snomed_warning_signs_async_search = useAsyncSearch({
     search_route,
     skip_blank_search: true,
     value: null,
     onSearchResults(results) {
-      search_results.value = results.pages.flatMap((page) => 
-        page.results) as unknown as SnomedConceptSearchResult[]
+      search_results.value = results.pages.flatMap((page) =>
+        page.results
+      ) as unknown as SnomedConceptSearchResult[]
     },
   })
 
@@ -221,19 +237,19 @@ export default function KeyedWarningSigns({
               if (search_results.value) {
                 checked_signs.value = [
                   { ...sign, checked: true },
-                  ...checked_signs.value
+                  ...checked_signs.value,
                 ]
                 search_results.value = null
                 snomed_warning_signs_async_search.setQuery('')
                 return
               }
 
-              checked_signs.value = checked_signs.value.map(other_sign =>
+              checked_signs.value = checked_signs.value.map((other_sign) =>
                 other_sign === sign ? { ...sign, checked: true } : other_sign
               )
             }}
             onUncheck={(sign) => {
-              checked_signs.value = checked_signs.value.map(other_sign =>
+              checked_signs.value = checked_signs.value.map((other_sign) =>
                 other_sign === sign ? { ...sign, checked: false } : other_sign
               )
             }}

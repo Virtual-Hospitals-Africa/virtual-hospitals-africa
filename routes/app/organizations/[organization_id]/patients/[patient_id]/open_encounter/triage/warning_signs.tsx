@@ -11,7 +11,11 @@ import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import {
   patient_findings,
 } from '../../../../../../../../db/models/patient_findings.ts'
-import { filter, forEach, pMap } from '../../../../../../../../util/inParallel.ts'
+import {
+  filter,
+  forEach,
+  pMap,
+} from '../../../../../../../../util/inParallel.ts'
 import {
   KEYED_WARNING_SIGNS,
   WARNING_SIGNS,
@@ -23,8 +27,8 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import {
-  WarningSignWithMaybeRecord,
   WarningSign,
+  WarningSignWithMaybeRecord,
 } from '../../../../../../../../types.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
@@ -69,7 +73,7 @@ export const handler = postHandler(
       patient_encounter_id,
       patient_encounter_employee_id,
     } = ctx.state
-    
+
     // TODO: match against what we already have and fail the transaction if the client was lying
     // const warning_signs_previously_entered = groupByUniq(
     //   await getAllClinicalFindingsAsWarningSignsForThisEncounter(ctx),
@@ -98,7 +102,7 @@ export const handler = postHandler(
           if (sign.existing_record && !sign.existing_record.modified) {
             return
           }
-          
+
           // insertOneIfNotAlreadyExistsForThisEncounter
           const finding_insert = await patient_findings
             .insertOneNested(
@@ -139,7 +143,7 @@ export const handler = postHandler(
           patient_encounter_id,
           procedure_id,
           finding_ids,
-        }
+        },
       })
     }
 
@@ -158,7 +162,7 @@ export const handler = postHandler(
               altered_record_id: sign.existing_record.id,
             },
           )
-        }
+        },
       )
     }
   },
@@ -201,24 +205,24 @@ function* asCheckedWarningSigns(
   findings: SearchResult<typeof patient_findings>[],
   warning_signs_for_patient: WarningSign[],
 ): Generator<WarningSignWithMaybeRecord> {
-  const findings_set = new Set(findings.map(finding => ({
+  const findings_set = new Set(findings.map((finding) => ({
     ...finding,
-    normal_form_s_expression: asNormalFormSExpression(finding)
+    normal_form_s_expression: asNormalFormSExpression(finding),
   })))
 
   matching_signs: for (const sign of warning_signs_for_patient) {
     for (const finding of findings_set) {
       const same_idea =
         finding.normal_form_s_expression === sign.clinical_finding_s_expression
-      
+
       if (same_idea) {
         findings_set.delete(finding)
         yield {
           ...sign,
           existing_record: {
             id: finding.record_id,
-            existence: 'Yes' as const // TODO handle negative records
-          }
+            existence: 'Yes' as const, // TODO handle negative records
+          },
         }
         continue matching_signs
       }
@@ -226,7 +230,7 @@ function* asCheckedWarningSigns(
 
     yield {
       ...sign,
-      existing_record: null
+      existing_record: null,
     }
   }
 
@@ -239,8 +243,8 @@ function* asCheckedWarningSigns(
       sats_secondary_text: finding.specific_snomed_concept.category,
       existing_record: {
         id: finding.record_id,
-        existence: 'Yes' as const // TODO handle negative records
-      }
+        existence: 'Yes' as const, // TODO handle negative records
+      },
     }
   }
 }

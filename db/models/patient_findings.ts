@@ -31,7 +31,6 @@ import {
 } from '../../shared/snomed_concepts.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 
-
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
 ) {

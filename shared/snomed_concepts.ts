@@ -13,7 +13,7 @@ export function asConceptSExpression(def: Def) {
 export function asConcept(def: Def): Def & { s_expression: string } {
   return {
     ...def,
-    s_expression: asConceptSExpression(def)
+    s_expression: asConceptSExpression(def),
   }
 }
 
