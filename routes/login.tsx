@@ -15,7 +15,7 @@ import {
   readMandatoryStringEnvironmentVariable,
 } from '../util/env.ts'
 import { redirectUri } from '../external-clients/google.ts'
-import { insertWithGoogleCredentials } from '../db/models/health_worker_google_tokens.ts'
+import { health_worker_google_tokens } from '../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../mocks/randomAvatar.ts'
 
 const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
@@ -50,14 +50,15 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
   const refresh_token = generateUUID()
   const expires_at = new Date()
   expires_at.setDate(expires_at.getDate() + 60)
-  const health_worker = await insertWithGoogleCredentials(trx, {
-    ...names,
-    email,
-    avatar_media_id,
-    access_token,
-    refresh_token,
-    expires_at,
-  })
+  const health_worker = await health_worker_google_tokens
+    .insertWithGoogleCredentials(trx, {
+      ...names,
+      email,
+      avatar_media_id,
+      access_token,
+      refresh_token,
+      expires_at,
+    })
 
   const session_id = await sessions.insertOne(trx, {
     entity_type: 'health_worker',

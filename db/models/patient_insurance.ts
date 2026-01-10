@@ -63,7 +63,7 @@ export const patient_insurance = {
       'Insurance expire_date must be in the future or today',
     )
 
-    const current_insurance = await getCurrent(trx, {
+    const current_insurance = await patient_insurance.getCurrent(trx, {
       patient_id: insert.patient_id,
     })
 

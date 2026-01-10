@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { pharmacy_employment } from './pharmacy_employment.ts'
 import { base } from './_base.ts'
 
-export const PharmacistUpsert = z.object({
+export const PharmacistUpsertSchema = z.object({
   licence_number: z.string(),
   prefix: z.enum(['Mr', 'Mrs', 'Ms', 'Miss', 'Dr']),
   given_name: z.string(),
@@ -26,8 +26,7 @@ export const PharmacistUpsert = z.object({
   }))),
 })
 
-export const parse_upsert = PharmacistUpsert.parse
-export type PharmacistUpsert = z.infer<typeof PharmacistUpsert>
+export type PharmacistUpsert = z.infer<typeof PharmacistUpsertSchema>
 
 export function nameSql(table: string) {
   return sql<string>`concat(${sql.ref(`${table}.prefix`)}, '. ', ${

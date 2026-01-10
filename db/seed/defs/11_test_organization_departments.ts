@@ -1,5 +1,5 @@
 import { define } from '../define.ts'
-import * as organizations from '../../models/organizations.ts'
+import { organizations } from '../../models/organizations.ts'
 import {
   testOrganizationDepartments,
   testOrganizationRoomNames,

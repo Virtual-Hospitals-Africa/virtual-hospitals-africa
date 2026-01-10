@@ -27,6 +27,15 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
     ])
   }
 }
+export function assertNoPresentEncounter(
+  maybe_encounter: RenderedPatientOpenEncounter | null,
+): asserts maybe_encounter is null {
+  if (maybe_encounter) {
+    throw new PresentWithAnotherPatientError(
+      maybe_encounter,
+    )
+  }
+}
 
 export const patient_workflows = {
   completedStep(
@@ -118,14 +127,5 @@ export const patient_workflows = {
   ) {
     return trx.insertInto('patient_workflows')
       .values(to_insert).execute()
-  },
-  assertNoPresentEncounter(
-    maybe_encounter: RenderedPatientOpenEncounter | null,
-  ): asserts maybe_encounter is null {
-    if (maybe_encounter) {
-      throw new PresentWithAnotherPatientError(
-        maybe_encounter,
-      )
-    }
   },
 }

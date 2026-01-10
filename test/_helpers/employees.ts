@@ -13,8 +13,8 @@ import { route } from '../_route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import omit from '../../util/omit.ts'
 import {
-  HealthWorkerWithGoogleTokens,
-  insertWithGoogleCredentials,
+  health_worker_google_tokens,
+  type HealthWorkerWithGoogleTokens,
 } from '../../db/models/health_worker_google_tokens.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
@@ -136,7 +136,7 @@ export async function addTestEmployee(
   )
 
   if (profession === 'nurse' && registration_status !== 'not started') {
-    const admin = await insertWithGoogleCredentials(
+    const admin = await health_worker_google_tokens.insertWithGoogleCredentials(
       trx,
       testHealthWorker(),
     )

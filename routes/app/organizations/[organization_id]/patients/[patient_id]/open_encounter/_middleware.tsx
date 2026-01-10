@@ -13,8 +13,8 @@ import {
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
 import { patient_encounters } from '../../../../../../../db/models/patient_encounters.ts'
-import { get as getThisVisitRecords } from '../../../../../../../db/models/this_visit_findings.ts'
-import { get as getPatientHistory } from '../../../../../../../db/models/patient_history.ts'
+import { this_visit_findings } from '../../../../../../../db/models/this_visit_findings.ts'
+import { patient_history } from '../../../../../../../db/models/patient_history.ts'
 import { events } from '../../../../../../../db/models/events.ts'
 
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
@@ -48,8 +48,7 @@ import {
 } from '../../../../../../../shared/workflow.ts'
 import mapEntries from '../../../../../../../util/mapEntries.ts'
 import {
-  completedStep,
-  completedWorkflow,
+  patient_workflows,
   PresentWithAnotherPatientError,
 } from '../../../../../../../db/models/patient_workflows.ts'
 import last from '../../../../../../../util/last.ts'
@@ -136,12 +135,12 @@ export function completeLastStep(
   const { patient_workflow_id } = workflow_status
 
   return promiseProps({
-    completed_step: completedStep(trx, {
+    completed_step: patient_workflows.completedStep(trx, {
       workflow,
       step,
       patient_workflow_id,
     }),
-    completed_workflow: completedWorkflow(trx, {
+    completed_workflow: patient_workflows.completedWorkflow(trx, {
       patient_workflow_id,
     }),
   })
@@ -164,7 +163,7 @@ export async function completeStep(
   const steps_completed_previously: string[] = workflow_status.steps_completed
   const already_completed = steps_completed_previously.includes(step)
   if (!already_completed) {
-    await completedStep(ctx.state.trx, {
+    await patient_workflows.completedStep(ctx.state.trx, {
       workflow,
       step,
       patient_workflow_id: workflow_status.patient_workflow_id,
@@ -267,16 +266,12 @@ export async function workflowHandler(
     step,
   )
 
-  const {
-    this_visit_findings,
-    patient_history,
-    previously_completed_procedures,
-  } = await promiseProps({
-    this_visit_findings: getThisVisitRecords(trx, {
+  const fetched = await promiseProps({
+    this_visit_findings: this_visit_findings.get(trx, {
       encounter,
       health_worker_id: ctx.state.health_worker.id,
     }),
-    patient_history: getPatientHistory(trx, {
+    patient_history: patient_history.get(trx, {
       patient_encounter_id,
       patient_encounter_employee_id:
         encounter_employee_presence.patient_encounter_employee_id,
@@ -299,14 +294,12 @@ export async function workflowHandler(
     workflow,
     step,
     workflow_status,
-    patient_history,
-    this_visit_findings,
     previously_completed_step,
     encounter_employee_presence,
     patient_encounter_employee_id,
     workflow_step_snomed_concept_id,
-    previously_completed_procedures,
     workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS[workflow],
+    ...fetched,
   }
 
   Object.assign(ctx.state, workflow_props)

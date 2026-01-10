@@ -15,7 +15,7 @@ import {
   satisfyingSExpression,
 } from '../../db/models/s_expression.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
-import { hydrateIntermediateRecords } from '../../db/models/patient_record_providers.ts'
+import { patient_record_providers } from '../../db/models/patient_record_providers.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
@@ -81,7 +81,7 @@ describeParallel('db/models/patient_findings.ts', () => {
 
       const [finding] = await patient_findings.getById(db, finding_id)
         .then((f) =>
-          hydrateIntermediateRecords(db, {
+          patient_record_providers.hydrateIntermediateRecords(db, {
             records: [f],
             health_worker_id: nurse.id,
             encounter,
@@ -228,11 +228,14 @@ describeParallel('db/models/patient_findings.ts', () => {
 
     const raw_finding = await patient_findings.getById(db, finding_id)
 
-    const [finding] = await hydrateIntermediateRecords(db, {
-      records: [raw_finding],
-      health_worker_id: nurse.id,
-      encounter,
-    })
+    const [finding] = await patient_record_providers.hydrateIntermediateRecords(
+      db,
+      {
+        records: [raw_finding],
+        health_worker_id: nurse.id,
+        encounter,
+      },
+    )
 
     assertEquals(
       finding.displays.full,

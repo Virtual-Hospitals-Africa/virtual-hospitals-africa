@@ -2,14 +2,14 @@ import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
 
 import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { events } from '../../../../../db/models/events.ts'
-import { complete } from '../../../../../db/models/doctor_reviews.ts'
+import { doctor_reviews } from '../../../../../db/models/doctor_reviews.ts'
 import redirect from '../../../../../util/redirect.ts'
 
 export const handler = {
   async POST(ctx: ReviewContext) {
     const { review_id } = ctx.state.doctor_review
     await Promise.all([
-      complete(ctx.state.trx, { review_id }),
+      doctor_reviews.complete(ctx.state.trx, { review_id }),
       completeStep(ctx),
       events.insert(ctx.state.trx, {
         type: 'DoctorReviewCompleted',

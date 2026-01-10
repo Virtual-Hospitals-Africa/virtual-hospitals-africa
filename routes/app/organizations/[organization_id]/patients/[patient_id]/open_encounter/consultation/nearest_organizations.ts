@@ -1,11 +1,15 @@
-import { nearest_organizations } from '../../../../../../../../db/models/nearest_organizations.ts'
+import {
+  nearest_organizations,
+  type NearestOrganizationSearchResult,
+  type SearchOpts,
+} from '../../../../../../../../db/models/nearest_organizations.ts'
 import { BlankRecord } from '../../../../../../../../types.ts'
 import { jsonSearchHandler } from '../../../../../../../../util/jsonSearchHandler.ts'
 import { OpenEncounterWorkflowContext } from '../_middleware.tsx'
 
 export const handler = jsonSearchHandler<
-  nearest_organizations.SearchOpts,
-  nearest_organizations.NearestOrganizationSearchResult,
+  SearchOpts,
+  NearestOrganizationSearchResult,
   OpenEncounterWorkflowContext<BlankRecord>
 >(nearest_organizations, (ctx) => ({
   location: ctx.state.encounter.organization.location!,

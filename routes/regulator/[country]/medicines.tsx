@@ -1,6 +1,6 @@
 import { MedicinesTable } from '../../../components/regulator/MedicinesTable.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
-import manufactured_medications from '../../../db/models/manufactured_medications.ts'
+import { manufactured_medications } from '../../../db/models/manufactured_medications.ts'
 import type { Context } from 'fresh'
 import { MedicinesSearch } from '../../../components/regulator/MedicinesSearch.tsx'
 import Form from '../../../components/library/Form.tsx'

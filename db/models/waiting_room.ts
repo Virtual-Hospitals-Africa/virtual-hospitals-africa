@@ -134,6 +134,7 @@ function asWaitingRoom(
 }
 
 export const waiting_room = {
+  asWaitingRoom,
   async get(
     trx: TrxOrDb,
     organization_employment: HealthWorkerOrganization,

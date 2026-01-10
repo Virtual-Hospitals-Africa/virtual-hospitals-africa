@@ -1,5 +1,8 @@
 import { TrxOrDb } from '../../types.ts'
-import { pharmacists } from '../../db/models/pharmacists.ts'
+import {
+  type PharmacistInsert,
+  pharmacists,
+} from '../../db/models/pharmacists.ts'
 import generateUUID from '../../util/uuid.ts'
 
 export function testPharmacist() {
@@ -18,7 +21,7 @@ export function testPharmacist() {
 
 export async function addTestPharmacist(
   trx: TrxOrDb,
-  pharmacist?: pharmacists.PharmacistInsert,
+  pharmacist?: PharmacistInsert,
 ) {
   const dummy_pharmacist = {
     ...testPharmacist(),

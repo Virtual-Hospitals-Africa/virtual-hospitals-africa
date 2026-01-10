@@ -15,7 +15,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import matching from '../../util/matching.ts'
 import { groupBy } from '../../util/groupBy.ts'
-import { hydrateIntermediateRecords } from './patient_record_providers.ts'
+import { patient_record_providers } from './patient_record_providers.ts'
 import { patient_vitals } from './patient_vitals.ts'
 import {
   ACTION_STATUS,
@@ -134,7 +134,7 @@ export const additional_tasks = {
     const { procedures, findings } = await promiseProps({
       procedures: patient_procedures.getByIds(trx, procedure_ids),
       findings: patient_vitals.getByIds(trx, finding_ids).then((findings) =>
-        hydrateIntermediateRecords(trx, {
+        patient_record_providers.hydrateIntermediateRecords(trx, {
           records: findings,
           encounter,
           health_worker_id,
