@@ -180,13 +180,13 @@ describeParallel('db/models/s_expression.ts', () => {
           encounter.employee.patient_encounter_employee_id,
         procedure_id,
         finding:
-          `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Nasal discharge" "finding"))`,
+          `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nasal discharge" "finding"))`,
       })
 
       const nasal_structure_findings = await patient_findings.findAll(db, {
         patient_id: encounter.patient.id,
         s_expression: `
-          (finding ${CLINICAL_FINDING.lang} 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (attribute (snomed_concept "Finding site" "attribute")
                       (snomed_concept "Nasal structure" "body structure")))
         `,
@@ -204,7 +204,7 @@ describeParallel('db/models/s_expression.ts', () => {
       const face_structure_findings = await patient_findings.findAll(db, {
         patient_id: encounter.patient.id,
         s_expression: `
-          (finding ${CLINICAL_FINDING.lang} 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (attribute (snomed_concept "Finding site" "attribute")
                       (snomed_concept "Face structure" "body structure")))
         `,
@@ -215,7 +215,7 @@ describeParallel('db/models/s_expression.ts', () => {
       const stomach_structure_findings = await patient_findings.findAll(db, {
         patient_id: encounter.patient.id,
         s_expression: `
-          (finding ${CLINICAL_FINDING.lang} 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (attribute (snomed_concept "Finding site" "attribute")
                       (snomed_concept "Stomach structure" "body structure")))
         `,
@@ -228,7 +228,7 @@ describeParallel('db/models/s_expression.ts', () => {
         {
           patient_id: encounter.patient.id,
           s_expression: `
-          (finding ${CLINICAL_FINDING.lang} 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (finding_site (snomed_concept "Nasal structure" "body structure")))
         `,
         },

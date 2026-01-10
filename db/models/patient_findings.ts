@@ -160,6 +160,7 @@ export type IntermediateFinding = QueryResult<typeof baseQuery>
 export type PatientFindingsSearch = {
   patient_id?: string | IdSelection
   patient_encounter_id?: string | IdSelection
+  procedure_id?: string | IdSelection
   s_expression?: string | Lang['finding']
   search?: string
   not_measurements?: boolean
@@ -203,6 +204,13 @@ export const patient_findings = base({
         'patient_records.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
+      )
+    }
+    if (opts.procedure_id) {
+      qb = qb.where(
+        'patient_records.as_part_of_procedure_id',
+        '=',
+        opts.procedure_id,
       )
     }
     if (opts.not_measurements) {

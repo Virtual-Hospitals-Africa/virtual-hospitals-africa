@@ -130,7 +130,9 @@ export async function* map<T, U>(
   }
 }
 
-// Does not respect the order of the input iterable
+/**
+ *  Does not respect the order of the input iterable
+ */
 export async function filter<T>(
   generator: Iterable<T> | AsyncIterable<T>,
   fn: (item: T) => Promise<boolean>,

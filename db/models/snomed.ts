@@ -1,6 +1,6 @@
 import { ExpressionBuilder, sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
-import { base } from './_base.ts'
+import { base, SearchResult } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DB, SnomedCategory } from '../../db.d.ts'
 import {
@@ -161,3 +161,5 @@ export const snomed_model = base({
     return result
   },
 })
+
+export type SnomedConceptSearchResult = SearchResult<typeof snomed_model>

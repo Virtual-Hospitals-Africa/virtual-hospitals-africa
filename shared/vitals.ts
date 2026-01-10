@@ -178,12 +178,12 @@ export function formatBloodPressureDisplay(
 type TEWSScore = 0 | 1 | 2 | 3
 
 function asSExpression(specific_snomed_concept_id: string) {
-  return `(finding ${CLINICAL_FINDING.lang} ${specific_snomed_concept_id})`
+  return `(finding ${CLINICAL_FINDING.s_expression} ${specific_snomed_concept_id})`
 }
 
 const normal_for_age = normalForm(`
   (finding
-    ${CLINICAL_FINDING.lang}
+    ${CLINICAL_FINDING.s_expression}
     (snomed_concept "Ability to move" "observable entity")
     (snomed_concept "Normal" "qualifier value")
     (qualifier (snomed_concept "For" "qualifier value")
@@ -192,7 +192,7 @@ const normal_for_age = normalForm(`
 
 const abnormal_for_age = normalForm(`
   (finding
-    ${CLINICAL_FINDING.lang}
+    ${CLINICAL_FINDING.s_expression}
     (snomed_concept "Ability to move" "observable entity")
     (snomed_concept "Abnormal" "qualifier value")
     (qualifier (snomed_concept "For" "qualifier value")

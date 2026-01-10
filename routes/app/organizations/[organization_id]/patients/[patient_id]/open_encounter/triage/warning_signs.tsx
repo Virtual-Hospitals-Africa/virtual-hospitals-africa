@@ -1,5 +1,6 @@
 import {
   completeAndProceedToNextStep,
+  completedProcedure,
   createProcedureIfNotAlreadyCompleted,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
@@ -8,8 +9,11 @@ import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import entries from '../../../../../../../../util/entries.ts'
-import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
-import { forEach } from '../../../../../../../../util/inParallel.ts'
+import {
+  IntermediateFinding,
+  patient_findings,
+} from '../../../../../../../../db/models/patient_findings.ts'
+import { filter, forEach } from '../../../../../../../../util/inParallel.ts'
 import {
   findingQueryExpression,
   KEYED_WARNING_SIGNS,
@@ -23,9 +27,11 @@ import { assert } from 'std/assert/assert.ts'
 import isKeyOf from '../../../../../../../../util/isKeyOf.ts'
 import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import {
-  CheckedWarningSign,
-  KeyedWarningSign,
+  WarningSignWithMaybeRecord,
+  WarningSign,
   Priority,
+  RenderedFindingRelativeToHealthWorker,
+  WarningSign,
   WarningSignPresence,
 } from '../../../../../../../../types.ts'
 import { groupByUniq } from '../../../../../../../../util/groupBy.ts'
@@ -43,18 +49,28 @@ import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
 import { snomed_model } from '../../../../../../../../db/models/snomed.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
+import keys from '../../../../../../../../util/keys.ts'
+import partition from '../../../../../../../../util/partition.ts'
+import { SearchResult } from '../../../../../../../../db/models/_base.ts'
+
+const WarningSignSchema = z.object({
+  s_expression: z.string().transform((
+    value,
+  ) => parseExpressionExpectingAtom(value, 'finding')),
+  existence: z.enum(['Yes', 'No']).optional().transform((existence) =>
+    existence || 'No'
+  ),
+  warning_sign_key: z.enum(keys(WARNING_SIGNS)).optional(),
+  existing_record: z.object({
+    id: z.string(),
+    modified: z.boolean(),
+  }).optional(),
+}).strict()
 
 const WarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
-    z.string().transform((
-      value,
-    ) => parseExpressionExpectingAtom(value, 'finding')),
-  ).default({}).transform((signs) =>
-    entries(signs).map(([key, finding]) => ({
-      key,
-      finding,
-    }))
+    WarningSignSchema,
   ),
 }).strict()
 
@@ -155,124 +171,99 @@ export const handler = postHandler(
   },
 )
 
-async function getAllOtherClinicalFindingsFromThisEncounter(
-  { state }: OpenEncounterWorkflowContext,
-): Promise<CheckedWarningSign[]> {
-  const { trx, patient_id, patient_encounter_id } = state
-  const not_expressions = KEYED_WARNING_SIGNS.map((sign) =>
-    `(not (exact ${sign.clinical_finding_s_expression}))`
-  ).join(' ')
-
-  const s_expression = `
-    (and (or (finding ${CLINICAL_FINDING.lang})
-             (finding ${CHIEF_COMPLAINT.id}))
-         (not (finding (qualifier ${SELF_REPORTED_QUALIFIER.id})))
-         ${not_expressions})
-  `
-
-  const other_clinical_findings = await patient_findings.findAll(trx, {
+function getAllFindingsReportedPreviouslyOnThisPage(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  const { trx, patient_id, patient_encounter_id } = ctx.state
+  const completed_procedure = completedProcedure(ctx)
+  if (!completed_procedure) return Promise.resolve([])
+  return patient_findings.findAll(trx, {
     patient_id,
     patient_encounter_id,
-    s_expression,
-  })
-
-  return other_clinical_findings.map((finding) => {
-    assertArrayEmpty(finding.attributes)
-
-    const presence: WarningSignPresence = finding.record_id
-      ? { satisfied_by_record_id: finding.record_id, checked: true }
-      : { satisfied_by_record_id: null, checked: false }
-
-    return {
-      key: finding.specific_snomed_concept.name,
-      clinical_finding_s_expression: asNormalFormSExpression(finding),
-      sats_primary_name: finding.specific_snomed_concept.name,
-      sats_secondary_text: finding.specific_snomed_concept.category,
-      sats_priority: finding.priority || 'Non-urgent',
-      ...presence,
-    }
+    procedure_id: completed_procedure.procedure_id,
   })
 }
 
-function getWarningSignsFromThisEncounter(
-  ctx: OpenEncounterWorkflowContext,
-): Promise<CheckedWarningSign[]> {
-  const {
-    trx,
-    patient_id,
-    patient_encounter_id,
-    previously_completed_procedures: { workflow_step_record_id },
-  } = ctx.state
+async function getWarningSignsForPatient(
+  { state: { trx, patient_id } }: OpenEncounterWorkflowContext,
+): Promise<WarningSign[]> {
+  const [having_prompt_when, no_prompt_when] = partition(
+    KEYED_WARNING_SIGNS,
+    (sign) => !!sign.prompt_when_s_expression,
+  )
+  const satisfying_prompt_when = await filter(having_prompt_when, promptWhen)
+  return [...no_prompt_when, ...satisfying_prompt_when]
 
-  function promptWhen({ prompt_when_s_expression }: KeyedWarningSign) {
-    if (!prompt_when_s_expression) {
-      return Promise.resolve({ satisfies: true })
-    }
-    return satisfyingSExpression(trx, {
+  async function promptWhen({ prompt_when_s_expression }: WarningSign) {
+    assert(prompt_when_s_expression)
+    const { satisfies } = await satisfyingSExpression(trx, {
       patient_id,
       s_expression: prompt_when_s_expression,
     })
+    return satisfies
   }
-
-  function clinicalFinding(
-    sign: KeyedWarningSign,
-  ) {
-    if (!workflow_step_record_id) {
-      return Promise.resolve({ satisfies: false, record_ids: [] })
-    }
-
-    return satisfyingSExpression(trx, {
-      patient_id,
-      patient_encounter_id,
-      s_expression: findingQueryExpression(sign),
-      procedure_id: workflow_step_record_id,
-    })
-  }
-
-  return Promise.all(
-    KEYED_WARNING_SIGNS.map(
-      async (sign): Promise<null | CheckedWarningSign> => {
-        const { prompt_when, clinical_finding } = await promiseProps({
-          prompt_when: promptWhen(sign),
-          clinical_finding: clinicalFinding(sign),
-        })
-
-        if (!prompt_when.satisfies) {
-          return null
-        }
-
-        const satisfied_by_record_id = first(clinical_finding.record_ids)
-        if (satisfied_by_record_id) {
-          return {
-            ...sign,
-            satisfied_by_record_id,
-            checked: true,
-          }
-        }
-
-        return {
-          ...sign,
-          satisfied_by_record_id: null,
-          checked: false,
-        }
-      },
-    ),
-  ).then(compact)
 }
 
-async function getAllClinicalFindingsAsWarningSignsForThisEncounter(
-  ctx: OpenEncounterWorkflowContext,
-): Promise<CheckedWarningSign[]> {
-  const [other, base] = await Promise.all([
-    getAllOtherClinicalFindingsFromThisEncounter(ctx),
-    getWarningSignsFromThisEncounter(ctx),
-  ])
-  return [...other, ...base]
+function* asCheckedWarningSigns(
+  findings: SearchResult<typeof patient_findings>[],
+  warning_signs_for_patient: WarningSign[],
+): Generator<WarningSignWithMaybeRecord> {
+  const findings_set = new Set(findings.map(finding => ({
+    ...finding,
+    normal_form_s_expression: asNormalFormSExpression(finding)
+  })))
+
+  matching_signs: for (const sign of warning_signs_for_patient) {
+    for (const finding of findings_set) {
+      const same_idea =
+        finding.normal_form_s_expression === sign.clinical_finding_s_expression
+      
+      if (same_idea) {
+        findings_set.delete(finding)
+        yield {
+          ...sign,
+          existing_record: {
+            id: finding.record_id,
+            existence: 'Yes' as const // TODO handle negative records
+          }
+        }
+        continue matching_signs
+      }
+    }
+
+    yield {
+      ...sign,
+      existing_record: null
+    }
+  }
+
+  for (const finding of findings_set) {
+    yield {
+      key: null,
+      sats_priority: finding.priority || 'Non-urgent',
+      clinical_finding_s_expression: finding.normal_form_s_expression,
+      sats_primary_name: finding.specific_snomed_concept.name,
+      sats_secondary_text: finding.specific_snomed_concept.category,
+      existing_record: {
+        id: finding.record_id,
+        existence: 'Yes' as const // TODO handle negative records
+      }
+    }
+  }
 }
 
 export async function TriageWarningSignsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
+  const {
+    all_findings_reported_previously_on_this_page,
+    warning_signs_for_patient,
+  } = await promiseProps({
+    all_findings_reported_previously_on_this_page:
+      getAllFindingsReportedPreviouslyOnThisPage(ctx),
+    warning_signs_for_patient: getWarningSignsForPatient(ctx),
+  })
+
   return (
     <WarningSigns
       search_route={hrefFromCtx(ctx, (url) => {
@@ -281,9 +272,10 @@ export async function TriageWarningSignsPage(
           '/snomed-warning-signs',
         )
       })}
-      warning_signs={await getAllClinicalFindingsAsWarningSignsForThisEncounter(
-        ctx,
-      )}
+      warning_signs={Array.from(asCheckedWarningSigns(
+        all_findings_reported_previously_on_this_page,
+        warning_signs_for_patient,
+      ))}
     />
   )
 }

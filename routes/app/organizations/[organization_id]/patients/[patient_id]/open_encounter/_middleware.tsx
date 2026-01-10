@@ -578,7 +578,7 @@ export function nextRouteAfterCompletingWorkflow(
   return success(success_message, next_route)
 }
 
-export function createProcedureIfNotAlreadyCompleted(
+export function completedProcedure(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const previously_completed_procedure_record_id =
@@ -587,10 +587,19 @@ export function createProcedureIfNotAlreadyCompleted(
       : ctx.state.previously_completed_procedures.workflow_record_id
 
   if (previously_completed_procedure_record_id) {
-    return Promise.resolve({
+    return {
       procedure_id: previously_completed_procedure_record_id,
-    })
+    }
   }
+
+  return null
+}
+
+export function createProcedureIfNotAlreadyCompleted(
+  ctx: OpenEncounterWorkflowContext,
+) {
+  const completed_procedure = completedProcedure(ctx)
+  if (completed_procedure) return Promise.resolve(completed_procedure)
 
   const procedure_snomed_concept_id =
     ctx.state.workflow_step_snomed_concept_id ||

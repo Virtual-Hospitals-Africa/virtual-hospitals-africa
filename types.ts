@@ -37,6 +37,7 @@ export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
 export { type MessageTargetCategory } from './shared/message_targets.ts'
 export { type CommonConditionKey } from './shared/brief_history.ts'
+export { type SnomedConceptSearchResult } from './db/models/snomed.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -3599,6 +3600,7 @@ export type MostRecentBriefHistoryFindings = {
 }
 
 export type WarningSign = {
+  key: string | null
   clinical_finding_s_expression: string
   sats_primary_name: string
   sats_secondary_text: string | null
@@ -3609,19 +3611,12 @@ export type WarningSign = {
 
 export type WarningSignKey = keyof typeof WARNING_SIGNS
 
-export type KeyedWarningSign = {
-  key: string
-} & WarningSign
-
-export type WarningSignPresence = {
-  satisfied_by_record_id: string
-  checked: true
-} | {
-  satisfied_by_record_id: null
-  checked: false
+export type WarningSignWithMaybeRecord = WarningSign & {
+  existing_record: null | {
+    id: string
+    existence: 'Yes' | 'No'
+  }
 }
-
-export type CheckedWarningSign = KeyedWarningSign & WarningSignPresence
 
 export type IntermediateProcedureRecord = {
   created_at: Date
