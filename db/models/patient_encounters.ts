@@ -638,7 +638,7 @@ type EncounterSearch = {
   presence_health_worker_id?: string | IdSelection
 }
 
-const model = base({
+export const patient_encounters = base({
   top_level_table: 'patient_encounters',
   baseQuery,
   formatResult: (
@@ -723,13 +723,13 @@ const model = base({
   },
 })
 
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const search = model.search
-export const findAll = model.findAll
-export const findOne = model.findOne
-export const findOneOptional = model.findOneOptional
-export const formatResult = model.formatResult
+
+
+
+
+
+
+
 
 /*
   Does not ensure that workflows are done.

@@ -78,7 +78,7 @@ function baseQuery(trx: TrxOrDb) {
     ])
 }
 
-const model = base({
+export const media = base({
   top_level_table: 'media' as const,
   baseQuery,
   formatResult: (x) => x,
@@ -104,8 +104,8 @@ const model = base({
   },
 })
 
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const findAll = model.findAll
-export const findOne = model.findOne
+
+
+
+
+

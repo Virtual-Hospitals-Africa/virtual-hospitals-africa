@@ -85,7 +85,7 @@ export function toSearchTerms(
   return { country, name_search: search, licence_number_search: null }
 }
 
-const model = base({
+export const pharmacies = base({
   top_level_table: 'pharmacies',
   baseQuery,
   formatResult(result): RenderedPharmacy {
@@ -108,10 +108,6 @@ const model = base({
     return qb
   },
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
 
 export function getByLicenceNumber(trx: TrxOrDb, licence_number: string) {
   return baseQuery(trx)

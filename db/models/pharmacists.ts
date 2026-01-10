@@ -192,7 +192,7 @@ export function toSearchTerms(
   return { country, name_search: search, licence_number_search: null }
 }
 
-const model = base({
+export const pharmacists = base({
   top_level_table: 'pharmacists',
   baseQuery,
   formatResult: (x: RenderedPharmacist): RenderedPharmacist => x,
@@ -232,9 +232,9 @@ const model = base({
   },
 })
 
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
+
+
+
 
 export function getByLicenceNumber(
   trx: TrxOrDb,

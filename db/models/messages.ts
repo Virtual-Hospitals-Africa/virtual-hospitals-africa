@@ -68,7 +68,7 @@ export function baseQuery(
 
 export type IntermediateMessage = QueryResult<typeof baseQuery>
 
-const model = base({
+export const messages = base({
   top_level_table: 'messages' as const,
   baseQuery,
   formatResult: (x: IntermediateMessage): IntermediateMessage => x,
@@ -86,10 +86,3 @@ const model = base({
     return qb
   },
 })
-
-export const search = model.search
-export const getById = model.getById
-export const getByIds = model.getByIds
-export const findAll = model.findAll
-export const findOne = model.findOne
-export const findFirst = model.findFirst
