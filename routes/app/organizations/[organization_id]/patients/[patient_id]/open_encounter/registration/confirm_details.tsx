@@ -25,6 +25,7 @@ export async function PatientRegistrationConfirmPage(
       ctx.state.trx,
       ctx.state.patient.id,
     )
+
   return (
     <PatientRegistrationSummary
       organization_id={ctx.state.organization.id}

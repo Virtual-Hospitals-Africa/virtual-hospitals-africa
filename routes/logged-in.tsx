@@ -3,11 +3,11 @@ import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
-import * as sessions from '../db/models/sessions.ts'
+import { sessions } from '../db/models/sessions.ts'
 import * as organizations from '../db/models/organizations.ts'
-import * as health_workers from '../db/models/health_workers.ts'
+import { health_workers } from '../db/models/health_workers.ts'
 import * as regulators from '../db/models/regulators.ts'
-import * as google_tokens from '../db/models/google_tokens.ts'
+import { google_tokens } from '../db/models/google_tokens.ts'
 import * as events from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
 import * as media from '../db/models/media.ts'
@@ -63,72 +63,6 @@ export async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
     ...calendars,
   }))
 }
-// export async function initializeHealthWorkerWithInvites(
-//   trx: TrxOrDb,
-//   google_client: google.GoogleClient,
-//   profile: GoogleProfile,
-//   invitees: { id: string; organization_id: string; profession: Profession | null, is_admin: boolean }[],
-// ): Promise<{ id: string }> {
-// assert(invitees.length, 'No invitees found')
-
-// await employment.removeInvitees(
-//   trx,
-//   invitees.map((invitee) => invitee.id),
-// )
-
-// const organization_ids = uniq(
-//   invitees.map((invitee) => invitee.organization_id),
-// )
-
-// const calendars =
-//   await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
-//     trx,
-//     google_client,
-//     organization_ids,
-//   )
-
-// const avatar_media_id = await downloadAndSaveAvatar(trx, profile.picture)
-
-// const health_worker = await upsertWithGoogleCredentials(
-//   trx,
-//   {
-//     email: profile.email,
-//     avatar_media_id,
-//     ...asNames({
-//       first_names: profile.given_name,
-//       surname: profile.family_name,
-//       name: profile.name,
-//     }),
-//   },
-//   google_client.tokens
-// )
-
-// const calendars_to_insert = calendars.map(({ organization_id, ...calendar }) => ({
-//   ...calendar,
-//   employment_id: health_worker
-// }))
-
-// await employment_calendars.add(
-//   trx,
-//   calendars,
-// )
-
-// await Promise.all(
-//   invitees.map(({ organization_id, profession }) =>
-//     employment.addIgnoreDuplicate(
-//       trx,
-//       { health_worker_id, organization_id, profession },
-//     )
-//   ),
-// )
-
-// await events.insert(trx, {
-//   type: 'HealthWorkerLogin',
-//   data: { health_worker_id },
-// })
-
-// return { id: health_worker_id }
-// }
 
 export async function initializeHealthWorkerWithoutInvites(
   trx: TrxOrDb,
@@ -137,47 +71,75 @@ export async function initializeHealthWorkerWithoutInvites(
 ): Promise<Response> {
   const {
     avatar_media_id,
-    health_worker_id,
+    existing_health_worker,
   } = await promiseProps({
     avatar_media_id: downloadAndSaveAvatar(trx, profile.picture),
-    health_worker_id: health_workers.getIdByEmailOrGenerateNew(
+    existing_health_worker: health_workers.getIdByEmail(
       trx,
       profile.email,
     ),
   })
 
-  const { existing_employment } = await promiseProps({
-    existing_employment: trx.selectFrom('employment')
-      .where('employment.health_worker_id', '=', health_worker_id)
-      .select('employment.id')
-      .executeTakeFirst(),
-    update_tokens: google_tokens.upsert(
+  const health_worker_attributes = {
+    email: profile.email,
+    avatar_media_id,
+    ...asNames({
+      first_names: profile.given_name,
+      surname: profile.family_name,
+      name: profile.name,
+    }),
+  }
+
+  async function insertNewHealthWorker() {
+    const health_worker_id = await health_workers.insertOne(
       trx,
-      'health_worker',
-      health_worker_id,
-      google_client.tokens,
-    ),
-    health_worker: health_workers.upsert(
+      health_worker_attributes,
+    )
+    await google_tokens.insertOne(
       trx,
       {
-        id: health_worker_id,
-        email: profile.email,
-        avatar_media_id,
-        ...asNames({
-          first_names: profile.given_name,
-          surname: profile.family_name,
-          name: profile.name,
-        }),
+        entity_type: 'health_worker',
+        entity_id: health_worker_id,
+        ...google_client.tokens,
       },
-    ),
-  })
+    )
+    return { health_worker_id, existing_employment: null }
+  }
+
+  function updateExistingHealthWorker(health_worker_id: string) {
+    return promiseProps({
+      health_worker_id: Promise.resolve(health_worker_id),
+      existing_employment: trx.selectFrom('employment')
+        .where('employment.health_worker_id', '=', health_worker_id)
+        .select('employment.id')
+        .executeTakeFirst(),
+      update_tokens: google_tokens.upsert(
+        trx,
+        'health_worker',
+        health_worker_id,
+        google_client.tokens,
+      ),
+      health_worker: health_workers.updateById(
+        trx,
+        health_worker_id,
+        health_worker_attributes,
+      ),
+    })
+  }
+
+  const { health_worker_id, existing_employment } = await (
+    existing_health_worker
+      ? updateExistingHealthWorker(existing_health_worker.id)
+      : insertNewHealthWorker()
+  )
 
   await events.insert(trx, {
     type: 'HealthWorkerLogin',
     data: { health_worker_id },
   })
 
-  const session = await sessions.create(trx, 'health_worker', {
+  const session_id = await sessions.insertOne(trx, {
+    entity_type: 'health_worker',
     entity_id: health_worker_id,
   })
 
@@ -187,7 +149,7 @@ export async function initializeHealthWorkerWithoutInvites(
 
   setCookie(response.headers, {
     name: cookie.session_key,
-    value: session.id,
+    value: session_id,
   })
 
   return response
@@ -208,7 +170,8 @@ export async function startRegulatorSession(
   trx: TrxOrDb,
   regulator: HasStringId<Regulator>,
 ) {
-  const session = await sessions.create(trx, 'regulator', {
+  const session_id = await sessions.insertOne(trx, {
+    entity_type: 'regulator',
     entity_id: regulator.id,
   })
 
@@ -218,7 +181,7 @@ export async function startRegulatorSession(
 
   setCookie(response.headers, {
     name: cookie.session_key,
-    value: session.id,
+    value: session_id,
   })
 
   return response
@@ -304,3 +267,70 @@ export const handler = {
     )
   },
 }
+
+// export async function initializeHealthWorkerWithInvites(
+//   trx: TrxOrDb,
+//   google_client: google.GoogleClient,
+//   profile: GoogleProfile,
+//   invitees: { id: string; organization_id: string; profession: Profession | null, is_admin: boolean }[],
+// ): Promise<{ id: string }> {
+// assert(invitees.length, 'No invitees found')
+
+// await employment.removeInvitees(
+//   trx,
+//   invitees.map((invitee) => invitee.id),
+// )
+
+// const organization_ids = uniq(
+//   invitees.map((invitee) => invitee.organization_id),
+// )
+
+// const calendars =
+//   await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
+//     trx,
+//     google_client,
+//     organization_ids,
+//   )
+
+// const avatar_media_id = await downloadAndSaveAvatar(trx, profile.picture)
+
+// const health_worker = await upsertWithGoogleCredentials(
+//   trx,
+//   {
+//     email: profile.email,
+//     avatar_media_id,
+//     ...asNames({
+//       first_names: profile.given_name,
+//       surname: profile.family_name,
+//       name: profile.name,
+//     }),
+//   },
+//   google_client.tokens
+// )
+
+// const calendars_to_insert = calendars.map(({ organization_id, ...calendar }) => ({
+//   ...calendar,
+//   employment_id: health_worker
+// }))
+
+// await employment_calendars.add(
+//   trx,
+//   calendars,
+// )
+
+// await Promise.all(
+//   invitees.map(({ organization_id, profession }) =>
+//     employment.addIgnoreDuplicate(
+//       trx,
+//       { health_worker_id, organization_id, profession },
+//     )
+//   ),
+// )
+
+// await events.insert(trx, {
+//   type: 'HealthWorkerLogin',
+//   data: { health_worker_id },
+// })
+
+// return { id: health_worker_id }
+// }

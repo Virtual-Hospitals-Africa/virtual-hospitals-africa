@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
 import { Maybe, Names, TrxOrDb } from '../../types.ts'
-import * as sessions from '../../db/models/sessions.ts'
+import { sessions } from '../../db/models/sessions.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
@@ -14,10 +14,11 @@ import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetail
 import omit from '../../util/omit.ts'
 import {
   HealthWorkerWithGoogleTokens,
-  upsertWithGoogleCredentials,
+  insertWithGoogleCredentials,
 } from '../../db/models/health_worker_google_tokens.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { asMaybeNames, asNames } from '../../db/models/asNames.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -72,7 +73,11 @@ export async function addTestEmployee(
 
   const health_worker: HealthWorkerWithGoogleTokens = await insertHealthWorker(
     trx,
-    health_worker_attrs,
+    {
+      ...testHealthWorker(),
+      ...health_worker_attrs,
+      ...asMaybeNames(health_worker_attrs),
+    },
   )
   if (profession === 'none') {
     assert(!is_admin)
@@ -131,7 +136,7 @@ export async function addTestEmployee(
   )
 
   if (profession === 'nurse' && registration_status !== 'not started') {
-    const admin = await upsertWithGoogleCredentials(
+    const admin = await insertWithGoogleCredentials(
       trx,
       testHealthWorker(),
     )
@@ -168,7 +173,17 @@ export async function addTestEmployee(
     }
   }
 
-  return { ...health_worker, organization_id, employee_id, calendars }
+  assert(health_worker.first_names)
+  assert(health_worker.name)
+  assert(health_worker.surname)
+  assert(health_worker.preferred_name)
+  return {
+    ...health_worker,
+    organization_id,
+    employee_id,
+    calendars,
+    ...asNames(health_worker),
+  }
 }
 
 export async function addTestEmployeeWithSession(
@@ -176,10 +191,11 @@ export async function addTestEmployeeWithSession(
   opts?: TestHealthWorkerOpts,
 ) {
   const health_worker = await addTestEmployee(trx, opts)
-  const session = await sessions.create(trx, 'health_worker', {
+  const session_id = await sessions.insertOne(trx, {
+    entity_type: 'health_worker',
     entity_id: health_worker.id,
   })
-  const Cookie = `session_id=${session.id}`
+  const Cookie = `session_id=${session_id}`
 
   function fetchWithSession(
     input: URL | RequestInfo,
@@ -246,7 +262,7 @@ export async function addTestEmployeeWithSession(
   }
 
   return {
-    session_id: session.id,
+    session_id,
     Cookie,
     health_worker,
     fetch: fetchWithSession,

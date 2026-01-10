@@ -36,7 +36,7 @@ export default function ContactPage(
                 <Form
                   method='POST'
                   action='/interest'
-                  className='w-full mt-4 min-w-[450px]'
+                  className='w-full mt-4 min-w-112.5'
                 >
                   <HiddenInput name='entrypoint' value={entrypoint} />
 

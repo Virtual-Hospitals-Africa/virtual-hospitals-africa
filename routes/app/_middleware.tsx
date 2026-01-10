@@ -1,12 +1,12 @@
 import { Context } from 'fresh'
 import { deleteCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
+import { health_workers } from '../../db/models/health_workers.ts'
 import * as employees from '../../db/models/employees.ts'
 import * as health_worker_registration_status from '../../db/models/health_worker_registration_status.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as notifications from '../../db/models/notifications.ts'
-import * as sessions from '../../db/models/sessions.ts'
+import { sessions } from '../../db/models/sessions.ts'
 import redirect from '../../util/redirect.ts'
 import * as cookie from '../../shared/cookie.ts'
 import { warning } from '../../util/alerts.ts'
@@ -68,7 +68,7 @@ export function getLoggedInHealthWorker(
     )
 
     const { health_worker, present_encounter } = await promiseProps({
-      update_session: sessions.tickUpdatedAt(db, 'health_worker', session_id),
+      update_session: sessions.tickUpdatedAt(db, session_id),
       health_worker: health_workers.getByIdOptional(
         db,
         health_worker_id_selection,
@@ -88,6 +88,7 @@ export function getLoggedInHealthWorker(
         !require_employment || health_workers.isEmployed(health_worker)
       )
     ) {
+      ctx.state.session_id = session_id
       ctx.state.health_worker = health_worker
       ctx.state.health_worker_id = health_worker.id
       ctx.state.present_encounter = present_encounter

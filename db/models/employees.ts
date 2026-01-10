@@ -1,6 +1,6 @@
 import { SelectQueryBuilder, sql } from 'kysely'
 import { EmployedHealthWorker, RenderedEmployee, TrxOrDb } from '../../types.ts'
-import * as health_workers from './health_workers.ts'
+import { health_workers, type HealthWorkerSearch } from './health_workers.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
@@ -44,7 +44,7 @@ const model = base({
   },
   handleSearch(
     qb,
-    opts: health_workers.HealthWorkerSearch & {
+    opts: HealthWorkerSearch & {
       // TODO
       include_incomplete_registration?: boolean
       can_perform_workflow?: Workflow

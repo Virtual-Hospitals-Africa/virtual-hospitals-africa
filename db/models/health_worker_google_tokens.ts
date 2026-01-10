@@ -2,10 +2,12 @@ import { DeleteResult, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import { GoogleTokens, TrxOrDb } from '../../types.ts'
 import pick from '../../util/pick.ts'
-import * as health_workers from './health_workers.ts'
-import * as google_tokens from './google_tokens.ts'
+import { health_workers } from './health_workers.ts'
+import { google_tokens } from './google_tokens.ts'
 import { combine } from '../../util/combine.ts'
 import { HealthWorkerUpsert } from './health_workers.ts'
+import { assert } from 'std/assert/assert.ts'
+import { NameInputs } from './asNames.ts'
 
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 
@@ -18,10 +20,10 @@ export function updateTokens(
 }
 
 export type HealthWorkerWithGoogleTokens = Awaited<
-  ReturnType<typeof upsertWithGoogleCredentials>
+  ReturnType<typeof insertWithGoogleCredentials>
 >
 
-export async function upsertWithGoogleCredentials(
+export async function insertWithGoogleCredentials(
   trx: TrxOrDb,
   {
     access_token,
@@ -31,12 +33,14 @@ export async function upsertWithGoogleCredentials(
     ...health_worker_details
   }:
     & HealthWorkerUpsert
+    & NameInputs
     & GoogleTokens
     & {
       expires_in?: string | number | Date
     },
 ) {
-  const health_worker = await health_workers.upsert(
+  assert(!health_worker_details.id)
+  const id = await health_workers.insertOne(
     trx,
     health_worker_details,
   )
@@ -46,8 +50,8 @@ export async function upsertWithGoogleCredentials(
     expires_at,
   }
 
-  await google_tokens.upsert(trx, 'health_worker', health_worker.id, tokens)
-  return combine(health_worker, tokens)
+  await google_tokens.upsert(trx, 'health_worker', id, tokens)
+  return combine({ id, ...health_worker_details }, tokens)
 }
 
 export function getWithTokensQuery(trx: TrxOrDb) {

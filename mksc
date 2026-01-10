@@ -1,0 +1,3 @@
+docker buildx build \
+                          -t 150810357387.dkr.ecr.af-south-1.amazonaws.com/virtual-hospitals-africa/virtual-hospitals-africa:vha-app \
+                          --platform linux/arm64 --push .
