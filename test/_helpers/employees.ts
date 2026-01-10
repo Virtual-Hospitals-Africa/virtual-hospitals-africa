@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
 import { Maybe, Names, TrxOrDb } from '../../types.ts'
-import * as sessions from '../../db/models/sessions.ts'
+import { sessions } from '../../db/models/sessions.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
@@ -19,7 +19,6 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { asMaybeNames, asNames } from '../../db/models/asNames.ts'
-import { health_workers } from '../../db/models/health_workers.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -192,10 +191,11 @@ export async function addTestEmployeeWithSession(
   opts?: TestHealthWorkerOpts,
 ) {
   const health_worker = await addTestEmployee(trx, opts)
-  const session = await sessions.create(trx, 'health_worker', {
+  const session_id = await sessions.insertOne(trx, {
+    entity_type: 'health_worker',
     entity_id: health_worker.id,
   })
-  const Cookie = `session_id=${session.id}`
+  const Cookie = `session_id=${session_id}`
 
   function fetchWithSession(
     input: URL | RequestInfo,
@@ -262,7 +262,7 @@ export async function addTestEmployeeWithSession(
   }
 
   return {
-    session_id: session.id,
+    session_id,
     Cookie,
     health_worker,
     fetch: fetchWithSession,

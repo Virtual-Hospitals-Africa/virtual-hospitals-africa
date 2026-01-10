@@ -10,6 +10,7 @@ import { postHandler } from '../../backend/postHandler.ts'
 import redirect from '../../util/redirect.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
+import { sessions } from '../../db/models/sessions.ts'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
@@ -26,22 +27,16 @@ const OnboardingSchema = z.object({
 export const handler = postHandler(
   OnboardingSchema,
   async (ctx: OnboardingContext, form_values) => {
-    const { trx, health_worker } = ctx.state
+    const { trx, health_worker, session_id } = ctx.state
     // We had previously created a health worker for the user, but since they are indicating they are a regulator
     // this was incorrect, so we need to remove the health worker and create a regulator instead
     // Very hacky, but we move the google tokens and session to the regulator
     if (form_values.profession === 'regulator') {
       await promiseProps({
         health_worker: health_workers.removeById(trx, health_worker.id),
-        session: trx.updateTable('sessions').where(
-          'entity_id',
-          '=',
-          health_worker.id,
-        ).where('entity_type', '=', 'health_worker').set({
+        session: sessions.updateById(trx, session_id, {
           entity_type: 'regulator',
-        })
-          .returning('sessions.id')
-          .executeTakeFirstOrThrow(),
+        }),
         google_token: trx.updateTable('google_tokens').where(
           'entity_id',
           '=',

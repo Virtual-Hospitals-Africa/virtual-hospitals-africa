@@ -9,6 +9,7 @@ import redirect from '../../util/redirect.ts'
 
 export type OnboardingContext = TrxContext & {
   state: {
+    session_id: string
     health_worker: PossiblyEmployedHealthWorker
   }
 }

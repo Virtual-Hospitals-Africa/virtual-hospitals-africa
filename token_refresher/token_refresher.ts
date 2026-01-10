@@ -2,7 +2,7 @@
 // Perhaps we do this as well so that users don't have to wait for the token to be refreshed.a
 import db from '../db/db.ts'
 import { refreshTokens } from '../external-clients/google.ts'
-import * as google_tokens from '../db/models/google_tokens.ts'
+import { google_tokens } from '../db/models/google_tokens.ts'
 
 export type token_refresher = { start(): void; exit(): void }
 

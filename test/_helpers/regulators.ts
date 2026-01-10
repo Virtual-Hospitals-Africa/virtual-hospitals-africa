@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
 import { HasStringId, Regulator, TrxOrDb } from '../../types.ts'
-import * as sessions from '../../db/models/sessions.ts'
+import { sessions } from '../../db/models/sessions.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import db from '../../db/db.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -29,7 +29,8 @@ export async function addTestRegulatorWithSession(
   trx: TrxOrDb,
 ) {
   const regulator = await addTestRegulator(trx)
-  const session = await sessions.create(trx, 'regulator', {
+  const session_id = await sessions.insertOne(trx, {
+    entity_type: 'regulator',
     entity_id: regulator.id,
   })
   function fetchWithSession(
@@ -43,7 +44,7 @@ export async function addTestRegulatorWithSession(
       {
         headers: {
           ...headers,
-          Cookie: `session_id=${session.id}`,
+          Cookie: `session_id=${session_id}`,
         },
         ...rest,
       },
@@ -82,7 +83,7 @@ export async function addTestRegulatorWithSession(
   }
 
   return {
-    session_id: session.id,
+    session_id,
     regulator,
     fetch: fetchWithSession,
     fetchOk,
