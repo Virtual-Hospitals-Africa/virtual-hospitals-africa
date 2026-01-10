@@ -8,7 +8,7 @@ import generateUUID from '../../util/uuid.ts'
 import { Priority, RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
 import first from '../../util/first.ts'
-import { jsonBuildObject, jsonObjectFrom, literalBoolean, literalString, success_true } from '../helpers.ts'
+import { jsonArrayFrom, jsonArrayFromColumn, jsonBuildObject, jsonObjectFrom, literalBoolean, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -31,6 +31,9 @@ import { KEYED_WARNING_SIGNS, findingQueryExpression } from '../../shared/warnin
 import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
 import { snomed_model } from './snomed.ts'
 import mapEntries from '../../util/mapEntries.ts'
+import zip from '../../util/zip.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import range from '../../util/range.ts'
 
 function getPriorityOfSnomedConcept<
   // deno-lint-ignore no-explicit-any
@@ -111,52 +114,45 @@ export const additional_tasks = {
     },
   ) {
 
+
+    console.log()
+
     if (!finding_ids.length) return
 
-    await trx.selectFrom('patient_records as xr')
-      .where('xr.id', 'in', finding_ids)
-      .select((eb) => [
-        jsonBuildObject(
-          mapEntries(KEYED_TASKS, task => {
-            if (task.when.atom !== 'finding') {
-              return literalBoolean(false)
-            }
-            return eb.exists(
-              buildExpression(
-                trx,
-                { patient_id },
-                task.when,
-              ).where(
-                'patient_records.id',
-                '=',
-                eb.ref('xr.id')
-              ),
+    const [first_task, ...other_tasks] = TASKS.map(
+      ({ description, when }) => 
+        trx.selectNoFrom([
+          literalString(description).as('description'),
+          jsonArrayFromColumn(
+            'id',
+            buildExpression(
+              trx,
+              { patient_id },
+              when,
+            ).where(
+              'patient_records.id',
+              'in',
+              finding_ids
             )
-          })
-        ).as('matching_tasks')
-      ])
-      .execute()
+          ).as('matching_finding_ids')
+        ])
+    )
 
+    const all_tasks_query = other_tasks.reduce((acc, curr) => acc.unionAll(curr), first_task)
+
+    const task_results = zip(
+      await all_tasks_query.execute(),
+      TASKS
+    )
     
-
-
-    await pMap(TASKS, async (task) => {
-      const records_for_which_task_should_be_done = await satisfyingSExpression(
-        trx,
-        {
-          patient_id,
-          patient_encounter_id,
-          s_expression: task.when,
-        },
-      )
-
-      if (!records_for_which_task_should_be_done.satisfies) {
+    await pMap(task_results, async ([task_result, task]) => {
+      assertEquals(task_result.description, task.description)
+      assertNotEquals(task.when.atom, 'any') // TODO support these
+      assertNotEquals(task.when.atom, 'all')
+      
+      if (arrayIsEmpty(task_result.matching_finding_ids)) {
         return null
       }
-
-      const first_record = exists(
-        first(records_for_which_task_should_be_done.record_ids),
-      )
 
       const procedure = await patient_procedures
         .insertOneIfNotAlreadyExistsForThisEncounter(
@@ -169,44 +165,75 @@ export const additional_tasks = {
           },
         )
 
-      if (procedure.inserted_new) {
-        const evaluation_id = generateUUID()
-        const relation_id = generateUUID()
+      // TODO: the procedure was already identified, so probably nothing to do here
+      if (!procedure.inserted_new) {
+        return 
+      }
+  
+      const evaluation_id = generateUUID()
+      const relations = task_result.matching_finding_ids.map(finding_id => ({
+        id: generateUUID(),
+        source_id: evaluation_id,
+        destination_id: finding_id,
+      }))
 
-        await patient_evaluations.insertOneNestedQuery(
-          trx,
-          {
-            evaluation_id,
+      await patient_evaluations.insertOneNestedQuery(
+        trx,
+        {
+          evaluation_id,
+          patient_id,
+          patient_encounter_id,
+          by_system: true,
+          evaluates_record_id: procedure.procedure_id,
+          evaluation:
+            `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
+        },
+      ).with(
+        'inserting_relation_patient_records',
+        (qb) =>
+          qb.insertInto('patient_records').values(relations.map(({ id }) => ({
+            id,
             patient_id,
             patient_encounter_id,
-            by_system: true,
-            evaluates_record_id: procedure.procedure_id,
-            evaluation:
-              `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
-          },
-        ).with(
-          'inserting_relation_patient_records',
-          (qb) =>
-            qb.insertInto('patient_records').values({
-              patient_id,
-              patient_encounter_id,
-              id: relation_id,
-              root_snomed_concept_id: RELATIONSHIP.id,
-              specific_snomed_concept_id: DUE_TO.id,
-            }),
-        ).with(
-          'inserting_relations',
-          (qb) =>
-            qb.insertInto('patient_record_relations').values({
-              id: relation_id,
-              source_id: evaluation_id,
-              destination_id: first_record,
-            }),
-        ).selectNoFrom([
-          success_true,
-        ]).executeTakeFirstOrThrow()
-      }
+            root_snomed_concept_id: RELATIONSHIP.id,
+            specific_snomed_concept_id: DUE_TO.id,
+          }))),
+      ).with(
+        'inserting_relations',
+        (qb) =>
+          qb.insertInto('patient_record_relations').values(relations),
+      ).selectNoFrom([
+        success_true,
+      ]).executeTakeFirstOrThrow()
     })
+
+
+    // const findings = 
+    // await trx.selectFrom('patient_records as xr')
+    //   .where('xr.id', 'in', finding_ids)
+    //   .select((eb) => [
+    //     jsonBuildObject(
+    //       mapEntries(KEYED_TASKS, task => {
+    //         if (task.when.atom !== 'finding') {
+    //           return literalBoolean(false)
+    //         }
+    //         return eb.exists(
+    //           buildExpression(
+    //             trx,
+    //             { patient_id },
+    //             task.when,
+    //           ).where(
+    //             'patient_records.id',
+    //             '=',
+    //             eb.ref('xr.id')
+    //           ),
+    //         )
+    //       })
+    //     ).as('matching_tasks')
+    //   ])
+    //   .execute()
+
+    
   },
   async getTasksGroups(
     trx: TrxOrDb,
