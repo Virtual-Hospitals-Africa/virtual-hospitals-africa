@@ -55,7 +55,7 @@ import {
 import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import first from '../../util/first.ts'
-import { isEmployed } from './health_workers.ts'
+import { health_workers } from './health_workers.ts'
 import { makeAssertion } from '../../util/makeAssertion.ts'
 import matching from '../../util/matching.ts'
 import { exists } from '../../util/exists.ts'
@@ -657,7 +657,7 @@ const model = base({
     assert(organization)
     assertAll(
       all_employees_seen,
-      makeAssertion(isEmployed),
+      makeAssertion(health_workers.isEmployed),
     )
 
     const status = asStatus(patient_presence, closed_at)

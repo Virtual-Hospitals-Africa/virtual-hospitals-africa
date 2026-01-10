@@ -5,7 +5,7 @@ import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as sessions from '../db/models/sessions.ts'
 import * as organizations from '../db/models/organizations.ts'
-import * as health_workers from '../db/models/health_workers.ts'
+import { health_workers } from '../db/models/health_workers.ts'
 import * as regulators from '../db/models/regulators.ts'
 import * as google_tokens from '../db/models/google_tokens.ts'
 import * as events from '../db/models/events.ts'
@@ -157,10 +157,10 @@ export async function initializeHealthWorkerWithoutInvites(
       health_worker_id,
       google_client.tokens,
     ),
-    health_worker: health_workers.upsert(
+    health_worker: health_workers.updateById(
       trx,
+      health_worker_id,
       {
-        id: health_worker_id,
         email: profile.email,
         avatar_media_id,
         ...asNames({

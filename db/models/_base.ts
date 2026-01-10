@@ -1,16 +1,18 @@
+import { LRU } from 'tiny-lru'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import type { Generated, ReferenceExpression, SelectQueryBuilder } from 'kysely'
 import type {
   IdSelection,
   InsertShape,
   SearchResults,
   TrxOrDb,
+  UpdateShape,
 } from '../../types.ts'
-import { assert } from 'std/assert/assert.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
 import { asCompiledSql, debugLog } from '../helpers.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import isString from '../../util/isString.ts'
 
 // deno-lint-ignore no-explicit-any
@@ -39,10 +41,14 @@ export type BaseModelInput<
   ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
   formatResult: (result: IntermediateResult) => RenderedResult
   verbose?: boolean
+  caching?: {
+    number_of_items: number
+  }
 }
 
 type BaseModel<
   Tables,
+  TopLevelTable extends StandardTables,
   SelectingFrom extends keyof Tables,
   IntermediateResult,
   SearchTerms extends Partial<Record<string, unknown>>,
@@ -74,12 +80,21 @@ type BaseModel<
     trx: TrxOrDb,
     search_terms: SearchTerms,
   ): Promise<RenderedResult[]>
+  insertOne(
+    trx: TrxOrDb,
+    to_insert: InsertShape<DB[TopLevelTable]>,
+  ): Promise<string>
   getById(trx: TrxOrDb, id: string | IdSelection): Promise<RenderedResult>
   getByIdOptional(
     trx: TrxOrDb,
     id: string | IdSelection,
   ): Promise<RenderedResult | null>
   getByIds(trx: TrxOrDb, ids: string[] | IdSelection): Promise<RenderedResult[]>
+  updateById(
+    trx: TrxOrDb,
+    id: string,
+    updates: UpdateShape<DB[TopLevelTable]>,
+  ): Promise<void>
   distinctIds(
     trx: TrxOrDb,
     search_terms: SearchTerms,
@@ -88,6 +103,9 @@ type BaseModel<
     >[0],
   ): IdSelection
   countAll(trx: TrxOrDb, search_terms: SearchTerms): Promise<number>
+  removeById(trx: TrxOrDb, id: string): Promise<void>
+  invalidateCacheOne(id: string): void
+  invalidateCacheAll(): void
 }
 type StandardTables = {
   [Table in keyof DB]: DB[Table] extends
@@ -97,6 +115,8 @@ type StandardTables = {
 
 export type SearchResult<
   BM extends BaseModel<
+    // deno-lint-ignore no-explicit-any
+    any,
     // deno-lint-ignore no-explicit-any
     any,
     // deno-lint-ignore no-explicit-any
@@ -132,6 +152,7 @@ export function base<
 ):
   & BaseModel<
     Tables,
+    TopLevelTable,
     SelectingFrom,
     IntermediateResult,
     SearchTerms,
@@ -150,6 +171,7 @@ export function base<
     top_level_table,
     baseQuery,
     formatResult,
+    caching,
   } = input
 
   const base_query_consumes_search = baseQuery.length === 2
@@ -168,6 +190,8 @@ export function base<
     )
     handleSearch = input.handleSearch
   }
+
+  const lru = caching ? new LRU<RenderedResult>(caching.number_of_items) : null
 
   return bindAll({
     ...input,
@@ -306,6 +330,8 @@ export function base<
       trx: TrxOrDb,
       id: string | IdSelection,
     ): Promise<RenderedResult | null> {
+      const cache_result = lru?.get(id)
+      if (cache_result) return cache_result
       const query = this.buildQuery(trx, {} as SearchTerms, (qb) =>
         qb.where(
           `${top_level_table}.id` as ReferenceExpression<Tables, SelectingFrom>,
@@ -320,7 +346,22 @@ export function base<
         console.error(asCompiledSql(query))
         throw new Error('Expected query to return a unique result')
       }
-      return formatResult(results[0])
+      const db_result = formatResult(results[0])
+      lru?.set(id, db_result)
+      return db_result
+    },
+    async updateById(
+      trx: TrxOrDb,
+      id: string,
+      updates: UpdateShape<DB[TopLevelTable]>,
+    ) {
+      lru?.delete(id)
+      await trx
+        // deno-lint-ignore no-explicit-any
+        .updateTable(top_level_table as any)
+        .set(updates)
+        .where('id', '=', id)
+        .execute()
     },
     async getByIds(
       trx: TrxOrDb,
@@ -345,15 +386,17 @@ export function base<
         .execute()
       return intermediate_results.map(formatResult)
     },
-    insertOne(
+    async insertOne(
       trx: TrxOrDb,
       to_insert: InsertShape<DB[TopLevelTable]>,
     ) {
-      return trx.insertInto(top_level_table)
+      const { id } = await trx.insertInto(top_level_table)
         // deno-lint-ignore no-explicit-any
         .values(to_insert as any)
         .returning('id')
         .executeTakeFirstOrThrow()
+
+      return id
     },
     distinctIds(
       trx: TrxOrDb,
@@ -397,6 +440,22 @@ export function base<
         .executeTakeFirstOrThrow() as unknown as { count: number | string }
 
       return isString(count) ? parseInt(count) : count
+    },
+    async removeById(
+      trx: TrxOrDb,
+      id: string,
+    ) {
+      lru?.delete(id)
+      // deno-lint-ignore no-explicit-any
+      await trx.deleteFrom(top_level_table as any)
+        .where('id', '=', id)
+        .execute()
+    },
+    invalidateCacheOne(id: string) {
+      lru?.delete(id)
+    },
+    invalidateCacheAll() {
+      lru?.clear()
     },
   })
 }

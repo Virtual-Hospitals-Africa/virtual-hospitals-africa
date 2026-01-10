@@ -89,6 +89,9 @@ export function baseQuery(trx: TrxOrDb) {
 
 const model = base({
   top_level_table: 'organizations',
+  caching: {
+    number_of_items: 100,
+  },
   baseQuery,
   formatResult: (x): RenderedOrganization => x,
   handleSearch(

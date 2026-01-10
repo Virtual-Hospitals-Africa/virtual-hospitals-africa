@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { sql, UpdateResult } from 'kysely'
+import { sql } from 'kysely'
 import {
   EmployedHealthWorker,
   IdSelection,
@@ -49,81 +49,11 @@ function asHealthWorkerValues(
   }
 }
 
-export function upsert(
-  trx: TrxOrDb,
-  details: HealthWorkerUpsert,
-) {
-  const to_upsert = asHealthWorkerValues(details)
-  return trx
-    .insertInto('health_workers')
-    .values(to_upsert)
-    .onConflict((oc) => oc.column('email').doUpdateSet(details))
-    .returning([
-      'id',
-      'name',
-      'first_names',
-      'surname',
-      'preferred_name',
-      'email',
-      'avatar_media_id',
-    ])
-    .executeTakeFirstOrThrow()
-}
-
-export async function getIdByEmailOrGenerateNew(
-  trx: TrxOrDb,
-  email: string,
-) {
-  const health_worker = await trx.selectFrom('health_workers')
-    .where('email', '=', email)
-    .select('id')
-    .executeTakeFirst()
-
-  return health_worker?.id || generateUUID()
-}
-
-export function updateNames(
-  trx: TrxOrDb,
-  health_worker_id: string,
-  names: {
-    name: string
-    first_names: string
-    surname: string
-    preferred_name: string
-  },
-): Promise<UpdateResult[]> {
-  return trx
-    .updateTable('health_workers')
-    .set(names)
-    .where('id', '=', health_worker_id)
-    .execute()
-}
-
 export const pickHealthWorkerDetails = pick([
   'name',
   'email',
   'avatar_media_id',
 ])
-
-export function isHealthWorker(
-  health_worker: unknown,
-): health_worker is PossiblyEmployedHealthWorker {
-  return (
-    isObjectLike(health_worker) &&
-    ('id' in health_worker && typeof health_worker.id === 'string') &&
-    ('name' in health_worker && typeof health_worker.name === 'string') &&
-    ('email' in health_worker && typeof health_worker.email === 'string')
-  )
-}
-
-export function isEmployed(
-  health_worker: unknown,
-): health_worker is EmployedHealthWorker {
-  return isHealthWorker(health_worker) &&
-    'organizations' in health_worker &&
-    Array.isArray(health_worker.organizations) &&
-    !!health_worker.organizations.length
-}
 
 export function baseQuery(trx: TrxOrDb) {
   return trx
@@ -216,7 +146,7 @@ export type HealthWorkerSearch = {
   prioritize_organization_id?: Maybe<string>
 }
 
-const model = base({
+export const health_workers = base({
   top_level_table: 'health_workers',
   baseQuery,
   formatResult: (x): PossiblyEmployedHealthWorker => x,
@@ -278,40 +208,78 @@ const model = base({
 
     return qb
   },
+
+  async upsert(
+    trx: TrxOrDb,
+    details: HealthWorkerUpsert,
+  ) {
+    const to_upsert = asHealthWorkerValues(details)
+    const health_worker = await trx
+      .insertInto('health_workers')
+      .values(to_upsert)
+      .onConflict((oc) => oc.column('email').doUpdateSet(details))
+      .returning([
+        'id',
+        'name',
+        'first_names',
+        'surname',
+        'preferred_name',
+        'email',
+        'avatar_media_id',
+      ])
+      .executeTakeFirstOrThrow()
+
+    health_workers.invalidateCacheOne(health_worker.id)
+    return health_worker
+  },
+
+  async getIdByEmailOrGenerateNew(
+    trx: TrxOrDb,
+    email: string,
+  ) {
+    const health_worker = await trx.selectFrom('health_workers')
+      .where('email', '=', email)
+      .select('id')
+      .executeTakeFirst()
+
+    return health_worker?.id || generateUUID()
+  },
+
+  isHealthWorker(
+    health_worker: unknown,
+  ): health_worker is PossiblyEmployedHealthWorker {
+    return (
+      isObjectLike(health_worker) &&
+      ('id' in health_worker && typeof health_worker.id === 'string') &&
+      ('name' in health_worker && typeof health_worker.name === 'string') &&
+      ('email' in health_worker && typeof health_worker.email === 'string')
+    )
+  },
+
+  isEmployed(
+    health_worker: unknown,
+  ): health_worker is EmployedHealthWorker {
+    return health_workers.isHealthWorker(health_worker) &&
+      'organizations' in health_worker &&
+      Array.isArray(health_worker.organizations) &&
+      !!health_worker.organizations.length
+  },
+
+  getAvatar(trx: TrxOrDb, opts: { health_worker_id: string }) {
+    return trx
+      .selectFrom('media')
+      .innerJoin('health_workers', 'health_workers.avatar_media_id', 'media.id')
+      .select(['media.mime_type', 'media.binary_data'])
+      .where('health_workers.id', '=', opts.health_worker_id)
+      .executeTakeFirst()
+  },
+
+  async getEmployed(
+    trx: TrxOrDb,
+    { health_worker_id }: { health_worker_id: string | IdSelection },
+  ): Promise<EmployedHealthWorker> {
+    const health_worker = await health_workers.getById(trx, health_worker_id)
+    assert(health_workers.isEmployed(health_worker))
+    return health_worker
+  },
 })
-
-export const getById = model.getById
-export const getByIdOptional = model.getByIdOptional
-export const search = model.search
-export const findAll = model.findAll
-export const findOne = model.findOne
-export const findOneOptional = model.findOneOptional
-export const formatResult = model.formatResult
-
-export async function getEmployed(
-  trx: TrxOrDb,
-  { health_worker_id }: { health_worker_id: string | IdSelection },
-): Promise<EmployedHealthWorker> {
-  const health_worker = await getById(trx, health_worker_id)
-  assert(isEmployed(health_worker))
-  return health_worker
-}
-
-export function getAvatar(trx: TrxOrDb, opts: { health_worker_id: string }) {
-  return trx
-    .selectFrom('media')
-    .innerJoin('health_workers', 'health_workers.avatar_media_id', 'media.id')
-    .select(['media.mime_type', 'media.binary_data'])
-    .where('health_workers.id', '=', opts.health_worker_id)
-    .executeTakeFirst()
-}
-
-export function removeById(
-  trx: TrxOrDb,
-  id: string,
-) {
-  return trx
-    .deleteFrom('health_workers')
-    .where('id', '=', id)
-    .executeTakeFirstOrThrow()
-}

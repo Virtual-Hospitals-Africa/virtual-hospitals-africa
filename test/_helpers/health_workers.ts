@@ -1,7 +1,7 @@
-import { asMaybeNames } from '../../db/models/asNames.ts'
+import { asNames, NameInputs } from '../../db/models/asNames.ts'
 import {
   HealthWorkerWithGoogleTokens,
-  upsertWithGoogleCredentials,
+  insertWithGoogleCredentials,
 } from '../../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
 import { TrxOrDb } from '../../types.ts'
@@ -27,13 +27,13 @@ export function testHealthWorker() {
 
 export function insertHealthWorker(
   trx: TrxOrDb,
-  opts?: Partial<HealthWorkerWithGoogleTokens>,
+  opts: Partial<HealthWorkerWithGoogleTokens> & NameInputs,
 ) {
   const defaults = testHealthWorker()
   const to_insert = {
     ...defaults,
     ...opts,
-    ...asMaybeNames(opts || {}),
+    ...asNames(opts),
   }
-  return upsertWithGoogleCredentials(trx, to_insert)
+  return insertWithGoogleCredentials(trx, to_insert)
 }

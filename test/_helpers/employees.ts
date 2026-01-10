@@ -14,10 +14,11 @@ import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetail
 import omit from '../../util/omit.ts'
 import {
   HealthWorkerWithGoogleTokens,
-  upsertWithGoogleCredentials,
+  insertWithGoogleCredentials,
 } from '../../db/models/health_worker_google_tokens.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { asMaybeNames, asNames } from '../../db/models/asNames.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -72,7 +73,11 @@ export async function addTestEmployee(
 
   const health_worker: HealthWorkerWithGoogleTokens = await insertHealthWorker(
     trx,
-    health_worker_attrs,
+    {
+      ...testHealthWorker(),
+      ...health_worker_attrs,
+      ...asMaybeNames(health_worker_attrs),
+    },
   )
   if (profession === 'none') {
     assert(!is_admin)
@@ -131,7 +136,7 @@ export async function addTestEmployee(
   )
 
   if (profession === 'nurse' && registration_status !== 'not started') {
-    const admin = await upsertWithGoogleCredentials(
+    const admin = await insertWithGoogleCredentials(
       trx,
       testHealthWorker(),
     )
@@ -168,7 +173,17 @@ export async function addTestEmployee(
     }
   }
 
-  return { ...health_worker, organization_id, employee_id, calendars }
+  assert(health_worker.first_names)
+  assert(health_worker.name)
+  assert(health_worker.surname)
+  assert(health_worker.preferred_name)
+  return {
+    ...health_worker,
+    organization_id,
+    employee_id,
+    calendars,
+    ...asNames(health_worker),
+  }
 }
 
 export async function addTestEmployeeWithSession(

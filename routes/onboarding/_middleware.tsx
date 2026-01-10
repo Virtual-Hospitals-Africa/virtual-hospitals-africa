@@ -4,7 +4,7 @@ import {
 } from '../app/_middleware.tsx'
 import { PossiblyEmployedHealthWorker } from '../../types.ts'
 import { attachTrx, TrxContext } from '../../backend/attachTrx.ts'
-import { isEmployed } from '../../db/models/health_workers.ts'
+import { health_workers } from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
 
 export type OnboardingContext = TrxContext & {
@@ -23,5 +23,7 @@ export const handler = [
 function redirectToAppIfEmployedAlready(
   ctx: OnboardingContext,
 ) {
-  return isEmployed(ctx.state.health_worker) ? redirect('/app') : ctx.next()
+  return health_workers.isEmployed(ctx.state.health_worker)
+    ? redirect('/app')
+    : ctx.next()
 }
