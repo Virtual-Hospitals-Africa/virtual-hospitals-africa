@@ -148,6 +148,9 @@ export type HealthWorkerSearch = {
 
 export const health_workers = base({
   top_level_table: 'health_workers',
+  caching: {
+    number_of_items: 100,
+  },
   baseQuery,
   formatResult: (x): PossiblyEmployedHealthWorker => x,
   handleSearch(

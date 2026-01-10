@@ -49,7 +49,9 @@ for arg in "$@"; do
     resolved_args+=("$arg")
   else
     # Try to find a test file with a matching describe/describeParallel block
-    match=$(grep -rl "describe\(Parallel\)\?(['\"]${arg}['\"]" test/ 2>/dev/null | head -1 || true)
+    # Escape regex special characters in arg for grep
+    escaped_arg=$(printf '%s' "$arg" | sed -e 's/\[/\\[/g' -e 's/\]/\\]/g' -e 's/\./\\./g' -e 's/\*/\\*/g' -e 's/\^/\\^/g' -e 's/\$/\\$/g')
+    match=$(grep -rl "['\"]${escaped_arg}['\"]" test/ 2>/dev/null | head -1 || true)
     if [[ -n "$match" ]]; then
       resolved_args+=("$match")
     else

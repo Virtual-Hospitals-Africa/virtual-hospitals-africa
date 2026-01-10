@@ -25,6 +25,8 @@ export async function PatientRegistrationConfirmPage(
       ctx.state.trx,
       ctx.state.patient.id,
     )
+
+  const x = ctx.state.trx.selectFrom('health_workers').selectAll()
   return (
     <PatientRegistrationSummary
       organization_id={ctx.state.organization.id}
