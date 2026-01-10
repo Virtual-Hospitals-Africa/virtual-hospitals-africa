@@ -1,5 +1,4 @@
 import db from '../../../../../db/db.ts'
-import { CommonConditionKey, WarningSignKey } from '../../../../../types.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { createTestOrganization } from '../../../../_helpers/organizations.ts'
@@ -7,41 +6,27 @@ import {
   insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
   PartialPatientDemographics,
 } from '../../../../_helpers/workflows.ts'
-import fromEntries from '../../../../../util/fromEntries.ts'
-import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
-import {
-  VitalAssessment,
-  VitalMeasurement,
-} from '../../../../../shared/vitals.ts'
 import { assert } from 'std/assert/assert.ts'
+import z from 'zod'
+import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
+import { WarningSignKey } from '../../../../../types.ts'
+
+// Note: We don't import the schema from warning_signs.tsx because the POST body
+// structure differs from the schema's internal structure. The handler uses
+// z.record(z.string(), WarningSignSchema).transform(values) which means POST data
+// is keyed by name, not an array.
+
+// Import schemas from route files to ensure tests don't drift from implementation
+import { TriageBriefHistorySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/brief_history.tsx'
+import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
+import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
 
 export type TriageScenario = {
   patient_demographics: PartialPatientDemographics
   warning_signs: WarningSignKey[]
-  conditions?: CommonConditionKey[]
-  height_and_weight?: {
-    height: {
-      value: number
-      units: string
-    }
-    weight: {
-      value: number
-      units: string
-    }
-  }
-  vitals?: {
-    measurements: {
-      [v in VitalMeasurement]?: {
-        value: number
-        units: string
-      }
-    }
-    assessments: {
-      [v in VitalAssessment]?: {
-        s_expression: string
-      }
-    }
-  }
+  conditions?: z.input<typeof TriageBriefHistorySchema>
+  height_and_weight?: z.input<typeof TriageHeightAndWeightSchema>['measurements']
+  vitals?: z.input<typeof TriageMeasureVitalsSchema>
 }
 
 /**
@@ -74,14 +59,24 @@ export async function setupTriage(
       },
     )
 
-  const warning_signs_post_data = fromEntries(
-    warning_signs.map((
-      warning_sign,
-    ) => [
-      warning_sign,
-      WARNING_SIGNS[warning_sign].clinical_finding_s_expression,
-    ]),
-  )
+  // Build warning signs POST data in the format expected by the handler:
+  // { warning_signs: { [key]: { s_expression, existence, priority_level, ... } } }
+  const warning_signs_post_data: Record<string, {
+    s_expression: string
+    existence: 'Yes'
+    warning_sign_key: string
+    priority_level: string
+  }> = {}
+
+  for (const key of warning_signs) {
+    const sign = WARNING_SIGNS[key]
+    warning_signs_post_data[key] = {
+      s_expression: sign.clinical_finding_s_expression,
+      existence: 'Yes',
+      warning_sign_key: key,
+      priority_level: sign.sats_priority,
+    }
+  }
 
   let $ = await nurse.fetchCheerio(
     `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -94,20 +89,11 @@ export async function setupTriage(
   )
 
   if (conditions) {
-    const conditions_post_data = fromEntries(
-      conditions.map((condition) => [condition, { existence: 'Yes' }]),
-    )
-    if (!conditions_post_data.pregnancy) {
-      conditions_post_data.pregnancy = { existence: 'No' }
-    }
-    if (!conditions_post_data.diabetes) {
-      conditions_post_data.diabetes = { existence: 'No' }
-    }
     $ = await nurse.fetchCheerio(
       `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
       {
         method: 'POST',
-        body: asFormData(conditions_post_data),
+        body: asFormData(conditions),
       },
     )
   } else {
