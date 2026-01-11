@@ -2,9 +2,8 @@ import { TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
 import { EventInsertAny, EVENTS } from '../../events/handlers.ts'
 import { sql } from 'kysely'
-
 import { Client } from 'pg'
-import db, { opts } from '../db.ts'
+import { opts } from '../db.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isUUID } from '../../util/uuid.ts'
 import { once } from '../../util/once.ts'
@@ -104,6 +103,7 @@ export const events = {
       .selectFrom('events')
       .where('listeners_inserted_at', 'is', null)
       .where('error_message_no_automated_retry', 'is', null)
+      .where('created_at', '<', now)
       .forUpdate()
       .skipLocked()
       .select(['id', 'type', 'data'])
