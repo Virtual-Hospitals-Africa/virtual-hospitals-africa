@@ -3600,7 +3600,7 @@ export type MostRecentBriefHistoryFindings = {
 }
 
 export type WarningSign = {
-  key: string | null
+  key: string
   clinical_finding_s_expression: string
   sats_primary_name: string
   sats_secondary_text: string | null
@@ -3611,8 +3611,9 @@ export type WarningSign = {
 
 export type WarningSignKey = keyof typeof WARNING_SIGNS
 
-export type WarningSignWithMaybeRecord = WarningSign & {
-  existing_record: null | {
+export type WarningSignWithMaybeRecord = Omit<WarningSign, 'key'> & {
+  key?: string
+  existing_record?: {
     id: string
     existence: 'Yes' | 'No'
   }

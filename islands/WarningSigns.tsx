@@ -6,10 +6,7 @@ import {
 import { groupBy } from '../util/groupBy.ts'
 import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
-import {
-  asConceptSExpression,
-  CLINICAL_FINDING,
-} from '../shared/snomed_concepts.ts'
+
 import { EmptyState } from '../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
 import sortBy from '../util/sortBy.ts'
@@ -145,7 +142,7 @@ function KeyedWarningSignsPriorityGrid({
 }
 
 type CheckedWarningSign = WarningSignWithMaybeRecord & {
-  checked: boolean
+  checked?: boolean
 }
 
 export default function KeyedWarningSigns({
@@ -161,26 +158,11 @@ export default function KeyedWarningSigns({
       checked: sign.existing_record?.existence === 'Yes',
     })),
   )
-  const search_results = useSignal<null | SnomedConceptSearchResult[]>(null)
-
-  const search_results_as_signs = computed(() =>
-    search_results.value && search_results.value.map((result) => ({
-      key: null,
-      checked: false,
-      sats_priority: result.priority?.name || ('Non-urgent' as const),
-      clinical_finding_s_expression:
-        `(finding ${CLINICAL_FINDING.s_expression} ${(asConceptSExpression(
-          result,
-        ))})`,
-      sats_primary_name: result.name,
-      sats_secondary_text: result.category,
-      existing_record: null,
-    }))
-  )
+  const search_results = useSignal<null | CheckedWarningSign[]>(null)
 
   const grouped = computed(() =>
     groupBy(
-      search_results_as_signs.value || checked_signs.value,
+      search_results.value || checked_signs.value,
       'sats_priority',
     )
   )
@@ -189,7 +171,7 @@ export default function KeyedWarningSigns({
     sortBy(
       PRIORITIES,
       ({ priority }) =>
-        -(grouped.value.get(priority) || []).filter((sign) => sign.checked)
+        -(grouped.value.get(priority) || []).filter((sign) => !!sign.checked)
           .length,
       (_config, index) => index,
     )

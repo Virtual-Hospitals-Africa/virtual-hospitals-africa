@@ -101,7 +101,7 @@ export const handler = postHandler(
             task.existence,
           )
 
-          return patient_findings.insertOneIfNotAlreadyExistsForThisEncounter(
+          return patient_findings.insertOneNested(
             trx,
             {
               patient_id,

@@ -52,11 +52,11 @@ const WarningSignSchema = z.object({
   priority_level: z.enum(ORDERED_PRIORITIES),
   existing_record: z.object({
     id: z.string(),
-    modified: z.boolean(),
+    modified: z.boolean().optional(),
   }).optional(),
 }).strict()
 
-const WarningSignsSchema = z.object({
+export const TriageWarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
     WarningSignSchema,
@@ -64,7 +64,7 @@ const WarningSignsSchema = z.object({
 }).strict()
 
 export const handler = postHandler(
-  WarningSignsSchema,
+  TriageWarningSignsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const {
       trx,
@@ -103,7 +103,6 @@ export const handler = postHandler(
             return
           }
 
-          // insertOneIfNotAlreadyExistsForThisEncounter
           const finding_insert = await patient_findings
             .insertOneNested(
               trx,
@@ -210,6 +209,9 @@ function* asCheckedWarningSigns(
     normal_form_s_expression: asNormalFormSExpression(finding),
   })))
 
+  // Loop over the signs looking for findings that have identical s_expressions,
+  // Removing them as we go
+  // Any that are left over we send as well
   matching_signs: for (const sign of warning_signs_for_patient) {
     for (const finding of findings_set) {
       const same_idea =
@@ -228,15 +230,11 @@ function* asCheckedWarningSigns(
       }
     }
 
-    yield {
-      ...sign,
-      existing_record: null,
-    }
+    yield sign
   }
 
   for (const finding of findings_set) {
     yield {
-      key: null,
       sats_priority: finding.priority || 'Non-urgent',
       clinical_finding_s_expression: finding.normal_form_s_expression,
       sats_primary_name: finding.specific_snomed_concept.name,

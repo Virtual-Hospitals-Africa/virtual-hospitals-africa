@@ -166,6 +166,8 @@ export const patient_procedures = base({
       ])
       .executeTakeFirstOrThrow()
   },
+
+  // TODO: consider doing these in parallel
   async insertOneIfNotAlreadyExistsForThisEncounter(
     trx: TrxOrDb,
     to_insert: ProcedureInsert,

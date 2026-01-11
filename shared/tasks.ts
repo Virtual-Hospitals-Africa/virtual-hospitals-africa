@@ -11,10 +11,10 @@ function asTask(task_s_expression: string) {
 }
 
 export const TASKS = [
-  // `(task
-  //   "Give oxygen if saturation below 92%"
-  //     (< (measurement 103228002) (units 92 %))
-  //     (procedure ${PROCEDURE.s_expression} 57485005))`,
+  `(task
+    "Give oxygen if saturation below 92%"
+      (< (measurement 103228002) (units 92 %))
+      (procedure ${PROCEDURE.s_expression} 57485005))`,
   `(task
     "Check for head injury for any nose symptoms"
     (finding ${CLINICAL_FINDING.s_expression}
