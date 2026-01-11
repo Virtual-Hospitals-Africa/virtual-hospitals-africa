@@ -23,6 +23,7 @@ async function onEventListener(event_listener_id: string) {
       event_listener_id,
     )
   }
+  console.log('got listener', event_listener)
 
   if (!isEventType(event_listener.type)) {
     return events.markUnrecoverableError(
@@ -45,7 +46,11 @@ async function onEventListener(event_listener_id: string) {
       },
     )
   }
+
+  console.log('parsing', event_listener)
   const parse_result = handler.schema.safeParse(event_listener.data)
+
+  console.log('parse_result', { event_listener, parse_result })
 
   if (!parse_result.success) {
     return events.markErroredListener(
@@ -58,8 +63,10 @@ async function onEventListener(event_listener_id: string) {
   }
 
   try {
+    console.log('starting trx', event_listener)
     await db.transaction().setIsolationLevel('read committed').execute(
       async (trx) => {
+        console.log('inside trx', event_listener)
         await listener(trx, {
           id: event_listener.event_id,
           // deno-lint-ignore no-explicit-any
@@ -68,8 +75,10 @@ async function onEventListener(event_listener_id: string) {
           //   error_count: event_listener.error_count,
           // },
         })
+        console.log('listener complete', event_listener)
       },
     )
+    console.log('events.processedListener', event_listener)
     await events.processedListener(db, {
       event_listener_id: event_listener.id,
     })
@@ -91,7 +100,9 @@ const initializeEventListener = once(
     await client.connect()
     await client.query(`LISTEN event_listener_to_be_processed`)
 
-    client.on('notification', function ({ payload: event_listener_id }) {
+    client.on('notification', function (event) {
+      console.log('zzzz', event)
+      const { payload: event_listener_id } = event
       assert(isUUID(event_listener_id))
       onEventListener(event_listener_id)
     })

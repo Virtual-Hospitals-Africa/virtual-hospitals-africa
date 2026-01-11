@@ -12,8 +12,10 @@ import {
   ATTRIBUTE,
   CLINICAL_FINDING,
   EVENT,
+  NO_QUALIFIER,
   QUALIFIER_VALUE,
   STATUS_ATTRIBUTE,
+  UNKNOWN_QUALIFIER,
   YES_QUALIFIER,
 } from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
@@ -69,6 +71,7 @@ function baseQuery(
     qualifiers = [],
     attributes = [],
     exact = false,
+    include_negative = false,
   }: PatientIdentifiers & {
     root_snomed_concept?: Maybe<Lang['snomed_concept']>
     specific_snomed_concept?: Maybe<Lang['snomed_concept']>
@@ -80,6 +83,7 @@ function baseQuery(
       Lang['attribute']
     >
     exact?: boolean
+    include_negative?: boolean
   },
 ) {
   const query = trx.selectFrom('patient_records')
@@ -137,6 +141,29 @@ function baseQuery(
             matches,
           ])
         }),
+    )
+    // TODO there's other types of negation in SNOMED, but we're not using them?
+    // A more general approach use Finding context: Known absent
+    .$if(
+      !include_negative,
+      (qb) =>
+        qb.where((eb) =>
+          eb.or([
+            eb('patient_records.value_snomed_concept_id', 'is', null),
+            eb.and([
+              eb(
+                'patient_records.value_snomed_concept_id',
+                '!=',
+                NO_QUALIFIER.id,
+              ),
+              eb(
+                'patient_records.value_snomed_concept_id',
+                '!=',
+                UNKNOWN_QUALIFIER.id,
+              ),
+            ]),
+          ])
+        ),
     )
     .select('patient_records.id')
 

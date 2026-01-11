@@ -36,7 +36,7 @@ rule_no_db_imports_in_frontend() {
 }
 
 rule_no_only_in_tests() {
-  ! rg -n --pcre2 '\.only\(' test
+  ! rg -n --pcre2 '\.only\(|only:\s*true' test --glob '!test/_helpers/*'
 }
 
 # Main: run all rules in parallel and collect results

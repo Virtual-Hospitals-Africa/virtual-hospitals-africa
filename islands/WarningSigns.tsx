@@ -54,7 +54,6 @@ function KeyedWarningSignCheckbox(
     onUncheck: OnToggle
   },
 ) {
-  console.log('m', { sign })
   const name = `warning_signs.${uniqueIdentifier(sign)}`
   return (
     <label class='flex gap-1.5 2xl:gap-3 py-2 2xl:py-3 items-start cursor-pointer flex-1 p-1 min-w-0'>
@@ -108,7 +107,6 @@ function KeyedWarningSignsPriorityGrid({
   onCheck: OnToggle
   onUncheck: OnToggle
 }) {
-  console.log('x', arguments[0])
   return (
     <div
       class='w-full overflow-hidden rounded-xl border border-gray-200'

@@ -39,7 +39,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           },
         },
       },
-      vitals: {
+      measure_vitals: {
         measurements: {
           blood_oxygen_saturation: {
             value: 91,
@@ -265,7 +265,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           },
         },
       },
-      vitals: {
+      measure_vitals: {
         measurements: asVitalMeasurementFormValues({
           respiratory_rate: 12, // 9-14 -> score 0
           heart_rate: 60, // 51-100 -> score 0

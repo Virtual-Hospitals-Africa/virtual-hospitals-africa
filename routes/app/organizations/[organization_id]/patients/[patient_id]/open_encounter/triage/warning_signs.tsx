@@ -40,8 +40,11 @@ import { SearchResult } from '../../../../../../../../db/models/_base.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 import values from '../../../../../../../../util/values.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
+import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
+import { Lang } from '../../../../../../../../shared/s_expression_schemas.ts'
+import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 
-const WarningSignSchema = z.object({
+export const TriageWarningSignSchema = z.object({
   s_expression: z.string().transform((
     value,
   ) => parseExpressionExpectingAtom(value, 'finding')),
@@ -59,7 +62,7 @@ const WarningSignSchema = z.object({
 export const TriageWarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
-    WarningSignSchema,
+    TriageWarningSignSchema,
   ).optional().default({}).transform(values),
 }).strict()
 
@@ -74,20 +77,34 @@ export const handler = postHandler(
       patient_encounter_employee_id,
     } = ctx.state
 
-    // TODO: match against what we already have and fail the transaction if the client was lying
-    // const warning_signs_previously_entered = groupByUniq(
-    //   await getAllClinicalFindingsAsWarningSignsForThisEncounter(ctx),
-    //   (sign) => sign.key,
-    // )
-
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
     assert(procedure_id)
 
-    const { response } = await promiseProps({
-      response: completeAndProceedToNextStep(ctx),
-      mark_modified_as_invalid: markRecordsInvalid(),
-      inserted_signs: insertSigns().then(dispatchEvent),
-    })
+    const { response, inserted_signs, previously_reported } =
+      await promiseProps({
+        inserted_signs: insertSigns(),
+        response: completeAndProceedToNextStep(ctx),
+        mark_modified_as_invalid: markRecordsInvalid(),
+        previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
+      })
+
+    for (const previous_finding of previously_reported) {
+      const just_submitted = form_values.warning_signs.find((submitted) =>
+        submitted.existing_record?.id === previous_finding.record_id
+      )
+      assertOr400(
+        just_submitted,
+        `It is expected that the frontend resubmit previously submitted records. Missing: ${previous_finding.record_id}`,
+      )
+      const was_modified =
+        just_submitted.existence !== previous_finding.existence
+      assertOr400(
+        just_submitted.existing_record?.modified === was_modified,
+        `It is expected that the frontend keep track of whether the previously submitted record was modified. Detected a mismatch for ${previous_finding.record_id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
+      )
+    }
+
+    await dispatchEvent(inserted_signs)
 
     return response
 
@@ -95,53 +112,67 @@ export const handler = postHandler(
       return pMap(
         form_values.warning_signs,
         async (sign) => {
-          // TODO handle negative findings
-          if (sign.existence === 'No') {
-            return
-          }
           if (sign.existing_record && !sign.existing_record.modified) {
             return
           }
+
+          const finding: Lang['finding'] = sign.existence === 'Yes'
+            ? sign.s_expression
+            : {
+              ...sign.s_expression,
+              value_snomed_concept: {
+                atom: 'snomed_concept',
+                type: 'snomed_concept_name_and_category',
+                ...NO_QUALIFIER,
+              },
+            }
 
           const finding_insert = await patient_findings
             .insertOneNested(
               trx,
               {
+                finding,
                 patient_id,
                 procedure_id,
                 patient_encounter_id,
                 patient_encounter_employee_id,
-                finding: sign.s_expression,
               },
             )
           assert(finding_insert.success)
-          if (!finding_insert.inserted_new) return
+          assert(finding_insert.inserted_new)
 
-          await patient_triage.insertLevel(
-            trx,
-            {
-              patient_id,
-              patient_encounter_id,
-              procedure_id,
-              triage_level: sign.priority_level,
-              by_system: true,
-              evaluates_record_id: finding_insert.finding_id,
-            },
-          )
+          if (sign.existence === 'Yes') {
+            await patient_triage.insertLevel(
+              trx,
+              {
+                patient_id,
+                patient_encounter_id,
+                procedure_id,
+                triage_level: sign.priority_level,
+                by_system: true,
+                evaluates_record_id: finding_insert.finding_id,
+              },
+            )
+          }
 
-          return finding_insert.finding_id
+          return {
+            id: finding_insert.finding_id,
+            existence: sign.existence,
+          }
         },
       ).then(compact)
     }
 
-    function dispatchEvent(finding_ids: string[]) {
+    function dispatchEvent(
+      findings: { id: string; existence: 'Yes' | 'No' }[],
+    ) {
       return events.insert(trx, {
         type: 'ProcedureCompleted',
         data: {
+          findings,
           patient_id,
-          patient_encounter_id,
           procedure_id,
-          finding_ids,
+          patient_encounter_id,
         },
       })
     }
@@ -177,6 +208,7 @@ function getAllFindingsReportedPreviouslyOnThisPage(
     patient_id,
     patient_encounter_id,
     procedure_id: completed_procedure.procedure_id,
+    include_negative: true,
   })
 }
 
@@ -204,14 +236,22 @@ function* asCheckedWarningSigns(
   findings: SearchResult<typeof patient_findings>[],
   warning_signs_for_patient: WarningSign[],
 ): Generator<WarningSignWithMaybeRecord> {
-  const findings_set = new Set(findings.map((finding) => ({
-    ...finding,
-    normal_form_s_expression: asNormalFormSExpression(finding),
-  })))
+  const findings_set = new Set(findings.map((finding) => {
+    // We don't use the value when calculating the normal form
+    // of the s_expression here so that negative findings match.
+    // That is if a previous submission found no chest pain,
+    // then that's the existing record for that sign.
+    const normal_form_s_expression = asNormalFormSExpression({
+      ...finding,
+      value: null,
+    })
 
-  // Loop over the signs looking for findings that have identical s_expressions,
-  // Removing them as we go
-  // Any that are left over we send as well
+    return { ...finding, normal_form_s_expression }
+  }))
+
+  // Loop over the signs looking for findings that have identical
+  // s_expressions, removing them as we go. Any that are left
+  // over we send as well (these were the result of search)
   matching_signs: for (const sign of warning_signs_for_patient) {
     for (const finding of findings_set) {
       const same_idea =
@@ -223,7 +263,7 @@ function* asCheckedWarningSigns(
           ...sign,
           existing_record: {
             id: finding.record_id,
-            existence: 'Yes' as const, // TODO handle negative records
+            existence: finding.existence,
           },
         }
         continue matching_signs
@@ -241,7 +281,7 @@ function* asCheckedWarningSigns(
       sats_secondary_text: finding.specific_snomed_concept.category,
       existing_record: {
         id: finding.record_id,
-        existence: 'Yes' as const, // TODO handle negative records
+        existence: finding.existence,
       },
     }
   }
