@@ -20,8 +20,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'employment_id',
           'uuid',
-          (col) =>
-            col.notNull().references('employment.id').onDelete('cascade'),
+          (col) => col.notNull().references('employment.id').onDelete('cascade'),
         )
         .addColumn(
           'seen_at',

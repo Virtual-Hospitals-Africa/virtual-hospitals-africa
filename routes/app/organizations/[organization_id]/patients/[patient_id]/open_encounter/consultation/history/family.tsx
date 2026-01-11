@@ -8,11 +8,7 @@ import { postHandler } from '../../../../../../../../../backend/postHandler.ts'
 import { promiseProps } from '../../../../../../../../../util/promiseProps.ts'
 import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
 import { completeAndProceedToNextStep } from '../../_middleware.tsx'
-import {
-  completeAssessment,
-  HistoryContext,
-  HistoryPage,
-} from './_middleware.tsx'
+import { completeAssessment, HistoryContext, HistoryPage } from './_middleware.tsx'
 import { RenderedPatientFamilyHistory } from '../../../../../../../../../types.ts'
 
 const FamilyMemberSchema = z.object({
@@ -31,17 +27,11 @@ export const FamilyHistorySchema = z
           .array(FamilyMemberSchema)
           .nonempty()
           .refine(
-            (members) =>
-              members.filter((m) =>
-                m.relation_sexed.match(/(biological mother)/gi)
-              ).length <= 1,
+            (members) => members.filter((m) => m.relation_sexed.match(/(biological mother)/gi)).length <= 1,
             { message: 'Cannot have more than one bilogical mother.' },
           )
           .refine(
-            (members) =>
-              members.filter((m) =>
-                m.relation_sexed.match(/(biological father)/gi)
-              ).length <= 1,
+            (members) => members.filter((m) => m.relation_sexed.match(/(biological father)/gi)).length <= 1,
             { message: 'Cannot have more than one bilogical father.' },
           ),
       }),

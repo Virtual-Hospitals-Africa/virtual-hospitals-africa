@@ -69,9 +69,7 @@ describeParallel(
 
         assertEquals(
           post_response.url,
-          `${route}/regulator/${regulator.country}/pharmacists?success=${
-            encodeURIComponent('New pharmacist added')
-          }`,
+          `${route}/regulator/${regulator.country}/pharmacists?success=${encodeURIComponent('New pharmacist added')}`,
         )
 
         const invited_pharmacist = await db

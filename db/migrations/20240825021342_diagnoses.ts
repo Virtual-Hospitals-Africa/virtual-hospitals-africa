@@ -5,14 +5,10 @@ import { createStandardTable } from '../createTable.ts'
 export async function up(db: Kysely<DB>) {
   await createStandardTable(db, 'diagnoses', (qb) =>
     qb
-      .addColumn('patient_condition_id', 'uuid', (col) =>
-        col.notNull().references('patient_conditions.id').onDelete('cascade'))
-      .addColumn('provider_id', 'uuid', (col) =>
-        col.notNull().references('employment.id').onDelete('cascade'))
-      .addColumn('doctor_review_id', 'uuid', (col) =>
-        col.references('doctor_reviews.id').onDelete('cascade'))
-      .addColumn('patient_encounter_id', 'uuid', (col) =>
-        col.references('patient_encounters.id').onDelete('cascade'))
+      .addColumn('patient_condition_id', 'uuid', (col) => col.notNull().references('patient_conditions.id').onDelete('cascade'))
+      .addColumn('provider_id', 'uuid', (col) => col.notNull().references('employment.id').onDelete('cascade'))
+      .addColumn('doctor_review_id', 'uuid', (col) => col.references('doctor_reviews.id').onDelete('cascade'))
+      .addColumn('patient_encounter_id', 'uuid', (col) => col.references('patient_encounters.id').onDelete('cascade'))
       .addCheckConstraint(
         'either_doctor_review_or_patient_encounter',
         sql<

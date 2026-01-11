@@ -98,9 +98,7 @@ function baseQuery(
                 'organizations.id',
               )
               .where('doctor_employment.profession', '=', 'doctor')
-              .select((eb2) =>
-                eb2.fn.count('doctor_employment.id').as('doctor_count')
-              ),
+              .select((eb2) => eb2.fn.count('doctor_employment.id').as('doctor_count')),
           '>',
           0,
         ),

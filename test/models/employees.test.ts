@@ -6,10 +6,7 @@ import db from '../../db/db.ts'
 import { exists } from '../../util/exists.ts'
 import assertLength from '../../util/assertLength.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
-import {
-  createTestOrganization,
-  TEST_ORGANIZATION_UUIDS,
-} from '../_helpers/organizations.ts'
+import { createTestOrganization, TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
 import { employees } from '../../db/models/employees.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -170,8 +167,7 @@ describeParallel('db/models/employees.ts', () => {
           'profession': 'nurse',
           'is_admin': false,
           'specialty': 'Primary care',
-          'href':
-            `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${result.id}`,
+          'href': `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${result.id}`,
           'organizations': [
             {
               ...await organizations.getById(

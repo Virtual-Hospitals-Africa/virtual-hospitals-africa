@@ -42,8 +42,7 @@ describe('patient chatbot', () => {
         messages: {
           type: 'buttons',
           buttonText: 'Menu',
-          message_body:
-            'This is the end of the demo. Thank you for participating!',
+          message_body: 'This is the end of the demo. Thank you for participating!',
           options: [
             {
               id: 'main_menu',

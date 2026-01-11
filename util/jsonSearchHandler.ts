@@ -1,10 +1,6 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { json } from '../util/responses.ts'
-import type {
-  LoggedInHealthWorkerContext,
-  SearchResults,
-  TrxOrDb,
-} from '../types.ts'
+import type { LoggedInHealthWorkerContext, SearchResults, TrxOrDb } from '../types.ts'
 
 export function jsonSearchHandler<
   SearchTerms,

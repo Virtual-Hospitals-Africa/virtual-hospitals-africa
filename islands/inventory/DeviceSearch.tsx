@@ -13,9 +13,7 @@ function DeviceOption({
     <div className='flex flex-col'>
       {option.diagnostic_test_capabilities && (
         <div className={cls('truncate text-base', selected && 'font-bold')}>
-          {`${option.name}(${option.manufacturer ?? ''}) - ${
-            (option.diagnostic_test_capabilities ?? []).join(' ')
-          }`}
+          {`${option.name}(${option.manufacturer ?? ''}) - ${(option.diagnostic_test_capabilities ?? []).join(' ')}`}
         </div>
       )}
     </div>
@@ -28,7 +26,5 @@ export default function DeviceSearch(
     'Option' | 'search_route'
   >,
 ) {
-  return (
-    <AsyncSearch {...props} search_route='/app/devices' Option={DeviceOption} />
-  )
+  return <AsyncSearch {...props} search_route='/app/devices' Option={DeviceOption} />
 }

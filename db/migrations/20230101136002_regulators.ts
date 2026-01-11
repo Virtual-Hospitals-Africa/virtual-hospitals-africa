@@ -17,8 +17,7 @@ export async function up(db: Kysely<DB>) {
               'cascade',
             ),
         )
-        .addColumn('avatar_media_id', 'uuid', (col) =>
-          col.references('media.id').onDelete('set null')),
+        .addColumn('avatar_media_id', 'uuid', (col) => col.references('media.id').onDelete('set null')),
   )
 }
 

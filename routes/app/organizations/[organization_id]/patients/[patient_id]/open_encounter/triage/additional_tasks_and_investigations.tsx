@@ -1,9 +1,4 @@
-import {
-  completeAndProceedToNextStep,
-  createProcedureIfNotAlreadyCompleted,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, createProcedureIfNotAlreadyCompleted, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import AdditionalTasks from '../../../../../../../../components/triage/AdditionalTasks.tsx'

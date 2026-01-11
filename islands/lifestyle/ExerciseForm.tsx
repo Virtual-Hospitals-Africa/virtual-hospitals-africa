@@ -167,24 +167,16 @@ export default function ExerciseSection(
     lifestyle?.exercise?.currently_exercises ?? null,
   )
   const physical_activities = useSignal<{ name: string; frequency: string }[]>(
-    lifestyle?.exercise?.currently_exercises === 'Yes'
-      ? (lifestyle.exercise.physical_activities || [])
-      : [],
+    lifestyle?.exercise?.currently_exercises === 'Yes' ? (lifestyle.exercise.physical_activities || []) : [],
   )
   const sports = useSignal<{ name: string; frequency: string }[]>(
-    lifestyle?.exercise?.currently_exercises === 'Yes'
-      ? (lifestyle.exercise.sports || [])
-      : [],
+    lifestyle?.exercise?.currently_exercises === 'Yes' ? (lifestyle.exercise.sports || []) : [],
   )
   const types_of_exercises = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'Yes'
-      ? (lifestyle.exercise.types_of_exercises || [])
-      : [],
+    lifestyle?.exercise?.currently_exercises === 'Yes' ? (lifestyle.exercise.types_of_exercises || []) : [],
   )
   const disabilities = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'Yes'
-      ? (lifestyle.exercise.physical_injuries_or_disability.disabilities || [])
-      : [],
+    lifestyle?.exercise?.currently_exercises === 'Yes' ? (lifestyle.exercise.physical_injuries_or_disability.disabilities || []) : [],
   )
 
   const musculoskeletal_injuries = useSignal<string[]>(
@@ -195,19 +187,13 @@ export default function ExerciseSection(
   )
 
   const limitations = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'Yes'
-      ? (lifestyle.exercise.limitations.limits || [])
-      : [],
+    lifestyle?.exercise?.currently_exercises === 'Yes' ? (lifestyle.exercise.limitations.limits || []) : [],
   )
   const structural = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'Yes'
-      ? (lifestyle.exercise.limitations.structural_conditions || [])
-      : [],
+    lifestyle?.exercise?.currently_exercises === 'Yes' ? (lifestyle.exercise.limitations.structural_conditions || []) : [],
   )
   const medical = useSignal<string[]>(
-    lifestyle?.exercise?.currently_exercises === 'Yes'
-      ? (lifestyle.exercise.limitations.medical_conditions || [])
-      : [],
+    lifestyle?.exercise?.currently_exercises === 'Yes' ? (lifestyle.exercise.limitations.medical_conditions || []) : [],
   )
   return (
     <FormSection header='Exercise Questions'>
@@ -256,9 +242,7 @@ export default function ExerciseSection(
             selected={sports.value.map(({ name }) => name)}
             onChange={(selected_sports) => {
               sports.value = selected_sports.map((name) => {
-                const matching_sport = sports.value.find((activity) =>
-                  activity.name === name
-                )
+                const matching_sport = sports.value.find((activity) => activity.name === name)
                 return matching_sport || {
                   name: name,
                   frequency: FREQUENCIES[0],

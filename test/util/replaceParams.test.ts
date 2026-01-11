@@ -6,8 +6,7 @@ import { replaceParams } from '../../util/replaceParams.ts'
 
 describe('replaceParams', () => {
   it('replaces params in the route', () => {
-    const route =
-      '/app/patients/:patient_id/encounters/:patient_encounter_id/examinations'
+    const route = '/app/patients/:patient_id/encounters/:patient_encounter_id/examinations'
     const params = { patient_id: '1029', patient_encounter_id: 'open' }
     const replaced = replaceParams(route, params)
     assertEquals(
@@ -17,8 +16,7 @@ describe('replaceParams', () => {
   })
 
   it('throws if insufficient params are supplied', () => {
-    const route =
-      '/app/patients/:patient_id/encounters/:patient_encounter_id/examinations'
+    const route = '/app/patients/:patient_id/encounters/:patient_encounter_id/examinations'
     const params = { patient_encounter_id: 'open' }
     const error = assertThrows(() => replaceParams(route, params))
     assert(error instanceof Error)

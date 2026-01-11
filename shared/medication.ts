@@ -159,16 +159,12 @@ export function dosageDisplay(params: DosageDisplayParams) {
 
   const single_dose = strength_denominator.mul(dosage)
 
-  let display = strength_denominator.equals(1)
-    ? (dosage_text ?? dosageText(params.dosage))
-    : String(single_dose)
+  let display = strength_denominator.equals(1) ? (dosage_text ?? dosageText(params.dosage)) : String(single_dose)
 
   if (!strength_denominator_is_units) {
     display += ' '
   }
-  display += dosage.equals(1)
-    ? strength_denominator_unit
-    : denominatorPlural(params)
+  display += dosage.equals(1) ? strength_denominator_unit : denominatorPlural(params)
   display += ` (${strength_numerator.mul(dosage)}${strength_numerator_unit})`
 
   return display
@@ -203,9 +199,7 @@ export function strengthDisplay({
   strength_denominator_unit: string
   separator?: string
 }): string {
-  let strength_display = `${strength_numerator}${strength_numerator_unit}${
-    separator ?? '/'
-  }`
+  let strength_display = `${strength_numerator}${strength_numerator_unit}${separator ?? '/'}`
   if (strength_denominator === '1') {
     strength_display += strength_denominator
   }
@@ -226,9 +220,7 @@ export function scheduleDisplay(
     ...medication,
   })
 
-  return `${dosage_display} ${frequency_display} for ${duration} ${
-    unpluralize(duration_unit, duration)
-  }`
+  return `${dosage_display} ${frequency_display} for ${duration} ${unpluralize(duration_unit, duration)}`
 }
 
 // // 2 tablets (50mg) per dose * 4 doses per day * 6 days = 48 tablets (50mg)

@@ -1,9 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import {
-  HealthWorkerOrganization,
-  RenderedPatientEncounter,
-  TrxOrDb,
-} from '../../types.ts'
+import { HealthWorkerOrganization, RenderedPatientEncounter, TrxOrDb } from '../../types.ts'
 import { employees } from './employees.ts'
 import { base, identity } from './_base.ts'
 
@@ -29,9 +25,7 @@ export const patient_encounter_employees = base({
     encounter: RenderedPatientEncounter,
     organization_employment: HealthWorkerOrganization,
   ) {
-    const employee = encounter.all_employees_seen.find((employee) =>
-      employee.employee_id === organization_employment.employment_id
-    )
+    const employee = encounter.all_employees_seen.find((employee) => employee.employee_id === organization_employment.employment_id)
     assert(
       employee,
       'If the encounter exists and the health worker is manipulating it, the health worker must have seen the patient at least once',

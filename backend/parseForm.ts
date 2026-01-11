@@ -70,9 +70,7 @@ export async function parseRequest<T extends Record<string, unknown>>(
   if (isBlank(form_data)) {
     const text = !body_consumed ? await req.text() : undefined
 
-    values_map = (req.method === 'POST' && text)
-      ? new URLSearchParams(text)
-      : new URL(req.url).searchParams
+    values_map = (req.method === 'POST' && text) ? new URLSearchParams(text) : new URL(req.url).searchParams
   } else {
     values_map = form_data!
   }

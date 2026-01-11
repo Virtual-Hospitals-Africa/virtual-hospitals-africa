@@ -54,9 +54,7 @@ export function Command(
     args = args_in_command
   }
   if (USE_DOCKER_FOR_POSTGRES && POSTGRES_COMMANDS.has(program)) {
-    args = program.endsWith('.sh')
-      ? ['exec', 'vha_postgres', 'bash', program].concat(args || [])
-      : ['exec', 'vha_postgres', program].concat(args || [])
+    args = program.endsWith('.sh') ? ['exec', 'vha_postgres', 'bash', program].concat(args || []) : ['exec', 'vha_postgres', program].concat(args || [])
     program = 'docker'
   }
   if (verbose) {

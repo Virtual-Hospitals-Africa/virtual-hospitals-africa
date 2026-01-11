@@ -17,9 +17,7 @@ function OrganizationSelectOption(
     <label
       className={cls(
         'relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus:outline-none sm:flex sm:justify-between',
-        active.value
-          ? 'border-indigo-600 ring-2 ring-indigo-600'
-          : 'border-gray-300',
+        active.value ? 'border-indigo-600 ring-2 ring-indigo-600' : 'border-gray-300',
       )}
       onMouseOver={() => active.value = true}
       onMouseLeave={() => active.value = false}

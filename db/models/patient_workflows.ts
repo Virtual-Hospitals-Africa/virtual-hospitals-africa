@@ -1,14 +1,10 @@
-import { PatientWorkflows, Workflow } from '../../db.d.ts'
+import { DB, Workflow } from '../../db.d.ts'
 import { workflowStepKey } from '../../shared/workflow.ts'
-import {
-  InsertShape,
-  RenderedPatientEncounter,
-  RenderedPatientOpenEncounter,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedPatientEncounter, RenderedPatientOpenEncounter, TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'
 import { AlertWithActionsError } from '../../util/assertOr.ts'
+import { InsertObject } from 'kysely'
 
 export class PresentWithAnotherPatientError extends AlertWithActionsError {
   constructor(encounter: RenderedPatientOpenEncounter) {
@@ -20,8 +16,7 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
       },
       {
         text: `Move ${encounter.patient.name} to the waiting room`,
-        href:
-          `/app/organizations/${encounter.organization.id}/patients/${encounter.patient.id}/open_encounter/move-to-waiting-room`,
+        href: `/app/organizations/${encounter.organization.id}/patients/${encounter.patient.id}/open_encounter/move-to-waiting-room`,
         method: 'POST',
       },
     ])
@@ -81,8 +76,7 @@ export const patient_workflows = {
       existing_patient_encounter_employee_id: string | null
     },
   ) {
-    const patient_encounter_employee_id =
-      existing_patient_encounter_employee_id ||
+    const patient_encounter_employee_id = existing_patient_encounter_employee_id ||
       generateUUID()
 
     return trx.with(
@@ -116,14 +110,15 @@ export const patient_workflows = {
         patient_encounter_employee_id,
         patient_workflow_id,
       })
-      .onConflict((oc) =>
-        oc.constraint('patient_workflows_started_once').doNothing()
-      )
+      .onConflict((oc) => oc.constraint('patient_workflows_started_once').doNothing())
       .execute()
   },
   insert(
     trx: TrxOrDb,
-    to_insert: InsertShape<PatientWorkflows> | InsertShape<PatientWorkflows>[],
+    to_insert: InsertObject<DB, 'patient_workflows'> | InsertObject<
+      DB,
+      'patient_workflows'
+    >[],
   ) {
     return trx.insertInto('patient_workflows')
       .values(to_insert).execute()

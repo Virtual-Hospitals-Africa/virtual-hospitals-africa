@@ -58,8 +58,7 @@ export async function up(db: Kysely<DB>) {
     },
     (qb) =>
       qb
-        .addColumn('language_code', 'varchar(3)', (col) =>
-          col.notNull().references('languages.iso_639_2_b')),
+        .addColumn('language_code', 'varchar(3)', (col) => col.notNull().references('languages.iso_639_2_b')),
   )
 
   await createStandardTable(
@@ -67,13 +66,10 @@ export async function up(db: Kysely<DB>) {
     'speech_transcriptions',
     (qb) =>
       qb
-        .addColumn('media_speech_id', 'uuid', (col) =>
-          col.notNull().references('media_speeches.id'))
+        .addColumn('media_speech_id', 'uuid', (col) => col.notNull().references('media_speeches.id'))
         .addColumn('transcription', 'text')
-        .addColumn('finished', 'boolean', (col) =>
-          col.notNull())
-        .addColumn('model', 'varchar(255)', (col) =>
-          col.notNull()).addCheckConstraint(
+        .addColumn('finished', 'boolean', (col) => col.notNull())
+        .addColumn('model', 'varchar(255)', (col) => col.notNull()).addCheckConstraint(
           'transcription_present_when_finished',
           sql`(
         finished = (transcription is not null)

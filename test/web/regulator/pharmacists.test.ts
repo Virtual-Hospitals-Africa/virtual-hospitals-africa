@@ -5,10 +5,7 @@ import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
 import { path } from '../../../util/path.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  addTestPharmacist,
-  removeTestPharmacist,
-} from '../../_helpers/pharmacists.ts'
+import { addTestPharmacist, removeTestPharmacist } from '../../_helpers/pharmacists.ts'
 import { addTestRegulatorWithSession } from '../../_helpers/regulators.ts'
 import { route } from '../../_route.ts'
 import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
@@ -44,8 +41,7 @@ describeParallel.skip(
         const new_pharmacist = await addTestPharmacist(db)
         const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-        const pharmacist_name =
-          `${new_pharmacist.given_name} ${new_pharmacist.family_name}`
+        const pharmacist_name = `${new_pharmacist.given_name} ${new_pharmacist.family_name}`
 
         const response = await fetch(
           path(`/regulator/${regulator.country}/pharmacists`, {

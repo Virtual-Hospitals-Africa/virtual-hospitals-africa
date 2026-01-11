@@ -1,19 +1,13 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import {
-  parseExpression,
-  parseExpressionExpectingAtom,
-} from '../../shared/s_expression.ts'
+import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
-import {
-  buildExpression,
-  satisfyingSExpression,
-} from '../../db/models/s_expression.ts'
+import { buildExpression, satisfyingSExpression } from '../../db/models/s_expression.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { patient_record_providers } from '../../db/models/patient_record_providers.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
@@ -35,14 +29,13 @@ describeParallel('db/models/patient_findings.ts', () => {
         registration_status: 'approved',
       })
 
-      const encounter =
-        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          nurse.organization_id,
-          {
-            employment_id: nurse.employee_id,
-          },
-        )
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+        db,
+        nurse.organization_id,
+        {
+          employment_id: nurse.employee_id,
+        },
+      )
       const patient_id = encounter.patient.id
 
       const procedure = await patient_procedures.insertOneNested(db, {
@@ -69,8 +62,7 @@ describeParallel('db/models/patient_findings.ts', () => {
           {
             patient_id,
             patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id:
-              encounter.employee.patient_encounter_employee_id,
+            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
             procedure_id: procedure.procedure_id,
             finding: burn_of_left_arm_by_attribute_s_expression,
           },
@@ -180,14 +172,13 @@ describeParallel('db/models/patient_findings.ts', () => {
       registration_status: 'approved',
     })
 
-    const encounter =
-      await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-        db,
-        nurse.organization_id,
-        {
-          employment_id: nurse.employee_id,
-        },
-      )
+    const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+      db,
+      nurse.organization_id,
+      {
+        employment_id: nurse.employee_id,
+      },
+    )
     const patient_id = encounter.patient.id
 
     const procedure = await patient_procedures.insertOneNested(db, {
@@ -195,9 +186,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       patient_encounter_id: encounter.patient_encounter_id,
       employment_id: nurse.employee_id,
       procedure: parseExpressionExpectingAtom(
-        `(procedure ${PROCEDURE.id} ${
-          WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
-        })`,
+        `(procedure ${PROCEDURE.id} ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
         'procedure',
       ),
     })
@@ -216,8 +205,7 @@ describeParallel('db/models/patient_findings.ts', () => {
         {
           patient_id,
           patient_encounter_id: encounter.patient_encounter_id,
-          patient_encounter_employee_id:
-            encounter.employee.patient_encounter_employee_id,
+          patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
           procedure_id: procedure.procedure_id,
           finding: common_cold_attribute_s_expression,
         },
@@ -276,14 +264,13 @@ describeParallel('db/models/patient_findings.ts', () => {
         registration_status: 'approved',
       })
 
-      const encounter =
-        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          nurse.organization_id,
-          {
-            employment_id: nurse.employee_id,
-          },
-        )
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+        db,
+        nurse.organization_id,
+        {
+          employment_id: nurse.employee_id,
+        },
+      )
       const patient_id = encounter.patient.id
 
       const procedure = await patient_procedures.insertOneNested(db, {
@@ -291,9 +278,7 @@ describeParallel('db/models/patient_findings.ts', () => {
         patient_encounter_id: encounter.patient_encounter_id,
         employment_id: nurse.employee_id,
         procedure: parseExpressionExpectingAtom(
-          `(procedure ${PROCEDURE.id} ${
-            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals
-          })`,
+          `(procedure ${PROCEDURE.id} ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
           'procedure',
         ),
       })
@@ -314,8 +299,7 @@ describeParallel('db/models/patient_findings.ts', () => {
           {
             patient_id,
             patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id:
-              encounter.employee.patient_encounter_employee_id,
+            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
             procedure_id: procedure.procedure_id,
             finding: normal_for_age_s_expression,
           },

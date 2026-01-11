@@ -3,10 +3,7 @@ import * as slack from '../external-clients/slack.ts'
 import redirect from '../util/redirect.ts'
 import { assertOr400 } from '../util/assertOr.ts'
 import isObjectLike from '../util/isObjectLike.ts'
-import {
-  CONTACT_REASON_OPTIONS,
-  ContactReason,
-} from '../components/library/ContactForm.tsx'
+import { CONTACT_REASON_OPTIONS, ContactReason } from '../components/library/ContactForm.tsx'
 import { Handlers } from 'fresh/compat'
 
 function assertIsMailingListRecipient(
@@ -33,14 +30,10 @@ function assertIsMailingListRecipient(
 }
 
 const success_messages = {
-  general_inquiry: (name: string) =>
-    `Thanks for your interest ${name}! Our team has received your inquiry and will respond as soon as possible 🚀`,
-  book_a_demo: (name: string) =>
-    `Thanks for your interest in a demo ${name}! We\'ll reach out shortly to schedule a time to connect ⏰`,
-  book_an_intro_call: (name: string) =>
-    `Thanks for your interest in an intro call ${name}! We\'ll reach out shortly to schedule a time to connect ⏰`,
-  request_investor_deck: (name: string) =>
-    `Thanks for your interest in a our investor deck ${name}! We\'ll reach out shortly to send it to you 🚀`,
+  general_inquiry: (name: string) => `Thanks for your interest ${name}! Our team has received your inquiry and will respond as soon as possible 🚀`,
+  book_a_demo: (name: string) => `Thanks for your interest in a demo ${name}! We\'ll reach out shortly to schedule a time to connect ⏰`,
+  book_an_intro_call: (name: string) => `Thanks for your interest in an intro call ${name}! We\'ll reach out shortly to schedule a time to connect ⏰`,
+  request_investor_deck: (name: string) => `Thanks for your interest in a our investor deck ${name}! We\'ll reach out shortly to send it to you 🚀`,
 }
 
 export const handler: Handlers = {
@@ -53,8 +46,7 @@ export const handler: Handlers = {
 
     // await mailing_list.add(db, recipient)
 
-    let slackMessage =
-      `New interest from ${recipient.name} ${recipient.email}\n\nreason: ${recipient.reason}`
+    let slackMessage = `New interest from ${recipient.name} ${recipient.email}\n\nreason: ${recipient.reason}`
     if (recipient.interest) {
       slackMessage += `\ninterest: ${recipient.interest}`
     }

@@ -94,10 +94,8 @@ export function vitalAssessmentOrder(
 }
 
 export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_IDS
-export type VitalMeasurement =
-  keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS
-export type VitalAssessment =
-  keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
+export type VitalMeasurement = keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS
+export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
 export type Vital = VitalMeasurement | VitalAssessment
 
 export const ADULT_TEWS_COMPONENTS = [
@@ -391,11 +389,8 @@ export function measureVitalsInputDefinitions(
   ).map(([vital, options]) => ({
     vital,
     required: true,
-    evaluation_snomed_concept_id:
-      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital],
-    options: options.filter((option) =>
-      option.available_to_ages.includes(age_determination)
-    ),
+    evaluation_snomed_concept_id: VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital],
+    options: options.filter((option) => option.available_to_ages.includes(age_determination)),
   }))
 
   return { measurements, assessments }
@@ -564,9 +559,7 @@ export function isAssessmentFor(
   f: RenderedFindingRelativeToHealthWorker,
   evaluation_snomed_concept_id: string,
 ): boolean {
-  const has_matching_evaluation = f.evaluations.some((e) =>
-    e.specific_snomed_concept.snomed_concept_id === evaluation_snomed_concept_id
-  )
+  const has_matching_evaluation = f.evaluations.some((e) => e.specific_snomed_concept.snomed_concept_id === evaluation_snomed_concept_id)
   if (!has_matching_evaluation) return false
 
   // const specific_snomed_concept_id = f.specific_snomed_concept.snomed_concept_id
@@ -600,8 +593,7 @@ export function matchingAssessment(
         evaluation.root_snomed_concept.snomed_concept_id ===
           evaluation_snomed_concept_id
       ) {
-        const specific_snomed_concept_id =
-          f.specific_snomed_concept.snomed_concept_id
+        const specific_snomed_concept_id = f.specific_snomed_concept.snomed_concept_id
         return {
           vital,
           evaluation_snomed_concept_id,

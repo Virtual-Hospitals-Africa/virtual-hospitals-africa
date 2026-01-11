@@ -29,23 +29,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -160,23 +158,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -284,23 +280,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -413,23 +407,21 @@ describeParallel(
           registration_status: 'not started',
           organization_id: clinic.id,
         })
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              patient_demographics: randomDemographics(),
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_demographics: randomDemographics(),
+            employment_id: nurse.employee_id,
+          },
+        )
 
         const patient_examination = await examinations.upsert(
           db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id:
-              encounter.employee.patient_encounter_employee_id,
+            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
             examination_identifier: 'history_pre_existing_conditions',
             completed: true,
           },
@@ -460,8 +452,7 @@ describeParallel(
           id: 'c_10846',
           name: 'Histiocytosis - malignant',
           start_date: '2020-01-01',
-          patient_condition_id:
-            preExistingCondition.comorbidities[0].patient_condition_id,
+          patient_condition_id: preExistingCondition.comorbidities[0].patient_condition_id,
         })
       })
 
@@ -474,23 +465,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -531,8 +520,7 @@ describeParallel(
 
           assertEquals(preExistingConditionAfter, {
             ...pre_existing_condition_before,
-            patient_condition_id:
-              preExistingConditionAfter.patient_condition_id,
+            patient_condition_id: preExistingConditionAfter.patient_condition_id,
             comorbidities: [
               {
                 id: 'c_8251',
@@ -556,23 +544,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -698,23 +684,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -760,23 +744,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -811,23 +793,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -863,23 +843,21 @@ describeParallel(
           registration_status: 'not started',
           organization_id: clinic.id,
         })
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              patient_demographics: randomDemographics(),
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_demographics: randomDemographics(),
+            employment_id: nurse.employee_id,
+          },
+        )
 
         const patient_examination = await examinations.upsert(
           db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id:
-              encounter.employee.patient_encounter_employee_id,
+            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
             examination_identifier: 'history_pre_existing_conditions',
             completed: true,
           },
@@ -914,23 +892,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -965,23 +941,21 @@ describeParallel(
           registration_status: 'not started',
           organization_id: clinic.id,
         })
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              patient_demographics: randomDemographics(),
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_demographics: randomDemographics(),
+            employment_id: nurse.employee_id,
+          },
+        )
 
         const patient_examination = await examinations.upsert(
           db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id:
-              encounter.employee.patient_encounter_employee_id,
+            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
             examination_identifier: 'history_pre_existing_conditions',
             completed: true,
           },
@@ -1013,23 +987,21 @@ describeParallel(
             registration_status: 'not started',
             organization_id: clinic.id,
           })
-          const encounter =
-            await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-              db,
-              nurse.organization_id,
-              {
-                patient_demographics: randomDemographics(),
-                employment_id: nurse.employee_id,
-              },
-            )
+          const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+            db,
+            nurse.organization_id,
+            {
+              patient_demographics: randomDemographics(),
+              employment_id: nurse.employee_id,
+            },
+          )
 
           const patient_examination = await examinations.upsert(
             db,
             {
               patient_id: encounter.patient.id,
               patient_encounter_id: encounter.patient_encounter_id,
-              patient_encounter_employee_id:
-                encounter.employee.patient_encounter_employee_id,
+              patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
               examination_identifier: 'history_pre_existing_conditions',
               completed: true,
             },
@@ -1061,23 +1033,21 @@ describeParallel(
           registration_status: 'not started',
           organization_id: clinic.id,
         })
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              patient_demographics: randomDemographics(),
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_demographics: randomDemographics(),
+            employment_id: nurse.employee_id,
+          },
+        )
 
         const patient_examination = await examinations.upsert(
           db,
           {
             patient_id: encounter.patient.id,
             patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id:
-              encounter.employee.patient_encounter_employee_id,
+            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
             examination_identifier: 'history_pre_existing_conditions',
             completed: true,
           },
@@ -1202,23 +1172,21 @@ describeParallel(
               registration_status: 'not started',
               organization_id: clinic.id,
             })
-            const encounter =
-              await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-                db,
-                nurse.organization_id,
-                {
-                  patient_demographics: randomDemographics(),
-                  employment_id: nurse.employee_id,
-                },
-              )
+            const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+              db,
+              nurse.organization_id,
+              {
+                patient_demographics: randomDemographics(),
+                employment_id: nurse.employee_id,
+              },
+            )
 
             const patient_examination = await examinations.upsert(
               db,
               {
                 patient_id: encounter.patient.id,
                 patient_encounter_id: encounter.patient_encounter_id,
-                patient_encounter_employee_id:
-                  encounter.employee.patient_encounter_employee_id,
+                patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
                 examination_identifier: 'history_pre_existing_conditions',
                 completed: true,
               },

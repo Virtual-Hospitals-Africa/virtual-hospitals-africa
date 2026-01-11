@@ -9,8 +9,7 @@ import { assertNoPresentEncounter } from '../../../../../db/models/patient_workf
 export const handler = postHandler(
   z.object({}),
   async (ctx: OrganizationContext) => {
-    const { trx, organization, present_encounter, organization_employment } =
-      ctx.state
+    const { trx, organization, present_encounter, organization_employment } = ctx.state
     assertNoPresentEncounter(present_encounter)
     const { success, patient_id } = await patient_registration.start(
       trx,

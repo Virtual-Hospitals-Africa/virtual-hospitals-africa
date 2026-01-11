@@ -19,8 +19,7 @@ export function ZimbabweanNationalIdFormGroup({ national_id_number }: {
         name='no_national_id'
         label='Patient has no national id'
         checked={no_national_id.value}
-        onInput={({ currentTarget }) =>
-          no_national_id.value = currentTarget.checked}
+        onInput={({ currentTarget }) => no_national_id.value = currentTarget.checked}
       />
     </>
   )

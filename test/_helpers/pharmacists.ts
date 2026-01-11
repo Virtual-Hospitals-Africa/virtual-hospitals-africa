@@ -1,8 +1,5 @@
 import { TrxOrDb } from '../../types.ts'
-import {
-  type PharmacistInsert,
-  pharmacists,
-} from '../../db/models/pharmacists.ts'
+import { type PharmacistInsert, pharmacists } from '../../db/models/pharmacists.ts'
 import generateUUID from '../../util/uuid.ts'
 
 export function testPharmacist() {

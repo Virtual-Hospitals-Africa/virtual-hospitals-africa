@@ -40,9 +40,7 @@ export function OrganizationView(props: {
       'request_review_from_organization_id',
     )
     requesting_organization.value = (request_review_from_organization_id &&
-      organizations.value.find((o) =>
-        o.id === request_review_from_organization_id
-      )) || null
+      organizations.value.find((o) => o.id === request_review_from_organization_id)) || null
   }
 
   function getSortItems(): DropdownItem[] {

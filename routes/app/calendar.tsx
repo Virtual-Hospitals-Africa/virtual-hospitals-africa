@@ -1,9 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
-import type {
-  LoggedInHealthWorkerContext,
-  ProviderAppointment,
-} from '../../types.ts'
+import type { LoggedInHealthWorkerContext, ProviderAppointment } from '../../types.ts'
 import { appointments } from '../../db/models/appointments.ts'
 import { parseDateTime, todayISOInJohannesburg } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
@@ -85,44 +82,39 @@ export default HealthWorkerHomePageLayout(
 
     const gcal_event_ids = new Set(events.map((event) => event.id))
 
-    const appointments_of_provider_with_gcal_event_ids =
-      appointmentsOfHealthWorker
-        .filter(
-          (appointment) => (
-            assert(appointment.gcal_event_id),
-              gcal_event_ids.has(appointment.gcal_event_id)
-          ),
-        )
-
-    const provider_appointments: ProviderAppointment[] =
-      appointments_of_provider_with_gcal_event_ids.map(
-        (appt) => {
-          const gcal_item = events.find((event) =>
-            event.id === appt.gcal_event_id
-          )
-          if (!gcal_item) {
-            throw new Error('Could not find gcal event for appointment')
-          }
-
-          const start_time = new Date(gcal_item.start.dateTime)
-          const end_time = new Date(gcal_item.end.dateTime)
-          const duration = end_time.getTime() - start_time.getTime()
-
-          return {
-            type: 'provider_appointment' as const,
-            id: appt.id,
-            patient: appt.patient,
-            duration_minutes: Math.round(duration / (1000 * 60)),
-            start: parseDateTime(start_time),
-            end: parseDateTime(end_time),
-            virtualLocation: gcal_item.hangoutLink
-              ? {
-                href: gcal_item.hangoutLink,
-              }
-              : undefined,
-          }
-        },
+    const appointments_of_provider_with_gcal_event_ids = appointmentsOfHealthWorker
+      .filter(
+        (appointment) => (
+          assert(appointment.gcal_event_id), gcal_event_ids.has(appointment.gcal_event_id)
+        ),
       )
+
+    const provider_appointments: ProviderAppointment[] = appointments_of_provider_with_gcal_event_ids.map(
+      (appt) => {
+        const gcal_item = events.find((event) => event.id === appt.gcal_event_id)
+        if (!gcal_item) {
+          throw new Error('Could not find gcal event for appointment')
+        }
+
+        const start_time = new Date(gcal_item.start.dateTime)
+        const end_time = new Date(gcal_item.end.dateTime)
+        const duration = end_time.getTime() - start_time.getTime()
+
+        return {
+          type: 'provider_appointment' as const,
+          id: appt.id,
+          patient: appt.patient,
+          duration_minutes: Math.round(duration / (1000 * 60)),
+          start: parseDateTime(start_time),
+          end: parseDateTime(end_time),
+          virtualLocation: gcal_item.hangoutLink
+            ? {
+              href: gcal_item.hangoutLink,
+            }
+            : undefined,
+        }
+      },
+    )
     return (
       <AppointmentsCalendar
         url={ctx.url}

@@ -77,8 +77,7 @@ async function respondToMessage(
       //   `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
       // const github_code_link = `<${github_code_href}|Github Commit>`
 
-      const logs_href =
-        `https://dashboard.heroku.com/apps/vha-${unhandled_message.chatbot_name}-chatbot/logs`
+      const logs_href = `https://dashboard.heroku.com/apps/vha-${unhandled_message.chatbot_name}-chatbot/logs`
       const logs_link = `<${logs_href}|Heroku Logs>`
 
       await sendToEngineeringChannel([

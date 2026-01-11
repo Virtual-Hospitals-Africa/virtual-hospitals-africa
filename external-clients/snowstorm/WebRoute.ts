@@ -11,8 +11,7 @@
 import { ExpressionConstraint } from './data-contracts.ts'
 import { HttpClient, RequestParams } from './http-client.ts'
 
-export class WebRoute<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class WebRoute<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description Swagger will attempt to follow the 302 redirection, so use developer's tools network tab to view the redirection issued.
    *

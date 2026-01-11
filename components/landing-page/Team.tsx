@@ -44,16 +44,13 @@ export function Team() {
       <div className='mx-auto grid max-w-7xl grid-cols-1 gap-x-6 gap-y-6 xl:grid-cols-2 mt-4'>
         <div className='max-w-2xl xl:col-span-1'>
           <p className='text-lg leading-8 text-gray-600'>
-            Our team believes that the global health space is in need of
-            creative vigor to bring new possibilities forward, advancing how
-            care is delivered.
+            Our team believes that the global health space is in need of creative vigor to bring new possibilities forward, advancing how care is delivered.
           </p>
         </div>
         <div className='max-w-2xl xl:col-span-1'>
           <p className='text-lg leading-8 text-gray-600'>
-            We bring 45 years of combined experience in bringing technology
-            solutions into resource poor settings, challenging deeply held
-            assumptions about what is possible.
+            We bring 45 years of combined experience in bringing technology solutions into resource poor settings, challenging deeply held assumptions about
+            what is possible.
           </p>
         </div>
       </div>

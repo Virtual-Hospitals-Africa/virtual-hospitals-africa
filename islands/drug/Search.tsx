@@ -19,9 +19,7 @@ function DrugOption({
       >
         <b>{option.name}</b>
         {option.medications.map(
-          (medication) => (
-            <div>{medication.form_route} ({medication.strength_summary})</div>
-          ),
+          (medication, i) => <div key={i}>{medication.form_route} ({medication.strength_summary})</div>,
         )}
         {option.distinct_trade_names.length > 0 && (
           <div className='text-s italic'>
@@ -39,7 +37,5 @@ export default function DrugSearch(
     'Option' | 'search_route'
   >,
 ) {
-  return (
-    <AsyncSearch search_route='/app/drugs' {...props} Option={DrugOption} />
-  )
+  return <AsyncSearch search_route='/app/drugs' {...props} Option={DrugOption} />
 }

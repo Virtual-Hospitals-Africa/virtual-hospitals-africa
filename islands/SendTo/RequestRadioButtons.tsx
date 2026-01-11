@@ -62,9 +62,7 @@ export function SendToRequestRadioButtons({
                 onClick={() => selected_option.value = option}
               >
                 <div className='icon-container'>
-                  {is_selected
-                    ? PickedIconComponents[option]
-                    : DefaultIconComponents[option]}
+                  {is_selected ? PickedIconComponents[option] : DefaultIconComponents[option]}
                 </div>
                 <span
                   className={cls(

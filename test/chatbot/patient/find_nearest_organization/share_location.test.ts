@@ -57,12 +57,8 @@ describe('patient chatbot', () => {
 
     assertEquals(message.action.sections[0].title, 'Nqweba')
 
-    const addo = organizations.value.find((o) =>
-      o.name === 'Addo Enon Satellite Clinic'
-    )!
-    const moses = organizations.value.find((o) =>
-      o.name === 'Moses Mabida Clinic'
-    )!
+    const addo = organizations.value.find((o) => o.name === 'Addo Enon Satellite Clinic')!
+    const moses = organizations.value.find((o) => o.name === 'Moses Mabida Clinic')!
 
     assertEquals(
       message.action.sections[0].rows[0].id,

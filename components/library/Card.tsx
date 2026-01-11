@@ -2,12 +2,11 @@ import { ComponentChildren } from 'preact'
 import cls from '../../util/cls.ts'
 
 export default function Card(
-  { className, children = <ExampleCardContents />, orientation = 'horizontal' }:
-    {
-      className?: string
-      children?: ComponentChildren
-      orientation?: 'vertical' | 'horizontal'
-    },
+  { className, children = <ExampleCardContents />, orientation = 'horizontal' }: {
+    className?: string
+    children?: ComponentChildren
+    orientation?: 'vertical' | 'horizontal'
+  },
 ) {
   return (
     <div className={cls(className, 'bg-white sm:px-6 p-3 rounded-lg')}>

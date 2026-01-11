@@ -13,12 +13,7 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import { drugs } from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  differenceInDays,
-  durationEndDate,
-  isISODateString,
-  parseDate,
-} from '../../util/date.ts'
+import { differenceInDays, durationEndDate, isISODateString, parseDate } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
@@ -161,9 +156,7 @@ async function upsertPreExistingCondition(
     .insertInto('patient_conditions')
     .values(upsert)
     .returning('id')
-    .onConflict((oc) =>
-      oc.constraint('patient_condition_start_date').doUpdateSet(upsert)
-    )
+    .onConflict((oc) => oc.constraint('patient_condition_start_date').doUpdateSet(upsert))
     .executeTakeFirstOrThrow()
 
   const comorbidities = (condition.comorbidities || []).map((comorbidity) => ({
@@ -442,9 +435,7 @@ export const patient_conditions = {
             name: comorbidity.name,
           })),
         medications: patient_medications
-          .filter((m) =>
-            m.patient_condition_id === parent_condition.patient_condition_id
-          )
+          .filter((m) => m.patient_condition_id === parent_condition.patient_condition_id)
           .map(({ schedules, ...medication }) => {
             assertEquals(schedules.length, 1)
             assert(medication.start_date)
@@ -470,13 +461,9 @@ export const patient_conditions = {
     const pre_existing_conditions = await patient_conditions
       .getPreExistingConditions(trx, opts)
     const drug_ids = uniq(
-      pre_existing_conditions.flatMap((c) =>
-        c.medications.map((medication) => medication.id)
-      ),
+      pre_existing_conditions.flatMap((c) => c.medications.map((medication) => medication.id)),
     )
-    const matching_drugs = drug_ids.length
-      ? await drugs.getByIds(trx, drug_ids)
-      : []
+    const matching_drugs = drug_ids.length ? await drugs.getByIds(trx, drug_ids) : []
 
     return pre_existing_conditions.map((c) => ({
       ...c,

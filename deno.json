@@ -85,6 +85,7 @@
     "indentWidth": 2,
     "semiColons": false,
     "singleQuote": true,
+    "lineWidth": 160,
     "proseWrap": "preserve",
     "include": ["**/*.ts", "**/*.tsx"]
   },
@@ -132,6 +133,8 @@
     "tailwindcss/plugin": "npm:/tailwindcss@4.1.10/plugin.js",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@4.1.12",
     "patch-package": "npm:patch-package@latest",
+    "html": "npm:html@latest",
+    "@types/html": "npm:@types/html@latest",
     "rollup": "npm:rollup@4.53.0"
   },
   "exclude": ["**/_fresh/*"],

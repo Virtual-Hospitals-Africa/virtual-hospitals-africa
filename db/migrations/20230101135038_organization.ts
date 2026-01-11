@@ -45,16 +45,13 @@ export async function up(db: Kysely<DB>) {
     'organization_departments',
     (qb) =>
       qb
-        .addColumn('organization_id', 'uuid', (col) =>
-          col.notNull().references('organizations.id').onDelete('cascade'))
-        .addColumn('name', 'varchar(255)', (col) =>
-          col.notNull().references('departments.name'))
+        .addColumn('organization_id', 'uuid', (col) => col.notNull().references('organizations.id').onDelete('cascade'))
+        .addColumn('name', 'varchar(255)', (col) => col.notNull().references('departments.name'))
         .addColumn('inactive_reason', 'varchar(255)')
         .addColumn(
           'address_id',
           'uuid',
-          (col) =>
-            col.references('addresses.id').onDelete('cascade'),
+          (col) => col.references('addresses.id').onDelete('cascade'),
         )
         .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
         .addUniqueConstraint('organization_department_name', [

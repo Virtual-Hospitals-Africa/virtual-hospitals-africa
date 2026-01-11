@@ -199,16 +199,12 @@ function buildDisplays(
   for (const qualifier of qualifiers) {
     assert(
       !qualifier.value,
-      `Expected only prefixes (without value) saw ${
-        humanReadableJson(qualifier)
-      }`,
+      `Expected only prefixes (without value) saw ${humanReadableJson(qualifier)}`,
     )
   }
   const use_postfix = postfix || qualifierIsPostfix(qualifiers[0])
 
-  const qualifier_displays = qualifiers.map((prefix) =>
-    buildDisplays(prefix, use_postfix).full
-  )
+  const qualifier_displays = qualifiers.map((prefix) => buildDisplays(prefix, use_postfix).full)
 
   const finding_displays = compact([
     specific_snomed_concept?.name,
@@ -216,9 +212,7 @@ function buildDisplays(
     root_snomed_concept.name,
   ])
 
-  const finding_displays_qualified = use_postfix
-    ? [...finding_displays, ...qualifier_displays]
-    : [...qualifier_displays, ...finding_displays]
+  const finding_displays_qualified = use_postfix ? [...finding_displays, ...qualifier_displays] : [...qualifier_displays, ...finding_displays]
 
   const finding_display = finding_displays_qualified.join(' ')
 
@@ -328,9 +322,7 @@ export function asNormalFormSExpression<Rest>(
         specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
         value: {
           type: 'event' as const,
-          datetime: isDate(value.datetime)
-            ? value.datetime.toISOString()
-            : value.datetime,
+          datetime: isDate(value.datetime) ? value.datetime.toISOString() : value.datetime,
           location: null,
         },
       }
@@ -347,9 +339,7 @@ export function asNormalFormSExpression<Rest>(
   const specific_snomed_concept = toSnomedConcept(
     record.specific_snomed_concept,
   )
-  const value_snomed_concept = record.value?.type === 'snomed_concept'
-    ? toSnomedConcept(record.value)
-    : null
+  const value_snomed_concept = record.value?.type === 'snomed_concept' ? toSnomedConcept(record.value) : null
 
   switch (record.type) {
     case 'finding': {

@@ -13,13 +13,7 @@ import uniq from '../../util/uniq.ts'
 import { patients } from './patients.ts'
 import { employees } from './employees.ts'
 import isDate from '../../util/isDate.ts'
-import {
-  jsonArrayFrom,
-  jsonBuildObject,
-  now,
-  today_in_johannesburg,
-  tomorrow_in_johannesburg,
-} from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject, now, today_in_johannesburg, tomorrow_in_johannesburg } from '../helpers.ts'
 
 type AppointmentQuery = {
   time_range: 'all' | 'future' | 'past' | 'today'
@@ -189,8 +183,7 @@ export const appointments = {
       ])
       .executeTakeFirstOrThrow()
 
-    const { start, end, duration_minutes, patient_id, provider_id, reason } =
-      offered
+    const { start, end, duration_minutes, patient_id, provider_id, reason } = offered
     assert(reason)
 
     const appointment_to_insert = {
@@ -374,9 +367,7 @@ export const appointments = {
     const patients_of_appointments = await patients.getByIds(trx, patient_ids)
 
     return provider_appointments.map((appointment) => {
-      const patient = patients_of_appointments.find((p) =>
-        p.id === appointment.patient_id
-      )
+      const patient = patients_of_appointments.find((p) => p.id === appointment.patient_id)
       assert(patient, `Could not find patient ${appointment.patient_id}`)
       return { ...appointment, patient }
     })

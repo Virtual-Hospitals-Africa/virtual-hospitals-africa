@@ -55,8 +55,7 @@ export const handler = postHandler(
           procedure_id,
           patient_id: ctx.state.patient.id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          patient_encounter_employee_id:
-            ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+          patient_encounter_employee_id: ctx.state.encounter_employee_presence.patient_encounter_employee_id,
           measurement_equality,
         }),
     )

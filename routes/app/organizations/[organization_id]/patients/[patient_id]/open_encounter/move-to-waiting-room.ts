@@ -3,15 +3,13 @@ import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 import { OpenEncounterContext } from './_middleware.tsx'
-import { InsertShape } from '../../../../../../../types.ts'
-import {
-  EmploymentPresence,
-  PatientPresence,
-} from '../../../../../../../db.d.ts'
+
+import { DB } from '../../../../../../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
 import { exists } from '../../../../../../../util/exists.ts'
+import { InsertObject } from 'kysely'
 
 const MoveToWaitingRoomSchema = z.object({})
 
@@ -21,7 +19,7 @@ export const handler = postHandler(
     const { organization, organization_employment, encounter } = ctx.state
 
     if (encounter.status.patient_presence.current_workflow) {
-      const patient_presence: InsertShape<PatientPresence> = {
+      const patient_presence: InsertObject<DB, 'patient_presence'> = {
         id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
         organization_id: organization.id,
@@ -57,7 +55,7 @@ export const handler = postHandler(
         non_admin_employment_id,
       )
 
-      const employment_presence: InsertShape<EmploymentPresence> = {
+      const employment_presence: InsertObject<DB, 'employment_presence'> = {
         id: non_admin_employment_id,
         with_patient_id: null,
         at_work: true,

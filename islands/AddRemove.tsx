@@ -1,8 +1,5 @@
 import { ComponentChildren, JSX } from 'preact'
-import {
-  MinusCircleIcon,
-  PlusCircleIcon,
-} from '../components/library/icons/heroicons/outline.tsx'
+import { MinusCircleIcon, PlusCircleIcon } from '../components/library/icons/heroicons/outline.tsx'
 import cls from '../util/cls.ts'
 import words from '../util/words.ts'
 

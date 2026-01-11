@@ -1,9 +1,4 @@
-import {
-  Migration,
-  MigrationResult,
-  MigrationResultSet,
-  Migrator,
-} from 'kysely'
+import { Migration, MigrationResult, MigrationResultSet, Migrator } from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -34,9 +29,7 @@ const migrator = new Migrator({
 
 function targetError(cmd: string) {
   console.error(
-    `Please specify a valid target as in\n\n  deno task db:migrate:${cmd} ${
-      migration_targets[0]
-    }\n\nValid targets:\n  ${migration_targets.join('\n  ')}`,
+    `Please specify a valid target as in\n\n  deno task db:migrate:${cmd} ${migration_targets[0]}\n\nValid targets:\n  ${migration_targets.join('\n  ')}`,
   )
   return Deno.exit(1)
 }
@@ -44,9 +37,7 @@ function targetError(cmd: string) {
 function findTarget(target: string, cmd: string) {
   const target_file = last(target.split('/'))
   assert(target_file)
-  const matching_targets = migration_targets.filter((it) =>
-    it.includes(target_file)
-  )
+  const matching_targets = migration_targets.filter((it) => it.includes(target_file))
   if (matching_targets.length === 1) {
     return matching_targets[0]
   }

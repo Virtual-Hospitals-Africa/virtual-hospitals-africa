@@ -1,10 +1,7 @@
 import { JSX } from 'preact'
 import { Signal } from '@preact/signals'
 import cls from '../../util/cls.ts'
-import {
-  CheckIcon,
-  ExclamationTriangleIcon,
-} from '../../components/library/icons/heroicons/solid.tsx'
+import { CheckIcon, ExclamationTriangleIcon } from '../../components/library/icons/heroicons/solid.tsx'
 import { XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { ActionButton } from '../../components/library/ActionButton.tsx'
 import { Alert } from '../../types.ts'

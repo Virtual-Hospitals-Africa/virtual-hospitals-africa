@@ -41,10 +41,8 @@ export default async function findMatchingState<US extends ChatbotUserState>(
   userState: ChatbotUserState,
 ): Promise<Maybe<MatchingState<US>>> {
   // deno-lint-ignore no-explicit-any
-  const conversation_states: any =
-    defs[userState.chatbot_user.chatbot_name].conversation_states
-  const current_state =
-    conversation_states[userState.chatbot_user.conversation_state]
+  const conversation_states: any = defs[userState.chatbot_user.chatbot_name].conversation_states
+  const current_state = conversation_states[userState.chatbot_user.conversation_state]
 
   if (!current_state) return null
 
@@ -58,9 +56,7 @@ export default async function findMatchingState<US extends ChatbotUserState>(
     case 'action': {
       assert(message_body)
       const action = await current_state.action(trx, userState)
-      return action.type === 'list'
-        ? findMatchingRow(action, message_body)
-        : findMatchingOption(action, message_body)
+      return action.type === 'list' ? findMatchingRow(action, message_body) : findMatchingOption(action, message_body)
     }
     case 'date': {
       assert(message_body)

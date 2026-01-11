@@ -1,9 +1,5 @@
 import { NonEmptyArray, RenderedRoom, TrxOrDb } from '../../types.ts'
-import {
-  jsonArrayFromColumn,
-  jsonObjectFrom,
-  orderByArrayPosition,
-} from '../helpers.ts'
+import { jsonArrayFromColumn, jsonObjectFrom, orderByArrayPosition } from '../helpers.ts'
 import { base } from './_base.ts'
 import { Department, DEPARTMENTS } from '../../shared/departments.ts'
 

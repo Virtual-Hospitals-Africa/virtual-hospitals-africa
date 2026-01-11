@@ -1,12 +1,5 @@
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
-import {
-  DiagnosesCollaboration,
-  Diagnosis,
-} from '../../../../../../../../types.ts'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import { DiagnosesCollaboration, Diagnosis } from '../../../../../../../../types.ts'
 import FormSection from '../../../../../../../../components/library/FormSection.tsx'
 import DiagnosesForm from '../../../../../../../../islands/diagnoses/Form.tsx'
 import { diagnoses } from '../../../../../../../../db/models/diagnoses.ts'

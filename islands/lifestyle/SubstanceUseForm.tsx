@@ -36,9 +36,7 @@ export default function SubstanceUseSection(
       has_ever_used_substance: null,
     },
   )
-  const substances_used = substance_use.value.has_ever_used_substance === 'Yes'
-    ? substance_use.value.substances_used
-    : []
+  const substances_used = substance_use.value.has_ever_used_substance === 'Yes' ? substance_use.value.substances_used : []
 
   return (
     <FormSection header='Substance Use Questions'>
@@ -61,33 +59,26 @@ export default function SubstanceUseSection(
           label='Which substances does the patient use?'
           name='lifestyle.substance_use.substances_used_names'
           options={substances}
-          selected={substance_use.value.substances_used.length > 0
-            ? substance_use.value.substances_used.map((substance) =>
-              substance.name
-            )
-            : []}
+          selected={substance_use.value.substances_used.length > 0 ? substance_use.value.substances_used.map((substance) => substance.name) : []}
           onChange={(selectedValues) => {
-            const names: string[] = selectedValues.map((item) =>
-              item
-            ) as unknown as string[]
-            substance_use.value =
-              substance_use.value.has_ever_used_substance === 'Yes'
-                ? {
-                  ...substance_use.value,
-                  substances_used: names.map((name) => ({
-                    name: name,
-                    first_use_age: 0,
-                    used_regularly_years: 0,
-                    times_used_in_a_week: 0,
-                    injected_substance: null,
-                    annoyed_by_criticism: null,
-                    attempt_to_stop: null,
-                    withdrawal_symptoms: null,
-                    quit_more_than_six_months: null,
-                    quit_substance_use_years: 0,
-                  })),
-                }
-                : { ...substance_use.value }
+            const names: string[] = selectedValues.map((item) => item) as unknown as string[]
+            substance_use.value = substance_use.value.has_ever_used_substance === 'Yes'
+              ? {
+                ...substance_use.value,
+                substances_used: names.map((name) => ({
+                  name: name,
+                  first_use_age: 0,
+                  used_regularly_years: 0,
+                  times_used_in_a_week: 0,
+                  injected_substance: null,
+                  annoyed_by_criticism: null,
+                  attempt_to_stop: null,
+                  withdrawal_symptoms: null,
+                  quit_more_than_six_months: null,
+                  quit_substance_use_years: 0,
+                })),
+              }
+              : { ...substance_use.value }
           }}
         />
       )}
@@ -112,9 +103,7 @@ export default function SubstanceUseSection(
                   substance_use.value = {
                     has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
-                      other_substance === substance
-                        ? { ...other_substance, injected_substance: value }
-                        : other_substance
+                      other_substance === substance ? { ...other_substance, injected_substance: value } : other_substance
                     ),
                   }}
               />
@@ -127,9 +116,7 @@ export default function SubstanceUseSection(
                   substance_use.value = {
                     has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
-                      other_substance === substance
-                        ? { ...other_substance, annoyed_by_criticism: value }
-                        : other_substance
+                      other_substance === substance ? { ...other_substance, annoyed_by_criticism: value } : other_substance
                     ),
                   }}
               />
@@ -142,9 +129,7 @@ export default function SubstanceUseSection(
                   substance_use.value = {
                     has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
-                      other_substance === substance
-                        ? { ...other_substance, attempt_to_stop: value }
-                        : other_substance
+                      other_substance === substance ? { ...other_substance, attempt_to_stop: value } : other_substance
                     ),
                   }}
               />
@@ -157,9 +142,7 @@ export default function SubstanceUseSection(
                   substance_use.value = {
                     has_ever_used_substance: 'Yes',
                     substances_used: substances_used.map((other_substance) =>
-                      other_substance === substance
-                        ? { ...other_substance, withdrawal_symptoms: value }
-                        : other_substance
+                      other_substance === substance ? { ...other_substance, withdrawal_symptoms: value } : other_substance
                     ),
                   }}
               />

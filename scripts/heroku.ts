@@ -86,9 +86,7 @@ if (import.meta.main) {
   const app = asApplication(app_arg)
   if (!app) {
     console.log(
-      `Please provide a valid app name as in\n\ndeno task heroku ${cmd} virtual-hospitals-africa\n\nValid apps:\n  ${
-        Object.keys(APPLICATIONS).join('\n  ')
-      }`,
+      `Please provide a valid app name as in\n\ndeno task heroku ${cmd} virtual-hospitals-africa\n\nValid apps:\n  ${Object.keys(APPLICATIONS).join('\n  ')}`,
     )
     Deno.exit(1)
   }

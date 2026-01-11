@@ -33,8 +33,7 @@ describeParallel(
             method: 'POST',
           },
         )
-        const patient_id =
-          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
         // Submit personal info
         const $this_visit = await fetchCheerio(
@@ -120,8 +119,7 @@ describeParallel(
             method: 'POST',
           },
         )
-        const patient_id =
-          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
         // Submit personal info
         const $this_visit = await fetchCheerio(

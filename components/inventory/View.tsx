@@ -1,8 +1,4 @@
-import {
-  RenderedOrganizationConsumable,
-  RenderedOrganizationDevice,
-  RenderedOrganizationMedicine,
-} from '../../types.ts'
+import { RenderedOrganizationConsumable, RenderedOrganizationDevice, RenderedOrganizationMedicine } from '../../types.ts'
 import { TabProps, Tabs } from '../library/Tabs.tsx'
 import OrganizationConsumablesTable from './ConsumablesTable.tsx'
 import OrganizationDevicesTable from './DevicesTable.tsx'
@@ -21,20 +17,17 @@ export default function inventoryView(
   const tabs: TabProps[] = [
     {
       tab: 'Devices',
-      href:
-        `/app/organizations/${organization_id}/inventory?active_tab=devices`,
+      href: `/app/organizations/${organization_id}/inventory?active_tab=devices`,
       active: active_tab === 'devices',
     },
     {
       tab: 'Consumables',
-      href:
-        `/app/organizations/${organization_id}/inventory?active_tab=consumables`,
+      href: `/app/organizations/${organization_id}/inventory?active_tab=consumables`,
       active: active_tab === 'consumables',
     },
     {
       tab: 'Medicines',
-      href:
-        `/app/organizations/${organization_id}/inventory?active_tab=medicines`,
+      href: `/app/organizations/${organization_id}/inventory?active_tab=medicines`,
       active: active_tab === 'medicines',
     },
   ]

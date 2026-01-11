@@ -1,14 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { Context } from 'fresh'
-import {
-  ColumnType,
-  Generated,
-  QueryCreator,
-  RawBuilder,
-  SelectQueryBuilder,
-  SqlBool,
-  Transaction,
-} from 'kysely'
+import { ColumnType, Generated, InsertObject, QueryCreator, RawBuilder, SelectQueryBuilder, SqlBool, Transaction, ValueExpression } from 'kysely'
 import { JSX } from 'preact'
 import {
   AgeUnit,
@@ -129,33 +121,51 @@ export type SelectShape<T> = {
     : T[K]
 }
 
-export type InsertShape<T> = OptionalMaybeFields<
-  {
-    [K in keyof T]: T[K] extends ColumnType<any, infer I, any> ? I
-      : T[K] extends null | ColumnType<any, infer NullableI, any>
-        ? null | NullableI
-      : T[K] | RawBuilder<T[K]>
-  }
->
+// type X<I> = I extends string
+//   ? I | RawBuilder<I> | SelectQueryBuilder<DB, any, { id: string }>
+//   : I | RawBuilder<I>
+
+// export type Y<Table extends keyof DB, XDB extends DB> =
+//   InsertObject<DB, "patient_presence">
+
+// export type InsertObject<DB, T> = OptionalMaybeFields<
+//   {
+//     [K in keyof T]: T[K] extends ColumnType<any, infer I, any> ? X<I>
+//       : T[K] extends null | ColumnType<any, infer NullableI, any>
+//         ? null | X<NullableI>
+//       : X<T[K]>
+//   }
+// >
 
 // Helper type to exclude RawBuilder from a union type
-type ExcludeRawBuilder<T> = T extends RawBuilder<any> ? never : T
+// type ExcludeRawBuilder<T> = T extends RawBuilder<any> ? never : T
 
-export type InsertShapeLiteral<T> = OptionalMaybeFields<
+type ExtractValueType<T> = T extends ValueExpression<any, any, infer V> ? V
+  : never
+
+/** */
+export type InsertShapeLiteral<T extends InsertObject<DB, any>> = OptionalMaybeFields<
   {
-    [K in keyof T]: T[K] extends ColumnType<any, infer I, any>
-      ? ExcludeRawBuilder<I>
-      : T[K] extends null | ColumnType<any, infer NullableI, any>
-        ? null | ExcludeRawBuilder<NullableI>
-      : ExcludeRawBuilder<T[K]>
+    [K in keyof T]: ExtractValueType<T[K]>
   }
 >
+
+export type InsertRows<Table extends keyof DB> = InsertObject<DB, Table>[]
+
+// export type InsertShapeLiteral<T> = OptionalMaybeFields<
+//   {
+//     [K in keyof T]: T[K] extends ColumnType<any, infer I, any>
+//       ? ExcludeRawBuilder<I>
+//       : T[K] extends null | ColumnType<any, infer NullableI, any>
+//         ? null | ExcludeRawBuilder<NullableI>
+//       : ExcludeRawBuilder<T[K]>
+//   }
+// >
 
 export type UpdateShape<T> = OptionalMaybeFields<
   {
     [K in keyof T]?: T[K] extends ColumnType<any, any, infer U> ? U
-      : T[K] extends null | ColumnType<any, any, infer NullableU>
-        ? null | NullableU
+      : T[K] extends null | ColumnType<any, any, infer NullableU> ? null | NullableU
       : T[K] | RawBuilder<T[K]>
   }
 >
@@ -574,20 +584,18 @@ export type ConversationStateHandlerNextState<US extends ChatbotUserState> =
     | US['chatbot_user']['conversation_state']
     | Promise<US['chatbot_user']['conversation_state']>)
 
-export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> =
-  {
-    id: string
-    title: string
-    onExit: ConversationStateHandlerNextState<US>
-  }
+export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> = {
+  id: string
+  title: string
+  onExit: ConversationStateHandlerNextState<US>
+}
 
-export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> =
-  {
-    id: string
-    title: string
-    description: string
-    onExit: ConversationStateHandlerNextState<US>
-  }
+export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> = {
+  id: string
+  title: string
+  description: string
+  onExit: ConversationStateHandlerNextState<US>
+}
 export type ConversationStateHandlerListActionSection<
   US extends ChatbotUserState,
 > = {
@@ -601,81 +609,73 @@ export type ConversationStateHandlerListAction<US extends ChatbotUserState> = {
   sections: ConversationStateHandlerListActionSection<US>[]
 }
 
-export type ConversationStateHandlerList<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'action'
-      headerText: string
-      action: (
-        trx: TrxOrDb,
-        userState: US,
-      ) => Promise<
-        | ConversationStateHandlerSelect<US>
-        | ConversationStateHandlerListAction<US>
-      >
-    }
-  >
+export type ConversationStateHandlerList<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'action'
+    headerText: string
+    action: (
+      trx: TrxOrDb,
+      userState: US,
+    ) => Promise<
+      | ConversationStateHandlerSelect<US>
+      | ConversationStateHandlerListAction<US>
+    >
+  }
+>
 
-export type ConversationStateHandlerSelect<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'select'
-      options: ConversationStateHandlerSelectOption<US>[]
-    }
-  >
+export type ConversationStateHandlerSelect<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'select'
+    options: ConversationStateHandlerSelectOption<US>[]
+  }
+>
 
-export type ConversationStateHandlerString<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'string'
-      validation?: (value: string) => boolean
-    }
-  >
+export type ConversationStateHandlerString<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'string'
+    validation?: (value: string) => boolean
+  }
+>
 
-export type ConversationStateHandlerGetLocation<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'get_location'
-    }
-  >
+export type ConversationStateHandlerGetLocation<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'get_location'
+  }
+>
 
-export type ConversationStateHandlerDate<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'date'
-    }
-  >
+export type ConversationStateHandlerDate<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'date'
+  }
+>
 
-export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'send_location'
-      getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
-    }
-  >
-export type ConversationStateHandlerSendDocument<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'send_document'
-      getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
-    }
-  >
+export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'send_location'
+    getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
+  }
+>
+export type ConversationStateHandlerSendDocument<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'send_document'
+    getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
+  }
+>
 
-export type ConversationStateHandlerExpectMedia<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'expect_media'
-      options: [ConversationStateHandlerSelectOption<US>]
-    }
-  >
+export type ConversationStateHandlerExpectMedia<US extends ChatbotUserState> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'expect_media'
+    options: [ConversationStateHandlerSelectOption<US>]
+  }
+>
 
 export type ConversationStateHandler<US extends ChatbotUserState> =
   | ConversationStateHandlerSelect<US>
@@ -3253,8 +3253,7 @@ export type RenderedMessageTargets = {
     }
 }
 
-export type RenderedMessageTarget =
-  RenderedMessageTargets[keyof RenderedMessageTargets]
+export type RenderedMessageTarget = RenderedMessageTargets[keyof RenderedMessageTargets]
 
 export type RenderedMessageDraftConcerning = {
   id: string
@@ -3540,24 +3539,21 @@ export type RenderedEvaluationEvaluatedBy =
     as_part_of_procedure: AsPartOfProcedure
   })
 
-export type RenderedEvaluationRelativeToHealthWorker =
-  RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
-    evaluated_by: RenderedEvaluationEvaluatedBy
-  }>
+export type RenderedEvaluationRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
+  evaluated_by: RenderedEvaluationEvaluatedBy
+}>
 
-export type RenderedFindingRelativeToHealthWorker =
-  RenderedRecordRelativeToHealthWorkerDef<'finding', {
-    priority: Priority | null
-    score: number | null
-    existence: Existence
-    provider: RenderedRecordProvider
-    as_part_of_procedure: AsPartOfProcedure
-  }>
+export type RenderedFindingRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'finding', {
+  priority: Priority | null
+  score: number | null
+  existence: Existence
+  provider: RenderedRecordProvider
+  as_part_of_procedure: AsPartOfProcedure
+}>
 
-export type RenderedProcedureRelativeToHealthWorker =
-  RenderedRecordRelativeToHealthWorkerDef<'procedure', {
-    provider?: RenderedRecordProvider
-  }>
+export type RenderedProcedureRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'procedure', {
+  provider?: RenderedRecordProvider
+}>
 
 export type RenderedRecordRelativeToHealthWorker =
   | RenderedFindingRelativeToHealthWorker
@@ -3763,8 +3759,7 @@ export type RegistrationPatientSummary = {
   family: PatientFamily
   occupation: Maybe<Occupation>
   allergies: Allergy[]
-  pre_existing_conditions:
-    import('./db/models/patient_conditions.ts').PreExistingConditionSummary[]
+  pre_existing_conditions: import('./db/models/patient_conditions.ts').PreExistingConditionSummary[]
   past_medical_conditions: PastMedicalCondition[]
   major_surgeries: MajorSurgery[]
 }

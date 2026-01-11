@@ -17,8 +17,7 @@ export default function Features() {
                   Sleek design
                 </dt>
                 <dd className='mt-3 text-sm text-gray-500'>
-                  The machined kettle has a smooth black finish and contemporary
-                  shape that stands apart from most plastic appliances.
+                  The machined kettle has a smooth black finish and contemporary shape that stands apart from most plastic appliances.
                 </dd>
               </div>
               <div>
@@ -34,8 +33,7 @@ export default function Features() {
                   One-button control
                 </dt>
                 <dd className='mt-3 text-sm text-gray-500'>
-                  The one button control has a digital readout for setting
-                  temperature and turning the kettle on and off.
+                  The one button control has a digital readout for setting temperature and turning the kettle on and off.
                 </dd>
               </div>
               <div>
@@ -43,8 +41,7 @@ export default function Features() {
                   Long spout
                 </dt>
                 <dd className='mt-3 text-sm text-gray-500'>
-                  Designed specifically for controlled pour-overs that
-                  don&#039;t slash or sputter.
+                  Designed specifically for controlled pour-overs that don&#039;t slash or sputter.
                 </dd>
               </div>
             </dl>

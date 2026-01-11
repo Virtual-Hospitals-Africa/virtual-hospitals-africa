@@ -1,15 +1,7 @@
-import {
-  DrugSearchResult as DrugSearchResultData,
-  PreExistingConditionWithDrugs,
-} from '../../types.ts'
+import { DrugSearchResult as DrugSearchResultData, PreExistingConditionWithDrugs } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
 import MedicationSearch from './Search.tsx'
-import {
-  dosageDisplay,
-  Dosages,
-  RegistrationFrequencies,
-  strengthDisplay,
-} from '../../shared/medication.ts'
+import { dosageDisplay, Dosages, RegistrationFrequencies, strengthDisplay } from '../../shared/medication.ts'
 import { computed, effect, useSignal } from '@preact/signals'
 import { Select } from '../form/inputs/select.tsx'
 import { DateInput } from '../form/inputs/date.tsx'
@@ -52,9 +44,7 @@ export default function DrugInput({
     )
   )
 
-  const strength_numerator_options = computed(() =>
-    medication.value?.strength_numerators
-  )
+  const strength_numerator_options = computed(() => medication.value?.strength_numerators)
 
   effect(() => {
     if (!drug.value) return
@@ -169,11 +159,9 @@ export default function DrugInput({
               >
                 {strengthDisplay({
                   strength_numerator: strength_numerator_option,
-                  strength_numerator_unit:
-                    medication.value!.strength_numerator_unit,
+                  strength_numerator_unit: medication.value!.strength_numerator_unit,
                   strength_denominator: medication.value!.strength_denominator,
-                  strength_denominator_unit:
-                    medication.value!.strength_denominator_unit,
+                  strength_denominator_unit: medication.value!.strength_denominator_unit,
                 })}
               </option>
             ))}
@@ -248,8 +236,7 @@ export default function DrugInput({
           className='w-full'
           label='Special Instructions'
           value={special_instructions.value}
-          onInput={(event) =>
-            special_instructions.value = event.currentTarget.value}
+          onInput={(event) => special_instructions.value = event.currentTarget.value}
         />
       </FormRow>
     </div>

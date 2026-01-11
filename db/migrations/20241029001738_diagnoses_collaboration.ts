@@ -5,12 +5,9 @@ import { createStandardTable } from '../createTable.ts'
 export async function up(db: Kysely<DB>) {
   await createStandardTable(db, 'diagnoses_collaboration', (qb) =>
     qb
-      .addColumn('diagnosis_id', 'uuid', (col) =>
-        col.notNull().references('diagnoses.id').onDelete('cascade'))
-      .addColumn('approver_id', 'uuid', (col) =>
-        col.notNull().references('employment.id').onDelete('cascade'))
-      .addColumn('is_approved', 'boolean', (col) =>
-        col.notNull())
+      .addColumn('diagnosis_id', 'uuid', (col) => col.notNull().references('diagnoses.id').onDelete('cascade'))
+      .addColumn('approver_id', 'uuid', (col) => col.notNull().references('employment.id').onDelete('cascade'))
+      .addColumn('is_approved', 'boolean', (col) => col.notNull())
       .addColumn('disagree_reason', 'varchar(255)'))
 }
 

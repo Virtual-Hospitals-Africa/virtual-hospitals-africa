@@ -65,11 +65,7 @@ async function loadAllModules(dir: string) {
           }
         }
       }
-      return modules[file_name] = just_default_export
-        ? module.default
-        : just_single_export_of_same_name
-        ? module[file_name]
-        : module
+      return modules[file_name] = just_default_export ? module.default : just_single_export_of_same_name ? module[file_name] : module
     })
     importing.push(importing_module)
   }

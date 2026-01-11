@@ -1,9 +1,5 @@
 import { SelectWithOptions } from '../../islands/form/inputs/select_with_options.tsx'
-import {
-  Maybe,
-  RenderedFindingRelativeToHealthWorker,
-  VitalAssessmentFormInputDefition,
-} from '../../types.ts'
+import { Maybe, RenderedFindingRelativeToHealthWorker, VitalAssessmentFormInputDefition } from '../../types.ts'
 import VitalsInputRow from './InputRow.tsx'
 
 export default function DatabaseDrivenCategoricalInput(

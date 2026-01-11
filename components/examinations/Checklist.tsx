@@ -20,8 +20,7 @@ type ExaminationChecklistProps = {
 }
 
 export function ExaminationChecklist(
-  { patient_examination_href, checklist, subcategory, findings }:
-    ExaminationChecklistProps,
+  { patient_examination_href, checklist, subcategory, findings }: ExaminationChecklistProps,
 ) {
   return (
     <>
@@ -35,9 +34,7 @@ export function ExaminationChecklist(
           key={checklist_item.snomed_concept_id}
           checklist_item={checklist_item}
           edit_href={`${patient_examination_href}#edit=${checklist_item.snomed_concept_id}`}
-          found={findings.find((finding) =>
-            finding.snomed_concept_id === checklist_item.snomed_concept_id
-          )}
+          found={findings.find((finding) => finding.snomed_concept_id === checklist_item.snomed_concept_id)}
         />
       ))}
     </>

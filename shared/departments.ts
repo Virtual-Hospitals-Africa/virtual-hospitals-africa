@@ -2,14 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
-import {
-  EmployedHealthWorker,
-  HealthWorkerOrganization,
-  Maybe,
-  Profession,
-  RenderedEmployee,
-  RenderedOrganization,
-} from '../types.ts'
+import { EmployedHealthWorker, HealthWorkerOrganization, Maybe, Profession, RenderedEmployee, RenderedOrganization } from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'

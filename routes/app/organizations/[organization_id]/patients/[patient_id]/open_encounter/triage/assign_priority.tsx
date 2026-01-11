@@ -1,9 +1,4 @@
-import {
-  assertAllPriorStepsCompleted,
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import {
@@ -16,10 +11,7 @@ import {
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
-import {
-  TriageAssignPriorityTableVital,
-  WithTriageLevelFinding,
-} from '../../../../../../../../types.ts'
+import { TriageAssignPriorityTableVital, WithTriageLevelFinding } from '../../../../../../../../types.ts'
 import { TriageAssignPriorityTable } from '../../../../../../../../components/triage/AssignPriorityTable.tsx'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -148,11 +140,10 @@ async function sortedVitals(
   const measurements_unsorted_with_reference_ranges = this_encounter_vitals
     .measurements.map(
       (finding) => {
-        const previous =
-          previous_vitals.measurements.find((m) =>
-            m.specific_snomed_concept.snomed_concept_id ===
-              finding.specific_snomed_concept.snomed_concept_id
-          ) ?? null
+        const previous = previous_vitals.measurements.find((m) =>
+          m.specific_snomed_concept.snomed_concept_id ===
+            finding.specific_snomed_concept.snomed_concept_id
+        ) ?? null
 
         return {
           finding,
@@ -227,12 +218,11 @@ export async function TriageAssignPriorityPage(
 
   const priority = exists(ctx.state.encounter.priority).name
 
-  const { vitals, total_score, with_triage_level_findings } =
-    await promiseProps({
-      vitals: sortedVitals(ctx),
-      total_score: totalScore(ctx),
-      with_triage_level_findings: withTriageLevelFindings(ctx),
-    })
+  const { vitals, total_score, with_triage_level_findings } = await promiseProps({
+    vitals: sortedVitals(ctx),
+    total_score: totalScore(ctx),
+    with_triage_level_findings: withTriageLevelFindings(ctx),
+  })
 
   assertEquals(
     total_score.score,

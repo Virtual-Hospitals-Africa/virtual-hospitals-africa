@@ -103,20 +103,17 @@ async function handleRequest(
         tools: [
           {
             name: 'search_snomed',
-            description:
-              'Search for SNOMED CT concepts by name. Returns snomed_concept_id, name, and category for matching concepts.',
+            description: 'Search for SNOMED CT concepts by name. Returns snomed_concept_id, name, and category for matching concepts.',
             inputSchema: {
               type: 'object',
               properties: {
                 query: {
                   type: 'string',
-                  description:
-                    'The search query to match against SNOMED concept names',
+                  description: 'The search query to match against SNOMED concept names',
                 },
                 limit: {
                   type: 'number',
-                  description:
-                    'Maximum number of results to return (default: 20)',
+                  description: 'Maximum number of results to return (default: 20)',
                 },
               },
               required: ['query'],
@@ -186,8 +183,7 @@ export const handler: Handlers = {
       JSON.stringify({
         name: 'vha-snomed-server',
         version: '1.0.0',
-        description:
-          'MCP server for searching SNOMED CT concepts from VHA database',
+        description: 'MCP server for searching SNOMED CT concepts from VHA database',
         mcpVersion: MCP_VERSION,
       }),
       {

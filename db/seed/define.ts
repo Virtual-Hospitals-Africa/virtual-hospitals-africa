@@ -8,9 +8,7 @@ const SEED_DUMPS_DIRECTORY = './db/seed/dumps'
 
 await Deno.mkdir(SEED_DUMPS_DIRECTORY, { recursive: true })
 
-const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map((file) =>
-  file.name
-)
+const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map((file) => file.name)
 
 type TableName = keyof DB
 
@@ -41,16 +39,12 @@ export function define(
       },
     )
 
-    const needs_loading = table_names.filter((_table_name, index) =>
-      !have_rows[index]
-    )
+    const needs_loading = table_names.filter((_table_name, index) => !have_rows[index])
     if (!needs_loading.length) {
       return 'already loaded'
     }
 
-    const tables_with_data = table_names.filter((_table_name, index) =>
-      have_rows[index]
-    )
+    const tables_with_data = table_names.filter((_table_name, index) => have_rows[index])
     await drop(tables_with_data)
 
     const all_seeds_present = table_names.every((table_name) => {

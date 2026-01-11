@@ -54,9 +54,7 @@ export default RegulatorHomePageLayout(
 
     return (
       <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-        Recall {manufactured_medication.generic_name} (Trade Name:{' '}
-        {manufactured_medication.trade_name}) by{' '}
-        {manufactured_medication.applicant_name} ?
+        Recall {manufactured_medication.generic_name} (Trade Name: {manufactured_medication.trade_name}) by {manufactured_medication.applicant_name} ?
         <br />
         Strength Summary: {manufactured_medication.strength_summary}
 

@@ -10,8 +10,7 @@ export async function up(db: Kysely<DB>) {
 
   await createStandardTable(db, 'device_capabilities', (qb) =>
     qb
-      .addColumn('device_id', 'uuid', (col) =>
-        col.notNull().references('devices.id').onDelete('cascade'))
+      .addColumn('device_id', 'uuid', (col) => col.notNull().references('devices.id').onDelete('cascade'))
       .addColumn('diagnostic_test', 'varchar(80)', (col) =>
         col.notNull().references('examinations.identifier').onDelete(
           'cascade',
@@ -20,20 +19,15 @@ export async function up(db: Kysely<DB>) {
   await createStandardTable(db, 'organization_devices', (qb) =>
     qb
       .addColumn('serial_number', 'varchar(255)')
-      .addColumn('created_by', 'uuid', (column) =>
-        column.notNull().references('employment.id').onDelete('cascade'))
-      .addColumn('updated_by', 'uuid', (column) =>
-        column.references('employment.id').onDelete('cascade'))
-      .addColumn('device_id', 'uuid', (col) =>
-        col.notNull().references('devices.id').onDelete('cascade'))
-      .addColumn('organization_id', 'uuid', (col) =>
-        col.notNull().references('organizations.id').onDelete('cascade')))
+      .addColumn('created_by', 'uuid', (column) => column.notNull().references('employment.id').onDelete('cascade'))
+      .addColumn('updated_by', 'uuid', (column) => column.references('employment.id').onDelete('cascade'))
+      .addColumn('device_id', 'uuid', (col) => col.notNull().references('devices.id').onDelete('cascade'))
+      .addColumn('organization_id', 'uuid', (col) => col.notNull().references('organizations.id').onDelete('cascade')))
 
   await createStandardTable(
     db,
     'procurers',
-    (qb) =>
-      qb.addColumn('name', 'varchar(255)', (col) => col.notNull().unique()),
+    (qb) => qb.addColumn('name', 'varchar(255)', (col) => col.notNull().unique()),
   )
 
   await createStandardTable(db, 'consumables', (qb) =>
@@ -43,12 +37,9 @@ export async function up(db: Kysely<DB>) {
 
   await createStandardTable(db, 'organization_consumables', (qb) =>
     qb
-      .addColumn('organization_id', 'uuid', (col) =>
-        col.notNull().references('organizations.id').onDelete('cascade'))
-      .addColumn('consumable_id', 'uuid', (col) =>
-        col.notNull().references('consumables.id').onDelete('cascade'))
-      .addColumn('quantity_on_hand', 'integer', (col) =>
-        col.notNull())
+      .addColumn('organization_id', 'uuid', (col) => col.notNull().references('organizations.id').onDelete('cascade'))
+      .addColumn('consumable_id', 'uuid', (col) => col.notNull().references('consumables.id').onDelete('cascade'))
+      .addColumn('quantity_on_hand', 'integer', (col) => col.notNull())
       .addUniqueConstraint('organization_consumable', [
         'organization_id',
         'consumable_id',
@@ -62,21 +53,14 @@ export async function up(db: Kysely<DB>) {
 
   await createStandardTable(db, 'procurement', (qb) =>
     qb
-      .addColumn('organization_id', 'uuid', (col) =>
-        col.notNull().references('organizations.id').onDelete('cascade'))
-      .addColumn('quantity', 'integer', (col) =>
-        col.notNull())
-      .addColumn('container_size', 'integer', (col) =>
-        col.notNull())
+      .addColumn('organization_id', 'uuid', (col) => col.notNull().references('organizations.id').onDelete('cascade'))
+      .addColumn('quantity', 'integer', (col) => col.notNull())
+      .addColumn('container_size', 'integer', (col) => col.notNull())
       .addColumn('number_of_containers', 'integer', (col) => col.notNull())
-      .addColumn('consumed_amount', 'integer', (col) =>
-        col.notNull().defaultTo(0))
-      .addColumn('consumable_id', 'uuid', (col) =>
-        col.notNull().references('consumables.id').onDelete('cascade'))
-      .addColumn('procured_from', 'uuid', (col) =>
-        col.notNull().references('procurers.id').onDelete('cascade'))
-      .addColumn('created_by', 'uuid', (column) =>
-        column.notNull().references('employment.id').onDelete('cascade'))
+      .addColumn('consumed_amount', 'integer', (col) => col.notNull().defaultTo(0))
+      .addColumn('consumable_id', 'uuid', (col) => col.notNull().references('consumables.id').onDelete('cascade'))
+      .addColumn('procured_from', 'uuid', (col) => col.notNull().references('procurers.id').onDelete('cascade'))
+      .addColumn('created_by', 'uuid', (column) => column.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('expiry_date', 'date')
       .addColumn('batch_number', 'varchar(255)')
       .addCheckConstraint(
@@ -106,14 +90,10 @@ export async function up(db: Kysely<DB>) {
 
   await createStandardTable(db, 'consumption', (qb) =>
     qb
-      .addColumn('organization_id', 'uuid', (col) =>
-        col.notNull().references('organizations.id').onDelete('cascade'))
-      .addColumn('quantity', 'integer', (col) =>
-        col.notNull())
-      .addColumn('created_by', 'uuid', (column) =>
-        column.notNull().references('employment.id').onDelete('cascade'))
-      .addColumn('procurement_id', 'uuid', (col) =>
-        col.notNull().references('procurement.id').onDelete('cascade'))
+      .addColumn('organization_id', 'uuid', (col) => col.notNull().references('organizations.id').onDelete('cascade'))
+      .addColumn('quantity', 'integer', (col) => col.notNull())
+      .addColumn('created_by', 'uuid', (column) => column.notNull().references('employment.id').onDelete('cascade'))
+      .addColumn('procurement_id', 'uuid', (col) => col.notNull().references('procurement.id').onDelete('cascade'))
       .addCheckConstraint(
         'consumption_quantity',
         sql`

@@ -77,9 +77,7 @@ export default function PharmacistsTable({
         <EmptyState
           header='No matching pharmacist found'
           explanation={[
-            `No pharmacist matched the search term "${
-              search_terms.name_search || search_terms.licence_number_search
-            }"`,
+            `No pharmacist matched the search term "${search_terms.name_search || search_terms.licence_number_search}"`,
             'If there should be, click below to invite them',
           ]}
           button={{

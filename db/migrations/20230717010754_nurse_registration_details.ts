@@ -32,19 +32,16 @@ export async function up(db: Kysely<DB>) {
           .unique())
         .addColumn('sex', sql`sex`, (column) => column.notNull())
         .addColumn('gender', 'varchar(255)', (column) => column.notNull())
-        .addColumn('country', 'varchar(2)', (col) =>
-          col.references('countries.iso_3166_2'))
+        .addColumn('country', 'varchar(2)', (col) => col.references('countries.iso_3166_2'))
         .addColumn('national_id_number', 'varchar(50)', (column) =>
           column
             .notNull())
         .addColumn(
           'date_of_first_practice',
           'date',
-          (column) =>
-            column.notNull(),
+          (column) => column.notNull(),
         )
-        .addColumn('date_of_birth', 'date', (column) =>
-          column.notNull())
+        .addColumn('date_of_birth', 'date', (column) => column.notNull())
         .addColumn('ncz_registration_number', 'varchar(50)', (column) =>
           column
             .notNull()

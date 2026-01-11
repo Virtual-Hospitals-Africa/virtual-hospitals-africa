@@ -21,14 +21,7 @@ import {
   RenderedOrganizationMedicine,
   TrxOrDb,
 } from '../../types.ts'
-import {
-  jsonArrayFromColumn,
-  jsonObjectFrom,
-  literalNumber,
-  literalOptionalDate,
-  literalString,
-  longFormattedDateTime,
-} from '../helpers.ts'
+import { jsonArrayFromColumn, jsonObjectFrom, literalNumber, literalOptionalDate, literalString, longFormattedDateTime } from '../helpers.ts'
 import { manufactured_medications } from './manufactured_medications.ts'
 import { employees } from './employees.ts'
 import { longFormattedDate } from '../helpers.ts'
@@ -371,14 +364,12 @@ export const inventory = {
       batch_number?: string
     },
   ) {
-    const procured_from = medicine.procured_from_id
-      ? { id: medicine.procured_from_id }
-      : (assert(medicine.procured_from_name),
-        await trx
-          .insertInto('procurers')
-          .values({ name: medicine.procured_from_name })
-          .returning('id')
-          .executeTakeFirstOrThrow())
+    const procured_from = medicine.procured_from_id ? { id: medicine.procured_from_id } : (assert(medicine.procured_from_name),
+      await trx
+        .insertInto('procurers')
+        .values({ name: medicine.procured_from_name })
+        .returning('id')
+        .executeTakeFirstOrThrow())
 
     const { consumable_id } = await trx.insertInto('procurement')
       .columns([
@@ -434,8 +425,7 @@ export const inventory = {
       })
       .onConflict((oc) =>
         oc.constraint('organization_consumable').doUpdateSet({
-          quantity_on_hand:
-            sql`organization_consumables.quantity_on_hand + ${medicine.quantity}`,
+          quantity_on_hand: sql`organization_consumables.quantity_on_hand + ${medicine.quantity}`,
         })
       )
       .executeTakeFirstOrThrow()
@@ -464,24 +454,21 @@ export const inventory = {
       })
       .onConflict((oc) =>
         oc.constraint('organization_consumable').doUpdateSet({
-          quantity_on_hand:
-            sql`organization_consumables.quantity_on_hand + ${consumable.quantity}`,
+          quantity_on_hand: sql`organization_consumables.quantity_on_hand + ${consumable.quantity}`,
         })
       )
       .executeTakeFirstOrThrow()
 
-    const procured_from = consumable.procured_from_id
-      ? { id: consumable.procured_from_id }
-      : (
-        assert(consumable.procured_from_name, 'procured_from_name is required'),
-          await trx
-            .insertInto('procurers')
-            .values(
-              { name: consumable.procured_from_name },
-            )
-            .returning('id')
-            .executeTakeFirstOrThrow()
-      )
+    const procured_from = consumable.procured_from_id ? { id: consumable.procured_from_id } : (
+      assert(consumable.procured_from_name, 'procured_from_name is required'),
+        await trx
+          .insertInto('procurers')
+          .values(
+            { name: consumable.procured_from_name },
+          )
+          .returning('id')
+          .executeTakeFirstOrThrow()
+    )
 
     const procured = await trx
       .insertInto('procurement')

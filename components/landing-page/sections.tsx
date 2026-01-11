@@ -1,12 +1,6 @@
 import { JSX } from 'preact'
 import capitalize from '../../util/capitalize.ts'
-import {
-  GlobeEuropeAfricaIcon,
-  IdentificationIcon,
-  PresentationChartBarIcon,
-  UserCircleIcon,
-  UsersIcon,
-} from '../library/icons/heroicons/outline.tsx'
+import { GlobeEuropeAfricaIcon, IdentificationIcon, PresentationChartBarIcon, UserCircleIcon, UsersIcon } from '../library/icons/heroicons/outline.tsx'
 
 const icons = {
   'health-workers': <IdentificationIcon />,

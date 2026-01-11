@@ -43,9 +43,7 @@ export function inverseSExpression(node: AnyNode): string {
       const { value } = node
       // Event-type attribute
       if (value && isEventValue(value)) {
-        return `(event ${
-          snomedConceptToString(node.specific_snomed_concept)
-        } "${value.datetime}")`
+        return `(event ${snomedConceptToString(node.specific_snomed_concept)} "${value.datetime}")`
       }
       // Regular attribute
       const parts: string[] = [
@@ -118,9 +116,7 @@ export function inverseSExpression(node: AnyNode): string {
     case '>=':
     case '<=':
     case '=': {
-      return `(${node.atom} ${inverseSExpression(node.left)} ${
-        inverseSExpression(node.right)
-      })`
+      return `(${node.atom} ${inverseSExpression(node.left)} ${inverseSExpression(node.right)})`
     }
 
     case 'not': {
@@ -148,9 +144,7 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'task': {
-      return `(task ${inverseSExpression(node.when)} ${
-        inverseSExpression(node.procedure)
-      })`
+      return `(task ${inverseSExpression(node.when)} ${inverseSExpression(node.procedure)})`
     }
 
     default: {

@@ -25,14 +25,13 @@ describe('db/models/prescriptions.ts', () => {
           organization_id: '00000000-0000-1000-8000-000000000002',
         })
 
-        const { patient, ...encounter } =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            trx,
-            '00000000-0000-1000-8000-000000000001',
-            {
-              employment_id: nurse.employee_id,
-            },
-          )
+        const { patient, ...encounter } = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          trx,
+          '00000000-0000-1000-8000-000000000001',
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
 
         await doctor_reviews.upsertRequest(trx, {
           patient_id: patient.id,
@@ -97,8 +96,7 @@ describe('db/models/prescriptions.ts', () => {
           doctor_review_id: doctor_review.review_id,
           prescribing: [
             {
-              patient_condition_id:
-                patient_diagnoses.self[0].patient_condition_id,
+              patient_condition_id: patient_diagnoses.self[0].patient_condition_id,
               medication_id: tablet.medication_id,
               strength: tablet.strength_numerators[0],
               route: tablet.routes[0],

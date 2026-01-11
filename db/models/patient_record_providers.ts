@@ -1,9 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import {
-  RenderedPatientEncounter,
-  RenderedRecordProvider,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedPatientEncounter, RenderedRecordProvider, TrxOrDb } from '../../types.ts'
 import { groupByUniq } from '../../util/groupBy.ts'
 import uniq from '../../util/uniq.ts'
 import { patient_encounters } from './patient_encounters.ts'
@@ -41,13 +37,9 @@ async function hydrateIntermediateRecords<
       records.map((record) => record.patient_encounter_id),
     )
 
-    const other_encounter_ids = encounter_ids.filter((encounter_id) =>
-      encounter ? encounter_id !== encounter.patient_encounter_id : true
-    )
+    const other_encounter_ids = encounter_ids.filter((encounter_id) => encounter ? encounter_id !== encounter.patient_encounter_id : true)
 
-    const encounters: RenderedPatientEncounter[] = other_encounter_ids.length
-      ? await patient_encounters.getByIds(trx, other_encounter_ids)
-      : []
+    const encounters: RenderedPatientEncounter[] = other_encounter_ids.length ? await patient_encounters.getByIds(trx, other_encounter_ids) : []
 
     if (encounter) {
       encounters.push(encounter)

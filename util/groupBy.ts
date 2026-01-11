@@ -15,9 +15,7 @@ export function groupBy<
   : never {
   const result = new Map()
   for (const [i, item] of array.entries()) {
-    const key = typeof keyBy === 'function'
-      ? keyBy(item, i)
-      : item[keyBy as any]
+    const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
     if (result.has(key)) {
       result.get(key)!.push(item)
     } else {
@@ -41,9 +39,7 @@ export function groupByUniq<
   : never {
   const result = new Map()
   for (const [i, item] of array.entries()) {
-    const key = typeof keyBy === 'function'
-      ? keyBy(item, i)
-      : item[keyBy as any]
+    const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
     if (result.has(key)) {
       throw new Error('Duplicate key: ' + key)
     }
@@ -69,23 +65,18 @@ export function groupByMapped<
 ): KeyBy extends keyof T ? ValueBy extends keyof T ? Map<T[KeyBy], T[ValueBy]>
   : ValueBy extends (value: T, i: number) => infer V ? Map<T[KeyBy], V>
   : never
-  : KeyBy extends (value: T, i: number) => infer K
-    ? ValueBy extends keyof T ? Map<K, T[ValueBy]>
+  : KeyBy extends (value: T, i: number) => infer K ? ValueBy extends keyof T ? Map<K, T[ValueBy]>
     : ValueBy extends (value: T, i: number) => infer V ? Map<K, V>
     : never
   : never {
   const result = new Map()
   for (const [i, item] of array.entries()) {
-    const key = typeof keyBy === 'function'
-      ? keyBy(item, i)
-      : item[keyBy as any]
+    const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
 
     if (result.has(key)) {
       throw new Error('Duplicate key: ' + key)
     }
-    const value = typeof valueBy === 'function'
-      ? valueBy(item, i)
-      : item[valueBy as any]
+    const value = typeof valueBy === 'function' ? valueBy(item, i) : item[valueBy as any]
     result.set(key, value)
   }
   return result as any

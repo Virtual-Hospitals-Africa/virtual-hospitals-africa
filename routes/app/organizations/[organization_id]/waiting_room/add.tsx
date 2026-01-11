@@ -26,8 +26,7 @@ const AddPatientFormSchema = z.object({
 export const handler = postHandler(
   AddPatientFormSchema,
   async (
-    { state: { trx, organization, organization_employment } }:
-      OrganizationContext,
+    { state: { trx, organization, organization_employment } }: OrganizationContext,
     { patient_id, ...to_create },
   ) => {
     const inserted = await patient_encounters

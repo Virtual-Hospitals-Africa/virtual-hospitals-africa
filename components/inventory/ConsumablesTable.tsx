@@ -14,9 +14,7 @@ const columns: TableColumn<RenderedOrganizationConsumable>[] = [
   {
     label: 'Quantity',
     data(row) {
-      return row.quantity_on_hand || (
-        <span className='text-red-600'>Not in stock</span>
-      )
+      return row.quantity_on_hand || <span className='text-red-600'>Not in stock</span>
     },
   },
   {
@@ -32,8 +30,7 @@ export default function OrganizationConsumablesTable(
     is_admin: boolean
   },
 ) {
-  const add_href =
-    `/app/organizations/${organization_id}/inventory/add_consumable`
+  const add_href = `/app/organizations/${organization_id}/inventory/add_consumable`
   return (
     <>
       {is_admin && (
@@ -57,9 +54,7 @@ export default function OrganizationConsumablesTable(
             header='No consumables in stock'
             explanation='Add a consumable to get started'
             Icon={ArchiveBoxIcon}
-            button={is_admin
-              ? { children: 'Add Consumable', href: add_href }
-              : undefined}
+            button={is_admin ? { children: 'Add Consumable', href: add_href } : undefined}
           />
         )}
       />

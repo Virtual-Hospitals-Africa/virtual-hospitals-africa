@@ -2,10 +2,7 @@ import db from '../../../../../db/db.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { createTestOrganization } from '../../../../_helpers/organizations.ts'
-import {
-  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
-  PartialPatientDemographics,
-} from '../../../../_helpers/workflows.ts'
+import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest, PartialPatientDemographics } from '../../../../_helpers/workflows.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import {
@@ -16,10 +13,7 @@ import { TriageBriefHistorySchema } from '../../../../../routes/app/organization
 import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
 import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
 import fromEntries from '../../../../../util/fromEntries.ts'
-import {
-  KEYED_WARNING_SIGNS,
-  WARNING_SIGNS,
-} from '../../../../../shared/warning_signs.ts'
+import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { CheerioAPI } from 'cheerio'
 import entries from '../../../../../util/entries.ts'
 import keys from '../../../../../util/keys.ts'
@@ -47,7 +41,7 @@ const ONLY_WHEN_PREGNANCY_STATUS = {
 
 export function asWarningSigns(
   sign_keys: Array<keyof typeof WARNING_SIGNS>,
-  opts: { pregnant: boolean } = { pregnant: false },
+  opts: { pregnant: boolean },
 ): z.input<typeof TriageWarningSignsSchema> {
   return { warning_signs: fromEntries(applicableWarningSigns()) }
 
@@ -90,15 +84,17 @@ export async function setupTriage(
     organization_id: clinic.id,
   })
 
-  const encounter =
-    await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-      db,
-      nurse.health_worker.organization_id,
-      {
-        patient_demographics,
-        employment_id: nurse.health_worker.employee_id,
-      },
-    )
+  const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+    db,
+    nurse.health_worker.organization_id,
+    {
+      patient_demographics,
+      employment_id: nurse.health_worker.employee_id,
+    },
+  )
+
+  const patient_id = encounter.patient.id
+  const patient_encounter_id = encounter.patient_encounter_id
 
   function openEncounterRoute(path: string) {
     assert(!path.startsWith('/'))
@@ -132,14 +128,15 @@ export async function setupTriage(
     return $
   }
 
-  const $ =
-    await (keys(steps).length ? postStep(steps) : getStep('warning_signs'))
+  const $ = await (keys(steps).length ? postStep(steps) : getStep('warning_signs'))
 
   return {
     $,
     clinic,
     nurse,
     encounter,
+    patient_id,
+    patient_encounter_id,
     getStep,
     postStep,
     openEncounterRoute,

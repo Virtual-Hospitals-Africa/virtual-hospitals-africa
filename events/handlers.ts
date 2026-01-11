@@ -33,8 +33,7 @@ export const EVENTS = {
         }).catch((_err) => null)
         assert(health_worker, 'Health worker not found')
 
-        const message =
-          `Health worker ${health_worker.name} has logged in for the first time`
+        const message = `Health worker ${health_worker.name} has logged in for the first time`
         await sendToHealthWorkerLoggedInChannel(message)
       },
     },
@@ -116,8 +115,7 @@ export const EVENTS = {
           row_id: payload.data.review_request_id,
           notification_type: 'doctor_review_request',
           title: 'Review Requested',
-          action_href:
-            `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
+          action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
         })
       },
       async notifyDoctorsOrOrganization(trx, payload) {
@@ -150,8 +148,7 @@ export const EVENTS = {
             row_id: payload.data.review_request_id,
             notification_type: 'doctor_review_request',
             title: 'Review Requested',
-            action_href:
-              `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
+            action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
           })
         }
       },
@@ -255,9 +252,7 @@ export const EVENTS = {
           await notifications.insert(trx, {
             title: 'Immediate Triage Requested',
             avatar_url: '/images/heroicons/24/solid/exclamation-triangle.svg',
-            description: `${
-              employeeDisplay(requested_by_employee).display_name
-            } has requested immediate triage for a patient`,
+            description: `${employeeDisplay(requested_by_employee).display_name} has requested immediate triage for a patient`,
             employment_id: employee.employee_id,
             table_name: 'patient_encounters',
             row_id: patient_encounter_id,
@@ -283,16 +278,13 @@ export const EVENTS = {
           action_title: 'View completed review',
           avatar_url: doctor.avatar_url ||
             '/images/heroicons/24/solid/slipboard-document-list.svg',
-          description: `Doctor ${doctor.name} at ${
-            organizationOf(review.requested_by).name
-          } has reviewed ${review.patient.name}`,
+          description: `Doctor ${doctor.name} at ${organizationOf(review.requested_by).name} has reviewed ${review.patient.name}`,
           health_worker_id: review.requested_by.id,
           table_name: 'doctor_review_requests',
           row_id: review.review_id,
           notification_type: 'doctor_review_request',
           title: 'Review Requested',
-          action_href:
-            `/app/patients/${review.patient.id}/review/clinical_notes`,
+          action_href: `/app/patients/${review.patient.id}/review/clinical_notes`,
         })
       },
     },

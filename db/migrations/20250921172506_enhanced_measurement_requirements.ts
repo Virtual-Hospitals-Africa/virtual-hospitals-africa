@@ -16,13 +16,10 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('age_max_days', 'integer')
         .addColumn('medical_standard', 'varchar(100)', (col) => col.notNull())
         .addColumn('clinical_rationale', 'text', (col) => col.notNull())
-        .addColumn('is_required', 'boolean', (col) =>
-          col.notNull().defaultTo(true))
-        .addColumn('effective_date', 'date', (col) =>
-          col.notNull().defaultTo(sql`CURRENT_DATE`))
+        .addColumn('is_required', 'boolean', (col) => col.notNull().defaultTo(true))
+        .addColumn('effective_date', 'date', (col) => col.notNull().defaultTo(sql`CURRENT_DATE`))
         .addColumn('expiration_date', 'date')
-        .addColumn('active', 'boolean', (col) =>
-          col.notNull().defaultTo(true))
+        .addColumn('active', 'boolean', (col) => col.notNull().defaultTo(true))
         .addCheckConstraint(
           'age_req_age_min_valid',
           sql`age_min_days IS NULL OR age_min_days >= 0`,
@@ -54,14 +51,11 @@ export async function up(db: Kysely<unknown>) {
         )
         .addColumn('medical_standard', 'varchar(100)', (col) => col.notNull())
         .addColumn('clinical_rationale', 'text', (col) => col.notNull())
-        .addColumn('is_required', 'boolean', (col) =>
-          col.notNull().defaultTo(true))
+        .addColumn('is_required', 'boolean', (col) => col.notNull().defaultTo(true))
         .addColumn('frequency_recommendation', 'varchar(50)')
-        .addColumn('effective_date', 'date', (col) =>
-          col.notNull().defaultTo(sql`CURRENT_DATE`))
+        .addColumn('effective_date', 'date', (col) => col.notNull().defaultTo(sql`CURRENT_DATE`))
         .addColumn('expiration_date', 'date')
-        .addColumn('active', 'boolean', (col) =>
-          col.notNull().defaultTo(true)),
+        .addColumn('active', 'boolean', (col) => col.notNull().defaultTo(true)),
   )
 
   await createStandardTable(
@@ -86,11 +80,9 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('reference_source', 'varchar(100)', (col) => col.notNull())
         .addColumn('evidence_level', 'varchar(20)')
         .addColumn('clinical_context', 'varchar(255)')
-        .addColumn('effective_date', 'date', (col) =>
-          col.notNull().defaultTo(sql`CURRENT_DATE`))
+        .addColumn('effective_date', 'date', (col) => col.notNull().defaultTo(sql`CURRENT_DATE`))
         .addColumn('expiration_date', 'date')
-        .addColumn('active', 'boolean', (col) =>
-          col.notNull().defaultTo(true))
+        .addColumn('active', 'boolean', (col) => col.notNull().defaultTo(true))
         .addCheckConstraint(
           'ref_range_normal_valid',
           sql`normal_min < normal_max`,

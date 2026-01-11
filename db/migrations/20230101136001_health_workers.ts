@@ -12,8 +12,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn('surname', 'varchar(255)', (col) => col.notNull())
         .addColumn('preferred_name', 'varchar(255)', (col) => col.notNull())
         .addColumn('email', 'varchar(255)', (col) => col.notNull().unique())
-        .addColumn('avatar_media_id', 'uuid', (col) =>
-          col.references('media.id').onDelete('set null'))
+        .addColumn('avatar_media_id', 'uuid', (col) => col.references('media.id').onDelete('set null'))
         .addCheckConstraint(
           'health_worker_name_matches_first_names_and_surname',
           sql`(

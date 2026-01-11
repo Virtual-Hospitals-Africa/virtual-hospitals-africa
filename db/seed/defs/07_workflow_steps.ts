@@ -1,16 +1,13 @@
-import { WorkflowSteps } from '../../../db.d.ts'
-import {
-  WORKFLOW_STEPS,
-  workflowStepKey,
-  workflowStepSnomedConceptId,
-} from '../../../shared/workflow.ts'
-import { InsertShape } from '../../../types.ts'
+import { InsertObject } from 'kysely'
+import { DB } from '../../../db.d.ts'
+import { WORKFLOW_STEPS, workflowStepKey, workflowStepSnomedConceptId } from '../../../shared/workflow.ts'
+
 import { collect } from '../../../util/collectSorted.ts'
 import entries from '../../../util/entries.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { define } from '../define.ts'
 
-function* workflowSteps(): Generator<InsertShape<WorkflowSteps>> {
+function* workflowSteps(): Generator<InsertObject<DB, 'workflow_steps'>> {
   let workflow_step_order = 0
   for (const [workflow, steps] of entries(WORKFLOW_STEPS)) {
     for (const step of steps) {
@@ -32,9 +29,7 @@ function* workflowSteps(): Generator<InsertShape<WorkflowSteps>> {
 */
 export default define(['workflow_steps'], async (trx) => {
   const workflow_steps = collect(workflowSteps())
-  const { count } = await trx.selectFrom('workflow_steps').select((eb) =>
-    eb.fn.countAll().as('count')
-  )
+  const { count } = await trx.selectFrom('workflow_steps').select((eb) => eb.fn.countAll().as('count'))
     .executeTakeFirstOrThrow()
 
   const count_int = parseInt(String(count))

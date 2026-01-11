@@ -16,8 +16,7 @@ import {
 } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Multisearch<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Multisearch<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description Search descriptions across multiple Code Systems.
    *

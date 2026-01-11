@@ -1,17 +1,10 @@
-import {
-  Maybe,
-  RenderedFindingRelativeToHealthWorker,
-  VitalMeasurementFormInputDefition,
-} from '../../types.ts'
+import { Maybe, RenderedFindingRelativeToHealthWorker, VitalMeasurementFormInputDefition } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 
 import { LocalTime } from '../LocalTime.tsx'
 import { HeroIconButton } from '../../components/library/HeroIconButton.tsx'
-import {
-  FlagIcon,
-  PencilIcon,
-} from '../../components/library/icons/heroicons/solid.tsx'
+import { FlagIcon, PencilIcon } from '../../components/library/icons/heroicons/solid.tsx'
 import { useSignal } from '@preact/signals'
 import { Label } from '../../components/library/Label.tsx'
 import { TextInput } from '../form/inputs/text.tsx'

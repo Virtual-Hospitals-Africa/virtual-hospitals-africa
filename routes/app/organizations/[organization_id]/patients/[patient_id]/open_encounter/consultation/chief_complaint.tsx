@@ -1,9 +1,5 @@
 import { z } from 'zod'
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { patient_chief_complaints } from '../../../../../../../../db/models/patient_chief_complaints.ts'
 import { getRequiredUUIDParam } from '../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
@@ -25,8 +21,7 @@ export const handler = postHandler(
       patient_id,
       patient_encounter_id: ctx.state.encounter.patient_encounter_id,
       employment_id: ctx.state.organization_employment.employment_id,
-      patient_encounter_employee_id:
-        ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+      patient_encounter_employee_id: ctx.state.encounter_employee_presence.patient_encounter_employee_id,
       chief_complaint: form_values,
     })
 

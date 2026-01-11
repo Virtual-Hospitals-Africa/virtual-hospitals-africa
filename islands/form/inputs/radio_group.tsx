@@ -30,8 +30,7 @@ export function RadioGroup({
                 checked={value === option.value}
                 value={option.value}
                 className='w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-600'
-                onChange={(event) =>
-                  onChange?.(event.currentTarget.value)}
+                onChange={(event) => onChange?.(event.currentTarget.value)}
               />
               <label
                 htmlFor={`radio-${name}-${option.value}`}
@@ -39,9 +38,7 @@ export function RadioGroup({
               >
                 {option.label || option.value}
               </label>
-              {option.description && (
-                <p className='text-gray-500'>{option.description}</p>
-              )}
+              {option.description && <p className='text-gray-500'>{option.description}</p>}
             </div>
           ))}
         </div>

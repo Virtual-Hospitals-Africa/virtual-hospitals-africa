@@ -1,8 +1,4 @@
-import {
-  RenderedPatient,
-  RenderedPatientCompletedPersonal,
-  RenderedPatientCompletedRegistration,
-} from '../types.ts'
+import { RenderedPatient, RenderedPatientCompletedPersonal, RenderedPatientCompletedRegistration } from '../types.ts'
 import { assertPropertyNonNull } from '../util/assertPropertyNonNull.ts'
 
 export const PATIENT_REGISTRATION_STEPS = [
@@ -13,8 +9,7 @@ export const PATIENT_REGISTRATION_STEPS = [
   'biometrics' as const,
 ]
 
-export type PatientRegistrationStep =
-  (typeof PATIENT_REGISTRATION_STEPS)[number]
+export type PatientRegistrationStep = (typeof PATIENT_REGISTRATION_STEPS)[number]
 
 export function isPatientRegistrationStep(
   step: string | undefined,

@@ -30,16 +30,14 @@ export function VerticalRadioButtons({ options, name, defaultValue }: {
                 <span className='text-md font-medium leading-6 text-gray-600'>
                   {option.name}
                 </span>
-                {(Array.isArray(option.description)
-                  ? option.description
-                  : [option.description]).map((desc, i) => (
-                    <p
-                      key={i}
-                      className='text-sm leading-5 text-gray-600'
-                    >
-                      {desc}
-                    </p>
-                  ))}
+                {(Array.isArray(option.description) ? option.description : [option.description]).map((desc, i) => (
+                  <p
+                    key={i}
+                    className='text-sm leading-5 text-gray-600'
+                  >
+                    {desc}
+                  </p>
+                ))}
               </label>
             </div>
           </div>

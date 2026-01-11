@@ -3,11 +3,7 @@ import { examinations } from '../../../../../../../../../db/models/examinations.
 import { z } from 'zod'
 import PastMedicalConditionsForm from '../../../../../../../../../islands/past-medical-conditions/Form.tsx'
 import { parseRequest } from '../../../../../../../../../backend/parseForm.ts'
-import {
-  completeAssessment,
-  HistoryContext,
-  HistoryPage,
-} from './_middleware.tsx'
+import { completeAssessment, HistoryContext, HistoryPage } from './_middleware.tsx'
 
 export const PastConditionsSchema = z.object({
   past_medical_conditions: z.array(
@@ -35,10 +31,8 @@ export const handler = {
       {
         patient_id: ctx.state.patient.id,
         patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-        patient_encounter_employee_id:
-          ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-        examination_identifier:
-          ctx.state.current_assessment.examination_identifier,
+        patient_encounter_employee_id: ctx.state.encounter_employee_presence.patient_encounter_employee_id,
+        examination_identifier: ctx.state.current_assessment.examination_identifier,
       },
     )
 

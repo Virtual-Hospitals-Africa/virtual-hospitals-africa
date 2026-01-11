@@ -106,10 +106,8 @@ export async function up(db: Kysely<DB>) {
     primary_key_type: 'uuid',
   }, (qb) =>
     qb
-      .addColumn('language_code', 'varchar(3)', (col) =>
-        col.notNull().references('languages.iso_639_2_b'))
-      .addColumn('note', 'text', (col) =>
-        col.notNull()))
+      .addColumn('language_code', 'varchar(3)', (col) => col.notNull().references('languages.iso_639_2_b'))
+      .addColumn('note', 'text', (col) => col.notNull()))
 
   await createPointerTable(db, 'patient_symptoms', {
     references: 'patient_findings',
@@ -147,14 +145,12 @@ export async function up(db: Kysely<DB>) {
     qb.addColumn(
       'finding_id',
       'uuid',
-      (col) =>
-        col.notNull().references('patient_findings.id').onDelete('cascade'),
+      (col) => col.notNull().references('patient_findings.id').onDelete('cascade'),
     )
       .addColumn(
         'media_image_id',
         'uuid',
-        (col) =>
-          col.notNull().references('media_images.id').onDelete('cascade'),
+        (col) => col.notNull().references('media_images.id').onDelete('cascade'),
       ))
 
   await createPointerTable(db, 'patient_finding_media_speeches', {
@@ -165,14 +161,12 @@ export async function up(db: Kysely<DB>) {
       .addColumn(
         'finding_id',
         'uuid',
-        (col) =>
-          col.notNull().references('patient_findings.id').onDelete('cascade'),
+        (col) => col.notNull().references('patient_findings.id').onDelete('cascade'),
       )
       .addColumn(
         'media_speech_id',
         'uuid',
-        (col) =>
-          col.notNull().references('media_speeches.id').onDelete('cascade'),
+        (col) => col.notNull().references('media_speeches.id').onDelete('cascade'),
       ))
 
   await createPointerTable(
@@ -199,16 +193,14 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'by_system',
           'boolean',
-          (col) =>
-            col.notNull(),
+          (col) => col.notNull(),
         )
         // more such relations can be declared using patient_record_relations,
         // but evaluations are always made because of at least one other record
         .addColumn(
           'evaluates_record_id',
           'uuid',
-          (col) =>
-            col.notNull().references('patient_records.id').onDelete('cascade'),
+          (col) => col.notNull().references('patient_records.id').onDelete('cascade'),
         )
         .addCheckConstraint(
           'evaluation_is_either_by_system_or_by_person',

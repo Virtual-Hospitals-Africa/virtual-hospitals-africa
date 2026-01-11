@@ -10,9 +10,7 @@ export async function spinner<T>(
   try {
     const result = typeof task === 'function' ? await task() : await task
     const to_print = opts?.success || (
-      !!result && typeof result === 'string'
-        ? result
-        : description.replaceAll('ing ', 'ed ')
+      !!result && typeof result === 'string' ? result : description.replaceAll('ing ', 'ed ')
     )
     spinner.succeed(to_print)
     return result

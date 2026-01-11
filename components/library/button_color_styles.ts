@@ -27,23 +27,16 @@ export const get_color_styles = (
   if (variant === 'ghost') {
     const ghost_colors: Record<ColorName, string> = {
       primary: 'hover:text-primary focus-visible:text-primary',
-      secondary:
-        'hover:text-primary-secondary focus-visible:text-primary-secondary',
-      tertiary:
-        'hover:text-primary-tertiary focus-visible:text-primary-tertiary',
+      secondary: 'hover:text-primary-secondary focus-visible:text-primary-secondary',
+      tertiary: 'hover:text-primary-tertiary focus-visible:text-primary-tertiary',
       success: 'hover:text-success-status focus-visible:text-success-status',
       error: 'hover:text-error-status focus-visible:text-error-status',
       warning: 'hover:text-warning-status focus-visible:text-warning-status',
-      blue:
-        'hover:text-accent-blue-textIcon focus-visible:text-accent-blue-textIcon',
-      teal:
-        'hover:text-accent-teal-textIcon focus-visible:text-accent-teal-textIcon',
-      pink:
-        'hover:text-accent-pink-textIcon focus-visible:text-accent-pink-textIcon',
-      purple:
-        'hover:text-accent-purple-textIcon focus-visible:text-accent-purple-textIcon',
-      orange:
-        'hover:text-accent-orange-status focus-visible:text-accent-orange-status',
+      blue: 'hover:text-accent-blue-textIcon focus-visible:text-accent-blue-textIcon',
+      teal: 'hover:text-accent-teal-textIcon focus-visible:text-accent-teal-textIcon',
+      pink: 'hover:text-accent-pink-textIcon focus-visible:text-accent-pink-textIcon',
+      purple: 'hover:text-accent-purple-textIcon focus-visible:text-accent-purple-textIcon',
+      orange: 'hover:text-accent-orange-status focus-visible:text-accent-orange-status',
       neutral: 'hover:text-neutral-primary focus-visible:text-neutral-primary',
     }
     return ghost_colors[color] || ''
@@ -51,16 +44,14 @@ export const get_color_styles = (
 
   if (variant === 'primary' || variant === 'destructive') {
     const solid_colors: Record<ColorName, string> = {
-      primary:
-        'bg-primary text-primary-onBrand hover:bg-primary-secondary focus-visible:outline-primary active:bg-primary-secondary disabled:hover:bg-primary',
+      primary: 'bg-primary text-primary-onBrand hover:bg-primary-secondary focus-visible:outline-primary active:bg-primary-secondary disabled:hover:bg-primary',
       secondary:
         'bg-primary-secondary text-primary-onBrand hover:bg-primary focus-visible:outline-primary-secondary active:bg-primary disabled:hover:bg-primary-secondary',
       tertiary:
         'bg-primary-tertiary text-primary hover:bg-primary-secondary focus-visible:outline-primary-tertiary active:bg-primary-secondary disabled:hover:bg-primary-tertiary',
       success:
         'bg-success-status text-white hover:bg-success-textIcon focus-visible:outline-success-status active:bg-success-textIcon disabled:hover:bg-success-status',
-      error:
-        'bg-error-status text-white hover:bg-error-textIcon focus-visible:outline-error-status active:bg-error-textIcon disabled:hover:bg-error-status',
+      error: 'bg-error-status text-white hover:bg-error-textIcon focus-visible:outline-error-status active:bg-error-textIcon disabled:hover:bg-error-status',
       warning:
         'bg-warning-status text-white hover:bg-warning-textIcon focus-visible:outline-warning-status active:bg-warning-textIcon disabled:hover:bg-warning-status',
       blue:

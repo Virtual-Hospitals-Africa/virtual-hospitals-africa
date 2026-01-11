@@ -8,16 +8,10 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  Concept,
-  CreateReviewRequest,
-  MergeReview,
-  MergeReviewConceptVersions,
-} from './data-contracts.ts'
+import { Concept, CreateReviewRequest, MergeReview, MergeReviewConceptVersions } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class MergeReviews<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class MergeReviews<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *

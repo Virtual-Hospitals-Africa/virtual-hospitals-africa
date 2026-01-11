@@ -40,8 +40,7 @@ export async function up(db: Kysely<DB>) {
       .addColumn(
         'country',
         'varchar(2)',
-        (col) =>
-          col.notNull().references('countries.iso_3166_2').onDelete('cascade'),
+        (col) => col.notNull().references('countries.iso_3166_2').onDelete('cascade'),
       )
       .addColumn('revoked_at', 'timestamp')
       .addColumn(

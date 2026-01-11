@@ -1,10 +1,6 @@
 import { prescriptions } from '../../db/models/prescriptions.ts'
 import { prescription_medications } from '../../db/models/prescription_medications.ts'
-import {
-  PharmacistChatbotUserState,
-  PrescriptionMedication,
-  TrxOrDb,
-} from '../../types.ts'
+import { PharmacistChatbotUserState, PrescriptionMedication, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { conversations } from '../../db/models/conversations.ts'
 import omit from '../../util/omit.ts'
@@ -69,8 +65,7 @@ export async function handleDispense(
     {
       data: {
         ...pharmacistState.chatbot_user.data,
-        prescription_medication_id:
-          unfilled_medications[0].prescription_medication_id,
+        prescription_medication_id: unfilled_medications[0].prescription_medication_id,
       },
     },
   )
@@ -115,8 +110,7 @@ async function dispenseNextStep(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const { prescription_id, skipped_prescription_medication_ids = [] } =
-    pharmacistState.chatbot_user.data as PharmacistStateData
+  const { prescription_id, skipped_prescription_medication_ids = [] } = pharmacistState.chatbot_user.data as PharmacistStateData
 
   const unfilled_medications = await prescription_medications
     .getByPrescriptionId(
@@ -156,9 +150,8 @@ export async function dispenseSkip(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const skipped_prescription_medication_ids =
-    (pharmacistState.chatbot_user.data as PharmacistStateData)
-      .skipped_prescription_medication_ids || []
+  const skipped_prescription_medication_ids = (pharmacistState.chatbot_user.data as PharmacistStateData)
+    .skipped_prescription_medication_ids || []
 
   await conversations.updateChatbotUser(
     trx,
@@ -266,8 +259,7 @@ export function medicationDisplay(
 ) {
   // Format the main medication description
   const strength = strengthDisplay(medication)
-  const medicationDescription =
-    `${medication.drug_generic_name} ${medication.form} (${strength})`
+  const medication_description = `${medication.drug_generic_name} ${medication.form} (${strength})`
 
   // Format each schedule
   const schedule_descriptions = medication.schedules.map((schedule) => {
@@ -275,5 +267,5 @@ export function medicationDisplay(
   })
 
   // Combine everything into the final output
-  return `${medicationDescription}\n${schedule_descriptions.join('\n')}`
+  return `${medication_description}\n${schedule_descriptions.join('\n')}`
 }

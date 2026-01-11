@@ -79,8 +79,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'medication_id',
           'uuid',
-          (col) =>
-            col.notNull().references('medications.id').onDelete('cascade'),
+          (col) => col.notNull().references('medications.id').onDelete('cascade'),
         )
         .addColumn(
           'strength_numerators',
@@ -107,8 +106,7 @@ export async function up(db: Kysely<DB>) {
               'cascade',
             ),
         )
-        .addColumn('consumable_id', 'uuid', (col) =>
-          col.notNull().references('consumables.id').onDelete('cascade')),
+        .addColumn('consumable_id', 'uuid', (col) => col.notNull().references('consumables.id').onDelete('cascade')),
   )
 
   await createStandardTable(

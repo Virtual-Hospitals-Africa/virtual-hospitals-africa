@@ -7,9 +7,7 @@ const living_language_types = new Set<LanguageType>([
   'Genetic-like',
 ])
 
-export const LIVING_LANGUAGES = WIKIPEDIA_ISO_LANGUAGES.filter((lang) =>
-  living_language_types.has(lang.type)
-)
+export const LIVING_LANGUAGES = WIKIPEDIA_ISO_LANGUAGES.filter((lang) => living_language_types.has(lang.type))
 
 export const OFFICIAL_LANGUAGES = {
   ZA: new Set([

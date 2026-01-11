@@ -82,7 +82,7 @@
 //     {
 //       patient_id: string
 //       patient_encounter_id: string
-//     } & InsertShape<PatientFindings>
+//     } & InsertObject<DB, 'patient_findings'>
 //   > = family_members
 //     .map((member) => {
 //       const id = generateUUID()

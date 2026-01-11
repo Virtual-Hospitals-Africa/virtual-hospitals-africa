@@ -50,8 +50,7 @@ export function AddMedicineSearch(
 ) {
   return (
     <ManufacturedMedicationSearch
-      optionHref={(option) =>
-        `/app/organizations/${organization_id}/inventory/add_medicine?manufactured_medication_id=${option.id}`}
+      optionHref={(option) => `/app/organizations/${organization_id}/inventory/add_medicine?manufactured_medication_id=${option.id}`}
     />
   )
 }

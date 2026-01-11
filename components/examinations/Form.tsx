@@ -2,10 +2,7 @@ import { JSX } from 'preact'
 import { GENERAL_ASSESSMENTS_BY_IDENTIFIER } from '../../shared/general_assessments.ts'
 import { ExaminationCategory } from './Category.tsx'
 import { HiddenInput } from '../library/HiddenInput.tsx'
-import {
-  RenderedPatientExamination,
-  RenderedPatientExaminationFinding,
-} from '../../types.ts'
+import { RenderedPatientExamination, RenderedPatientExaminationFinding } from '../../types.ts'
 
 export function PatientExaminationForm({
   patient_examination,

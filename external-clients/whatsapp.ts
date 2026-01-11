@@ -1,12 +1,5 @@
 import { ChatbotName } from '../db.d.ts'
-import {
-  WhatsAppJSONResponse,
-  WhatsAppLocation,
-  WhatsAppMessageAction,
-  WhatsAppMessageOption,
-  WhatsAppSendable,
-  WhatsAppSingleSendable,
-} from '../types.ts'
+import { WhatsAppJSONResponse, WhatsAppLocation, WhatsAppMessageAction, WhatsAppMessageOption, WhatsAppSendable, WhatsAppSingleSendable } from '../types.ts'
 import { basename } from 'std/path/mod.ts'
 import * as pdf from '../util/pdf.ts'
 import { delay } from '../util/delay.ts'
@@ -135,9 +128,7 @@ export async function postMessage(chatbot_name: ChatbotName, body: unknown) {
     body: JSON.stringify(body),
   }
 
-  const post_message_route = `https://graph.facebook.com/v17.0/${
-    phone_numbers[chatbot_name]
-  }/messages`
+  const post_message_route = `https://graph.facebook.com/v17.0/${phone_numbers[chatbot_name]}/messages`
   const response = await fetch(post_message_route, to_post)
 
   return response.json()
@@ -162,9 +153,7 @@ export async function postMedia(
     headers: { 'Authorization': `${Authorization}` },
     body: form_data,
   }
-  const post_message_route = `https://graph.facebook.com/v20.0/${
-    phone_numbers[chatbot_name]
-  }/media`
+  const post_message_route = `https://graph.facebook.com/v20.0/${phone_numbers[chatbot_name]}/media`
 
   const response = await fetch(post_message_route, to_post)
   if (!response.ok) {

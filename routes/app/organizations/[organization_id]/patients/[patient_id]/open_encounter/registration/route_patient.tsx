@@ -44,8 +44,7 @@ export const PatientRegistrationRoutePatientSchema = z.object({
 export const handler = postHandler(
   PatientRegistrationRoutePatientSchema,
   async (ctx: OpenEncounterWorkflowContext, { next_workflow /*, notes */ }) => {
-    const { trx, patient, encounter, organization, organization_employment } =
-      ctx.state
+    const { trx, patient, encounter, organization, organization_employment } = ctx.state
 
     assertEquals(next_workflow, 'await_triage')
     // const can_do_triage = canPerform(organization_employment, 'triage')
@@ -107,10 +106,9 @@ export const handler = postHandler(
     // })
 
     // TODO: time estimate
-    const redirect_success_message =
-      `Please move ${patient.names.preferred_name} to the waiting room. The next available triage nurse will see ${
-        pronoun(patient)
-      }.`
+    const redirect_success_message = `Please move ${patient.names.preferred_name} to the waiting room. The next available triage nurse will see ${
+      pronoun(patient)
+    }.`
 
     // TODO notify senior_health_worker_name
     return redirect(success(

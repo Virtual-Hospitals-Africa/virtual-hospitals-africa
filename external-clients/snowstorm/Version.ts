@@ -11,8 +11,7 @@
 import { BuildVersion } from './data-contracts.ts'
 import { HttpClient, RequestParams } from './http-client.ts'
 
-export class Version<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Version<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *

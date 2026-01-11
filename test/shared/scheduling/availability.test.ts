@@ -1,10 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { TimeWindow } from '../../../types.ts'
-import {
-  overlaps,
-  windowsOverlap,
-} from '../../../backend/scheduling/availability.tsx'
+import { overlaps, windowsOverlap } from '../../../backend/scheduling/availability.tsx'
 
 describe('availability', () => {
   describe('windowsOverlap', () => {

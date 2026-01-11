@@ -21,8 +21,7 @@ import {
 } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Codesystems<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Codesystems<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *

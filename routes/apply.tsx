@@ -36,10 +36,8 @@ export default async function ApplyPage(ctx: Context<unknown>) {
                 </FormRow>
               </form>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from organization_name is currently under
-                review by{' '}
-                organization_admin_name. You will receive an email once your
-                application has been approved.
+                Your application from organization_name is currently under review by{' '}
+                organization_admin_name. You will receive an email once your application has been approved.
               </p>
               <div class='mt-10 flex'>
                 <Button href='/'>

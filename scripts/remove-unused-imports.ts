@@ -45,8 +45,7 @@ function removeUnusedImports(
   unused_vars: Set<string>,
 ): string {
   // Match import statements (single-line and multi-line)
-  const import_regex =
-    /import\s+(\w+\s+from\s+|)(\{[\s\S]*?\})\s*from\s*['"][^'"]+['"]/g
+  const import_regex = /import\s+(\w+\s+from\s+|)(\{[\s\S]*?\})\s*from\s*['"][^'"]+['"]/g
 
   return content.replace(
     import_regex,
@@ -89,8 +88,7 @@ function removeDefaultImports(
   unused_vars: Set<string>,
 ): string {
   // Match default imports with optional named imports: import foo, { bar } from 'baz' or import foo from 'bar'
-  const default_import_regex =
-    /import\s+(\w+)\s*(,\s*\{[^}]*\})?\s*from\s*(['"][^'"]+['"])\s*\n?/g
+  const default_import_regex = /import\s+(\w+)\s*(,\s*\{[^}]*\})?\s*from\s*(['"][^'"]+['"])\s*\n?/g
 
   return content.replace(
     default_import_regex,

@@ -168,9 +168,7 @@ export function Steps<S extends string>(
           role='list'
           className='overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200'
         >
-          {steps.map((step, index) => (
-            <Step step={step} index={index} base_url={base_url} steps={steps} />
-          ))}
+          {steps.map((step, index) => <Step key={step} step={step} index={index} base_url={base_url} steps={steps} />)}
         </ol>
       </nav>
     </div>

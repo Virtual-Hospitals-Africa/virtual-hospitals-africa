@@ -62,9 +62,7 @@ export function getFormLabels($: cheerio.CheerioAPI): unknown {
         const by_labelledby = $(`label[id="${el.attribs['aria-labelledby']}"]`)
         if (!by_labelledby.length) {
           throw new Error(
-            `element declared it was labelled by ${
-              el.attribs['aria-labelledby']
-            } but no such element was found`,
+            `element declared it was labelled by ${el.attribs['aria-labelledby']} but no such element was found`,
           )
         }
         return by_labelledby
@@ -89,8 +87,7 @@ export function getFormOptions($: cheerio.CheerioAPI): unknown {
   > = {}
   $('form select').each((_i, el) => {
     if (!el.attribs.name) return
-    const options: Array<{ label: string; value: string; selected: boolean }> =
-      []
+    const options: Array<{ label: string; value: string; selected: boolean }> = []
     $(el).find('option').each((_i, option) => {
       options.push({
         label: option.attribs.label ?? $(option).text(),

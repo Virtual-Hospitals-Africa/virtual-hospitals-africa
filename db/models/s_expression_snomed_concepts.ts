@@ -4,11 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import {
-  CLINICAL_FINDING,
-  STATUS_ATTRIBUTE,
-  YES_QUALIFIER,
-} from '../../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING, STATUS_ATTRIBUTE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import { DB } from '../../db.d.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 
@@ -36,9 +32,7 @@ function basePredicate(
     return sql<boolean>`true`
   }
   const parent_id = snomedConceptIdPredicate(specific_snomed_concept)
-  return sql<boolean>`is_descendant(${
-    sql.ref(column_ref)
-  }, ${parent_id}::bigint)`
+  return sql<boolean>`is_descendant(${sql.ref(column_ref)}, ${parent_id}::bigint)`
 }
 
 type PredicateAtom =
@@ -80,16 +74,12 @@ const PREDICATE_BUILDERS = {
   },
   or(column_ref, { expressions }) {
     if (expressions.length === 0) return sql<boolean>`false`
-    const predicates = expressions.map((expr) =>
-      internalBuildExpressionPredicate(column_ref, expr)
-    )
+    const predicates = expressions.map((expr) => internalBuildExpressionPredicate(column_ref, expr))
     return sql<boolean>`(${sql.join(predicates, sql` OR `)})`
   },
   and(column_ref, { expressions }) {
     if (expressions.length === 0) return sql<boolean>`true`
-    const predicates = expressions.map((expr) =>
-      internalBuildExpressionPredicate(column_ref, expr)
-    )
+    const predicates = expressions.map((expr) => internalBuildExpressionPredicate(column_ref, expr))
     return sql<boolean>`(${sql.join(predicates, sql` AND `)})`
   },
   active_condition(column_ref, { snomed_concept }) {

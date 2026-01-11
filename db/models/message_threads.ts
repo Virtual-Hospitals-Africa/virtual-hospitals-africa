@@ -94,30 +94,22 @@ function renderedParticipants(
 }
 
 function renderedMessage(
-  { reads, is_from_system, sender_participant_id, ...message }:
-    IntermediateMessage,
+  { reads, is_from_system, sender_participant_id, ...message }: IntermediateMessage,
   my_participant: IntermediateMessageThread['participants'][0],
   rendered_participants: RenderedMessageThreadParticipant[],
 ): RenderedMessage {
   return {
     ...message,
-    read_by_me_at:
-      reads.find((read) =>
-        read.participant_id === my_participant.participant_id
-      )
-        ?.read_at || null,
-    read_by_others: reads.filter((read) =>
-      read.participant_id !== my_participant.participant_id
-    ),
+    read_by_me_at: reads.find((read) => read.participant_id === my_participant.participant_id)
+      ?.read_at || null,
+    read_by_others: reads.filter((read) => read.participant_id !== my_participant.participant_id),
     sender: is_from_system
       ? {
         is_system: true as const,
         display_name: 'System',
         participant_type: 'system' as const,
       }
-      : rendered_participants.find((p) =>
-        p.participant_id === sender_participant_id
-      )!,
+      : rendered_participants.find((p) => p.participant_id === sender_participant_id)!,
   }
 }
 
@@ -264,40 +256,39 @@ export const message_threads = base({
 
     assert(employee_ids.length, 'Must complete onboarding first')
 
-    const { thread, raw_messages, raw_employees, raw_pharmacists } =
-      await promiseProps({
-        thread: message_threads.findOne(trx, {
-          employee_ids,
-          thread_id: message_thread_id,
-        }),
-        raw_messages: messages.findAll(trx, {
-          thread_id: message_thread_id,
-        }),
-        raw_employees: employees.getByIds(
-          trx,
-          trx.selectFrom('message_thread_participants')
-            .where(
-              'message_thread_participants.thread_id',
-              '=',
-              message_thread_id,
-            )
-            .where('message_thread_participants.table_name', '=', 'employment')
-            .select('message_thread_participants.row_id as id')
-            .distinct(),
-        ),
-        raw_pharmacists: pharmacists.getByIds(
-          trx,
-          trx.selectFrom('message_thread_participants')
-            .where(
-              'message_thread_participants.thread_id',
-              '=',
-              message_thread_id,
-            )
-            .where('message_thread_participants.table_name', '=', 'pharmacists')
-            .select('message_thread_participants.row_id as id')
-            .distinct(),
-        ),
-      })
+    const { thread, raw_messages, raw_employees, raw_pharmacists } = await promiseProps({
+      thread: message_threads.findOne(trx, {
+        employee_ids,
+        thread_id: message_thread_id,
+      }),
+      raw_messages: messages.findAll(trx, {
+        thread_id: message_thread_id,
+      }),
+      raw_employees: employees.getByIds(
+        trx,
+        trx.selectFrom('message_thread_participants')
+          .where(
+            'message_thread_participants.thread_id',
+            '=',
+            message_thread_id,
+          )
+          .where('message_thread_participants.table_name', '=', 'employment')
+          .select('message_thread_participants.row_id as id')
+          .distinct(),
+      ),
+      raw_pharmacists: pharmacists.getByIds(
+        trx,
+        trx.selectFrom('message_thread_participants')
+          .where(
+            'message_thread_participants.thread_id',
+            '=',
+            message_thread_id,
+          )
+          .where('message_thread_participants.table_name', '=', 'pharmacists')
+          .select('message_thread_participants.row_id as id')
+          .distinct(),
+      ),
+    })
 
     assertOr404(thread, `No thread ${message_thread_id}`)
 
@@ -313,13 +304,10 @@ export const message_threads = base({
     )
 
     const rendered_messages = raw_messages.map(
-      (message) =>
-        renderedMessage(message, my_participant, rendered_participants_list),
+      (message) => renderedMessage(message, my_participant, rendered_participants_list),
     )
 
-    const last_message_read_by_everyone_else = rendered_messages.find((m) =>
-      m.read_by_others.length === thread.participants.length - 1
-    )
+    const last_message_read_by_everyone_else = rendered_messages.find((m) => m.read_by_others.length === thread.participants.length - 1)
 
     return {
       ...thread,
@@ -341,30 +329,29 @@ export const message_threads = base({
     const threads = await message_threads.findAll(trx, { employee_ids })
     const thread_ids = threads.map((t) => t.id)
 
-    const { most_recent_messages_raw, raw_employees, raw_pharmacists } =
-      await promiseProps({
-        // TODO: do this via rank and get all of this down to one round trip
-        most_recent_messages_raw: pMap(
-          threads,
-          (thread) => messages.findFirst(trx, { thread_id: thread.id }),
-        ),
-        raw_employees: employees.getByIds(
-          trx,
-          trx.selectFrom('message_thread_participants')
-            .where('message_thread_participants.thread_id', 'in', thread_ids)
-            .where('message_thread_participants.table_name', '=', 'employment')
-            .select('message_thread_participants.row_id as id')
-            .distinct(),
-        ),
-        raw_pharmacists: pharmacists.getByIds(
-          trx,
-          trx.selectFrom('message_thread_participants')
-            .where('message_thread_participants.thread_id', 'in', thread_ids)
-            .where('message_thread_participants.table_name', '=', 'pharmacists')
-            .select('message_thread_participants.row_id as id')
-            .distinct(),
-        ),
-      })
+    const { most_recent_messages_raw, raw_employees, raw_pharmacists } = await promiseProps({
+      // TODO: do this via rank and get all of this down to one round trip
+      most_recent_messages_raw: pMap(
+        threads,
+        (thread) => messages.findFirst(trx, { thread_id: thread.id }),
+      ),
+      raw_employees: employees.getByIds(
+        trx,
+        trx.selectFrom('message_thread_participants')
+          .where('message_thread_participants.thread_id', 'in', thread_ids)
+          .where('message_thread_participants.table_name', '=', 'employment')
+          .select('message_thread_participants.row_id as id')
+          .distinct(),
+      ),
+      raw_pharmacists: pharmacists.getByIds(
+        trx,
+        trx.selectFrom('message_thread_participants')
+          .where('message_thread_participants.thread_id', 'in', thread_ids)
+          .where('message_thread_participants.table_name', '=', 'pharmacists')
+          .select('message_thread_participants.row_id as id')
+          .distinct(),
+      ),
+    })
 
     return Array.from(
       zip(threads, most_recent_messages_raw).map(

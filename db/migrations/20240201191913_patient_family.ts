@@ -1,10 +1,6 @@
 import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
-import {
-  FAMILY_TYPES,
-  MARITAL_STATUS,
-  PATIENT_COHABITATIONS,
-} from '../../shared/family.ts'
+import { FAMILY_TYPES, MARITAL_STATUS, PATIENT_COHABITATIONS } from '../../shared/family.ts'
 import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
@@ -21,8 +17,7 @@ export async function up(db: Kysely<DB>) {
     qb.addColumn(
       'patient_id',
       'uuid',
-      (col) =>
-        col.unique().notNull().references('patients.id').onDelete('cascade'),
+      (col) => col.unique().notNull().references('patients.id').onDelete('cascade'),
     )
       .addColumn('religion', 'varchar(255)')
       .addColumn('family_type', sql`family_type`)

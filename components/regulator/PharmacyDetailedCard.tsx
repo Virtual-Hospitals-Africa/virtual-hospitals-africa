@@ -50,9 +50,7 @@ export default function PharmacyDetailedCard(
                 Address
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacy.address
-                  ? pharmacy.address + ', ' + pharmacy.town
-                  : 'N/A'}
+                {pharmacy.address ? pharmacy.address + ', ' + pharmacy.town : 'N/A'}
               </dd>
             </div>
             <div class='border-t border-gray-100 py-6 sm:col-span-4 sm:px-0'>

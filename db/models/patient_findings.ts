@@ -1,41 +1,18 @@
-import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import {
-  asText,
-  blankSelection,
-  jsonBuildObject,
-  literalString,
-  success_true,
-} from '../helpers.ts'
+import { IdSelection, InsertRows, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { asText, blankSelection, debugLog, jsonBuildObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records } from './patient_records.ts'
 import { RawBuilder, sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  buildExpression,
-  maybeSnomedConceptBase,
-  satisfyingSExpression,
-  snomedConceptBase,
-} from './s_expression.ts'
-import {
-  Priority,
-  PRIORITY_SNOMED_CODES,
-  TARGET_TIME_TO_TREATMENT_MINUTES,
-} from '../../shared/priorities.ts'
+import { buildExpression, maybeSnomedConceptBase, satisfyingSExpression, snomedConceptBase } from './s_expression.ts'
+import { Priority, PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import {
-  ATTRIBUTE,
-  EVALUATION_ACTION,
-  EVENT,
-  NO_QUALIFIER,
-  PRIORITY,
-  UNKNOWN_QUALIFIER,
-  YES_QUALIFIER,
-} from '../../shared/snomed_concepts.ts'
+import { ATTRIBUTE, EVALUATION_ACTION, EVENT, NO_QUALIFIER, PRIORITY, UNKNOWN_QUALIFIER, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 
 export function baseQuery(
@@ -180,7 +157,6 @@ export type PatientFindingsSearch = {
   before?: RawBuilder<Date> | Date
 }
 
-
 type InsertCommon = {
   patient_id: string
   patient_encounter_id: string
@@ -189,10 +165,10 @@ type InsertCommon = {
 }
 
 export type FindingNodeToInsert = Lang['finding'] & {
-  priority?: {
+  priority?: Maybe<{
     level: Priority
     by_system: boolean
-  }
+  }>
   score?: number
 }
 type FindingInsert = InsertCommon & {
@@ -295,7 +271,7 @@ export const patient_findings = base({
       qb = qb.where(
         'patient_records.created_at',
         '<',
-        opts.before
+        opts.before,
       )
     }
 
@@ -322,9 +298,7 @@ export const patient_findings = base({
       assertHasProperty(finding_node, 'root_snomed_concept')
       assertHasProperty(finding_node, 'specific_snomed_concept')
       // Preserve priority from FindingNodeToInsert (asNode strips non-schema properties)
-      const priority = typeof finding === 'object' && 'priority' in finding
-        ? finding.priority
-        : undefined
+      const priority = typeof finding === 'object' && 'priority' in finding ? finding.priority : undefined
       return {
         patient_id,
         patient_encounter_id,
@@ -335,47 +309,12 @@ export const patient_findings = base({
     })
 
     // Collect attributes (not handled by baseInsertMany)
-    const attribute_record_values: {
-      id: string
-      patient_id: string
-      patient_encounter_id: string
-      root_snomed_concept_id: string | ReturnType<typeof snomedConceptBase>
-      specific_snomed_concept_id: ReturnType<typeof snomedConceptBase>
-      value_snomed_concept_id: ReturnType<typeof maybeSnomedConceptBase>
-    }[] = []
-
-    const attribute_qualifier_link_values: {
-      id: string
-      qualifies_record_id: string
-    }[] = []
-
-    const event_values: {
-      id: string
-      datetime: string
-    }[] = []
-
-    // Collect priority/triage level data
-    const triage_level_record_values: {
-      id: string
-      patient_id: string
-      patient_encounter_id: string
-      root_snomed_concept_id: string
-      specific_snomed_concept_id: string
-      value_snomed_concept_id: string
-    }[] = []
-
-    const triage_level_evaluation_values: {
-      id: string
-      evaluates_record_id: string
-      employment_id: string
-      by_system: boolean
-      procedure_id: string
-    }[] = []
-
-    const triage_level_values: {
-      id: string
-      target_treatment_time: RawBuilder<Date>
-    }[] = []
+    const attribute_records: InsertRows<'patient_records'> = []
+    const attribute_qualifiers: InsertRows<'patient_record_qualifiers'> = []
+    const event_values: InsertRows<'patient_events'> = []
+    const triage_level_records: InsertRows<'patient_records'> = []
+    const triage_level_evaluations: InsertRows<'patient_evaluations'> = []
+    const triage_level_values: InsertRows<'patient_triage_level'> = []
 
     for (const { record_id, attributes, priority } of records) {
       // Collect attributes
@@ -384,16 +323,19 @@ export const patient_findings = base({
         const { value } = attribute
 
         if (value?.type === 'event') {
-          attribute_record_values.push({
+          attribute_records.push({
             id: attribute_id,
             patient_id,
             patient_encounter_id,
             root_snomed_concept_id: EVENT.id,
-            specific_snomed_concept_id: snomedConceptBase(trx, attribute.specific_snomed_concept),
+            specific_snomed_concept_id: snomedConceptBase(
+              trx,
+              attribute.specific_snomed_concept,
+            ),
             value_snomed_concept_id: null,
           })
 
-          attribute_qualifier_link_values.push({
+          attribute_qualifiers.push({
             id: attribute_id,
             qualifies_record_id: record_id,
           })
@@ -403,16 +345,19 @@ export const patient_findings = base({
             datetime: value.datetime,
           })
         } else {
-          attribute_record_values.push({
+          attribute_records.push({
             id: attribute_id,
             patient_id,
             patient_encounter_id,
             root_snomed_concept_id: ATTRIBUTE.id,
-            specific_snomed_concept_id: snomedConceptBase(trx, attribute.specific_snomed_concept),
+            specific_snomed_concept_id: snomedConceptBase(
+              trx,
+              attribute.specific_snomed_concept,
+            ),
             value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
           })
 
-          attribute_qualifier_link_values.push({
+          attribute_qualifiers.push({
             id: attribute_id,
             qualifies_record_id: record_id,
           })
@@ -425,7 +370,7 @@ export const patient_findings = base({
         const value_snomed_concept_id = PRIORITY_SNOMED_CODES[priority.level]
         const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[priority.level]
 
-        triage_level_record_values.push({
+        triage_level_records.push({
           id: triage_level_evaluation_id,
           patient_id,
           patient_encounter_id,
@@ -434,23 +379,22 @@ export const patient_findings = base({
           value_snomed_concept_id,
         })
 
-        triage_level_evaluation_values.push({
+        triage_level_evaluations.push({
           id: triage_level_evaluation_id,
           evaluates_record_id: record_id,
-          employment_id,
+          employment_id: priority.by_system ? null : employment_id,
           by_system: priority.by_system,
           procedure_id,
         })
 
         triage_level_values.push({
           id: triage_level_evaluation_id,
-          target_treatment_time: sql`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
+          target_treatment_time: sql<Date>`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
         })
       }
     }
 
-    // Use baseInsertMany for patient_records
-    return baseInsertMany(trx, records).with(
+    const query = baseInsertMany(trx, records).with(
       'inserting_findings',
       (qb) =>
         qb.insertInto('patient_findings').values(
@@ -462,26 +406,41 @@ export const patient_findings = base({
         ),
     ).with(
       'inserting_attribute_records',
-      (qb) => attribute_record_values.length ? qb.insertInto('patient_records').values(attribute_record_values) : blankSelection(qb)
+      (qb) => attribute_records.length ? qb.insertInto('patient_records').values(attribute_records) : blankSelection(qb),
     ).with(
       'inserting_attribute_qualifier_links',
-      (qb) => attribute_record_values.length ? qb.insertInto('patient_record_qualifiers').values(attribute_qualifier_link_values) : blankSelection(qb),
+      (qb) =>
+        attribute_records.length
+          ? qb.insertInto('patient_record_qualifiers').values(
+            attribute_qualifiers,
+          )
+          : blankSelection(qb),
     ).with(
       'inserting_events',
       (qb) => event_values.length ? qb.insertInto('patient_events').values(event_values) : blankSelection(qb),
     ).with(
       'inserting_triage_level_records',
-      (qb) => triage_level_record_values.length ? qb.insertInto('patient_records').values(triage_level_record_values) : blankSelection(qb),
+      (qb) => triage_level_records.length ? qb.insertInto('patient_records').values(triage_level_records) : blankSelection(qb),
     ).with(
       'inserting_triage_level_evaluations',
-      (qb) => triage_level_evaluation_values.length ? qb.insertInto('patient_evaluations').values(triage_level_evaluation_values) : blankSelection(qb),
+      (qb) =>
+        triage_level_evaluations.length
+          ? qb.insertInto('patient_evaluations').values(
+            triage_level_evaluations,
+          )
+          : blankSelection(qb),
     ).with(
       'inserting_triage_levels',
       (qb) => triage_level_values.length ? qb.insertInto('patient_triage_level').values(triage_level_values) : blankSelection(qb),
     ).selectFrom('inserting_records').select([
       success_true,
       sql<string[]>`array_agg(id)`.as('finding_ids'),
-    ]).executeTakeFirstOrThrow()
+    ])
+
+    debugLog(query)
+
+    // Use baseInsertMany for patient_records
+    return query.executeTakeFirstOrThrow()
   },
   insertOneNested(
     trx: TrxOrDb,

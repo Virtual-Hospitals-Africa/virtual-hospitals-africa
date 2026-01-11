@@ -1,13 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  DefiniteDuration,
-  Duration,
-  MonthNum,
-  ParsedDate,
-  ParsedDateTime,
-  Time,
-} from '../types.ts'
+import { DefiniteDuration, Duration, MonthNum, ParsedDate, ParsedDateTime, Time } from '../types.ts'
 import isDate from './isDate.ts'
 import isString from './isString.ts'
 import isObjectLike from './isObjectLike.ts'
@@ -146,9 +139,7 @@ export function stringify(
       'Africa/Johannesburg',
       'Only Joburg supported for now',
     )
-    return `${date.year}-${padMonth(date.month)}-${
-      padMonthDay(date.day)
-    }T00:00:00+02:00`
+    return `${date.year}-${padMonth(date.month)}-${padMonthDay(date.day)}T00:00:00+02:00`
   }
   if (isString(date)) {
     if (date.endsWith('+02:00')) {
@@ -166,9 +157,7 @@ export function stringify(
   const parsed_date_time = isDate(date) ? parseDateTime(date) : date
   assert(
     parsed_date_time.format === 'numeric',
-    `Received ${JSON.stringify(date)}. parsed_date_time ${
-      JSON.stringify(parsed_date_time)
-    }`,
+    `Received ${JSON.stringify(date)}. parsed_date_time ${JSON.stringify(parsed_date_time)}`,
   )
   assertEquals(
     parsed_date_time.timezone,
@@ -185,9 +174,7 @@ export function stringifyJustDate(
   const datetime_string = stringify(date)
   assert(
     datetime_string.endsWith('+02:00'),
-    `Expected something representing a precise date in Johannesburg time. Got ${
-      JSON.stringify(date)
-    }`,
+    `Expected something representing a precise date in Johannesburg time. Got ${JSON.stringify(date)}`,
   )
   const date_string = datetime_string.slice(0, 10)
   assert(date_regex.test(date_string))
@@ -211,8 +198,7 @@ export function formatJohannesburg(
 }
 
 export const date_regex = /^\d{4}-\d{2}-\d{2}$/
-export const rfc3339_regex =
-  /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$/
+export const rfc3339_regex = /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$/
 
 export function differenceInDays(date1: string, date2: string): number {
   if (date1.endsWith('+02:00')) {
@@ -292,9 +278,7 @@ export function timeInSimpleAmPm(parsed: ParsedDateTime): string {
 
   if (hour === 0) return `12:${parsed.minute}am`
   if (hour === 12) return `12:${parsed.minute}pm`
-  return hour > 12
-    ? `${hour - 12}:${parsed.minute}pm`
-    : `${hour}:${parsed.minute}am`
+  return hour > 12 ? `${hour - 12}:${parsed.minute}pm` : `${hour}:${parsed.minute}am`
 }
 
 export function timeRangeInSimpleAmPm(
@@ -304,9 +288,7 @@ export function timeRangeInSimpleAmPm(
   const time_start = timeInSimpleAmPm(start)
   const time_end = timeInSimpleAmPm(end)
   const same_am_pm = time_start.slice(-2) === time_end.slice(-2)
-  return same_am_pm
-    ? `${time_start.slice(0, -2)}-${time_end}`
-    : `${time_start}-${time_end}`
+  return same_am_pm ? `${time_start.slice(0, -2)}-${time_end}` : `${time_start}-${time_end}`
 }
 
 export function isRfc3339(date: string): boolean {
@@ -411,9 +393,7 @@ export function convertToTime(date: string): Time {
 
 export function convertToTimeString(time: string): string {
   const formatted_time = convertToTime(time)
-  const minute = formatted_time.minute
-    ? formatted_time.minute.toString().padStart(2, '0')
-    : '00'
+  const minute = formatted_time.minute ? formatted_time.minute.toString().padStart(2, '0') : '00'
   return `${formatted_time.hour}:${minute} ${formatted_time.am_pm}`
 }
 

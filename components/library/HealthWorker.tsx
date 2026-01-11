@@ -22,9 +22,7 @@ export function HealthWorker(
       {menu_items && menu_items.length > 0 && (
         <Menu
           options={menu_items}
-          icon={
-            <EllipsisVerticalIcon className='stroke-indigo-700 fill-indigo-700 cursor-pointer' />
-          }
+          icon={<EllipsisVerticalIcon className='stroke-indigo-700 fill-indigo-700 cursor-pointer' />}
           className='absolute  flex-shrink-0 top-1 right-1'
           optionsClassName='absolute bottom-2.5 left-2'
         />

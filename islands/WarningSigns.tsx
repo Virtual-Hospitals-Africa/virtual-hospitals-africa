@@ -1,8 +1,5 @@
 import { computed, useSignal } from '@preact/signals'
-import {
-  SnomedConceptSearchResult,
-  WarningSignWithMaybeRecord,
-} from '../types.ts'
+import { SnomedConceptSearchResult, WarningSignWithMaybeRecord } from '../types.ts'
 import { groupBy } from '../util/groupBy.ts'
 import Search from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
@@ -78,8 +75,7 @@ function KeyedWarningSignCheckbox(
           value='Yes'
           checked={!!sign.checked}
           class='w-4 h-4 2xl:w-5 2xl:h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
-          onInput={(event) =>
-            event.currentTarget.checked ? onCheck(sign) : onUncheck(sign)}
+          onInput={(event) => event.currentTarget.checked ? onCheck(sign) : onUncheck(sign)}
         />
       </div>
       <div class='flex flex-col gap-0.75 2xl:gap-1 pt-0.5'>
@@ -180,9 +176,7 @@ export default function KeyedWarningSigns({
     skip_blank_search: true,
     value: null,
     onSearchResults(results) {
-      search_results.value = results.pages.flatMap((page) =>
-        page.results
-      ) as unknown as SnomedConceptSearchResult[]
+      search_results.value = results.pages.flatMap((page) => page.results) as unknown as SnomedConceptSearchResult[]
     },
   })
 
@@ -224,14 +218,10 @@ export default function KeyedWarningSigns({
                 return
               }
 
-              checked_signs.value = checked_signs.value.map((other_sign) =>
-                other_sign === sign ? { ...sign, checked: true } : other_sign
-              )
+              checked_signs.value = checked_signs.value.map((other_sign) => other_sign === sign ? { ...sign, checked: true } : other_sign)
             }}
             onUncheck={(sign) => {
-              checked_signs.value = checked_signs.value.map((other_sign) =>
-                other_sign === sign ? { ...sign, checked: false } : other_sign
-              )
+              checked_signs.value = checked_signs.value.map((other_sign) => other_sign === sign ? { ...sign, checked: false } : other_sign)
             }}
           />
         )

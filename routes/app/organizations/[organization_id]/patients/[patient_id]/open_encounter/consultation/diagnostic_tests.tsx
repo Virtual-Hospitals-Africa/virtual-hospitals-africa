@@ -1,8 +1,4 @@
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 
 export const handler = {
   // deno-lint-ignore require-await

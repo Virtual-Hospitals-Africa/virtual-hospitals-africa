@@ -1,9 +1,5 @@
 import { computed, useSignal } from '@preact/signals'
-import Search, {
-  OptionLike,
-  SearchPropsCommon,
-  SearchPropsSingular,
-} from './Search.tsx'
+import Search, { OptionLike, SearchPropsCommon, SearchPropsSingular } from './Search.tsx'
 
 type SelectWithOtherProps<T extends string> =
   & Omit<
@@ -22,9 +18,7 @@ export default function SelectWithOther<T extends string>(
 ) {
   const search = useSignal<string>(value ?? '')
   const matching_options = computed(() =>
-    options.filter((option) =>
-      option.toLowerCase().includes(search.value.toLowerCase())
-    ).map((option) => ({
+    options.filter((option) => option.toLowerCase().includes(search.value.toLowerCase())).map((option) => ({
       id: option,
       name: option,
     }))

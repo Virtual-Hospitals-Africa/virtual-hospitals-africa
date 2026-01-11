@@ -1,9 +1,6 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import {
-  findingQueryExpression,
-  WARNING_SIGNS,
-} from '../../shared/warning_signs.ts'
+import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { buildExpressionPredicate } from '../../db/models/s_expression_snomed_concepts.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'

@@ -5,9 +5,7 @@ import Buttons from '../form/buttons.tsx'
 import { RenderedPharmacy } from '../../types.ts'
 import Form from '../../components/library/Form.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
-import AddPharmacistSearch, {
-  PharmacistOption,
-} from '../AddPharmacistSearch.tsx'
+import AddPharmacistSearch, { PharmacistOption } from '../AddPharmacistSearch.tsx'
 import { DateInput } from '../form/inputs/date.tsx'
 import { PharmacyTypeSelect } from '../form/inputs/pharmacy_type.tsx'
 import { TextInput } from '../form/inputs/text.tsx'

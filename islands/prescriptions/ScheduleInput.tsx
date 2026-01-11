@@ -1,10 +1,6 @@
 import { DrugSearchResultMedication, MedicationSchedule } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
-import {
-  dosageDisplay,
-  Dosages,
-  RegistrationFrequencies,
-} from '../../shared/medication.ts'
+import { dosageDisplay, Dosages, RegistrationFrequencies } from '../../shared/medication.ts'
 import { useSignal } from '@preact/signals'
 import { NoLabelButSpaceAsPlaceholder } from '../form/inputs/labelled.tsx'
 import { NumberInput } from '../form/inputs/number.tsx'

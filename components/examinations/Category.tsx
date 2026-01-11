@@ -1,8 +1,5 @@
 import SectionHeader from '../library/typography/SectionHeader.tsx'
-import type {
-  ExaminationChecklistDefinition,
-  RenderedPatientExaminationFinding,
-} from '../../types.ts'
+import type { ExaminationChecklistDefinition, RenderedPatientExaminationFinding } from '../../types.ts'
 import { ExaminationChecklist } from './Checklist.tsx'
 
 type ExaminationCategoryProps = {
@@ -17,8 +14,7 @@ type ExaminationCategoryProps = {
 }
 
 export function ExaminationCategory(
-  { patient_examination_href, category, checklist, subcategories, ...rest }:
-    ExaminationCategoryProps,
+  { patient_examination_href, category, checklist, subcategories, ...rest }: ExaminationCategoryProps,
 ) {
   return (
     <div className='flex flex-col mb-5'>

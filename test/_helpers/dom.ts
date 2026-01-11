@@ -1,4 +1,6 @@
 import * as cheerio from 'cheerio'
+import { prettyPrint } from 'html'
+import { assert } from 'std/assert/assert.ts'
 
 export type DOMNode = {
   tag: string
@@ -33,4 +35,10 @@ function extractTree(
   })
 
   return { tag, children: child_nodes }
+}
+
+export function prettyPrintHtml($: cheerio.CheerioAPI, selector?: string) {
+  const html = selector ? $(selector).html() : $.html()
+  assert(html, `No html found for ${selector}`)
+  return prettyPrint(html)
 }

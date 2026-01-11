@@ -1,9 +1,4 @@
-import {
-  completeAndProceedToNextStep,
-  completeStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, completeStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import ThisVisitSection from '../../../../../../../../components/patient-registration/ThisVisitSection.tsx'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
@@ -39,8 +34,7 @@ export const PatientRegistrationThisVisitSchema = z.object({
 export const handler = postHandler(
   PatientRegistrationThisVisitSchema,
   async (ctx: OpenEncounterWorkflowContext, { next_workflow, notes }) => {
-    const { trx, patient, encounter, organization, organization_employment } =
-      ctx.state
+    const { trx, patient, encounter, organization, organization_employment } = ctx.state
     const can_do_triage = canPerform(organization_employment, 'triage')
 
     switch (next_workflow) {
@@ -77,8 +71,7 @@ export const handler = postHandler(
         )
         if (first_available_room) {
           assert(!first_available_room.occupied_by_patient)
-          patient_presence_updates.organization_room_id =
-            first_available_room.id
+          patient_presence_updates.organization_room_id = first_available_room.id
         }
 
         await Promise.all([

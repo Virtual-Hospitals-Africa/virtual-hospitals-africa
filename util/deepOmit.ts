@@ -2,12 +2,10 @@
 import isObjectLike from './isObjectLike.ts'
 
 type RemoveNever<T> = {
-  [K in keyof T as T[K] extends never ? never : K]: T[K] extends object
-    ? RemoveNever<T[K]>
+  [K in keyof T as T[K] extends never ? never : K]: T[K] extends object ? RemoveNever<T[K]>
     : T[K]
 }
-type DeepOmit<T, K extends string> = T extends Array<infer U>
-  ? Array<DeepOmit<U, K>>
+type DeepOmit<T, K extends string> = T extends Array<infer U> ? Array<DeepOmit<U, K>>
   : T extends object ? RemoveNever<
       {
         [P in keyof T]: P extends K ? never : DeepOmit<T[P], K>

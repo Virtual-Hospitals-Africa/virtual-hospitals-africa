@@ -1,15 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../../db.d.ts'
-import {
-  prettyStepName,
-  WORKFLOW_STEP_SNOMED_CONCEPT_IDS,
-  WORKFLOW_STEPS,
-  WORKFLOWS,
-} from '../../shared/workflow.ts'
-import {
-  PatientDrawerV4Props,
-  RenderedFindingRelativeToHealthWorker,
-} from '../../types.ts'
+import { prettyStepName, WORKFLOW_STEP_SNOMED_CONCEPT_IDS, WORKFLOW_STEPS, WORKFLOWS } from '../../shared/workflow.ts'
+import { PatientDrawerV4Props, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import compact from '../../util/compact.ts'
 import { groupBy } from '../../util/groupBy.ts'
@@ -39,13 +31,11 @@ type RenderedSidebarWorkflow = {
 
 // TODO: move to models?
 function groupRecordsByWorkflows(
-  { this_visit_findings, encounter, current_workflow_state }:
-    DrawerThisVisitProps,
+  { this_visit_findings, encounter, current_workflow_state }: DrawerThisVisitProps,
 ): RenderedSidebarWorkflow[] {
   const records_by_procedure = groupBy(
     this_visit_findings,
-    (record) =>
-      record.as_part_of_procedure.specific_snomed_concept.snomed_concept_id,
+    (record) => record.as_part_of_procedure.specific_snomed_concept.snomed_concept_id,
   )
 
   const grouped_records = compact(WORKFLOWS.map((workflow) => {
@@ -59,15 +49,12 @@ function groupRecordsByWorkflows(
       workflow,
       status: workflow_status.status,
       steps: workflow_steps.map((workflow_step) => {
-        const workflow_step_snomed_concept_id =
-          WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]?.[workflow_step]
+        const workflow_step_snomed_concept_id = WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]?.[workflow_step]
 
         const records_of_concept = (workflow_step_snomed_concept_id &&
           records_by_procedure.get(workflow_step_snomed_concept_id)) || []
 
-        const completed = arrayIsNonEmpty(workflow_status.steps_completed)
-          ? workflow_status.steps_completed.includes(workflow_step)
-          : false
+        const completed = arrayIsNonEmpty(workflow_status.steps_completed) ? workflow_status.steps_completed.includes(workflow_step) : false
 
         const in_progress = current_workflow_state?.workflow === workflow &&
           current_workflow_state?.step === workflow_step
@@ -75,11 +62,7 @@ function groupRecordsByWorkflows(
         return {
           workflow_step,
           title: prettyStepName(workflow_step),
-          status: completed
-            ? 'completed' as const
-            : in_progress
-            ? 'in progress' as const
-            : 'not started' as const,
+          status: completed ? 'completed' as const : in_progress ? 'in progress' as const : 'not started' as const,
           records: records_of_concept,
         }
       }).filter((step) => step.status !== 'not started'),
@@ -97,9 +80,7 @@ function groupRecordsByWorkflows(
 
   assert(
     !remaining_records.size,
-    `Expected all records to be accounted for\n${
-      humanReadableJson(Array.from(remaining_records))
-    }`,
+    `Expected all records to be accounted for\n${humanReadableJson(Array.from(remaining_records))}`,
   )
 
   return grouped_records
@@ -148,9 +129,7 @@ function WorkflowX(
     <div>
       {/* <h3 className='capitalize'>{workflow.workflow}</h3> */}
       <div className='flex flex-col gap-2.5'>
-        {workflow.steps.map((step) => (
-          <WorkflowStep step={step} organization_id={organization_id} />
-        ))}
+        {workflow.steps.map((step) => <WorkflowStep key={step} step={step} organization_id={organization_id} />)}
       </div>
     </div>
   )
@@ -158,8 +137,7 @@ function WorkflowX(
 
 // This Visit component showing encounter steps
 export function DrawerThisVisit(
-  { this_visit_findings, encounter, current_workflow_state, organization_id }:
-    DrawerThisVisitProps,
+  { this_visit_findings, encounter, current_workflow_state, organization_id }: DrawerThisVisitProps,
 ) {
   const grouped_records = groupRecordsByWorkflows({
     this_visit_findings,
@@ -169,13 +147,11 @@ export function DrawerThisVisit(
   })
 
   return (
-    <div className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 px-3 w-full'>
+    <div id='patient-drawer-this-visit' className='bg-white content-stretch flex flex-col items-start justify-start relative shrink-0 px-3 w-full'>
       <h2 className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-5.5 not-italic relative shrink-0 text-[#29313d] text-[16px] text-nowrap whitespace-pre z-2 pb-1">
         This Visit
       </h2>
-      {grouped_records.map((workflow) => (
-        <WorkflowX workflow={workflow} organization_id={organization_id} />
-      ))}
+      {grouped_records.map((workflow) => <WorkflowX key={workflow.workflow} workflow={workflow} organization_id={organization_id} />)}
     </div>
   )
 }

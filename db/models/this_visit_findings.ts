@@ -1,9 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import {
-  RenderedFindingRelativeToHealthWorker,
-  RenderedPatientEncounter,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedFindingRelativeToHealthWorker, RenderedPatientEncounter, TrxOrDb } from '../../types.ts'
 import {
   patient_findings,
   // STATUS_ATTRIBUTE.id,

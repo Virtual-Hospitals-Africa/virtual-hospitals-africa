@@ -1,7 +1,4 @@
-import {
-  ConversationStateHandlerSelectOption,
-  PatientChatbotUserState,
-} from '../../types.ts'
+import { ConversationStateHandlerSelectOption, PatientChatbotUserState } from '../../types.ts'
 
 export default [
   {

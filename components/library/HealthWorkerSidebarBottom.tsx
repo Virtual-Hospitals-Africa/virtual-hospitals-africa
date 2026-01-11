@@ -15,8 +15,7 @@ export function HealthWorkerSidebarBottom({ employee }: {
         menu_items={[
           {
             label: 'View Profile',
-            href:
-              `/app/organizations/${employee.organization_id}/employees/${employee.id}`,
+            href: `/app/organizations/${employee.organization_id}/employees/${employee.id}`,
           },
           { label: 'Sign Out', href: '/app/logout' },
         ]}

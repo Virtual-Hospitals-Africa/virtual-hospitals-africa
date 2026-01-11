@@ -12,8 +12,7 @@ const assertion = assertOnInsert({
            AND snomed_inferred_canonical_name_and_category.category = 'qualifier value'
     )
   `,
-  error_message:
-    `format('patient_findings whose snomed_concept_id are qualifier values must refer to other findings. id: %s', NEW.id)`,
+  error_message: `format('patient_findings whose snomed_concept_id are qualifier values must refer to other findings. id: %s', NEW.id)`,
   after: true,
 })
 

@@ -8,17 +8,10 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  Branch,
-  BranchPojo,
-  CreateBranchRequest,
-  SetAuthorFlag,
-  UpdateBranchRequest,
-} from './data-contracts.ts'
+import { Branch, BranchPojo, CreateBranchRequest, SetAuthorFlag, UpdateBranchRequest } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Branches<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Branches<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *

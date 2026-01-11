@@ -47,8 +47,7 @@ import {
 } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Branch<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Branch<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *
@@ -1073,8 +1072,7 @@ export class Branch<SecurityDataType = unknown>
     params: RequestParams = {},
   ) =>
     this.request<ItemsPageRelationshipChange, any>({
-      path:
-        `/${branch}/classifications/${classificationId}/relationship-changes`,
+      path: `/${branch}/classifications/${classificationId}/relationship-changes`,
       method: 'GET',
       query: query,
       format: 'json',
@@ -1106,8 +1104,7 @@ export class Branch<SecurityDataType = unknown>
     params: RequestParams = {},
   ) =>
     this.request<ItemsPageEquivalentConceptsResponse, any>({
-      path:
-        `/${branch}/classifications/${classificationId}/equivalent-concepts`,
+      path: `/${branch}/classifications/${classificationId}/equivalent-concepts`,
       method: 'GET',
       query: query,
       format: 'json',
@@ -1128,8 +1125,7 @@ export class Branch<SecurityDataType = unknown>
     params: RequestParams = {},
   ) =>
     this.request<ConceptViewComponent, any>({
-      path:
-        `/${branch}/classifications/${classificationId}/concept-preview/${conceptId}`,
+      path: `/${branch}/classifications/${classificationId}/concept-preview/${conceptId}`,
       method: 'GET',
       format: 'json',
       ...params,

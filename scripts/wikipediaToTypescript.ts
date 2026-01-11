@@ -2,10 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { rewriteTsvAsTypescript } from './tsvAsTypescript.ts'
 
-const split_semi = (s: string) =>
-  s.split('; ').map((s) =>
-    s.startsWith('*') && s.endsWith('*') ? s.slice(1, -1) : s
-  )
+const split_semi = (s: string) => s.split('; ').map((s) => s.startsWith('*') && s.endsWith('*') ? s.slice(1, -1) : s)
 
 const schema = z.object({
   'iso_639_2': z.string(),
@@ -29,12 +26,8 @@ const schema = z.object({
     'Extinct',
     'Special',
   ]).nullable(),
-  'native_names': z.string().transform(split_semi).nullable().transform((x) =>
-    x ?? []
-  ),
-  'other_names': z.string().transform(split_semi).nullable().transform((x) =>
-    x ?? []
-  ),
+  'native_names': z.string().transform(split_semi).nullable().transform((x) => x ?? []),
+  'other_names': z.string().transform(split_semi).nullable().transform((x) => x ?? []),
   // Omitting these as unused
   // 'iso_639_3': z.string().nullable(),
   // 'iso_639_5': z.string().nullable(),

@@ -227,50 +227,35 @@ export const KEYED_WARNING_SIGNS = sortBy(
   [
     {
       'key': 'Obstructed airway' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('79688008')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('79688008')})`,
       'sats_primary_name': 'Obstructed airway',
       'sats_secondary_text': 'Not breathing',
       'sats_priority': 'Emergency' as const,
     },
     {
       'key': 'Seizure' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('91175000')
-        } (qualifier ${sExpressionById('15240007')}))`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('91175000')} (qualifier ${sExpressionById('15240007')}))`,
       'sats_primary_name': 'Seizure',
       'sats_secondary_text': 'Current',
       'sats_priority': 'Emergency' as const,
     },
     {
       'key': 'Burn Facial' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('262582004')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('262582004')})`,
       'sats_primary_name': 'Burn',
       'sats_secondary_text': 'Facial',
       'sats_priority': 'Emergency' as const,
     },
     {
       'key': 'Burn Inhalation' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('425082000')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('425082000')})`,
       'sats_primary_name': 'Burn',
       'sats_secondary_text': 'Inhalation',
       'sats_priority': 'Emergency' as const,
     },
     {
       'key': 'Cardiac arrest' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('410429000')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('410429000')})`,
       'sats_primary_name': 'Cardiac arrest',
       'sats_secondary_text': null,
       'sats_priority': 'Emergency' as const,
@@ -278,140 +263,95 @@ export const KEYED_WARNING_SIGNS = sortBy(
     // ${sExpressionById('400209005')} |Injury caused by causative force (disorder)|
     {
       'key': 'High energy transfer' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('400209005')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('400209005')})`,
       'sats_primary_name': 'High energy transfer',
       'sats_secondary_text': 'Severe mechanism of injury',
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Focal neurology — acute' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('230690007')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('230690007')})`,
       'sats_primary_name': 'Focal neurology — acute',
       'sats_secondary_text': 'Stroke',
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Burn Circumferential' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('125666000')
-        } (qualifier ${sExpressionById('255593009')}))`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('125666000')} (qualifier ${sExpressionById('255593009')}))`,
       'sats_primary_name': 'Burn',
       'sats_secondary_text': 'Circumferential',
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Shortness of breath - acute' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('267036007')
-        } (qualifier ${sExpressionById('24484000')}))`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('267036007')} (qualifier ${sExpressionById('24484000')}))`,
       'sats_primary_name': 'Shortness of breath - acute',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Aggression' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('61372001')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('61372001')})`,
       'sats_primary_name': 'Aggression',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Burn Chemical' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('426284001')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('426284001')})`,
       'sats_primary_name': 'Burn',
       'sats_secondary_text': 'Chemical',
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Threatened limb' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('21631000119105')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('21631000119105')})`,
       'sats_primary_name': 'Threatened limb',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Poisoning' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('75478009')
-        })`,
-      'excluding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${
-        sExpressionById('1149222004')
-      })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('75478009')})`,
+      'excluding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('1149222004')})`,
       'sats_primary_name': 'Poisoning',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Overdose' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('1149222004')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('1149222004')})`,
       'sats_primary_name': 'Overdose',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Coughing blood' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('66857006')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('66857006')})`,
       'sats_primary_name': 'Coughing blood',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Eye injury' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('231794000')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('231794000')})`,
       'sats_primary_name': 'Eye injury',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Chest pain' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('29857009')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('29857009')})`,
       'sats_primary_name': 'Chest pain',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Dislocation of larger joint' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('87642003')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('87642003')})`,
       'excluding_s_expression': `
-      (or (finding ${sExpressionById('363698007')} ${
-        sExpressionById('7569003')
-      })
-           (finding ${sExpressionById('363698007')} ${
-        sExpressionById('29707007')
-      }))
+      (or (finding ${sExpressionById('363698007')} ${sExpressionById('7569003')})
+           (finding ${sExpressionById('363698007')} ${sExpressionById('29707007')}))
     `,
       'sats_primary_name': 'Dislocation of larger joint',
       'sats_secondary_text': 'not finger or toe',
@@ -419,66 +359,44 @@ export const KEYED_WARNING_SIGNS = sortBy(
     },
     {
       'key': 'Vomiting fresh blood' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('267051003')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('267051003')})`,
       'sats_primary_name': 'Vomiting fresh blood',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Stabbed neck' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('283457003')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('283457003')})`,
       'sats_primary_name': 'Stabbed neck',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Fractured - compound' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('52329006')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('52329006')})`,
       'sats_primary_name': 'Fractured - compound',
       'sats_secondary_text': 'with a break in skin',
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Pregnancy and abdominal trauma' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('417746004')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('417746004')})`,
       'sats_primary_name': 'Pregnancy and abdominal trauma',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
-      'prompt_when_s_expression': `(active_condition ${
-        sExpressionById('77386006')
-      })`,
+      'prompt_when_s_expression': `(active_condition ${sExpressionById('77386006')})`,
     },
     {
       'key': 'Pregnancy and abdominal pain' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('21522001')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('21522001')})`,
       'sats_primary_name': 'Pregnancy and abdominal pain',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
-      'prompt_when_s_expression': `(active_condition ${
-        sExpressionById('77386006')
-      })`,
+      'prompt_when_s_expression': `(active_condition ${sExpressionById('77386006')})`,
     },
     {
       'key': 'Hemorrhage Uncontrolled' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('131148009')
-        } (qualifier ${sExpressionById('19032002')}))`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('131148009')} (qualifier ${sExpressionById('19032002')}))`,
       'sats_primary_name': 'Hemorrhage Uncontrolled',
       'sats_secondary_text': 'arterial bleed',
       'sats_priority': 'Very urgent' as const,
@@ -495,70 +413,49 @@ export const KEYED_WARNING_SIGNS = sortBy(
     // },
     {
       'key': 'Seizure - post ictal' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('31758001')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('31758001')})`,
       'sats_primary_name': 'Seizure - post ictal',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Severe pain' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('76948002')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('76948002')})`,
       'sats_primary_name': 'Severe pain',
       'sats_secondary_text': null,
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Burn Moderate severity' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('284549007')
-        } (qualifier ${sExpressionById('6736007')}))`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('284549007')} (qualifier ${sExpressionById('6736007')}))`,
       'sats_primary_name': 'Burn',
       'sats_secondary_text': 'Moderate severity',
       'sats_priority': 'Very urgent' as const,
     },
     {
       'key': 'Haemorrhage Controlled' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('131148009')
-        } (qualifier ${sExpressionById('31509003')}))`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('131148009')} (qualifier ${sExpressionById('31509003')}))`,
       'sats_primary_name': 'Haemorrhage',
       'sats_secondary_text': 'Controlled',
       'sats_priority': 'Urgent' as const,
     },
     {
       'key': 'Dislocation of finger' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('827108008')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('827108008')})`,
       'sats_primary_name': 'Dislocation of finger',
       'sats_secondary_text': null,
       'sats_priority': 'Urgent' as const,
     },
     {
       'key': 'Dislocation of toe joint' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('263030002')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('263030002')})`,
       'sats_primary_name': 'Dislocation of toe joint',
       'sats_secondary_text': null,
       'sats_priority': 'Urgent' as const,
     },
     {
       'key': 'Fracture' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('423125000')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('423125000')})`,
       'sats_primary_name': 'Fracture',
       'sats_secondary_text': 'Closed (no break in the skin)',
       'sats_priority': 'Urgent' as const,
@@ -570,18 +467,10 @@ export const KEYED_WARNING_SIGNS = sortBy(
     `,
       'excluding_s_expression': `
       (or
-        (finding ${CLINICAL_FINDING.s_expression} ${
-        sExpressionById('125666000')
-      } (qualifier ${sExpressionById('255593009')}))
-        (finding ${CLINICAL_FINDING.s_expression} ${
-        sExpressionById('425082000')
-      })
-        (finding ${CLINICAL_FINDING.s_expression} ${
-        sExpressionById('426284001')
-      })
-        (finding ${CLINICAL_FINDING.s_expression} ${
-        sExpressionById('262582004')
-      }))
+        (finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('125666000')} (qualifier ${sExpressionById('255593009')}))
+        (finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('425082000')})
+        (finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('426284001')})
+        (finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('262582004')}))
     `,
       'sats_primary_name': 'Burn',
       'sats_secondary_text': 'Other',
@@ -589,31 +478,22 @@ export const KEYED_WARNING_SIGNS = sortBy(
     },
     {
       'key': 'Abdominal pain' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('21522001')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('21522001')})`,
       'sats_primary_name': 'Abdominal pain',
       'sats_secondary_text': null,
       'sats_priority': 'Urgent' as const,
-      'prompt_when_s_expression': `(not (active_condition ${
-        sExpressionById('77386006')
-      }))`,
+      'prompt_when_s_expression': `(not (active_condition ${sExpressionById('77386006')}))`,
     },
     {
       'key': 'Persistent vomiting' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} ${
-          sExpressionById('196746003')
-        })`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} ${sExpressionById('196746003')})`,
       'sats_primary_name': 'Persistent vomiting',
       'sats_secondary_text': null,
       'sats_priority': 'Urgent' as const,
     },
     {
       'key': 'Moderate pain' as const,
-      'clinical_finding_s_expression':
-        `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Moderate pain" "finding"))`,
+      'clinical_finding_s_expression': `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Moderate pain" "finding"))`,
       'sats_primary_name': 'Moderate pain',
       'sats_secondary_text': null,
       'sats_priority': 'Urgent' as const,

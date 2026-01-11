@@ -44,8 +44,7 @@ async function rename({ files, directories, to_rename }: {
     const regex = new RegExp(old_text, 'g')
     return (str: string): string => str.replace(regex, new_text)
   })
-  const replace_all = (str: string) =>
-    replacements.reduce((str, replace) => replace(str), str)
+  const replace_all = (str: string) => replacements.reduce((str, replace) => replace(str), str)
 
   async function replaceInFile(file_path: string) {
     const new_file_path = replace_all(file_path)
