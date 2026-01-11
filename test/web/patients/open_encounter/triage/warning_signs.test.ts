@@ -30,6 +30,7 @@ import { asWarningSigns, setupTriage } from './_setup.ts'
 import { hyphenate } from '../../../../../util/hyphenate.ts'
 import { events } from '../../../../../db/models/events.ts'
 import values from '../../../../../util/values.ts'
+import { asResultAsync } from '../../../../../util/asResult.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -40,61 +41,64 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'renders a warning signs page when patient not known to be pregnant',
       async () => {
-        const { clinic, nurse, encounter } = await setupTriage({
+        const { $ } = await setupTriage({
           patient_demographics: {},
-          warning_signs: { warning_signs: {} },
         })
 
-        const $warning_signs = await nurse.fetchCheerio(
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-        )
-
-        const search_route = $warning_signs('#warning-signs-search').attr(
-          'data-searchroute',
-        )
-        assertEquals(
-          search_route,
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs`,
-        )
-
-        const form_labels = getFormLabels($warning_signs)
+        const form_labels = getFormLabels($)
         assertEquals(form_labels, {
           'warning_signs': {
-            'Obstructed airway': 'Obstructed airwayNot breathing',
-            'Seizure': 'SeizureCurrent',
-            'Burn Facial': 'BurnFacial',
-            'Burn Inhalation': 'BurnInhalation',
-            'Cardiac arrest': 'Cardiac arrest',
-            'High energy transfer':
-              'High energy transferSevere mechanism of injury',
-            'Focal neurology — acute': 'Focal neurology — acuteStroke',
-            'Fracture': 'FractureClosed (no break in the skin)',
-            'Burn Circumferential': 'BurnCircumferential',
-            'Shortness of breath - acute': 'Shortness of breath - acute',
-            'Aggression': 'Aggression',
-            'Burn Chemical': 'BurnChemical',
-            'Threatened limb': 'Threatened limb',
-            'Poisoning': 'Poisoning',
-            'Overdose': 'Overdose',
-            'Coughing blood': 'Coughing blood',
-            'Eye injury': 'Eye injury',
-            'Chest pain': 'Chest pain',
-            'Dislocation of larger joint':
-              'Dislocation of larger jointnot finger or toe',
-            'Vomiting fresh blood': 'Vomiting fresh blood',
-            'Stabbed neck': 'Stabbed neck',
-            'Fractured - compound': 'Fractured - compoundwith a break in skin',
-            'Hemorrhage Uncontrolled': 'Hemorrhage Uncontrolledarterial bleed',
-            'Seizure - post ictal': 'Seizure - post ictal',
-            'Severe pain': 'Severe pain',
-            'Burn Moderate severity': 'BurnModerate severity',
-            'Haemorrhage Controlled': 'HaemorrhageControlled',
-            'Dislocation of finger': 'Dislocation of finger',
-            'Dislocation of toe joint': 'Dislocation of toe joint',
-            'Burn Other': 'BurnOther',
-            'Abdominal pain': 'Abdominal pain',
-            'Persistent vomiting': 'Persistent vomiting',
-            'Moderate pain': 'Moderate pain',
+            'obstructed-airway': {
+              'existence': 'Obstructed airwayNot breathing',
+            },
+            'seizure': { 'existence': 'SeizureCurrent' },
+            'burn-facial': { 'existence': 'BurnFacial' },
+            'burn-inhalation': { 'existence': 'BurnInhalation' },
+            'cardiac-arrest': { 'existence': 'Cardiac arrest' },
+            'high-energy-transfer': {
+              'existence': 'High energy transferSevere mechanism of injury',
+            },
+            'focal-neurology-acute': {
+              'existence': 'Focal neurology — acuteStroke',
+            },
+            'burn-circumferential': { 'existence': 'BurnCircumferential' },
+            'shortness-of-breath-acute': {
+              'existence': 'Shortness of breath - acute',
+            },
+            'aggression': { 'existence': 'Aggression' },
+            'burn-chemical': { 'existence': 'BurnChemical' },
+            'threatened-limb': { 'existence': 'Threatened limb' },
+            'poisoning': { 'existence': 'Poisoning' },
+            'overdose': { 'existence': 'Overdose' },
+            'coughing-blood': { 'existence': 'Coughing blood' },
+            'eye-injury': { 'existence': 'Eye injury' },
+            'chest-pain': { 'existence': 'Chest pain' },
+            'dislocation-of-larger-joint': {
+              'existence': 'Dislocation of larger jointnot finger or toe',
+            },
+            'vomiting-fresh-blood': { 'existence': 'Vomiting fresh blood' },
+            'stabbed-neck': { 'existence': 'Stabbed neck' },
+            'fractured-compound': {
+              'existence': 'Fractured - compoundwith a break in skin',
+            },
+            'hemorrhage-uncontrolled': {
+              'existence': 'Hemorrhage Uncontrolledarterial bleed',
+            },
+            'seizure-post-ictal': { 'existence': 'Seizure - post ictal' },
+            'severe-pain': { 'existence': 'Severe pain' },
+            'burn-moderate-severity': { 'existence': 'BurnModerate severity' },
+            'haemorrhage-controlled': { 'existence': 'HaemorrhageControlled' },
+            'dislocation-of-finger': { 'existence': 'Dislocation of finger' },
+            'dislocation-of-toe-joint': {
+              'existence': 'Dislocation of toe joint',
+            },
+            'fracture': {
+              'existence': 'FractureClosed (no break in the skin)',
+            },
+            'burn-other': { 'existence': 'BurnOther' },
+            'persistent-vomiting': { 'existence': 'Persistent vomiting' },
+            'moderate-pain': { 'existence': 'Moderate pain' },
+            'abdominal-pain': { 'existence': 'Abdominal pain' },
           },
         })
       },
@@ -103,13 +107,13 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'renders the pregnancy-specific signs when the patient is pregnant',
       async () => {
-        const { clinic, nurse, encounter } = await setupTriage({
+        const { nurse, encounter, getStep } = await setupTriage({
           patient_demographics: {},
-          early_brief_history: {
+          warning_signs: asWarningSigns([]),
+          brief_history: {
             diabetes: { existence: 'No' },
             pregnancy: { existence: 'Yes' },
           },
-          warning_signs: { warning_signs: {} },
         })
 
         const most_recent_findings = await brief_history
@@ -125,6 +129,16 @@ describeParallel('triage/warning_signs', () => {
           patient_encounter_id: encounter.patient_encounter_id,
         })
 
+        const result = await asResultAsync(() => getStep('warning_signs'))
+        assert(
+          !result.success,
+          'Because we closed the earlier encounter, we expect this to fail. But when we open a new one below we expect that to succeed',
+        )
+        assertIncludes(
+          result.error.message,
+          '[404]: No open encounter for this patient at this organization',
+        )
+
         await insertReturningSeekingTreatmentWithEmployeeForTest(
           db,
           nurse.health_worker.organization_id,
@@ -134,51 +148,21 @@ describeParallel('triage/warning_signs', () => {
           },
         )
 
-        const $warning_signs = await nurse.fetchCheerio(
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-        )
+        const $warning_signs = await getStep('warning_signs')
 
         const form_labels = getFormLabels($warning_signs)
-        assertEquals(form_labels, {
+        assertMatches(form_labels, {
           'warning_signs': {
-            'Obstructed airway': 'Obstructed airwayNot breathing',
-            'Seizure': 'SeizureCurrent',
-            'Burn Facial': 'BurnFacial',
-            'Burn Inhalation': 'BurnInhalation',
-            'Cardiac arrest': 'Cardiac arrest',
-            'High energy transfer':
-              'High energy transferSevere mechanism of injury',
-            'Focal neurology — acute': 'Focal neurology — acuteStroke',
-            'Fracture': 'FractureClosed (no break in the skin)',
-            'Burn Circumferential': 'BurnCircumferential',
-            'Shortness of breath - acute': 'Shortness of breath - acute',
-            'Aggression': 'Aggression',
-            'Burn Chemical': 'BurnChemical',
-            'Threatened limb': 'Threatened limb',
-            'Poisoning': 'Poisoning',
-            'Overdose': 'Overdose',
-            'Coughing blood': 'Coughing blood',
-            'Eye injury': 'Eye injury',
-            'Chest pain': 'Chest pain',
-            'Dislocation of larger joint':
-              'Dislocation of larger jointnot finger or toe',
-            'Vomiting fresh blood': 'Vomiting fresh blood',
-            'Stabbed neck': 'Stabbed neck',
-            'Fractured - compound': 'Fractured - compoundwith a break in skin',
-            'Hemorrhage Uncontrolled': 'Hemorrhage Uncontrolledarterial bleed',
-            'Seizure - post ictal': 'Seizure - post ictal',
-            'Severe pain': 'Severe pain',
-            'Burn Moderate severity': 'BurnModerate severity',
-            'Haemorrhage Controlled': 'HaemorrhageControlled',
-            'Dislocation of finger': 'Dislocation of finger',
-            'Dislocation of toe joint': 'Dislocation of toe joint',
-            'Burn Other': 'BurnOther',
-            'Pregnancy and abdominal trauma': 'Pregnancy and abdominal trauma',
-            'Pregnancy and abdominal pain': 'Pregnancy and abdominal pain',
-            'Persistent vomiting': 'Persistent vomiting',
-            'Moderate pain': 'Moderate pain',
+            'pregnancy-and-abdominal-trauma': {
+              'existence': 'Pregnancy and abdominal trauma',
+            },
+            'pregnancy-and-abdominal-pain': {
+              'existence': 'Pregnancy and abdominal pain',
+            },
           },
         })
+
+        assert(!form_labels['warning_signs']['abdominal-pain'])
       },
     )
   })
@@ -596,7 +580,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs, including a priority level if the concept is a descendant of a warning sign',
       async () => {
-        const { clinic, nurse, encounter, getStep, postStep } =
+        const { $, clinic, nurse, encounter, getStep, postStep } =
           await setupTriage({
             patient_demographics: {},
             early_brief_history: {
@@ -605,10 +589,17 @@ describeParallel('triage/warning_signs', () => {
             },
           })
 
-        const warning_signs_route =
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs`
+        const search_route = $('#warning-signs-search').attr(
+          'data-searchroute',
+        )
+
+        assertEquals(
+          search_route,
+          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs`,
+        )
+
         const { results } = await nurse.fetchJson(
-          `${warning_signs_route}?search=appendicular+pain`,
+          `${search_route}?search=appendicular+pain`,
         )
         assertEquals(results[0], {
           clinical_finding_s_expression:
@@ -650,10 +641,10 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Very urgent',
         })
 
-        const $ = await getStep('warning_signs')
+        const $reload = await getStep('warning_signs')
 
         assertIncludes(
-          $('#priority-grid-very-urgent').text(),
+          $reload('#priority-grid-very-urgent').text(),
           'Appendicular pain',
         )
       },

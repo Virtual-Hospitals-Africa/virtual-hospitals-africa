@@ -93,11 +93,23 @@ export function parseWithValues<
   )
 }
 
-export function assertMatches(
+// deno-lint-ignore no-explicit-any
+type Indexable = { [key: string]: any }
+
+type Matched<T, Strict extends boolean> = T extends z.ZodType<infer O>
+  ? Matched<O, Strict>
+  : T extends readonly (infer E)[] ? Strict extends true ? Matched<E, Strict>[]
+    : Matched<E, Strict>[] & Indexable
+  : T extends object
+    ? Strict extends true ? { [P in keyof T]: Matched<T[P], Strict> }
+    : { [P in keyof T]: Matched<T[P], Strict> } & Indexable
+  : T
+
+export function assertMatches<T, Strict extends boolean = false>(
   object: unknown,
-  test: unknown,
-  opts: { strict?: boolean } = {},
-): void {
+  test: T,
+  opts: { strict?: Strict } = {},
+): asserts object is Matched<T, Strict> {
   const schema = zodify(test, opts)
   parseWithValues(schema, object)
 }

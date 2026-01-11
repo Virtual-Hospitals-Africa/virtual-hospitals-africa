@@ -12,7 +12,7 @@ import { message_threads } from '../db/models/message_threads.ts'
 import { conversations } from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
-import { debug } from '../util/debug.ts'
+// import { debug } from '../util/debug.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
 import { organizationOf } from '../shared/employees.ts'
 import { promiseProps } from '../util/promiseProps.ts'
@@ -267,30 +267,6 @@ export const EVENTS = {
       },
     },
   ),
-  TEST_WORKS_ON_SECOND_TRY: defineEvent(
-    z.object({
-      foo: z.string().uuid(),
-    }),
-    {
-      // deno-lint-ignore require-await
-      async workOnSecondTry(_trx, payload) {
-        debug('foo bar')
-        if (payload.metadata.error_count === 0) {
-          throw new Error('Fails at first')
-        }
-      },
-    },
-  ),
-  TEST_NEVER_WORKS: defineEvent(
-    z.object({
-      bar: z.string().uuid(),
-    }),
-    {
-      neverWorks(_trx, _payload) {
-        throw new Error('Never Works')
-      },
-    },
-  ),
   DoctorReviewCompleted: defineEvent(
     z.object({
       review_id: z.string().uuid(),
@@ -329,6 +305,30 @@ export const EVENTS = {
       },
     },
   ),
+  TEST_NEVER_WORKS: defineEvent(
+    z.object({
+      bar: z.string().uuid(),
+    }),
+    {
+      neverWorks(_trx, _payload) {
+        throw new Error('Never Works')
+      },
+    },
+  ),
+  // TODO implement retries
+  // TEST_WORKS_ON_SECOND_TRY: defineEvent(
+  //   z.object({
+  //     foo: z.string().uuid(),
+  //   }),
+  //   {
+  //     // deno-lint-ignore require-await
+  //     async workOnSecondTry(_trx, payload) {
+  //       if (payload.metadata.error_count === 0) {
+  //         throw new Error('Fails at first')
+  //       }
+  //     },
+  //   },
+  // ),
 }
 
 export type EventType = keyof typeof EVENTS
@@ -359,7 +359,7 @@ export function defineEvent<T extends z.ZodRawShape>(
       payload: {
         id: string
         data: z.infer<z.ZodObject<T>>
-        metadata: { error_count: number }
+        // metadata: { error_count: number }
       },
     ) => Promise<unknown>
   >,

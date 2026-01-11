@@ -7,8 +7,8 @@ export async function up(db: Kysely<DB>) {
     qb
       .addColumn('type', 'varchar(255)', (col) => col.notNull())
       .addColumn('data', 'jsonb', (col) => col.notNull())
-      .addColumn('error_message_no_automated_retry', 'text')
-      .addColumn('listeners_inserted_at', 'timestamptz')
+      .addColumn('listener_names', sql`varchar(255)[]`, (col) => col.notNull())
+      .addColumn('error_message', 'text')
       .addColumn('all_processed_at', 'timestamptz'))
 
   await createStandardTable(db, 'event_listeners', (qb) =>
@@ -17,10 +17,8 @@ export async function up(db: Kysely<DB>) {
         col.notNull().references('events.id'))
       .addColumn('listener_name', 'varchar(255)', (col) =>
         col.notNull())
+      .addColumn('started_processing_at', 'timestamptz')
       .addColumn('error_message', 'text')
-      .addColumn('error_count', 'integer', (col) =>
-        col.notNull().defaultTo(0))
-      .addColumn('backoff_until', 'timestamptz')
       .addColumn('processed_at', 'timestamptz')
       .addUniqueConstraint('single_listener', ['event_id', 'listener_name']))
 
@@ -37,7 +35,7 @@ export async function up(db: Kysely<DB>) {
               FROM event_listeners
              WHERE event_listeners.processed_at IS NULL
                AND event_listeners.event_id = NEW.event_id
-               AND event_listeners.id != NEW.event_id
+               AND event_listeners.id != NEW.id
           );
 
           PERFORM pg_notify('event_all_processed', NEW.event_id::text);
@@ -54,27 +52,39 @@ export async function up(db: Kysely<DB>) {
     EXECUTE FUNCTION check_event_all_processed_on_event_listener_processed();
   `.execute(db)
 
-  // await sql`
-  //   CREATE OR REPLACE FUNCTION notify_event_all_processed()
-  //   RETURNS TRIGGER AS $$
-  //   BEGIN
-  //     IF OLD.all_processed_at IS NULL AND NEW.all_processed_at IS NOT NULL THEN
+  await sql`
+    CREATE OR REPLACE FUNCTION create_event_listeners_on_event_insert()
+    RETURNS TRIGGER AS $$
+    DECLARE
+      listener_name varchar(255);
+      new_event_listener_id uuid;
+    BEGIN
+      FOREACH listener_name IN ARRAY NEW.listener_names
+      LOOP
+        new_event_listener_id := gen_random_uuid();
+        INSERT INTO event_listeners (id, event_id, listener_name, created_at, updated_at)
+        VALUES (new_event_listener_id, NEW.id, listener_name, now(), now());
 
-  //     END IF;
-  //     RETURN NEW;
-  //   END;
-  //   $$ LANGUAGE plpgsql;
-  // `.execute(db)
+        PERFORM pg_notify('event_listener_to_be_processed', new_event_listener_id::text);
+      END LOOP;
+      RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+  `.execute(db)
 
-  // await sql`
-  //   CREATE TRIGGER event_all_processed_trigger
-  //   AFTER UPDATE ON events
-  //   FOR EACH ROW
-  //   EXECUTE FUNCTION notify_event_all_processed();
-  // `.execute(db)
+  await sql`
+    CREATE TRIGGER event_insert_trigger
+    AFTER INSERT ON events
+    FOR EACH ROW
+    EXECUTE FUNCTION create_event_listeners_on_event_insert();
+  `.execute(db)
 }
 
 export async function down(db: Kysely<DB>) {
+  await sql`DROP TRIGGER IF EXISTS event_insert_trigger ON events`
+    .execute(db)
+  await sql`DROP FUNCTION IF EXISTS create_event_listeners_on_event_insert`
+    .execute(db)
   await sql`DROP TRIGGER IF EXISTS event_listener_processed_trigger ON event_listeners`
     .execute(db)
   await sql`DROP FUNCTION IF EXISTS check_event_all_processed_on_event_listener_processed`

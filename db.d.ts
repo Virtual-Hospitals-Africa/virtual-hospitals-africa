@@ -512,14 +512,13 @@ export interface EmploymentPresence {
 }
 
 export interface EventListeners {
-  backoff_until: Timestamp | null
   created_at: Generated<Timestamp>
-  error_count: Generated<number>
   error_message: string | null
   event_id: string
   id: Generated<string>
   listener_name: string
   processed_at: Timestamp | null
+  started_processing_at: Timestamp | null
   updated_at: Generated<Timestamp>
 }
 
@@ -527,9 +526,9 @@ export interface Events {
   all_processed_at: Timestamp | null
   created_at: Generated<Timestamp>
   data: Json
-  error_message_no_automated_retry: string | null
+  error_message: string | null
   id: Generated<string>
-  listeners_inserted_at: Timestamp | null
+  listener_names: string[]
   type: string
   updated_at: Generated<Timestamp>
 }

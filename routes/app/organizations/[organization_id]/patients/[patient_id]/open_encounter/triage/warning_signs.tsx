@@ -60,7 +60,7 @@ export const TriageWarningSignsSchema = z.object({
   warning_signs: z.record(
     z.string(),
     WarningSignSchema,
-  ).transform(values),
+  ).optional().default({}).transform(values),
 }).strict()
 
 export const handler = postHandler(
