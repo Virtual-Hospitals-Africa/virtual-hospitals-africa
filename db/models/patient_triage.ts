@@ -126,6 +126,16 @@ function insertLevel(
     .executeTakeFirstOrThrow()
 }
 
+type InsertLevelInput = {
+  patient_id: string
+  patient_encounter_id: string
+  employment_id?: string
+  by_system?: boolean
+  procedure_id: string
+  evaluates_record_id: string
+  triage_level: TriageLevel
+}
+
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
 ) {
