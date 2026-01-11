@@ -137,6 +137,7 @@ export const handler = postHandler(
         {
           patient_id,
           procedure_id,
+          employment_id,
           patient_encounter_id,
           patient_encounter_employee_id,
           findings: findings_to_insert,
