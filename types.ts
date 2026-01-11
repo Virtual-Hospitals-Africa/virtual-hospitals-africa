@@ -3600,7 +3600,7 @@ export type MostRecentBriefHistoryFindings = {
 }
 
 export type WarningSign = {
-  key: string
+  key: WarningSignKey
   clinical_finding_s_expression: string
   sats_primary_name: string
   sats_secondary_text: string | null

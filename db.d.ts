@@ -524,6 +524,7 @@ export interface EventListeners {
 }
 
 export interface Events {
+  all_processed_at: Timestamp | null
   created_at: Generated<Timestamp>
   data: Json
   error_message_no_automated_retry: string | null

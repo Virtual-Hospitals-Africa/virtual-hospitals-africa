@@ -11,3 +11,4 @@ export const app = new App()
   .fsRoutes()
 
 createEventProcessor().start()
+// events.initializeListener()
