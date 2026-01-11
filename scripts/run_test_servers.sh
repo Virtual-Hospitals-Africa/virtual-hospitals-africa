@@ -110,4 +110,6 @@ print_server_log_info
 start_http_server &
 http_server_pid="$!"
 
-wait $http_server_pid $https_proxy_server_pid
+# Wait for either process to exit - if one dies, we want to fail fast
+wait -n $http_server_pid $https_proxy_server_pid
+exit 1

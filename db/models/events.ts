@@ -8,6 +8,7 @@ import { assert } from 'std/assert/assert.ts'
 import { isUUID } from '../../util/uuid.ts'
 import { once } from '../../util/once.ts'
 import { timeout } from '../../util/timeout.ts'
+import keys from '../../util/keys.ts'
 // @ts-types="preact"
 
 /**
@@ -77,11 +78,13 @@ export const events = {
     trx: TrxOrDb,
     { type, data }: EventInsertAny,
   ): Promise<{ id: string }> {
+    const event_def = EVENTS[type]
     return trx
       .insertInto('events')
       .values({
         type,
-        data: EVENTS[type].schema.parse(data),
+        data: event_def.schema.parse(data),
+        listener_names: keys(event_def.listeners),
       })
       .returning('id')
       .executeTakeFirstOrThrow()
@@ -96,48 +99,56 @@ export const events = {
       .where('id', '=', event_id)
       .executeTakeFirstOrThrow()
   },
-  withoutListeners(
+  selectUnprocessedListener(
     trx: TrxOrDb,
+    event_listener_id: string,
   ) {
     return trx
-      .selectFrom('events')
-      .where('listeners_inserted_at', 'is', null)
-      .where('error_message_no_automated_retry', 'is', null)
-      .where('created_at', '<', now)
-      .forUpdate()
-      .skipLocked()
-      .select(['id', 'type', 'data'])
-      .limit(50)
-      .execute()
+      .updateTable('event_listeners')
+      .from('events')
+      .whereRef('event_listeners.event_id', '=', 'events.id')
+      .where('event_listeners.started_processing_at', 'is', null)
+      .where('event_listeners.id', '=', event_listener_id)
+      .set({
+        started_processing_at: now,
+      })
+      .returning([
+        'event_listeners.id',
+        'listener_name',
+        'type',
+        'data',
+        'event_id',
+      ])
+      .executeTakeFirst()
   },
-  selectUnprocessedListeners(
-    trx: TrxOrDb,
-    opts: {
-      max_error_count?: number
-      limit?: number
-    } = {},
-  ) {
-    const { max_error_count = 3, limit = 8 } = opts
-    return trx
-      .selectFrom('event_listeners')
-      .innerJoin('events', 'event_listeners.event_id', 'events.id')
-      .where('event_listeners.processed_at', 'is', null)
-      .where('event_listeners.error_count', '<', max_error_count)
-      .where('events.error_message_no_automated_retry', 'is', null)
-      .where((eb) =>
-        eb.or([
-          eb('event_listeners.backoff_until', '<', now),
-          eb('event_listeners.backoff_until', 'is', null),
-        ])
-      )
-      .forUpdate()
-      .skipLocked()
-      .selectAll('event_listeners')
-      .select('events.type')
-      .select('events.data')
-      .limit(limit)
-      .execute()
-  },
+  // selectUnprocessedListeners(
+  //   trx: TrxOrDb,
+  //   opts: {
+  //     max_error_count?: number
+  //     limit?: number
+  //   } = {},
+  // ) {
+  //   const { max_error_count = 3, limit = 8 } = opts
+  //   return trx
+  //     .selectFrom('event_listeners')
+  //     .innerJoin('events', 'event_listeners.event_id', 'events.id')
+  //     .where('event_listeners.processed_at', 'is', null)
+  //     .where('event_listeners.error_count', '<', max_error_count)
+  //     .where('events.error_message_no_automated_retry', 'is', null)
+  //     .where((eb) =>
+  //       eb.or([
+  //         eb('event_listeners.backoff_until', '<', now),
+  //         eb('event_listeners.backoff_until', 'is', null),
+  //       ])
+  //     )
+  //     .forUpdate()
+  //     .skipLocked()
+  //     .selectAll('event_listeners')
+  //     .select('events.type')
+  //     .select('events.data')
+  //     .limit(limit)
+  //     .execute()
+  // },
   selectListenersOfEvent(
     trx: TrxOrDb,
     { event_id }: {
@@ -161,8 +172,7 @@ export const events = {
       .updateTable('event_listeners')
       .set({
         error_message: null,
-        error_count: 0,
-        backoff_until: null,
+        // backoff_until: null,
         processed_at: now,
       })
       .where('id', '=', event_listener_id)
@@ -176,7 +186,7 @@ export const events = {
     console.error(error)
     return trx
       .updateTable('events')
-      .set({ error_message_no_automated_retry: error.message })
+      .set({ error_message: error.message })
       .where('id', '=', id)
       .executeTakeFirstOrThrow()
   },
@@ -188,38 +198,38 @@ export const events = {
   2           60000
   3           360000
   */
-  calculateBackoff(error_count: number): string {
-    const backoff_ms = Math.pow(6, error_count - 1) * 10000
-    return new Date(Date.now() + backoff_ms).toISOString()
-  },
+  // calculateBackoff(error_count: number): string {
+  //   const backoff_ms = Math.pow(6, error_count - 1) * 10000
+  //   return new Date(Date.now() + backoff_ms).toISOString()
+  // },
   markErroredListener(
     trx: TrxOrDb,
-    { event_listener_id, error_message, error_count }: {
+    { event_listener_id, error_message /*, error_count */ }: {
       event_listener_id: string
       error_message: string
-      error_count: number
+      // error_count: number
     },
   ) {
     return trx
       .updateTable('event_listeners')
       .set({
-        error_count,
+        // error_count,
         error_message,
         processed_at: null,
-        backoff_until: events.calculateBackoff(error_count),
+        // backoff_until: events.calculateBackoff(error_count),
       })
       .where('id', '=', event_listener_id)
       .executeTakeFirstOrThrow()
   },
-  clearBackoff(
-    trx: TrxOrDb,
-    { event_listener_id }: { event_listener_id: string },
-  ) {
-    return trx.updateTable('event_listeners')
-      .where('id', '=', event_listener_id)
-      .set({ backoff_until: null })
-      .executeTakeFirstOrThrow()
-  },
+  // clearBackoff(
+  //   trx: TrxOrDb,
+  //   { event_listener_id }: { event_listener_id: string },
+  // ) {
+  //   return trx.updateTable('event_listeners')
+  //     .where('id', '=', event_listener_id)
+  //     .set({ backoff_until: null })
+  //     .executeTakeFirstOrThrow()
+  // },
 
   /**
    * Waits until all events for a given patient encounter have been fully processed.

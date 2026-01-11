@@ -16,6 +16,7 @@ import fromEntries from '../../../../../util/fromEntries.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { CheerioAPI } from 'cheerio'
 import entries from '../../../../../util/entries.ts'
+import keys from '../../../../../util/keys.ts'
 
 export type TriageSteps = {
   warning_signs?: z.input<typeof TriageWarningSignsSchema>
@@ -71,12 +72,17 @@ export async function setupTriage(
       },
     )
 
-  function route(step: keyof TriageSteps) {
-    return `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/${step}`
+  function openEncounterRoute(path: string) {
+    assert(!path.startsWith('/'))
+    return `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/${path}`
+  }
+
+  function triageRoute(step: keyof TriageSteps) {
+    return openEncounterRoute(`triage/${step}`)
   }
 
   function getStep(step: keyof TriageSteps) {
-    return nurse.fetchCheerio(route(step))
+    return nurse.fetchCheerio(triageRoute(step))
   }
 
   async function postStep(
@@ -87,7 +93,7 @@ export async function setupTriage(
       if (!data) continue
       const step_name = step === 'early_brief_history' ? 'brief_history' : step
       $ = await nurse.fetchCheerio(
-        route(step_name),
+        triageRoute(step_name),
         {
           method: 'POST',
           body: asFormData(data),
@@ -98,7 +104,17 @@ export async function setupTriage(
     return $
   }
 
-  const $ = await postStep(steps)
+  const $ =
+    await (keys(steps).length ? postStep(steps) : getStep('warning_signs'))
 
-  return { $, clinic, nurse, encounter, getStep, postStep }
+  return {
+    $,
+    clinic,
+    nurse,
+    encounter,
+    getStep,
+    postStep,
+    openEncounterRoute,
+    triageRoute,
+  }
 }
