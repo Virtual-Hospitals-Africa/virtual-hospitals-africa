@@ -5,17 +5,9 @@ import { patient_evaluations } from './patient_evaluations.ts'
 
 import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  RenderedPatientEncounter,
-  TaskGroup,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import {
-  jsonArrayFromColumn,
-  literalString,
-  success_true,
-} from '../helpers.ts'
+import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -34,7 +26,6 @@ import {
 import zip from '../../util/zip.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assert } from 'std/assert/assert.ts'
-
 
 export const additional_tasks = {
   async insertTasksIfNotAlreadyIdentified(
@@ -97,7 +88,7 @@ export const additional_tasks = {
       }
 
       const procedure = await patient_procedures
-        .insertOneIfNotAlreadyExistsForThisEncounter(
+        .insertOneNested(
           trx,
           {
             patient_id,

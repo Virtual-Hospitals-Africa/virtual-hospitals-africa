@@ -11,6 +11,10 @@ import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
 import { jsonBuildObject, literalString } from '../helpers.ts'
 import { buildExpression } from './s_expression.ts'
 import { isAtom, parseExpression } from '../../shared/s_expression.ts'
+import {
+  asConceptSExpression,
+  CLINICAL_FINDING,
+} from '../../shared/snomed_concepts.ts'
 
 type SearchTerms = {
   search: string
@@ -158,7 +162,19 @@ export const snomed_model = base({
   baseQuery,
   getPriorityOfSnomedConcept,
   formatResult(result) {
-    return result
+    const concept_s_expression = asConceptSExpression(result)
+    const clinical_finding_s_expression =
+      `(finding ${CLINICAL_FINDING.s_expression} ${concept_s_expression})`
+    return {
+      clinical_finding_s_expression,
+      snomed_concept_id: result.id,
+      sats_primary_name: result.name,
+      sats_secondary_text: result.category,
+      sats_priority: result.priority?.name || ('Non-urgent' as const),
+      sats_priority_by_virtue_of_matching_warning_sign: result.priority
+        ?.warning_sign,
+      similarity: result.best_similarity,
+    }
   },
 })
 

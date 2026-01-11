@@ -3,7 +3,7 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { setupTriage } from './_setup.ts'
+import { asWarningSigns, setupTriage } from './_setup.ts'
 import { route } from '../../../../_route.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
@@ -20,19 +20,23 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   itParallel.skip('loads on the page', async () => {
     const { $, clinic, encounter, nurse } = await setupTriage({
       patient_demographics: { date_of_birth: '2023-01-01' },
-      conditions: {
+      brief_history: {
         diabetes: { existence: 'Yes' },
         pregnancy: { existence: 'No' },
       },
-      warning_signs: [],
+      warning_signs: {
+        warning_signs: {},
+      },
       height_and_weight: {
-        height: {
-          value: 160,
-          units: 'cm',
-        },
-        weight: {
-          value: 80,
-          units: 'kg',
+        measurements: {
+          height: {
+            value: 160,
+            units: 'cm',
+          },
+          weight: {
+            value: 80,
+            units: 'kg',
+          },
         },
       },
       vitals: {
@@ -244,19 +248,21 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   itParallel('prompts for Nausea Vomiting Pallor Sweating', async () => {
     const { $, clinic, encounter, nurse } = await setupTriage({
       patient_demographics: { date_of_birth: '2001-01-01' },
-      conditions: {
+      brief_history: {
         diabetes: { existence: 'No' },
         pregnancy: { existence: 'No' },
       },
-      warning_signs: ['Chest pain'],
+      warning_signs: asWarningSigns(['Chest pain']),
       height_and_weight: {
-        height: {
-          value: 160,
-          units: 'cm',
-        },
-        weight: {
-          value: 80,
-          units: 'kg',
+        measurements: {
+          height: {
+            value: 160,
+            units: 'cm',
+          },
+          weight: {
+            value: 80,
+            units: 'kg',
+          },
         },
       },
       vitals: {
@@ -348,6 +354,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 //       warning_signs: [],
 //       conditions: ['diabetes'],
 //       height_and_weight: {
+// measurements: {
 //         height: {
 //           value: 160,
 //           units: 'cm',
@@ -355,7 +362,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 //         weight: {
 //           value: 80,
 //           units: 'kg',
-//         },
+//         },}
 //       },
 //       vitals: {
 //         measurements: {

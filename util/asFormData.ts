@@ -1,4 +1,6 @@
-export default function asFormData(data: Record<string, unknown>) {
+export default function asFormData(
+  data: Record<string, unknown>,
+) {
   const form_data = new FormData()
 
   function appendToFormData(obj: Record<string, unknown>, prefix = '') {
