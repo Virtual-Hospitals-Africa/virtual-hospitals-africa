@@ -19,7 +19,6 @@ import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
-import entries from '../../../../../util/entries.ts'
 import {
   CLINICAL_FINDING,
   STATUS_ATTRIBUTE,
@@ -29,10 +28,13 @@ import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 import { asWarningSigns, setupTriage } from './_setup.ts'
 import { hyphenate } from '../../../../../util/hyphenate.ts'
+import { events } from '../../../../../db/models/events.ts'
+import values from '../../../../../util/values.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
+  afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
   describeParallel('GET', () => {
     itParallel(
@@ -657,7 +659,7 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    itParallel.only(
+    itParallel(
       'creates an additional task to check for a head injury with watery discharge',
       async () => {
         const { nurse, encounter } = await setupTriage({
@@ -694,6 +696,10 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Non-urgent',
         })
 
+        await events.allProcessedForEncounter(db, {
+          patient_encounter_id: encounter.patient_encounter_id,
+        })
+
         const task_groups = await additional_tasks.getTasksGroups(db, {
           encounter,
           health_worker_id: nurse.health_worker.id,
@@ -705,9 +711,9 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    function testRoundTrip(key: string, sign: WarningSign, pregnant: boolean) {
+    function testRoundTrip(sign: WarningSign, pregnant: boolean) {
       itParallel(
-        `renders the page with the ${key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
+        `renders the page with the ${sign.key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
         async () => {
           const { clinic, nurse, encounter } = await setupTriage({
             patient_demographics: {},
@@ -717,7 +723,7 @@ describeParallel('triage/warning_signs', () => {
                 pregnancy: { existence: 'Yes' },
               }
               : undefined,
-            warning_signs: asWarningSigns([key as keyof typeof WARNING_SIGNS]),
+            warning_signs: asWarningSigns([sign.key]),
           })
 
           const receptionist = await addTestEmployeeWithSession(db, {
@@ -736,13 +742,13 @@ describeParallel('triage/warning_signs', () => {
           )
 
           const form_values = getFormValues($warning_signs)
-          const hyphenated_key = hyphenate(key.toLowerCase())
+          const hyphenated_key = hyphenate(sign.key.toLowerCase())
           assertMatches(form_values, {
             warning_signs: {
               [hyphenated_key]: {
-                s_expression: sign.clinical_finding_s_expression,
-                warning_sign_key: key,
+                warning_sign_key: sign.key,
                 priority_level: sign.sats_priority,
+                s_expression: sign.clinical_finding_s_expression,
               },
             },
           })
@@ -759,16 +765,16 @@ describeParallel('triage/warning_signs', () => {
       )
     }
 
-    for (const [key, sign] of entries(WARNING_SIGNS)) {
+    for (const sign of values(WARNING_SIGNS)) {
       const pregnant = [
         'Pregnancy and abdominal pain',
         'Pregnancy and abdominal trauma',
-      ].includes(key)
+      ].includes(sign.key)
 
-      testRoundTrip(key, sign, pregnant)
+      testRoundTrip(sign, pregnant)
     }
 
     // When you just want to test one. This is a good test to exercise s_expression
-    // testRoundTrip('Burn Other', WARNING_SIGNS['Burn Other'], false)
+    // testRoundTrip(WARNING_SIGNS['Burn Other'], false)
   })
 })

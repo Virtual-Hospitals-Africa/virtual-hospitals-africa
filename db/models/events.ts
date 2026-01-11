@@ -1,8 +1,79 @@
 import { TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
 import { EventInsertAny, EVENTS } from '../../events/handlers.ts'
+import { sql } from 'kysely'
+
+import { Client } from 'pg'
+import db, { opts } from '../db.ts'
+import { assert } from 'std/assert/assert.ts'
+import { isUUID } from '../../util/uuid.ts'
+import { once } from '../../util/once.ts'
+import { timeout } from '../../util/timeout.ts'
+// @ts-types="preact"
+
+/**
+ * We need a dedicated query for the listener.
+ * Provides the ability to subscribe to processed events by id or in general
+ */
+const initializeAllProcessedPubSub = once(
+  async function initializeAllProcessedPubSub() {
+    const client = new Client(opts || {})
+
+    await client.connect()
+    await client.query(`LISTEN event_all_processed`)
+
+    const by_id_subscribers = new Map<string, Set<() => void>>()
+    const any_subscribers = new Set<(event_id: string) => void>()
+
+    client.on('notification', function (event) {
+      const event_id = event.payload
+      assert(isUUID(event_id))
+      const by_id_subscriptions = by_id_subscribers.get(event_id)
+      if (!by_id_subscriptions?.size) return
+      for (const subscription of by_id_subscriptions) {
+        subscription()
+      }
+      for (const subscription of any_subscribers) {
+        subscription(event_id)
+      }
+    })
+
+    // TODO stop accepting new subscriptions after shutdown
+    return {
+      // am I a pythonista? 🐍
+      by_id: {
+        subscribe(event_id: string, callback: () => void) {
+          assert(isUUID(event_id))
+          const subscriptions = by_id_subscribers.get(event_id) || new Set()
+          subscriptions.add(callback)
+        },
+        unsubscribe(event_id: string, callback: () => void) {
+          assert(isUUID(event_id))
+          const subscriptions = by_id_subscribers.get(event_id)
+          subscriptions?.delete(callback)
+        },
+      },
+      any: {
+        subscribe(callback: (event_id: string) => void) {
+          any_subscribers.add(callback)
+        },
+        unsubscribe(callback: (event_id: string) => void) {
+          any_subscribers.delete(callback)
+        },
+      },
+      __client__: client,
+    }
+  },
+)
 
 export const events = {
+  initializeAllProcessedPubSub,
+  async closeAllProcessedPubSub(opts: { graceful: boolean }) {
+    assert(!opts.graceful, 'TODO support a graceful mode')
+    if (!initializeAllProcessedPubSub.called) return
+    const pub_sub = await initializeAllProcessedPubSub()
+    await pub_sub.__client__.end()
+  },
   insert(
     trx: TrxOrDb,
     { type, data }: EventInsertAny,
@@ -148,5 +219,72 @@ export const events = {
       .where('id', '=', event_listener_id)
       .set({ backoff_until: null })
       .executeTakeFirstOrThrow()
+  },
+
+  /**
+   * Waits until all events for a given patient encounter have been fully processed.
+   * An event is considered for this encounter if its data jsonb contains a matching patient_encounter_id.
+   */
+  async allProcessedForEncounter(
+    trx: TrxOrDb,
+    { patient_encounter_id, timeout_ms = 30000 }: {
+      patient_encounter_id: string
+      timeout_ms?: number
+    },
+  ): Promise<void> {
+    // Do we care about events that come in later?
+    // const start = Date.now()
+
+    const pub_sub = await initializeAllProcessedPubSub()
+    const events_seen_while_waiting = new Set<string>()
+
+    async function unprocessedEventsRelatedToThisEncounter() {
+      try {
+        pub_sub.any.subscribe(events_seen_while_waiting.add)
+        return await trx
+          .selectFrom('events')
+          .where(
+            sql<
+              boolean
+            >`events.data->>'patient_encounter_id' = ${patient_encounter_id}`,
+          )
+          .where('events.all_processed_at', 'is', null)
+          .select('events.id')
+          .execute()
+      } finally {
+        pub_sub.any.unsubscribe(events_seen_while_waiting.add)
+      }
+    }
+
+    const unprocessed_events_related_to_this_encounter =
+      await unprocessedEventsRelatedToThisEncounter()
+
+    if (!unprocessed_events_related_to_this_encounter.length) return
+
+    const unprocessed_events_related_to_this_encounter_for_sure =
+      unprocessed_events_related_to_this_encounter.filter((e) => {
+        if (events_seen_while_waiting.has(e.id)) {
+          console.log('ha! the paranoia is justified!', e.id)
+          return false
+        }
+        return true
+      })
+    events_seen_while_waiting.clear()
+
+    const timer = timeout(timeout_ms)
+
+    await Promise.all(
+      unprocessed_events_related_to_this_encounter_for_sure.map(async (e) => {
+        const promise = Promise.withResolvers<void>()
+        try {
+          pub_sub.by_id.subscribe(e.id, promise.resolve)
+          await Promise.race([promise, timer])
+        } finally {
+          pub_sub.by_id.unsubscribe(e.id, promise.resolve)
+        }
+      }),
+    )
+
+    timer.cancel()
   },
 }

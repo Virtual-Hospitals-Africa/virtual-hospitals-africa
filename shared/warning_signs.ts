@@ -204,7 +204,7 @@ export const WARNING_SIGN_SNOMED_CONCEPTS = [
   },
   {
     'id': '262582004',
-    'name': 'Burn of face injury',
+    'name': 'Burn of face',
     'category': 'disorder' as const,
   },
   {
