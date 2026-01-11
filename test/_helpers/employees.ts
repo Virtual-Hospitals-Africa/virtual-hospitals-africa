@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import { Maybe, Names, TrxOrDb } from '../../types.ts'
+import { Falsy, Maybe, Names, TrxOrDb } from '../../types.ts'
 import { sessions } from '../../db/models/sessions.ts'
 import { employment } from '../../db/models/employment.ts'
 import { organizations } from '../../db/models/organizations.ts'
@@ -19,6 +19,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { asMaybeNames, asNames } from '../../db/models/asNames.ts'
+import compact from '../../util/compact.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -218,18 +219,41 @@ export async function addTestEmployeeWithSession(
     opts?: { cancel_response_body?: boolean },
   ) => {
     const response = await fetchWithSession(url, init)
-    if (!response.ok) {
-      const method = init?.method || 'GET'
-      console.error(`${method} ${url}`)
-      if (init?.body) {
-        console.error(init.body)
+    if (response.ok) {
+      if (opts?.cancel_response_body) {
+        await response.body?.cancel()
       }
-      throw new Error(`[${response.status}]: ${await response.text()}`)
+      return response
     }
-    if (opts?.cancel_response_body) {
-      await response.body?.cancel()
+
+    const method = init?.method || 'GET'
+    const content_type = response.headers.get('content-type')
+    const include_response_text = !content_type?.startsWith('text/html')
+    const response_text = include_response_text && await response.text()
+
+    throw new Error(
+      compact([
+        compact([`[${response.status}]`, response_text]).join(': '),
+        maybeIndent(`${method} ${url}`),
+        maybeIndent(prettyPrintBody(init?.body)),
+      ]).join('\n'),
+    )
+  }
+
+  function prettyPrintBody(body: Maybe<BodyInit>) {
+    if (body == null) return
+    if (body instanceof FormData) {
+      const inner = [...body.entries()].map(([k, v]) => `  ${k}: ${v}`).join(
+        '\n',
+      )
+      return `FormData {\n${inner}\n}`
     }
-    return response
+    return body.toString()
+  }
+
+  function maybeIndent(lines: Falsy | string) {
+    if (!lines) return
+    return lines.split('\n').map((line) => '  ' + line).join('\n')
   }
 
   const fetchJson = async (

@@ -3549,6 +3549,7 @@ export type RenderedFindingRelativeToHealthWorker =
   RenderedRecordRelativeToHealthWorkerDef<'finding', {
     priority: Priority | null
     score: number | null
+    existence: Existence
     provider: RenderedRecordProvider
     as_part_of_procedure: AsPartOfProcedure
   }>
@@ -3578,7 +3579,6 @@ export type RenderedBriefHistoryRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
     pertaining_to_key: CommonConditionKey
-    existence: Existence
   }
 
 export type AppUser = Profession | 'admin' | 'regulator'
@@ -3615,7 +3615,7 @@ export type WarningSignWithMaybeRecord = Omit<WarningSign, 'key'> & {
   key?: string
   existing_record?: {
     id: string
-    existence: 'Yes' | 'No'
+    existence: Existence
   }
 }
 

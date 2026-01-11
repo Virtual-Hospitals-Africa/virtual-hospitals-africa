@@ -25,20 +25,28 @@ export async function up(db: Kysely<DB>) {
   await sql`
       CREATE OR REPLACE FUNCTION check_event_all_processed_on_event_listener_processed()
       RETURNS TRIGGER AS $$
+      DECLARE
+        unprocessed_count integer;
       BEGIN
         -- Only fire when processed_at is set (was null, now not null)
         IF OLD.processed_at IS NULL AND NEW.processed_at IS NOT NULL THEN
-          UPDATE events
-            SET all_processed_at = now()
-          WHERE NOT EXISTS (
-            SELECT event_listeners.id
-              FROM event_listeners
-             WHERE event_listeners.processed_at IS NULL
-               AND event_listeners.event_id = NEW.event_id
-               AND event_listeners.id != NEW.id
-          );
+          -- Use advisory lock to prevent deadlock when multiple listeners
+          -- for the same event are processed concurrently
+          PERFORM pg_advisory_xact_lock(hashtext(NEW.event_id::text));
 
-          PERFORM pg_notify('event_all_processed', NEW.event_id::text);
+          SELECT COUNT(*) INTO unprocessed_count
+            FROM event_listeners
+           WHERE event_listeners.processed_at IS NULL
+             AND event_listeners.event_id = NEW.event_id;
+
+          IF unprocessed_count = 0 THEN
+            UPDATE events
+              SET all_processed_at = now()
+            WHERE events.id = NEW.event_id
+              AND events.all_processed_at IS NULL;
+
+            PERFORM pg_notify('event_all_processed', NEW.event_id::text);
+          END IF;
         END IF;
         RETURN NEW;
       END;

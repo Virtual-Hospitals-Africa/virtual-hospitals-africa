@@ -42,49 +42,49 @@ describeParallel('snomed-warning-signs', () => {
           'rows_per_page': 20,
           'results': [
             {
-              'id': '301354004',
-              'description_id': '4696155015',
-              'language_code': 'en',
-              'name': 'Pain of ear',
-              'category': 'finding',
-              'best_similarity': 1,
-              'priority': null,
+              'clinical_finding_s_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain of ear" "finding"))',
+              'snomed_concept_id': '301354004',
+              'sats_primary_name': 'Pain of ear',
+              'sats_secondary_text': 'finding',
+              'sats_priority': 'Non-urgent',
+              'similarity': 1,
             },
             {
-              'id': '1010233001',
-              'description_id': '4212225016',
-              'language_code': 'en',
-              'name': 'Otalgia of left ear',
-              'category': 'finding',
-              'best_similarity': 0.47058824,
-              'priority': null,
+              'clinical_finding_s_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Otalgia of left ear" "finding"))',
+              'snomed_concept_id': '1010233001',
+              'sats_primary_name': 'Otalgia of left ear',
+              'sats_secondary_text': 'finding',
+              'sats_priority': 'Non-urgent',
+              'similarity': 0.47058824,
             },
             {
-              'id': '162359003',
-              'description_id': '2691690017',
-              'language_code': 'en',
-              'name': 'Bilateral earache',
-              'category': 'finding',
-              'best_similarity': 0.44444445,
-              'priority': null,
+              'clinical_finding_s_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Bilateral earache" "finding"))',
+              'snomed_concept_id': '162359003',
+              'sats_primary_name': 'Bilateral earache',
+              'sats_secondary_text': 'finding',
+              'sats_priority': 'Non-urgent',
+              'similarity': 0.44444445,
             },
             {
-              'id': '1010234007',
-              'description_id': '4212229010',
-              'language_code': 'en',
-              'name': 'Otalgia of right ear',
-              'category': 'finding',
-              'best_similarity': 0.44444445,
-              'priority': null,
+              'clinical_finding_s_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Otalgia of right ear" "finding"))',
+              'snomed_concept_id': '1010234007',
+              'sats_primary_name': 'Otalgia of right ear',
+              'sats_secondary_text': 'finding',
+              'sats_priority': 'Non-urgent',
+              'similarity': 0.44444445,
             },
             {
-              'id': '27635008',
-              'description_id': '758225015',
-              'language_code': 'en',
-              'name': 'Aching pain',
-              'category': 'finding',
-              'best_similarity': 0.3,
-              'priority': null,
+              'clinical_finding_s_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Aching pain" "finding"))',
+              'snomed_concept_id': '27635008',
+              'sats_primary_name': 'Aching pain',
+              'sats_secondary_text': 'finding',
+              'sats_priority': 'Non-urgent',
+              'similarity': 0.3,
             },
           ],
           'has_next_page': false,
@@ -122,16 +122,14 @@ describeParallel('snomed-warning-signs', () => {
         )
 
         assertEquals(results[0], {
-          'id': '275406005',
-          'description_id': '668271011',
-          'language_code': 'en',
-          'name': 'Appendicular pain',
-          'category': 'finding',
-          'best_similarity': 1,
-          'priority': {
-            'name': 'Urgent',
-            'warning_sign': 'Abdominal pain',
-          },
+          'clinical_finding_s_expression':
+            '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Appendicular pain" "finding"))',
+          'snomed_concept_id': '275406005',
+          'sats_primary_name': 'Appendicular pain',
+          'sats_secondary_text': 'finding',
+          'sats_priority': 'Urgent',
+          'sats_priority_by_virtue_of_matching_warning_sign': 'Abdominal pain',
+          'similarity': 1,
         })
       },
     )
@@ -177,16 +175,15 @@ describeParallel('snomed-warning-signs', () => {
         )
 
         assertEquals(results[0], {
-          'id': '275406005',
-          'description_id': '668271011',
-          'language_code': 'en',
-          'name': 'Appendicular pain',
-          'category': 'finding',
-          'best_similarity': 1,
-          'priority': {
-            'name': 'Very urgent',
-            'warning_sign': 'Pregnancy and abdominal pain',
-          },
+          'clinical_finding_s_expression':
+            '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Appendicular pain" "finding"))',
+          'snomed_concept_id': '275406005',
+          'sats_primary_name': 'Appendicular pain',
+          'sats_secondary_text': 'finding',
+          'sats_priority': 'Very urgent',
+          'sats_priority_by_virtue_of_matching_warning_sign':
+            'Pregnancy and abdominal pain',
+          'similarity': 1,
         })
       },
     )

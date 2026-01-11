@@ -9,7 +9,7 @@ export function HiddenInput(
     name?: string
   },
 ): JSX.Element | null {
-  if (!value) {
+  if (value === undefined || value === null) {
     return null
   }
   if (Array.isArray(value)) {
@@ -26,20 +26,24 @@ export function HiddenInput(
   if (isObjectLike(value)) {
     return (
       <>
-        {Object.keys(value).map((key) => (
-          <HiddenInput
-            value={value[key]}
-            form={form}
-            name={name ? `${name}.${key}` : key}
-          />
-        ))}
+        {Object.keys(value).map((key) => {
+          const x_key = name ? `${name}.${key}` : key
+          return (
+            <HiddenInput
+              key={x_key}
+              value={value[key]}
+              form={form}
+              name={x_key}
+            />
+          )
+        })}
       </>
     )
   }
   return (
     <input
       type='hidden'
-      value={value === true ? 'true' : value}
+      value={typeof value === 'boolean' ? String(value) : value}
       form={form}
       name={name}
     />

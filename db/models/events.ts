@@ -99,27 +99,32 @@ export const events = {
       .where('id', '=', event_id)
       .executeTakeFirstOrThrow()
   },
-  selectUnprocessedListener(
+  async selectUnprocessedListener(
     trx: TrxOrDb,
     event_listener_id: string,
   ) {
-    return trx
+    const listener = await trx
       .updateTable('event_listeners')
-      .from('events')
-      .whereRef('event_listeners.event_id', '=', 'events.id')
       .where('event_listeners.started_processing_at', 'is', null)
       .where('event_listeners.id', '=', event_listener_id)
       .set({
         started_processing_at: now,
       })
       .returning([
-        'event_listeners.id',
-        'listener_name',
-        'type',
-        'data',
+        'id',
         'event_id',
+        'listener_name',
       ])
       .executeTakeFirst()
+    if (!listener) return
+
+    const event = await trx
+      .selectFrom('events')
+      .select(['type', 'data'])
+      .where('id', '=', listener.event_id)
+      .executeTakeFirstOrThrow()
+
+    return { ...listener, ...event }
   },
   // selectUnprocessedListeners(
   //   trx: TrxOrDb,
@@ -245,6 +250,7 @@ export const events = {
     // Do we care about events that come in later?
     // const start = Date.now()
 
+    console.log('in here')
     const pub_sub = await initializeAllProcessedPubSub()
     const events_seen_while_waiting = new Set<string>()
 
@@ -269,6 +275,7 @@ export const events = {
     const unprocessed_events_related_to_this_encounter =
       await unprocessedEventsRelatedToThisEncounter()
 
+    console.log({ unprocessed_events_related_to_this_encounter })
     if (!unprocessed_events_related_to_this_encounter.length) return
 
     const unprocessed_events_related_to_this_encounter_for_sure =

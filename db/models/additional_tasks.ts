@@ -7,7 +7,12 @@ import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
 import { RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import {
+  debugLog,
+  jsonArrayFromColumn,
+  literalString,
+  success_true,
+} from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -26,18 +31,27 @@ import {
 import zip from '../../util/zip.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assert } from 'std/assert/assert.ts'
+import { patient_findings } from './patient_findings.ts'
 
 export const additional_tasks = {
   async insertTasksIfNotAlreadyIdentified(
     trx: TrxOrDb,
-    { patient_id, patient_encounter_id, /*procedure_id, */ finding_ids }: {
+    { patient_id, patient_encounter_id, /*procedure_id, */ findings }: {
       patient_id: string
       patient_encounter_id: string
       procedure_id: string
-      finding_ids: string[]
+      findings: {
+        id: string
+        existence: 'Yes' | 'No'
+      }[]
     },
   ) {
-    if (!finding_ids.length) return
+    console.log('in here!!!', findings)
+    // TODO, maybe handle negative findings? There could be tasks that call for them
+    const positive_finding_ids = findings
+      .filter((f) => f.existence === 'Yes')
+      .map((f) => f.id)
+    if (!positive_finding_ids.length) return
 
     const [first_task, ...other_tasks] = TASKS.map(
       ({ description, when, procedure }) =>
@@ -52,7 +66,7 @@ export const additional_tasks = {
             ).where(
               'patient_records.id',
               'in',
-              finding_ids,
+              positive_finding_ids,
             ),
           ).as('matching_finding_ids'),
           buildExpression(
@@ -68,12 +82,23 @@ export const additional_tasks = {
       first_task,
     )
 
+    debugLog(all_tasks_query)
+
+    const all_t = await all_tasks_query.execute()
+    console.log({ all_t })
+
+    const f = await patient_findings.getById(trx, positive_finding_ids[0])
+    console.log({ f })
+
     const task_results = zip(
-      await all_tasks_query.execute(),
+      all_t,
       TASKS,
     )
 
+    console.log({ task_results })
+
     await pMap(task_results, async ([task_result, task]) => {
+      console.log({ task_result, task })
       assertEquals(task_result.description, task.description)
       assertNotEquals(task.when.atom, 'any') // TODO support these
       assertNotEquals(task.when.atom, 'all')

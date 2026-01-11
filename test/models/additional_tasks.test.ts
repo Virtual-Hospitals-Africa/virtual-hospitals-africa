@@ -1,7 +1,7 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
-import { humanReadableJson } from '../../util/humanReadableJson.ts'
+
 import { TASKS } from '../../shared/tasks.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { nameAndCategorySnomedConceptBase } from '../../db/models/s_expression.ts'
@@ -15,8 +15,6 @@ describeParallel('db/models/additional_tasks.ts', () => {
   itParallel(
     'all of the findings referenced to check_for actually exist',
     async () => {
-      console.log(humanReadableJson(TASKS))
-
       await pMap(TASKS, async (task) => {
         if (task.procedure.value?.type !== 'finding_s_expression') return
 

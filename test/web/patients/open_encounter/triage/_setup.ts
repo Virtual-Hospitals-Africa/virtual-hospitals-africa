@@ -8,15 +8,22 @@ import {
 } from '../../../../_helpers/workflows.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
-import { TriageWarningSignsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
+import {
+  TriageWarningSignSchema,
+  TriageWarningSignsSchema,
+} from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
 import { TriageBriefHistorySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/brief_history.tsx'
 import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
 import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
 import fromEntries from '../../../../../util/fromEntries.ts'
-import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
+import {
+  KEYED_WARNING_SIGNS,
+  WARNING_SIGNS,
+} from '../../../../../shared/warning_signs.ts'
 import { CheerioAPI } from 'cheerio'
 import entries from '../../../../../util/entries.ts'
 import keys from '../../../../../util/keys.ts'
+import isKeyOf from '../../../../../util/isKeyOf.ts'
 
 export type TriageSteps = {
   warning_signs?: z.input<typeof TriageWarningSignsSchema>
@@ -24,7 +31,7 @@ export type TriageSteps = {
   height_and_weight?: z.input<
     typeof TriageHeightAndWeightSchema
   >
-  vitals?: z.input<typeof TriageMeasureVitalsSchema>
+  measure_vitals?: z.input<typeof TriageMeasureVitalsSchema>
 }
 
 export type TriageScenario = TriageSteps & {
@@ -32,17 +39,38 @@ export type TriageScenario = TriageSteps & {
   early_brief_history?: z.input<typeof TriageBriefHistorySchema>
 }
 
-export function asWarningSigns(sign_keys: Array<keyof typeof WARNING_SIGNS>) {
-  return {
-    warning_signs: fromEntries(
-      sign_keys.map((key) => [key, {
-        existence: 'Yes' as const,
-        warning_sign_key: key,
-        priority_level: WARNING_SIGNS[key].sats_priority,
-        s_expression: WARNING_SIGNS[key].clinical_finding_s_expression,
-      }]),
-    ),
-  } satisfies TriageScenario['warning_signs']
+const ONLY_WHEN_PREGNANCY_STATUS = {
+  'Pregnancy and abdominal trauma': true,
+  'Pregnancy and abdominal pain': true,
+  'Abdominal pain': false,
+}
+
+export function asWarningSigns(
+  sign_keys: Array<keyof typeof WARNING_SIGNS>,
+  opts: { pregnant: boolean } = { pregnant: false },
+): z.input<typeof TriageWarningSignsSchema> {
+  return { warning_signs: fromEntries(applicableWarningSigns()) }
+
+  function* applicableWarningSigns(): Generator<
+    [string, z.input<typeof TriageWarningSignSchema>]
+  > {
+    for (const sign of KEYED_WARNING_SIGNS) {
+      if (
+        isKeyOf(sign.key, ONLY_WHEN_PREGNANCY_STATUS) &&
+        ONLY_WHEN_PREGNANCY_STATUS[sign.key] !== opts.pregnant
+      ) continue
+
+      const field: z.input<typeof TriageWarningSignSchema> = {
+        warning_sign_key: sign.key,
+        priority_level: sign.sats_priority,
+        s_expression: sign.clinical_finding_s_expression,
+      }
+      if (sign_keys.includes(sign.key)) {
+        field.existence = 'Yes'
+      }
+      yield [sign.key, field]
+    }
+  }
 }
 
 /**

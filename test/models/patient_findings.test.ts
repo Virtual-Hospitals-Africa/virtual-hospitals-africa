@@ -76,7 +76,6 @@ describeParallel('db/models/patient_findings.ts', () => {
           },
         )
 
-      console.log({ finding_id })
       assert(inserted_new)
 
       const [finding] = await patient_findings.getById(db, finding_id)

@@ -71,7 +71,10 @@ export const EVENTS = {
       patient_id: z.string().uuid(),
       patient_encounter_id: z.string().uuid(),
       procedure_id: z.string().uuid(),
-      finding_ids: z.string().uuid().array(),
+      findings: z.object({
+        id: z.string().uuid(),
+        existence: z.enum(['Yes', 'No']),
+      }).array(),
     }),
     {
       async insertTasksIfNotAlreadyIdentified(trx, payload) {

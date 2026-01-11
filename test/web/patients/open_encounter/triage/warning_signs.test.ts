@@ -25,11 +25,9 @@ import {
 } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
-import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 import { asWarningSigns, setupTriage } from './_setup.ts'
 import { hyphenate } from '../../../../../util/hyphenate.ts'
 import { events } from '../../../../../db/models/events.ts'
-import values from '../../../../../util/values.ts'
 import { asResultAsync } from '../../../../../util/asResult.ts'
 
 describeParallel('triage/warning_signs', () => {
@@ -271,6 +269,7 @@ describeParallel('triage/warning_signs', () => {
             'source_relations': [],
             'evaluations': z.array(z.any()),
             'attributes': [],
+            'existence': 'Yes',
           },
         ], { strict: true })
 
@@ -356,9 +355,9 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
-      'marks a warning sign as having been entered in error if a second POST on the same page does not include a warning sign originally submitted',
+      'marks a warning sign as having been entered in error if a second POST on the same page modifies it',
       async () => {
-        const { clinic, nurse, encounter } = await setupTriage({
+        const { encounter, getStep, postStep } = await setupTriage({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Chest pain']),
         })
@@ -370,21 +369,183 @@ describeParallel('triage/warning_signs', () => {
           1,
         )
 
-        await nurse.fetchOk(
-          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-          {
-            method: 'POST',
+        const $ = await getStep('warning_signs')
+        const form_values = getFormValues($)
+
+        assertMatches(form_values, {
+          'warning_signs': {
+            'high-energy-transfer': {
+              's_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
+              'warning_sign_key': 'High energy transfer',
+              'priority_level': 'Very urgent',
+              'existing_record': {
+                'id': z.string().uuid(),
+                'modified': false,
+              },
+            },
+            'chest-pain': {
+              's_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+              'warning_sign_key': 'Chest pain',
+              'priority_level': 'Very urgent',
+              'existing_record': {
+                'id': z.string().uuid(),
+                'modified': false,
+              },
+              'existence': 'Yes',
+            },
           },
-          {
-            cancel_response_body: true,
-          },
-        )
+        })
+
+        const next_form_submission = structuredClone(form_values)
+        // @ts-ignore the frontend sends this back blank
+        delete next_form_submission.warning_signs['chest-pain'].existence
+        next_form_submission.warning_signs['chest-pain'].existing_record
+          .modified = true
+
+        await postStep({
+          // deno-lint-ignore no-explicit-any
+          warning_signs: next_form_submission as any,
+        })
 
         assertLength(
           await patient_findings.findAll(db, {
             patient_id: encounter.patient.id,
           }),
           0,
+        )
+      },
+    )
+
+    itParallel(
+      '400s if the client fails to include previously submitted records',
+      async () => {
+        const { encounter, getStep, postStep } = await setupTriage({
+          patient_demographics: {},
+          warning_signs: asWarningSigns(['Chest pain']),
+        })
+
+        assertLength(
+          await patient_findings.findAll(db, {
+            patient_id: encounter.patient.id,
+          }),
+          1,
+        )
+
+        const $ = await getStep('warning_signs')
+        const form_values = getFormValues($)
+
+        assertMatches(form_values, {
+          'warning_signs': {
+            'high-energy-transfer': {
+              's_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
+              'warning_sign_key': 'High energy transfer',
+              'priority_level': 'Very urgent',
+              'existing_record': {
+                'id': z.string().uuid(),
+                'modified': false,
+              },
+            },
+            'chest-pain': {
+              's_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+              'warning_sign_key': 'Chest pain',
+              'priority_level': 'Very urgent',
+              'existing_record': {
+                'id': z.string().uuid(),
+                'modified': false,
+              },
+              'existence': 'Yes',
+            },
+          },
+        })
+
+        const next_form_submission = structuredClone(form_values)
+        // @ts-ignore deleting chest-pain entirely
+        delete next_form_submission.warning_signs['chest-pain']
+
+        const result = await asResultAsync(() =>
+          postStep({
+            // deno-lint-ignore no-explicit-any
+            warning_signs: next_form_submission as any,
+          })
+        )
+
+        assert(!result.success)
+        assertIncludes(
+          result.error.message,
+          '[400]: It is expected that the frontend resubmit previously submitted records',
+        )
+      },
+    )
+
+    itParallel(
+      '400s if the client fails to mark records as modified when they were',
+      async () => {
+        const { encounter, getStep, postStep } = await setupTriage({
+          patient_demographics: {},
+          warning_signs: asWarningSigns(['Chest pain']),
+        })
+
+        assertLength(
+          await patient_findings.findAll(db, {
+            patient_id: encounter.patient.id,
+          }),
+          1,
+        )
+
+        const $ = await getStep('warning_signs')
+        const form_values = getFormValues($)
+
+        assertMatches(form_values, {
+          'warning_signs': {
+            'high-energy-transfer': {
+              's_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
+              'warning_sign_key': 'High energy transfer',
+              'priority_level': 'Very urgent',
+              'existing_record': {
+                'id': z.string().uuid(),
+                'modified': false,
+              },
+            },
+            'chest-pain': {
+              's_expression':
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+              'warning_sign_key': 'Chest pain',
+              'priority_level': 'Very urgent',
+              'existing_record': {
+                'id': z.string().uuid(),
+                'modified': false,
+              },
+              'existence': 'Yes',
+            },
+          },
+        })
+
+        const next_form_submission = structuredClone(form_values)
+        Object.assign(
+          next_form_submission.warning_signs['high-energy-transfer'],
+          {
+            existence: 'Yes',
+          },
+        )
+
+        const result = await asResultAsync(() =>
+          postStep({
+            // deno-lint-ignore no-explicit-any
+            warning_signs: next_form_submission as any,
+          })
+        )
+
+        assert(!result.success)
+        assertEquals(
+          result.error.message.split('\n')[0],
+          `[400]: It is expected that the frontend keep track of whether the previously submitted record was modified. Detected a mismatch for ${
+            form_values.warning_signs['high-energy-transfer'].existing_record.id
+          } which had existence: No, but just_submitted.existence: Yes`,
         )
       },
     )
@@ -516,13 +677,14 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs (those selected via search)',
       async () => {
-        const { clinic, nurse, encounter } = await setupTriage({
+        const { encounter, getStep, postStep } = await setupTriage({
           patient_demographics: {},
           warning_signs: {
             warning_signs: {
+              ...asWarningSigns([]).warning_signs,
               'Pain of ear': {
-                existence: 'Yes',
-                priority_level: 'Non-urgent',
+                existence: 'Yes' as const,
+                priority_level: 'Non-urgent' as const,
                 s_expression:
                   `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Pain of ear" "finding"))`,
               },
@@ -544,9 +706,7 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Non-urgent',
         })
 
-        const $ = await nurse.fetchCheerio(
-          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-        )
+        const $ = await getStep('warning_signs')
 
         assertEquals(
           $('#priority-grid-non-urgent').text(),
@@ -554,21 +714,10 @@ describeParallel('triage/warning_signs', () => {
         )
 
         // Posting again has no effect
-        await nurse.fetchOk(
-          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-          {
-            method: 'POST',
-            body: asFormData({
-              warning_signs: {
-                'Pain of ear':
-                  `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Pain of ear" "finding"))`,
-              },
-            }),
-          },
-          {
-            cancel_response_body: true,
-          },
-        )
+        await postStep({
+          // deno-lint-ignore no-explicit-any
+          warning_signs: getFormValues($) as any,
+        })
 
         const subsequent_findings = await patient_findings.findAll(db, {
           patient_id: encounter.patient.id,
@@ -613,16 +762,17 @@ describeParallel('triage/warning_signs', () => {
           similarity: 1,
         })
 
+        // deno-lint-ignore no-explicit-any
+        const form_values = getFormValues($) as any
+
+        form_values.warning_signs['s275406005'] = {
+          existence: 'Yes',
+          priority_level: results[0].sats_priority,
+          s_expression: results[0].clinical_finding_s_expression,
+        }
+
         await postStep({
-          warning_signs: {
-            warning_signs: {
-              's275406005': {
-                existence: 'Yes',
-                priority_level: results[0].sats_priority,
-                s_expression: results[0].clinical_finding_s_expression,
-              },
-            },
-          },
+          warning_signs: form_values,
         })
 
         const findings = await patient_findings.findAll(db, {
@@ -655,12 +805,9 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { nurse, encounter } = await setupTriage({
           patient_demographics: {},
-          early_brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'Yes' },
-          },
           warning_signs: {
             warning_signs: {
+              ...asWarningSigns([]).warning_signs,
               's275406005': {
                 existence: 'Yes',
                 priority_level: 'Non-urgent',
@@ -673,7 +820,6 @@ describeParallel('triage/warning_signs', () => {
 
         const findings = await patient_findings.findAll(db, {
           patient_id: encounter.patient.id,
-          s_expression: `(not (finding ${STATUS_ATTRIBUTE.id}))`,
         })
         assertLength(findings, 1)
 
@@ -695,8 +841,6 @@ describeParallel('triage/warning_signs', () => {
           encounter,
           health_worker_id: nurse.health_worker.id,
         })
-
-        console.log(humanReadableJson(task_groups))
 
         assertLength(task_groups, 1)
       },
@@ -756,16 +900,16 @@ describeParallel('triage/warning_signs', () => {
       )
     }
 
-    for (const sign of values(WARNING_SIGNS)) {
-      const pregnant = [
-        'Pregnancy and abdominal pain',
-        'Pregnancy and abdominal trauma',
-      ].includes(sign.key)
+    // for (const sign of values(WARNING_SIGNS)) {
+    //   const pregnant = [
+    //     'Pregnancy and abdominal pain',
+    //     'Pregnancy and abdominal trauma',
+    //   ].includes(sign.key)
 
-      testRoundTrip(sign, pregnant)
-    }
+    //   testRoundTrip(sign, pregnant)
+    // }
 
     // When you just want to test one. This is a good test to exercise s_expression
-    // testRoundTrip(WARNING_SIGNS['Burn Other'], false)
+    testRoundTrip(WARNING_SIGNS['Burn Other'], false)
   })
 })

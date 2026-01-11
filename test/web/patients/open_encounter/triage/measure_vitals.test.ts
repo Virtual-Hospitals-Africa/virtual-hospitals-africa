@@ -343,7 +343,7 @@ describeParallel('triage/measure_vitals', () => {
                 },
               },
             },
-            vitals: {
+            measure_vitals: {
               measurements: {
                 respiratory_rate: {
                   value: 12,
@@ -392,7 +392,7 @@ describeParallel('triage/measure_vitals', () => {
 
         assert(result.success === false)
         assertEquals(
-          result.error.message,
+          result.error.message.split('\n')[0],
           '[400]: Missing required measurement: blood_glucose',
         )
       },
@@ -420,7 +420,7 @@ describeParallel('triage/measure_vitals', () => {
               },
             },
           },
-          vitals: {
+          measure_vitals: {
             measurements: {
               respiratory_rate: {
                 value: 12,
@@ -548,6 +548,7 @@ describeParallel('triage/measure_vitals', () => {
               'full': 'Severity score: 0',
             },
           }],
+          'existence': 'Yes',
         }, { strict: true })
 
         const component_scores = await patient_evaluation_scores.findAll(
@@ -671,7 +672,7 @@ describeParallel('triage/measure_vitals', () => {
               },
             },
           },
-          vitals: {
+          measure_vitals: {
             measurements: asVitalMeasurementFormValues(measurement_values),
             assessments: asVitalAssessmentFormValues(assessment_values),
           },
