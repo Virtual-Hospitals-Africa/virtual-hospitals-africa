@@ -3,16 +3,8 @@ import db from '../../db/db.ts'
 import { conversations } from '../../db/models/conversations.ts'
 import { media } from '../../db/models/media.ts'
 import * as whatsapp from '../../external-clients/whatsapp.ts'
-import {
-  WhatsAppIncomingMessage,
-  WhatsAppMessage,
-  WhatsAppMessageContents,
-} from '../../types.ts'
-import {
-  PHONE_TO_CHATBOT_NAME,
-  WHATSAPP_PATIENT_CHATBOT_NUMBER,
-  WHATSAPP_PHARMACIST_CHATBOT_NUMBER,
-} from '../../chatbot/phone_numbers.ts'
+import { WhatsAppIncomingMessage, WhatsAppMessage, WhatsAppMessageContents } from '../../types.ts'
+import { PHONE_TO_CHATBOT_NAME, WHATSAPP_PATIENT_CHATBOT_NUMBER, WHATSAPP_PHARMACIST_CHATBOT_NUMBER } from '../../chatbot/phone_numbers.ts'
 import { Handlers } from 'fresh/compat'
 
 const verify_token = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
@@ -67,9 +59,7 @@ async function getContents(
       }
 
     case 'interactive': {
-      const body = message.interactive.type === 'list_reply'
-        ? message.interactive.list_reply.id
-        : message.interactive.button_reply.id
+      const body = message.interactive.type === 'list_reply' ? message.interactive.list_reply.id : message.interactive.button_reply.id
       return { has_media: false, media_id: null, body }
     }
     case 'contacts': {

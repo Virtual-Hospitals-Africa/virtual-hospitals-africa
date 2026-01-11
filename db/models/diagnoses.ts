@@ -127,8 +127,7 @@ export const diagnoses = {
       diagnoses_to_insert,
       (diagnosis) =>
         existing_diagnoses.self.some(
-          (existing_diagnosis) =>
-            existing_diagnosis.id === diagnosis.condition_id,
+          (existing_diagnosis) => existing_diagnosis.id === diagnosis.condition_id,
         ),
     )
     const [to_update_collaborations, to_insert_collaborations] = partition(
@@ -169,9 +168,7 @@ export const diagnoses = {
         .where(
           'id',
           'in',
-          to_delete_diagnoses.map((diagnosis) =>
-            diagnosis.patient_condition_id
-          ),
+          to_delete_diagnoses.map((diagnosis) => diagnosis.patient_condition_id),
         )
         .execute()
 

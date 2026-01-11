@@ -85,9 +85,7 @@ export default function Condition(
               prefix={prefix}
               index={index}
               remove={() => {
-                const next_comorbidities = comorbidities.map((c) =>
-                  c === comorbidity ? { removed: true as const } : c
-                )
+                const next_comorbidities = comorbidities.map((c) => c === comorbidity ? { removed: true as const } : c)
                 const next_condition_state = {
                   medications,
                   comorbidities: next_comorbidities,
@@ -112,9 +110,7 @@ export default function Condition(
               prefix={prefix}
               index={index}
               remove={() => {
-                const next_medications = medications.map((m) =>
-                  m === medication ? { removed: true as const } : m
-                )
+                const next_medications = medications.map((m) => m === medication ? { removed: true as const } : m)
                 const next_condition_state = {
                   medications: next_medications,
                   comorbidities,

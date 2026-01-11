@@ -1,12 +1,5 @@
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
-import {
-  TabProps,
-  Tabs,
-} from '../../../../../../../../components/library/Tabs.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import { TabProps, Tabs } from '../../../../../../../../components/library/Tabs.tsx'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { doctor_reviews } from '../../../../../../../../db/models/doctor_reviews.ts'
@@ -16,9 +9,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { parseRequest } from '../../../../../../../../backend/parseForm.ts'
 import z from 'zod'
 import redirect from '../../../../../../../../util/redirect.ts'
-import {
-  completedRegistration,
-} from '../../../../../../../../shared/patient_registration.ts'
+import { completedRegistration } from '../../../../../../../../shared/patient_registration.ts'
 import { assert } from 'std/assert/assert.ts'
 
 function searchByHref<T>(
@@ -65,8 +56,7 @@ const ReviewRequestSchema = z.object({
   .refine(
     (data) => !!data.organization_id === !data.doctor_id,
     {
-      message:
-        'Must request a review from a doctor or an organization, but not both',
+      message: 'Must request a review from a doctor or an organization, but not both',
       path: ['organization_id'],
     },
   )
@@ -88,8 +78,7 @@ export const handler = {
         if (!body.review_request) return false
         const review_request = await doctor_reviews.upsertRequest(trx, {
           ...body.review_request,
-          requested_by:
-            encounter_employee_presence.patient_encounter_employee_id,
+          requested_by: encounter_employee_presence.patient_encounter_employee_id,
           patient_id: encounter.patient.id,
           patient_encounter_id: encounter.patient_encounter_id,
         })

@@ -12,8 +12,7 @@ export async function up(db: Kysely<DB>) {
     .addColumn(
       'section',
       'varchar(8)',
-      (col) =>
-        col.notNull().references('icd10_sections.section').onDelete('cascade'),
+      (col) => col.notNull().references('icd10_sections.section').onDelete('cascade'),
     )
     .addColumn('description', 'varchar(255)', (col) => col.notNull())
     .execute()
@@ -47,8 +46,7 @@ export async function up(db: Kysely<DB>) {
     .addColumn(
       'code',
       'varchar(8)',
-      (col) =>
-        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+      (col) => col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn('note', 'text', (col) => col.notNull())
     .addColumn('note_vector', sql`tsvector`, (col) => col.notNull())
@@ -64,8 +62,7 @@ export async function up(db: Kysely<DB>) {
     .addColumn(
       'code',
       'varchar(8)',
-      (col) =>
-        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+      (col) => col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn('note', 'text', (col) => col.notNull())
     .addColumn('pure', 'boolean', (col) => col.notNull())
@@ -112,8 +109,7 @@ export async function up(db: Kysely<DB>) {
     .addColumn(
       'code',
       'varchar(8)',
-      (col) =>
-        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+      (col) => col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn('dash', 'boolean', (col) => col.notNull().defaultTo(false))
     .execute()
@@ -135,14 +131,12 @@ export async function up(db: Kysely<DB>) {
     .addColumn(
       'code_range_start',
       'varchar(8)',
-      (col) =>
-        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+      (col) => col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn(
       'code_range_end',
       'varchar(8)',
-      (col) =>
-        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+      (col) => col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn(
       'code_range_start_dash',

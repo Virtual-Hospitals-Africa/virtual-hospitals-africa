@@ -1,13 +1,5 @@
 import { InsertResult, UpdateResult } from 'kysely'
-import {
-  ChatbotName,
-  ChatbotUser,
-  HasStringId,
-  TrxOrDb,
-  UnhandledMessage,
-  WhatsAppMessageContents,
-  WhatsAppMessageReceived,
-} from '../../types.ts'
+import { ChatbotName, ChatbotUser, HasStringId, TrxOrDb, UnhandledMessage, WhatsAppMessageContents, WhatsAppMessageReceived } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { literalString, now } from '../helpers.ts'

@@ -148,8 +148,7 @@ export async function withTestOrganizations(
   callback: (organization_ids: string[]) => Promise<void>,
 ) {
   const to_create = Array.isArray(opts) ? opts : (
-    assert(opts.count > 0),
-      range(opts.count).map((_) => ({ category: opts.category }))
+    assert(opts.count > 0), range(opts.count).map((_) => ({ category: opts.category }))
   )
 
   const creating: OrganizationInsert[] = to_create.map((
@@ -174,9 +173,7 @@ export async function withTestOrganizations(
   const organizations_added = await Promise.all(
     creating.map((org) => organizations.add(trx, org)),
   )
-  const organization_ids = organizations_added.map((organization) =>
-    organization.id
-  )
+  const organization_ids = organizations_added.map((organization) => organization.id)
   // const address_ids = compact(
   //   organizations_added.map((organization) => organization.address_id),
   // )

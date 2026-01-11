@@ -44,10 +44,7 @@ export default function MajorSurgeriesForm(props: {
                   surgery.start_date === state.start_date,
               )
               : undefined}
-            remove={() =>
-              major_surgeries.value = major_surgeries.value.map((surgery, j) =>
-                j === index ? { removed: true } : surgery
-              )}
+            remove={() => major_surgeries.value = major_surgeries.value.map((surgery, j) => j === index ? { removed: true } : surgery)}
           />
         )
       )}

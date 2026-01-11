@@ -1,12 +1,7 @@
 import { Signal, useSignal } from '@preact/signals'
 import { JSX } from 'preact'
 import FormSection from '../../components/library/FormSection.tsx'
-import {
-  FamilyRelation,
-  GuardianFamilyRelation,
-  NextOfKin,
-  PatientFamily,
-} from '../../types.ts'
+import { FamilyRelation, GuardianFamilyRelation, NextOfKin, PatientFamily } from '../../types.ts'
 import NextOfKinInput from './NextOfKin.tsx'
 import Guardian from './Guardian.tsx'
 import { AddRow } from '../AddRemove.tsx'
@@ -71,12 +66,8 @@ export default function PatientFamilyForm({
 
   return (
     <>
-      {show_guardians && (
-        <input type='hidden' name='family.under_18' value='on' />
-      )}
-      {show_next_of_kin && (
-        <NextOfKinFormSection next_of_kin={family.next_of_kin ?? undefined} />
-      )}
+      {show_guardians && <input type='hidden' name='family.under_18' value='on' />}
+      {show_next_of_kin && <NextOfKinFormSection next_of_kin={family.next_of_kin ?? undefined} />}
 
       {show_guardians &&
         (
@@ -88,10 +79,7 @@ export default function PatientFamilyForm({
                   value={guardian}
                   key={i}
                   name={`family.guardians.${i}`}
-                  onRemove={() =>
-                    guardians.value = guardians.value.map((guardian, ix) =>
-                      i === ix ? { removed: true } : guardian
-                    )}
+                  onRemove={() => guardians.value = guardians.value.map((guardian, ix) => i === ix ? { removed: true } : guardian)}
                 />
               )
             ))}
@@ -115,10 +103,7 @@ export default function PatientFamilyForm({
                   key={i}
                   value={dependent}
                   name={`family.dependents.${i}`}
-                  onRemove={() =>
-                    dependents.value = dependents.value.map((dependent, ix) =>
-                      i === ix ? { removed: true } : dependent
-                    )}
+                  onRemove={() => dependents.value = dependents.value.map((dependent, ix) => i === ix ? { removed: true } : dependent)}
                 />
               )
             ))}

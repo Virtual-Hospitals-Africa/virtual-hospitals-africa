@@ -17,16 +17,13 @@ export default function PartnersContent() {
               Driving innovative<br />health care
             </h2>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
-              We’re interested in collaborating with funders passionate about
-              global health to pilot this system in 5 rural clinics in Zimbabwe
-              in early 2025. Your support will enable software development,
-              health worker training, internet access, point of care testing,
-              implementation, and other essential services.
+              We’re interested in collaborating with funders passionate about global health to pilot this system in 5 rural clinics in Zimbabwe in early 2025.
+              Your support will enable software development, health worker training, internet access, point of care testing, implementation, and other essential
+              services.
             </p>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
-              In creating this integrated platform together we can demonstrate
-              how higher quality care can be delivered to patients with less
-              stress at lower cost.
+              In creating this integrated platform together we can demonstrate how higher quality care can be delivered to patients with less stress at lower
+              cost.
             </p>
             <Button
               className='mt-4'

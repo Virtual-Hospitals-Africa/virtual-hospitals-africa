@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'preact/hooks'
-import {
-  Diagnosis,
-  DrugSearchResult as DrugSearchResultData,
-  PrescriptionMedicationWithDrug,
-} from '../../types.ts'
+import { Diagnosis, DrugSearchResult as DrugSearchResultData, PrescriptionMedicationWithDrug } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
 import DrugSearch from '../drug/Search.tsx'
 import { strengthDisplay } from '../../shared/medication.ts'
@@ -188,8 +184,7 @@ export function PrescriptionMedicationInput({
                   strength_numerator: strength_numerator_option,
                   strength_numerator_unit: medication.strength_numerator_unit,
                   strength_denominator: medication.strength_denominator,
-                  strength_denominator_unit:
-                    medication.strength_denominator_unit,
+                  strength_denominator_unit: medication.strength_denominator_unit,
                 })}
               </option>
             ))}

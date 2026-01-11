@@ -9,9 +9,7 @@ function* yieldTables(): Generator<keyof DB> {
   const file_contents = new TextDecoder().decode(file)
   const db_lines = file_contents.split('\n')
 
-  const db_interface_start = db_lines.findIndex((line) =>
-    line === 'export interface DB {'
-  )
+  const db_interface_start = db_lines.findIndex((line) => line === 'export interface DB {')
 
   assertNotEquals(db_interface_start, -1)
   const remaining_lines = db_lines.slice(db_interface_start + 1)

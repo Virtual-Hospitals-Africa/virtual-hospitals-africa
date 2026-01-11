@@ -1,7 +1,4 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from '../library/icons/heroicons/outline.tsx'
+import { ChevronLeftIcon, ChevronRightIcon } from '../library/icons/heroicons/outline.tsx'
 import cls from '../../util/cls.ts'
 import { monthName, numberOfDaysInMonth } from '../../util/date.ts'
 import range from '../../util/range.ts'
@@ -64,9 +61,7 @@ function daysToShow(
     total_days_in_last_month - first_week_days_of_last_month + 1,
     total_days_in_last_month + 1,
   ).map((dayInt) => {
-    const date = `${last_month_year_int}-${padTime(last_month_int)}-${
-      padTime(dayInt)
-    }`
+    const date = `${last_month_year_int}-${padTime(last_month_int)}-${padTime(dayInt)}`
     return toShow(date)
   })
 
@@ -74,9 +69,7 @@ function daysToShow(
     1,
     last_week_days_of_next_month + 1,
   ).map((dayInt) => {
-    const date = `${next_month_year_int}-${padTime(next_month_int)}-${
-      padTime(dayInt)
-    }`
+    const date = `${next_month_year_int}-${padTime(next_month_int)}-${padTime(dayInt)}`
     return toShow(date)
   })
 
@@ -104,15 +97,11 @@ export default function Calendar(
     last_month_int,
     last_month_year_int,
   )
-  const last_day_of_last_month = `${last_month_year_int}-${
-    padTime(last_month_int)
-  }-${total_days_in_last_month}`
+  const last_day_of_last_month = `${last_month_year_int}-${padTime(last_month_int)}-${total_days_in_last_month}`
 
   const next_month_int = monthInt === 12 ? 1 : monthInt + 1
   const next_month_year_int = monthInt === 12 ? yearInt + 1 : yearInt
-  const first_day_of_next_month = `${next_month_year_int}-${
-    padTime(next_month_int)
-  }-01`
+  const first_day_of_next_month = `${next_month_year_int}-${padTime(next_month_int)}-01`
 
   return (
     <div className='text-center lg:col-start-8 lg:col-end-13 lg:mt-9 xl:col-start-9'>

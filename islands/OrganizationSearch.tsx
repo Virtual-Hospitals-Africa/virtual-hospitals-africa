@@ -1,8 +1,4 @@
-import {
-  Maybe,
-  NearestOrganizationSearchResult,
-  OrganizationSortOptions,
-} from '../types.ts'
+import { Maybe, NearestOrganizationSearchResult, OrganizationSortOptions } from '../types.ts'
 import AsyncSearch from './AsyncSearch.tsx'
 
 export default function OrganizationSearch(
@@ -55,9 +51,7 @@ export default function OrganizationSearch(
     params.set('sort_direction', sort.direction)
   }
 
-  const search_route = url.includes('?')
-    ? `${url}&${params}`
-    : `${url}?${params}`
+  const search_route = url.includes('?') ? `${url}&${params}` : `${url}?${params}`
 
   return (
     <AsyncSearch

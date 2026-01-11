@@ -26,8 +26,7 @@ export async function up(db: Kysely<DB>) {
       .addColumn(
         'country',
         'varchar(2)',
-        (col) =>
-          col.notNull().references('countries.iso_3166_2').onDelete('cascade'),
+        (col) => col.notNull().references('countries.iso_3166_2').onDelete('cascade'),
       )
       .addColumn('licence_number', 'varchar(255)', (col) => col.notNull())
       .addColumn('name', 'varchar(255)', (col) => col.notNull())
@@ -35,17 +34,13 @@ export async function up(db: Kysely<DB>) {
       .addColumn('address', 'varchar(255)')
       .addColumn('town', 'varchar(255)')
       .addColumn('expiry_date', 'date', (col) => col.notNull())
-      .addColumn('pharmacies_types', sql`pharmacies_types`, (col) =>
-        col.notNull()))
+      .addColumn('pharmacies_types', sql`pharmacies_types`, (col) => col.notNull()))
 
   await createStandardTable(db, 'pharmacy_employment', (qb) =>
     qb
-      .addColumn('pharmacy_id', 'uuid', (col) =>
-        col.notNull().references('pharmacies.id').onDelete('cascade'))
-      .addColumn('pharmacist_id', 'uuid', (col) =>
-        col.notNull().references('pharmacists.id').onDelete('cascade'))
-      .addColumn('is_supervisor', 'boolean', (col) =>
-        col.notNull()))
+      .addColumn('pharmacy_id', 'uuid', (col) => col.notNull().references('pharmacies.id').onDelete('cascade'))
+      .addColumn('pharmacist_id', 'uuid', (col) => col.notNull().references('pharmacists.id').onDelete('cascade'))
+      .addColumn('is_supervisor', 'boolean', (col) => col.notNull()))
 }
 
 export async function down(db: Kysely<DB>) {

@@ -1,12 +1,6 @@
 import findMatchingState from './findMatchingState.ts'
 import formatMessageToSend from './formatMessageToSend.ts'
-import {
-  ChatbotUserState,
-  TrxOrDb,
-  UnhandledMessage,
-  WhatsAppSendable,
-  WhatsAppSingleSendable,
-} from '../types.ts'
+import { ChatbotUserState, TrxOrDb, UnhandledMessage, WhatsAppSendable, WhatsAppSingleSendable } from '../types.ts'
 import * as defs from './defs.ts'
 import { conversations } from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -17,8 +11,7 @@ export async function determineResponse(
   unhandled_message: UnhandledMessage,
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
   // deno-lint-ignore no-explicit-any
-  const conversation_states: any =
-    defs[unhandled_message.chatbot_name].conversation_states
+  const conversation_states: any = defs[unhandled_message.chatbot_name].conversation_states
 
   let chatbot_user = await conversations.findChatbotUser(
     trx,
@@ -67,12 +60,9 @@ export async function determineResponse(
 
     if (!current_state) {
       nextConversationState = 'error'
-      nextState =
-        defs[userState.chatbot_user.chatbot_name].conversation_states.error
+      nextState = defs[userState.chatbot_user.chatbot_name].conversation_states.error
     } else {
-      nextConversationState = typeof current_state.onExit === 'string'
-        ? current_state.onExit
-        : await current_state.onExit(trx, userState)
+      nextConversationState = typeof current_state.onExit === 'string' ? current_state.onExit : await current_state.onExit(trx, userState)
 
       nextState = conversation_states[nextConversationState]
     }

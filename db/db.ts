@@ -1,13 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { Pool } from 'pg'
 import Cursor from 'pg-cursor'
-import {
-  Kysely,
-  PostgresAdapter,
-  PostgresDriver,
-  PostgresIntrospector,
-  PostgresQueryCompiler,
-} from 'kysely'
+import { Kysely, PostgresAdapter, PostgresDriver, PostgresIntrospector, PostgresQueryCompiler } from 'kysely'
 import { DB } from '../db.d.ts'
 import { debugReplaceAll } from './helpers.ts'
 import { monkeyPatchConsole } from '../util/monkey-patch-console.ts'
@@ -38,8 +32,7 @@ if (
 export function parseConnectionString(
   connectionString: string,
 ) {
-  const regex =
-    /^postgres:\/\/(?:(.*?)(?::(.*?))?@)?(.*):(\d+)\/(\w*)?(\?sslmode=require)?$/
+  const regex = /^postgres:\/\/(?:(.*?)(?::(.*?))?@)?(.*):(\d+)\/(\w*)?(\?sslmode=require)?$/
   const match = connectionString.match(regex)
 
   assert(match, 'Invalid postgres connection string format.')

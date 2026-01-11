@@ -11,8 +11,6 @@ export default function assertLength<
 ) {
   assert(
     array.length === length,
-    `Expected array to be length ${length}. Actual length ${array.length}. Actual value\n${
-      humanReadableJson(array)
-    }`,
+    `Expected array to be length ${length}. Actual length ${array.length}. Actual value\n${humanReadableJson(array)}`,
   )
 }

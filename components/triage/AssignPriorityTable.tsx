@@ -1,9 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import {
-  Priority,
-  TriageAssignPriorityTableVital,
-  WithTriageLevelFinding,
-} from '../../types.ts'
+import { Priority, TriageAssignPriorityTableVital, WithTriageLevelFinding } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 import { ReferenceRangeIndicator } from '../vitals/SimpleReferenceRangeIndicator.tsx'
@@ -90,9 +86,7 @@ const columns: TableColumn<Row>[] = [
         <ReferenceRangeIndicator
           units={finding.value.units}
           value={finding.value.value}
-          previous_value={previous?.value?.type === 'measurement'
-            ? previous.value.value
-            : undefined}
+          previous_value={previous?.value?.type === 'measurement' ? previous.value.value : undefined}
           reference_ranges={reference_ranges}
         />
       )
@@ -146,8 +140,7 @@ function ConclusionRow(
 }
 
 export function TriageAssignPriorityTable(
-  { vitals, with_triage_level_findings, total_score, priority }:
-    TriageAssignPriorityTableProps,
+  { vitals, with_triage_level_findings, total_score, priority }: TriageAssignPriorityTableProps,
 ) {
   return (
     <div className='relative'>

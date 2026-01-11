@@ -1,9 +1,4 @@
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-} from '@headlessui/react'
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import cls from '../../util/cls.ts'
 import { ComponentChild } from 'preact'
 import isString from '../../util/isString.ts'
@@ -41,9 +36,7 @@ export function ListboxMulti<O extends Option>({
   const selected_ids = useSignal(
     selected,
   )
-  const using_options: OptionRecord[] = options.map((option) =>
-    isString(option) ? { id: option, name: option } : option as OptionRecord
-  )
+  const using_options: OptionRecord[] = options.map((option) => isString(option) ? { id: option, name: option } : option as OptionRecord)
 
   for (const option of using_options) {
     assert(option.id, `Option must have id for ${name}`)
@@ -63,9 +56,7 @@ export function ListboxMulti<O extends Option>({
         <ListboxButton className='block min-h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700 text-left text-ellipsis'>
           <span className='block py-3 px-1.5'>
             {selected_ids.value.map((id) => {
-              const matching_option = using_options.find((option) =>
-                option.id === id
-              )
+              const matching_option = using_options.find((option) => option.id === id)
               assert(
                 matching_option,
                 `No matching option could be found for field: ${name}, id: ${id}`,

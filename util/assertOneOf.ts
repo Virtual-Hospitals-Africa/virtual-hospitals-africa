@@ -8,8 +8,6 @@ export default function assertOneOf<T>(
   const use_explanation = explanation ? `\n${explanation}` : ''
   assert(
     array.includes(item as T),
-    `Expected ${JSON.stringify(item)} to be one of ${
-      JSON.stringify(array)
-    }${use_explanation}`,
+    `Expected ${JSON.stringify(item)} to be one of ${JSON.stringify(array)}${use_explanation}`,
   )
 }

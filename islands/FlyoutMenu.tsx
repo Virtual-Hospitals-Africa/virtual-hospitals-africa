@@ -1,16 +1,6 @@
 import { Popover, Transition } from '@headlessui/react'
-import {
-  ChevronDownIcon,
-  PhoneIcon,
-  PlayCircleIcon,
-} from '../components/library/icons/heroicons/solid.tsx'
-import {
-  ArrowPathIcon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-} from '../components/library/icons/heroicons/outline.tsx'
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '../components/library/icons/heroicons/solid.tsx'
+import { ArrowPathIcon, ChartPieIcon, CursorArrowRaysIcon, FingerPrintIcon, SquaresPlusIcon } from '../components/library/icons/heroicons/outline.tsx'
 
 const solutions = [
   {

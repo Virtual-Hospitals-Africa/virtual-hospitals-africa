@@ -35,8 +35,7 @@ const incidences = memoize(function (country: 'ZA' | 'ZW') {
       incidence: surname_incidence,
     }
   })
-  const total_surname_incidence =
-    surname_incidences[surname_incidences.length - 1].incidence
+  const total_surname_incidence = surname_incidences[surname_incidences.length - 1].incidence
 
   let first_name_incidence = 0
   const first_name_incidences = first_names.map((entry) => {
@@ -48,8 +47,7 @@ const incidences = memoize(function (country: 'ZA' | 'ZW') {
       male_percentage: entry.male_percentage,
     }
   })
-  const total_first_name_incidence =
-    first_name_incidences[first_name_incidences.length - 1].incidence
+  const total_first_name_incidence = first_name_incidences[first_name_incidences.length - 1].incidence
 
   return {
     surname_incidences,
@@ -79,9 +77,7 @@ export default function randomNamesAndSex(
     return first_name_seed < entry.incidence
   })!
   const first_names = first_name_entry.name
-  const of_sex = first_name_entry.female_percentage > sex_seed
-    ? 'female'
-    : 'male'
+  const of_sex = first_name_entry.female_percentage > sex_seed ? 'female' : 'male'
   if (sex && sex !== of_sex) {
     // Just re-roll the dice until we get one that matches
     return randomNamesAndSex(country, sex)

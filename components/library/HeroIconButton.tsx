@@ -1,9 +1,4 @@
-import {
-  AnchorHTMLAttributes,
-  ButtonHTMLAttributes,
-  ComponentChild,
-  type JSX,
-} from 'preact'
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, ComponentChild, type JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
 type FigmaVariant =

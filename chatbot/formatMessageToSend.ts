@@ -1,11 +1,4 @@
-import {
-  ChatbotUserState,
-  ConversationStateHandler,
-  TrxOrDb,
-  WhatsAppSendable,
-  WhatsAppSendableString,
-  WhatsAppSingleSendable,
-} from '../types.ts'
+import { ChatbotUserState, ConversationStateHandler, TrxOrDb, WhatsAppSendable, WhatsAppSendableString, WhatsAppSingleSendable } from '../types.ts'
 import pick from '../util/pick.ts'
 
 function stringSendable(message_body: string): WhatsAppSendableString {
@@ -24,9 +17,7 @@ export default async function formatMessageToSend<
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
   console.log('state', state)
 
-  const message_body = typeof state.prompt === 'string'
-    ? state.prompt
-    : await state.prompt(trx, userState)
+  const message_body = typeof state.prompt === 'string' ? state.prompt : await state.prompt(trx, userState)
 
   switch (state.type) {
     case 'select':

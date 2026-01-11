@@ -1,10 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../../db.d.ts'
-import {
-  directoryExists,
-  rmrf,
-  runCommandAssertExitCodeZero,
-} from '../../../util/command.ts'
+import { directoryExists, rmrf, runCommandAssertExitCodeZero } from '../../../util/command.ts'
 import { chunkTsvResource } from '../../parseTsvResource.ts'
 import { define } from '../define.ts'
 import z from 'zod'
@@ -59,9 +55,7 @@ const effective_time = z.number().transform((s) => {
   return str.slice(0, 4) + '-' + str.slice(4, 6) + '-' + str.slice(6, 8)
 })
 
-const number_or_string_as_string = z.string().or(z.number()).transform((s) =>
-  String(s)
-)
+const number_or_string_as_string = z.string().or(z.number()).transform((s) => String(s))
 
 const snomed_tables: {
   table: keyof DB
@@ -125,8 +119,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_cisscc_refset_mrcm_attribute_domain',
-    text_file:
-      `der2_cissccRefset_MRCMAttributeDomainSnapshot${snomed_file_suffix}`,
+    text_file: `der2_cissccRefset_MRCMAttributeDomainSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -256,8 +249,7 @@ const snomed_tables: {
   },
   {
     table: 'snomed_sscc_refset_mrcm_attribute_range',
-    text_file:
-      `der2_ssccRefset_MRCMAttributeRangeSnapshot${snomed_file_suffix}`,
+    text_file: `der2_ssccRefset_MRCMAttributeRangeSnapshot${snomed_file_suffix}`,
     schema: z.object({
       id: z.string(),
       effective_time,
@@ -440,9 +432,7 @@ export default define([
   await ensureLatestSnomedExtractedAndFilesLayFlatInDirectory()
 
   const TEST_AGAINST_FILE_HEADS = false
-  const snomed_directory = TEST_AGAINST_FILE_HEADS
-    ? 'snomed-file-heads'
-    : 'extracted/snomed'
+  const snomed_directory = TEST_AGAINST_FILE_HEADS ? 'snomed-file-heads' : 'extracted/snomed'
 
   for (const { table, text_file, schema } of snomed_tables) {
     console.log(`Loading ${table}`)

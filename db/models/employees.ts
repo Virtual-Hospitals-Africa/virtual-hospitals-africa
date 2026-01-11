@@ -41,8 +41,7 @@ function fromHealthWorker(
     profession: organization_employment.profession,
     is_admin: organization_employment.is_admin,
     specialty: organization_employment.specialty,
-    href:
-      `/app/organizations/${organization_employment.id}/employees/${health_worker.id}`,
+    href: `/app/organizations/${organization_employment.id}/employees/${health_worker.id}`,
   }
 }
 
@@ -83,9 +82,7 @@ export const employees = base({
       qb = qb.where(
         'employment.organization_id',
         'in',
-        isString(opts.organization_id)
-          ? [opts.organization_id]
-          : opts.organization_id,
+        isString(opts.organization_id) ? [opts.organization_id] : opts.organization_id,
       )
     }
 

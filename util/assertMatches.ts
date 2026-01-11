@@ -19,9 +19,7 @@ function zodify(value: unknown, opts: { strict?: boolean } = {}): z.ZodType {
   // Arrays become tuples with each element zodified
   if (Array.isArray(value)) {
     const elements = value.map((item) => zodify(item, opts))
-    return elements.length
-      ? z.tuple(elements as [z.ZodType, ...z.ZodType[]])
-      : z.tuple([])
+    return elements.length ? z.tuple(elements as [z.ZodType, ...z.ZodType[]]) : z.tuple([])
   }
 
   if (isDate(value)) {
@@ -96,12 +94,10 @@ export function parseWithValues<
 // deno-lint-ignore no-explicit-any
 type Indexable = { [key: string]: any }
 
-type Matched<T, Strict extends boolean> = T extends z.ZodType<infer O>
-  ? Matched<O, Strict>
+type Matched<T, Strict extends boolean> = T extends z.ZodType<infer O> ? Matched<O, Strict>
   : T extends readonly (infer E)[] ? Strict extends true ? Matched<E, Strict>[]
     : Matched<E, Strict>[] & Indexable
-  : T extends object
-    ? Strict extends true ? { [P in keyof T]: Matched<T[P], Strict> }
+  : T extends object ? Strict extends true ? { [P in keyof T]: Matched<T[P], Strict> }
     : { [P in keyof T]: Matched<T[P], Strict> } & Indexable
   : T
 

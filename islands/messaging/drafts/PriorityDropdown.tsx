@@ -1,9 +1,5 @@
 import { useSignal } from '@preact/signals'
-import {
-  PRIORITIES,
-  Priority,
-  PRIORITY_COLORS,
-} from '../../../shared/priorities.ts'
+import { PRIORITIES, Priority, PRIORITY_COLORS } from '../../../shared/priorities.ts'
 import { ChevronDownIcon } from '../../../components/library/icons/heroicons/outline.tsx'
 import { Maybe } from '../../../types.ts'
 import remove from '../../../util/remove.ts'
@@ -57,9 +53,7 @@ export default function PriorityDropdown(
                       priority.value = p as Priority
                       open.value = false
                     }}
-                    class={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${
-                      priority.value === p ? 'bg-gray-50' : ''
-                    }`}
+                    class={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${priority.value === p ? 'bg-gray-50' : ''}`}
                     role='menuitem'
                   >
                     <span

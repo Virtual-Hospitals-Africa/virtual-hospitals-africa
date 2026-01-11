@@ -7,8 +7,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeeTable(
     ctx,
   ) {
-    const { trx, health_worker, organization, is_admin_at_organization } =
-      ctx.state
+    const { trx, health_worker, organization, is_admin_at_organization } = ctx.state
 
     // const getEmployees = is_admin_at_organization
     //   ? organizations.getEmployeesAndInvitees

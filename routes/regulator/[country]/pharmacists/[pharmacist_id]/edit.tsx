@@ -2,10 +2,7 @@ import { Context } from 'fresh'
 import { LoggedInRegulator } from '../../../../../types.ts'
 import PharmacistForm from '../../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../../util/redirect.ts'
-import {
-  pharmacists,
-  PharmacistUpsertSchema,
-} from '../../../../../db/models/pharmacists.ts'
+import { pharmacists, PharmacistUpsertSchema } from '../../../../../db/models/pharmacists.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../backend/postHandler.ts'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
@@ -50,8 +47,6 @@ export default RegulatorHomePageLayout(
       })
     }
 
-    return (
-      <PharmacistForm form_data={pharmacist} country={ctx.params.country} />
-    )
+    return <PharmacistForm form_data={pharmacist} country={ctx.params.country} />
   },
 )

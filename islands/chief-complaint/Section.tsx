@@ -4,14 +4,8 @@ import { MicrophoneIcon } from '../../components/library/icons/heroicons/outline
 
 import { assert } from 'std/assert/assert.ts'
 import { RecordDialog, RecordingState } from './RecordDialog.tsx'
-import {
-  SpeechWebsocketState,
-  startSpeechWebsocket,
-} from './startSpeechWebsocket.ts'
-import {
-  MediaRecorderState,
-  startStreamAndMediaRecorder,
-} from './startStreamAndMediaRecorder.ts'
+import { SpeechWebsocketState, startSpeechWebsocket } from './startSpeechWebsocket.ts'
+import { MediaRecorderState, startStreamAndMediaRecorder } from './startStreamAndMediaRecorder.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { SelectWithOptions } from '../form/inputs/select_with_options.tsx'
 import { TextArea } from '../form/inputs/textarea.tsx'
@@ -35,9 +29,7 @@ export function ChiefComplaintSection({
     recording: false,
   })
 
-  const transcribing_audio = computed(() =>
-    speech_websocket_signal.value.type === 'stream_ended_awaiting_transcription'
-  )
+  const transcribing_audio = computed(() => speech_websocket_signal.value.type === 'stream_ended_awaiting_transcription')
 
   effect(() => {
     if (speech_websocket_signal.value.type !== 'transcription_finished') return
@@ -142,13 +134,9 @@ export function ChiefComplaintSection({
         {...recording_signal.value}
       />
 
-      {speech_websocket_signal.value.type === 'error' && (
-        <span>{speech_websocket_signal.value.error.message}</span>
-      )}
+      {speech_websocket_signal.value.type === 'error' && <span>{speech_websocket_signal.value.error.message}</span>}
 
-      {media_recorder_signal.value.type === 'error' && (
-        <span>{media_recorder_signal.value.error.message}</span>
-      )}
+      {media_recorder_signal.value.type === 'error' && <span>{media_recorder_signal.value.error.message}</span>}
     </div>
   )
 }

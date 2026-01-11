@@ -38,9 +38,7 @@ export default function DescriptionRow(
               {cell.href
                 ? (
                   <a
-                    title={`${capitalize(cell.action || 'view')} ${
-                      capitalize(cell.name)
-                    }`}
+                    title={`${capitalize(cell.action || 'view')} ${capitalize(cell.name)}`}
                     style={{ display: 'inline-block' }}
                     onMouseOver={() => setHoveredCellIndex(index)}
                     onMouseLeave={() => setHoveredCellIndex(-1)}
@@ -61,9 +59,7 @@ export default function DescriptionRow(
           <PencilSquareIcon
             className={cls(
               'self-center w-4 h-4 show-on-mobile lg:block',
-              isHoveredOnGroup
-                ? 'transition duration-120 opacity-1'
-                : 'opacity-0',
+              isHoveredOnGroup ? 'transition duration-120 opacity-1' : 'opacity-0',
             )}
           />
         )}
@@ -71,9 +67,7 @@ export default function DescriptionRow(
           <EyeIcon
             className={cls(
               'self-center w-4 h-4 show-on-mobile lg:block',
-              isHoveredOnGroup
-                ? 'transition duration-120 opacity-1'
-                : 'opacity-0',
+              isHoveredOnGroup ? 'transition duration-120 opacity-1' : 'opacity-0',
             )}
           />
         )}

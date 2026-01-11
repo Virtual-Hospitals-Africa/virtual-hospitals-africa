@@ -7,9 +7,7 @@ import { BluetoothIcon } from './icons/BluetoothIcon.tsx'
 
 export function CircularImage({ image }: { image: Image }) {
   if (image.type === 'avatar') {
-    return (
-      <Avatar src={image.url} className={cls('h-10 w-10', image.className)} />
-    )
+    return <Avatar src={image.url} className={cls('h-10 w-10', image.className)} />
   }
   assertEquals(image.type, 'icon')
 

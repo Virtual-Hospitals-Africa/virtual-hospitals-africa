@@ -21,9 +21,7 @@ export default function NurseRegistrationForm(
           form_data={form_data}
         />
       )}
-      {current_step === 'professional' && (
-        <NurseProfessionalForm form_data={form_data} />
-      )}
+      {current_step === 'professional' && <NurseProfessionalForm form_data={form_data} />}
       {current_step === 'documents' && (
         <NurseDocumentsForm
           form_data={form_data}

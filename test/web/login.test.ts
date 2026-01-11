@@ -5,10 +5,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { addTestRegulatorWithSession } from '../_helpers/regulators.ts'
-import {
-  createTestOrganization,
-  withTestOrganization,
-} from '../_helpers/organizations.ts'
+import { createTestOrganization, withTestOrganization } from '../_helpers/organizations.ts'
 import sample from '../../util/sample.ts'
 import { route } from '../_route.ts'
 import selfUrl from '../../util/selfUrl.ts'

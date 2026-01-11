@@ -5,10 +5,7 @@ import generateUUID from '../../util/uuid.ts'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
-import {
-  patient_evaluations,
-  PatientEvaluationInsert,
-} from './patient_evaluations.ts'
+import { patient_evaluations, PatientEvaluationInsert } from './patient_evaluations.ts'
 
 type PatientEvaluationScoreInsert = PatientEvaluationInsert & {
   score: number

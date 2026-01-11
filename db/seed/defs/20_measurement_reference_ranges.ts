@@ -30,9 +30,7 @@ export default define(['measurement_reference_ranges'], async (trx) => {
     .insertInto('measurement_reference_ranges')
     .values(rows.map((row) => ({
       ...row,
-      condition_codes: row.condition_codes
-        ? sql.raw<number[]>(row.condition_codes)
-        : null,
+      condition_codes: row.condition_codes ? sql.raw<number[]>(row.condition_codes) : null,
     })))
     .execute()
 })

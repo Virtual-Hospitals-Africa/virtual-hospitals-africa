@@ -1,8 +1,4 @@
-import {
-  Maybe,
-  RenderedFindingRelativeToHealthWorker,
-  VitalMeasurementFormInputDefition,
-} from '../../types.ts'
+import { Maybe, RenderedFindingRelativeToHealthWorker, VitalMeasurementFormInputDefition } from '../../types.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
 import VitalsInputRow from './InputRow.tsx'

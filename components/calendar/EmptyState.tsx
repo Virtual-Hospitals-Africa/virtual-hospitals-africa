@@ -16,9 +16,7 @@ export default function CalendarEmptyState(
       icon={<MakeAppointmentIcon className='mx-auto h-12 w-12 text-gray-400' />}
       button={{
         children: 'New Appointment',
-        href: search
-          ? `/app/calendar/appointments/schedule?${search}`
-          : '/app/calendar/appointments/schedule',
+        href: search ? `/app/calendar/appointments/schedule?${search}` : '/app/calendar/appointments/schedule',
       }}
     />
   )

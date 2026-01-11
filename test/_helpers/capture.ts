@@ -47,8 +47,7 @@ export function capture(object: unknown) {
   let new_file_contents = file_contents.replace(capture_line, new_line)
     .replace(capture_import_line_regex, '')
   if (!already_has_assert_equals) {
-    new_file_contents =
-      "import { assertEquals } from 'std/assert/assert_equals.ts'\n" +
+    new_file_contents = "import { assertEquals } from 'std/assert/assert_equals.ts'\n" +
       new_file_contents
   }
   Deno.writeTextFileSync(pretty_file_name, new_file_contents)

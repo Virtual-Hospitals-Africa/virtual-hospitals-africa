@@ -139,10 +139,8 @@ describeParallel('db/models/inventory.ts', () => {
               name: consumable_name,
               quantity_on_hand: 5,
               actions: {
-                add:
-                  `/app/organizations/${organization_id}/inventory/add_consumable?consumable_id=${consumable.id}`,
-                history:
-                  `/app/organizations/${organization_id}/inventory/history?consumable_id=${consumable.id}`,
+                add: `/app/organizations/${organization_id}/inventory/add_consumable?consumable_id=${consumable.id}`,
+                history: `/app/organizations/${organization_id}/inventory/history?consumable_id=${consumable.id}`,
               },
             },
           ])

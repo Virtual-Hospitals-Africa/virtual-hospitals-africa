@@ -1,8 +1,7 @@
 import { PostgresInterval } from '../types.ts'
 
 export function timeAgoDisplay(wait_time: PostgresInterval) {
-  const { years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0 } =
-    wait_time
+  const { years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0 } = wait_time
   if (years > 1) {
     return `${years} years ago`
   }

@@ -26,8 +26,7 @@ import {
 } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Browser<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Browser<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description During content authoring previous versions of the concept can be loaded from version control. To do this use the branch path format {branch@yyyy-MM-ddTHH:mm:ss.SSSZ} or {branch@epoch_milliseconds}. The version of the concept when the branch was created can be loaded using {branch@-}.
    *
@@ -450,8 +449,7 @@ export class Browser<SecurityDataType = unknown>
     params: RequestParams = {},
   ) =>
     this.request<ItemsPageObjectComponent, any>({
-      path:
-        `/browser/${branch}/concepts/${componentId}/concept-or-identifier-ref-concept`,
+      path: `/browser/${branch}/concepts/${componentId}/concept-or-identifier-ref-concept`,
       method: 'GET',
       query: query,
       format: 'json',

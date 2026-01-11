@@ -8,10 +8,7 @@ import { route } from '../../../../_route.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-import {
-  asVitalAssessmentFormValues,
-  asVitalMeasurementFormValues,
-} from '../../../../../shared/vitals.ts'
+import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
@@ -97,8 +94,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
               'name': 'Taking patient vital signs assessment',
             },
             'priority': null,
-            'full_display':
-              'Hemoglobin saturation with oxygen Measurement finding',
+            'full_display': 'Hemoglobin saturation with oxygen Measurement finding',
             'provider': {
               'is_me': true,
               'id': z.string().uuid(),
@@ -118,8 +114,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
                   'ownership': null,
                   'inactive_reason': null,
                   'most_common_language_code': null,
-                  'formatted_address':
-                    '123 Test St, Test City, South Africa, 12345',
+                  'formatted_address': '123 Test St, Test City, South Africa, 12345',
                   'description': '123 Test St, Test City, South Africa, 12345',
                   'waiting_room_id': z.string().uuid(),
                   'reception_id': z.string().uuid(),
@@ -252,7 +247,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         diabetes: { existence: 'No' },
         pregnancy: { existence: 'No' },
       },
-      warning_signs: asWarningSigns(['Chest pain']),
+      warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
       height_and_weight: {
         measurements: {
           height: {
@@ -299,8 +294,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
             'procedure': {
               'value': {
                 'type': 's_expression',
-                's_expression':
-                  '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
+                's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
               },
               'displays': {
                 'value': 'Nausea',

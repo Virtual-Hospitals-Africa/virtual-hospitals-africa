@@ -12,11 +12,7 @@ import { temporaryTable } from '../helpers.ts'
 import { IntermediateFinding, patient_findings } from './patient_findings.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import first from '../../util/first.ts'
-import {
-  CommonCondition,
-  CommonConditionKey,
-  commonConditionSnomedConceptId,
-} from '../../shared/brief_history.ts'
+import { CommonCondition, CommonConditionKey, commonConditionSnomedConceptId } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
@@ -55,9 +51,7 @@ function mostRecentFindings(
             'common_conditions',
             (join) =>
               join.on((eb) =>
-                sql<boolean>`is_descendant(${
-                  eb.ref('patient_records.specific_snomed_concept_id')
-                }, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
+                sql<boolean>`is_descendant(${eb.ref('patient_records.specific_snomed_concept_id')}, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
               ),
           )
           .select((eb) => [
@@ -118,24 +112,23 @@ function mostRecentFinding<
       [],
   )
 
-  const first_positive_finding_not_invalidated_by_a_later_negative_finding =
-    findings_of_condition.find((finding) => {
-      if (finding.existence !== 'Yes') return
+  const first_positive_finding_not_invalidated_by_a_later_negative_finding = findings_of_condition.find((finding) => {
+    if (finding.existence !== 'Yes') return
 
-      const most_recent_finding_of_concept = first(
-        findings_of_condition_grouped_by_concept.get(
-          finding.specific_snomed_concept.snomed_concept_id,
-        )!,
-      )
-      assert(most_recent_finding_of_concept)
-      if (finding !== most_recent_finding_of_concept) return false
+    const most_recent_finding_of_concept = first(
+      findings_of_condition_grouped_by_concept.get(
+        finding.specific_snomed_concept.snomed_concept_id,
+      )!,
+    )
+    assert(most_recent_finding_of_concept)
+    if (finding !== most_recent_finding_of_concept) return false
 
-      const invalidated = most_recent_parent_concept_finding &&
-        most_recent_parent_concept_finding.existence !== 'Yes' &&
-        most_recent_parent_concept_finding.created_at > finding.created_at
+    const invalidated = most_recent_parent_concept_finding &&
+      most_recent_parent_concept_finding.existence !== 'Yes' &&
+      most_recent_parent_concept_finding.created_at > finding.created_at
 
-      return !invalidated
-    })
+    return !invalidated
+  })
 
   if (first_positive_finding_not_invalidated_by_a_later_negative_finding) {
     return first_positive_finding_not_invalidated_by_a_later_negative_finding
@@ -168,20 +161,17 @@ export const brief_history = {
       .map(mostRecentFinding)
       .toArray()
 
-    const with_providers: RenderedBriefHistoryRelativeToHealthWorker[] =
-      await patient_record_providers.hydrateIntermediateRecords(trx, {
-        encounter,
-        health_worker_id,
-        records: compact(most_recent_grouped),
-      })
+    const with_providers: RenderedBriefHistoryRelativeToHealthWorker[] = await patient_record_providers.hydrateIntermediateRecords(trx, {
+      encounter,
+      health_worker_id,
+      records: compact(most_recent_grouped),
+    })
 
     return fromEntries(
       conditions.map(
         (condition) => [
           condition.key,
-          with_providers.find((finding) =>
-            finding.pertaining_to_key === condition.key
-          ),
+          with_providers.find((finding) => finding.pertaining_to_key === condition.key),
         ],
       ),
     )

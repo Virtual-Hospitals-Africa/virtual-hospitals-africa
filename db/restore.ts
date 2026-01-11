@@ -38,17 +38,13 @@ if (import.meta.main) {
   const [name, ...rest] = Deno.args
   assert(
     name,
-    `Please provide a valid name for the dump file as in "deno task db:restore ${
-      dumps[0].name
-    }"`,
+    `Please provide a valid name for the dump file as in "deno task db:restore ${dumps[0].name}"`,
   )
 
   const dump_exists = dumps.find((it) => it.name === name)
   assert(
     dump_exists,
-    `Dump file ${name} not found in ./db/dumps. Available dumps: ${
-      dumps.map((it) => it.name).join(', ')
-    }`,
+    `Dump file ${name} not found in ./db/dumps. Available dumps: ${dumps.map((it) => it.name).join(', ')}`,
   )
   await restore(name, ...rest)
 }

@@ -229,9 +229,7 @@ function parseExcludes(excludes: string[] | string | null) {
   if (excludes[0].trim().endsWith(':')) {
     const prepend_note = excludes[0].trim().slice(0, -1) + ' '
     return compact(
-      excludes.slice(1).flatMap((exclude) =>
-        parseExclude(prepend_note + exclude)
-      ),
+      excludes.slice(1).flatMap((exclude) => parseExclude(prepend_note + exclude)),
     )
   }
   return compact(excludes.flatMap(parseExclude))
@@ -321,11 +319,9 @@ function* iterTree(
         row: { category, section, description: tree.desc },
       }
     }
-    const includes: string[] = (Array.isArray(includes_col)
-      ? includes_col
-      : (typeof includes_col === 'string' ? [includes_col] : [])).map(
-        human_readable,
-      )
+    const includes: string[] = (Array.isArray(includes_col) ? includes_col : (typeof includes_col === 'string' ? [includes_col] : [])).map(
+      human_readable,
+    )
 
     const general_words = new Set([
       'unspecified',
@@ -334,9 +330,7 @@ function* iterTree(
     ])
 
     const general = !!parent_code &&
-      words(description.toLowerCase()).some((word) =>
-        general_words.has(word)
-      )
+      words(description.toLowerCase()).some((word) => general_words.has(word))
 
     yield {
       table: 'icd10_diagnoses' as const,
@@ -385,9 +379,7 @@ async function readICD10TabularSections() {
         data,
       )['ICD10CM.tabular']['chapter'],
   )
-  return chapters.flatMap((chapter: any) =>
-    Array.isArray(chapter.section) ? chapter.section : [chapter.section]
-  )
+  return chapters.flatMap((chapter: any) => Array.isArray(chapter.section) ? chapter.section : [chapter.section])
 }
 
 async function insertExcludeRow(
@@ -887,18 +879,10 @@ function tidyTerm(x: any): TidiedTerm {
     }
   }
   if (code) {
-    extra.code = code.endsWith('.-')
-      ? code.slice(0, -2)
-      : code.endsWith('-')
-      ? code.slice(0, -1)
-      : code
+    extra.code = code.endsWith('.-') ? code.slice(0, -2) : code.endsWith('-') ? code.slice(0, -1) : code
   }
   if (subcat) {
-    extra.code = subcat.endsWith('.-')
-      ? subcat.slice(0, -2)
-      : subcat.endsWith('-')
-      ? subcat.slice(0, -1)
-      : subcat
+    extra.code = subcat.endsWith('.-') ? subcat.slice(0, -2) : subcat.endsWith('-') ? subcat.slice(0, -1) : subcat
     extra.is_subcat = true
   }
   return { ...extra, ...to_return }

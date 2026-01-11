@@ -17,8 +17,7 @@ describe('patient chatbot', () => {
     async () => {
       const phone_number = randomPhoneNumber('ZW')
       await patients.insert(db, {
-        conversation_state:
-          'not_onboarded:make_appointment:enter_date_of_birth',
+        conversation_state: 'not_onboarded:make_appointment:enter_date_of_birth',
         phone_number,
         name: 'Test Patient',
         sex: 'female',

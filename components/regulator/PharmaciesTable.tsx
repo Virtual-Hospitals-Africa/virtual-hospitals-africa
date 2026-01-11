@@ -72,9 +72,7 @@ export function PharmaciesTable(
         <EmptyState
           header='No matching pharmacy found'
           explanation={[
-            `No pharmacy matched the search term "${
-              search_terms.name_search || search_terms.licence_number_search
-            }"`,
+            `No pharmacy matched the search term "${search_terms.name_search || search_terms.licence_number_search}"`,
             'If there should be, click below to add it',
           ]}
           button={{

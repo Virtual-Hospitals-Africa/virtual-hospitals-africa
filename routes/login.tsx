@@ -10,10 +10,7 @@ import { TrxOrDb } from '../types.ts'
 import randomNamesAndSex from '../mocks/randomNamesAndSex.ts'
 import { Context } from 'fresh'
 import memoize from '../util/memoize.ts'
-import {
-  readBooleanEnvironmentVariable,
-  readMandatoryStringEnvironmentVariable,
-} from '../util/env.ts'
+import { readBooleanEnvironmentVariable, readMandatoryStringEnvironmentVariable } from '../util/env.ts'
 import { redirectUri } from '../external-clients/google.ts'
 import { health_worker_google_tokens } from '../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../mocks/randomAvatar.ts'
@@ -31,8 +28,7 @@ export const loginHref = memoize(() => {
     prompt: 'consent',
     response_type: 'code',
     client_id,
-    scope:
-      'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+    scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
     access_type: 'offline',
     service: 'lso',
     o2v: '2',
@@ -87,8 +83,7 @@ export const handler = {
     const session = await sessions.getByIdOptional(db, session_id)
 
     if (!session) {
-      const response =
-        await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))
+      const response = await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))
       deleteCookie(response.headers, cookie.session_key)
       return response
     }

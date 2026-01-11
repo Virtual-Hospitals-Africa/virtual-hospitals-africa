@@ -28,8 +28,7 @@ describeParallel(
         await forEach(
           allSupportedWorkflowSteps(),
           async ({ workflow, step }) => {
-            const path =
-              `routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/${workflow}/${step}.tsx`
+            const path = `routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/${workflow}/${step}.tsx`
             await Deno.readFile(path)
           },
         )

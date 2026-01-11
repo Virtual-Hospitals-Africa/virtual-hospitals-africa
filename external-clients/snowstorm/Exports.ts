@@ -8,15 +8,10 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  ExportConfiguration,
-  ExportRequestView,
-  ReferenceSetMemberComponent,
-} from './data-contracts.ts'
+import { ExportConfiguration, ExportRequestView, ReferenceSetMemberComponent } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Exports<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Exports<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description Create a job to export an RF2 archive. The 'location' response header contain the URL, including the identifier, of the new resource.
    *

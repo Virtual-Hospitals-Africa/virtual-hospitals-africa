@@ -10,8 +10,6 @@ export default function assertSome<
   const passes = array.some(predicate)
   assert(
     passes,
-    `Expected predicate to be true for at least one value in ${
-      JSON.stringify(array)
-    }`,
+    `Expected predicate to be true for at least one value in ${JSON.stringify(array)}`,
   )
 }

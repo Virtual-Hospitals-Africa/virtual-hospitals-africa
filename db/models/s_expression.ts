@@ -48,9 +48,7 @@ export function snomedConceptBase(
   snomed_concept: Lang['snomed_concept'],
 ) {
   assert(isAtom(snomed_concept, 'snomed_concept'))
-  return snomed_concept.type === 'snomed_concept_id'
-    ? snomed_concept.id
-    : nameAndCategorySnomedConceptBase(trx, snomed_concept)
+  return snomed_concept.type === 'snomed_concept_id' ? snomed_concept.id : nameAndCategorySnomedConceptBase(trx, snomed_concept)
 }
 
 export function maybeSnomedConceptBase(
@@ -120,9 +118,7 @@ function baseQuery(
               '=',
               snomed_concept,
             )
-            : sql<boolean>`is_descendant(${
-              eb.ref('patient_records.specific_snomed_concept_id')
-            }, ${snomed_concept}::bigint)`
+            : sql<boolean>`is_descendant(${eb.ref('patient_records.specific_snomed_concept_id')}, ${snomed_concept}::bigint)`
         }),
     )
     .$if(
@@ -132,9 +128,7 @@ function baseQuery(
           const snomed_concept = snomedConceptBase(trx, value_snomed_concept!)
           const matches = exact
             ? eb('patient_records.value_snomed_concept_id', '=', snomed_concept)
-            : sql<boolean>`is_descendant(${
-              eb.ref('patient_records.value_snomed_concept_id')
-            }, ${snomed_concept}::bigint)`
+            : sql<boolean>`is_descendant(${eb.ref('patient_records.value_snomed_concept_id')}, ${snomed_concept}::bigint)`
 
           return eb.and([
             eb('patient_records.value_snomed_concept_id', 'is not', null),
@@ -217,9 +211,7 @@ function baseQuery(
             .where(
               sql<
                 boolean
-              >`is_descendant(snomed_relationship.destination_id, ${
-                snomedConceptBase(trx, value)
-              }::bigint)`,
+              >`is_descendant(snomed_relationship.destination_id, ${snomedConceptBase(trx, value)}::bigint)`,
             ),
         ),
       ])
@@ -234,9 +226,7 @@ export const satisfyingSExpression = deduplicate(
       s_expression: string | AnyNode
     } & PatientIdentifiers,
   ): Promise<SatisfyingResult> {
-    const node = isString(s_expression)
-      ? parseExpression(s_expression)
-      : s_expression
+    const node = isString(s_expression) ? parseExpression(s_expression) : s_expression
 
     if (isAtom(node, 'not')) {
       const any_matching = await buildExpression(trx, patient, node.expression)

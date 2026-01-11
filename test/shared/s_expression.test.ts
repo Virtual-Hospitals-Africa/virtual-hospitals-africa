@@ -1,9 +1,6 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  parseExpression,
-  parseExpressionExpectingAtom,
-} from '../../shared/s_expression.ts'
+import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
 import { assertMatches } from '../../util/assertMatches.ts'

@@ -33,8 +33,7 @@ describe('patient chatbot', () => {
         chatbot_name: 'patient',
         messages: {
           type: 'string',
-          message_body:
-            'Sure, I can help you make an appointment with a health_worker.\n' +
+          message_body: 'Sure, I can help you make an appointment with a health_worker.\n' +
             '\n' +
             'To start, what is your name?',
         },

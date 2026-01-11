@@ -38,8 +38,7 @@ export async function up(db: Kysely<DB>) {
         col.notNull().references('employment.id').onDelete(
           'cascade',
         ))
-      .addColumn('patient_id', 'uuid', (col) =>
-        col.notNull().references('patients.id').onDelete('cascade'))
+      .addColumn('patient_id', 'uuid', (col) => col.notNull().references('patients.id').onDelete('cascade'))
       .addColumn('doctor_review_id', 'uuid', (col) =>
         col.references('doctor_reviews.id').onDelete(
           'cascade',
@@ -82,8 +81,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'prescription_id',
           'uuid',
-          (col) =>
-            col.notNull().references('prescriptions.id').onDelete('cascade'),
+          (col) => col.notNull().references('prescriptions.id').onDelete('cascade'),
         ),
   )
 
@@ -97,10 +95,8 @@ export async function up(db: Kysely<DB>) {
             .notNull()
             .references('prescription_medications.id')
             .onDelete('cascade'))
-        .addColumn('pharmacist_id', 'uuid', (col) =>
-          col.notNull().references('pharmacists.id').onDelete('cascade'))
-        .addColumn('pharmacy_id', 'uuid', (col) =>
-          col.references('pharmacies.id').onDelete('cascade'))
+        .addColumn('pharmacist_id', 'uuid', (col) => col.notNull().references('pharmacists.id').onDelete('cascade'))
+        .addColumn('pharmacy_id', 'uuid', (col) => col.references('pharmacies.id').onDelete('cascade'))
         .addUniqueConstraint('prescription_medication_id', [
           'prescription_medication_id',
         ]),

@@ -7,8 +7,6 @@ export const handler = function AppRedirectToWaitingRoomPage(
   { state }: Context<LoggedInHealthWorker>,
 ) {
   return redirect(
-    `/app/organizations/${
-      defaultOrganizationId(state.health_worker)
-    }/waiting_room`,
+    `/app/organizations/${defaultOrganizationId(state.health_worker)}/waiting_room`,
   )
 }

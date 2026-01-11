@@ -8,30 +8,15 @@ import {
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
-import {
-FindingNodeToInsert,
-  patient_findings,
-} from '../../../../../../../../db/models/patient_findings.ts'
-import {
-  filter,
-  forEach,
-  pMap,
-} from '../../../../../../../../util/inParallel.ts'
-import {
-  KEYED_WARNING_SIGNS,
-  WARNING_SIGNS,
-} from '../../../../../../../../shared/warning_signs.ts'
+import { FindingNodeToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
+import { filter, forEach } from '../../../../../../../../util/inParallel.ts'
+import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
-import compact from '../../../../../../../../util/compact.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
-import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
-import {
-Maybe,
-  WarningSign,
-  WarningSignWithMaybeRecord,
-} from '../../../../../../../../types.ts'
+
+import { WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
@@ -43,9 +28,8 @@ import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts
 import values from '../../../../../../../../util/values.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
-import { Lang } from '../../../../../../../../shared/s_expression_schemas.ts'
-import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
-import compactMap from '../../../../../../../../util/compactMap.ts'
+
+import { assertOr409 } from '../../../../../../../../util/assertOr.ts'
 import zip from '../../../../../../../../util/zip.ts'
 import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 import { now } from '../../../../../../../../db/helpers.ts'
@@ -54,9 +38,7 @@ export const TriageWarningSignSchema = z.object({
   s_expression: z.string().transform((
     value,
   ) => parseExpressionExpectingAtom(value, 'finding')),
-  existence: z.enum(['Yes', 'No']).optional().transform((existence) =>
-    existence || 'No'
-  ),
+  existence: z.enum(['Yes', 'No']).optional().transform((existence) => existence || 'No'),
   warning_sign_key: z.enum(keys(WARNING_SIGNS)).optional(),
   priority_level: z.enum(ORDERED_PRIORITIES),
   existing_record: z.object({
@@ -70,6 +52,7 @@ export const TriageWarningSignsSchema = z.object({
     z.string(),
     TriageWarningSignSchema,
   ).optional().default({}).transform(values),
+  __test_only_skip_inserting_negative_findings: z.boolean().optional(),
 }).strict()
 
 export const handler = postHandler(
@@ -86,26 +69,22 @@ export const handler = postHandler(
     const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
     assert(procedure_id)
 
-    const { response, inserted_signs, previously_reported } =
-      await promiseProps({
-        previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
-        inserted_signs: insertSigns(),
-        response: completeAndProceedToNextStep(ctx),
-        mark_modified_as_invalid: markRecordsInvalid(),
-      })
+    const { response, inserted_signs, previously_reported } = await promiseProps({
+      previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
+      inserted_signs: insertSigns(),
+      response: completeAndProceedToNextStep(ctx),
+      mark_modified_as_invalid: markRecordsInvalid(),
+    })
 
     // console.log(previously_reported)
     for (const previous_finding of previously_reported) {
-      const just_submitted = form_values.warning_signs.find((submitted) =>
-        submitted.existing_record?.id === previous_finding.record_id
-      )
-      assertOr400(
+      const just_submitted = form_values.warning_signs.find((submitted) => submitted.existing_record?.id === previous_finding.record_id)
+      assertOr409(
         just_submitted,
         `It is expected that the frontend resubmit previously submitted records. Missing: ${humanReadableJson(previous_finding)}`,
       )
-      const was_modified =
-        just_submitted.existence !== previous_finding.existence
-      assertOr400(
+      const was_modified = just_submitted.existence !== previous_finding.existence
+      assertOr409(
         just_submitted.existing_record?.modified === was_modified,
         `It is expected that the frontend keep track of whether the previously submitted record was modified. Detected a mismatch for ${previous_finding.record_id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
       )
@@ -116,19 +95,28 @@ export const handler = postHandler(
     return response
 
     async function insertSigns() {
-      const needing_insert = form_values.warning_signs.filter(sign => !sign.existing_record || sign.existing_record.modified)
-      const findings_to_insert = needing_insert.map((sign): FindingNodeToInsert => ({
-          ...sign.s_expression,
-          priority: {
+      const needing_insert = form_values.warning_signs
+        .filter((sign) => !sign.existing_record || sign.existing_record.modified)
+        .filter((sign) => sign.existence === 'Yes' || !form_values.__test_only_skip_inserting_negative_findings)
+
+      console.log({ needing_insert })
+
+      const findings_to_insert = needing_insert.map((
+        sign,
+      ): FindingNodeToInsert => ({
+        ...sign.s_expression,
+        priority: sign.existence === 'Yes'
+          ? {
             level: sign.priority_level,
             by_system: true,
-          },
-          value_snomed_concept: sign.existence === 'Yes' ? null : {
-            atom: 'snomed_concept',
-            type: 'snomed_concept_name_and_category',
-            ...NO_QUALIFIER,
-          },
-        }))
+          }
+          : null,
+        value_snomed_concept: sign.existence === 'Yes' ? null : {
+          atom: 'snomed_concept',
+          type: 'snomed_concept_name_and_category',
+          ...NO_QUALIFIER,
+        },
+      }))
 
       if (!findings_to_insert.length) return []
 
@@ -147,8 +135,9 @@ export const handler = postHandler(
 
       return Array.from(
         zip(finding_ids, needing_insert).map(([id, { existence }]) => ({
-         id, existence 
-        }))
+          id,
+          existence,
+        })),
       )
     }
 
@@ -198,7 +187,7 @@ function getAllFindingsReportedPreviouslyOnThisPage(
     patient_encounter_id,
     procedure_id: completed_procedure.procedure_id,
     include_negative: true,
-    before: now
+    before: now,
   })
 }
 
@@ -244,8 +233,7 @@ function* asCheckedWarningSigns(
   // over we send as well (these were the result of search)
   matching_signs: for (const sign of warning_signs_for_patient) {
     for (const finding of findings_set) {
-      const same_idea =
-        finding.normal_form_s_expression === sign.clinical_finding_s_expression
+      const same_idea = finding.normal_form_s_expression === sign.clinical_finding_s_expression
 
       if (same_idea) {
         findings_set.delete(finding)
@@ -284,8 +272,7 @@ export async function TriageWarningSignsPage(
     all_findings_reported_previously_on_this_page,
     warning_signs_for_patient,
   } = await promiseProps({
-    all_findings_reported_previously_on_this_page:
-      getAllFindingsReportedPreviouslyOnThisPage(ctx),
+    all_findings_reported_previously_on_this_page: getAllFindingsReportedPreviouslyOnThisPage(ctx),
     warning_signs_for_patient: getWarningSignsForPatient(ctx),
   })
 

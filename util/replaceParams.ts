@@ -14,9 +14,7 @@ export function replaceParams(route: string, params: Record<string, string>) {
   }
   assert(
     !replaced.includes(':'),
-    `replaceParams failed to replace all params\nreplaceParams("${route}", ${
-      JSON.stringify(params)
-    }) => "${replaced}"`,
+    `replaceParams failed to replace all params\nreplaceParams("${route}", ${JSON.stringify(params)}) => "${replaced}"`,
   )
   return replaced
 }

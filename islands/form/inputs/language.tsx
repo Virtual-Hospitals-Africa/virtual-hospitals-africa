@@ -1,9 +1,6 @@
 import { Maybe } from '../../../types.ts'
 import { SelectWithOptions } from './select_with_options.tsx'
-import {
-  LIVING_LANGUAGES,
-  OFFICIAL_LANGUAGES,
-} from '../../../shared/languages.ts'
+import { LIVING_LANGUAGES, OFFICIAL_LANGUAGES } from '../../../shared/languages.ts'
 import { assert } from 'std/assert/assert.ts'
 import partition from '../../../util/partition.ts'
 import uniq from '../../../util/uniq.ts'

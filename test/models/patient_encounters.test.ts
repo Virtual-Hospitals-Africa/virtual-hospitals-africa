@@ -8,10 +8,7 @@ import { patient_encounters } from '../../db/models/patient_encounters.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { createTestOrganization } from '../_helpers/organizations.ts'
-import {
-  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
-  insertRegistrationWithEmployeeForTest,
-} from '../_helpers/workflows.ts'
+import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest, insertRegistrationWithEmployeeForTest } from '../_helpers/workflows.ts'
 import { RenderedPatient } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
@@ -85,8 +82,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       organization,
       workflows: {
         registration: {
-          patient_workflow_id:
-            open_encounter.workflows.registration!.patient_workflow_id,
+          patient_workflow_id: open_encounter.workflows.registration!.patient_workflow_id,
           workflow: 'registration',
           status: 'in progress',
           steps_completed: [],
@@ -124,9 +120,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
           name: receptionist.name,
           profession: 'receptionist',
           specialty: null,
-          avatar_url: `/health_workers/${
-            open_encounter.all_employees_seen[0].id
-          }/avatar`,
+          avatar_url: `/health_workers/${open_encounter.all_employees_seen[0].id}/avatar`,
           organization_id: organization.id,
         },
       ],
@@ -152,8 +146,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
         disabled: false,
         text: 'registration',
         method: 'POST',
-        href:
-          `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow?workflow=registration`,
+        href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow?workflow=registration`,
       }],
       present_employees: [
         open_encounter.all_employees_seen[0],
@@ -183,14 +176,13 @@ describeParallel('db/models/patient_encounters.ts', () => {
         patient_encounter_id,
         employee,
         patient,
-      } =
-        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          clinic.id,
-          {
-            employment_id: receptionist.employee_id,
-          },
-        )
+      } = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+        db,
+        clinic.id,
+        {
+          employment_id: receptionist.employee_id,
+        },
+      )
 
       const open_encounter = await patient_encounters.getById(
         db,
@@ -210,8 +202,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
         organization,
         workflows: {
           registration: {
-            patient_workflow_id:
-              open_encounter.workflows.registration!.patient_workflow_id,
+            patient_workflow_id: open_encounter.workflows.registration!.patient_workflow_id,
             workflow: 'registration',
             status: 'completed',
             steps_completed: [
@@ -230,8 +221,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
               .completed_at!,
           },
           triage: {
-            patient_workflow_id:
-              open_encounter.workflows.triage!.patient_workflow_id,
+            patient_workflow_id: open_encounter.workflows.triage!.patient_workflow_id,
             workflow: 'triage',
             status: 'not started',
             steps_completed: [],
@@ -267,8 +257,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
         all_employees_seen: [
           {
             ...open_encounter.all_employees_seen[0],
-            patient_encounter_employee_id:
-              employee.patient_encounter_employee_id,
+            patient_encounter_employee_id: employee.patient_encounter_employee_id,
             employee_id: exists(organization_employment).employment_id,
             organization_id: organization_employment.id,
             profession: 'receptionist',
@@ -301,8 +290,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
           disabled: true,
           text: 'triage',
           method: 'POST',
-          href:
-            `/app/organizations/${clinic.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=triage`,
+          href: `/app/organizations/${clinic.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=triage`,
         }],
         present_employees: [],
         reason: 'seeking treatment',

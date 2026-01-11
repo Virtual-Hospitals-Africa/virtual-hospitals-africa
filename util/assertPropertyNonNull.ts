@@ -9,8 +9,6 @@ export function assertPropertyNonNull<
 ): asserts object is T & { [k in K]: NonNullable<T[K]> } {
   assert(
     object[key] != null,
-    `Expected ${key as string} to be a non-null value in ${
-      JSON.stringify(object)
-    }`,
+    `Expected ${key as string} to be a non-null value in ${JSON.stringify(object)}`,
   )
 }

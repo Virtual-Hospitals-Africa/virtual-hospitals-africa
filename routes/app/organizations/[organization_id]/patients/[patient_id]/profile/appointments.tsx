@@ -37,9 +37,7 @@ export default PatientProfilePage(
           first_provider.health_worker_id,
         )
         assert(tokens)
-        const organizations_with_addresses = organizations.filter((o) =>
-          o.formatted_address
-        )
+        const organizations_with_addresses = organizations.filter((o) => o.formatted_address)
         // TODO ensure this can't happen upstream
         assert(
           organizations_with_addresses.length <= 1,

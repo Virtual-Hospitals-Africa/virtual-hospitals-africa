@@ -89,9 +89,8 @@ export const patient_chief_complaints = {
               patient_id,
               patient_encounter_id,
               root_snomed_concept_id: PROCEDURE.id,
-              specific_snomed_concept_id:
-                EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS
-                  .id,
+              specific_snomed_concept_id: EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS
+                .id,
             })
           : blankSelection(qb),
     ).with(
@@ -142,8 +141,7 @@ export const patient_chief_complaints = {
                 patient_encounter_id,
                 // TODO pick a better concept?
                 root_snomed_concept_id: CLINICAL_FINDING.id,
-                specific_snomed_concept_id:
-                  AUDIO_RECORDING_OF_SUBJECT_INTERVIEW.id,
+                specific_snomed_concept_id: AUDIO_RECORDING_OF_SUBJECT_INTERVIEW.id,
               })
             : blankSelection(qb),
       )

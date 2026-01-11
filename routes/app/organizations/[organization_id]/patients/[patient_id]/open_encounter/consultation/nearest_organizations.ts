@@ -1,8 +1,4 @@
-import {
-  nearest_organizations,
-  type NearestOrganizationSearchResult,
-  type SearchOpts,
-} from '../../../../../../../../db/models/nearest_organizations.ts'
+import { nearest_organizations, type NearestOrganizationSearchResult, type SearchOpts } from '../../../../../../../../db/models/nearest_organizations.ts'
 import { BlankRecord } from '../../../../../../../../types.ts'
 import { jsonSearchHandler } from '../../../../../../../../util/jsonSearchHandler.ts'
 import { OpenEncounterWorkflowContext } from '../_middleware.tsx'

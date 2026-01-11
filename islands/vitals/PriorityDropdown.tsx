@@ -108,9 +108,7 @@ export default function PriorityDropdown({
         <Menu.Items
           className={cls(
             'absolute z-50 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none',
-            should_open_upward.value
-              ? 'bottom-full mb-2 right-0 origin-bottom-right'
-              : 'top-full mt-2 right-0 origin-top-right',
+            should_open_upward.value ? 'bottom-full mb-2 right-0 origin-bottom-right' : 'top-full mt-2 right-0 origin-top-right',
           )}
         >
           <div className='py-1'>
@@ -126,9 +124,7 @@ export default function PriorityDropdown({
                       className={cls(
                         'flex items-center w-full px-4 py-2 text-sm text-left',
                         focus ? 'bg-gray-100' : '',
-                        selected_priority.value === priority
-                          ? 'bg-gray-50'
-                          : '',
+                        selected_priority.value === priority ? 'bg-gray-50' : '',
                       )}
                     >
                       <div

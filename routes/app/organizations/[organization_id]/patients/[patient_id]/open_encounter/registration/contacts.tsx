@@ -1,8 +1,4 @@
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import * as patient_address from '../../../../../../../../db/models/patient_address.ts'
 import * as patient_contacts from '../../../../../../../../db/models/patient_emergency_contacts.ts'

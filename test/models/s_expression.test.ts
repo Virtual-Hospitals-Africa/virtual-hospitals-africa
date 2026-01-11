@@ -1,13 +1,7 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import {
-  parseExpression,
-  parseExpressionExpectingAtom,
-} from '../../shared/s_expression.ts'
-import {
-  findingQueryExpression,
-  WARNING_SIGNS,
-} from '../../shared/warning_signs.ts'
+import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
@@ -33,14 +27,13 @@ describeParallel('db/models/s_expression.ts', () => {
         registration_status: 'approved',
       })
 
-      const encounter =
-        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          nurse.organization_id,
-          {
-            employment_id: nurse.employee_id,
-          },
-        )
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+        db,
+        nurse.organization_id,
+        {
+          employment_id: nurse.employee_id,
+        },
+      )
 
       const finding = parseExpression(
         WARNING_SIGNS['Burn Circumferential'].clinical_finding_s_expression,
@@ -60,8 +53,7 @@ describeParallel('db/models/s_expression.ts', () => {
       await patient_findings.insertOneNested(db, {
         patient_id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
-        patient_encounter_employee_id:
-          encounter.employee.patient_encounter_employee_id,
+        patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
         procedure_id,
         finding,
       })
@@ -154,14 +146,13 @@ describeParallel('db/models/s_expression.ts', () => {
         registration_status: 'approved',
       })
 
-      const encounter =
-        await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          nurse.organization_id,
-          {
-            employment_id: nurse.employee_id,
-          },
-        )
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+        db,
+        nurse.organization_id,
+        {
+          employment_id: nurse.employee_id,
+        },
+      )
 
       const { procedure_id } = await patient_procedures.insertOneNested(db, {
         patient_id: encounter.patient.id,
@@ -176,11 +167,9 @@ describeParallel('db/models/s_expression.ts', () => {
       await patient_findings.insertOneNested(db, {
         patient_id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
-        patient_encounter_employee_id:
-          encounter.employee.patient_encounter_employee_id,
+        patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
         procedure_id,
-        finding:
-          `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nasal discharge" "finding"))`,
+        finding: `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nasal discharge" "finding"))`,
       })
 
       const nasal_structure_findings = await patient_findings.findAll(db, {

@@ -56,12 +56,8 @@ export function FamilyHistoryPage(_props: FamilyHistoryPageProps) {
       <FamilyHistoryFormPanel
         show={panel_state.value.action === 'new'}
         family_history={{
-          name: panel_state.value.action === 'new'
-            ? panel_state.value.new_family_history_name
-            : undefined,
-          snomed_concept_id: panel_state.value.action === 'new'
-            ? panel_state.value.new_family_history_snomed_concept_id
-            : undefined,
+          name: panel_state.value.action === 'new' ? panel_state.value.new_family_history_name : undefined,
+          snomed_concept_id: panel_state.value.action === 'new' ? panel_state.value.new_family_history_snomed_concept_id : undefined,
         }}
         onClose={() => (panel_state.value = { action: 'none' })}
       />

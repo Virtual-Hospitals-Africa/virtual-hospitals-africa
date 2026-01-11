@@ -46,9 +46,7 @@ export default function DietSection(
   )
 
   const meals = useSignal<Meal[]>(
-    lifestyle?.diet?.typical_foods_eaten
-      ? (lifestyle.diet.typical_foods_eaten || [])
-      : [],
+    lifestyle?.diet?.typical_foods_eaten ? (lifestyle.diet.typical_foods_eaten || []) : [],
   )
 
   function addMeal() {
@@ -74,8 +72,7 @@ export default function DietSection(
       />
 
       <div>
-        When and what does the patient usually eat over the course of a typical
-        day?
+        When and what does the patient usually eat over the course of a typical day?
       </div>
       {meals.value.map((meal, index) => (
         <RemoveRow onClick={() => removeMeal(index)}>
@@ -111,18 +108,14 @@ export default function DietSection(
         name='lifestyle.diet.eating_takeout_fast_food_frequency'
         label='How often does the patient eat takeout, restaurant meals, or fast food?'
       >
-        {DIET_FREQUENCIES.map((freq) => (
-          <option key={freq} value={freq}>{freq}</option>
-        ))}
+        {DIET_FREQUENCIES.map((freq) => <option key={freq} value={freq}>{freq}</option>)}
       </Select>
 
       <Select
         name='lifestyle.diet.eating_home_cooked_frequency'
         label='How often does the patient eat home cooked meals?'
       >
-        {DIET_FREQUENCIES.map((freq) => (
-          <option key={freq} value={freq}>{freq}</option>
-        ))}
+        {DIET_FREQUENCIES.map((freq) => <option key={freq} value={freq}>{freq}</option>)}
       </Select>
 
       <LabelledListboxMulti
@@ -150,9 +143,7 @@ export default function DietSection(
         selected={drinks.value.map(({ name }) => name)}
         onChange={(selected) => {
           drinks.value = selected.map((name) => {
-            const matching_drink = drinks.value.find((drink) =>
-              drink.name === name
-            )
+            const matching_drink = drinks.value.find((drink) => drink.name === name)
             return matching_drink || {
               name: name,
               frequency: DIET_FREQUENCIES[0],
@@ -177,9 +168,7 @@ export default function DietSection(
         selected={non_meats.value.map(({ name }) => name)}
         onChange={(selected) => {
           non_meats.value = selected.map((name) => {
-            const matching_non_meat = non_meats.value.find((non_meat) =>
-              non_meat.name === name
-            )
+            const matching_non_meat = non_meats.value.find((non_meat) => non_meat.name === name)
             return matching_non_meat || {
               name: name,
               frequency: DIET_FREQUENCIES[0],
@@ -229,9 +218,7 @@ export default function DietSection(
         selected={junk_foods.value.map(({ name }) => name)}
         onChange={(selected) => {
           junk_foods.value = selected.map((name) => {
-            const matching_junk_food = junk_foods.value.find((junk_food) =>
-              junk_food.name === name
-            )
+            const matching_junk_food = junk_foods.value.find((junk_food) => junk_food.name === name)
             return matching_junk_food || {
               name: name,
               frequency: DIET_FREQUENCIES[0],

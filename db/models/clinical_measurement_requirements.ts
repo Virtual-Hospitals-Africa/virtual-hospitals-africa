@@ -1,8 +1,5 @@
 import { Sex, TrxOrDb, VitalMeasurementFormInputDefition } from '../../types.ts'
-import {
-  VITAL_MEASUREMENTS_UNITS,
-  vitalMeasurementFromSnomedConceptId,
-} from '../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_UNITS, vitalMeasurementFromSnomedConceptId } from '../../shared/vitals.ts'
 import { asText, now } from '../helpers.ts'
 
 export interface MeasurementRequirement {

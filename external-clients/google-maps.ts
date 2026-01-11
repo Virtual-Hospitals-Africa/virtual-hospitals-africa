@@ -1,10 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 
-import {
-  Coordinates,
-  GoogleAddressComponent,
-  LocationDistance,
-} from '../types.ts'
+import { Coordinates, GoogleAddressComponent, LocationDistance } from '../types.ts'
 import { cacheable } from './cache.ts'
 import { AddressInsert } from '../db/models/addresses.ts'
 import { getEnvVariableRequiredOutsideDockerQuickstart } from '../util/getEnvVariableRequiredOutsideDockerQuickstart.ts'
@@ -28,8 +24,7 @@ export async function getGeocodeData(
 ): Promise<GoogleAddressComponent[] | undefined> {
   const encoded_latitude = encodeURIComponent(latitude)
   const encoded_longitude = encodeURIComponent(longitude)
-  const url =
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encoded_latitude},${encoded_longitude}&key=${GOOGLE_MAPS_API_KEY}`
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encoded_latitude},${encoded_longitude}&key=${GOOGLE_MAPS_API_KEY}`
   const response = await fetch(url)
   if (!response.ok) {
     throw await response.text()
@@ -51,8 +46,7 @@ const types_we_care_about = new Set([
 ])
 
 function isRouteUseful(route: string): boolean {
-  const regex =
-    /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i
+  const regex = /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i
   return regex.test(route)
 }
 
@@ -82,10 +76,8 @@ export const getWalkingDistance = cacheable(
   async function getWalkingDistance(
     locations: LocationDistance,
   ): Promise<string | null> {
-    const origin_coords =
-      `${locations.origin.latitude},${locations.origin.longitude}`
-    const dest_coords =
-      `${locations.destination.latitude},${locations.destination.longitude}`
+    const origin_coords = `${locations.origin.latitude},${locations.origin.longitude}`
+    const dest_coords = `${locations.destination.latitude},${locations.destination.longitude}`
     const mode = `walking`
 
     const url =

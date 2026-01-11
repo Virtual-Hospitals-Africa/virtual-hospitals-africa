@@ -61,9 +61,7 @@ export const google_tokens = base({
     email: string,
     tokens: GoogleTokens,
   ): Promise<null | { id: string }> {
-    const table_name = entity_type === 'health_worker'
-      ? 'health_workers'
-      : 'regulators'
+    const table_name = entity_type === 'health_worker' ? 'health_workers' : 'regulators'
     const entity = await trx.selectFrom(table_name).where(
       'email',
       '=',

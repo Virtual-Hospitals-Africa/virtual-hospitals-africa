@@ -18,14 +18,9 @@ import {
   VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/vitals.ts'
-import {
-  parseExpressionExpectingAtom,
-  sExpressionZodValidator,
-} from '../../../../../../../../shared/s_expression.ts'
+import { parseExpressionExpectingAtom, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
-import {
-  patient_findings,
-} from '../../../../../../../../db/models/patient_findings.ts'
+import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import keys from '../../../../../../../../util/keys.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -37,15 +32,9 @@ import { completedPersonal } from '../../../../../../../../shared/patient_regist
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
-import {
-  VitalAssessmentFormInputDefition,
-  VitalMeasurementFormInputDefition,
-} from '../../../../../../../../types.ts'
+import { VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } from '../../../../../../../../types.ts'
 import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
-import {
-  EVALUATION_ACTION,
-  SEVERITY_SCORE,
-} from '../../../../../../../../shared/snomed_concepts.ts'
+import { EVALUATION_ACTION, SEVERITY_SCORE } from '../../../../../../../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 
 export const TriageMeasureVitalsSchema = z.object({
@@ -54,9 +43,7 @@ export const TriageMeasureVitalsSchema = z.object({
     z.object({
       value: positive_decimal.optional(),
       units: z.string().min(1),
-    }).strict().transform(({ value, units }) =>
-      value ? { value, units } : undefined
-    ),
+    }).strict().transform(({ value, units }) => value ? { value, units } : undefined),
   ).default({}),
   assessments: z.partialRecord(
     z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
@@ -82,9 +69,7 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
       patient_id,
       encounter,
       health_worker_id: health_worker.id,
-      conditions: COMMON_CONDITIONS.filter((condition) =>
-        condition.key === 'diabetes'
-      ),
+      conditions: COMMON_CONDITIONS.filter((condition) => condition.key === 'diabetes'),
     },
   )
 
@@ -153,8 +138,7 @@ export const handler = postHandler(
       }
 
       const measured_previously = previous_measurements_this_encounter.some(
-        (v) =>
-          v.specific_snomed_concept.snomed_concept_id === snomed_concept_id,
+        (v) => v.specific_snomed_concept.snomed_concept_id === snomed_concept_id,
       )
       assertOr400(
         measured_previously,
@@ -224,8 +208,7 @@ export const handler = postHandler(
               patient_encounter_id,
               by_system: true,
               evaluates_record_id: result.measurement_id,
-              evaluation:
-                `(evaluation ${EVALUATION_ACTION.id} ${SEVERITY_SCORE.id})`,
+              evaluation: `(evaluation ${EVALUATION_ACTION.id} ${SEVERITY_SCORE.id})`,
             })
           }
         },
@@ -249,8 +232,7 @@ export const handler = postHandler(
             assessment.s_expression,
           )
           if (score != null) {
-            const evaluation_snomed_concept_id =
-              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital]
+            const evaluation_snomed_concept_id = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital]
 
             await patient_evaluation_scores.insertOneNested(trx, {
               score,
@@ -258,8 +240,7 @@ export const handler = postHandler(
               patient_encounter_id,
               by_system: true,
               evaluates_record_id: result.finding_id,
-              evaluation:
-                `(evaluation ${EVALUATION_ACTION.id} ${evaluation_snomed_concept_id})`,
+              evaluation: `(evaluation ${EVALUATION_ACTION.id} ${evaluation_snomed_concept_id})`,
             })
           }
         },
@@ -320,9 +301,7 @@ export async function TriageMeasureVitalsPage(
       {
         patient_id: ctx.state.patient.id,
         health_worker_id: ctx.state.health_worker.id,
-        snomed_concept_ids: assessments.map((m) =>
-          m.evaluation_snomed_concept_id
-        ),
+        snomed_concept_ids: assessments.map((m) => m.evaluation_snomed_concept_id),
       },
     )
 

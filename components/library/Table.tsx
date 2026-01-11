@@ -131,9 +131,7 @@ function TableCellInnerContents<T extends Row>(
     persons.forEach(assertPersonLike)
     return (
       <div className='flex flex-col gap-1'>
-        {persons.map((person) => (
-          <Person key={person.id || person.name} person={person} />
-        ))}
+        {persons.map((person) => <Person key={person.id || person.name} person={person} />)}
       </div>
     )
   }
@@ -202,9 +200,7 @@ function TableCell<T extends Row>(
     row_index: number
   },
 ) {
-  const tdClassName = typeof mapped_column.column.tdClassName === 'function'
-    ? mapped_column.column.tdClassName(row)
-    : mapped_column.column.tdClassName
+  const tdClassName = typeof mapped_column.column.tdClassName === 'function' ? mapped_column.column.tdClassName(row) : mapped_column.column.tdClassName
   return (
     <td
       className={cls(tdClassName, mapped_column.column.label ? 'p-3' : 'p-2')}
@@ -282,9 +278,7 @@ function* columnsWithSomeNonNullValue<T extends Row>(
 
     let use_column = false
     const cell_contents = rows.map((row) => {
-      const value = typeof column.data === 'function'
-        ? column.data(row)
-        : row[column.data]
+      const value = typeof column.data === 'function' ? column.data(row) : row[column.data]
 
       if (value != null && (!Array.isArray(value) || value.length)) {
         use_column = true
@@ -305,8 +299,7 @@ function* columnsWithSomeNonNullValue<T extends Row>(
 }
 
 export default function Table<T extends Row>(
-  { columns, rows, className, EmptyState, pagination, tableClassName }:
-    TableProps<T>,
+  { columns, rows, className, EmptyState, pagination, tableClassName }: TableProps<T>,
 ): JSX.Element {
   if (rows.length === 0) {
     return <EmptyState />

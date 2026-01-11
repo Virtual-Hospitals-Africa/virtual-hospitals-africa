@@ -165,13 +165,10 @@ async function importDataFromCSV(trx: TrxOrDb) {
         longitude: Number(row.Long),
       }
 
-      const get_google_maps_address =
-        GET_ADDRESSES_FROM_GOOGLE_MAPS_FOR_COUNTRIES.has(country)
+      const get_google_maps_address = GET_ADDRESSES_FROM_GOOGLE_MAPS_FOR_COUNTRIES.has(country)
 
       console.log({ country, get_google_maps_address })
-      const address = get_google_maps_address
-        ? await getLocationAddress(location)
-        : undefined
+      const address = get_google_maps_address ? await getLocationAddress(location) : undefined
 
       const category_capitalized = category && capitalize(category)
       let name = row.Facility_n!.trim()

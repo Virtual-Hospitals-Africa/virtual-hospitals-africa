@@ -27,9 +27,7 @@ export default async function PartnerPage(ctx: Context<unknown>) {
       >
         <p class='text-xl leading-8 text-gray-600'>
           <i>
-            Thanks for you interest in Virtual Hospitals Africa! Please fill out
-            the form below and we'll be in touch to show you what we've been
-            work.
+            Thanks for you interest in Virtual Hospitals Africa! Please fill out the form below and we'll be in touch to show you what we've been work.
           </i>
         </p>
         <Form

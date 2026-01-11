@@ -1,8 +1,4 @@
-import {
-  AnchorHTMLAttributes,
-  ButtonHTMLAttributes,
-  ComponentChild,
-} from 'preact'
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, ComponentChild } from 'preact'
 import { assert } from 'std/assert/assert.ts'
 import cls from '../../util/cls.ts'
 

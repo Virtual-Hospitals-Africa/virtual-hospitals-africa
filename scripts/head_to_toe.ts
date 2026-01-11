@@ -15,9 +15,7 @@ const ExaminationSchema = z.object({
   finding_name: z.string().nullable(),
   notes: z.string().nullable(),
   snomed_finding_code: z.string().nullable(),
-  snomed_body_structure_codes: z.string().nullable().transform((x) =>
-    x?.split(',')
-  ),
+  snomed_body_structure_codes: z.string().nullable().transform((x) => x?.split(',')),
   snomed_additional_relationships: z.string().nullable(),
 })
 
@@ -115,8 +113,7 @@ function toChecklist(exs: ExaminationSchema[]) {
     assert(e.snomed_finding_code), {
       label: e.finding_name,
       code: e.snomed_finding_code,
-      snomed_english_term:
-        findings_by_code.get(e.snomed_finding_code!)!.snomed_english_term,
+      snomed_english_term: findings_by_code.get(e.snomed_finding_code!)!.snomed_english_term,
       body_sites: e.snomed_body_structure_codes?.map((code) => {
         const body_structure = snomed_body_structures_by_code.get(code)
         assert(body_structure)

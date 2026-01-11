@@ -38,14 +38,8 @@ export default function PreExistingConditionsForm({
                 (condition) => condition.id === state.id,
               )
               : undefined}
-            remove={() =>
-              conditions.value = conditions.value.map((condition, j) =>
-                j === index ? { removed: true } : condition
-              )}
-            update={(updatedCondition) =>
-              conditions.value = conditions.value.map((condition, j) =>
-                j === index ? updatedCondition : condition
-              )}
+            remove={() => conditions.value = conditions.value.map((condition, j) => j === index ? { removed: true } : condition)}
+            update={(updatedCondition) => conditions.value = conditions.value.map((condition, j) => j === index ? updatedCondition : condition)}
           />
         )
       )}

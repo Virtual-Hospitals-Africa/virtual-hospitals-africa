@@ -20,8 +20,7 @@ export function ScheduleADemo() {
               Schedule a demo
             </h2>
             <p className='mt-4 text-lg tracking-tight text-white'>
-              Click below to set up time to chat with our team or to get more
-              information about the services of Virtual Hospitals Africa.
+              Click below to set up time to chat with our team or to get more information about the services of Virtual Hospitals Africa.
             </p>
             <Button
               href='/schedule-demo'

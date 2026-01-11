@@ -3,21 +3,15 @@ import generateUUID from '../../util/uuid.ts'
 import { asText, blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
-import {
-  buildExpression,
-  maybeSnomedConceptBase,
-  snomedConceptBase,
-} from './s_expression.ts'
+import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
-import {
-  IntermediateBaseRecord,
-  nonGroupedBaseQuery,
-} from './patient_records_base.ts'
-import { sql } from 'kysely'
+import { IntermediateBaseRecord, nonGroupedBaseQuery } from './patient_records_base.ts'
+import { InsertObject, sql } from 'kysely'
+import { DB } from '../../db.d.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -176,7 +170,6 @@ type RecordsInsert = {
   }[]
 }
 
-
 export function baseInsert(
   trx: TrxOrDb,
   insert: RecordInsert,
@@ -281,27 +274,9 @@ export function baseInsertMany(
   }
 
   // Collect all patient_records inserts and qualifier inserts
-  const patient_record_values: {
-    id: string
-    patient_id: string
-    patient_encounter_id: string
-    root_snomed_concept_id: ReturnType<typeof snomedConceptBase>
-    specific_snomed_concept_id: ReturnType<typeof snomedConceptBase>
-    value_snomed_concept_id: ReturnType<typeof maybeSnomedConceptBase>
-  }[] = []
-
-  const qualifier_record_values: {
-    id: string
-    patient_id: string
-    patient_encounter_id: string
-    root_snomed_concept_id: string
-    specific_snomed_concept_id: ReturnType<typeof snomedConceptBase>
-  }[] = []
-
-  const qualifier_link_values: {
-    id: string
-    qualifies_record_id: string
-  }[] = []
+  const patient_record_values: InsertObject<DB, 'patient_records'>[] = []
+  const qualifier_record_values: InsertObject<DB, 'patient_records'>[] = []
+  const qualifier_link_values: InsertObject<DB, 'patient_record_qualifiers'>[] = []
 
   function collectQualifiers(
     qualifier: Lang['qualifier'],
@@ -355,8 +330,14 @@ export function baseInsertMany(
       patient_id,
       patient_encounter_id,
       root_snomed_concept_id: snomedConceptBase(trx, root_snomed_concept),
-      specific_snomed_concept_id: snomedConceptBase(trx, specific_snomed_concept),
-      value_snomed_concept_id: maybeSnomedConceptBase(trx, value_snomed_concept),
+      specific_snomed_concept_id: snomedConceptBase(
+        trx,
+        specific_snomed_concept,
+      ),
+      value_snomed_concept_id: maybeSnomedConceptBase(
+        trx,
+        value_snomed_concept,
+      ),
     })
 
     for (const qualifier of qualifiers) {
@@ -367,16 +348,23 @@ export function baseInsertMany(
   // Build query with one CTE per table
   return trx.with(
     'inserting_records',
-    (qb) => qb.insertInto('patient_records').values(patient_record_values).returning('id'),
+    (qb) =>
+      qb.insertInto('patient_records').values(patient_record_values).returning(
+        'id',
+      ),
   ).with(
     'inserting_qualifier_records',
     (qb) => qualifier_record_values.length ? qb.insertInto('patient_records').values(qualifier_record_values) : blankSelection(qb),
   ).with(
     'inserting_qualifier_links',
-    (qb) => qualifier_record_values.length ? qb.insertInto('patient_record_qualifiers').values(qualifier_link_values) : blankSelection(qb),
+    (qb) =>
+      qualifier_record_values.length
+        ? qb.insertInto('patient_record_qualifiers').values(
+          qualifier_link_values,
+        )
+        : blankSelection(qb),
   )
 }
-
 
 type PatientRecordsSearch = {
   patient_id: string | IdSelection

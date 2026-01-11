@@ -20,9 +20,7 @@ export default base({
         'snomed_inferred_canonical_name_and_category.name',
       ])
       .where((eb) =>
-        sql<boolean>`is_descendant(${
-          eb.ref('snomed_inferred_canonical_name_and_category.id')
-        }, ${FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT.id}::bigint)`
+        sql<boolean>`is_descendant(${eb.ref('snomed_inferred_canonical_name_and_category.id')}, ${FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT.id}::bigint)`
       ),
   formatResult: (x) => x,
   handleSearch(

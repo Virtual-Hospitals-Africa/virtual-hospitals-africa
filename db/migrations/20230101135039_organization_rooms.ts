@@ -8,10 +8,8 @@ export async function up(db: Kysely<DB>) {
     'organization_rooms',
     (qb) =>
       qb
-        .addColumn('organization_id', 'uuid', (col) =>
-          col.notNull().references('organizations.id').onDelete('cascade'))
-        .addColumn('name', 'varchar(255)', (col) =>
-          col.notNull())
+        .addColumn('organization_id', 'uuid', (col) => col.notNull().references('organizations.id').onDelete('cascade'))
+        .addColumn('name', 'varchar(255)', (col) => col.notNull())
         .addUniqueConstraint('organization_room_name', [
           'organization_id',
           'name',
@@ -27,8 +25,7 @@ export async function up(db: Kysely<DB>) {
           col.notNull().references('organization_departments.id').onDelete(
             'cascade',
           ))
-        .addColumn('organization_room_id', 'uuid', (col) =>
-          col.notNull().references('organization_rooms.id').onDelete('cascade'))
+        .addColumn('organization_room_id', 'uuid', (col) => col.notNull().references('organization_rooms.id').onDelete('cascade'))
         .addUniqueConstraint('department_room_unique', [
           'organization_department_id',
           'organization_room_id',

@@ -35,9 +35,7 @@ function FamilyHistoryForm(
         name='family_history.snomed_concept_id'
         value={family_history.snomed_concept_id}
       />
-      {family_members.value.map((member, index) => (
-        <FamilyMemberSection member={member} index={index} />
-      ))}
+      {family_members.value.map((member, index) => <FamilyMemberSection key={index} member={member} index={index} />)}
       <AddRow
         text='Add New Family Member For Condition'
         onClick={addFamilyMember}

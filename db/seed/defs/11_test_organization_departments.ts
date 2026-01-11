@@ -1,9 +1,6 @@
 import { define } from '../define.ts'
 import { organizations } from '../../models/organizations.ts'
-import {
-  testOrganizationDepartments,
-  testOrganizationRoomNames,
-} from '../../../test/_helpers/organizations.ts'
+import { testOrganizationDepartments, testOrganizationRoomNames } from '../../../test/_helpers/organizations.ts'
 import { DEPARTMENT_DEFS } from '../../../shared/departments.ts'
 import entries from '../../../util/entries.ts'
 

@@ -9,10 +9,7 @@ import { isAtom } from './s_expression.ts'
 import { Coordinates, Maybe } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
-import {
-  EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS,
-  PROCEDURE,
-} from './snomed_concepts.ts'
+import { EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, PROCEDURE } from './snomed_concepts.ts'
 
 type Node<Atom, Rest> = {
   atom: Atom
@@ -377,9 +374,7 @@ export const event: z.ZodType<Lang['attribute']> = z.lazy(() =>
   }))
 ).describe('event')
 
-export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() =>
-  z.union([attribute_base, finding_site])
-).describe('attribute')
+export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() => z.union([attribute_base, finding_site])).describe('attribute')
 
 const attribute_base: z.ZodType<Lang['attribute']> = z.lazy(() =>
   z.object({

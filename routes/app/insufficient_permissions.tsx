@@ -15,8 +15,7 @@ export default async function InsufficientPermissionsPage(
             Insufficient Permissions Granted
           </PageHeader>
           <p class='mt-6 text-xl leading-8 text-gray-600'>
-            Virtual Hospitals Africa has not been granted calendar
-            permissions.<br />
+            Virtual Hospitals Africa has not been granted calendar permissions.<br />
             Please sign in again and allow calendar access.
           </p>
           <div class='mt-10 flex items-center justify-center gap-x-6'>

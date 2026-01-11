@@ -53,9 +53,7 @@ export default function ThisVisitSection(
               name: 'Immediate transfer to triage',
               description: compact([
                 `I will transfer ${patient_names.preferred_name} immediately to the triage area as this appears to be an urgent case`,
-                can_do_triage
-                  ? null
-                  : `${senior_health_worker_name} will be notified immediately to meet us in the triage area`,
+                can_do_triage ? null : `${senior_health_worker_name} will be notified immediately to meet us in the triage area`,
                 `Registration will be completed later once the patient is confirmed stable`,
               ]),
             },
@@ -76,9 +74,7 @@ export default function ThisVisitSection(
           className='max-w-full pl-6'
         />
       </FormSection>
-      {staff_availability.length > 0 && (
-        <StaffAvailabilityColumn staff={staff_availability} />
-      )}
+      {staff_availability.length > 0 && <StaffAvailabilityColumn staff={staff_availability} />}
     </div>
   )
 }

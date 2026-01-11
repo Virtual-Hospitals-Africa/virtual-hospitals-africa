@@ -11,8 +11,7 @@
 import { BranchMergeJob, MergeRequest } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Merges<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Merges<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description The integrity-check endpoint should be used before performing a promotion to avoid promotion errors.
    *

@@ -8,9 +8,7 @@ export const countries = await collectTsvResource(
     iso_3166_2: z.string().length(2),
     iso_3166_3: z.string().length(3),
     official_name: z.string(),
-    alternate_names: z.string().nullable().transform((names) =>
-      names?.split(',') || []
-    ),
+    alternate_names: z.string().nullable().transform((names) => names?.split(',') || []),
   }),
 )
 

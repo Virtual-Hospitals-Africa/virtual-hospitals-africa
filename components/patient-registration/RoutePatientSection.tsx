@@ -38,9 +38,7 @@ export default function RegistrationRoutePatientSection(
                 name: 'Immediate transfer to triage',
                 description: compact([
                   `I will transfer ${patient_names.preferred_name} immediately to the triage area as this appears to be an urgent case`,
-                  can_do_triage
-                    ? null
-                    : `${senior_health_worker_name} will be notified immediately to meet us in the triage area`,
+                  can_do_triage ? null : `${senior_health_worker_name} will be notified immediately to meet us in the triage area`,
                 ]),
               },
               {

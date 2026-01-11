@@ -46,8 +46,7 @@ export function SexAndGenderInputs(
         required
         name='sex'
         label='Sex'
-        onChange={(event) =>
-          sex.value = (event.currentTarget.value ?? null) as Sex | null}
+        onChange={(event) => sex.value = (event.currentTarget.value ?? null) as Sex | null}
         blank_option
         value={sex.value ?? undefined}
         options={[

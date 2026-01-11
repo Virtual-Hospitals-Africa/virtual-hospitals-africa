@@ -1,8 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import {
-  NearestOrganizationSearchResult,
-  RenderedPatientCompletedRegistration,
-} from '../../types.ts'
+import { NearestOrganizationSearchResult, RenderedPatientCompletedRegistration } from '../../types.ts'
 import ViewIconWithBackground from './ViewIconWithBackground.tsx'
 import { H2 } from '../../components/library/typography/H2.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'

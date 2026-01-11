@@ -47,13 +47,9 @@ export function LabeledInput({
 }) {
   return (
     <Label
-      className={label === NoLabelButSpaceAsPlaceholder
-        ? cls(className, 'pt-6')
-        : className}
+      className={label === NoLabelButSpaceAsPlaceholder ? cls(className, 'pt-6') : className}
       label={label &&
-        label !== NoLabelButSpaceAsPlaceholder && (
-        <LabelSpan label={label} required={required} />
-      )}
+        label !== NoLabelButSpaceAsPlaceholder && <LabelSpan label={label} required={required} />}
     >
       {children}
     </Label>

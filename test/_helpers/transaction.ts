@@ -3,8 +3,7 @@ import { assertRejects } from 'std/assert/assert_rejects.ts'
 import db from '../../db/db.ts'
 import { TrxOrDb } from '../../types.ts'
 
-const withTrx = (callback: (trx: TrxOrDb) => Promise<void>) =>
-  db.transaction().setIsolationLevel('read committed').execute(callback)
+const withTrx = (callback: (trx: TrxOrDb) => Promise<void>) => db.transaction().setIsolationLevel('read committed').execute(callback)
 
 export function itUsesTrxAnd(
   description: string,

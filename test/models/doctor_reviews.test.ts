@@ -6,9 +6,7 @@ import db from '../../db/db.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { createTestOrganization } from '../_helpers/organizations.ts'
 
-import {
-  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
-} from '../_helpers/workflows.ts'
+import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 
 describe('db/models/doctor_reviews.ts', () => {
   afterAll(() => db.destroy())
@@ -33,20 +31,18 @@ describe('db/models/doctor_reviews.ts', () => {
           organization_id: hospital.id,
         })
 
-        const { patient, ...patient_encounter } =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            clinic.id,
-            {
-              employment_id: nurse.employee_id,
-            },
-          )
+        const { patient, ...patient_encounter } = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          clinic.id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
 
         await doctor_reviews.upsertRequest(db, {
           patient_id: patient.id,
           patient_encounter_id: patient_encounter.patient_encounter_id,
-          requested_by:
-            patient_encounter.employee.patient_encounter_employee_id,
+          requested_by: patient_encounter.employee.patient_encounter_employee_id,
           doctor_id: doctor.employee_id,
         })
 

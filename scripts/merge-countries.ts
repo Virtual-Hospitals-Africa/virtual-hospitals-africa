@@ -69,8 +69,7 @@ if (import.meta.main) {
       // Try to match emoji and phone code
       const emoji = find_match(emoji_by_country, official_name, common_name) ||
         ''
-      const phone_calling_code =
-        find_match(phone_code_by_country, official_name, common_name) || ''
+      const phone_calling_code = find_match(phone_code_by_country, official_name, common_name) || ''
 
       return {
         iso_3166_2,

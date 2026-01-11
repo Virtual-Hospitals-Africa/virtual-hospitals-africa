@@ -1,17 +1,12 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import {
-  RenderedICD10DiagnosisTreeWithOptionalIncludes,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedICD10DiagnosisTreeWithOptionalIncludes, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 
 function name(table_name: string) {
   return sql<
     string
-  >`${sql.ref(table_name)}.description || ' (' || ${
-    sql.ref(table_name)
-  }.code || ')'`.as('name')
+  >`${sql.ref(table_name)}.description || ' (' || ${sql.ref(table_name)}.code || ')'`.as('name')
 }
 
 // Yield the tree of sub_diagnoses
@@ -101,9 +96,7 @@ function searchBaseQuery(
       if (!code_range) {
         return matches_query
       }
-      const code_range_array = Array.isArray(code_range)
-        ? code_range
-        : [code_range]
+      const code_range_array = Array.isArray(code_range) ? code_range : [code_range]
 
       assert(code_range_array.length)
 

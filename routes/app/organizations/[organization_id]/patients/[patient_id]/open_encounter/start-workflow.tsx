@@ -4,10 +4,7 @@ import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 import { OpenEncounterContext } from './_middleware.tsx'
-import {
-  Workflow,
-  WORKFLOW_STEPS,
-} from '../../../../../../../shared/workflow.ts'
+import { Workflow, WORKFLOW_STEPS } from '../../../../../../../shared/workflow.ts'
 import { patient_workflows } from '../../../../../../../db/models/patient_workflows.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
@@ -56,10 +53,9 @@ export async function startWorkflow<T>(
 
   const { employment_id } = organization_employment
 
-  const existing_patient_encounter_employee_id =
-    encounter.all_employees_seen.find(
-      (employee) => employee.employee_id === employment_id,
-    )?.patient_encounter_employee_id || null
+  const existing_patient_encounter_employee_id = encounter.all_employees_seen.find(
+    (employee) => employee.employee_id === employment_id,
+  )?.patient_encounter_employee_id || null
 
   console.log('mwkelwke')
   await patient_workflows.start(

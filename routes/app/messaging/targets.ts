@@ -1,14 +1,8 @@
-import {
-  LoggedInHealthWorkerContext,
-  RenderedMessageTarget,
-} from '../../../types.ts'
+import { LoggedInHealthWorkerContext, RenderedMessageTarget } from '../../../types.ts'
 import { jsonSearchHandler } from '../../../util/jsonSearchHandler.ts'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import isKeyOf from '../../../util/isKeyOf.ts'
-import {
-  MESSAGE_TARGET_CATEGORIES,
-  MessageTargetCategory,
-} from '../../../shared/message_targets.ts'
+import { MESSAGE_TARGET_CATEGORIES, MessageTargetCategory } from '../../../shared/message_targets.ts'
 import { message_targets } from '../../../db/models/message_targets.ts'
 
 export const handler = jsonSearchHandler<

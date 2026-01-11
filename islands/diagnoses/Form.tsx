@@ -81,12 +81,9 @@ export default function DiagnosesForm(props: {
                   />
                   <div className='flex flex-col gap-2'>
                     <p>
-                      {props.diagnoses.others[index].name} since{' '}
-                      {props.diagnoses.others[index].start_date}{' '}
+                      {props.diagnoses.others[index].name} since {props.diagnoses.others[index].start_date}{' '}
                       <span className='italic'>
-                        diagnosed by Dr.{' '}
-                        {props.diagnoses.others[index].diagnosed_by}{' '}
-                        {props.diagnoses.others[index].diagnosed_at}
+                        diagnosed by Dr. {props.diagnoses.others[index].diagnosed_by} {props.diagnoses.others[index].diagnosed_at}
                       </span>
                     </p>
                     {state.id && state.approval === 'disagree' && (
@@ -95,9 +92,7 @@ export default function DiagnosesForm(props: {
                         label=''
                         placeholder='Reason why you disapproval'
                         value={state.id
-                          ? others_diagnoses.value.find((od) =>
-                            od.id === state.id
-                          )
+                          ? others_diagnoses.value.find((od) => od.id === state.id)
                             ?.disagree_reason
                           : null}
                         onInput={(event) => {
@@ -145,13 +140,15 @@ export default function DiagnosesForm(props: {
                 : undefined}
               earliestSymptomDate={props.earliestSymptomDate}
               remove={() =>
-                self_diagnoses.value = self_diagnoses.value.map((diagnosis, j) =>
-                  j === index ? { removed: true } : diagnosis
-                )}
+                self_diagnoses.value = self_diagnoses.value.map((
+                  diagnosis,
+                  j,
+                ) => j === index ? { removed: true } : diagnosis)}
               update={(updatedDiagnosis) =>
-                self_diagnoses.value = self_diagnoses.value.map((diagnosis, j) =>
-                  j === index ? updatedDiagnosis : diagnosis
-                )}
+                self_diagnoses.value = self_diagnoses.value.map((
+                  diagnosis,
+                  j,
+                ) => j === index ? updatedDiagnosis : diagnosis)}
             />
           )
         )}

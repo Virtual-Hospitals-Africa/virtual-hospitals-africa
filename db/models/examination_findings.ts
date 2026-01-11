@@ -78,8 +78,7 @@ function render(
   examinations: ExaminationResults,
 ): RenderedPatientExaminationFinding[] {
   return examinations.map(({ path, ...ex }) => {
-    const examination_href =
-      `/app/patients/${ex.patient_id}/encounters/${ex.patient_encounter_id}${path}`
+    const examination_href = `/app/patients/${ex.patient_id}/encounters/${ex.patient_encounter_id}${path}`
 
     const edit_href = `${examination_href}#edit=${ex.snomed_concept_id}`
     return {
@@ -170,8 +169,7 @@ export const examination_findings = {
           (finding.body_sites || []).map((body_site) =>
             upsertOne(trx, 'patient_examination_finding_body_sites', {
               id: body_site.patient_examination_finding_body_site_id,
-              patient_examination_finding_id:
-                finding.patient_examination_finding_id,
+              patient_examination_finding_id: finding.patient_examination_finding_id,
               snomed_concept_id: String(body_site.snomed_concept_id),
             })
           )

@@ -10,9 +10,7 @@ describeParallel('workflows', () => {
   itParallel('have a unique ordering', async () => {
     const workflows = await db.selectFrom('workflows').select(['order'])
       .orderBy('order', 'asc').execute()
-    const workflow_orders = workflows.map((workflow) =>
-      parseInt(workflow.order)
-    )
+    const workflow_orders = workflows.map((workflow) => parseInt(workflow.order))
     assertEquals(workflow_orders, range(1, workflows.length + 1))
   })
 

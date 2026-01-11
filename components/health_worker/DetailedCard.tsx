@@ -60,9 +60,7 @@ export default function HealthWorkerDetailedCard(
                 Middle Name
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.name.split(' ').length > 2
-                  ? employee.name.split(' ').slice(1, -1).join(' ')
-                  : 'N/A'}
+                {employee.name.split(' ').length > 2 ? employee.name.split(' ').slice(1, -1).join(' ') : 'N/A'}
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -126,9 +124,7 @@ export default function HealthWorkerDetailedCard(
                 Specialty
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.specialty
-                  ? employee.specialty.replaceAll('_', ' ')
-                  : 'N/A'}
+                {employee.specialty ? employee.specialty.replaceAll('_', ' ') : 'N/A'}
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -180,9 +176,7 @@ export default function HealthWorkerDetailedCard(
                       className='mx-auto border border-gray-200 divide-y divide-gray-100 rounded-md'
                       style={{ width: '50%' }}
                     >
-                      {employee.documents.map((document) => (
-                        <ImageDownload {...document} />
-                      ))}
+                      {employee.documents.map((document) => <ImageDownload key={document.name} {...document} />)}
                     </ul>
                   </dd>
                 )

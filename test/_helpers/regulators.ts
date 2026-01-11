@@ -38,9 +38,7 @@ export async function addTestRegulatorWithSession(
     { headers, ...rest }: RequestInit = {},
   ): ReturnType<typeof fetch> {
     return fetch(
-      typeof input === 'string' && input.startsWith('/')
-        ? `${route}${input}`
-        : input,
+      typeof input === 'string' && input.startsWith('/') ? `${route}${input}` : input,
       {
         headers: {
           ...headers,

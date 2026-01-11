@@ -95,9 +95,7 @@ export function InternalInput({
         <div
           className={cls(
             'grid h-12 rounded-md bg-white outline-1 -outline-offset-1 focus-within:outline-2 focus-within:-outline-offset-2 dark:bg-white/5',
-            errorText
-              ? 'outline-red-300 focus-within:outline-red-600 dark:outline-red-500/50 dark:focus-within:outline-red-400'
-              : '',
+            errorText ? 'outline-red-300 focus-within:outline-red-600 dark:outline-red-500/50 dark:focus-within:outline-red-400' : '',
             { 'bg-gray-300': !!disabled },
           )}
           style={{ gridTemplateColumns: suffix ? '1fr auto' : '1fr' }}
@@ -121,9 +119,7 @@ export function InternalInput({
                 'pl-3': !!leftIcon,
                 'pr-3': !!rightIcon && !suffix,
               },
-              errorText
-                ? 'text-red-900 dark:text-red-400 dark:placeholder:text-red-400/70'
-                : 'text-black-900 dark:focus:text-black-900', // TODO
+              errorText ? 'text-red-900 dark:text-red-400 dark:placeholder:text-red-400/70' : 'text-black-900 dark:focus:text-black-900', // TODO
             )}
             inputmode={inputmode}
             placeholder={placeholder}
@@ -159,11 +155,7 @@ export function InternalInput({
           )}
         </div>
       </LabeledInput>
-      {errorText
-        ? <span className='text-red-400'>{errorText}</span>
-        : guidanceText
-        ? <span className='text-gray-400'>{guidanceText}</span>
-        : null}
+      {errorText ? <span className='text-red-400'>{errorText}</span> : guidanceText ? <span className='text-gray-400'>{guidanceText}</span> : null}
     </>
   )
 }

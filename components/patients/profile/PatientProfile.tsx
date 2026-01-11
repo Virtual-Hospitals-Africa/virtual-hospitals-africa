@@ -1,9 +1,5 @@
 import { RegistrationPatientSummary } from '../../../types.ts'
-import {
-  DescriptionList,
-  DescriptionListCellAction,
-  type DescriptionListRows,
-} from '../../library/DescriptionList.tsx'
+import { DescriptionList, DescriptionListCellAction, type DescriptionListRows } from '../../library/DescriptionList.tsx'
 import { nonEmptyRows } from '../registration/Summary.tsx'
 
 export default function PatientSummary(
@@ -52,8 +48,7 @@ export default function PatientSummary(
     address_rows.push({
       value: address.administrative_area_level_1,
       name: 'District',
-      href:
-        `${registration_href}/address#focus=address.administrative_area_level_1`,
+      href: `${registration_href}/address#focus=address.administrative_area_level_1`,
       action: DescriptionListCellAction.View,
       leading_separator: ', ',
     })
@@ -67,8 +62,7 @@ export default function PatientSummary(
     address_rows.push({
       value: address.administrative_area_level_2,
       name: 'Province',
-      href:
-        `${registration_href}/address#focus=address.administrative_area_level_2`,
+      href: `${registration_href}/address#focus=address.administrative_area_level_2`,
       action: DescriptionListCellAction.View,
       leading_separator: ', ',
     })

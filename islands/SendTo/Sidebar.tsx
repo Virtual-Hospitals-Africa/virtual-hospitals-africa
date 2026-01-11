@@ -42,9 +42,7 @@ export function SendToSidebar(
                       sendables={sendables}
                       selected={selected}
                     />
-                    {selected.value && (
-                      <SendToSelectedPatient patient={patient} />
-                    )}
+                    {selected.value && <SendToSelectedPatient patient={patient} />}
                     {selected.value && (
                       <SendToForm
                         form={form}

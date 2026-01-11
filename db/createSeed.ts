@@ -6,8 +6,6 @@ import { padLeft } from '../util/pad.ts'
 import { getTables } from './getTables.ts'
 import last from '../util/last.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
-import pascalCase from '../util/pascalCase.ts'
-
 const seed_defs_dir = `db/seed/defs`
 
 const seed_integer_prefix_length = 2
@@ -47,20 +45,18 @@ function* remapSeedFiles(placement: string) {
 }
 
 function initialSeedFileContents(table_name: string) {
-  const interface_name = pascalCase(table_name)
   return `import z from 'zod'
-import { ${interface_name} } from '../../../db.d.ts'
+import { DB } from '../../../db.d.ts'
 import { InsertShape } from '../../../types.ts'
 import { define } from '../define.ts'
 import { collectTsvResource } from '../../parseTsvResource.ts'
 
-
-export const ${table_name}: InsertShape<${interface_name}>[] = await collectTsvResource(
+export const ${table_name}: InsertObject<DB, '${table_name}'>[] = await collectTsvResource(
   '${table_name}',
   z.object({
 
   }),
-) satisfies InsertShape<${interface_name}>[]
+)
 
 export default define(['${table_name}'], (trx) =>
   trx.insertInto('${table_name}')
@@ -84,15 +80,12 @@ export default async function createSeed(seed_name?: string) {
   const new_option = fileName(next_order, seed_name)
 
   const placement = await Select.prompt({
-    message:
-      'Where to place the seed file? The file will immediately precede whichever file you select if not placed at the end',
+    message: 'Where to place the seed file? The file will immediately precede whichever file you select if not placed at the end',
     options: seed_targets.concat([new_option]),
     default: new_option,
   })
 
-  const file_name = placement === new_option
-    ? placement
-    : fileName(orderOf(placement), seed_name)
+  const file_name = placement === new_option ? placement : fileName(orderOf(placement), seed_name)
 
   const file_path = `${seed_defs_dir}/${file_name}`
 

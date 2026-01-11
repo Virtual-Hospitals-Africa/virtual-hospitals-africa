@@ -2,7 +2,7 @@ import { Falsy } from '../types.ts'
 
 export default function compactMap<T, U>(
   arr: Iterable<T>,
-  callback: (item: T) => Falsy | U
+  callback: (item: T) => Falsy | U,
 ): U[] {
   const to_return: U[] = []
   for (const item of arr) {
