@@ -1,6 +1,6 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { asText, jsonArrayFrom } from '../helpers.ts'
+import { asText, blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import {
@@ -163,6 +163,20 @@ type RecordInsert = {
   attributes?: Lang['attribute'][]
 }
 
+type RecordsInsert = {
+  patient_id: string
+  patient_encounter_id: string
+  records: {
+    record_id?: string
+    root_snomed_concept: Lang['snomed_concept']
+    specific_snomed_concept: Lang['snomed_concept']
+    value_snomed_concept: Lang['snomed_concept'] | null
+    qualifiers?: Lang['qualifier'][]
+    attributes?: Lang['attribute'][]
+  }[]
+}
+
+
 export function baseInsert(
   trx: TrxOrDb,
   insert: RecordInsert,
@@ -178,7 +192,7 @@ export function baseInsert(
   } = insert
 
   let query = trx.with(
-    'inserting_records',
+    `inserting_record`,
     (qb) =>
       qb.insertInto('patient_records')
         .values({
@@ -247,6 +261,122 @@ export function baseInsert(
 
   return query
 }
+
+type RecordInsertMany = {
+  patient_id: string
+  patient_encounter_id: string
+  record_id: string
+  root_snomed_concept: Lang['snomed_concept']
+  specific_snomed_concept: Lang['snomed_concept']
+  value_snomed_concept: Lang['snomed_concept'] | null
+  qualifiers?: Lang['qualifier'][]
+}
+
+export function baseInsertMany(
+  trx: TrxOrDb,
+  records: RecordInsertMany[],
+) {
+  if (records.length === 0) {
+    throw new Error('baseInsertMany requires at least one record')
+  }
+
+  // Collect all patient_records inserts and qualifier inserts
+  const patientRecordValues: {
+    id: string
+    patient_id: string
+    patient_encounter_id: string
+    root_snomed_concept_id: ReturnType<typeof snomedConceptBase>
+    specific_snomed_concept_id: ReturnType<typeof snomedConceptBase>
+    value_snomed_concept_id: ReturnType<typeof maybeSnomedConceptBase>
+  }[] = []
+
+  const qualifierRecordValues: {
+    id: string
+    patient_id: string
+    patient_encounter_id: string
+    root_snomed_concept_id: string
+    specific_snomed_concept_id: ReturnType<typeof snomedConceptBase>
+  }[] = []
+
+  const qualifierLinkValues: {
+    id: string
+    qualifies_record_id: string
+  }[] = []
+
+  function collectQualifiers(
+    qualifier: Lang['qualifier'],
+    qualifies_record_id: string,
+    patient_id: string,
+    patient_encounter_id: string,
+  ) {
+    assertHasProperty(qualifier, 'specific_snomed_concept')
+    const qualifier_id = generateUUID()
+
+    qualifierRecordValues.push({
+      id: qualifier_id,
+      patient_id,
+      patient_encounter_id,
+      root_snomed_concept_id: QUALIFIER_VALUE.id,
+      specific_snomed_concept_id: snomedConceptBase(
+        trx,
+        qualifier.specific_snomed_concept,
+      ),
+    })
+
+    qualifierLinkValues.push({
+      id: qualifier_id,
+      qualifies_record_id,
+    })
+
+    for (const sub_qualifier of qualifier.qualifiers) {
+      collectQualifiers(
+        sub_qualifier,
+        qualifier_id,
+        patient_id,
+        patient_encounter_id,
+      )
+    }
+  }
+
+  // Collect all values
+  for (const record of records) {
+    const {
+      patient_id,
+      patient_encounter_id,
+      record_id,
+      root_snomed_concept,
+      specific_snomed_concept,
+      value_snomed_concept,
+      qualifiers = [],
+    } = record
+
+    patientRecordValues.push({
+      id: record_id,
+      patient_id,
+      patient_encounter_id,
+      root_snomed_concept_id: snomedConceptBase(trx, root_snomed_concept),
+      specific_snomed_concept_id: snomedConceptBase(trx, specific_snomed_concept),
+      value_snomed_concept_id: maybeSnomedConceptBase(trx, value_snomed_concept),
+    })
+
+    for (const qualifier of qualifiers) {
+      collectQualifiers(qualifier, record_id, patient_id, patient_encounter_id)
+    }
+  }
+
+  // Build query with one CTE per table
+  return trx.with(
+    'inserting_records',
+    (qb) => qb.insertInto('patient_records').values(patientRecordValues).returning('id'),
+  ).with(
+    'inserting_qualifier_records',
+    (qb) => qualifierRecordValues.length ? qb.insertInto('patient_records').values(qualifierRecordValues) : blankSelection(qb),
+  ).with(
+    'inserting_qualifier_links',
+    (qb) => qualifierRecordValues.length ? qb.insertInto('patient_record_qualifiers').values(qualifierLinkValues) : blankSelection(qb),
+  )
+}
+
 
 type PatientRecordsSearch = {
   patient_id: string | IdSelection

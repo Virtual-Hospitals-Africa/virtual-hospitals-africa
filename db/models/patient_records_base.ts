@@ -46,7 +46,8 @@ function markInvalid(
         patient_encounter_id,
         root_snomed_concept_id: EVALUATION_ACTION.id,
         specific_snomed_concept_id: RECORD_NOW_INVALID[snomed_concept].id,
-      })).with(
+      }).returning('id')
+    ).with(
       'inserting_evaluation',
       (qb) =>
         qb.insertInto('patient_evaluations')

@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import {
+FindingNodeToInsert,
   patient_findings,
 } from '../../../../../../../../db/models/patient_findings.ts'
 import {
@@ -27,6 +28,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import {
+Maybe,
   WarningSign,
   WarningSignWithMaybeRecord,
 } from '../../../../../../../../types.ts'
@@ -43,6 +45,10 @@ import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
 import { Lang } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
+import compactMap from '../../../../../../../../util/compactMap.ts'
+import zip from '../../../../../../../../util/zip.ts'
+import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
+import { now } from '../../../../../../../../db/helpers.ts'
 
 export const TriageWarningSignSchema = z.object({
   s_expression: z.string().transform((
@@ -82,19 +88,20 @@ export const handler = postHandler(
 
     const { response, inserted_signs, previously_reported } =
       await promiseProps({
+        previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
         inserted_signs: insertSigns(),
         response: completeAndProceedToNextStep(ctx),
         mark_modified_as_invalid: markRecordsInvalid(),
-        previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
       })
 
+    // console.log(previously_reported)
     for (const previous_finding of previously_reported) {
       const just_submitted = form_values.warning_signs.find((submitted) =>
         submitted.existing_record?.id === previous_finding.record_id
       )
       assertOr400(
         just_submitted,
-        `It is expected that the frontend resubmit previously submitted records. Missing: ${previous_finding.record_id}`,
+        `It is expected that the frontend resubmit previously submitted records. Missing: ${humanReadableJson(previous_finding)}`,
       )
       const was_modified =
         just_submitted.existence !== previous_finding.existence
@@ -108,59 +115,40 @@ export const handler = postHandler(
 
     return response
 
-    function insertSigns() {
-      return pMap(
-        form_values.warning_signs,
-        async (sign) => {
-          if (sign.existing_record && !sign.existing_record.modified) {
-            return
-          }
+    async function insertSigns() {
+      const needing_insert = form_values.warning_signs.filter(sign => !sign.existing_record || sign.existing_record.modified)
+      const findings_to_insert = needing_insert.map((sign): FindingNodeToInsert => ({
+          ...sign.s_expression,
+          priority: {
+            level: sign.priority_level,
+            by_system: true,
+          },
+          value_snomed_concept: sign.existence === 'Yes' ? null : {
+            atom: 'snomed_concept',
+            type: 'snomed_concept_name_and_category',
+            ...NO_QUALIFIER,
+          },
+        }))
 
-          const finding: Lang['finding'] = sign.existence === 'Yes'
-            ? sign.s_expression
-            : {
-              ...sign.s_expression,
-              value_snomed_concept: {
-                atom: 'snomed_concept',
-                type: 'snomed_concept_name_and_category',
-                ...NO_QUALIFIER,
-              },
-            }
+      if (!findings_to_insert.length) return []
 
-          const finding_insert = await patient_findings
-            .insertOneNested(
-              trx,
-              {
-                finding,
-                patient_id,
-                procedure_id,
-                patient_encounter_id,
-                patient_encounter_employee_id,
-              },
-            )
-          assert(finding_insert.success)
-          assert(finding_insert.inserted_new)
-
-          if (sign.existence === 'Yes') {
-            await patient_triage.insertLevel(
-              trx,
-              {
-                patient_id,
-                patient_encounter_id,
-                procedure_id,
-                triage_level: sign.priority_level,
-                by_system: true,
-                evaluates_record_id: finding_insert.finding_id,
-              },
-            )
-          }
-
-          return {
-            id: finding_insert.finding_id,
-            existence: sign.existence,
-          }
+      const { success, finding_ids } = await patient_findings.insertMany(
+        trx,
+        {
+          patient_id,
+          procedure_id,
+          patient_encounter_id,
+          patient_encounter_employee_id,
+          findings: findings_to_insert,
         },
-      ).then(compact)
+      )
+      assert(success)
+
+      return Array.from(
+        zip(finding_ids, needing_insert).map(([id, { existence }]) => ({
+         id, existence 
+        }))
+      )
     }
 
     function dispatchEvent(
@@ -209,6 +197,7 @@ function getAllFindingsReportedPreviouslyOnThisPage(
     patient_encounter_id,
     procedure_id: completed_procedure.procedure_id,
     include_negative: true,
+    before: now
   })
 }
 

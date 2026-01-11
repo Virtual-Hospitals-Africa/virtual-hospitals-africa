@@ -1,13 +1,14 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import {
   asText,
+  blankSelection,
   jsonBuildObject,
   literalString,
   success_true,
 } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { patient_records } from './patient_records.ts'
-import { sql } from 'kysely'
+import { baseInsertMany, patient_records } from './patient_records.ts'
+import { RawBuilder, sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
@@ -170,14 +171,29 @@ export type PatientFindingsSearch = {
   search?: string
   not_measurements?: boolean
   include_negative?: boolean
+  before?: RawBuilder<Date> | Date
 }
 
-type FindingInsert = {
+
+type InsertCommon = {
   patient_id: string
   patient_encounter_id: string
   patient_encounter_employee_id: string
   procedure_id: string
-  finding: Lang['finding'] | string
+}
+
+export type FindingNodeToInsert = Lang['finding'] & {
+  priority?: {
+    level: Priority
+    by_system: boolean
+  }
+  score?: number
+}
+type FindingInsert = InsertCommon & {
+  finding: FindingNodeToInsert | string
+}
+type FindingsInsert = InsertCommon & {
+  findings: Array<FindingNodeToInsert | string>
 }
 
 export const patient_findings = base({
@@ -268,8 +284,129 @@ export const patient_findings = base({
         ),
       )
     }
+    if (opts.before) {
+      qb = qb.where(
+        'patient_records.created_at',
+        '<',
+        opts.before
+      )
+    }
 
     return qb
+  },
+  insertMany(
+    trx: TrxOrDb,
+    {
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      procedure_id,
+      findings,
+    }: FindingsInsert,
+  ) {
+    if (findings.length === 0) {
+      throw new Error('insertMany requires at least one finding')
+    }
+
+    // Parse findings and generate IDs
+    const records = findings.map((finding) => {
+      const finding_node = asNode(finding, 'finding')
+      assertHasProperty(finding_node, 'root_snomed_concept')
+      assertHasProperty(finding_node, 'specific_snomed_concept')
+      return {
+        patient_id,
+        patient_encounter_id,
+        record_id: generateUUID(),
+        ...finding_node,
+      }
+    })
+
+    // Collect attributes (not handled by baseInsertMany)
+    const attributeRecordValues: {
+      id: string
+      patient_id: string
+      patient_encounter_id: string
+      root_snomed_concept_id: string | ReturnType<typeof snomedConceptBase>
+      specific_snomed_concept_id: ReturnType<typeof snomedConceptBase>
+      value_snomed_concept_id: ReturnType<typeof maybeSnomedConceptBase>
+    }[] = []
+
+    const attributeQualifierLinkValues: {
+      id: string
+      qualifies_record_id: string
+    }[] = []
+
+    const eventValues: {
+      id: string
+      datetime: string
+    }[] = []
+
+    for (const { record_id, attributes } of records) {
+      for (const attribute of attributes) {
+        const attribute_id = generateUUID()
+        const { value } = attribute
+
+        if (value?.type === 'event') {
+          attributeRecordValues.push({
+            id: attribute_id,
+            patient_id,
+            patient_encounter_id,
+            root_snomed_concept_id: EVENT.id,
+            specific_snomed_concept_id: snomedConceptBase(trx, attribute.specific_snomed_concept),
+            value_snomed_concept_id: null,
+          })
+
+          attributeQualifierLinkValues.push({
+            id: attribute_id,
+            qualifies_record_id: record_id,
+          })
+
+          eventValues.push({
+            id: attribute_id,
+            datetime: value.datetime,
+          })
+        } else {
+          attributeRecordValues.push({
+            id: attribute_id,
+            patient_id,
+            patient_encounter_id,
+            root_snomed_concept_id: ATTRIBUTE.id,
+            specific_snomed_concept_id: snomedConceptBase(trx, attribute.specific_snomed_concept),
+            value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
+          })
+
+          attributeQualifierLinkValues.push({
+            id: attribute_id,
+            qualifies_record_id: record_id,
+          })
+        }
+      }
+    }
+
+    // Use baseInsertMany for patient_records
+    return baseInsertMany(trx, records).with(
+      'inserting_findings',
+      (qb) =>
+        qb.insertInto('patient_findings').values(
+          records.map(({ record_id }) => ({
+            id: record_id,
+            procedure_id,
+            patient_encounter_employee_id,
+          })),
+        ),
+    ).with(
+      'inserting_attribute_records',
+      (qb) => attributeRecordValues.length ? qb.insertInto('patient_records').values(attributeRecordValues) : blankSelection(qb)
+    ).with(
+      'inserting_attribute_qualifier_links',
+      (qb) => attributeRecordValues.length ? qb.insertInto('patient_record_qualifiers').values(attributeQualifierLinkValues) : blankSelection(qb),
+    ).with(
+      'inserting_events',
+      (qb) => eventValues.length ? qb.insertInto('patient_events').values(eventValues) : blankSelection(qb),
+    ).selectFrom('inserting_records').select([
+      success_true,
+      sql<string[]>`array_agg(id)`.as('finding_ids'),
+    ]).executeTakeFirstOrThrow()
   },
   insertOneNested(
     trx: TrxOrDb,
