@@ -281,7 +281,7 @@ export function baseInsertMany(
   }
 
   // Collect all patient_records inserts and qualifier inserts
-  const patientRecordValues: {
+  const patient_record_values: {
     id: string
     patient_id: string
     patient_encounter_id: string
@@ -290,7 +290,7 @@ export function baseInsertMany(
     value_snomed_concept_id: ReturnType<typeof maybeSnomedConceptBase>
   }[] = []
 
-  const qualifierRecordValues: {
+  const qualifier_record_values: {
     id: string
     patient_id: string
     patient_encounter_id: string
@@ -298,7 +298,7 @@ export function baseInsertMany(
     specific_snomed_concept_id: ReturnType<typeof snomedConceptBase>
   }[] = []
 
-  const qualifierLinkValues: {
+  const qualifier_link_values: {
     id: string
     qualifies_record_id: string
   }[] = []
@@ -312,7 +312,7 @@ export function baseInsertMany(
     assertHasProperty(qualifier, 'specific_snomed_concept')
     const qualifier_id = generateUUID()
 
-    qualifierRecordValues.push({
+    qualifier_record_values.push({
       id: qualifier_id,
       patient_id,
       patient_encounter_id,
@@ -323,7 +323,7 @@ export function baseInsertMany(
       ),
     })
 
-    qualifierLinkValues.push({
+    qualifier_link_values.push({
       id: qualifier_id,
       qualifies_record_id,
     })
@@ -350,7 +350,7 @@ export function baseInsertMany(
       qualifiers = [],
     } = record
 
-    patientRecordValues.push({
+    patient_record_values.push({
       id: record_id,
       patient_id,
       patient_encounter_id,
@@ -367,13 +367,13 @@ export function baseInsertMany(
   // Build query with one CTE per table
   return trx.with(
     'inserting_records',
-    (qb) => qb.insertInto('patient_records').values(patientRecordValues).returning('id'),
+    (qb) => qb.insertInto('patient_records').values(patient_record_values).returning('id'),
   ).with(
     'inserting_qualifier_records',
-    (qb) => qualifierRecordValues.length ? qb.insertInto('patient_records').values(qualifierRecordValues) : blankSelection(qb),
+    (qb) => qualifier_record_values.length ? qb.insertInto('patient_records').values(qualifier_record_values) : blankSelection(qb),
   ).with(
     'inserting_qualifier_links',
-    (qb) => qualifierRecordValues.length ? qb.insertInto('patient_record_qualifiers').values(qualifierLinkValues) : blankSelection(qb),
+    (qb) => qualifier_record_values.length ? qb.insertInto('patient_record_qualifiers').values(qualifier_link_values) : blankSelection(qb),
   )
 }
 

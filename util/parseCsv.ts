@@ -13,43 +13,43 @@ export default async function* parseCsv(
     file = await Deno.open(file_path)
 
     let header: string[] = []
-    let isFirstRow = true
+    let is_first_row = true
 
     for await (const row of readCSV(file, opts)) {
       // Collecting data from the async iterable row into an array
-      const rowDataArray: string[] = []
+      const row_data_array: string[] = []
       for await (let cell of row) {
         if (cell.endsWith('\r')) {
           cell = cell.slice(0, cell.length - 1)
         }
-        rowDataArray.push(cell)
+        row_data_array.push(cell)
       }
 
-      if (isFirstRow) {
-        if (rowDataArray.some((row) => row === '')) {
+      if (is_first_row) {
+        if (row_data_array.some((row) => row === '')) {
           throw new Error(
             `Error parsing ${file_path}. Check the header for extraneous trailing characters`,
           )
         }
         // Assuming the first row of the CSV contains the header
-        header = rowDataArray
-        isFirstRow = false
+        header = row_data_array
+        is_first_row = false
         continue
       }
 
-      const rowData: Record<string, string | null> = {}
+      const row_data: Record<string, string | null> = {}
 
       let at_least_one_column_is_not_null = false
       header.forEach((column, i) => {
-        const value = rowDataArray[i] || null
-        rowData[column] = value
+        const value = row_data_array[i] || null
+        row_data[column] = value
         if (value) {
           at_least_one_column_is_not_null = true
         }
       })
 
       if (at_least_one_column_is_not_null) {
-        yield rowData
+        yield row_data
       }
     }
   } catch (err) {

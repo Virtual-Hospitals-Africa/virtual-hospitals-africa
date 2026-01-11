@@ -20,12 +20,12 @@ export async function handleShareLocation(
   let location: Coordinates
   try {
     assert(pharmacistState.unhandled_message.trimmed_body)
-    const locationMessage: Coordinates = JSON.parse(
+    const location_message: Coordinates = JSON.parse(
       pharmacistState.unhandled_message.trimmed_body,
     )
     location = {
-      longitude: locationMessage.longitude,
-      latitude: locationMessage.latitude,
+      longitude: location_message.longitude,
+      latitude: location_message.latitude,
     }
   } catch (err) {
     console.error(err)

@@ -12,7 +12,7 @@ type StaffMember = {
   status: AvailabilityStatus
 }
 
-const statusStyles: Record<
+const status_styles: Record<
   AvailabilityStatus,
   { border: string; chipBg: string; chipText: string }
 > = {
@@ -34,7 +34,7 @@ const statusStyles: Record<
 }
 
 function StaffStatusCard({ staff }: { staff: StaffMember }) {
-  const styles = statusStyles[staff.status]
+  const styles = status_styles[staff.status]
 
   return (
     <div

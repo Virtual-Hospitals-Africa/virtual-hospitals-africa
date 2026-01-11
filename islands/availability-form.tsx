@@ -99,7 +99,7 @@ function TimeInput(
           className='ml-2 sz-2'
           title='add'
           onClick={() => {
-            const nextEndTime: Time = time_window.end.hour === 12
+            const next_end_time: Time = time_window.end.hour === 12
               ? {
                 hour: 1,
                 minute: time_window.end.minute,
@@ -113,7 +113,7 @@ function TimeInput(
 
             addTimeWindow({
               start: time_window.end,
-              end: nextEndTime,
+              end: next_end_time,
             })
           }}
         >

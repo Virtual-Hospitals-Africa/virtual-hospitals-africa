@@ -1,11 +1,11 @@
 import { Falsy } from '../types.ts'
 
 export default function compact<T>(arr: (T | Falsy)[]): T[] {
-  const toReturn: T[] = []
+  const to_return: T[] = []
   for (const item of arr) {
     if (item) {
-      toReturn.push(item)
+      to_return.push(item)
     }
   }
-  return toReturn
+  return to_return
 }

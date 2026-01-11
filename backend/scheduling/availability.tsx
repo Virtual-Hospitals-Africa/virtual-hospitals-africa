@@ -21,7 +21,7 @@ export function assertIsPartialAvailability(
   }
 }
 
-export const defaultTimeWindow: TimeWindow = {
+export const default_time_window: TimeWindow = {
   start: { hour: 9, minute: 0, am_pm: 'am' },
   end: { hour: 5, minute: 0, am_pm: 'pm' },
 }
