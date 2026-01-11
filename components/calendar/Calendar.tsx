@@ -35,7 +35,7 @@ function daysToShow(
 
   const total_days_in_this_month = numberOfDaysInMonth(monthInt, yearInt)
 
-  const daysOfThisMonth: CalendarDayProps[] = range(
+  const days_of_this_month: CalendarDayProps[] = range(
     1,
     total_days_in_this_month + 1,
   )
@@ -60,7 +60,7 @@ function daysToShow(
     last_month_year_int,
   )
 
-  const daysOfLastMonth: CalendarDayProps[] = range(
+  const days_of_last_month: CalendarDayProps[] = range(
     total_days_in_last_month - first_week_days_of_last_month + 1,
     total_days_in_last_month + 1,
   ).map((dayInt) => {
@@ -70,7 +70,7 @@ function daysToShow(
     return toShow(date)
   })
 
-  const daysOfNextMonth: CalendarDayProps[] = range(
+  const days_of_next_month: CalendarDayProps[] = range(
     1,
     last_week_days_of_next_month + 1,
   ).map((dayInt) => {
@@ -81,9 +81,9 @@ function daysToShow(
   })
 
   return [
-    ...daysOfLastMonth,
-    ...daysOfThisMonth,
-    ...daysOfNextMonth,
+    ...days_of_last_month,
+    ...days_of_this_month,
+    ...days_of_next_month,
   ]
 }
 

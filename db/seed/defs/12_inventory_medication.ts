@@ -57,7 +57,7 @@ type ParsedStrengths = {
 }
 
 // deno-lint-ignore no-explicit-any
-const skippedDrugs: { drug: any; reason: string }[] = []
+const skipped_drugs: { drug: any; reason: string }[] = []
 
 const form_rewrite = {
   'GRANULES, FOR SUSPENSION; ORAL': 'GRANULE, FOR SUSPENSION; ORAL',
@@ -91,10 +91,10 @@ async function seedDataFromJSON(trx: TrxOrDb) {
   // console.log(uniq(data.map(d => d.forms)).sort())
   await inParallel.forEach([...drugs.entries()], addDrug.bind(null, trx))
 
-  if (skippedDrugs.length) {
+  if (skipped_drugs.length) {
     Deno.writeTextFileSync(
       './db/resources/skipped_drugs.json',
-      humanReadableJson(skippedDrugs),
+      humanReadableJson(skipped_drugs),
     )
   }
 }
@@ -122,7 +122,7 @@ async function addDrug(
             }
           } catch (e) {
             assert(e instanceof Error)
-            skippedDrugs.push({
+            skipped_drugs.push({
               drug: manufactured_medication,
               reason: e.message,
             })
@@ -149,7 +149,7 @@ async function addDrug(
       ))
 
       if (!same_units) {
-        skippedDrugs.push({
+        skipped_drugs.push({
           drug: manufactured_medications_with_strengths,
           reason: 'Units are not the same',
         })

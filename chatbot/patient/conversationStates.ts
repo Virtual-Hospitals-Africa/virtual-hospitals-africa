@@ -36,7 +36,7 @@ import { SERVER_COUNTRY } from '../../db/models/countries.ts'
 import { patient_nearest_facilities } from '../../db/models/patient_nearest_facilities.ts'
 import { patient_appointments } from '../../db/models/patient_appointments.ts'
 
-const conversationStates: ConversationStates<
+const conversation_states: ConversationStates<
   PatientChatbotUserState
 > = {
   'initial_message': {
@@ -146,16 +146,16 @@ const conversationStates: ConversationStates<
     async onExit(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
       assert(patientState.unhandled_message.trimmed_body)
-      const locationMessage: Coordinates = JSON.parse(
+      const location_message: Coordinates = JSON.parse(
         patientState.unhandled_message.trimmed_body,
       )
-      const currentLocation: Coordinates = {
-        longitude: locationMessage.longitude,
-        latitude: locationMessage.latitude,
+      const current_location: Coordinates = {
+        longitude: location_message.longitude,
+        latitude: location_message.latitude,
       }
       await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
-        location: currentLocation,
+        location: current_location,
       })
 
       return 'find_nearest_facilities:got_location' as const
@@ -263,7 +263,7 @@ const conversationStates: ConversationStates<
         'selected_organization should be available in the patientState',
       )
 
-      const locationMessage: WhatsAppSingleSendable = {
+      const location_message: WhatsAppSingleSendable = {
         type: 'location',
         message_body: selected_organization.name,
         location: {
@@ -274,7 +274,7 @@ const conversationStates: ConversationStates<
         },
       }
 
-      const buttonMessage: WhatsAppSingleSendable = {
+      const button_message: WhatsAppSingleSendable = {
         type: 'buttons',
         message_body: 'Click below to go back to main menu.',
         buttonText: 'Back to main menu',
@@ -283,7 +283,7 @@ const conversationStates: ConversationStates<
           title: 'Back to Menu',
         }],
       }
-      return [locationMessage, buttonMessage]
+      return [location_message, button_message]
     },
     type: 'send_location',
     onExit(_trx, patientState): PatientConversationState {
@@ -550,7 +550,7 @@ const conversationStates: ConversationStates<
           (offered_time) => !offered_time.declined,
         )
 
-      const appointmentsByDate: {
+      const appointments_by_date: {
         [date: string]: SchedulingAppointmentOfferedTime[]
       } = non_declined_times.reduce((acc, appointment) => {
         const date = formatJohannesburg(appointment.start).substring(0, 10)
@@ -565,10 +565,10 @@ const conversationStates: ConversationStates<
         PatientChatbotUserState
       >[] = []
 
-      for (const date in appointmentsByDate) {
+      for (const date in appointments_by_date) {
         sections.push({
           title: date,
-          rows: appointmentsByDate[date].map((offered_time) => {
+          rows: appointments_by_date[date].map((offered_time) => {
             return {
               id: String(offered_time.id),
               title: convertToTimeString(
@@ -685,4 +685,4 @@ const conversationStates: ConversationStates<
   },
 }
 
-export default conversationStates
+export default conversation_states

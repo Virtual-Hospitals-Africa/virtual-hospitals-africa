@@ -79,7 +79,7 @@
 //           label='Is the patient advancing their education?'
 //           value={school.status === 'adult in school' ? 'Yes' : 'No'}
 //           onChange={(value) => {
-//             const thisSchool: School = value
+//             const this_school: School = value
 //               ? {
 //                 status: 'adult in school',
 //                 education_level: '',
@@ -87,7 +87,7 @@
 //               : {
 //                 status: 'never attended',
 //               }
-//             setSchool(thisSchool)
+//             setSchool(this_school)
 //           }}
 //         />
 //         <input
@@ -101,7 +101,7 @@
 //             label='Has the patient ever gone to school?'
 //             value={school.status === 'adult stopped school'}
 //             onChange={(value) => {
-//               const nextSchool: School = value
+//               const next_school: School = value
 //                 ? {
 //                   status: 'adult stopped school',
 //                   education_level: 'grade 1',
@@ -111,7 +111,7 @@
 //                 : {
 //                   status: 'never attended',
 //                 }
-//               setSchool(nextSchool)
+//               setSchool(next_school)
 //             }}
 //           />
 //         )}

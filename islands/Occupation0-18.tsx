@@ -72,7 +72,7 @@
 //           label='Does the patient go to school?'
 //           value={school.status === 'in school'}
 //           onChange={(value) => {
-//             const nextSchool: School = value
+//             const next_school: School = value
 //               ? {
 //                 status: 'in school',
 //                 current: {
@@ -85,7 +85,7 @@
 //               : {
 //                 status: 'never attended',
 //               }
-//             setSchool(nextSchool)
+//             setSchool(next_school)
 //           }}
 //         />
 //         <input
@@ -100,7 +100,7 @@
 //               label='Has the patient ever gone to school?'
 //               value={school.status === 'stopped school'}
 //               onChange={(value) => {
-//                 const nextSchool: School = value
+//                 const next_school: School = value
 //                   ? {
 //                     status: 'stopped school',
 //                     past: {
@@ -111,7 +111,7 @@
 //                   : {
 //                     status: 'never attended',
 //                   }
-//                 setSchool(nextSchool)
+//                 setSchool(next_school)
 //               }}
 //             />
 //           )}

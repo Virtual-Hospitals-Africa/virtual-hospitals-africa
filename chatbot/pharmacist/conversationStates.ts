@@ -328,7 +328,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       assert(unfilled_medications.length > 0)
 
-      const documentMessage: WhatsAppSingleSendable = {
+      const document_message: WhatsAppSingleSendable = {
         type: 'document',
         message_body:
           `Here is the patient's prescription including the following medications:\n* ${
@@ -337,7 +337,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         file_path,
       }
 
-      const buttonMessage: WhatsAppSingleSendable = {
+      const button_message: WhatsAppSingleSendable = {
         type: 'buttons',
         message_body: 'Click below to continue dispensing medications',
         buttonText: 'Back to main menu',
@@ -352,7 +352,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           title: 'Back to Menu',
         }],
       }
-      return [documentMessage, buttonMessage]
+      return [document_message, button_message]
     },
 
     onExit: dispenseType,

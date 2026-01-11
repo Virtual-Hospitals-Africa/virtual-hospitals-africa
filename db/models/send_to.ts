@@ -106,9 +106,9 @@
 //   patient_encounter_employees: RenderedPatientEncounterEmployee[],
 //   opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 // ): Promise<Sendable[]> {
-//   const { nearestFacilities, employees, organization, patient } =
+//   const { nearest_facilities, employees, organization, patient } =
 //     await promiseProps({
-//       nearestFacilities: nearest_organizations.search(trx, { location }),
+//       nearest_facilities: nearest_organizations.search(trx, { location }),
 //       employees: getApprovedProviders(
 //         trx,
 //         organization_id,
@@ -119,7 +119,7 @@
 //       organization: organizations.getById(trx, organization_id),
 //       patient: patients.getById(trx, patient_id),
 //     })
-//   const nearestFacilitySendables: Sendable[] = nearestFacilities.results.map(
+//   const nearest_facility_sendables: Sendable[] = nearest_facilities.results.map(
 //     (facility) => ({
 //       key: `facility/${facility.id}`,
 //       name: facility.name,
@@ -211,7 +211,7 @@
 //       textarea: 'additional_details',
 //     },
 //     ...nurse_information,
-//     ...nearestFacilitySendables,
+//     ...nearest_facility_sendables,
 //     {
 //       key: 'waiting_room',
 //       name: 'Waiting Room',
@@ -262,8 +262,8 @@
 //   patient_encounter_employees: RenderedPatientEncounterEmployee[],
 //   opts: { exclude_health_worker_id?: string; primary_doctor_id?: string } = {},
 // ): Promise<Sendable[]> {
-//   const { nearestFacilities, employees, patient } = await promiseProps({
-//     nearestFacilities: nearest_organizations.search(trx, { location }),
+//   const { nearest_facilities, employees, patient } = await promiseProps({
+//     nearest_facilities: nearest_organizations.search(trx, { location }),
 //     employees: getApprovedDoctorsWithoutAction(
 //       trx,
 //       {
@@ -274,7 +274,7 @@
 //   })
 //   assert(completedRegistration(patient))
 
-//   const nearestFacilitySendables: Sendable[] = nearestFacilities.results.map(
+//   const nearest_facility_sendables: Sendable[] = nearest_facilities.results.map(
 //     (facility) => ({
 //       key: `facility/${facility.id}`,
 //       name: facility.name,
@@ -364,7 +364,7 @@
 //       textarea: 'additional_details',
 //     },
 //     ...doctor_information,
-//     ...nearestFacilitySendables,
+//     ...nearest_facility_sendables,
 //     {
 //       key: 'waiting_room',
 //       name: 'Waiting Room',

@@ -101,15 +101,15 @@ export const handler: Handlers = {
   },
   async POST(ctx) {
     const req = ctx.req
-    const incomingMessage: WhatsAppIncomingMessage = await req.json()
+    const incoming_message: WhatsAppIncomingMessage = await req.json()
 
-    console.log(JSON.stringify(incomingMessage))
+    console.log(JSON.stringify(incoming_message))
 
-    if (incomingMessage.object !== 'whatsapp_business_account') {
+    if (incoming_message.object !== 'whatsapp_business_account') {
       console.error('Object is not whatsapp_business_account')
       return new Response('Unexpected object', { status: 400 })
     }
-    const [entry, ...otherEntries] = incomingMessage.entry
+    const [entry, ...otherEntries] = incoming_message.entry
     if (otherEntries.length) {
       console.error("More than one entry in the message, that's weird")
     }

@@ -10,7 +10,7 @@ export type BadgeProps = {
   classNames?: string
 }
 
-const badgeStyles: Record<BadgeColor, string> = {
+const badge_styles: Record<BadgeColor, string> = {
   gray: 'bg-gray-100 text-gray-600',
   red: 'bg-red-100 text-red-800',
   yellow: 'bg-yellow-100 text-yellow-800',
@@ -26,7 +26,7 @@ export default function Badge(
     <div
       className={cls(
         'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium',
-        badgeStyles[color],
+        badge_styles[color],
         {
           'rounded-full': round === 'lg',
           'rounded-md': round === 'md',

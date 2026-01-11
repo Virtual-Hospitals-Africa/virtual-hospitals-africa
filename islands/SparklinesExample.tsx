@@ -44,17 +44,17 @@ function Sparklines(
   console.log('data', data)
   const points = dataToPoints({ data, limit, width, height, margin, max, min })
 
-  const svgOpts: JSX.SVGAttributes<SVGSVGElement> = {
+  const svg_opts: JSX.SVGAttributes<SVGSVGElement> = {
     className,
     viewBox: `0 0 ${width} ${height}`,
     preserveAspectRatio: preserveAspectRatio,
   }
-  if (svgWidth && svgWidth > 0) svgOpts.width = svgWidth
-  if (svgHeight && svgHeight > 0) svgOpts.height = svgHeight
+  if (svgWidth && svgWidth > 0) svg_opts.width = svgWidth
+  if (svgHeight && svgHeight > 0) svg_opts.height = svgHeight
 
   console.log('points', points)
   return (
-    <svg {...svgOpts}>
+    <svg {...svg_opts}>
       <SparklinesLine
         data={data}
         points={points}

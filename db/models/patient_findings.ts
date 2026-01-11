@@ -322,7 +322,7 @@ export const patient_findings = base({
     })
 
     // Collect attributes (not handled by baseInsertMany)
-    const attributeRecordValues: {
+    const attribute_record_values: {
       id: string
       patient_id: string
       patient_encounter_id: string
@@ -331,12 +331,12 @@ export const patient_findings = base({
       value_snomed_concept_id: ReturnType<typeof maybeSnomedConceptBase>
     }[] = []
 
-    const attributeQualifierLinkValues: {
+    const attribute_qualifier_link_values: {
       id: string
       qualifies_record_id: string
     }[] = []
 
-    const eventValues: {
+    const event_values: {
       id: string
       datetime: string
     }[] = []
@@ -347,7 +347,7 @@ export const patient_findings = base({
         const { value } = attribute
 
         if (value?.type === 'event') {
-          attributeRecordValues.push({
+          attribute_record_values.push({
             id: attribute_id,
             patient_id,
             patient_encounter_id,
@@ -356,17 +356,17 @@ export const patient_findings = base({
             value_snomed_concept_id: null,
           })
 
-          attributeQualifierLinkValues.push({
+          attribute_qualifier_link_values.push({
             id: attribute_id,
             qualifies_record_id: record_id,
           })
 
-          eventValues.push({
+          event_values.push({
             id: attribute_id,
             datetime: value.datetime,
           })
         } else {
-          attributeRecordValues.push({
+          attribute_record_values.push({
             id: attribute_id,
             patient_id,
             patient_encounter_id,
@@ -375,7 +375,7 @@ export const patient_findings = base({
             value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
           })
 
-          attributeQualifierLinkValues.push({
+          attribute_qualifier_link_values.push({
             id: attribute_id,
             qualifies_record_id: record_id,
           })
@@ -396,14 +396,47 @@ export const patient_findings = base({
         ),
     ).with(
       'inserting_attribute_records',
-      (qb) => attributeRecordValues.length ? qb.insertInto('patient_records').values(attributeRecordValues) : blankSelection(qb)
+      (qb) => attribute_record_values.length ? qb.insertInto('patient_records').values(attribute_record_values) : blankSelection(qb)
     ).with(
       'inserting_attribute_qualifier_links',
-      (qb) => attributeRecordValues.length ? qb.insertInto('patient_record_qualifiers').values(attributeQualifierLinkValues) : blankSelection(qb),
+      (qb) => attribute_record_values.length ? qb.insertInto('patient_record_qualifiers').values(attribute_qualifier_link_values) : blankSelection(qb),
     ).with(
       'inserting_events',
-      (qb) => eventValues.length ? qb.insertInto('patient_events').values(eventValues) : blankSelection(qb),
-    ).selectFrom('inserting_records').select([
+      (qb) => event_values.length ? qb.insertInto('patient_events').values(event_values) : blankSelection(qb),
+    ).with(
+      'inserting_triage_level_records',
+      (qb) =>
+        qb.insertInto('patient_records')
+          .values({
+            id: triage_level_evaluation_id,
+            patient_id,
+            patient_encounter_id,
+            root_snomed_concept_id: EVALUATION_ACTION.id,
+            specific_snomed_concept_id: PRIORITY.id,
+            value_snomed_concept_id,
+          }),
+    ).with('inserting_triage_level_evaluations', (qb) =>
+      qb.insertInto('patient_evaluations')
+        .values({
+          id: triage_level_evaluation_id,
+          evaluates_record_id,
+          employment_id,
+          by_system,
+          procedure_id,
+        })
+        .returning('id'))
+      .with(
+        'inserting_triage_level',
+        (qb) =>
+          qb.insertInto('patient_triage_level')
+            .values({
+              id: triage_level_evaluation_id,
+              target_treatment_time: sql`now() + interval '${
+                sql.raw(target_treatment_minutes.toString())
+              } minutes'`,
+            })
+            .returningAll(),
+      ).selectFrom('inserting_records').select([
       success_true,
       sql<string[]>`array_agg(id)`.as('finding_ids'),
     ]).executeTakeFirstOrThrow()

@@ -23,13 +23,13 @@ export default function DiagnosesForm(props: {
   diagnoses: DiagnosisGroup
   earliestSymptomDate?: string
 }): JSX.Element {
-  const selfDiagnoses: Signal<SelfDiagnosesFormState> = useSignal<
+  const self_diagnoses: Signal<SelfDiagnosesFormState> = useSignal<
     SelfDiagnosesFormState
   >(
     props.diagnoses.self,
   )
 
-  const othersDiagnoses: Signal<OthersDiagnosesFormState> = useSignal<
+  const others_diagnoses: Signal<OthersDiagnosesFormState> = useSignal<
     OthersDiagnosesFormState
   >(
     props.diagnoses.others,
@@ -43,34 +43,34 @@ export default function DiagnosesForm(props: {
         new Date().toISOString().split('T')[0], // default to earliest date or today
     }
 
-    selfDiagnoses.value = [...selfDiagnoses.value, new_diagnosis]
+    self_diagnoses.value = [...self_diagnoses.value, new_diagnosis]
   }
 
-  const first_not_removed = selfDiagnoses.value.find(
+  const first_not_removed = self_diagnoses.value.find(
     (d) => !d.removed,
   )
 
   return (
     <section className='flex flex-col gap-4'>
-      {othersDiagnoses.value.length > 0 && (
+      {others_diagnoses.value.length > 0 && (
         <div>
           <h3 className='text-sm font-semibold text-gray-900'>
             Made by others
           </h3>
           <div className='flex flex-col gap-3'>
-            {othersDiagnoses.value.map((state, index) => {
+            {others_diagnoses.value.map((state, index) => {
               return (
                 <div className='flex gap-2' key={index}>
                   <AgreeDisagreeQuestion
                     name={`diagnoses_collaborations.${index}.approval`}
                     onChange={(approval) => {
-                      othersDiagnoses.value = othersDiagnoses.value.map((
+                      others_diagnoses.value = others_diagnoses.value.map((
                         diagnosis,
                         j,
                       ) => j === index ? { ...diagnosis, approval } : diagnosis)
                     }}
                     value={state.id
-                      ? othersDiagnoses.value.find((od) => od.id === state.id)
+                      ? others_diagnoses.value.find((od) => od.id === state.id)
                         ?.approval
                       : null}
                   />
@@ -95,13 +95,13 @@ export default function DiagnosesForm(props: {
                         label=''
                         placeholder='Reason why you disapproval'
                         value={state.id
-                          ? othersDiagnoses.value.find((od) =>
+                          ? others_diagnoses.value.find((od) =>
                             od.id === state.id
                           )
                             ?.disagree_reason
                           : null}
                         onInput={(event) => {
-                          othersDiagnoses.value = othersDiagnoses.value.map((
+                          others_diagnoses.value = others_diagnoses.value.map((
                             diagnosis,
                             j,
                           ) =>
@@ -124,12 +124,12 @@ export default function DiagnosesForm(props: {
         </div>
       )}
       <div className='flex flex-col gap-3'>
-        {othersDiagnoses.value.length > 0 && (
+        {others_diagnoses.value.length > 0 && (
           <h3 className='text-sm font-semibold text-gray-900'>
             Made by you
           </h3>
         )}
-        {selfDiagnoses.value.map((
+        {self_diagnoses.value.map((
           state,
           index,
         ) =>
@@ -145,11 +145,11 @@ export default function DiagnosesForm(props: {
                 : undefined}
               earliestSymptomDate={props.earliestSymptomDate}
               remove={() =>
-                selfDiagnoses.value = selfDiagnoses.value.map((diagnosis, j) =>
+                self_diagnoses.value = self_diagnoses.value.map((diagnosis, j) =>
                   j === index ? { removed: true } : diagnosis
                 )}
               update={(updatedDiagnosis) =>
-                selfDiagnoses.value = selfDiagnoses.value.map((diagnosis, j) =>
+                self_diagnoses.value = self_diagnoses.value.map((diagnosis, j) =>
                   j === index ? updatedDiagnosis : diagnosis
                 )}
             />
