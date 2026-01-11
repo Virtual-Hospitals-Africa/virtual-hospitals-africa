@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -eo pipefail
+set -xeo pipefail
 
 fail() {
   >&2 echo "$@"
@@ -20,6 +20,8 @@ fi
 HTTP_SERVER_PORT=8004
 HTTPS_PROXY_SERVER_PORT=8005
 https_proxy_server_pid=""
+http_server_pid=""
+
 
 mktemp_with_suffix() {
   local suffix="$1"
@@ -33,11 +35,11 @@ mktemp_with_suffix() {
 test_http_server_output=$(mktemp_with_suffix log)
 test_https_proxy_server_output=$(mktemp_with_suffix log)
 
-use_build=false
+task=vite
 
 while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
   if [[ "$1" == "--use-build" ]]; then
-    use_build=true
+    task=web
   elif [[ "$1" == "--verbose" ]]; then
     set -x
   else
@@ -62,7 +64,12 @@ print_server_log_info() {
 }
 
 cleanup() {
-  kill $https_proxy_server_pid || true
+  if [ ! -z $http_server_pid ]; then
+    kill $http_server_pid || true
+  fi
+  if [ ! -z $https_proxy_server_pid ]; then
+    kill $https_proxy_server_pid || true
+  fi
   if [[ "${CI:-}" == "true" ]]; then
     echo "Server output:"
     cat "$test_http_server_output"
@@ -73,21 +80,13 @@ cleanup() {
   fi
 }
 
-http_server_command() {
-  if $use_build; then
-    deno task web
-  else
-    deno task vite
-  fi
-}
-
 start_http_server() {
   IS_TEST=true \
   PORT=$HTTP_SERVER_PORT \
   HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
   FAKE_GOOGLE_AUTH=false \
   GOOGLE_CLIENT_ID=FAKE_GOOGLE_CLIENT_ID \
-  http_server_command \
+  exec deno task $task \
   >> "$test_http_server_output" 2>&1
 }
 
@@ -95,7 +94,7 @@ start_https_proxy_server() {
   VERBOSE=1 \
   HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
   HTTP_SERVER_PORT=$HTTP_SERVER_PORT \
-  deno task proxy \
+  exec deno task proxy \
   >> "$test_https_proxy_server_output" 2>&1
 }
 
@@ -108,4 +107,9 @@ https_proxy_server_pid="$!"
 
 print_server_log_info
 
-start_http_server
+start_http_server &
+http_server_pid="$!"
+
+# Wait for either process to exit - if one dies, we want to fail fast
+wait -n $http_server_pid $https_proxy_server_pid
+exit 1

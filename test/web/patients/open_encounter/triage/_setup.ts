@@ -1,5 +1,4 @@
 import db from '../../../../../db/db.ts'
-import { CommonConditionKey, WarningSignKey } from '../../../../../types.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { createTestOrganization } from '../../../../_helpers/organizations.ts'
@@ -7,39 +6,69 @@ import {
   insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
   PartialPatientDemographics,
 } from '../../../../_helpers/workflows.ts'
-import fromEntries from '../../../../../util/fromEntries.ts'
-import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
-import {
-  VitalAssessment,
-  VitalMeasurement,
-} from '../../../../../shared/vitals.ts'
 import { assert } from 'std/assert/assert.ts'
+import z from 'zod'
+import {
+  TriageWarningSignSchema,
+  TriageWarningSignsSchema,
+} from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
+import { TriageBriefHistorySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/brief_history.tsx'
+import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
+import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
+import fromEntries from '../../../../../util/fromEntries.ts'
+import {
+  KEYED_WARNING_SIGNS,
+  WARNING_SIGNS,
+} from '../../../../../shared/warning_signs.ts'
+import { CheerioAPI } from 'cheerio'
+import entries from '../../../../../util/entries.ts'
+import keys from '../../../../../util/keys.ts'
+import isKeyOf from '../../../../../util/isKeyOf.ts'
 
-export type TriageScenario = {
+export type TriageSteps = {
+  warning_signs?: z.input<typeof TriageWarningSignsSchema>
+  brief_history?: z.input<typeof TriageBriefHistorySchema>
+  height_and_weight?: z.input<
+    typeof TriageHeightAndWeightSchema
+  >
+  measure_vitals?: z.input<typeof TriageMeasureVitalsSchema>
+}
+
+export type TriageScenario = TriageSteps & {
   patient_demographics: PartialPatientDemographics
-  warning_signs: WarningSignKey[]
-  conditions?: CommonConditionKey[]
-  height_and_weight?: {
-    height: {
-      value: number
-      units: string
-    }
-    weight: {
-      value: number
-      units: string
-    }
-  }
-  vitals?: {
-    measurements: {
-      [v in VitalMeasurement]?: {
-        value: number
-        units: string
+  early_brief_history?: z.input<typeof TriageBriefHistorySchema>
+}
+
+const ONLY_WHEN_PREGNANCY_STATUS = {
+  'Pregnancy and abdominal trauma': true,
+  'Pregnancy and abdominal pain': true,
+  'Abdominal pain': false,
+}
+
+export function asWarningSigns(
+  sign_keys: Array<keyof typeof WARNING_SIGNS>,
+  opts: { pregnant: boolean } = { pregnant: false },
+): z.input<typeof TriageWarningSignsSchema> {
+  return { warning_signs: fromEntries(applicableWarningSigns()) }
+
+  function* applicableWarningSigns(): Generator<
+    [string, z.input<typeof TriageWarningSignSchema>]
+  > {
+    for (const sign of KEYED_WARNING_SIGNS) {
+      if (
+        isKeyOf(sign.key, ONLY_WHEN_PREGNANCY_STATUS) &&
+        ONLY_WHEN_PREGNANCY_STATUS[sign.key] !== opts.pregnant
+      ) continue
+
+      const field: z.input<typeof TriageWarningSignSchema> = {
+        warning_sign_key: sign.key,
+        priority_level: sign.sats_priority,
+        s_expression: sign.clinical_finding_s_expression,
       }
-    }
-    assessments: {
-      [v in VitalAssessment]?: {
-        s_expression: string
+      if (sign_keys.includes(sign.key)) {
+        field.existence = 'Yes'
       }
+      yield [sign.key, field]
     }
   }
 }
@@ -50,10 +79,7 @@ export type TriageScenario = {
 export async function setupTriage(
   {
     patient_demographics,
-    warning_signs,
-    conditions,
-    height_and_weight,
-    vitals,
+    ...steps
   }: TriageScenario,
 ) {
   const clinic = await createTestOrganization(db)
@@ -74,70 +100,49 @@ export async function setupTriage(
       },
     )
 
-  const warning_signs_post_data = fromEntries(
-    warning_signs.map((
-      warning_sign,
-    ) => [
-      warning_sign,
-      WARNING_SIGNS[warning_sign].clinical_finding_s_expression,
-    ]),
-  )
+  function openEncounterRoute(path: string) {
+    assert(!path.startsWith('/'))
+    return `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/${path}`
+  }
 
-  let $ = await nurse.fetchCheerio(
-    `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
-    {
-      method: 'POST',
-      body: asFormData({
-        warning_signs: warning_signs_post_data,
-      }),
-    },
-  )
+  function triageRoute(step: keyof TriageSteps) {
+    return openEncounterRoute(`triage/${step}`)
+  }
 
-  if (conditions) {
-    const conditions_post_data = fromEntries(
-      conditions.map((condition) => [condition, { existence: 'Yes' }]),
-    )
-    if (!conditions_post_data.pregnancy) {
-      conditions_post_data.pregnancy = { existence: 'No' }
+  function getStep(step: keyof TriageSteps) {
+    return nurse.fetchCheerio(triageRoute(step))
+  }
+
+  async function postStep(
+    steps: Partial<NonNullable<Omit<TriageScenario, 'patient_demographics'>>>,
+  ) {
+    let $!: CheerioAPI & { url: string }
+    for (const [step, data] of entries(steps)) {
+      if (!data) continue
+      const step_name = step === 'early_brief_history' ? 'brief_history' : step
+      $ = await nurse.fetchCheerio(
+        triageRoute(step_name),
+        {
+          method: 'POST',
+          body: asFormData(data),
+        },
+      )
     }
-    if (!conditions_post_data.diabetes) {
-      conditions_post_data.diabetes = { existence: 'No' }
-    }
-    $ = await nurse.fetchCheerio(
-      `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
-      {
-        method: 'POST',
-        body: asFormData(conditions_post_data),
-      },
-    )
-  } else {
-    assert(!height_and_weight)
-    assert(!vitals)
+    assert($)
+    return $
   }
 
-  if (height_and_weight) {
-    $ = await nurse.fetchCheerio(
-      `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/height_and_weight`,
-      {
-        method: 'POST',
-        body: asFormData({
-          measurements: height_and_weight,
-        }),
-      },
-    )
-  } else {
-    assert(!vitals)
-  }
+  const $ =
+    await (keys(steps).length ? postStep(steps) : getStep('warning_signs'))
 
-  if (vitals) {
-    $ = await nurse.fetchCheerio(
-      `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/measure_vitals`,
-      {
-        method: 'POST',
-        body: asFormData(vitals),
-      },
-    )
+  return {
+    $,
+    clinic,
+    nurse,
+    encounter,
+    getStep,
+    postStep,
+    openEncounterRoute,
+    triageRoute,
   }
-
-  return { $, clinic, nurse, encounter }
 }

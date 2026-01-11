@@ -30,7 +30,6 @@ import keys from '../../../../../../../../util/keys.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
-import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
@@ -49,7 +48,7 @@ import {
 } from '../../../../../../../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 
-const TriageMeasureVitalsSchema = z.object({
+export const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
     z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)),
     z.object({
@@ -291,10 +290,10 @@ export const handler = postHandler(
       triage_level: triageLevelFromTEWSTotal(total_score, age_determination),
     })
 
-    await additional_tasks.insertTasksIfNotAlreadyIdentified(trx, {
-      patient_id,
-      patient_encounter_id,
-    })
+    // await additional_tasks.insertTasksIfNotAlreadyIdentified(trx, {
+    //   patient_id,
+    //   patient_encounter_id,
+    // })
 
     return completeAndProceedToNextStep(ctx)
   },

@@ -10,7 +10,7 @@ import {
 } from '../../../../_helpers/form.ts'
 import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
-import { setupTriage } from './_setup.ts'
+import { asWarningSigns, setupTriage } from './_setup.ts'
 import {
   assessmentOptionSExpression,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
@@ -42,16 +42,21 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: [],
-          conditions: [],
+          warning_signs: asWarningSigns([]),
+          brief_history: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
-            height: {
-              value: 160,
-              units: 'cm',
-            },
-            weight: {
-              value: 80,
-              units: 'kg',
+            measurements: {
+              height: {
+                value: 160,
+                units: 'cm',
+              },
+              weight: {
+                value: 80,
+                units: 'kg',
+              },
             },
           },
         })
@@ -191,16 +196,21 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: [],
-          conditions: ['diabetes'],
+          warning_signs: asWarningSigns([]),
+          brief_history: {
+            diabetes: { existence: 'Yes' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
-            height: {
-              value: 160,
-              units: 'cm',
-            },
-            weight: {
-              value: 80,
-              units: 'kg',
+            measurements: {
+              height: {
+                value: 160,
+                units: 'cm',
+              },
+              weight: {
+                value: 80,
+                units: 'kg',
+              },
             },
           },
         })
@@ -230,16 +240,21 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '2020-01-01' },
-          warning_signs: [],
-          conditions: [],
+          warning_signs: asWarningSigns([]),
+          brief_history: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
-            height: {
-              value: 100,
-              units: 'cm',
-            },
-            weight: {
-              value: 40,
-              units: 'kg',
+            measurements: {
+              height: {
+                value: 100,
+                units: 'cm',
+              },
+              weight: {
+                value: 40,
+                units: 'kg',
+              },
             },
           },
         })
@@ -266,16 +281,21 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '2020-01-01' },
-          warning_signs: [],
-          conditions: ['diabetes'],
+          warning_signs: asWarningSigns([]),
+          brief_history: {
+            diabetes: { existence: 'Yes' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
-            height: {
-              value: 100,
-              units: 'cm',
-            },
-            weight: {
-              value: 40,
-              units: 'kg',
+            measurements: {
+              height: {
+                value: 100,
+                units: 'cm',
+              },
+              weight: {
+                value: 40,
+                units: 'kg',
+              },
             },
           },
         })
@@ -306,19 +326,24 @@ describeParallel('triage/measure_vitals', () => {
         const result = await asResultAsync(() =>
           setupTriage({
             patient_demographics: { date_of_birth: '2023-01-01' },
-            warning_signs: [],
-            conditions: ['diabetes'],
+            warning_signs: asWarningSigns([]),
+            brief_history: {
+              diabetes: { existence: 'Yes' },
+              pregnancy: { existence: 'No' },
+            },
             height_and_weight: {
-              height: {
-                value: 160,
-                units: 'cm',
-              },
-              weight: {
-                value: 80,
-                units: 'kg',
+              measurements: {
+                height: {
+                  value: 160,
+                  units: 'cm',
+                },
+                weight: {
+                  value: 80,
+                  units: 'kg',
+                },
               },
             },
-            vitals: {
+            measure_vitals: {
               measurements: {
                 respiratory_rate: {
                   value: 12,
@@ -367,7 +392,7 @@ describeParallel('triage/measure_vitals', () => {
 
         assert(result.success === false)
         assertEquals(
-          result.error.message,
+          result.error.message.split('\n')[0],
           '[400]: Missing required measurement: blood_glucose',
         )
       },
@@ -378,19 +403,24 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { encounter } = await setupTriage({
           patient_demographics: { date_of_birth: '2023-01-01' },
-          warning_signs: [],
-          conditions: [],
+          warning_signs: asWarningSigns([]),
+          brief_history: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
-            height: {
-              value: 160,
-              units: 'cm',
-            },
-            weight: {
-              value: 80,
-              units: 'kg',
+            measurements: {
+              height: {
+                value: 160,
+                units: 'cm',
+              },
+              weight: {
+                value: 80,
+                units: 'kg',
+              },
             },
           },
-          vitals: {
+          measure_vitals: {
             measurements: {
               respiratory_rate: {
                 value: 12,
@@ -518,6 +548,7 @@ describeParallel('triage/measure_vitals', () => {
               'full': 'Severity score: 0',
             },
           }],
+          'existence': 'Yes',
         }, { strict: true })
 
         const component_scores = await patient_evaluation_scores.findAll(
@@ -624,19 +655,24 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
           },
-          warning_signs: [],
-          conditions: [],
+          warning_signs: asWarningSigns([]),
+          brief_history: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
           height_and_weight: {
-            height: {
-              value: heightOf(age_determination),
-              units: 'cm',
-            },
-            weight: {
-              value: weightOf(age_determination),
-              units: 'kg',
+            measurements: {
+              height: {
+                value: heightOf(age_determination),
+                units: 'cm',
+              },
+              weight: {
+                value: weightOf(age_determination),
+                units: 'kg',
+              },
             },
           },
-          vitals: {
+          measure_vitals: {
             measurements: asVitalMeasurementFormValues(measurement_values),
             assessments: asVitalAssessmentFormValues(assessment_values),
           },

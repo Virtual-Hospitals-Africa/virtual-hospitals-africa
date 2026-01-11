@@ -100,6 +100,7 @@ type BaseLang =
       expressions: AnyNode[]
     }
     task: {
+      description: string
       when: Lang[Comparisons | 'finding' | 'any' | 'all']
       procedure: Lang['procedure']
     }
@@ -553,11 +554,13 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   z.object({
     atom: z.literal('task'),
     args: z.tuple([
+      z.string(),
       comparator.or(finding).or(any).or(all),
       procedure.or(check_for),
     ]),
-  }).transform(({ atom, args: [when, procedure] }) => ({
+  }).transform(({ atom, args: [description, when, procedure] }) => ({
     atom,
+    description,
     when,
     procedure,
   }))

@@ -88,15 +88,26 @@ function removeDefaultImports(
   content: string,
   unused_vars: Set<string>,
 ): string {
-  // Match default imports: import foo from 'bar'
-  const default_import_regex = /import\s+(\w+)\s+from\s*['"][^'"]+['"]\s*\n?/g
+  // Match default imports with optional named imports: import foo, { bar } from 'baz' or import foo from 'bar'
+  const default_import_regex =
+    /import\s+(\w+)\s*(,\s*\{[^}]*\})?\s*from\s*(['"][^'"]+['"])\s*\n?/g
 
-  return content.replace(default_import_regex, (match, var_name) => {
-    if (unused_vars.has(var_name)) {
-      return '' // Remove entire import
-    }
-    return match
-  })
+  return content.replace(
+    default_import_regex,
+    (match, default_name, named_part, from_path) => {
+      const default_unused = unused_vars.has(default_name)
+
+      if (default_unused) {
+        if (named_part) {
+          // Keep the named imports, remove default
+          const cleaned_named = named_part.replace(/^,\s*/, '')
+          return `import ${cleaned_named} from ${from_path}\n`
+        }
+        return '' // Remove entire import
+      }
+      return match
+    },
+  )
 }
 
 async function processFile(

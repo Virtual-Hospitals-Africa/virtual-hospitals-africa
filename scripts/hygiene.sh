@@ -13,7 +13,7 @@ declare -A rules=(
 rule_no_camel_case_const() {
   # Note that we can ignore specific variable names like onClick at the front
   # and we can ignore functions/patterns that return functions at the back like const getById = model.getById
-  ! rg -n --pcre2 "const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! logArgsOnError)(?! deduplicate)(?! simpleBaseQuery)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s"
+  ! rg -n --pcre2 "const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! once)(?! logArgsOnError)(?! deduplicate)(?! simpleBaseQuery)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s"
 }
 
 rule_no_node_imports() {
@@ -36,7 +36,7 @@ rule_no_db_imports_in_frontend() {
 }
 
 rule_no_only_in_tests() {
-  ! rg -n --pcre2 '\.only\(' test
+  ! rg -n --pcre2 '\.only\(|only:\s*true' test --glob '!test/_helpers/*'
 }
 
 # Main: run all rules in parallel and collect results

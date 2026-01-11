@@ -1,123 +1,120 @@
-import db from '../db/db.ts'
+import db, { opts } from '../db/db.ts'
 import { EVENTS, isEventType } from './handlers.ts'
 import { events } from '../db/models/events.ts'
-import { forEach } from '../util/inParallel.ts'
-import { TrxOrDb } from '../types.ts'
-import { now } from '../db/helpers.ts'
 import { NO_EXTERNAL_CONNECT } from '../util/env.ts'
+import { assert } from 'std/assert/assert.ts'
+import { Client } from 'pg'
+import { once } from '../util/once.ts'
+import { isUUID } from '../util/uuid.ts'
 
-export type EventProcessor = { start(): void; exit(): void }
-
-export async function addListeners(trx: TrxOrDb) {
-  const unprocessed = await events.withoutListeners(trx)
-  await forEach(unprocessed, async (event) => {
-    if (!isEventType(event.type)) {
-      return events.markUnrecoverableError(
-        trx,
-        event.id,
-        new Error(`No event with type: ${event.type}`),
-      )
-    }
-
-    const handler = EVENTS[event.type]
-    const parsed = handler.schema.safeParse(event.data)
-    if (parsed.error) {
-      return events.markUnrecoverableError(
-        trx,
-        event.id,
-        parsed.error,
-      )
-    }
-
-    const listeners = Object.keys(handler.listeners)
-    if (listeners.length) {
-      await trx
-        .insertInto('event_listeners')
-        .values(listeners.map((listener_name) => ({
-          listener_name,
-          event_id: event.id,
-        })))
-        .execute()
-    }
-
-    await trx.updateTable('events')
-      .where('id', '=', event.id)
-      .set({
-        listeners_inserted_at: now,
-      })
-      .execute()
-  })
+export type EventProcessor = {
+  start(): void
+  exit(opts: { graceful: boolean }): Promise<void>
 }
 
-export async function processListeners(
-  trx: TrxOrDb,
-) {
-  const unprocessed = await events.selectUnprocessedListeners(trx)
+async function onEventListener(event_listener_id: string) {
+  const event_listener = await events.selectUnprocessedListener(
+    db,
+    event_listener_id,
+  )
+  if (!event_listener) {
+    return console.log(
+      'Another process got to this one first',
+      event_listener_id,
+    )
+  }
+  console.log('got listener', event_listener)
 
-  await forEach(
-    unprocessed,
-    async (event_listener) => {
-      if (!isEventType(event_listener.type)) {
-        return events.markUnrecoverableError(
-          trx,
-          event_listener.event_id,
-          new Error(`No event with type: ${event_listener.type}`),
-        )
-      }
+  if (!isEventType(event_listener.type)) {
+    return events.markUnrecoverableError(
+      db,
+      event_listener.event_id,
+      new Error(`No event with type: ${event_listener.type}`),
+    )
+  }
 
-      const handler = EVENTS[event_listener.type]
+  const handler = EVENTS[event_listener.type]
 
-      const listener = handler.listeners[event_listener.listener_name]
+  const listener = handler.listeners[event_listener.listener_name]
 
-      if (!listener) {
-        return events.markErroredListener(
-          trx,
-          {
-            event_listener_id: event_listener.id,
-            error_message: 'No such listener found by name',
-            error_count: event_listener.error_count + 1,
-          },
-        )
-      }
-      try {
+  if (!listener) {
+    return events.markErroredListener(
+      db,
+      {
+        event_listener_id: event_listener.id,
+        error_message: 'No such listener found by name',
+      },
+    )
+  }
+
+  console.log('parsing', event_listener)
+  const parse_result = handler.schema.safeParse(event_listener.data)
+
+  console.log('parse_result', { event_listener, parse_result })
+
+  if (!parse_result.success) {
+    return events.markErroredListener(
+      db,
+      {
+        event_listener_id: event_listener.id,
+        error_message: parse_result.error.message,
+      },
+    )
+  }
+
+  try {
+    console.log('starting trx', event_listener)
+    await db.transaction().setIsolationLevel('read committed').execute(
+      async (trx) => {
+        console.log('inside trx', event_listener)
         await listener(trx, {
           id: event_listener.event_id,
           // deno-lint-ignore no-explicit-any
-          data: event_listener.data as any,
-          metadata: {
-            error_count: event_listener.error_count,
-          },
+          data: parse_result.data as any,
+          // metadata: {
+          //   error_count: event_listener.error_count,
+          // },
         })
-        await events.processedListener(trx, {
-          event_listener_id: event_listener.id,
-        })
-      } catch (error) {
-        console.error(error)
-        await events.markErroredListener(trx, {
-          event_listener_id: event_listener.id,
-          // deno-lint-ignore no-explicit-any
-          error_message: (error as any).message,
-          error_count: event_listener.error_count + 1,
-        })
-      }
-    },
-  )
+        console.log('listener complete', event_listener)
+      },
+    )
+    console.log('events.processedListener', event_listener)
+    await events.processedListener(db, {
+      event_listener_id: event_listener.id,
+    })
+  } catch (error) {
+    console.error(error)
+    await events.markErroredListener(db, {
+      event_listener_id: event_listener.id,
+      // deno-lint-ignore no-explicit-any
+      error_message: (error as any).message,
+      // error_count: event_listener.error_count + 1,
+    })
+  }
 }
 
-export function createEventProcessor(): EventProcessor {
-  let add_listeners_timer: number
-  let process_listeners_timer: number
+const initializeEventListener = once(
+  async function initializeEventListener() {
+    const client = new Client(opts || {})
 
-  async function addListenersOnLoop(): Promise<void> {
-    await db.transaction().execute(addListeners)
-    add_listeners_timer = setTimeout(addListenersOnLoop, 100)
-  }
-  async function processListenersOnLoop(): Promise<void> {
-    await db.transaction().execute(processListeners)
-    process_listeners_timer = setTimeout(processListenersOnLoop, 100)
-  }
+    await client.connect()
+    await client.query(`LISTEN event_listener_to_be_processed`)
+
+    client.on('notification', function (event) {
+      console.log('zzzz', event)
+      const { payload: event_listener_id } = event
+      assert(isUUID(event_listener_id))
+      onEventListener(event_listener_id)
+    })
+
+    return client
+  },
+)
+
+export function createEventProcessor(): EventProcessor {
+  let client: Client
   return {
-    start: () => {
+    start() {
       if (NO_EXTERNAL_CONNECT) {
         console.log(
           'Not starting the event processor due to NO_EXTERNAL_CONNECT',
@@ -125,13 +122,17 @@ export function createEventProcessor(): EventProcessor {
         return
       }
       console.log('Starting event processor')
-      addListenersOnLoop()
-      processListenersOnLoop()
+      initializeEventListener().then((c) => {
+        client = c
+      })
     },
-    exit: () => {
+    exit(opts: { graceful: boolean }) {
+      assert(
+        !opts.graceful,
+        'TODO support graceful shutdown which might let listeners currently being processed finish while not listening for new ones',
+      )
       console.log('Stopping event processor')
-      clearTimeout(add_listeners_timer)
-      clearTimeout(process_listeners_timer)
+      return client?.end() || Promise.resolve()
     },
   }
 }

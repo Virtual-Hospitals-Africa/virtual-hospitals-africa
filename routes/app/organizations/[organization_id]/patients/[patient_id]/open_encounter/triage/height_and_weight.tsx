@@ -18,7 +18,7 @@ import { assert } from 'std/assert/assert.ts'
 import fromEntries from '../../../../../../../../util/fromEntries.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 
-const TriageHeightAndWeightSchema = z.object({
+export const TriageHeightAndWeightSchema = z.object({
   measurements: z.record(
     z.enum(['height', 'weight']),
     z.object({

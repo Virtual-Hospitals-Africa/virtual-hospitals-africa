@@ -1,6 +1,7 @@
 import { CLINICAL_FINDING, PROCEDURE } from './snomed_concepts.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
 import { CheckForTask, RenderedTask } from '../types.ts'
+import { keyBy } from '../util/keyBy.ts'
 
 function asTask(task_s_expression: string) {
   return parseExpressionExpectingAtom(
@@ -11,34 +12,42 @@ function asTask(task_s_expression: string) {
 
 export const TASKS = [
   `(task
+    "Give oxygen if saturation below 92%"
       (< (measurement 103228002) (units 92 %))
-      (procedure ${PROCEDURE.lang} 57485005))`,
+      (procedure ${PROCEDURE.s_expression} 57485005))`,
   `(task
-    (finding ${CLINICAL_FINDING.lang}
+    "Check for head injury for any nose symptoms"
+    (finding ${CLINICAL_FINDING.s_expression}
       (finding_site (snomed_concept "Nasal structure" "body structure")))
     (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Injury of head" "disorder"))))`,
+      (finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Injury of head" "disorder"))))`,
   `(task
-    (finding ${CLINICAL_FINDING.lang}
+    "Check for nausea in case of chest pain"
+    (finding ${CLINICAL_FINDING.s_expression}
       (snomed_concept "Chest pain" "finding"))
     (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Nausea" "finding"))))`,
+      (finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nausea" "finding"))))`,
   `(task
-    (finding ${CLINICAL_FINDING.lang}
+    "Check for vomiting in case of chest pain"
+    (finding ${CLINICAL_FINDING.s_expression}
       (snomed_concept "Chest pain" "finding"))
     (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Vomiting" "disorder"))))`,
+      (finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Vomiting" "disorder"))))`,
   `(task
-    (finding ${CLINICAL_FINDING.lang}
+    "Check for pallor in case of chest pain"
+    (finding ${CLINICAL_FINDING.s_expression}
       (snomed_concept "Chest pain" "finding"))
     (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Pallor of skin of face" "finding"))))`,
+      (finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Pallor of skin of face" "finding"))))`,
   `(task
-    (finding ${CLINICAL_FINDING.lang}
+    "Check for sweating in case of chest pain"
+    (finding ${CLINICAL_FINDING.s_expression}
       (snomed_concept "Chest pain" "finding"))
     (check_for
-      (finding ${CLINICAL_FINDING.lang} (snomed_concept "Sweating" "finding"))))`,
+      (finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Sweating" "finding"))))`,
 ].map(asTask)
+
+export const KEYED_TASKS = keyBy(TASKS, 'description')
 
 export function isCheckFor(task: RenderedTask): task is CheckForTask {
   return task.procedure.value?.type === 's_expression'

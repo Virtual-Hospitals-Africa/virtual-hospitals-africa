@@ -1,6 +1,6 @@
 import { ExpressionBuilder, sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
-import { base } from './_base.ts'
+import { base, SearchResult } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DB, SnomedCategory } from '../../db.d.ts'
 import {
@@ -11,6 +11,10 @@ import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
 import { jsonBuildObject, literalString } from '../helpers.ts'
 import { buildExpression } from './s_expression.ts'
 import { isAtom, parseExpression } from '../../shared/s_expression.ts'
+import {
+  asConceptSExpression,
+  CLINICAL_FINDING,
+} from '../../shared/snomed_concepts.ts'
 
 type SearchTerms = {
   search: string
@@ -158,6 +162,39 @@ export const snomed_model = base({
   baseQuery,
   getPriorityOfSnomedConcept,
   formatResult(result) {
-    return result
+    const concept_s_expression = asConceptSExpression(result)
+    const clinical_finding_s_expression =
+      `(finding ${CLINICAL_FINDING.s_expression} ${concept_s_expression})`
+    return {
+      clinical_finding_s_expression,
+      snomed_concept_id: result.id,
+      sats_primary_name: result.name,
+      sats_secondary_text: result.category,
+      sats_priority: result.priority?.name || ('Non-urgent' as const),
+      sats_priority_by_virtue_of_matching_warning_sign: result.priority
+        ?.warning_sign,
+      similarity: result.best_similarity,
+    }
   },
 })
+
+export type SnomedConceptSearchResult = SearchResult<typeof snomed_model>
+
+// Unused, but stashing because it's an interesting idea.
+// The idea is to get the triage level of a finding already in the database based on
+// The warning signs.
+// async function getPriorityByRecordId(): Promise<Priority> {
+//   const { priority } = await trx.selectFrom('patient_records')
+//     .where('patient_records.id', '=', finding_insert.finding_id)
+//     .select((eb) =>
+//       snomed_model.getPriorityOfSnomedConcept(
+//         eb,
+//         'patient_records.specific_snomed_concept_id',
+//         patient_id,
+//         trx,
+//       )
+//     )
+//     .executeTakeFirstOrThrow()
+
+//   return priority?.name || 'Non-urgent'
+// }

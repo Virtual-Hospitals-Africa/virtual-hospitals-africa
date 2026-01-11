@@ -37,6 +37,7 @@ export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
 export { type MessageTargetCategory } from './shared/message_targets.ts'
 export { type CommonConditionKey } from './shared/brief_history.ts'
+export { type SnomedConceptSearchResult } from './db/models/snomed.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -3548,6 +3549,7 @@ export type RenderedFindingRelativeToHealthWorker =
   RenderedRecordRelativeToHealthWorkerDef<'finding', {
     priority: Priority | null
     score: number | null
+    existence: Existence
     provider: RenderedRecordProvider
     as_part_of_procedure: AsPartOfProcedure
   }>
@@ -3577,7 +3579,6 @@ export type RenderedBriefHistoryRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
     pertaining_to_key: CommonConditionKey
-    existence: Existence
   }
 
 export type AppUser = Profession | 'admin' | 'regulator'
@@ -3599,6 +3600,7 @@ export type MostRecentBriefHistoryFindings = {
 }
 
 export type WarningSign = {
+  key: WarningSignKey
   clinical_finding_s_expression: string
   sats_primary_name: string
   sats_secondary_text: string | null
@@ -3609,19 +3611,13 @@ export type WarningSign = {
 
 export type WarningSignKey = keyof typeof WARNING_SIGNS
 
-export type KeyedWarningSign = {
-  key: string
-} & WarningSign
-
-export type WarningSignPresence = {
-  satisfied_by_record_id: string
-  checked: true
-} | {
-  satisfied_by_record_id: null
-  checked: false
+export type WarningSignWithMaybeRecord = Omit<WarningSign, 'key'> & {
+  key?: string
+  existing_record?: {
+    id: string
+    existence: Existence
+  }
 }
-
-export type CheckedWarningSign = KeyedWarningSign & WarningSignPresence
 
 export type IntermediateProcedureRecord = {
   created_at: Date

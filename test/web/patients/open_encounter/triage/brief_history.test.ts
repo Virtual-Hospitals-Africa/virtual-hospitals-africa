@@ -249,6 +249,7 @@ describeParallel('triage/brief_history', () => {
         const this_patient_findings = sortBy(
           await patient_findings.findAll(db, {
             patient_id: initial_encounter.patient.id,
+            include_negative: true,
           }),
           (finding) => finding.displays.full,
         )

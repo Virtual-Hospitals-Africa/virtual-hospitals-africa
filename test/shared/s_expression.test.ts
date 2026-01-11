@@ -69,7 +69,7 @@ describe('shared/s_expression.ts', () => {
    */
   it('can parse a finding expression with attributes & snomed concepts', () => {
     const parsed = parseExpressionExpectingAtom(
-      `(finding ${CLINICAL_FINDING.lang} 
+      `(finding ${CLINICAL_FINDING.s_expression} 
           (snomed_concept "Burn" "disorder")
           (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure"))
       )`,
@@ -114,7 +114,7 @@ describe('shared/s_expression.ts', () => {
 
     assertEquals(
       inverseSExpression(parsed),
-      `(finding ${CLINICAL_FINDING.lang} (snomed_concept "Burn" "disorder") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure")))`,
+      `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Burn" "disorder") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Left upper arm structure" "body structure")))`,
     )
   })
 

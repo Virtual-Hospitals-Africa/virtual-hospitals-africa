@@ -31,14 +31,6 @@ import {
 } from '../../shared/snomed_concepts.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 
-type FindingInsert = {
-  patient_id: string
-  patient_encounter_id: string
-  patient_encounter_employee_id: string
-  procedure_id: string
-  finding: Lang['finding'] | string
-}
-
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
 ) {
@@ -100,6 +92,19 @@ export function baseQuery(
         }),
       }).as('as_part_of_procedure'),
 
+      eb.case()
+        .when('patient_records.value_snomed_concept_id', '=', NO_QUALIFIER.id)
+        .then('No' as const)
+        .when(
+          'patient_records.value_snomed_concept_id',
+          '=',
+          UNKNOWN_QUALIFIER.id,
+        )
+        .then('Unknown' as const)
+        .else('Yes' as const)
+        .end()
+        .as('existence'), // yields Yes/No/Unknown
+
       eb.selectFrom('patient_triage_level')
         .innerJoin(
           'patient_records as triage_patient_records',
@@ -160,9 +165,19 @@ export type IntermediateFinding = QueryResult<typeof baseQuery>
 export type PatientFindingsSearch = {
   patient_id?: string | IdSelection
   patient_encounter_id?: string | IdSelection
+  procedure_id?: string | IdSelection
   s_expression?: string | Lang['finding']
   search?: string
   not_measurements?: boolean
+  include_negative?: boolean
+}
+
+type FindingInsert = {
+  patient_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
+  procedure_id: string
+  finding: Lang['finding'] | string
 }
 
 export const patient_findings = base({
@@ -203,6 +218,32 @@ export const patient_findings = base({
         'patient_records.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
+      )
+    }
+    if (opts.procedure_id) {
+      qb = qb.where(
+        'patient_findings.procedure_id',
+        '=',
+        opts.procedure_id,
+      )
+    }
+    if (!opts.include_negative) {
+      qb = qb.where((eb) =>
+        eb.or([
+          eb('patient_records.value_snomed_concept_id', 'is', null),
+          eb.and([
+            eb(
+              'patient_records.value_snomed_concept_id',
+              '!=',
+              NO_QUALIFIER.id,
+            ),
+            eb(
+              'patient_records.value_snomed_concept_id',
+              '!=',
+              UNKNOWN_QUALIFIER.id,
+            ),
+          ]),
+        ])
       )
     }
     if (opts.not_measurements) {

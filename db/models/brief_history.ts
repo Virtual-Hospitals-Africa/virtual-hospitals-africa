@@ -19,9 +19,9 @@ import {
 } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
-import assertOneOf from '../../util/assertOneOf.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
+import compact from '../../util/compact.ts'
 
 type IntermediateBriefHistory = IntermediateFinding & {
   pertaining_to_key: CommonConditionKey
@@ -66,44 +66,27 @@ function mostRecentFindings(
               .as('pertaining_to_key'),
           ]),
     )
-    .with('this_patient_findings', (qb) =>
-      patient_findings.baseQuery(trx)
-        .where('patient_records.patient_id', '=', patient_id)
-        .innerJoin(
-          qb.selectFrom('patient_findings_matching_common_conditions')
-            .selectAll('patient_findings_matching_common_conditions')
-            .as('pfmcc'),
-          (join) => join.onRef('patient_records.id', '=', 'pfmcc.id'),
-        )
-        .select([
-          'pfmcc.pertaining_to_key',
-        ]))
+    .with(
+      'this_patient_findings',
+      (qb) =>
+        patient_findings.searchQuery(trx, {
+          patient_id,
+          include_negative: true,
+        })
+          .innerJoin(
+            qb.selectFrom('patient_findings_matching_common_conditions')
+              .selectAll('patient_findings_matching_common_conditions')
+              .as('pfmcc'),
+            (join) => join.onRef('patient_records.id', '=', 'pfmcc.id'),
+          )
+          .select([
+            'pfmcc.pertaining_to_key',
+          ]),
+    )
     .selectFrom('this_patient_findings')
     .selectAll('this_patient_findings')
     .orderBy('this_patient_findings.created_at', 'desc')
     .execute()
-}
-
-function findingExistence(finding: IntermediateBriefHistory): Existence {
-  assertOneOf(
-    finding.root_snomed_concept.name,
-    ['Status' as const, 'Clinical finding' as const],
-    "Revisit this function when considering how other types of findings interplay with what's shown for brief history",
-  )
-
-  if (finding.root_snomed_concept.name !== 'Status') {
-    return 'Yes'
-  }
-
-  assert(finding.value)
-  assert(finding.value.type === 'snomed_concept')
-  assert(finding.value.name)
-  assertOneOf(finding.value.name, [
-    'Yes' as const,
-    'No' as const,
-    'Unknown' as const,
-  ])
-  return finding.value.name
 }
 
 function mostRecentFinding<
@@ -112,7 +95,7 @@ function mostRecentFinding<
   },
 >(
   findings_of_condition: NonEmptyArray<Finding>,
-): Finding {
+): Finding | null {
   if (findings_of_condition.length > 1) {
     assert(
       findings_of_condition[0].created_at >=
@@ -154,8 +137,11 @@ function mostRecentFinding<
       return !invalidated
     })
 
-  return first_positive_finding_not_invalidated_by_a_later_negative_finding ||
-    findings_of_condition[0]
+  if (first_positive_finding_not_invalidated_by_a_later_negative_finding) {
+    return first_positive_finding_not_invalidated_by_a_later_negative_finding
+  }
+
+  return most_recent_parent_concept_finding ?? null
 }
 
 export const brief_history = {
@@ -172,19 +158,10 @@ export const brief_history = {
     const most_recent_findings = await mostRecentFindings(trx, {
       patient_id,
       conditions,
-    })
+    }).then((findings) => findings.map(formatRecord))
 
-    const most_recent_findings_with_existence = most_recent_findings.map(
-      (finding) => ({
-        ...formatRecord(finding),
-        existence: findingExistence(finding),
-      }),
-    )
-
-    most_recent_findings_with_existence[0]
-
-    const records = groupBy(
-      most_recent_findings_with_existence,
+    const most_recent_grouped = groupBy(
+      most_recent_findings,
       'pertaining_to_key',
     )
       .values()
@@ -193,9 +170,9 @@ export const brief_history = {
 
     const with_providers: RenderedBriefHistoryRelativeToHealthWorker[] =
       await patient_record_providers.hydrateIntermediateRecords(trx, {
-        records,
-        health_worker_id,
         encounter,
+        health_worker_id,
+        records: compact(most_recent_grouped),
       })
 
     return fromEntries(
