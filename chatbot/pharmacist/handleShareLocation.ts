@@ -1,8 +1,4 @@
-import {
-  Coordinates,
-  PharmacistChatbotUserState,
-  TrxOrDb,
-} from '../../types.ts'
+import { Coordinates, PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
 import { conversations } from '../../db/models/conversations.ts'
 import { pharmacists } from '../../db/models/pharmacists.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -12,8 +8,7 @@ export async function handleShareLocation(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
-  const { licence_number, pharmacy_licence_number } =
-    pharmacistState.chatbot_user.data
+  const { licence_number, pharmacy_licence_number } = pharmacistState.chatbot_user.data
   assert(typeof licence_number === 'string')
   assert(typeof pharmacy_licence_number === 'string')
 

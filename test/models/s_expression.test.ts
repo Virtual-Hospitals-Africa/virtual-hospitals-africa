@@ -1,7 +1,7 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
-import { findingQueryExpression, KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
+import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
@@ -12,7 +12,7 @@ import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
-import { PROCEDURE } from '../../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING, PROCEDURE } from '../../shared/snomed_concepts.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import assertLength from '../../util/assertLength.ts'
 
@@ -36,7 +36,7 @@ describeParallel('db/models/s_expression.ts', () => {
       )
 
       const finding = parseExpression(
-        KEYED_WARNING_SIGNS['Burn Circumferential'].clinical_finding_s_expression,
+        WARNING_SIGNS['Burn Circumferential'].clinical_finding_s_expression,
       )
       assert(finding.atom === 'finding')
 
@@ -129,7 +129,7 @@ describeParallel('db/models/s_expression.ts', () => {
         db,
         { patient_id: encounter.patient.id },
         parseExpression(
-          findingQueryExpression(KEYED_WARNING_SIGNS['Burn Other']),
+          findingQueryExpression(WARNING_SIGNS['Burn Other']),
         ),
       )
 
@@ -169,13 +169,13 @@ describeParallel('db/models/s_expression.ts', () => {
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
         procedure_id,
-        finding: `(clinical_finding (snomed_concept "Nasal discharge" "finding"))`,
+        finding: `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nasal discharge" "finding"))`,
       })
 
       const nasal_structure_findings = await patient_findings.findAll(db, {
         patient_id: encounter.patient.id,
         s_expression: `
-          (clinical_finding 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (attribute (snomed_concept "Finding site" "attribute")
                       (snomed_concept "Nasal structure" "body structure")))
         `,
@@ -193,7 +193,7 @@ describeParallel('db/models/s_expression.ts', () => {
       const face_structure_findings = await patient_findings.findAll(db, {
         patient_id: encounter.patient.id,
         s_expression: `
-          (clinical_finding 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (attribute (snomed_concept "Finding site" "attribute")
                       (snomed_concept "Face structure" "body structure")))
         `,
@@ -204,7 +204,7 @@ describeParallel('db/models/s_expression.ts', () => {
       const stomach_structure_findings = await patient_findings.findAll(db, {
         patient_id: encounter.patient.id,
         s_expression: `
-          (clinical_finding 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (attribute (snomed_concept "Finding site" "attribute")
                       (snomed_concept "Stomach structure" "body structure")))
         `,
@@ -217,7 +217,7 @@ describeParallel('db/models/s_expression.ts', () => {
         {
           patient_id: encounter.patient.id,
           s_expression: `
-          (clinical_finding 
+          (finding ${CLINICAL_FINDING.s_expression} 
             (finding_site (snomed_concept "Nasal structure" "body structure")))
         `,
         },

@@ -1,11 +1,5 @@
 import { sql } from 'kysely'
-import {
-  Maybe,
-  MedicationSchedule,
-  RenderedPrescription,
-  RenderedPrescriptionWithMedications,
-  TrxOrDb,
-} from '../../types.ts'
+import { Maybe, MedicationSchedule, RenderedPrescription, RenderedPrescriptionWithMedications, TrxOrDb } from '../../types.ts'
 import { drugs } from './drugs.ts'
 import { prescription_medications } from './prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -133,9 +127,7 @@ export const prescriptions = {
           schedules: sql<string[]>`
           ARRAY[${
             sql.raw(
-              schedules.map((schedule) =>
-                `ROW('${schedule.dosage}', '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`
-              ).join(','),
+              schedules.map((schedule) => `ROW('${schedule.dosage}', '${schedule.frequency}', ${schedule.duration}, '${schedule.duration_unit}')`).join(','),
             )
           }]::medication_schedule[]
         `,
@@ -188,9 +180,7 @@ export const prescriptions = {
 
     const medications_with_drugs = medications_of_prescription.map(
       (medication) => {
-        const drug = drugs_of_medications.find((drug) =>
-          drug.id === medication.drug_id
-        )
+        const drug = drugs_of_medications.find((drug) => drug.id === medication.drug_id)
         assert(drug)
         return { ...medication, drug }
       },

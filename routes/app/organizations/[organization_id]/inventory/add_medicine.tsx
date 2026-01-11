@@ -9,11 +9,7 @@ import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import { postHandler } from '../../../../../backend/postHandler.ts'
 import z from 'zod'
-import {
-  positive_decimal,
-  positive_integer,
-  string_or_number_as_string,
-} from '../../../../../util/validators.ts'
+import { positive_decimal, positive_integer, string_or_number_as_string } from '../../../../../util/validators.ts'
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
 
 const AddMedicineSchema = z.object({
@@ -63,34 +59,30 @@ export const handler = postHandler(
 export default HealthWorkerHomePageLayout(
   'Add Medicine',
   async function MedicineAdd(
-    { url: { searchParams }, state: { trx, organization } }:
-      OrganizationContext,
+    { url: { searchParams }, state: { trx, organization } }: OrganizationContext,
   ) {
-    const strength = searchParams.has('strength')
-      ? positive_decimal.parse(searchParams.get('strength')).toFixed()
-      : null
+    const strength = searchParams.has('strength') ? positive_decimal.parse(searchParams.get('strength')).toFixed() : null
 
     const manufactured_medication_id = searchParams.get(
       'manufactured_medication_id',
     )
 
-    const { manufactured_medication, last_procurement } =
-      !manufactured_medication_id
-        ? { manufactured_medication: null, last_procurement: null }
-        : await promiseProps({
-          last_procurement: inventory.getLatestProcurement(
-            trx,
-            {
-              manufactured_medication_id,
-              strength,
-              organization_id: organization.id,
-            },
-          ),
-          manufactured_medication: manufactured_medications.getById(
-            trx,
+    const { manufactured_medication, last_procurement } = !manufactured_medication_id
+      ? { manufactured_medication: null, last_procurement: null }
+      : await promiseProps({
+        last_procurement: inventory.getLatestProcurement(
+          trx,
+          {
             manufactured_medication_id,
-          ),
-        })
+            strength,
+            organization_id: organization.id,
+          },
+        ),
+        manufactured_medication: manufactured_medications.getById(
+          trx,
+          manufactured_medication_id,
+        ),
+      })
 
     return (
       <InventoryMedicineForm

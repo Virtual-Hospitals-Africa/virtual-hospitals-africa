@@ -1,7 +1,4 @@
-import {
-  LoggedInHealthWorkerContext,
-  RenderedDevice,
-} from '../../../../../types.ts'
+import { LoggedInHealthWorkerContext, RenderedDevice } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
 import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'

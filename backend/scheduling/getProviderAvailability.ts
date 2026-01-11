@@ -4,14 +4,7 @@ import * as google from '../../external-clients/google.ts'
 import { employees } from '../../db/models/employees.ts'
 import { google_tokens } from '../../db/models/google_tokens.ts'
 import { employment_calendars } from '../../db/models/employment_calendars.ts'
-import {
-  Availability,
-  GCalFreeBusy,
-  RenderedAppointmentProvider,
-  RenderedEmployee,
-  TimeRange,
-  TrxOrDb,
-} from '../../types.ts'
+import { Availability, GCalFreeBusy, RenderedAppointmentProvider, RenderedEmployee, TimeRange, TrxOrDb } from '../../types.ts'
 import { assertAllJohannesburg, formatJohannesburg } from '../../util/date.ts'
 import flatten from '../../util/flatten.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
@@ -27,8 +20,7 @@ export function getAvailability(
     ...free_busy.calendars[calendars.gcal_availability_calendar_id].busy,
   ]
 
-  const appointments =
-    free_busy.calendars[calendars.gcal_appointments_calendar_id].busy
+  const appointments = free_busy.calendars[calendars.gcal_appointments_calendar_id].busy
 
   appointments.forEach((appointment) => {
     const conflict_index = availability.findIndex((availabilityBlock) =>
@@ -153,14 +145,13 @@ export function getAllProviderAvailability(
  */
 export async function availableSlots(
   trx: TrxOrDb,
-  { dates, declined_times = [], count, employment_ids, duration_minutes = 30 }:
-    {
-      count: number
-      employment_ids: string[]
-      declined_times?: string[]
-      dates?: string[]
-      duration_minutes?: number
-    },
+  { dates, declined_times = [], count, employment_ids, duration_minutes = 30 }: {
+    count: number
+    employment_ids: string[]
+    declined_times?: string[]
+    dates?: string[]
+    duration_minutes?: number
+  },
 ): Promise<{
   provider: RenderedAppointmentProvider
   start: Date
@@ -196,9 +187,7 @@ export async function availableSlots(
       slots.push(...more_slots)
     }
   }
-  slots.sort((a, b) =>
-    new Date(a.start).valueOf() - new Date(b.start).valueOf()
-  )
+  slots.sort((a, b) => new Date(a.start).valueOf() - new Date(b.start).valueOf())
 
   if (!slots.length) return []
 

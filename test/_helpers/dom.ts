@@ -37,15 +37,8 @@ function extractTree(
   return { tag, children: child_nodes }
 }
 
-export function prettyHtml($: cheerio.CheerioAPI, selector?: string): string {
+export function prettyPrintHtml($: cheerio.CheerioAPI, selector?: string) {
   const html = selector ? $(selector).html() : $.html()
   assert(html, `No html found for ${selector}`)
   return prettyPrint(html)
-}
-
-/**
- * @example logPrettyHtml($, '#warning-signs')
- */
-export function logPrettyHtml($: cheerio.CheerioAPI, selector?: string): void {
-  console.log(prettyHtml($, selector))
 }

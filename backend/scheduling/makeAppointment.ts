@@ -1,10 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  differenceInMinutes,
-  formatJohannesburg,
-  isIsoJohannesburg,
-} from '../../util/date.ts'
+import { differenceInMinutes, formatJohannesburg, isIsoJohannesburg } from '../../util/date.ts'
 import { employees } from '../../db/models/employees.ts'
 import { appointments } from '../../db/models/appointments.ts'
 import { employment_calendars } from '../../db/models/employment_calendars.ts'

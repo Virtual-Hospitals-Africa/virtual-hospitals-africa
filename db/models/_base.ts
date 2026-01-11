@@ -1,15 +1,8 @@
 import { LRU } from 'tiny-lru'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import type { Generated, ReferenceExpression, SelectQueryBuilder } from 'kysely'
-import type {
-  IdSelection,
-  InsertShape,
-  SearchResults,
-  SelectShape,
-  TrxOrDb,
-  UpdateShape,
-} from '../../types.ts'
+import type { Generated, InsertObject, ReferenceExpression, SelectQueryBuilder } from 'kysely'
+import type { IdSelection, SearchResults, SelectShape, TrxOrDb, UpdateShape } from '../../types.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
@@ -162,7 +155,7 @@ type BaseModel<
   ): Promise<RenderedResult[]>
   insertOne(
     trx: TrxOrDb,
-    to_insert: InsertShape<DB[TopLevelTable]>,
+    to_insert: InsertObject<DB, TopLevelTable>,
   ): Promise<string>
   getById(trx: TrxOrDb, id: string | IdSelection): Promise<RenderedResult>
   getByIdOptional(
@@ -190,8 +183,7 @@ type BaseModel<
   invalidateCacheAll(): void
 }
 type StandardTables = {
-  [Table in keyof DB]: DB[Table] extends
-    { id: Generated<string> | string | Int8 } ? Table
+  [Table in keyof DB]: DB[Table] extends { id: Generated<string> | string | Int8 } ? Table
     : never
 }[keyof DB]
 
@@ -285,9 +277,7 @@ export function base<
     )
   }
 
-  const _lru: null | LRU = caching
-    ? new LRU<RenderedResult>(caching.number_of_items)
-    : null
+  const _lru: null | LRU = caching ? new LRU<RenderedResult>(caching.number_of_items) : null
 
   const lru = {
     get(id: string | IdSelection) {
@@ -507,7 +497,7 @@ export function base<
     },
     async insertOne(
       trx: TrxOrDb,
-      to_insert: InsertShape<DB[TopLevelTable]>,
+      to_insert: InsertObject<DB, TopLevelTable>,
     ) {
       const insert_query = trx.insertInto(top_level_table).values(
         // deno-lint-ignore no-explicit-any
@@ -560,9 +550,7 @@ export function base<
         search_terms,
         (qb) =>
           qb.clearSelect()
-            .select((eb) =>
-              eb.fn.countAll().as('count')
-            ) as unknown as SelectQueryBuilder<
+            .select((eb) => eb.fn.countAll().as('count')) as unknown as SelectQueryBuilder<
               Tables,
               SelectingFrom,
               IntermediateResult

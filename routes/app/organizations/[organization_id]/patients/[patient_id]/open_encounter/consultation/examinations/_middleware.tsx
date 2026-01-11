@@ -1,15 +1,8 @@
 import { JSX } from 'preact'
 import { examinations } from '../../../../../../../../../db/models/examinations.ts'
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../../_middleware.tsx'
 import { RenderedPatientExamination } from '../../../../../../../../../types.ts'
-import {
-  TabProps,
-  Tabs,
-} from '../../../../../../../../../components/library/Tabs.tsx'
+import { TabProps, Tabs } from '../../../../../../../../../components/library/Tabs.tsx'
 import { Progress } from '../../../../../../../../../components/library/icons/progress.tsx'
 import redirect from '../../../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../../../util/replaceParams.ts'
@@ -38,14 +31,10 @@ export async function handler(
     },
   )
 
-  const next_incomplete_examination = patient_examinations.find((a) =>
-    !a.completed
-  )
+  const next_incomplete_examination = patient_examinations.find((a) => !a.completed)
 
   const { examination_slug } = ctx.params
-  const current_examination = examination_slug
-    ? patient_examinations.find((a) => a.slug === examination_slug)
-    : undefined
+  const current_examination = examination_slug ? patient_examinations.find((a) => a.slug === examination_slug) : undefined
 
   Object.assign(
     ctx.state,
@@ -66,9 +55,7 @@ export type ExaminationPageChildProps = {
 
 export function completeExamination(ctx: ExaminationContext) {
   const { next_incomplete_examination } = ctx.state
-  return next_incomplete_examination
-    ? redirect(next_incomplete_examination.href)
-    : completeAndProceedToNextStep(ctx)
+  return next_incomplete_examination ? redirect(next_incomplete_examination.href) : completeAndProceedToNextStep(ctx)
 }
 
 export function ExaminationPage(

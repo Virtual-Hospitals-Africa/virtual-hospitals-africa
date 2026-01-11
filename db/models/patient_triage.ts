@@ -3,20 +3,11 @@ import { assert } from 'std/assert/assert.ts'
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
-import {
-  PRIORITY_SNOMED_CODES,
-  TARGET_TIME_TO_TREATMENT_MINUTES,
-  TriageLevel,
-} from '../../shared/priorities.ts'
+import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
 import { base } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression } from './s_expression.ts'
-import {
-  EVALUATION_ACTION,
-  PRIORITY,
-  PROCEDURE,
-  TRIAGE_PROCEDURE,
-} from '../../shared/snomed_concepts.ts'
+import { EVALUATION_ACTION, PRIORITY, PROCEDURE, TRIAGE_PROCEDURE } from '../../shared/snomed_concepts.ts'
 
 export function insertProcedure(
   trx: TrxOrDb,
@@ -81,8 +72,7 @@ function insertLevel(
 ) {
   const triage_level_evaluation_id = generateUUID()
   const value_snomed_concept_id = PRIORITY_SNOMED_CODES[triage_level]
-  const target_treatment_minutes =
-    TARGET_TIME_TO_TREATMENT_MINUTES[triage_level]
+  const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[triage_level]
 
   return trx.with(
     'inserting_evaluation_records',
@@ -112,9 +102,7 @@ function insertLevel(
         qb.insertInto('patient_triage_level')
           .values({
             id: triage_level_evaluation_id,
-            target_treatment_time: sql`now() + interval '${
-              sql.raw(target_treatment_minutes.toString())
-            } minutes'`,
+            target_treatment_time: sql`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
           })
           .returningAll(),
     )

@@ -188,13 +188,12 @@ export const family = {
     trx: TrxOrDb,
     { patient_id }: { patient_id: string },
   ): Promise<PatientFamily> {
-    const { patient_family, guardians, dependents, next_of_kin } =
-      await promiseProps({
-        patient_family: family.getPatientFamily(trx, patient_id),
-        guardians: family.getGuardiansOfPatient(trx, patient_id),
-        dependents: family.getDependentsOfPatient(trx, patient_id),
-        next_of_kin: family.getOtherNextOfKinOfPatient(trx, patient_id),
-      })
+    const { patient_family, guardians, dependents, next_of_kin } = await promiseProps({
+      patient_family: family.getPatientFamily(trx, patient_id),
+      guardians: family.getGuardiansOfPatient(trx, patient_id),
+      dependents: family.getDependentsOfPatient(trx, patient_id),
+      next_of_kin: family.getOtherNextOfKinOfPatient(trx, patient_id),
+    })
 
     return {
       marital_status: patient_family?.marital_status,

@@ -40,8 +40,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          message_body:
-            `What is the reason you want to schedule an appointment?`,
+          message_body: `What is the reason you want to schedule an appointment?`,
           type: 'string',
         },
         phone_number,

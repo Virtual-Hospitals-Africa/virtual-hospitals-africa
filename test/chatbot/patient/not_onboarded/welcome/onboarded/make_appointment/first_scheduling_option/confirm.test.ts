@@ -31,8 +31,7 @@ describe('patient chatbot', () => {
     async () => {
       const phone_number = randomPhoneNumber('ZW')
       const patient_before = await patients.insert(db, {
-        conversation_state:
-          'onboarded:make_appointment:first_scheduling_option',
+        conversation_state: 'onboarded:make_appointment:first_scheduling_option',
         phone_number,
         name: 'Test Patient',
         gender: 'female',
@@ -94,8 +93,7 @@ describe('patient chatbot', () => {
         {
           chatbot_name: 'patient',
           messages: {
-            message_body:
-              `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+            message_body: `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
               prettyAppointmentTime(start),
             type: 'buttons',
             buttonText: 'Menu',

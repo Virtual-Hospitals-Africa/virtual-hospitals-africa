@@ -71,8 +71,7 @@ describe('db/models/drugs.ts', () => {
         const recalling = NIFEDIPINE.medications[0].manufacturers.map(
           (manufacturer) =>
             manufactured_medications.recall(trx, {
-              manufactured_medication_id:
-                manufacturer.manufactured_medication_id,
+              manufactured_medication_id: manufacturer.manufactured_medication_id,
               regulator_id: regulator.id,
             }),
         )

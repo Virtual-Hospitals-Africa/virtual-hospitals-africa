@@ -17,8 +17,7 @@ describe('patient chatbot', () => {
     const phone_number = randomPhoneNumber('ZW')
     const { national_id_number, ...demographics } = randomDemographics()
     await patients.insert(db, {
-      conversation_state:
-        'not_onboarded:make_appointment:enter_national_id_number',
+      conversation_state: 'not_onboarded:make_appointment:enter_national_id_number',
       phone_number,
       ...demographics,
       national_id_number: null,
@@ -41,8 +40,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          message_body:
-            'What is the reason you want to schedule an appointment?',
+          message_body: 'What is the reason you want to schedule an appointment?',
           type: 'string',
         },
         phone_number,

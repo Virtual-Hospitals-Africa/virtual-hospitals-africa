@@ -19,8 +19,7 @@ describe('patient chatbot', () => {
     const phone_number = randomPhoneNumber('ZW')
     const demographics = randomDemographics()
     await patients.insert(db, {
-      conversation_state:
-        'not_onboarded:make_appointment:enter_national_id_number',
+      conversation_state: 'not_onboarded:make_appointment:enter_national_id_number',
       phone_number,
       ...demographics,
     })
@@ -56,8 +55,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          message_body:
-            'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
+          message_body: 'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
           type: 'buttons',
           buttonText: 'Menu',
           options: [{ id: 'skip', title: 'Skip' }],

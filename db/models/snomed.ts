@@ -3,12 +3,12 @@ import { TrxOrDb } from '../../types.ts'
 import { base, SearchResult } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DB, SnomedCategory } from '../../db.d.ts'
-import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_signs.ts'
+import { findingQueryExpression, KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
 import { jsonBuildObject, literalString } from '../helpers.ts'
 import { buildExpression } from './s_expression.ts'
 import { isAtom, parseExpression } from '../../shared/s_expression.ts'
-import { asConceptSExpression } from '../../shared/snomed_concepts.ts'
+import { asConceptSExpression, CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
 
 type SearchTerms = {
   search: string
@@ -25,7 +25,7 @@ function getPriorityOfSnomedConcept<
   patient_id: string,
   trx: TrxOrDb,
 ) {
-  const [first_sign, ...rest] = WARNING_SIGNS
+  const [first_sign, ...rest] = KEYED_WARNING_SIGNS
 
   // Build the predicate for a warning sign, including prompt_when check if present
   const buildSignPredicate = (sign: typeof first_sign) => {
@@ -157,17 +157,16 @@ export const snomed_model = base({
   getPriorityOfSnomedConcept,
   formatResult(result) {
     const concept_s_expression = asConceptSExpression(result)
-    const clinical_finding_s_expression = `(clinical_finding ${concept_s_expression})`
+    const clinical_finding_s_expression = `(finding ${CLINICAL_FINDING.s_expression} ${concept_s_expression})`
     return {
       clinical_finding_s_expression,
       snomed_concept_id: result.id,
-      primary_name: result.name,
-      secondary_text: result.category,
-      sats_priority: result.priority?.name,
+      sats_primary_name: result.name,
+      sats_secondary_text: result.category,
+      sats_priority: result.priority?.name || ('Non-urgent' as const),
       sats_priority_by_virtue_of_matching_warning_sign: result.priority
         ?.warning_sign,
       similarity: result.best_similarity,
-      category: 'Search Results' as const,
     }
   },
 })

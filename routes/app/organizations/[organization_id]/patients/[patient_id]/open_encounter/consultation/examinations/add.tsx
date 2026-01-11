@@ -27,8 +27,7 @@ export const handler = {
     await examinations.createIncompleteIfNoneExists(trx, {
       patient_id,
       patient_encounter_id: encounter.patient_encounter_id,
-      patient_encounter_employee_id:
-        encounter_employee_presence.patient_encounter_employee_id,
+      patient_encounter_employee_id: encounter_employee_presence.patient_encounter_employee_id,
       examination_identifiers: form_values.examinations,
     })
 
@@ -47,9 +46,7 @@ export default ExaminationPage(async function AddExaminationsPage(ctx) {
 
   return (
     <AddExaminationsForm
-      selected_examinations={ctx.state.patient_examinations.map((ex) =>
-        ex.examination_identifier
-      )}
+      selected_examinations={ctx.state.patient_examinations.map((ex) => ex.examination_identifier)}
       all_examinations={all_examinations}
     />
   )

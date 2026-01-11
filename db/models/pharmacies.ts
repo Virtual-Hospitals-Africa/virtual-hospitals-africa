@@ -59,8 +59,7 @@ function baseQuery(trx: TrxOrDb) {
     .orderBy('pharmacies.name', 'asc')
 }
 
-const isLicenceLike = (search: string) =>
-  /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
+const isLicenceLike = (search: string) => /^[A-Z]\d{2}-[A-Z]\d{4}-\d{4}$/.test(search.toUpperCase())
 
 type SearchTerms = {
   country: string

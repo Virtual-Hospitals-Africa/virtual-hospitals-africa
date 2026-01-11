@@ -1,5 +1,5 @@
-import { Languages } from '../db.d.ts'
-import { InsertShape } from '../types.ts'
+import { InsertObject } from 'kysely'
+import { DB } from '../db.d.ts'
 
 export const WIKIPEDIA_ISO_LANGUAGES = [
   {
@@ -7036,4 +7036,4 @@ export const WIKIPEDIA_ISO_LANGUAGES = [
       'Zazan',
     ],
   },
-] satisfies InsertShape<Languages>[]
+] satisfies InsertObject<DB, 'languages'>[]

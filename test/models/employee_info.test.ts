@@ -225,23 +225,19 @@ describe('getEmployeeInfo', () => {
     assertEquals(result.documents, [
       {
         name: 'Face Picture',
-        href:
-          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${face_picture_media.id}`,
+        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${face_picture_media.id}`,
       },
       {
         name: 'National ID',
-        href:
-          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${national_id_media.id}`,
+        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${national_id_media.id}`,
       },
       {
         name: 'Nurse Practicing Certificate',
-        href:
-          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${nurse_practicing_cert_media.id}`,
+        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${nurse_practicing_cert_media.id}`,
       },
       {
         name: 'Registration Card',
-        href:
-          `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${registration_card_media.id}`,
+        href: `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${health_worker.id}/media/${registration_card_media.id}`,
       },
     ])
     assertEquals(

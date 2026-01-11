@@ -1,16 +1,7 @@
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { NearestHealthCareSection } from '../../../../../../../../islands/NearestHealthCare.tsx'
 import { HealthInsuranceSection } from '../../../../../../../../islands/HealthInsurance.tsx'
-import {
-  setNearestHealthFacility,
-  setPrimaryDoctor,
-  setUnregisteredPrimaryDoctor,
-} from '../../../../../../../../db/models/patient_primary_care.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { patient_primary_care } from '../../../../../../../../db/models/patient_primary_care.ts'
 import { patient_insurance } from '../../../../../../../../db/models/patient_insurance.ts'
@@ -47,24 +38,25 @@ export const handler = postHandler(
 
     const { response } = await promiseProps({
       setting_primary_doctor: primary_doctor_id
-        ? setPrimaryDoctor(trx, {
+        ? patient_primary_care.setPrimaryDoctor(trx, {
           patient_id,
           primary_doctor_id,
         })
-        : setUnregisteredPrimaryDoctor(trx, {
+        : patient_primary_care.setUnregisteredPrimaryDoctor(trx, {
           patient_id,
           primary_doctor_name,
         }),
-      setting_nearest_facility: setNearestHealthFacility(trx, {
-        patient_id,
-        nearest_organization_id,
-      }),
-      updating_insurance: insurance.has_no_insurance
-        ? patient_insurance.clearCurrent(trx, { patient_id })
-        : patient_insurance.setCurrent(trx, {
+      setting_nearest_facility: patient_primary_care.setNearestHealthFacility(
+        trx,
+        {
           patient_id,
-          ...insurance,
-        }),
+          nearest_organization_id,
+        },
+      ),
+      updating_insurance: insurance.has_no_insurance ? patient_insurance.clearCurrent(trx, { patient_id }) : patient_insurance.setCurrent(trx, {
+        patient_id,
+        ...insurance,
+      }),
       response: completeAndProceedToNextStep(ctx),
     })
 
@@ -73,8 +65,7 @@ export const handler = postHandler(
 )
 
 export async function PatientRegistrationPrimaryCarePage(
-  { state: { trx, patient, previously_completed_step } }:
-    OpenEncounterWorkflowContext,
+  { state: { trx, patient, previously_completed_step } }: OpenEncounterWorkflowContext,
 ) {
   const { primary_care, current_insurance } = await promiseProps({
     primary_care: patient_primary_care.getById(trx, {
