@@ -22,6 +22,7 @@ export function MostRecentFinding(
   if (!finding) return null
   return (
     <span
+      tabIndex={0}
       className={twMerge('relative text-gray-500 group pb-2', className)}
       id={`most-recent-finding-${finding.pertaining_to_key || finding.record_id}`}
     >
@@ -41,7 +42,7 @@ export function MostRecentFinding(
         <LocalTime timestamp={finding.created_at} expected_time_range='past' />
       </span>
 
-      <div className='absolute left-0 z-50 hidden pt-2 top-full group-hover:block hover:block'>
+      <div className='absolute left-0 z-50 hidden pt-2 top-full group-hover:block group-focus-within:block hover:block'>
         <FindingPanel finding={finding} organization_id={organization_id} />
       </div>
     </span>
