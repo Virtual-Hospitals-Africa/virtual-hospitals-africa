@@ -23,7 +23,7 @@ import values from '../../../../../../../../util/values.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
 
-import { assertOr400, assertOr409 } from '../../../../../../../../util/assertOr.ts'
+import { assertOr409 } from '../../../../../../../../util/assertOr.ts'
 import zip from '../../../../../../../../util/zip.ts'
 import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 import { now } from '../../../../../../../../db/helpers.ts'
@@ -78,7 +78,7 @@ export const handler = postHandler(
       previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
       inserted: insertSigns(),
       response: completeAndProceedToNextStep(ctx),
-      mark_modified_as_invalid: markRecordsInvalid(),
+      mark_modified_as_invalid: markAlteredRecords(),
     })
 
     for (const previous_finding of previously_reported) {
@@ -87,9 +87,10 @@ export const handler = postHandler(
         just_submitted,
         `It is expected that the frontend resubmit previously submitted records. Missing: ${humanReadableJson(previous_finding)}`,
       )
-      const was_modified = just_submitted.existence !== previous_finding.existence
+      const client_said_was_altered = !!just_submitted.existing_record?.altered
+      const was_indeed_altered = just_submitted.existence !== previous_finding.existence
       assertOr409(
-        just_submitted.existing_record?.altered === was_modified,
+        client_said_was_altered === was_indeed_altered,
         `It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${previous_finding.record_id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
       )
     }
@@ -168,12 +169,12 @@ export const handler = postHandler(
       })
     }
 
-    function markRecordsInvalid() {
+    function markAlteredRecords() {
       if (!completed_procedure) {
         for (const sign of form_values.warning_signs) {
-          assertOr400(
-            !!sign.existing_record?.altered,
-            'With no previously completed procedure, there cannot be record modifications',
+          assertOr409(
+            !sign.existing_record?.altered,
+            'With no previously completed procedure, there cannot be record alterations',
           )
         }
         return

@@ -12,3 +12,8 @@ export const app = new App()
 
 createEventProcessor().start()
 // events.initializeListener()
+
+globalThis.addEventListener('unhandledrejection', (e) => {
+  console.error('Caught unhandled rejection:', e.reason)
+  e.preventDefault()
+})

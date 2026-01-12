@@ -8,11 +8,15 @@ export function promiseProps<T extends Record<string, unknown>>(
   const keys = Object.keys(obj) as Array<keyof T>
   const promises = keys.map((key) => Promise.resolve(obj[key]))
 
-  return Promise.all(promises).then((results) => {
+  return Promise.allSettled(promises).then((results) => {
     // deno-lint-ignore no-explicit-any
     const result_obj: any = {}
     keys.forEach((key, i) => {
-      result_obj[key] = results[i]
+      const result = results[i]
+      if (result.status === 'rejected') {
+        throw result.reason
+      }
+      result_obj[key] = result.value
     })
     return result_obj as PromiseProps<T>
   })

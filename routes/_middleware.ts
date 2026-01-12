@@ -2,18 +2,27 @@ import { assert } from 'std/assert/assert.ts'
 import { ZodError } from 'zod'
 import redirect from '../util/redirect.ts'
 import { Context } from 'fresh'
+import isObjectLike from '../util/isObjectLike.ts'
 
-export function grokPostgresError(err: Error) {
+export function grokPostgresError(err: Record<string, unknown>) {
   // deno-lint-ignore no-explicit-any
   const cause: any = err.cause || err
   if (!('fields' in cause)) return
   return `${cause.name}: ${cause.fields.message}`
 }
 
-export const handler = (ctx: Context<unknown>) => { // deno-lint-ignore no-explicit-any
-  return ctx.next().catch(function handleError(error: any) {
+export const handler = async (ctx: Context<unknown>) => {
+  try {
+    return await ctx.next()
+  } catch (error) {
+    if (!isObjectLike(error)) {
+      console.error(error)
+      return new Response('Unexpected error', { status: 500 })
+    }
+    console.log('IN ERROR HANDLER')
     if (error.status === 302) {
       assert(error.location, '302 redirect must have a location')
+      assert(typeof error.location === 'string', '302 redirect must have a location')
       return redirect(error.location)
     }
     if (error instanceof ZodError) {
@@ -30,9 +39,9 @@ export const handler = (ctx: Context<unknown>) => { // deno-lint-ignore no-expli
     if (!is_expected) {
       console.error(error)
     }
-    const status = error.status || 500
-    const message: string = grokPostgresError(error) || error.message ||
+    const status = Number(error.status) || 500
+    const message: string = grokPostgresError(error) || String(error.message) ||
       'Internal Server Error'
     return new Response(message, { status })
-  })
+  }
 }

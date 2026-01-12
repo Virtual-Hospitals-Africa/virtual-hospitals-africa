@@ -299,6 +299,10 @@ addEventListener('submit', function (event) {
         return response.text().then(function (text) {
           return onError(text ? 'Forbidden: ' + text : 'Forbidden')
         })
+      case 409:
+        return response.text().then(function (text) {
+          return onError(text ? 'Conflict: ' + text : 'Conflict')
+        })
       case 500:
         return response.text().then(function (text) {
           return onError('Internal Server Error: ' + text)

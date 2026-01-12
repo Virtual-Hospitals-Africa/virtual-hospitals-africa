@@ -63,7 +63,7 @@ function KeyedWarningSignCheckbox(
             priority_level: sign.sats_priority,
             existing_record: sign.existing_record && {
               id: sign.existing_record.id,
-              modified: sign.existing_record.existence !==
+              altered: sign.existing_record.existence !==
                 (sign.checked ? 'Yes' : 'No'),
             },
           }}

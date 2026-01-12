@@ -189,7 +189,7 @@ const snomed_concept_or_attribute_or_qualifier: z.ZodType<
     snomed_concept,
     attribute_or_qualifier,
   ])
-).describe('snomed_concept_id | qualifier')
+).describe('snomed_concept_id | attribute | qualifier')
 
 function isQualifier(node: AnyNode): node is Lang['qualifier'] {
   return node.atom === 'qualifier'
@@ -634,4 +634,4 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     all,
     exact,
   ])
-)
+).describe('any_expression')
