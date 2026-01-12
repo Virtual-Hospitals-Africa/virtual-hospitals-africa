@@ -11,7 +11,7 @@ import {
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
-import { TriageAssignPriorityTableVital, WithTriageLevelFinding } from '../../../../../../../../types.ts'
+import { TriageAssignPriorityTableRow, WithTriageLevelFinding } from '../../../../../../../../types.ts'
 import { TriageAssignPriorityTable } from '../../../../../../../../components/triage/AssignPriorityTable.tsx'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -106,7 +106,7 @@ async function sortedVitals(
   {
     state: { trx, patient, patient_id, patient_encounter_id, health_worker_id },
   }: OpenEncounterWorkflowContext,
-): Promise<TriageAssignPriorityTableVital[]> {
+): Promise<TriageAssignPriorityTableRow[]> {
   assert(completedPersonal(patient))
 
   const age_determination = patientAgeDetermination(patient)

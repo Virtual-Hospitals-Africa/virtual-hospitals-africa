@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { Priority, TriageAssignPriorityTableVital, WithTriageLevelFinding } from '../../types.ts'
+import { Priority, TriageAssignPriorityTableRow, WithTriageLevelFinding } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 import { ReferenceRangeIndicator } from '../vitals/SimpleReferenceRangeIndicator.tsx'
@@ -8,17 +8,14 @@ import { colorFromPriorityOrScoreComponent } from '../../shared/vitals.ts'
 import { PRIORITY_COLORS } from '../../shared/priorities.ts'
 
 type TriageAssignPriorityTableProps = {
-  vitals: TriageAssignPriorityTableVital[]
+  vitals: TriageAssignPriorityTableRow[]
   with_triage_level_findings: WithTriageLevelFinding[]
   total_score: number
   priority: Priority
 }
 
 type Row =
-  | ({
-    type: 'vital'
-  } & TriageAssignPriorityTableVital)
-  | {
+  | TriageAssignPriorityTableRow | {
     type: 'with_triage_level_finding'
     finding: WithTriageLevelFinding
   }
@@ -151,10 +148,7 @@ export function TriageAssignPriorityTable(
             type: 'with_triage_level_finding' as const,
             finding,
           })),
-          ...vitals.map((vital) => ({
-            type: 'vital' as const,
-            ...vital,
-          })),
+          ...vitals
         ]}
         tableClassName='border-b-0 !rounded-b-none'
         EmptyState={() => <div>No measurements available</div>}

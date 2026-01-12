@@ -3673,7 +3673,8 @@ export type ReferenceRangeX = {
   color: 'green' | 'yellow' | 'orange' | 'red'
 }
 
-export type TriageAssignPriorityTableVital = {
+export type TriageAssignPriorityTableRow = {
+  type: 'chief complaint/warning sign' | 'measurement' | 'assessment'
   finding: RenderedFindingRelativeToHealthWorker
   previous: RenderedFindingRelativeToHealthWorker | null
   reference_ranges?: Maybe<ReferenceRangeX[]>
