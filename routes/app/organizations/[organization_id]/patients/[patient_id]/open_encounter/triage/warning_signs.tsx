@@ -1,10 +1,4 @@
-import {
-  completeAndProceedToNextStep,
-  completedProcedure,
-  createProcedureIfNotAlreadyCompleted,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
@@ -29,10 +23,12 @@ import values from '../../../../../../../../util/values.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
 
-import { assertOr409 } from '../../../../../../../../util/assertOr.ts'
+import { assertOr400, assertOr409 } from '../../../../../../../../util/assertOr.ts'
 import zip from '../../../../../../../../util/zip.ts'
 import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 import { now } from '../../../../../../../../db/helpers.ts'
+import { exists } from '../../../../../../../../util/exists.ts'
+import compactMap from '../../../../../../../../util/compactMap.ts'
 
 export const TriageWarningSignSchema = z.object({
   s_expression: z.string().transform((
@@ -43,7 +39,7 @@ export const TriageWarningSignSchema = z.object({
   priority_level: z.enum(ORDERED_PRIORITIES),
   existing_record: z.object({
     id: z.string(),
-    modified: z.boolean().optional(),
+    altered: z.boolean().optional(),
   }).optional(),
 }).strict()
 
@@ -55,6 +51,15 @@ export const TriageWarningSignsSchema = z.object({
   __test_only_skip_inserting_negative_findings: z.boolean().optional(),
 }).strict()
 
+const NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges = Symbol(
+  'NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges',
+)
+
+type InsertedSummary = {
+  procedure_id: string
+  findings: { id: string; existence: 'Yes' | 'No' }[]
+} | typeof NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
+
 export const handler = postHandler(
   TriageWarningSignsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
@@ -64,19 +69,18 @@ export const handler = postHandler(
       employment_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      workflow_step_snomed_concept_id,
     } = ctx.state
 
-    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
-    assert(procedure_id)
+    const completed_procedure = completedProcedure(ctx)
 
-    const { response, inserted_signs, previously_reported } = await promiseProps({
+    const { response, inserted, previously_reported } = await promiseProps({
       previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
-      inserted_signs: insertSigns(),
+      inserted: insertSigns(),
       response: completeAndProceedToNextStep(ctx),
       mark_modified_as_invalid: markRecordsInvalid(),
     })
 
-    // console.log(previously_reported)
     for (const previous_finding of previously_reported) {
       const just_submitted = form_values.warning_signs.find((submitted) => submitted.existing_record?.id === previous_finding.record_id)
       assertOr409(
@@ -85,21 +89,19 @@ export const handler = postHandler(
       )
       const was_modified = just_submitted.existence !== previous_finding.existence
       assertOr409(
-        just_submitted.existing_record?.modified === was_modified,
-        `It is expected that the frontend keep track of whether the previously submitted record was modified. Detected a mismatch for ${previous_finding.record_id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
+        just_submitted.existing_record?.altered === was_modified,
+        `It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${previous_finding.record_id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
       )
     }
 
-    await dispatchEvent(inserted_signs)
+    await dispatchEvent(inserted)
 
     return response
 
-    async function insertSigns() {
+    async function insertSigns(): Promise<InsertedSummary> {
       const needing_insert = form_values.warning_signs
-        .filter((sign) => !sign.existing_record || sign.existing_record.modified)
+        .filter((sign) => !sign.existing_record || sign.existing_record.altered)
         .filter((sign) => sign.existence === 'Yes' || !form_values.__test_only_skip_inserting_negative_findings)
-
-      console.log({ needing_insert })
 
       const findings_to_insert = needing_insert.map((
         sign,
@@ -118,60 +120,78 @@ export const handler = postHandler(
         },
       }))
 
-      if (!findings_to_insert.length) return []
+      if (!findings_to_insert.length) {
+        assert(
+          completed_procedure,
+          'Your first time submitting warning signs there must be findings to insert',
+        )
+        return NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
+      }
 
-      const { success, finding_ids } = await patient_findings.insertMany(
+      const { success, procedure_id, finding_ids } = await patient_findings.insertMany(
         trx,
         {
           patient_id,
-          procedure_id,
           employment_id,
           patient_encounter_id,
           patient_encounter_employee_id,
           findings: findings_to_insert,
+          procedure: completed_procedure || {
+            create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept_id),
+          },
         },
       )
       assert(success)
+      assert(procedure_id)
 
-      return Array.from(
+      const findings = Array.from(
         zip(finding_ids, needing_insert).map(([id, { existence }]) => ({
           id,
           existence,
         })),
       )
+
+      return { findings, procedure_id }
     }
 
     function dispatchEvent(
-      findings: { id: string; existence: 'Yes' | 'No' }[],
+      inserted: InsertedSummary,
     ) {
+      if (inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges) return
       return events.insert(trx, {
         type: 'ProcedureCompleted',
         data: {
-          findings,
           patient_id,
-          procedure_id,
           patient_encounter_id,
+          ...inserted,
         },
       })
     }
 
     function markRecordsInvalid() {
-      return forEach(
-        form_values.warning_signs,
-        async (sign) => {
-          if (!sign.existing_record?.modified) return
-          await markEnteredInError(
-            trx,
-            {
-              patient_id,
-              procedure_id,
-              employment_id,
-              patient_encounter_id,
-              altered_record_id: sign.existing_record.id,
-            },
+      if (!completed_procedure) {
+        for (const sign of form_values.warning_signs) {
+          assertOr400(
+            !!sign.existing_record?.altered,
+            'With no previously completed procedure, there cannot be record modifications',
           )
-        },
+        }
+        return
+      }
+
+      const altered_record_ids = compactMap(
+        form_values.warning_signs,
+        (sign) => sign.existing_record?.altered && sign.existing_record.id,
       )
+
+      return forEach(altered_record_ids, (altered_record_id) =>
+        markEnteredInError(trx, {
+          patient_id,
+          employment_id,
+          patient_encounter_id,
+          altered_record_id,
+          ...completed_procedure,
+        }))
     }
   },
 )
@@ -185,7 +205,7 @@ function getAllFindingsReportedPreviouslyOnThisPage(
   return patient_findings.findAll(trx, {
     patient_id,
     patient_encounter_id,
-    procedure_id: completed_procedure.procedure_id,
+    ...completed_procedure,
     include_negative: true,
     before: now,
   })
@@ -219,36 +239,37 @@ function* asCheckedWarningSigns(
     // We don't use the value when calculating the normal form
     // of the s_expression here so that negative findings match.
     // That is if a previous submission found no chest pain,
-    // then that's the existing record for that sign.
+    // then that should match and be the finding corresponding to
+    // the chest pain warning sign.
     const normal_form_s_expression = asNormalFormSExpression({
       ...finding,
       value: null,
     })
+    const existing_record = {
+      id: finding.record_id,
+      existence: finding.existence,
+    }
 
-    return { ...finding, normal_form_s_expression }
+    return { ...finding, normal_form_s_expression, existing_record }
   }))
 
   // Loop over the signs looking for findings that have identical
   // s_expressions, removing them as we go. Any that are left
   // over we send as well (these were the result of search)
-  matching_signs: for (const sign of warning_signs_for_patient) {
-    for (const finding of findings_set) {
-      const same_idea = finding.normal_form_s_expression === sign.clinical_finding_s_expression
+  for (const sign of warning_signs_for_patient) {
+    let existing_record: WarningSignWithMaybeRecord['existing_record']
 
-      if (same_idea) {
+    for (const finding of findings_set) {
+      const is_same_concept = finding.normal_form_s_expression === sign.clinical_finding_s_expression
+
+      if (is_same_concept) {
+        existing_record = finding.existing_record
         findings_set.delete(finding)
-        yield {
-          ...sign,
-          existing_record: {
-            id: finding.record_id,
-            existence: finding.existence,
-          },
-        }
-        continue matching_signs
+        break
       }
     }
 
-    yield sign
+    yield { ...sign, existing_record }
   }
 
   for (const finding of findings_set) {
@@ -257,10 +278,7 @@ function* asCheckedWarningSigns(
       clinical_finding_s_expression: finding.normal_form_s_expression,
       sats_primary_name: finding.specific_snomed_concept.name,
       sats_secondary_text: finding.specific_snomed_concept.category,
-      existing_record: {
-        id: finding.record_id,
-        existence: finding.existence,
-      },
+      existing_record: finding.existing_record,
     }
   }
 }

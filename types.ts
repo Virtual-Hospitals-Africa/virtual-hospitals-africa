@@ -3333,11 +3333,11 @@ export type Measurement = {
 }
 
 export type ExtantProcedureOrCreationIntent = {
-  id: string
-  create_from_snomed_concept_id?: never
+  procedure_id: string
+  create_with_specific_snomed_concept_id?: never
 } | {
-  id?: never
-  create_from_snomed_concept_id: string
+  procedure_id?: never
+  create_with_specific_snomed_concept_id: string
 }
 
 export type PatientFamilyHistoryShared = {
