@@ -100,6 +100,7 @@ export async function initializeHealthWorkerWithoutInvites(
       {
         entity_type: 'health_worker',
         entity_id: health_worker_id,
+        // Don't ...spread - expires_in is not a column of google_tokens
         expires_at: google_client.tokens.expires_at,
         access_token: google_client.tokens.access_token,
         refresh_token: google_client.tokens.refresh_token,
