@@ -105,7 +105,7 @@ function TaskGroupCard({
 
       {/* Check-for Tasks (YesNoGrid) */}
       {check_for_tasks.length > 0 && (
-        <YesNoGrid title='Findings'>
+        <YesNoGrid title='Check for'>
           {check_for_tasks.map((task) => (
             <CheckForTaskInput
               key={task.procedure.record_id}
