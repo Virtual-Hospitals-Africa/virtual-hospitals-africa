@@ -207,7 +207,8 @@ function buildDisplays(
   const qualifier_displays = qualifiers.map((prefix) => buildDisplays(prefix, use_postfix).full)
 
   const finding_displays = compact([
-    specific_snomed_concept?.name,
+    // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
+    specific_snomed_concept?.name.replace(' (severity modifier)', ''),
     includeRootSnomedConceptName(root_snomed_concept) &&
     root_snomed_concept.name,
   ])

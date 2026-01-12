@@ -304,10 +304,10 @@ const WARNING_SIGN_DEFS = [
     'sats_priority': 'Very urgent' as const,
   },
   {
-    'key': 'Threatened limb' as const,
-    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('21631000119105')})`,
-    'primary_name': 'Threatened limb',
-    'secondary_text': null,
+    'key': 'Severe limb ischemia' as const,
+    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('21631000119105')} (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))`,
+    'primary_name': 'Severe limb ischemia',
+    'secondary_text': 'Threatened limb',
     'sats_priority': 'Very urgent' as const,
   },
   {
@@ -506,6 +506,7 @@ export const KEYED_WARNING_SIGNS: WarningSign[] = sortBy(
   WARNING_SIGN_DEFS.map((sign) =>
     omitUndefinedProperties({
       ...sign,
+      category: sign.sats_priority,
       clinical_finding_s_expression: normalForm(sign.clinical_finding_s_expression),
       excluding_s_expression: sign.excluding_s_expression && normalForm(sign.excluding_s_expression),
       prompt_when_s_expression: sign.prompt_when_s_expression && normalForm(sign.prompt_when_s_expression),

@@ -3604,18 +3604,27 @@ export type MostRecentBriefHistoryFindings = {
   [c in CommonConditionKey]?: RenderedBriefHistoryRelativeToHealthWorker
 }
 
-export type WarningSign = {
-  key: WarningSignKey
+type SignShared<Category> = {
   clinical_finding_s_expression: string
   primary_name: string
   secondary_text: string | null
-  sats_priority: 'Urgent' | 'Very urgent' | 'Emergency' | 'Non-urgent'
+  category: Category
+  key?: string
+  sats_priority?: Maybe<Priority>
+}
+
+export type WarningSignDef<Priority extends 'Urgent' | 'Very urgent' | 'Emergency'> = SignShared<Priority> & {
+  key: WarningSignKey
+  sats_priority: Priority
   excluding_s_expression?: string
   prompt_when_s_expression?: string
 }
 
-export type WarningSignWithMaybeRecord = Omit<WarningSign, 'key'> & {
-  key?: string
+export type WarningSign = WarningSignDef<'Urgent' | 'Very urgent' | 'Emergency'>
+
+export type CommonSymptom = SignShared<'Common Symptoms'>
+
+export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Selected'>) & {
   existing_record?: {
     id: string
     existence: Existence

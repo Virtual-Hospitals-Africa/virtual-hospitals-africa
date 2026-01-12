@@ -5,7 +5,7 @@ import { PatientDrawerV4Props, RenderedFindingRelativeToHealthWorker } from '../
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import compact from '../../util/compact.ts'
 import { groupBy } from '../../util/groupBy.ts'
-import { RecordChips } from '../../islands/RecordChip.tsx'
+import { RecordChips } from './RecordChip.tsx'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
 
 type DrawerThisVisitProps = Pick<

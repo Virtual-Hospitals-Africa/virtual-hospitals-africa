@@ -1,3 +1,4 @@
+import { Maybe } from '../types.ts'
 import entries from '../util/entries.ts'
 import keys from '../util/keys.ts'
 import sortBy from '../util/sortBy.ts'
@@ -78,4 +79,8 @@ export const PRIORITY_COLORS: Record<
     text: 'text-blue-900',
     border: 'border-blue-300',
   },
+}
+
+export function priorityColors(priority: Maybe<keyof typeof PRIORITY_COLORS>) {
+  return PRIORITY_COLORS[priority || 'Normal']
 }
