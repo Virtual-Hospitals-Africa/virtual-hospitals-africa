@@ -29,8 +29,7 @@ export function VitalsEvaluationsForm({
           Clinical Evaluation
         </h2>
         <p className='text-sm text-gray-600 mt-1'>
-          Review all measurements and add clinical notes or priority flags as
-          needed.
+          Review all measurements and add clinical notes or priority flags as needed.
         </p>
       </div>
 

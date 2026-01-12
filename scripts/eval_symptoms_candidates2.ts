@@ -55,9 +55,7 @@ for await (const row of symptoms_candidates2) {
 }
 
 results.forEach((row) => {
-  row.duplicate = results.filter((r) =>
-    r.code_range === row.code_range
-  ).length > 1
+  row.duplicate = results.filter((r) => r.code_range === row.code_range).length > 1
   row.present_in_other_spreadsheet = already_spotted.has(row.code_range)
 })
 
@@ -76,9 +74,7 @@ for (
   } of results
 ) {
   console.log(
-    `${code_range || ''}\t${jonathan_dr_skhu_symptom_name || ''}\t${
-      jonathan_dr_skhu_category || ''
-    }\t${exists_with_that_code || ''}\t${
+    `${code_range || ''}\t${jonathan_dr_skhu_symptom_name || ''}\t${jonathan_dr_skhu_category || ''}\t${exists_with_that_code || ''}\t${
       actual_name_of_code || ''
     }\t${duplicate}\t${present_in_other_spreadsheet}`,
   )

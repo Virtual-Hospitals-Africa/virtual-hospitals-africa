@@ -6,6 +6,8 @@ import { assert } from 'std/assert/assert.ts'
 import { pluralize } from '../../util/pluralize.ts'
 import partition from '../../util/partition.ts'
 
+export type TestOpts = { only?: boolean; skip?: boolean }
+
 type TestFn = () => void | Promise<void>
 
 const MAX_PARALLEL_TESTS = parseInt(Deno.env.get('MAX_PARALLEL_TESTS')!) || 8
@@ -15,7 +17,7 @@ export type TestCase =
   | [
     name: string,
     fn: TestFn,
-    opts: { only?: boolean; skip?: boolean },
+    opts: TestOpts,
   ]
 
 function casesToRun(
@@ -60,7 +62,7 @@ let test_cases: TestCase[] = []
 export function describeParallel(
   description: string,
   callback: () => void,
-  opts: { only?: boolean; skip?: boolean } = {},
+  opts: TestOpts = {},
 ) {
   const this_descriptions = [...descriptions]
   descriptions = [...descriptions, description]
@@ -76,9 +78,7 @@ export function describeParallel(
     callback()
     assert(test_cases.length, 'No test cases supplied')
     const [cases_to_run, skipped] = casesToRun(test_cases)
-    let it_description = `passes ${cases_to_run.length} test ${
-      pluralize('case', cases_to_run.length)
-    }`
+    let it_description = `passes ${cases_to_run.length} test ${pluralize('case', cases_to_run.length)}`
     if (skipped.length) {
       const skipped_description = ` (${skipped.length} skipped)`
       it_description += skipped_description
@@ -103,7 +103,7 @@ describeParallel.skip = (
 export function itParallel(
   description: string,
   test: TestFn,
-  opts: { only?: boolean; skip?: boolean } = {},
+  opts: TestOpts = {},
 ) {
   const concatenated_test_description = [...descriptions.slice(1), description]
     .join(' > ')

@@ -1,13 +1,13 @@
 export default function uniq<T>(array: T[]): T[] {
-  const uniqueArray: T[] = []
+  const unique_array: T[] = []
   const seen_values: Set<T> = new Set<T>()
 
   for (const value of array) {
     if (!seen_values.has(value)) {
       seen_values.add(value)
-      uniqueArray.push(value)
+      unique_array.push(value)
     }
   }
 
-  return uniqueArray
+  return unique_array
 }

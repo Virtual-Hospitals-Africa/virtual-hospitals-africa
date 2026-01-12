@@ -1,17 +1,7 @@
 import { Selecting, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import {
-  asText,
-  jsonBuildNullableObject,
-  jsonBuildObject,
-  literalString,
-  success_true,
-} from '../helpers.ts'
-import {
-  ALTERED,
-  ENTERED_IN_ERROR,
-  EVALUATION_ACTION,
-} from '../../shared/snomed_concepts.ts'
+import { asText, jsonBuildNullableObject, jsonBuildObject, literalString, success_true } from '../helpers.ts'
+import { ALTERED, ENTERED_IN_ERROR, EVALUATION_ACTION } from '../../shared/snomed_concepts.ts'
 
 export const RECORD_NOW_INVALID = {
   ALTERED,
@@ -46,7 +36,7 @@ function markInvalid(
         patient_encounter_id,
         root_snomed_concept_id: EVALUATION_ACTION.id,
         specific_snomed_concept_id: RECORD_NOW_INVALID[snomed_concept].id,
-      })).with(
+      }).returning('id')).with(
       'inserting_evaluation',
       (qb) =>
         qb.insertInto('patient_evaluations')

@@ -11,9 +11,8 @@ export default async function UnauthorizedPage(ctx: Context<unknown>) {
         <div class='text-center'>
           <PageHeader className='h1'>Unauthorized</PageHeader>
           <p class='mt-6 text-xl leading-8 text-gray-600'>
-            Sorry, we can't find an account with that email address. Please
-            contact your administrator. Perhaps another account is registered,
-            in which case you can try again
+            Sorry, we can't find an account with that email address. Please contact your administrator. Perhaps another account is registered, in which case you
+            can try again
           </p>
           <div class='mt-10 flex items-center justify-center gap-x-6'>
             <Button href='/login'>

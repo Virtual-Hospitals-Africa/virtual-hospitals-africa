@@ -11,8 +11,7 @@
 import { ConceptMini, ItemsPageConceptMini } from './data-contracts.ts'
 import { HttpClient, RequestParams } from './http-client.ts'
 
-export class Mrcm<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Mrcm<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description The parentIds must be the set ids of stated parents. If creating post-coordinated expressions be sure to set the content type to POSTCOORDINATED.
    *

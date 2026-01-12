@@ -10,8 +10,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'assessment_option_id',
       'uuid',
-      (col) =>
-        col.references('sats_triage_assessment_options.id').onDelete('cascade'),
+      (col) => col.references('sats_triage_assessment_options.id').onDelete('cascade'),
     )
     // For quantitative measurements (HR, RR, BP, Temp)
     .addColumn('specific_snomed_concept_id', 'bigint')

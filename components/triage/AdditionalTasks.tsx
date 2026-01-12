@@ -137,13 +137,9 @@ function ProgressHeader({
   completed_count: number
   total_count: number
 }) {
-  const percentage = total_count > 0
-    ? Math.round((completed_count / total_count) * 100)
-    : 0
+  const percentage = total_count > 0 ? Math.round((completed_count / total_count) * 100) : 0
   const progress_color = percentage === 100 ? 'bg-green-500' : 'bg-indigo-700'
-  const badge_color = percentage === 100
-    ? 'bg-success-bg text-success-text'
-    : 'bg-error-bg text-error-text'
+  const badge_color = percentage === 100 ? 'bg-success-bg text-success-text' : 'bg-error-bg text-error-text'
 
   return (
     <div class='flex flex-col gap-3.5'>
@@ -205,8 +201,7 @@ export default function AdditionalTasks({
         </svg>
         <p class='text-lg font-medium'>No additional tasks required</p>
         <p class='text-sm'>
-          Based on the patient's current clinical findings, no additional tasks
-          are needed.
+          Based on the patient's current clinical findings, no additional tasks are needed.
         </p>
       </div>
     )

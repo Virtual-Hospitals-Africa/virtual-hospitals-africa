@@ -1,10 +1,4 @@
-import {
-  afterAll,
-  afterEach,
-  beforeEach,
-  describe,
-  it,
-} from 'std/testing/bdd.ts'
+import { afterAll, afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../../db/db.ts'
@@ -14,10 +8,7 @@ import { conversations } from '../../../../../../../../db/models/conversations.t
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../../../db/models/appointments.ts'
 import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
-import {
-  convertToTimeString,
-  formatJohannesburg,
-} from '../../../../../../../../util/date.ts'
+import { convertToTimeString, formatJohannesburg } from '../../../../../../../../util/date.ts'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 
 import { resetInTest } from '../../../../../../../../db/meta.ts'
@@ -45,8 +36,7 @@ describe.skip('patient chatbot', () => {
 
       const phone_number = randomPhoneNumber('ZW')
       const patient_before = await patients.insert(trx, {
-        conversation_state:
-          'onboarded:make_appointment:other_scheduling_options',
+        conversation_state: 'onboarded:make_appointment:other_scheduling_options',
         phone_number,
         name: 'Test Patient',
         gender: 'female',

@@ -2,11 +2,7 @@ import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import Form from '../components/library/Form.tsx'
 import { useSignal } from '@preact/signals'
-import {
-  AppUser,
-  OrganizationLike,
-  PossiblyEmployedHealthWorker,
-} from '../types.ts'
+import { AppUser, OrganizationLike, PossiblyEmployedHealthWorker } from '../types.ts'
 import FormRow from '../components/library/FormRow.tsx'
 import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
@@ -32,8 +28,7 @@ function Welcome({ show, getStarted }: { show: boolean; getStarted(): void }) {
     >
       <PageHeader className='h1'>Welcome!</PageHeader>
       <p className='mt-6 text-xl leading-8 text-gray-600'>
-        This is a demonstration of the Virtual Hospital Africa platform. All
-        information presented and shared is for testing purposes only.
+        This is a demonstration of the Virtual Hospital Africa platform. All information presented and shared is for testing purposes only.
       </p>
       <div className='flex mt-10'>
         <Button type='button' onClick={getStarted}>
@@ -122,13 +117,11 @@ function EnterProfession(
       <div className='flex mt-10'>
         <Button
           type={profession.value === 'regulator' ? 'submit' : 'button'}
-          onClick={profession.value === 'regulator'
-            ? undefined
-            : () =>
-              onProfession({
-                profession: profession.value,
-                specialty: specialty.value,
-              })}
+          onClick={profession.value === 'regulator' ? undefined : () =>
+            onProfession({
+              profession: profession.value,
+              specialty: specialty.value,
+            })}
         >
           Continue<span aria-hidden='true'>
             &nbsp;&nbsp;&rarr;

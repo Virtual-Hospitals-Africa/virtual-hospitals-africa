@@ -26,10 +26,8 @@ export default function Home() {
         }}
       >
         <p>
-          “Virtual hospitals can help ensure that everyone has access to the
-          healthcare they need. I am excited about the personalized care options
-          that will make caring for my patients much easier and more
-          convenient.”
+          “Virtual hospitals can help ensure that everyone has access to the healthcare they need. I am excited about the personalized care options that will
+          make caring for my patients much easier and more convenient.”
         </p>
       </Testimonial>
       <Patients />
@@ -41,9 +39,8 @@ export default function Home() {
         }}
       >
         <p>
-          “I look forward to being able to communicate with all my care
-          providers easily and efficiently, and to receive clear and concise
-          information about my next steps and how to lead a healthy life.”
+          “I look forward to being able to communicate with all my care providers easily and efficiently, and to receive clear and concise information about my
+          next steps and how to lead a healthy life.”
         </p>
       </Testimonial>
       <Research />

@@ -53,9 +53,7 @@ export const automated_evaluation = {
       .where((eb) =>
         eb.or([
           eb('mrr.gender', 'is', null),
-          patient_context.gender
-            ? eb('mrr.gender', '=', patient_context.gender)
-            : eb.val(false), // If patient gender is unknown, only match records where gender is null
+          patient_context.gender ? eb('mrr.gender', '=', patient_context.gender) : eb.val(false), // If patient gender is unknown, only match records where gender is null
         ])
       )
       .orderBy('mrr.measurement_snomed_concept_id', 'asc')
@@ -68,12 +66,8 @@ export const automated_evaluation = {
       condition_codes: row.condition_codes?.map((code) => code.toString()),
       normal_min: parseFloat(row.normal_min.toString()),
       normal_max: parseFloat(row.normal_max.toString()),
-      critical_min: row.critical_min
-        ? parseFloat(row.critical_min.toString())
-        : undefined,
-      critical_max: row.critical_max
-        ? parseFloat(row.critical_max.toString())
-        : undefined,
+      critical_min: row.critical_min ? parseFloat(row.critical_min.toString()) : undefined,
+      critical_max: row.critical_max ? parseFloat(row.critical_max.toString()) : undefined,
       units: row.units,
       reference_source: row.reference_source,
       evidence_level: row.evidence_level || undefined,

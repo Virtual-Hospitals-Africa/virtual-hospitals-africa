@@ -3,12 +3,7 @@ import { getSteps } from '../../../library/Steps.tsx'
 import { NurseSpecialty, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../backend/parseForm.ts'
 import { Maybe } from '../../../../types.ts'
-import {
-  e164_phone_number,
-  sex,
-  string_or_number_as_string,
-  varchar255,
-} from '../../../../util/validators.ts'
+import { e164_phone_number, sex, string_or_number_as_string, varchar255 } from '../../../../util/validators.ts'
 
 export type NurseRegistrationStep =
   | 'personal'

@@ -1,11 +1,7 @@
-import { MessageDraftTargets, MessagePriority } from '../../db.d.ts'
+import { InsertObject } from 'kysely'
+import { DB, MessagePriority } from '../../db.d.ts'
 import { BY_TARGET_UUID } from '../../shared/message_targets.ts'
-import {
-  InsertShape,
-  RenderedMessageDraft,
-  RenderedMessageTarget,
-  TrxOrDb,
-} from '../../types.ts'
+import { RenderedMessageDraft, RenderedMessageTarget, TrxOrDb } from '../../types.ts'
 import entries from '../../util/entries.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { blankSelection, jsonArrayFrom, success_true } from '../helpers.ts'
@@ -94,7 +90,9 @@ export const message_drafts = {
       employment_id: string
     },
   ): Promise<{ success: true }> {
-    const draft_targets: InsertShape<MessageDraftTargets>[] = entries(targets)
+    const draft_targets: InsertObject<DB, 'message_draft_targets'>[] = entries(
+      targets,
+    )
       .flatMap(([target_type, target_strings = []]) => {
         const by_uuid = BY_TARGET_UUID.has(target_type)
         return target_strings.map((target_string) => ({
@@ -119,10 +117,7 @@ export const message_drafts = {
             .where('message_draft_id', '=', message_draft_id),
       ).with(
         'inserting_new_targets',
-        (qb) =>
-          draft_targets.length
-            ? qb.insertInto('message_draft_targets').values(draft_targets)
-            : blankSelection(qb),
+        (qb) => draft_targets.length ? qb.insertInto('message_draft_targets').values(draft_targets) : blankSelection(qb),
       )
       .selectNoFrom([
         success_true,

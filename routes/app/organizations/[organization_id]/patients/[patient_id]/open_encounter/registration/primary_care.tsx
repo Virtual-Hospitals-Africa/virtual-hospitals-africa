@@ -1,8 +1,4 @@
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { NearestHealthCareSection } from '../../../../../../../../islands/NearestHealthCare.tsx'
 import { HealthInsuranceSection } from '../../../../../../../../islands/HealthInsurance.tsx'
@@ -57,12 +53,10 @@ export const handler = postHandler(
           nearest_organization_id,
         },
       ),
-      updating_insurance: insurance.has_no_insurance
-        ? patient_insurance.clearCurrent(trx, { patient_id })
-        : patient_insurance.setCurrent(trx, {
-          patient_id,
-          ...insurance,
-        }),
+      updating_insurance: insurance.has_no_insurance ? patient_insurance.clearCurrent(trx, { patient_id }) : patient_insurance.setCurrent(trx, {
+        patient_id,
+        ...insurance,
+      }),
       response: completeAndProceedToNextStep(ctx),
     })
 
@@ -71,8 +65,7 @@ export const handler = postHandler(
 )
 
 export async function PatientRegistrationPrimaryCarePage(
-  { state: { trx, patient, previously_completed_step } }:
-    OpenEncounterWorkflowContext,
+  { state: { trx, patient, previously_completed_step } }: OpenEncounterWorkflowContext,
 ) {
   const { primary_care, current_insurance } = await promiseProps({
     primary_care: patient_primary_care.getById(trx, {

@@ -1,10 +1,4 @@
-import {
-  afterAll,
-  afterEach,
-  beforeEach,
-  describe,
-  it,
-} from 'std/testing/bdd.ts'
+import { afterAll, afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../../../db/db.ts'
@@ -14,10 +8,7 @@ import { conversations } from '../../../../../../../db/models/conversations.ts'
 import { patients } from '../../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../../db/models/appointments.ts'
 import { patient_chatbot_users } from '../../../../../../../db/models/patient_chatbot_users.ts'
-import {
-  formatJohannesburg,
-  prettyAppointmentTime,
-} from '../../../../../../../util/date.ts'
+import { formatJohannesburg, prettyAppointmentTime } from '../../../../../../../util/date.ts'
 
 import generateUUID from '../../../../../../../util/uuid.ts'
 

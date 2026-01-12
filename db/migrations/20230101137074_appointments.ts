@@ -12,10 +12,8 @@ export async function up(db: Kysely<DB>) {
       .addColumn('reason', 'varchar(255)', (col) => col.notNull())
       .addColumn('start', 'timestamptz', (col) => col.notNull())
       .addColumn('end', 'timestamptz', (col) => col.notNull())
-      .addColumn('duration_minutes', 'integer', (col) =>
-        col.notNull().check(sql`duration_minutes > 0`))
-      .addColumn('gcal_event_id', 'varchar(255)', (col) =>
-        col.notNull())
+      .addColumn('duration_minutes', 'integer', (col) => col.notNull().check(sql`duration_minutes > 0`))
+      .addColumn('gcal_event_id', 'varchar(255)', (col) => col.notNull())
       .addColumn('gcal_hangout_link', 'varchar(255)'))
 
   await createStandardTable(db, 'appointment_providers', (qb) =>
@@ -66,13 +64,11 @@ export async function up(db: Kysely<DB>) {
         )
         .addColumn('start', 'timestamptz', (col) => col.notNull())
         .addColumn('end', 'timestamptz', (col) => col.notNull())
-        .addColumn('duration_minutes', 'integer', (col) =>
-          col.notNull().check(sql`duration_minutes > 0`))
+        .addColumn('duration_minutes', 'integer', (col) => col.notNull().check(sql`duration_minutes > 0`))
         .addColumn(
           'declined',
           'boolean',
-          (col) =>
-            col.notNull().defaultTo(false),
+          (col) => col.notNull().defaultTo(false),
         ),
   )
 }

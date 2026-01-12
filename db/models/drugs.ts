@@ -2,10 +2,7 @@ import { type SelectQueryBuilder, sql } from 'kysely'
 import { DrugSearchResult, TrxOrDb } from '../../types.ts'
 import { asText, asTextArray, jsonArrayFrom } from '../helpers.ts'
 import type { DB } from '../../db.d.ts'
-import {
-  collectSortedUniqDecimals,
-  collectSortedUniqStrings,
-} from '../../util/collectSorted.ts'
+import { collectSortedUniqDecimals, collectSortedUniqStrings } from '../../util/collectSorted.ts'
 import { base } from './_base.ts'
 import { positive_decimal } from '../../util/validators.ts'
 
@@ -92,8 +89,7 @@ function baseQuery(opts: { include_recalled: boolean }) {
   }
 }
 
-type BaseQueryReturn = ReturnType<ReturnType<typeof baseQuery>> extends
-  SelectQueryBuilder<DB, 'drugs', infer T> ? T : never
+type BaseQueryReturn = ReturnType<ReturnType<typeof baseQuery>> extends SelectQueryBuilder<DB, 'drugs', infer T> ? T : never
 
 function* distinctTradeNames(medications: BaseQueryReturn['medications']) {
   for (const medication of medications) {
@@ -137,9 +133,7 @@ export const drugs = base({
   formatResult({ medications, ...rest }): DrugSearchResult {
     console.log({ medications, ...rest })
     return {
-      all_recalled: medications.every((m) =>
-        m.manufacturers.every((m) => m.recalled_at)
-      ),
+      all_recalled: medications.every((m) => m.manufacturers.every((m) => m.recalled_at)),
       distinct_trade_names: collectSortedUniqStrings(
         distinctTradeNames(medications),
       ),

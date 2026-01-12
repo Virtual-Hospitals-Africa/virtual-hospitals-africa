@@ -2,10 +2,7 @@ import { LoggedInHealthWorkerContext } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { media } from '../../db/models/media.ts'
 import upgradeWebsocket from '../../util/websocket.ts'
-import {
-  supported_language_codes,
-  transcriptionProcess,
-} from '../../external-clients/whisper/transcription.ts'
+import { supported_language_codes, transcriptionProcess } from '../../external-clients/whisper/transcription.ts'
 import * as ffmpeg from '../../external-clients/ffmpeg.ts'
 import { deferred } from 'https://deno.land/std@0.136.0/async/deferred.ts'
 import { assertOr400 } from '../../util/assertOr.ts'

@@ -212,12 +212,10 @@ export function HealthWorkerHomePageLayout<
         sidebar={
           <HealthWorkerHomePageSidebar
             route={ctx.route!}
-            params={ctx.params && 'organization_id' in ctx.params
-              ? ctx.params
-              : {
-                ...ctx.params,
-                organization_id: defaultOrganizationId(ctx.state.health_worker),
-              }}
+            params={ctx.params && 'organization_id' in ctx.params ? ctx.params : {
+              ...ctx.params,
+              organization_id: defaultOrganizationId(ctx.state.health_worker),
+            }}
             urlSearchParams={ctx.url.searchParams}
             bottom={
               <HealthWorkerSidebarBottom

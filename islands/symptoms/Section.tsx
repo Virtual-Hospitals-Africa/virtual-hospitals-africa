@@ -93,12 +93,8 @@ export default function SymptomSection(
         today={today}
         show={panel_state.value?.action === 'new'}
         symptom={{
-          name: panel_state.value.action === 'new'
-            ? panel_state.value.new_symptom_name
-            : undefined,
-          snomed_concept_id: panel_state.value.action === 'new'
-            ? panel_state.value.new_symptom_snomed_concept_id
-            : undefined,
+          name: panel_state.value.action === 'new' ? panel_state.value.new_symptom_name : undefined,
+          snomed_concept_id: panel_state.value.action === 'new' ? panel_state.value.new_symptom_snomed_concept_id : undefined,
         }}
         onClose={() => location.hash = ''}
       />

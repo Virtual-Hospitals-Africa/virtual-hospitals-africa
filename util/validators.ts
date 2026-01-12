@@ -68,9 +68,7 @@ export const nonnegative_integer = z.number().or(
     message: 'Expected a nonnegative integer',
   })
 
-export const generated_uuid = z.string().uuid().optional().transform((v) =>
-  v || generateUUID()
-)
+export const generated_uuid = z.string().uuid().optional().transform((v) => v || generateUUID())
 
 export const snomed_concept_id = z.string().regex(/^\d+$/).or(z.number())
   .transform((concept_id) => String(concept_id))

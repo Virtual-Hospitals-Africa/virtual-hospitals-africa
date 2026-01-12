@@ -38,8 +38,7 @@ export async function up(db: Kysely<DB>) {
       qb.addColumn(
         'patient_condition_id',
         'uuid',
-        (col) =>
-          col.notNull().references('patient_conditions.id').onDelete('cascade'),
+        (col) => col.notNull().references('patient_conditions.id').onDelete('cascade'),
       )
         .addColumn(
           'medication_id',
@@ -49,8 +48,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'manufactured_medication_id',
           'uuid',
-          (col) =>
-            col.references('manufactured_medications.id').onDelete('cascade'),
+          (col) => col.references('manufactured_medications.id').onDelete('cascade'),
         )
         .addColumn('strength', 'decimal', (col) => col.notNull())
         .addColumn('route', 'varchar(255)', (col) => col.notNull())

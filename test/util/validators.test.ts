@@ -23,9 +23,7 @@ describe('validators', () => {
     })
 
     it('throws an error on an illegitimate national_id_number', () => {
-      const error = assertThrows(() =>
-        validators.zimbabwe_national_id_number.parse('63-8312 A 56')
-      )
+      const error = assertThrows(() => validators.zimbabwe_national_id_number.parse('63-8312 A 56'))
       assert(error instanceof ZodError)
       assertMatches(error.issues, [
         {
@@ -34,8 +32,7 @@ describe('validators', () => {
           'format': 'regex',
           'pattern': '/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i',
           'path': [],
-          'message':
-            'Invalid string: must match pattern /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i',
+          'message': 'Invalid string: must match pattern /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/i',
         },
       ])
     })
@@ -60,9 +57,7 @@ describe('validators', () => {
     })
 
     it('throws an error on an illegitimate phone number', () => {
-      const error = assertThrows(() =>
-        validators.e164_phone_number.parse('MY HAMSTER IS NAMED TERRENCE')
-      )
+      const error = assertThrows(() => validators.e164_phone_number.parse('MY HAMSTER IS NAMED TERRENCE'))
       assert(error instanceof ZodError)
       assertEquals(error.issues, [
         {

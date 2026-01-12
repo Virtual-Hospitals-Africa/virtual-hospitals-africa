@@ -8,9 +8,7 @@ export function PharmacistTypeSelect({
 }) {
   return (
     <Select name='pharmacist_type' label='Specialty' required>
-      {PHARMACIST_TYPES.map((type) => (
-        <option value={type} label={type} selected={value === type} />
-      ))}
+      {PHARMACIST_TYPES.map((type) => <option key={type} value={type} label={type} selected={value === type} />)}
     </Select>
   )
 }

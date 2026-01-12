@@ -112,9 +112,7 @@ export default function Menu(
           {icon === 'ChevronDownIcon' ? <ChevronDownIcon /> : icon}
         </button>
       </div>
-      {show_menu.value && (
-        <MenuOptions options={options} className={optionsClassName || ''} />
-      )}
+      {show_menu.value && <MenuOptions options={options} className={optionsClassName || ''} />}
     </div>
   )
 }

@@ -23,10 +23,9 @@ export function startSpeechWebsocket(
   { language_code }: { language_code: string },
   signal: Signal<SpeechWebsocketState>,
 ) {
-  const wsUri =
-    `wss://${self.location.host}/app/speech-websocket?language_code=${language_code}`
+  const ws_uri = `wss://${self.location.host}/app/speech-websocket?language_code=${language_code}`
 
-  const websocket = new WebSocket(wsUri)
+  const websocket = new WebSocket(ws_uri)
 
   websocket.onopen = function () {
     console.log('websocket open')

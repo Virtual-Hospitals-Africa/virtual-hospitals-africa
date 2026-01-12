@@ -1,21 +1,12 @@
 import { assert } from 'std/assert/assert.ts'
-import {
-  ExtendedActionData,
-  HealthWorkerOrganization,
-  RenderedPatientOpenEncounter,
-  RenderedWaitingRoom,
-  TrxOrDb,
-} from '../../types.ts'
+import { ExtendedActionData, HealthWorkerOrganization, RenderedPatientOpenEncounter, RenderedWaitingRoom, TrxOrDb } from '../../types.ts'
 import { patient_encounters } from './patient_encounters.ts'
 import sortBy from '../../util/sortBy.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import capitalize from '../../util/capitalize.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
-import {
-  Department,
-  departmentResponsibleForWorkflow,
-} from '../../shared/departments.ts'
+import { Department, departmentResponsibleForWorkflow } from '../../shared/departments.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 
@@ -78,8 +69,7 @@ function asWaitingRoom(
     assertNotEquals(department_name, 'Waiting room')
     assertEquals(current_workflow_status.workflow, current_workflow)
     assertNotEquals(current_workflow_status.status, 'completed')
-    workflow_status_display =
-      `${current_workflow_status.workflow} ${current_workflow_status.status}`
+    workflow_status_display = `${current_workflow_status.workflow} ${current_workflow_status.status}`
   } else {
     assertEquals(department_name, 'Waiting room')
     assert(next_workflow_status)
@@ -105,8 +95,7 @@ function asWaitingRoom(
   const action: ExtendedActionData = {
     text: workflow_to_start,
     method: 'POST',
-    href:
-      `/app/organizations/${organization_employment.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=${workflow_to_start}`,
+    href: `/app/organizations/${organization_employment.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=${workflow_to_start}`,
     disabled: !can_perform_action,
   }
 
@@ -153,15 +142,12 @@ export const waiting_room = {
       )
     })
 
-    const waiting_room_unsorted = open_encounters.map((encounter) =>
-      asWaitingRoom(encounter, organization_employment)
-    )
+    const waiting_room_unsorted = open_encounters.map((encounter) => asWaitingRoom(encounter, organization_employment))
 
     return sortBy(
       waiting_room_unsorted,
       (row) => row.present_employees.length ? 1 : 0,
-      (row) =>
-        row.target_treatment_time ? row.target_treatment_time.valueOf() : -1,
+      (row) => row.target_treatment_time ? row.target_treatment_time.valueOf() : -1,
       (row) => row.arrived_timestamp.valueOf(),
     )
   },

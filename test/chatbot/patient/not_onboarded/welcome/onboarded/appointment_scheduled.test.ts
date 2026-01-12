@@ -85,8 +85,7 @@ describe('patient chatbot', () => {
         {
           chatbot_name: 'patient',
           messages: {
-            message_body:
-              'Your appointment has been cancelled. What can I help you with today?',
+            message_body: 'Your appointment has been cancelled. What can I help you with today?',
             type: 'buttons',
             buttonText: 'Menu',
             options: [

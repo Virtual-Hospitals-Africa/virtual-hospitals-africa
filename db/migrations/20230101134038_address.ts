@@ -16,8 +16,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn('postal_code', 'varchar(255)')
         .addColumn('administrative_area_level_1', 'varchar(255)')
         .addColumn('administrative_area_level_2', 'varchar(255)')
-        .addColumn('country', 'varchar(2)', (col) =>
-          col.notNull().references('countries.iso_3166_2')),
+        .addColumn('country', 'varchar(2)', (col) => col.notNull().references('countries.iso_3166_2')),
   )
 }
 

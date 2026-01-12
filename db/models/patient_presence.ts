@@ -1,10 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import {
-  HealthWorkerOrganization,
-  RenderedPatientOpenEncounter,
-  TrxOrDb,
-  UpdateShape,
-} from '../../types.ts'
+import { HealthWorkerOrganization, RenderedPatientOpenEncounter, TrxOrDb, UpdateShape } from '../../types.ts'
 import { Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { PatientPresence } from '../../db.d.ts'
 import { blankSelection } from '../helpers.ts'
@@ -61,11 +56,9 @@ export const patient_presence = {
         next_patient_presence.current_workflow
           ? qb.insertInto('patient_workflows_started')
             .values({
-              patient_workflow_id:
-                encounter.workflows[next_patient_presence.current_workflow]!
-                  .patient_workflow_id,
-              patient_encounter_employee_id:
-                existing_patient_encounter_employee_id!,
+              patient_workflow_id: encounter.workflows[next_patient_presence.current_workflow]!
+                .patient_workflow_id,
+              patient_encounter_employee_id: existing_patient_encounter_employee_id!,
             })
           : blankSelection(qb),
     )
@@ -75,9 +68,7 @@ export const patient_presence = {
           qb.updateTable('employment_presence')
             .set({
               at_work: true,
-              with_patient_id: employed_in_next_workflow_department
-                ? patient_id
-                : null,
+              with_patient_id: employed_in_next_workflow_department ? patient_id : null,
             })
             .where('employment_presence.id', '=', non_admin_employment_id),
       )

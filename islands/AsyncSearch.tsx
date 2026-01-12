@@ -1,9 +1,4 @@
-import Search, {
-  OptionLike,
-  SearchPropsCommon,
-  SearchPropsMulti,
-  SearchPropsSingular,
-} from './Search.tsx'
+import Search, { OptionLike, SearchPropsCommon, SearchPropsMulti, SearchPropsSingular } from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 
 export type AsyncSearchProps<

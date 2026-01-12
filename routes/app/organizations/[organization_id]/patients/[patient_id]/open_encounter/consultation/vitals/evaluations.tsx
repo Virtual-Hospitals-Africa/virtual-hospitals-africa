@@ -1,8 +1,4 @@
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../../backend/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
@@ -19,11 +15,7 @@ const VitalsEvaluationSchema = z.object({
       priority: z.enum(PRIORITIES).optional(),
       note: z.string().trim().optional(),
     }),
-  ).optional().transform((findings) =>
-    Object.entries(findings || {}).map(([_, evaluation_data]) =>
-      evaluation_data
-    )
-  ),
+  ).optional().transform((findings) => Object.entries(findings || {}).map(([_, evaluation_data]) => evaluation_data)),
 })
 
 export const handler = postHandler(

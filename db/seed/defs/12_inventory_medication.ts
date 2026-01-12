@@ -57,7 +57,7 @@ type ParsedStrengths = {
 }
 
 // deno-lint-ignore no-explicit-any
-const skippedDrugs: { drug: any; reason: string }[] = []
+const skipped_drugs: { drug: any; reason: string }[] = []
 
 const form_rewrite = {
   'GRANULES, FOR SUSPENSION; ORAL': 'GRANULE, FOR SUSPENSION; ORAL',
@@ -91,10 +91,10 @@ async function seedDataFromJSON(trx: TrxOrDb) {
   // console.log(uniq(data.map(d => d.forms)).sort())
   await inParallel.forEach([...drugs.entries()], addDrug.bind(null, trx))
 
-  if (skippedDrugs.length) {
+  if (skipped_drugs.length) {
     Deno.writeTextFileSync(
       './db/resources/skipped_drugs.json',
-      humanReadableJson(skippedDrugs),
+      humanReadableJson(skipped_drugs),
     )
   }
 }
@@ -122,7 +122,7 @@ async function addDrug(
             }
           } catch (e) {
             assert(e instanceof Error)
-            skippedDrugs.push({
+            skipped_drugs.push({
               drug: manufactured_medication,
               reason: e.message,
             })
@@ -134,8 +134,7 @@ async function addDrug(
         return
       }
 
-      const first_strength =
-        manufactured_medications_with_strengths[0].strengths
+      const first_strength = manufactured_medications_with_strengths[0].strengths
 
       const same_units = manufactured_medications_with_strengths.every((
         { strengths },
@@ -149,7 +148,7 @@ async function addDrug(
       ))
 
       if (!same_units) {
-        skippedDrugs.push({
+        skipped_drugs.push({
           drug: manufactured_medications_with_strengths,
           reason: 'Units are not the same',
         })
@@ -159,9 +158,7 @@ async function addDrug(
       const strengths = {
         strength_numerators: sortBy(
           uniq(
-            manufactured_medications_with_strengths.flatMap(({ strengths }) =>
-              strengths.strength_numerators
-            ),
+            manufactured_medications_with_strengths.flatMap(({ strengths }) => strengths.strength_numerators),
           ),
         ),
         strength_numerator_unit: first_strength.strength_numerator_unit,
@@ -242,8 +239,7 @@ async function addDrug(
         const consumable = await trx
           .insertInto('consumables')
           .values({
-            name:
-              `${trade_name} ${strength_numerator}${medication.strengths.strength_numerator_unit} ${form} by ${applicant_name}`,
+            name: `${trade_name} ${strength_numerator}${medication.strengths.strength_numerator_unit} ${form} by ${applicant_name}`,
           })
           .returning('id')
           .executeTakeFirstOrThrow()
@@ -325,9 +321,7 @@ const forms_with_singular_doses = [
 function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
   assert(str)
   const values = compact(
-    str.replace('I.U.', 'IU').split(';').map((part) =>
-      part.trim().toUpperCase()
-    ),
+    str.replace('I.U.', 'IU').split(';').map((part) => part.trim().toUpperCase()),
   ).reverse().map(parseSingleStrength)
   const numerator_units = sortBy(
     compact(uniq(values.map((v) => v.numerator_unit))),
@@ -344,14 +338,10 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
       arraysEqual(numerator_units, ['G', 'MG']) ||
       arraysEqual(numerator_units, ['MCG', 'MG']) ||
       arraysEqual(numerator_units, ['M', 'MCG']),
-    `Multiple numerator units found for ${str} ${form}: ${
-      numerator_units.join(', ')
-    }`,
+    `Multiple numerator units found for ${str} ${form}: ${numerator_units.join(', ')}`,
   )
 
-  const single_dose_form = forms_with_singular_doses.find((f) =>
-    form.includes(f)
-  )
+  const single_dose_form = forms_with_singular_doses.find((f) => form.includes(f))
   assert(
     denominator_units.length <= 1,
     `Multiple denominator units found for ${str} ${form}`,
@@ -379,11 +369,7 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
   if (arraysEqual(numerator_units, ['G', 'MG'])) {
     return {
       strength_numerators: sortBy(
-        values.map((v) =>
-          v.numerator_unit === 'G'
-            ? 1000 * v.numerator_value
-            : v.numerator_value
-        ),
+        values.map((v) => v.numerator_unit === 'G' ? 1000 * v.numerator_value : v.numerator_value),
       ),
       strength_numerator_unit: 'MG',
       strength_denominator: String(denominator_values[0] || 1),
@@ -394,11 +380,7 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
   if (arraysEqual(numerator_units, ['MCG', 'MG'])) {
     return {
       strength_numerators: sortBy(
-        values.map((v) =>
-          v.numerator_unit === 'MG'
-            ? 1000 * v.numerator_value
-            : v.numerator_value
-        ),
+        values.map((v) => v.numerator_unit === 'MG' ? 1000 * v.numerator_value : v.numerator_value),
       ),
       strength_numerator_unit: 'MCG',
       strength_denominator: String(denominator_values[0] || 1),

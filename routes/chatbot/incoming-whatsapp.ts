@@ -3,16 +3,8 @@ import db from '../../db/db.ts'
 import { conversations } from '../../db/models/conversations.ts'
 import { media } from '../../db/models/media.ts'
 import * as whatsapp from '../../external-clients/whatsapp.ts'
-import {
-  WhatsAppIncomingMessage,
-  WhatsAppMessage,
-  WhatsAppMessageContents,
-} from '../../types.ts'
-import {
-  PHONE_TO_CHATBOT_NAME,
-  WHATSAPP_PATIENT_CHATBOT_NUMBER,
-  WHATSAPP_PHARMACIST_CHATBOT_NUMBER,
-} from '../../chatbot/phone_numbers.ts'
+import { WhatsAppIncomingMessage, WhatsAppMessage, WhatsAppMessageContents } from '../../types.ts'
+import { PHONE_TO_CHATBOT_NAME, WHATSAPP_PATIENT_CHATBOT_NUMBER, WHATSAPP_PHARMACIST_CHATBOT_NUMBER } from '../../chatbot/phone_numbers.ts'
 import { Handlers } from 'fresh/compat'
 
 const verify_token = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
@@ -67,9 +59,7 @@ async function getContents(
       }
 
     case 'interactive': {
-      const body = message.interactive.type === 'list_reply'
-        ? message.interactive.list_reply.id
-        : message.interactive.button_reply.id
+      const body = message.interactive.type === 'list_reply' ? message.interactive.list_reply.id : message.interactive.button_reply.id
       return { has_media: false, media_id: null, body }
     }
     case 'contacts': {
@@ -101,15 +91,15 @@ export const handler: Handlers = {
   },
   async POST(ctx) {
     const req = ctx.req
-    const incomingMessage: WhatsAppIncomingMessage = await req.json()
+    const incoming_message: WhatsAppIncomingMessage = await req.json()
 
-    console.log(JSON.stringify(incomingMessage))
+    console.log(JSON.stringify(incoming_message))
 
-    if (incomingMessage.object !== 'whatsapp_business_account') {
+    if (incoming_message.object !== 'whatsapp_business_account') {
       console.error('Object is not whatsapp_business_account')
       return new Response('Unexpected object', { status: 400 })
     }
-    const [entry, ...otherEntries] = incomingMessage.entry
+    const [entry, ...otherEntries] = incoming_message.entry
     if (otherEntries.length) {
       console.error("More than one entry in the message, that's weird")
     }

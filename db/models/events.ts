@@ -272,20 +272,18 @@ export const events = {
       }
     }
 
-    const unprocessed_events_related_to_this_encounter =
-      await unprocessedEventsRelatedToThisEncounter()
+    const unprocessed_events_related_to_this_encounter = await unprocessedEventsRelatedToThisEncounter()
 
     console.log({ unprocessed_events_related_to_this_encounter })
     if (!unprocessed_events_related_to_this_encounter.length) return
 
-    const unprocessed_events_related_to_this_encounter_for_sure =
-      unprocessed_events_related_to_this_encounter.filter((e) => {
-        if (events_seen_while_waiting.has(e.id)) {
-          console.log('ha! the paranoia is justified!', e.id)
-          return false
-        }
-        return true
-      })
+    const unprocessed_events_related_to_this_encounter_for_sure = unprocessed_events_related_to_this_encounter.filter((e) => {
+      if (events_seen_while_waiting.has(e.id)) {
+        console.log('ha! the paranoia is justified!', e.id)
+        return false
+      }
+      return true
+    })
     events_seen_while_waiting.clear()
 
     const timer = timeout(timeout_ms)

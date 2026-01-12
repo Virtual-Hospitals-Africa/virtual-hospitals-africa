@@ -56,8 +56,7 @@ export function defineDecimal() {
 
       // The natural logarithm of 10.
       // 115 digits
-      LN10:
-        '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298341967784042286',
+      LN10: '2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298341967784042286',
     },
     // ----------------------------------- END OF EDITABLE DEFAULTS ------------------------------- //
 
@@ -1544,13 +1543,11 @@ export function defineDecimal() {
       // digit at (left-to-right) index j, e.g. if w is 908714 and j is 2, the expression will give
       // 714.
 
-      doRound = rm < 4
-        ? (rd || doRound) && (rm == 0 || rm == (x.s < 0 ? 3 : 2))
-        : rd > 5 || rd == 5 && (rm == 4 || doRound || rm == 6 &&
-                // Check whether the digit to the left of the rounding digit is odd.
-                ((i > 0 ? j > 0 ? w / mathpow(10, n - j) : 0 : xd[xdi - 1]) %
-                    10) & 1 ||
-              rm == (x.s < 0 ? 8 : 7))
+      doRound = rm < 4 ? (rd || doRound) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : rd > 5 || rd == 5 && (rm == 4 || doRound || rm == 6 &&
+              // Check whether the digit to the left of the rounding digit is odd.
+              ((i > 0 ? j > 0 ? w / mathpow(10, n - j) : 0 : xd[xdi - 1]) %
+                  10) & 1 ||
+            rm == (x.s < 0 ? 8 : 7))
     }
 
     if (sd < 1 || !xd[0]) {

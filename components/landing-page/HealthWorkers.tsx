@@ -17,9 +17,8 @@ export function HealthWorkers() {
           Focus on care, get help with everything else
         </p>
         <p className='mt-4 text-lg tracking-tight text-slate-700'>
-          Local doctors and health administrators can easily set up their own
-          virtual hospitals, granting them a shared digital space to monitor,
-          communicate with, and improve outcomes for patients.
+          Local doctors and health administrators can easily set up their own virtual hospitals, granting them a shared digital space to monitor, communicate
+          with, and improve outcomes for patients.
         </p>
         <p className='mt-4'>
           <ArrowLink
@@ -32,20 +31,17 @@ export function HealthWorkers() {
         features={[
           {
             title: 'Crystal Clear Medical Records',
-            description:
-              'Find and evaluate patient medical records quickly and easily.',
+            description: 'Find and evaluate patient medical records quickly and easily.',
             image: '/images/demos/medical_records.png',
           },
           {
             title: 'One Click Prescriptions',
-            description:
-              'Upon making a diagnosis, health workers can send prescriptions to local pharmacies with a single click.',
+            description: 'Upon making a diagnosis, health workers can send prescriptions to local pharmacies with a single click.',
             image: '/images/demos/one_click_prescriptions.png',
           },
           {
             title: 'Painless Follow Up',
-            description:
-              'When needed, create follow up appointments with other doctors or specialists even those at other organizations.',
+            description: 'When needed, create follow up appointments with other doctors or specialists even those at other organizations.',
             image: '/images/demos/video_appointments.png',
           },
           {

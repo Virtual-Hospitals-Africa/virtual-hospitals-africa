@@ -23,8 +23,7 @@ export function SouthAfricanNationalIdFormGroup(
           name='no_national_id'
           className='h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
           checked={no_national_id.value}
-          onInput={({ currentTarget }) =>
-            no_national_id.value = currentTarget.checked}
+          onInput={({ currentTarget }) => no_national_id.value = currentTarget.checked}
         />
         <span className='text-sm font-medium text-gray-600'>
           Patient has no National ID

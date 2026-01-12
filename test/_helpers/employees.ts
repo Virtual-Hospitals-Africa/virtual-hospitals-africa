@@ -12,10 +12,7 @@ import { insertHealthWorker, testHealthWorker } from './health_workers.ts'
 import { route } from '../_route.ts'
 import { testNurseRegistrationDetails } from '../../mocks/testRegistrationDetails.ts'
 import omit from '../../util/omit.ts'
-import {
-  health_worker_google_tokens,
-  type HealthWorkerWithGoogleTokens,
-} from '../../db/models/health_worker_google_tokens.ts'
+import { health_worker_google_tokens, type HealthWorkerWithGoogleTokens } from '../../db/models/health_worker_google_tokens.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { asMaybeNames, asNames } from '../../db/models/asNames.ts'
@@ -203,9 +200,7 @@ export async function addTestEmployeeWithSession(
     { headers, ...rest }: RequestInit = {},
   ): ReturnType<typeof fetch> {
     return fetch(
-      typeof input === 'string' && input.startsWith('/')
-        ? `${route}${input}`
-        : input,
+      typeof input === 'string' && input.startsWith('/') ? `${route}${input}` : input,
       {
         headers: { ...headers, Cookie },
         ...rest,

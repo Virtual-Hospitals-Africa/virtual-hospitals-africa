@@ -1,8 +1,4 @@
-import {
-  RenderedFindingRelativeToHealthWorker,
-  VitalAssessmentFormInputDefition,
-  VitalMeasurementFormInputDefition,
-} from '../../types.ts'
+import { RenderedFindingRelativeToHealthWorker, VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } from '../../types.ts'
 import VitalsMeasurementsInput from './VitalsMeasurementsInput.tsx'
 import DatabaseDrivenCategoricalInput from './DatabaseDrivenCategoricalInput.tsx'
 import { isAssessmentFor } from '../../shared/vitals.ts'

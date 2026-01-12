@@ -14,13 +14,9 @@ export function DrawerPatientCard(
     priority: Maybe<Priority>
   },
 ) {
-  const priority_color = priority
-    ? PRIORITY_COLORS[priority]
-    : { bg: 'bg-gray-100', text: 'gray-800' }
+  const priority_color = priority ? PRIORITY_COLORS[priority] : { bg: 'bg-gray-100', text: 'gray-800' }
 
-  const href = patient.completed_registration
-    ? `/app/organizations/${organization_id}/patients/${patient.id}/profile`
-    : undefined
+  const href = patient.completed_registration ? `/app/organizations/${organization_id}/patients/${patient.id}/profile` : undefined
   const Tag = href ? 'a' : 'div'
 
   return (

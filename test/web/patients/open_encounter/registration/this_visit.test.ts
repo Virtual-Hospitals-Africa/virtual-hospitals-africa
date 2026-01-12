@@ -5,10 +5,7 @@ import { employees } from '../../../../../db/models/employees.ts'
 import { patients } from '../../../../../db/models/patients.ts'
 // import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
-import {
-  createTestOrganization,
-  TEST_ORGANIZATION_UUIDS,
-} from '../../../../_helpers/organizations.ts'
+import { createTestOrganization, TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { route /*, wss_route */ } from '../../../../_route.ts'
@@ -37,8 +34,7 @@ describeParallel(
             method: 'POST',
           },
         )
-        const patient_id =
-          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
         const $this_visit = await fetchCheerio(
           $personal.url,
@@ -132,8 +128,7 @@ describeParallel(
             method: 'POST',
           },
         )
-        const patient_id =
-          $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
         const $this_visit = await receptionist.fetchCheerio(
           $personal.url,
@@ -184,9 +179,7 @@ describeParallel(
         const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
         assertEquals(
           waiting_room_url.searchParams.get('success'),
-          `Please move ${
-            patient.names!.preferred_name
-          } to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+          `Please move ${patient.names!.preferred_name} to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
         )
 
         // const notification = await received_notification.promise
@@ -255,8 +248,7 @@ describeParallel(
             method: 'POST',
           },
         )
-        const patient_id1 =
-          $personal1.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const patient_id1 = $personal1.url.match(/patients\/(.*)\/open_encounter/)![1]
 
         const $this_visit1 = await receptionist.fetchCheerio(
           $personal1.url,
@@ -280,9 +272,7 @@ describeParallel(
 
         assertEquals(
           new URL($waiting_room1.url).searchParams.get('success'),
-          `Please move ${
-            patient1.names!.preferred_name
-          } to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+          `Please move ${patient1.names!.preferred_name} to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
         )
 
         const $personal2 = await receptionist.fetchCheerio(
@@ -291,8 +281,7 @@ describeParallel(
             method: 'POST',
           },
         )
-        const patient_id2 =
-          $personal2.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const patient_id2 = $personal2.url.match(/patients\/(.*)\/open_encounter/)![1]
 
         const $this_visit2 = await receptionist.fetchCheerio(
           $personal2.url,
@@ -316,9 +305,7 @@ describeParallel(
 
         assertEquals(
           new URL($waiting_room2.url).searchParams.get('success'),
-          `Please move ${
-            patient2.names!.preferred_name
-          } to Triage room 2. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+          `Please move ${patient2.names!.preferred_name} to Triage room 2. ${hardcoded_senior_health_care_professional_name} has been notified.`,
         )
 
         const $personal3 = await receptionist.fetchCheerio(
@@ -327,8 +314,7 @@ describeParallel(
             method: 'POST',
           },
         )
-        const patient_id3 =
-          $personal3.url.match(/patients\/(.*)\/open_encounter/)![1]
+        const patient_id3 = $personal3.url.match(/patients\/(.*)\/open_encounter/)![1]
 
         const $this_visit3 = await receptionist.fetchCheerio(
           $personal3.url,
@@ -383,8 +369,7 @@ describeParallel(
           method: 'POST',
         },
       )
-      const patient_id =
-        $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
+      const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
       const $this_visit = await fetchCheerio(
         $personal.url,

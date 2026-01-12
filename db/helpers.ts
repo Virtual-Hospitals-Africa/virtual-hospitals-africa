@@ -356,9 +356,7 @@ export function longFormattedDate(ref: string) {
 }
 
 export function longFormattedDateTime(ref: string) {
-  return sql<string>`TO_CHAR(${
-    sql.ref(ref)
-  }, 'FMDD FMMonth YYYY FMHH:MI:SS AM')`
+  return sql<string>`TO_CHAR(${sql.ref(ref)}, 'FMDD FMMonth YYYY FMHH:MI:SS AM')`
 }
 
 export function literalLocation(loc: Coordinates) {
@@ -433,9 +431,7 @@ export async function ensureAllEnumValuesExist(
   values: string[],
 ) {
   // Build multiple ALTER TYPE statements and execute them together
-  const statements = values.map((value) =>
-    `ALTER TYPE ${enum_name} ADD VALUE IF NOT EXISTS '${value}'`
-  ).join('; ')
+  const statements = values.map((value) => `ALTER TYPE ${enum_name} ADD VALUE IF NOT EXISTS '${value}'`).join('; ')
 
   await sql.raw(statements).execute(trx)
 }
@@ -468,17 +464,13 @@ export function assertOnInsert({
       `.execute(db)
       await sql`
         CREATE TRIGGER ${sql.raw(trigger_name)}
-        ${sql.raw(after ? 'AFTER' : 'BEFORE')} INSERT OR UPDATE ON ${
-        sql.raw(table)
-      }
+        ${sql.raw(after ? 'AFTER' : 'BEFORE')} INSERT OR UPDATE ON ${sql.raw(table)}
         FOR EACH ROW
         EXECUTE FUNCTION ${sql.raw(function_name)}();
       `.execute(db)
     },
     async down(db: Kysely<DB>) {
-      await sql`DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} ON ${
-        sql.raw(table)
-      }`.execute(db)
+      await sql`DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} ON ${sql.raw(table)}`.execute(db)
       await sql`DROP FUNCTION IF EXISTS ${sql.raw(function_name)}()`.execute(db)
     },
   }
@@ -488,11 +480,9 @@ export function temporaryTable<T extends Record<string, unknown>>(
   trx: TrxOrDb,
   records: T[],
 ) {
-  return records.map((record) =>
-    trx.selectNoFrom(() =>
-      entries(record).map(([key, value]) => sql.lit(value).as(key as string))
-    )
-  ).reduce((acc, curr) => acc.unionAll(curr)) as unknown as SelectQueryBuilder<
+  return records.map((record) => trx.selectNoFrom(() => entries(record).map(([key, value]) => sql.lit(value).as(key as string)))).reduce((acc, curr) =>
+    acc.unionAll(curr)
+  ) as unknown as SelectQueryBuilder<
     DB,
     never,
     T
@@ -519,16 +509,14 @@ export function orderByArrayPosition<
 >(
   eb: EB,
   ref: Ref,
-  [first, ...rest]: EB extends ExpressionBuilder<infer SDB, any>
-    ? NonEmptyArray<
+  [first, ...rest]: EB extends ExpressionBuilder<infer SDB, any> ? NonEmptyArray<
       ExtractTypeFromReferenceExpression<SDB, any, Ref>
     >
     : never,
 ) {
   const case_statement = eb.case().when(ref, '=', first).then(rest.length + 1)
   return rest.reduce(
-    (statement, option, i) =>
-      statement.when(ref, '=', option).then(rest.length - i),
+    (statement, option, i) => statement.when(ref, '=', option).then(rest.length - i),
     case_statement,
   ).else(0).end()
 }

@@ -170,9 +170,7 @@ export default function ThreadList(
           isSelected={selected.value.has(thread)}
           toggleSelection={() => {
             const new_selected = new Set(selected.value)
-            selected.value.has(thread)
-              ? new_selected.delete(thread)
-              : new_selected.add(thread)
+            selected.value.has(thread) ? new_selected.delete(thread) : new_selected.add(thread)
             selected.value = new_selected
             is_select_all.value = selected.value.size === threads.length
           }}

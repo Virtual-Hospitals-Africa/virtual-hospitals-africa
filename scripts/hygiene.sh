@@ -3,21 +3,21 @@
 set -uo pipefail
 
 declare -A rules=(
-  [rule_no_camel_case_const]="Found camelCase const declarations:"
+  [rule_no_camel_case]="Found camelCase variable declarations:"
   [rule_no_node_imports]="Found node imports:"
   [rule_test_files_naming]="Files in /test that aren't tests nor helpers:"
   [rule_no_db_imports_in_frontend]="components/ and islands/ should never import from db/:"
   [rule_no_only_in_tests]="Found .only( in test files (remove before committing):"
 )
 
-rule_no_camel_case_const() {
+rule_no_camel_case() {
   # Note that we can ignore specific variable names like onClick at the front
   # and we can ignore functions/patterns that return functions at the back like const getById = model.getById
-  ! rg -n --pcre2 "const (?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*) (=|of|in)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! once)(?! logArgsOnError)(?! deduplicate)(?! simpleBaseQuery)(?! cacheable)(?! \(.+\) =>)(?! model\.)(?! pick\()\s"
+  ! rg -n --pcre2 --color=always 'const (?!createCommand)(?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*)(:| =| of| in)(?! \(.+\) =>)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! once)(?! logArgsOnError)(?! deduplicate)(?! simpleBaseQuery)(?! cacheable)(?! model\.)(?! pick\()\s' --glob '**/*.ts' --glob '**/*.tsx'
 }
 
 rule_no_node_imports() {
-  ! rg -n --pcre2 "from 'node:" --glob '!scripts/hygiene.sh'
+  ! rg -n --pcre2 --color=always "from 'node:" --glob '!scripts/hygiene.sh'
 }
 
 rule_test_files_naming() {
@@ -32,11 +32,11 @@ rule_test_files_naming() {
 }
 
 rule_no_db_imports_in_frontend() {
-  ! rg -n --pcre2 "from ['\"].*db/" components islands util shared
+  ! rg -n --pcre2 --color=always "from ['\"].*db/" components islands util shared
 }
 
 rule_no_only_in_tests() {
-  ! rg -n --pcre2 '\.only\(|only:\s*true' test --glob '!test/_helpers/*'
+  ! rg -n --pcre2 --color=always '^(?!\s*\/\/).*(?:\.only\(|only:\s*true)' test --glob '!test/_helpers/*'
 }
 
 # Main: run all rules in parallel and collect results

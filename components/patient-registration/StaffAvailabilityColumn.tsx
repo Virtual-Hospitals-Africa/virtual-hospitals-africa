@@ -12,7 +12,7 @@ type StaffMember = {
   status: AvailabilityStatus
 }
 
-const statusStyles: Record<
+const status_styles: Record<
   AvailabilityStatus,
   { border: string; chipBg: string; chipText: string }
 > = {
@@ -34,7 +34,7 @@ const statusStyles: Record<
 }
 
 function StaffStatusCard({ staff }: { staff: StaffMember }) {
-  const styles = statusStyles[staff.status]
+  const styles = status_styles[staff.status]
 
   return (
     <div
@@ -88,9 +88,7 @@ export default function StaffAvailabilityColumn(
         Staff Availability
       </h3>
       <div className='flex flex-col gap-6'>
-        {staff.map((member) => (
-          <StaffStatusCard key={member.name} staff={member} />
-        ))}
+        {staff.map((member) => <StaffStatusCard key={member.name} staff={member} />)}
       </div>
     </div>
   )

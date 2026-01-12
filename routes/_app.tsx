@@ -80,9 +80,7 @@ export default function App({ Component, ...props }: PageProps) {
           </>
         )}
         {(props.route?.startsWith('/app') ||
-          props.route?.startsWith('/regulator')) && (
-          <script src='/scripts/general.js' async />
-        )}
+          props.route?.startsWith('/regulator')) && <script src='/scripts/general.js' async />}
       </head>
       <body className='relative flex flex-col justify-between min-h-screen'>
         <Component />

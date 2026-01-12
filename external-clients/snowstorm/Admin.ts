@@ -8,17 +8,10 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  ConceptsInForm,
-  PermissionRecordComponent,
-  ResponseMessage,
-  UpdatedDocumentCount,
-  UserGroupsPojo,
-} from './data-contracts.ts'
+import { ConceptsInForm, PermissionRecordComponent, ResponseMessage, UpdatedDocumentCount, UserGroupsPojo } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Admin<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Admin<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description Set which user groups have the given role on the given branch. These permissions will also apply to ancestor branches in the same code system.
    *
@@ -119,8 +112,7 @@ export class Admin<SecurityDataType = unknown>
     params: RequestParams = {},
   ) =>
     this.request<void, any>({
-      path:
-        `/admin/${branch}/actions/update-mrcm-domain-templates-and-attribute-rules`,
+      path: `/admin/${branch}/actions/update-mrcm-domain-templates-and-attribute-rules`,
       method: 'POST',
       ...params,
     })
@@ -277,8 +269,7 @@ export class Admin<SecurityDataType = unknown>
     params: RequestParams = {},
   ) =>
     this.request<void, any>({
-      path:
-        `/admin/${branch}/actions/inactive-relationships-restore-group-number`,
+      path: `/admin/${branch}/actions/inactive-relationships-restore-group-number`,
       method: 'POST',
       query: query,
       ...params,

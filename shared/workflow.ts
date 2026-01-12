@@ -2,10 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { HealthWorkerOrganization, WorkflowStatus } from '../types.ts'
 import last from '../util/last.ts'
 import first from '../util/first.ts'
-import {
-  departmentNames,
-  departmentResponsibleForWorkflow,
-} from './departments.ts'
+import { departmentNames, departmentResponsibleForWorkflow } from './departments.ts'
 import capitalize from '../util/capitalize.ts'
 
 export const WORKFLOWS = [
@@ -160,9 +157,7 @@ export function canPerform(
   organization_employment: HealthWorkerOrganization,
   workflow: Workflow,
 ): boolean {
-  return departmentNames(organization_employment).some((dept) =>
-    departmentResponsibleForWorkflow(dept, workflow)
-  )
+  return departmentNames(organization_employment).some((dept) => departmentResponsibleForWorkflow(dept, workflow))
 }
 
 export function prettyStepName(step: string) {

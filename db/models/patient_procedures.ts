@@ -1,10 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-import {
-  IdSelection,
-  PreviouslyCompletedProcedures,
-  TrxOrDb,
-} from '../../types.ts'
+import { IdSelection, PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
 import { blankSelection, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records } from './patient_records.ts'
@@ -97,12 +93,8 @@ export const patient_procedures = base({
       ])
       .execute()
 
-    const workflow_procedure = procedures.find((p) =>
-      p.snomed_concept_id === workflow_snomed_concept_id
-    )
-    const workflow_step_procedure = procedures.find((p) =>
-      p.snomed_concept_id === workflow_step_snomed_concept_id
-    )
+    const workflow_procedure = procedures.find((p) => p.snomed_concept_id === workflow_snomed_concept_id)
+    const workflow_step_procedure = procedures.find((p) => p.snomed_concept_id === workflow_step_snomed_concept_id)
 
     return {
       workflow_record_id: workflow_procedure?.id || null,

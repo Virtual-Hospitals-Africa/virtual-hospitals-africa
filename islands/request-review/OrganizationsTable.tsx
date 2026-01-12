@@ -1,7 +1,4 @@
-import {
-  ExtendedActionData,
-  NearestOrganizationSearchResult,
-} from '../../types.ts'
+import { ExtendedActionData, NearestOrganizationSearchResult } from '../../types.ts'
 import Table, { TableColumn } from '../../components/library/Table.tsx'
 import AvatarGroup from '../../components/library/AvatarGroup.tsx'
 import { OrganizationCard } from './OrganizationCard.tsx'
@@ -117,9 +114,7 @@ export function OrganizationsTable(
     <Table
       columns={columns}
       rows={organizations}
-      EmptyState={() => (
-        <p>No matching organizations found with those criteria.</p>
-      )}
+      EmptyState={() => <p>No matching organizations found with those criteria.</p>}
     />
   )
 }

@@ -20,8 +20,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'organization_department_id',
           'uuid',
-          (col) =>
-            col.references('organization_departments.id').onDelete('cascade'),
+          (col) => col.references('organization_departments.id').onDelete('cascade'),
         )
         .addColumn(
           'organization_id',

@@ -16,18 +16,18 @@ describeParallel('inParallel.forEach', () => {
   itParallel(
     'processes items in parallel up to a concurrency limit',
     async () => {
-      const proccessedItems: number[] = []
+      const proccessed_items: number[] = []
       await inParallel.forEach(
         eventually100(),
         async (item) => {
           if (item % 5 === 0) {
             await new Promise((resolve) => setTimeout(resolve, 1))
           }
-          proccessedItems.push(item)
+          proccessed_items.push(item)
         },
         { concurrency: 8 },
       )
-      assertEquals(proccessedItems, [
+      assertEquals(proccessed_items, [
         1,
         2,
         3,
@@ -133,22 +133,22 @@ describeParallel('inParallel.forEach', () => {
   )
 
   itParallel('can set concurrency to 1', async () => {
-    const proccessedItems: number[] = []
+    const proccessed_items: number[] = []
     await inParallel.forEach(
       eventually10(),
       async (item) => {
         await new Promise((resolve) => setTimeout(resolve, 0))
-        proccessedItems.push(item)
+        proccessed_items.push(item)
       },
       { concurrency: 1 },
     )
-    assertEquals(proccessedItems, range(10))
+    assertEquals(proccessed_items, range(10))
   })
 
   itParallel(
     'rejects with the first error and stops processing further',
     async () => {
-      const proccessedItems: number[] = []
+      const proccessed_items: number[] = []
       await assertRejects(
         () =>
           inParallel.forEach(
@@ -158,14 +158,14 @@ describeParallel('inParallel.forEach', () => {
               if (item === 15) {
                 throw new Error('Whoops!')
               }
-              proccessedItems.push(item)
+              proccessed_items.push(item)
             },
             { concurrency: 8 },
           ),
         Error,
         'Whoops!',
       )
-      assertEquals(proccessedItems, [
+      assertEquals(proccessed_items, [
         0,
         1,
         2,
@@ -190,20 +190,20 @@ describeParallel('pMap', () => {
   itParallel(
     'processes items in parallel up to a concurrency limit, but returns them in the order the source generator yields them were yielded',
     async () => {
-      const proccessedItems: number[] = []
+      const proccessed_items: number[] = []
       const results = await inParallel.pMap(
         eventually100(),
         async (item) => {
           if (item % 5 === 0) {
             await new Promise((resolve) => setTimeout(resolve, 1))
           }
-          proccessedItems.push(item)
+          proccessed_items.push(item)
           return item
         },
         { concurrency: 8 },
       )
       assertEquals(results, range(100))
-      assertEquals(proccessedItems, [
+      assertEquals(proccessed_items, [
         1,
         2,
         3,
@@ -311,7 +311,7 @@ describeParallel('pMap', () => {
   itParallel(
     'rejects with the first error and stops processing further',
     async () => {
-      const proccessedItems: number[] = []
+      const proccessed_items: number[] = []
       await assertRejects(
         () =>
           inParallel.pMap(
@@ -321,14 +321,14 @@ describeParallel('pMap', () => {
               if (item === 15) {
                 throw new Error('Whoops!')
               }
-              proccessedItems.push(item)
+              proccessed_items.push(item)
             },
             { concurrency: 8 },
           ),
         Error,
         'Whoops!',
       )
-      assertEquals(proccessedItems, [
+      assertEquals(proccessed_items, [
         0,
         1,
         2,

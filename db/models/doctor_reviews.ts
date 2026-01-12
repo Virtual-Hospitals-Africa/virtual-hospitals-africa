@@ -10,13 +10,7 @@ import {
   RenderedDoctorReviewRequestOfSpecificDoctor,
   TrxOrDb,
 } from '../../types.ts'
-import {
-  jsonArrayFromColumn,
-  jsonBuildObject,
-  jsonObjectFrom,
-  literalString,
-  now,
-} from '../helpers.ts'
+import { jsonArrayFromColumn, jsonBuildObject, jsonObjectFrom, literalString, now } from '../helpers.ts'
 import roleByProfession from '../../shared/roleByProfession.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { assertOr403 } from '../../util/assertOr.ts'

@@ -10,8 +10,7 @@
 
 import { HttpClient, RequestParams } from './http-client.ts'
 
-export class ValidationMaintenance<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class ValidationMaintenance<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description Reload SNOMED Drools assertions and test resources.
    *

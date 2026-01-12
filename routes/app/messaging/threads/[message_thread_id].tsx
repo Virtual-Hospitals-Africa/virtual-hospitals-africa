@@ -17,9 +17,7 @@ export const handler = postHandler(
   MessageSchema,
   async (ctx: LoggedInHealthWorkerContext, form_values) => {
     const thread_id = getRequiredUUIDParam(ctx, 'message_thread_id')
-    const employee_ids = ctx.state.health_worker.organizations.map((e) =>
-      e.employment_id
-    )
+    const employee_ids = ctx.state.health_worker.organizations.map((e) => e.employment_id)
 
     assert(employee_ids.length, 'Must complete onboarding first')
 

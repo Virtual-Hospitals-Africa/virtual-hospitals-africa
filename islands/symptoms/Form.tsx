@@ -4,11 +4,7 @@ import { computed, useSignal } from '@preact/signals'
 import range from '../../util/range.ts'
 import { Duration } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  approximateDuration,
-  date_regex,
-  durationEndDate,
-} from '../../util/date.ts'
+import { approximateDuration, date_regex, durationEndDate } from '../../util/date.ts'
 import { DurationInput } from './DurationInput.tsx'
 import { RenderedPatientSymptom } from '../../types.ts'
 // import cls from '../../util/cls.ts'

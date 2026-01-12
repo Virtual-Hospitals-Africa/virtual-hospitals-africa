@@ -17,8 +17,7 @@ export async function receiveMedia(
 
   assert(patientState.unhandled_message.media_id)
   await appointments.insertRequestMedia(trx, {
-    patient_appointment_request_id:
-      scheduling_appointment_request.patient_appointment_request_id,
+    patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
     media_id: patientState.unhandled_message.media_id,
   })
   return 'onboarded:make_appointment:subsequent_ask_for_media' as const

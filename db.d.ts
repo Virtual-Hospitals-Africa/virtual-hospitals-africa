@@ -5,8 +5,7 @@ export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 export type ArrayType<T> = ArrayTypeImpl<T> extends (infer U)[] ? U[]
   : ArrayTypeImpl<T>
 
-export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S[], I[], U[]>
+export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U> ? ColumnType<S[], I[], U[]>
   : T[]
 
 export type ChatbotName = 'patient' | 'pharmacist'
@@ -46,8 +45,7 @@ export type FamilyType =
   | 'Polygamous/Compound'
   | 'Single Parent'
 
-export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S, I | undefined, U>
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U> ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>
 
 export type GuardianRelation =
@@ -1974,8 +1972,7 @@ export interface DB {
   patient_appointment_offered_times: PatientAppointmentOfferedTimes
   patient_appointment_request_media: PatientAppointmentRequestMedia
   patient_appointment_requests: PatientAppointmentRequests
-  patient_chatbot_user_whatsapp_messages_received:
-    PatientChatbotUserWhatsappMessagesReceived
+  patient_chatbot_user_whatsapp_messages_received: PatientChatbotUserWhatsappMessagesReceived
   patient_chatbot_users: PatientChatbotUsers
   patient_chief_complaints: PatientChiefComplaints
   patient_computed_findings: PatientComputedFindings
@@ -2017,8 +2014,7 @@ export interface DB {
   patient_workflows_started: PatientWorkflowsStarted
   patients: Patients
   pharmacies: Pharmacies
-  pharmacist_chatbot_user_whatsapp_messages_received:
-    PharmacistChatbotUserWhatsappMessagesReceived
+  pharmacist_chatbot_user_whatsapp_messages_received: PharmacistChatbotUserWhatsappMessagesReceived
   pharmacist_chatbot_users: PharmacistChatbotUsers
   pharmacists: Pharmacists
   pharmacy_employment: PharmacyEmployment
@@ -2042,14 +2038,12 @@ export interface DB {
   snomed_c_refset_mrcm_module_scope: SnomedCRefsetMrcmModuleScope
   snomed_cci_refset_refset_descriptor: SnomedCciRefsetRefsetDescriptor
   snomed_ci_refset_description_type: SnomedCiRefsetDescriptionType
-  snomed_cisscc_refset_mrcm_attribute_domain:
-    SnomedCissccRefsetMrcmAttributeDomain
+  snomed_cisscc_refset_mrcm_attribute_domain: SnomedCissccRefsetMrcmAttributeDomain
   snomed_concept: SnomedConcept
   snomed_description: SnomedDescription
   snomed_family_history: SnomedFamilyHistory
   snomed_iissscc_refset_extended_map: SnomedIisssccRefsetExtendedMap
-  snomed_inferred_canonical_name_and_category:
-    SnomedInferredCanonicalNameAndCategory
+  snomed_inferred_canonical_name_and_category: SnomedInferredCanonicalNameAndCategory
   snomed_refset_simple: SnomedRefsetSimple
   snomed_relationship: SnomedRelationship
   snomed_relationship_concrete_values: SnomedRelationshipConcreteValues

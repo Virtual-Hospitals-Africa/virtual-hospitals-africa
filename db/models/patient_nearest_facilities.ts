@@ -1,9 +1,5 @@
 import { sql } from 'kysely'
-import {
-  HasStringId,
-  PatientNearestOrganization,
-  TrxOrDb,
-} from '../../types.ts'
+import { HasStringId, PatientNearestOrganization, TrxOrDb } from '../../types.ts'
 import { getWalkingDistance } from '../../external-clients/google-maps.ts'
 import { nearest_organizations } from './nearest_organizations.ts'
 import { jsonBuildObject } from '../helpers.ts'

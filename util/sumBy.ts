@@ -6,9 +6,7 @@ export default function sumBy<T>(
   arr: T[],
   iteratee: NumericKeys<T> | ((obj: T) => number),
 ): number {
-  const getter = typeof iteratee === 'function'
-    ? iteratee
-    : (obj: T) => obj[iteratee as keyof T] as number
+  const getter = typeof iteratee === 'function' ? iteratee : (obj: T) => obj[iteratee as keyof T] as number
 
   let sum = 0
   for (const item of arr) {

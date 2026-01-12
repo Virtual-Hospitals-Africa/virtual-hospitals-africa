@@ -1,4 +1,4 @@
-import { InsertShape, TrxOrDb } from '../../types.ts'
+import { TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID from '../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -9,15 +9,12 @@ import { patients } from '../../db/models/patients.ts'
 import { patient_encounters } from '../../db/models/patient_encounters.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { healthWorkerIdOfEmploymentId } from '../../db/models/health_worker_id.ts'
-import {
-  Workflow,
-  WORKFLOW_STEPS,
-  workflowStepKey,
-} from '../../shared/workflow.ts'
-import { PatientWorkflowStepsCompleted, Sex } from '../../db.d.ts'
+import { Workflow, WORKFLOW_STEPS, workflowStepKey } from '../../shared/workflow.ts'
+import { DB, Sex } from '../../db.d.ts'
 import { patient_workflows } from '../../db/models/patient_workflows.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 import assertLength from '../../util/assertLength.ts'
+import { InsertObject } from 'kysely'
 
 export async function insertRegistrationWithEmployeeForTest(
   trx: TrxOrDb,
@@ -33,9 +30,7 @@ export async function insertRegistrationWithEmployeeForTest(
       health_worker_id: healthWorkerIdOfEmploymentId(trx, employment_id),
     }),
   })
-  const organization_employment = health_worker.organizations.find((o) =>
-    o.id === organization_id
-  )
+  const organization_employment = health_worker.organizations.find((o) => o.id === organization_id)
   assert(organization_employment)
 
   const result = await patient_registration.start(
@@ -58,12 +53,13 @@ export function completeAllStepsForTest(
 ) {
   assert(Deno.env.get('IS_TEST'))
   const steps = WORKFLOW_STEPS[workflow]
-  const insert: InsertShape<PatientWorkflowStepsCompleted>[] = steps.map(
-    (step) => ({
-      patient_workflow_id,
-      workflow_step: workflowStepKey(workflow, step),
-    }),
-  )
+  const insert: InsertObject<DB, 'patient_workflow_steps_completed'>[] = steps
+    .map(
+      (step) => ({
+        patient_workflow_id,
+        workflow_step: workflowStepKey(workflow, step),
+      }),
+    )
   return trx.insertInto('patient_workflow_steps_completed')
     .values(insert)
     .execute()
@@ -161,9 +157,7 @@ export async function insertReturningSeekingTreatmentWithEmployeeForTest(
       health_worker_id: healthWorkerIdOfEmploymentId(trx, employment_id),
     }),
   })
-  const organization_employment = health_worker.organizations.find((o) =>
-    o.id === organization_id
-  )
+  const organization_employment = health_worker.organizations.find((o) => o.id === organization_id)
   assert(organization_employment)
 
   const patient_presence = await patient_encounters

@@ -45,9 +45,7 @@ function scoreOrPriorityColors(record: {
       throw new Error(`Unexpected score ${record.score}`)
   }
 
-  return record.priority
-    ? PRIORITY_COLORS[record.priority]
-    : PRIORITY_COLORS.Normal
+  return record.priority ? PRIORITY_COLORS[record.priority] : PRIORITY_COLORS.Normal
 }
 
 export function RecordChip(
@@ -73,8 +71,7 @@ export function RecordChip(
       const viewport_width = globalThis.innerWidth
 
       // Check if panel would overflow on the right when left-aligned
-      const would_overflow_right =
-        chip_rect.left + panel_width > viewport_width - 16
+      const would_overflow_right = chip_rect.left + panel_width > viewport_width - 16
 
       align_right.value = would_overflow_right
     }

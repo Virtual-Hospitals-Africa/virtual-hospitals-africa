@@ -1,8 +1,5 @@
 import { define } from '../define.ts'
-import {
-  WORKFLOW_SNOMED_CONCEPT_IDS,
-  WORKFLOWS,
-} from '../../../shared/workflow.ts'
+import { WORKFLOW_SNOMED_CONCEPT_IDS, WORKFLOWS } from '../../../shared/workflow.ts'
 import entries from '../../../util/entries.ts'
 import { ensureAllEnumValuesExist } from '../../helpers.ts'
 import { forEach } from '../../../util/inParallel.ts'
@@ -23,9 +20,7 @@ export default define(['workflows'], async (trx) => {
     }),
   )
 
-  const { count } = await trx.selectFrom('workflows').select((eb) =>
-    eb.fn.countAll().as('count')
-  )
+  const { count } = await trx.selectFrom('workflows').select((eb) => eb.fn.countAll().as('count'))
     .executeTakeFirstOrThrow()
 
   const count_int = parseInt(String(count))
@@ -50,9 +45,7 @@ export default define(['workflows'], async (trx) => {
 
   if (count_int > workflows.length) {
     await trx.deleteFrom('workflows')
-      .where((eb) =>
-        eb.not(eb.or(workflows.map((ws) => eb('workflow', '=', ws.workflow))))
-      )
+      .where((eb) => eb.not(eb.or(workflows.map((ws) => eb('workflow', '=', ws.workflow)))))
       .execute()
   }
 

@@ -1,9 +1,5 @@
 import { RawBuilder, sql } from 'kysely'
-import {
-  type Maybe,
-  RenderedManufacturedMedication,
-  TrxOrDb,
-} from '../../types.ts'
+import { type Maybe, RenderedManufacturedMedication, TrxOrDb } from '../../types.ts'
 import { isoDate, now } from '../helpers.ts'
 import { base } from './_base.ts'
 
@@ -29,9 +25,7 @@ function strengthDisplay(
 
 function strengthSummary(base_table: string) {
   return strengthDisplay(
-    sql<string>`array_toString(${
-      sql.ref(base_table)
-    }.strength_numerators, ', ')`,
+    sql<string>`array_toString(${sql.ref(base_table)}.strength_numerators, ', ')`,
   ).as('strength_summary')
 }
 
@@ -70,8 +64,7 @@ function baseQuery(trx: TrxOrDb, opts: {
     ])
     .$if(
       !opts.include_recalled,
-      (eb) =>
-        eb.where('manufactured_medication_recalls.recalled_at', 'is', null),
+      (eb) => eb.where('manufactured_medication_recalls.recalled_at', 'is', null),
     )
     .orderBy('drugs.generic_name', 'asc')
     .orderBy('manufactured_medications.trade_name', 'asc')
@@ -105,13 +98,9 @@ export const manufactured_medications = base({
   formatResult(result): RenderedManufacturedMedication {
     return {
       ...result,
-      name: result.recalled_at
-        ? `${result.generic_name} (recalled ${result.recalled_at})`
-        : result.generic_name,
+      name: result.recalled_at ? `${result.generic_name} (recalled ${result.recalled_at})` : result.generic_name,
       actions: {
-        recall: result.recalled_at
-          ? null
-          : `/regulator/medicines/${result.id}/recall`,
+        recall: result.recalled_at ? null : `/regulator/medicines/${result.id}/recall`,
       },
     }
   },

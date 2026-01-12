@@ -18,9 +18,7 @@ describe('shared/warning_signs.ts', () => {
           warning_signs.push({
             ...sign,
             clinical_finding: parseExpression(clinical_finding_s_expression),
-            prompt_when: prompt_when_s_expression
-              ? parseExpression(prompt_when_s_expression)
-              : null,
+            prompt_when: prompt_when_s_expression ? parseExpression(prompt_when_s_expression) : null,
           })
         } catch (err) {
           console.log(sign)
@@ -376,8 +374,7 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Poisoning',
-          'excluding_s_expression':
-            '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Overdose" "disorder"))',
+          'excluding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Overdose" "disorder"))',
           'sats_primary_name': 'Poisoning',
           'sats_secondary_text': null,
           'sats_priority': 'Very urgent',

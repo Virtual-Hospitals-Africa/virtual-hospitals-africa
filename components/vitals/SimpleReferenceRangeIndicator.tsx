@@ -31,9 +31,7 @@ export function ReferenceRangeIndicator({
   }
 
   const value_position = getPosition(value)
-  const previous_position = previous_value != null
-    ? getPosition(previous_value)
-    : null
+  const previous_position = previous_value != null ? getPosition(previous_value) : null
 
   const padding_x = 16
   const bar_width = 320
@@ -105,13 +103,9 @@ export function ReferenceRangeIndicator({
             />
 
             <polygon
-              points={`${
-                padding_x + (previous_position * bar_width / 100) - 5
-              },${bar_y - 13} ${
-                padding_x + (previous_position * bar_width / 100) + 5
-              },${bar_y - 13} ${
-                padding_x + (previous_position * bar_width / 100)
-              },${bar_y - 4.5}`}
+              points={`${padding_x + (previous_position * bar_width / 100) - 5},${bar_y - 13} ${padding_x + (previous_position * bar_width / 100) + 5},${
+                bar_y - 13
+              } ${padding_x + (previous_position * bar_width / 100)},${bar_y - 4.5}`}
               fill='#9ca3af'
             />
           </g>
@@ -138,11 +132,9 @@ export function ReferenceRangeIndicator({
           />
 
           <polygon
-            points={`${padding_x + (value_position * bar_width / 100) - 5},${
-              bar_y - 14
-            } ${padding_x + (value_position * bar_width / 100) + 5},${
-              bar_y - 14
-            } ${padding_x + (value_position * bar_width / 100)},${bar_y - 5.5}`}
+            points={`${padding_x + (value_position * bar_width / 100) - 5},${bar_y - 14} ${padding_x + (value_position * bar_width / 100) + 5},${bar_y - 14} ${
+              padding_x + (value_position * bar_width / 100)
+            },${bar_y - 5.5}`}
             fill='#000000'
           />
         </g>

@@ -11,8 +11,7 @@
 import { EclString, ExpressionConstraint } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Util<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Util<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description This utility function can be used to parse Expression Constraint Language and convert to a model representation, to support ECL builder web applications. Please note that this function does not validate any concepts or terms within the expression.
    *

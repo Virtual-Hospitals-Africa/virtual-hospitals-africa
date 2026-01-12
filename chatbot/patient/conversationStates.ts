@@ -11,11 +11,7 @@ import {
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../../types.ts'
-import {
-  convertToTimeString,
-  formatJohannesburg,
-  prettyAppointmentTime,
-} from '../../util/date.ts'
+import { convertToTimeString, formatJohannesburg, prettyAppointmentTime } from '../../util/date.ts'
 import { appointments } from '../../db/models/appointments.ts'
 import { patients } from '../../db/models/patients.ts'
 import { conversations } from '../../db/models/conversations.ts'
@@ -25,10 +21,7 @@ import { availableSlots } from '../../backend/scheduling/getProviderAvailability
 import { cancelAppointment } from '../../backend/scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../backend/scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
-import {
-  capLengthAtWhatsAppDescription,
-  capLengthAtWhatsAppTitle,
-} from '../../util/capLengthAt.ts'
+import { capLengthAtWhatsAppDescription, capLengthAtWhatsAppTitle } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { GoogleClient } from '../../external-clients/google.ts'
 import { receiveMedia } from './receiveMedia.ts'
@@ -36,31 +29,27 @@ import { SERVER_COUNTRY } from '../../db/models/countries.ts'
 import { patient_nearest_facilities } from '../../db/models/patient_nearest_facilities.ts'
 import { patient_appointments } from '../../db/models/patient_appointments.ts'
 
-const conversationStates: ConversationStates<
+const conversation_states: ConversationStates<
   PatientChatbotUserState
 > = {
   'initial_message': {
     type: 'select',
-    prompt:
-      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    prompt: 'Welcome to Virtual Hospitals Africa. What can I help you with today?',
     options: mainMenuOptions,
   },
   'not_onboarded:welcome': {
     type: 'select',
-    prompt:
-      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    prompt: 'Welcome to Virtual Hospitals Africa. What can I help you with today?',
     options: mainMenuOptions,
   },
   'onboarded:main_menu': {
     type: 'select',
-    prompt:
-      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    prompt: 'Welcome to Virtual Hospitals Africa. What can I help you with today?',
     options: mainMenuOptions,
   },
   'not_onboarded:make_appointment:enter_name': {
     type: 'string',
-    prompt:
-      'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
+    prompt: 'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
     async onExit(trx, patientState) {
       const patient = await patients.insert(trx, {
         name: patientState.unhandled_message.trimmed_body!,
@@ -141,21 +130,20 @@ const conversationStates: ConversationStates<
   },
   'find_nearest_facilities:share_location': {
     type: 'get_location',
-    prompt:
-      'Sure, we can find your nearest organization. Can you share your location?',
+    prompt: 'Sure, we can find your nearest organization. Can you share your location?',
     async onExit(trx, patientState) {
       assert(patientState.chatbot_user.entity_id)
       assert(patientState.unhandled_message.trimmed_body)
-      const locationMessage: Coordinates = JSON.parse(
+      const location_message: Coordinates = JSON.parse(
         patientState.unhandled_message.trimmed_body,
       )
-      const currentLocation: Coordinates = {
-        longitude: locationMessage.longitude,
-        latitude: locationMessage.latitude,
+      const current_location: Coordinates = {
+        longitude: location_message.longitude,
+        latitude: location_message.latitude,
       }
       await patients.update(trx, {
         id: patientState.chatbot_user.entity_id,
-        location: currentLocation,
+        location: current_location,
       })
 
       return 'find_nearest_facilities:got_location' as const
@@ -180,16 +168,13 @@ const conversationStates: ConversationStates<
       if (!nearest_facilities?.length) {
         return {
           type: 'select',
-          prompt:
-            "We're sorry that no organizations were found in your area. Our team has been notified and will follow up with you soon.",
+          prompt: "We're sorry that no organizations were found in your area. Our team has been notified and will follow up with you soon.",
           options: [
             {
               id: 'main_menu',
               title: 'Main Menu',
               onExit() {
-                return patientState.chatbot_user.entity_id
-                  ? 'onboarded:main_menu' as const
-                  : 'not_onboarded:welcome' as const
+                return patientState.chatbot_user.entity_id ? 'onboarded:main_menu' as const : 'not_onboarded:welcome' as const
               },
             },
           ],
@@ -199,21 +184,16 @@ const conversationStates: ConversationStates<
       const organizations = nearest_facilities.map((organization) => {
         const distance_in_km = organization.walking_distance ||
           (organization.distance_meters / 1000).toFixed(1) + ' km'
-        const description = distance_in_km
-          ? `${organization.address} (${distance_in_km})`
-          : organization.address
+        const description = distance_in_km ? `${organization.address} (${distance_in_km})` : organization.address
 
-        const organization_name = organization.admins.length
-          ? `${organization.name} (VHA)`
-          : organization.name
+        const organization_name = organization.admins.length ? `${organization.name} (VHA)` : organization.name
         return {
           section: organization.locality || '[Unknown Location]',
           row: {
             id: organization.id,
             title: capLengthAtWhatsAppTitle(organization_name),
             description: capLengthAtWhatsAppDescription(description),
-            onExit:
-              'find_nearest_facilities:send_organization_location' as const,
+            onExit: 'find_nearest_facilities:send_organization_location' as const,
           },
         }
       })
@@ -263,7 +243,7 @@ const conversationStates: ConversationStates<
         'selected_organization should be available in the patientState',
       )
 
-      const locationMessage: WhatsAppSingleSendable = {
+      const location_message: WhatsAppSingleSendable = {
         type: 'location',
         message_body: selected_organization.name,
         location: {
@@ -274,7 +254,7 @@ const conversationStates: ConversationStates<
         },
       }
 
-      const buttonMessage: WhatsAppSingleSendable = {
+      const button_message: WhatsAppSingleSendable = {
         type: 'buttons',
         message_body: 'Click below to go back to main menu.',
         buttonText: 'Back to main menu',
@@ -283,13 +263,11 @@ const conversationStates: ConversationStates<
           title: 'Back to Menu',
         }],
       }
-      return [locationMessage, buttonMessage]
+      return [location_message, button_message]
     },
     type: 'send_location',
     onExit(_trx, patientState): PatientConversationState {
-      return patientState.chatbot_user.entity_id
-        ? 'onboarded:main_menu'
-        : 'not_onboarded:welcome'
+      return patientState.chatbot_user.entity_id ? 'onboarded:main_menu' : 'not_onboarded:welcome'
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {
@@ -316,8 +294,7 @@ const conversationStates: ConversationStates<
   },
   'onboarded:make_appointment:initial_ask_for_media': {
     type: 'expect_media',
-    prompt:
-      'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
+    prompt: 'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
     onExit: receiveMedia,
     options: [
       {
@@ -329,8 +306,7 @@ const conversationStates: ConversationStates<
   },
   'onboarded:make_appointment:subsequent_ask_for_media': {
     type: 'expect_media',
-    prompt:
-      'Thanks for sending that. To send another image, video, or voice note, click the + button. Otherwise, click Done.',
+    prompt: 'Thanks for sending that. To send another image, video, or voice note, click the + button. Otherwise, click Done.',
     onExit: receiveMedia,
     options: [
       {
@@ -394,8 +370,7 @@ const conversationStates: ConversationStates<
           )
 
           await appointments.addOfferedTime(trx, {
-            patient_appointment_request_id:
-              scheduling_appointment_request.patient_appointment_request_id,
+            patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
             provider_id: first_available[0].provider.employee_id,
             start: first_available[0].start,
             end: first_available[0].end,
@@ -493,9 +468,7 @@ const conversationStates: ConversationStates<
             trx,
             {
               employment_ids,
-              declined_times: declined_times.map((time) =>
-                formatJohannesburg(time)
-              ),
+              declined_times: declined_times.map((time) => formatJohannesburg(time)),
               count: 9,
               dates: [
                 formatJohannesburg(today).substring(0, 10),
@@ -509,8 +482,7 @@ const conversationStates: ConversationStates<
           await Promise.all(filtered_available_times.map(
             (timeslot) =>
               appointments.addOfferedTime(trx, {
-                patient_appointment_request_id:
-                  scheduling_appointment_request.patient_appointment_request_id,
+                patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
                 provider_id: timeslot.provider.employee_id,
                 start: timeslot.start,
                 end: timeslot.end,
@@ -531,8 +503,7 @@ const conversationStates: ConversationStates<
   'onboarded:make_appointment:other_scheduling_options': {
     type: 'action',
     headerText: 'Other Appointment Times',
-    prompt:
-      'OK here are the other available time, please choose from the list.',
+    prompt: 'OK here are the other available time, please choose from the list.',
     async action(
       trx,
       patientState,
@@ -550,7 +521,7 @@ const conversationStates: ConversationStates<
           (offered_time) => !offered_time.declined,
         )
 
-      const appointmentsByDate: {
+      const appointments_by_date: {
         [date: string]: SchedulingAppointmentOfferedTime[]
       } = non_declined_times.reduce((acc, appointment) => {
         const date = formatJohannesburg(appointment.start).substring(0, 10)
@@ -565,10 +536,10 @@ const conversationStates: ConversationStates<
         PatientChatbotUserState
       >[] = []
 
-      for (const date in appointmentsByDate) {
+      for (const date in appointments_by_date) {
         sections.push({
           title: date,
-          rows: appointmentsByDate[date].map((offered_time) => {
+          rows: appointments_by_date[date].map((offered_time) => {
             return {
               id: String(offered_time.id),
               title: convertToTimeString(
@@ -657,8 +628,7 @@ const conversationStates: ConversationStates<
   },
   'onboarded:appointment_cancelled': {
     type: 'select',
-    prompt:
-      'Your appointment has been cancelled. What can I help you with today?',
+    prompt: 'Your appointment has been cancelled. What can I help you with today?',
     options: mainMenuOptions,
   },
   end_of_demo: {
@@ -685,4 +655,4 @@ const conversationStates: ConversationStates<
   },
 }
 
-export default conversationStates
+export default conversation_states

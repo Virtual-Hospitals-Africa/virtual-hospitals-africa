@@ -30,8 +30,7 @@ describe.skip('patient chatbot', () => {
     async () => {
       const phone_number = randomPhoneNumber('ZW')
       const patient_before = await patients.insert(db, {
-        conversation_state:
-          'onboarded:make_appointment:other_scheduling_options',
+        conversation_state: 'onboarded:make_appointment:other_scheduling_options',
         phone_number,
         name: 'Test Patient',
         gender: 'female',
@@ -110,8 +109,7 @@ describe.skip('patient chatbot', () => {
         {
           chatbot_name: 'patient',
           messages: {
-            message_body:
-              `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+            message_body: `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
               prettyAppointmentTime(other_time),
             type: 'buttons',
             buttonText: 'Menu',

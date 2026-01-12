@@ -12,9 +12,7 @@ export default function FormGrid(
     <div
       className={cls(
         'grid w-full gap-4',
-        columns === 3
-          ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-          : 'grid-cols-1 sm:grid-cols-2',
+        columns === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2',
         className,
       )}
     >

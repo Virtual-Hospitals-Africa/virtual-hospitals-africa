@@ -3,11 +3,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import {
-  getFormLabels,
-  getFormOptions,
-  getFormValues,
-} from '../../../../_helpers/form.ts'
+import { getFormLabels, getFormOptions, getFormValues } from '../../../../_helpers/form.ts'
 import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { asWarningSigns, setupTriage } from './_setup.ts'
@@ -27,10 +23,7 @@ import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { AgeDetermination } from '../../../../../types.ts'
 import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
-import {
-  asVitalAssessmentFormValues,
-  asVitalMeasurementFormValues,
-} from '../../../../../shared/vitals.ts'
+import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
 
 describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -42,7 +35,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: asWarningSigns([]),
+          warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
             diabetes: { existence: 'No' },
             pregnancy: { existence: 'No' },
@@ -108,32 +101,27 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Alert',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 248234008)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 248234008)',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to voice',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 422768004)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 422768004)',
                   'selected': false,
                 },
                 {
                   'label': 'Confused',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 40917007)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 40917007)',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to pain',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 450847001)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 450847001)',
                   'selected': false,
                 },
                 {
                   'label': 'Unresponsive',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 422107003)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 422107003)',
                   'selected': false,
                 },
               ],
@@ -147,20 +135,17 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Walking',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 282144007)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 282144007)',
                   'selected': false,
                 },
                 {
                   'label': 'Difficulty walking',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 719232003)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 719232003)',
                   'selected': false,
                 },
                 {
                   'label': 'Stretcher/Immobile',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 282145008)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 282145008)',
                   'selected': false,
                 },
               ],
@@ -174,14 +159,12 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'No',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 1149217004)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 1149217004)',
                   'selected': false,
                 },
                 {
                   'label': 'Yes',
-                  'value':
-                    '(finding (snomed_concept "Clinical finding" "finding") 417746004)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") 417746004)',
                   'selected': false,
                 },
               ],
@@ -196,7 +179,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: asWarningSigns([]),
+          warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
             diabetes: { existence: 'Yes' },
             pregnancy: { existence: 'No' },
@@ -240,7 +223,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '2020-01-01' },
-          warning_signs: asWarningSigns([]),
+          warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
             diabetes: { existence: 'No' },
             pregnancy: { existence: 'No' },
@@ -281,7 +264,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriage({
           patient_demographics: { date_of_birth: '2020-01-01' },
-          warning_signs: asWarningSigns([]),
+          warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
             diabetes: { existence: 'Yes' },
             pregnancy: { existence: 'No' },
@@ -326,7 +309,7 @@ describeParallel('triage/measure_vitals', () => {
         const result = await asResultAsync(() =>
           setupTriage({
             patient_demographics: { date_of_birth: '2023-01-01' },
-            warning_signs: asWarningSigns([]),
+            warning_signs: asWarningSigns([], { pregnant: false }),
             brief_history: {
               diabetes: { existence: 'Yes' },
               pregnancy: { existence: 'No' },
@@ -403,7 +386,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { encounter } = await setupTriage({
           patient_demographics: { date_of_birth: '2023-01-01' },
-          warning_signs: asWarningSigns([]),
+          warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
             diabetes: { existence: 'No' },
             pregnancy: { existence: 'No' },
@@ -655,7 +638,7 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
           },
-          warning_signs: asWarningSigns([]),
+          warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
             diabetes: { existence: 'No' },
             pregnancy: { existence: 'No' },

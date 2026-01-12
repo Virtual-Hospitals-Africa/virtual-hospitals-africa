@@ -47,9 +47,7 @@ const columns: TableColumn<RenderedOrganizationMedicine>[] = [
   {
     label: 'Quantity',
     data(row) {
-      return row.quantity_on_hand || (
-        <span className='text-red-600'>Not in stock</span>
-      )
+      return row.quantity_on_hand || <span className='text-red-600'>Not in stock</span>
     },
   },
   {
@@ -65,8 +63,7 @@ export default function OrganizationMedicinesTable(
     is_admin: boolean
   },
 ) {
-  const add_href =
-    `/app/organizations/${organization_id}/inventory/add_medicine`
+  const add_href = `/app/organizations/${organization_id}/inventory/add_medicine`
   return (
     <>
       {is_admin && (
@@ -89,9 +86,7 @@ export default function OrganizationMedicinesTable(
             header='No medicines in stock'
             explanation='Add a medicine to get started'
             Icon={ArchiveBoxIcon}
-            button={is_admin
-              ? { children: 'Add Medicine', href: add_href }
-              : undefined}
+            button={is_admin ? { children: 'Add Medicine', href: add_href } : undefined}
           />
         )}
       />

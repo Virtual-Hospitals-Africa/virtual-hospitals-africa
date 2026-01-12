@@ -23,9 +23,7 @@ function ProviderSelectOption(
     <label
       className={cls(
         'relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus:outline-none sm:flex sm:justify-between',
-        active.value
-          ? 'border-indigo-600 ring-2 ring-indigo-600'
-          : 'border-gray-300',
+        active.value ? 'border-indigo-600 ring-2 ring-indigo-600' : 'border-gray-300',
       )}
       onMouseOver={() => active.value = true}
       onMouseLeave={() => active.value = false}
@@ -103,9 +101,7 @@ export default function ProvidersSelect(
           selected={selected.value.has(provider)}
           toggleSelection={() => {
             const new_selected = new Set(selected.value)
-            selected.value.has(provider)
-              ? new_selected.delete(provider)
-              : new_selected.add(provider)
+            selected.value.has(provider) ? new_selected.delete(provider) : new_selected.add(provider)
             selected.value = new_selected
           }}
         />

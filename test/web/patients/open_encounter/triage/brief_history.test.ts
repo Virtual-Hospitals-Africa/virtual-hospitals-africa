@@ -39,22 +39,20 @@ describeParallel('triage/brief_history', () => {
       'renders the brief history page for a female patient',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchOk, fetchCheerio } =
-          await addTestEmployeeWithSession(db, {
-            profession: 'nurse',
-            registration_status: 'approved',
-            organization_id: clinic.id,
-          })
+        const { health_worker: nurse, fetchOk, fetchCheerio } = await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+          organization_id: clinic.id,
+        })
 
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              patient_demographics: randomDemographics('ZA', 'female'),
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_demographics: randomDemographics('ZA', 'female'),
+            employment_id: nurse.employee_id,
+          },
+        )
 
         await fetchOk(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -115,22 +113,20 @@ describeParallel('triage/brief_history', () => {
       'renders the brief history page for a male patient',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchOk, fetchCheerio } =
-          await addTestEmployeeWithSession(db, {
-            profession: 'nurse',
-            registration_status: 'approved',
-            organization_id: clinic.id,
-          })
+        const { health_worker: nurse, fetchOk, fetchCheerio } = await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+          organization_id: clinic.id,
+        })
 
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              patient_demographics: randomDemographics('ZA', 'male'),
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            patient_demographics: randomDemographics('ZA', 'male'),
+            employment_id: nurse.employee_id,
+          },
+        )
 
         await fetchOk(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -209,15 +205,14 @@ describeParallel('triage/brief_history', () => {
           registration_status: 'approved',
         })
 
-        const initial_encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse1.health_worker.organization_id,
-            {
-              patient_demographics: randomDemographics('ZA', 'male'),
-              employment_id: nurse1.health_worker.employee_id,
-            },
-          )
+        const initial_encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse1.health_worker.organization_id,
+          {
+            patient_demographics: randomDemographics('ZA', 'male'),
+            employment_id: nurse1.health_worker.employee_id,
+          },
+        )
 
         await nurse1.fetchOk(
           `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -527,19 +522,17 @@ describeParallel('triage/brief_history', () => {
             `/app/organizations/${clinic.id}/waiting_room`,
           )
 
-        const waiting_room_table_before_initial_encounter_close =
-          getTableDisplay(
-            $waiting_room_before_initial_encounter_close,
-          )
+        const waiting_room_table_before_initial_encounter_close = getTableDisplay(
+          $waiting_room_before_initial_encounter_close,
+        )
 
         assertMatches(waiting_room_table_before_initial_encounter_close, [
           {
-            Patient:
-              `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
-                prettyPatientDateOfBirth(
-                  initial_encounter.patient.date_of_birth!,
-                )
-              }`,
+            Patient: `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
+              prettyPatientDateOfBirth(
+                initial_encounter.patient.date_of_birth!,
+              )
+            }`,
             'Reason for visit': 'Seeking Treatment',
             // Department: 'Triage',
             // 'Target time': z.string().regex(/^\d{1,2}:\d{2} [AP]M( tomorrow)?/),
@@ -573,15 +566,14 @@ describeParallel('triage/brief_history', () => {
           ),
         )
 
-        const subsequent_encounter =
-          await insertReturningSeekingTreatmentWithEmployeeForTest(
-            db,
-            nurse2.health_worker.organization_id,
-            {
-              patient_id: initial_encounter.patient.id,
-              employment_id: nurse2.health_worker.employee_id,
-            },
-          )
+        const subsequent_encounter = await insertReturningSeekingTreatmentWithEmployeeForTest(
+          db,
+          nurse2.health_worker.organization_id,
+          {
+            patient_id: initial_encounter.patient.id,
+            employment_id: nurse2.health_worker.employee_id,
+          },
+        )
 
         assertNotEquals(
           subsequent_encounter.patient_encounter_id,
@@ -595,17 +587,15 @@ describeParallel('triage/brief_history', () => {
             `/app/organizations/${clinic.id}/waiting_room`,
           )
 
-        const waiting_room_table_after_subsequent_encounter_start =
-          getTableDisplay($waiting_room_after_subsequent_encounter_start)
+        const waiting_room_table_after_subsequent_encounter_start = getTableDisplay($waiting_room_after_subsequent_encounter_start)
 
         assertMatches(waiting_room_table_after_subsequent_encounter_start, [
           {
-            Patient:
-              `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
-                prettyPatientDateOfBirth(
-                  initial_encounter.patient.date_of_birth!,
-                )
-              }`,
+            Patient: `${initial_encounter.patient.name}${initial_encounter.patient.sex} • ${
+              prettyPatientDateOfBirth(
+                initial_encounter.patient.date_of_birth!,
+              )
+            }`,
             'Reason for visit': 'Seeking Treatment',
             // Department: 'Triage',
             Location: 'Triage room 1',
@@ -677,8 +667,7 @@ describeParallel('triage/brief_history', () => {
               'children': [
                 {
                   'tag': 'a',
-                  'text':
-                    'Self reported Malignant neoplastic disease Status: Yes',
+                  'text': 'Self reported Malignant neoplastic disease Status: Yes',
                 },
                 {
                   'tag': 'span',
@@ -703,8 +692,7 @@ describeParallel('triage/brief_history', () => {
                               'children': [
                                 {
                                   'tag': 'h3',
-                                  'text':
-                                    'Self reported Malignant neoplastic disease Status: Yes',
+                                  'text': 'Self reported Malignant neoplastic disease Status: Yes',
                                 },
                               ],
                             },
@@ -775,8 +763,7 @@ describeParallel('triage/brief_history', () => {
                                     },
                                     {
                                       'tag': 'p',
-                                      'text':
-                                        `at ${subsequent_encounter.organization.name}`,
+                                      'text': `at ${subsequent_encounter.organization.name}`,
                                     },
                                   ],
                                 },
@@ -843,21 +830,19 @@ describeParallel('triage/brief_history', () => {
       'inserts positive & negative findings, redirecting to the measure_vitals page',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchOk } =
-          await addTestEmployeeWithSession(db, {
-            profession: 'nurse',
-            registration_status: 'approved',
-            organization_id: clinic.id,
-          })
+        const { health_worker: nurse, fetchOk } = await addTestEmployeeWithSession(db, {
+          profession: 'nurse',
+          registration_status: 'approved',
+          organization_id: clinic.id,
+        })
 
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
 
         await fetchOk(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -967,15 +952,14 @@ describeParallel('triage/brief_history', () => {
           registration_status: 'approved',
         })
 
-        const initial_encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse1.health_worker.organization_id,
-            {
-              patient_demographics: randomDemographics('ZA', 'male'),
-              employment_id: nurse1.health_worker.employee_id,
-            },
-          )
+        const initial_encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse1.health_worker.organization_id,
+          {
+            patient_demographics: randomDemographics('ZA', 'male'),
+            employment_id: nurse1.health_worker.employee_id,
+          },
+        )
 
         await nurse1.fetchOk(
           `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -1008,15 +992,14 @@ describeParallel('triage/brief_history', () => {
           patient_encounter_id: initial_encounter.patient_encounter_id,
         })
 
-        const subsequent_encounter =
-          await insertReturningSeekingTreatmentWithEmployeeForTest(
-            db,
-            nurse2.health_worker.organization_id,
-            {
-              patient_id: initial_encounter.patient.id,
-              employment_id: nurse2.health_worker.employee_id,
-            },
-          )
+        const subsequent_encounter = await insertReturningSeekingTreatmentWithEmployeeForTest(
+          db,
+          nurse2.health_worker.organization_id,
+          {
+            patient_id: initial_encounter.patient.id,
+            employment_id: nurse2.health_worker.employee_id,
+          },
+        )
 
         await nurse2.fetchOk(
           `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -1160,15 +1143,14 @@ describeParallel('triage/brief_history', () => {
           registration_status: 'approved',
         })
 
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.health_worker.organization_id,
-            {
-              patient_demographics: randomDemographics('ZA', 'male'),
-              employment_id: nurse.health_worker.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.health_worker.organization_id,
+          {
+            patient_demographics: randomDemographics('ZA', 'male'),
+            employment_id: nurse.health_worker.employee_id,
+          },
+        )
 
         await nurse.fetchOk(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -1266,15 +1248,14 @@ describeParallel('triage/brief_history', () => {
           registration_status: 'approved',
         })
 
-        const initial_encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.health_worker.organization_id,
-            {
-              patient_demographics: randomDemographics('ZA', 'male'),
-              employment_id: nurse.health_worker.employee_id,
-            },
-          )
+        const initial_encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.health_worker.organization_id,
+          {
+            patient_demographics: randomDemographics('ZA', 'male'),
+            employment_id: nurse.health_worker.employee_id,
+          },
+        )
 
         await nurse.fetchOk(
           `/app/organizations/${clinic.id}/patients/${initial_encounter.patient.id}/open_encounter/triage/warning_signs`,
@@ -1367,15 +1348,14 @@ describeParallel('triage/brief_history', () => {
           patient_encounter_id: initial_encounter.patient_encounter_id,
         })
 
-        const subsequent_encounter =
-          await insertReturningSeekingTreatmentWithEmployeeForTest(
-            db,
-            nurse.health_worker.organization_id,
-            {
-              patient_id: initial_encounter.patient.id,
-              employment_id: nurse.health_worker.employee_id,
-            },
-          )
+        const subsequent_encounter = await insertReturningSeekingTreatmentWithEmployeeForTest(
+          db,
+          nurse.health_worker.organization_id,
+          {
+            patient_id: initial_encounter.patient.id,
+            employment_id: nurse.health_worker.employee_id,
+          },
+        )
 
         await nurse.fetchOk(
           `/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/brief_history`,

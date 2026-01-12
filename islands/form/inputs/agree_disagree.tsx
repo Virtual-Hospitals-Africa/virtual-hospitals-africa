@@ -1,9 +1,6 @@
 import { Maybe } from '../../../types.ts'
 import cls from '../../../util/cls.ts'
-import {
-  CheckCircleIcon,
-  XCircleIcon,
-} from '../../../components/library/icons/heroicons/outline.tsx'
+import { CheckCircleIcon, XCircleIcon } from '../../../components/library/icons/heroicons/outline.tsx'
 
 export function AgreeDisagreeQuestion({
   name,

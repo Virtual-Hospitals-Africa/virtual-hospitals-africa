@@ -1,16 +1,11 @@
-import {
-  readBooleanEnvironmentVariable,
-  readPositiveIntegerEnvironmentVariable,
-} from './util/env.ts'
+import { readBooleanEnvironmentVariable, readPositiveIntegerEnvironmentVariable } from './util/env.ts'
 import { onProduction, opts as db_opts } from './db/db.ts'
 import { bgRgb8, bold, cyan, rgb8 } from 'std/fmt/colors.ts'
 
 const VERBOSE = readBooleanEnvironmentVariable('VERBOSE')
 
-const HTTPS_PROXY_SERVER_PORT =
-  readPositiveIntegerEnvironmentVariable('HTTPS_PROXY_SERVER_PORT') || 8000
-const HTTP_SERVER_PORT =
-  readPositiveIntegerEnvironmentVariable('HTTP_SERVER_PORT') || 8001
+const HTTPS_PROXY_SERVER_PORT = readPositiveIntegerEnvironmentVariable('HTTPS_PROXY_SERVER_PORT') || 8000
+const HTTP_SERVER_PORT = readPositiveIntegerEnvironmentVariable('HTTP_SERVER_PORT') || 8001
 
 // Load local certificates
 const cert_file = './local-certs/localhost.crt'
@@ -236,8 +231,7 @@ Deno.serve({
       )
       const { database, user, password } = db_opts!
 
-      const adminer_url =
-        `http://localhost:8888?pgsql=postgres&server=postgres&username=${user}&db=${database}`
+      const adminer_url = `http://localhost:8888?pgsql=postgres&server=postgres&username=${user}&db=${database}`
       console.log(`    ${bold('URL:')} ${cyan(adminer_url)}`)
       console.log(`    ${bold('Password:')} ${password}\n`)
       console.log()

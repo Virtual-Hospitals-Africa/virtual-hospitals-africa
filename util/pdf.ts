@@ -17,9 +17,7 @@ export async function remove(file_path: string): Promise<void> {
     // console.log(`File deleted: ${file_path}`);
   } catch (err) {
     console.error(
-      `Error deleting file: ${
-        err instanceof Error ? err.message : String(err)
-      }`,
+      `Error deleting file: ${err instanceof Error ? err.message : String(err)}`,
     )
   }
 }

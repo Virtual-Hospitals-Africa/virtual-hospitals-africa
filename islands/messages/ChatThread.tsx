@@ -1,8 +1,5 @@
 import Avatar from '../../components/library/Avatar.tsx'
-import {
-  RenderedMessage,
-  RenderedMessageThreadWithAllMessages,
-} from '../../types.ts'
+import { RenderedMessage, RenderedMessageThreadWithAllMessages } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import { initials } from '../../util/initials.ts'
 import { useSignal } from '@preact/signals'
@@ -16,9 +13,7 @@ function SingleMessage({ message, thread }: {
     <div
       className={cls(
         'p-3 rounded-lg',
-        message.sender.is_me
-          ? 'col-start-6 col-end-13'
-          : 'col-start-1 col-end-8',
+        message.sender.is_me ? 'col-start-6 col-end-13' : 'col-start-1 col-end-8',
       )}
     >
       <div className='flex flex-row items-center'>

@@ -1,13 +1,7 @@
 import PharmacistForm from '../../../../islands/regulator/PharmacistForm.tsx'
 import redirect from '../../../../util/redirect.ts'
-import {
-  pharmacists,
-  PharmacistUpsertSchema,
-} from '../../../../db/models/pharmacists.ts'
-import {
-  LoggedInRegulatorContext,
-  RenderedPharmacist,
-} from '../../../../types.ts'
+import { pharmacists, PharmacistUpsertSchema } from '../../../../db/models/pharmacists.ts'
+import { LoggedInRegulatorContext, RenderedPharmacist } from '../../../../types.ts'
 import compact from '../../../../util/compact.ts'
 import { postHandler } from '../../../../backend/postHandler.ts'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'

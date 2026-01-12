@@ -1,20 +1,11 @@
-import {
-  ConversationStates,
-  PharmacistChatbotUserState,
-  PharmacistConversationState,
-  TrxOrDb,
-  WhatsAppSingleSendable,
-} from '../../types.ts'
+import { ConversationStates, PharmacistChatbotUserState, PharmacistConversationState, TrxOrDb, WhatsAppSingleSendable } from '../../types.ts'
 import { conversations } from '../../db/models/conversations.ts'
 import { pharmacists } from '../../db/models/pharmacists.ts'
 import { pharmacies } from '../../db/models/pharmacies.ts'
 import { prescription_medications } from '../../db/models/prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
 import { generate } from '../../util/pdf.ts'
-import {
-  handleLicenceInput,
-  handlePharmacyLicenceInput,
-} from './handleLicenceInput.ts'
+import { handleLicenceInput, handlePharmacyLicenceInput } from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
   activePresciptionMedication,
@@ -126,8 +117,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'not_onboarded:incorrect_licence_number': {
     type: 'select',
-    prompt:
-      `No record found with that licence number. To continue, you'll need to reenter your licence number.`,
+    prompt: `No record found with that licence number. To continue, you'll need to reenter your licence number.`,
     options: [
       {
         id: 'reenter_licence_number',
@@ -183,8 +173,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'not_onboarded:licence_expired': {
     type: 'select',
-    prompt:
-      'Your license has expired. Please contact the authority to renew your license.',
+    prompt: 'Your license has expired. Please contact the authority to renew your license.',
     options: [
       {
         id: 'main_menu',
@@ -200,20 +189,17 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'not_onboarded:reenter_pharmacy_licence': {
     type: 'string',
-    prompt:
-      `No pharmacy record found with that licence number. To continue, you'll need to reenter your pharmacy licence number.`,
+    prompt: `No pharmacy record found with that licence number. To continue, you'll need to reenter your pharmacy licence number.`,
     onExit: handlePharmacyLicenceInput,
   },
   'not_onboarded:incorrect_pharmacy_licence': {
     type: 'string',
-    prompt:
-      `We don't have a record of you working at that pharmacy. Please reenter your pharmacy licence number.`,
+    prompt: `We don't have a record of you working at that pharmacy. Please reenter your pharmacy licence number.`,
     onExit: handlePharmacyLicenceInput,
   },
   'not_onboarded:pharmacy_licence_expired': {
     type: 'select',
-    prompt:
-      'Your pharmacy license has expired. Please contact the authority to renew your license.',
+    prompt: 'Your pharmacy license has expired. Please contact the authority to renew your license.',
     options: [
       {
         id: 'main_menu',
@@ -264,14 +250,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'not_onboarded:share_location': {
     type: 'get_location',
-    prompt:
-      'For regulatory purposes, we will need to have your current location, can you share that to us?',
+    prompt: 'For regulatory purposes, we will need to have your current location, can you share that to us?',
     onExit: handleShareLocation,
   },
   'not_onboarded:reshare_location': {
     type: 'get_location',
-    prompt:
-      "Sorry, we couldn't process that. Please click the + icon in the lower left corner to share your location and proceed",
+    prompt: "Sorry, we couldn't process that. Please click the + icon in the lower left corner to share your location and proceed",
     onExit: handleShareLocation,
   },
   'onboarded:view_inventory': {
@@ -310,8 +294,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     type: 'send_document',
     prompt: '',
     async getMessages(trx, pharmacistState) {
-      const { prescription_id, prescription_code } =
-        pharmacistState.chatbot_user.data
+      const { prescription_id, prescription_code } = pharmacistState.chatbot_user.data
       assert(typeof prescription_id === 'string')
       assert(typeof prescription_code === 'string')
 
@@ -328,16 +311,15 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       assert(unfilled_medications.length > 0)
 
-      const documentMessage: WhatsAppSingleSendable = {
+      const document_message: WhatsAppSingleSendable = {
         type: 'document',
-        message_body:
-          `Here is the patient's prescription including the following medications:\n* ${
-            unfilled_medications.map((m) => m.drug_generic_name).join('\n* ')
-          }`,
+        message_body: `Here is the patient's prescription including the following medications:\n* ${
+          unfilled_medications.map((m) => m.drug_generic_name).join('\n* ')
+        }`,
         file_path,
       }
 
-      const buttonMessage: WhatsAppSingleSendable = {
+      const button_message: WhatsAppSingleSendable = {
         type: 'buttons',
         message_body: 'Click below to continue dispensing medications',
         buttonText: 'Back to main menu',
@@ -352,7 +334,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           title: 'Back to Menu',
         }],
       }
-      return [documentMessage, buttonMessage]
+      return [document_message, button_message]
     },
 
     onExit: dispenseType,
@@ -376,14 +358,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:ask_prescriber': {
     type: 'string',
-    prompt:
-      'Chat with the prescriber here. When finished type you may type done or click the dispense button.',
+    prompt: 'Chat with the prescriber here. When finished type you may type done or click the dispense button.',
     onExit: handleAskPrescriber,
   },
   'onboarded:fill_prescription:ask_prescriber_continue': {
     type: 'string',
-    prompt:
-      "Your message has been sent to the prescriber. You'll receive a message here when they reply.",
+    prompt: "Your message has been sent to the prescriber. You'll receive a message here when they reply.",
     onExit: handleAskPrescriber,
   },
   'onboarded:fill_prescription:ask_dispense_one': {
@@ -397,9 +377,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         pharmacistState,
       )
 
-      return `Are you dispensing this medication?\n\n${
-        medicationDisplay(medication)
-      }`
+      return `Are you dispensing this medication?\n\n${medicationDisplay(medication)}`
     },
     options: [
       {
@@ -442,8 +420,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
             {
               data: {
                 ...pharmacistState.chatbot_user.data,
-                prescription_medication_id:
-                  unfilled_medications[0].prescription_medication_id,
+                prescription_medication_id: unfilled_medications[0].prescription_medication_id,
               },
             },
           )

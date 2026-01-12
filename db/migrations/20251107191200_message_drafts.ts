@@ -75,12 +75,9 @@ export async function up(db: Kysely<DB>) {
     'message_drafts',
     (qb) =>
       qb
-        .addColumn('employment_id', 'uuid', (col) =>
-          col.notNull().references('employment.id').onDelete('cascade'))
-        .addColumn('body', 'text', (col) =>
-          col.notNull())
-        .addColumn('priority', sql`message_priority`, (col) =>
-          col.notNull()),
+        .addColumn('employment_id', 'uuid', (col) => col.notNull().references('employment.id').onDelete('cascade'))
+        .addColumn('body', 'text', (col) => col.notNull())
+        .addColumn('priority', sql`message_priority`, (col) => col.notNull()),
   )
 
   await createStandardTable(
@@ -88,10 +85,8 @@ export async function up(db: Kysely<DB>) {
     'message_draft_targets',
     (qb) =>
       qb
-        .addColumn('message_draft_id', 'uuid', (col) =>
-          col.notNull().references('message_drafts.id').onDelete('cascade'))
-        .addColumn('target_type', sql`message_target_type`, (col) =>
-          col.notNull())
+        .addColumn('message_draft_id', 'uuid', (col) => col.notNull().references('message_drafts.id').onDelete('cascade'))
+        .addColumn('target_type', sql`message_target_type`, (col) => col.notNull())
         .addColumn('target_uuid', 'uuid')
         .addColumn('target_value', 'varchar(255)')
         .addCheckConstraint(
@@ -109,12 +104,9 @@ export async function up(db: Kysely<DB>) {
     'message_draft_concerning',
     (qb) =>
       qb
-        .addColumn('message_draft_id', 'uuid', (col) =>
-          col.notNull().references('message_drafts.id').onDelete('cascade'))
-        .addColumn('concerning_type', sql`message_concerning_type`, (col) =>
-          col.notNull())
-        .addColumn('concerning_uuid', 'uuid', (col) =>
-          col.notNull()),
+        .addColumn('message_draft_id', 'uuid', (col) => col.notNull().references('message_drafts.id').onDelete('cascade'))
+        .addColumn('concerning_type', sql`message_concerning_type`, (col) => col.notNull())
+        .addColumn('concerning_uuid', 'uuid', (col) => col.notNull()),
   )
 
   await organization_assertion.up(db)

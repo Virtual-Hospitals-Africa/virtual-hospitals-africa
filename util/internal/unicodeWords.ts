@@ -28,9 +28,7 @@ const rs_combo = `[${rs_combo_range}]`
 const rs_digit = '\\d'
 const rs_dingbat = `[${rs_dingbat_range}]`
 const rs_lower = `[${rs_lower_range}]`
-const rs_misc = `[^${rs_astral_range}${
-  rs_break_range + rs_digit + rs_dingbat_range + rs_lower_range + rs_upper_range
-}]`
+const rs_misc = `[^${rs_astral_range}${rs_break_range + rs_digit + rs_dingbat_range + rs_lower_range + rs_upper_range}]`
 const rs_fitz = '\\ud83c[\\udffb-\\udfff]'
 const rs_modifier = `(?:${rs_combo}|${rs_fitz})`
 const rs_non_astral = `[^${rs_astral_range}]`
@@ -46,24 +44,16 @@ const rs_opt_contr_lower = `(?:${rs_apos}(?:d|ll|m|re|s|t|ve))?`
 const rs_opt_contr_upper = `(?:${rs_apos}(?:D|LL|M|RE|S|T|VE))?`
 const re_opt_mod = `${rs_modifier}?`
 const rs_opt_var = `[${rs_var_range}]?`
-const rs_opt_join = `(?:${rs_z_w_j}(?:${
-  [rs_non_astral, rs_regional, rs_surr_pair].join('|')
-})${rs_opt_var + re_opt_mod})*`
+const rs_opt_join = `(?:${rs_z_w_j}(?:${[rs_non_astral, rs_regional, rs_surr_pair].join('|')})${rs_opt_var + re_opt_mod})*`
 const rs_ord_lower = '\\d*(?:1st|2nd|3rd|(?![123])\\dth)(?=\\b|[A-Z_])'
 const rs_ord_upper = '\\d*(?:1ST|2ND|3RD|(?![123])\\dTH)(?=\\b|[a-z_])'
 const rs_seq = rs_opt_var + re_opt_mod + rs_opt_join
-const rs_emoji = `(?:${
-  [rs_dingbat, rs_regional, rs_surr_pair].join('|')
-})${rs_seq}`
+const rs_emoji = `(?:${[rs_dingbat, rs_regional, rs_surr_pair].join('|')})${rs_seq}`
 
 const re_unicode_words = RegExp(
   [
-    `${rs_upper}?${rs_lower}+${rs_opt_contr_lower}(?=${
-      [rs_break, rs_upper, '$'].join('|')
-    })`,
-    `${rs_misc_upper}+${rs_opt_contr_upper}(?=${
-      [rs_break, rs_upper + rs_misc_lower, '$'].join('|')
-    })`,
+    `${rs_upper}?${rs_lower}+${rs_opt_contr_lower}(?=${[rs_break, rs_upper, '$'].join('|')})`,
+    `${rs_misc_upper}+${rs_opt_contr_upper}(?=${[rs_break, rs_upper + rs_misc_lower, '$'].join('|')})`,
     `${rs_upper}?${rs_misc_lower}+${rs_opt_contr_lower}`,
     `${rs_upper}+${rs_opt_contr_upper}`,
     rs_ord_upper,

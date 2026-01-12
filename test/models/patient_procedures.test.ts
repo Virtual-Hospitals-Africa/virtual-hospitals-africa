@@ -20,14 +20,13 @@ describeParallel('db/models/patient_procedures.ts', () => {
           registration_status: 'approved',
         })
 
-        const encounter =
-          await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-            db,
-            nurse.organization_id,
-            {
-              employment_id: nurse.employee_id,
-            },
-          )
+        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+          db,
+          nurse.organization_id,
+          {
+            employment_id: nurse.employee_id,
+          },
+        )
 
         const { procedure_id } = await patient_procedures.insertOneNested(db, {
           patient_id: encounter.patient.id,

@@ -40,8 +40,7 @@ describe('patient chatbot', () => {
       {
         chatbot_name: 'patient',
         messages: {
-          message_body:
-            'What is your date of birth? Please enter the date in the format DD/MM/YYYY',
+          message_body: 'What is your date of birth? Please enter the date in the format DD/MM/YYYY',
           type: 'string',
         },
         phone_number,

@@ -29,9 +29,7 @@ const MedicationsTableColumns: TableColumn<PrescriptionMedication>[] = [
     label: 'Schedules',
     data: (medication) => (
       <ul>
-        {medication.schedules.map((schedule) => (
-          <li>{scheduleDisplay(schedule, medication)}</li>
-        ))}
+        {medication.schedules.map((schedule, i) => <li key={i}>{scheduleDisplay(schedule, medication)}</li>)}
       </ul>
     ),
   },

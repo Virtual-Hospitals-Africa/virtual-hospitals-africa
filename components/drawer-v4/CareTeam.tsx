@@ -17,8 +17,7 @@ export function DrawerCareTeam(
         </div>
         <div className='box-border content-stretch flex flex-col gap-[16px] items-start justify-start px-[16px] py-[8px] relative shrink-0 w-full'>
           <p className="font-['Inter:Regular',_sans-serif] font-normal leading-[16px] not-italic relative shrink-0 text-[12px] text-gray-600 w-full">
-            See a list of all the doctors who have had contact with the patient
-            in the recent past.
+            See a list of all the doctors who have had contact with the patient in the recent past.
           </p>
         </div>
       </div>
@@ -71,9 +70,7 @@ export function DrawerCareTeam(
                     </div>
                     <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#473fce] text-[12px] text-center text-nowrap">
                       <p className='leading-[16px] whitespace-pre'>
-                        {provider.profession === 'doctor'
-                          ? 'Primary Care RenderedCareTeamHealthWorker'
-                          : 'Nurse'}
+                        {provider.profession === 'doctor' ? 'Primary Care RenderedCareTeamHealthWorker' : 'Nurse'}
                       </p>
                     </div>
                   </div>
@@ -103,9 +100,7 @@ export function DrawerCareTeam(
               <div
                 className='bg-center bg-cover bg-no-repeat relative rounded-[200px] shrink-0 size-[48px]'
                 style={{
-                  backgroundImage: `url('${
-                    provider.avatar_url || '/static/images/default-avatar.png'
-                  }')`,
+                  backgroundImage: `url('${provider.avatar_url || '/static/images/default-avatar.png'}')`,
                 }}
               >
                 <div className='absolute bottom-[-1px] overflow-clip right-[-1px] size-[14px]'>

@@ -10,10 +10,10 @@ export function promiseProps<T extends Record<string, unknown>>(
 
   return Promise.all(promises).then((results) => {
     // deno-lint-ignore no-explicit-any
-    const resultObj: any = {}
+    const result_obj: any = {}
     keys.forEach((key, i) => {
-      resultObj[key] = results[i]
+      result_obj[key] = results[i]
     })
-    return resultObj as PromiseProps<T>
+    return result_obj as PromiseProps<T>
   })
 }

@@ -16,10 +16,7 @@ import { employees } from './employees.ts'
 import isString from '../../util/isString.ts'
 import { ProfessionSchema } from '../../shared/profession.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
-import {
-  BY_TARGET_UUID,
-  MessageTargetCategory,
-} from '../../shared/message_targets.ts'
+import { BY_TARGET_UUID, MessageTargetCategory } from '../../shared/message_targets.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { addresses } from './addresses.ts'

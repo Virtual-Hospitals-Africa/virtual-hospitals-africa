@@ -215,11 +215,7 @@ export default function RelationshipSelect({
   additionalRelations?: Map<string, string>
 }) {
   const selected_family_relation_sexed = useSignal(family_relation_sexed)
-  const Options = type === 'guardian'
-    ? GuardianOptions
-    : type === 'dependent'
-    ? DependentOptions
-    : AllOptions
+  const Options = type === 'guardian' ? GuardianOptions : type === 'dependent' ? DependentOptions : AllOptions
   return (
     <Select name={name} label='Relationship' required={required}>
       <option value='' selected={!selected_family_relation_sexed.value}>

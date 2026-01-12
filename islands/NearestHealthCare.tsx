@@ -18,8 +18,7 @@ export function NearestHealthCareSection(
   const nearest_health_facility_signal = useSignal(nearest_health_facility)
   let doctor_search_href = '/app/providers?professions=[doctor]'
   if (nearest_health_facility_signal.value) {
-    doctor_search_href +=
-      `&prioritize_organization_id=${nearest_health_facility_signal.value.id}`
+    doctor_search_href += `&prioritize_organization_id=${nearest_health_facility_signal.value.id}`
   }
 
   return (
@@ -34,8 +33,7 @@ export function NearestHealthCareSection(
           // deno-lint-ignore no-explicit-any
           value={nearest_health_facility_signal.value as any}
           sort={{ by: OrganizationSortOptions.closest, direction: 'asc' }}
-          onSelect={(organization) =>
-            nearest_health_facility_signal.value = organization}
+          onSelect={(organization) => nearest_health_facility_signal.value = organization}
           required
         />
         <PersonSearch

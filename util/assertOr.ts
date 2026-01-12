@@ -73,6 +73,15 @@ export function assertOr405(
   }
 }
 
+export function assertOr409(
+  condition: unknown,
+  message = 'Conflict',
+): asserts condition {
+  if (!condition) {
+    throw new StatusError(message, 409)
+  }
+}
+
 export function assertOrRedirect(
   condition: unknown,
   location: string,

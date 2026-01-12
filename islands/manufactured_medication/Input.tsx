@@ -44,13 +44,9 @@ export default function ManufacturedMedicationInput(props: {
     }
   })
 
-  const container_labels = computed(() =>
-    containerLabels(manufactured_medication.value?.form || '')
-  )
+  const container_labels = computed(() => containerLabels(manufactured_medication.value?.form || ''))
 
-  const total_quantity = computed(() =>
-    container_size.value * number_of_containers.value
-  )
+  const total_quantity = computed(() => container_size.value * number_of_containers.value)
 
   const total_quantity_label_end = computed(() => {
     if (!manufactured_medication.value) return ''
@@ -124,8 +120,7 @@ export default function ManufacturedMedicationInput(props: {
           value={container_size.value}
           min={1}
           required
-          onInput={(e) =>
-            container_size.value = Number(e.currentTarget.value) || 0}
+          onInput={(e) => container_size.value = Number(e.currentTarget.value) || 0}
         />
         <NumberInput
           name='number_of_containers'
@@ -133,8 +128,7 @@ export default function ManufacturedMedicationInput(props: {
           value={number_of_containers.value}
           min={1}
           required
-          onInput={(e) =>
-            number_of_containers.value = Number(e.currentTarget.value) || 0}
+          onInput={(e) => number_of_containers.value = Number(e.currentTarget.value) || 0}
         />
         <NumberInput
           name='quantity'

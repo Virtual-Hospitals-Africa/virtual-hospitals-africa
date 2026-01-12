@@ -1,17 +1,10 @@
 import { JSX } from 'preact'
 import { examinations } from '../../../../../../../../../db/models/examinations.ts'
 import { RenderedPatientExamination } from '../../../../../../../../../types.ts'
-import {
-  TabProps,
-  Tabs,
-} from '../../../../../../../../../components/library/Tabs.tsx'
+import { TabProps, Tabs } from '../../../../../../../../../components/library/Tabs.tsx'
 import { Progress } from '../../../../../../../../../components/library/icons/progress.tsx'
 import redirect from '../../../../../../../../../util/redirect.ts'
-import {
-  completeAndProceedToNextStep,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../../_middleware.tsx'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../../_middleware.tsx'
 
 type HistoryState = {
   history_assessments: RenderedPatientExamination[]
@@ -36,9 +29,7 @@ export async function handler(
     },
   )
 
-  const next_incomplete_assessment = history_assessments.find((a) =>
-    !a.completed
-  )
+  const next_incomplete_assessment = history_assessments.find((a) => !a.completed)
 
   const current_assessment_slug = ctx.url.pathname.match(/\/history\/(.*)$/)
   const current_assessment = current_assessment_slug &&

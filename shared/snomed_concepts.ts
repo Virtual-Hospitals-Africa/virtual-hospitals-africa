@@ -147,12 +147,11 @@ export const SEVERITY_SCORE = asConcept({
   name: 'Severity score',
   category: 'qualifier value' as const,
 })
-export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS =
-  asConcept({
-    id: '409060008',
-    name: 'Evaluation for signs and symptoms of physical health problems',
-    category: 'procedure' as const,
-  })
+export const EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS = asConcept({
+  id: '409060008',
+  name: 'Evaluation for signs and symptoms of physical health problems',
+  category: 'procedure' as const,
+})
 export const AUDIO_RECORDING_OF_SUBJECT_INTERVIEW = asConcept({
   id: '431315003',
   name: 'Audio recording of subject interview',

@@ -9,9 +9,7 @@ const WHISPER_MODELS_DIRECTORY_PATH = Deno.env.get(
 
 const available_transcription_models = WHISPER_MODELS_DIRECTORY_PATH
   ? compact(
-    Deno.readDirSync(WHISPER_MODELS_DIRECTORY_PATH).map((value) =>
-      value.isDirectory && value.name.startsWith('whisper') && value.name
-    ).toArray(),
+    Deno.readDirSync(WHISPER_MODELS_DIRECTORY_PATH).map((value) => value.isDirectory && value.name.startsWith('whisper') && value.name).toArray(),
   )
   : []
 
@@ -30,9 +28,7 @@ const LANGUAGE_CODES_TO_MODELS = Object.fromEntries(
 )
 
 export const supported_language_codes = compact(
-  available_transcription_models.map((model) =>
-    MODELS_TO_LANGUAGE_CODES[model as keyof typeof MODELS_TO_LANGUAGE_CODES]
-  ),
+  available_transcription_models.map((model) => MODELS_TO_LANGUAGE_CODES[model as keyof typeof MODELS_TO_LANGUAGE_CODES]),
 )
 
 export function transcriptionProcess(
@@ -50,9 +46,7 @@ export function transcriptionProcess(
     supported_language_codes.includes(language_code),
     `${language_code} is not yet supported`,
   )
-  const model = `${WHISPER_MODELS_DIRECTORY_PATH}/${
-    LANGUAGE_CODES_TO_MODELS[language_code]
-  }`
+  const model = `${WHISPER_MODELS_DIRECTORY_PATH}/${LANGUAGE_CODES_TO_MODELS[language_code]}`
 
   const process = new Deno.Command('python', {
     args: [

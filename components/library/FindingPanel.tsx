@@ -81,8 +81,7 @@ export function FindingPanel(
                   </svg>
                 </div>
                 <p className='text-sm font-medium text-gray-900'>
-                  during{' '}
-                  {finding.as_part_of_procedure.specific_snomed_concept.name}
+                  during {finding.as_part_of_procedure.specific_snomed_concept.name}
                 </p>
               </div>
             )}
@@ -111,9 +110,7 @@ export function FindingPanel(
               <Button
                 variant='secondary'
                 href={`/app/organizations/${organization_id}/messaging/drafts/${generateUUID()}?targets.employee.${finding.provider.employee_id}=true`}
-                left_icon={
-                  <ChatBubbleLeftIcon className='w-4 h-4 text-indigo-700' />
-                }
+                left_icon={<ChatBubbleLeftIcon className='w-4 h-4 text-indigo-700' />}
               >
                 Message
               </Button>

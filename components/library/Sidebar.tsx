@@ -6,12 +6,7 @@ import { matchActiveLink } from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
-import {
-  ArchiveBoxIcon,
-  CalendarDaysIcon,
-  ChatBubbleLeftRightIcon,
-  PresentationChartBarIcon,
-} from './icons/heroicons/outline.tsx'
+import { ArchiveBoxIcon, CalendarDaysIcon, ChatBubbleLeftRightIcon, PresentationChartBarIcon } from './icons/heroicons/outline.tsx'
 import { IdentificationIcon } from './icons/heroicons/outline.tsx'
 import { AcademicCapIcon } from './icons/heroicons/outline.tsx'
 import { ArrowRightOnRectangleIcon } from './icons/heroicons/outline.tsx'
@@ -248,9 +243,7 @@ export function StepsSidebar(
       nav_links={nav_links.map((link) => ({
         ...link,
         title: prettyStepName(link.step),
-        Icon: steps_completed.includes(link.step)
-          ? ProgressIcons.Check
-          : ProgressIcons.Dot,
+        Icon: steps_completed.includes(link.step) ? ProgressIcons.Check : ProgressIcons.Dot,
       }))}
     />
   )

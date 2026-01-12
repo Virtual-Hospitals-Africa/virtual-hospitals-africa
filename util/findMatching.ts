@@ -11,8 +11,6 @@ export default function findMatching<T>(
     }
   }
   throw new Error(
-    `No item found matching ${JSON.stringify(pattern)} in ${
-      JSON.stringify(items)
-    }`,
+    `No item found matching ${JSON.stringify(pattern)} in ${JSON.stringify(items)}`,
   )
 }

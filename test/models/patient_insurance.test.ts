@@ -5,10 +5,7 @@ import { patient_insurance } from '../../db/models/patient_insurance.ts'
 import db from '../../db/db.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  existingDurationEndDate,
-  todayISOInJohannesburg,
-} from '../../util/date.ts'
+import { existingDurationEndDate, todayISOInJohannesburg } from '../../util/date.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 
 describeParallel('patient_insurance', () => {

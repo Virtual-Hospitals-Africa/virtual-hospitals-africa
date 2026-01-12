@@ -124,9 +124,7 @@ export function ICD10SearchSpecific({
         Option={SymptomOption}
         onQuery={(query) => search.value = query}
         onSelect={(symptom) => {
-          const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
-            sd.general
-          )
+          const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) => sd.general)
           selected_parent.value = symptom
           selected_c0.value = general_subdiagnosis
           selected_c1.value = undefined
@@ -144,9 +142,7 @@ export function ICD10SearchSpecific({
             const symptom = selected_parent.value!.sub_diagnoses!.find(
               (s) => s.code === e.currentTarget.value,
             )
-            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
-              sd.general
-            )
+            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) => sd.general)
             selected_c0.value = symptom
             selected_c1.value = general_subdiagnosis
             selected_c2.value = undefined
@@ -164,9 +160,7 @@ export function ICD10SearchSpecific({
             const symptom = selected_c0.value!.sub_diagnoses!.find(
               (s) => s.code === e.currentTarget.value,
             )
-            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
-              sd.general
-            )
+            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) => sd.general)
             selected_c1.value = symptom
             selected_c2.value = general_subdiagnosis
             selected_c3.value = undefined
@@ -183,9 +177,7 @@ export function ICD10SearchSpecific({
             const symptom = selected_c1.value!.sub_diagnoses!.find(
               (s) => s.code === e.currentTarget.value,
             )
-            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
-              sd.general
-            )
+            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) => sd.general)
             selected_c2.value = symptom
             selected_c3.value = general_subdiagnosis
           }}

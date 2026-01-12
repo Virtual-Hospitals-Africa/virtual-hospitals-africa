@@ -1,27 +1,12 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import {
-  Coordinates,
-  InsertShape,
-  Maybe,
-  NonEmptyArray,
-  RenderedOrganization,
-  TrxOrDb,
-} from '../../types.ts'
+import { Coordinates, InsertRows, Maybe, NonEmptyArray, RenderedOrganization, TrxOrDb } from '../../types.ts'
 import { addresses, type AddressInsert } from './addresses.ts'
-import {
-  blankSelection,
-  jsonArrayFrom,
-  jsonBuildNullableObject,
-  literalLocation,
-  orderByArrayPosition,
-  success_true,
-} from '../helpers.ts'
+import { blankSelection, jsonArrayFrom, jsonBuildNullableObject, literalLocation, orderByArrayPosition, success_true } from '../helpers.ts'
 import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Department, DEPARTMENTS } from '../../shared/departments.ts'
 import { SERVER_COUNTRY } from './countries.ts'
-import { DB } from '../../db.d.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 
 function baseQuery(trx: TrxOrDb) {
@@ -114,11 +99,9 @@ async function addDepartments(
 ) {
   if (!departments.length) return
 
-  const departments_insert: InsertShape<DB['organization_departments']>[] = []
-  const organization_rooms_insert: InsertShape<DB['organization_rooms']>[] = []
-  const organization_department_rooms_insert: InsertShape<
-    DB['organization_department_rooms']
-  >[] = []
+  const departments_insert: InsertRows<'organization_departments'> = []
+  const organization_rooms_insert: InsertRows<'organization_rooms'> = []
+  const organization_department_rooms_insert: InsertRows<'organization_department_rooms'> = []
 
   for (const dept of departments) {
     const organization_department_id = generateUUID()
@@ -172,9 +155,7 @@ async function add(
   }: OrganizationInsert,
 ) {
   const organization_id = id || generateUUID()
-  const address_id: string | undefined = address
-    ? (address.id || generateUUID())
-    : undefined
+  const address_id: string | undefined = address ? (address.id || generateUUID()) : undefined
 
   await trx.with(
     'inserting_address',

@@ -1,9 +1,5 @@
 import { RegistrationPatientSummary } from '../../../types.ts'
-import {
-  DescriptionList,
-  DescriptionListCellAction,
-  type DescriptionListRows,
-} from '../../library/DescriptionList.tsx'
+import { DescriptionList, DescriptionListCellAction, type DescriptionListRows } from '../../library/DescriptionList.tsx'
 import { nonEmptyRows } from '../registration/Summary.tsx'
 
 export default function PatientHistory(
@@ -26,8 +22,7 @@ export default function PatientHistory(
             {
               value: condition.name,
               name: 'condition',
-              href:
-                `${registration_href}/history#focus=past_medical_conditions.${index}.name`,
+              href: `${registration_href}/history#focus=past_medical_conditions.${index}.name`,
               action: DescriptionListCellAction.View,
             },
           ],
@@ -35,15 +30,13 @@ export default function PatientHistory(
             {
               value: condition.start_date,
               name: 'start_date',
-              href:
-                `${registration_href}/history#focus=past_medical_conditions.${index}.start_date`,
+              href: `${registration_href}/history#focus=past_medical_conditions.${index}.start_date`,
               action: DescriptionListCellAction.View,
             },
             {
               value: condition.end_date,
               name: 'end_date',
-              href:
-                `${registration_href}/history#focus=past_medical_conditions.${index}.end_date`,
+              href: `${registration_href}/history#focus=past_medical_conditions.${index}.end_date`,
               action: DescriptionListCellAction.View,
               leading_separator: ' — ',
             },
@@ -58,8 +51,7 @@ export default function PatientHistory(
           {
             value: surgery.name,
             name: 'surgery',
-            href:
-              `${registration_href}/history#focus=major_surgeries.${index}.name`,
+            href: `${registration_href}/history#focus=major_surgeries.${index}.name`,
             action: DescriptionListCellAction.View,
           },
         ],
@@ -67,8 +59,7 @@ export default function PatientHistory(
           {
             value: surgery.start_date,
             name: 'start_date',
-            href:
-              `${registration_href}/history#focus=major_surgeries.${index}.start_date`,
+            href: `${registration_href}/history#focus=major_surgeries.${index}.start_date`,
             action: DescriptionListCellAction.View,
           },
         ],

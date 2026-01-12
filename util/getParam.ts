@@ -5,9 +5,7 @@ export function getParam(
   ctx: Context<unknown> | URLSearchParams,
   param_name: string,
 ): string | null {
-  const param = ctx instanceof URLSearchParams
-    ? ctx.get(param_name)
-    : ctx.params[param_name]
+  const param = ctx instanceof URLSearchParams ? ctx.get(param_name) : ctx.params[param_name]
   return param || null
 }
 
@@ -21,8 +19,7 @@ export function getRequiredParam(
   return param
 }
 
-const uuid_regex =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+const uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
 export function getRequiredUUIDParam(
   // deno-lint-ignore no-explicit-any

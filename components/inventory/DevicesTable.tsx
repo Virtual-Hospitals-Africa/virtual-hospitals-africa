@@ -24,8 +24,7 @@ const columns: TableColumn<RenderedOrganizationDevice>[] = [
     data(row) {
       return (
         <div className='flex flex-col'>
-          {row.diagnostic_test_capabilities.map((c) => <span key={c}>{c}
-          </span>)}
+          {row.diagnostic_test_capabilities.map((c) => <span key={c}>{c}</span>)}
         </div>
       )
     },
@@ -63,9 +62,7 @@ export default function OrganizationDevicesTable(
             header='No devices in the inventory'
             explanation='Add a device to get started'
             Icon={ArchiveBoxIcon}
-            button={is_admin
-              ? { children: 'Add Device', href: add_href }
-              : undefined}
+            button={is_admin ? { children: 'Add Device', href: add_href } : undefined}
           />
         )}
       />

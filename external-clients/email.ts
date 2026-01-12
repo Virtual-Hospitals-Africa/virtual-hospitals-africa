@@ -10,13 +10,13 @@
 // ) {
 //   const client = new SmtpClient()
 //   const { SEND_EMAIL, PWD } = Deno.env.toObject()
-//   const connectConfig: ConnectConfigWithAuthentication = {
+//   const connect_config: ConnectConfigWithAuthentication = {
 //     hostname: 'smtp.gmail.com',
 //     port: 465,
 //     username: SEND_EMAIL,
 //     password: PWD,
 //   }
-//   await client.connect(connectConfig)
+//   await client.connect(connect_config)
 
 //   await client.send({
 //     from: SEND_EMAIL,

@@ -1,9 +1,9 @@
-import { Media } from '../../../db.d.ts'
-import { InsertShape } from '../../../types.ts'
 import { define } from '../define.ts'
 import range from '../../../util/range.ts'
 import { pMap } from '../../../util/inParallel.ts'
 import { predefinedAvatarMediaUUID } from '../../../backend/predefinedAvatarMediaUUID.ts'
+import { InsertObject } from 'kysely'
+import { DB } from '../../../db.d.ts'
 
 function* avatars() {
   for (const sex of ['female' as const, 'male' as const]) {
@@ -18,7 +18,7 @@ function* avatars() {
 }
 
 export default define(['media'], async (trx) => {
-  const avatar_images: InsertShape<Media>[] = await pMap(
+  const avatar_images: InsertObject<DB, 'media'>[] = await pMap(
     avatars(),
     async ({ sex, int, file_name }) => {
       return {

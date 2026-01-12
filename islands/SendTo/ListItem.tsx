@@ -70,21 +70,18 @@ export function SendableListItem(
   },
 ): JSX.Element {
   // When clicked, actions submit immediately while entities are selected and add hidden inputs to the form
-  const button_props: ButtonHTMLAttributes<HTMLButtonElement> =
-    sendable.to.type === 'action'
-      ? {
-        form,
-        type: 'submit',
-        name: 'send_to.action',
-        value: sendable.to.action,
-      }
-      : { type: 'button', onClick: toggleSelected }
+  const button_props: ButtonHTMLAttributes<HTMLButtonElement> = sendable.to.type === 'action'
+    ? {
+      form,
+      type: 'submit',
+      name: 'send_to.action',
+      value: sendable.to.action,
+    }
+    : { type: 'button', onClick: toggleSelected }
 
   return (
     <li
-      className={is_selected
-        ? 'bg-indigo-200 hover:bg-indigo-200'
-        : 'hover:bg-indigo-200'}
+      className={is_selected ? 'bg-indigo-200 hover:bg-indigo-200' : 'hover:bg-indigo-200'}
     >
       {is_selected && sendable.to.type === 'entity' && (
         <HiddenInput

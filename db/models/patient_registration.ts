@@ -1,20 +1,10 @@
 import { sql } from 'kysely'
-import {
-  HealthWorkerOrganization,
-  RegistrationPatientSummary,
-  RenderedOrganization,
-  TrxOrDb,
-} from '../../types.ts'
+import { HealthWorkerOrganization, RegistrationPatientSummary, RenderedOrganization, TrxOrDb } from '../../types.ts'
 import { patient_occupations } from './patient_occupations.ts'
 import { patient_conditions } from './patient_conditions.ts'
 import { family as patient_family } from './family.ts'
 import { patient_allergies } from './patient_allergies.ts'
-import {
-  isoDate,
-  jsonBuildObject,
-  literalLocation,
-  success_true,
-} from '../helpers.ts'
+import { isoDate, jsonBuildObject, literalLocation, success_true } from '../helpers.ts'
 import { assertOr403, assertOr404 } from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'

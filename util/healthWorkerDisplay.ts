@@ -1,13 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { Profession } from '../db.d.ts'
-import {
-  AppUser,
-  EmployedHealthWorker,
-  HealthWorkerDisplay,
-  HealthWorkerOrganization,
-  Maybe,
-  RenderedEmployee,
-} from '../types.ts'
+import { AppUser, EmployedHealthWorker, HealthWorkerDisplay, HealthWorkerOrganization, Maybe, RenderedEmployee } from '../types.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { organizationOf } from '../shared/employees.ts'

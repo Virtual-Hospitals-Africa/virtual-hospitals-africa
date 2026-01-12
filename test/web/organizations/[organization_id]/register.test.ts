@@ -5,10 +5,7 @@ import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { nurse_registration_details } from '../../../../db/models/nurse_registration_details.ts'
 import db from '../../../../db/db.ts'
-import {
-  addTestEmployee,
-  addTestEmployeeWithSession,
-} from '../../../_helpers/employees.ts'
+import { addTestEmployee, addTestEmployeeWithSession } from '../../../_helpers/employees.ts'
 import { route } from '../../../_route.ts'
 import randomDemographics from '../../../../mocks/randomDemographics.ts'
 import createTestAddress from '../../../../mocks/createTestAddress.ts'
@@ -63,14 +60,13 @@ describeParallel.skip(
       'supports POSTs on the personal, professional, and documents step, moving you into /pending_approval',
       async () => {
         await addTestEmployee(db, { profession: 'admin' })
-        const { fetch, health_worker: nurse } =
-          await addTestEmployeeWithSession(
-            db,
-            {
-              profession: 'nurse',
-              registration_status: 'not started',
-            },
-          )
+        const { fetch, health_worker: nurse } = await addTestEmployeeWithSession(
+          db,
+          {
+            profession: 'nurse',
+            registration_status: 'not started',
+          },
+        )
         const address = createTestAddress()
 
         const demographics = randomDemographics('ZA')

@@ -25,8 +25,7 @@ describe('db/models/pharmacists.ts', () => {
           name: 'Mrs. HUHUYANA WINNIA',
           address: 'B A T ZIMBABWE CLINIC NO 1 MANCHESTER ROAD SOUTHERTON',
           town: 'HARARE',
-          address_display:
-            'B A T ZIMBABWE CLINIC NO 1 MANCHESTER ROAD SOUTHERTON, HARARE',
+          address_display: 'B A T ZIMBABWE CLINIC NO 1 MANCHESTER ROAD SOUTHERTON, HARARE',
           href: `/regulator/ZW/pharmacists/${id}`,
           expiry_date: '2024-09-30',
           pharmacist_type: 'Ind Clinic Nurse',

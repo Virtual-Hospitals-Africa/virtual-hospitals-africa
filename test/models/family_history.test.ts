@@ -21,8 +21,7 @@ describe(
               { id: '427858005', name: 'Family history of malignant melanoma' },
               {
                 id: '1365944002',
-                name:
-                  'Family history of malignant melanoma in first degree relative',
+                name: 'Family history of malignant melanoma in first degree relative',
               },
             ],
             has_next_page: false,

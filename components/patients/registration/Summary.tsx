@@ -1,10 +1,5 @@
 // deno-lint-ignore-file no-irregular-whitespace
-import {
-  DescriptionList,
-  DescriptionListCell,
-  DescriptionListCellAction,
-  type DescriptionListRows,
-} from '../../library/DescriptionList.tsx'
+import { DescriptionList, DescriptionListCell, DescriptionListCellAction, type DescriptionListRows } from '../../library/DescriptionList.tsx'
 import type { Maybe, RegistrationPatientSummary } from '../../../types.ts'
 // import { registrationFrequencyText } from '../../../shared/medication.ts'
 // import { international_phone_number } from '../../../util/validators.ts'
@@ -47,8 +42,7 @@ export default function PatientRegistrationSummary(
     }
   },
 ) {
-  const registration_href =
-    `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/registration`
+  const registration_href = `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/registration`
 
   const {
     personal,
@@ -76,9 +70,7 @@ export default function PatientRegistrationSummary(
         name: 'surname',
         leading_separator: ' ',
       }, {
-        value: personal.preferred_name !== personal.first_names
-          ? `(${personal.preferred_name})`
-          : undefined,
+        value: personal.preferred_name !== personal.first_names ? `(${personal.preferred_name})` : undefined,
         href: `${registration_href}/personal#focus=preferred_name`,
         action: DescriptionListCellAction.Edit,
         name: 'preferred_name',
@@ -153,8 +145,7 @@ export default function PatientRegistrationSummary(
     address_rows.push({
       value: address.administrative_area_level_1,
       name: 'District',
-      href:
-        `${registration_href}/primary_care#focus=address.administrative_area_level_1`,
+      href: `${registration_href}/primary_care#focus=address.administrative_area_level_1`,
       action: DescriptionListCellAction.Edit,
       leading_separator: ', ',
     })
@@ -168,8 +159,7 @@ export default function PatientRegistrationSummary(
     address_rows.push({
       value: address.administrative_area_level_2,
       name: 'Province',
-      href:
-        `${registration_href}/primary_care#focus=address.administrative_area_level_2`,
+      href: `${registration_href}/primary_care#focus=address.administrative_area_level_2`,
       action: DescriptionListCellAction.Edit,
       leading_separator: ', ',
     })
@@ -183,8 +173,7 @@ export default function PatientRegistrationSummary(
     nonEmptyRows([[
       {
         value: nearest_health_care.nearest_organization_name,
-        href:
-          `${registration_href}/primary_care#focus=nearest_organization_name`,
+        href: `${registration_href}/primary_care#focus=nearest_organization_name`,
         action: DescriptionListCellAction.Edit,
         name: 'Nearest Organization',
       },

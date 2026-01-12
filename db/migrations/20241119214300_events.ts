@@ -13,10 +13,8 @@ export async function up(db: Kysely<DB>) {
 
   await createStandardTable(db, 'event_listeners', (qb) =>
     qb
-      .addColumn('event_id', 'uuid', (col) =>
-        col.notNull().references('events.id'))
-      .addColumn('listener_name', 'varchar(255)', (col) =>
-        col.notNull())
+      .addColumn('event_id', 'uuid', (col) => col.notNull().references('events.id').onDelete('cascade'))
+      .addColumn('listener_name', 'varchar(255)', (col) => col.notNull())
       .addColumn('started_processing_at', 'timestamptz')
       .addColumn('error_message', 'text')
       .addColumn('processed_at', 'timestamptz')

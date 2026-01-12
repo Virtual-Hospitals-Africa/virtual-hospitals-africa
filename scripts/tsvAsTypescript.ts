@@ -26,9 +26,7 @@ export async function rewriteTsvAsTypescript<Schema extends z.ZodTypeAny>(
     } as unknown as z.ZodTypeAny,
   )
   const output_file_path = filepath.replace('.tsv', '.ts')
-  const content = `export default ${
-    humanReadableJson(rows as JsonSerializable)
-  }\n`
+  const content = `export default ${humanReadableJson(rows as JsonSerializable)}\n`
   await Deno.writeTextFile(output_file_path, content, { create: true })
   console.log(`Written ${rows.length} rows to ${output_file_path}`)
 }

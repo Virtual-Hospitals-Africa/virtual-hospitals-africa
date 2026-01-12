@@ -9,16 +9,10 @@ export function SendableList(
     selected: Signal<Sendable | null>
   },
 ) {
-  const entity_sendables = sendables.filter((sendable) =>
-    sendable.to.type === 'entity'
-  )
-  const action_sendables = sendables.filter((sendable) =>
-    sendable.to.type === 'action'
-  )
+  const entity_sendables = sendables.filter((sendable) => sendable.to.type === 'entity')
+  const action_sendables = sendables.filter((sendable) => sendable.to.type === 'action')
 
-  const show_sendables = selected.value == null
-    ? entity_sendables
-    : sendables.filter((sendable) => sendable === selected.value)
+  const show_sendables = selected.value == null ? entity_sendables : sendables.filter((sendable) => sendable === selected.value)
 
   return (
     <div>
@@ -34,8 +28,7 @@ export function SendableList(
               form={form}
               sendable={sendable}
               is_selected={is_selected}
-              toggleSelected={() =>
-                selected.value = is_selected ? null : sendable}
+              toggleSelected={() => selected.value = is_selected ? null : sendable}
             />
           )
         })}
@@ -51,8 +44,7 @@ export function SendableList(
                   form={form}
                   sendable={sendable}
                   is_selected={is_selected}
-                  toggleSelected={() =>
-                    selected.value = is_selected ? null : sendable}
+                  toggleSelected={() => selected.value = is_selected ? null : sendable}
                 />
               )
             })}

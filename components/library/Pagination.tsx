@@ -1,7 +1,4 @@
-import {
-  ArrowLongLeftIcon,
-  ArrowLongRightIcon,
-} from './icons/heroicons/solid.tsx'
+import { ArrowLongLeftIcon, ArrowLongRightIcon } from './icons/heroicons/solid.tsx'
 import cls from '../../util/cls.ts'
 import range from '../../util/range.ts'
 
@@ -20,9 +17,7 @@ function PageNumber(
       value={page}
       className={cls(
         'inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium',
-        is_current
-          ? 'text-indigo-600 border-indigo-500'
-          : 'text-gray-500 hover:border-gray-300 hover:text-gray-700',
+        is_current ? 'text-indigo-600 border-indigo-500' : 'text-gray-500 hover:border-gray-300 hover:text-gray-700',
       )}
     >
       {page}
@@ -71,9 +66,7 @@ export default function Pagination({
             <Ellipsis />
           </>
         )}
-        {primary_page_range.map((p) => (
-          <PageNumber key={p} page={p} is_current={p === page} />
-        ))}
+        {primary_page_range.map((p) => <PageNumber key={p} page={p} is_current={p === page} />)}
         {has_next_page && <Ellipsis />}
       </div>
       <div className='-mt-px flex w-0 flex-1 justify-end'>

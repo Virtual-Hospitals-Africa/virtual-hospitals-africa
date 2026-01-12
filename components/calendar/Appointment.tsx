@@ -1,11 +1,5 @@
-import {
-  CalendarIcon,
-  MapPinIcon,
-} from '../library/icons/heroicons/outline.tsx'
-import type {
-  ProviderAppointmentSlot,
-  RenderableAppointment,
-} from '../../types.ts'
+import { CalendarIcon, MapPinIcon } from '../library/icons/heroicons/outline.tsx'
+import type { ProviderAppointmentSlot, RenderableAppointment } from '../../types.ts'
 import { stringify, timeRangeInSimpleAmPm } from '../../util/date.ts'
 import { GoogleMeetIcon } from '../library/icons/GoogleMeet.tsx'
 import { WhatsAppIcon } from '../library/icons/whatsapp.tsx'
@@ -22,9 +16,7 @@ function AppointmentContents(
   // Show the health worker when showing appointment slots,
   // the patient for the actual appointment
   // TODO: revisit whether we want to show all participants
-  const featuring = appointment.type === 'provider_appointment'
-    ? appointment.patient
-    : appointment.providers[0]
+  const featuring = appointment.type === 'provider_appointment' ? appointment.patient : appointment.providers[0]
 
   const header = (
     <h3 className='pr-10 font-semibold text-gray-900 xl:pr-0'>
@@ -131,25 +123,21 @@ export default function Appointment(
     appointment: RenderableAppointment
   },
 ) {
-  const href = appointment.type === 'provider_appointment'
-    ? `${url.pathname}/appointments/${appointment.id}`
-    : undefined
+  const href = appointment.type === 'provider_appointment' ? `${url.pathname}/appointments/${appointment.id}` : undefined
 
   return (
     <li className='relative flex space-x-6 xl:static hover:bg-gray-50 px-2 py-3'>
       <AppointmentContents appointment={appointment} href={href} />
-      {appointment.type === 'provider_appointment_slot'
-        ? <AppointmentSlot slot={appointment} url={url} />
-        : (
-          <Menu
-            icon='DotsVerticalIcon'
-            options={[
-              { label: 'Cancel', href: `${href}/cancel` },
-              { label: 'Reschedule', href: `${href}/reschedule` },
-            ]}
-            className='top-2 right-2 xl:relative xl:right-auto xl:top-auto xl:self-center'
-          />
-        )}
+      {appointment.type === 'provider_appointment_slot' ? <AppointmentSlot slot={appointment} url={url} /> : (
+        <Menu
+          icon='DotsVerticalIcon'
+          options={[
+            { label: 'Cancel', href: `${href}/cancel` },
+            { label: 'Reschedule', href: `${href}/reschedule` },
+          ]}
+          className='top-2 right-2 xl:relative xl:right-auto xl:top-auto xl:self-center'
+        />
+      )}
     </li>
   )
 }

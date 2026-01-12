@@ -7,12 +7,7 @@ import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
 import { RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import {
-  debugLog,
-  jsonArrayFromColumn,
-  literalString,
-  success_true,
-} from '../helpers.ts'
+import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -21,13 +16,7 @@ import matching from '../../util/matching.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
 import { patient_vitals } from './patient_vitals.ts'
-import {
-  ACTION_STATUS,
-  DUE_TO,
-  EVALUATION_ACTION,
-  RELATIONSHIP,
-  TO_BE_DONE,
-} from '../../shared/snomed_concepts.ts'
+import { ACTION_STATUS, DUE_TO, EVALUATION_ACTION, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
 import zip from '../../util/zip.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -140,8 +129,7 @@ export const additional_tasks = {
           patient_encounter_id,
           by_system: true,
           evaluates_record_id: procedure.procedure_id,
-          evaluation:
-            `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
+          evaluation: `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
         },
       ).with(
         'inserting_relation_patient_records',
@@ -172,8 +160,7 @@ export const additional_tasks = {
     const evaluations = await patient_evaluations.findAll(trx, {
       patient_id,
       patient_encounter_id: encounter.patient_encounter_id,
-      s_expression:
-        `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
+      s_expression: `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
     })
 
     if (arrayIsEmpty(evaluations)) {

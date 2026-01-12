@@ -1,8 +1,4 @@
-import {
-  completeExamination,
-  ExaminationContext,
-  ExaminationPage,
-} from './_middleware.tsx'
+import { completeExamination, ExaminationContext, ExaminationPage } from './_middleware.tsx'
 import {} from '../../../../../../../../../types.ts'
 
 export const handler = {

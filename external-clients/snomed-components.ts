@@ -97,8 +97,7 @@ export type components = {
       refsetId: string
       referencedComponentId: string
       conceptId?: string
-      referencedComponentSnomedComponent?:
-        components['schemas']['SnomedComponentObject_Component']
+      referencedComponentSnomedComponent?: components['schemas']['SnomedComponentObject_Component']
       mapTargetCoding?: components['schemas']['Coding_Component']
       annotationId?: string
       typeId?: string
@@ -218,8 +217,7 @@ export type components = {
       changed?: boolean
       effectiveTimeI?: number
       releaseHash?: string
-      referencedComponentSnomedComponent?:
-        components['schemas']['SnomedComponentObject_Component']
+      referencedComponentSnomedComponent?: components['schemas']['SnomedComponentObject_Component']
       id?: string
       referencedComponent?: { [key: string]: any }
     }
@@ -353,8 +351,7 @@ export type components = {
       referencedComponentId: string
       conceptId?: string
       additionalFields?: { [key: string]: string }
-      referencedComponentSnomedComponent?:
-        components['schemas']['SnomedComponentObject_Component']
+      referencedComponentSnomedComponent?: components['schemas']['SnomedComponentObject_Component']
       mapTargetCoding?: components['schemas']['Coding_Component']
       mapGroup?: string
       mapPriority?: string
@@ -415,8 +412,7 @@ export type components = {
       concept?: components['schemas']['ConceptMini_Component']
     }
     ItemsPageBrowserDescriptionSearchResult_Component: {
-      items?:
-        components['schemas']['BrowserDescriptionSearchResult_Component'][]
+      items?: components['schemas']['BrowserDescriptionSearchResult_Component'][]
       total?: number
       limit?: number
       offset?: number
@@ -447,8 +443,7 @@ export type components = {
       referencedComponentId: string
       conceptId?: string
       additionalFields?: { [key: string]: string }
-      referencedComponentSnomedComponent?:
-        components['schemas']['SnomedComponentObject']
+      referencedComponentSnomedComponent?: components['schemas']['SnomedComponentObject']
       mapTargetCoding?: components['schemas']['Coding']
       annotationId?: string
       typeId?: string
@@ -572,8 +567,7 @@ export type components = {
       changed?: boolean
       effectiveTimeI?: number
       releaseHash?: string
-      referencedComponentSnomedComponent?:
-        components['schemas']['SnomedComponentObject']
+      referencedComponentSnomedComponent?: components['schemas']['SnomedComponentObject']
       id?: string
       referencedComponent?: { [key: string]: any }
     }
@@ -606,8 +600,7 @@ export type components = {
       referencedComponentId: string
       conceptId?: string
       additionalFields?: { [key: string]: string }
-      referencedComponentSnomedComponent?:
-        components['schemas']['SnomedComponentObject']
+      referencedComponentSnomedComponent?: components['schemas']['SnomedComponentObject']
       mapTargetCoding?: components['schemas']['Coding']
       mapGroup?: string
       mapPriority?: string
@@ -781,12 +774,9 @@ export type components = {
       effectiveTimeI?: number
       releaseHash?: string
       activeDescriptions?: components['schemas']['Description_Component'][]
-      allOwlAxiomMembers?:
-        components['schemas']['ReferenceSetMember_Component'][]
-      activeInferredRelationships?:
-        components['schemas']['Relationship_Component'][]
-      allAnnotationMembers?:
-        components['schemas']['ReferenceSetMember_Component'][]
+      allOwlAxiomMembers?: components['schemas']['ReferenceSetMember_Component'][]
+      activeInferredRelationships?: components['schemas']['Relationship_Component'][]
+      allAnnotationMembers?: components['schemas']['ReferenceSetMember_Component'][]
       primitive?: boolean
     }
     CreateBranchRequest: {
@@ -997,8 +987,7 @@ export type components = {
       pageable?: components['schemas']['PageableObject_Component']
       numberOfElements?: number
       size?: number
-      content?:
-        components['schemas']['BrowserDescriptionSearchResult_Component'][]
+      content?: components['schemas']['BrowserDescriptionSearchResult_Component'][]
       number?: number
       sort?: components['schemas']['SortObject'][]
       first?: boolean

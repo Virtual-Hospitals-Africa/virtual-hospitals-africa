@@ -67,8 +67,7 @@ export function ExaminationChecklistItem(
         body_sites: checklist_item.body_sites?.length
           ? [{
             snomed_concept_id: checklist_item.body_sites[0].snomed_concept_id,
-            snomed_english_term:
-              checklist_item.body_sites[0].snomed_english_term,
+            snomed_english_term: checklist_item.body_sites[0].snomed_english_term,
           }]
           : [],
         additional_notes: null,

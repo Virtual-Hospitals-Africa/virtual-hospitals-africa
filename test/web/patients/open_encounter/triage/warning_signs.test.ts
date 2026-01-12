@@ -1,4 +1,4 @@
-import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
+import { describeParallel, itParallel, TestOpts } from 'test/_helpers/testParallel.ts'
 import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
@@ -6,11 +6,10 @@ import { insertReturningSeekingTreatmentWithEmployeeForTest } from '../../../../
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
-import asFormData from '../../../../../util/asFormData.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-import { route } from '../../../../_route.ts'
+
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
 import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { brief_history } from '../../../../../db/models/brief_history.ts'
@@ -19,16 +18,17 @@ import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
-import {
-  CLINICAL_FINDING,
-  STATUS_ATTRIBUTE,
-} from '../../../../../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING, STATUS_ATTRIBUTE } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { asWarningSigns, setupTriage } from './_setup.ts'
 import { hyphenate } from '../../../../../util/hyphenate.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { asResultAsync } from '../../../../../util/asResult.ts'
+
+import values from '../../../../../util/values.ts'
+import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
+import keys from '../../../../../util/keys.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -105,10 +105,9 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'renders the pregnancy-specific signs when the patient is pregnant',
       async () => {
-        const { nurse, encounter, getStep } = await setupTriage({
+        const { nurse, encounter, patient_id, patient_encounter_id, getStep } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns([]),
-          brief_history: {
+          early_brief_history: {
             diabetes: { existence: 'No' },
             pregnancy: { existence: 'Yes' },
           },
@@ -116,7 +115,7 @@ describeParallel('triage/warning_signs', () => {
 
         const most_recent_findings = await brief_history
           .renderedMostRecentFindings(db, {
-            patient_id: encounter.patient.id,
+            patient_id,
             encounter,
             health_worker_id: nurse.health_worker.id,
             conditions: COMMON_CONDITIONS,
@@ -124,13 +123,13 @@ describeParallel('triage/warning_signs', () => {
         assert(most_recent_findings.pregnancy)
 
         await patient_encounters.close(db, {
-          patient_encounter_id: encounter.patient_encounter_id,
+          patient_encounter_id,
         })
 
         const result = await asResultAsync(() => getStep('warning_signs'))
         assert(
           !result.success,
-          'Because we closed the earlier encounter, we expect this to fail. But when we open a new one below we expect that to succeed',
+          'Because we closed the earlier patient_id, we expect this to fail. But when we open a new one below we expect that to succeed',
         )
         assertIncludes(
           result.error.message,
@@ -141,7 +140,7 @@ describeParallel('triage/warning_signs', () => {
           db,
           nurse.health_worker.organization_id,
           {
-            patient_id: encounter.patient.id,
+            patient_id,
             employment_id: nurse.health_worker.employee_id,
           },
         )
@@ -169,18 +168,13 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts a simple warning sign finding without qualifiers',
       async () => {
-        const { $, clinic, encounter } = await setupTriage({
+        const { patient_id, patient_encounter_id } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Cardiac arrest']),
+          warning_signs: asWarningSigns(['Cardiac arrest'], { pregnant: false }),
         })
 
-        assertEquals(
-          $.url,
-          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
-        )
-
         const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
         })
 
         assertMatches(this_patient_findings, [
@@ -195,7 +189,7 @@ describeParallel('triage/warning_signs', () => {
             'specific_snomed_concept': {
               'snomed_concept_id': '410429000',
             },
-            'patient_encounter_id': encounter.patient_encounter_id,
+            'patient_encounter_id': patient_encounter_id,
             'as_part_of_procedure': {
               'record_id': z.string().uuid(),
               'root_snomed_concept': {
@@ -217,13 +211,13 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
-        const { encounter, getStep, postStep } = await setupTriage({
+        const { patient_id, patient_encounter_id, getStep, postStep } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Seizure']),
+          warning_signs: asWarningSigns(['Seizure'], { pregnant: false }),
         })
 
         const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
         })
 
         assertMatches(this_patient_findings, [
@@ -235,7 +229,7 @@ describeParallel('triage/warning_signs', () => {
               'name': 'Clinical finding',
               'category': 'finding',
             },
-            'patient_encounter_id': encounter.patient_encounter_id,
+            'patient_encounter_id': patient_encounter_id,
             'patient_encounter_employee_id': z.string().uuid(),
             'type': 'finding',
             'value': null,
@@ -288,8 +282,7 @@ describeParallel('triage/warning_signs', () => {
               'existence': 'Yes',
             },
             'dislocation-of-larger-joint': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
               'warning_sign_key': 'Dislocation of larger joint',
               'priority_level': 'Very urgent',
             },
@@ -303,7 +296,7 @@ describeParallel('triage/warning_signs', () => {
         })
 
         const this_patient_findings2 = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
         })
 
         assertLength(this_patient_findings2, 1)
@@ -313,24 +306,20 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts multiple warning sign findings when multiple are selected',
       async () => {
-        const { encounter } = await setupTriage({
+        const { patient_id } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Cardiac arrest', 'Chest pain']),
+          warning_signs: asWarningSigns(['Cardiac arrest', 'Chest pain'], { pregnant: false }),
         })
 
         const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
         })
 
         assertEquals(this_patient_findings.length, 2)
 
         // Both should be Clinical findings with the appropriate qualifiers
-        const cardiac_arrest_finding = this_patient_findings.find((f) =>
-          f.specific_snomed_concept.snomed_concept_id === '410429000'
-        )
-        const chest_pain_finding = this_patient_findings.find((f) =>
-          f.specific_snomed_concept.snomed_concept_id === '29857009'
-        )
+        const cardiac_arrest_finding = this_patient_findings.find((f) => f.specific_snomed_concept.snomed_concept_id === '410429000')
+        const chest_pain_finding = this_patient_findings.find((f) => f.specific_snomed_concept.snomed_concept_id === '29857009')
 
         assertMatches(cardiac_arrest_finding, {
           'root_snomed_concept': {
@@ -357,14 +346,14 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'marks a warning sign as having been entered in error if a second POST on the same page modifies it',
       async () => {
-        const { encounter, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain']),
+          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
 
         assertLength(
           await patient_findings.findAll(db, {
-            patient_id: encounter.patient.id,
+            patient_id,
           }),
           1,
         )
@@ -375,8 +364,7 @@ describeParallel('triage/warning_signs', () => {
         assertMatches(form_values, {
           'warning_signs': {
             'high-energy-transfer': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
               'warning_sign_key': 'High energy transfer',
               'priority_level': 'Very urgent',
               'existing_record': {
@@ -385,8 +373,7 @@ describeParallel('triage/warning_signs', () => {
               },
             },
             'chest-pain': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
               'existing_record': {
@@ -411,7 +398,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertLength(
           await patient_findings.findAll(db, {
-            patient_id: encounter.patient.id,
+            patient_id,
           }),
           0,
         )
@@ -419,16 +406,16 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
-      '400s if the client fails to include previously submitted records',
+      '409s if the client fails to include previously submitted records',
       async () => {
-        const { encounter, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain']),
+          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
 
         assertLength(
           await patient_findings.findAll(db, {
-            patient_id: encounter.patient.id,
+            patient_id,
           }),
           1,
         )
@@ -439,8 +426,7 @@ describeParallel('triage/warning_signs', () => {
         assertMatches(form_values, {
           'warning_signs': {
             'high-energy-transfer': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
               'warning_sign_key': 'High energy transfer',
               'priority_level': 'Very urgent',
               'existing_record': {
@@ -449,8 +435,7 @@ describeParallel('triage/warning_signs', () => {
               },
             },
             'chest-pain': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
               'existing_record': {
@@ -476,22 +461,22 @@ describeParallel('triage/warning_signs', () => {
         assert(!result.success)
         assertIncludes(
           result.error.message,
-          '[400]: It is expected that the frontend resubmit previously submitted records',
+          '[409]: It is expected that the frontend resubmit previously submitted records',
         )
       },
     )
 
     itParallel(
-      '400s if the client fails to mark records as modified when they were',
+      '409s if the client fails to mark records as modified when they were',
       async () => {
-        const { encounter, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain']),
+          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
 
         assertLength(
           await patient_findings.findAll(db, {
-            patient_id: encounter.patient.id,
+            patient_id,
           }),
           1,
         )
@@ -502,8 +487,7 @@ describeParallel('triage/warning_signs', () => {
         assertMatches(form_values, {
           'warning_signs': {
             'high-energy-transfer': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
               'warning_sign_key': 'High energy transfer',
               'priority_level': 'Very urgent',
               'existing_record': {
@@ -512,8 +496,7 @@ describeParallel('triage/warning_signs', () => {
               },
             },
             'chest-pain': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
               'existing_record': {
@@ -543,7 +526,7 @@ describeParallel('triage/warning_signs', () => {
         assert(!result.success)
         assertEquals(
           result.error.message.split('\n')[0],
-          `[400]: It is expected that the frontend keep track of whether the previously submitted record was modified. Detected a mismatch for ${
+          `[409]: It is expected that the frontend keep track of whether the previously submitted record was modified. Detected a mismatch for ${
             form_values.warning_signs['high-energy-transfer'].existing_record.id
           } which had existence: No, but just_submitted.existence: Yes`,
         )
@@ -551,38 +534,32 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
-      'does not insert any findings when no warning signs are selected',
+      'does not insert any positive findings when no warning signs are selected, but still inserts negative findings',
       async () => {
-        const { $, clinic, encounter } = await setupTriage({
+        const { patient_id } = await setupTriage({
           patient_demographics: {},
-          warning_signs: { warning_signs: {} },
+          warning_signs: asWarningSigns([], { pregnant: false }),
         })
 
-        assertEquals(
-          $.url,
-          `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
-        )
+        const positive_findings_count = await patient_findings.countAll(db, { patient_id })
+        assertEquals(positive_findings_count, 0)
 
-        const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
-        })
-
-        assertEquals(this_patient_findings.length, 0)
+        const negative_findings_count = await patient_findings.countAll(db, { patient_id, include_negative: true })
+        const number_of_pregnancy_related_signs = 2
+        assertEquals(negative_findings_count, keys(WARNING_SIGNS).length - number_of_pregnancy_related_signs)
       },
     )
 
     itParallel(
       'does not save warning signs already made during the encounter',
       async () => {
-        const { encounter, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriage({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain']),
+          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
 
         const findings_count_after_first_insertion = await patient_findings
-          .findAll(db, {
-            patient_id: encounter.patient.id,
-          })
+          .findAll(db, { patient_id })
 
         assertEquals(findings_count_after_first_insertion.length, 1)
 
@@ -591,8 +568,7 @@ describeParallel('triage/warning_signs', () => {
         assertMatches(form_values, {
           'warning_signs': {
             'chest-pain': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
               'existing_record': {
@@ -601,8 +577,7 @@ describeParallel('triage/warning_signs', () => {
               'existence': 'Yes',
             },
             'dislocation-of-larger-joint': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
               'warning_sign_key': 'Dislocation of larger joint',
               'priority_level': 'Very urgent',
             },
@@ -617,7 +592,7 @@ describeParallel('triage/warning_signs', () => {
 
         const findings_count_after_second_insertion = await patient_findings
           .countAll(db, {
-            patient_id: encounter.patient.id,
+            patient_id,
           })
 
         assertEquals(findings_count_after_second_insertion, 1)
@@ -627,48 +602,35 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'does save identical warning concepts made during different encounters',
       async () => {
-        const { clinic, nurse, encounter: initial_encounter } =
-          await setupTriage({
-            patient_demographics: {},
-            warning_signs: asWarningSigns(['Chest pain']),
-          })
+        const { nurse, patient_id, patient_encounter_id, postStep } = await setupTriage({
+          patient_demographics: {},
+          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+        })
 
         const findings_count_after_first_insertion = await patient_findings
           .findAll(db, {
-            patient_id: initial_encounter.patient.id,
+            patient_id,
           })
 
         assertEquals(findings_count_after_first_insertion.length, 1)
 
-        await patient_encounters.close(db, {
-          patient_encounter_id: initial_encounter.patient_encounter_id,
-        })
+        await patient_encounters.close(db, { patient_encounter_id })
 
-        const subsequent_encounter =
-          await insertReturningSeekingTreatmentWithEmployeeForTest(
-            db,
-            nurse.health_worker.organization_id,
-            {
-              patient_id: initial_encounter.patient.id,
-              employment_id: nurse.health_worker.employee_id,
-            },
-          )
-
-        await nurse.fetchOk(
-          `${route}/app/organizations/${clinic.id}/patients/${subsequent_encounter.patient.id}/open_encounter/triage/warning_signs`,
+        await insertReturningSeekingTreatmentWithEmployeeForTest(
+          db,
+          nurse.health_worker.organization_id,
           {
-            method: 'POST',
-            body: asFormData(asWarningSigns(['Chest pain'])),
-          },
-          {
-            cancel_response_body: true,
+            patient_id,
+            employment_id: nurse.health_worker.employee_id,
           },
         )
 
+        await postStep({
+          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+        })
+
         const findings_count_after_second_insertion = await patient_findings
-          .countAll(db, {
-            patient_id: initial_encounter.patient.id,
-          })
+          .countAll(db, { patient_id })
 
         assertEquals(findings_count_after_second_insertion, 2)
       },
@@ -677,23 +639,22 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs (those selected via search)',
       async () => {
-        const { encounter, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriage({
           patient_demographics: {},
           warning_signs: {
             warning_signs: {
-              ...asWarningSigns([]).warning_signs,
+              ...asWarningSigns([], { pregnant: false }).warning_signs,
               'Pain of ear': {
                 existence: 'Yes' as const,
                 priority_level: 'Non-urgent' as const,
-                s_expression:
-                  `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Pain of ear" "finding"))`,
+                s_expression: `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Pain of ear" "finding"))`,
               },
             },
           },
         })
 
         const [finding] = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
         })
 
         assertMatches(finding, {
@@ -720,7 +681,7 @@ describeParallel('triage/warning_signs', () => {
         })
 
         const subsequent_findings = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
         })
         assertLength(subsequent_findings, 1)
       },
@@ -729,14 +690,13 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs, including a priority level if the concept is a descendant of a warning sign',
       async () => {
-        const { $, clinic, nurse, encounter, getStep, postStep } =
-          await setupTriage({
-            patient_demographics: {},
-            early_brief_history: {
-              diabetes: { existence: 'No' },
-              pregnancy: { existence: 'Yes' },
-            },
-          })
+        const { $, clinic, nurse, patient_id, getStep, postStep } = await setupTriage({
+          patient_demographics: {},
+          early_brief_history: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'Yes' },
+          },
+        })
 
         const search_route = $('#warning-signs-search').attr(
           'data-searchroute',
@@ -744,21 +704,19 @@ describeParallel('triage/warning_signs', () => {
 
         assertEquals(
           search_route,
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs`,
+          `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/snomed-warning-signs`,
         )
 
         const { results } = await nurse.fetchJson(
           `${search_route}?search=appendicular+pain`,
         )
         assertEquals(results[0], {
-          clinical_finding_s_expression:
-            '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Appendicular pain" "finding"))',
+          clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Appendicular pain" "finding"))',
           snomed_concept_id: '275406005',
           sats_primary_name: 'Appendicular pain',
           sats_secondary_text: 'finding',
           sats_priority: 'Very urgent',
-          sats_priority_by_virtue_of_matching_warning_sign:
-            'Pregnancy and abdominal pain',
+          sats_priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
           similarity: 1,
         })
 
@@ -776,7 +734,7 @@ describeParallel('triage/warning_signs', () => {
         })
 
         const findings = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
           s_expression: `(not (finding ${STATUS_ATTRIBUTE.id}))`,
         })
         assertLength(findings, 1)
@@ -803,23 +761,22 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'creates an additional task to check for a head injury with watery discharge',
       async () => {
-        const { nurse, encounter } = await setupTriage({
+        const { nurse, encounter, patient_id, patient_encounter_id } = await setupTriage({
           patient_demographics: {},
           warning_signs: {
             warning_signs: {
-              ...asWarningSigns([]).warning_signs,
+              ...asWarningSigns([], { pregnant: false }).warning_signs,
               's275406005': {
                 existence: 'Yes',
                 priority_level: 'Non-urgent',
-                s_expression:
-                  `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nasal discharge" "finding"))`,
+                s_expression: `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nasal discharge" "finding"))`,
               },
             },
           },
         })
 
         const findings = await patient_findings.findAll(db, {
-          patient_id: encounter.patient.id,
+          patient_id,
         })
         assertLength(findings, 1)
 
@@ -834,7 +791,7 @@ describeParallel('triage/warning_signs', () => {
         })
 
         await events.allProcessedForEncounter(db, {
-          patient_encounter_id: encounter.patient_encounter_id,
+          patient_encounter_id,
         })
 
         const task_groups = await additional_tasks.getTasksGroups(db, {
@@ -846,11 +803,11 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
-    function testRoundTrip(sign: WarningSign, pregnant: boolean) {
+    function testRoundTrip(sign: WarningSign, pregnant: boolean, opts?: TestOpts) {
       itParallel(
         `renders the page with the ${sign.key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
         async () => {
-          const { clinic, nurse, encounter } = await setupTriage({
+          const { clinic, $, getStep } = await setupTriage({
             patient_demographics: {},
             early_brief_history: pregnant
               ? {
@@ -858,7 +815,7 @@ describeParallel('triage/warning_signs', () => {
                 pregnancy: { existence: 'Yes' },
               }
               : undefined,
-            warning_signs: asWarningSigns([sign.key]),
+            warning_signs: asWarningSigns([sign.key], { pregnant }),
           })
 
           const receptionist = await addTestEmployeeWithSession(db, {
@@ -867,14 +824,13 @@ describeParallel('triage/warning_signs', () => {
             organization_id: clinic.id,
           })
 
-          const $warning_signs = await nurse.fetchCheerio(
-            `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/warning_signs`,
+          assertEquals(
+            $('#patient-drawer-priority').text(),
+            sign.sats_priority,
+            `mismatch for ${humanReadableJson(sign)}`,
           )
 
-          assertEquals(
-            $warning_signs('#patient-drawer-priority').text(),
-            sign.sats_priority,
-          )
+          const $warning_signs = await getStep('warning_signs')
 
           const form_values = getFormValues($warning_signs)
           const hyphenated_key = hyphenate(sign.key.toLowerCase())
@@ -897,19 +853,25 @@ describeParallel('triage/warning_signs', () => {
             Priority: sign.sats_priority,
           }])
         },
+        opts,
       )
     }
 
-    // for (const sign of values(WARNING_SIGNS)) {
-    //   const pregnant = [
-    //     'Pregnancy and abdominal pain',
-    //     'Pregnancy and abdominal trauma',
-    //   ].includes(sign.key)
+    for (const sign of values(WARNING_SIGNS)) {
+      const pregnant = [
+        'Pregnancy and abdominal pain',
+        'Pregnancy and abdominal trauma',
+      ].includes(sign.key)
 
-    //   testRoundTrip(sign, pregnant)
-    // }
+      testRoundTrip(sign, pregnant)
+    }
 
-    // When you just want to test one. This is a good test to exercise s_expression
-    testRoundTrip(WARNING_SIGNS['Burn Other'], false)
+    /* Singletons to test */
+
+    // Exercises s_expression
+    // testRoundTrip(WARNING_SIGNS['Burn Other'], false, { only: true })
+
+    // Pregnancy
+    // testRoundTrip(WARNING_SIGNS['Pregnancy and abdominal pain'], true, { only: true })
   })
 })

@@ -1,7 +1,4 @@
-import {
-  ArrowUpCircleIcon,
-  MagnifyingGlassIcon,
-} from '../components/library/icons/heroicons/mini.tsx'
+import { ArrowUpCircleIcon, MagnifyingGlassIcon } from '../components/library/icons/heroicons/mini.tsx'
 import { ComponentChildren } from 'preact'
 import { useState } from 'preact/hooks'
 

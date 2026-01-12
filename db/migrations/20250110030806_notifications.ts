@@ -8,12 +8,9 @@ export function up(db: Kysely<DB>) {
     'health_worker_web_notifications',
     (qb) =>
       qb
-        .addColumn('health_worker_id', 'uuid', (col) =>
-          col.notNull().references('health_workers.id'))
-        .addColumn('table_name', 'varchar(255)', (col) =>
-          col.notNull())
-        .addColumn('row_id', 'uuid', (col) =>
-          col.notNull())
+        .addColumn('health_worker_id', 'uuid', (col) => col.notNull().references('health_workers.id'))
+        .addColumn('table_name', 'varchar(255)', (col) => col.notNull())
+        .addColumn('row_id', 'uuid', (col) => col.notNull())
         .addColumn('notification_type', 'varchar(255)', (col) => col.notNull())
         .addColumn('title', 'text', (col) => col.notNull())
         .addColumn('description', 'text', (col) => col.notNull())

@@ -130,9 +130,7 @@ export async function run(cmd: Cmd, target?: string) {
     const result = findTarget(target)
     if (result.type === 'not_found') {
       console.error(
-        `Please specify a valid target as in\n\n  deno task db:seed ${cmd} ${
-          seed_targets[0]
-        }\n\nValid targets:\n${seed_targets.join('\n')}`,
+        `Please specify a valid target as in\n\n  deno task db:seed ${cmd} ${seed_targets[0]}\n\nValid targets:\n${seed_targets.join('\n')}`,
       )
       Deno.exit(1)
     }
@@ -153,9 +151,7 @@ export async function run(cmd: Cmd, target?: string) {
     await spinner(`${gerund[cmd]} seed ${seed_name}`, async () => {
       const seed = seeds[seed_name]
       await seed[cmd]()
-      return `${seed_name} ${past_tense[cmd]}. Tables affected: ${
-        seed.table_names.join(', ')
-      }.`
+      return `${seed_name} ${past_tense[cmd]}. Tables affected: ${seed.table_names.join(', ')}.`
     })
   }
 }

@@ -1,9 +1,5 @@
 import { useRef, useState } from 'preact/hooks'
-import {
-  LinkIcon,
-  ListBulletIcon,
-  PhotoIcon,
-} from '../../../components/library/icons/heroicons/outline.tsx'
+import { LinkIcon, ListBulletIcon, PhotoIcon } from '../../../components/library/icons/heroicons/outline.tsx'
 
 type RichTextEditorProps = {
   name: string
@@ -81,9 +77,7 @@ export default function RichTextEditor(
             type='button'
             onClick={() => execCommand(btn.command, btn.value)}
             title={btn.title}
-            class={`p-2 hover:bg-gray-200 rounded transition-colors ${
-              btn.className || ''
-            }`}
+            class={`p-2 hover:bg-gray-200 rounded transition-colors ${btn.className || ''}`}
           >
             {btn.icon}
           </button>

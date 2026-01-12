@@ -1,9 +1,5 @@
 import { sql } from 'kysely'
-import {
-  MedicationSchedule,
-  PrescriptionMedication,
-  TrxOrDb,
-} from '../../types.ts'
+import { MedicationSchedule, PrescriptionMedication, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { PrescriptionMedicationsFilled } from '../../db.d.ts'
 

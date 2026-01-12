@@ -8,16 +8,10 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  ImportCreationRequest,
-  ImportJob,
-  ImportPatchCreationRequest,
-  LocalFileImportCreationRequest,
-} from './data-contracts.ts'
+import { ImportCreationRequest, ImportJob, ImportPatchCreationRequest, LocalFileImportCreationRequest } from './data-contracts.ts'
 import { ContentType, HttpClient, RequestParams } from './http-client.ts'
 
-export class Imports<SecurityDataType = unknown>
-  extends HttpClient<SecurityDataType> {
+export class Imports<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
    * @description Creates an import job ready for an archive to be uploaded. The 'internalRelease' flag is optional, it can be used to hide a version from the code system versions listing and prevent it being chosen as the code system 'latestRelease'. The 'location' response header contain the URL, including the identifier, of the new resource. Use the upload archive function next. An optional list of module IDs can be provided like ["731000124108", "900000000000012004"] to import only those modules. Leave empty or omit argument for all modules.
    *

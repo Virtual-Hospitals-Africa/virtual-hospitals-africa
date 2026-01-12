@@ -128,9 +128,7 @@ export async function initializeHealthWorkerWithoutInvites(
   }
 
   const { health_worker_id, existing_employment } = await (
-    existing_health_worker
-      ? updateExistingHealthWorker(existing_health_worker.id)
-      : insertNewHealthWorker()
+    existing_health_worker ? updateExistingHealthWorker(existing_health_worker.id) : insertNewHealthWorker()
   )
 
   await events.insert(trx, {

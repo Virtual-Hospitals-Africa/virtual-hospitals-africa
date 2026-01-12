@@ -4,11 +4,7 @@ import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  buildExpression,
-  satisfyingSExpression,
-  snomedConceptBase,
-} from './s_expression.ts'
+import { buildExpression, satisfyingSExpression, snomedConceptBase } from './s_expression.ts'
 import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
