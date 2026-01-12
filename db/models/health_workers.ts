@@ -4,7 +4,7 @@ import { EmployedHealthWorker, IdSelection, Maybe, NonEmptyArray, PossiblyEmploy
 import { organizations } from './organizations.ts'
 import { jsonArrayFrom, jsonArrayFromColumn, orderByArrayPosition } from '../helpers.ts'
 import { Profession } from '../../db.d.ts'
-import { NameInputs } from './asNames.ts'
+import { NameInputs } from '../../util/asNames.ts'
 import { base } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'

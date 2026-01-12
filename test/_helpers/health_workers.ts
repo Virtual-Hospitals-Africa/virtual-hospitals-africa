@@ -1,4 +1,4 @@
-import { asNames, NameInputs } from '../../db/models/asNames.ts'
+import { asNames, NameInputs } from '../../util/asNames.ts'
 import { health_worker_google_tokens, type HealthWorkerWithGoogleTokens } from '../../db/models/health_worker_google_tokens.ts'
 import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
 import { TrxOrDb } from '../../types.ts'

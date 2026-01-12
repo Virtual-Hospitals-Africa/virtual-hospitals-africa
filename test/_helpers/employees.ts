@@ -15,7 +15,7 @@ import omit from '../../util/omit.ts'
 import { health_worker_google_tokens, type HealthWorkerWithGoogleTokens } from '../../db/models/health_worker_google_tokens.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
-import { asMaybeNames, asNames } from '../../db/models/asNames.ts'
+import { asMaybeNames, asNames } from '../../util/asNames.ts'
 import compact from '../../util/compact.ts'
 
 type TestHealthWorkerOpts = {

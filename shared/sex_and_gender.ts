@@ -1,12 +1,12 @@
 import { RenderedPatient } from '../types.ts'
 
 export function pronoun(
-  { sex, gender }: Pick<RenderedPatient, 'sex' | 'gender'>,
+  { gender }: Pick<RenderedPatient, 'gender'>,
 ) {
-  switch (`${sex}${gender}`) {
-    case 'maleman':
+  switch (gender) {
+    case 'man':
       return 'him'
-    case 'femalewoman':
+    case 'woman':
       return 'her'
     default:
       'them'

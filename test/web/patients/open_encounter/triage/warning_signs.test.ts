@@ -272,8 +272,7 @@ describeParallel('triage/warning_signs', () => {
         assertMatches(form_values, {
           'warning_signs': {
             'seizure': {
-              's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
+              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
               'warning_sign_key': 'Seizure',
               'priority_level': 'Emergency',
               'existing_record': {
