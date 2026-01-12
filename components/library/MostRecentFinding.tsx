@@ -37,9 +37,8 @@ export function MostRecentFinding(
           className='text-blue-500'
         >
           {finding.displays.full}
-        </a>
-        &nbsp;recorded&nbsp;
-        <LocalTime timestamp={finding.created_at} expected_time_range='past' />
+        </a>{' '}
+        <LocalTime timestamp={finding.created_at} expected_time_range='past' preceding_past_participle='recorded' />
       </span>
 
       <div className='absolute left-0 z-50 hidden pt-2 top-full group-hover:block group-focus-within:block hover:block'>

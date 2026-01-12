@@ -590,7 +590,7 @@ describeParallel('triage/brief_history', () => {
                 },
                 {
                   'tag': 'span',
-                  'text': z.string().regex(/^at \d{1,2}:\d{2}/),
+                  'text': z.string().regex(/^recorded at \d{1,2}:\d{2}/),
                 },
               ],
             },
@@ -703,7 +703,7 @@ describeParallel('triage/brief_history', () => {
                                         {
                                           'tag': 'span',
                                           'text': z.string().regex(
-                                            /^at \d{1,2}:\d{2}/,
+                                            /^at \d{1,2}:\d{2}/,
                                           ),
                                         },
                                       ],

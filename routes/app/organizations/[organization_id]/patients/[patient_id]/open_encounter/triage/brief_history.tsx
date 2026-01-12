@@ -188,19 +188,17 @@ function BriefHistorySection(
   },
 ) {
   return (
-    <FormSection header='Confirm Pre-existing Conditions'>
-      <YesNoGrid title='Condition'>
-        {COMMON_CONDITIONS.map((condition) => (
-          <CommonConditionRow
-            key={condition.key}
-            condition={condition}
-            sex={sex}
-            organization_id={organization_id}
-            most_recent_finding={most_recent_findings[condition.key]}
-          />
-        ))}
-      </YesNoGrid>
-    </FormSection>
+    <YesNoGrid title='Condition'>
+      {COMMON_CONDITIONS.map((condition) => (
+        <CommonConditionRow
+          key={condition.key}
+          condition={condition}
+          sex={sex}
+          organization_id={organization_id}
+          most_recent_finding={most_recent_findings[condition.key]}
+        />
+      ))}
+    </YesNoGrid>
   )
 }
 

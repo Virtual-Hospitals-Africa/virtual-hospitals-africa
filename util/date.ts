@@ -548,8 +548,8 @@ export function formatDateTime(
   }).format(date)
 
   return {
-    date_display,
-    time_display,
+    date_display: date_display.replace(' ', ' '),
+    time_display: time_display.replace(' ', ' '),
     type: getType(),
   }
 
