@@ -30,7 +30,7 @@
 //   itParallel(
 //     'can model complex rules such as BP >= 180/110 and not pregnant',
 //     async () => {
-//       // setupTriage()
+//       // setupTriageNewPatient()
 
 //       const patient_with_gum_teeth = `
 //         (patient

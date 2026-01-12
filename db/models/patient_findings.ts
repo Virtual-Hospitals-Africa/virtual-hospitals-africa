@@ -465,6 +465,7 @@ export const patient_findings = base({
         (qb) => triage_level_values.length ? qb.insertInto('patient_triage_level').values(triage_level_values) : blankSelection(qb),
       ).selectFrom('inserting_records')
       .innerJoin('inserting_procedure_record', (join) => join.onTrue())
+      .groupBy('inserting_procedure_record.id')
       .select([
         success_true,
         'inserting_procedure_record.id as procedure_id',

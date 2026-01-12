@@ -21,7 +21,7 @@ import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import { CLINICAL_FINDING, STATUS_ATTRIBUTE } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
-import { asWarningSigns, setupTriage } from './_setup.ts'
+import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
 import { hyphenate } from '../../../../../util/hyphenate.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { asResultAsync } from '../../../../../util/asResult.ts'
@@ -39,7 +39,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'renders a warning signs page when patient not known to be pregnant',
       async () => {
-        const { $ } = await setupTriage({
+        const { $ } = await setupTriageNewPatient({
           patient_demographics: {},
         })
 
@@ -105,7 +105,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'renders the pregnancy-specific signs when the patient is pregnant',
       async () => {
-        const { nurse, encounter, patient_id, patient_encounter_id, getStep } = await setupTriage({
+        const { nurse, encounter, patient_id, patient_encounter_id, getStep } = await setupTriageNewPatient({
           patient_demographics: {},
           early_brief_history: {
             diabetes: { existence: 'No' },
@@ -168,7 +168,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts a simple warning sign finding without qualifiers',
       async () => {
-        const { patient_id, patient_encounter_id } = await setupTriage({
+        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Cardiac arrest'], { pregnant: false }),
         })
@@ -211,7 +211,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
-        const { patient_id, patient_encounter_id, getStep, postStep } = await setupTriage({
+        const { patient_id, patient_encounter_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Seizure'], { pregnant: false }),
         })
@@ -306,7 +306,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts multiple warning sign findings when multiple are selected',
       async () => {
-        const { patient_id } = await setupTriage({
+        const { patient_id } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Cardiac arrest', 'Chest pain'], { pregnant: false }),
         })
@@ -346,7 +346,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'marks a warning sign as having been entered in error if a second POST on the same page modifies it',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
@@ -369,7 +369,7 @@ describeParallel('triage/warning_signs', () => {
               'priority_level': 'Very urgent',
               'existing_record': {
                 'id': z.string().uuid(),
-                'modified': false,
+                'altered': false,
               },
             },
             'chest-pain': {
@@ -378,7 +378,7 @@ describeParallel('triage/warning_signs', () => {
               'priority_level': 'Very urgent',
               'existing_record': {
                 'id': z.string().uuid(),
-                'modified': false,
+                'altered': false,
               },
               'existence': 'Yes',
             },
@@ -389,7 +389,7 @@ describeParallel('triage/warning_signs', () => {
         // @ts-ignore the frontend sends this back blank
         delete next_form_submission.warning_signs['chest-pain'].existence
         next_form_submission.warning_signs['chest-pain'].existing_record
-          .modified = true
+          .altered = true
 
         await postStep({
           // deno-lint-ignore no-explicit-any
@@ -408,7 +408,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       '409s if the client fails to include previously submitted records',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
@@ -431,7 +431,7 @@ describeParallel('triage/warning_signs', () => {
               'priority_level': 'Very urgent',
               'existing_record': {
                 'id': z.string().uuid(),
-                'modified': false,
+                'altered': false,
               },
             },
             'chest-pain': {
@@ -440,7 +440,7 @@ describeParallel('triage/warning_signs', () => {
               'priority_level': 'Very urgent',
               'existing_record': {
                 'id': z.string().uuid(),
-                'modified': false,
+                'altered': false,
               },
               'existence': 'Yes',
             },
@@ -467,9 +467,9 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
-      '409s if the client fails to mark records as modified when they were',
+      '409s if the client fails to mark records as altered when they were',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
@@ -492,7 +492,7 @@ describeParallel('triage/warning_signs', () => {
               'priority_level': 'Very urgent',
               'existing_record': {
                 'id': z.string().uuid(),
-                'modified': false,
+                'altered': false,
               },
             },
             'chest-pain': {
@@ -501,7 +501,7 @@ describeParallel('triage/warning_signs', () => {
               'priority_level': 'Very urgent',
               'existing_record': {
                 'id': z.string().uuid(),
-                'modified': false,
+                'altered': false,
               },
               'existence': 'Yes',
             },
@@ -526,7 +526,7 @@ describeParallel('triage/warning_signs', () => {
         assert(!result.success)
         assertEquals(
           result.error.message.split('\n')[0],
-          `[409]: It is expected that the frontend keep track of whether the previously submitted record was modified. Detected a mismatch for ${
+          `[409]: It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${
             form_values.warning_signs['high-energy-transfer'].existing_record.id
           } which had existence: No, but just_submitted.existence: Yes`,
         )
@@ -536,7 +536,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'does not insert any positive findings when no warning signs are selected, but still inserts negative findings',
       async () => {
-        const { patient_id } = await setupTriage({
+        const { patient_id } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns([], { pregnant: false }),
         })
@@ -553,7 +553,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'does not save warning signs already made during the encounter',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
@@ -602,7 +602,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'does save identical warning concepts made during different encounters',
       async () => {
-        const { nurse, patient_id, patient_encounter_id, postStep } = await setupTriage({
+        const { nurse, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
         })
@@ -639,7 +639,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs (those selected via search)',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriage({
+        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: {
             warning_signs: {
@@ -690,7 +690,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs, including a priority level if the concept is a descendant of a warning sign',
       async () => {
-        const { $, clinic, nurse, patient_id, getStep, postStep } = await setupTriage({
+        const { $, clinic, nurse, patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           early_brief_history: {
             diabetes: { existence: 'No' },
@@ -761,7 +761,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'creates an additional task to check for a head injury with watery discharge',
       async () => {
-        const { nurse, encounter, patient_id, patient_encounter_id } = await setupTriage({
+        const { nurse, encounter, patient_id, patient_encounter_id } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: {
             warning_signs: {
@@ -807,7 +807,7 @@ describeParallel('triage/warning_signs', () => {
       itParallel(
         `renders the page with the ${sign.key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
         async () => {
-          const { clinic, $, getStep } = await setupTriage({
+          const { clinic, $, getStep } = await setupTriageNewPatient({
             patient_demographics: {},
             early_brief_history: pregnant
               ? {

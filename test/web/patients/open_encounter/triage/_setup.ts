@@ -1,8 +1,13 @@
 import db from '../../../../../db/db.ts'
 import asFormData from '../../../../../util/asFormData.ts'
-import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
+import { addTestEmployeeWithSession, TestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { createTestOrganization } from '../../../../_helpers/organizations.ts'
-import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest, PartialPatientDemographics } from '../../../../_helpers/workflows.ts'
+import {
+  insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
+  insertReturningSeekingTreatmentWithEmployeeForTest,
+  PartialPatientDemographics,
+  TestEncounterRelativeToHealthWorker,
+} from '../../../../_helpers/workflows.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import {
@@ -28,7 +33,7 @@ export type TriageSteps = {
   measure_vitals?: z.input<typeof TriageMeasureVitalsSchema>
 }
 
-export type TriageScenario = TriageSteps & {
+export type TriageScenarioNewPatient = TriageSteps & {
   patient_demographics: PartialPatientDemographics
   early_brief_history?: z.input<typeof TriageBriefHistorySchema>
 }
@@ -67,35 +72,17 @@ export function asWarningSigns(
   }
 }
 
-/**
- * Sets up a triage scenario, going as far into the workflow as data provided
- */
-export async function setupTriage(
-  {
-    patient_demographics,
-    ...steps
-  }: TriageScenario,
-) {
-  const clinic = await createTestOrganization(db)
-
-  const nurse = await addTestEmployeeWithSession(db, {
-    profession: 'nurse',
-    registration_status: 'approved',
-    organization_id: clinic.id,
-  })
-
-  const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-    db,
-    nurse.health_worker.organization_id,
-    {
-      patient_demographics,
-      employment_id: nurse.health_worker.employee_id,
-    },
-  )
-
-  const patient_id = encounter.patient.id
-  const patient_encounter_id = encounter.patient_encounter_id
-
+async function setupTriage({
+  clinic,
+  nurse,
+  encounter,
+  steps,
+}: {
+  clinic: { id: string }
+  nurse: TestEmployeeWithSession
+  encounter: TestEncounterRelativeToHealthWorker
+  steps: TriageSteps
+}) {
   function openEncounterRoute(path: string) {
     assert(!path.startsWith('/'))
     return `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/${path}`
@@ -110,7 +97,7 @@ export async function setupTriage(
   }
 
   async function postStep(
-    steps: Partial<NonNullable<Omit<TriageScenario, 'patient_demographics'>>>,
+    steps: Partial<NonNullable<Omit<TriageScenarioNewPatient, 'patient_demographics'>>>,
   ) {
     let $!: CheerioAPI & { url: string }
     for (const [step, data] of entries(steps)) {
@@ -135,11 +122,67 @@ export async function setupTriage(
     clinic,
     nurse,
     encounter,
-    patient_id,
-    patient_encounter_id,
+    patient_id: encounter.patient.id,
+    patient_encounter_id: encounter.patient_encounter_id,
     getStep,
     postStep,
     openEncounterRoute,
     triageRoute,
   }
+}
+
+/**
+ * Sets up a triage scenario for a new patient, going as far into the workflow steps as data provided
+ */
+export async function setupTriageNewPatient(
+  {
+    patient_demographics,
+    ...steps
+  }: TriageScenarioNewPatient,
+) {
+  const clinic = await createTestOrganization(db)
+
+  const nurse = await addTestEmployeeWithSession(db, {
+    profession: 'nurse',
+    registration_status: 'approved',
+    organization_id: clinic.id,
+  })
+
+  const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
+    db,
+    nurse.health_worker.organization_id,
+    {
+      patient_demographics,
+      employment_id: nurse.health_worker.employee_id,
+    },
+  )
+
+  return setupTriage({ clinic, nurse, encounter, steps })
+}
+
+/**
+ * Sets up a triage scenario for a returning patient, going as far into the workflow steps as data provided
+ */
+export async function setupTriageReturningPatient(
+  {
+    nurse,
+    clinic,
+    patient_id,
+    ...steps
+  }: TriageSteps & {
+    nurse: TestEmployeeWithSession
+    clinic: { id: string }
+    patient_id: string
+  },
+) {
+  const encounter = await insertReturningSeekingTreatmentWithEmployeeForTest(
+    db,
+    nurse.health_worker.organization_id,
+    {
+      patient_id,
+      employment_id: nurse.health_worker.employee_id,
+    },
+  )
+
+  return setupTriage({ clinic, nurse, encounter, steps })
 }

@@ -72,6 +72,8 @@ export type PartialPatientDemographics = {
   gender?: string
 }
 
+export type TestEncounterRelativeToHealthWorker = Awaited<ReturnType<typeof insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest>>
+
 export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
   trx: TrxOrDb,
   organization_id: string,

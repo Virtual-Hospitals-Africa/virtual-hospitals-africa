@@ -3,10 +3,13 @@ import s_expression from 's-expression'
 import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as schemas from './s_expression_schemas.ts'
-import { parseWithValues } from '../util/assertMatches.ts'
+
 import isObjectLike from '../util/isObjectLike.ts'
 import z from 'zod'
 import { inverseSExpression } from './s_expression_inverse.ts'
+import { positive_decimal, snomed_concept_id } from '../util/validators.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { Values } from '../types.ts'
 
 type SExpressionNode = {
   atom: string
@@ -30,26 +33,39 @@ function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
 
 type SExpressionSimpleNode = string | SExpressionSimpleNode[]
 
-export function firstPass(
+function parseExpressionBase<Schema extends Values<typeof schemas>>(
   expression: string,
+  schema: Schema,
 ) {
-  const parsed = s_expression(expression) as SExpressionSimpleNode
-  if (parsed instanceof Error) {
-    throw parsed
+  try {
+    const parsed = s_expression(expression) as SExpressionSimpleNode
+    if (parsed instanceof Error) {
+      throw parsed
+    }
+    assert(Array.isArray(parsed))
+    const first_pass = recursiveTreePass(parsed)
+    const second_pass = schema.parse(first_pass)
+
+    // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions
+    const normal_form_by_inverse = inverseSExpression(second_pass)
+    const normalized = normalForm(normal_form_by_inverse)
+    assertEquals(normal_form_by_inverse, normalized)
+    return second_pass
+  } catch (err) {
+    const msg = `failure to parse ${expression} as ${schema.description}\n`
+    if (err instanceof Error) {
+      err.message = msg + err.message
+      throw err
+    }
+    console.error(msg)
+    throw err
   }
-  return recursiveTreePass(parsed)
 }
 
 export function parseExpression(
   expression: string,
 ) {
-  const first_pass = firstPass(expression)
-  try {
-    return schemas.any_expression.parse(first_pass)
-  } catch (_err) {
-    console.log(expression, _err)
-    throw new Error('failure to parse')
-  }
+  return parseExpressionBase(expression, schemas.any_expression)
 }
 
 export type Atom = schemas.AnyNode['atom']
@@ -80,20 +96,9 @@ export function parseExpressionExpectingAtom<
   expression: string,
   atom: T,
 ): schemas.Lang[T] {
-  const parsed = s_expression(expression) as SExpressionSimpleNode
-  if (parsed instanceof Error) {
-    throw parsed
-  }
-
-  const first_pass = recursiveTreePass(parsed)
-
-  const schema = schemaByAtom(atom)
-
-  const second_pass = parseWithValues(schema, first_pass)
-
-  assert(isAtom(second_pass, atom))
-
-  return second_pass
+  const parsed = parseExpressionBase(expression, schemaByAtom(atom))
+  assert(isAtom(parsed, atom))
+  return parsed
 }
 
 export function asNode<
@@ -111,15 +116,44 @@ export function asNode<
 
 export function sExpressionZodValidator<T extends Atom>(atom: T) {
   return z.string()
-    .transform((expression) => {
-      const first_pass = firstPass(expression)
-      const schema = schemaByAtom(atom)
-      const second_pass = parseWithValues(schema, first_pass)
-      assert(isAtom(second_pass, atom))
-      return second_pass
-    })
+    .transform((expression) => parseExpressionExpectingAtom(expression, atom))
 }
 
-export function normalForm(s_expression: string): string {
-  return inverseSExpression(parseExpression(s_expression))
+// function normalFormRoundTrip(s_expression: string): string {
+//   return inverseSExpression(parseExpression(s_expression))
+// }
+
+export function normalForm(expr: string): string {
+  const parsed = s_expression(expr) as SExpressionSimpleNode
+  if (parsed instanceof Error) {
+    throw parsed
+  }
+  assert(Array.isArray(parsed))
+  return fastNormalize(parsed)
+}
+
+const UNITS = new Set([
+  '%',
+  'bpm',
+  '°C',
+  'cm',
+  'kg',
+  'mg/dL',
+  'mmHg',
+])
+
+function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>): string {
+  if (rest.length === 0) return `(${atom})`
+  const terms = rest.map((item, index) => {
+    if (Array.isArray(item)) return fastNormalize(item)
+    if (snomed_concept_id.safeParse(item).success) return String(item)
+    if (positive_decimal.safeParse(item).success) return String(item)
+    if (atom === 'units' && index === 1) {
+      assert(UNITS.has(item as string), `Update UNITS to include ${item}`)
+      return item
+    }
+    if (isString(item)) return `"${item}"`
+    throw new Error(`Unable to normalize ${item}`)
+  }).join(' ')
+  return `(${atom} ${terms})`
 }
