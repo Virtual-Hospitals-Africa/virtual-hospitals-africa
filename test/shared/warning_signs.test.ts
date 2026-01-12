@@ -73,18 +73,7 @@ describe('shared/warning_signs.ts', () => {
               'type': 'snomed_concept_name_and_category',
             },
             'value_snomed_concept': null,
-            'qualifiers': [
-              {
-                'atom': 'qualifier',
-                'specific_snomed_concept': {
-                  'atom': 'snomed_concept',
-                  'name': 'Current',
-                  'category': 'qualifier value',
-                  'type': 'snomed_concept_name_and_category',
-                },
-                'qualifiers': [],
-              },
-            ],
+            'qualifiers': [],
             'attributes': [],
             'exact': false,
           },
@@ -506,7 +495,7 @@ describe('shared/warning_signs.ts', () => {
         {
           'key': 'Dislocation of larger joint',
           'excluding_s_expression':
-            '\n      (or (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Finger structure" "body structure"))\n           (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Toe structure" "body structure")))\n    ',
+            '(or (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Finger structure" "body structure")) (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Toe structure" "body structure")))',
           'sats_primary_name': 'Dislocation of larger joint',
           'sats_secondary_text': 'not finger or toe',
           'sats_priority': 'Very urgent',
@@ -921,7 +910,7 @@ describe('shared/warning_signs.ts', () => {
         {
           'key': 'Burn Other',
           'excluding_s_expression':
-            '\n      (or\n        (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value")))\n        (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Inhalation burn due to hot gas" "disorder"))\n        (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chemical burn" "disorder"))\n        (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn of face" "disorder")))\n    ',
+            '(or (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value"))) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Inhalation burn due to hot gas" "disorder")) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chemical burn" "disorder")) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn of face" "disorder")))',
           'sats_primary_name': 'Burn',
           'sats_secondary_text': 'Other',
           'sats_priority': 'Urgent',

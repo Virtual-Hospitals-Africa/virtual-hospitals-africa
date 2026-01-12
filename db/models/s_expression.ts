@@ -8,16 +8,7 @@ import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import {
-  ATTRIBUTE,
-  CLINICAL_FINDING,
-  EVENT,
-  NO_QUALIFIER,
-  QUALIFIER_VALUE,
-  STATUS_ATTRIBUTE,
-  UNKNOWN_QUALIFIER,
-  YES_QUALIFIER,
-} from '../../shared/snomed_concepts.ts'
+import { ATTRIBUTE, EVENT, NO_QUALIFIER, QUALIFIER_VALUE, STATUS_ATTRIBUTE, UNKNOWN_QUALIFIER, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 
 type PatientIdentifiers = {
@@ -494,7 +485,7 @@ const EXPRESSION_BUILDERS = {
       trx,
       patient,
       parseExpression(`
-        (or (finding ${CLINICAL_FINDING.s_expression} ${snomed_concept_s_expression})
+        (or (clinical_finding ${snomed_concept_s_expression})
             (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
       `),
     )

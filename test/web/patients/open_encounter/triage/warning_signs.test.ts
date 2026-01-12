@@ -254,8 +254,8 @@ describeParallel('triage/warning_signs', () => {
             'priority': 'Emergency',
             'score': null,
             'displays': {
-              'finding': 'Current Seizure',
-              'full': 'Current Seizure',
+              'finding': 'Seizure',
+              'full': 'Seizure',
               'value': null,
             },
             'modifiers': z.array(z.any()),
@@ -273,7 +273,7 @@ describeParallel('triage/warning_signs', () => {
           'warning_signs': {
             'seizure': {
               's_expression':
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding") (qualifier (snomed_concept "Current" "qualifier value")))',
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
               'warning_sign_key': 'Seizure',
               'priority_level': 'Emergency',
               'existing_record': {
@@ -647,7 +647,7 @@ describeParallel('triage/warning_signs', () => {
               'Pain of ear': {
                 existence: 'Yes' as const,
                 priority_level: 'Non-urgent' as const,
-                s_expression: `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Pain of ear" "finding"))`,
+                s_expression: `(clinical_finding (snomed_concept "Pain of ear" "finding"))`,
               },
             },
           },
@@ -711,7 +711,7 @@ describeParallel('triage/warning_signs', () => {
           `${search_route}?search=appendicular+pain`,
         )
         assertEquals(results[0], {
-          clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Appendicular pain" "finding"))',
+          clinical_finding_s_expression: '(clinical_finding (snomed_concept "Appendicular pain" "finding"))',
           snomed_concept_id: '275406005',
           sats_primary_name: 'Appendicular pain',
           sats_secondary_text: 'finding',
@@ -769,7 +769,7 @@ describeParallel('triage/warning_signs', () => {
               's275406005': {
                 existence: 'Yes',
                 priority_level: 'Non-urgent',
-                s_expression: `(finding ${CLINICAL_FINDING.s_expression} (snomed_concept "Nasal discharge" "finding"))`,
+                s_expression: `(clinical_finding (snomed_concept "Nasal discharge" "finding"))`,
               },
             },
           },

@@ -8,7 +8,7 @@ import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
 import { jsonBuildObject, literalString } from '../helpers.ts'
 import { buildExpression } from './s_expression.ts'
 import { isAtom, parseExpression } from '../../shared/s_expression.ts'
-import { asConceptSExpression, CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
+import { asConceptSExpression } from '../../shared/snomed_concepts.ts'
 
 type SearchTerms = {
   search: string
@@ -157,7 +157,7 @@ export const snomed_model = base({
   getPriorityOfSnomedConcept,
   formatResult(result) {
     const concept_s_expression = asConceptSExpression(result)
-    const clinical_finding_s_expression = `(finding ${CLINICAL_FINDING.s_expression} ${concept_s_expression})`
+    const clinical_finding_s_expression = `(clinical_finding ${concept_s_expression})`
     return {
       clinical_finding_s_expression,
       snomed_concept_id: result.id,

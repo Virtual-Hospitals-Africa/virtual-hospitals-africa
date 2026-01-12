@@ -6,14 +6,10 @@ import partition from '../util/partition.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom } from './s_expression.ts'
-import { Coordinates, Maybe } from '../types.ts'
+import { Coordinates, Maybe, NonNullableProperty } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
-import { EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, PROCEDURE } from './snomed_concepts.ts'
-
-type Node<Atom, Rest> = {
-  atom: Atom
-} & Rest
+import { CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, PROCEDURE } from './snomed_concepts.ts'
 
 type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
@@ -110,7 +106,9 @@ type BaseLang =
   }
 
 export type Lang = {
-  [A in keyof BaseLang]: Node<A, BaseLang[A]>
+  [Atom in keyof BaseLang]: {
+    atom: Atom
+  } & BaseLang[Atom]
 }
 
 export type AnyNode = Lang[keyof Lang]
@@ -199,7 +197,7 @@ function isAttribute(node: AnyNode): node is Lang['attribute'] {
   return node.atom === 'attribute'
 }
 
-export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
+export const finding_base: z.ZodType<Lang['finding']> = z.lazy(() =>
   z.object({
     atom: z.literal('finding'),
     args: z.tuple([
@@ -260,7 +258,67 @@ export const finding: z.ZodType<Lang['finding']> = z.lazy(() =>
       }
     },
   )
-).describe('finding')
+).describe('finding_base')
+
+export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'root_snomed_concept'>> = z.lazy(() =>
+  z.object({
+    atom: z.literal('clinical_finding'),
+    args: z.tuple([
+      snomed_concept_or_attribute_or_qualifier.optional(),
+      snomed_concept_or_attribute_or_qualifier.optional(),
+      attribute_or_qualifier.optional(),
+      attribute_or_qualifier.optional(),
+      attribute_or_qualifier.optional(),
+      attribute_or_qualifier.optional(),
+      attribute_or_qualifier.optional(),
+      attribute_or_qualifier.optional(),
+    ]),
+  }).transform(
+    (
+      {
+        args: [
+          specific_snomed_concept = null,
+          value_snomed_concept = null,
+          ...rest
+        ],
+      },
+    ) => {
+      const nodes = compact(rest)
+
+      if (value_snomed_concept && !isSnomedConcept(value_snomed_concept)) {
+        nodes.unshift(value_snomed_concept)
+        value_snomed_concept = null
+      }
+
+      if (
+        specific_snomed_concept && !isSnomedConcept(specific_snomed_concept)
+      ) {
+        assert(!isSnomedConcept(value_snomed_concept))
+        nodes.unshift(specific_snomed_concept)
+        specific_snomed_concept = null
+      }
+
+      const [qualifiers, attributes] = partition(nodes, isQualifier)
+
+      return {
+        atom: 'finding' as const,
+        root_snomed_concept: {
+          atom: 'snomed_concept' as const,
+          type: 'snomed_concept_name_and_category' as const,
+          name: CLINICAL_FINDING.name,
+          category: CLINICAL_FINDING.category,
+        },
+        specific_snomed_concept,
+        value_snomed_concept,
+        qualifiers,
+        attributes,
+        exact: false,
+      }
+    },
+  )
+).describe('clinical_finding')
+
+export const finding: z.ZodType<Lang['finding']> = z.lazy(() => finding_base.or(clinical_finding)).describe('finding')
 
 export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
   z.object({

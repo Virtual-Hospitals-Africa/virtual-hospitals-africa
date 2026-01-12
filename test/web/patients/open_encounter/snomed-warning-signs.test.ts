@@ -40,7 +40,7 @@ describeParallel('snomed-warning-signs', () => {
           'rows_per_page': 20,
           'results': [
             {
-              'clinical_finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain of ear" "finding"))',
+              'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Pain of ear" "finding"))',
               'snomed_concept_id': '301354004',
               'sats_primary_name': 'Pain of ear',
               'sats_secondary_text': 'finding',
@@ -48,7 +48,7 @@ describeParallel('snomed-warning-signs', () => {
               'similarity': 1,
             },
             {
-              'clinical_finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Otalgia of left ear" "finding"))',
+              'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Otalgia of left ear" "finding"))',
               'snomed_concept_id': '1010233001',
               'sats_primary_name': 'Otalgia of left ear',
               'sats_secondary_text': 'finding',
@@ -56,7 +56,7 @@ describeParallel('snomed-warning-signs', () => {
               'similarity': 0.47058824,
             },
             {
-              'clinical_finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Bilateral earache" "finding"))',
+              'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Bilateral earache" "finding"))',
               'snomed_concept_id': '162359003',
               'sats_primary_name': 'Bilateral earache',
               'sats_secondary_text': 'finding',
@@ -64,7 +64,7 @@ describeParallel('snomed-warning-signs', () => {
               'similarity': 0.44444445,
             },
             {
-              'clinical_finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Otalgia of right ear" "finding"))',
+              'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Otalgia of right ear" "finding"))',
               'snomed_concept_id': '1010234007',
               'sats_primary_name': 'Otalgia of right ear',
               'sats_secondary_text': 'finding',
@@ -72,7 +72,7 @@ describeParallel('snomed-warning-signs', () => {
               'similarity': 0.44444445,
             },
             {
-              'clinical_finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Aching pain" "finding"))',
+              'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Aching pain" "finding"))',
               'snomed_concept_id': '27635008',
               'sats_primary_name': 'Aching pain',
               'sats_secondary_text': 'finding',
@@ -113,7 +113,7 @@ describeParallel('snomed-warning-signs', () => {
         )
 
         assertEquals(results[0], {
-          'clinical_finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Appendicular pain" "finding"))',
+          'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Appendicular pain" "finding"))',
           'snomed_concept_id': '275406005',
           'sats_primary_name': 'Appendicular pain',
           'sats_secondary_text': 'finding',
@@ -163,7 +163,7 @@ describeParallel('snomed-warning-signs', () => {
         )
 
         assertEquals(results[0], {
-          'clinical_finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Appendicular pain" "finding"))',
+          'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Appendicular pain" "finding"))',
           'snomed_concept_id': '275406005',
           'sats_primary_name': 'Appendicular pain',
           'sats_secondary_text': 'finding',

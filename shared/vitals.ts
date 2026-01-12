@@ -25,7 +25,7 @@ import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 import { positive_decimal } from '../util/validators.ts'
 import { collectSortedUniqDecimals } from '../util/collectSorted.ts'
-import { CLINICAL_FINDING } from './snomed_concepts.ts'
+
 import { normalForm } from './s_expression.ts'
 import { Lang } from './s_expression_schemas.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
@@ -176,12 +176,11 @@ export function formatBloodPressureDisplay(
 type TEWSScore = 0 | 1 | 2 | 3
 
 function asSExpression(specific_snomed_concept_id: string) {
-  return `(finding ${CLINICAL_FINDING.s_expression} ${specific_snomed_concept_id})`
+  return normalForm(`(clinical_finding ${specific_snomed_concept_id})`)
 }
 
 const normal_for_age = normalForm(`
-  (finding
-    ${CLINICAL_FINDING.s_expression}
+  (clinical_finding
     (snomed_concept "Ability to move" "observable entity")
     (snomed_concept "Normal" "qualifier value")
     (qualifier (snomed_concept "For" "qualifier value")
@@ -189,8 +188,7 @@ const normal_for_age = normalForm(`
 `)
 
 const abnormal_for_age = normalForm(`
-  (finding
-    ${CLINICAL_FINDING.s_expression}
+  (clinical_finding
     (snomed_concept "Ability to move" "observable entity")
     (snomed_concept "Abnormal" "qualifier value")
     (qualifier (snomed_concept "For" "qualifier value")

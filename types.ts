@@ -21,8 +21,8 @@ import { type DietFrequency } from './shared/diet.ts'
 import { type Priority } from './shared/priorities.ts'
 import { type MessageTargetCategory } from './shared/message_targets.ts'
 import { type CommonConditionKey } from './shared/brief_history.ts'
-import { VitalAssessment, VitalMeasurement } from './shared/vitals.ts'
-import { WARNING_SIGNS } from './shared/warning_signs.ts'
+import { type VitalAssessment, type VitalMeasurement } from './shared/vitals.ts'
+import { type WarningSignKey } from './shared/warning_signs.ts'
 import { type Decimal } from './util/decimal.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
@@ -30,6 +30,7 @@ export { type Priority } from './shared/priorities.ts'
 export { type MessageTargetCategory } from './shared/message_targets.ts'
 export { type CommonConditionKey } from './shared/brief_history.ts'
 export { type SnomedConceptSearchResult } from './db/models/snomed.ts'
+export { type WarningSignKey } from './shared/warning_signs.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -38,6 +39,8 @@ export type NonNull<T> = Exclude<T, null | undefined>
 export type Falsy = false | 0 | '' | null | undefined
 
 export type BlankRecord = Record<string, never>
+
+export type AnyRecord = Record<string, unknown>
 
 export type Values<R> = R extends Record<any, infer V> ? V : never
 
@@ -3605,8 +3608,6 @@ export type WarningSign = {
   excluding_s_expression?: string
   prompt_when_s_expression?: string
 }
-
-export type WarningSignKey = keyof typeof WARNING_SIGNS
 
 export type WarningSignWithMaybeRecord = Omit<WarningSign, 'key'> & {
   key?: string
