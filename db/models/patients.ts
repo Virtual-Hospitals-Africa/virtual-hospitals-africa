@@ -3,7 +3,7 @@ import { Coordinates, IdSelection, InsertShapeLiteral, Maybe, RenderedPatient, R
 import { isoDate, jsonBuildNullableObject, literalLocation, longFormattedDate } from '../helpers.ts'
 import { DB } from '../../db.d.ts'
 import { base } from './_base.ts'
-import { asMaybeNames, asNames, NameInputs } from './asNames.ts'
+import { asMaybeNames, asNames, NameInputs } from '../../util/asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'

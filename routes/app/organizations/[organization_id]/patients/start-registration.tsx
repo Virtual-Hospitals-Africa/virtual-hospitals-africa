@@ -10,7 +10,7 @@ export const handler = postHandler(
   z.object({}),
   async (ctx: OrganizationContext) => {
     const { trx, organization, present_encounter, organization_employment } = ctx.state
-    assertNoPresentEncounter(present_encounter)
+    assertNoPresentEncounter(present_encounter, organization_employment)
     const { success, patient_id } = await patient_registration.start(
       trx,
       organization,

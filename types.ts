@@ -53,6 +53,11 @@ export type DeepPartial<T> = T extends Record<string, unknown> ? {
   }
   : T
 
+export type DeepMaybe<T> = T extends Record<string, unknown> ? {
+    [P in keyof T]?: DeepMaybe<T[P]>
+  }
+  : Maybe<T>
+
 export type NonEmptyArray<T> = [T, ...T[]]
 
 export type DigitChar =

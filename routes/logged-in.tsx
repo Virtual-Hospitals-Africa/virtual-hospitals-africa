@@ -17,7 +17,7 @@ import { assertOrRedirect } from '../util/assertOr.ts'
 import { warning } from '../util/alerts.ts'
 import * as cookie from '../shared/cookie.ts'
 import { promiseProps } from '../util/promiseProps.ts'
-import { asNames } from '../db/models/asNames.ts'
+import { asNames } from '../util/asNames.ts'
 import { Context } from 'fresh'
 
 async function downloadAndSaveAvatar(

@@ -296,10 +296,10 @@ async function findPatientOpenEncounter(
   ctx: OrganizationContext,
 ): Promise<RenderedPatientOpenEncounter> {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-  const { present_encounter, trx } = ctx.state
+  const { trx, present_encounter, organization_employment } = ctx.state
   if (present_encounter) {
     if (present_encounter.patient.id !== patient_id) {
-      throw new PresentWithAnotherPatientError(present_encounter)
+      throw new PresentWithAnotherPatientError(present_encounter, organization_employment)
     }
     return present_encounter
   }

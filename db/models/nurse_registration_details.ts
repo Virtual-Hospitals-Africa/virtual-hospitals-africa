@@ -2,7 +2,7 @@ import { HasStringId, NurseRegistrationDetails, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { addresses, type AddressInsert } from './addresses.ts'
 import { isoDate } from '../helpers.ts'
-import { asMaybeNames } from './asNames.ts'
+import { asMaybeNames } from '../../util/asNames.ts'
 import { health_workers } from './health_workers.ts'
 
 export type UpsertableNurseRegistrationDetails =

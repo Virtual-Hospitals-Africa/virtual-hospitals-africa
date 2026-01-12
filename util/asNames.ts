@@ -1,10 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
-import first from '../../util/first.ts'
-
-import { exists } from '../../util/exists.ts'
-import last from '../../util/last.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { Maybe, Names } from '../../types.ts'
+import { DeepMaybe, Maybe, Names } from '../types.ts'
+import { exists } from './exists.ts'
+import first from './first.ts'
+import last from './last.ts'
 
 export type NameInputs = {
   name: string
@@ -65,4 +64,19 @@ export function asMaybeNames(
     surname,
     preferred_name,
   }
+}
+
+export function preferredName(
+  person: DeepMaybe<
+    Names & {
+      name?: Maybe<string>
+      names?: Partial<Names>
+    }
+  > = {},
+  entity_type: string,
+): string {
+  if (person.names) return preferredName(person.names, entity_type)
+  if (person.preferred_name) return person.preferred_name
+  if (person.name) return person.name
+  return `the ${entity_type}`
 }

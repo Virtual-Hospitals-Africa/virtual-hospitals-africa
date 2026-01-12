@@ -7,7 +7,7 @@ import { google_tokens } from './google_tokens.ts'
 import { combine } from '../../util/combine.ts'
 import { type HealthWorkerUpsert } from './health_workers.ts'
 import { assert } from 'std/assert/assert.ts'
-import { asNames, NameInputs } from './asNames.ts'
+import { asNames, NameInputs } from '../../util/asNames.ts'
 
 export type HealthWorkerWithGoogleTokens = Awaited<
   ReturnType<typeof insertWithGoogleCredentials>
