@@ -58,8 +58,7 @@ export const EVENTS = {
       workflow: z.enum(WORKFLOWS),
       workflow_step: z.string(),
     }),
-    {
-    },
+    {},
   ),
   ProcedureCompleted: defineEvent(
     z.object({
