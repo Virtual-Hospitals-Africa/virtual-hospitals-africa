@@ -1,10 +1,11 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import { normalForm, parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { CLINICAL_FINDING } from '../../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING, PROCEDURE } from '../../shared/snomed_concepts.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import { positive_decimal } from '../../util/validators.ts'
+import { Decimal } from '../../util/decimal.ts'
 
 describe('shared/s_expression.ts', () => {
   it('can parse a simple finding expression', () => {
@@ -1031,6 +1032,70 @@ describe('shared/s_expression.ts', () => {
         atom: 'units',
         units: '%',
         value: positive_decimal.parse(92),
+      },
+    })
+  })
+
+  it('can produce a normal form', () => {
+    const normal_for_age = normalForm(`
+      (finding
+        ${CLINICAL_FINDING.s_expression}
+        (snomed_concept "Ability to move" "observable entity")
+        (snomed_concept "Normal" "qualifier value")
+        (qualifier (snomed_concept "For" "qualifier value")
+          (qualifier (snomed_concept "Age" "qualifier value"))))
+    `)
+    assertEquals(
+      normal_for_age,
+      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Ability to move" "observable entity") (snomed_concept "Normal" "qualifier value") (qualifier (snomed_concept "For" "qualifier value") (qualifier (snomed_concept "Age" "qualifier value"))))',
+    )
+  })
+
+  it('can parse a task', () => {
+    const parsed = parseExpressionExpectingAtom(
+      `
+      (task
+          "Give oxygen if saturation below 92%"
+            (< (measurement 103228002) (units 92 %))
+            (procedure ${PROCEDURE.s_expression} 57485005))`,
+      'task',
+    )
+
+    assertEquals(parsed, {
+      atom: 'task',
+      description: 'Give oxygen if saturation below 92%',
+      when: {
+        atom: '<',
+        left: {
+          atom: 'measurement',
+          snomed_concept: {
+            atom: 'snomed_concept',
+            type: 'snomed_concept_id',
+            id: '103228002',
+          },
+        },
+        right: {
+          atom: 'units',
+          value: new Decimal(92),
+          units: '%',
+        },
+      },
+      procedure: {
+        atom: 'procedure',
+        root_snomed_concept: {
+          atom: 'snomed_concept',
+          name: 'Procedure',
+          category: 'procedure',
+          type: 'snomed_concept_name_and_category',
+        },
+        specific_snomed_concept: {
+          atom: 'snomed_concept',
+          type: 'snomed_concept_id',
+          id: '57485005',
+        },
+        qualifiers: [],
+        attributes: [],
+        value: null,
       },
     })
   })

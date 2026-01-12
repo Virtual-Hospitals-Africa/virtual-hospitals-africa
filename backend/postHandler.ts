@@ -20,13 +20,20 @@ export function postHandler<
         ctx.req,
         schema.parse,
       )
-      return db
-        .transaction()
-        .setIsolationLevel('read committed')
-        .execute((trx) => {
-          ctx.state.trx = trx
-          return Promise.resolve(callback(ctx, form_values))
-        })
+
+      try {
+        return await db
+          .transaction()
+          .setIsolationLevel('read committed')
+          .execute((trx) => {
+            console.log('starting to execute trx')
+            ctx.state.trx = trx
+            return Promise.resolve(callback(ctx, form_values))
+          })
+      } catch (err) {
+        console.log('kllkkllkklin here now', err)
+        throw err
+      }
     },
   }
 }

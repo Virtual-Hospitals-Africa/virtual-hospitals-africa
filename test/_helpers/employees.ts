@@ -184,6 +184,8 @@ export async function addTestEmployee(
   }
 }
 
+export type TestEmployeeWithSession = Awaited<ReturnType<typeof addTestEmployeeWithSession>>
+
 export async function addTestEmployeeWithSession(
   trx: TrxOrDb,
   opts?: TestHealthWorkerOpts,

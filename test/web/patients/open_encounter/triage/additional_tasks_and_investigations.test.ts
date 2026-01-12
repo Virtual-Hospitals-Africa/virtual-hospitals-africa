@@ -3,7 +3,7 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { asWarningSigns, setupTriage } from './_setup.ts'
+import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
 import { route } from '../../../../_route.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
@@ -15,7 +15,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   afterAll(() => db.destroy())
 
   itParallel.skip('loads on the page', async () => {
-    const { $, clinic, encounter, nurse } = await setupTriage({
+    const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
       patient_demographics: { date_of_birth: '2023-01-01' },
       brief_history: {
         diabetes: { existence: 'Yes' },
@@ -241,7 +241,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   })
 
   itParallel('prompts for Nausea Vomiting Pallor Sweating', async () => {
-    const { $, clinic, encounter, nurse } = await setupTriage({
+    const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
       patient_demographics: { date_of_birth: '2001-01-01' },
       brief_history: {
         diabetes: { existence: 'No' },
@@ -343,7 +343,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 // TODO: moving this
 // describeParallel('POST', () => {
 //   itParallel('creates an additional task if oxygen saturation is below 92%', async () => {
-//     const { encounter } = await setupTriage({
+//     const { encounter } = await setupTriageNewPatient({
 //       patient_demographics: { date_of_birth: '2023-01-01' },
 //       warning_signs: [],
 //       conditions: ['diabetes'],

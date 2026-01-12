@@ -6,7 +6,7 @@ import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts
 import { getFormLabels, getFormOptions, getFormValues } from '../../../../_helpers/form.ts'
 import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
-import { asWarningSigns, setupTriage } from './_setup.ts'
+import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
 import {
   assessmentOptionSExpression,
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
@@ -33,7 +33,7 @@ describeParallel('triage/measure_vitals', () => {
     itParallel(
       'loads a page for the first visit for an adult non-diabetic patient ',
       async () => {
-        const { $ } = await setupTriage({
+        const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '1990-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
@@ -177,7 +177,7 @@ describeParallel('triage/measure_vitals', () => {
     itParallel(
       'loads a page for the first visit for an adult diabetic patient ',
       async () => {
-        const { $ } = await setupTriage({
+        const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '1990-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
@@ -221,7 +221,7 @@ describeParallel('triage/measure_vitals', () => {
     itParallel(
       'loads a page for the first visit for a non-diabetic older child ',
       async () => {
-        const { $ } = await setupTriage({
+        const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '2020-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
@@ -262,7 +262,7 @@ describeParallel('triage/measure_vitals', () => {
     itParallel(
       'loads a page for the first visit for a non-diabetic older child ',
       async () => {
-        const { $ } = await setupTriage({
+        const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '2020-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
@@ -307,7 +307,7 @@ describeParallel('triage/measure_vitals', () => {
       '400s if missing blood_glucose measurement for a diabetic patient',
       async () => {
         const result = await asResultAsync(() =>
-          setupTriage({
+          setupTriageNewPatient({
             patient_demographics: { date_of_birth: '2023-01-01' },
             warning_signs: asWarningSigns([], { pregnant: false }),
             brief_history: {
@@ -384,7 +384,7 @@ describeParallel('triage/measure_vitals', () => {
     itParallel(
       'inserts all zero TEWS scores for an an adult patient fully in the normal range',
       async () => {
-        const { encounter } = await setupTriage({
+        const { encounter } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '2023-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
@@ -634,7 +634,7 @@ describeParallel('triage/measure_vitals', () => {
       opts: { only?: boolean; skip?: boolean } = {},
     ) {
       itParallel(description, async () => {
-        const { encounter } = await setupTriage({
+        const { encounter } = await setupTriageNewPatient({
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
           },

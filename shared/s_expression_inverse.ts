@@ -144,7 +144,7 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'task': {
-      return `(task ${inverseSExpression(node.when)} ${inverseSExpression(node.procedure)})`
+      return `(task "${node.description}" ${inverseSExpression(node.when)} ${inverseSExpression(node.procedure)})`
     }
 
     default: {
