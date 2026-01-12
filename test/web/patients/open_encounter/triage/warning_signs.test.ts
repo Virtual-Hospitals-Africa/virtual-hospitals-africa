@@ -525,8 +525,7 @@ describeParallel('triage/warning_signs', () => {
         assert(!result.success)
         assertEquals(
           result.error.message.split('\n')[0],
-          `[409]: It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${
-            form_values.warning_signs['high-energy-transfer'].existing_record.id
+          `[409]: It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${form_values.warning_signs['high-energy-transfer'].existing_record.id
           } which had existence: No, but just_submitted.existence: Yes`,
         )
       },
@@ -712,8 +711,8 @@ describeParallel('triage/warning_signs', () => {
         assertEquals(results[0], {
           clinical_finding_s_expression: '(clinical_finding (snomed_concept "Appendicular pain" "finding"))',
           snomed_concept_id: '275406005',
-          sats_primary_name: 'Appendicular pain',
-          sats_secondary_text: 'finding',
+          primary_name: 'Appendicular pain',
+          secondary_text: 'finding',
           sats_priority: 'Very urgent',
           sats_priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
           similarity: 1,

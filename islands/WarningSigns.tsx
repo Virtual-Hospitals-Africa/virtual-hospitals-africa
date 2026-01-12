@@ -40,7 +40,7 @@ type OnToggle = (sign: CheckedWarningSign) => void
 
 function uniqueIdentifier(sign: CheckedWarningSign) {
   const first_unique = sign.key ||
-    compact([sign.sats_primary_name + sign.sats_secondary_text]).join('-')
+    compact([sign.primary_name + sign.secondary_text]).join('-')
   return hyphenate(first_unique.toLowerCase())
 }
 
@@ -80,11 +80,11 @@ function KeyedWarningSignCheckbox(
       </div>
       <div class='flex flex-col gap-0.75 2xl:gap-1 pt-0.5'>
         <span class='text-xs 2xl:text-sm font-medium text-gray-600 leading-4 2xl:leading-5'>
-          {sign.sats_primary_name}
+          {sign.primary_name}
         </span>
-        {sign.sats_secondary_text && (
+        {sign.secondary_text && (
           <span class='text-[8pt] 2xl:text-xs text-gray-500 leading-3 2xl:leading-4'>
-            {sign.sats_secondary_text}
+            {sign.secondary_text}
           </span>
         )}
       </div>

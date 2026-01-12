@@ -277,8 +277,8 @@ function* asCheckedWarningSigns(
     yield {
       sats_priority: finding.priority || 'Non-urgent',
       clinical_finding_s_expression: finding.normal_form_s_expression,
-      sats_primary_name: finding.specific_snomed_concept.name,
-      sats_secondary_text: finding.specific_snomed_concept.category,
+      primary_name: finding.specific_snomed_concept.name,
+      secondary_text: finding.specific_snomed_concept.category,
       existing_record: finding.existing_record,
     }
   }

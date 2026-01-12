@@ -161,8 +161,8 @@ export const snomed_model = base({
     return {
       clinical_finding_s_expression,
       snomed_concept_id: result.id,
-      sats_primary_name: result.name,
-      sats_secondary_text: result.category,
+      primary_name: result.name,
+      secondary_text: result.category,
       sats_priority: result.priority?.name || ('Non-urgent' as const),
       sats_priority_by_virtue_of_matching_warning_sign: result.priority
         ?.warning_sign,

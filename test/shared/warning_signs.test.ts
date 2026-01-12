@@ -29,8 +29,8 @@ describe('shared/warning_signs.ts', () => {
       assertEquals(warning_signs, [
         {
           'key': 'Obstructed airway',
-          'sats_primary_name': 'Obstructed airway',
-          'sats_secondary_text': 'Not breathing',
+          'primary_name': 'Obstructed airway',
+          'secondary_text': 'Not breathing',
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
@@ -55,8 +55,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Seizure',
-          'sats_primary_name': 'Seizure',
-          'sats_secondary_text': 'Current',
+          'primary_name': 'Seizure',
+          'secondary_text': 'Current',
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
@@ -81,8 +81,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Burn Facial',
-          'sats_primary_name': 'Burn',
-          'sats_secondary_text': 'Facial',
+          'primary_name': 'Burn',
+          'secondary_text': 'Facial',
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
@@ -107,8 +107,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Burn Inhalation',
-          'sats_primary_name': 'Burn',
-          'sats_secondary_text': 'Inhalation',
+          'primary_name': 'Burn',
+          'secondary_text': 'Inhalation',
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
@@ -133,8 +133,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Cardiac arrest',
-          'sats_primary_name': 'Cardiac arrest',
-          'sats_secondary_text': null,
+          'primary_name': 'Cardiac arrest',
+          'secondary_text': null,
           'sats_priority': 'Emergency',
           'clinical_finding': {
             'atom': 'finding',
@@ -159,8 +159,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'High energy transfer',
-          'sats_primary_name': 'High energy transfer',
-          'sats_secondary_text': 'Severe mechanism of injury',
+          'primary_name': 'High energy transfer',
+          'secondary_text': 'Severe mechanism of injury',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -185,8 +185,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Focal neurology — acute',
-          'sats_primary_name': 'Focal neurology — acute',
-          'sats_secondary_text': 'Stroke',
+          'primary_name': 'Focal neurology — acute',
+          'secondary_text': 'Stroke',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -211,8 +211,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Burn Circumferential',
-          'sats_primary_name': 'Burn',
-          'sats_secondary_text': 'Circumferential',
+          'primary_name': 'Burn',
+          'secondary_text': 'Circumferential',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -248,8 +248,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Shortness of breath - acute',
-          'sats_primary_name': 'Shortness of breath - acute',
-          'sats_secondary_text': null,
+          'primary_name': 'Shortness of breath - acute',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -285,8 +285,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Aggression',
-          'sats_primary_name': 'Aggression',
-          'sats_secondary_text': null,
+          'primary_name': 'Aggression',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -311,8 +311,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Burn Chemical',
-          'sats_primary_name': 'Burn',
-          'sats_secondary_text': 'Chemical',
+          'primary_name': 'Burn',
+          'secondary_text': 'Chemical',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -337,8 +337,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Threatened limb',
-          'sats_primary_name': 'Threatened limb',
-          'sats_secondary_text': null,
+          'primary_name': 'Threatened limb',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -364,8 +364,8 @@ describe('shared/warning_signs.ts', () => {
         {
           'key': 'Poisoning',
           'excluding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Overdose" "disorder"))',
-          'sats_primary_name': 'Poisoning',
-          'sats_secondary_text': null,
+          'primary_name': 'Poisoning',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -390,8 +390,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Overdose',
-          'sats_primary_name': 'Overdose',
-          'sats_secondary_text': null,
+          'primary_name': 'Overdose',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -416,8 +416,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Coughing blood',
-          'sats_primary_name': 'Coughing blood',
-          'sats_secondary_text': null,
+          'primary_name': 'Coughing blood',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -442,8 +442,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Eye injury',
-          'sats_primary_name': 'Eye injury',
-          'sats_secondary_text': null,
+          'primary_name': 'Eye injury',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -468,8 +468,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Chest pain',
-          'sats_primary_name': 'Chest pain',
-          'sats_secondary_text': null,
+          'primary_name': 'Chest pain',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -496,8 +496,8 @@ describe('shared/warning_signs.ts', () => {
           'key': 'Dislocation of larger joint',
           'excluding_s_expression':
             '(or (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Finger structure" "body structure")) (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Toe structure" "body structure")))',
-          'sats_primary_name': 'Dislocation of larger joint',
-          'sats_secondary_text': 'not finger or toe',
+          'primary_name': 'Dislocation of larger joint',
+          'secondary_text': 'not finger or toe',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -522,8 +522,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Vomiting fresh blood',
-          'sats_primary_name': 'Vomiting fresh blood',
-          'sats_secondary_text': null,
+          'primary_name': 'Vomiting fresh blood',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -548,8 +548,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Stabbed neck',
-          'sats_primary_name': 'Stabbed neck',
-          'sats_secondary_text': null,
+          'primary_name': 'Stabbed neck',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -574,8 +574,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Fractured - compound',
-          'sats_primary_name': 'Fractured - compound',
-          'sats_secondary_text': 'with a break in skin',
+          'primary_name': 'Fractured - compound',
+          'secondary_text': 'with a break in skin',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -600,8 +600,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Pregnancy and abdominal trauma',
-          'sats_primary_name': 'Pregnancy and abdominal trauma',
-          'sats_secondary_text': null,
+          'primary_name': 'Pregnancy and abdominal trauma',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -634,8 +634,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Pregnancy and abdominal pain',
-          'sats_primary_name': 'Pregnancy and abdominal pain',
-          'sats_secondary_text': null,
+          'primary_name': 'Pregnancy and abdominal pain',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -668,8 +668,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Hemorrhage Uncontrolled',
-          'sats_primary_name': 'Hemorrhage Uncontrolled',
-          'sats_secondary_text': 'arterial bleed',
+          'primary_name': 'Hemorrhage Uncontrolled',
+          'secondary_text': 'arterial bleed',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -705,8 +705,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Seizure - post ictal',
-          'sats_primary_name': 'Seizure - post ictal',
-          'sats_secondary_text': null,
+          'primary_name': 'Seizure - post ictal',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -731,8 +731,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Severe pain',
-          'sats_primary_name': 'Severe pain',
-          'sats_secondary_text': null,
+          'primary_name': 'Severe pain',
+          'secondary_text': null,
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -757,8 +757,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Burn Moderate severity',
-          'sats_primary_name': 'Burn',
-          'sats_secondary_text': 'Moderate severity',
+          'primary_name': 'Burn',
+          'secondary_text': 'Moderate severity',
           'sats_priority': 'Very urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -794,8 +794,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Haemorrhage Controlled',
-          'sats_primary_name': 'Haemorrhage',
-          'sats_secondary_text': 'Controlled',
+          'primary_name': 'Haemorrhage',
+          'secondary_text': 'Controlled',
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -831,8 +831,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Dislocation of finger',
-          'sats_primary_name': 'Dislocation of finger',
-          'sats_secondary_text': null,
+          'primary_name': 'Dislocation of finger',
+          'secondary_text': null,
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -857,8 +857,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Dislocation of toe joint',
-          'sats_primary_name': 'Dislocation of toe joint',
-          'sats_secondary_text': null,
+          'primary_name': 'Dislocation of toe joint',
+          'secondary_text': null,
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -883,8 +883,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Fracture',
-          'sats_primary_name': 'Fracture',
-          'sats_secondary_text': 'Closed (no break in the skin)',
+          'primary_name': 'Fracture',
+          'secondary_text': 'Closed (no break in the skin)',
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -911,8 +911,8 @@ describe('shared/warning_signs.ts', () => {
           'key': 'Burn Other',
           'excluding_s_expression':
             '(or (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value"))) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Inhalation burn due to hot gas" "disorder")) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chemical burn" "disorder")) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn of face" "disorder")))',
-          'sats_primary_name': 'Burn',
-          'sats_secondary_text': 'Other',
+          'primary_name': 'Burn',
+          'secondary_text': 'Other',
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -937,8 +937,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Abdominal pain',
-          'sats_primary_name': 'Abdominal pain',
-          'sats_secondary_text': null,
+          'primary_name': 'Abdominal pain',
+          'secondary_text': null,
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -974,8 +974,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Persistent vomiting',
-          'sats_primary_name': 'Persistent vomiting',
-          'sats_secondary_text': null,
+          'primary_name': 'Persistent vomiting',
+          'secondary_text': null,
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
@@ -1000,8 +1000,8 @@ describe('shared/warning_signs.ts', () => {
         },
         {
           'key': 'Moderate pain',
-          'sats_primary_name': 'Moderate pain',
-          'sats_secondary_text': null,
+          'primary_name': 'Moderate pain',
+          'secondary_text': null,
           'sats_priority': 'Urgent',
           'clinical_finding': {
             'atom': 'finding',
