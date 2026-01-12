@@ -919,6 +919,7 @@ export type GoogleTokens = {
   access_token: string
   refresh_token: string
   expires_at: Date | string
+  expires_in?: number
 }
 
 export type GoogleTokenInfo = {

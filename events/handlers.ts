@@ -59,10 +59,6 @@ export const EVENTS = {
       workflow_step: z.string(),
     }),
     {
-      async insertTasksIfNotAlreadyIdentified(_trx, _payload) {
-        // TODO: decide whether to do this as part of handling the request or in the background via events
-        // await insertTasksIfNotAlreadyIdentified(trx, payload.data)
-      },
     },
   ),
   ProcedureCompleted: defineEvent(
@@ -77,7 +73,6 @@ export const EVENTS = {
     }),
     {
       async insertTasksIfNotAlreadyIdentified(trx, payload) {
-        // TODO: decide whether to do this as part of handling the request or in the background via events
         await additional_tasks.insertTasksIfNotAlreadyIdentified(
           trx,
           payload.data,
