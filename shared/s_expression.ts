@@ -9,7 +9,9 @@ import z from 'zod'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { positive_decimal, snomed_concept_id } from '../util/validators.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { Values } from '../types.ts'
+import { MostlyJsonSerializable, Values } from '../types.ts'
+import assertLength from '../util/assertLength.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
 
 type SExpressionNode = {
   atom: string
@@ -37,29 +39,28 @@ function parseExpressionBase<Schema extends Values<typeof schemas>>(
   expression: string,
   schema: Schema,
 ) {
-  try {
-    const parsed = s_expression(expression) as SExpressionSimpleNode
-    if (parsed instanceof Error) {
-      throw parsed
-    }
-    assert(Array.isArray(parsed))
-    const first_pass = recursiveTreePass(parsed)
-    const second_pass = schema.parse(first_pass)
-
-    // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions
-    const normal_form_by_inverse = inverseSExpression(second_pass)
-    const normalized = normalForm(normal_form_by_inverse)
-    assertEquals(normal_form_by_inverse, normalized)
-    return second_pass
-  } catch (err) {
-    const msg = `failure to parse ${expression} as ${schema.description}\n`
-    if (err instanceof Error) {
-      err.message = msg + err.message
-      throw err
-    }
-    console.error(msg)
-    throw err
+  assert(schema.description)
+  const parsed = s_expression(expression) as SExpressionSimpleNode
+  if (parsed instanceof Error) {
+    throw parsed
   }
+  assert(Array.isArray(parsed))
+  const first_pass = recursiveTreePass(parsed)
+  const second_pass = schema.safeParse(first_pass)
+  if (!second_pass.success) {
+    assertLength(second_pass.error.issues, 1)
+    const issue = Object.assign({}, second_pass.error.issues[0], {
+      expression,
+      schema_description: schema.description,
+    })
+    throw new Error(humanReadableJson(issue as unknown as MostlyJsonSerializable))
+  }
+
+  // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions
+  const normal_form_by_inverse = inverseSExpression(second_pass.data)
+  const normalized = fastNormalForm(normal_form_by_inverse)
+  assertEquals(normal_form_by_inverse, normalized)
+  return second_pass.data
 }
 
 export function parseExpression(
@@ -119,11 +120,11 @@ export function sExpressionZodValidator<T extends Atom>(atom: T) {
     .transform((expression) => parseExpressionExpectingAtom(expression, atom))
 }
 
-// function normalFormRoundTrip(s_expression: string): string {
-//   return inverseSExpression(parseExpression(s_expression))
-// }
+export function normalForm(s_expression: string): string {
+  return inverseSExpression(parseExpression(s_expression))
+}
 
-export function normalForm(expr: string): string {
+export function fastNormalForm(expr: string): string {
   const parsed = s_expression(expr) as SExpressionSimpleNode
   if (parsed instanceof Error) {
     throw parsed

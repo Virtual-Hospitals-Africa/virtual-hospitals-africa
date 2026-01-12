@@ -139,7 +139,7 @@ type CheckedWarningSign = WarningSignWithMaybeRecord & {
   checked?: boolean
 }
 
-export default function KeyedWarningSigns({
+export default function WarningSigns({
   search_route,
   warning_signs,
 }: {
@@ -181,7 +181,7 @@ export default function KeyedWarningSigns({
   })
 
   return (
-    <div class='flex flex-col gap-2 2xl:gap-4 w-full'>
+    <div class='flex flex-col gap-2 2xl:gap-4 w-full' id='warning-signs'>
       <Search
         id='warning-signs-search'
         do_not_render_built_in_options

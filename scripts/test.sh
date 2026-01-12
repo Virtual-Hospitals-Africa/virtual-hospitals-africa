@@ -30,12 +30,15 @@ test_servers_pid=
 while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
   if [[ "$1" == "--use-build" ]]; then
     run_test_server_args="--use-build"
-  elif [[ "$1" == "--verbose" ]]; then
-    set -x
-  else
-    fail "Unknown option: $1"
+    shift
+    continue
   fi
-  shift
+  if [[ "$1" == "--verbose" ]]; then
+    set -x
+    shift
+    continue
+  fi
+  break
 done
 
 # Resolve arguments: if an arg doesn't look like a file path, try to find a matching test file

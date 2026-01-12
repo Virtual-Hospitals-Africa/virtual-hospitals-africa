@@ -4,7 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { CLINICAL_FINDING, STATUS_ATTRIBUTE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
+import { STATUS_ATTRIBUTE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import { DB } from '../../db.d.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 
@@ -85,7 +85,7 @@ const PREDICATE_BUILDERS = {
   active_condition(column_ref, { snomed_concept }) {
     const snomed_concept_s_expression = inverseSExpression(snomed_concept)
     const expanded_expression = parseExpression(`
-      (or (finding ${CLINICAL_FINDING.s_expression} ${snomed_concept_s_expression})
+      (or (clinical_finding ${snomed_concept_s_expression})
           (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
     `)
     return internalBuildExpressionPredicate(column_ref, expanded_expression)

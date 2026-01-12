@@ -50,7 +50,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       })
 
       const burn_of_left_arm_by_attribute_s_expression = `
-      (finding ${CLINICAL_FINDING.s_expression}
+      (clinical_finding
         (snomed_concept "Burn" "disorder")
         (attribute (snomed_concept "Finding site" "attribute")
                    (snomed_concept "Left upper arm structure" "body structure")))
@@ -127,7 +127,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       })
 
       console.log(parseExpression(`
-          (finding ${CLINICAL_FINDING.s_expression} 
+          (clinical_finding 
             (snomed_concept "Burn" "disorder")
             (attribute (snomed_concept "Finding site" "attribute") 
                         (snomed_concept "Right upper arm structure" "body structure")))
@@ -137,7 +137,7 @@ describeParallel('db/models/patient_findings.ts', () => {
           db,
           { patient_id },
           `
-          (finding ${CLINICAL_FINDING.s_expression} 
+          (clinical_finding 
             (snomed_concept "Burn" "disorder")
             (attribute (snomed_concept "Finding site" "attribute") 
                         (snomed_concept "Right upper arm structure" "body structure")))
@@ -151,7 +151,7 @@ describeParallel('db/models/patient_findings.ts', () => {
           patient_id,
           // Right arm != Left arm
           s_expression: `
-          (finding ${CLINICAL_FINDING.s_expression} 
+          (clinical_finding 
             (snomed_concept "Burn" "disorder")
             (attribute (snomed_concept "Finding site" "attribute") 
                         (snomed_concept "Right upper arm structure" "body structure")))
@@ -193,7 +193,7 @@ describeParallel('db/models/patient_findings.ts', () => {
 
     // 263501003 |Time of onset (observable entity)|
     const common_cold_attribute_s_expression = `
-      (finding ${CLINICAL_FINDING.s_expression}
+      (clinical_finding
         (snomed_concept "Common cold" "disorder")
         (event (snomed_concept "Time of onset" "observable entity")
                    "2025-12-28 19:51:18.275362-05"))
