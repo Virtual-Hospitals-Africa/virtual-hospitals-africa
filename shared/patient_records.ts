@@ -20,6 +20,7 @@ import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
 import { logArgsOnError } from '../util/decorators.ts'
+import capitalize from '../util/capitalize.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -184,6 +185,24 @@ function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
   }
 }
 
+// 1. Overload for when the input is null or undefined
+function massageSpecificConceptDisplay(specific_snomed_concept: null | undefined): null;
+
+// 2. Overload for when a valid concept is provided
+function massageSpecificConceptDisplay(specific_snomed_concept: RenderedSnomedConcept): string;
+
+// 4. The actual implementation
+function massageSpecificConceptDisplay(specific_snomed_concept: Maybe<RenderedSnomedConcept>): string | null {
+  if (!specific_snomed_concept) return null
+
+  const replaced = specific_snomed_concept.name
+    .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
+    .replace(/^Body /, '')
+    .replace(/, function$/, '')
+
+  return capitalize(replaced, { just_first: true })
+}
+
 function buildDisplays(
   record: DisplayableRecord,
   postfix?: boolean,
@@ -207,8 +226,7 @@ function buildDisplays(
   const qualifier_displays = qualifiers.map((prefix) => buildDisplays(prefix, use_postfix).full)
 
   const finding_displays = compact([
-    // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
-    specific_snomed_concept?.name.replace(' (severity modifier)', ''),
+    massageSpecificConceptDisplay(specific_snomed_concept),
     includeRootSnomedConceptName(root_snomed_concept) &&
     root_snomed_concept.name,
   ])
