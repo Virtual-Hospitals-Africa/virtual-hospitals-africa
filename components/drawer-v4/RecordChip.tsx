@@ -31,7 +31,7 @@ export function RecordChip({
   organization_id: string
 }) {
   return (
-    <Popover className='relative group'>
+    <Popover className='relative record-chip'>
       <PopoverButton className={recordChipClassName(record)}>
         {record.displays.full}
       </PopoverButton>

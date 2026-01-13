@@ -11,6 +11,7 @@ import redirect from '../../util/redirect.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 import { sessions } from '../../db/models/sessions.ts'
+import { assert } from 'std/assert/assert.ts'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
