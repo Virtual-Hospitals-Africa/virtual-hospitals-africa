@@ -1,30 +1,26 @@
+import { assertArrayNonEmpty } from './arraySize.ts'
+import { collectSorted } from './collectSorted.ts'
+
 export default function sortBy<T>(
-  arr: T[],
-  ...iteratees: (keyof T | ((obj: T, index: number) => string | number | Date))[]
+  iterable: Iterable<T>,
+  ...iteratees: (keyof T | ((obj: T) => string | number | Date))[]
 ): T[] {
-  const getters = !iteratees.length ? [(x: T) => x] : iteratees.map((iteratee) => {
-    if (typeof iteratee === 'string') {
-      return (obj: T) => obj[iteratee]
-    } else if (typeof iteratee === 'function') {
-      return iteratee
-    } else {
-      throw new Error('Invalid iteratee')
+  assertArrayNonEmpty(iteratees, 'Must provide at least one sorting function')
+  // 1. Normalize iteratees into getter functions
+  const getters = iteratees.map((iteratee) => typeof iteratee === 'function' ? iteratee : (obj: T) => obj[iteratee])
+  // 2. Form a combined comparison function
+  function compare(a: T, b: T): number {
+    for (const getter of getters) {
+      const a_value = getter(a)
+      const b_value = getter(b)
+
+      if (a_value < b_value) return -1
+      if (a_value > b_value) return 1
+      // If equal, continue to the next getter for tie-breaking
     }
-  })
-
-  return [...arr].sort((a, b) => {
-    for (let i = 0; i < getters.length; i++) {
-      const getter = getters[i]
-      const a_value = getter(a, i)
-      const b_value = getter(b, i)
-
-      if (a_value < b_value) {
-        return -1
-      } else if (a_value > b_value) {
-        return 1
-      }
-    }
-
     return 0
-  })
+  }
+
+  // 3. Leverage collectSorted to build the array via binary insertion
+  return collectSorted(iterable, compare)
 }

@@ -28,6 +28,7 @@ import values from '../../../../../util/values.ts'
 import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 import keys from '../../../../../util/keys.ts'
 import { getGridDisplay } from 'test/_helpers/grid.ts'
+import { nobreak } from '../../../../../util/nobreak.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -867,7 +868,7 @@ describeParallel('triage/warning_signs', () => {
 
           const waiting_room_table = getTableDisplay($waiting_room)
           assertMatches(waiting_room_table, [{
-            Priority: sign.sats_priority,
+            Priority: nobreak(sign.sats_priority),
           }])
         },
         opts,

@@ -39,7 +39,7 @@ export default function PatientRegistrationPersonalSection(
   },
 ) {
   return (
-    <FormSection 
+    <FormSection
       header='Patient Information'
       onPaste={devModeFillFormOnJsonPaste}
     >

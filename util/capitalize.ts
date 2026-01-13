@@ -1,6 +1,6 @@
 export default function capitalize(
   str: string,
-  opts?: { split_hyphen?: boolean, just_first?: boolean },
+  opts?: { split_hyphen?: boolean; just_first?: boolean },
 ): string {
   if (opts?.just_first) {
     return str[0].toUpperCase() + str.slice(1).toLowerCase()
