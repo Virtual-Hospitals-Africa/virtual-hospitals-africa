@@ -44,7 +44,7 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
       const colors = PRIORITY_COLORS[priority.name]
       return (
         <Badge
-          content={priority.name}
+          content={priority.name.replace(' ', ' ')}
           classNames={cls(colors.bg, colors.text)}
         />
       )

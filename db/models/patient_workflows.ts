@@ -37,7 +37,7 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
     const { patient, organization, status } = encounter
     const other_employee = otherEmployeePresentWithPatient(encounter, organization_employment)
 
-    super('Cannot register new patients while present with another patient', [
+    super('You cannot register new patients while present with another patient', [
       {
         text: `Continue with ${preferredName(patient, 'patient')}`,
         href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/${status.patient_presence.current_workflow}`,

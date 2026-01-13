@@ -71,7 +71,7 @@ export const handler = postHandler(
     }
 
     const next_url = success(
-      `${capitalize(preferredName(encounter.patient, 'patient'))} was moved to the waiting room`,
+      `${capitalize(preferredName(encounter.patient, 'patient'))} has been moved to the waiting room`,
       replaceParams(
         `/app/organizations/:organization_id/waiting_room`,
         ctx.params,

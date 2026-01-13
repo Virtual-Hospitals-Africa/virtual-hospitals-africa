@@ -53,7 +53,7 @@ describeParallel('triage/warning_signs', () => {
           'Very urgent': [
             'Shortness of breathacute',
             'Chest pain',
-            'Seizurepost ictal',
+            'SeizurePost ictal',
             'Focal neurologyacute; Stroke',
             'BurnChemical',
             'Coughing blood',
