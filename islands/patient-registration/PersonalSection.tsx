@@ -21,33 +21,31 @@ export default function PatientRegistrationPersonalSection(
   },
 ) {
   return (
-    <>
-      <FormSection header='Patient Information'>
-        <FormGrid columns={3}>
-          <NamesInputs names={patient.names || {}} />
-          <DateInput
-            name='date_of_birth'
-            value={patient.date_of_birth}
-            required
-          />
-          <SexAndGenderInputs
-            sex={patient.sex ?? null}
-            gender={patient.gender ?? null}
-          />
-        </FormGrid>
-        <hr className='border-gray-300' />
-        <FormGrid columns={2}>
-          <LanguageSelect
-            value={patient.preferred_language_code_iso_639_2_b}
-            default_language_code={organization_default_language_code}
-            server_country={server_country}
-          />
-          <SouthAfricanNationalIdFormGroup
-            national_id_number={patient.national_id_number}
-            previously_completed_step={previously_completed_step}
-          />
-        </FormGrid>
-      </FormSection>
-    </>
+    <FormSection header='Patient Information'>
+      <FormGrid columns={3}>
+        <NamesInputs names={patient.names || {}} />
+        <DateInput
+          name='date_of_birth'
+          value={patient.date_of_birth}
+          required
+        />
+        <SexAndGenderInputs
+          sex={patient.sex ?? null}
+          gender={patient.gender ?? null}
+        />
+      </FormGrid>
+      <hr className='border-gray-300' />
+      <FormGrid columns={2}>
+        <LanguageSelect
+          value={patient.preferred_language_code_iso_639_2_b}
+          default_language_code={organization_default_language_code}
+          server_country={server_country}
+        />
+        <SouthAfricanNationalIdFormGroup
+          national_id_number={patient.national_id_number}
+          previously_completed_step={previously_completed_step}
+        />
+      </FormGrid>
+    </FormSection>
   )
 }
