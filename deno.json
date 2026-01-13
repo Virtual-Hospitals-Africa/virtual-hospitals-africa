@@ -93,6 +93,7 @@
     "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
   },
   "imports": {
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.6",
     "test/_helpers/": "./test/_helpers/",
     "@headlessui/react": "npm:@headlessui/react@2.2.9",
     "@preact/signals": "npm:@preact/signals@^2.5.0",

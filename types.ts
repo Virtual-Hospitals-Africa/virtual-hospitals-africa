@@ -49,8 +49,8 @@ export type NonNullableProperty<R, K extends keyof R> =
   & { [P in K]: NonNullable<R[P]> }
 
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
-  [P in keyof T]?: DeepPartial<T[P]>
-}
+    [P in keyof T]?: DeepPartial<T[P]>
+  }
   : T
 
 export type DeepMaybe<T> = T extends Record<string, unknown> ? {
@@ -99,22 +99,22 @@ export type OptionalUndefinedFields<T> =
 export type OptionalMaybeFields<T> =
   & {
     [
-    K in keyof T as null extends T[K] ? never
-    : undefined extends T[K] ? never
-    : K
+      K in keyof T as null extends T[K] ? never
+        : undefined extends T[K] ? never
+        : K
     ]: T[K]
   }
   & {
     [
-    K in keyof T as null extends T[K] ? K : undefined extends T[K] ? K : never
+      K in keyof T as null extends T[K] ? K : undefined extends T[K] ? K : never
     ]?: T[K]
   }
 
 export type RequiredFields<T> = {
   [
-  K in keyof T as null extends T[K] ? K
-  : undefined extends T[K] ? K
-  : never
+    K in keyof T as null extends T[K] ? K
+      : undefined extends T[K] ? K
+      : never
   ]: NonNull<T[K]>
 }
 
@@ -126,7 +126,7 @@ export type SqlRow<T> = {
 
 export type SelectShape<T> = {
   [K in keyof T]: T[K] extends ColumnType<infer S, any, any> ? S
-  : T[K]
+    : T[K]
 }
 
 // type X<I> = I extends string
@@ -173,8 +173,8 @@ export type InsertRows<Table extends keyof DB> = InsertObject<DB, Table>[]
 export type UpdateShape<T> = OptionalMaybeFields<
   {
     [K in keyof T]?: T[K] extends ColumnType<any, any, infer U> ? U
-    : T[K] extends null | ColumnType<any, any, infer NullableU> ? null | NullableU
-    : T[K] | RawBuilder<T[K]>
+      : T[K] extends null | ColumnType<any, any, infer NullableU> ? null | NullableU
+      : T[K] | RawBuilder<T[K]>
   }
 >
 
@@ -2968,10 +2968,10 @@ export type SendToFormSubmission = {
     id: SendableToEntity['entity_id']
   }
   request_type?:
-  | 'request_visit'
-  | 'request_review'
-  | 'make_appointment'
-  | 'declare_emergency'
+    | 'request_visit'
+    | 'request_review'
+    | 'make_appointment'
+    | 'declare_emergency'
   additional_notes?: string
 }
 export type Sendable = {
@@ -3015,18 +3015,18 @@ export type RenderedPharmacy = {
   licensee: string
   name: string
   pharmacies_types:
-  | 'Clinics: Class A'
-  | 'Clinics: Class B'
-  | 'Clinics: Class C'
-  | 'Clinics: Class D'
-  | 'Dispensing medical practice'
-  | 'Hospital pharmacies'
-  | 'Pharmacies: Research'
-  | 'Pharmacies: Restricted'
-  | 'Pharmacy in any other location'
-  | 'Pharmacy in rural area'
-  | 'Pharmacy located in the CBD'
-  | 'Wholesalers'
+    | 'Clinics: Class A'
+    | 'Clinics: Class B'
+    | 'Clinics: Class C'
+    | 'Clinics: Class D'
+    | 'Dispensing medical practice'
+    | 'Hospital pharmacies'
+    | 'Pharmacies: Research'
+    | 'Pharmacies: Restricted'
+    | 'Pharmacy in any other location'
+    | 'Pharmacy in rural area'
+    | 'Pharmacy located in the CBD'
+    | 'Wholesalers'
   href: string
   supervisors: Supervisor[]
   actions: {
@@ -3052,10 +3052,10 @@ export type RenderedPharmacist = {
   address_display: string | null
   expiry_date: string
   pharmacist_type:
-  | 'Dispensing Medical Practitioner'
-  | 'Ind Clinic Nurse'
-  | 'Pharmacist'
-  | 'Pharmacy Technician'
+    | 'Dispensing Medical Practitioner'
+    | 'Ind Clinic Nurse'
+    | 'Pharmacist'
+    | 'Pharmacy Technician'
   pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
   href: string
   actions: {
@@ -3083,10 +3083,10 @@ export type DetailedPharmacist = {
   town: string | null
   expiry_date: string
   pharmacist_type:
-  | 'Dispensing Medical Practitioner'
-  | 'Ind Clinic Nurse'
-  | 'Pharmacist'
-  | 'Pharmacy Technician'
+    | 'Dispensing Medical Practitioner'
+    | 'Ind Clinic Nurse'
+    | 'Pharmacist'
+    | 'Pharmacy Technician'
   pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
 }
 
@@ -3249,17 +3249,17 @@ export type MessageTargetEntities = {
 
 export type RenderedMessageTargets = {
   [TargetType in keyof MessageTargetEntities]:
-  & {
-    id?: string
-    target_type: TargetType
-    target_category: MessageTargetCategory
-    display_name: string
-    description: string
-    avatar_url?: Maybe<string>
-  }
-  & {
-    [K in TargetType]: MessageTargetEntities[K]
-  }
+    & {
+      id?: string
+      target_type: TargetType
+      target_category: MessageTargetCategory
+      display_name: string
+      description: string
+      avatar_url?: Maybe<string>
+    }
+    & {
+      [K in TargetType]: MessageTargetEntities[K]
+    }
 }
 
 export type RenderedMessageTarget = RenderedMessageTargets[keyof RenderedMessageTargets]
@@ -3467,6 +3467,7 @@ export type AsPartOfProcedure = {
   record_id: string
   root_snomed_concept: RenderedSnomedConcept
   specific_snomed_concept: RenderedSnomedConcept
+  workflow_step_name: string | null
 }
 
 export type RecordDisplays = {
@@ -3569,11 +3570,6 @@ export type RenderedRecordRelativeToHealthWorker =
   | RenderedEvaluationRelativeToHealthWorker
   | RenderedProcedureRelativeToHealthWorker
 
-export type WithTriageLevelFinding = NonNullableProperty<
-  RenderedFindingRelativeToHealthWorker,
-  'priority'
->
-
 export type RenderedMeasurementRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
@@ -3624,7 +3620,7 @@ export type WarningSign = WarningSignDef<'Urgent' | 'Very urgent' | 'Emergency'>
 
 export type CommonSymptom = SignShared<'Common Symptoms'>
 
-export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Selected'>) & {
+export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record'>) & {
   existing_record?: {
     id: string
     existence: Existence

@@ -167,7 +167,7 @@ export const handler = postHandler(
       const assessed_previously = previous_assessments_this_encounter.some(
         (finding) =>
           finding.evaluations.some((evaluation) =>
-            evaluation.root_snomed_concept.snomed_concept_id ===
+            evaluation.specific_snomed_concept.snomed_concept_id ===
               evaluation_snomed_concept_id
           ),
       )

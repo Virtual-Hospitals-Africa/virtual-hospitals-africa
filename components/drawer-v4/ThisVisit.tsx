@@ -1,12 +1,13 @@
 import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../../db.d.ts'
-import { prettyStepName, WORKFLOW_STEP_SNOMED_CONCEPT_IDS, WORKFLOW_STEPS, WORKFLOWS } from '../../shared/workflow.ts'
+import { prettyStepName, WORKFLOW_STEPS, WORKFLOWS, workflowStepSnomedConceptId } from '../../shared/workflow.ts'
 import { PatientDrawerV4Props, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
-import { arrayIsNonEmpty } from '../../util/arraySize.ts'
+import { arrayIsEmpty, arrayIsNonEmpty } from '../../util/arraySize.ts'
 import compact from '../../util/compact.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { RecordChips } from './RecordChip.tsx'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import { NoFindings } from './NoFindings.tsx'
 
 type DrawerThisVisitProps = Pick<
   PatientDrawerV4Props,
@@ -49,7 +50,7 @@ function groupRecordsByWorkflows(
       workflow,
       status: workflow_status.status,
       steps: workflow_steps.map((workflow_step) => {
-        const workflow_step_snomed_concept_id = WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]?.[workflow_step]
+        const workflow_step_snomed_concept_id = workflowStepSnomedConceptId(workflow, workflow_step)
 
         const records_of_concept = (workflow_step_snomed_concept_id &&
           records_by_procedure.get(workflow_step_snomed_concept_id)) || []
@@ -111,6 +112,7 @@ function WorkflowStep(
           </p>
         )}
       </div>
+      {step.status !== 'in progress' && arrayIsEmpty(step.records) && <NoFindings explanation='No findings entered' with_padding_x />}
       <RecordChips
         records={step.records}
         organization_id={organization_id}

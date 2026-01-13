@@ -7,7 +7,7 @@ import { ORDERED_PRIORITIES } from './priorities.ts'
 import { normalForm } from './s_expression.ts'
 import { asConcept } from './snomed_concepts.ts'
 
-export const WARNING_SIGN_SNOMED_CONCEPTS = [
+const WARNING_SIGN_SNOMED_CONCEPTS = [
   {
     'id': '212049006',
     'name': 'Burns classified according to percentage of body surface involved',
@@ -269,10 +269,10 @@ const WARNING_SIGN_DEFS = [
     'sats_priority': 'Very urgent' as const,
   },
   {
-    'key': 'Focal neurology — acute' as const,
+    'key': 'Focal neurology' as const,
     'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('230690007')})`,
-    'primary_name': 'Focal neurology — acute',
-    'secondary_text': 'Stroke',
+    'primary_name': 'Focal neurology',
+    'secondary_text': 'acute; Stroke',
     'sats_priority': 'Very urgent' as const,
   },
   {
@@ -283,10 +283,10 @@ const WARNING_SIGN_DEFS = [
     'sats_priority': 'Very urgent' as const,
   },
   {
-    'key': 'Shortness of breath - acute' as const,
+    'key': 'Acute shortness of breath' as const,
     'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('267036007')} (qualifier ${sExpressionById('24484000')}))`,
-    'primary_name': 'Shortness of breath - acute',
-    'secondary_text': null,
+    'primary_name': 'Shortness of breath',
+    'secondary_text': 'acute',
     'sats_priority': 'Very urgent' as const,
   },
   {
@@ -305,7 +305,9 @@ const WARNING_SIGN_DEFS = [
   },
   {
     'key': 'Severe limb ischemia' as const,
-    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('21631000119105')} (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))`,
+    'clinical_finding_s_expression': `(clinical_finding ${
+      sExpressionById('21631000119105')
+    } (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))`,
     'primary_name': 'Severe limb ischemia',
     'secondary_text': 'Threatened limb',
     'sats_priority': 'Very urgent' as const,
@@ -372,9 +374,9 @@ const WARNING_SIGN_DEFS = [
     'sats_priority': 'Very urgent' as const,
   },
   {
-    'key': 'Fractured - compound' as const,
+    'key': 'Compound Fracture' as const,
     'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('52329006')})`,
-    'primary_name': 'Fractured - compound',
+    'primary_name': 'Compound fracture',
     'secondary_text': 'with a break in skin',
     'sats_priority': 'Very urgent' as const,
   },
@@ -414,8 +416,8 @@ const WARNING_SIGN_DEFS = [
   {
     'key': 'Seizure - post ictal' as const,
     'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('31758001')})`,
-    'primary_name': 'Seizure - post ictal',
-    'secondary_text': null,
+    'primary_name': 'Seizure',
+    'secondary_text': 'post ictal',
     'sats_priority': 'Very urgent' as const,
   },
   {
@@ -433,13 +435,6 @@ const WARNING_SIGN_DEFS = [
     'sats_priority': 'Very urgent' as const,
   },
   {
-    'key': 'Haemorrhage Controlled' as const,
-    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('131148009')} (qualifier ${sExpressionById('31509003')}))`,
-    'primary_name': 'Haemorrhage',
-    'secondary_text': 'Controlled',
-    'sats_priority': 'Urgent' as const,
-  },
-  {
     'key': 'Dislocation of finger' as const,
     'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('827108008')})`,
     'primary_name': 'Dislocation of finger',
@@ -454,10 +449,39 @@ const WARNING_SIGN_DEFS = [
     'sats_priority': 'Urgent' as const,
   },
   {
-    'key': 'Fracture' as const,
+    'key': 'Persistent vomiting' as const,
+    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('196746003')})`,
+    'primary_name': 'Persistent vomiting',
+    'secondary_text': null,
+    'sats_priority': 'Urgent' as const,
+  },
+  {
+    'key': 'Abdominal pain' as const,
+    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('21522001')})`,
+    'primary_name': 'Abdominal pain',
+    'secondary_text': null,
+    'sats_priority': 'Urgent' as const,
+    'prompt_when_s_expression': `(not (active_condition ${sExpressionById('77386006')}))`,
+  },
+  {
+    'key': 'Moderate pain' as const,
+    'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Moderate pain" "finding"))`,
+    'primary_name': 'Moderate pain',
+    'secondary_text': null,
+    'sats_priority': 'Urgent' as const,
+  },
+  {
+    'key': 'Haemorrhage Controlled' as const,
+    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('131148009')} (qualifier ${sExpressionById('31509003')}))`,
+    'primary_name': 'Haemorrhage',
+    'secondary_text': 'Controlled',
+    'sats_priority': 'Urgent' as const,
+  },
+  {
+    'key': 'Closed fracture' as const,
     'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('423125000')})`,
-    'primary_name': 'Fracture',
-    'secondary_text': 'Closed (no break in the skin)',
+    'primary_name': 'Closed fracture',
+    'secondary_text': 'no break in the skin',
     'sats_priority': 'Urgent' as const,
   },
   {
@@ -476,33 +500,11 @@ const WARNING_SIGN_DEFS = [
     'secondary_text': 'Other',
     'sats_priority': 'Urgent' as const,
   },
-  {
-    'key': 'Abdominal pain' as const,
-    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('21522001')})`,
-    'primary_name': 'Abdominal pain',
-    'secondary_text': null,
-    'sats_priority': 'Urgent' as const,
-    'prompt_when_s_expression': `(not (active_condition ${sExpressionById('77386006')}))`,
-  },
-  {
-    'key': 'Persistent vomiting' as const,
-    'clinical_finding_s_expression': `(clinical_finding ${sExpressionById('196746003')})`,
-    'primary_name': 'Persistent vomiting',
-    'secondary_text': null,
-    'sats_priority': 'Urgent' as const,
-  },
-  {
-    'key': 'Moderate pain' as const,
-    'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Moderate pain" "finding"))`,
-    'primary_name': 'Moderate pain',
-    'secondary_text': null,
-    'sats_priority': 'Urgent' as const,
-  },
 ]
 
 export type WarningSignKey = typeof WARNING_SIGN_DEFS[number]['key']
 
-export const KEYED_WARNING_SIGNS: WarningSign[] = sortBy(
+export const WARNING_SIGNS: WarningSign[] = sortBy(
   WARNING_SIGN_DEFS.map((sign) =>
     omitUndefinedProperties({
       ...sign,
@@ -515,7 +517,7 @@ export const KEYED_WARNING_SIGNS: WarningSign[] = sortBy(
   (sign) => ORDERED_PRIORITIES.indexOf(sign.sats_priority),
 )
 
-export const WARNING_SIGNS = keyBy(KEYED_WARNING_SIGNS, 'key')
+export const KEYED_WARNING_SIGNS = keyBy(WARNING_SIGNS, 'key')
 
 export function findingQueryExpression(
   { excluding_s_expression, clinical_finding_s_expression }: WarningSign,

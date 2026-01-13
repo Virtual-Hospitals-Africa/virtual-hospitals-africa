@@ -1,66 +1,68 @@
 import { assert } from 'std/assert/assert.ts'
-import { Priority, TriageAssignPriorityTableRow, WithTriageLevelFinding } from '../../types.ts'
+import { Priority, RenderedFindingRelativeToHealthWorker, TriageAssignPriorityTableRow } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 import { ReferenceRangeIndicator } from '../vitals/SimpleReferenceRangeIndicator.tsx'
 import capitalize from '../../util/capitalize.ts'
 import { colorFromPriorityOrScoreComponent } from '../../shared/vitals.ts'
 import { PRIORITY_COLORS } from '../../shared/priorities.ts'
+import findMatching from '../../util/findMatching.ts'
+import { humanReadableJson } from '../../util/humanReadableJson.ts'
 
 type TriageAssignPriorityTableProps = {
   vitals: TriageAssignPriorityTableRow[]
-  with_triage_level_findings: WithTriageLevelFinding[]
+  with_triage_level_findings: RenderedFindingRelativeToHealthWorker[]
   total_score: number
   priority: Priority
 }
 
-type Row =
-  | TriageAssignPriorityTableRow | {
-    type: 'with_triage_level_finding'
-    finding: WithTriageLevelFinding
+function assessmentDisplay(row: TriageAssignPriorityTableRow) {
+  if (row.type === 'assessment') {
+    return findMatching(row.finding.evaluations, (evaluation) => evaluation.value?.type === 'score').displays.finding
   }
+  if (row.type === 'measurement') {
+    return row.finding.displays.finding
+  }
+  if (row.finding.as_part_of_procedure.workflow_step_name) {
+    return row.finding.as_part_of_procedure.workflow_step_name
+  }
+  throw new Error(humanReadableJson(row))
+}
 
-const columns: TableColumn<Row>[] = [
+const columns: TableColumn<TriageAssignPriorityTableRow>[] = [
   {
-    label: 'Vital',
+    label: 'Assessment',
     type: 'content',
-    data: (row) => (
-      <div
-        className={cls('whitespace-nowrap text-sm text-gray-900', {
-          // 'font-normal': !row.is_computed,
-          // 'font-bold': !!row.is_computed,
-          // 'pl-4': !!row.is_component_of_computed,
-        })}
-      >
-        {capitalize(row.finding.displays.finding)}
-      </div>
-    ),
+    tdClassName: 'max-w-12 word-break',
+    data: (row, index, rows) => {
+      const display = assessmentDisplay(row)
+      const prior_row_display = index && assessmentDisplay(rows[index - 1])
+      if (display === prior_row_display) return null
+      return capitalize(display)
+    },
   },
   {
     label: 'Finding',
     type: 'content',
     data: (row) => (
-      <div className='whitespace-nowrap text-sm text-gray-900'>
-        {row.finding.displays.value || row.finding.displays.finding}
-      </div>
+      row.finding.displays.value || row.finding.displays.finding
     ),
   },
   {
     label: 'Previous',
     type: 'content',
     data: (row) => (
-      row.type === 'vital' && row.previous?.value != null && (
-        <div className='whitespace-nowrap text-sm text-gray-500'>
-          {row.previous?.value}
-        </div>
-      )
+      row.previous?.value
     ),
   },
   {
     label: 'Reference Range',
     type: 'content',
+    headerClassName: 'text-center!',
+    tdClassName: 'py-1! grid place-items-center min-w-75',
+    // cellClassName: 'min-h-12 max-h-16',
+    no_wrapper: true,
     data: (row) => {
-      if (row.type !== 'vital') return null
       const { finding, previous, reference_ranges } = row
       if (!reference_ranges) return null
       assert(
@@ -69,11 +71,11 @@ const columns: TableColumn<Row>[] = [
       )
       assert(
         finding.value.type === 'measurement',
-        `If there's a reference range there must be a value`,
+        `If there's a reference range there must be a measurement`,
       )
       assert(
         finding.value.value !== null,
-        `If there's a reference range there must be a value`,
+        `If there's a reference range there must be a measurement value`,
       )
       assert(
         finding.value.units,
@@ -90,22 +92,17 @@ const columns: TableColumn<Row>[] = [
     },
   },
   {
-    label: 'TEWS',
+    label: 'Priority / Score',
     type: 'content',
+
+    headerClassName: 'text-center!',
     tdClassName: ({ finding: { score, priority } }) => {
       if (priority == null && score == null) return ''
       const colors = colorFromPriorityOrScoreComponent(score, priority)
       return cls(colors.bg, colors.text)
     },
-    data: ({ finding: { score, priority } }) => {
-      if (priority == null && score == null) return null
-
-      return (
-        <div className='whitespace-nowrap text-sm font-semibold text-gray-900 text-center'>
-          {priority || score}
-        </div>
-      )
-    },
+    cellClassName: 'text-center font-semibold',
+    data: ({ finding: { priority, score } }) => priority || score,
   },
 ]
 
@@ -139,17 +136,19 @@ function ConclusionRow(
 export function TriageAssignPriorityTable(
   { vitals, with_triage_level_findings, total_score, priority }: TriageAssignPriorityTableProps,
 ) {
+  const rows: TriageAssignPriorityTableRow[] = [
+    ...with_triage_level_findings.map((finding) => ({
+      type: 'chief complaint/warning sign' as const,
+      previous: null, // TODO populate this from last encounter
+      finding,
+    })),
+    ...vitals,
+  ]
   return (
     <div className='relative'>
       <Table
         columns={columns}
-        rows={[
-          ...with_triage_level_findings.map((finding) => ({
-            type: 'with_triage_level_finding' as const,
-            finding,
-          })),
-          ...vitals
-        ]}
+        rows={rows}
         tableClassName='border-b-0 !rounded-b-none'
         EmptyState={() => <div>No measurements available</div>}
       />

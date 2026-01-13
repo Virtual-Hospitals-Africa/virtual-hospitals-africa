@@ -4,7 +4,7 @@ import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { filter, forEach } from '../../../../../../../../util/inParallel.ts'
-import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
+import { WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
@@ -28,7 +28,9 @@ import { humanReadableJson } from '../../../../../../../../util/humanReadableJso
 import { now } from '../../../../../../../../db/helpers.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import compactMap from '../../../../../../../../util/compactMap.ts'
-import { COMMON_SYMPTOMS_LIST } from '../../../../../../../../shared/common_symptoms.ts'
+import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.ts'
+
+import sortBy from '../../../../../../../../util/sortBy.ts'
 
 export const TriageWarningSignSchema = z.object({
   s_expression: z.string().transform((
@@ -216,11 +218,16 @@ async function getWarningSignsForPatient(
   { state: { trx, patient_id } }: OpenEncounterWorkflowContext,
 ): Promise<WarningSign[]> {
   const [having_prompt_when, no_prompt_when] = partition(
-    KEYED_WARNING_SIGNS,
+    WARNING_SIGNS,
     (sign) => !!sign.prompt_when_s_expression,
   )
   const satisfying_prompt_when = await filter(having_prompt_when, promptWhen)
-  return [...no_prompt_when, ...satisfying_prompt_when]
+  const warning_signs_for_patient = [...no_prompt_when, ...satisfying_prompt_when]
+  return sortBy(
+    warning_signs_for_patient,
+    (sign) => ORDERED_PRIORITIES.indexOf(sign.sats_priority),
+    (sign) => WARNING_SIGNS.indexOf(sign),
+  )
 
   async function promptWhen({ prompt_when_s_expression }: WarningSign) {
     assert(prompt_when_s_expression)
@@ -232,12 +239,12 @@ async function getWarningSignsForPatient(
   }
 }
 
-function* asCheckedWarningSigns(
-  findings: SearchResult<typeof patient_findings>[],
+function* signsMatchedWithPriorRecords(
+  prior_findings: SearchResult<typeof patient_findings>[],
   warning_signs_for_patient: WarningSign[],
   common_symptoms: CommonSymptom[],
 ): Generator<WarningSignWithMaybeRecord> {
-  const findings_set = new Set(findings.map((finding) => {
+  const findings_set = new Set(prior_findings.map((finding) => {
     // We don't use the value when calculating the normal form
     // of the s_expression here so that negative findings match.
     // That is if a previous submission found no chest pain,
@@ -257,7 +264,7 @@ function* asCheckedWarningSigns(
 
   const warning_signs_and_common_symptoms: Array<WarningSign | CommonSymptom> = [
     ...warning_signs_for_patient,
-    ...common_symptoms
+    ...common_symptoms,
   ]
 
   // Loop over the signs looking for findings that have identical
@@ -287,7 +294,7 @@ function* asCheckedWarningSigns(
       primary_name: finding.specific_snomed_concept.name,
       secondary_text: finding.specific_snomed_concept.category,
       existing_record: finding.existing_record,
-      category: 'Search Results' as const,
+      category: 'Prior record' as const,
     }
   }
 }
@@ -296,12 +303,18 @@ export async function TriageWarningSignsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const {
-    all_findings_reported_previously_on_this_page,
+    prior_findings,
     warning_signs_for_patient,
   } = await promiseProps({
-    all_findings_reported_previously_on_this_page: getAllFindingsReportedPreviouslyOnThisPage(ctx),
+    prior_findings: getAllFindingsReportedPreviouslyOnThisPage(ctx),
     warning_signs_for_patient: getWarningSignsForPatient(ctx),
   })
+
+  const warning_signs = signsMatchedWithPriorRecords(
+    prior_findings,
+    warning_signs_for_patient,
+    COMMON_SYMPTOMS,
+  )
 
   return (
     <WarningSigns
@@ -311,11 +324,7 @@ export async function TriageWarningSignsPage(
           '/snomed-warning-signs',
         )
       })}
-      warning_signs={Array.from(asCheckedWarningSigns(
-        all_findings_reported_previously_on_this_page,
-        warning_signs_for_patient,
-        COMMON_SYMPTOMS_LIST
-      ))}
+      warning_signs={Array.from(warning_signs)}
     />
   )
 }

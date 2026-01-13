@@ -1,3 +1,4 @@
+import '@std/dotenv/load'
 import { assert } from 'std/assert/assert.ts'
 import { Pool } from 'pg'
 import Cursor from 'pg-cursor'

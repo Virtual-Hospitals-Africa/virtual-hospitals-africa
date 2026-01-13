@@ -4,6 +4,10 @@ import last from '../util/last.ts'
 import first from '../util/first.ts'
 import { departmentNames, departmentResponsibleForWorkflow } from './departments.ts'
 import capitalize from '../util/capitalize.ts'
+import values from '../util/values.ts'
+import { invertRecord } from '../util/invertRecord.ts'
+import { combineAll } from '../util/combine.ts'
+import isKeyOf from '../util/isKeyOf.ts'
 
 export const WORKFLOWS = [
   'registration' as const,
@@ -89,22 +93,22 @@ export const WORKFLOW_STEPS = {
   [w in Workflow]: string[]
 }
 
-export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS: {
-  [w in Workflow]?: Record<string, string>
-} = {
+export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS = {
   triage: {
-    'brief_history': '203421005', // |History taking, limited (procedure)|'
     // The warning_sides code isn't quite right, but it's the closest match and having a single code per step streamlines things
     // TODO: become a member organization for SNOMED and request that all the codes we need be added
     // https://www.snomed.org/change-or-add
     // https://www.snomed.org/members
     'warning_signs': '245581009', // chief complaint + emergency signs + urgent signs |Emergency examination for triage (procedure)|
+    'brief_history': '203421005', // |History taking, limited (procedure)|'
     'height_and_weight': '54709006', // |Body measurement (procedure)|'
     'measure_vitals': '410188000', // |Taking patient vital signs assessment (procedure)|
     'additional_tasks_and_investigations': '386053000', // Evaluation procedure (procedure)
     // 'assign_priority': '',
   },
 }
+
+export const SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES = invertRecord(combineAll(values(WORKFLOW_STEP_SNOMED_CONCEPT_IDS)))
 
 export function isWorkflow(workflow: string): workflow is Workflow {
   return workflow in WORKFLOW_STEPS
@@ -120,8 +124,9 @@ export function workflowStepSnomedConceptId(
   workflow: Workflow,
   step: string,
 ): string | null {
+  if (!isKeyOf(workflow, WORKFLOW_STEP_SNOMED_CONCEPT_IDS)) return null
   const concepts = WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]
-  return (concepts && concepts[step]) || null
+  return isKeyOf(step, concepts) ? concepts[step] : null
 }
 
 export function firstIncompleteStep(

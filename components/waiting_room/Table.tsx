@@ -52,21 +52,15 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   },
   {
     label: 'Employees',
+    type: 'person',
+    fallback: 'Next Available',
     data(row) {
-      if (!row.present_employees.length) return 'Next Available'
-      return (
-        <div className='flex flex-col'>
-          {row.present_employees.map((employee) => (
-            <Person
-              key={employee.id}
-              person={{
-                ...employee,
-                ...employeeDisplay(employee),
-              }}
-            />
-          ))}
-        </div>
-      )
+      return row.present_employees.map((employee) => (
+        {
+          ...employee,
+          ...employeeDisplay(employee),
+        }
+      ))
     },
   },
   // {
@@ -106,6 +100,9 @@ export default function WaitingRoomTable(
     can_register_patients: boolean
   },
 ) {
+  console.log('z', {
+    waiting_room,
+  })
   return (
     <Table
       columns={columns}

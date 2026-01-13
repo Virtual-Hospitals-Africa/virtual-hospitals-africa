@@ -44,7 +44,7 @@ describeParallel('snomed-warning-signs', () => {
               'snomed_concept_id': '301354004',
               'primary_name': 'Pain of ear',
               'secondary_text': 'finding',
-              'sats_priority': 'Non-urgent',
+              'category': 'Search Results',
               'similarity': 1,
             },
             {
@@ -52,7 +52,7 @@ describeParallel('snomed-warning-signs', () => {
               'snomed_concept_id': '1010233001',
               'primary_name': 'Otalgia of left ear',
               'secondary_text': 'finding',
-              'sats_priority': 'Non-urgent',
+              'category': 'Search Results',
               'similarity': 0.47058824,
             },
             {
@@ -60,7 +60,7 @@ describeParallel('snomed-warning-signs', () => {
               'snomed_concept_id': '162359003',
               'primary_name': 'Bilateral earache',
               'secondary_text': 'finding',
-              'sats_priority': 'Non-urgent',
+              'category': 'Search Results',
               'similarity': 0.44444445,
             },
             {
@@ -68,7 +68,7 @@ describeParallel('snomed-warning-signs', () => {
               'snomed_concept_id': '1010234007',
               'primary_name': 'Otalgia of right ear',
               'secondary_text': 'finding',
-              'sats_priority': 'Non-urgent',
+              'category': 'Search Results',
               'similarity': 0.44444445,
             },
             {
@@ -76,7 +76,7 @@ describeParallel('snomed-warning-signs', () => {
               'snomed_concept_id': '27635008',
               'primary_name': 'Aching pain',
               'secondary_text': 'finding',
-              'sats_priority': 'Non-urgent',
+              'category': 'Search Results',
               'similarity': 0.3,
             },
           ],
@@ -120,6 +120,7 @@ describeParallel('snomed-warning-signs', () => {
           'sats_priority': 'Urgent',
           'sats_priority_by_virtue_of_matching_warning_sign': 'Abdominal pain',
           'similarity': 1,
+          'category': 'Search Results',
         })
       },
     )
@@ -170,6 +171,7 @@ describeParallel('snomed-warning-signs', () => {
           'sats_priority': 'Very urgent',
           'sats_priority_by_virtue_of_matching_warning_sign': 'Pregnancy and abdominal pain',
           'similarity': 1,
+          'category': 'Search Results',
         })
       },
     )

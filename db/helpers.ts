@@ -521,6 +521,19 @@ export function orderByArrayPosition<
   ).else(0).end()
 }
 
+export function caseWhenMatching<T>(
+  eb: ExpressionBuilder<any, any>,
+  ew: ExpressionWrapper<any, any, string>,
+  record: Record<string, T>,
+) {
+  const [[first_key, first_value], ...rest] = entries(record)
+  const case_statement = eb.case().when(ew, '=', first_key).then(first_value)
+  return rest.reduce(
+    (statement, [key, value]) => statement.when(ew, '=', key).then(value),
+    case_statement,
+  ).end()
+}
+
 export function deduplicate<T extends Array<any>, U>(
   func: (trx: TrxOrDb, ...parameters: T) => Promise<U>,
 ): (trx: TrxOrDb, ...parameters: T) => Promise<U> {

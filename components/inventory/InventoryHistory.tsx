@@ -14,6 +14,7 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
     label: 'Employee',
     type: 'person',
     data: 'created_by',
+    fallback: null,
   },
   {
     label: 'Change',
@@ -31,6 +32,7 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
     label: 'Patient',
     type: 'person',
     data: 'patient',
+    fallback: null,
   },
 
   {

@@ -2,9 +2,9 @@ import matching from './matching.ts'
 
 export default function findMatching<T>(
   items: Array<T>,
-  pattern: Partial<T>,
+  pattern: Partial<T> | ((item: T) => boolean),
 ): T {
-  const match = matching(pattern)
+  const match = typeof pattern === 'function' ? pattern : matching(pattern)
   for (const item of items) {
     if (match(item)) {
       return item

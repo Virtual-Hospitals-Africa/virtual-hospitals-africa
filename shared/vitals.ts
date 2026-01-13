@@ -509,38 +509,91 @@ export function buildReferenceRanges(
 
   // For the lowest fixed range, find the interval
   const interval_low = ranges[1].max - ranges[0].max
-  // For the half-open low range one possible value is that interval distance below
-  const low_range_base = Math.floor(ranges[0].max - interval_low)
-  // We want to include the lowest observed value with some padding.
-  const lowest_observed_minus_padding = Number(
-    min_value_to_be_sure_to_include
-      .minus(interval_low / 2)
-      .toDecimalPlaces(0, Decimal.ROUND_FLOOR),
-  )
-  // Take whichever is lower
-  const low_range_min = Math.min(
-    low_range_base,
-    lowest_observed_minus_padding,
-  )
+  // For the half-open low range, by default choose an interval that is 1/3 the length of the lowest fixed range
+  const half_open_low_base_interval = interval_low / 3
+  // By default, close the half open range on the low end
+  const low_range_base = ranges[0].max - half_open_low_base_interval
 
   // Do the same on the high end
   const interval_high = ranges.at(-2)!.max - ranges.at(-3)!.max
-  const high_range_base = Math.ceil(ranges.at(-2)!.max + interval_high)
-  const highest_observed_plus_padding = Number(
-    max_value_to_be_sure_to_include
-      .plus(interval_high / 2)
-      .toDecimalPlaces(0, Decimal.ROUND_CEIL),
+  const half_open_high_base_interval = interval_high / 3
+  const high_range_base = ranges.at(-2)!.max + half_open_high_base_interval
+
+  // The base ranges above may not include the values
+  // At the lowest, the values to be sure to include will appear visually at a minimum of 4% from the left/right
+  const padding_factor = 0.04
+
+  const min_value_supporting_padding_factor = (min_value_to_be_sure_to_include.toNumber() - padding_factor * high_range_base) / (1 - padding_factor)
+  const max_value_supporting_padding_factor = (-max_value_to_be_sure_to_include.toNumber() + padding_factor * low_range_base) / (padding_factor - 1)
+
+  const low_range_min = Math.min(
+    low_range_base,
+    min_value_supporting_padding_factor,
   )
+
   const high_range_max = Math.max(
     high_range_base,
-    highest_observed_plus_padding,
+    max_value_supporting_padding_factor,
   )
+
+  if (vital === 'temperature') {
+    assertEquals(interval_low, interval_high)
+  }
 
   return ranges.map((range, i) => ({
     low: i ? ranges[i - 1].max : low_range_min,
     high: range.max === Infinity ? high_range_max : range.max,
     color: colorFromScoreComponent(range.score),
   }))
+
+  /*
+    Giving flavor of the above
+    {
+      vital: "heart_rate",
+      decimal_values: [ Decimal(80) ],
+      ranges: [
+        { max: 41, score: 3 },
+        { max: 51, score: 1 },
+        { max: 101, score: 0 },
+        { max: 111, score: 1 },
+        { max: 130, score: 2 },
+        { max: Infinity, score: 3 }
+      ],
+      min_value_to_be_sure_to_include: Decimal(80),
+      max_value_to_be_sure_to_include: Decimal(80),
+      interval_low: 10,
+      low_range_base: 37.666666666666664,
+      interval_high: 19,
+      high_range_base: 136.33333333333334,
+      padding_factor: 0.04,
+      total_interval_base: 98.66666666666669,
+      min_value_supporting_padding_factor: 77.65277777777779,
+      max_value_supporting_padding_factor: 81.7638888888889,
+      low_range_min: 37.666666666666664,
+      high_range_max: 136.33333333333334
+    }
+    {
+      vital: "temperature",
+      decimal_values: [ Decimal(36.75) ],
+      ranges: [
+        { max: 35, score: 2 },
+        { max: 38.5, score: 0 },
+        { max: Infinity, score: 2 }
+      ],
+      min_value_to_be_sure_to_include: Decimal(36.75),
+      max_value_to_be_sure_to_include: Decimal(36.75),
+      interval_low: 3.5,
+      low_range_base: 33.833333333333336,
+      interval_high: 3.5,
+      high_range_base: 39.666666666666664,
+      padding_factor: 0.04,
+      total_interval_base: 5.833333333333329,
+      min_value_supporting_padding_factor: 36.62847222222222,
+      max_value_supporting_padding_factor: 36.87152777777778,
+      low_range_min: 33.833333333333336,
+      high_range_max: 39.666666666666664
+    }
+  */
 }
 
 export function isMeasurement<

@@ -31,14 +31,20 @@ function scoreOrPriorityColors(record: EvaluatedRecord): Values<typeof PRIORITY_
   return priorityColors(priority)
 }
 
-export const record_chip_padding_class_name = 'py-0.5 text-sm'
+export function recordChipPaddingClassName({ with_padding_x }: {
+  with_padding_x: boolean
+}) {
+  return cls('py-0.5 text-sm', {
+    'px-4': with_padding_x,
+  })
+}
 
 export function recordChipClassName(record: EvaluatedRecord) {
-  const colors = scoreOrPriorityColors(record);
+  const colors = scoreOrPriorityColors(record)
   return cls(
-    "group box-border flex gap-2 items-center px-4 rounded-[60px] outline-none",
-    record_chip_padding_class_name,
+    'group box-border flex gap-2 items-center rounded-[60px] outline-none',
+    recordChipPaddingClassName({ with_padding_x: true }),
     colors.bg,
-    colors.text
+    colors.text,
   )
 }

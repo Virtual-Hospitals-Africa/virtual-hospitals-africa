@@ -1,6 +1,6 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_signs.ts'
+import { findingQueryExpression, KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { buildExpressionPredicate } from '../../db/models/s_expression_snomed_concepts.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -13,7 +13,7 @@ describeParallel('db/models/s_expression_concepts.ts', () => {
     'can be joined against to determine if a given concept matches an s_expression for a simple case',
     async () => {
       const persistent_vomiting_s_expression = findingQueryExpression(
-        WARNING_SIGNS['Persistent vomiting'],
+        KEYED_WARNING_SIGNS['Persistent vomiting'],
       )
 
       const results = await db.selectFrom(
@@ -46,7 +46,7 @@ describeParallel('db/models/s_expression_concepts.ts', () => {
     'can be joined against to determine if a given concept matches an s_expression for a complex case',
     async () => {
       const burn_other_s_expression = findingQueryExpression(
-        WARNING_SIGNS['Burn Other'],
+        KEYED_WARNING_SIGNS['Burn Other'],
       )
 
       // Test multiple concepts at once: Burn (125666000), Burn of back (72998004),

@@ -45,7 +45,7 @@ const ONLY_WHEN_PREGNANCY_STATUS = {
 }
 
 export function asWarningSigns(
-  sign_keys: Array<keyof typeof WARNING_SIGNS>,
+  sign_keys: Array<keyof typeof KEYED_WARNING_SIGNS>,
   opts: { pregnant: boolean },
 ): z.input<typeof TriageWarningSignsSchema> {
   return { warning_signs: fromEntries(applicableWarningSigns()) }
@@ -53,7 +53,7 @@ export function asWarningSigns(
   function* applicableWarningSigns(): Generator<
     [string, z.input<typeof TriageWarningSignSchema>]
   > {
-    for (const sign of KEYED_WARNING_SIGNS) {
+    for (const sign of WARNING_SIGNS) {
       if (
         isKeyOf(sign.key, ONLY_WHEN_PREGNANCY_STATUS) &&
         ONLY_WHEN_PREGNANCY_STATUS[sign.key] !== opts.pregnant

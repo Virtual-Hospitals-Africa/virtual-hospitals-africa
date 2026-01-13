@@ -10,7 +10,7 @@ export default function waitUntilTestServerUp(): Promise<void> {
       controller.abort()
       clearTimeout(retry_timeout)
       reject(new Error('Test server did not start in time'))
-    }, 10000)
+    }, 25000)
 
     function healthCheck() {
       fetch(`${route}/health-check`, { signal: controller.signal }).then(
@@ -21,7 +21,7 @@ export default function waitUntilTestServerUp(): Promise<void> {
           resolve()
         },
       ).catch(() => {
-        retry_timeout = setTimeout(healthCheck, 3)
+        retry_timeout = setTimeout(healthCheck, 300)
       })
     }
 

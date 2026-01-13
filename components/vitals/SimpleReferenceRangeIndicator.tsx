@@ -23,148 +23,107 @@ export function ReferenceRangeIndicator({
   const overall_max = reference_ranges[reference_ranges.length - 1].high
   const total_range = overall_max - overall_min
 
-  function getPosition(val: string | number) {
-    return Math.max(
-      0,
-      Math.min(100, ((Number(val) - overall_min) / total_range) * 100),
-    )
-  }
-
-  const value_position = getPosition(value)
-  const previous_position = previous_value != null ? getPosition(previous_value) : null
-
-  const padding_x = 16
+  // Layout Constants - Padding removed
   const bar_width = 320
-  const svg_width = bar_width + (padding_x * 2)
-  const svg_height = 50
+  const svg_width = bar_width
+  const svg_height = 50 // Reduced height to fit content tightly
   const bar_height = 8
-  const bar_y = 12
+
+  // Center the bar horizontally, but vertically we need space for labels
+  const bar_y = 20
   const border_radius = 4
 
-  // Find the green range to display its boundaries as labels
-  const green_range = reference_ranges.find((r) => r.color === 'green')
+  function getXPos(val: string | number) {
+    const percent = Math.max(0, Math.min(100, ((Number(val) - overall_min) / total_range) * 100))
+    // padding_x is now 0
+    return (percent / 100) * bar_width
+  }
+
+  const current_x = getXPos(value)
+  const previous_x = previous_value != null ? getXPos(previous_value) : null
+
+  const boundaries = reference_ranges.slice(0, -1).map((r) => ({
+    val: r.high,
+    x: getXPos(r.high),
+  }))
 
   return (
-    <div className='w-full min-w-[200px] max-w-[200px]'>
-      <svg
-        viewBox={`0 0 ${svg_width} ${svg_height}`}
-        className='w-full'
-        preserveAspectRatio='xMidYMid meet'
-      >
-        <defs>
-          <clipPath id={`rounded-bar-${value}`}>
-            <rect
-              x={padding_x}
-              y={bar_y}
-              width={bar_width}
-              height={bar_height}
-              rx={border_radius}
-              ry={border_radius}
-            />
-          </clipPath>
-        </defs>
-        <g clipPath={`url(#rounded-bar-${value})`}>
-          {reference_ranges.map((range, i) => {
-            const start_position = getPosition(range.low)
-            const end_position = getPosition(range.high)
-            const width_percent = end_position - start_position
-            return (
-              <rect
-                key={i}
-                x={padding_x + (start_position / 100) * bar_width}
-                y={bar_y}
-                width={(width_percent / 100) * bar_width}
-                height={bar_height}
-                fill={RANGE_COLORS[range.color]}
-              />
-            )
-          })}
-        </g>
+    <svg
+      viewBox={`0 0 ${svg_width} ${svg_height}`}
+      class='w-full h-auto max-w-90 min-w-75;'
+      preserveAspectRatio='xMidYMid meet'
+      style={{ display: 'block' }}
+    >
+      <defs>
+        <clipPath id={`rounded-bar-${value}`}>
+          <rect x='0' y={bar_y} width={bar_width} height={bar_height} rx={border_radius} ry={border_radius} />
+        </clipPath>
+      </defs>
 
-        {previous_position !== null && (
-          <g>
-            <line
-              x1={padding_x + (previous_position * bar_width / 100)}
-              y1={bar_y - 1}
-              x2={padding_x + (previous_position * bar_width / 100)}
-              y2={bar_y + bar_height + 1}
-              stroke='#ffffff'
-              strokeWidth='6'
-              strokeLinecap='round'
-            />
-            <line
-              x1={padding_x + (previous_position * bar_width / 100)}
-              y1={bar_y - 1}
-              x2={padding_x + (previous_position * bar_width / 100)}
-              y2={bar_y + bar_height + 1}
-              stroke='#9ca3af'
-              strokeWidth='3.5'
-              strokeLinecap='round'
-            />
+      {/* Track */}
+      <g clipPath={`url(#rounded-bar-${value})`}>
+        {reference_ranges.map((range, i) => {
+          const x1 = getXPos(range.low)
+          const x2 = getXPos(range.high)
+          return <rect key={i} x={x1} y={bar_y} width={Math.max(0, x2 - x1)} height={bar_height} fill={RANGE_COLORS[range.color]} />
+        })}
+      </g>
 
-            <polygon
-              points={`${padding_x + (previous_position * bar_width / 100) - 5},${bar_y - 13} ${padding_x + (previous_position * bar_width / 100) + 5},${
-                bar_y - 13
-              } ${padding_x + (previous_position * bar_width / 100)},${bar_y - 4.5}`}
-              fill='#9ca3af'
-            />
-          </g>
-        )}
-
-        <g>
-          <line
-            x1={padding_x + (value_position * bar_width / 100)}
-            y1={bar_y - 2}
-            x2={padding_x + (value_position * bar_width / 100)}
-            y2={bar_y + bar_height + 4}
-            stroke='#ffffff'
-            strokeWidth='6'
-            strokeLinecap='round'
-          />
-          <line
-            x1={padding_x + (value_position * bar_width / 100)}
-            y1={bar_y - 2}
-            x2={padding_x + (value_position * bar_width / 100)}
-            y2={bar_y + bar_height + 4}
-            stroke='#000000'
-            strokeWidth='3.5'
-            strokeLinecap='round'
-          />
-
+      {/* Previous Value Indicator */}
+      {previous_x !== null && (
+        <g opacity='0.5'>
           <polygon
-            points={`${padding_x + (value_position * bar_width / 100) - 5},${bar_y - 14} ${padding_x + (value_position * bar_width / 100) + 5},${bar_y - 14} ${
-              padding_x + (value_position * bar_width / 100)
-            },${bar_y - 5.5}`}
-            fill='#000000'
+            points={`${previous_x - 3},${bar_y - 8} ${previous_x + 3},${bar_y - 8} ${previous_x},${bar_y - 2}`}
+            fill='#9ca3af'
           />
         </g>
+      )}
 
-        {green_range && (
-          <>
-            <text
-              x={padding_x + (getPosition(green_range.low) / 100) * bar_width}
-              y={bar_y + bar_height + 14}
-              textAnchor='middle'
-              fontSize='12'
-              fill='#6b7280'
-              fontWeight='500'
-            >
-              {green_range.low}
-            </text>
+      {/* Current Value Indicator & Top Label */}
+      <g>
+        <text
+          x={current_x}
+          y={bar_y - 6}
+          textAnchor='middle'
+          fontSize='11'
+          fontWeight='700'
+          fill='#000000'
+        >
+          {value}
+        </text>
+        <line
+          x1={current_x}
+          y1={bar_y - 2}
+          x2={current_x}
+          y2={bar_y + bar_height + 2}
+          stroke='#ffffff'
+          strokeWidth='4'
+          strokeLinecap='round'
+        />
+        <line
+          x1={current_x}
+          y1={bar_y - 2}
+          x2={current_x}
+          y2={bar_y + bar_height + 2}
+          stroke='#000000'
+          strokeWidth='2'
+          strokeLinecap='round'
+        />
+      </g>
 
-            <text
-              x={padding_x + (getPosition(green_range.high) / 100) * bar_width}
-              y={bar_y + bar_height + 14}
-              textAnchor='middle'
-              fontSize='12'
-              fill='#6b7280'
-              fontWeight='500'
-            >
-              {green_range.high}
-            </text>
-          </>
-        )}
-      </svg>
-    </div>
+      {/* Range Labels (Bottom) */}
+      <g fontSize='10' fontWeight='500' fill='#6b7280'>
+        {boundaries.map((b, idx) => (
+          <text
+            key={idx}
+            x={b.x}
+            y={bar_y + bar_height + 14}
+            textAnchor='middle'
+          >
+            {b.val}
+          </text>
+        ))}
+      </g>
+    </svg>
   )
 }
