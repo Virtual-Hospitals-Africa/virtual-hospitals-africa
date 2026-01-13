@@ -70,7 +70,7 @@ export const handler = postHandler(
       specialty,
     )
 
-    await employment.addOne(trx, {
+    const result = await employment.addOne(trx, {
       department_ids,
       organization_id,
       profession,
@@ -78,6 +78,7 @@ export const handler = postHandler(
       health_worker_id: health_worker.id,
       is_admin: false,
     })
+    assert(result.id)
 
     return redirect('/app')
   },

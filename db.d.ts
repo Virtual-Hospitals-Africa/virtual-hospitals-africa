@@ -10,27 +10,11 @@ export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U> ?
 
 export type ChatbotName = 'patient' | 'pharmacist'
 
-export type DoctorReviewStep =
-  | 'clinical_notes'
-  | 'diagnosis'
-  | 'orders'
-  | 'prescriptions'
-  | 'referral'
-  | 'revert'
+export type DoctorReviewStep = 'clinical_notes' | 'diagnosis' | 'orders' | 'prescriptions' | 'referral' | 'revert'
 
-export type EmergencyContactRelationship =
-  | 'Friend'
-  | 'Other'
-  | 'Parent'
-  | 'Sibling'
+export type EmergencyContactRelationship = 'Friend' | 'Other' | 'Parent' | 'Sibling'
 
-export type EncounterReason =
-  | 'administration'
-  | 'checkup'
-  | 'follow up'
-  | 'maternity'
-  | 'referral'
-  | 'seeking treatment'
+export type EncounterReason = 'administration' | 'checkup' | 'follow up' | 'maternity' | 'referral' | 'seeking treatment'
 
 export type EntityType = 'health_worker' | 'regulator'
 
@@ -48,20 +32,9 @@ export type FamilyType =
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U> ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>
 
-export type GuardianRelation =
-  | 'adopted parent'
-  | 'biological parent'
-  | 'foster parent'
-  | 'grandparent'
-  | 'other guardian'
-  | 'sibling'
-  | 'sibling of parent'
+export type GuardianRelation = 'adopted parent' | 'biological parent' | 'foster parent' | 'grandparent' | 'other guardian' | 'sibling' | 'sibling of parent'
 
-export type Int8 = ColumnType<
-  string,
-  bigint | number | string,
-  bigint | number | string
->
+export type Int8 = ColumnType<string, bigint | number | string, bigint | number | string>
 
 export type Json = JsonValue
 
@@ -75,39 +48,15 @@ export type JsonPrimitive = boolean | number | string | null
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive
 
-export type LanguageScope =
-  | 'Collective'
-  | 'Individual'
-  | 'Local'
-  | 'Macrolanguage'
-  | 'Special'
+export type LanguageScope = 'Collective' | 'Individual' | 'Local' | 'Macrolanguage' | 'Special'
 
-export type LanguageType =
-  | 'Constructed'
-  | 'Extinct'
-  | 'Genetic'
-  | 'Genetic-like'
-  | 'Geographic'
-  | 'Historical'
-  | 'Living'
-  | 'Special'
+export type LanguageType = 'Constructed' | 'Extinct' | 'Genetic' | 'Genetic-like' | 'Geographic' | 'Historical' | 'Living' | 'Special'
 
-export type MaritalStatus =
-  | 'Co-habiting'
-  | 'Divorced'
-  | 'Married'
-  | 'Never Married'
-  | 'Separated'
-  | 'Single'
-  | 'Widowed'
+export type MaritalStatus = 'Co-habiting' | 'Divorced' | 'Married' | 'Never Married' | 'Separated' | 'Single' | 'Widowed'
 
 export type MessageConcerningType = 'patient' | 'patient_record'
 
-export type MessagePriority =
-  | 'Emergency'
-  | 'Non-urgent'
-  | 'Urgent'
-  | 'Very urgent'
+export type MessagePriority = 'Emergency' | 'Non-urgent' | 'Urgent' | 'Very urgent'
 
 export type MessageTargetType =
   | 'administrative_area_level_1'
@@ -122,15 +71,7 @@ export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
 
 export type Numeric = ColumnType<string, number | string, number | string>
 
-export type PatientCohabitation =
-  | 'Father'
-  | 'Foster Parent'
-  | 'Grandparent(s)'
-  | 'Mother'
-  | 'Orphanage'
-  | 'Other Relative'
-  | 'Sibling'
-  | 'Uncle or Aunt'
+export type PatientCohabitation = 'Father' | 'Foster Parent' | 'Grandparent(s)' | 'Mother' | 'Orphanage' | 'Other Relative' | 'Sibling' | 'Uncle or Aunt'
 
 export type PharmaciesTypes =
   | 'Clinics: Class A'
@@ -146,11 +87,7 @@ export type PharmaciesTypes =
   | 'Pharmacy located in the CBD'
   | 'Wholesalers'
 
-export type PharmacistType =
-  | 'Dispensing Medical Practitioner'
-  | 'Ind Clinic Nurse'
-  | 'Pharmacist'
-  | 'Pharmacy Technician'
+export type PharmacistType = 'Dispensing Medical Practitioner' | 'Ind Clinic Nurse' | 'Pharmacist' | 'Pharmacy Technician'
 
 export type Profession = 'doctor' | 'nurse' | 'receptionist'
 
@@ -218,19 +155,9 @@ export type SnomedCategory =
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
-export type VitalAssessment =
-  | 'consciousness'
-  | 'mobility_assessment'
-  | 'trauma_presence'
+export type VitalAssessment = 'consciousness' | 'mobility_assessment' | 'trauma_presence'
 
-export type Workflow =
-  | 'consultation'
-  | 'doctor_review'
-  | 'maternity'
-  | 'prescription_refill'
-  | 'registration'
-  | 'stabilization'
-  | 'triage'
+export type Workflow = 'consultation' | 'doctor_review' | 'maternity' | 'prescription_refill' | 'registration' | 'stabilization' | 'triage'
 
 export interface Addresses {
   administrative_area_level_1: string | null

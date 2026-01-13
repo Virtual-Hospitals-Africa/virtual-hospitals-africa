@@ -4,6 +4,7 @@ import { SqlBool } from 'kysely'
 import generateUUID from '../../util/uuid.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { blankSelection } from '../helpers.ts'
+import { health_workers } from './health_workers.ts'
 
 type Employee = {
   health_worker_id: string
@@ -32,17 +33,18 @@ export type OrganizationAdmin = {
 export const employment = {
   addOne(
     trx: TrxOrDb,
-    { department_ids, profession, is_admin, ...rest }: Employee & {
+    { department_ids, profession, is_admin, health_worker_id, ...rest }: Employee & {
       department_ids?: string[]
     },
   ) {
+    health_workers.invalidateCacheOne(health_worker_id)
     const id = generateUUID()
 
     return trx.with(
       'employment_insert',
       (qb) =>
         qb.insertInto('employment')
-          .values({ id, profession, is_admin, ...rest })
+          .values({ id, profession, is_admin, health_worker_id, ...rest })
           .returningAll(),
     ).with(
       'department_insert',
