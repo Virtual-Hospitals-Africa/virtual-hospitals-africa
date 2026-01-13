@@ -115,3 +115,80 @@ export const getWalkingDistance = cacheable(
     return distance
   },
 )
+
+export async function getAddressSuggestions(
+  input: string,
+  options?: {
+    location?: Coordinates
+    radius?: number
+    country?: string
+  },
+): Promise<
+  Array<{
+    place_id: string
+    description: string
+    structured_formatting: {
+      main_text: string
+      secondary_text: string
+    }
+  }>
+> {
+  if (!input.trim()) return []
+
+  const params = new URLSearchParams({
+    input: input,
+    key: GOOGLE_MAPS_API_KEY!,
+  })
+
+  if (options?.location) {
+    params.append(
+      'location',
+      `${options.location.latitude},${options.location.longitude}`,
+    )
+    params.append('radius', String(options.radius || 50000))
+  }
+
+  if (options?.country) {
+    params.append('components', `country:${options.country}`)
+  }
+
+  const url =
+    `https://maps.googleapis.com/maps/api/place/autocomplete/json?${params}`
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch address suggestions')
+  }
+
+  const data = await response.json()
+
+  if (data.status === 'OK' && Array.isArray(data.predictions)) {
+    return data.predictions
+  }
+
+  return []
+}
+
+export async function getPlaceDetails(
+  place_id: string,
+): Promise<AddressInsert | null> {
+  const url =
+    `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${GOOGLE_MAPS_API_KEY}`
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch place details')
+  }
+
+  const data = await response.json()
+
+  if (data.status === 'OK' && data.result) {
+    return getAddressFromData([{
+      types: data.result.types,
+      address_components: data.result.address_components,
+      formatted_address: data.result.formatted_address,
+    }])
+  }
+
+  return null
+}
