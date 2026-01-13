@@ -6,6 +6,24 @@ import { DateInput } from '../form/inputs/date.tsx'
 import { LanguageSelect } from '../form/inputs/language.tsx'
 import { NamesInputs } from './NamesInputs.tsx'
 import { SexAndGenderInputs } from './SexAndGenderInputs.tsx'
+import { asResult } from '../../util/asResult.ts'
+import { TargetedClipboardEvent } from 'preact'
+
+function devModeFillFormOnJsonPaste(event: TargetedClipboardEvent<HTMLElement>) {
+  console.log('paste')
+  console.log(event.currentTarget)
+  const pasted_text = event.clipboardData?.getData('text')?.trim()
+  if (!pasted_text) return
+  if (pasted_text[0] !== '{') return
+  const json = asResult(() => JSON.parse(pasted_text))
+  if (!json.success) return
+  for (const key in json.value) {
+    const input = event.currentTarget.querySelector(`[name="${key}"]`) as HTMLInputElement
+    if (!input) continue
+    input.value = json.value[key]
+    input.dispatchEvent(new Event('input'))
+  }
+}
 
 export default function PatientRegistrationPersonalSection(
   {
@@ -21,7 +39,10 @@ export default function PatientRegistrationPersonalSection(
   },
 ) {
   return (
-    <FormSection header='Patient Information'>
+    <FormSection 
+      header='Patient Information'
+      onPaste={devModeFillFormOnJsonPaste}
+    >
       <FormGrid columns={3}>
         <NamesInputs names={patient.names || {}} />
         <DateInput

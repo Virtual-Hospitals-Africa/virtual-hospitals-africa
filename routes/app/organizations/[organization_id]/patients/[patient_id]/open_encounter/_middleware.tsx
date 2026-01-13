@@ -529,8 +529,8 @@ export function nextRouteAfterCompletingWorkflow(
   const next_current_workflow = next_patient_presence.current_workflow
 
   if (next_current_workflow) {
-    const success_message = `${capitalize(workflow, { splitHyphen: true })} is complete. Continuing with ${
-      capitalize(next_current_workflow, { splitHyphen: true })
+    const success_message = `${capitalize(workflow, { split_hyphen: true })} is complete. Continuing with ${
+      capitalize(next_current_workflow, { split_hyphen: true })
     }`
     const next_route = `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/${next_current_workflow}/${
       firstStep(next_current_workflow)
@@ -546,7 +546,7 @@ export function nextRouteAfterCompletingWorkflow(
     next_patient_presence.next_workflow,
   )
   const success_message = `${capitalize(workflow)} is complete. Please guide the patient to the waiting room to await ${
-    capitalize(next_patient_presence.next_workflow, { splitHyphen: true })
+    capitalize(next_patient_presence.next_workflow, { split_hyphen: true })
   }`
   const next_route = `/app/organizations/${organization.id}/waiting_room?just_encountered_patient_id=${patient.id}`
   return success(success_message, next_route)

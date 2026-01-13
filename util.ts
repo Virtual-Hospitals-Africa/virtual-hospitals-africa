@@ -1,4 +1,5 @@
 import assertHasProperty from './util/assertHasProperty.ts'
+import { humanReadableJson } from './util/humanReadableJson.ts'
 
 const [util, ...args] = Deno.args
 
@@ -13,4 +14,4 @@ assertHasProperty(module, 'default')
 
 const result = await module.default(...args)
 
-console.log(result)
+console.log(humanReadableJson(result))
