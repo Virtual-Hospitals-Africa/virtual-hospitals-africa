@@ -1,5 +1,5 @@
 import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, debugLog, jsonBuildObject, literalString, success_true } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records } from './patient_records.ts'
 import { RawBuilder, sql } from 'kysely'
@@ -14,6 +14,9 @@ import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { ATTRIBUTE, EVALUATION_ACTION, EVENT, NO_QUALIFIER, PRIORITY, PROCEDURE, UNKNOWN_QUALIFIER, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
+import isString from '../../util/isString.ts'
+
+import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -74,6 +77,7 @@ export function baseQuery(
             'procedure_specific_snomed_concept.category',
           ),
         }),
+        workflow_step_name: caseWhenMatching(eb, eb.ref('procedure_specific_snomed_concept.id'), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
       }).as('as_part_of_procedure'),
 
       eb.case()
@@ -223,7 +227,7 @@ export const patient_findings = base({
     if (opts.procedure_id) {
       qb = qb.where(
         'patient_findings.procedure_id',
-        '=',
+        isString(opts.procedure_id) ? '=' : 'in',
         opts.procedure_id,
       )
     }
@@ -300,7 +304,6 @@ export const patient_findings = base({
       const finding_node = asNode(finding, 'finding')
       assertHasProperty(finding_node, 'root_snomed_concept')
       assertHasProperty(finding_node, 'specific_snomed_concept')
-      // Preserve priority from FindingNodeToInsert (asNode strips non-schema properties)
       const priority = typeof finding === 'object' && 'priority' in finding ? finding.priority : undefined
       return {
         patient_id,
@@ -311,7 +314,6 @@ export const patient_findings = base({
       }
     })
 
-    // Collect attributes (not handled by baseInsertMany)
     const attribute_records: InsertRows<'patient_records'> = []
     const attribute_qualifiers: InsertRows<'patient_record_qualifiers'> = []
     const event_values: InsertRows<'patient_events'> = []
@@ -397,7 +399,7 @@ export const patient_findings = base({
       }
     }
 
-    const query = baseInsertMany(trx, records)
+    return baseInsertMany(trx, records)
       .with(
         'inserting_procedure_record',
         (qb) =>
@@ -471,11 +473,7 @@ export const patient_findings = base({
         'inserting_procedure_record.id as procedure_id',
         sql<string[]>`array_agg(inserting_records.id)`.as('finding_ids'),
       ])
-
-    debugLog(query)
-
-    // Use baseInsertMany for patient_records
-    return query.executeTakeFirstOrThrow()
+      .executeTakeFirstOrThrow()
   },
   insertOneNested(
     trx: TrxOrDb,

@@ -1,4 +1,4 @@
-export function without<T extends string, W extends T>(
+export function without<T, W extends T>(
   array: T[],
   ...exclude: W[]
 ): Array<Exclude<T, W>> {

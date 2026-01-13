@@ -5,13 +5,13 @@ import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { insertReturningSeekingTreatmentWithEmployeeForTest } from '../../../../_helpers/workflows.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { getFormLabels, getFormValues } from '../../../../_helpers/form.ts'
+import { getFormValues } from '../../../../_helpers/form.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
-import { WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
+import { KEYED_WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { brief_history } from '../../../../../db/models/brief_history.ts'
 import { assert } from 'std/assert/assert.ts'
 import { WarningSign } from '../../../../../types.ts'
@@ -29,6 +29,8 @@ import { asResultAsync } from '../../../../../util/asResult.ts'
 import values from '../../../../../util/values.ts'
 import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 import keys from '../../../../../util/keys.ts'
+import { getGridDisplay } from 'test/_helpers/grid.ts'
+import entries from '../../../../../util/entries.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -43,62 +45,71 @@ describeParallel('triage/warning_signs', () => {
           patient_demographics: {},
         })
 
-        const form_labels = getFormLabels($)
-        assertEquals(form_labels, {
-          'warning_signs': {
-            'obstructed-airway': {
-              'existence': 'Obstructed airwayNot breathing',
-            },
-            'seizure': { 'existence': 'SeizureCurrent' },
-            'burn-facial': { 'existence': 'BurnFacial' },
-            'burn-inhalation': { 'existence': 'BurnInhalation' },
-            'cardiac-arrest': { 'existence': 'Cardiac arrest' },
-            'high-energy-transfer': {
-              'existence': 'High energy transferSevere mechanism of injury',
-            },
-            'focal-neurology-acute': {
-              'existence': 'Focal neurology — acuteStroke',
-            },
-            'burn-circumferential': { 'existence': 'BurnCircumferential' },
-            'shortness-of-breath-acute': {
-              'existence': 'Shortness of breath - acute',
-            },
-            'aggression': { 'existence': 'Aggression' },
-            'burn-chemical': { 'existence': 'BurnChemical' },
-            'threatened-limb': { 'existence': 'Threatened limb' },
-            'poisoning': { 'existence': 'Poisoning' },
-            'overdose': { 'existence': 'Overdose' },
-            'coughing-blood': { 'existence': 'Coughing blood' },
-            'eye-injury': { 'existence': 'Eye injury' },
-            'chest-pain': { 'existence': 'Chest pain' },
-            'dislocation-of-larger-joint': {
-              'existence': 'Dislocation of larger jointnot finger or toe',
-            },
-            'vomiting-fresh-blood': { 'existence': 'Vomiting fresh blood' },
-            'stabbed-neck': { 'existence': 'Stabbed neck' },
-            'fractured-compound': {
-              'existence': 'Fractured - compoundwith a break in skin',
-            },
-            'hemorrhage-uncontrolled': {
-              'existence': 'Hemorrhage Uncontrolledarterial bleed',
-            },
-            'seizure-post-ictal': { 'existence': 'Seizure - post ictal' },
-            'severe-pain': { 'existence': 'Severe pain' },
-            'burn-moderate-severity': { 'existence': 'BurnModerate severity' },
-            'haemorrhage-controlled': { 'existence': 'HaemorrhageControlled' },
-            'dislocation-of-finger': { 'existence': 'Dislocation of finger' },
-            'dislocation-of-toe-joint': {
-              'existence': 'Dislocation of toe joint',
-            },
-            'fracture': {
-              'existence': 'FractureClosed (no break in the skin)',
-            },
-            'burn-other': { 'existence': 'BurnOther' },
-            'persistent-vomiting': { 'existence': 'Persistent vomiting' },
-            'moderate-pain': { 'existence': 'Moderate pain' },
-            'abdominal-pain': { 'existence': 'Abdominal pain' },
-          },
-        })
+        const expected = {
+          'Emergency': [
+            'Obstructed airwayNot breathing',
+            'SeizureCurrent',
+            'BurnFacial',
+            'BurnInhalation',
+            'Cardiac arrest',
+          ],
+          'Very urgent': [
+            'High energy transferSevere mechanism of injury',
+            'Focal neurologyacute; Stroke',
+            'BurnCircumferential',
+            'Shortness of breathacute',
+            'Aggression',
+            'BurnChemical',
+            'Severe limb ischemiaThreatened limb',
+            'Poisoning',
+            'Overdose',
+            'Coughing blood',
+            'Eye injury',
+            'Chest pain',
+            'Dislocation of larger jointnot finger or toe',
+            'Vomiting fresh blood',
+            'Stabbed neck',
+            'Compound fracturewith a break in skin',
+            'Hemorrhage Uncontrolledarterial bleed',
+            'Seizurepost ictal',
+            'Severe pain',
+            'BurnModerate severity',
+          ],
+          'Urgent': [
+            'Dislocation of finger',
+            'Dislocation of toe joint',
+            'Persistent vomiting',
+            'Abdominal pain',
+            'Moderate pain',
+            'HaemorrhageControlled',
+            'Closed fractureno break in the skin',
+            'BurnOther',
+          ],
+          'Common Symptoms': [
+            'Nasal discharge',
+            'Fever',
+            'Cough',
+            'Sore throat',
+            'Headache',
+            'Fatigue',
+            'Shortness of breath',
+            'Nausea',
+            'Vomiting',
+            'Diarrhea',
+            'Dizziness',
+            'Muscle pain',
+            'Pain of joint',
+            'Back pain',
+            'Constipation',
+          ],
+        }
+
+        assertEquals($('.priority-table').length, Object.keys(expected).length)
+
+        for (const [category, expected_grid] of entries(expected)) {
+          const grid_display = getGridDisplay($, `.priority-table[data-category="${category}"] > .grid`)
+          assertEquals(grid_display, expected_grid)
+        }
       },
     )
 
@@ -147,19 +158,25 @@ describeParallel('triage/warning_signs', () => {
 
         const $warning_signs = await getStep('warning_signs')
 
-        const form_labels = getFormLabels($warning_signs)
-        assertMatches(form_labels, {
+        const form_values = getFormValues($warning_signs)
+        assertMatches(form_values, {
           'warning_signs': {
-            'pregnancy-and-abdominal-trauma': {
-              'existence': 'Pregnancy and abdominal trauma',
+            'very-urgent-pregnancy-and-abdominal-trauma': {
+              'existence': 'No',
+              's_expression': KEYED_WARNING_SIGNS['Pregnancy and abdominal trauma'].clinical_finding_s_expression,
             },
-            'pregnancy-and-abdominal-pain': {
-              'existence': 'Pregnancy and abdominal pain',
+            'very-urgent-pregnancy-and-abdominal-pain': {
+              'existence': 'No',
+              's_expression': KEYED_WARNING_SIGNS['Pregnancy and abdominal pain'].clinical_finding_s_expression,
+            },
+            'very-urgent-severe-limb-ischemia': {
+              'existence': 'No',
+              's_expression': KEYED_WARNING_SIGNS['Severe limb ischemia'].clinical_finding_s_expression,
             },
           },
         })
 
-        assert(!form_labels['warning_signs']['abdominal-pain'])
+        assert(!form_values['warning_signs']['urgent-abdominal-pain'])
       },
     )
   })
@@ -271,7 +288,7 @@ describeParallel('triage/warning_signs', () => {
         const form_values = getFormValues($)
         assertMatches(form_values, {
           'warning_signs': {
-            'seizure': {
+            'emergency-seizure': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
               'warning_sign_key': 'Seizure',
               'priority_level': 'Emergency',
@@ -280,7 +297,7 @@ describeParallel('triage/warning_signs', () => {
               },
               'existence': 'Yes',
             },
-            'dislocation-of-larger-joint': {
+            'very-urgent-dislocation-of-larger-joint': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
               'warning_sign_key': 'Dislocation of larger joint',
               'priority_level': 'Very urgent',
@@ -362,7 +379,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(form_values, {
           'warning_signs': {
-            'high-energy-transfer': {
+            'very-urgent-high-energy-transfer': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
               'warning_sign_key': 'High energy transfer',
               'priority_level': 'Very urgent',
@@ -371,7 +388,7 @@ describeParallel('triage/warning_signs', () => {
                 'altered': false,
               },
             },
-            'chest-pain': {
+            'very-urgent-chest-pain': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
@@ -386,8 +403,8 @@ describeParallel('triage/warning_signs', () => {
 
         const next_form_submission = structuredClone(form_values)
         // @ts-ignore the frontend sends this back blank
-        delete next_form_submission.warning_signs['chest-pain'].existence
-        next_form_submission.warning_signs['chest-pain'].existing_record
+        delete next_form_submission.warning_signs['very-urgent-chest-pain'].existence
+        next_form_submission.warning_signs['very-urgent-chest-pain'].existing_record
           .altered = true
 
         await postStep({
@@ -424,7 +441,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(form_values, {
           'warning_signs': {
-            'high-energy-transfer': {
+            'very-urgent-high-energy-transfer': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
               'warning_sign_key': 'High energy transfer',
               'priority_level': 'Very urgent',
@@ -433,7 +450,7 @@ describeParallel('triage/warning_signs', () => {
                 'altered': false,
               },
             },
-            'chest-pain': {
+            'very-urgent-chest-pain': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
@@ -448,7 +465,7 @@ describeParallel('triage/warning_signs', () => {
 
         const next_form_submission = structuredClone(form_values)
         // @ts-ignore deleting chest-pain entirely
-        delete next_form_submission.warning_signs['chest-pain']
+        delete next_form_submission.warning_signs['very-urgent-chest-pain']
 
         const result = await asResultAsync(() =>
           postStep({
@@ -485,7 +502,7 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(form_values, {
           'warning_signs': {
-            'high-energy-transfer': {
+            'very-urgent-high-energy-transfer': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
               'warning_sign_key': 'High energy transfer',
               'priority_level': 'Very urgent',
@@ -494,7 +511,7 @@ describeParallel('triage/warning_signs', () => {
                 'altered': false,
               },
             },
-            'chest-pain': {
+            'very-urgent-chest-pain': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
@@ -509,7 +526,7 @@ describeParallel('triage/warning_signs', () => {
 
         const next_form_submission = structuredClone(form_values)
         Object.assign(
-          next_form_submission.warning_signs['high-energy-transfer'],
+          next_form_submission.warning_signs['very-urgent-high-energy-transfer'],
           {
             existence: 'Yes',
           },
@@ -526,7 +543,7 @@ describeParallel('triage/warning_signs', () => {
         assertEquals(
           result.error.message.split('\n')[0],
           `[409]: It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${
-            form_values.warning_signs['high-energy-transfer'].existing_record.id
+            form_values.warning_signs['very-urgent-high-energy-transfer'].existing_record.id
           } which had existence: No, but just_submitted.existence: Yes`,
         )
       },
@@ -545,7 +562,7 @@ describeParallel('triage/warning_signs', () => {
 
         const negative_findings_count = await patient_findings.countAll(db, { patient_id, include_negative: true })
         const number_of_pregnancy_related_signs = 2
-        assertEquals(negative_findings_count, keys(WARNING_SIGNS).length - number_of_pregnancy_related_signs)
+        assertEquals(negative_findings_count, keys(KEYED_WARNING_SIGNS).length - number_of_pregnancy_related_signs)
       },
     )
 
@@ -566,7 +583,7 @@ describeParallel('triage/warning_signs', () => {
         const form_values = getFormValues($)
         assertMatches(form_values, {
           'warning_signs': {
-            'chest-pain': {
+            'very-urgent-chest-pain': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
               'warning_sign_key': 'Chest pain',
               'priority_level': 'Very urgent',
@@ -575,7 +592,7 @@ describeParallel('triage/warning_signs', () => {
               },
               'existence': 'Yes',
             },
-            'dislocation-of-larger-joint': {
+            'very-urgent-dislocation-of-larger-joint': {
               's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
               'warning_sign_key': 'Dislocation of larger joint',
               'priority_level': 'Very urgent',
@@ -669,8 +686,8 @@ describeParallel('triage/warning_signs', () => {
         const $ = await getStep('warning_signs')
 
         assertEquals(
-          $('#priority-grid-non-urgent').text(),
-          'Non-urgentPain of earfinding',
+          $('#warning-signs-selected-chips').text(),
+          'Pain of ear',
         )
 
         // Posting again has no effect
@@ -710,10 +727,11 @@ describeParallel('triage/warning_signs', () => {
           `${search_route}?search=appendicular+pain`,
         )
         assertEquals(results[0], {
+          category: 'Search Results',
           clinical_finding_s_expression: '(clinical_finding (snomed_concept "Appendicular pain" "finding"))',
           snomed_concept_id: '275406005',
-          sats_primary_name: 'Appendicular pain',
-          sats_secondary_text: 'finding',
+          primary_name: 'Appendicular pain',
+          secondary_text: 'finding',
           sats_priority: 'Very urgent',
           sats_priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
           similarity: 1,
@@ -751,7 +769,7 @@ describeParallel('triage/warning_signs', () => {
         const $reload = await getStep('warning_signs')
 
         assertIncludes(
-          $reload('#priority-grid-very-urgent').text(),
+          $reload('#warning-signs-selected-chips').text(),
           'Appendicular pain',
         )
       },
@@ -832,7 +850,7 @@ describeParallel('triage/warning_signs', () => {
           const $warning_signs = await getStep('warning_signs')
 
           const form_values = getFormValues($warning_signs)
-          const hyphenated_key = hyphenate(sign.key.toLowerCase())
+          const hyphenated_key = hyphenate(sign.sats_priority + '-' + sign.key.toLowerCase())
           assertMatches(form_values, {
             warning_signs: {
               [hyphenated_key]: {
@@ -856,7 +874,7 @@ describeParallel('triage/warning_signs', () => {
       )
     }
 
-    for (const sign of values(WARNING_SIGNS)) {
+    for (const sign of values(KEYED_WARNING_SIGNS)) {
       const pregnant = [
         'Pregnancy and abdominal pain',
         'Pregnancy and abdominal trauma',
@@ -868,9 +886,9 @@ describeParallel('triage/warning_signs', () => {
     /* Singletons to test */
 
     // Exercises s_expression
-    // testRoundTrip(WARNING_SIGNS['Burn Other'], false, { only: true })
+    // testRoundTrip(KEYED_WARNING_SIGNS['Burn Other'], false, { only: true })
 
     // Pregnancy
-    // testRoundTrip(WARNING_SIGNS['Pregnancy and abdominal pain'], true, { only: true })
+    // testRoundTrip(KEYED_WARNING_SIGNS['Pregnancy and abdominal pain'], true, { only: true })
   })
 })

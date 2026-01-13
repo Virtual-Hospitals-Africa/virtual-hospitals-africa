@@ -318,18 +318,25 @@ export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'r
   )
 ).describe('clinical_finding')
 
-export const clinical_finding_defined: z.ZodType<NonNullableProperty<Lang['finding'], 'root_snomed_concept' | 'specific_snomed_concept'>> = clinical_finding
+export const finding: z.ZodType<Lang['finding']> = z.lazy(() => finding_base.or(clinical_finding)).describe('finding')
+
+export const defined_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'root_snomed_concept' | 'specific_snomed_concept'>> = finding
   // .refine doesn't do type winnowing
-  .transform((finding) => finding as NonNullableProperty<typeof finding, 'specific_snomed_concept'>)
+  .transform((finding) => finding as NonNullableProperty<typeof finding, 'root_snomed_concept' | 'specific_snomed_concept'>)
+  .refine(
+    (finding) => finding.root_snomed_concept != null,
+    {
+      message: 'root_snomed_concept is required for a defined clinical finding',
+      path: ['args'],
+    },
+  )
   .refine(
     (finding) => finding.specific_snomed_concept != null,
     {
       message: 'specific_snomed_concept is required for a defined clinical finding',
       path: ['args'],
     },
-  ).describe('clinical_finding_defined')
-
-export const finding: z.ZodType<Lang['finding']> = z.lazy(() => finding_base.or(clinical_finding)).describe('finding')
+  ).describe('defined_finding')
 
 export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
   z.object({

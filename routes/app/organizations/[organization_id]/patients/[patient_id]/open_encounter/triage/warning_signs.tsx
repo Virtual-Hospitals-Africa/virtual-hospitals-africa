@@ -4,18 +4,17 @@ import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { filter, forEach } from '../../../../../../../../util/inParallel.ts'
-import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
+import { WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
 
-import { WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
-import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
+import { CommonSymptom, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
+import { normalForm, parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
-import keys from '../../../../../../../../util/keys.ts'
 import partition from '../../../../../../../../util/partition.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
@@ -29,14 +28,17 @@ import { humanReadableJson } from '../../../../../../../../util/humanReadableJso
 import { now } from '../../../../../../../../db/helpers.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import compactMap from '../../../../../../../../util/compactMap.ts'
+import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.ts'
+
+import sortBy from '../../../../../../../../util/sortBy.ts'
 
 export const TriageWarningSignSchema = z.object({
   s_expression: z.string().transform((
     value,
   ) => parseExpressionExpectingAtom(value, 'finding')),
   existence: z.enum(['Yes', 'No']).optional().transform((existence) => existence || 'No'),
-  warning_sign_key: z.enum(keys(WARNING_SIGNS)).optional(),
-  priority_level: z.enum(ORDERED_PRIORITIES),
+  warning_sign_key: z.string().optional(),
+  priority_level: z.enum(ORDERED_PRIORITIES).optional(),
   existing_record: z.object({
     id: z.string(),
     altered: z.boolean().optional(),
@@ -108,7 +110,7 @@ export const handler = postHandler(
         sign,
       ): FindingNodeToInsert => ({
         ...sign.s_expression,
-        priority: sign.existence === 'Yes'
+        priority: sign.existence === 'Yes' && sign.priority_level
           ? {
             level: sign.priority_level,
             by_system: true,
@@ -216,11 +218,16 @@ async function getWarningSignsForPatient(
   { state: { trx, patient_id } }: OpenEncounterWorkflowContext,
 ): Promise<WarningSign[]> {
   const [having_prompt_when, no_prompt_when] = partition(
-    KEYED_WARNING_SIGNS,
+    WARNING_SIGNS,
     (sign) => !!sign.prompt_when_s_expression,
   )
   const satisfying_prompt_when = await filter(having_prompt_when, promptWhen)
-  return [...no_prompt_when, ...satisfying_prompt_when]
+  const warning_signs_for_patient = [...no_prompt_when, ...satisfying_prompt_when]
+  return sortBy(
+    warning_signs_for_patient,
+    (sign) => ORDERED_PRIORITIES.indexOf(sign.sats_priority),
+    (sign) => WARNING_SIGNS.indexOf(sign),
+  )
 
   async function promptWhen({ prompt_when_s_expression }: WarningSign) {
     assert(prompt_when_s_expression)
@@ -232,11 +239,12 @@ async function getWarningSignsForPatient(
   }
 }
 
-function* asCheckedWarningSigns(
-  findings: SearchResult<typeof patient_findings>[],
+function* signsMatchedWithPriorRecords(
+  prior_findings: SearchResult<typeof patient_findings>[],
   warning_signs_for_patient: WarningSign[],
+  common_symptoms: CommonSymptom[],
 ): Generator<WarningSignWithMaybeRecord> {
-  const findings_set = new Set(findings.map((finding) => {
+  const findings_set = new Set(prior_findings.map((finding) => {
     // We don't use the value when calculating the normal form
     // of the s_expression here so that negative findings match.
     // That is if a previous submission found no chest pain,
@@ -254,13 +262,19 @@ function* asCheckedWarningSigns(
     return { ...finding, normal_form_s_expression, existing_record }
   }))
 
+  const warning_signs_and_common_symptoms: Array<WarningSign | CommonSymptom> = [
+    ...warning_signs_for_patient,
+    ...common_symptoms,
+  ]
+
   // Loop over the signs looking for findings that have identical
   // s_expressions, removing them as we go. Any that are left
   // over we send as well (these were the result of search)
-  for (const sign of warning_signs_for_patient) {
+  for (const sign of warning_signs_and_common_symptoms) {
     let existing_record: WarningSignWithMaybeRecord['existing_record']
 
     for (const finding of findings_set) {
+      assert(sign.clinical_finding_s_expression === normalForm(sign.clinical_finding_s_expression), 'Comparing concepts requires they be in normal form')
       const is_same_concept = finding.normal_form_s_expression === sign.clinical_finding_s_expression
 
       if (is_same_concept) {
@@ -275,11 +289,12 @@ function* asCheckedWarningSigns(
 
   for (const finding of findings_set) {
     yield {
-      sats_priority: finding.priority || 'Non-urgent',
+      sats_priority: finding.priority,
       clinical_finding_s_expression: finding.normal_form_s_expression,
-      sats_primary_name: finding.specific_snomed_concept.name,
-      sats_secondary_text: finding.specific_snomed_concept.category,
+      primary_name: finding.specific_snomed_concept.name,
+      secondary_text: finding.specific_snomed_concept.category,
       existing_record: finding.existing_record,
+      category: 'Prior record' as const,
     }
   }
 }
@@ -288,12 +303,18 @@ export async function TriageWarningSignsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const {
-    all_findings_reported_previously_on_this_page,
+    prior_findings,
     warning_signs_for_patient,
   } = await promiseProps({
-    all_findings_reported_previously_on_this_page: getAllFindingsReportedPreviouslyOnThisPage(ctx),
+    prior_findings: getAllFindingsReportedPreviouslyOnThisPage(ctx),
     warning_signs_for_patient: getWarningSignsForPatient(ctx),
   })
+
+  const warning_signs = signsMatchedWithPriorRecords(
+    prior_findings,
+    warning_signs_for_patient,
+    COMMON_SYMPTOMS,
+  )
 
   return (
     <WarningSigns
@@ -303,10 +324,7 @@ export async function TriageWarningSignsPage(
           '/snomed-warning-signs',
         )
       })}
-      warning_signs={Array.from(asCheckedWarningSigns(
-        all_findings_reported_previously_on_this_page,
-        warning_signs_for_patient,
-      ))}
+      warning_signs={Array.from(warning_signs)}
     />
   )
 }

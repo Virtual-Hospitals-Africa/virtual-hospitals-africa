@@ -50,7 +50,7 @@ export const patient_procedures = base({
   formatResult: formatRecord,
   handleSearch(
     qb,
-    opts: { search?: string; patient_id: string | IdSelection; specific_snomed_concept_id?: string },
+    opts: { search?: string; patient_id: string | IdSelection; patient_encounter_id?: string; specific_snomed_concept_id?: string | string[] },
   ) {
     assert(!opts.search, 'TODO support')
     if (opts.patient_id) {
@@ -60,11 +60,18 @@ export const patient_procedures = base({
         opts.patient_id,
       )
     }
+    if (opts.patient_encounter_id) {
+      qb = qb.where(
+        'patient_records.patient_encounter_id',
+        '=',
+        opts.patient_encounter_id,
+      )
+    }
     if (opts.specific_snomed_concept_id) {
       qb = qb.where(
         'patient_records.specific_snomed_concept_id',
-        '=',
-        opts.specific_snomed_concept_id,
+        'in',
+        [opts.specific_snomed_concept_id].flat(),
       )
     }
     return qb

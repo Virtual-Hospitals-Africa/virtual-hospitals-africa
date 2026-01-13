@@ -3467,6 +3467,7 @@ export type AsPartOfProcedure = {
   record_id: string
   root_snomed_concept: RenderedSnomedConcept
   specific_snomed_concept: RenderedSnomedConcept
+  workflow_step_name: string | null
 }
 
 export type RecordDisplays = {
@@ -3569,11 +3570,6 @@ export type RenderedRecordRelativeToHealthWorker =
   | RenderedEvaluationRelativeToHealthWorker
   | RenderedProcedureRelativeToHealthWorker
 
-export type WithTriageLevelFinding = NonNullableProperty<
-  RenderedFindingRelativeToHealthWorker,
-  'priority'
->
-
 export type RenderedMeasurementRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
@@ -3604,18 +3600,27 @@ export type MostRecentBriefHistoryFindings = {
   [c in CommonConditionKey]?: RenderedBriefHistoryRelativeToHealthWorker
 }
 
-export type WarningSign = {
-  key: WarningSignKey
+type SignShared<Category> = {
   clinical_finding_s_expression: string
-  sats_primary_name: string
-  sats_secondary_text: string | null
-  sats_priority: 'Urgent' | 'Very urgent' | 'Emergency' | 'Non-urgent'
+  primary_name: string
+  secondary_text: string | null
+  category: Category
+  key?: string
+  sats_priority?: Maybe<Priority>
+}
+
+export type WarningSignDef<Priority extends 'Urgent' | 'Very urgent' | 'Emergency'> = SignShared<Priority> & {
+  key: WarningSignKey
+  sats_priority: Priority
   excluding_s_expression?: string
   prompt_when_s_expression?: string
 }
 
-export type WarningSignWithMaybeRecord = Omit<WarningSign, 'key'> & {
-  key?: string
+export type WarningSign = WarningSignDef<'Urgent' | 'Very urgent' | 'Emergency'>
+
+export type CommonSymptom = SignShared<'Common Symptoms'>
+
+export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record'>) & {
   existing_record?: {
     id: string
     existence: Existence

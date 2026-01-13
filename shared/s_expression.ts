@@ -35,10 +35,10 @@ function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
 
 type SExpressionSimpleNode = string | SExpressionSimpleNode[]
 
-function parseExpressionBase<Schema extends Values<typeof schemas>>(
+export function parseWithSchema<Schema extends Values<typeof schemas>>(
   expression: string,
   schema: Schema,
-) {
+): z.infer<Schema> {
   assert(schema.description)
   const parsed = s_expression(expression) as SExpressionSimpleNode
   if (parsed instanceof Error) {
@@ -60,13 +60,13 @@ function parseExpressionBase<Schema extends Values<typeof schemas>>(
   const normal_form_by_inverse = inverseSExpression(second_pass.data)
   const normalized = fastNormalForm(normal_form_by_inverse)
   assertEquals(normal_form_by_inverse, normalized)
-  return second_pass.data
+  return second_pass.data as z.infer<Schema>
 }
 
 export function parseExpression(
   expression: string,
 ) {
-  return parseExpressionBase(expression, schemas.any_expression)
+  return parseWithSchema(expression, schemas.any_expression)
 }
 
 export type Atom = schemas.AnyNode['atom']
@@ -97,7 +97,7 @@ export function parseExpressionExpectingAtom<
   expression: string,
   atom: T,
 ): schemas.Lang[T] {
-  const parsed = parseExpressionBase(expression, schemaByAtom(atom))
+  const parsed = parseWithSchema(expression, schemaByAtom(atom))
   assert(isAtom(parsed, atom))
   return parsed
 }

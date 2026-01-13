@@ -1,3 +1,5 @@
+import { assertArrayNonEmpty } from './arraySize.ts'
+
 type OverlappingKeys<X, Y> = Extract<keyof X, keyof Y>
 
 export function combine<
@@ -13,4 +15,10 @@ export function combine<
     clone[key] = y[key]
   }
   return clone
+}
+
+export function combineAll(objects: Record<string, string>[]): Record<string, string> {
+  assertArrayNonEmpty(objects)
+  // deno-lint-ignore no-explicit-any
+  return objects.reduce(combine as any)
 }
