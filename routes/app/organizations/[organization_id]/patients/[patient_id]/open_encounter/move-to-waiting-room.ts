@@ -10,6 +10,8 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
 import { exists } from '../../../../../../../util/exists.ts'
 import { InsertObject } from 'kysely'
+import { preferredName } from '../../../../../../../util/asNames.ts'
+import capitalize from '../../../../../../../util/capitalize.ts'
 
 const MoveToWaitingRoomSchema = z.object({})
 
@@ -69,7 +71,7 @@ export const handler = postHandler(
     }
 
     const next_url = success(
-      `${encounter.patient.name} was moved to the waiting room`,
+      `${capitalize(preferredName(encounter.patient, 'patient'))} was moved to the waiting room`,
       replaceParams(
         `/app/organizations/:organization_id/waiting_room`,
         ctx.params,

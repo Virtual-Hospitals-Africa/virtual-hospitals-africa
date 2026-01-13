@@ -14,11 +14,10 @@ type TriageAssignPriorityTableProps = {
   priority: Priority
 }
 
-type Row =
-  | TriageAssignPriorityTableRow | {
-    type: 'with_triage_level_finding'
-    finding: WithTriageLevelFinding
-  }
+type Row = TriageAssignPriorityTableRow | {
+  type: 'with_triage_level_finding'
+  finding: WithTriageLevelFinding
+}
 
 const columns: TableColumn<Row>[] = [
   {
@@ -148,7 +147,7 @@ export function TriageAssignPriorityTable(
             type: 'with_triage_level_finding' as const,
             finding,
           })),
-          ...vitals
+          ...vitals,
         ]}
         tableClassName='border-b-0 !rounded-b-none'
         EmptyState={() => <div>No measurements available</div>}
