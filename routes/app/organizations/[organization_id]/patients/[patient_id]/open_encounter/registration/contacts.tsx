@@ -6,39 +6,60 @@ import { postHandler } from '../../../../../../../../util/postHandler.ts'
 import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
 import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'
 import { EmergencyContactSchema } from '../../../../../../../../shared/family.ts'
-
+import { addressSearchHandler } from '../../../../../../../../util/googleMapsResponses.ts'
 
 export const PatientRegistrationContactsSchema = z.object({
-  // address: z.object({
-  //   street: z.string().optional(),
-  //   locality: z.string(),
-  //   administrative_area_level_2: z.string().optional(),
-  //   administrative_area_level_1: z.string().optional(),
-  //   country: z.string(),
-  // }),
+  address: z.object({
+    formatted: z.string(),
+    country: z.string(),
+    administrative_area_level_1: z.string().nullable(),
+    administrative_area_level_2: z.string().nullable(),
+    locality: z.string().nullable(),
+    route: z.string().nullable(),
+    street_number: z.string().nullable(),
+    unit: z.string().nullable(),
+    street: z.string().nullable(),
+    postal_code: z.string().nullable(),
+  }),
   emergency_contacts: z.array(EmergencyContactSchema).min(1),
 })
 
-export const handler = postHandler(
-  PatientRegistrationContactsSchema,
-  // deno-lint-ignore require-await
-  async (
-    ctx: OpenEncounterWorkflowContext,
-    { emergency_contacts },
-  ) => {
-    await patient_contacts.setContacts(
-      ctx.state.trx,
-      { patient_id: ctx.state.patient.id, contacts: emergency_contacts },
-    )
-    // console.log('TODO use address', address)
-    // await patient_address.updateById(
-    //   ctx.state.trx,
-    //   { patient_id: ctx.state.patient.id, address },
-    // )
+const addressSearch = addressSearchHandler<OpenEncounterWorkflowContext>({
+  country: 'South Africa',
+})
 
-    return completeAndProceedToNextStep(ctx)
+export const handler = {
+  async GET(ctx: OpenEncounterWorkflowContext) {
+    if (ctx.req.headers.get('accept') === 'application/json') {
+      if (
+        ctx.url.searchParams.has('search') ||
+        ctx.url.searchParams.has('place_id')
+      ) {
+        return await addressSearch.GET(ctx)
+      }
+    }
+    return PatientRegistrationContactsPage(ctx)
   },
-)
+  ...postHandler(
+    PatientRegistrationContactsSchema,
+    async (
+      ctx: OpenEncounterWorkflowContext,
+      { address, emergency_contacts },
+    ) => {
+      await Promise.all([
+        patient_contacts.setContacts(
+          ctx.state.trx,
+          { patient_id: ctx.state.patient.id, contacts: emergency_contacts },
+        ),
+        patient_address.updateById(
+          ctx.state.trx,
+          { patient_id: ctx.state.patient.id, address: address },
+        ),
+      ])
+      return completeAndProceedToNextStep(ctx)
+    },
+  ),
+}
 
 export async function PatientRegistrationContactsPage(
   ctx: OpenEncounterWorkflowContext,
