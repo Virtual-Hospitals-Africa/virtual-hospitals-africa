@@ -9,7 +9,6 @@ import { getFormValues } from '../../../../_helpers/form.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
 import { KEYED_WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { brief_history } from '../../../../../db/models/brief_history.ts'
@@ -25,12 +24,10 @@ import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
 import { hyphenate } from '../../../../../util/hyphenate.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { asResultAsync } from '../../../../../util/asResult.ts'
-
 import values from '../../../../../util/values.ts'
 import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 import keys from '../../../../../util/keys.ts'
 import { getGridDisplay } from 'test/_helpers/grid.ts'
-import entries from '../../../../../util/entries.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -48,42 +45,42 @@ describeParallel('triage/warning_signs', () => {
         const expected = {
           'Emergency': [
             'Obstructed airwayNot breathing',
+            'Cardiac arrestHeart attack',
             'SeizureCurrent',
             'BurnFacial',
             'BurnInhalation',
-            'Cardiac arrest',
           ],
           'Very urgent': [
-            'High energy transferSevere mechanism of injury',
-            'Focal neurologyacute; Stroke',
-            'BurnCircumferential',
             'Shortness of breathacute',
-            'Aggression',
-            'BurnChemical',
-            'Severe limb ischemiaThreatened limb',
-            'Poisoning',
-            'Overdose',
-            'Coughing blood',
-            'Eye injury',
             'Chest pain',
-            'Dislocation of larger jointnot finger or toe',
-            'Vomiting fresh blood',
-            'Stabbed neck',
-            'Compound fracturewith a break in skin',
-            'Hemorrhage Uncontrolledarterial bleed',
             'Seizurepost ictal',
+            'Focal neurologyacute; Stroke',
+            'BurnChemical',
+            'Coughing blood',
+            'PoisoningOverdose',
+            'Aggression',
+            'Severe limb ischemiaThreatened limb',
+            'BurnCircumferential',
+            'Vomiting fresh blood',
+            'High energy transferSevere mechanism of injury',
+            'Stabbed neck',
+            'Eye injury',
+            'BurnOver 20%',
+            'HaemorrhageUncontrolled',
+            'Dislocation of larger jointnot finger or toe',
+            'Compound fracturewith a break in the skin',
             'Severe pain',
             'BurnModerate severity',
           ],
           'Urgent': [
-            'Dislocation of finger',
-            'Dislocation of toe joint',
             'Persistent vomiting',
-            'Abdominal pain',
-            'Moderate pain',
-            'HaemorrhageControlled',
+            'Dislocation of finger',
             'Closed fractureno break in the skin',
+            'Moderate pain',
             'BurnOther',
+            'HaemorrhageControlled',
+            'Dislocation of toe joint',
+            'Abdominal pain',
           ],
           'Common Symptoms': [
             'Nasal discharge',
@@ -106,10 +103,13 @@ describeParallel('triage/warning_signs', () => {
 
         assertEquals($('.priority-table').length, Object.keys(expected).length)
 
-        for (const [category, expected_grid] of entries(expected)) {
+        const actual: typeof expected = {} as unknown as typeof expected
+        for (const category of keys(expected)) {
           const grid_display = getGridDisplay($, `.priority-table[data-category="${category}"] > .grid`)
-          assertEquals(grid_display, expected_grid)
+          actual[category] = grid_display
         }
+
+        assertEquals(actual, expected)
       },
     )
 
