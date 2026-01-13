@@ -53,7 +53,7 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
           href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/move-to-waiting-room`,
           method: 'POST',
         },
-    ])
+    ], 'warning')
   }
 }
 export function assertNoPresentEncounter(
