@@ -9,9 +9,8 @@ import z from 'zod'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { positive_decimal, snomed_concept_id } from '../util/validators.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { MostlyJsonSerializable, Values } from '../types.ts'
-import assertLength from '../util/assertLength.ts'
-import { humanReadableJson } from '../util/humanReadableJson.ts'
+import { Values } from '../types.ts'
+import { wrapError } from '../util/wrapError.ts'
 
 type SExpressionNode = {
   atom: string
@@ -42,18 +41,13 @@ export function parseWithSchema<Schema extends Values<typeof schemas>>(
   assert(schema.description)
   const parsed = s_expression(expression) as SExpressionSimpleNode
   if (parsed instanceof Error) {
-    throw parsed
+    throw wrapError(`Error parsing ${expression}`, parsed)
   }
   assert(Array.isArray(parsed))
   const first_pass = recursiveTreePass(parsed)
   const second_pass = schema.safeParse(first_pass)
   if (!second_pass.success) {
-    assertLength(second_pass.error.issues, 1)
-    const issue = Object.assign({}, second_pass.error.issues[0], {
-      expression,
-      schema_description: schema.description,
-    })
-    throw new Error(humanReadableJson(issue as unknown as MostlyJsonSerializable))
+    throw wrapError(`Error parsing ${expression} using schema ${schema.description}`, second_pass.error)
   }
 
   // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions

@@ -66,7 +66,12 @@ function KeyedWarningSignCheckbox(
   },
 ) {
   return (
-    <label className='flex gap-1.5 2xl:gap-3 py-2 2xl:py-3 items-start cursor-pointer flex-1 p-1 min-w-0'>
+    <label
+      className={cls(
+        'flex gap-1.5 2xl:gap-3 items-start cursor-pointer flex-1 p-1 min-w-0',
+        sign.category === 'Common Symptoms' ? 'py-1.5 2xl:py-2' : ' py-2 2xl:py-3',
+      )}
+    >
       <div className='pt-0.5'>
         <input
           id={uniqueIdentifier(sign)}
@@ -103,7 +108,7 @@ function SelectedChip({ sign, onUncheck }: {
       onClick={() => onUncheck(sign)}
     >
       {sign.primary_name}
-      <XMarkIcon />
+      <XMarkIcon className='-ml-1.5 -mr-2.5 p-0.5' />
     </button>
   )
 }
@@ -144,11 +149,9 @@ function WarningSignsPriorityTable({
       id={`priority-table-${category_attribute}`}
       data-category={category}
     >
-      <div className={cls('py-1.5 2xl:py-3 flex items-center justify-center', colors.bg)}>
-        <span className={cls('text-xl font-semibold uppercase', colors.text)}>
-          {category}
-        </span>
-      </div>
+      <h2 className={cls('py-1 2xl:py-3 flex items-center justify-center text-lg font-semibold uppercase', colors.text, colors.bg)}>
+        {category}
+      </h2>
       <div id={`priority-grid-${category_attribute}`} className='grid grid-cols-5 bg-white px-1 2xl:gap-4'>
         {signs.map((sign) => (
           <KeyedWarningSignCheckbox
@@ -248,7 +251,7 @@ export default function WarningSigns({
   }
 
   return (
-    <div className='flex flex-col gap-2 2xl:gap-4 w-full' id='warning-signs'>
+    <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs'>
       <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1'>
         <Search
           id='warning-signs-search'
