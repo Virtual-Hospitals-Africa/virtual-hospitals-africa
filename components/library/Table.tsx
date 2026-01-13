@@ -262,7 +262,6 @@ function TableHeader<T extends Row>(
               'text-left text-sm font-semibold text-indigo-900',
               {
                 'p-3': !!column.label,
-                'pl-12': column.type === 'person',
               },
             )}
           >

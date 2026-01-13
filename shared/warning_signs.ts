@@ -113,7 +113,7 @@ const WARNING_SIGN_DEFS = [
     key: 'Seizure - post ictal' as const,
     clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Post-ictal state" "finding"))',
     primary_name: 'Seizure',
-    secondary_text: 'post ictal',
+    secondary_text: 'Post ictal',
     sats_priority: 'Very urgent' as const,
     category: 'Very urgent' as const,
   },
