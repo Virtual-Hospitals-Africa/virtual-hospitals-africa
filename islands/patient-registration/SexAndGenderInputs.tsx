@@ -50,8 +50,8 @@ export function SexAndGenderInputs(
         blank_option
         value={sex.value ?? undefined}
         options={[
-          'male',
           'female',
+          'male',
           'other',
           'prefer not to say',
         ]}
