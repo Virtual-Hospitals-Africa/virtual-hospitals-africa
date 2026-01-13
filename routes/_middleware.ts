@@ -13,7 +13,10 @@ export function grokPostgresError(err: Record<string, unknown>) {
 
 export const handler = async (ctx: Context<unknown>) => {
   try {
-    return await ctx.next()
+    console.log(`Starting ${ctx.req.method} ${ctx.req.url}`)
+    const response = await ctx.next()
+    console.log(`Ending ${ctx.req.method} ${ctx.req.url}`, response)
+    return response
   } catch (error) {
     if (!isObjectLike(error)) {
       console.error(error)
