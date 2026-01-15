@@ -118,6 +118,15 @@ export type RequiredFields<T> = {
   ]: NonNull<T[K]>
 }
 
+export type Success<T> = { success: true; value: T }
+
+export type Failure = {
+  success: false
+  error: Error
+}
+
+export type Result<T> = Success<T> | Failure
+
 export type SqlRow<T> = {
   id: Generated<number>
   created_at: ColumnType<Date, undefined, never>

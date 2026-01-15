@@ -1212,6 +1212,13 @@ export interface PatientProcedures {
   id: string
 }
 
+export interface PatientRecordLinks {
+  href: string
+  id: string
+  thumbnail_href: string | null
+  title: string
+}
+
 export interface PatientRecordQualifiers {
   id: string
   qualifies_record_id: string
@@ -1930,6 +1937,7 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_presence: PatientPresence
   patient_procedures: PatientProcedures
+  patient_record_links: PatientRecordLinks
   patient_record_qualifiers: PatientRecordQualifiers
   patient_record_relations: PatientRecordRelations
   patient_record_s_expressions: PatientRecordSExpressions
