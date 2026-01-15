@@ -1,9 +1,9 @@
-import { RenderedSidebarWorkflow, RenderedSidebarWorkflowStep } from '../../types.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
-import { RecordChips } from './RecordChip.tsx'
+import { RecordChips } from './RecordChips.tsx'
 import { NoFindings } from './NoFindings.tsx'
 import { hyphenate } from '../../util/hyphenate.ts'
 import { Workflow } from '../../db.d.ts'
+import { RenderedSidebarWorkflow, RenderedSidebarWorkflowStep } from '../../types.ts'
 
 function WorkflowStep(
   { workflow, step, organization_id }: {

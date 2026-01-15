@@ -83,10 +83,10 @@ export default function randomNamesAndSex(
     return randomNamesAndSex(country, sex)
   }
   return {
+    name: `${first_names} ${surname}`,
     first_names,
     surname,
     preferred_name: first_names,
     sex: of_sex,
-    name: `${first_names} ${surname}`,
   }
 }
