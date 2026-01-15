@@ -1,9 +1,12 @@
 export default function capitalize(
   str: string,
-  opts?: { splitHyphen?: boolean },
-) {
+  opts?: { split_hyphen?: boolean; just_first?: boolean },
+): string {
+  if (opts?.just_first) {
+    return str[0].toUpperCase() + str.slice(1).toLowerCase()
+  }
   return str
-    .split(opts?.splitHyphen ? /[\s_-]+/ : /[\s_]+/)
-    .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
+    .split(opts?.split_hyphen ? /[\s_-]+/ : /[\s_]+/)
+    .map((word) => capitalize(word, { just_first: true }))
     .join(' ')
 }

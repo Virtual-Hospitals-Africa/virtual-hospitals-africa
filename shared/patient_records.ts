@@ -2,6 +2,7 @@ import {
   IntermediateBaseRecord,
   Maybe,
   RecordDisplays,
+  RecordValue,
   RenderedAttribute,
   RenderedEvaluation,
   RenderedRecordRelativeToHealthWorkerDef,
@@ -20,6 +21,7 @@ import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
 import { logArgsOnError } from '../util/decorators.ts'
+import capitalize from '../util/capitalize.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -184,6 +186,21 @@ function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
   }
 }
 
+function massageSpecificConceptDisplay(specific_snomed_concept: null | undefined, value: RecordValue | null): null
+function massageSpecificConceptDisplay(specific_snomed_concept: RenderedSnomedConcept, value: RecordValue | null): string
+function massageSpecificConceptDisplay(specific_snomed_concept: Maybe<RenderedSnomedConcept>, value: RecordValue | null): string | null {
+  if (!specific_snomed_concept) return null
+
+  const replaced = specific_snomed_concept.name
+    .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
+
+  if (value?.type !== 'measurement') return replaced
+
+  return replaced
+    .replace(/^Body /, '')
+    .replace(/, function$/, '')
+}
+
 function buildDisplays(
   record: DisplayableRecord,
   postfix?: boolean,
@@ -206,12 +223,14 @@ function buildDisplays(
 
   const qualifier_displays = qualifiers.map((prefix) => buildDisplays(prefix, use_postfix).full)
 
-  const finding_displays = compact([
-    // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
-    specific_snomed_concept?.name.replace(' (severity modifier)', ''),
-    includeRootSnomedConceptName(root_snomed_concept) &&
-    root_snomed_concept.name,
-  ])
+  const specific_concept_display = capitalize(
+    massageSpecificConceptDisplay(specific_snomed_concept, value),
+    { just_first: true },
+  )
+
+  const maybe_root_concept_name = includeRootSnomedConceptName(root_snomed_concept) && root_snomed_concept.name
+
+  const finding_displays = compact([specific_concept_display, maybe_root_concept_name])
 
   const finding_displays_qualified = use_postfix ? [...finding_displays, ...qualifier_displays] : [...qualifier_displays, ...finding_displays]
 

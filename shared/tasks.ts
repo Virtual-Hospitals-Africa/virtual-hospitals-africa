@@ -9,7 +9,24 @@ function asTask(task_s_expression: string) {
     'task',
   )
 }
+/*
+                          // Triage nurse has permission.
+  check_for finding              Yes
+  do measurement                 Most of the time
+  suspected diagnosis            Sometimes
+  make diagnosis                 Generally no
+  administer medication          Depends
+*/
 
+/*
+  The tasks must be done even if the triage nurse can't do them.
+  In fact, this is the _reason_ for transfer
+*/
+
+/*
+  1. Calculate the tasks
+  2. If there's a task that needs doing that the triage nurse can't do that itself creates a new task to transfer or get confirmation from SHCP
+*/
 export const TASKS = [
   `(task
     "Give oxygen if saturation below 92%"

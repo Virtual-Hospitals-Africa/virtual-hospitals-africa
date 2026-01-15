@@ -10,7 +10,6 @@ export default function PatientDrawerV4({
   this_visit_findings,
   patient_history,
   care_team,
-  current_workflow_state,
   organization_id,
 }: PatientDrawerV4Props) {
   return (
@@ -25,8 +24,6 @@ export default function PatientDrawerV4({
       />
       <DrawerThisVisit
         this_visit_findings={this_visit_findings}
-        encounter={encounter}
-        current_workflow_state={current_workflow_state}
         organization_id={organization_id}
       />
       <DrawerHistory history={patient_history} />

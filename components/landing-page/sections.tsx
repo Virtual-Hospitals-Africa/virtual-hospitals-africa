@@ -15,7 +15,7 @@ const sections = Object.keys(icons).reduce(
     ...sections,
     [name]: {
       icon: icons[name as keyof typeof icons],
-      displayName: capitalize(name, { splitHyphen: true }),
+      displayName: capitalize(name, { split_hyphen: true }),
       title: `${name}-title`,
       href: `#${name}`,
     },

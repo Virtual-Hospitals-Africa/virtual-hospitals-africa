@@ -10,6 +10,8 @@ export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U> ?
 
 export type ChatbotName = 'patient' | 'pharmacist'
 
+export type Comparator = '<' | '<=' | '=' | '>' | '>='
+
 export type DoctorReviewStep = 'clinical_notes' | 'diagnosis' | 'orders' | 'prescriptions' | 'referral' | 'revert'
 
 export type EmergencyContactRelationship = 'Friend' | 'Other' | 'Parent' | 'Sibling'
@@ -1177,6 +1179,7 @@ export interface PatientLifestyle {
 }
 
 export interface PatientMeasurements {
+  comparator: Generated<Comparator>
   id: string
   units: string
   value: Numeric

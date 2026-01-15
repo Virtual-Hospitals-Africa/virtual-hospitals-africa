@@ -3,6 +3,7 @@ import { RenderedWaitingRoom } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
+import { nobreak } from '../../util/nobreak.ts'
 import Badge from '../library/Badge.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { Person } from '../library/Person.tsx'
@@ -44,7 +45,7 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
       const colors = PRIORITY_COLORS[priority.name]
       return (
         <Badge
-          content={priority.name.replace(' ', ' ')}
+          content={nobreak(priority.name)}
           classNames={cls(colors.bg, colors.text)}
         />
       )

@@ -22,6 +22,7 @@ export type InputProps =
     placeholder?: string
     pattern?: string
     onKeyDown?: (event: KeyboardEvent) => void
+    onPaste?: (event: ClipboardEvent) => void
     characterCountLimit?: number
     leftIcon?: ComponentChildren
     rightIcon?: ComponentChildren
@@ -64,6 +65,7 @@ export function InternalInput({
   onFocus,
   onBlur,
   onKeyDown,
+  onPaste,
   disabled,
   readonly,
   pattern,
@@ -135,6 +137,7 @@ export function InternalInput({
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyDown={onKeyDown}
+            onPaste={onPaste}
             pattern={pattern}
             autoComplete='off'
             min={min ?? undefined}

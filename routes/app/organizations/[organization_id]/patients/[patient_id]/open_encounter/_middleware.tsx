@@ -4,11 +4,11 @@ import Form from '../../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   PreviouslyCompletedProcedures,
-  RenderedFindingRelativeToHealthWorker,
   RenderedPatient,
   RenderedPatientEncounterEmployee,
   RenderedPatientHistory,
   RenderedPatientOpenEncounter,
+  RenderedSidebarWorkflow,
   WorkflowStatus,
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
@@ -78,7 +78,7 @@ type WorkflowState = {
   previously_completed_procedures: PreviouslyCompletedProcedures
   encounter_employee_presence: RenderedPatientEncounterEmployee
   patient_encounter_employee_id: string
-  this_visit_findings: RenderedFindingRelativeToHealthWorker[]
+  this_visit_findings: RenderedSidebarWorkflow[]
   patient_history: RenderedPatientHistory
 }
 
@@ -256,6 +256,13 @@ export async function workflowHandler(
     this_visit_findings: this_visit_findings.get(trx, {
       encounter,
       health_worker_id: ctx.state.health_worker.id,
+      current_workflow_state: {
+        workflow,
+        step,
+        workflow_snomed_concept_id,
+        workflow_step_snomed_concept_id,
+        workflow_status,
+      },
     }),
     patient_history: patient_history.get(trx, {
       patient_encounter_id,
@@ -416,13 +423,6 @@ export function OpenEncounterWorkflowLayout({
             organization_id={ctx.state.organization.id}
             this_visit_findings={ctx.state.this_visit_findings}
             patient_history={ctx.state.patient_history}
-            current_workflow_state={{
-              workflow: ctx.state.workflow,
-              step: ctx.state.step,
-              workflow_snomed_concept_id: ctx.state.workflow_snomed_concept_id,
-              workflow_step_snomed_concept_id: ctx.state.workflow_step_snomed_concept_id,
-              workflow_status: ctx.state.workflow_status,
-            }}
             care_team={[]}
             // care_team={ctx.state.patient.primary_doctor
             //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
@@ -529,8 +529,8 @@ export function nextRouteAfterCompletingWorkflow(
   const next_current_workflow = next_patient_presence.current_workflow
 
   if (next_current_workflow) {
-    const success_message = `${capitalize(workflow, { splitHyphen: true })} is complete. Continuing with ${
-      capitalize(next_current_workflow, { splitHyphen: true })
+    const success_message = `${capitalize(workflow, { split_hyphen: true })} is complete. Continuing with ${
+      capitalize(next_current_workflow, { split_hyphen: true })
     }`
     const next_route = `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/${next_current_workflow}/${
       firstStep(next_current_workflow)
@@ -546,7 +546,7 @@ export function nextRouteAfterCompletingWorkflow(
     next_patient_presence.next_workflow,
   )
   const success_message = `${capitalize(workflow)} is complete. Please guide the patient to the waiting room to await ${
-    capitalize(next_patient_presence.next_workflow, { splitHyphen: true })
+    capitalize(next_patient_presence.next_workflow, { split_hyphen: true })
   }`
   const next_route = `/app/organizations/${organization.id}/waiting_room?just_encountered_patient_id=${patient.id}`
   return success(success_message, next_route)

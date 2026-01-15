@@ -3383,20 +3383,34 @@ export type RenderedPatientHistory = {
   lifestyle: RenderedFindingRelativeToHealthWorker[]
 }
 
+export type CurrentWorkflowState = {
+  workflow: Workflow
+  step: string
+  workflow_snomed_concept_id: string
+  workflow_step_snomed_concept_id: string | null
+  workflow_status: WorkflowStatus
+}
+
 export type PatientDrawerV4Props = {
   patient: RenderedPatient
   encounter: RenderedPatientEncounter
   organization_id: string
-  this_visit_findings: RenderedFindingRelativeToHealthWorker[]
+  this_visit_findings: RenderedSidebarWorkflow[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
-  current_workflow_state: null | {
-    workflow: Workflow
-    step: string
-    workflow_snomed_concept_id: string
-    workflow_step_snomed_concept_id: string | null
-    workflow_status: WorkflowStatus
-  }
+}
+
+export type RenderedSidebarWorkflowStep = {
+  workflow_step: string
+  title: string
+  status: 'not started' | 'in progress' | 'completed'
+  records: RenderedFindingRelativeToHealthWorker[]
+}
+
+export type RenderedSidebarWorkflow = {
+  workflow: Workflow
+  status: 'not started' | 'incomplete' | 'in progress' | 'completed'
+  steps: RenderedSidebarWorkflowStep[]
 }
 
 export type RenderedCareTeamHealthWorker = {
@@ -3784,3 +3798,8 @@ export type SearchResults<SearchTerms, RenderedResult> = {
   has_next_page: boolean
   search_terms: SearchTerms
 }
+
+export type EvaluatedRecord = DeepMaybe<{
+  score: number
+  priority: Priority
+}>
