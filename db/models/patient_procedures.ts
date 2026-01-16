@@ -10,7 +10,6 @@ import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 
 type ProcedureInsert =
   & {
@@ -128,9 +127,6 @@ export const patient_procedures = base({
     assertHasProperty(procedure, 'root_snomed_concept')
     assertHasProperty(procedure, 'specific_snomed_concept')
     const procedure_id = generateUUID()
-    if (procedure.value) {
-      assertEquals(procedure.value.type, 'finding_s_expression')
-    }
 
     return patient_records.baseInsert(
       trx,
@@ -154,13 +150,24 @@ export const patient_procedures = base({
       .with(
         'inserting_record_s_expression',
         (qb) =>
-          procedure.value
+          procedure.value?.atom === 'finding'
             ? qb.insertInto('patient_record_s_expressions')
               .values({
                 id: procedure_id,
-                s_expression: inverseSExpression(
-                  procedure.value.finding_s_expression,
-                ),
+                s_expression: inverseSExpression(procedure.value),
+              })
+            : blankSelection(qb),
+      )
+      .with(
+        'inserting_record_link',
+        (qb) =>
+          procedure.value?.atom === 'link'
+            ? qb.insertInto('patient_record_links')
+              .values({
+                id: procedure_id,
+                title: procedure.value.title,
+                href: procedure.value.href,
+                thumbnail_href: procedure.value.thumbnail_href,
               })
             : blankSelection(qb),
       )

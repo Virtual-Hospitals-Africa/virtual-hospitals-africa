@@ -1,10 +1,21 @@
 import { assert } from 'std/assert/assert.ts'
 import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
-import type { CheckForTask, RenderedTask, TaskGroup } from '../../types.ts'
+import type { CheckForTask, RecordValueLink, RenderedTask, TaskGroup } from '../../types.ts'
 import partition from '../../util/partition.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
 import { isCheckFor } from '../../shared/tasks.ts'
 import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
+import isString from '../../util/isString.ts'
+
+function ValueDisplay({ value }: { value: string | RecordValueLink }) {
+  if (isString(value)) return value
+  return (
+    <a href={value.href}>
+      {value.title}
+      {value.thumbnail_href && <img src={value.thumbnail_href} />}
+    </a>
+  )
+}
 
 function TaskCheckbox({
   task,
@@ -29,7 +40,12 @@ function TaskCheckbox({
       </div>
       <div class='flex flex-col gap-1'>
         <span class='text-sm font-medium text-gray-600 leading-5'>
-          {task.procedure.displays.full}
+          {task.procedure.displays.finding}
+          {task.procedure.displays.value && (
+            <>
+              : <ValueDisplay value={task.procedure.displays.value} />
+            </>
+          )}
         </span>
       </div>
     </label>
@@ -91,7 +107,9 @@ function TaskGroupCard({
       <div class='flex items-start justify-between'>
         <div class='flex flex-col gap-1'>
           <p class='text-sm leading-5'>
-            <span class='font-semibold text-gray-600'>Due to:&nbsp;</span>
+            <span class='font-semibold text-gray-600'>
+              {'Due to: '}
+            </span>
             {group.due_to.map((finding) => (
               <MostRecentFinding
                 key={finding.record_id}

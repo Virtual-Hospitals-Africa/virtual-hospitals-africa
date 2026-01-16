@@ -33,9 +33,7 @@ const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_S
 
   return snomed_mapping.map((concept) =>
     `(task
-    "Display medical guidance for ${
-      table_of_contents_name === 'Lump, neck/axilla/groin' ? concept.name : table_of_contents_name
-    }"
+    "Display medical guidance for ${table_of_contents_name === 'Lump, neck/axilla/groin' ? concept.name : table_of_contents_name}"
       ${concept.clinical_finding_s_expression}
       (procedure 
         ${PROCEDURE.s_expression}

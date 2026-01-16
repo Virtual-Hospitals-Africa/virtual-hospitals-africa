@@ -43,13 +43,8 @@ type BaseLang =
       specific_snomed_concept: Lang['snomed_concept'] | null
       value:
         | null
-        | {
-          type: 'finding_s_expression'
-          finding_s_expression: Lang['finding']
-        }
-        | (Lang['link'] & {
-          type: 'link'
-        })
+        | Lang['finding']
+        | Lang['link']
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
     }
@@ -499,7 +494,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
     args: z.tuple([
       snomed_concept_or_attribute_or_qualifier.optional(),
       snomed_concept_or_attribute_or_qualifier.optional(),
-      attribute_or_qualifier.or(link).optional(),
+      attribute_or_qualifier.or(link).or(finding).optional(),
       attribute_or_qualifier.optional(),
       attribute_or_qualifier.optional(),
       attribute_or_qualifier.optional(),
@@ -512,7 +507,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
           [
             root_snomed_concept = null,
             specific_snomed_concept = null,
-            link = null,
+            link_or_finding = null,
             ...rest
           ],
         ) => {
@@ -531,9 +526,9 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
             root_snomed_concept = null
           }
 
-          if (link && link.atom !== 'link') {
-            nodes.unshift(link)
-            link = null
+          if (link_or_finding && (link_or_finding.atom !== 'link' && link_or_finding.atom !== 'finding')) {
+            nodes.unshift(link_or_finding)
+            link_or_finding = null
           }
 
           const [qualifiers, attributes] = partition(nodes, isQualifier)
@@ -543,10 +538,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
             specific_snomed_concept,
             qualifiers,
             attributes,
-            value: link && {
-              ...link,
-              type: 'link' as const,
-            },
+            value: link_or_finding,
           }
         },
       ),
@@ -596,10 +588,7 @@ export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
       },
       qualifiers: [],
       attributes: [],
-      value: {
-        type: 'finding_s_expression' as const,
-        finding_s_expression,
-      },
+      value: finding_s_expression,
     })),
 ).describe('check_for')
 

@@ -1,3 +1,5 @@
+import { assert } from 'std/assert/assert.ts'
+import compact from '../util/compact.ts'
 import { AnyNode, EventValue, Lang } from './s_expression_schemas.ts'
 
 // TODO: come back to this idea maybe.
@@ -16,6 +18,11 @@ function snomedConceptToString(node: Lang['snomed_concept']): string {
     return node.id
   }
   return `(snomed_concept "${node.name}" "${node.category}")`
+}
+
+function quoted(str: string): string {
+  assert(str, `attempting to enquote falsy value ${str}`)
+  return `"${str}"`
 }
 
 export function inverseSExpression(node: AnyNode): string {
@@ -65,6 +72,10 @@ export function inverseSExpression(node: AnyNode): string {
       return `(${parts.join(' ')})`
     }
 
+    case 'link': {
+      return '(' + compact(['link', quoted(node.title), quoted(node.href), node.thumbnail_href && quoted(node.thumbnail_href)]).join(' ') + ')'
+    }
+
     case 'procedure': {
       const parts: string[] = ['procedure']
       if (node.root_snomed_concept) {
@@ -72,6 +83,9 @@ export function inverseSExpression(node: AnyNode): string {
       }
       if (node.specific_snomed_concept) {
         parts.push(snomedConceptToString(node.specific_snomed_concept))
+      }
+      if (node.value) {
+        parts.push(inverseSExpression(node.value))
       }
       for (const attr of node.attributes) parts.push(inverseSExpression(attr))
       for (const qual of node.qualifiers) parts.push(inverseSExpression(qual))

@@ -3495,7 +3495,7 @@ export type AsPartOfProcedure = {
 
 export type RecordDisplays = {
   finding: string
-  value: string | null
+  value: string | null | RecordValueLink
   full: string
 }
 
