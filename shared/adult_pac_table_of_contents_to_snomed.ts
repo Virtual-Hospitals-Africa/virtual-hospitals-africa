@@ -213,8 +213,8 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
   'Convulsion': [
     {
       'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure" "finding"))',
-      'snomed_concept_id': '91175000',
+      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure related finding" "finding"))',
+      'snomed_concept_id': '313287004',
       'name': 'Seizure',
       'category': 'finding',
     },
@@ -386,8 +386,8 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
   'Fits': [
     {
       'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure" "finding"))',
-      'snomed_concept_id': '91175000',
+      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure related finding" "finding"))',
+      'snomed_concept_id': '313287004',
       'name': 'Seizure',
       'category': 'finding',
     },
@@ -726,8 +726,8 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
   'Seizures': [
     {
       'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure" "finding"))',
-      'snomed_concept_id': '91175000',
+      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure related finding" "finding"))',
+      'snomed_concept_id': '313287004',
       'name': 'Seizure',
       'category': 'finding',
     },
