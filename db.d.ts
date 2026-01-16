@@ -159,7 +159,15 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export type VitalAssessment = 'consciousness' | 'mobility_assessment' | 'trauma_presence'
 
-export type Workflow = 'consultation' | 'doctor_review' | 'maternity' | 'prescription_refill' | 'registration' | 'stabilization' | 'triage'
+export type Workflow =
+  | 'consultation'
+  | 'doctor_review'
+  | 'emergency_escalation'
+  | 'maternity'
+  | 'prescription_refill'
+  | 'registration'
+  | 'stabilization'
+  | 'triage'
 
 export interface Addresses {
   administrative_area_level_1: string | null

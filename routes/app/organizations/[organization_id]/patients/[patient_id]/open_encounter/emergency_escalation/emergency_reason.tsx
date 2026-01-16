@@ -1,4 +1,10 @@
-import { completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import {
+  assertAllPriorStepsCompleted,
+  completeAndProceedToNextStep,
+  completedProcedure,
+  OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowPage,
+} from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
@@ -302,7 +308,9 @@ function* signsMatchedWithPriorRecords(
 export async function EmergencyEscalationReasonPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  assertAllPriorStepsCompleted(ctx)
+  assertAllPriorStepsCompleted(ctx, {
+    attempting_to_complete_workflow: false,
+  })
   const {
     prior_findings,
     warning_signs_for_patient,

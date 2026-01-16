@@ -1,7 +1,7 @@
-import { OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import { assertAllPriorStepsCompleted, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-import { success }         from '../../../../../../../../util/alerts.ts'
+import { success } from '../../../../../../../../util/alerts.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { preferredName } from '../../../../../../../../util/asNames.ts'
 import capitalize from '../../../../../../../../util/capitalize.ts'
@@ -10,7 +10,7 @@ import { employees } from '../../../../../../../../db/models/employees.ts'
 import ProvidersSelect from '../../../../../../../../islands/ProvidersSelect.tsx'
 
 export const EmergencyEscalationNotifyStaffSchema = z.object({
-  provider_ids: z.string().uuid().array()
+  provider_ids: z.string().uuid().array(),
 }).strict()
 
 export const handler = postHandler(
@@ -19,6 +19,10 @@ export const handler = postHandler(
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const { organization_id, encounter } = ctx.state
     console.log(form_values)
+
+    assertAllPriorStepsCompleted(ctx, {
+      attempting_to_complete_workflow: true,
+    })
 
     const next_room_name = 'the resuscitation area'
 
@@ -36,13 +40,15 @@ export const handler = postHandler(
 export async function EmergencyEscalationNotifyStaffPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const providers = await employees.findAll(ctx.state.trx, {
-    organization_id: ctx.state.organization_id
+  assertAllPriorStepsCompleted(ctx, {
+    attempting_to_complete_workflow: false,
   })
 
-  return (
-    <ProvidersSelect providers={providers}/>
-  )
+  const providers = await employees.findAll(ctx.state.trx, {
+    organization_id: ctx.state.organization_id,
+  })
+
+  return <ProvidersSelect providers={providers} />
 }
 
 export default OpenEncounterWorkflowPage(EmergencyEscalationNotifyStaffPage)
