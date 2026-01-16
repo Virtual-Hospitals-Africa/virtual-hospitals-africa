@@ -31,9 +31,9 @@ name=$(echo "$full_term" | sed 's/ ([^)]*)$//')
 const_name=$(echo "$name" | tr '[:lower:]' '[:upper:]' | sed "s/[^A-Z0-9]/_/g" | sed 's/__*/_/g' | sed 's/^_//; s/_$//')
 
 cat <<EOF >> ./shared/snomed_concepts.ts
-export const $const_name = {
+export const $const_name = asConcept({
   id: '$id',
   name: '$name',
   category: '$category' as const,
-}
+})
 EOF

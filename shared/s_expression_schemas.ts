@@ -41,10 +41,15 @@ type BaseLang =
     procedure: {
       root_snomed_concept: Lang['snomed_concept'] | null
       specific_snomed_concept: Lang['snomed_concept'] | null
-      value: null | {
-        type: 'finding_s_expression'
-        finding_s_expression: Lang['finding']
-      }
+      value:
+        | null
+        | {
+          type: 'finding_s_expression'
+          finding_s_expression: Lang['finding']
+        }
+        | (Lang['link'] & {
+          type: 'link'
+        })
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
     }
@@ -96,6 +101,11 @@ type BaseLang =
       description: string
       when: Lang[Comparisons | 'finding' | 'any' | 'all']
       procedure: Lang['procedure']
+    }
+    link: {
+      title: string
+      href: string
+      thumbnail_href: string | null
     }
   }
   & {
@@ -489,6 +499,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
     args: z.tuple([
       snomed_concept_or_attribute_or_qualifier.optional(),
       snomed_concept_or_attribute_or_qualifier.optional(),
+      attribute_or_qualifier.or(link).optional(),
       attribute_or_qualifier.optional(),
       attribute_or_qualifier.optional(),
       attribute_or_qualifier.optional(),
@@ -501,6 +512,7 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
           [
             root_snomed_concept = null,
             specific_snomed_concept = null,
+            link = null,
             ...rest
           ],
         ) => {
@@ -519,6 +531,11 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
             root_snomed_concept = null
           }
 
+          if (link && link.atom !== 'link') {
+            nodes.unshift(link)
+            link = null
+          }
+
           const [qualifiers, attributes] = partition(nodes, isQualifier)
 
           return {
@@ -526,7 +543,10 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
             specific_snomed_concept,
             qualifiers,
             attributes,
-            value: null,
+            value: link && {
+              ...link,
+              type: 'link' as const,
+            },
           }
         },
       ),
@@ -621,6 +641,18 @@ export const exact: z.ZodType<Lang['finding'] & { exact: true }> = z.lazy(() =>
   }))
 ).describe('exact')
 
+export const link: z.ZodType<Lang['link']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('link'),
+    args: z.tuple([z.string(), z.string(), z.string().optional()]),
+  }).transform(({ atom, args: [title, href, thumbnail_href = null] }) => ({
+    atom,
+    title,
+    href,
+    thumbnail_href,
+  }))
+).describe('link')
+
 export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   z.object({
     atom: z.literal('task'),
@@ -708,6 +740,6 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     not,
     any,
     all,
-    exact,
+    link,
   ])
 ).describe('any_expression')
