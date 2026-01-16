@@ -165,6 +165,7 @@ function valueDisplay(
 
 function includeRootSnomedConceptName(
   root_snomed_concept: RenderedSnomedConcept,
+  specific_snomed_concept: RenderedSnomedConcept,
 ): boolean {
   switch (root_snomed_concept.name) {
     case 'Attribute':
@@ -174,6 +175,8 @@ function includeRootSnomedConceptName(
     case 'Qualifier value':
     case 'Evaluation - action':
       return false
+    case 'Procedure':
+      return specific_snomed_concept.name !== 'Reference documentation'
     default:
       return true
   }
@@ -233,7 +236,7 @@ function buildDisplays(
     { just_first: true },
   )
 
-  const maybe_root_concept_name = includeRootSnomedConceptName(root_snomed_concept) && root_snomed_concept.name
+  const maybe_root_concept_name = includeRootSnomedConceptName(root_snomed_concept, specific_snomed_concept) && root_snomed_concept.name
 
   const finding_displays = compact([specific_concept_display, maybe_root_concept_name])
 
