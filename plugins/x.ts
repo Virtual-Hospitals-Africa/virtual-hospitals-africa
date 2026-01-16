@@ -1,6 +1,5 @@
 // plugins/profiler.ts
 import { Context } from 'fresh'
-import { assert } from 'std/assert/assert.ts'
 
 export default function profilerPlugin() {
   return {

@@ -324,7 +324,7 @@ const EXPRESSION_BUILDERS = {
         'patient_procedures.id',
       )
       .$if(
-        !!value,
+        value?.atom === 'finding',
         (qb) =>
           qb.innerJoin(
             'patient_record_s_expressions',
@@ -334,7 +334,21 @@ const EXPRESSION_BUILDERS = {
             .where(
               'patient_record_s_expressions.s_expression',
               '=',
-              inverseSExpression(value!.finding_s_expression),
+              inverseSExpression(value!),
+            ),
+      )
+      .$if(
+        value?.atom === 'link',
+        (qb) =>
+          qb.innerJoin(
+            'patient_record_links',
+            'patient_record_links.id',
+            'patient_records.id',
+          )
+            .where(
+              'patient_record_links.href',
+              '=',
+              (value as Lang['link']).href,
             ),
       )
   },

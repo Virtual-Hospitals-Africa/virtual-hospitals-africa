@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
-import { Sex } from '../types.ts'
+import { Result, Sex } from '../types.ts'
 import { parseDate } from './date.ts'
 import { assertOr400 } from './assertOr.ts'
-import { asResult, Result } from './asResult.ts'
+import { asResult } from './asResult.ts'
 
 // Uses the Luhn Algorithm
 // Adapted from https://github.com/tiaanduplessis/mod10-check-digit/blob/master/index.js

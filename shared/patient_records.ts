@@ -3,6 +3,7 @@ import {
   Maybe,
   RecordDisplays,
   RecordValue,
+  RecordValueLink,
   RenderedAttribute,
   RenderedEvaluation,
   RenderedRecordRelativeToHealthWorkerDef,
@@ -22,6 +23,7 @@ import { Lang } from './s_expression_schemas.ts'
 import { parseExpressionExpectingAtom } from './s_expression.ts'
 import { logArgsOnError } from '../util/decorators.ts'
 import capitalize from '../util/capitalize.ts'
+import isString from '../util/isString.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -136,7 +138,7 @@ function findingSExpressionDisplay(
 
 function valueDisplay(
   value: Exclude<NonNullable<DisplayableRecord['value']>, string>,
-): string {
+): string | RecordValueLink {
   switch (value.type) {
     case 'event':
       return formatEventDatetime(value.datetime)
@@ -151,6 +153,9 @@ function valueDisplay(
         value.s_expression,
         'finding',
       ))
+    }
+    case 'link': {
+      return value
     }
     default: {
       throw new Error(`Unexpected type in ${humanReadableJson(value)}`)
@@ -249,7 +254,7 @@ function buildDisplays(
   return {
     finding: finding_display,
     value: value_display,
-    full: `${finding_display}: ${value_display}`,
+    full: `${finding_display}: ${isString(value_display) ? value_display : value_display.title}`,
   }
 }
 
