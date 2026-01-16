@@ -98,15 +98,16 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'disorder',
     },
   ],
-  'Blackout': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Syncope" "finding"))',
-      'snomed_concept_id': '271594007',
-      'name': 'Syncope',
-      'category': 'finding',
-    },
-  ],
+  // Commenting out synonyms
+  // 'Blackout': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Syncope" "finding"))',
+  //     'snomed_concept_id': '271594007',
+  //     'name': 'Syncope',
+  //     'category': 'finding',
+  //   },
+  // ],
   'Body pain': [
     {
       'type': 'specific_concept',
@@ -211,6 +212,7 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
     },
   ],
   // TODO remove this I think: you only need one page for the same type
+  // Commenting out synonyms
   // 'Convulsion': [
   //   {
   //     'type': 'specific_concept',
@@ -384,6 +386,7 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
+  // Commenting out synonyms
   // 'Fits': [
   //   {
   //     'type': 'specific_concept',
@@ -539,33 +542,36 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
-  'Pain, back': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Backache" "finding"))',
-      'snomed_concept_id': '161891005',
-      'name': 'Backache',
-      'category': 'finding',
-    },
-  ],
-  'Pain, body/general': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))',
-      'snomed_concept_id': '82991003',
-      'name': 'Generalized aches and pains',
-      'category': 'finding',
-    },
-  ],
-  'Pain, chest': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Chest pain" "finding"))',
-      'snomed_concept_id': '29857009',
-      'name': 'Chest pain',
-      'category': 'finding',
-    },
-  ],
+  // Commenting out synonyms
+  // 'Pain, back': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Backache" "finding"))',
+  //     'snomed_concept_id': '161891005',
+  //     'name': 'Backache',
+  //     'category': 'finding',
+  //   },
+  // ],
+  // Commenting out synonyms
+  // 'Pain, body/general': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))',
+  //     'snomed_concept_id': '82991003',
+  //     'name': 'Generalized aches and pains',
+  //     'category': 'finding',
+  //   },
+  // ],
+  // Commenting out synonyms
+  // 'Pain, chest': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Chest pain" "finding"))',
+  //     'snomed_concept_id': '29857009',
+  //     'name': 'Chest pain',
+  //     'category': 'finding',
+  //   },
+  // ],
   'Pain, chronic': [
     {
       'type': 'specific_concept',
@@ -575,15 +581,16 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
-  'Pain, neck': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Neck pain" "finding"))',
-      'snomed_concept_id': '81680005',
-      'name': 'Neck pain',
-      'category': 'finding',
-    },
-  ],
+  // Commenting out synonyms
+  // 'Pain, neck': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Neck pain" "finding"))',
+  //     'snomed_concept_id': '81680005',
+  //     'name': 'Neck pain',
+  //     'category': 'finding',
+  //   },
+  // ],
   'Pallor': [
     {
       'type': 'specific_concept',
@@ -593,15 +600,16 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
-  'Period problems': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Disorder of menstruation" "disorder"))',
-      'snomed_concept_id': '386804004',
-      'name': 'Disorder of menstruation',
-      'category': 'disorder',
-    },
-  ],
+  // Commenting out synonyms
+  // 'Period problems': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Disorder of menstruation" "disorder"))',
+  //     'snomed_concept_id': '386804004',
+  //     'name': 'Disorder of menstruation',
+  //     'category': 'disorder',
+  //   },
+  // ],
   'Pimples': [
     {
       'type': 'specific_concept',
@@ -851,24 +859,26 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'body structure',
     },
   ],
-  'Tiredness': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Fatigue" "finding"))',
-      'snomed_concept_id': '84229001',
-      'name': 'Fatigue',
-      'category': 'finding',
-    },
-  ],
-  'Traumatised patient': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Victim of abuse" "finding"))',
-      'snomed_concept_id': '386702006',
-      'name': 'Victim of abuse',
-      'category': 'finding',
-    },
-  ],
+  // Commenting out synonyms
+  // 'Tiredness': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Fatigue" "finding"))',
+  //     'snomed_concept_id': '84229001',
+  //     'name': 'Fatigue',
+  //     'category': 'finding',
+  //   },
+  // ],
+  // Commenting out synonyms
+  // 'Traumatised patient': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Victim of abuse" "finding"))',
+  //     'snomed_concept_id': '386702006',
+  //     'name': 'Victim of abuse',
+  //     'category': 'finding',
+  //   },
+  // ],
   'Ulcer, genital': [
     {
       'type': 'specific_concept',
@@ -923,15 +933,16 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
-  'Violent patient': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Aggressive behavior" "finding"))',
-      'snomed_concept_id': '61372001',
-      'name': 'Aggressive behavior',
-      'category': 'finding',
-    },
-  ],
+  // Commenting out synonyms
+  // 'Violent patient': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Aggressive behavior" "finding"))',
+  //     'snomed_concept_id': '61372001',
+  //     'name': 'Aggressive behavior',
+  //     'category': 'finding',
+  //   },
+  // ],
   'Vision symptoms': [
     {
       'type': 'specific_concept',

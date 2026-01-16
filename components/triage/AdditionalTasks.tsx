@@ -10,9 +10,9 @@ import isString from '../../util/isString.ts'
 function ValueDisplay({ value }: { value: string | RecordValueLink }) {
   if (isString(value)) return value
   return (
-    <a href={value.href}>
+    <a href={value.href} className='flex'>
       {value.title}
-      {value.thumbnail_href && <img src={value.thumbnail_href} />}
+      {value.thumbnail_href && <img width='200' src={value.thumbnail_href} />}
     </a>
   )
 }
@@ -38,7 +38,7 @@ function TaskCheckbox({
           />
         </div>
       </div>
-      <div class='flex flex-col gap-1'>
+      <div class='flex gap-1'>
         <span class='text-sm font-medium text-gray-600 leading-5'>
           {task.procedure.displays.finding}
           {task.procedure.displays.value && (
