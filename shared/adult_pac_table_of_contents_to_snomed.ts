@@ -210,15 +210,16 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
-  'Convulsion': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure related finding" "finding"))',
-      'snomed_concept_id': '313287004',
-      'name': 'Seizure',
-      'category': 'finding',
-    },
-  ],
+  // TODO remove this I think: you only need one page for the same type
+  // 'Convulsion': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure related finding" "finding"))',
+  //     'snomed_concept_id': '313287004',
+  //     'name': 'Seizure',
+  //     'category': 'finding',
+  //   },
+  // ],
   'Cough': [
     {
       'type': 'specific_concept',
@@ -383,15 +384,15 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
-  'Fits': [
-    {
-      'type': 'specific_concept',
-      'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure related finding" "finding"))',
-      'snomed_concept_id': '313287004',
-      'name': 'Seizure',
-      'category': 'finding',
-    },
-  ],
+  // 'Fits': [
+  //   {
+  //     'type': 'specific_concept',
+  //     'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Seizure related finding" "finding"))',
+  //     'snomed_concept_id': '313287004',
+  //     'name': 'Seizure',
+  //     'category': 'finding',
+  //   },
+  // ],
   'Foot symptoms': [
     {
       'type': 'by_finding_site',
