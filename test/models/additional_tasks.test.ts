@@ -16,9 +16,9 @@ describeParallel('db/models/additional_tasks.ts', () => {
     'all of the findings referenced to check_for actually exist',
     async () => {
       await pMap(TASKS, async (task) => {
-        if (task.procedure.value?.type !== 'finding_s_expression') return
+        if (task.procedure.value?.atom !== 'finding') return
 
-        const finding = task.procedure.value.finding_s_expression
+        const finding = task.procedure.value
         assert(finding.specific_snomed_concept)
         assert(
           finding.specific_snomed_concept.type ===

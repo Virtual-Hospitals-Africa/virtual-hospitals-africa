@@ -12,7 +12,7 @@ import { asConceptSExpression } from '../../shared/snomed_concepts.ts'
 
 type SearchTerms = {
   search: string
-  patient_id: string
+  patient_id?: string
   categories?: SnomedCategory[]
 }
 
@@ -85,73 +85,59 @@ function getPriorityOfSnomedConcept<
 
 function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
   assertOr400(terms.search, 'Must be searching for a term')
-  assertOr400(
-    terms.patient_id,
-    'Must be searching with respect to a particular patient (in order to ascertain the priority level)',
-  )
 
-  const descriptions_with_similarity = trx
-    .selectFrom('snomed_description')
+  const best_similarity = sql<number>`max(similarity(term, ${terms.search}))`
+
+  return trx
+    .selectFrom('snomed_inferred_canonical_name_and_category')
     .innerJoin(
-      'snomed_concept',
-      'snomed_concept.id',
-      'snomed_description.concept_id',
-    )
-    .where('snomed_concept.active', '=', true)
-    // Maybe if they're searching by an outdated term we still want to return it?
-    // .where('snomed_description.active', '=', true)
-    // Use trigram similarity operator for fuzzy matching
-    .where(sql<boolean>`term % ${terms.search}`)
-    .select([
-      'snomed_description.concept_id',
-      sql<number>`similarity(term, ${terms.search})`.as('similarity'),
-    ])
-    .orderBy(sql<number>`similarity(term, ${terms.search})`, 'desc')
-    .limit(100)
-    .as('descriptions_with_similarity')
-
-  const snomed_concepts = trx.selectFrom(
-    descriptions_with_similarity,
-  )
-    .select([
-      'descriptions_with_similarity.concept_id',
-      sql<number>`max(descriptions_with_similarity.similarity)`.as(
-        'best_similarity',
-      ),
-    ])
-    .groupBy('descriptions_with_similarity.concept_id')
-    .as('snomed_concepts')
-
-  return trx.selectFrom('snomed_inferred_canonical_name_and_category')
-    .innerJoin(
-      snomed_concepts,
-      'snomed_concepts.concept_id',
+      'snomed_description',
       'snomed_inferred_canonical_name_and_category.id',
+      'snomed_description.concept_id',
     )
-    .selectAll('snomed_inferred_canonical_name_and_category')
-    .$if(
-      !!terms.categories,
-      (qb) =>
-        qb.where(
-          'snomed_inferred_canonical_name_and_category.category',
-          'in',
-          terms.categories!,
-        ),
+    .leftJoin(
+      'snomed_inferred_canonical_name_and_category as preferred_category_of_same_name',
+      (join) =>
+        terms.categories
+          ? join.on((eb) =>
+            eb.or(
+              terms.categories!.slice(1).flatMap((category, i) => {
+                const higher_ranking_categories = terms.categories!.slice(0, i + 1)
+                return higher_ranking_categories.map((higher_ranking_category) =>
+                  eb.and([
+                    eb('preferred_category_of_same_name.name', '=', eb.ref('snomed_inferred_canonical_name_and_category.name')),
+                    eb('snomed_inferred_canonical_name_and_category.category', '=', category),
+                    eb('preferred_category_of_same_name.category', '=', higher_ranking_category),
+                  ])
+                )
+              }),
+            )
+          )
+          : join.on(sql<boolean>`false`),
     )
-    .select('snomed_concepts.best_similarity')
-    .select((eb) =>
-      getPriorityOfSnomedConcept(
-        eb,
-        'snomed_inferred_canonical_name_and_category.id',
-        terms.patient_id,
-        trx,
-      )
-    )
-    .orderBy('snomed_concepts.best_similarity', 'desc')
+    .where('preferred_category_of_same_name.id', 'is', null)
+    .where(sql<boolean>`term % ${terms.search}`)
+    .$if(!!terms.categories, (qb) => qb.where('snomed_inferred_canonical_name_and_category.category', 'in', terms.categories!))
+    .select((eb) => [
+      'snomed_inferred_canonical_name_and_category.id',
+      'snomed_inferred_canonical_name_and_category.name',
+      'snomed_inferred_canonical_name_and_category.category',
+      // Priority can technically only be determined relative to a patient because the same condition might be more or less concerning depending on their case
+      terms.patient_id
+        ? getPriorityOfSnomedConcept(
+          eb,
+          'snomed_inferred_canonical_name_and_category.id',
+          terms.patient_id,
+          trx,
+        )
+        : sql<null>`null`.as('priority'),
+      best_similarity.as('best_similarity'),
+    ])
+    .groupBy('snomed_inferred_canonical_name_and_category.id')
+    .orderBy(best_similarity, 'desc')
 }
 
 export const snomed_model = base({
-  verbose: true,
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery,
   getPriorityOfSnomedConcept,

@@ -1,10 +1,11 @@
 import { describe, it } from 'std/testing/bdd.ts'
-import { asResultAsync, Failure, isSuccess } from '../../util/asResult.ts'
+import { asResultAsync, isSuccess } from '../../util/asResult.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { forEach } from '../../util/inParallel.ts'
 import { assert } from 'std/assert/assert.ts'
 import { pluralize } from '../../util/pluralize.ts'
 import partition from '../../util/partition.ts'
+import { Failure } from '../../types.ts'
 
 export type TestOpts = { only?: boolean; skip?: boolean }
 

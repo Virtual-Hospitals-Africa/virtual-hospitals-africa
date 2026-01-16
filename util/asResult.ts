@@ -1,11 +1,4 @@
-export type Success<T> = { success: true; value: T }
-
-export type Failure = {
-  success: false
-  error: Error
-}
-
-export type Result<T> = Success<T> | Failure
+import { Failure, Result, Success } from '../types.ts'
 
 export function asResult<T>(callback: () => T): Result<T> {
   try {

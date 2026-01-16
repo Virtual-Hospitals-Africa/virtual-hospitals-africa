@@ -53,7 +53,7 @@ export function parseWithSchema<Schema extends Values<typeof schemas>>(
   // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions
   const normal_form_by_inverse = inverseSExpression(second_pass.data)
   const normalized = fastNormalForm(normal_form_by_inverse)
-  assertEquals(normal_form_by_inverse, normalized)
+  assertEquals(normal_form_by_inverse, normalized, `${normal_form_by_inverse} ; ${normalized}`)
   return second_pass.data as z.infer<Schema>
 }
 

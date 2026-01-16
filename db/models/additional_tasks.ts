@@ -66,6 +66,8 @@ export const additional_tasks = {
         ]),
     )
 
+    console.log('mmkkk')
+
     const all_tasks_query = other_tasks.reduce(
       (acc, curr) => acc.unionAll(curr),
       first_task,

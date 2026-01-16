@@ -1,0 +1,17 @@
+import { Kysely } from 'kysely'
+import { DB } from '../../db.d.ts'
+
+export async function up(db: Kysely<DB>) {
+  await db.schema
+    .createIndex('snomed_inferred_canonical_name_and_category_name_category_idx')
+    .on('snomed_inferred_canonical_name_and_category')
+    .columns(['name', 'category'])
+    .unique()
+    .execute()
+}
+
+export async function down(db: Kysely<DB>) {
+  await db.schema
+    .dropIndex('snomed_inferred_canonical_name_and_category_name_category_idx')
+    .execute()
+}

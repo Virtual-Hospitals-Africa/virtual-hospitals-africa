@@ -118,6 +118,15 @@ export type RequiredFields<T> = {
   ]: NonNull<T[K]>
 }
 
+export type Success<T> = { success: true; value: T }
+
+export type Failure = {
+  success: false
+  error: Error
+}
+
+export type Result<T> = Success<T> | Failure
+
 export type SqlRow<T> = {
   id: Generated<number>
   created_at: ColumnType<Date, undefined, never>
@@ -3486,7 +3495,7 @@ export type AsPartOfProcedure = {
 
 export type RecordDisplays = {
   finding: string
-  value: string | null
+  value: string | null | RecordValueLink
   full: string
 }
 
@@ -3520,12 +3529,20 @@ export type RecordValueSExpression = {
   s_expression: string
 }
 
+export type RecordValueLink = {
+  type: 'link'
+  title: string
+  href: string
+  thumbnail_href: string | null
+}
+
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
   | RecordValueScore
   | RecordValueSExpression
+  | RecordValueLink
 
 export type IntermediateBaseRecord = {
   record_id: string
