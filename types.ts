@@ -3529,12 +3529,20 @@ export type RecordValueSExpression = {
   s_expression: string
 }
 
+export type RecordValueLink = {
+  type: 'link'
+  title: string
+  href: string
+  thumbnail_href: string | null
+}
+
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
   | RecordValueScore
   | RecordValueSExpression
+  | RecordValueLink
 
 export type IntermediateBaseRecord = {
   record_id: string

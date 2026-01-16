@@ -145,6 +145,11 @@ export function nonGroupedBaseQuery(
       'patient_records.id',
       'maybe_s_expressions.id',
     )
+    .leftJoin(
+      'patient_record_links as maybe_links',
+      'patient_records.id',
+      'maybe_links.id',
+    )
     .select((eb) => [
       'patient_records.id as record_id',
       'patient_records.created_at',
@@ -217,6 +222,16 @@ export function nonGroupedBaseQuery(
             type: literalString('s_expression' as const),
             s_expression: asText(eb, 'maybe_s_expressions.s_expression')
               .$notNull(),
+          },
+        ),
+        // @ts-ignore coalesce should handle these just fine
+        jsonBuildNullableObject(
+          eb.ref('maybe_links.id'),
+          {
+            type: literalString('link' as const),
+            title: eb.ref('maybe_links.title').$notNull(),
+            href: eb.ref('maybe_links.href').$notNull(),
+            thumbnail_href: eb.ref('maybe_links.thumbnail_href'),
           },
         ),
       ).as('value'),

@@ -187,3 +187,8 @@ export const SOUTH_AFRICA = asConcept({
   name: 'South Africa',
   category: 'geographic location' as const,
 })
+export const REFERENCE_DOCUMENTATION = {
+  id: '308910008',
+  name: 'Reference documentation',
+  category: 'qualifier value' as const,
+}
