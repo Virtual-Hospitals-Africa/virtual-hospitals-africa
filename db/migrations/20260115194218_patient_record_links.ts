@@ -8,12 +8,12 @@ export function up(db: Kysely<DB>) {
     primary_key_type: 'uuid',
   }, (qb) =>
     qb
+      .addColumn('title', 'text', (col) => col.notNull())
       .addColumn(
         'href',
         'text',
         (col) => col.notNull(),
       )
-      .addColumn('title', 'text', (col) => col.notNull())
       .addColumn('thumbnail_href', 'text'))
 }
 
