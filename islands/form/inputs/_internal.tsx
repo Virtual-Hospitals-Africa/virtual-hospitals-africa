@@ -12,6 +12,7 @@ export type WrapperInputProps<
   inputClassName?: string
   value?: Maybe<Value>
   signal?: Signal<Value>
+  suffix?: string
 }
 
 export type InputProps =
@@ -26,7 +27,6 @@ export type InputProps =
     characterCountLimit?: number
     leftIcon?: ComponentChildren
     rightIcon?: ComponentChildren
-    suffix?: string
     guidanceText?: string
     errorText?: string
     size?: InputSize

@@ -27,7 +27,7 @@ export function LanguageSelect(
 
   return (
     <SelectWithOptions
-      name='language_code'
+      name='preferred_language_code'
       value={value ?? default_language_code ?? undefined}
       groups={[
         {

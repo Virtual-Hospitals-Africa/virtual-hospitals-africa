@@ -12,6 +12,7 @@ import isKeyOf from '../util/isKeyOf.ts'
 export const WORKFLOWS = [
   'registration' as const,
   'triage' as const,
+  'emergency_escalation' as const,
   'stabilization' as const,
   'consultation' as const,
   'maternity' as const,
@@ -25,6 +26,7 @@ export type Workflow = (typeof WORKFLOWS)[number]
 export const WORKFLOW_SNOMED_CONCEPT_IDS = {
   registration: '184047000', // Patient registration
   triage: '225390008',
+  emergency_escalation: '306104004', // |Referral to accident and emergency service (procedure)|
   stabilization: '115979005', // |Stabilization (procedure)|
   consultation: '185347001', // Encounter for problem
   maternity: '18114009', //  |Prenatal examination and care of mother (procedure)|
@@ -53,6 +55,11 @@ export const WORKFLOW_STEPS = {
     'additional_tasks_and_investigations',
     'assign_priority',
     'route_patient',
+  ],
+  emergency_escalation: [
+    'identify_patient',
+    'emergency_reason',
+    'notify_staff',
   ],
   stabilization: [
     'monitor_patient',

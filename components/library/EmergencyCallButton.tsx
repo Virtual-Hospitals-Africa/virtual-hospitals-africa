@@ -6,9 +6,11 @@ export function EmergencyCallButton({ organization_id }: {
 }) {
   return (
     <Button
+      type='submit'
       variant='destructive'
       className='w-full'
-      href={`/app/organizations/${organization_id}/emergency_call`}
+      method='POST'
+      action={`/app/organizations/${organization_id}/patients/start-emergency-escalation`}
       left_icon={<PhoneIcon />}
     >
       Emergency

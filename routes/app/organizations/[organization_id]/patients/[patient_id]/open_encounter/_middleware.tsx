@@ -150,6 +150,7 @@ export async function completeStep(
 
   const steps_completed_previously: string[] = workflow_status.steps_completed
   const already_completed = steps_completed_previously.includes(step)
+  // TODO: parallelize
   if (!already_completed) {
     await patient_workflows.completedStep(ctx.state.trx, {
       workflow,
@@ -403,6 +404,7 @@ export function OpenEncounterWorkflowLayout({
   buttons?: ComponentChild
   children: ComponentChildren
 }): JSX.Element {
+  console.log('m', ctx.state)
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       url={ctx.url}

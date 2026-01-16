@@ -8,11 +8,9 @@ export default HealthWorkerHomePageLayout(
   async function WaitingRoomPage(
     ctx: OrganizationContext,
   ) {
-    console.log('mmmm')
     const { trx, organization, organization_employment } = ctx.state
     const can_register_patients = !!organization.location
     const open_encounters = await waiting_room.get(trx, organization_employment)
-    console.log({ open_encounters })
 
     return (
       <WaitingRoomView

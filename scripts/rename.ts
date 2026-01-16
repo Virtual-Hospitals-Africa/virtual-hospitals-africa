@@ -10,9 +10,10 @@ const ignore_paths = [
 ]
 
 const dirs = [
-  'db',
+  'backend',
   'chatbot',
   'components',
+  'db',
   'external-clients',
   'islands',
   // 'scripts',
@@ -70,11 +71,18 @@ async function rename({ files, directories, to_rename }: {
 }
 
 if (import.meta.main) {
+  const [from, to] = Deno.args
+
+  if (!from || !to) {
+    console.error('Usage: deno run -A scripts/rename.ts <from> <to>')
+    Deno.exit(1)
+  }
+
   await rename({
     files: ['types.ts', 'db.d.ts'],
     directories: dirs,
     to_rename: [
-      ['consultation', 'consultation'],
+      [from, to],
     ],
   })
 }

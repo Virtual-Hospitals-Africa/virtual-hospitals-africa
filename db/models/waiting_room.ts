@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { ExtendedActionData, HealthWorkerOrganization, RenderedPatientOpenEncounter, RenderedWaitingRoom, TrxOrDb } from '../../types.ts'
+import { ExtendedActionData, HealthWorkerOrganization, RenderedOrganization, RenderedPatientOpenEncounter, RenderedWaitingRoom, TrxOrDb } from '../../types.ts'
 import { patient_encounters } from './patient_encounters.ts'
 import sortBy from '../../util/sortBy.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
@@ -9,6 +9,9 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { Department, departmentResponsibleForWorkflow } from '../../shared/departments.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
+import { InsertObject } from 'kysely'
+import { DB } from '../../db.d.ts'
+import { exists } from '../../util/exists.ts'
 
 function asWaitingRoom(
   patient_encounter: RenderedPatientOpenEncounter,
@@ -150,5 +153,63 @@ export const waiting_room = {
       (row) => row.target_treatment_time ? row.target_treatment_time.valueOf() : -1,
       (row) => row.arrived_timestamp.valueOf(),
     )
+  },
+  async moveTo(
+    trx: TrxOrDb,
+    { organization, organization_employment, encounter }: {
+      organization: RenderedOrganization
+      organization_employment: HealthWorkerOrganization
+      encounter: RenderedPatientOpenEncounter
+    },
+  ) {
+    if (!encounter.status.patient_presence.current_workflow) return
+
+    const patient_presence: InsertObject<DB, 'patient_presence'> = {
+      id: encounter.patient.id,
+      patient_encounter_id: encounter.patient_encounter_id,
+      organization_id: organization.id,
+      current_workflow: null,
+      next_workflow: encounter.status.patient_presence.current_workflow,
+      department_name: 'Waiting room',
+      organization_room_id: exists(organization.waiting_room_id),
+    }
+
+    await trx.insertInto('patient_presence').values(
+      patient_presence,
+    )
+      .onConflict((oc) => oc.column('id').doUpdateSet(patient_presence))
+      .execute()
+
+    assert(
+      encounter.status.patient_presence
+        .present_with_patient_encounter_employee_ids.length <= 1,
+      "Moving patient to waiting room when other employees also with patient isn't supported",
+    )
+    const employee_present_with_patient = encounter.all_employees_seen.find(
+      (employee) =>
+        employee.patient_encounter_employee_id ===
+          encounter.status.patient_presence
+            .present_with_patient_encounter_employee_ids[0],
+    )
+    assert(employee_present_with_patient)
+
+    const non_admin_employment_id = organization_employment.employment_id
+    assert(non_admin_employment_id)
+    assertEquals(
+      employee_present_with_patient.employee_id,
+      non_admin_employment_id,
+    )
+
+    const employment_presence: InsertObject<DB, 'employment_presence'> = {
+      id: non_admin_employment_id,
+      with_patient_id: null,
+      at_work: true,
+    }
+
+    await trx.insertInto('employment_presence').values(
+      employment_presence,
+    )
+      .onConflict((oc) => oc.column('id').doUpdateSet(employment_presence))
+      .execute()
   },
 }

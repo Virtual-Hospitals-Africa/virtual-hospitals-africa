@@ -8,6 +8,7 @@ import PersonalSection from '../../../../../../../../islands/patient-registratio
 import { SERVER_COUNTRY } from '../../../../../../../../db/models/countries.ts'
 import { nationalIdCheckResult } from '../../../../../../../../util/southAfricanNationalId.ts'
 import omit from '../../../../../../../../util/omit.ts'
+import { LIVING_LANGUAGES } from '../../../../../../../../shared/languages.ts'
 
 export const PatientRegistrationPersonalSchema = z.object({
   first_names: varchar255,
@@ -18,6 +19,7 @@ export const PatientRegistrationPersonalSchema = z.object({
   date_of_birth: z.string().date(),
   sex,
   gender: varchar255,
+  preferred_language_code: z.enum(LIVING_LANGUAGES.map((lang) => lang.iso_639_2_b)),
 }).refine(
   (data) => data.national_id_number || data.no_national_id,
   {
@@ -59,11 +61,13 @@ export async function PatientRegistrationPersonalPage(
 ) {
   return (
     <PersonalSection
+      header='Patient Information'
       patient={ctx.state.patient}
       organization_default_language_code={ctx.state.organization
         .most_common_language_code}
       server_country={SERVER_COUNTRY}
       previously_completed_step={ctx.state.previously_completed_step}
+      include_language_and_national_id_inputs
     />
   )
 }
