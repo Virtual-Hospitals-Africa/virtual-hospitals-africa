@@ -7,10 +7,11 @@ export const handler = jsonSearchHandler(
   (ctx: OpenEncounterContext) => ({
     patient_id: ctx.state.patient_id,
     categories: [
-      'disorder' as const,
       'finding' as const,
+      'disorder' as const,
       'morphologic abnormality' as const,
     ],
+    preferred_category: 'finding' as const,
   }),
   {
     verbose: true,

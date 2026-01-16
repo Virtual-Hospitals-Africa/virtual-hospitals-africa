@@ -86,52 +86,55 @@ function getPriorityOfSnomedConcept<
 function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
   assertOr400(terms.search, 'Must be searching for a term')
 
-  // 1. & 2. Use DISTINCT ON and Early Filtering
-  const best_descriptions = trx
-    .selectFrom('snomed_description')
-    // Join with the category table EARLY so we only rank relevant concepts
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category',
-      'snomed_inferred_canonical_name_and_category.id',
-      'snomed_description.concept_id'
-    )
-    .where(sql<boolean>`term % ${terms.search}`)
-    .$if(!!terms.categories, (qb) =>
-      qb.where('snomed_inferred_canonical_name_and_category.category', 'in', terms.categories!)
-    )
-    // DISTINCT ON (concept_id) picks the best term for each concept in one pass
-    .select([
-      'snomed_description.concept_id',
-      sql<number>`similarity(term, ${terms.search})`.as('similarity'),
-    ])
-    // Standard PG requirement: DISTINCT ON expression must match the first ORDER BY
-    .distinctOn('snomed_description.concept_id')
-    .orderBy('snomed_description.concept_id')
-    .orderBy(sql`similarity(term, ${terms.search})`, 'desc')
-    .limit(100)
-    .as('best_descriptions')
+  const best_similarity = sql<number>`max(similarity(term, ${terms.search}))`
 
-  // 3. Final selection using the optimized set
-  return trx.selectFrom('snomed_inferred_canonical_name_and_category as icnc')
+  return trx
+    .selectFrom('snomed_inferred_canonical_name_and_category')
     .innerJoin(
-      best_descriptions,
-      'best_descriptions.concept_id',
-      'icnc.id',
+      'snomed_description',
+      'snomed_inferred_canonical_name_and_category.id',
+      'snomed_description.concept_id',
     )
-    .selectAll('icnc')
-    .select('best_descriptions.similarity as best_similarity')
-    .select((eb) =>
+    .leftJoin(
+      'snomed_inferred_canonical_name_and_category as preferred_category_of_same_name',
+      (join) =>
+        terms.categories
+          ? join.on((eb) =>
+            eb.or(
+              terms.categories!.slice(1).flatMap((category, i) => {
+                const higher_ranking_categories = terms.categories!.slice(0, i + 1)
+                return higher_ranking_categories.map((higher_ranking_category) =>
+                  eb.and([
+                    eb('preferred_category_of_same_name.name', '=', eb.ref('snomed_inferred_canonical_name_and_category.name')),
+                    eb('snomed_inferred_canonical_name_and_category.category', '=', category),
+                    eb('preferred_category_of_same_name.category', '=', higher_ranking_category),
+                  ])
+                )
+              }),
+            )
+          )
+          : join.on(sql<boolean>`false`),
+    )
+    .where('preferred_category_of_same_name.id', 'is', null)
+    .where(sql<boolean>`term % ${terms.search}`)
+    .$if(!!terms.categories, (qb) => qb.where('snomed_inferred_canonical_name_and_category.category', 'in', terms.categories!))
+    .select((eb) => [
+      'snomed_inferred_canonical_name_and_category.id',
+      'snomed_inferred_canonical_name_and_category.name',
+      'snomed_inferred_canonical_name_and_category.category',
+      // Priority can technically only be determined relative to a patient because the same condition might be more or less concerning depending on their case
       terms.patient_id
         ? getPriorityOfSnomedConcept(
           eb,
-          'icnc.id',
+          'snomed_inferred_canonical_name_and_category.id',
           terms.patient_id,
           trx,
         )
-        : sql<null>`null`.as('priority')
-    )
-    // Sort the final 100 results by relevance
-    .orderBy('best_descriptions.similarity', 'desc')
+        : sql<null>`null`.as('priority'),
+      best_similarity.as('best_similarity'),
+    ])
+    .groupBy('snomed_inferred_canonical_name_and_category.id')
+    .orderBy(best_similarity, 'desc')
 }
 
 export const snomed_model = base({

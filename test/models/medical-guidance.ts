@@ -7,14 +7,19 @@ import { logReadableJson } from '../../util/humanReadableJson.ts'
 
 describeParallel('db/models/medical-guidance.ts', () => {
   afterAll(() => db.destroy())
-  itParallel('foo', async () => {
+  itParallel('can exclude identically named concepts if searching ', async () => {
     const symptoms = SYMPTOMS_TABLE_OF_CONTENTS.map((s) => s[0])
 
     snomed_model.verbose = true
     const results = await snomed_model.search(db, {
-        search: 'cervical screen',
-
-      })
+      search: 'collapse',
+      categories: [
+        'disorder' as const,
+        'finding' as const,
+        'morphologic abnormality' as const,
+      ],
+      preferred_category: 'finding',
+    })
 
     console.log(results)
 
