@@ -16,6 +16,9 @@ import { Separator } from '../../../../../../../../components/Separator.tsx'
 import { ReturningOrNewPatient } from '../../../../../../../../islands/ReturningOrNewPatient.tsx'
 import { asNames } from '../../../../../../../../util/asNames.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+import { patient_new_encounters } from '../../../../../../../../db/models/patient_new_encounters.ts'
+import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
+import redirect from '../../../../../../../../util/redirect.ts'
 
 const IdentifyPatientSchema = z.object({
   patient_id: z.string().uuid().optional(),
@@ -29,13 +32,15 @@ const IdentifyPatientSchema = z.object({
 
 export const handler = postHandler(
   IdentifyPatientSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const { trx, patient_id } = ctx.state
-    
+  async (ctx: OpenEncounterWorkflowContext, { patient_id: identified_patient_id, ...form_values }) => {
+    console.log({ identified_patient_id })
+    const { trx, organization, organization_employment, workflow, step, organization_id } = ctx.state
+    const newly_created_patient = ctx.state.patient_id
+
     // New patient
-    if (!form_values.patient_id) {
+    if (!identified_patient_id) {
       const { response } = await promiseProps({
-        updating_patient: patients.updateById(trx, patient_id, {
+        updating_patient: patients.updateById(trx, newly_created_patient, {
           ...asNames({
             name: form_values.patient_name,
           }),
@@ -48,23 +53,31 @@ export const handler = postHandler(
       return response
     }
 
-    assertNotEquals(form_values.patient_id, patient_id)
-
-    await patients.removeById(trx, patient_id)
-    
     // Returning patient
-    // Here is a slightly odd case in that we started the process with a patient record we created,
-    // but now that we've identified 
-    console.log({ form_values })
-    throw new Error('x')
-    const { response } = await promiseProps({
-      upserting_patient: patients.upsert(ctx.state.trx, {
-        id: ctx.state.patient.id,
-        ...form_values,
-      }),
-      response: completeAndProceedToNextStep(ctx),
+    assertNotEquals(identified_patient_id, newly_created_patient)
+
+    await patients.removeById(trx, newly_created_patient)
+
+    const { patient_workflow_id } = await patient_new_encounters.create(
+      trx,
+      {
+        organization,
+        organization_employment,
+        patient: { patient_id: identified_patient_id },
+        current_workflow: 'emergency_escalation',
+        next_workflows: ['stabilization'],
+      },
+    )
+
+    await patient_workflows.completedStep(trx, {
+      workflow,
+      step,
+      patient_workflow_id,
     })
-    return response
+
+    const first_incomplete_step = 'emergency_reason'
+
+    return redirect(`/app/organizations/${organization_id}/patients/${identified_patient_id}/open_encounter/${workflow}/${first_incomplete_step}`)
   },
 )
 
