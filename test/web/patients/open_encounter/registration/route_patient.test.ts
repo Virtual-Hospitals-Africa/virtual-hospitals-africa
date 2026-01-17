@@ -33,6 +33,18 @@ describeParallel(
             },
           },
           contacts: {
+            address: {
+              formatted: '123 Main St, Cape Town, ZA',
+              country: 'ZA',
+              locality: 'Cape Town',
+              street: '123 Main St',
+              administrative_area_level_1: 'Western Cape',
+              administrative_area_level_2: 'City of Cape Town',
+              route: 'Main St',
+              street_number: '123',
+              postal_code: '8000',
+              unit: null,
+            },
             emergency_contacts: [{
               ...randomDemographics(),
               phone_number: randomPhoneNumber('ZA'),

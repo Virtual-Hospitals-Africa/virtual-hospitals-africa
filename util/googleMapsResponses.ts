@@ -1,9 +1,6 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { json } from './responses.ts'
-import {
-  getAddressSuggestions,
-  getPlaceDetails,
-} from '../external-clients/google-maps.ts'
+import { getAddressSuggestions, getPlaceDetails } from '../external-clients/google-maps.ts'
 import type { Coordinates } from '../types.ts'
 
 type GoogleMapsContext = {
@@ -27,9 +24,6 @@ export function addressSearchHandler<Ctx extends GoogleMapsContext>(
 ) {
   return {
     async GET(ctx: Ctx) {
-      console.log('Address search request received:', {
-        url: ctx.url.toString(),
-      })
       assertEquals(ctx.req.headers.get('accept'), 'application/json')
 
       const url = ctx.url
@@ -49,9 +43,7 @@ export function addressSearchHandler<Ctx extends GoogleMapsContext>(
       if (search_query !== null) {
         const location = options?.get_location?.(ctx)
 
-        const country = typeof options?.country === 'function'
-          ? options.country(ctx)
-          : options?.country
+        const country = typeof options?.country === 'function' ? options.country(ctx) : options?.country
 
         const suggestions = await getAddressSuggestions(search_query, {
           location,

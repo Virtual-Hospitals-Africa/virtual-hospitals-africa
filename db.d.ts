@@ -12,7 +12,7 @@ export type ChatbotName = 'patient' | 'pharmacist'
 
 export type DoctorReviewStep = 'clinical_notes' | 'diagnosis' | 'orders' | 'prescriptions' | 'referral' | 'revert'
 
-export type EmergencyContactRelationship = 'Friend' | 'Other' | 'Parent' | 'Sibling'
+export type EmergencyContactRelationship = 'Child' | 'Friend' | 'Guardian' | 'Other' | 'Parent' | 'Sibling' | 'Spouse'
 
 export type EncounterReason = 'administration' | 'checkup' | 'follow up' | 'maternity' | 'referral' | 'seeking treatment'
 

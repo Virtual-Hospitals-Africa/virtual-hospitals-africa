@@ -1,3 +1,4 @@
+import { useMemo } from 'preact/hooks'
 import { useSignal } from '@preact/signals'
 import FormSection from '../components/library/FormSection.tsx'
 import CountrySelect from './CountrySelect.tsx'
@@ -6,55 +7,52 @@ import { PhoneNumberInput } from './form/inputs/phone_number.tsx'
 import FormGrid from '../components/library/FormGrid.tsx'
 import AsyncSearch from './AsyncSearch.tsx'
 import { OptionLike } from './Search.tsx'
+import { compact } from 'std/collections/compact.ts'
 
 type AddressSuggestion = OptionLike & {
   main_text: string
   secondary_text: string
 }
 
-type AddressDetails = {
-  street?: string
-  locality?: string
-  administrative_area_level_2?: string
-  administrative_area_level_1?: string
-  country?: string
-  route?: string
-  street_number?: string
+function formatAddress(street?: string, locality?: string, country?: string) {
+  return compact([street || '', locality || '', country || '']).join(', ')
 }
 
-function buildDisplayAddress(details: AddressDetails): string {
-  const parts = []
-
-  if (details.street) {
-    parts.push(details.street)
-  }
-  if (details.locality) {
-    parts.push(details.locality)
-  }
-  if (details.country) {
-    parts.push(details.country)
-  }
-
-  return parts.join(', ')
-}
-
-async function fetchPlaceDetails(
-  place_id: string,
-): Promise<AddressDetails | null> {
+async function fetchPlaceDetails(place_id: string): Promise<Address | null> {
   try {
-    const response = await fetch(`?place_id=${place_id}`)
+    const url = new URL(globalThis.location.href)
+    url.search = ''
+    url.searchParams.set('place_id', place_id)
+
+    const response = await fetch(url.toString(), {
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      console.error('Failed to fetch place details:', response.status)
+      return null
+    }
+
     const details = await response.json()
+    console.log('Fetched place details:', details)
 
     if (!details) return null
 
+    const street = (details.route || details.street_number) ? `${details.street_number || ''} ${details.route || ''}`.trim() : ''
+
     return {
-      street: details.route || details.street_number
-        ? `${details.street_number || ''} ${details.route || ''}`.trim()
-        : '',
+      formatted: formatAddress(street, details.locality, details.country),
+      street,
       locality: details.locality || '',
       administrative_area_level_2: details.administrative_area_level_2 || '',
       administrative_area_level_1: details.administrative_area_level_1 || '',
       country: details.country || '',
+      postal_code: details.postal_code || '',
+      unit: details.unit || '',
+      route: details.route || '',
+      street_number: details.street_number || '',
     }
   } catch (error) {
     console.error('Failed to fetch place details:', error)
@@ -66,17 +64,46 @@ export default function PatientContactInformationSection(
   { address }: { address?: Address },
 ) {
   const country = useSignal(address?.country || 'South Africa')
-  const selectedAddress = useSignal<AddressSuggestion | null>(null)
+
+  const selected_address = useSignal<AddressSuggestion | null>(null)
 
   const street = useSignal(address?.street || '')
   const locality = useSignal(address?.locality || '')
   const admin2 = useSignal(address?.administrative_area_level_2 || '')
   const admin1 = useSignal(address?.administrative_area_level_1 || '')
 
-  const handleAddressSelect = async (suggestion: AddressSuggestion) => {
-    selectedAddress.value = suggestion
+  const formatted = compact([
+    street.value,
+    locality.value,
+    country.value,
+  ]).join(', ')
 
-    if (!suggestion) {
+  const address_json = useMemo(() => {
+    return JSON.stringify({
+      formatted,
+      country: country.value,
+      street: street.value || null,
+      locality: locality.value || null,
+      administrative_area_level_2: admin2.value || null,
+      administrative_area_level_1: admin1.value || null,
+      route: null,
+      street_number: null,
+      postal_code: null,
+      unit: null,
+    })
+  }, [
+    formatted,
+    country.value,
+    street.value,
+    locality.value,
+    admin2.value,
+    admin1.value,
+  ])
+
+  const handleAddressSelect = async (suggestion: AddressSuggestion) => {
+    selected_address.value = suggestion
+
+    if (!suggestion?.id) {
       street.value = ''
       locality.value = ''
       admin2.value = ''
@@ -84,53 +111,42 @@ export default function PatientContactInformationSection(
       return
     }
 
-    if (suggestion.id) {
-      const details = await fetchPlaceDetails(suggestion.id)
+    const details = await fetchPlaceDetails(suggestion.id)
+    if (!details) return
 
-      if (details) {
-        street.value = details.street || ''
-        locality.value = details.locality || ''
-        admin2.value = details.administrative_area_level_2 || ''
-        admin1.value = details.administrative_area_level_1 || ''
-        if (details.country) {
-          country.value = details.country
-        }
-      }
-    }
+    street.value = details.street || ''
+    locality.value = details.locality || ''
+    admin2.value = details.administrative_area_level_2 || ''
+    admin1.value = details.administrative_area_level_1 || ''
+    if (details.country) country.value = details.country
   }
 
   return (
     <FormSection header='Patient Contact Information'>
       <FormGrid columns={2}>
         <CountrySelect
-          name='country'
+          name='country_ui'
           label='Country'
           required
-          defaultValue='South Africa'
-          value={country.value}
-        >
-        </CountrySelect>
+          value={country.value || 'ZA'}
+        />
+
         <PhoneNumberInput
           name='phone_number'
           label='Phone Number'
           required
-        >
-        </PhoneNumberInput>
+        />
       </FormGrid>
 
       <div class='mt-4'>
         <AsyncSearch<AddressSuggestion>
           search_route='?search='
-          signal={selectedAddress}
+          signal={selected_address}
           onSelect={handleAddressSelect}
           skip_blank_search
           placeholder='Start typing an address...'
           label='Address'
           required
-          onSearchResults={(search) => {
-            console.log('Current search query:', search.query)
-            console.log('Search results:', search)
-          }}
           Option={({ option, active }) => (
             <div class='py-1'>
               <div class={active ? 'font-medium' : 'font-normal'}>
@@ -143,29 +159,14 @@ export default function PatientContactInformationSection(
           )}
         />
 
-        {locality.value && (
+        {!!formatted && (
           <div class='mt-2 text-sm text-gray-600'>
-            {buildDisplayAddress({
-              street: street.value,
-              locality: locality.value,
-              country: country.value,
-            })}
+            {formatted}
           </div>
         )}
       </div>
 
-      <input type='hidden' name='address[street]' value={street.value} />
-      <input type='hidden' name='address[locality]' value={locality.value} />
-      <input
-        type='hidden'
-        name='address[administrative_area_level_2]'
-        value={admin2.value}
-      />
-      <input
-        type='hidden'
-        name='address[administrative_area_level_1]'
-        value={admin1.value}
-      />
+      <input type='hidden' name='address' value={address_json} />
     </FormSection>
   )
 }

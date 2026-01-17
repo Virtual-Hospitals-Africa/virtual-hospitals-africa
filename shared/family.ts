@@ -165,6 +165,9 @@ export const EMERGENCY_CONTACT_RELATIONSHIPS = [
   'Parent',
   'Sibling',
   'Friend',
+  'Spouse',
+  'Child',
+  'Guardian',
   'Other',
 ] as const
 

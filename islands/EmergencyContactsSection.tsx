@@ -17,7 +17,7 @@ const RELATIONSHIP_OPTIONS = [
 ]
 
 export default function EmergencyContactSection({
-  existing_contacts = [{ name: '', relationship: '', phone_number: '' }],
+  existing_contacts,
 }: {
   existing_contacts?: Array<{
     name: string
@@ -25,7 +25,9 @@ export default function EmergencyContactSection({
     phone_number: string
   }>
 }) {
-  const contacts = useSignal(existing_contacts)
+  const contacts = useSignal(
+    existing_contacts && existing_contacts.length > 0 ? existing_contacts : [{ name: '', relationship: '', phone_number: '' }],
+  )
   const addContact = () => {
     contacts.value = [
       ...contacts.value,

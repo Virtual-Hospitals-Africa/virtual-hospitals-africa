@@ -1,4 +1,4 @@
-import * as addresses from './addresses.ts'
+import { addresses } from './addresses.ts'
 import { Address, TrxOrDb } from '../../types.ts'
 
 export function getById(trx: TrxOrDb, { patient_id }: { patient_id: string }) {
