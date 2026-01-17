@@ -1,4 +1,4 @@
-import { addresses } from './addresses.ts'
+import { addresses, AddressInsert } from './addresses.ts'
 import { Address, TrxOrDb } from '../../types.ts'
 
 export function getById(trx: TrxOrDb, { patient_id }: { patient_id: string }) {
@@ -14,7 +14,7 @@ export function getById(trx: TrxOrDb, { patient_id }: { patient_id: string }) {
     .executeTakeFirst()
 }
 
-function addressToInsert(address: Address): addresses.AddressInsert {
+function addressToInsert(address: Address): AddressInsert {
   return {
     street_number: address.street_number ?? undefined,
     route: address.route ?? undefined,

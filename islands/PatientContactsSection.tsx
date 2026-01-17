@@ -7,7 +7,6 @@ import { PhoneNumberInput } from './form/inputs/phone_number.tsx'
 import FormGrid from '../components/library/FormGrid.tsx'
 import AsyncSearch from './AsyncSearch.tsx'
 import { OptionLike } from './Search.tsx'
-import { compact } from 'std/collections/compact.ts'
 
 type AddressSuggestion = OptionLike & {
   main_text: string
@@ -15,7 +14,7 @@ type AddressSuggestion = OptionLike & {
 }
 
 function formatAddress(street?: string, locality?: string, country?: string) {
-  return compact([street || '', locality || '', country || '']).join(', ')
+  return [street, locality, country].filter(Boolean).join(', ')
 }
 
 async function fetchPlaceDetails(place_id: string): Promise<Address | null> {
