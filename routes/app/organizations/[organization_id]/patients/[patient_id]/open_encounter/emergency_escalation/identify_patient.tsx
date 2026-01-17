@@ -3,12 +3,6 @@ import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncount
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import PersonalSection from '../../../../../../../../islands/patient-registration/PersonalSection.tsx'
-import { SERVER_COUNTRY } from '../../../../../../../../db/models/countries.ts'
-import { PatientRegistrationPersonalSchema } from '../registration/personal.tsx'
-import { AddPatientSearch } from '../../../../../../../../islands/waiting_room/AddPatientSearch.tsx'
-import FormSection from '../../../../../../../../components/library/FormSection.tsx'
-import { RadioButtonGroup } from '../../../../../../../../components/library/RadioButtonGroup.tsx'
 import { ModeOfArrivalFormSection } from '../../../../../../../../islands/ModeOfArrivalFormSection.tsx'
 import { positive_integer, sex, varchar255 } from '../../../../../../../../util/validators.ts'
 import { Separator } from '../../../../../../../../components/Separator.tsx'
@@ -33,7 +27,6 @@ export const EmergencyEscalationIdentifyPatientSchema = z.object({
 export const handler = postHandler(
   EmergencyEscalationIdentifyPatientSchema,
   async (ctx: OpenEncounterWorkflowContext, { patient_id: identified_patient_id, ...form_values }) => {
-    console.log({ identified_patient_id })
     const { trx, organization, organization_employment, workflow, step, organization_id } = ctx.state
     const newly_created_patient = ctx.state.patient_id
 
@@ -57,6 +50,7 @@ export const handler = postHandler(
     assertNotEquals(identified_patient_id, newly_created_patient)
 
     await patients.removeById(trx, newly_created_patient)
+    ctx.state.encounter_expected_to_not_exist_after_post = true
 
     const { patient_workflow_id } = await patient_new_encounters.create(
       trx,

@@ -8,6 +8,7 @@ import capitalize from '../../../../../../../../util/capitalize.ts'
 import { replaceParams } from '../../../../../../../../util/replaceParams.ts'
 import { employees } from '../../../../../../../../db/models/employees.ts'
 import ProvidersSelect from '../../../../../../../../islands/ProvidersSelect.tsx'
+import { delay } from '../../../../../../../../util/delay.ts'
 
 export const EmergencyEscalationNotifyStaffSchema = z.object({
   provider_ids: z.string().uuid().array(),
@@ -15,14 +16,15 @@ export const EmergencyEscalationNotifyStaffSchema = z.object({
 
 export const handler = postHandler(
   EmergencyEscalationNotifyStaffSchema,
-  // deno-lint-ignore no-unused-vars
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const { organization_id, encounter } = ctx.state
+    const { encounter } = ctx.state
     console.log(form_values)
 
     assertAllPriorStepsCompleted(ctx, {
       attempting_to_complete_workflow: true,
     })
+
+    await delay(0)
 
     const next_room_name = 'the resuscitation area'
 

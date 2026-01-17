@@ -4,7 +4,7 @@ import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 import { OpenEncounterContext } from './_middleware.tsx'
-import { Workflow, WORKFLOW_STEPS } from '../../../../../../../shared/workflow.ts'
+import { canPerform, Workflow, WORKFLOW_STEPS } from '../../../../../../../shared/workflow.ts'
 import { patient_workflows } from '../../../../../../../db/models/patient_workflows.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
@@ -28,19 +28,13 @@ export async function startWorkflow<T>(
   ctx: OpenEncounterContext<T>,
   workflow: Workflow,
 ) {
-  console.log('kk startWorkflow')
   const { trx, organization_employment, encounter } = ctx.state
 
-  const department_handling_workflow = WORKFLOW_DEPARTMENTS[workflow]
-
-  const employed_in_department_handling_workflow = organization_employment
-    .departments.find(
-      (department) => department.name === department_handling_workflow,
-    )
+  const department_handling_workflow = canPerform(organization_employment, workflow)
 
   assertOr403(
-    employed_in_department_handling_workflow,
-    `You must be employed in the ${department_handling_workflow} department to start ${workflow}`,
+    department_handling_workflow,
+    `You must be employed in the ${WORKFLOW_DEPARTMENTS[workflow].join(' or ')} department to start ${workflow}`,
   )
 
   const workflow_status = encounter.workflows[workflow]
@@ -57,7 +51,6 @@ export async function startWorkflow<T>(
     (employee) => employee.employee_id === employment_id,
   )?.patient_encounter_employee_id || null
 
-  console.log('mwkelwke')
   await patient_workflows.start(
     trx,
     {
@@ -70,7 +63,7 @@ export async function startWorkflow<T>(
 
   const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
     current_workflow: workflow,
-    department_name: employed_in_department_handling_workflow.name,
+    department_name: department_handling_workflow,
     next_workflow: null,
   }
   await patient_presence.set(

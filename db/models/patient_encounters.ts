@@ -36,9 +36,9 @@ import { DB, EncounterReason, PatientPresence, Workflow } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID, { isUUID } from '../../util/uuid.ts'
 import { base, QueryResult } from './_base.ts'
-import { assertDepartment, Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
+import { assertDepartment } from '../../shared/departments.ts'
 import { arrayIsEmpty, arrayIsNonEmpty, assertArrayEmpty, assertArrayNonEmpty } from '../../util/arraySize.ts'
-import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
+import { canPerform, isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import first from '../../util/first.ts'
 import { health_workers } from './health_workers.ts'
@@ -591,9 +591,7 @@ export const patient_encounters = base({
 
     const department_name = 'Triage'
 
-    const employed_in_workflow_department = organization_employment
-      .departments
-      .some((department) => department.name === department_name)
+    const employed_in_workflow_department = canPerform(organization_employment, workflows[0])
 
     let with_patient_id: string | null = null
     let patient_presence: InsertObject<DB, 'patient_presence'> = {

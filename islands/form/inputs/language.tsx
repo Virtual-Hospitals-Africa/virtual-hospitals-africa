@@ -28,7 +28,7 @@ export function LanguageSelect(
 
   return (
     <SelectWithOptions
-      name='preferred_language_code'
+      name='preferred_language_code_iso_639_2_b'
       required={required}
       value={value ?? default_language_code ?? undefined}
       groups={[

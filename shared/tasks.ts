@@ -52,6 +52,7 @@ const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_S
   2. If there's a task that needs doing that the triage nurse can't do that itself creates a new task to transfer or get confirmation from SHCP
 */
 export const TASKS = [
+  ...MEDICAL_GUIDANCE_TASKS,
   `(task
     "Give oxygen if saturation below 92%"
       (< (measurement 103228002) (units 92 %))
@@ -86,7 +87,6 @@ export const TASKS = [
       (snomed_concept "Chest pain" "finding"))
     (check_for
       (clinical_finding (snomed_concept "Sweating" "finding"))))`,
-  ...MEDICAL_GUIDANCE_TASKS,
 ].map(asTask)
 
 export const KEYED_TASKS = keyBy(TASKS, 'description')

@@ -3,6 +3,9 @@ import set from '../../util/set.ts'
 import { parseParam } from '../../backend/parseForm.ts'
 import last from '../../util/last.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import compactMap from '../../util/compactMap.ts'
+import { groupBy } from '../../util/groupBy.ts'
+import uniq from '../../util/uniq.ts'
 
 export function getFormValues($: cheerio.CheerioAPI): unknown {
   const form_values = {}
@@ -45,17 +48,15 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
   return form_values
 }
 
-export function getFormLabels($: cheerio.CheerioAPI): unknown {
-  const form_labels = {}
-  $('form input,textarea,select').each((_i, el) => {
+export function getFormLabels($: cheerio.CheerioAPI): Record<string, unknown> {
+  const names_and_labels = compactMap($('form input,textarea,select').toArray(), (el) => {
     if (el.attribs.type === 'hidden' || !el.attribs.name) {
       return
     }
-    return set(
-      form_labels,
-      el.attribs.name,
-      findLabel().text(),
-    )
+    return {
+      name: el.attribs.name,
+      label: findLabel().text(),
+    }
 
     function findLabel() {
       if (el.attribs['aria-labelledby']) {
@@ -77,6 +78,14 @@ export function getFormLabels($: cheerio.CheerioAPI): unknown {
       throw new Error(`No label found for ${humanReadableJson(el.attribs)}`)
     }
   })
+
+  const form_labels = {}
+  for (const [key, values] of groupBy(names_and_labels, 'name')) {
+    const unique_labels = uniq(values.map((value) => value.label))
+    // For radio buttons with distinct labels, return all labels
+    const labels = unique_labels.length === 1 ? unique_labels[0] : unique_labels
+    set(form_labels, key, labels)
+  }
   return form_labels
 }
 

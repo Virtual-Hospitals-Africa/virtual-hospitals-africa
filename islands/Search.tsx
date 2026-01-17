@@ -1,4 +1,4 @@
-import { Combobox, ComboboxOption, ComboboxOptions } from '@headlessui/react'
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label } from '@headlessui/react'
 import { JSX } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
@@ -9,12 +9,12 @@ import isObjectLike from '../util/isObjectLike.ts'
 import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { BaseOption } from './BaseOption.tsx'
-import { Label } from '../components/library/Label.tsx'
 import { Signal, useSignal } from '@preact/signals'
 import RemovableChip from '../components/RemovableChip.tsx'
 import remove from '../util/remove.ts'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
 import isString from '../util/isString.ts'
+import { LabelSpan } from './form/inputs/labelled.tsx'
 
 function hasId(value: unknown): value is { id: string } {
   return isObjectLike(value) && !!value.id && isString(value.id)
@@ -160,6 +160,8 @@ export default function Search<
 
   const search_field = multi ? `${name}.search` : just_name ? name : name && (is_array_or_record_item ? `${name}.name` : `${name}_name`)
 
+  console.log({ search_field })
+
   const id_field = just_name ? undefined : name &&
     (is_array_or_record_item ? `${name}.id` : `${name}_id`)
 
@@ -167,6 +169,7 @@ export default function Search<
   const button_ref = useRef<HTMLButtonElement>(null)
   const options_ref = useRef<HTMLDivElement>(null)
   const prev_options_count = useRef(options.length)
+  const input_element_id = search_field && `${search_field}-input`
 
   // After loading more options, focus on the first new option
   useEffect(() => {
@@ -209,14 +212,11 @@ export default function Search<
         selected_multi.value = [...selected_multi.value, value]
       }}
     >
-      <div className='grow' id={id} {...props}>
+      <Field className='grow' id={id} {...props}>
         {label && (
-          <Combobox.Label>
-            <Label>
-              {label}
-              {required && '*'}
-            </Label>
-          </Combobox.Label>
+          <Label>
+            <LabelSpan label={label} required={required} />
+          </Label>
         )}
         <div className='relative'>
           {multi
@@ -242,8 +242,9 @@ export default function Search<
                     }}
                   />
                 ))}
-                <Combobox.Input
+                <ComboboxInput
                   ref={input_ref}
+                  id={input_element_id}
                   name={search_field}
                   className='flex-1 min-w-50 border-none outline-none focus:ring-0 p-0 bg-transparent text-black-900 placeholder:text-gray-400 sm:text-sm/6 dark:focus:text-black-900'
                   onChange={(event) => {
@@ -267,7 +268,7 @@ export default function Search<
               </div>
             )
             : (
-              <Combobox.Input
+              <ComboboxInput
                 ref={input_ref}
                 name={search_field}
                 className={cls(
@@ -438,7 +439,7 @@ export default function Search<
             value={selected_multi.value as JsonSerializable}
           />
         )}
-      </div>
+      </Field>
     </Combobox>
   )
 }

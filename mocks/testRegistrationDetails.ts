@@ -3,6 +3,7 @@ import insertTestAddress from './insertTestAddress.ts'
 import randomDemographics from './randomDemographics.ts'
 import randomDigits from './randomDigits.ts'
 import randomPhoneNumber from './randomPhoneNumber.ts'
+import omit from '../util/omit.ts'
 
 export async function testNurseRegistrationDetails(
   trx: TrxOrDb,
@@ -10,7 +11,6 @@ export async function testNurseRegistrationDetails(
 ): Promise<NurseRegistrationDetails & Names> {
   return {
     health_worker_id,
-    ...randomDemographics(),
     date_of_first_practice: '1999-11-11',
     ncz_registration_number: 'GN' + randomDigits(6),
     mobile_number: randomPhoneNumber(),
@@ -20,5 +20,6 @@ export async function testNurseRegistrationDetails(
     nurse_practicing_cert_media_id: undefined,
     approved_by: null,
     address_id: (await insertTestAddress(trx)).id,
+    ...omit(randomDemographics(), ['preferred_language_code_iso_639_2_b']),
   }
 }

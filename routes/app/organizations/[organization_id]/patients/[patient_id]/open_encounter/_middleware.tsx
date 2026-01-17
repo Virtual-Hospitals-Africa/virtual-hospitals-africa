@@ -59,6 +59,7 @@ import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expr
 import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
 import { PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
 import { ArrowRightIcon } from '../../../../../../../components/library/icons/heroicons/solid.tsx'
+import { get } from '../../../../../../../util/get.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -66,6 +67,7 @@ type OpenEncounterState = OrganizationState & {
   encounter: RenderedPatientOpenEncounter
   patient_encounter_id: string
   encounter_employee_presence: RenderedPatientEncounterEmployee | null
+  encounter_expected_to_not_exist_after_post?: true
 }
 
 type WorkflowState = {
@@ -330,6 +332,7 @@ export async function handler(
   const encounter = await findPatientOpenEncounter(ctx)
 
   const present_with_patient = presentWithPatient(encounter)
+
   const encounter_employee_presence = present_with_patient.find(
     matching({
       employee_id: organization_employment.employment_id,
@@ -350,7 +353,7 @@ export async function handler(
   const response = await ctx.next()
 
   // Run assertions to ensure any modifications to encounters
-  if (ctx.req.method === 'POST') {
+  if (ctx.req.method === 'POST' && !get(ctx.state, 'encounter_expected_to_not_exist_after_post')) {
     await patient_encounters.getById(trx, encounter.patient_encounter_id)
   }
 
@@ -404,7 +407,8 @@ export function OpenEncounterWorkflowLayout({
   buttons?: ComponentChild
   children: ComponentChildren
 }): JSX.Element {
-  console.log('m', ctx.state)
+  const id = last(ctx.route!.split('/'))!
+
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       url={ctx.url}
@@ -433,7 +437,7 @@ export function OpenEncounterWorkflowLayout({
         )
         : undefined}
     >
-      <Form method='POST' className='h-full flex flex-col'>
+      <Form method='POST' className='h-full flex flex-col' id={id}>
         <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>
           {children}
         </div>
