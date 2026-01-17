@@ -38,7 +38,7 @@ import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.
 
 import sortBy from '../../../../../../../../util/sortBy.ts'
 
-export const EmergencyEscalationReasonSchema = z.object({
+export const EmergencyEscalationEmergencyReasonSchema = z.object({
   s_expression: z.string().transform((
     value,
   ) => parseExpressionExpectingAtom(value, 'finding')),
@@ -54,7 +54,7 @@ export const EmergencyEscalationReasonSchema = z.object({
 export const EmergencyEscalationReasonsSchema = z.object({
   warning_signs: z.record(
     z.string(),
-    EmergencyEscalationReasonSchema,
+    EmergencyEscalationEmergencyReasonSchema,
   ).optional().default({}).transform(values),
   __test_only_skip_inserting_negative_findings: z.boolean().optional(),
 }).strict()
