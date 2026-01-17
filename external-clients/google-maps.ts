@@ -152,8 +152,7 @@ export async function getAddressSuggestions(
     params.append('components', `country:${options.country}`)
   }
 
-  const url =
-    `https://maps.googleapis.com/maps/api/place/autocomplete/json?${params}`
+  const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?${params}`
   const response = await fetch(url)
 
   if (!response.ok) {
@@ -161,6 +160,14 @@ export async function getAddressSuggestions(
   }
 
   const data = await response.json()
+
+  console.log('Places autocomplete:', {
+    status: data.status,
+    error_message: data.error_message,
+    input,
+    hasKey: !!GOOGLE_MAPS_API_KEY,
+    keyLen: GOOGLE_MAPS_API_KEY?.length,
+  })
 
   if (data.status === 'OK' && Array.isArray(data.predictions)) {
     return data.predictions
@@ -172,8 +179,7 @@ export async function getAddressSuggestions(
 export async function getPlaceDetails(
   place_id: string,
 ): Promise<AddressInsert | null> {
-  const url =
-    `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${GOOGLE_MAPS_API_KEY}`
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${GOOGLE_MAPS_API_KEY}`
   const response = await fetch(url)
 
   if (!response.ok) {
@@ -182,13 +188,40 @@ export async function getPlaceDetails(
 
   const data = await response.json()
 
-  if (data.status === 'OK' && data.result) {
-    return getAddressFromData([{
-      types: data.result.types,
-      address_components: data.result.address_components,
-      formatted_address: data.result.formatted_address,
-    }])
+  console.log('Place details response:', {
+    status: data.status,
+    error_message: data.error_message,
+    place_id,
+  })
+
+  if (data.status !== 'OK' || !data.result) {
+    console.error('Failed to get place details:', data.status, data.error_message)
+    return null
   }
 
-  return null
+  // Parse address components from Google's response
+  const address_components = data.result.address_components || []
+  const components: Record<string, string> = {}
+
+  for (const component of address_components) {
+    for (const type of component.types) {
+      if (types_we_care_about.has(type)) {
+        components[type] = component.long_name
+      }
+    }
+  }
+
+  const street = (components.route || components.street_number) ? `${components.street_number || ''} ${components.route || ''}`.trim() : ''
+
+  return {
+    street: street || undefined,
+    locality: components.locality || '',
+    administrative_area_level_2: components.administrative_area_level_2 || undefined,
+    administrative_area_level_1: components.administrative_area_level_1 || undefined,
+    country: components.country || '',
+    postal_code: components.postal_code || undefined,
+    route: components.route || undefined,
+    street_number: components.street_number || undefined,
+    unit: undefined,
+  }
 }

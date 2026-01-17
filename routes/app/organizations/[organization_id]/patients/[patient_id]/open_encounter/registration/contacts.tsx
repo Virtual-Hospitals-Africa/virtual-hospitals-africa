@@ -1,6 +1,8 @@
 import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
-import { patient_address } from '../../../../../../../../db/models/patient_address.ts'
+import { getById } from '../../../../../../../../db/models/patient_address.ts'
+import { patient_emergency_contacts } from '../../../../../../../../db/models/patient_emergency_contacts.ts'
+import * as patient_address from '../../../../../../../../db/models/patient_address.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
 import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'
@@ -23,8 +25,8 @@ export const PatientRegistrationContactsSchema = z.object({
   emergency_contacts: z.array(EmergencyContactSchema).min(1),
 })
 
-const addressSearch = addressSearchHandler<OpenEncounterWorkflowContext>({
-  country: 'South Africa',
+const address_search = addressSearchHandler<OpenEncounterWorkflowContext>({
+  country: 'za',
 })
 
 export const handler = {
@@ -34,7 +36,7 @@ export const handler = {
         ctx.url.searchParams.has('search') ||
         ctx.url.searchParams.has('place_id')
       ) {
-        return await addressSearch.GET(ctx)
+        return await address_search.GET(ctx)
       }
     }
     return PatientRegistrationContactsPage(ctx)
@@ -46,7 +48,7 @@ export const handler = {
       { address, emergency_contacts },
     ) => {
       await Promise.all([
-        patient_contacts.setContacts(
+        patient_emergency_contacts.setContacts(
           ctx.state.trx,
           { patient_id: ctx.state.patient.id, contacts: emergency_contacts },
         ),
@@ -63,14 +65,17 @@ export const handler = {
 export async function PatientRegistrationContactsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const address = await patient_address.getById(ctx.state.trx, {
+  const address = await getById(ctx.state.trx, {
     patient_id: ctx.state.patient.id,
   })
+  const existing_contacts = await patient_emergency_contacts.getByPatientId(
+    ctx.state.trx,
+    { patient_id: ctx.state.patient.id },
+  )
   return (
     <>
-      {/* <AddressSection address={address} /> */}
       <PatientContactInformationSection address={address} />
-      <EmergencyContactSection />
+      <EmergencyContactSection existing_contacts={existing_contacts} />
     </>
   )
 }
