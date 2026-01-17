@@ -36,7 +36,7 @@ import { DB, EncounterReason, PatientPresence, Workflow } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import generateUUID, { isUUID } from '../../util/uuid.ts'
 import { base, QueryResult } from './_base.ts'
-import { assertDepartment, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
+import { assertDepartment, Department, WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { arrayIsEmpty, arrayIsNonEmpty, assertArrayEmpty, assertArrayNonEmpty } from '../../util/arraySize.ts'
 import { isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertAll } from '../../util/assertAll.ts'
@@ -589,14 +589,11 @@ export const patient_encounters = base({
       workflow,
     }))
 
-    const department_name = WORKFLOW_DEPARTMENTS[workflows[0]]
+    const department_name = 'Triage'
 
     const employed_in_workflow_department = organization_employment
-      .department_ids
-      .some((department_id) =>
-        organization_employment.departments.find((d) => d.id === department_id)
-          ?.name === department_name
-      )
+      .departments
+      .some((department) => department.name === department_name)
 
     let with_patient_id: string | null = null
     let patient_presence: InsertObject<DB, 'patient_presence'> = {

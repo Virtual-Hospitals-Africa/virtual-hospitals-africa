@@ -68,6 +68,7 @@ export async function PatientRegistrationPersonalPage(
       server_country={SERVER_COUNTRY}
       previously_completed_step={ctx.state.previously_completed_step}
       include_language_and_national_id_inputs
+      required
     />
   )
 }

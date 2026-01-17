@@ -42,7 +42,7 @@ export const WORKFLOW_DEPARTMENTS = {
   consultation: ['Primary care'],
   maternity: ['Maternity'],
   registration: ['Reception'],
-  emergency_escalation: ['Reception'],
+  emergency_escalation: ['Reception', 'Triage'],
   triage: ['Triage'],
   prescription_refill: ['Pharmacy'],
   doctor_review: ['Remote care'],
