@@ -12,41 +12,59 @@ import { RadioButtonGroup } from '../../../../../../../../components/library/Rad
 import { ModeOfArrivalFormSection } from '../../../../../../../../islands/ModeOfArrivalFormSection.tsx'
 import { positive_integer, sex, varchar255 } from '../../../../../../../../util/validators.ts'
 import { Separator } from '../../../../../../../../components/Separator.tsx'
-import AsyncSearch from '../../../../../../../../islands/AsyncSearch.tsx'
 
-const ModeOfArrivalSchema = {
-  mode_of_arrival: z.enum(['en_route', 'just_arrived']),
-  eta_minutes: positive_integer.optional().default(0),
-}
+import { ReturningOrNewPatient } from '../../../../../../../../islands/ReturningOrNewPatient.tsx'
+import { asNames } from '../../../../../../../../util/asNames.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
-const ReturningPatientSchema = z.object({
-  patient: z.object({
-    id: z.string().uuid(),
-  }),
-}).extend(ModeOfArrivalSchema)
-
-const NewPatientSchema = z.object({
-  first_names: varchar255,
-  surname: varchar255,
-  preferred_name: varchar255,
+const IdentifyPatientSchema = z.object({
+  patient_id: z.string().uuid().optional(),
+  patient_name: varchar255,
   date_of_birth: z.string().date(),
   sex,
   gender: varchar255,
-}).extend(ModeOfArrivalSchema)
+  mode_of_arrival: z.enum(['just_arrived', 'en_route_personal', 'en_route_ambulance']),
+  eta_minutes: positive_integer.optional().default(0),
+})
 
 export const handler = postHandler(
-  ReturningPatientSchema.or(NewPatientSchema),
+  IdentifyPatientSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    const { trx, patient_id } = ctx.state
+    
+    // New patient
+    if (!form_values.patient_id) {
+      const { response } = await promiseProps({
+        updating_patient: patients.updateById(trx, patient_id, {
+          ...asNames({
+            name: form_values.patient_name,
+          }),
+          date_of_birth: form_values.date_of_birth,
+          sex: form_values.sex,
+          gender: form_values.gender,
+        }),
+        response: completeAndProceedToNextStep(ctx),
+      })
+      return response
+    }
+
+    assertNotEquals(form_values.patient_id, patient_id)
+
+    await patients.removeById(trx, patient_id)
+    
+    // Returning patient
+    // Here is a slightly odd case in that we started the process with a patient record we created,
+    // but now that we've identified 
     console.log({ form_values })
     throw new Error('x')
-    // const { response } = await promiseProps({
-    //   upserting_patient: patients.upsert(ctx.state.trx, {
-    //     id: ctx.state.patient.id,
-    //     ...form_values,
-    //   }),
-    //   response: completeAndProceedToNextStep(ctx),
-    // })
-    // return response
+    const { response } = await promiseProps({
+      upserting_patient: patients.upsert(ctx.state.trx, {
+        id: ctx.state.patient.id,
+        ...form_values,
+      }),
+      response: completeAndProceedToNextStep(ctx),
+    })
+    return response
   },
 )
 
@@ -56,25 +74,7 @@ export async function EmergencyEscalationIdentifyPatientPage(
 ) {
   return (
     <>
-      <FormSection header='Returning patient'>
-        <AsyncSearch
-          name='patient'
-          search_route='/app/patients'
-          label=''
-          skip_blank_search
-          placeholder='Search existing patients'
-        />
-      </FormSection>
-      <Separator text='OR' />
-      <PersonalSection
-        header='New patient'
-        patient={ctx.state.patient}
-        organization_default_language_code={ctx.state.organization
-          .most_common_language_code}
-        server_country={SERVER_COUNTRY}
-        previously_completed_step={ctx.state.previously_completed_step}
-        include_language_and_national_id_inputs={false}
-      />
+      <ReturningOrNewPatient patient={ctx.state.patient} />
       <Separator />
       <ModeOfArrivalFormSection organization_category={ctx.state.organization.category} />
     </>

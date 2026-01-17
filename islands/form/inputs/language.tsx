@@ -6,10 +6,11 @@ import partition from '../../../util/partition.ts'
 import uniq from '../../../util/uniq.ts'
 
 export function LanguageSelect(
-  { value, default_language_code, server_country }: {
+  { value, default_language_code, server_country, required }: {
     value: Maybe<string>
     default_language_code: Maybe<string>
     server_country: string
+    required: boolean
   },
 ) {
   assert(server_country === 'ZA')
@@ -28,6 +29,7 @@ export function LanguageSelect(
   return (
     <SelectWithOptions
       name='preferred_language_code'
+      required={required}
       value={value ?? default_language_code ?? undefined}
       groups={[
         {

@@ -27,9 +27,11 @@ export const Select = forwardRef(
       selectClassName,
       children,
       disabled,
+      ...rest
     }: SelectProps,
     ref: Ref<HTMLSelectElement>,
   ) => {
+    console.log('m', rest)
     return (
       <LabeledInput
         name={name}
@@ -39,6 +41,7 @@ export const Select = forwardRef(
         className={cls('grow min-w-0', className)}
       >
         <select
+          {...rest}
           {...(name && { name })}
           id={id}
           className={cls(

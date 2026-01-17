@@ -28,6 +28,7 @@ export default function PatientRegistrationPersonalSection(
     header,
     patient = {},
     organization_default_language_code,
+    required,
     server_country,
     previously_completed_step,
     include_language_and_national_id_inputs,
@@ -35,6 +36,7 @@ export default function PatientRegistrationPersonalSection(
     header: string
     patient: Partial<RenderedPatient>
     organization_default_language_code: string | null
+    required: boolean
     server_country: string
     previously_completed_step: boolean
     include_language_and_national_id_inputs: boolean
@@ -50,7 +52,7 @@ export default function PatientRegistrationPersonalSection(
         <DateInput
           name='date_of_birth'
           value={patient.date_of_birth}
-          required
+          required={required}
         />
         <SexAndGenderInputs
           sex={patient.sex ?? null}
@@ -65,6 +67,7 @@ export default function PatientRegistrationPersonalSection(
               value={patient.preferred_language_code_iso_639_2_b}
               default_language_code={organization_default_language_code}
               server_country={server_country}
+              required={required}
             />
             <SouthAfricanNationalIdFormGroup
               national_id_number={patient.national_id_number}
