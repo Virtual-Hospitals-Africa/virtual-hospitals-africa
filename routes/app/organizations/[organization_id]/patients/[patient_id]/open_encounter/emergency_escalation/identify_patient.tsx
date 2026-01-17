@@ -20,7 +20,7 @@ import { patient_new_encounters } from '../../../../../../../../db/models/patien
 import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 
-const IdentifyPatientSchema = z.object({
+export const EmergencyEscalationIdentifyPatientSchema = z.object({
   patient_id: z.string().uuid().optional(),
   patient_name: varchar255,
   date_of_birth: z.string().date(),
@@ -31,7 +31,7 @@ const IdentifyPatientSchema = z.object({
 })
 
 export const handler = postHandler(
-  IdentifyPatientSchema,
+  EmergencyEscalationIdentifyPatientSchema,
   async (ctx: OpenEncounterWorkflowContext, { patient_id: identified_patient_id, ...form_values }) => {
     console.log({ identified_patient_id })
     const { trx, organization, organization_employment, workflow, step, organization_id } = ctx.state
