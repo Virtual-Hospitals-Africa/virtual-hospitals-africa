@@ -12,6 +12,7 @@ import { RadioButtonGroup } from '../../../../../../../../components/library/Rad
 import { ModeOfArrivalFormSection } from '../../../../../../../../islands/ModeOfArrivalFormSection.tsx'
 import { positive_integer, sex, varchar255 } from '../../../../../../../../util/validators.ts'
 import { Separator } from '../../../../../../../../components/Separator.tsx'
+import AsyncSearch from '../../../../../../../../islands/AsyncSearch.tsx'
 
 const ModeOfArrivalSchema = {
   mode_of_arrival: z.enum(['en_route', 'just_arrived']),
@@ -56,9 +57,12 @@ export async function EmergencyEscalationIdentifyPatientPage(
   return (
     <>
       <FormSection header='Returning patient'>
-        <AddPatientSearch
-          organization_id={ctx.state.organization_id}
-          waiting_room={[]}
+        <AsyncSearch
+          name='patient'
+          search_route='/app/patients'
+          label=''
+          skip_blank_search
+          placeholder='Search existing patients'
         />
       </FormSection>
       <Separator text='OR' />

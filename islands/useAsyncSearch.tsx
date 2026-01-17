@@ -117,7 +117,7 @@ export default function useAsyncSearch<
     }))
   }, [search.query, search.page, search_route])
 
-  const loading = !!search.active_request
+  const loading = !!search.delay || !!search.active_request
 
   const loadMore = !loading && search.has_next_page
     ? () => {
