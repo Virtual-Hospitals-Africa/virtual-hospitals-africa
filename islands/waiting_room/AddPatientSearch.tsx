@@ -18,8 +18,8 @@ export function AddPatientSearch({
     selected: boolean
   }) {
     const patient = option as unknown as RenderedPatient
-    const patient_in_organization = waiting_room.find((encounter) => encounter.patient.id === option.id)
-    const { text, ...action } = patient_in_organization ? patient_in_organization.actions[0] : {
+    const patient_at_facility = waiting_room.find((encounter) => encounter.patient.id === option.id)
+    const { text, ...action } = patient_at_facility ? patient_at_facility.actions[0] : {
       text: 'TODO',
       href: 'TODO',
       method: 'POST' as const,
