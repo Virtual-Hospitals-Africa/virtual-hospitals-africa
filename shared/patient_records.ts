@@ -20,7 +20,7 @@ import assertOneOf from '../util/assertOneOf.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
-import { parseExpressionExpectingAtom } from './s_expression.ts'
+import { parseExpression, parseExpressionExpectingAtom } from './s_expression.ts'
 import { logArgsOnError } from '../util/decorators.ts'
 import capitalize from '../util/capitalize.ts'
 import isString from '../util/isString.ts'
@@ -337,6 +337,7 @@ export function asNormalFormSExpression<Rest>(
     Rest
   >,
 ): string {
+  console.log('klweklewkl', record)
   const qualifiers = record.modifiers.map(toQualifier)
 
   const attributes: Lang['attribute'][] = record.attributes.map((attr) => {
@@ -369,41 +370,51 @@ export function asNormalFormSExpression<Rest>(
   )
   const value_snomed_concept = record.value?.type === 'snomed_concept' ? toSnomedConcept(record.value) : null
 
-  switch (record.type) {
-    case 'finding': {
-      const node: Lang['finding'] = {
-        atom: 'finding',
-        root_snomed_concept,
-        specific_snomed_concept,
-        value_snomed_concept,
-        qualifiers,
-        attributes,
-        exact: false,
+  return inverseSExpression(asNode())
+
+  function asNode(): Lang['finding'] | Lang['evaluation'] | Lang['procedure'] {
+    switch (record.type) {
+      case 'finding': {
+        return {
+          atom: 'finding',
+          root_snomed_concept,
+          specific_snomed_concept,
+          value_snomed_concept,
+          qualifiers,
+          attributes,
+          exact: false,
+        }
       }
-      return inverseSExpression(node)
-    }
-    case 'evaluation': {
-      const node: Lang['evaluation'] = {
-        atom: 'evaluation',
-        root_snomed_concept,
-        specific_snomed_concept,
-        value_snomed_concept,
-        evaluates: null,
-        qualifiers,
-        attributes,
+      case 'evaluation': {
+        return {
+          atom: 'evaluation',
+          root_snomed_concept,
+          specific_snomed_concept,
+          value_snomed_concept,
+          evaluates: null,
+          qualifiers,
+          attributes,
+        }
       }
-      return inverseSExpression(node)
-    }
-    case 'procedure': {
-      const node: Lang['procedure'] = {
-        atom: 'procedure',
-        root_snomed_concept,
-        specific_snomed_concept,
-        qualifiers,
-        attributes,
-        value: null, // TODO: huh?
+      case 'procedure': {
+        const value = !record.value ? null : record.value.type === 's_expression' ? parseExpressionExpectingAtom(record.value.s_expression, 'finding') : (
+          assert(record.value.type === 'link'), {
+            atom: 'link' as const,
+            ...record.value,
+          }
+        )
+        return {
+          atom: 'procedure',
+          root_snomed_concept,
+          specific_snomed_concept,
+          qualifiers,
+          attributes,
+          value,
+        }
       }
-      return inverseSExpression(node)
+      default: {
+        throw new Error(`X ${record.type}`)
+      }
     }
   }
 }

@@ -57,7 +57,7 @@ describeParallel(
             'Status': 'Awaiting Triage',
             'Employees': 'Next Available',
             'Arrived': z.enum(['Just now', '1 minute ago']),
-            'Actions': 'triage',
+            'Actions': 'Triage',
           },
         ], { strict: true })
       },

@@ -194,7 +194,7 @@ export async function PatientRegistrationRoutePatientPage(
     organization_employment,
     encounter: { reason, notes },
   } = ctx.state
-  const can_do_triage = canPerform(organization_employment, 'triage')
+  const can_do_triage = !!canPerform(organization_employment, 'triage')
   assertOrRedirect(
     patient.names,
     warning(

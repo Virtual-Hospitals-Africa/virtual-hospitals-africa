@@ -472,7 +472,7 @@ describeParallel('triage/brief_history', () => {
             // Priority: 'Non-urgent',
             Employees: `${nurse.health_worker.name}Primary care nurse`,
             Arrived: z.enum(['Just now', '1 minute ago']),
-            Actions: 'triage',
+            Actions: 'Triage',
           },
         ])
 
@@ -528,7 +528,7 @@ describeParallel('triage/brief_history', () => {
             Status: 'Triage In Progress',
             Employees: `${other_nurse.health_worker.name}Primary care nurse`,
             Arrived: z.enum(['Just now', '1 minute ago']),
-            Actions: 'triage',
+            Actions: 'Triage',
           },
         ], { strict: true })
 

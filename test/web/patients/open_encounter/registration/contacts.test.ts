@@ -76,7 +76,7 @@ describeParallel(
         )
 
         // Verify form elements exist
-        assert($contacts('form').length === 1)
+        assert($contacts('form#contacts').length === 1)
 
         // Submit contacts with emergency contact
         const $confirm_details = await fetchCheerio(

@@ -7,11 +7,11 @@ import AsyncSearch from './AsyncSearch.tsx'
 import { DateInput } from './form/inputs/date.tsx'
 import { SexAndGenderInputs } from './patient-registration/SexAndGenderInputs.tsx'
 
-export function ReturningOrNewPatient({patient}: {
+export function ReturningOrNewPatient(_props: {
   patient: RenderedPatient
 }) {
   const patient_found = useSignal<null | RenderedPatient>(null)
-  
+
   return (
     <>
       <FormSection header='Patient'>
@@ -25,7 +25,7 @@ export function ReturningOrNewPatient({patient}: {
           addable={{
             formatDisplay(query: string) {
               return `Add "${query}" as a new patient`
-            }
+            },
           }}
           onSelect={(patient) => {
             if (patient && patient.id !== 'add') {
@@ -41,17 +41,16 @@ export function ReturningOrNewPatient({patient}: {
             name='date_of_birth'
             value={patient_found.value?.date_of_birth}
             required
-            disabled={!!patient_found.value}
+            readonly={!!patient_found.value}
           />
           <SexAndGenderInputs
             key={patient_found.value?.sex}
             sex={patient_found.value?.sex ?? null}
             gender={patient_found.value?.gender ?? null}
-            disabled={!!patient_found.value}
+            readonly={!!patient_found.value}
           />
         </FormGrid>
       </FormSection>
     </>
   )
 }
-

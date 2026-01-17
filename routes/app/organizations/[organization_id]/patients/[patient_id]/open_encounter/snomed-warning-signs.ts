@@ -11,7 +11,6 @@ export const handler = jsonSearchHandler(
       'disorder' as const,
       'morphologic abnormality' as const,
     ],
-    preferred_category: 'finding' as const,
   }),
   {
     verbose: true,

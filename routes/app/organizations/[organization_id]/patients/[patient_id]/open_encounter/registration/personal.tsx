@@ -19,7 +19,7 @@ export const PatientRegistrationPersonalSchema = z.object({
   date_of_birth: z.string().date(),
   sex,
   gender: varchar255,
-  preferred_language_code: z.enum(LIVING_LANGUAGES.map((lang) => lang.iso_639_2_b)),
+  preferred_language_code_iso_639_2_b: z.enum(LIVING_LANGUAGES.map((lang) => lang.iso_639_2_b)),
 }).refine(
   (data) => data.national_id_number || data.no_national_id,
   {

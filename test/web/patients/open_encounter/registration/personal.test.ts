@@ -11,6 +11,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { route } from '../../../../_route.ts'
 import { PatientRegistrationPersonalSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/registration/personal.tsx'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
+import asFormData from '../../../../../util/asFormData.ts'
 
 describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/personal',
@@ -18,7 +19,7 @@ describeParallel(
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
 
-    it('parses form data correctly', () => {
+    itParallel('parses form data correctly', () => {
       const demographics = {
         first_names: 'Susara',
         surname: 'van der Merwe',
@@ -27,6 +28,7 @@ describeParallel(
         date_of_birth: '1968-10-02',
         sex: 'female' as const,
         gender: 'woman',
+        preferred_language_code_iso_639_2_b: 'nso',
       }
       const parsed = PatientRegistrationPersonalSchema.parse(demographics)
       assertEquals(parsed, demographics)
@@ -55,29 +57,21 @@ describeParallel(
           /patients\/(.*)\/open_encounter\/registration\/personal/,
         )![1]
         assert(isUUID(patient_id))
-        const demographics = randomDemographics('ZA')
-        const phone_number = randomPhoneNumber()
-        const body = new FormData()
-        body.set('first_names', demographics.first_names)
-        body.set('surname', demographics.surname)
-        body.set('preferred_name', demographics.preferred_name)
-        body.set('national_id_number', demographics.national_id_number)
-        body.set('date_of_birth', demographics.date_of_birth)
-        body.set('sex', demographics.sex)
-        body.set('gender', demographics.gender)
-        body.set('phone_number', phone_number)
 
         const response = await fetchOk($.url, {
           method: 'POST',
-          body,
+          body: asFormData({
+            phone_number: randomPhoneNumber('ZA'),
+            ...randomDemographics('ZA'),
+          }),
+        }, {
+          cancel_response_body: true,
         })
 
         assertEquals(
           response.url,
           `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/this_visit`,
         )
-
-        return response.body?.cancel()
       },
     )
   },

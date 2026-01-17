@@ -1,6 +1,7 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, ComponentChild } from 'preact'
 import { assert } from 'std/assert/assert.ts'
 import cls from '../../util/cls.ts'
+import last from '../../util/last.ts'
 
 const size_styles = {
   sm: 'h-8 px-3 text-sm leading-6',
@@ -86,8 +87,10 @@ export function Button({
       'inline form submit button must be of type submit',
     )
 
+    const id = last(action.split('/'))!
+
     return (
-      <form method='POST' action={action}>
+      <form method='POST' action={action} id={id}>
         <button className={className} type='submit' {...props}>
           {content}
         </button>

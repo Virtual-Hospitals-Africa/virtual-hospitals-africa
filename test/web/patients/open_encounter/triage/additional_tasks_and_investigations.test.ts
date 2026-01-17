@@ -293,6 +293,24 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           {
             'procedure': {
               'value': {
+                'type': 'link',
+                'title': 'Chest pain page',
+                'href': '/medical-resources/primary-care/adult.pdf#page=37',
+                'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/37.png',
+              },
+              'displays': {
+                'finding': 'Reference documentation',
+                'value': {
+                  'title': 'Chest pain page',
+                  'href': '/medical-resources/primary-care/adult.pdf#page=37',
+                  'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/37.png',
+                },
+              },
+            },
+          },
+          {
+            'procedure': {
+              'value': {
                 'type': 's_expression',
                 's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
               },

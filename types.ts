@@ -3350,6 +3350,14 @@ export type Measurement = {
   units: string
 }
 
+export type ExtantPatientOrCreationIntent = {
+  patient_id: string
+  create?: never
+} | {
+  patient_id?: never
+  create: true
+}
+
 export type ExtantProcedureOrCreationIntent = {
   procedure_id: string
   create_with_specific_snomed_concept_id?: never
