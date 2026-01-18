@@ -181,7 +181,7 @@ type FindingInsert = InsertCommon & {
 type FindingsInsert = InsertCommon & {
   employment_id: string
   procedure: ExtantProcedureOrCreationIntent
-  findings: Array<FindingNodeToInsert | string>
+  findings: Array<FindingNodeToInsert  | string>
 }
 
 export const patient_findings = base({
