@@ -81,9 +81,6 @@ export const additional_tasks = {
     const all_t = await all_tasks_query.execute()
     console.log({ all_t })
 
-    const f = await patient_findings.getById(trx, positive_finding_ids[0])
-    console.log({ f })
-
     const task_results = zip(
       all_t,
       TASKS,

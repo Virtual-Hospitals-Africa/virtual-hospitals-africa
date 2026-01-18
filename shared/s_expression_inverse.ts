@@ -161,6 +161,19 @@ export function inverseSExpression(node: AnyNode): string {
       return `(task "${node.description}" ${inverseSExpression(node.when)} ${inverseSExpression(node.procedure)})`
     }
 
+    case 'system_priority_determination': {
+      const parts = [
+        'system_priority_determination',
+        `"${node.description}"`,
+        inverseSExpression(node.when_primary_finding),
+        node.priority,
+      ]
+      for (const other_finding of node.when_other_findings_also_present) {
+        parts.push(inverseSExpression(other_finding))
+      }
+      return `(${parts.join(' ')})`
+    }
+
     default: {
       const _exhaustive: never = node
       throw new Error(`Unknown node type: ${(_exhaustive as AnyNode).atom}`)

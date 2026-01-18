@@ -19,7 +19,7 @@ import {
   VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
 } from '../../../../../../../../shared/vitals.ts'
 import { parseExpressionExpectingAtom, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
-import { forEach } from '../../../../../../../../util/inParallel.ts'
+import { forEach, pMap } from '../../../../../../../../util/inParallel.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import keys from '../../../../../../../../util/keys.ts'
 import entries from '../../../../../../../../util/entries.ts'
@@ -36,6 +36,8 @@ import { VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } f
 import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, SEVERITY_SCORE } from '../../../../../../../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
+import compact from '../../../../../../../../util/compact.ts'
+import { events } from '../../../../../../../../db/models/events.ts'
 
 export const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -177,8 +179,8 @@ export const handler = postHandler(
       )
     }
 
-    await Promise.all([
-      forEach(
+    const [inserted_measurements, inserted_assessments] = await Promise.all([
+      pMap(
         entries(form_values.measurements),
         async ([vital, measurement]) => {
           if (!measurement) return
@@ -211,9 +213,10 @@ export const handler = postHandler(
               evaluation: `(evaluation ${EVALUATION_ACTION.id} ${SEVERITY_SCORE.id})`,
             })
           }
+          return result.measurement_id
         },
       ),
-      forEach(
+      pMap(
         entries(form_values.assessments),
         async ([vital, assessment]) => {
           if (!assessment) return
@@ -243,9 +246,15 @@ export const handler = postHandler(
               evaluation: `(evaluation ${EVALUATION_ACTION.id} ${evaluation_snomed_concept_id})`,
             })
           }
+          return result.finding_id
         },
       ),
     ])
+
+    const all_inserted = compact([...inserted_measurements, ...inserted_assessments]).map((id) => ({
+      id,
+      existence: 'Yes' as const,
+    }))
 
     const { total_score } = await patient_evaluation_scores
       .totalTEWSEncounterScore(trx, { patient_encounter_id })
@@ -269,6 +278,16 @@ export const handler = postHandler(
       by_system: true,
       evaluates_record_id: score_evaluation.evaluation_id,
       triage_level: triageLevelFromTEWSTotal(total_score, age_determination),
+    })
+
+    await events.insert(trx, {
+      type: 'ProcedureCompleted',
+      data: {
+        patient_id,
+        patient_encounter_id,
+        procedure_id,
+        findings: all_inserted,
+      },
     })
 
     // await additional_tasks.insertTasksIfNotAlreadyIdentified(trx, {

@@ -76,7 +76,7 @@ function baseQuery(
   },
 ) {
   const query = trx.selectFrom('patient_records')
-    .where('patient_id', '=', patient_id)
+    .where('patient_records.patient_id', '=', patient_id)
     .where(
       'patient_records.id',
       'not in',
@@ -267,7 +267,7 @@ function measurement(
     )
 }
 
-const EXPRESSION_BUILDERS = {
+export const EXPRESSION_BUILDERS = {
   finding(
     trx,
     { patient_id, patient_encounter_id, procedure_id },

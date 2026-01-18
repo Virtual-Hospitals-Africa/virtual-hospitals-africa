@@ -1025,3 +1025,96 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
   //     },
   //   ],
 }
+
+export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_BY_FINDING_SITE_TO_SNOMED = {
+  'Arm symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Upper limb structure" "body structure"))',
+    'snomed_concept_id': '53120007',
+    'primary_name': 'Upper limb structure',
+    'category': 'body structure',
+  },
+  'Dental symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Dental arch structure" "body structure"))',
+    'snomed_concept_id': '4442007',
+    'primary_name': 'Dental arch structure',
+    'category': 'body structure',
+  },
+  'Ear symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Ear structure" "body structure"))',
+    'snomed_concept_id': '117590005',
+    'primary_name': 'Ear structure',
+    'category': 'body structure',
+  },
+  'Face symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Face structure" "body structure"))',
+    'snomed_concept_id': '89545001',
+    'primary_name': 'Face structure',
+    'category': 'body structure',
+  },
+  'Foot symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Foot structure" "body structure"))',
+    'snomed_concept_id': '56459004',
+    'primary_name': 'Foot structure',
+    'category': 'body structure',
+  },
+  'Foot symptoms care': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Foot structure" "body structure"))',
+    'snomed_concept_id': '56459004',
+    'primary_name': 'Foot structure',
+    'category': 'body structure',
+  },
+  'Nail symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Nail unit structure" "body structure"))',
+    'snomed_concept_id': '770802007',
+    'primary_name': 'Nail unit structure',
+    'category': 'body structure',
+  },
+  'Gum symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Gingival structure" "body structure"))',
+    'snomed_concept_id': '113279002',
+    'primary_name': 'Gingival structure',
+    'category': 'body structure',
+  },
+  'Hand symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Hand structure" "body structure"))',
+    'snomed_concept_id': '85562004',
+    'primary_name': 'Hand structure',
+    'category': 'body structure',
+  },
+  'Joint symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Joint structure" "body structure"))',
+    'snomed_concept_id': '39352004',
+    'primary_name': 'Joint structure',
+    'category': 'body structure',
+  },
+  'Leg symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Lower limb structure" "body structure"))',
+    'snomed_concept_id': '61685007',
+    'primary_name': 'Lower limb structure',
+    'category': 'body structure',
+  },
+  'Scalp symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Scalp structure" "body structure"))',
+    'snomed_concept_id': '41695006',
+    'primary_name': 'Scalp structure',
+    'category': 'body structure',
+  },
+  'Scrotal symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Scrotal structure" "body structure"))',
+    'snomed_concept_id': '20233005',
+    'primary_name': 'Scrotal structure',
+    'category': 'body structure',
+  },
+  'Skin symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Skin structure" "body structure"))',
+    'snomed_concept_id': '39937001',
+    'primary_name': 'Skin structure',
+    'category': 'body structure',
+  },
+  'Throat symptoms': {
+    'finding_site_s_expression': '(finding_site (snomed_concept "Structure of internal nose and/or pharynx and/or larynx" "body structure"))',
+    'snomed_concept_id': '1162925002',
+    'primary_name': 'Structure of internal nose and/or pharynx and/or larynx',
+    'category': 'body structure',
+  },
+}

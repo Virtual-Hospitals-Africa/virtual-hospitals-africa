@@ -97,6 +97,18 @@ export function jsonAgg<O>(
   return sql`json_agg(${expr})`
 }
 
+export function arrayAggIds(
+  expr: Expression<string>,
+): RawBuilder<string[]> {
+  return sql<string[]>`array_agg(${expr})`
+}
+
+export function arrayFromSubquery<O>(
+  expr: SelectQueryBuilder<any, any, { id: O }>,
+): RawBuilder<O[]> {
+  return sql<O[]>`ARRAY(${expr})`
+}
+
 /**
  * A postgres helper for turning a subquery (or other expression) into a JSON object.
  *

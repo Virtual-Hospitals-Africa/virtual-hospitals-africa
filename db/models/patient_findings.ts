@@ -1,5 +1,5 @@
 import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, success_true } from '../helpers.ts'
+import { arrayAggIds, asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records } from './patient_records.ts'
 import { RawBuilder, sql } from 'kysely'
@@ -181,7 +181,7 @@ type FindingInsert = InsertCommon & {
 type FindingsInsert = InsertCommon & {
   employment_id: string
   procedure: ExtantProcedureOrCreationIntent
-  findings: Array<FindingNodeToInsert  | string>
+  findings: Array<FindingNodeToInsert | string>
 }
 
 export const patient_findings = base({
@@ -468,10 +468,10 @@ export const patient_findings = base({
       ).selectFrom('inserting_records')
       .innerJoin('inserting_procedure_record', (join) => join.onTrue())
       .groupBy('inserting_procedure_record.id')
-      .select([
+      .select((eb) => [
         success_true,
         'inserting_procedure_record.id as procedure_id',
-        sql<string[]>`array_agg(inserting_records.id)`.as('finding_ids'),
+        arrayAggIds(eb.ref('inserting_records.id')).as('finding_ids'),
       ])
       .executeTakeFirstOrThrow()
   },
