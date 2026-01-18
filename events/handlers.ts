@@ -19,6 +19,7 @@ import { promiseProps } from '../util/promiseProps.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { WORKFLOWS } from '../shared/workflow.ts'
 import { additional_tasks } from '../db/models/additional_tasks.ts'
+import { system_priority_determinations } from '../db/models/system_priority_determinations.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -73,6 +74,13 @@ export const EVENTS = {
     {
       async insertTasksIfNotAlreadyIdentified(trx, payload) {
         await additional_tasks.insertTasksIfNotAlreadyIdentified(
+          trx,
+          payload.data,
+        )
+      },
+      async insertSystemPriorityDeterminationsIfNotAlreadyIdentified(trx, payload) {
+        console.log('mmmmm', 'insertSystemPriorityDeterminationsIfNotAlreadyIdentified')
+        await system_priority_determinations.insertSystemPriorityDeterminationsIfNotAlreadyIdentified(
           trx,
           payload.data,
         )

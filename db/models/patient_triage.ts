@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { IdSelection, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
@@ -65,7 +65,7 @@ function insertLevel(
     patient_encounter_id: string
     employment_id?: string
     by_system?: boolean
-    procedure_id: string
+    procedure_id?: Maybe<string>
     evaluates_record_id: string
     triage_level: TriageLevel
   },
