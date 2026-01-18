@@ -23,7 +23,10 @@ function genderOptions(sex: Maybe<Sex>) {
 }
 
 export function SexAndGenderInputs(
-  initial_values: Pick<RenderedPatient, 'sex' | 'gender'>,
+  {
+    readonly,
+    ...initial_values
+  }: Pick<RenderedPatient, 'sex' | 'gender'> & { readonly?: boolean },
 ) {
   const sex = useSignal(initial_values.sex)
   const gender = useSignal(initial_values.gender)
@@ -48,6 +51,7 @@ export function SexAndGenderInputs(
         label='Sex'
         onChange={(event) => sex.value = (event.currentTarget.value ?? null) as Sex | null}
         blank_option
+        readonly={readonly}
         value={sex.value ?? undefined}
         options={[
           'female',
@@ -62,6 +66,7 @@ export function SexAndGenderInputs(
         placeholder='Gender'
         label='Gender'
         name='gender'
+        readonly={readonly}
         value={gender.value ?? undefined}
         onSelect={(value) => {
           gender.value = value ?? null

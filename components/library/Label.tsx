@@ -23,6 +23,7 @@ export function Label({
   children,
   htmlFor,
 }: LabelProps) {
+  console.log({ htmlFor })
   return (
     <label
       htmlFor={htmlFor}

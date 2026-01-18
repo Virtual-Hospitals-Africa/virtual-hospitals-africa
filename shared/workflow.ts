@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { HealthWorkerOrganization, WorkflowStatus } from '../types.ts'
+import { Department, HealthWorkerOrganization, WorkflowStatus } from '../types.ts'
 import last from '../util/last.ts'
 import first from '../util/first.ts'
 import { departmentNames, departmentResponsibleForWorkflow } from './departments.ts'
@@ -12,6 +12,7 @@ import isKeyOf from '../util/isKeyOf.ts'
 export const WORKFLOWS = [
   'registration' as const,
   'triage' as const,
+  'emergency_escalation' as const,
   'stabilization' as const,
   'consultation' as const,
   'maternity' as const,
@@ -25,6 +26,7 @@ export type Workflow = (typeof WORKFLOWS)[number]
 export const WORKFLOW_SNOMED_CONCEPT_IDS = {
   registration: '184047000', // Patient registration
   triage: '225390008',
+  emergency_escalation: '306104004', // |Referral to accident and emergency service (procedure)|
   stabilization: '115979005', // |Stabilization (procedure)|
   consultation: '185347001', // Encounter for problem
   maternity: '18114009', //  |Prenatal examination and care of mother (procedure)|
@@ -53,6 +55,11 @@ export const WORKFLOW_STEPS = {
     'additional_tasks_and_investigations',
     'assign_priority',
     'route_patient',
+  ],
+  emergency_escalation: [
+    'identify_patient',
+    'emergency_reason',
+    'notify_staff',
   ],
   stabilization: [
     'monitor_patient',
@@ -161,8 +168,8 @@ export function lastStep(workflow: Workflow): string {
 export function canPerform(
   organization_employment: HealthWorkerOrganization,
   workflow: Workflow,
-): boolean {
-  return departmentNames(organization_employment).some((dept) => departmentResponsibleForWorkflow(dept, workflow))
+): Department | undefined {
+  return departmentNames(organization_employment).find((dept) => departmentResponsibleForWorkflow(dept, workflow))
 }
 
 export function prettyStepName(step: string) {

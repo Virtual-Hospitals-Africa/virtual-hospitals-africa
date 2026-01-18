@@ -21,6 +21,9 @@ import zip from '../../util/zip.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_findings } from './patient_findings.ts'
+import sortBy from '../../util/sortBy.ts'
+import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import { asNormalFormSExpression } from '../../shared/patient_records.ts'
 
 export const additional_tasks = {
   async insertTasksIfNotAlreadyIdentified(
@@ -86,10 +89,7 @@ export const additional_tasks = {
       TASKS,
     )
 
-    console.log({ task_results })
-
     await pMap(task_results, async ([task_result, task]) => {
-      console.log({ task_result, task })
       assertEquals(task_result.description, task.description)
       assertNotEquals(task.when.atom, 'any') // TODO support these
       assertNotEquals(task.when.atom, 'all')
@@ -201,7 +201,7 @@ export const additional_tasks = {
         const due_to = exists(
           findings.find(matching({ record_id: finding_id })),
         )
-        const tasks = evaluations.map((evaluation) => {
+        const tasks_unsorted = evaluations.map((evaluation) => {
           const procedure = exists(
             procedures.find(
               matching({ record_id: evaluation.evaluates_record_id }),
@@ -212,6 +212,12 @@ export const additional_tasks = {
             completed: false,
           }
         })
+
+        // TODO: also compare findings in case there are 2 ways of getting to the same procedure
+        const tasks = sortBy(
+          tasks_unsorted,
+          (task) => TASKS.findIndex((task_def) => inverseSExpression(task_def.procedure) === asNormalFormSExpression(task.procedure)),
+        )
         return { due_to: [due_to], tasks }
       }),
     )

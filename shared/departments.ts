@@ -2,10 +2,11 @@ import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
-import { EmployedHealthWorker, HealthWorkerOrganization, Maybe, Profession, RenderedEmployee, RenderedOrganization } from '../types.ts'
+import { EmployedHealthWorker, HealthWorkerOrganization, Maybe, NonEmptyArray, Profession, RenderedEmployee, RenderedOrganization } from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
+import memoize from '../util/memoize.ts'
 
 export const DEPARTMENTS = [
   'Primary care' as const,
@@ -38,26 +39,29 @@ export function assertDepartmentName(
 }
 
 export const WORKFLOW_DEPARTMENTS = {
-  consultation: 'Primary care',
-  maternity: 'Maternity',
-  registration: 'Reception',
-  triage: 'Triage',
-  prescription_refill: 'Pharmacy',
-  doctor_review: 'Remote care',
-  stabilization: 'Emergency',
+  consultation: ['Primary care'],
+  maternity: ['Maternity'],
+  registration: ['Reception'],
+  emergency_escalation: ['Reception', 'Triage'],
+  triage: ['Triage'],
+  prescription_refill: ['Pharmacy'],
+  doctor_review: ['Remote care'],
+  stabilization: ['Emergency'],
 } satisfies {
-  [w in Workflow]: Department
+  [w in Workflow]: NonEmptyArray<Department>
 }
 
-function workflowsOfDepartment(department: Department): Workflow[] {
+const workflowsOfDepartment = memoize(function workflowsOfDepartment(department: Department): Workflow[] {
   const workflows: Workflow[] = []
-  for (const [workflow, workflow_department] of entries(WORKFLOW_DEPARTMENTS)) {
-    if (department === workflow_department) {
-      workflows.push(workflow)
+  for (const [workflow, workflow_departments] of entries(WORKFLOW_DEPARTMENTS)) {
+    for (const workflow_department of workflow_departments) {
+      if (department === workflow_department) {
+        workflows.push(workflow)
+      }
     }
   }
   return workflows
-}
+})
 
 export const DEPARTMENTS_REQUIRING_TRIAGE = new Set<Department>([
   'Primary care',
@@ -82,7 +86,8 @@ export function departmentResponsibleForWorkflow(
   department: Department,
   workflow: Workflow,
 ) {
-  return WORKFLOW_DEPARTMENTS[workflow] === department
+  const departments: Department[] = WORKFLOW_DEPARTMENTS[workflow]
+  return departments.includes(department)
 }
 
 export function assertDepartmentResponsibleForWorkflow(

@@ -9,18 +9,23 @@ import { assertOr404 } from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { description_sql } from './patients.ts'
-import { patient_new } from './patient_new.ts'
+import { Workflow } from '../../db.d.ts'
+import { patient_new_encounters } from './patient_new_encounters.ts'
 
-export const patient_registration = {
-  start(
+export const patient_new = {
+  create(
     trx: TrxOrDb,
-    organization: RenderedOrganization,
-    organization_employment: HealthWorkerOrganization,
+    values: {
+      organization: RenderedOrganization
+      organization_employment: HealthWorkerOrganization
+      current_workflow: Workflow
+      next_workflows: Workflow[]
+    },
   ) {
-    return patient_new.create(
-      trx,
-      { organization, organization_employment, current_workflow: 'registration', next_workflows: [] },
-    )
+    return patient_new_encounters.create(trx, {
+      patient: { create: true as const },
+      ...values,
+    })
   },
   async getSummaryById(
     trx: TrxOrDb,

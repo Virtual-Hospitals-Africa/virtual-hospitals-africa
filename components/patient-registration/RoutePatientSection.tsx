@@ -3,7 +3,7 @@ import { Maybe, Names } from '../../types.ts'
 import FormSection from '../library/FormSection.tsx'
 import { EncounterReason } from '../../db.d.ts'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
-import { VerticalRadioButtons } from '../library/VerticalRadioButtons.tsx'
+import { RadioButtonGroup } from '../library/RadioButtonGroup.tsx'
 import compact from '../../util/compact.ts'
 
 export default function RegistrationRoutePatientSection(
@@ -21,7 +21,7 @@ export default function RegistrationRoutePatientSection(
     <>
       <FormSection header='Patient Information'>
         <FormRow>
-          <VerticalRadioButtons
+          <RadioButtonGroup
             name='next_workflow'
             defaultValue='await_triage'
             options={[

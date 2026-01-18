@@ -8,7 +8,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { route } from '../../../../_route.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import asFormData from '../../../../../util/asFormData.ts'
-import { assert } from 'std/assert/assert.ts'
 
 describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/confirm_details',
@@ -98,7 +97,7 @@ describeParallel(
         )
 
         // Verify form exists
-        assert($confirm_details('form').length === 1)
+        assertEquals($confirm_details('form#confirm_details').length, 1)
       },
     )
 

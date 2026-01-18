@@ -83,7 +83,7 @@ describeParallel('snomed-warning-signs', () => {
           'has_next_page': false,
           'search_terms': {
             'patient_id': encounter.patient.id,
-            'categories': ['disorder', 'finding', 'morphologic abnormality'],
+            'categories': ['finding', 'disorder', 'morphologic abnormality'],
             'search': 'earache',
           },
         })

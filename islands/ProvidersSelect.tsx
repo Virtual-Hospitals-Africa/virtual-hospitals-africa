@@ -88,12 +88,14 @@ export default function ProvidersSelect(
 
   return (
     <fieldset className='grid grid-cols-2 gap-2 w-full'>
-      <ProviderSelectOption
+      {
+        /* <ProviderSelectOption
         key='next_available'
         provider={{ employee_id: 'next_available', name: 'Next Available' }}
         selected={selected.value.size === 0}
         toggleSelection={() => selected.value = new Set()}
-      />
+      /> */
+      }
       {providers.map((provider) => (
         <ProviderSelectOption
           key={provider.employee_id}
