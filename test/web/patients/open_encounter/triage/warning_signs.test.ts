@@ -229,13 +229,17 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
-        const { patient_id, patient_encounter_id, getStep, postStep } = await setupTriageNewPatient({
+        const { encounter, nurse, patient_id, patient_encounter_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSigns(['Seizure'], { pregnant: false }),
         })
 
         const this_patient_findings = await patient_findings.findAll(db, {
           patient_id,
+        })
+
+        await events.allProcessedForEncounter(db, {
+          patient_encounter_id,
         })
 
         assertMatches(this_patient_findings, [
@@ -278,12 +282,53 @@ describeParallel('triage/warning_signs', () => {
             },
             'modifiers': z.array(z.any()),
             'destination_relations': [],
-            'source_relations': [],
+            'source_relations': [{
+              'source_id': z.string().uuid(),
+              'root_snomed_concept_id': '263498003',
+              'specific_snomed_concept_id': '42752001',
+            }],
             'evaluations': z.array(z.any()),
             'attributes': [],
             'existence': 'Yes',
           },
         ], { strict: true })
+
+        const task_groups = await additional_tasks.getTasksGroups(db, {
+          encounter,
+          health_worker_id: nurse.health_worker.id,
+        })
+
+        assertMatches(task_groups, [
+          {
+            'due_to': [
+              {
+                'displays': { 'full': 'Seizure' },
+              },
+            ],
+            'tasks': [
+              {
+                'procedure': {
+                  'value': {
+                    'type': 'link',
+                    'title': 'Seizures page',
+                    'href': '/medical-resources/primary-care/adult.pdf#page=19',
+                    'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/19.png',
+                  },
+                  'evaluations': [
+                    {
+                      'displays': {
+                        'finding': 'Action status',
+                        'value': 'To be done',
+                        'full': 'Action status: To be done',
+                      },
+                    },
+                  ],
+                },
+                'completed': false,
+              },
+            ],
+          },
+        ])
 
         const $ = await getStep('warning_signs')
         const form_values = getFormValues($)
