@@ -1,0 +1,22 @@
+FROM postgis/postgis:16-3.4
+
+# Install build dependencies for pg_stat_monitor
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    postgresql-server-dev-16 \
+    llvm-13 \
+    clang-13 \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and build pg_stat_monitor from source
+COPY pg_stat_monitor-2.3.1.zip /tmp/
+RUN cd /tmp \
+    && unzip pg_stat_monitor-2.3.1.zip \
+    && cd pg_stat_monitor-2.3.1 \
+    && make USE_PGXS=1 \
+    && make USE_PGXS=1 install \
+    && cd / \
+    && rm -rf /tmp/pg_stat_monitor-2.3.1*
+
+WORKDIR /

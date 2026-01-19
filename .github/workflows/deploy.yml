@@ -39,6 +39,7 @@ jobs:
         run: |
           docker buildx build \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:vha-app \
             --platform linux/arm64 \
             --no-cache \
             --push .
@@ -83,4 +84,8 @@ jobs:
               --restart unless-stopped \
               -p 80:8000 \
               --env-file /home/ec2-user/.env \
+              --log-driver=awslogs \
+              --log-opt awslogs-region=af-south-1 \
+              --log-opt awslogs-group=/docker/virtual-hospitals-africa \
+              --log-opt awslogs-stream=vha-app \
               $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
