@@ -41,7 +41,7 @@ const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_S
         ${PROCEDURE.s_expression}
         ${REFERENCE_DOCUMENTATION.s_expression}
         (link 
-          "${table_of_contents_name} page" 
+          "${table_of_contents_name} page"
           "/medical-resources/primary-care/adult.pdf#page=${page_number}"
           "/medical-resources/za/primary-care/adult/thumbnails/${page_number}.png"
         )
