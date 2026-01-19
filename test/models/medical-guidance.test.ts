@@ -7,7 +7,7 @@
 // import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED } from '../../shared/adult_pac_table_of_contents_to_snomed.ts'
 
 // import entries from '../../util/entries.ts'
-// import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_BY_FINDING_SITE_TO_SNOMED } from '../../shared/zzz.ts'
+// import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_BY_FINDING_SITE_TO_SNOMED } from '../../shared/adult_pac_table_of_contents_to_snomed.ts'
 
 // describeParallel('db/models/medical-guidance.ts', () => {
 //   afterAll(() => db.destroy())

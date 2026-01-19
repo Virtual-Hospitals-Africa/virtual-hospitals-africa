@@ -1,20 +1,21 @@
 import { PROCEDURE, REFERENCE_DOCUMENTATION } from './snomed_concepts.ts'
-import { parseExpressionExpectingAtom } from './s_expression.ts'
+import { parseWithSchema } from './s_expression.ts'
 import { CheckForTask, RenderedTask } from '../types.ts'
 import { keyBy } from '../util/keyBy.ts'
 import entries from '../util/entries.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED } from './adult_pac_table_of_contents_to_snomed.ts'
 import { assert } from 'std/assert/assert.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from './pack-adult.ts'
+import { task } from './s_expression_schemas.ts'
 
 function asTask(task_s_expression: string) {
-  return parseExpressionExpectingAtom(
+  return parseWithSchema(
     task_s_expression,
-    'task',
+    task,
   )
 }
 /*
-                          // Triage nurse has permission.
+// Triage nurse has permission.
   check_for finding              Yes
   do measurement                 Most of the time
   suspected diagnosis            Sometimes
@@ -47,10 +48,6 @@ const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_S
   )
 })
 
-/*
-  1. Calculate the tasks
-  2. If there's a task that needs doing that the triage nurse can't do that itself creates a new task to transfer or get confirmation from SHCP
-*/
 export const TASKS = [
   ...MEDICAL_GUIDANCE_TASKS,
   `(task

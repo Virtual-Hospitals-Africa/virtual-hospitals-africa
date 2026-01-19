@@ -117,7 +117,7 @@ export const VITAL_MEASUREMENTS_UNITS = {
   blood_pressure_systolic: 'mmHg',
   blood_pressure_diastolic: 'mmHg',
   blood_oxygen_saturation: '%',
-  blood_glucose: 'mg/dL',
+  blood_glucose: 'mmol/L',
   heart_rate: 'bpm',
   respiratory_rate: 'bpm',
   midarm_circumference: 'cm',

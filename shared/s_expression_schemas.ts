@@ -6,7 +6,7 @@ import partition from '../util/partition.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom } from './s_expression.ts'
-import { Coordinates, Maybe, NonNullableProperty } from '../types.ts'
+import { Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
 import { CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, PROCEDURE } from './snomed_concepts.ts'
@@ -96,6 +96,12 @@ type BaseLang =
       description: string
       when: Lang[Comparisons | 'finding' | 'any' | 'all']
       procedure: Lang['procedure']
+    }
+    system_priority_determination: {
+      description: string
+      when_primary_finding: Lang[Comparisons | 'finding']
+      when_other_findings_also_present: Lang[Comparisons | 'finding'][]
+      priority: Priority
     }
     link: {
       title: string
@@ -658,6 +664,32 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   }))
 ).describe('task')
 
+const finding_like = comparator.or(finding)
+
+export const system_priority_determination: z.ZodType<Lang['system_priority_determination']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('system_priority_determination'),
+    args: z.tuple([
+      z.string(),
+      finding_like,
+      z.enum([
+        'Emergency',
+        'Very urgent',
+        'Urgent',
+      ]),
+      finding_like.optional(),
+      finding_like.optional(),
+      finding_like.optional(),
+    ]),
+  }).transform(({ atom, args: [description, when_primary_finding, priority, ...when_other_findings_also_present] }) => ({
+    atom,
+    description,
+    when_primary_finding,
+    priority,
+    when_other_findings_also_present: compact(when_other_findings_also_present),
+  }))
+).describe('system_priority_determination')
+
 export const not: z.ZodType<Lang['not']> = z.lazy(() =>
   z.object({
     atom: z.literal('not'),
@@ -723,6 +755,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     comparator,
     qualifier,
     task,
+    system_priority_determination,
     exact,
     or,
     and,

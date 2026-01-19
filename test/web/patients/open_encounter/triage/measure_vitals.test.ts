@@ -24,10 +24,12 @@ import { AgeDetermination } from '../../../../../types.ts'
 import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
 import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
+import { events } from '../../../../../db/models/events.ts'
 
-describeParallel.skip('triage/measure_vitals', () => {
+describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
+  afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
   describeParallel('GET', () => {
     itParallel(
@@ -378,6 +380,178 @@ describeParallel.skip('triage/measure_vitals', () => {
           result.error.message.split('\n')[0],
           '[400]: Missing required measurement: blood_glucose',
         )
+      },
+    )
+
+    itParallel(
+      'marks hypoglycaemia (glucose < 3) as an emergency',
+      async () => {
+        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+          patient_demographics: { date_of_birth: '1990-01-01' },
+          warning_signs: asWarningSigns([], { pregnant: false }),
+          brief_history: {
+            diabetes: { existence: 'Yes' },
+            pregnancy: { existence: 'No' },
+          },
+          height_and_weight: {
+            measurements: {
+              height: {
+                value: 160,
+                units: 'cm',
+              },
+              weight: {
+                value: 80,
+                units: 'kg',
+              },
+            },
+          },
+          measure_vitals: {
+            measurements: {
+              respiratory_rate: {
+                value: 12,
+                units: VITAL_MEASUREMENTS_UNITS.respiratory_rate,
+              },
+              heart_rate: {
+                value: 60,
+                units: VITAL_MEASUREMENTS_UNITS.heart_rate,
+              },
+              blood_pressure_systolic: {
+                value: 120,
+                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_systolic,
+              },
+              blood_pressure_diastolic: {
+                value: 80,
+                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_diastolic,
+              },
+              temperature: {
+                value: 36.6,
+                units: VITAL_MEASUREMENTS_UNITS.temperature,
+              },
+              blood_glucose: {
+                value: 2.9,
+                units: VITAL_MEASUREMENTS_UNITS.blood_glucose,
+              },
+            },
+            assessments: {
+              mobility_assessment: {
+                s_expression: assessmentOptionSExpression(
+                  'mobility_assessment',
+                  'Walking',
+                ),
+              },
+              consciousness: {
+                s_expression: assessmentOptionSExpression(
+                  'consciousness',
+                  'Alert',
+                ),
+              },
+              trauma_presence: {
+                s_expression: assessmentOptionSExpression(
+                  'trauma_presence',
+                  'No',
+                ),
+              },
+            },
+          },
+        })
+
+        await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+        const measurement = await patient_findings.findOne(db, {
+          patient_id,
+          s_expression: `(measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_glucose})`,
+        })
+
+        assertMatches(measurement, {
+          'displays': { 'full': 'Blood glucose status: 2.9 mmol/L' },
+          'priority': 'Emergency',
+        })
+      },
+    )
+
+    itParallel(
+      'marks hypoglycaemia (glucose < 3) as an emergency',
+      async () => {
+        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+          patient_demographics: { date_of_birth: '1990-01-01' },
+          warning_signs: asWarningSigns([], { pregnant: false }),
+          brief_history: {
+            diabetes: { existence: 'Yes' },
+            pregnancy: { existence: 'No' },
+          },
+          height_and_weight: {
+            measurements: {
+              height: {
+                value: 160,
+                units: 'cm',
+              },
+              weight: {
+                value: 80,
+                units: 'kg',
+              },
+            },
+          },
+          measure_vitals: {
+            measurements: {
+              respiratory_rate: {
+                value: 12,
+                units: VITAL_MEASUREMENTS_UNITS.respiratory_rate,
+              },
+              heart_rate: {
+                value: 60,
+                units: VITAL_MEASUREMENTS_UNITS.heart_rate,
+              },
+              blood_pressure_systolic: {
+                value: 120,
+                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_systolic,
+              },
+              blood_pressure_diastolic: {
+                value: 80,
+                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_diastolic,
+              },
+              temperature: {
+                value: 36.6,
+                units: VITAL_MEASUREMENTS_UNITS.temperature,
+              },
+              blood_glucose: {
+                value: 2.9,
+                units: VITAL_MEASUREMENTS_UNITS.blood_glucose,
+              },
+            },
+            assessments: {
+              mobility_assessment: {
+                s_expression: assessmentOptionSExpression(
+                  'mobility_assessment',
+                  'Walking',
+                ),
+              },
+              consciousness: {
+                s_expression: assessmentOptionSExpression(
+                  'consciousness',
+                  'Alert',
+                ),
+              },
+              trauma_presence: {
+                s_expression: assessmentOptionSExpression(
+                  'trauma_presence',
+                  'No',
+                ),
+              },
+            },
+          },
+        })
+
+        await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+        const measurement = await patient_findings.findOne(db, {
+          patient_id,
+          s_expression: `(measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_glucose})`,
+        })
+
+        assertMatches(measurement, {
+          'displays': { 'full': 'Blood glucose status: 2.9 mmol/L' },
+          'priority': 'Emergency',
+        })
       },
     )
 

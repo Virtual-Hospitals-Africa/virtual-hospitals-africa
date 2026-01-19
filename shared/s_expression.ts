@@ -11,6 +11,7 @@ import { positive_decimal, snomed_concept_id } from '../util/validators.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { Values } from '../types.ts'
 import { wrapError } from '../util/wrapError.ts'
+import { isTriageLevel } from './priorities.ts'
 
 type SExpressionNode = {
   atom: string
@@ -133,7 +134,7 @@ const UNITS = new Set([
   '°C',
   'cm',
   'kg',
-  'mg/dL',
+  'mmol/L',
   'mmHg',
 ])
 
@@ -145,6 +146,10 @@ function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>):
     if (positive_decimal.safeParse(item).success) return String(item)
     if (atom === 'units' && index === 1) {
       assert(UNITS.has(item as string), `Update UNITS to include ${item}`)
+      return item
+    }
+    if (atom === 'system_priority_determination' && index === 2) {
+      assert(isTriageLevel(item))
       return item
     }
     if (isString(item)) return `"${item}"`
