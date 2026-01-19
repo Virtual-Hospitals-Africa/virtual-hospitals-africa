@@ -1,6 +1,6 @@
 import { parseWithSchema } from './s_expression.ts'
 import { system_priority_determination } from './s_expression_schemas.ts'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS, VITAL_MEASUREMENTS_UNITS } from './vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS, VITAL_MEASUREMENTS_UNITS } from './vitals.ts'
 import { AgeDetermination } from '../types.ts'
 import { groupByUniq } from '../util/groupBy.ts'
 
@@ -19,7 +19,7 @@ export const SYSTEM_PRIORITY_DETERMINATIONS_DEFS: ['all' | AgeDetermination[], s
     'all',
     `(system_priority_determination
       "Emergency: Hypoglycaemia (glucose < 3)"
-        (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_glucose}) (units 3 ${VITAL_MEASUREMENTS_UNITS.blood_glucose}))
+        (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_glucose.s_expression} ${VITAL_MEASUREMENTS_UNITS.blood_glucose}) 3)
         Emergency)`,
   ],
   [

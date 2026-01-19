@@ -79,7 +79,6 @@ export const EVENTS = {
         )
       },
       async insertSystemPriorityDeterminationsIfNotAlreadyIdentified(trx, payload) {
-        console.log('mmmmm', 'insertSystemPriorityDeterminationsIfNotAlreadyIdentified')
         await system_priority_determinations.insertSystemPriorityDeterminationsIfNotAlreadyIdentified(
           trx,
           payload.data,

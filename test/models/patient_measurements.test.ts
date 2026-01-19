@@ -6,12 +6,12 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_measurements } from '../../db/models/patient_measurements.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
+import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { satisfyingSExpression } from '../../db/models/s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
-import { PROCEDURE } from '../../shared/snomed_concepts.ts'
+import { HEMOGLOBIN_SATURATION_WITH_OXYGEN, PROCEDURE } from '../../shared/snomed_concepts.ts'
 
 describeParallel('db/models/patient_measurements.ts', () => {
   afterAll(() => db.destroy())
@@ -34,11 +34,8 @@ describeParallel('db/models/patient_measurements.ts', () => {
         )
         const patient_id = encounter.patient.id
 
-        const measurement_equality = parseExpressionExpectingAtom(
-          `(=
-          (measurement 103228002)
-          (units 91.3 %)
-        )`,
+        const measurement_comparison = parseExpressionExpectingAtom(
+          `(= (measurement ${HEMOGLOBIN_SATURATION_WITH_OXYGEN.s_expression} %) 91.3)`,
           '=',
         )
         const procedure = await patient_procedures.insertOneNested(db, {
@@ -46,7 +43,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure ${PROCEDURE.id} ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
+            `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.s_expression})`,
             'procedure',
           ),
         })
@@ -58,7 +55,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
             patient_encounter_id: encounter.patient_encounter_id,
             patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
             procedure_id: procedure.procedure_id,
-            measurement_equality,
+            measurement_comparison,
           },
         )
 
@@ -76,7 +73,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           db,
           {
             patient_id,
-            s_expression: measurement_equality,
+            s_expression: measurement_comparison,
           },
         )
 
@@ -89,7 +86,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           db,
           {
             patient_id,
-            s_expression: `(= (measurement 103228002) (units 91.2 %))`,
+            s_expression: `(= (measurement ${HEMOGLOBIN_SATURATION_WITH_OXYGEN.s_expression} %) 91.2)`,
           },
         )
 
@@ -103,7 +100,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
             db,
             {
               patient_id,
-              s_expression: `(> (measurement 103228002) (units 91.2 %))`,
+              s_expression: `(> (measurement ${HEMOGLOBIN_SATURATION_WITH_OXYGEN.s_expression} %) 91.2)`,
             },
           ),
           {
@@ -133,10 +130,10 @@ describeParallel('db/models/patient_measurements.ts', () => {
         )
         const patient_id = encounter.patient.id
 
-        const measurement_equality = parseExpressionExpectingAtom(
+        const measurement_comparison = parseExpressionExpectingAtom(
           `(=
-          (measurement 103228002)
-          (units 91.3 %)
+          (measurement ${HEMOGLOBIN_SATURATION_WITH_OXYGEN.s_expression} %)
+          91.3
         )`,
           '=',
         )
@@ -145,7 +142,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure ${PROCEDURE.id} ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
+            `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.s_expression})`,
             'procedure',
           ),
         })
@@ -155,7 +152,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
           procedure_id: procedure.procedure_id,
-          measurement_equality,
+          measurement_comparison,
         }
 
         const first_insert = await patient_measurements
@@ -191,7 +188,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: nurse.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure ${PROCEDURE.id} ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
+            `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.s_expression})`,
             'procedure',
           ),
         })
@@ -206,10 +203,10 @@ describeParallel('db/models/patient_measurements.ts', () => {
         const first_insert = await patient_measurements
           .insertOneIfNotAlreadyExistsForThisEncounter(db, {
             ...to_insert,
-            measurement_equality: parseExpressionExpectingAtom(
+            measurement_comparison: parseExpressionExpectingAtom(
               `(=
-              (measurement 103228002)
-              (units 91.2 %)
+              (measurement ${HEMOGLOBIN_SATURATION_WITH_OXYGEN.s_expression} %)
+              91.2
             )`,
               '=',
             ),
@@ -218,10 +215,10 @@ describeParallel('db/models/patient_measurements.ts', () => {
         const second_insert = await patient_measurements
           .insertOneIfNotAlreadyExistsForThisEncounter(db, {
             ...to_insert,
-            measurement_equality: parseExpressionExpectingAtom(
+            measurement_comparison: parseExpressionExpectingAtom(
               `(=
-              (measurement 103228002)
-              (units 91.3 %)
+              (measurement ${HEMOGLOBIN_SATURATION_WITH_OXYGEN.s_expression} %)
+              91.3
             )`,
               '=',
             ),

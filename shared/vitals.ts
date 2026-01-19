@@ -6,6 +6,7 @@ import {
   RecordValueMeasurement,
   ReferenceRangeX,
   RenderedFindingRelativeToHealthWorker,
+  SnomedConcept,
   Values,
   VitalAssessmentFormInputDefition,
   VitalMeasurementFormInputDefition,
@@ -32,42 +33,72 @@ import { inverseSExpression } from './s_expression_inverse.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import assertOneOf from '../util/assertOneOf.ts'
 import mapEntries from '../util/mapEntries.ts'
+import {
+  ABLE_TO_WALK,
+  ALERT_CONFUSION_VOICE_PAIN_UNRESPONSIVE_SCALE_SCORE,
+  ASSESSMENT_OF_MOBILITY,
+  BLOOD_GLUCOSE_STATUS,
+  BLOOD_PRESSURE,
+  BODY_HEIGHT,
+  BODY_TEMPERATURE,
+  BODY_WEIGHT,
+  CLOUDED_CONSCIOUSNESS,
+  DIASTOLIC_BLOOD_PRESSURE,
+  DIFFICULTY_WALKING,
+  HEAD_CIRCUMFERENCE,
+  HEMOGLOBIN_SATURATION_WITH_OXYGEN,
+  IMPAIRMENT_OF_MENTAL_ALERTNESS,
+  MEAN_BLOOD_PRESSURE,
+  MEASUREMENT_OF_BODY_MASS_INDEX,
+  MENTALLY_ALERT,
+  MID_UPPER_ARM_CIRCUMFERENCE,
+  NO_TRAUMATIC_INJURY,
+  PULSE_FUNCTION,
+  RESPIRATORY_RATE,
+  RESPONDS_TO_PAIN,
+  SYSTOLIC_BLOOD_PRESSURE,
+  TRAUMA_SCORE,
+  TRAUMATIC_INJURY,
+  TRICEPS_SKIN_FOLD_THICKNESS,
+  UNABLE_TO_WALK,
+  UNRESPONSIVE,
+} from './snomed_concepts.ts'
 
-export const VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS = {
-  height: '1153637007',
-  weight: '27113001',
-  temperature: '386725007',
-  blood_pressure_systolic: '271649006',
-  blood_pressure_diastolic: '271650006',
-  blood_oxygen_saturation: '103228002',
-  blood_glucose: '405176005',
-  heart_rate: '8499008',
-  respiratory_rate: '86290005',
-  midarm_circumference: '284473002',
-  triceps_skinfold: '301851003',
-  head_circumference: '363812007',
+export const VITAL_MEASUREMENTS_SNOMED_CONCEPTS = {
+  height: BODY_HEIGHT,
+  weight: BODY_WEIGHT,
+  temperature: BODY_TEMPERATURE,
+  blood_pressure_systolic: SYSTOLIC_BLOOD_PRESSURE,
+  blood_pressure_diastolic: DIASTOLIC_BLOOD_PRESSURE,
+  blood_oxygen_saturation: HEMOGLOBIN_SATURATION_WITH_OXYGEN,
+  blood_glucose: BLOOD_GLUCOSE_STATUS,
+  heart_rate: PULSE_FUNCTION,
+  respiratory_rate: RESPIRATORY_RATE,
+  midarm_circumference: MID_UPPER_ARM_CIRCUMFERENCE,
+  triceps_skinfold: TRICEPS_SKIN_FOLD_THICKNESS,
+  head_circumference: HEAD_CIRCUMFERENCE,
 }
 
-export const VITALS_COMPUTED_SNOMED_CONCEPT_IDS = {
-  body_mass_index: '698094009',
-  mean_arterial_pressure: '6797001',
-  blood_pressure: '75367002',
+export const VITALS_COMPUTED_SNOMED_CONCEPTS = {
+  body_mass_index: MEASUREMENT_OF_BODY_MASS_INDEX,
+  mean_arterial_pressure: MEAN_BLOOD_PRESSURE,
+  blood_pressure: BLOOD_PRESSURE,
 }
 
-export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS = {
-  mobility_assessment: '430481008', // |Assessment of mobility (procedure)|
-  consciousness: '1104441000000107', // |Alert Confusion Voice Pain Unresponsive scale score (observable entity)|
-  trauma_presence: '273884004', // |Trauma score (assessment scale)|',
+export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS = {
+  mobility_assessment: ASSESSMENT_OF_MOBILITY,
+  consciousness: ALERT_CONFUSION_VOICE_PAIN_UNRESPONSIVE_SCALE_SCORE,
+  trauma_presence: TRAUMA_SCORE,
 }
 
 export const vitalMeasurementFromSnomedConceptId = memoize(
   (snomed_concept_id: string) => {
     for (
-      const [vital, concept_id] of entries(
-        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+      const [vital, concept] of entries(
+        VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
       )
     ) {
-      if (concept_id === snomed_concept_id) {
+      if (concept.id === snomed_concept_id) {
         return vital
       }
     }
@@ -81,11 +112,11 @@ export function vitalAssessmentOrder(
   f: RenderedFindingRelativeToHealthWorker,
 ): number {
   for (
-    const [i, [_vital, evaluation_snomed_concept_id]] of entries(
-      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+    const [i, [_vital, evaluation_snomed_concept]] of entries(
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS,
     ).entries()
   ) {
-    if (isAssessmentFor(f, evaluation_snomed_concept_id)) {
+    if (isAssessmentFor(f, evaluation_snomed_concept.id)) {
       return i
     }
   }
@@ -93,9 +124,9 @@ export function vitalAssessmentOrder(
   throw new Error(`Finding not an assessment \n${humanReadableJson(f)}`)
 }
 
-export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPT_IDS
-export type VitalMeasurement = keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS
-export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
+export type ComputedVital = keyof typeof VITALS_COMPUTED_SNOMED_CONCEPTS
+export type VitalMeasurement = keyof typeof VITAL_MEASUREMENTS_SNOMED_CONCEPTS
+export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS
 export type Vital = VitalMeasurement | VitalAssessment
 
 export const ADULT_TEWS_COMPONENTS = [
@@ -175,10 +206,6 @@ export function formatBloodPressureDisplay(
 
 type TEWSScore = 0 | 1 | 2 | 3
 
-function asSExpression(specific_snomed_concept_id: string) {
-  return normalForm(`(clinical_finding ${specific_snomed_concept_id})`)
-}
-
 const normal_for_age = normalForm(`
   (clinical_finding
     (snomed_concept "Ability to move" "observable entity")
@@ -195,6 +222,10 @@ const abnormal_for_age = normalForm(`
       (qualifier (snomed_concept "Age" "qualifier value"))))
 `)
 
+function asClinicalFindingSExpression(specific_snomed_concept: SnomedConcept) {
+  return normalForm(`(clinical_finding ${specific_snomed_concept.s_expression})`)
+}
+
 // deno-fmt-ignore
 const ASESSMENT_OPTIONS: {
   [a in VitalAssessment]: {
@@ -205,24 +236,24 @@ const ASESSMENT_OPTIONS: {
   }[]
 } = {
   mobility_assessment: [
-    { label: 'Walking' as const, score: 0, s_expression: asSExpression('282144007'), available_to_ages: ['adult'] },
-    { label: 'Difficulty walking' as const, score: 1, s_expression: asSExpression('719232003'), available_to_ages: ['adult'] },
-    { label: 'Stretcher/Immobile' as const, score: 2, s_expression: asSExpression('282145008'), available_to_ages: ['adult'] },
+    { label: 'Walking' as const, score: 0, s_expression: asClinicalFindingSExpression(ABLE_TO_WALK), available_to_ages: ['adult'] },
+    { label: 'Difficulty walking' as const, score: 1, s_expression: asClinicalFindingSExpression(DIFFICULTY_WALKING), available_to_ages: ['adult'] },
+    { label: 'Stretcher/Immobile' as const, score: 2, s_expression: asClinicalFindingSExpression(UNABLE_TO_WALK), available_to_ages: ['adult'] },
     // TODO: get correct s_expression fasSExpression(or )these younger child
     { label: 'Normal for age' as const, score: 0, s_expression: normal_for_age, available_to_ages: ['older child', 'younger child'] },
     { label: 'Unable to move as normal' as const, score: 2, s_expression: abnormal_for_age, available_to_ages: ['younger child'] },
     { label: 'Unable to walk as normal' as const, score: 2, s_expression: abnormal_for_age, available_to_ages: ['older child'] },
   ],
   consciousness: [
-    { label: 'Alert' as const, score: 0, s_expression: asSExpression('248234008'), available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Reacts to voice' as const, score: 1, s_expression: asSExpression('422768004'), available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Confused' as const, score: 2, s_expression: asSExpression('40917007'), available_to_ages: ['adult', 'older child'] },
-    { label: 'Reacts to pain' as const, score: 2, s_expression: asSExpression('450847001'), available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Unresponsive' as const, score: 3, s_expression: asSExpression('422107003'), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Alert' as const, score: 0, s_expression: asClinicalFindingSExpression(MENTALLY_ALERT), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Reacts to voice' as const, score: 1, s_expression: asClinicalFindingSExpression(IMPAIRMENT_OF_MENTAL_ALERTNESS), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Confused' as const, score: 2, s_expression: asClinicalFindingSExpression(CLOUDED_CONSCIOUSNESS), available_to_ages: ['adult', 'older child'] },
+    { label: 'Reacts to pain' as const, score: 2, s_expression: asClinicalFindingSExpression(RESPONDS_TO_PAIN), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Unresponsive' as const, score: 3, s_expression: asClinicalFindingSExpression(UNRESPONSIVE), available_to_ages: ['adult', 'older child', 'younger child'] },
   ],
   trauma_presence: [
-    { label: 'No' as const, score: 0, s_expression: asSExpression('1149217004'), available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Yes' as const, score: 1, s_expression: asSExpression('417746004'), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'No' as const, score: 0, s_expression: asClinicalFindingSExpression(NO_TRAUMATIC_INJURY), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Yes' as const, score: 1, s_expression: asClinicalFindingSExpression(TRAUMATIC_INJURY), available_to_ages: ['adult', 'older child', 'younger child'] },
   ],
 }
 // deno-fmt-ignore-end
@@ -247,14 +278,14 @@ const MEASUREMENT_RANGES: {
 } = {
   adult: {
     respiratory_rate: [
-      { max: 9, score: 3 },
+      { max: 9, score: 2 },
       { max: 15, score: 0 },
       { max: 21, score: 1 },
       { max: 30, score: 2 },
       { max: Infinity, score: 3 },
     ],
     heart_rate: [
-      { max: 41, score: 3 },
+      { max: 41, score: 2 },
       { max: 51, score: 1 },
       { max: 101, score: 0 },
       { max: 111, score: 1 },
@@ -345,7 +376,7 @@ export function getScoreForAssessment(
   const options = ASESSMENT_OPTIONS[vital]
   const option = options.find(
     (o) =>
-      o.s_expression === inverseSExpression(finding) &&
+      o.s_expression === inverseSExpression(finding!) &&
       o.available_to_ages.includes(age_determination),
   )
   return exists(option).score
@@ -373,12 +404,12 @@ export function measureVitalsInputDefinitions(
 
   const measurements: VitalMeasurementFormInputDefition[] = compact(
     // iterate over measurements for the sort order
-    keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)
+    keys(VITAL_MEASUREMENTS_SNOMED_CONCEPTS)
       .map((vital) => (measurement_vitals.includes(vital) && {
         vital,
         required: true,
         units: VITAL_MEASUREMENTS_UNITS[vital],
-        snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital],
+        snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital].id,
       })),
   )
 
@@ -387,7 +418,7 @@ export function measureVitalsInputDefinitions(
   ).map(([vital, options]) => ({
     vital,
     required: true,
-    evaluation_snomed_concept_id: VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital],
+    evaluation_snomed_concept_id: VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital].id,
     options: options.filter((option) => option.available_to_ages.includes(age_determination)),
   }))
 
@@ -489,7 +520,7 @@ export function buildReferenceRanges(
   }
 
   const vital = vitalMeasurementFromSnomedConceptId(snomed_concept_id)
-  if (!isKeyOf(vital, VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)) {
+  if (!isKeyOf(vital, VITAL_MEASUREMENTS_SNOMED_CONCEPTS)) {
     return null
   }
 
@@ -630,25 +661,25 @@ export function isAssessmentFor(
 export function matchingAssessment(
   f: RenderedFindingRelativeToHealthWorker,
 ): null | {
-  vital: keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS
+  vital: keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS
   evaluation_snomed_concept_id: string
   specific_snomed_concept_id: string
 } {
   for (
-    const [vital, evaluation_snomed_concept_id] of entries(
-      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
+    const [vital, evaluation_snomed_concept] of entries(
+      VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS,
     )
   ) {
     for (const evaluation of f.evaluations) {
       if (
         evaluation.root_snomed_concept.snomed_concept_id ===
-          evaluation_snomed_concept_id
+          evaluation_snomed_concept.id
       ) {
         const specific_snomed_concept_id = f.specific_snomed_concept.snomed_concept_id
         return {
           vital,
-          evaluation_snomed_concept_id,
           specific_snomed_concept_id,
+          evaluation_snomed_concept_id: evaluation_snomed_concept.id,
         }
       }
     }

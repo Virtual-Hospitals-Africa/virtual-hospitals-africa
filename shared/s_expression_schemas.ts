@@ -5,24 +5,21 @@ import compact from '../util/compact.ts'
 import partition from '../util/partition.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
-import { isAtom } from './s_expression.ts'
+import { isAtom, Units, UNITS_ARRAY } from './s_expression.ts'
 import { Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
-import { CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, PROCEDURE } from './snomed_concepts.ts'
+import { CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, MEASUREMENT_PROCEDURE, PROCEDURE } from './snomed_concepts.ts'
 
-type Comparisons = '>' | '<' | '>=' | '<=' | '='
+export type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
-type SnomedConcept =
-  | { type: 'snomed_concept_id'; id: string }
-  | {
-    type: 'snomed_concept_name_and_category'
-    name: string
-    category: SnomedCategory
-  }
+type SnomedConcept = {
+  name: string
+  category: SnomedCategory
+}
 
 export type EventValue = {
-  type: 'event'
+  atom: 'event'
   datetime: string
   location: Coordinates | null
 }
@@ -45,6 +42,7 @@ type BaseLang =
         | null
         | Lang['finding']
         | Lang['link']
+        | Lang['measurement']
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
     }
@@ -69,6 +67,7 @@ type BaseLang =
     }
     measurement: {
       snomed_concept: Lang['snomed_concept']
+      units: Units
     }
     active_condition: {
       snomed_concept: Lang['snomed_concept']
@@ -78,10 +77,6 @@ type BaseLang =
     }
     all: {
       findings: Lang[Comparisons | 'finding'][]
-    }
-    units: {
-      value: Decimal
-      units: string
     }
     not: {
       expression: AnyNode
@@ -112,7 +107,7 @@ type BaseLang =
   & {
     [Comp in Comparisons]: {
       left: Lang['measurement']
-      right: Lang['units']
+      right: Decimal
     }
   }
 
@@ -124,13 +119,6 @@ export type Lang = {
 
 export type AnyNode = Lang[keyof Lang]
 
-const snomed_concept_id: z.ZodType<Lang['snomed_concept']> = validators
-  .snomed_concept_id.transform((id) => ({
-    atom: 'snomed_concept',
-    type: 'snomed_concept_id',
-    id,
-  }))
-
 const snomed_concept_name_and_category: z.ZodType<Lang['snomed_concept']> = z
   .object({
     atom: z.literal('snomed_concept'),
@@ -139,11 +127,10 @@ const snomed_concept_name_and_category: z.ZodType<Lang['snomed_concept']> = z
     atom,
     name,
     category,
-    type: 'snomed_concept_name_and_category',
   }))
 
 export const snomed_concept: z.ZodType<Lang['snomed_concept']> = z.union([
-  snomed_concept_id,
+  // snomed_concept_id,
   snomed_concept_name_and_category,
 ]).describe('snomed_concept_id | qualifier')
 
@@ -315,7 +302,6 @@ export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'r
         atom: 'finding' as const,
         root_snomed_concept: {
           atom: 'snomed_concept' as const,
-          type: 'snomed_concept_name_and_category' as const,
           name: CLINICAL_FINDING.name,
           category: CLINICAL_FINDING.category,
         },
@@ -457,7 +443,7 @@ export const event: z.ZodType<Lang['attribute']> = z.lazy(() =>
   }).transform(({ args: [specific_snomed_concept, datetime] }) => ({
     atom: 'attribute' as const,
     specific_snomed_concept,
-    value: { type: 'event' as const, datetime, location: null },
+    value: { atom: 'event' as const, datetime, location: null },
   }))
 ).describe('event')
 
@@ -557,10 +543,11 @@ export const procedure: z.ZodType<Lang['procedure']> = z.lazy(() =>
 export const measurement: z.ZodType<Lang['measurement']> = z.lazy(() =>
   z.object({
     atom: z.literal('measurement'),
-    args: z.tuple([snomed_concept]),
-  }).transform(({ atom, args: [snomed_concept] }) => ({
+    args: z.tuple([snomed_concept, z.enum(UNITS_ARRAY)]),
+  }).transform(({ atom, args: [snomed_concept, units] }) => ({
     atom,
     snomed_concept,
+    units,
   }))
 ).describe('measurement')
 
@@ -598,16 +585,28 @@ export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
     })),
 ).describe('check_for')
 
-export const units: z.ZodType<Lang['units']> = z.lazy(() =>
-  z.object({
-    atom: z.literal('units'),
-    args: z.tuple([validators.positive_decimal, z.string()]),
-  }).transform(({ atom, args: [value, units] }) => ({
-    atom,
-    value,
-    units,
-  })).describe('units')
-)
+export const measure: z.ZodType<Lang['procedure']> = z.lazy(
+  () =>
+    z.object({
+      atom: z.literal('measure'),
+      args: z.tuple([measurement]),
+    }).transform(({ args: [measurement_node] }) => ({
+      atom: 'procedure' as const,
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        type: 'snomed_concept_name_and_category' as const,
+        ...PROCEDURE,
+      },
+      specific_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        type: 'snomed_concept_name_and_category' as const,
+        ...MEASUREMENT_PROCEDURE,
+      },
+      qualifiers: [],
+      attributes: [],
+      value: measurement_node,
+    })),
+).describe('measure')
 
 export const comparator: z.ZodType<Lang[Comparisons]> = z.lazy(() =>
   z.object({
@@ -618,7 +617,7 @@ export const comparator: z.ZodType<Lang[Comparisons]> = z.lazy(() =>
       '<=',
       '=',
     ]),
-    args: z.tuple([measurement, units]),
+    args: z.tuple([measurement, validators.positive_decimal]),
   }).transform(({ atom, args: [left, right] }) => ({
     atom,
     left,
@@ -654,7 +653,7 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
     args: z.tuple([
       z.string(),
       comparator.or(finding).or(any).or(all),
-      procedure.or(check_for),
+      procedure.or(check_for).or(measure),
     ]),
   }).transform(({ atom, args: [description, when, procedure] }) => ({
     atom,
@@ -752,6 +751,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     measurement,
     active_condition,
     check_for,
+    measure,
     comparator,
     qualifier,
     task,

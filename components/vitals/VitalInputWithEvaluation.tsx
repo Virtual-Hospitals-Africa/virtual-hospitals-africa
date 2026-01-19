@@ -5,7 +5,7 @@ import { LocalTime } from '../../islands/LocalTime.tsx'
 import { PencilIcon } from '../library/icons/heroicons/solid.tsx'
 import { Label } from '../library/Label.tsx'
 import PriorityDropdown from '../../islands/vitals/PriorityDropdown.tsx'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
@@ -29,10 +29,10 @@ export default function VitalInputWithEvaluation({
   const name = `findings.${measurement.record_id}`
   const has_existing_note = !!existingEvaluation?.note
 
-  const getVitalName = (snomedCode: string) => {
-    const vital_key = Object.entries(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)
+  const getVitalName = (snomed_concept_id: string) => {
+    const vital_key = Object.entries(VITAL_MEASUREMENTS_SNOMED_CONCEPTS)
       .find(
-        ([_, code]) => code === snomedCode,
+        ([_, concept]) => concept.id === snomed_concept_id,
       )?.[0]
 
     if (!vital_key) return 'Unknown Vital'

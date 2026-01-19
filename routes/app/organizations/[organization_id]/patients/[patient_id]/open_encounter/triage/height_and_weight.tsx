@@ -10,7 +10,7 @@ import { patient_measurements } from '../../../../../../../../db/models/patient_
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../../../../../../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../../../../../../../../shared/vitals.ts'
 import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import { pMap } from '../../../../../../../../util/inParallel.ts'
 import entries from '../../../../../../../../util/entries.ts'
@@ -32,9 +32,9 @@ export const TriageHeightAndWeightSchema = z.object({
       ) => {
         assert(measurement)
         const { value, units } = measurement
-        const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
+        const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
         const measurement_equality_expression = parseExpressionExpectingAtom(
-          `(= (measurement ${snomed_concept_id}) (units ${value} ${units}))`,
+          `(= (measurement ${snomed_concept.s_expression} ${units}) ${value})`,
           '=',
         )
         return [vital, measurement_equality_expression]
@@ -50,13 +50,13 @@ export const handler = postHandler(
 
     await pMap(
       entries(form_values.measurements),
-      ([/* vital */, measurement_equality]) =>
+      ([/* vital */, measurement_comparison]) =>
         patient_measurements.insertOneNested(ctx.state.trx, {
           procedure_id,
           patient_id: ctx.state.patient.id,
           patient_encounter_id: ctx.state.encounter.patient_encounter_id,
           patient_encounter_employee_id: ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-          measurement_equality,
+          measurement_comparison,
         }),
     )
 
@@ -78,8 +78,8 @@ export async function TriageHeightAndWeightPage(
         health_worker_id: ctx.state.health_worker.id,
         patient_id: ctx.state.patient.id,
         snomed_concept_ids: [
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight,
+          VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.id,
+          VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.id,
         ],
       },
     )
@@ -89,13 +89,13 @@ export async function TriageHeightAndWeightPage(
       vital_measurements_for_this_encounter={[
         {
           vital: 'height',
-          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height,
+          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.id,
           required: true,
           units: 'cm',
         },
         {
           vital: 'weight',
-          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight,
+          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.id,
           required: true,
           units: 'kg',
         },

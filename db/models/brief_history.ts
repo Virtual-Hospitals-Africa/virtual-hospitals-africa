@@ -12,7 +12,7 @@ import { temporaryTable } from '../helpers.ts'
 import { IntermediateFinding, patient_findings } from './patient_findings.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import first from '../../util/first.ts'
-import { CommonCondition, CommonConditionKey, commonConditionSnomedConceptId } from '../../shared/brief_history.ts'
+import { CommonCondition, CommonConditionKey, commonConditionSnomedConcept } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
@@ -98,9 +98,9 @@ function mostRecentFinding<
   }
   const { pertaining_to_key } = first(findings_of_condition)
 
-  const parent_snomed_concept_id = commonConditionSnomedConceptId(
+  const parent_snomed_concept_id = commonConditionSnomedConcept(
     pertaining_to_key,
-  )
+  )?.id
   assert(parent_snomed_concept_id)
 
   const findings_of_condition_grouped_by_concept = groupBy(

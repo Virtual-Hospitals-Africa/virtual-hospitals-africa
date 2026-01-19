@@ -33,7 +33,7 @@ describeParallel('db/models/patient_procedures.ts', () => {
           patient_encounter_id: encounter.patient_encounter_id,
           employment_id: encounter.employee.employee_id,
           procedure: parseExpressionExpectingAtom(
-            `(procedure ${PROCEDURE.id} 118292001 (qualifier 272180002 (qualifier 260378005)))`,
+            `(procedure ${PROCEDURE.s_expression} (snomed_concept "Removal" "procedure") (qualifier (snomed_concept "Garment" "physical object") (qualifier (snomed_concept "Excessive" "qualifier value"))))`,
             'procedure',
           ),
         })

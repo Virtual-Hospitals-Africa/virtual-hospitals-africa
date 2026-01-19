@@ -9,7 +9,7 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
 import {
   assessmentOptionSExpression,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
   VITAL_MEASUREMENTS_UNITS,
   VitalAssessment,
   VitalMeasurement,
@@ -25,6 +25,7 @@ import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
 import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
 import { events } from '../../../../../db/models/events.ts'
+import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 
 describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -103,27 +104,27 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Alert',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 248234008)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Mentally alert" "finding"))',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to voice',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 422768004)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Impairment of mental alertness" "finding"))',
                   'selected': false,
                 },
                 {
                   'label': 'Confused',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 40917007)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Clouded consciousness" "finding"))',
                   'selected': false,
                 },
                 {
                   'label': 'Reacts to pain',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 450847001)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Responds to pain" "finding"))',
                   'selected': false,
                 },
                 {
                   'label': 'Unresponsive',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 422107003)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Unresponsive" "finding"))',
                   'selected': false,
                 },
               ],
@@ -137,17 +138,17 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'Walking',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 282144007)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Able to walk" "finding"))',
                   'selected': false,
                 },
                 {
                   'label': 'Difficulty walking',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 719232003)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty walking" "finding"))',
                   'selected': false,
                 },
                 {
                   'label': 'Stretcher/Immobile',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 282145008)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Unable to walk" "finding"))',
                   'selected': false,
                 },
               ],
@@ -161,12 +162,12 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 {
                   'label': 'No',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 1149217004)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "No traumatic injury" "situation"))',
                   'selected': false,
                 },
                 {
                   'label': 'Yes',
-                  'value': '(finding (snomed_concept "Clinical finding" "finding") 417746004)',
+                  'value': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Traumatic injury" "disorder"))',
                   'selected': false,
                 },
               ],
@@ -459,93 +460,7 @@ describeParallel('triage/measure_vitals', () => {
 
         const measurement = await patient_findings.findOne(db, {
           patient_id,
-          s_expression: `(measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_glucose})`,
-        })
-
-        assertMatches(measurement, {
-          'displays': { 'full': 'Blood glucose status: 2.9 mmol/L' },
-          'priority': 'Emergency',
-        })
-      },
-    )
-
-    itParallel(
-      'marks hypoglycaemia (glucose < 3) as an emergency',
-      async () => {
-        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
-          patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: asWarningSigns([], { pregnant: false }),
-          brief_history: {
-            diabetes: { existence: 'Yes' },
-            pregnancy: { existence: 'No' },
-          },
-          height_and_weight: {
-            measurements: {
-              height: {
-                value: 160,
-                units: 'cm',
-              },
-              weight: {
-                value: 80,
-                units: 'kg',
-              },
-            },
-          },
-          measure_vitals: {
-            measurements: {
-              respiratory_rate: {
-                value: 12,
-                units: VITAL_MEASUREMENTS_UNITS.respiratory_rate,
-              },
-              heart_rate: {
-                value: 60,
-                units: VITAL_MEASUREMENTS_UNITS.heart_rate,
-              },
-              blood_pressure_systolic: {
-                value: 120,
-                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_systolic,
-              },
-              blood_pressure_diastolic: {
-                value: 80,
-                units: VITAL_MEASUREMENTS_UNITS.blood_pressure_diastolic,
-              },
-              temperature: {
-                value: 36.6,
-                units: VITAL_MEASUREMENTS_UNITS.temperature,
-              },
-              blood_glucose: {
-                value: 2.9,
-                units: VITAL_MEASUREMENTS_UNITS.blood_glucose,
-              },
-            },
-            assessments: {
-              mobility_assessment: {
-                s_expression: assessmentOptionSExpression(
-                  'mobility_assessment',
-                  'Walking',
-                ),
-              },
-              consciousness: {
-                s_expression: assessmentOptionSExpression(
-                  'consciousness',
-                  'Alert',
-                ),
-              },
-              trauma_presence: {
-                s_expression: assessmentOptionSExpression(
-                  'trauma_presence',
-                  'No',
-                ),
-              },
-            },
-          },
-        })
-
-        await events.allProcessedForEncounter(db, { patient_encounter_id })
-
-        const measurement = await patient_findings.findOne(db, {
-          patient_id,
-          s_expression: `(measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_glucose})`,
+          s_expression: `(measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_glucose.s_expression} mmol/L)`,
         })
 
         assertMatches(measurement, {
@@ -628,15 +543,15 @@ describeParallel('triage/measure_vitals', () => {
           {
             patient_id: encounter.patient.id,
             s_expression: `
-            (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
-                 (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight})))
+            (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.s_expression} ${VITAL_MEASUREMENTS_UNITS.height}))
+                 (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.s_expression} ${VITAL_MEASUREMENTS_UNITS.weight})))
           `,
           },
         )
 
         const respiratory_rate_measurement = measurements.find((m) =>
           m.specific_snomed_concept.snomed_concept_id ===
-            VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.respiratory_rate
+            VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.id
         )!
 
         assertMatches(respiratory_rate_measurement, {
@@ -805,10 +720,11 @@ describeParallel('triage/measure_vitals', () => {
         finding_name: string
         score: number
       }[],
+      expected_tasks?: unknown[],
       opts: { only?: boolean; skip?: boolean } = {},
     ) {
       itParallel(description, async () => {
-        const { encounter } = await setupTriageNewPatient({
+        const { nurse, encounter, patient_encounter_id } = await setupTriageNewPatient({
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
           },
@@ -834,6 +750,8 @@ describeParallel('triage/measure_vitals', () => {
             assessments: asVitalAssessmentFormValues(assessment_values),
           },
         })
+
+        await events.allProcessedForEncounter(db, { patient_encounter_id })
 
         const component_scores = await patient_evaluation_scores.findAll(
           db,
@@ -875,6 +793,11 @@ describeParallel('triage/measure_vitals', () => {
 
         assertEquals(sorted_finding_scores, expected_scores)
         assertEquals(total_score.score, sumBy(expected_scores, 'score'))
+
+        if (expected_tasks) {
+          const tasks = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
+          assertMatches(tasks, expected_tasks)
+        }
       }, opts)
     }
 
@@ -945,15 +868,101 @@ describeParallel('triage/measure_vitals', () => {
 
     // =========================================
     // RESPIRATORY RATE (RR)
-    // Ranges: <9 -> 3, 9-14 -> 0, 15-20 -> 1, 21-29 -> 2, >=30 -> 3
+    // Ranges: <9 -> 2, 9-14 -> 0, 15-20 -> 1, 21-29 -> 2, >=30 -> 3
     // =========================================
 
     testCase(
-      'adult, respiratory_rate: 8 (less than 9) -> score: 3',
+      'adult, respiratory_rate: 8 (less than 9) -> score: 2',
       'adult',
       { ...default_measurements_adult, respiratory_rate: 8 },
       default_assessments_adult,
-      baseScores({ 'Respiratory rate': 3 }),
+      baseScores({ 'Respiratory rate': 2 }),
+      [
+        {
+          'due_to': [
+            {
+              'root_snomed_concept': {
+                'name': 'Measurement finding',
+              },
+              'specific_snomed_concept': {
+                'name': 'Respiratory rate',
+              },
+              'value': { 'type': 'measurement', 'value': '8', 'units': 'bpm' },
+              'evaluations': [
+                {
+                  'root_snomed_concept': {
+                    'snomed_concept_id': '129265001',
+                    'name': 'Evaluation - action',
+                    'category': 'qualifier value',
+                  },
+                  'specific_snomed_concept': {
+                    'snomed_concept_id': '278305009',
+                    'name': 'Severity score',
+                    'category': 'qualifier value',
+                  },
+                  'value': { 'type': 'score', 'score': '2' },
+                  'displays': { 'finding': 'Severity score', 'value': '2', 'full': 'Severity score: 2' },
+                },
+              ],
+            },
+          ],
+          'tasks': [
+            {
+              'procedure': {
+                'root_snomed_concept': {
+                  'snomed_concept_id': '71388002',
+                  'name': 'Procedure',
+                  'category': 'procedure',
+                },
+                'specific_snomed_concept': {
+                  'snomed_concept_id': '122869004',
+                  'name': 'Measurement procedure',
+                  'category': 'procedure',
+                },
+                'value': {
+                  'type': 's_expression',
+                  's_expression': '(measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)',
+                  'node': {
+                    'atom': 'measurement',
+                    'snomed_concept': {
+                      'atom': 'snomed_concept',
+                      'name': 'Hemoglobin saturation with oxygen',
+                      'category': 'observable entity',
+                    },
+                    'units': '%',
+                  },
+                },
+                'evaluations': [
+                  {
+                    'root_snomed_concept': {
+                      'snomed_concept_id': '129265001',
+                      'name': 'Evaluation - action',
+                      'category': 'qualifier value',
+                    },
+                    'specific_snomed_concept': {
+                      'snomed_concept_id': '385641008',
+                      'name': 'Action status',
+                      'category': 'attribute',
+                    },
+                    'value': {
+                      'type': 'snomed_concept',
+                      'snomed_concept_id': '385643006',
+                      'name': 'To be done',
+                      'category': 'qualifier value',
+                    },
+                    'displays': {
+                      'finding': 'Action status',
+                      'value': 'To be done',
+                      'full': 'Action status: To be done',
+                    },
+                  },
+                ],
+              },
+              'completed': false,
+            },
+          ],
+        },
+      ],
     )
 
     testCase(
@@ -1026,11 +1035,11 @@ describeParallel('triage/measure_vitals', () => {
     // =========================================
 
     testCase(
-      'adult, heart_rate: 40 (less than 41) -> score: 3',
+      'adult, heart_rate: 40 (less than 41) -> score: 2',
       'adult',
       { ...default_measurements_adult, heart_rate: 40 },
       default_assessments_adult,
-      baseScores({ 'Pulse, function': 3 }),
+      baseScores({ 'Pulse, function': 2 }),
     )
 
     testCase(
@@ -1965,6 +1974,7 @@ describeParallel('triage/measure_vitals', () => {
       default_measurements_younger_child,
       { ...default_assessments_younger_child, trauma_presence: 'No' },
       baseScoresYoungerChild({ 'Trauma score': 0 }),
+      [],
     )
 
     testCase(

@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-import { IdSelection, PreviouslyCompletedProcedures, TrxOrDb } from '../../types.ts'
+import { IdSelection, PreviouslyCompletedProcedures, SnomedConcept, TrxOrDb } from '../../types.ts'
 import { blankSelection, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records } from './patient_records.ts'
@@ -79,17 +79,15 @@ export const patient_procedures = base({
     trx: TrxOrDb,
     {
       patient_encounter_id,
-      workflow_snomed_concept_id,
-      workflow_step_snomed_concept_id,
+      workflow_snomed_concept,
+      workflow_step_snomed_concept,
     }: {
       patient_encounter_id: string
-      workflow_snomed_concept_id: string
-      workflow_step_snomed_concept_id: string | null
+      workflow_snomed_concept: SnomedConcept
+      workflow_step_snomed_concept: SnomedConcept | null
     },
   ): Promise<PreviouslyCompletedProcedures> {
-    const search_for_concept_ids = workflow_step_snomed_concept_id
-      ? [workflow_step_snomed_concept_id, workflow_snomed_concept_id]
-      : [workflow_snomed_concept_id]
+    const search_for_concept_ids = workflow_step_snomed_concept ? [workflow_step_snomed_concept.id, workflow_snomed_concept.id] : [workflow_snomed_concept.id]
 
     const procedures = await trx.selectFrom('patient_procedures')
       .innerJoin(
@@ -105,8 +103,8 @@ export const patient_procedures = base({
       ])
       .execute()
 
-    const workflow_procedure = procedures.find((p) => p.snomed_concept_id === workflow_snomed_concept_id)
-    const workflow_step_procedure = procedures.find((p) => p.snomed_concept_id === workflow_step_snomed_concept_id)
+    const workflow_procedure = procedures.find((p) => p.snomed_concept_id === workflow_snomed_concept.id)
+    const workflow_step_procedure = procedures.find((p) => p.snomed_concept_id === workflow_step_snomed_concept?.id)
 
     return {
       workflow_record_id: workflow_procedure?.id || null,
@@ -127,6 +125,14 @@ export const patient_procedures = base({
     assertHasProperty(procedure, 'root_snomed_concept')
     assertHasProperty(procedure, 'specific_snomed_concept')
     const procedure_id = generateUUID()
+
+    console.log('mmmminsertProcedure', {
+      patient_id,
+      employment_id,
+      patient_encounter_id,
+      procedure,
+      by_system,
+    })
 
     return patient_records.baseInsert(
       trx,
@@ -150,7 +156,7 @@ export const patient_procedures = base({
       .with(
         'inserting_record_s_expression',
         (qb) =>
-          procedure.value?.atom === 'finding'
+          procedure.value && ('atom' in procedure.value) && procedure.value.atom !== 'link'
             ? qb.insertInto('patient_record_s_expressions')
               .values({
                 id: procedure_id,

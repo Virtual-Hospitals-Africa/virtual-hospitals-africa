@@ -32,7 +32,7 @@ export function insertProcedure(
           patient_id,
           patient_encounter_id,
           root_snomed_concept_id: PROCEDURE.id,
-          specific_snomed_concept_id: TRIAGE_PROCEDURE.id,
+          specific_snomed_concept_id: TRIAGE_PROCEDURE.s_expression,
         }),
   ).with('inserting_procedure', (qb) =>
     qb.insertInto('patient_procedures')

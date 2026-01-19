@@ -9,6 +9,7 @@ import {
   RenderedPatientHistory,
   RenderedPatientOpenEncounter,
   RenderedSidebarWorkflow,
+  SnomedConcept,
   WorkflowStatus,
   WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
@@ -37,9 +38,9 @@ import {
   isWorkflow,
   lastStep,
   prettyStepName,
-  WORKFLOW_SNOMED_CONCEPT_IDS,
+  WORKFLOW_SNOMED_CONCEPTS,
   WORKFLOW_STEPS,
-  workflowStepSnomedConceptId,
+  workflowStepSnomedConcept,
 } from '../../../../../../../shared/workflow.ts'
 import mapEntries from '../../../../../../../util/mapEntries.ts'
 import { patient_workflows, PresentWithAnotherPatientError } from '../../../../../../../db/models/patient_workflows.ts'
@@ -73,8 +74,8 @@ type OpenEncounterState = OrganizationState & {
 type WorkflowState = {
   workflow: Workflow
   step: string
-  workflow_snomed_concept_id: string
-  workflow_step_snomed_concept_id: string | null
+  workflow_snomed_concept: SnomedConcept
+  workflow_step_snomed_concept: SnomedConcept | null
   workflow_status: WorkflowStatus
   previously_completed_step: boolean
   previously_completed_procedures: PreviouslyCompletedProcedures
@@ -154,11 +155,17 @@ export async function completeStep(
   const already_completed = steps_completed_previously.includes(step)
   // TODO: parallelize
   if (!already_completed) {
+    console.log('zxxxxxxxxx', {
+      workflow,
+      step,
+      patient_workflow_id: workflow_status.patient_workflow_id,
+    })
     await patient_workflows.completedStep(ctx.state.trx, {
       workflow,
       step,
       patient_workflow_id: workflow_status.patient_workflow_id,
     })
+    console.log('mmmmm')
   }
 
   const steps_completed = already_completed ? steps_completed_previously : steps_completed_previously.concat([step])
@@ -248,9 +255,9 @@ export async function workflowHandler(
   const { patient_encounter_id } = encounter
   const { patient_encounter_employee_id } = encounter_employee_presence
 
-  const workflow_snomed_concept_id = WORKFLOW_SNOMED_CONCEPT_IDS[workflow]
+  const workflow_snomed_concept = WORKFLOW_SNOMED_CONCEPTS[workflow]
 
-  const workflow_step_snomed_concept_id = workflowStepSnomedConceptId(
+  const workflow_step_snomed_concept = workflowStepSnomedConcept(
     workflow,
     step,
   )
@@ -262,8 +269,8 @@ export async function workflowHandler(
       current_workflow_state: {
         workflow,
         step,
-        workflow_snomed_concept_id,
-        workflow_step_snomed_concept_id,
+        workflow_snomed_concept,
+        workflow_step_snomed_concept,
         workflow_status,
       },
     }),
@@ -275,8 +282,8 @@ export async function workflowHandler(
       trx,
       {
         patient_encounter_id,
-        workflow_snomed_concept_id,
-        workflow_step_snomed_concept_id,
+        workflow_snomed_concept,
+        workflow_step_snomed_concept,
       },
     ),
   })
@@ -292,8 +299,8 @@ export async function workflowHandler(
     previously_completed_step,
     encounter_employee_presence,
     patient_encounter_employee_id,
-    workflow_step_snomed_concept_id,
-    workflow_snomed_concept_id: WORKFLOW_SNOMED_CONCEPT_IDS[workflow],
+    workflow_step_snomed_concept,
+    workflow_snomed_concept: WORKFLOW_SNOMED_CONCEPTS[workflow],
     ...fetched,
   }
 
@@ -561,7 +568,7 @@ export function nextRouteAfterCompletingWorkflow(
 export function completedProcedure(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const previously_completed_procedure_record_id = ctx.state.workflow_step_snomed_concept_id
+  const previously_completed_procedure_record_id = ctx.state.workflow_step_snomed_concept
     ? ctx.state.previously_completed_procedures.workflow_step_record_id
     : ctx.state.previously_completed_procedures.workflow_record_id
 
@@ -580,15 +587,15 @@ export function createProcedureIfNotAlreadyCompleted(
   const completed_procedure = completedProcedure(ctx)
   if (completed_procedure) return Promise.resolve(completed_procedure)
 
-  const procedure_snomed_concept_id = ctx.state.workflow_step_snomed_concept_id ||
-    ctx.state.workflow_snomed_concept_id
+  const procedure_snomed_concept = ctx.state.workflow_step_snomed_concept ||
+    ctx.state.workflow_snomed_concept
 
   return patient_procedures.insertOneNested(ctx.state.trx, {
     patient_id: ctx.state.patient.id,
     patient_encounter_id: ctx.state.encounter.patient_encounter_id,
     employment_id: ctx.state.encounter_employee_presence.employee_id,
     procedure: parseExpressionExpectingAtom(
-      `(procedure ${PROCEDURE.id} ${procedure_snomed_concept_id})`,
+      `(procedure ${PROCEDURE.s_expression} ${procedure_snomed_concept.s_expression})`,
       'procedure',
     ),
   })

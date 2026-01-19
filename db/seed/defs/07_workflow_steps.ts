@@ -1,11 +1,12 @@
 import { InsertObject } from 'kysely'
 import { DB } from '../../../db.d.ts'
-import { WORKFLOW_STEPS, workflowStepKey, workflowStepSnomedConceptId } from '../../../shared/workflow.ts'
+import { WORKFLOW_STEPS, workflowStepKey, workflowStepSnomedConcept } from '../../../shared/workflow.ts'
 
 import { collect } from '../../../util/collectSorted.ts'
 import entries from '../../../util/entries.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { define } from '../define.ts'
+import { exists } from '../../../util/exists.ts'
 
 function* workflowSteps(): Generator<InsertObject<DB, 'workflow_steps'>> {
   let workflow_step_order = 0
@@ -15,7 +16,7 @@ function* workflowSteps(): Generator<InsertObject<DB, 'workflow_steps'>> {
         step,
         workflow,
         workflow_step: workflowStepKey(workflow, step),
-        snomed_concept_id: workflowStepSnomedConceptId(workflow, step),
+        snomed_concept_id: exists(workflowStepSnomedConcept(workflow, step)?.id),
         order: ++workflow_step_order,
       }
     }

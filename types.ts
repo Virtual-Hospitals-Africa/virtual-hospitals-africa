@@ -24,6 +24,7 @@ import { type CommonConditionKey } from './shared/brief_history.ts'
 import { type VitalAssessment, type VitalMeasurement } from './shared/vitals.ts'
 import { type WarningSignKey } from './shared/warning_signs.ts'
 import { type Decimal } from './util/decimal.ts'
+import { AnyNode, Lang } from './shared/s_expression_schemas.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -3403,8 +3404,8 @@ export type RenderedPatientHistory = {
 export type CurrentWorkflowState = {
   workflow: Workflow
   step: string
-  workflow_snomed_concept_id: string
-  workflow_step_snomed_concept_id: string | null
+  workflow_snomed_concept: SnomedConcept
+  workflow_step_snomed_concept: SnomedConcept | null
   workflow_status: WorkflowStatus
 }
 
@@ -3469,7 +3470,7 @@ export type BriefHistoryKey =
   | 'hiv'
   | 'asthma'
   | 'copd'
-  | 'coronavirus'
+  | 'covid19'
   | 'heart_disease'
   | 'mental_disorder'
   | 'epilepsy'
@@ -3535,6 +3536,7 @@ export type RecordValueScore = {
 export type RecordValueSExpression = {
   type: 's_expression'
   s_expression: string
+  node: AnyNode
 }
 
 export type RecordValueLink = {
@@ -3552,13 +3554,17 @@ export type RecordValue =
   | RecordValueSExpression
   | RecordValueLink
 
+export type IntermediateRecordValue =
+  | Exclude<RecordValue, RecordValueSExpression>
+  | Omit<RecordValueSExpression, 'node'>
+
 export type IntermediateBaseRecord = {
   record_id: string
   created_at: Date | string
   patient_encounter_id: string
   root_snomed_concept: RenderedSnomedConcept
   specific_snomed_concept: RenderedSnomedConcept
-  value: null | RecordValue
+  value: null | IntermediateRecordValue
 }
 
 export type RenderedEvaluation = IntermediateBaseRecord & {
@@ -3567,7 +3573,7 @@ export type RenderedEvaluation = IntermediateBaseRecord & {
 
 export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
   & Rest
-  & IntermediateBaseRecord
+  & Omit<IntermediateBaseRecord, 'value'>
   & {
     type: Type
     modifiers: IntermediateBaseRecord[]
@@ -3578,6 +3584,7 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
         displays: RecordDisplays
       }
     >
+    value: null | RecordValue
   }
 
 export type RenderedEvaluationEvaluatedBy =
@@ -3692,7 +3699,11 @@ export type RenderedTask = {
 }
 
 export type CheckForTask = RenderedTask & {
-  procedure: { value: RecordValueSExpression }
+  procedure: { value: RecordValueSExpression & { node: Lang['finding'] } }
+}
+
+export type MeasureTask = RenderedTask & {
+  procedure: { value: RecordValueSExpression & { node: Lang['measurement'] } }
 }
 
 export type TaskGroup = {
@@ -3828,3 +3839,5 @@ export type EvaluatedRecord = DeepMaybe<{
   score: number
   priority: Priority
 }>
+
+export type SnomedConcept = { id: string; name: string; category: SnomedCategory; s_expression: string; snomed_concept_id: string }

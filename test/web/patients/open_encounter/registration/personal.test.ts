@@ -1,5 +1,5 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
-import { afterAll, before, it } from 'std/testing/bdd.ts'
+import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'

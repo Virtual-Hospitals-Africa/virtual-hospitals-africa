@@ -28,7 +28,7 @@ export const system_priority_determinations = {
       }[]
     },
   ) {
-    console.log('mmmkkkkkkkk')
+    console.log('mmmkkkkkkkk', findings)
     // TODO, maybe handle negative findings? There could be system_priority_determinations that call for them
     const positive_finding_ids = findings
       .filter((f) => f.existence === 'Yes')
