@@ -870,7 +870,7 @@ describeParallel('triage/warning_signs', () => {
       itParallel(
         `renders the page with the ${sign.key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
         async () => {
-          const { clinic, $, getStep } = await setupTriageNewPatient({
+          const { $, clinic, encounter, patient_encounter_id, nurse, getStep } = await setupTriageNewPatient({
             patient_demographics: {},
             early_brief_history: pregnant
               ? {
@@ -906,6 +906,35 @@ describeParallel('triage/warning_signs', () => {
               },
             },
           })
+
+          await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+          const task_groups = await additional_tasks.getTasksGroups(db, {
+            encounter,
+            health_worker_id: nurse.health_worker.id,
+          })
+
+          const tasks = task_groups.flatMap((group) => group.tasks)
+          const medical_guidance_task = tasks.some((task) => task.procedure.value?.type === 'link')
+
+          const no_guidance_expected = new Set([
+            'Obstructed airway',
+            'Burn Inhalation',
+            'Focal neurology',
+            'Poisoning',
+            'High energy transfer',
+            'Severe limb ischemia',
+            'Haemorrhage Uncontrolled',
+            'Eye injury',
+            'Dislocation of larger joint',
+            'Severe pain',
+            'Closed fracture',
+            'Pregnancy and abdominal trauma',
+            'Moderate pain',
+            'Haemorrhage Controlled',
+            'Abdominal pain',
+          ])
+          assert(medical_guidance_task || no_guidance_expected.has(sign.key), `No medical guidance task created for ${sign.key}`)
 
           const $waiting_room = await receptionist.fetchCheerio(
             `/app/organizations/${clinic.id}/waiting_room`,

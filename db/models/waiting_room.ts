@@ -12,6 +12,7 @@ import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { InsertObject } from 'kysely'
 import { DB } from '../../db.d.ts'
 import { exists } from '../../util/exists.ts'
+import { logReadableJson } from '../../util/humanReadableJson.ts'
 
 function asWaitingRoom(
   patient_encounter: RenderedPatientOpenEncounter,
@@ -147,10 +148,17 @@ export const waiting_room = {
 
     const waiting_room_unsorted = open_encounters.map((encounter) => asWaitingRoom(encounter, organization_employment))
 
+    logReadableJson(sortBy(
+      waiting_room_unsorted,
+      (row) => row.present_employees.length ? 1 : 0,
+      (row) => row.target_treatment_time ? new Date(row.target_treatment_time).valueOf() : -1,
+      (row) => row.arrived_timestamp.valueOf(),
+    ))
+
     return sortBy(
       waiting_room_unsorted,
       (row) => row.present_employees.length ? 1 : 0,
-      (row) => row.target_treatment_time ? row.target_treatment_time.valueOf() : -1,
+      (row) => row.target_treatment_time ? new Date(row.target_treatment_time).valueOf() : -1,
       (row) => row.arrived_timestamp.valueOf(),
     )
   },
