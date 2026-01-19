@@ -113,3 +113,8 @@ await loadAllModules('./db').then((x) => {
   delete x['db']
   Object.assign(db, x)
 })
+
+async function logRecord(id: string) {
+  const record = await models.patient_records.patient_records.getById(db, id)
+  util.humanReadableJson.logReadableJson(record)
+}

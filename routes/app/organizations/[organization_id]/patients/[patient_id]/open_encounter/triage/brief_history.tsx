@@ -17,7 +17,7 @@ import { Existence, Maybe, MostRecentBriefHistoryFindings, RenderedBriefHistoryR
 import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
-import { COMMON_CONDITIONS, CommonCondition, CommonConditionKey, commonConditionSnomedConceptId } from '../../../../../../../../shared/brief_history.ts'
+import { COMMON_CONDITIONS, CommonCondition, CommonConditionKey, commonConditionSnomedConcept } from '../../../../../../../../shared/brief_history.ts'
 import { SELF_REPORTED_QUALIFIER, STATUS_ATTRIBUTE } from '../../../../../../../../shared/snomed_concepts.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
@@ -42,7 +42,7 @@ export const TriageBriefHistorySchema = z.object(
     hiv: ConditionSchemaOptional,
     asthma: ConditionSchemaOptional,
     copd: ConditionSchemaOptional,
-    coronavirus: ConditionSchemaOptional,
+    covid19: ConditionSchemaOptional,
     heart_disease: ConditionSchemaOptional,
     mental_disorder: ConditionSchemaOptional,
     epilepsy: ConditionSchemaOptional,
@@ -64,15 +64,15 @@ function mostRecentFindings({ state }: OpenEncounterWorkflowContext) {
 }
 
 function selfReportedStatusSExpression(
-  condition_snomed_concept_id: string,
+  condition_snomed_concept: { s_expression: string },
   existence: Existence,
 ): string {
   return `
     (finding 
-      ${STATUS_ATTRIBUTE.id}
-      ${condition_snomed_concept_id}
-      ${patient_findings.QUALIFIERS_BY_EXISTENCE[existence]}
-      (qualifier ${SELF_REPORTED_QUALIFIER.id}))
+      ${STATUS_ATTRIBUTE.s_expression}
+      ${condition_snomed_concept.s_expression}
+      ${patient_findings.QUALIFIERS_BY_EXISTENCE[existence].s_expression}
+      (qualifier ${SELF_REPORTED_QUALIFIER.s_expression}))
   `.trim()
 }
 
@@ -105,7 +105,7 @@ export const handler = postHandler(
             return Promise.resolve('Nothing to insert')
           }
 
-          const condition_snomed_concept_id = commonConditionSnomedConceptId(
+          const condition_snomed_concept = commonConditionSnomedConcept(
             condition_key,
           )
 
@@ -140,7 +140,7 @@ export const handler = postHandler(
               patient_encounter_id,
               patient_encounter_employee_id,
               finding: selfReportedStatusSExpression(
-                condition_snomed_concept_id,
+                condition_snomed_concept,
                 condition.existence,
               ),
             },

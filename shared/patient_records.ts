@@ -24,9 +24,15 @@ import { parseExpression, parseExpressionExpectingAtom } from './s_expression.ts
 import { logArgsOnError } from '../util/decorators.ts'
 import capitalize from '../util/capitalize.ts'
 import isString from '../util/isString.ts'
+import { MEASUREMENT_FINDING } from './snomed_concepts.ts'
+import { SnomedCategory } from '../db.d.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
+}
+
+type WithProperRecordValue<DR extends DisplayableRecord> = Omit<DR, 'value'> & {
+  value: null | RecordValue
 }
 
 function measurementValueDisplay(
@@ -64,12 +70,11 @@ function formatEventDatetime(datetime: Date | string): string {
 }
 
 function toRenderedSnomedConcept(
-  snomed_concept: Lang['snomed_concept'],
+  snomed_concept: Lang['snomed_concept'] | {
+    name: string
+    category: SnomedCategory
+  },
 ): RenderedSnomedConcept {
-  assert(
-    snomed_concept.type === 'snomed_concept_name_and_category',
-    'Expected snomed_concept_name_and_category',
-  )
   return {
     snomed_concept_id: '',
     name: snomed_concept.name,
@@ -80,7 +85,7 @@ function toRenderedSnomedConcept(
 const findingToDisplayableRecord = logArgsOnError(
   function findingToDisplayableRecord(
     finding: Lang['finding'],
-  ): DisplayableRecord {
+  ): WithProperRecordValue<DisplayableRecord> {
     assert(finding.root_snomed_concept, 'Expected root_snomed_concept')
     assert(finding.specific_snomed_concept, 'Expected specific_snomed_concept')
 
@@ -130,14 +135,35 @@ const findingToDisplayableRecord = logArgsOnError(
   },
 )
 
-function findingSExpressionDisplay(
-  finding_s_expression: Lang['finding'],
-): string {
-  return buildDisplays(findingToDisplayableRecord(finding_s_expression)).full
+const measurementToDisplayableRecord = logArgsOnError(
+  function measurementToDisplayableRecord(
+    measurement: Lang['measurement'],
+  ): WithProperRecordValue<DisplayableRecord> {
+    return {
+      record_id: '',
+      created_at: '',
+      patient_encounter_id: '',
+      root_snomed_concept: MEASUREMENT_FINDING,
+      specific_snomed_concept: toRenderedSnomedConcept(
+        measurement.snomed_concept,
+      ),
+      value: null,
+      qualifiers: [],
+    }
+  },
+)
+
+function toDisplayableRecord(node: Lang['measurement' | 'finding']): WithProperRecordValue<DisplayableRecord> {
+  switch (node.atom) {
+    case 'finding':
+      return findingToDisplayableRecord(node)
+    case 'measurement':
+      return measurementToDisplayableRecord(node)
+  }
 }
 
 function valueDisplay(
-  value: Exclude<NonNullable<DisplayableRecord['value']>, string>,
+  value: Exclude<NonNullable<WithProperRecordValue<DisplayableRecord>['value']>, string>,
 ): string | RecordValueLink {
   switch (value.type) {
     case 'event':
@@ -149,10 +175,8 @@ function valueDisplay(
     case 'score':
       return value.score
     case 's_expression': {
-      return findingSExpressionDisplay(parseExpressionExpectingAtom(
-        value.s_expression,
-        'finding',
-      ))
+      assertOneOf(value.node.atom, ['measurement' as const, 'finding' as const])
+      return buildDisplays(toDisplayableRecord(value.node)).full
     }
     case 'link': {
       return value
@@ -210,7 +234,7 @@ function massageSpecificConceptDisplay(specific_snomed_concept: Maybe<RenderedSn
 }
 
 function buildDisplays(
-  record: DisplayableRecord,
+  record: WithProperRecordValue<DisplayableRecord>,
   postfix?: boolean,
 ): RecordDisplays {
   const {
@@ -229,7 +253,7 @@ function buildDisplays(
   }
   const use_postfix = postfix || qualifierIsPostfix(qualifiers[0])
 
-  const qualifier_displays = qualifiers.map((prefix) => buildDisplays(prefix, use_postfix).full)
+  const qualifier_displays = qualifiers.map((prefix) => buildDisplays(addNodeIfValueIsSExpression(prefix), use_postfix).full)
 
   const specific_concept_display = capitalize(
     massageSpecificConceptDisplay(specific_snomed_concept, value),
@@ -266,7 +290,7 @@ function buildDisplays(
  * already been attached separately. The rest are prefixes which are consumed
  * as part of building out the record's displays
  */
-function addDisplay<DR extends DisplayableRecord>(
+function addDisplay<DR extends WithProperRecordValue<DisplayableRecord>>(
   record: DR,
 ): Omit<DR, 'qualifiers'> & {
   displays: RecordDisplays
@@ -277,22 +301,37 @@ function addDisplay<DR extends DisplayableRecord>(
   }
 }
 
+// Little hacky. Maybe we put this in the database
+function addNodeIfValueIsSExpression<DR extends DisplayableRecord>(record: DR): WithProperRecordValue<DR> {
+  return {
+    ...record,
+    value: record.value && (record.value.type === 's_expression'
+      ? {
+        ...record.value,
+        node: parseExpression(record.value.s_expression),
+      }
+      : record.value),
+  }
+}
+
 export function formatRecord<
   DR extends DisplayableRecord & {
     evaluations: DisplayableRecord[]
   },
->(record: DR): Omit<DR, 'qualifiers'> & {
+>(record: DR): Omit<WithProperRecordValue<DR>, 'qualifiers'> & {
   displays: RecordDisplays
   modifiers: IntermediateBaseRecord[]
   attributes: RenderedAttribute[]
   evaluations: RenderedEvaluation[]
 } {
+  const qualifiers = record.qualifiers || []
+
   const [modifiers, unformatted_attributes] = partition(
-    record.qualifiers || [],
+    qualifiers || [],
     (qualifier) => qualifier.root_snomed_concept.name === 'Qualifier value',
   )
 
-  const attributes = unformatted_attributes.map(addDisplay)
+  const attributes = unformatted_attributes.map(addNodeIfValueIsSExpression).map(addDisplay)
   assertAll(attributes, (attribute): asserts attribute is RenderedAttribute => {
     if (attribute.value) {
       assertOneOf(attribute.value.type, [
@@ -302,10 +341,10 @@ export function formatRecord<
     }
   })
 
-  const evaluations = record.evaluations.map(addDisplay)
+  const evaluations = record.evaluations.map(addNodeIfValueIsSExpression).map(addDisplay)
 
   return {
-    ...addDisplay({ ...record, qualifiers: modifiers }),
+    ...addDisplay({ ...addNodeIfValueIsSExpression(record), qualifiers: modifiers }),
     modifiers,
     attributes,
     evaluations,
@@ -317,7 +356,6 @@ function toSnomedConcept(
 ): Lang['snomed_concept'] {
   return {
     atom: 'snomed_concept',
-    type: 'snomed_concept_name_and_category',
     name: rendered.name,
     category: rendered.category,
   }
@@ -337,7 +375,6 @@ export function asNormalFormSExpression<Rest>(
     Rest
   >,
 ): string {
-  console.log('klweklewkl', record)
   const qualifiers = record.modifiers.map(toQualifier)
 
   const attributes: Lang['attribute'][] = record.attributes.map((attr) => {
@@ -350,7 +387,7 @@ export function asNormalFormSExpression<Rest>(
         atom: 'attribute',
         specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
         value: {
-          type: 'event' as const,
+          atom: 'event' as const,
           datetime: isDate(value.datetime) ? value.datetime.toISOString() : value.datetime,
           location: null,
         },

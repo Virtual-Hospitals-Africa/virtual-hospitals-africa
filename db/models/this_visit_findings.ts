@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { prettyStepName, WORKFLOW_STEPS, WORKFLOWS, workflowStepSnomedConceptId } from '../../shared/workflow.ts'
+import { prettyStepName, WORKFLOW_STEPS, WORKFLOWS, workflowStepSnomedConcept } from '../../shared/workflow.ts'
 import { CurrentWorkflowState, RenderedFindingRelativeToHealthWorker, RenderedPatientEncounter, RenderedSidebarWorkflow, TrxOrDb } from '../../types.ts'
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import { groupBy } from '../../util/groupBy.ts'
@@ -7,7 +7,7 @@ import { humanReadableJson } from '../../util/humanReadableJson.ts'
 import { patient_findings } from './patient_findings.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
 import compactMap from '../../util/compactMap.ts'
-import { VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS } from '../../shared/vitals.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
 import isString from '../../util/isString.ts'
 import { priorityOrder } from '../../shared/sats.ts'
 import sortBy from '../../util/sortBy.ts'
@@ -20,11 +20,11 @@ function* findAndCombineBloodPressure(
   let blood_pressure_diastolic: RenderedFindingRelativeToHealthWorker | undefined
 
   for (const record of records) {
-    if (record.specific_snomed_concept.snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_systolic) {
+    if (record.specific_snomed_concept.snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id) {
       blood_pressure_systolic = record
       continue
     }
-    if (record.specific_snomed_concept.snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic) {
+    if (record.specific_snomed_concept.snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_diastolic.id) {
       blood_pressure_diastolic = record
       continue
     }
@@ -84,10 +84,10 @@ function groupRecordsByWorkflows(
       workflow,
       status: workflow_status.status,
       steps: workflow_steps.map((workflow_step) => {
-        const workflow_step_snomed_concept_id = workflowStepSnomedConceptId(workflow, workflow_step)
+        const workflow_step_snomed_concept = workflowStepSnomedConcept(workflow, workflow_step)
 
-        const records_of_concept = (workflow_step_snomed_concept_id &&
-          records_by_procedure.get(workflow_step_snomed_concept_id)) || []
+        const records_of_concept = (workflow_step_snomed_concept &&
+          records_by_procedure.get(workflow_step_snomed_concept.id)) || []
 
         const completed = arrayIsNonEmpty(workflow_status.steps_completed) ? workflow_status.steps_completed.includes(workflow_step) : false
 

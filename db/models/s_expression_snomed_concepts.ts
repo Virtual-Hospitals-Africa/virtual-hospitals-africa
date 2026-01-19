@@ -8,14 +8,10 @@ import { STATUS_ATTRIBUTE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts
 import { DB } from '../../db.d.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 
-// Predicate builders - return boolean expressions for a given column reference
-// This avoids subquery scans by evaluating is_descendant directly on the column
 function snomedConceptIdPredicate(
   snomed_concept: Lang['snomed_concept'],
 ): string | RawBuilder<string> {
   assert(isAtom(snomed_concept, 'snomed_concept'))
-  if (snomed_concept.type === 'snomed_concept_id') return snomed_concept.id
-  // For name-based lookups, we need a subquery
   return sql<string>`(
     SELECT id FROM snomed_inferred_canonical_name_and_category
     WHERE name = ${snomed_concept.name} AND category = ${snomed_concept.category}
@@ -86,7 +82,7 @@ const PREDICATE_BUILDERS = {
     const snomed_concept_s_expression = inverseSExpression(snomed_concept)
     const expanded_expression = parseExpression(`
       (or (clinical_finding ${snomed_concept_s_expression})
-          (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
+          (finding ${STATUS_ATTRIBUTE.s_expression} ${snomed_concept_s_expression} ${YES_QUALIFIER.s_expression}))
     `)
     return internalBuildExpressionPredicate(column_ref, expanded_expression)
   },

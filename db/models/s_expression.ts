@@ -8,7 +8,16 @@ import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
 import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { ATTRIBUTE, EVENT, NO_QUALIFIER, QUALIFIER_VALUE, STATUS_ATTRIBUTE, UNKNOWN_QUALIFIER, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
+import {
+  ATTRIBUTE,
+  EVENT,
+  MEASUREMENT_FINDING,
+  NO_QUALIFIER,
+  QUALIFIER_VALUE,
+  STATUS_ATTRIBUTE,
+  UNKNOWN_QUALIFIER,
+  YES_QUALIFIER,
+} from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 
 type PatientIdentifiers = {
@@ -23,9 +32,7 @@ type SatisfyingResult = {
 
 export function nameAndCategorySnomedConceptBase(
   trx: TrxOrDb,
-  snomed_concept: Lang['snomed_concept'] & {
-    type: 'snomed_concept_name_and_category'
-  },
+  snomed_concept: Lang['snomed_concept'],
 ) {
   return trx
     .selectFrom('snomed_inferred_canonical_name_and_category')
@@ -39,7 +46,7 @@ export function snomedConceptBase(
   snomed_concept: Lang['snomed_concept'],
 ) {
   assert(isAtom(snomed_concept, 'snomed_concept'))
-  return snomed_concept.type === 'snomed_concept_id' ? snomed_concept.id : nameAndCategorySnomedConceptBase(trx, snomed_concept)
+  return nameAndCategorySnomedConceptBase(trx, snomed_concept)
 }
 
 export function maybeSnomedConceptBase(
@@ -175,7 +182,7 @@ function baseQuery(
 
     const { value } = attribute
 
-    if (value.type === 'event') {
+    if (value.atom === 'event') {
       return qb.where(
         'patient_records.id',
         'in',
@@ -240,14 +247,14 @@ export const satisfyingSExpression = deduplicate(
 function measurement(
   trx: TrxOrDb,
   patient: PatientIdentifiers,
-  { snomed_concept }: Lang['measurement'],
+  { snomed_concept, units }: Lang['measurement'],
 ) {
   return baseQuery(trx, {
     ...patient,
     root_snomed_concept: {
       atom: 'snomed_concept',
-      type: 'snomed_concept_id',
-      id: '118245000',
+      name: MEASUREMENT_FINDING.name,
+      category: MEASUREMENT_FINDING.category,
     },
   })
     .innerJoin(
@@ -265,6 +272,7 @@ function measurement(
       '=',
       snomedConceptBase(trx, snomed_concept),
     )
+    .where('patient_measurements.units', '=', units)
 }
 
 export const EXPRESSION_BUILDERS = {
@@ -324,7 +332,7 @@ export const EXPRESSION_BUILDERS = {
         'patient_procedures.id',
       )
       .$if(
-        value?.atom === 'finding',
+        !!value?.atom && value?.atom !== 'link',
         (qb) =>
           qb.innerJoin(
             'patient_record_s_expressions',
@@ -398,8 +406,8 @@ export const EXPRESSION_BUILDERS = {
       patient_encounter_id,
       root_snomed_concept: {
         atom: 'snomed_concept',
-        type: 'snomed_concept_id',
-        id: QUALIFIER_VALUE.id,
+        name: QUALIFIER_VALUE.name,
+        category: QUALIFIER_VALUE.category,
       },
       specific_snomed_concept,
       qualifiers,
@@ -419,11 +427,12 @@ export const EXPRESSION_BUILDERS = {
       patient_id,
       patient_encounter_id,
       specific_snomed_concept,
-      value_snomed_concept: value.type === 'event' ? undefined : value,
+      value_snomed_concept: value.atom === 'event' ? undefined : value,
       root_snomed_concept: {
         atom: 'snomed_concept',
-        type: 'snomed_concept_id',
-        id: value.type === 'event' ? EVENT.id : ATTRIBUTE.id,
+        ...(
+          value.atom === 'event' ? EVENT : ATTRIBUTE
+        ),
       },
     })
       .innerJoin(
@@ -432,7 +441,7 @@ export const EXPRESSION_BUILDERS = {
         'patient_record_qualifiers.id',
       )
 
-    if (value.type !== 'event') {
+    if (value.atom !== 'event') {
       return matches_attr
     }
 
@@ -500,34 +509,62 @@ export const EXPRESSION_BUILDERS = {
       patient,
       parseExpression(`
         (or (clinical_finding ${snomed_concept_s_expression})
-            (finding ${STATUS_ATTRIBUTE.id} ${snomed_concept_s_expression} ${YES_QUALIFIER.id}))
+            (finding ${STATUS_ATTRIBUTE.s_expression} ${snomed_concept_s_expression} ${YES_QUALIFIER.s_expression}))
       `),
     )
   },
   '>'(trx, patient, { left, right }) {
     return measurement(trx, patient, left)
-      .where('patient_measurements.units', '=', right.units)
-      .where('patient_measurements.value', '>', String(right.value))
+      .where((eb) =>
+        eb.or([
+          eb.and([
+            eb('patient_measurements.comparator', '=', '='),
+            eb('patient_measurements.value', '>', String(right)),
+          ]),
+          eb.and([
+            eb('patient_measurements.comparator', '=', '>'),
+            eb('patient_measurements.value', '>=', String(right)),
+          ]),
+          eb.and([
+            eb('patient_measurements.comparator', '=', '>='),
+            eb('patient_measurements.value', '>', String(right)),
+          ]),
+        ])
+      )
   },
   '<'(trx, patient, { left, right }) {
     return measurement(trx, patient, left)
-      .where('patient_measurements.units', '=', right.units)
-      .where('patient_measurements.value', '<', String(right.value))
+      .where((eb) =>
+        eb.or([
+          eb.and([
+            eb('patient_measurements.comparator', '=', '='),
+            eb('patient_measurements.value', '<', String(right)),
+          ]),
+          eb.and([
+            eb('patient_measurements.comparator', '=', '<'),
+            eb('patient_measurements.value', '<=', String(right)),
+          ]),
+          eb.and([
+            eb('patient_measurements.comparator', '=', '<='),
+            eb('patient_measurements.value', '<', String(right)),
+          ]),
+        ])
+      )
   },
   '>='(trx, patient, { left, right }) {
     return measurement(trx, patient, left)
-      .where('patient_measurements.units', '=', right.units)
-      .where('patient_measurements.value', '>=', String(right.value))
+      .where('patient_measurements.comparator', 'in', ['=', '>', '>='])
+      .where('patient_measurements.value', '>=', String(right))
   },
   '<='(trx, patient, { left, right }) {
     return measurement(trx, patient, left)
-      .where('patient_measurements.units', '=', right.units)
-      .where('patient_measurements.value', '<=', String(right.value))
+      .where('patient_measurements.comparator', 'in', ['=', '<', '<='])
+      .where('patient_measurements.value', '<=', String(right))
   },
   '='(trx, patient, { left, right }) {
     return measurement(trx, patient, left)
-      .where('patient_measurements.units', '=', right.units)
-      .where('patient_measurements.value', '=', String(right.value))
+      .where('patient_measurements.comparator', '=', '=')
+      .where('patient_measurements.value', '=', String(right))
   },
 } satisfies {
   [T in Atom]?: (

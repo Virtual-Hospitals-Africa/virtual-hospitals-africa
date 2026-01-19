@@ -21,19 +21,14 @@ export function postHandler<
         schema.parse,
       )
 
-      try {
-        return await db
-          .transaction()
-          .setIsolationLevel('read committed')
-          .execute((trx) => {
-            console.log('starting to execute trx')
-            ctx.state.trx = trx
-            return Promise.resolve(callback(ctx, form_values))
-          })
-      } catch (err) {
-        console.log('kllkkllkklin here now', err)
-        throw err
-      }
+      return await db
+        .transaction()
+        .setIsolationLevel('read committed')
+        .execute((trx) => {
+          console.log('starting to execute trx')
+          ctx.state.trx = trx
+          return Promise.resolve(callback(ctx, form_values))
+        })
     },
   }
 }

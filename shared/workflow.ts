@@ -4,10 +4,22 @@ import last from '../util/last.ts'
 import first from '../util/first.ts'
 import { departmentNames, departmentResponsibleForWorkflow } from './departments.ts'
 import capitalize from '../util/capitalize.ts'
-import values from '../util/values.ts'
-import { invertRecord } from '../util/invertRecord.ts'
-import { combineAll } from '../util/combine.ts'
 import isKeyOf from '../util/isKeyOf.ts'
+import {
+  BODY_MEASUREMENT,
+  DISPENSING_MEDICATION,
+  EMERGENCY_EXAMINATION_FOR_TRIAGE,
+  ENCOUNTER_FOR_PROBLEM,
+  EVALUATION_OF_CARE_PLAN,
+  EVALUATION_PROCEDURE,
+  HISTORY_TAKING_LIMITED,
+  PATIENT_REGISTRATION,
+  PRENATAL_EXAMINATION_AND_CARE_OF_MOTHER,
+  REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
+  STABILIZATION,
+  TAKING_PATIENT_VITAL_SIGNS_ASSESSMENT,
+  TRIAGE,
+} from './snomed_concepts.ts'
 
 export const WORKFLOWS = [
   'registration' as const,
@@ -23,18 +35,17 @@ export const WORKFLOWS = [
 
 export type Workflow = (typeof WORKFLOWS)[number]
 
-export const WORKFLOW_SNOMED_CONCEPT_IDS = {
-  registration: '184047000', // Patient registration
-  triage: '225390008',
-  emergency_escalation: '306104004', // |Referral to accident and emergency service (procedure)|
-  stabilization: '115979005', // |Stabilization (procedure)|
-  consultation: '185347001', // Encounter for problem
-  maternity: '18114009', //  |Prenatal examination and care of mother (procedure)|
-  prescription_refill: '373784005', //  |Dispensing medication (procedure)|
-  doctor_review: '712744002', //  |Evaluation of care plan (procedure)|
-  // resuscitation: '439569004',
+export const WORKFLOW_SNOMED_CONCEPTS = {
+  registration: PATIENT_REGISTRATION,
+  triage: TRIAGE,
+  emergency_escalation: REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
+  stabilization: STABILIZATION,
+  consultation: ENCOUNTER_FOR_PROBLEM,
+  maternity: PRENATAL_EXAMINATION_AND_CARE_OF_MOTHER,
+  prescription_refill: DISPENSING_MEDICATION,
+  doctor_review: EVALUATION_OF_CARE_PLAN,
 } satisfies {
-  [w in Workflow]: string
+  [w in Workflow]: unknown
 }
 
 export const WORKFLOW_STEPS = {
@@ -100,22 +111,27 @@ export const WORKFLOW_STEPS = {
   [w in Workflow]: string[]
 }
 
-export const WORKFLOW_STEP_SNOMED_CONCEPT_IDS = {
+export const WORKFLOW_STEP_SNOMED_CONCEPTS = {
   triage: {
     // The warning_sides code isn't quite right, but it's the closest match and having a single code per step streamlines things
     // TODO: become a member organization for SNOMED and request that all the codes we need be added
     // https://www.snomed.org/change-or-add
     // https://www.snomed.org/members
-    'warning_signs': '245581009', // chief complaint + emergency signs + urgent signs |Emergency examination for triage (procedure)|
-    'brief_history': '203421005', // |History taking, limited (procedure)|'
-    'height_and_weight': '54709006', // |Body measurement (procedure)|'
-    'measure_vitals': '410188000', // |Taking patient vital signs assessment (procedure)|
-    'additional_tasks_and_investigations': '386053000', // Evaluation procedure (procedure)
+    'warning_signs': EMERGENCY_EXAMINATION_FOR_TRIAGE,
+    'brief_history': HISTORY_TAKING_LIMITED,
+    'height_and_weight': BODY_MEASUREMENT,
+    'measure_vitals': TAKING_PATIENT_VITAL_SIGNS_ASSESSMENT,
+    'additional_tasks_and_investigations': EVALUATION_PROCEDURE,
     // 'assign_priority': '',
   },
 }
 
-export const SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES = invertRecord(combineAll(values(WORKFLOW_STEP_SNOMED_CONCEPT_IDS)))
+export const SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES: Record<string, string> = {}
+for (const steps of Object.values(WORKFLOW_STEP_SNOMED_CONCEPTS)) {
+  for (const [step, concept] of Object.entries(steps)) {
+    SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES[concept.id] = step
+  }
+}
 
 export function isWorkflow(workflow: string): workflow is Workflow {
   return workflow in WORKFLOW_STEPS
@@ -127,12 +143,12 @@ export function workflowStepKey(workflow: Workflow, step: string) {
   return `${workflow}:${step}`
 }
 
-export function workflowStepSnomedConceptId(
+export function workflowStepSnomedConcept(
   workflow: Workflow,
   step: string,
-): string | null {
-  if (!isKeyOf(workflow, WORKFLOW_STEP_SNOMED_CONCEPT_IDS)) return null
-  const concepts = WORKFLOW_STEP_SNOMED_CONCEPT_IDS[workflow]
+) {
+  if (!isKeyOf(workflow, WORKFLOW_STEP_SNOMED_CONCEPTS)) return null
+  const concepts = WORKFLOW_STEP_SNOMED_CONCEPTS[workflow]
   return isKeyOf(step, concepts) ? concepts[step] : null
 }
 

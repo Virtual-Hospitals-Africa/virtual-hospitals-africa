@@ -37,3 +37,5 @@ export const $const_name = asConcept({
   category: '$category' as const,
 })
 EOF
+
+echo "wrote $const_name to ./shared/snomed_concepts.ts"

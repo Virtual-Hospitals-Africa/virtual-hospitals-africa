@@ -7,7 +7,7 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assert } from 'std/assert/assert.ts'
-import { WORKFLOW_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
+import { WORKFLOW_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
@@ -45,7 +45,7 @@ describeParallel('db/models/s_expression.ts', () => {
         patient_encounter_id: encounter.patient_encounter_id,
         employment_id: encounter.employee.employee_id,
         procedure: parseExpressionExpectingAtom(
-          `(procedure ${PROCEDURE.id} ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
+          `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_SNOMED_CONCEPTS.triage.s_expression})`,
           'procedure',
         ),
       })
@@ -159,7 +159,7 @@ describeParallel('db/models/s_expression.ts', () => {
         patient_encounter_id: encounter.patient_encounter_id,
         employment_id: encounter.employee.employee_id,
         procedure: parseExpressionExpectingAtom(
-          `(procedure ${PROCEDURE.id} ${WORKFLOW_SNOMED_CONCEPT_IDS.triage})`,
+          `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_SNOMED_CONCEPTS.triage.s_expression})`,
           'procedure',
         ),
       })

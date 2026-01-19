@@ -55,7 +55,6 @@ function findingSExpression(
         atom: 'qualifier',
         specific_snomed_concept: {
           atom: 'snomed_concept',
-          type: 'snomed_concept_name_and_category',
           name: existence,
           category: 'qualifier value',
         },

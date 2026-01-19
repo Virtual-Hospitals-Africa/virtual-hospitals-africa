@@ -10,13 +10,10 @@ import { AnyNode, EventValue, Lang } from './s_expression_schemas.ts'
 function isEventValue(
   value: Lang['snomed_concept'] | EventValue,
 ): value is EventValue {
-  return value.type === 'event'
+  return value.atom === 'event'
 }
 
 function snomedConceptToString(node: Lang['snomed_concept']): string {
-  if (node.type === 'snomed_concept_id') {
-    return node.id
-  }
   return `(snomed_concept "${node.name}" "${node.category}")`
 }
 
@@ -114,15 +111,11 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'measurement': {
-      return `(measurement ${snomedConceptToString(node.snomed_concept)})`
+      return `(measurement ${snomedConceptToString(node.snomed_concept)} ${node.units})`
     }
 
     case 'active_condition': {
       return `(active_condition ${snomedConceptToString(node.snomed_concept)})`
-    }
-
-    case 'units': {
-      return `(units ${node.value} ${node.units})`
     }
 
     case '>':
@@ -130,7 +123,7 @@ export function inverseSExpression(node: AnyNode): string {
     case '>=':
     case '<=':
     case '=': {
-      return `(${node.atom} ${inverseSExpression(node.left)} ${inverseSExpression(node.right)})`
+      return `(${node.atom} ${inverseSExpression(node.left)} ${node.right})`
     }
 
     case 'not': {

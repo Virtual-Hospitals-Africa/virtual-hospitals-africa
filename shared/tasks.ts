@@ -1,12 +1,13 @@
-import { PROCEDURE, REFERENCE_DOCUMENTATION } from './snomed_concepts.ts'
+import { OXYGEN_THERAPY, PROCEDURE, REFERENCE_DOCUMENTATION } from './snomed_concepts.ts'
 import { parseWithSchema } from './s_expression.ts'
-import { CheckForTask, RenderedTask } from '../types.ts'
+import { CheckForTask, MeasureTask, RenderedTask } from '../types.ts'
 import { keyBy } from '../util/keyBy.ts'
 import entries from '../util/entries.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED } from './adult_pac_table_of_contents_to_snomed.ts'
 import { assert } from 'std/assert/assert.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from './pack-adult.ts'
 import { task } from './s_expression_schemas.ts'
+import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from './vitals.ts'
 
 function asTask(task_s_expression: string) {
   return parseWithSchema(
@@ -51,9 +52,13 @@ const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_S
 export const TASKS = [
   ...MEDICAL_GUIDANCE_TASKS,
   `(task
+    "Check Sp0₂ if respiratory rate < 9 bpm"
+      (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.s_expression} bpm) 9)
+      (measure (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %)))`,
+  `(task
     "Give oxygen if saturation below 92%"
-      (< (measurement 103228002) (units 92 %))
-      (procedure ${PROCEDURE.s_expression} 57485005))`,
+      (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %) 92)
+      (procedure ${PROCEDURE.s_expression} ${OXYGEN_THERAPY.s_expression}))`,
   `(task
     "Check for head injury for any nose symptoms"
     (clinical_finding
@@ -88,8 +93,18 @@ export const TASKS = [
 
 export const KEYED_TASKS = keyBy(TASKS, 'description')
 
-export function isCheckFor(task: RenderedTask): task is CheckForTask {
-  return task.procedure.value?.type === 's_expression'
+export function isCheckForTask(task: RenderedTask): task is CheckForTask {
+  const { value } = task.procedure
+  if (!value) return false
+  if (value.type !== 's_expression') return false
+  return value.node.atom === 'finding'
+}
+
+export function isMeasureTask(task: RenderedTask): task is MeasureTask {
+  const { value } = task.procedure
+  if (!value) return false
+  if (value.type !== 's_expression') return false
+  return value.node.atom === 'measurement'
 }
 
 // TODO Separate function for permission around tasks

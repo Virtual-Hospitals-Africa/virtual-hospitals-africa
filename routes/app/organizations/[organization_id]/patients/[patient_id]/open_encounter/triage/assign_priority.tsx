@@ -5,8 +5,8 @@ import {
   buildReferenceRanges,
   MEASUREMENTS_ORDERED,
   triageLevelFromTEWSTotal,
-  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
   vitalAssessmentOrder,
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
@@ -27,7 +27,7 @@ import { exists } from '../../../../../../../../util/exists.ts'
 import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
 import { intersection } from '../../../../../../../../util/intersection.ts'
 import { patient_procedures } from '../../../../../../../../db/models/patient_procedures.ts'
-import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../../../../../../../shared/workflow.ts'
+import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../../../../../../../shared/workflow.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -61,8 +61,8 @@ async function findingsFromWarningSignsOrAdditionalTasksAndInvestigations(
           patient_id,
           patient_encounter_id,
           specific_snomed_concept_id: [
-            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.warning_signs,
-            WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.additional_tasks_and_investigations,
+            WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.id,
+            WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.additional_tasks_and_investigations.id,
           ],
         },
       ),
@@ -119,11 +119,11 @@ async function sortedVitals(
       patient_id,
       patient_encounter_id,
       measurement_snomed_concept_ids: Object.values(
-        VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
-      ),
+        VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
+      ).map((concept) => concept.id),
       assessment_snomed_concept_ids: Object.values(
-        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
-      ),
+        VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS,
+      ).map((concept) => concept.id),
     })
 
   const previous_vitals = await patient_vitals
@@ -167,7 +167,7 @@ async function sortedVitals(
   ).map((finding) => {
     const evaluation_snomed_concept_ids = intersection(
       finding.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id),
-      Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS),
+      Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS).map((concept) => concept.id),
     )
     const previous = previous_vitals.assessments.find((a) => {
       a.evaluations.some((e) =>
@@ -198,7 +198,7 @@ async function sortedVitals(
     other_measurements_unsorted,
     (m) =>
       m.finding.specific_snomed_concept.snomed_concept_id ===
-          VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.blood_pressure_diastolic
+          VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_diastolic.id
         ? 0
         : 1,
     (m) => m.finding.created_at,
