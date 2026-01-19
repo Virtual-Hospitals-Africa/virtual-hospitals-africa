@@ -3,9 +3,10 @@ import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
 import type { CheckForTask, RecordValueLink, RenderedTask, TaskGroup } from '../../types.ts'
 import partition from '../../util/partition.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
-import { isCheckFor } from '../../shared/tasks.ts'
+import { isCheckForTask, isMeasureTask } from '../../shared/tasks.ts'
 import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
 import isString from '../../util/isString.ts'
+import MeasurementInput from '../vitals/MeasurementInput.tsx'
 
 function ValueDisplay({ value }: { value: string | RecordValueLink }) {
   if (isString(value)) return value
@@ -99,7 +100,8 @@ function TaskGroupCard({
   group: TaskGroup
   organization_id: string
 }) {
-  const [check_for_tasks, just_do_it_tasks] = partition(group.tasks, isCheckFor)
+  const [check_for_tasks, other_tasks] = partition(group.tasks, isCheckForTask)
+  const [measure_tasks, just_do_it_tasks] = partition(other_tasks, isMeasureTask)
 
   return (
     <div class='flex flex-col gap-4'>
@@ -132,6 +134,17 @@ function TaskGroupCard({
           ))}
         </YesNoGrid>
       )}
+
+      {measure_tasks.map((task) => (
+        <MeasurementInput
+          key={task.procedure.record_id}
+          name={`measurements.${task.procedure.record_id}`}
+          required
+          s_expression={task.procedure.value.s_expression}
+          units={task.procedure.value.node.units}
+          label={task.procedure.value.node.snomed_concept.name}
+        />
+      ))}
 
       {/* Just-do-it Tasks (Checkboxes) */}
       {just_do_it_tasks.length > 0 && (

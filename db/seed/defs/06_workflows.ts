@@ -1,5 +1,5 @@
 import { define } from '../define.ts'
-import { WORKFLOW_SNOMED_CONCEPT_IDS, WORKFLOWS } from '../../../shared/workflow.ts'
+import { WORKFLOW_SNOMED_CONCEPTS, WORKFLOWS } from '../../../shared/workflow.ts'
 import entries from '../../../util/entries.ts'
 import { ensureAllEnumValuesExist } from '../../helpers.ts'
 import { forEach } from '../../../util/inParallel.ts'
@@ -12,10 +12,10 @@ import { forEach } from '../../../util/inParallel.ts'
 export default define(['workflows'], async (trx) => {
   await ensureAllEnumValuesExist(trx, 'workflow', WORKFLOWS)
 
-  const workflows = entries(WORKFLOW_SNOMED_CONCEPT_IDS).map(
-    ([workflow, snomed_concept_id], index) => ({
+  const workflows = entries(WORKFLOW_SNOMED_CONCEPTS).map(
+    ([workflow, snomed_concept], index) => ({
       workflow,
-      snomed_concept_id,
+      snomed_concept_id: snomed_concept.id,
       order: index + 1,
     }),
   )

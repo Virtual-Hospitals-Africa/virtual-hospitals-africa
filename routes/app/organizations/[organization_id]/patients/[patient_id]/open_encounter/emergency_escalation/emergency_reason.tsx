@@ -77,7 +77,7 @@ export const handler = postHandler(
       employment_id,
       patient_encounter_id,
       patient_encounter_employee_id,
-      workflow_step_snomed_concept_id,
+      workflow_step_snomed_concept,
     } = ctx.state
 
     const completed_procedure = completedProcedure(ctx)
@@ -124,7 +124,6 @@ export const handler = postHandler(
           : null,
         value_snomed_concept: sign.existence === 'Yes' ? null : {
           atom: 'snomed_concept',
-          type: 'snomed_concept_name_and_category',
           ...NO_QUALIFIER,
         },
       }))
@@ -146,7 +145,7 @@ export const handler = postHandler(
           patient_encounter_employee_id,
           findings: findings_to_insert,
           procedure: completed_procedure || {
-            create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept_id),
+            create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
           },
         },
       )

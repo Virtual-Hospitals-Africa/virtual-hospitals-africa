@@ -7,7 +7,7 @@ import { assert } from 'std/assert/assert.ts'
 import { buildExpression, satisfyingSExpression, snomedConceptBase } from './s_expression.ts'
 import { baseQuery as findingsBaseQuery } from './patient_findings.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import { Lang } from '../../shared/s_expression_schemas.ts'
+import { Comparisons, Lang } from '../../shared/s_expression_schemas.ts'
 import { isMeasurement } from '../../shared/vitals.ts'
 import { MEASUREMENT_FINDING } from '../../shared/snomed_concepts.ts'
 
@@ -17,7 +17,7 @@ type MeasurementInsert = {
   patient_encounter_id: string
   patient_encounter_employee_id: string
   measurement_id?: string
-  measurement_equality: Lang['=']
+  measurement_comparison: Lang[Comparisons]
 }
 
 export function baseQuery(
@@ -90,14 +90,12 @@ export const patient_measurements = base({
       patient_encounter_id,
       patient_encounter_employee_id,
       measurement_id = generateUUID(),
-      measurement_equality: {
-        left: { snomed_concept },
-        right: units,
+      measurement_comparison: {
+        left: { snomed_concept, units },
+        right: value,
       },
     }: MeasurementInsert,
   ) {
-    assert(units.atom === 'units')
-
     return trx.with(
       'inserting_finding_records',
       (qb) =>
@@ -123,8 +121,8 @@ export const patient_measurements = base({
           qb.insertInto('patient_measurements')
             .values({
               id: measurement_id,
-              units: units.units,
-              value: units.value.toFixed(),
+              units,
+              value: value.toFixed(),
             }),
       )
       .selectNoFrom([
@@ -141,7 +139,7 @@ export const patient_measurements = base({
       patient_encounter_id,
       patient_encounter_employee_id,
       procedure_id,
-      measurement_equality,
+      measurement_comparison,
     }: Omit<MeasurementInsert, 'measurement_id'>,
   ) {
     const already_exists = await satisfyingSExpression(
@@ -149,7 +147,7 @@ export const patient_measurements = base({
       {
         patient_id,
         patient_encounter_id,
-        s_expression: measurement_equality,
+        s_expression: measurement_comparison,
       },
     )
 
@@ -166,7 +164,7 @@ export const patient_measurements = base({
       patient_encounter_id,
       patient_encounter_employee_id,
       procedure_id,
-      measurement_equality,
+      measurement_comparison,
     })
   },
 })

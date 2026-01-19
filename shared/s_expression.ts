@@ -110,9 +110,11 @@ export function asNode<
   return parseExpressionExpectingAtom(expression, atom)
 }
 
-export function sExpressionZodValidator<T extends Atom>(atom: T) {
+export function sExpressionZodValidator<Schema extends Values<typeof schemas>>(
+  schema: Schema,
+) {
   return z.string()
-    .transform((expression) => parseExpressionExpectingAtom(expression, atom))
+    .transform((expression) => parseWithSchema(expression, schema))
 }
 
 export function normalForm(s_expression: string): string {
@@ -129,14 +131,18 @@ export function fastNormalForm(expr: string): string {
 }
 
 const UNITS = new Set([
-  '%',
-  'bpm',
-  '°C',
-  'cm',
-  'kg',
-  'mmol/L',
-  'mmHg',
+  '%' as const,
+  'bpm' as const,
+  '°C' as const,
+  'cm' as const,
+  'kg' as const,
+  'mmol/L' as const,
+  'mmHg' as const,
 ])
+
+export const UNITS_ARRAY = Array.from(UNITS)
+
+export type Units = typeof UNITS_ARRAY[number]
 
 function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>): string {
   if (rest.length === 0) return `(${atom})`
@@ -144,8 +150,8 @@ function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>):
     if (Array.isArray(item)) return fastNormalize(item)
     if (snomed_concept_id.safeParse(item).success) return String(item)
     if (positive_decimal.safeParse(item).success) return String(item)
-    if (atom === 'units' && index === 1) {
-      assert(UNITS.has(item as string), `Update UNITS to include ${item}`)
+    if (atom === 'measurement' && index === 1) {
+      assert(UNITS.has(item as unknown as Units), `Update UNITS to include ${item}`)
       return item
     }
     if (atom === 'system_priority_determination' && index === 2) {

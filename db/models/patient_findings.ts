@@ -1,5 +1,5 @@
 import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { arrayAggIds, asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, success_true } from '../helpers.ts'
+import { arrayAggIds, asText, blankSelection, caseWhenMatching, debugLog, jsonBuildObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records } from './patient_records.ts'
 import { RawBuilder, sql } from 'kysely'
@@ -297,6 +297,8 @@ export const patient_findings = base({
       throw new Error('insertMany requires at least one finding')
     }
 
+    console.log('ffkkkkkk', procedure)
+
     const procedure_id = procedure.procedure_id || generateUUID()
 
     // Parse findings and generate IDs
@@ -327,7 +329,7 @@ export const patient_findings = base({
         const attribute_id = generateUUID()
         const { value } = attribute
 
-        if (value?.type === 'event') {
+        if (value?.atom === 'event') {
           attribute_records.push({
             id: attribute_id,
             patient_id,
@@ -398,6 +400,83 @@ export const patient_findings = base({
         })
       }
     }
+
+    debugLog(
+      baseInsertMany(trx, records)
+        .with(
+          'inserting_procedure_record',
+          (qb) =>
+            procedure.create_with_specific_snomed_concept_id
+              ? qb.insertInto('patient_records')
+                .values({
+                  id: procedure_id,
+                  patient_id,
+                  patient_encounter_id,
+                  root_snomed_concept_id: PROCEDURE.id,
+                  specific_snomed_concept_id: procedure.create_with_specific_snomed_concept_id,
+                }).returning('id')
+              : qb.selectNoFrom([
+                literalString(procedure.procedure_id!).as('id'),
+              ]),
+        ).with(
+          'inserting_procedure',
+          (qb) =>
+            procedure.create_with_specific_snomed_concept_id
+              ? qb.insertInto('patient_procedures')
+                .values({
+                  id: procedure_id,
+                  employment_id,
+                  by_system: false,
+                })
+              : blankSelection(qb),
+        )
+        .with(
+          'inserting_findings',
+          (qb) =>
+            qb.insertInto('patient_findings').values(
+              records.map(({ record_id }) => ({
+                id: record_id,
+                procedure_id,
+                patient_encounter_employee_id,
+              })),
+            ),
+        ).with(
+          'inserting_attribute_records',
+          (qb) => attribute_records.length ? qb.insertInto('patient_records').values(attribute_records) : blankSelection(qb),
+        ).with(
+          'inserting_attribute_qualifier_links',
+          (qb) =>
+            attribute_records.length
+              ? qb.insertInto('patient_record_qualifiers').values(
+                attribute_qualifiers,
+              )
+              : blankSelection(qb),
+        ).with(
+          'inserting_events',
+          (qb) => event_values.length ? qb.insertInto('patient_events').values(event_values) : blankSelection(qb),
+        ).with(
+          'inserting_triage_level_records',
+          (qb) => triage_level_records.length ? qb.insertInto('patient_records').values(triage_level_records) : blankSelection(qb),
+        ).with(
+          'inserting_triage_level_evaluations',
+          (qb) =>
+            triage_level_evaluations.length
+              ? qb.insertInto('patient_evaluations').values(
+                triage_level_evaluations,
+              )
+              : blankSelection(qb),
+        ).with(
+          'inserting_triage_levels',
+          (qb) => triage_level_values.length ? qb.insertInto('patient_triage_level').values(triage_level_values) : blankSelection(qb),
+        ).selectFrom('inserting_records')
+        .innerJoin('inserting_procedure_record', (join) => join.onTrue())
+        .groupBy('inserting_procedure_record.id')
+        .select((eb) => [
+          success_true,
+          'inserting_procedure_record.id as procedure_id',
+          arrayAggIds(eb.ref('inserting_records.id')).as('finding_ids'),
+        ]),
+    )
 
     return baseInsertMany(trx, records)
       .with(
@@ -529,7 +608,7 @@ export const patient_findings = base({
       const { value } = attribute
 
       // Event-type attribute
-      if (value?.type === 'event') {
+      if (value?.atom === 'event') {
         return qb.with(
           `inserting_event_record_${id_token}`,
           (qb) =>
@@ -614,8 +693,8 @@ export const patient_findings = base({
     return patient_findings.insertOneNested(trx, insert)
   },
   QUALIFIERS_BY_EXISTENCE: {
-    Yes: YES_QUALIFIER.id,
-    No: NO_QUALIFIER.id,
-    Unknown: UNKNOWN_QUALIFIER.id,
+    Yes: YES_QUALIFIER,
+    No: NO_QUALIFIER,
+    Unknown: UNKNOWN_QUALIFIER,
   },
 })

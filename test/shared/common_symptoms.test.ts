@@ -12,7 +12,6 @@ describe('shared/common_symptoms.ts', () => {
   it('refers to existing snomed concepts in each case', async () => {
     for (const symptom of COMMON_SYMPTOMS) {
       const { specific_snomed_concept } = parseWithSchema(symptom.clinical_finding_s_expression, defined_finding)
-      assert(specific_snomed_concept.type === 'snomed_concept_name_and_category')
       const result = await nameAndCategorySnomedConceptBase(db, specific_snomed_concept)
         .executeTakeFirst()
       assert(result, `No snomed concept found for ${humanReadableJson(symptom)}`)

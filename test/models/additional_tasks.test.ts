@@ -20,10 +20,6 @@ describeParallel('db/models/additional_tasks.ts', () => {
 
         const finding = task.procedure.value
         assert(finding.specific_snomed_concept)
-        assert(
-          finding.specific_snomed_concept.type ===
-            'snomed_concept_name_and_category',
-        )
 
         const { id } = await nameAndCategorySnomedConceptBase(
           db,

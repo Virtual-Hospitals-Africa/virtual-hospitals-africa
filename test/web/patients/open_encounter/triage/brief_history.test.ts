@@ -25,8 +25,9 @@ import { patient_evaluations } from '../../../../../db/models/patient_evaluation
 import sortBy from '../../../../../util/sortBy.ts'
 import { asWarningSigns, setupTriageNewPatient, setupTriageReturningPatient } from './_setup.ts'
 import { patient_procedures } from '../../../../../db/models/patient_procedures.ts'
-import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../../../../shared/workflow.ts'
+import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../../../../shared/workflow.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
+import { MALIGNANT_NEOPLASTIC_DISEASE } from '../../../../../shared/snomed_concepts.ts'
 
 describeParallel('triage/brief_history', () => {
   before(waitUntilTestServerUp)
@@ -64,8 +65,8 @@ describeParallel('triage/brief_history', () => {
           'copd': {
             'existence': 'Chronic Obstructive Pulmonary Disease',
           },
-          'coronavirus': {
-            'existence': 'Coronavirus',
+          'covid19': {
+            'existence': 'COVID-19',
           },
           'heart_disease': {
             'existence': 'Heart Disease',
@@ -121,8 +122,8 @@ describeParallel('triage/brief_history', () => {
           'copd': {
             'existence': 'Chronic Obstructive Pulmonary Disease',
           },
-          'coronavirus': {
-            'existence': 'Coronavirus',
+          'covid19': {
+            'existence': 'COVID-19',
           },
           'heart_disease': {
             'existence': 'Heart Disease',
@@ -174,7 +175,7 @@ describeParallel('triage/brief_history', () => {
             include_negative: true,
             procedure_id: patient_procedures.distinctIds(db, {
               patient_id,
-              specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.brief_history,
+              specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.brief_history.id,
             }),
           }),
           (finding) => finding.displays.full,
@@ -556,7 +557,7 @@ describeParallel('triage/brief_history', () => {
           {
             patient_id,
             patient_encounter_id,
-            s_expression: '(active_condition 363346000)',
+            s_expression: `(active_condition ${MALIGNANT_NEOPLASTIC_DISEASE.s_expression})`,
           },
         )
 
@@ -567,7 +568,7 @@ describeParallel('triage/brief_history', () => {
           {
             patient_id,
             patient_encounter_id: returning.patient_encounter_id,
-            s_expression: '(active_condition 363346000)',
+            s_expression: `(active_condition ${MALIGNANT_NEOPLASTIC_DISEASE.s_expression})`,
           },
         )
 

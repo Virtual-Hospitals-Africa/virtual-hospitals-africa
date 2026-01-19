@@ -798,7 +798,7 @@ describeParallel('triage/warning_signs', () => {
 
         const findings = await patient_findings.findAll(db, {
           patient_id,
-          s_expression: `(not (finding ${STATUS_ATTRIBUTE.id}))`,
+          s_expression: `(not (finding ${STATUS_ATTRIBUTE.s_expression}))`,
         })
         assertLength(findings, 1)
 

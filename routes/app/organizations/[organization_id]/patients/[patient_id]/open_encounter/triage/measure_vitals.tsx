@@ -15,11 +15,11 @@ import {
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
   triageLevelFromTEWSTotal,
-  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
-  VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
+  VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS,
+  VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
 } from '../../../../../../../../shared/vitals.ts'
-import { parseExpressionExpectingAtom, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
-import { forEach, pMap } from '../../../../../../../../util/inParallel.ts'
+import { parseWithSchema, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
+import { pMap } from '../../../../../../../../util/inParallel.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import keys from '../../../../../../../../util/keys.ts'
 import entries from '../../../../../../../../util/entries.ts'
@@ -38,19 +38,20 @@ import { EVALUATION_ACTION, SEVERITY_SCORE } from '../../../../../../../../share
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
+import { comparator, defined_finding } from '../../../../../../../../shared/s_expression_schemas.ts'
 
 export const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
-    z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS)),
+    z.enum(keys(VITAL_MEASUREMENTS_SNOMED_CONCEPTS)),
     z.object({
       value: positive_decimal.optional(),
       units: z.string().min(1),
     }).strict().transform(({ value, units }) => value ? { value, units } : undefined),
   ).default({}),
   assessments: z.partialRecord(
-    z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS)),
+    z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS)),
     z.object({
-      s_expression: sExpressionZodValidator('finding'),
+      s_expression: sExpressionZodValidator(defined_finding),
     }).strict(),
   ).default({}),
 }).strict()
@@ -86,6 +87,7 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
 export const handler = postHandler(
   TriageMeasureVitalsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
+    console.log('got here', form_values)
     const {
       trx,
       health_worker_id,
@@ -110,8 +112,8 @@ export const handler = postHandler(
             patient_encounter_id,
             health_worker_id,
             snomed_concept_ids: Object.values(
-              VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS,
-            ),
+              VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
+            ).map((concept) => concept.id),
           },
         ),
       previous_assessments_this_encounter: patient_vitals
@@ -122,8 +124,8 @@ export const handler = postHandler(
             patient_encounter_id,
             health_worker_id,
             snomed_concept_ids: Object.values(
-              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS,
-            ),
+              VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS,
+            ).map((concept) => concept.id),
           },
         ),
     })
@@ -185,23 +187,23 @@ export const handler = postHandler(
         async ([vital, measurement]) => {
           if (!measurement) return
 
-          const snomed_concept_id = VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS[vital]
-          const measurement_equality = parseExpressionExpectingAtom(
-            `(= (measurement ${snomed_concept_id}) (units ${measurement.value} ${measurement.units}))`,
-            '=',
+          const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
+          const measurement_comparison = parseWithSchema(
+            `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
+            comparator,
           )
           const result = await patient_measurements.insertOneNested(trx, {
             patient_id,
             patient_encounter_id,
             patient_encounter_employee_id,
             procedure_id,
-            measurement_equality,
+            measurement_comparison,
           })
 
           const score = getScoreForMeasurement(
             age_determination,
             vital,
-            measurement_equality.right.value,
+            measurement_comparison.right,
           )
           if (score != null) {
             await patient_evaluation_scores.insertOneNested(trx, {
@@ -210,7 +212,7 @@ export const handler = postHandler(
               patient_encounter_id,
               by_system: true,
               evaluates_record_id: result.measurement_id,
-              evaluation: `(evaluation ${EVALUATION_ACTION.id} ${SEVERITY_SCORE.id})`,
+              evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${SEVERITY_SCORE.s_expression})`,
             })
           }
           return result.measurement_id
@@ -221,6 +223,7 @@ export const handler = postHandler(
         async ([vital, assessment]) => {
           if (!assessment) return
           assert(assessment.s_expression)
+
           const result = await patient_findings.insertOneNested(trx, {
             patient_id,
             patient_encounter_id,
@@ -235,7 +238,7 @@ export const handler = postHandler(
             assessment.s_expression,
           )
           if (score != null) {
-            const evaluation_snomed_concept_id = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPT_IDS[vital]
+            const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
 
             await patient_evaluation_scores.insertOneNested(trx, {
               score,
@@ -243,7 +246,7 @@ export const handler = postHandler(
               patient_encounter_id,
               by_system: true,
               evaluates_record_id: result.finding_id,
-              evaluation: `(evaluation ${EVALUATION_ACTION.id} ${evaluation_snomed_concept_id})`,
+              evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${evaluation_snomed_concept.s_expression})`,
             })
           }
           return result.finding_id
@@ -267,7 +270,7 @@ export const handler = postHandler(
         patient_encounter_id,
         by_system: true,
         evaluates_record_id: procedure_id,
-        evaluation: `(evaluation ${EVALUATION_ACTION.id} ${SEVERITY_SCORE.id})`,
+        evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${SEVERITY_SCORE.s_expression})`,
       },
     )
 

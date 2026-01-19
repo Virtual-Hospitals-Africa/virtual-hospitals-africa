@@ -20,7 +20,6 @@ import { ACTION_STATUS, DUE_TO, EVALUATION_ACTION, RELATIONSHIP, TO_BE_DONE } fr
 import zip from '../../util/zip.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { assert } from 'std/assert/assert.ts'
-import { patient_findings } from './patient_findings.ts'
 import sortBy from '../../util/sortBy.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { asNormalFormSExpression } from '../../shared/patient_records.ts'
@@ -69,7 +68,7 @@ export const additional_tasks = {
         ]),
     )
 
-    console.log('mmkkk')
+    console.log('xyzppp', TASKS[0].procedure)
 
     const all_tasks_query = other_tasks.reduce(
       (acc, curr) => acc.unionAll(curr),
@@ -128,7 +127,7 @@ export const additional_tasks = {
           patient_encounter_id,
           by_system: true,
           evaluates_record_id: procedure.procedure_id,
-          evaluation: `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
+          evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
         },
       ).with(
         'inserting_relation_patient_records',
@@ -159,7 +158,7 @@ export const additional_tasks = {
     const evaluations = await patient_evaluations.findAll(trx, {
       patient_id,
       patient_encounter_id: encounter.patient_encounter_id,
-      s_expression: `(evaluation ${EVALUATION_ACTION.id} ${ACTION_STATUS.id} ${TO_BE_DONE.id})`,
+      s_expression: `(evaluation ${EVALUATION_ACTION.s_expression} ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
     })
 
     if (arrayIsEmpty(evaluations)) {

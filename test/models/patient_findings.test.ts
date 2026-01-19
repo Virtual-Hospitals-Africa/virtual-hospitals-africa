@@ -6,7 +6,7 @@ import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { WORKFLOW_STEP_SNOMED_CONCEPT_IDS } from '../../shared/workflow.ts'
+import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { buildExpression, satisfyingSExpression } from '../../db/models/s_expression.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { patient_record_providers } from '../../db/models/patient_record_providers.ts'
@@ -44,7 +44,7 @@ describeParallel('db/models/patient_findings.ts', () => {
         employment_id: nurse.employee_id,
         procedure: parseExpressionExpectingAtom(
           `(procedure ${PROCEDURE.s_expression}
-          ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
+          ${WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.s_expression})`,
           'procedure',
         ),
       })
@@ -186,7 +186,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       patient_encounter_id: encounter.patient_encounter_id,
       employment_id: nurse.employee_id,
       procedure: parseExpressionExpectingAtom(
-        `(procedure ${PROCEDURE.id} ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
+        `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.s_expression})`,
         'procedure',
       ),
     })
@@ -278,7 +278,7 @@ describeParallel('db/models/patient_findings.ts', () => {
         patient_encounter_id: encounter.patient_encounter_id,
         employment_id: nurse.employee_id,
         procedure: parseExpressionExpectingAtom(
-          `(procedure ${PROCEDURE.id} ${WORKFLOW_STEP_SNOMED_CONCEPT_IDS.triage!.measure_vitals})`,
+          `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.s_expression})`,
           'procedure',
         ),
       })
