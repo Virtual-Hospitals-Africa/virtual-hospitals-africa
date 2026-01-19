@@ -32,6 +32,14 @@ export const SYSTEM_PRIORITY_DETERMINATIONS_DEFS: ['all' | AgeDetermination[], s
         (clinical_finding (snomed_concept "Pulse fast" "finding"))
         (clinical_finding (snomed_concept "Lethargy" "finding")))`,
   ],
+  // [
+  //   ['older child', 'younger child'],
+  //   `(system_priority_determination
+  //     "Emergency: Cold hands + weak & fast pulse + lethargic"
+  //       (clinical_finding (snomed_concept "Cold hands" "finding"))
+  //       Emergency
+  //       (clinical_finding (snomed_concept "Lethargy" "finding")))`,
+  // ],
 ]
 
 export const SYSTEM_PRIORITY_DETERMINATIONS = SYSTEM_PRIORITY_DETERMINATIONS_DEFS.map(asSystemPriorityDetermination)
