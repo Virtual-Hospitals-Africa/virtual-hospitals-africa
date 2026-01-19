@@ -1,7 +1,9 @@
 import z from 'zod'
+import { sql } from 'kysely'
 import { parseRequest } from './parseForm.ts'
 import { LoggedInHealthWorkerContext } from '../types.ts'
 import db from '../db/db.ts'
+import { setApplicationName } from './attachTrx.ts'
 
 export function postHandler<
   // deno-lint-ignore no-explicit-any
@@ -24,9 +26,15 @@ export function postHandler<
       return await db
         .transaction()
         .setIsolationLevel('read committed')
-        .execute((trx) => {
+        .execute(async (trx) => {
           console.log('starting to execute trx')
-          ctx.state.trx = trx
+
+          // Tag queries with application_name for AWS RDS Performance Insights
+          const tag = `${ctx.req.method}:${ctx.url.pathname}`
+          // Note: SET commands don't support parameterized queries, use raw SQL
+          await sql.raw(`SET LOCAL application_name = '${tag.replace(/'/g, "''")}'`).execute(trx)
+
+          ctx.state.trx = setApplicationName(ctx, trx)
           return Promise.resolve(callback(ctx, form_values))
         })
     },

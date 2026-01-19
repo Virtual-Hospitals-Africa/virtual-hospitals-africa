@@ -118,7 +118,6 @@ function isSimpleBaseQuery(
 ): boolean {
   return typeof fn === 'function' && SIMPLE_BASE_QUERY in fn
 }
-
 type BaseModel<
   Tables,
   TopLevelTable extends StandardTables,

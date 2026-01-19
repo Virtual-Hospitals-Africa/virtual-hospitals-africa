@@ -136,10 +136,12 @@ export const this_visit_findings = {
       current_workflow_state: null | CurrentWorkflowState
     },
   ): Promise<RenderedSidebarWorkflow[]> {
+    patient_findings.verbose = true
     const records = await patient_findings.findAll(trx, {
       patient_id: encounter.patient.id,
       patient_encounter_id: encounter.patient_encounter_id,
     })
+    patient_findings.verbose = false
 
     const hydrated = await patient_record_providers.hydrateIntermediateRecords(
       trx,
