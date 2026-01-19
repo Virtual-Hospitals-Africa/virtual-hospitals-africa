@@ -56,6 +56,10 @@ export const TASKS = [
       (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.s_expression} bpm) 9)
       (measure (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %)))`,
   `(task
+    "Check Sp0₂ if respiratory rate >= 15 bpm"
+      (>= (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.s_expression} bpm) 15)
+      (measure (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %)))`,
+  `(task
     "Give oxygen if saturation below 92%"
       (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %) 92)
       (procedure ${PROCEDURE.s_expression} ${OXYGEN_THERAPY.s_expression}))`,
