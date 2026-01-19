@@ -2,6 +2,7 @@ import z from 'zod'
 import { parseRequest } from './parseForm.ts'
 import { LoggedInHealthWorkerContext } from '../types.ts'
 import db from '../db/db.ts'
+import { createNewDatabaseProxy } from './attachTrx.ts'
 
 export function postHandler<
   // deno-lint-ignore no-explicit-any
@@ -26,7 +27,7 @@ export function postHandler<
         .setIsolationLevel('read committed')
         .execute((trx) => {
           console.log('starting to execute trx')
-          ctx.state.trx = trx
+          ctx.state.trx = createNewDatabaseProxy(ctx, trx)
           return Promise.resolve(callback(ctx, form_values))
         })
     },

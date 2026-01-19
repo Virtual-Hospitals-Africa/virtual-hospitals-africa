@@ -2,12 +2,27 @@ import { Context } from 'fresh'
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
 import { isWebsocketPath } from '../util/websocket.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export type TrxContext = Context<
   {
     trx: TrxOrDb
   }
 >
+
+const proxies = new WeakMap<TrxOrDb, TrxContext>()
+
+export function ctxFromTrx(trx: TrxOrDb) {
+  const ctx = proxies.get(trx)
+  assert(ctx)
+  return ctx
+}
+
+export function createNewDatabaseProxy(ctx: TrxContext, trx: TrxOrDb) {
+  const proxy = new Proxy(trx, {});
+  proxies.set(proxy, ctx)
+  return proxy
+}
 
 export function attachTrx(
   ctx: TrxContext,
@@ -16,17 +31,17 @@ export function attachTrx(
   // still need a TrxOrDb on the state object for other middleware.
   // rely on business logic to not do anything that would make this an issue
   if (isWebsocketPath(ctx)) {
-    ctx.state.trx = db
+    ctx.state.trx = createNewDatabaseProxy(ctx, db)
     return ctx.next()
   }
 
   // TODO, make a separate read-replica connection for GETs when we ensure GETs are non-mutative, implement this
   // connecting to a read replica
   if (ctx.req.method === 'GET') {
-    ctx.state.trx = db
+    ctx.state.trx = createNewDatabaseProxy(ctx, db)
     return ctx.next()
   }
 
-  ctx.state.trx = db
+  ctx.state.trx = createNewDatabaseProxy(ctx, db)
   return ctx.next()
 }
