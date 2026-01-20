@@ -2,7 +2,6 @@ import { Context } from 'fresh'
 import { sql } from 'kysely'
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
-import { isWebsocketPath } from '../util/websocket.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export type TrxContext = Context<
@@ -11,48 +10,49 @@ export type TrxContext = Context<
   }
 >
 
-// const proxies = new WeakMap<TrxOrDb, TrxContext>()
+// Map trx/db objects to their associated context
+const trxContextMap = new WeakMap<TrxOrDb, TrxContext>()
 
-// export function ctxFromTrx(trx: TrxOrDb) {
-//   const ctx = proxies.get(trx)
-//   assert(ctx)
-//   return ctx
-// }
+export function ctxFromTrx(trx: TrxOrDb) {
+  const ctx = trxContextMap.get(trx)
+  assert(ctx, 'trx not found in context map')
+  return ctx
+}
 
-export function createNewDatabaseProxy(ctx: TrxContext, trx: TrxOrDb) {
-  // const proxy = new Proxy(trx, {})
-  // proxies.set(proxy, ctx)
+export function setApplicationName(ctx: TrxContext, trx: TrxOrDb) {
+  // Store the context association for later lookup
+  trxContextMap.set(trx, ctx)
 
-  // Tag non-transactional queries with application_name
-  // For transactions, this is handled in postHandler.ts with SET LOCAL
-  const tag = `${ctx.req.method}:${ctx.url.pathname}`
-  // Note: SET commands don't support parameterized queries, use raw SQL
-  sql.raw(`SET application_name = '${tag.replace(/'/g, "''")}'`).execute(trx).catch(() => {
-    // Ignore errors - this might be a transaction where SET LOCAL is used instead
-  })
+  // For non-transactional queries on the pool, we CAN'T safely set application_name
+  // because it would affect whichever connection from the pool executes the SET,
+  // creating race conditions where queries get tagged with the wrong route.
+  //
+  // For transactions, application_name is set via SET LOCAL in postHandler.ts
+  // which is transaction-scoped and safe.
 
   return trx
-  // return proxy
 }
 
 export function attachTrx(
   ctx: TrxContext,
 ) {
-  // Semi-hacky, just attach the db for websocket routes as we
-  // still need a TrxOrDb on the state object for other middleware.
-  // rely on business logic to not do anything that would make this an issue
-  if (isWebsocketPath(ctx)) {
-    ctx.state.trx = createNewDatabaseProxy(ctx, db)
-    return ctx.next()
-  }
+  // Use db.connection() to get a dedicated connection from the pool
+  // This allows us to set application_name per-request without race conditions
+  return db.connection().execute(async (conn) => {
+    // Tag this connection with application_name for monitoring
+    
+    // application_name limited to 63 bytes, so saving some space
+    const tag = `${ctx.req.method}:${ctx.url.pathname}`
+      .replaceAll(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g, ':id')
+      .replace('/organizations', '/orgs')
+      .replace('/patients', '/ps')
+      .replace('/open_encounter', '/o_e')
 
-  // TODO, make a separate read-replica connection for GETs when we ensure GETs are non-mutative, implement this
-  // connecting to a read replica
-  if (ctx.req.method === 'GET') {
-    ctx.state.trx = createNewDatabaseProxy(ctx, db)
-    return ctx.next()
-  }
+    await sql.raw(`SET application_name = '${tag.replace(/'/g, "''")}'`).execute(conn)
 
-  ctx.state.trx = createNewDatabaseProxy(ctx, db)
-  return ctx.next()
+    // Store the connection in the WeakMap for ctxFromTrx lookups
+    ctx.state.trx = setApplicationName(ctx, conn)
+
+    return await ctx.next()
+  })
 }

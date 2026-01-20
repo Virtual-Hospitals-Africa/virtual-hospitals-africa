@@ -3,7 +3,7 @@ import { sql } from 'kysely'
 import { parseRequest } from './parseForm.ts'
 import { LoggedInHealthWorkerContext } from '../types.ts'
 import db from '../db/db.ts'
-import { createNewDatabaseProxy } from './attachTrx.ts'
+import { setApplicationName } from './attachTrx.ts'
 
 export function postHandler<
   // deno-lint-ignore no-explicit-any
@@ -34,7 +34,7 @@ export function postHandler<
           // Note: SET commands don't support parameterized queries, use raw SQL
           await sql.raw(`SET LOCAL application_name = '${tag.replace(/'/g, "''")}'`).execute(trx)
 
-          ctx.state.trx = createNewDatabaseProxy(ctx, trx)
+          ctx.state.trx = setApplicationName(ctx, trx)
           return Promise.resolve(callback(ctx, form_values))
         })
     },
