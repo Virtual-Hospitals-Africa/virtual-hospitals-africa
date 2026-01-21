@@ -17,6 +17,12 @@ export async function up(db: Kysely<DB>) {
         (col) => col.references('patient_records.id').notNull().onDelete('cascade'),
       ),
   )
+
+  await db.schema
+    .createIndex('idx_patient_record_qualifiers_qualifies_record_id')
+    .on('patient_record_qualifiers')
+    .column('qualifies_record_id')
+    .execute()
 }
 
 export function down(db: Kysely<DB>) {

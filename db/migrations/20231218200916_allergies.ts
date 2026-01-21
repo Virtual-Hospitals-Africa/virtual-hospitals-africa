@@ -21,6 +21,12 @@ export async function up(db: Kysely<DB>) {
         'snomed_concept_id',
         'patient_id',
       ]))
+
+  await db.schema
+    .createIndex('idx_patient_allergies_patient_id')
+    .on('patient_allergies')
+    .column('patient_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

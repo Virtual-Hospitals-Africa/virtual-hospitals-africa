@@ -84,6 +84,18 @@ export async function up(db: Kysely<DB>) {
     FOR EACH ROW
     EXECUTE FUNCTION create_event_listeners_on_event_insert();
   `.execute(db)
+
+  await db.schema
+    .createIndex('idx_event_listeners_event_id')
+    .on('event_listeners')
+    .column('event_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_event_listeners_listener_name')
+    .on('event_listeners')
+    .column('listener_name')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

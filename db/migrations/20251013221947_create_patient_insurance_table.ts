@@ -17,6 +17,12 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('expire_date', 'date', (col) => col.notNull())
         .addColumn('is_dependent', 'boolean', (col) => col.notNull()),
   )
+
+  await db.schema
+    .createIndex('idx_patient_insurance_patient_id')
+    .on('patient_insurance')
+    .column('patient_id')
+    .execute()
 }
 
 export async function down(db: Kysely<unknown>) {

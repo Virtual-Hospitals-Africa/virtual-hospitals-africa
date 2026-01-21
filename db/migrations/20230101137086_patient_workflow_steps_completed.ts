@@ -50,6 +50,18 @@ export async function up(db: Kysely<DB>) {
           'workflow_step',
         ]),
   )
+
+  await db.schema
+    .createIndex('idx_patient_workflows_started_patient_encounter_employee_id')
+    .on('patient_workflows_started')
+    .column('patient_encounter_employee_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_workflow_steps_completed_workflow_step')
+    .on('patient_workflow_steps_completed')
+    .column('workflow_step')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

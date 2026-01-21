@@ -20,6 +20,18 @@ export async function up(db: Kysely<DB>) {
             .references('employment.id')
             .onDelete('cascade')),
   )
+
+  await db.schema
+    .createIndex('idx_patient_registration_organization_id')
+    .on('patient_registration')
+    .column('organization_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_registration_being_taken_by')
+    .on('patient_registration')
+    .column('being_taken_by')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {
