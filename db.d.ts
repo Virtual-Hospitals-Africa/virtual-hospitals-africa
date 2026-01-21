@@ -987,6 +987,118 @@ export interface PatientChiefComplaints {
   patient_id: string
 }
 
+export interface PatientChiefComplaintsP0 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP1 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP10 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP11 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP12 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP13 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP14 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP15 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP2 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP3 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP4 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP5 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP6 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP7 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP8 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
+export interface PatientChiefComplaintsP9 {
+  id: string
+  language_code: string
+  note: string
+  patient_id: string
+}
+
 export interface PatientComputedFindings {
   computation_algorithm_version: string
   computation_metadata: Generated<Json>
@@ -1005,6 +1117,326 @@ export interface PatientComputedFindingsInputs {
   input_measurement_id: string
   patient_id: string
   updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP0 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP1 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP10 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP11 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP12 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP13 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP14 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP15 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP2 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP3 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP4 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP5 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP6 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP7 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP8 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsInputsP9 {
+  computed_finding_id: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  input_measurement_id: string
+  patient_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientComputedFindingsP0 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP1 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP10 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP11 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP12 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP13 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP14 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP15 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP2 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP3 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP4 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP5 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP6 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP7 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP8 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
+}
+
+export interface PatientComputedFindingsP9 {
+  computation_algorithm_version: string
+  computation_metadata: Generated<Json>
+  created_at: Generated<Timestamp>
+  full_display: string | null
+  id: string
+  patient_id: string
+  units: string | null
+  value: Numeric | null
 }
 
 export interface PatientConditionMedications {
@@ -1081,7 +1513,375 @@ export interface PatientEvaluationScores {
   score: number
 }
 
+export interface PatientEvaluationScoresP0 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP1 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP10 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP11 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP12 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP13 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP14 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP15 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP2 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP3 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP4 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP5 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP6 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP7 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP8 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationScoresP9 {
+  id: string
+  patient_id: string
+  score: number
+}
+
+export interface PatientEvaluationsP0 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP1 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP10 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP11 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP12 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP13 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP14 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP15 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP2 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP3 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP4 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP5 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP6 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP7 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP8 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
+export interface PatientEvaluationsP9 {
+  by_system: boolean
+  employment_id: string | null
+  evaluates_record_id: string
+  id: string
+  patient_id: string
+  procedure_id: string | null
+}
+
 export interface PatientEvents {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP0 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP1 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP10 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP11 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP12 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP13 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP14 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP15 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP2 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP3 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP4 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP5 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP6 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP7 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP8 {
+  address_id: string | null
+  datetime: Timestamp
+  id: string
+  location: string | null
+  patient_id: string
+}
+
+export interface PatientEventsP9 {
   address_id: string | null
   datetime: Timestamp
   id: string
@@ -1137,6 +1937,118 @@ export interface PatientFindingMediaImages {
   patient_id: string
 }
 
+export interface PatientFindingMediaImagesP0 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP1 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP10 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP11 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP12 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP13 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP14 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP15 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP2 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP3 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP4 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP5 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP6 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP7 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP8 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaImagesP9 {
+  finding_id: string
+  id: string
+  media_image_id: string
+  patient_id: string
+}
+
 export interface PatientFindingMediaSpeeches {
   finding_id: string
   id: string
@@ -1144,7 +2056,231 @@ export interface PatientFindingMediaSpeeches {
   patient_id: string
 }
 
+export interface PatientFindingMediaSpeechesP0 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP1 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP10 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP11 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP12 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP13 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP14 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP15 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP2 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP3 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP4 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP5 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP6 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP7 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP8 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
+export interface PatientFindingMediaSpeechesP9 {
+  finding_id: string
+  id: string
+  media_speech_id: string
+  patient_id: string
+}
+
 export interface PatientFindings {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP0 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP1 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP10 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP11 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP12 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP13 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP14 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP15 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP2 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP3 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP4 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP5 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP6 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP7 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP8 {
+  id: string
+  patient_encounter_employee_id: string
+  patient_id: string
+  procedure_id: string
+}
+
+export interface PatientFindingsP9 {
   id: string
   patient_encounter_employee_id: string
   patient_id: string
@@ -1203,6 +2339,134 @@ export interface PatientMeasurements {
   value: Numeric
 }
 
+export interface PatientMeasurementsP0 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP1 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP10 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP11 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP12 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP13 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP14 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP15 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP2 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP3 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP4 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP5 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP6 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP7 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP8 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
+export interface PatientMeasurementsP9 {
+  comparator: Generated<Comparator>
+  id: string
+  patient_id: string
+  units: string
+  value: Numeric
+}
+
 export interface PatientOccupations {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -1231,7 +2495,263 @@ export interface PatientProcedures {
   patient_id: string
 }
 
+export interface PatientProceduresP0 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP1 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP10 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP11 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP12 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP13 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP14 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP15 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP2 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP3 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP4 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP5 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP6 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP7 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP8 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
+export interface PatientProceduresP9 {
+  as_part_of_procedure_id: string | null
+  by_system: boolean
+  employment_id: string | null
+  id: string
+  patient_id: string
+}
+
 export interface PatientRecordLinks {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP0 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP1 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP10 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP11 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP12 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP13 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP14 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP15 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP2 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP3 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP4 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP5 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP6 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP7 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP8 {
+  href: string
+  id: string
+  patient_id: string
+  thumbnail_href: string | null
+  title: string
+}
+
+export interface PatientRecordLinksP9 {
   href: string
   id: string
   patient_id: string
@@ -1245,7 +2765,215 @@ export interface PatientRecordQualifiers {
   qualifies_record_id: string
 }
 
+export interface PatientRecordQualifiersP0 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP1 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP10 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP11 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP12 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP13 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP14 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP15 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP2 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP3 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP4 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP5 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP6 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP7 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP8 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
+export interface PatientRecordQualifiersP9 {
+  id: string
+  patient_id: string
+  qualifies_record_id: string
+}
+
 export interface PatientRecordRelations {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP0 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP1 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP10 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP11 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP12 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP13 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP14 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP15 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP2 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP3 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP4 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP5 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP6 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP7 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP8 {
+  destination_id: string
+  id: string
+  patient_id: string
+  source_id: string
+}
+
+export interface PatientRecordRelationsP9 {
   destination_id: string
   id: string
   patient_id: string
@@ -1269,7 +2997,423 @@ export interface PatientRecordSExpressions {
   s_expression: string
 }
 
+export interface PatientRecordSExpressionsP0 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP1 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP10 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP11 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP12 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP13 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP14 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP15 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP2 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP3 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP4 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP5 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP6 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP7 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP8 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordSExpressionsP9 {
+  id: string
+  patient_id: string
+  s_expression: string
+}
+
+export interface PatientRecordsP0 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP1 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP10 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP11 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP12 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP13 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP14 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP15 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP2 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP3 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP4 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP5 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP6 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP7 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP8 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
+export interface PatientRecordsP9 {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_encounter_id: string
+  patient_id: string
+  root_snomed_concept_id: Int8
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
 export interface PatientReferrals {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP0 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP1 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP10 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP11 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP12 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP13 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP14 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP15 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP2 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP3 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP4 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP5 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP6 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP7 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP8 {
+  employment_id: string | null
+  id: string
+  organization_department_id: string | null
+  organization_id: string | null
+  organization_room_id: string | null
+  patient_id: string
+}
+
+export interface PatientReferralsP9 {
   employment_id: string | null
   id: string
   organization_department_id: string | null
@@ -1321,7 +3465,263 @@ export interface PatientSymptoms {
   start_date: Timestamp
 }
 
+export interface PatientSymptomsP0 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP1 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP10 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP11 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP12 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP13 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP14 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP15 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP2 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP3 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP4 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP5 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP6 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP7 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP8 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
+export interface PatientSymptomsP9 {
+  end_date: Timestamp | null
+  id: string
+  notes: string | null
+  patient_id: string
+  severity: number
+  start_date: Timestamp
+}
+
 export interface PatientTriageLevel {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP0 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP1 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP10 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP11 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP12 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP13 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP14 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP15 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP2 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP3 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP4 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP5 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP6 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP7 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP8 {
+  created_at: Generated<Timestamp>
+  id: string
+  patient_id: string
+  target_treatment_time: Timestamp | null
+}
+
+export interface PatientTriageLevelP9 {
   created_at: Generated<Timestamp>
   id: string
   patient_id: string
@@ -2057,40 +4457,344 @@ export interface DB {
   patient_chatbot_user_whatsapp_messages_received: PatientChatbotUserWhatsappMessagesReceived
   patient_chatbot_users: PatientChatbotUsers
   patient_chief_complaints: PatientChiefComplaints
+  patient_chief_complaints_p0: PatientChiefComplaintsP0
+  patient_chief_complaints_p1: PatientChiefComplaintsP1
+  patient_chief_complaints_p10: PatientChiefComplaintsP10
+  patient_chief_complaints_p11: PatientChiefComplaintsP11
+  patient_chief_complaints_p12: PatientChiefComplaintsP12
+  patient_chief_complaints_p13: PatientChiefComplaintsP13
+  patient_chief_complaints_p14: PatientChiefComplaintsP14
+  patient_chief_complaints_p15: PatientChiefComplaintsP15
+  patient_chief_complaints_p2: PatientChiefComplaintsP2
+  patient_chief_complaints_p3: PatientChiefComplaintsP3
+  patient_chief_complaints_p4: PatientChiefComplaintsP4
+  patient_chief_complaints_p5: PatientChiefComplaintsP5
+  patient_chief_complaints_p6: PatientChiefComplaintsP6
+  patient_chief_complaints_p7: PatientChiefComplaintsP7
+  patient_chief_complaints_p8: PatientChiefComplaintsP8
+  patient_chief_complaints_p9: PatientChiefComplaintsP9
   patient_computed_findings: PatientComputedFindings
   patient_computed_findings_inputs: PatientComputedFindingsInputs
+  patient_computed_findings_inputs_p0: PatientComputedFindingsInputsP0
+  patient_computed_findings_inputs_p1: PatientComputedFindingsInputsP1
+  patient_computed_findings_inputs_p10: PatientComputedFindingsInputsP10
+  patient_computed_findings_inputs_p11: PatientComputedFindingsInputsP11
+  patient_computed_findings_inputs_p12: PatientComputedFindingsInputsP12
+  patient_computed_findings_inputs_p13: PatientComputedFindingsInputsP13
+  patient_computed_findings_inputs_p14: PatientComputedFindingsInputsP14
+  patient_computed_findings_inputs_p15: PatientComputedFindingsInputsP15
+  patient_computed_findings_inputs_p2: PatientComputedFindingsInputsP2
+  patient_computed_findings_inputs_p3: PatientComputedFindingsInputsP3
+  patient_computed_findings_inputs_p4: PatientComputedFindingsInputsP4
+  patient_computed_findings_inputs_p5: PatientComputedFindingsInputsP5
+  patient_computed_findings_inputs_p6: PatientComputedFindingsInputsP6
+  patient_computed_findings_inputs_p7: PatientComputedFindingsInputsP7
+  patient_computed_findings_inputs_p8: PatientComputedFindingsInputsP8
+  patient_computed_findings_inputs_p9: PatientComputedFindingsInputsP9
+  patient_computed_findings_p0: PatientComputedFindingsP0
+  patient_computed_findings_p1: PatientComputedFindingsP1
+  patient_computed_findings_p10: PatientComputedFindingsP10
+  patient_computed_findings_p11: PatientComputedFindingsP11
+  patient_computed_findings_p12: PatientComputedFindingsP12
+  patient_computed_findings_p13: PatientComputedFindingsP13
+  patient_computed_findings_p14: PatientComputedFindingsP14
+  patient_computed_findings_p15: PatientComputedFindingsP15
+  patient_computed_findings_p2: PatientComputedFindingsP2
+  patient_computed_findings_p3: PatientComputedFindingsP3
+  patient_computed_findings_p4: PatientComputedFindingsP4
+  patient_computed_findings_p5: PatientComputedFindingsP5
+  patient_computed_findings_p6: PatientComputedFindingsP6
+  patient_computed_findings_p7: PatientComputedFindingsP7
+  patient_computed_findings_p8: PatientComputedFindingsP8
+  patient_computed_findings_p9: PatientComputedFindingsP9
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
   patient_emergency_contacts: PatientEmergencyContacts
   patient_encounter_employees: PatientEncounterEmployees
   patient_encounters: PatientEncounters
   patient_evaluation_scores: PatientEvaluationScores
+  patient_evaluation_scores_p0: PatientEvaluationScoresP0
+  patient_evaluation_scores_p1: PatientEvaluationScoresP1
+  patient_evaluation_scores_p10: PatientEvaluationScoresP10
+  patient_evaluation_scores_p11: PatientEvaluationScoresP11
+  patient_evaluation_scores_p12: PatientEvaluationScoresP12
+  patient_evaluation_scores_p13: PatientEvaluationScoresP13
+  patient_evaluation_scores_p14: PatientEvaluationScoresP14
+  patient_evaluation_scores_p15: PatientEvaluationScoresP15
+  patient_evaluation_scores_p2: PatientEvaluationScoresP2
+  patient_evaluation_scores_p3: PatientEvaluationScoresP3
+  patient_evaluation_scores_p4: PatientEvaluationScoresP4
+  patient_evaluation_scores_p5: PatientEvaluationScoresP5
+  patient_evaluation_scores_p6: PatientEvaluationScoresP6
+  patient_evaluation_scores_p7: PatientEvaluationScoresP7
+  patient_evaluation_scores_p8: PatientEvaluationScoresP8
+  patient_evaluation_scores_p9: PatientEvaluationScoresP9
   patient_evaluations: PatientEvaluations
+  patient_evaluations_p0: PatientEvaluationsP0
+  patient_evaluations_p1: PatientEvaluationsP1
+  patient_evaluations_p10: PatientEvaluationsP10
+  patient_evaluations_p11: PatientEvaluationsP11
+  patient_evaluations_p12: PatientEvaluationsP12
+  patient_evaluations_p13: PatientEvaluationsP13
+  patient_evaluations_p14: PatientEvaluationsP14
+  patient_evaluations_p15: PatientEvaluationsP15
+  patient_evaluations_p2: PatientEvaluationsP2
+  patient_evaluations_p3: PatientEvaluationsP3
+  patient_evaluations_p4: PatientEvaluationsP4
+  patient_evaluations_p5: PatientEvaluationsP5
+  patient_evaluations_p6: PatientEvaluationsP6
+  patient_evaluations_p7: PatientEvaluationsP7
+  patient_evaluations_p8: PatientEvaluationsP8
+  patient_evaluations_p9: PatientEvaluationsP9
   patient_events: PatientEvents
+  patient_events_p0: PatientEventsP0
+  patient_events_p1: PatientEventsP1
+  patient_events_p10: PatientEventsP10
+  patient_events_p11: PatientEventsP11
+  patient_events_p12: PatientEventsP12
+  patient_events_p13: PatientEventsP13
+  patient_events_p14: PatientEventsP14
+  patient_events_p15: PatientEventsP15
+  patient_events_p2: PatientEventsP2
+  patient_events_p3: PatientEventsP3
+  patient_events_p4: PatientEventsP4
+  patient_events_p5: PatientEventsP5
+  patient_events_p6: PatientEventsP6
+  patient_events_p7: PatientEventsP7
+  patient_events_p8: PatientEventsP8
+  patient_events_p9: PatientEventsP9
   patient_examination_finding_body_sites: PatientExaminationFindingBodySites
   patient_examination_findings: PatientExaminationFindings
   patient_examinations: PatientExaminations
   patient_family: PatientFamily
   patient_finding_media_images: PatientFindingMediaImages
+  patient_finding_media_images_p0: PatientFindingMediaImagesP0
+  patient_finding_media_images_p1: PatientFindingMediaImagesP1
+  patient_finding_media_images_p10: PatientFindingMediaImagesP10
+  patient_finding_media_images_p11: PatientFindingMediaImagesP11
+  patient_finding_media_images_p12: PatientFindingMediaImagesP12
+  patient_finding_media_images_p13: PatientFindingMediaImagesP13
+  patient_finding_media_images_p14: PatientFindingMediaImagesP14
+  patient_finding_media_images_p15: PatientFindingMediaImagesP15
+  patient_finding_media_images_p2: PatientFindingMediaImagesP2
+  patient_finding_media_images_p3: PatientFindingMediaImagesP3
+  patient_finding_media_images_p4: PatientFindingMediaImagesP4
+  patient_finding_media_images_p5: PatientFindingMediaImagesP5
+  patient_finding_media_images_p6: PatientFindingMediaImagesP6
+  patient_finding_media_images_p7: PatientFindingMediaImagesP7
+  patient_finding_media_images_p8: PatientFindingMediaImagesP8
+  patient_finding_media_images_p9: PatientFindingMediaImagesP9
   patient_finding_media_speeches: PatientFindingMediaSpeeches
+  patient_finding_media_speeches_p0: PatientFindingMediaSpeechesP0
+  patient_finding_media_speeches_p1: PatientFindingMediaSpeechesP1
+  patient_finding_media_speeches_p10: PatientFindingMediaSpeechesP10
+  patient_finding_media_speeches_p11: PatientFindingMediaSpeechesP11
+  patient_finding_media_speeches_p12: PatientFindingMediaSpeechesP12
+  patient_finding_media_speeches_p13: PatientFindingMediaSpeechesP13
+  patient_finding_media_speeches_p14: PatientFindingMediaSpeechesP14
+  patient_finding_media_speeches_p15: PatientFindingMediaSpeechesP15
+  patient_finding_media_speeches_p2: PatientFindingMediaSpeechesP2
+  patient_finding_media_speeches_p3: PatientFindingMediaSpeechesP3
+  patient_finding_media_speeches_p4: PatientFindingMediaSpeechesP4
+  patient_finding_media_speeches_p5: PatientFindingMediaSpeechesP5
+  patient_finding_media_speeches_p6: PatientFindingMediaSpeechesP6
+  patient_finding_media_speeches_p7: PatientFindingMediaSpeechesP7
+  patient_finding_media_speeches_p8: PatientFindingMediaSpeechesP8
+  patient_finding_media_speeches_p9: PatientFindingMediaSpeechesP9
   patient_findings: PatientFindings
+  patient_findings_p0: PatientFindingsP0
+  patient_findings_p1: PatientFindingsP1
+  patient_findings_p10: PatientFindingsP10
+  patient_findings_p11: PatientFindingsP11
+  patient_findings_p12: PatientFindingsP12
+  patient_findings_p13: PatientFindingsP13
+  patient_findings_p14: PatientFindingsP14
+  patient_findings_p15: PatientFindingsP15
+  patient_findings_p2: PatientFindingsP2
+  patient_findings_p3: PatientFindingsP3
+  patient_findings_p4: PatientFindingsP4
+  patient_findings_p5: PatientFindingsP5
+  patient_findings_p6: PatientFindingsP6
+  patient_findings_p7: PatientFindingsP7
+  patient_findings_p8: PatientFindingsP8
+  patient_findings_p9: PatientFindingsP9
   patient_guardians: PatientGuardians
   patient_insurance: PatientInsurance
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
+  patient_measurements_p0: PatientMeasurementsP0
+  patient_measurements_p1: PatientMeasurementsP1
+  patient_measurements_p10: PatientMeasurementsP10
+  patient_measurements_p11: PatientMeasurementsP11
+  patient_measurements_p12: PatientMeasurementsP12
+  patient_measurements_p13: PatientMeasurementsP13
+  patient_measurements_p14: PatientMeasurementsP14
+  patient_measurements_p15: PatientMeasurementsP15
+  patient_measurements_p2: PatientMeasurementsP2
+  patient_measurements_p3: PatientMeasurementsP3
+  patient_measurements_p4: PatientMeasurementsP4
+  patient_measurements_p5: PatientMeasurementsP5
+  patient_measurements_p6: PatientMeasurementsP6
+  patient_measurements_p7: PatientMeasurementsP7
+  patient_measurements_p8: PatientMeasurementsP8
+  patient_measurements_p9: PatientMeasurementsP9
   patient_occupations: PatientOccupations
   patient_presence: PatientPresence
   patient_procedures: PatientProcedures
+  patient_procedures_p0: PatientProceduresP0
+  patient_procedures_p1: PatientProceduresP1
+  patient_procedures_p10: PatientProceduresP10
+  patient_procedures_p11: PatientProceduresP11
+  patient_procedures_p12: PatientProceduresP12
+  patient_procedures_p13: PatientProceduresP13
+  patient_procedures_p14: PatientProceduresP14
+  patient_procedures_p15: PatientProceduresP15
+  patient_procedures_p2: PatientProceduresP2
+  patient_procedures_p3: PatientProceduresP3
+  patient_procedures_p4: PatientProceduresP4
+  patient_procedures_p5: PatientProceduresP5
+  patient_procedures_p6: PatientProceduresP6
+  patient_procedures_p7: PatientProceduresP7
+  patient_procedures_p8: PatientProceduresP8
+  patient_procedures_p9: PatientProceduresP9
   patient_record_links: PatientRecordLinks
+  patient_record_links_p0: PatientRecordLinksP0
+  patient_record_links_p1: PatientRecordLinksP1
+  patient_record_links_p10: PatientRecordLinksP10
+  patient_record_links_p11: PatientRecordLinksP11
+  patient_record_links_p12: PatientRecordLinksP12
+  patient_record_links_p13: PatientRecordLinksP13
+  patient_record_links_p14: PatientRecordLinksP14
+  patient_record_links_p15: PatientRecordLinksP15
+  patient_record_links_p2: PatientRecordLinksP2
+  patient_record_links_p3: PatientRecordLinksP3
+  patient_record_links_p4: PatientRecordLinksP4
+  patient_record_links_p5: PatientRecordLinksP5
+  patient_record_links_p6: PatientRecordLinksP6
+  patient_record_links_p7: PatientRecordLinksP7
+  patient_record_links_p8: PatientRecordLinksP8
+  patient_record_links_p9: PatientRecordLinksP9
   patient_record_qualifiers: PatientRecordQualifiers
+  patient_record_qualifiers_p0: PatientRecordQualifiersP0
+  patient_record_qualifiers_p1: PatientRecordQualifiersP1
+  patient_record_qualifiers_p10: PatientRecordQualifiersP10
+  patient_record_qualifiers_p11: PatientRecordQualifiersP11
+  patient_record_qualifiers_p12: PatientRecordQualifiersP12
+  patient_record_qualifiers_p13: PatientRecordQualifiersP13
+  patient_record_qualifiers_p14: PatientRecordQualifiersP14
+  patient_record_qualifiers_p15: PatientRecordQualifiersP15
+  patient_record_qualifiers_p2: PatientRecordQualifiersP2
+  patient_record_qualifiers_p3: PatientRecordQualifiersP3
+  patient_record_qualifiers_p4: PatientRecordQualifiersP4
+  patient_record_qualifiers_p5: PatientRecordQualifiersP5
+  patient_record_qualifiers_p6: PatientRecordQualifiersP6
+  patient_record_qualifiers_p7: PatientRecordQualifiersP7
+  patient_record_qualifiers_p8: PatientRecordQualifiersP8
+  patient_record_qualifiers_p9: PatientRecordQualifiersP9
   patient_record_relations: PatientRecordRelations
+  patient_record_relations_p0: PatientRecordRelationsP0
+  patient_record_relations_p1: PatientRecordRelationsP1
+  patient_record_relations_p10: PatientRecordRelationsP10
+  patient_record_relations_p11: PatientRecordRelationsP11
+  patient_record_relations_p12: PatientRecordRelationsP12
+  patient_record_relations_p13: PatientRecordRelationsP13
+  patient_record_relations_p14: PatientRecordRelationsP14
+  patient_record_relations_p15: PatientRecordRelationsP15
+  patient_record_relations_p2: PatientRecordRelationsP2
+  patient_record_relations_p3: PatientRecordRelationsP3
+  patient_record_relations_p4: PatientRecordRelationsP4
+  patient_record_relations_p5: PatientRecordRelationsP5
+  patient_record_relations_p6: PatientRecordRelationsP6
+  patient_record_relations_p7: PatientRecordRelationsP7
+  patient_record_relations_p8: PatientRecordRelationsP8
+  patient_record_relations_p9: PatientRecordRelationsP9
   patient_record_s_expressions: PatientRecordSExpressions
+  patient_record_s_expressions_p0: PatientRecordSExpressionsP0
+  patient_record_s_expressions_p1: PatientRecordSExpressionsP1
+  patient_record_s_expressions_p10: PatientRecordSExpressionsP10
+  patient_record_s_expressions_p11: PatientRecordSExpressionsP11
+  patient_record_s_expressions_p12: PatientRecordSExpressionsP12
+  patient_record_s_expressions_p13: PatientRecordSExpressionsP13
+  patient_record_s_expressions_p14: PatientRecordSExpressionsP14
+  patient_record_s_expressions_p15: PatientRecordSExpressionsP15
+  patient_record_s_expressions_p2: PatientRecordSExpressionsP2
+  patient_record_s_expressions_p3: PatientRecordSExpressionsP3
+  patient_record_s_expressions_p4: PatientRecordSExpressionsP4
+  patient_record_s_expressions_p5: PatientRecordSExpressionsP5
+  patient_record_s_expressions_p6: PatientRecordSExpressionsP6
+  patient_record_s_expressions_p7: PatientRecordSExpressionsP7
+  patient_record_s_expressions_p8: PatientRecordSExpressionsP8
+  patient_record_s_expressions_p9: PatientRecordSExpressionsP9
   patient_records: PatientRecords
+  patient_records_p0: PatientRecordsP0
+  patient_records_p1: PatientRecordsP1
+  patient_records_p10: PatientRecordsP10
+  patient_records_p11: PatientRecordsP11
+  patient_records_p12: PatientRecordsP12
+  patient_records_p13: PatientRecordsP13
+  patient_records_p14: PatientRecordsP14
+  patient_records_p15: PatientRecordsP15
+  patient_records_p2: PatientRecordsP2
+  patient_records_p3: PatientRecordsP3
+  patient_records_p4: PatientRecordsP4
+  patient_records_p5: PatientRecordsP5
+  patient_records_p6: PatientRecordsP6
+  patient_records_p7: PatientRecordsP7
+  patient_records_p8: PatientRecordsP8
+  patient_records_p9: PatientRecordsP9
   patient_referrals: PatientReferrals
+  patient_referrals_p0: PatientReferralsP0
+  patient_referrals_p1: PatientReferralsP1
+  patient_referrals_p10: PatientReferralsP10
+  patient_referrals_p11: PatientReferralsP11
+  patient_referrals_p12: PatientReferralsP12
+  patient_referrals_p13: PatientReferralsP13
+  patient_referrals_p14: PatientReferralsP14
+  patient_referrals_p15: PatientReferralsP15
+  patient_referrals_p2: PatientReferralsP2
+  patient_referrals_p3: PatientReferralsP3
+  patient_referrals_p4: PatientReferralsP4
+  patient_referrals_p5: PatientReferralsP5
+  patient_referrals_p6: PatientReferralsP6
+  patient_referrals_p7: PatientReferralsP7
+  patient_referrals_p8: PatientReferralsP8
+  patient_referrals_p9: PatientReferralsP9
   patient_registration: PatientRegistration
   patient_symptoms: PatientSymptoms
+  patient_symptoms_p0: PatientSymptomsP0
+  patient_symptoms_p1: PatientSymptomsP1
+  patient_symptoms_p10: PatientSymptomsP10
+  patient_symptoms_p11: PatientSymptomsP11
+  patient_symptoms_p12: PatientSymptomsP12
+  patient_symptoms_p13: PatientSymptomsP13
+  patient_symptoms_p14: PatientSymptomsP14
+  patient_symptoms_p15: PatientSymptomsP15
+  patient_symptoms_p2: PatientSymptomsP2
+  patient_symptoms_p3: PatientSymptomsP3
+  patient_symptoms_p4: PatientSymptomsP4
+  patient_symptoms_p5: PatientSymptomsP5
+  patient_symptoms_p6: PatientSymptomsP6
+  patient_symptoms_p7: PatientSymptomsP7
+  patient_symptoms_p8: PatientSymptomsP8
+  patient_symptoms_p9: PatientSymptomsP9
   patient_triage_level: PatientTriageLevel
+  patient_triage_level_p0: PatientTriageLevelP0
+  patient_triage_level_p1: PatientTriageLevelP1
+  patient_triage_level_p10: PatientTriageLevelP10
+  patient_triage_level_p11: PatientTriageLevelP11
+  patient_triage_level_p12: PatientTriageLevelP12
+  patient_triage_level_p13: PatientTriageLevelP13
+  patient_triage_level_p14: PatientTriageLevelP14
+  patient_triage_level_p15: PatientTriageLevelP15
+  patient_triage_level_p2: PatientTriageLevelP2
+  patient_triage_level_p3: PatientTriageLevelP3
+  patient_triage_level_p4: PatientTriageLevelP4
+  patient_triage_level_p5: PatientTriageLevelP5
+  patient_triage_level_p6: PatientTriageLevelP6
+  patient_triage_level_p7: PatientTriageLevelP7
+  patient_triage_level_p8: PatientTriageLevelP8
+  patient_triage_level_p9: PatientTriageLevelP9
   patient_workflow_steps_completed: PatientWorkflowStepsCompleted
   patient_workflows: PatientWorkflows
   patient_workflows_completed: PatientWorkflowsCompleted

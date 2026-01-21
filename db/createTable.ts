@@ -68,9 +68,8 @@ export async function createStandardTablePartitionedByPatientId(
     .modifyEnd(sql` PARTITION BY HASH (patient_id);`)
 
   await with_columns.execute()
-  console.log(with_columns.compile())
+
   await addUpdatedAtTrigger(db, table)
-  console.log('made it')
 }
 
 export async function createPointerTablePartitionedByPatientId(
@@ -146,7 +145,6 @@ export async function createPointerTablePartitionedByPatientId(
   const with_columns = callback(creating_table)
     .modifyEnd(sql` PARTITION BY HASH (patient_id);`)
 
-  console.log(with_columns.compile())
   await with_columns.execute()
 
   if (include_updated_at) {

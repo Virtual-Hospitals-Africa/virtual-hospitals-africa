@@ -132,12 +132,14 @@ export const waiting_room = {
     trx: TrxOrDb,
     organization_employment: HealthWorkerOrganization,
   ): Promise<RenderedWaitingRoom[]> {
+    patient_encounters.verbose = true
     const open_encounters = await patient_encounters.getOpen(
       trx,
       {
         organization_id: organization_employment.id,
       },
     )
+    patient_encounters.verbose = false
 
     assertAll(open_encounters, (encounter) => {
       assertEquals(
@@ -147,14 +149,6 @@ export const waiting_room = {
     })
 
     const waiting_room_unsorted = open_encounters.map((encounter) => asWaitingRoom(encounter, organization_employment))
-
-    logReadableJson(sortBy(
-      waiting_room_unsorted,
-      (row) => row.present_employees.length ? 1 : 0,
-      (row) => row.target_treatment_time ? new Date(row.target_treatment_time).valueOf() : -1,
-      (row) => row.arrived_timestamp.valueOf(),
-    ))
-
     return sortBy(
       waiting_room_unsorted,
       (row) => row.present_employees.length ? 1 : 0,

@@ -43,7 +43,7 @@ export function attachTrx(
     // Tag this connection with application_name for monitoring
 
     const tag = `${ctx.req.method}:${truncatePath(ctx.url.pathname)}`
-    await sql.raw(`SET application_name = ${sql.val(tag)}`).execute(conn)
+    await sql`SET application_name = ${sql.lit(tag)};`.execute(conn)
 
     // Store the connection in the WeakMap for ctxFromTrx lookups
     ctx.state.trx = setApplicationName(ctx, conn)
