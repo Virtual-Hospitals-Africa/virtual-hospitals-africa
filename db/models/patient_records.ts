@@ -92,6 +92,9 @@ export function baseQuery(
             ),
           ]),
       ).as('source_relations'),
+      // sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
+      //   'qualifiers',
+      // ),
 
       jsonArrayFrom(
         patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
