@@ -90,13 +90,13 @@ const db = (NO_EXTERNAL_CONNECT ? undefined : new Kysely<DB>({
     if (error_due_to_lock) return
 
     console.error('Query failed')
-    // console.error(event.error)
+    console.error(event.error)
 
     // TODO, mask PII
-    // console.error(debugReplaceAll(
-    //   event.query.sql,
-    //   event.query.parameters,
-    // ))
+    console.error(debugReplaceAll(
+      event.query.sql,
+      event.query.parameters,
+    ))
   },
 }))!
 
