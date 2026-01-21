@@ -12,5 +12,5 @@ export async function up(db: Kysely<DB>) {
 }
 
 export function down(db: Kysely<DB>) {
-  return sql`DROP EXTENSION pg_stat_monitor IF EXISTS;`.execute(db)
+  return sql`DROP EXTENSION IF EXISTS pg_stat_monitor;`.execute(db)
 }

@@ -10,11 +10,6 @@ export default base({
   ) =>
     trx
       .selectFrom('snomed_inferred_canonical_name_and_category')
-      .innerJoin(
-        'snomed_family_history',
-        'snomed_family_history.id',
-        'snomed_inferred_canonical_name_and_category.id',
-      )
       .select([
         'snomed_inferred_canonical_name_and_category.id',
         'snomed_inferred_canonical_name_and_category.name',
