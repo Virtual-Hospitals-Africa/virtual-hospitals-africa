@@ -38,9 +38,9 @@ const connectionOpts = () => {
 
 export const opts = connectionOpts()
 
-export const redis = (NO_EXTERNAL_CONNECT ? undefined : await connect(opts).catch((err) => {
+export const redis = (NO_EXTERNAL_CONNECT ? undefined : await connect(opts).catch((_err) => {
   // Redis isn't needed to run locally or on prod
-  console.error(err)
+  // console.error(err)
 }))!
 
 // export const lock = redis && new Redlock([redis])
