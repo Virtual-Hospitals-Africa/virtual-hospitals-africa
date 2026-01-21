@@ -47,10 +47,7 @@ async function onEventListener(event_listener_id: string) {
     )
   }
 
-  console.log('parsing', event_listener)
   const parse_result = handler.schema.safeParse(event_listener.data)
-
-  console.log('parse_result', { event_listener, parse_result })
 
   if (!parse_result.success) {
     return events.markErroredListener(
