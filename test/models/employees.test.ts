@@ -15,13 +15,14 @@ import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import first from '../../util/first.ts'
 import last from '../../util/last.ts'
 import generateUUID from '../../util/uuid.ts'
+import { organizations_with_departments } from '../../db/models/organizations_with_departments.ts'
 
 describeParallel('db/models/employees.ts', () => {
   afterAll(() => db.destroy())
   itParallel(
     'handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first',
     async () => {
-      const getting_test_clinic = organizations.getById(
+      const getting_test_clinic = organizations_with_departments.getById(
         db,
         TEST_ORGANIZATION_UUIDS.ZA.clinic,
       )
@@ -153,7 +154,7 @@ describeParallel('db/models/employees.ts', () => {
         })
         assertEquals(results.length, 1)
         const [result] = results
-        assertLength(result.organizations[0].department_ids, 3)
+        assertLength(result.organizations[0].in_departments, 3)
         assertEquals(result, {
           'id': result.id,
           'name': result.name,
@@ -178,7 +179,7 @@ describeParallel('db/models/employees.ts', () => {
               'profession': 'nurse',
               'is_admin': false,
               'specialty': 'Primary care',
-              'department_ids': result.organizations[0].department_ids,
+              'in_departments': result.organizations[0].in_departments,
             },
           ],
         })

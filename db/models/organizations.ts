@@ -1,30 +1,17 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { Coordinates, InsertRows, Maybe, NonEmptyArray, RenderedOrganization, TrxOrDb } from '../../types.ts'
+import { Coordinates, InsertRows, Maybe, RenderedOrganization, TrxOrDb } from '../../types.ts'
 import { addresses, type AddressInsert } from './addresses.ts'
-import { blankSelection, jsonArrayFrom, jsonBuildNullableObject, literalLocation, orderByArrayPosition, success_true } from '../helpers.ts'
+import { blankSelection, jsonBuildNullableObject, literalLocation, success_true } from '../helpers.ts'
 import { base, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
-import { Department, DEPARTMENTS } from '../../shared/departments.ts'
+import { Department } from '../../shared/departments.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 
 function baseQuery(trx: TrxOrDb) {
   return trx
     .selectFrom('organizations')
-    .leftJoin('addresses', 'organizations.address_id', 'addresses.id')
-    .leftJoin(
-      'organization_rooms as waiting_rooms',
-      (join) =>
-        join.onRef('waiting_rooms.organization_id', '=', 'organizations.id')
-          .on('waiting_rooms.name', '=', 'Waiting room'),
-    )
-    .leftJoin(
-      'organization_rooms as receptions',
-      (join) =>
-        join.onRef('receptions.organization_id', '=', 'organizations.id')
-          .on('receptions.name', '=', 'Reception'),
-    )
     .select((eb) => [
       'organizations.id',
       'organizations.name',
@@ -34,41 +21,24 @@ function baseQuery(trx: TrxOrDb) {
       'organizations.ownership',
       'organizations.inactive_reason',
       'organizations.most_common_language_code',
-      'addresses.formatted as formatted_address',
-      'addresses.formatted as description',
-      'waiting_rooms.id as waiting_room_id',
-      'receptions.id as reception_id',
+      eb.selectFrom('addresses')
+        .whereRef('addresses.id', '=', 'organizations.address_id')
+        .select('addresses.formatted')
+        .as('formatted_address'),
+      eb.selectFrom('organization_rooms')
+        .whereRef('organization_rooms.organization_id', '=', 'organizations.id')
+        .where('organization_rooms.name', '=', 'Waiting room')
+        .select('organization_rooms.id')
+        .as('waiting_room_id'),
+      eb.selectFrom('organization_rooms')
+        .whereRef('organization_rooms.organization_id', '=', 'organizations.id')
+        .where('organization_rooms.name', '=', 'Reception')
+        .select('organization_rooms.id')
+        .as('reception_id'),
       jsonBuildNullableObject(eb.ref('location'), {
         longitude: sql<number>`ST_X(location::geometry)`,
         latitude: sql<number>`ST_Y(location::geometry)`,
       }).as('location'),
-      jsonArrayFrom(
-        eb.selectFrom('organization_departments')
-          .innerJoin(
-            'departments',
-            'departments.name',
-            'organization_departments.name',
-          )
-          .select([
-            'organization_departments.id',
-            'organization_departments.name',
-            'departments.requires_triage',
-            'departments.workflows',
-          ])
-          .whereRef(
-            'organization_departments.organization_id',
-            '=',
-            'organizations.id',
-          ).orderBy(
-            (eb_organization_departments_order) =>
-              orderByArrayPosition(
-                eb_organization_departments_order,
-                'organization_departments.name',
-                DEPARTMENTS as NonEmptyArray<string>,
-              ),
-            'desc',
-          ),
-      ).as('departments'),
     ])
 }
 
@@ -195,23 +165,25 @@ function remove(
   return trx.deleteFrom('organizations').where('id', '=', opts.id).execute()
 }
 
+export type OrganizationSearch = {
+  search?: string | null
+  kind?: 'physical' | 'virtual' | null
+  is_test?: boolean
+  category?: string
+  country?: string
+  include_all_countries?: boolean
+}
+
 export const organizations = base({
   top_level_table: 'organizations',
   caching: {
     number_of_items: 100,
   },
   baseQuery,
-  formatResult: (x): RenderedOrganization => x,
+  formatResult: (org): RenderedOrganization => org,
   handleSearch(
     qb,
-    opts: {
-      search?: string | null
-      kind?: 'physical' | 'virtual' | null
-      is_test?: boolean
-      category?: string
-      country?: string
-      include_all_countries?: boolean
-    },
+    opts: OrganizationSearch,
   ) {
     if (opts.search) {
       qb = qb.where('organizations.name', 'ilike', `%${opts.search}%`)
