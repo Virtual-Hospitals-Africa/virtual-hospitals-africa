@@ -45,6 +45,12 @@ export async function up(db: Kysely<DB>) {
     )
     .execute()
 
+  await db.schema
+    .createIndex('idx_snomed_description_concept_id')
+    .on('snomed_description')
+    .column('concept_id')
+    .execute()
+
   await db.schema.createTable('snomed_relationship')
     .addColumn('id', 'bigint', (col) => col.primaryKey())
     .addColumn('effective_time', 'date', (col) => col.notNull())
@@ -383,6 +389,12 @@ export async function up(db: Kysely<DB>) {
       'bigint',
       (col) => col.notNull(),
     )
+    .execute()
+
+  await db.schema
+    .createIndex('idx_snomed_text_definition_concept_id')
+    .on('snomed_text_definition')
+    .column('concept_id')
     .execute()
 }
 

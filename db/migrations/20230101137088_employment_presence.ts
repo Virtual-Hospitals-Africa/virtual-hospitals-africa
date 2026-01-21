@@ -31,6 +31,12 @@ export async function up(db: Kysely<DB>) {
           )`,
         ),
   )
+
+  await db.schema
+    .createIndex('idx_employment_presence_with_patient_id')
+    .on('employment_presence')
+    .column('with_patient_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

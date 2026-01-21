@@ -47,6 +47,24 @@ export async function up(db: Kysely<DB>) {
           (col) => col.notNull(),
         ),
   )
+
+  await db.schema
+    .createIndex('idx_patient_chatbot_users_entity_id')
+    .on('patient_chatbot_users')
+    .column('entity_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_chatbot_user_whatsapp_messages_received_whatsapp_message_received_id')
+    .on('patient_chatbot_user_whatsapp_messages_received')
+    .column('whatsapp_message_received_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_chatbot_user_whatsapp_messages_received_chatbot_user_id')
+    .on('patient_chatbot_user_whatsapp_messages_received')
+    .column('chatbot_user_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

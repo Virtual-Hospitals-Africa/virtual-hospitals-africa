@@ -100,6 +100,90 @@ export async function up(db: Kysely<DB>) {
         quantity > 0
       `,
       ))
+
+  await db.schema
+    .createIndex('idx_device_capabilities_device_id')
+    .on('device_capabilities')
+    .column('device_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_device_capabilities_diagnostic_test')
+    .on('device_capabilities')
+    .column('diagnostic_test')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organization_devices_created_by')
+    .on('organization_devices')
+    .column('created_by')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organization_devices_updated_by')
+    .on('organization_devices')
+    .column('updated_by')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organization_devices_device_id')
+    .on('organization_devices')
+    .column('device_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organization_devices_organization_id')
+    .on('organization_devices')
+    .column('organization_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organization_consumables_consumable_id')
+    .on('organization_consumables')
+    .column('consumable_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_procurement_organization_id')
+    .on('procurement')
+    .column('organization_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_procurement_consumable_id')
+    .on('procurement')
+    .column('consumable_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_procurement_procured_from')
+    .on('procurement')
+    .column('procured_from')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_procurement_created_by')
+    .on('procurement')
+    .column('created_by')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_consumption_organization_id')
+    .on('consumption')
+    .column('organization_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_consumption_created_by')
+    .on('consumption')
+    .column('created_by')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_consumption_procurement_id')
+    .on('consumption')
+    .column('procurement_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

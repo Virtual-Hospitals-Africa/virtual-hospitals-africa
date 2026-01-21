@@ -25,7 +25,13 @@ export function up(db: Kysely<DB>) {
       patient_id != next_of_kin_patient_id
     `,
         ),
-  )
+  ).then(async () => {
+    await db.schema
+      .createIndex('idx_patient_kin_next_of_kin_patient_id')
+      .on('patient_kin')
+      .column('next_of_kin_patient_id')
+      .execute()
+  })
 }
 
 export async function down(db: Kysely<DB>) {

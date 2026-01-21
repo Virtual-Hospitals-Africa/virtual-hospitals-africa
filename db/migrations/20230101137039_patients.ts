@@ -93,6 +93,42 @@ export async function up(db: Kysely<DB>) {
         )`,
         ),
   )
+
+  await db.schema
+    .createIndex('idx_patients_country')
+    .on('patients')
+    .column('country')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patients_avatar_media_id')
+    .on('patients')
+    .column('avatar_media_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patients_address_id')
+    .on('patients')
+    .column('address_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patients_nearest_organization_id')
+    .on('patients')
+    .column('nearest_organization_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patients_preferred_language_code_iso_639_2_b')
+    .on('patients')
+    .column('preferred_language_code_iso_639_2_b')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patients_primary_doctor_id')
+    .on('patients')
+    .column('primary_doctor_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

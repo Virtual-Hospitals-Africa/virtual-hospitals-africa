@@ -41,6 +41,24 @@ export async function up(db: Kysely<DB>) {
       .addColumn('pharmacy_id', 'uuid', (col) => col.notNull().references('pharmacies.id').onDelete('cascade'))
       .addColumn('pharmacist_id', 'uuid', (col) => col.notNull().references('pharmacists.id').onDelete('cascade'))
       .addColumn('is_supervisor', 'boolean', (col) => col.notNull()))
+
+  await db.schema
+    .createIndex('idx_pharmacies_country')
+    .on('pharmacies')
+    .column('country')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_pharmacy_employment_pharmacy_id')
+    .on('pharmacy_employment')
+    .column('pharmacy_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_pharmacy_employment_pharmacist_id')
+    .on('pharmacy_employment')
+    .column('pharmacist_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

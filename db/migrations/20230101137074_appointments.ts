@@ -71,6 +71,42 @@ export async function up(db: Kysely<DB>) {
           (col) => col.notNull().defaultTo(false),
         ),
   )
+
+  await db.schema
+    .createIndex('idx_appointments_patient_id')
+    .on('appointments')
+    .column('patient_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_appointment_providers_appointment_id')
+    .on('appointment_providers')
+    .column('appointment_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_appointment_providers_provider_id')
+    .on('appointment_providers')
+    .column('provider_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_appointment_requests_patient_id')
+    .on('patient_appointment_requests')
+    .column('patient_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_appointment_offered_times_patient_appointment_request_id')
+    .on('patient_appointment_offered_times')
+    .column('patient_appointment_request_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_appointment_offered_times_provider_id')
+    .on('patient_appointment_offered_times')
+    .column('provider_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

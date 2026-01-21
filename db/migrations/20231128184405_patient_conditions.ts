@@ -49,7 +49,31 @@ export function up(db: Kysely<any>) {
         )
     `,
         ),
-  )
+  ).then(async () => {
+    await db.schema
+      .createIndex('idx_patient_conditions_condition_id')
+      .on('patient_conditions')
+      .column('condition_id')
+      .execute()
+
+    await db.schema
+      .createIndex('idx_patient_conditions_patient_examination_id')
+      .on('patient_conditions')
+      .column('patient_examination_id')
+      .execute()
+
+    await db.schema
+      .createIndex('idx_patient_conditions_comorbidity_of_condition_id')
+      .on('patient_conditions')
+      .column('comorbidity_of_condition_id')
+      .execute()
+
+    await db.schema
+      .createIndex('idx_patient_conditions_start_date')
+      .on('patient_conditions')
+      .column('start_date')
+      .execute()
+  })
 }
 
 export async function down(db: Kysely<any>) {

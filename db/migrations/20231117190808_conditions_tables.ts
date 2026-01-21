@@ -51,6 +51,18 @@ export async function up(db: Kysely<any>) {
         .references('icd10_codes.code')
         .onDelete('cascade'))
     .execute()
+
+  await db.schema
+    .createIndex('idx_condition_icd10_codes_condition_id')
+    .on('condition_icd10_codes')
+    .column('condition_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_condition_icd10_codes_icd10_code')
+    .on('condition_icd10_codes')
+    .column('icd10_code')
+    .execute()
 }
 
 export async function down(db: Kysely<any>) {

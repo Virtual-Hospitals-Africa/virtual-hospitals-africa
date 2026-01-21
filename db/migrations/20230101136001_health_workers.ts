@@ -27,6 +27,12 @@ export async function up(db: Kysely<DB>) {
           )`,
         ),
   )
+
+  await db.schema
+    .createIndex('idx_health_workers_avatar_media_id')
+    .on('health_workers')
+    .column('avatar_media_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

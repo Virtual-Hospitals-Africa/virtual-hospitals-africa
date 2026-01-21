@@ -17,6 +17,12 @@ export async function up(db: Kysely<DB>) {
     .addColumn('description', 'varchar(255)', (col) => col.notNull())
     .execute()
 
+  await db.schema
+    .createIndex('idx_icd10_categories_section')
+    .on('icd10_categories')
+    .column('section')
+    .execute()
+
   await db.schema.createTable('icd10_diagnoses')
     .addColumn('code', 'varchar(8)', (col) => col.primaryKey())
     .addColumn(
@@ -37,6 +43,18 @@ export async function up(db: Kysely<DB>) {
     .addColumn('general', 'boolean', (col) => col.notNull().defaultTo(false))
     .execute()
 
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_category')
+    .on('icd10_diagnoses')
+    .column('category')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_parent_code')
+    .on('icd10_diagnoses')
+    .column('parent_code')
+    .execute()
+
   await db.schema.createTable('icd10_diagnoses_includes')
     .addColumn(
       'id',
@@ -53,6 +71,12 @@ export async function up(db: Kysely<DB>) {
     .addColumn('sourced_from_index', 'boolean', (col) => col.notNull())
     .execute()
 
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_includes_code')
+    .on('icd10_diagnoses_includes')
+    .column('code')
+    .execute()
+
   await db.schema.createTable('icd10_diagnoses_excludes')
     .addColumn(
       'id',
@@ -66,6 +90,12 @@ export async function up(db: Kysely<DB>) {
     )
     .addColumn('note', 'text', (col) => col.notNull())
     .addColumn('pure', 'boolean', (col) => col.notNull())
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_code')
+    .on('icd10_diagnoses_excludes')
+    .column('code')
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_categories')
@@ -92,6 +122,18 @@ export async function up(db: Kysely<DB>) {
     )
     .execute()
 
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_categories_exclude_id')
+    .on('icd10_diagnoses_excludes_categories')
+    .column('exclude_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_categories_category')
+    .on('icd10_diagnoses_excludes_categories')
+    .column('category')
+    .execute()
+
   await db.schema.createTable('icd10_diagnoses_excludes_codes')
     .addColumn(
       'id',
@@ -112,6 +154,18 @@ export async function up(db: Kysely<DB>) {
       (col) => col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn('dash', 'boolean', (col) => col.notNull().defaultTo(false))
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_codes_exclude_id')
+    .on('icd10_diagnoses_excludes_codes')
+    .column('exclude_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_codes_code')
+    .on('icd10_diagnoses_excludes_codes')
+    .column('code')
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_code_ranges')
@@ -148,6 +202,24 @@ export async function up(db: Kysely<DB>) {
       'boolean',
       (col) => col.notNull().defaultTo(false),
     )
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_code_ranges_exclude_id')
+    .on('icd10_diagnoses_excludes_code_ranges')
+    .column('exclude_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_code_ranges_code_range_start')
+    .on('icd10_diagnoses_excludes_code_ranges')
+    .column('code_range_start')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_icd10_diagnoses_excludes_code_ranges_code_range_end')
+    .on('icd10_diagnoses_excludes_code_ranges')
+    .column('code_range_end')
     .execute()
 
   await sql`

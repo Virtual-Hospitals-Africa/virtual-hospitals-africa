@@ -70,6 +70,24 @@ export async function up(db: Kysely<DB>) {
           'start_date',
         ], (constraint) => constraint.nullsNotDistinct()),
   )
+
+  await db.schema
+    .createIndex('idx_patient_condition_medications_medication_id')
+    .on('patient_condition_medications')
+    .column('medication_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_condition_medications_manufactured_medication_id')
+    .on('patient_condition_medications')
+    .column('manufactured_medication_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_condition_medications_start_date')
+    .on('patient_condition_medications')
+    .column('start_date')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

@@ -181,6 +181,12 @@ export async function up(db: Kysely<unknown>) {
     END;
     $$ LANGUAGE plpgsql;
   `.execute(db)
+
+  await db.schema
+    .createIndex('idx_sats_triage_scoring_rules_assessment_option_id')
+    .on('sats_triage_scoring_rules')
+    .column('assessment_option_id')
+    .execute()
 }
 
 export async function down(db: Kysely<unknown>) {
