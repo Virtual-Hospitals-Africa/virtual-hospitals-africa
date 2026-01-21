@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import { EmployedHealthWorker, IdSelection, Maybe, NonEmptyArray, PossiblyEmployedHealthWorker, TrxOrDb } from '../../types.ts'
 import { organizations } from './organizations.ts'
-import { jsonArrayFrom, jsonArrayFromColumn, orderByArrayPosition } from '../helpers.ts'
+import { jsonArrayFrom, orderByArrayPosition } from '../helpers.ts'
 import { Profession } from '../../db.d.ts'
 import { NameInputs } from '../../util/asNames.ts'
 import { base } from './_base.ts'
@@ -66,8 +66,7 @@ export function baseQuery(trx: TrxOrDb) {
             'profession',
             'specialty',
             'is_admin',
-            jsonArrayFromColumn(
-              'department_id',
+            jsonArrayFrom(
               eb_employment.selectFrom('department_employment')
                 .innerJoin(
                   'organization_departments',
@@ -79,7 +78,10 @@ export function baseQuery(trx: TrxOrDb) {
                   '=',
                   'employment.id',
                 )
-                .select('organization_departments.id as department_id')
+                .select([
+                  'organization_departments.id',
+                  'organization_departments.name',
+                ])
                 .orderBy(
                   (eb_employment_departments_order) =>
                     orderByArrayPosition(
@@ -89,7 +91,7 @@ export function baseQuery(trx: TrxOrDb) {
                     ),
                   'desc',
                 ),
-            ).as('department_ids'),
+            ).as('in_departments'),
           ]).orderBy(
             // TODO order by most recently interacted with?
             (eb_organization_order) =>

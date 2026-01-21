@@ -2,14 +2,15 @@ import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
 import { employment } from '../../db/models/employment.ts'
-import { organizations } from '../../db/models/organizations.ts'
 import db from '../../db/db.ts'
 import { exists } from '../../util/exists.ts'
+import omit from '../../util/omit.ts'
 import assertSome from '../../util/assertSome.ts'
 import assertLength from '../../util/assertLength.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
 import { healthWorkerOrganizationDepartmentNames } from '../../shared/departments.ts'
+import { organizations_with_departments } from '../../db/models/organizations_with_departments.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
@@ -18,7 +19,7 @@ describe('db/models/health_workers.ts', () => {
     it(
       'returns the health worker and their employment information',
       async () => {
-        const getting_test_clinic = organizations.getById(
+        const getting_test_clinic = organizations_with_departments.getById(
           db,
           TEST_ORGANIZATION_UUIDS.ZA.clinic,
         )
@@ -41,34 +42,28 @@ describe('db/models/health_workers.ts', () => {
           email: health_worker.email,
           organizations: [
             {
-              ...test_clinic,
+              ...omit(test_clinic, ['departments']),
               profession: 'nurse',
               is_admin: false,
               employment_id: health_worker.employee_id,
               specialty: 'Primary care',
-              department_ids: result.organizations[0].department_ids,
+              in_departments: result.organizations[0].in_departments,
             },
           ],
         })
 
-        assertLength(result.organizations[0].department_ids, 3)
+        assertLength(result.organizations[0].in_departments, 3)
         assertSome(
-          result.organizations[0].department_ids,
-          (department_id) =>
-            test_clinic.departments.find((d) => d.id === department_id)
-              ?.name === 'Primary care',
+          result.organizations[0].in_departments,
+          (department) => department.name === 'Primary care',
         )
         assertSome(
-          result.organizations[0].department_ids,
-          (department_id) =>
-            test_clinic.departments.find((d) => d.id === department_id)
-              ?.name === 'Triage',
+          result.organizations[0].in_departments,
+          (department) => department.name === 'Triage',
         )
         assertSome(
-          result.organizations[0].department_ids,
-          (department_id) =>
-            test_clinic.departments.find((d) => d.id === department_id)
-              ?.name === 'Reception',
+          result.organizations[0].in_departments,
+          (department) => department.name === 'Reception',
         )
       },
     )
@@ -104,7 +99,7 @@ describe('db/models/health_workers.ts', () => {
     it(
       'handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first',
       async () => {
-        const getting_test_clinic = organizations.getById(
+        const getting_test_clinic = organizations_with_departments.getById(
           db,
           TEST_ORGANIZATION_UUIDS.ZA.clinic,
         )

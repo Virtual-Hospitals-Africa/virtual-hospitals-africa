@@ -126,14 +126,6 @@ export const patient_procedures = base({
     assertHasProperty(procedure, 'specific_snomed_concept')
     const procedure_id = generateUUID()
 
-    console.log('mmmminsertProcedure', {
-      patient_id,
-      employment_id,
-      patient_encounter_id,
-      procedure,
-      by_system,
-    })
-
     return patient_records.baseInsert(
       trx,
       {

@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio'
 import { Falsy, Maybe, Names, TrxOrDb } from '../../types.ts'
 import { sessions } from '../../db/models/sessions.ts'
 import { employment } from '../../db/models/employment.ts'
-import { organizations } from '../../db/models/organizations.ts'
 import { nurse_registration_details } from '../../db/models/nurse_registration_details.ts'
 import { employment_calendars } from '../../db/models/employment_calendars.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -17,6 +16,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { asMaybeNames, asNames } from '../../util/asNames.ts'
 import compact from '../../util/compact.ts'
+import { organizations_with_departments } from '../../db/models/organizations_with_departments.ts'
 
 type TestHealthWorkerOpts = {
   profession?:
@@ -99,7 +99,7 @@ export async function addTestEmployee(
     } as unknown as TestEmployee
   }
 
-  const organization = await organizations.getById(trx, organization_id)
+  const organization = await organizations_with_departments.getById(trx, organization_id)
   const department_ids = organizationDepartmentIdsOfProfession(
     organization,
     profession,

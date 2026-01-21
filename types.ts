@@ -1558,9 +1558,12 @@ export type HealthWorkerRegistrationStatus = {
 export type HealthWorkerOrganization = RenderedOrganization & {
   employment_id: string
   specialty: string | null
-  department_ids: string[]
   profession: Profession | null
   is_admin: boolean
+  in_departments: {
+    id: string
+    name: string
+  }[]
 }
 
 export type PossiblyEmployedHealthWorker = HealthWorker & {
@@ -1829,7 +1832,6 @@ export type Organization = {
   category: string | null
   is_test: boolean
   country: string
-  description: string | null
   formatted_address: string | null
   ownership: string | null
   inactive_reason: string | null
@@ -2310,18 +2312,17 @@ export type PatientEncounterProvider = {
   seen_at: null | Date
 }
 
-export type RenderedOrganization = HasStringId<
-  Organization & {
-    departments: {
-      id: string
-      name: string
-      requires_triage: boolean
-      workflows: Workflow[]
-    }[]
-    waiting_room_id: string | null
-    reception_id: string | null
-  }
->
+export type RenderedOrganization = HasStringId<Organization> & {
+  waiting_room_id: string | null
+  reception_id: string | null
+}
+
+export type RenderedOrganizationWithDepartments = RenderedOrganization & {
+  departments: {
+    id: string
+    name: string
+  }[]
+}
 
 export type RenderedPatientPresenceWaitingRoom = {
   department_name: 'Waiting room'

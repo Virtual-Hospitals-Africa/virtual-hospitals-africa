@@ -63,6 +63,7 @@ export default function OrganizationSearch(
       label={label}
       placeholder={placeholder}
       value={value}
+      option_description_field='formatted_address'
     />
   )
 }

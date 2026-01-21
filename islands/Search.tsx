@@ -44,12 +44,16 @@ export type SearchPropsCommon<
   readonly?: boolean
   className?: string
   loading_options?: boolean
+  option_name_field?: string
+  option_description_field?: string
   loadMoreOptions?(): void
   onSelect?(value: T | undefined): void
   Option?(props: {
     option: T
     selected: boolean
     active: boolean
+    option_name_field?: string
+    option_description_field?: string
   }): JSX.Element
   optionHref?(option: T): string
   ignore_option_href?: boolean
@@ -111,6 +115,8 @@ export default function Search<
   readonly,
   loading_options,
   options,
+  option_name_field,
+  option_description_field,
   className,
   loadMoreOptions,
   onQuery,
@@ -353,6 +359,8 @@ export default function Search<
                             option={option}
                             active={focus}
                             selected={use_selected}
+                            option_name_field={option_name_field}
+                            option_description_field={option_description_field}
                           />
                           {use_selected && (
                             <span
