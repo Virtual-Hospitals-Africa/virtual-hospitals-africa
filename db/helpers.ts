@@ -301,9 +301,10 @@ export function debugReplaceAll(
     const sql_index = `$${i + 1}`
     sql = sql.replace(sql_index, debugReplace(p))
   })
-  return formatter.format(sql, {
-    language: 'postgresql',
-  })
+  return sql
+  // return formatter.format(sql, {
+  //   language: 'postgresql',
+  // })
 }
 
 export function asCompiledSql(
