@@ -92,6 +92,12 @@ export async function up(db: Kysely<DB>) {
       (col) => col.notNull(),
     )
     .execute()
+
+  await db.schema
+    .createIndex('idx_snomed_inferred_canonical_name_and_category_description_id')
+    .on('snomed_inferred_canonical_name_and_category')
+    .column('description_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

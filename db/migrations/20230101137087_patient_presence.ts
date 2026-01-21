@@ -56,6 +56,30 @@ export async function up(db: Kysely<DB>) {
           )`,
         ),
   )
+
+  await db.schema
+    .createIndex('idx_patient_presence_patient_encounter_id')
+    .on('patient_presence')
+    .column('patient_encounter_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_presence_organization_id')
+    .on('patient_presence')
+    .column('organization_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_presence_department_name')
+    .on('patient_presence')
+    .column('department_name')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_presence_organization_room_id')
+    .on('patient_presence')
+    .column('organization_room_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

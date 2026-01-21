@@ -52,6 +52,42 @@ export async function up(db: Kysely<DB>) {
         .addColumn('message_id', 'uuid', (col) => col.notNull().references('message_threads.id'))
         .addColumn('participant_id', 'uuid', (col) => col.notNull().references('message_thread_participants.id')),
   )
+
+  await db.schema
+    .createIndex('idx_message_thread_subjects_thread_id')
+    .on('message_thread_subjects')
+    .column('thread_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_message_thread_participants_thread_id')
+    .on('message_thread_participants')
+    .column('thread_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_messages_thread_id')
+    .on('messages')
+    .column('thread_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_messages_sender_participant_id')
+    .on('messages')
+    .column('sender_participant_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_message_reads_message_id')
+    .on('message_reads')
+    .column('message_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_message_reads_participant_id')
+    .on('message_reads')
+    .column('participant_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

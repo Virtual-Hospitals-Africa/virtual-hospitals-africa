@@ -113,6 +113,24 @@ export async function up(db: Kysely<DB>) {
   await employment_assertion.up(db)
   await patient_assertion.up(db)
   await patient_record_assertion.up(db)
+
+  await db.schema
+    .createIndex('idx_message_drafts_employment_id')
+    .on('message_drafts')
+    .column('employment_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_message_draft_targets_message_draft_id')
+    .on('message_draft_targets')
+    .column('message_draft_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_message_draft_concerning_message_draft_id')
+    .on('message_draft_concerning')
+    .column('message_draft_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

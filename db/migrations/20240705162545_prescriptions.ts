@@ -101,6 +101,60 @@ export async function up(db: Kysely<DB>) {
           'prescription_medication_id',
         ]),
   )
+
+  await db.schema
+    .createIndex('idx_prescriptions_prescriber_id')
+    .on('prescriptions')
+    .column('prescriber_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescriptions_patient_id')
+    .on('prescriptions')
+    .column('patient_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescriptions_doctor_review_id')
+    .on('prescriptions')
+    .column('doctor_review_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescriptions_patient_encounter_id')
+    .on('prescriptions')
+    .column('patient_encounter_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescription_codes_prescription_id')
+    .on('prescription_codes')
+    .column('prescription_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescription_medications_patient_condition_medication_id')
+    .on('prescription_medications')
+    .column('patient_condition_medication_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescription_medications_prescription_id')
+    .on('prescription_medications')
+    .column('prescription_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescription_medications_filled_pharmacist_id')
+    .on('prescription_medications_filled')
+    .column('pharmacist_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_prescription_medications_filled_pharmacy_id')
+    .on('prescription_medications_filled')
+    .column('pharmacy_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

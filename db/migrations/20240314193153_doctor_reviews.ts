@@ -111,6 +111,78 @@ export async function up(db: Kysely<DB>) {
         'doctor_review_id',
         'step',
       ]))
+
+  await db.schema
+    .createIndex('idx_doctor_review_requests_patient_id')
+    .on('doctor_review_requests')
+    .column('patient_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_review_requests_patient_encounter_id')
+    .on('doctor_review_requests')
+    .column('patient_encounter_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_review_requests_requested_by')
+    .on('doctor_review_requests')
+    .column('requested_by')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_review_requests_organization_id')
+    .on('doctor_review_requests')
+    .column('organization_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_review_requests_doctor_id')
+    .on('doctor_review_requests')
+    .column('doctor_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_reviews_reviewer_id')
+    .on('doctor_reviews')
+    .column('reviewer_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_reviews_patient_id')
+    .on('doctor_reviews')
+    .column('patient_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_reviews_patient_encounter_id')
+    .on('doctor_reviews')
+    .column('patient_encounter_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_reviews_requested_by')
+    .on('doctor_reviews')
+    .column('requested_by')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_reviews_completed_at')
+    .on('doctor_reviews')
+    .column('completed_at')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_review_steps_doctor_review_id')
+    .on('doctor_review_steps')
+    .column('doctor_review_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_review_steps_step')
+    .on('doctor_review_steps')
+    .column('step')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

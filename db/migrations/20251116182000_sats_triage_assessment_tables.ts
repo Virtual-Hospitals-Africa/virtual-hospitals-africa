@@ -68,7 +68,8 @@ export async function up(db: Kysely<unknown>) {
     ])
     .execute()
 
-  // Create index
+  // Create indexes - idx_sats_assessment_options_assessment_id already exists above from the original migration
+  // Just keeping it for completeness
   await db.schema
     .createIndex('idx_sats_assessment_options_assessment_id')
     .on('sats_triage_assessment_options')

@@ -33,6 +33,30 @@ export async function up(db: Kysely<DB>) {
         'uuid',
         (col) => col.notNull().references('media.id').onDelete('cascade'),
       ))
+
+  await db.schema
+    .createIndex('idx_patient_appointment_request_media_patient_appointment_request_id')
+    .on('patient_appointment_request_media')
+    .column('patient_appointment_request_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_appointment_request_media_media_id')
+    .on('patient_appointment_request_media')
+    .column('media_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_appointment_media_appointment_id')
+    .on('appointment_media')
+    .column('appointment_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_appointment_media_media_id')
+    .on('appointment_media')
+    .column('media_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

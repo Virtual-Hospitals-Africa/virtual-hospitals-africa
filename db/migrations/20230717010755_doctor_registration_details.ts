@@ -75,6 +75,42 @@ export async function up(db: Kysely<DB>) {
             .references('health_workers.id')
             .onDelete('cascade')),
   )
+
+  await db.schema
+    .createIndex('idx_doctor_registration_details_national_id_media_id')
+    .on('doctor_registration_details')
+    .column('national_id_media_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_registration_details_address_id')
+    .on('doctor_registration_details')
+    .column('address_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_registration_details_ncz_registration_card_media_id')
+    .on('doctor_registration_details')
+    .column('ncz_registration_card_media_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_registration_details_face_picture_media_id')
+    .on('doctor_registration_details')
+    .column('face_picture_media_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_registration_details_doctor_practicing_cert_media_id')
+    .on('doctor_registration_details')
+    .column('doctor_practicing_cert_media_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_doctor_registration_details_approved_by')
+    .on('doctor_registration_details')
+    .column('approved_by')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

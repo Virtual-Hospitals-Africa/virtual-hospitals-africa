@@ -41,6 +41,12 @@ export async function up(db: Kysely<DB>) {
         ),
   )
 
+  await db.schema
+    .createIndex('idx_employment_organization_id')
+    .on('employment')
+    .column('organization_id')
+    .execute()
+
   await createPointerTable(
     db,
     'organization_admins',
@@ -103,6 +109,12 @@ export async function up(db: Kysely<DB>) {
           'department_id',
         ]),
   )
+
+  await db.schema
+    .createIndex('idx_department_employment_department_id')
+    .on('department_employment')
+    .column('department_id')
+    .execute()
 
   await createStandardTable(
     db,

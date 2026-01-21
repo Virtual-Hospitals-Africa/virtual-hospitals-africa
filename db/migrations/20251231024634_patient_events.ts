@@ -24,6 +24,12 @@ export async function up(db: Kysely<DB>) {
         sql`GEOGRAPHY(POINT,4326)`,
       ),
   )
+
+  await db.schema
+    .createIndex('idx_patient_events_address_id')
+    .on('patient_events')
+    .column('address_id')
+    .execute()
 }
 
 export function down(db: Kysely<DB>) {

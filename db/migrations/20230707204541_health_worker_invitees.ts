@@ -30,7 +30,13 @@ export function up(db: Kysely<DB>) {
           (profession IS NOT NULL) OR (is_admin = TRUE)
         `,
         ),
-  )
+  ).then(async () => {
+    await db.schema
+      .createIndex('idx_health_worker_invitees_organization_id')
+      .on('health_worker_invitees')
+      .column('organization_id')
+      .execute()
+  })
 }
 
 export async function down(db: Kysely<DB>) {

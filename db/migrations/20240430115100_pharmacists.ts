@@ -51,7 +51,19 @@ export async function up(db: Kysely<DB>) {
       .addCheckConstraint(
         'revoked_at',
         sql`(revoked_at is null) = (revoked_by is null)`,
-      ))
+      )).then(async () => {
+    await db.schema
+      .createIndex('idx_pharmacists_country')
+      .on('pharmacists')
+      .column('country')
+      .execute()
+
+    await db.schema
+      .createIndex('idx_pharmacists_revoked_by')
+      .on('pharmacists')
+      .column('revoked_by')
+      .execute()
+  })
 }
 
 export async function down(db: Kysely<DB>) {

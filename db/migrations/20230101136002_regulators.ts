@@ -19,6 +19,18 @@ export async function up(db: Kysely<DB>) {
         )
         .addColumn('avatar_media_id', 'uuid', (col) => col.references('media.id').onDelete('set null')),
   )
+
+  await db.schema
+    .createIndex('idx_regulators_country')
+    .on('regulators')
+    .column('country')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_regulators_avatar_media_id')
+    .on('regulators')
+    .column('avatar_media_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

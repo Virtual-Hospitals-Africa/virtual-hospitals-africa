@@ -28,6 +28,18 @@ export async function up(db: Kysely<DB>) {
           (col) => col.notNull().defaultTo(now),
         ),
   )
+
+  await db.schema
+    .createIndex('idx_patient_encounter_employees_patient_encounter_id')
+    .on('patient_encounter_employees')
+    .column('patient_encounter_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_encounter_employees_employment_id')
+    .on('patient_encounter_employees')
+    .column('employment_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {
