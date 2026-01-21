@@ -38,6 +38,7 @@ export function insertProcedure(
     qb.insertInto('patient_procedures')
       .values({
         id: triage_procedure_id,
+        patient_id,
         employment_id,
         by_system: false,
       })
@@ -90,6 +91,7 @@ function insertLevel(
     qb.insertInto('patient_evaluations')
       .values({
         id: triage_level_evaluation_id,
+        patient_id,
         evaluates_record_id,
         employment_id,
         by_system,
@@ -102,6 +104,7 @@ function insertLevel(
         qb.insertInto('patient_triage_level')
           .values({
             id: triage_level_evaluation_id,
+            patient_id,
             target_treatment_time: sql`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
           })
           .returningAll(),

@@ -119,6 +119,7 @@ export const patient_computed_findings = {
         qb.insertInto('patient_findings')
           .values({
             id: computed_finding_id,
+            patient_id,
             patient_encounter_employee_id,
             procedure_id,
           }),
@@ -128,6 +129,7 @@ export const patient_computed_findings = {
         qb.insertInto('patient_computed_findings')
           .values({
             id: computed_finding_id,
+            patient_id,
             computation_algorithm_version: algorithm_version,
             computation_metadata: JSON.stringify(computation_metadata),
             value: value ?? null,
@@ -141,6 +143,7 @@ export const patient_computed_findings = {
           ? qb.insertInto('patient_computed_findings_inputs')
             .values(
               input_measurements.map((input) => ({
+                patient_id,
                 computed_finding_id,
                 input_measurement_id: input.record_id,
               })),

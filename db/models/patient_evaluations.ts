@@ -60,6 +60,7 @@ export function insertOneNestedQuery(
       qb.insertInto('patient_evaluations')
         .values({
           id: evaluation_id,
+          patient_id,
           employment_id,
           evaluates_record_id,
           by_system: by_system || false,

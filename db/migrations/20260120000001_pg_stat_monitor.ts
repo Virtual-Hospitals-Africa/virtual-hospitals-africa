@@ -1,8 +1,6 @@
 import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
-// Enable pg_stat_statements for query performance monitoring
-// https://www.postgresql.org/docs/current/pgstatstatements.html
 export async function up(db: Kysely<DB>) {
   try {
     await sql`CREATE EXTENSION IF NOT EXISTS pg_stat_monitor;`.execute(db)
@@ -12,5 +10,5 @@ export async function up(db: Kysely<DB>) {
 }
 
 export function down(db: Kysely<DB>) {
-  return sql`DROP EXTENSION pg_stat_monitor IF EXISTS;`.execute(db)
+  return sql`DROP EXTENSION IF EXISTS pg_stat_monitor;`.execute(db)
 }

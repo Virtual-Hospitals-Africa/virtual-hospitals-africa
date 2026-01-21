@@ -1,14 +1,13 @@
 import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
-import { createPointerTable, createStandardTable } from '../createTable.ts'
+import { createPointerTablePartitionedByPatientId, createStandardTablePartitionedByPatientId } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
-  await createPointerTable(
+  await createPointerTablePartitionedByPatientId(
     db,
     'patient_computed_findings',
     {
       references: 'patient_findings',
-      primary_key_type: 'uuid',
       include_created_at: true,
     },
     (qb) =>
@@ -32,7 +31,7 @@ export async function up(db: Kysely<DB>) {
         ),
   )
 
-  await createStandardTable(
+  await createStandardTablePartitionedByPatientId(
     db,
     'patient_computed_findings_inputs',
     (qb) =>
@@ -40,18 +39,27 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'computed_finding_id',
           'uuid',
-          (col) =>
-            col.notNull().references('patient_computed_findings.id').onDelete(
-              'cascade',
-            ),
+          (col) => col.notNull(),
         )
         .addColumn(
           'input_measurement_id',
           'uuid',
-          (col) =>
-            col.notNull().references('patient_measurements.id').onDelete(
-              'cascade',
-            ),
+          (col) => col.notNull(),
+        ).addForeignKeyConstraint(
+          `fk_computed_findings_input_computed_finding_id_patient_id`,
+          // deno-lint-ignore no-explicit-any
+          ['computed_finding_id', 'patient_id'] as any,
+          'patient_computed_findings',
+          ['id', 'patient_id'],
+          (cb) => cb.onDelete('cascade'),
+        )
+        .addForeignKeyConstraint(
+          `fk_computed_findings_input_input_measurement_id_patient_id`,
+          // deno-lint-ignore no-explicit-any
+          ['input_measurement_id', 'patient_id'] as any,
+          'patient_measurements',
+          ['id', 'patient_id'],
+          (cb) => cb.onDelete('cascade'),
         ),
   )
 }

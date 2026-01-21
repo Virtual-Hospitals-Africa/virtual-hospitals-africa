@@ -344,11 +344,13 @@ export const patient_findings = base({
 
           attribute_qualifiers.push({
             id: attribute_id,
+            patient_id,
             qualifies_record_id: record_id,
           })
 
           event_values.push({
             id: attribute_id,
+            patient_id,
             datetime: value.datetime,
           })
         } else {
@@ -366,6 +368,7 @@ export const patient_findings = base({
 
           attribute_qualifiers.push({
             id: attribute_id,
+            patient_id,
             qualifies_record_id: record_id,
           })
         }
@@ -388,6 +391,7 @@ export const patient_findings = base({
 
         triage_level_evaluations.push({
           id: triage_level_evaluation_id,
+          patient_id,
           evaluates_record_id: record_id,
           employment_id: priority.by_system ? null : employment_id,
           by_system: priority.by_system,
@@ -396,6 +400,7 @@ export const patient_findings = base({
 
         triage_level_values.push({
           id: triage_level_evaluation_id,
+          patient_id,
           target_treatment_time: sql<Date>`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
         })
       }
@@ -425,6 +430,7 @@ export const patient_findings = base({
               ? qb.insertInto('patient_procedures')
                 .values({
                   id: procedure_id,
+                  patient_id,
                   employment_id,
                   by_system: false,
                 })
@@ -436,6 +442,7 @@ export const patient_findings = base({
             qb.insertInto('patient_findings').values(
               records.map(({ record_id }) => ({
                 id: record_id,
+                patient_id,
                 procedure_id,
                 patient_encounter_employee_id,
               })),
@@ -501,6 +508,7 @@ export const patient_findings = base({
             ? qb.insertInto('patient_procedures')
               .values({
                 id: procedure_id,
+                patient_id,
                 employment_id,
                 by_system: false,
               })
@@ -512,6 +520,7 @@ export const patient_findings = base({
           qb.insertInto('patient_findings').values(
             records.map(({ record_id }) => ({
               id: record_id,
+              patient_id,
               procedure_id,
               patient_encounter_employee_id,
             })),
@@ -582,6 +591,7 @@ export const patient_findings = base({
       qb.insertInto('patient_findings')
         .values({
           id: finding_id,
+          patient_id,
           procedure_id,
           patient_encounter_employee_id,
         }))
@@ -630,6 +640,7 @@ export const patient_findings = base({
             qb.insertInto('patient_record_qualifiers')
               .values({
                 id: attribute_id,
+                patient_id,
                 qualifies_record_id: finding_id,
               }),
         ).with(
@@ -638,6 +649,7 @@ export const patient_findings = base({
             qb.insertInto('patient_events')
               .values({
                 id: attribute_id,
+                patient_id,
                 datetime: value.datetime,
               }),
         ) as unknown as typeof query
@@ -664,6 +676,7 @@ export const patient_findings = base({
           qb.insertInto('patient_record_qualifiers')
             .values({
               id: attribute_id,
+              patient_id,
               qualifies_record_id: finding_id,
             }),
       ) as unknown as typeof query

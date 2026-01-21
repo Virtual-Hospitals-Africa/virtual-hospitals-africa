@@ -149,6 +149,7 @@ export const patient_procedures = base({
         qb.insertInto('patient_procedures')
           .values({
             id: procedure_id,
+            patient_id,
             employment_id,
             by_system: by_system || false,
           }),
@@ -160,6 +161,7 @@ export const patient_procedures = base({
             ? qb.insertInto('patient_record_s_expressions')
               .values({
                 id: procedure_id,
+                patient_id,
                 s_expression: inverseSExpression(procedure.value),
               })
             : blankSelection(qb),
@@ -171,6 +173,7 @@ export const patient_procedures = base({
             ? qb.insertInto('patient_record_links')
               .values({
                 id: procedure_id,
+                patient_id,
                 title: procedure.value.title,
                 href: procedure.value.href,
                 thumbnail_href: procedure.value.thumbnail_href,

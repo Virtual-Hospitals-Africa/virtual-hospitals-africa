@@ -1,11 +1,10 @@
 import { Kysely } from 'kysely'
 import { DB } from '../../db.d.ts'
-import { createPointerTable } from '../createTable.ts'
+import { createPointerTablePartitionedByPatientId } from '../createTable.ts'
 
 export function up(db: Kysely<DB>) {
-  return createPointerTable(db, 'patient_record_links', {
+  return createPointerTablePartitionedByPatientId(db, 'patient_record_links', {
     references: 'patient_records',
-    primary_key_type: 'uuid',
   }, (qb) =>
     qb
       .addColumn('title', 'text', (col) => col.notNull())

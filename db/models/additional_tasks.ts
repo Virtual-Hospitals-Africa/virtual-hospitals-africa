@@ -115,6 +115,7 @@ export const additional_tasks = {
       const evaluation_id = generateUUID()
       const relations = task_result.matching_finding_ids.map((finding_id) => ({
         id: generateUUID(),
+        patient_id,
         source_id: evaluation_id,
         destination_id: finding_id,
       }))

@@ -1,14 +1,13 @@
 import { Kysely, sql } from 'kysely'
-import { createPointerTable } from '../createTable.ts'
+import { createPointerTablePartitionedByPatientId } from '../createTable.ts'
 import { DB } from '../../db.d.ts'
 
 export async function up(db: Kysely<DB>) {
-  await createPointerTable(
+  await createPointerTablePartitionedByPatientId(
     db,
     'patient_record_s_expressions',
     {
       references: 'patient_records',
-      primary_key_type: 'uuid',
     },
     (qb) =>
       qb.addColumn(

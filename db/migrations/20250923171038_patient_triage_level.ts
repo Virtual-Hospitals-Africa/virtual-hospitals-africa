@@ -1,6 +1,6 @@
 import { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
-import { createPointerTable } from '../createTable.ts'
+import { createPointerTable, createPointerTablePartitionedByPatientId } from '../createTable.ts'
 import { assertOnInsert } from '../helpers.ts'
 import { TRIAGE_LEVELS } from '../../shared/priorities.ts'
 
@@ -31,12 +31,11 @@ export async function up(db: Kysely<DB>) {
     primary_key_type: 'bigint',
   }, (qb) => qb.addColumn('sats_name', 'varchar(255)', (col) => col.notNull()))
 
-  await createPointerTable(
+  await createPointerTablePartitionedByPatientId(
     db,
     'patient_triage_level',
     {
       references: 'patient_evaluations',
-      primary_key_type: 'uuid',
       include_created_at: true,
     },
     (qb) =>

@@ -175,6 +175,7 @@ export const system_priority_determinations = {
 
       const relations = compact([other1_finding.id, other2_finding.id, other3_finding.id]).map((finding_id) => ({
         id: generateUUID(),
+        patient_id,
         source_id: triage_level.id,
         destination_id: finding_id,
       }))

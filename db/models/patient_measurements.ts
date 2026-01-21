@@ -112,6 +112,7 @@ export const patient_measurements = base({
       qb.insertInto('patient_findings')
         .values({
           id: measurement_id,
+          patient_id,
           procedure_id,
           patient_encounter_employee_id,
         }))
@@ -121,6 +122,7 @@ export const patient_measurements = base({
           qb.insertInto('patient_measurements')
             .values({
               id: measurement_id,
+              patient_id,
               units,
               value: value.toFixed(),
             }),

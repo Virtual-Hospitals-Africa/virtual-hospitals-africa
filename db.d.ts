@@ -984,6 +984,7 @@ export interface PatientChiefComplaints {
   id: string
   language_code: string
   note: string
+  patient_id: string
 }
 
 export interface PatientComputedFindings {
@@ -992,6 +993,7 @@ export interface PatientComputedFindings {
   created_at: Generated<Timestamp>
   full_display: string | null
   id: string
+  patient_id: string
   units: string | null
   value: Numeric | null
 }
@@ -1001,6 +1003,7 @@ export interface PatientComputedFindingsInputs {
   created_at: Generated<Timestamp>
   id: Generated<string>
   input_measurement_id: string
+  patient_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1068,11 +1071,13 @@ export interface PatientEvaluations {
   employment_id: string | null
   evaluates_record_id: string
   id: string
+  patient_id: string
   procedure_id: string | null
 }
 
 export interface PatientEvaluationScores {
   id: string
+  patient_id: string
   score: number
 }
 
@@ -1081,6 +1086,7 @@ export interface PatientEvents {
   datetime: Timestamp
   id: string
   location: string | null
+  patient_id: string
 }
 
 export interface PatientExaminationFindingBodySites {
@@ -1128,17 +1134,20 @@ export interface PatientFindingMediaImages {
   finding_id: string
   id: string
   media_image_id: string
+  patient_id: string
 }
 
 export interface PatientFindingMediaSpeeches {
   finding_id: string
   id: string
   media_speech_id: string
+  patient_id: string
 }
 
 export interface PatientFindings {
   id: string
   patient_encounter_employee_id: string
+  patient_id: string
   procedure_id: string
 }
 
@@ -1189,6 +1198,7 @@ export interface PatientLifestyle {
 export interface PatientMeasurements {
   comparator: Generated<Comparator>
   id: string
+  patient_id: string
   units: string
   value: Numeric
 }
@@ -1218,23 +1228,27 @@ export interface PatientProcedures {
   by_system: boolean
   employment_id: string | null
   id: string
+  patient_id: string
 }
 
 export interface PatientRecordLinks {
   href: string
   id: string
+  patient_id: string
   thumbnail_href: string | null
   title: string
 }
 
 export interface PatientRecordQualifiers {
   id: string
+  patient_id: string
   qualifies_record_id: string
 }
 
 export interface PatientRecordRelations {
   destination_id: string
   id: string
+  patient_id: string
   source_id: string
 }
 
@@ -1251,6 +1265,7 @@ export interface PatientRecords {
 
 export interface PatientRecordSExpressions {
   id: string
+  patient_id: string
   s_expression: string
 }
 
@@ -1260,6 +1275,7 @@ export interface PatientReferrals {
   organization_department_id: string | null
   organization_id: string | null
   organization_room_id: string | null
+  patient_id: string
 }
 
 export interface PatientRegistration {
@@ -1300,6 +1316,7 @@ export interface PatientSymptoms {
   end_date: Timestamp | null
   id: string
   notes: string | null
+  patient_id: string
   severity: number
   start_date: Timestamp
 }
@@ -1307,6 +1324,7 @@ export interface PatientSymptoms {
 export interface PatientTriageLevel {
   created_at: Generated<Timestamp>
   id: string
+  patient_id: string
   target_treatment_time: Timestamp | null
 }
 

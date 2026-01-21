@@ -233,6 +233,7 @@ export function baseInsert(
         qb.insertInto('patient_record_qualifiers')
           .values({
             id: qualifier_id,
+            patient_id,
             qualifies_record_id,
           }),
     ) as unknown as typeof query
@@ -300,6 +301,7 @@ export function baseInsertMany(
 
     qualifier_link_values.push({
       id: qualifier_id,
+      patient_id,
       qualifies_record_id,
     })
 

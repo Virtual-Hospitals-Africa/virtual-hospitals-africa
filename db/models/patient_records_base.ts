@@ -42,6 +42,7 @@ function markInvalid(
         qb.insertInto('patient_evaluations')
           .values({
             id,
+            patient_id,
             employment_id,
             procedure_id,
             evaluates_record_id: altered_record_id,

@@ -1,16 +1,27 @@
 import { Kysely } from 'kysely'
 import { DB } from '../../db.d.ts'
 
-export function up(db: Kysely<DB>) {
-  return db.schema.alterTable('patient_procedures').addColumn(
+export async function up(db: Kysely<DB>) {
+  await db.schema.alterTable('patient_procedures').addColumn(
     'as_part_of_procedure_id',
     'uuid',
-    (col) => col.references('patient_procedures.id').onDelete('cascade'),
+  ).execute()
+
+  await db.schema.alterTable('patient_procedures').addForeignKeyConstraint(
+    `fk_patient_procedures_as_part_of_procedure_id_patient_id`,
+    // deno-lint-ignore no-explicit-any
+    ['as_part_of_procedure_id', 'patient_id'] as any,
+    'patient_procedures',
+    ['id', 'patient_id'],
+    (cb) => cb.onDelete('cascade'),
   ).execute()
 }
 
-export function down(db: Kysely<DB>) {
-  return db.schema.alterTable('patient_procedures').dropColumn(
+export async function down(db: Kysely<DB>) {
+  await db.schema.alterTable('patient_procedures').dropConstraint(
+    'fk_patient_procedures_as_part_of_procedure_id_patient_id',
+  ).execute()
+  await db.schema.alterTable('patient_procedures').dropColumn(
     'as_part_of_procedure_id',
   ).execute()
 }

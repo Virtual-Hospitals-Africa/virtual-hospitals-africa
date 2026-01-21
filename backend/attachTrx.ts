@@ -11,25 +11,26 @@ export type TrxContext = Context<
 >
 
 // Map trx/db objects to their associated context
-const trxContextMap = new WeakMap<TrxOrDb, TrxContext>()
+const trx_context_map = new WeakMap<TrxOrDb, TrxContext>()
 
 export function ctxFromTrx(trx: TrxOrDb) {
-  const ctx = trxContextMap.get(trx)
+  const ctx = trx_context_map.get(trx)
   assert(ctx, 'trx not found in context map')
   return ctx
 }
 
+// application_name limited to 63 bytes, so saving some space
+function truncatePath(pathname: string): string {
+  return pathname
+    .replaceAll(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g, ':id')
+    .replace('/organizations', '/orgs')
+    .replace('/patients', '/ps')
+    .replace('/open_encounter', '/o_e')
+}
+
 export function setApplicationName(ctx: TrxContext, trx: TrxOrDb) {
   // Store the context association for later lookup
-  trxContextMap.set(trx, ctx)
-
-  // For non-transactional queries on the pool, we CAN'T safely set application_name
-  // because it would affect whichever connection from the pool executes the SET,
-  // creating race conditions where queries get tagged with the wrong route.
-  //
-  // For transactions, application_name is set via SET LOCAL in postHandler.ts
-  // which is transaction-scoped and safe.
-
+  trx_context_map.set(trx, ctx)
   return trx
 }
 
@@ -40,15 +41,9 @@ export function attachTrx(
   // This allows us to set application_name per-request without race conditions
   return db.connection().execute(async (conn) => {
     // Tag this connection with application_name for monitoring
-    
-    // application_name limited to 63 bytes, so saving some space
-    const tag = `${ctx.req.method}:${ctx.url.pathname}`
-      .replaceAll(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g, ':id')
-      .replace('/organizations', '/orgs')
-      .replace('/patients', '/ps')
-      .replace('/open_encounter', '/o_e')
 
-    await sql.raw(`SET application_name = '${tag.replace(/'/g, "''")}'`).execute(conn)
+    const tag = `${ctx.req.method}:${truncatePath(ctx.url.pathname)}`
+    await sql.raw(`SET application_name = ${sql.val(tag)}`).execute(conn)
 
     // Store the connection in the WeakMap for ctxFromTrx lookups
     ctx.state.trx = setApplicationName(ctx, conn)

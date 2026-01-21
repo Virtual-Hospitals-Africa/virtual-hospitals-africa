@@ -103,7 +103,7 @@ export const patient_evaluation_scores = base({
       'inserting_patient_evaluation_score',
       (qb) =>
         qb.insertInto('patient_evaluation_scores')
-          .values({ id: evaluation_id, score }),
+          .values({ id: evaluation_id, patient_id: to_insert.patient_id, score }),
     )
       .selectNoFrom([
         success_true,

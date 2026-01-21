@@ -1,25 +1,21 @@
 import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
-import { createPointerTable, createStandardTable } from '../createTable.ts'
+import { createPointerTablePartitionedByPatientId, createStandardTablePartitionedByPatientId } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
-  await createStandardTable(
+  // Create patient_records as a partitioned table
+  await createStandardTablePartitionedByPatientId(
     db,
     'patient_records',
     (qb) =>
       qb.addColumn(
-        'patient_id',
+        'patient_encounter_id',
         'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        (col) =>
+          col.notNull().references('patient_encounters.id').onDelete(
+            'cascade',
+          ),
       )
-        .addColumn(
-          'patient_encounter_id',
-          'uuid',
-          (col) =>
-            col.notNull().references('patient_encounters.id').onDelete(
-              'cascade',
-            ),
-        )
         .addColumn(
           'root_snomed_concept_id',
           'bigint',
@@ -46,12 +42,11 @@ export async function up(db: Kysely<DB>) {
         ),
   )
 
-  await createPointerTable(
+  await createPointerTablePartitionedByPatientId(
     db,
     'patient_procedures',
     {
       references: 'patient_records',
-      primary_key_type: 'uuid',
     },
     (qb) =>
       qb
@@ -76,9 +71,8 @@ export async function up(db: Kysely<DB>) {
         ),
   )
 
-  await createPointerTable(db, 'patient_findings', {
+  await createPointerTablePartitionedByPatientId(db, 'patient_findings', {
     references: 'patient_records',
-    primary_key_type: 'uuid',
   }, (qb) =>
     qb
       .addColumn(
@@ -89,29 +83,31 @@ export async function up(db: Kysely<DB>) {
             'cascade',
           ),
       )
-      .addColumn('procedure_id', 'uuid', (col) =>
-        col.notNull().references('patient_procedures.id').onDelete(
-          'cascade',
-        )))
+      .addColumn('procedure_id', 'uuid', (col) => col.notNull())
+      .addForeignKeyConstraint(
+        `fk_finding_procedure_id_patient_id`,
+        // deno-lint-ignore no-explicit-any
+        ['procedure_id', 'patient_id'] as any,
+        'patient_procedures',
+        ['id', 'patient_id'],
+        (cb) => cb.onDelete('cascade'),
+      ))
 
-  await createPointerTable(db, 'patient_measurements', {
+  await createPointerTablePartitionedByPatientId(db, 'patient_measurements', {
     references: 'patient_findings',
-    primary_key_type: 'uuid',
   }, (qb) =>
     qb.addColumn('value', 'decimal', (col) => col.notNull())
       .addColumn('units', 'varchar(255)', (col) => col.notNull()))
 
-  await createPointerTable(db, 'patient_chief_complaints', {
+  await createPointerTablePartitionedByPatientId(db, 'patient_chief_complaints', {
     references: 'patient_findings',
-    primary_key_type: 'uuid',
   }, (qb) =>
     qb
       .addColumn('language_code', 'varchar(3)', (col) => col.notNull().references('languages.iso_639_2_b'))
       .addColumn('note', 'text', (col) => col.notNull()))
 
-  await createPointerTable(db, 'patient_symptoms', {
+  await createPointerTablePartitionedByPatientId(db, 'patient_symptoms', {
     references: 'patient_findings',
-    primary_key_type: 'uuid',
   }, (qb) =>
     qb
       .addColumn(
@@ -138,43 +134,56 @@ export async function up(db: Kysely<DB>) {
       `,
       ))
 
-  await createPointerTable(db, 'patient_finding_media_images', {
+  await createPointerTablePartitionedByPatientId(db, 'patient_finding_media_images', {
     references: 'patient_records',
-    primary_key_type: 'uuid',
   }, (qb) =>
     qb.addColumn(
       'finding_id',
       'uuid',
-      (col) => col.notNull().references('patient_findings.id').onDelete('cascade'),
+      (col) => col.notNull(),
     )
       .addColumn(
         'media_image_id',
         'uuid',
         (col) => col.notNull().references('media_images.id').onDelete('cascade'),
+      )
+      .addForeignKeyConstraint(
+        `fk_media_images_finding_id_patient_id`,
+        // deno-lint-ignore no-explicit-any
+        ['finding_id', 'patient_id'] as any,
+        'patient_findings',
+        ['id', 'patient_id'],
+        (cb) => cb.onDelete('cascade'),
       ))
 
-  await createPointerTable(db, 'patient_finding_media_speeches', {
+  await createPointerTablePartitionedByPatientId(db, 'patient_finding_media_speeches', {
     references: 'patient_findings',
-    primary_key_type: 'uuid',
   }, (qb) =>
     qb
       .addColumn(
         'finding_id',
         'uuid',
-        (col) => col.notNull().references('patient_findings.id').onDelete('cascade'),
+        (col) => col.notNull(),
       )
       .addColumn(
         'media_speech_id',
         'uuid',
         (col) => col.notNull().references('media_speeches.id').onDelete('cascade'),
+      )
+      .addForeignKeyConstraint(
+        `fk_media_speech_id_patient_id`,
+        // deno-lint-ignore no-explicit-any
+        ['finding_id', 'patient_id'] as any,
+        'patient_findings',
+        ['id', 'patient_id'],
+        (cb) => cb.onDelete('cascade'),
       ))
 
-  await createPointerTable(
+  await createPointerTablePartitionedByPatientId(
     db,
     'patient_evaluations',
     {
       references: 'patient_records',
-      primary_key_type: 'uuid',
     },
     (qb) =>
       qb
@@ -186,10 +195,7 @@ export async function up(db: Kysely<DB>) {
               'cascade',
             ),
         )
-        .addColumn('procedure_id', 'uuid', (col) =>
-          col.references('patient_procedures.id').onDelete(
-            'cascade',
-          ))
+        .addColumn('procedure_id', 'uuid')
         .addColumn(
           'by_system',
           'boolean',
@@ -200,42 +206,61 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'evaluates_record_id',
           'uuid',
-          (col) => col.notNull().references('patient_records.id').onDelete('cascade'),
+          (col) => col.notNull(),
         )
         .addCheckConstraint(
           'evaluation_is_either_by_system_or_by_person',
           sql`(
             by_system or (employment_id is not null and procedure_id is not null)
           )`,
+        ).addForeignKeyConstraint(
+          `fk_evaluation_procedure_id_patient_id`,
+          // deno-lint-ignore no-explicit-any
+          ['procedure_id', 'patient_id'] as any,
+          'patient_procedures',
+          ['id', 'patient_id'],
+          (cb) => cb.onDelete('cascade'),
+        ).addForeignKeyConstraint(
+          `fk_evaluation_evaluates_id_patient_id`,
+          // deno-lint-ignore no-explicit-any
+          ['evaluates_record_id', 'patient_id'] as any,
+          'patient_records',
+          ['id', 'patient_id'],
+          (cb) => cb.onDelete('cascade'),
         ),
   )
 
-  //
-
-  await createPointerTable(
+  await createPointerTablePartitionedByPatientId(
     db,
     'patient_record_relations',
     {
       references: 'patient_records',
-      primary_key_type: 'uuid',
     },
     (qb) =>
       qb
         .addColumn(
           'source_id',
           'uuid',
-          (col) =>
-            col.notNull().references('patient_records.id').onDelete(
-              'cascade',
-            ),
+          (col) => col.notNull(),
         )
         .addColumn(
           'destination_id',
           'uuid',
-          (col) =>
-            col.notNull().references('patient_records.id').onDelete(
-              'cascade',
-            ),
+          (col) => col.notNull(),
+        ).addForeignKeyConstraint(
+          `fk_relation_source_id_patient_id`,
+          // deno-lint-ignore no-explicit-any
+          ['source_id', 'patient_id'] as any,
+          'patient_records',
+          ['id', 'patient_id'],
+          (cb) => cb.onDelete('cascade'),
+        ).addForeignKeyConstraint(
+          `fk_relation_destination_id_patient_id`,
+          // deno-lint-ignore no-explicit-any
+          ['destination_id', 'patient_id'] as any,
+          'patient_records',
+          ['id', 'patient_id'],
+          (cb) => cb.onDelete('cascade'),
         ),
   )
 }

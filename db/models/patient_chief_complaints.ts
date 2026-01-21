@@ -100,6 +100,7 @@ export const patient_chief_complaints = {
           ? qb.insertInto('patient_procedures')
             .values({
               id: procedure_id,
+              patient_id,
               employment_id,
               by_system: false,
             })
@@ -117,6 +118,7 @@ export const patient_chief_complaints = {
         qb.insertInto('patient_findings')
           .values({
             id: chief_complaint_id,
+            patient_id,
             procedure_id,
             patient_encounter_employee_id,
           }))
@@ -126,6 +128,7 @@ export const patient_chief_complaints = {
           qb.insertInto('patient_chief_complaints')
             .values({
               id: chief_complaint_id,
+              patient_id,
               note,
               language_code,
             }),
@@ -152,6 +155,7 @@ export const patient_chief_complaints = {
             ? qb.insertInto('patient_findings')
               .values({
                 id: speech_record_id,
+                patient_id,
                 patient_encounter_employee_id,
                 procedure_id,
               })
@@ -164,6 +168,7 @@ export const patient_chief_complaints = {
             ? qb.insertInto('patient_finding_media_speeches')
               .values({
                 id: speech_record_id,
+                patient_id,
                 finding_id: chief_complaint_id,
                 media_speech_id,
               })
