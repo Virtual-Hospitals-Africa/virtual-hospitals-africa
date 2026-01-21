@@ -3,6 +3,7 @@ import { parseArgs } from '@std/cli/parse-args'
 import { recreate } from './recreate.ts'
 import { restore } from './restore.ts'
 import { codegenOnDev } from './codegenOnDev.ts'
+import { run } from './seed/run.ts'
 
 export async function reset(
   opts: { recreate?: boolean | string[] } = {},
@@ -10,6 +11,7 @@ export async function reset(
   await recreate()
   await restore('snomed')
   await migrate.all(opts)
+  await run('load')
   await codegenOnDev()
 }
 

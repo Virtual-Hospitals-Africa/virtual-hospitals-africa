@@ -85,10 +85,7 @@ function asWaitingRoom(
     next_workflow_status?.workflow
   assert(workflow_to_start)
 
-  const employment_departments = organization_employment.departments.filter(
-    (d) => organization_employment.department_ids.includes(d.id),
-  )
-  const can_perform_action = employment_departments.some(
+  const can_perform_action = organization_employment.in_departments.some(
     (department) =>
       departmentResponsibleForWorkflow(
         department.name as Department,

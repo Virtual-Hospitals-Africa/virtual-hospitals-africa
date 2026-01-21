@@ -1,5 +1,4 @@
 import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
-import { organizations } from '../../db/models/organizations.ts'
 import { regulators } from '../../db/models/regulators.ts'
 import { employment } from '../../db/models/employment.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
@@ -12,6 +11,7 @@ import { promiseProps } from '../../util/promiseProps.ts'
 import { organizationDepartmentIdsOfProfession } from '../../shared/departments.ts'
 import { sessions } from '../../db/models/sessions.ts'
 import { assert } from 'std/assert/assert.ts'
+import { organizations_with_departments } from '../../db/models/organizations_with_departments.ts'
 
 const OnboardingSchema = z.object({
   organization_id: z.string().uuid(),
@@ -63,7 +63,7 @@ export const handler = postHandler(
 
     const { organization_id, profession } = form_values
     const specialty = 'specialty' in form_values ? form_values.specialty : null
-    const organization = await organizations.getById(trx, organization_id)
+    const organization = await organizations_with_departments.getById(trx, organization_id)
 
     const department_ids = organizationDepartmentIdsOfProfession(
       organization,
@@ -88,7 +88,7 @@ export const handler = postHandler(
 export default async function OnboardingPage(
   ctx: OnboardingContext,
 ) {
-  const test_organizations = await organizations.search(ctx.state.trx, {
+  const test_organizations = await organizations_with_departments.search(ctx.state.trx, {
     is_test: true,
   })
 

@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 
 if [ $# -eq 0 ]; then
   echo "Please provide a script to run against the vha_dev & vha_test databases"
@@ -14,6 +14,11 @@ diff .env .env.docker >/dev/null || {
   exit 1
 }
 
+# Sync version
+# IS_TEST=true deno task db:$script "$@"
+# deno task db:$script "$@"
+
+# Async version
 test_output=$(mktemp)
 
 # shellcheck disable=SC2086

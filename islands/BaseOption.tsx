@@ -13,32 +13,46 @@ export function BaseOption<
 >({
   option,
   selected,
+  option_name_field,
+  option_description_field,
 }: {
   option: T
   active: boolean
   selected: boolean
+  option_name_field?: string
+  option_description_field?: string
 }) {
   // If the key is there
   const avatar = 'avatar_url' in option && (
     <Avatar
       src={option.avatar_url}
       className={cls(
-        'flex-shrink-0 rounded-full',
+        'shrink-0 rounded-full',
         'h-10 w-10',
       )}
     />
   )
+
+  const name = option_name_field
+    // deno-lint-ignore no-explicit-any
+    ? (option as any)[option_name_field]
+    : option.display_name || option.name
+
+  const description = option_description_field
+    // deno-lint-ignore no-explicit-any
+    ? (option as any)[option_description_field]
+    : option.description
 
   return (
     <div className='flex flex-row gap-2'>
       {avatar}
       <div className='flex flex-col'>
         <div className={cls('text-base', selected && 'font-bold')}>
-          {option.display_name || option.name}
+          {name}
         </div>
         {option.description && (
           <div className={cls('text-xs capitalize', selected && 'font-bold')}>
-            {option.description}
+            {description}
           </div>
         )}
       </div>

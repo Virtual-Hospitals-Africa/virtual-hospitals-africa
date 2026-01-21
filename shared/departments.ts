@@ -2,7 +2,15 @@ import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
-import { EmployedHealthWorker, HealthWorkerOrganization, Maybe, NonEmptyArray, Profession, RenderedEmployee, RenderedOrganization } from '../types.ts'
+import {
+  EmployedHealthWorker,
+  HealthWorkerOrganization,
+  Maybe,
+  NonEmptyArray,
+  Profession,
+  RenderedEmployee,
+  RenderedOrganizationWithDepartments,
+} from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
@@ -137,7 +145,7 @@ export function departmentsOfProfession(
 }
 
 export function organizationDepartmentIdsOfProfession(
-  organization: RenderedOrganization,
+  organization: RenderedOrganizationWithDepartments,
   profession: Profession | 'admin',
   specialty?: Maybe<string>,
 ): string[] {
@@ -175,7 +183,6 @@ export function healthWorkerOrganizationDepartmentNames(
 export function departmentNames(
   organization_employment: HealthWorkerOrganization,
 ): Department[] {
-  return organization_employment.departments
-    .filter((dept) => organization_employment.department_ids.includes(dept.id))
+  return organization_employment.in_departments
     .map((dept) => dept.name as Department)
 }

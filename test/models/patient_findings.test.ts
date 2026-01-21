@@ -251,7 +251,7 @@ describeParallel('db/models/patient_findings.ts', () => {
       },
       'value': {
         'type': 'event',
-        'datetime': '2025-12-28T19:51:18.275362-05:00', // The value in the DB has the same timezone as whatever was inserted
+        'datetime': '2025-12-29T00:51:18.275362+00:00', // The database is in UTC
       },
     }, { strict: true })
   })

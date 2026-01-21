@@ -41,7 +41,6 @@ describeParallel(
         ownership: 'Govt.',
         inactive_reason: null,
         formatted_address: '123 Main St, Polokwane, South Africa, 23456',
-        description: '123 Main St, Polokwane, South Africa, 23456',
         location: {
           latitude: -19.4554096,
           longitude: 29.7739353,
@@ -57,7 +56,6 @@ describeParallel(
         ownership: 'Govt.',
         inactive_reason: null,
         formatted_address: '12356 Main St, Polokwane, South Africa, 23456',
-        description: '12356 Main St, Polokwane, South Africa, 23456',
         location: {
           latitude: -19.4555096,
           longitude: 29.7738353,
