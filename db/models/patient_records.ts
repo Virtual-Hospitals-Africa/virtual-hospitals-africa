@@ -18,134 +18,134 @@ export function baseQuery(
 ) {
   return nonGroupedBaseQuery(trx)
     .select((eb) => [
-      // TODO: we likely need the values here...
-      // Probably worth extracting another baseQuery
-      jsonArrayFrom(
-        trx.selectFrom(
-          nonGroupedBaseQuery(trx).as('evaluation_records'),
-        )
-          .innerJoin(
-            'patient_evaluations',
-            'evaluation_records.record_id',
-            'patient_evaluations.id',
-          )
-          .whereRef(
-            'patient_evaluations.evaluates_record_id',
-            '=',
-            eb.ref('patient_records.id'),
-          ).select([
-            'evaluation_records.record_id',
-            'evaluation_records.created_at',
-            'evaluation_records.patient_encounter_id',
-            'evaluation_records.root_snomed_concept',
-            'evaluation_records.specific_snomed_concept',
-            'evaluation_records.value',
-          ]),
-      ).as('evaluations'),
 
-      jsonArrayFrom(
-        eb.selectFrom('patient_record_relations')
-          .innerJoin(
-            'patient_records as relation_records',
-            'relation_records.id',
-            'patient_record_relations.id',
-          )
-          .whereRef(
-            'patient_record_relations.source_id',
-            '=',
-            'patient_records.id',
-          )
-          .select((eb_destination) => [
-            'patient_record_relations.destination_id',
-            asText(eb_destination, 'relation_records.root_snomed_concept_id')
-              .as(
-                'root_snomed_concept_id',
-              ),
-            asText(
-              eb_destination,
-              'relation_records.specific_snomed_concept_id',
-            ).as(
-              'specific_snomed_concept_id',
-            ),
-          ]),
-      ).as('destination_relations'),
+      // jsonArrayFrom(
+      //   trx.selectFrom(
+      //     nonGroupedBaseQuery(trx).as('evaluation_records'),
+      //   )
+      //     .innerJoin(
+      //       'patient_evaluations',
+      //       'evaluation_records.record_id',
+      //       'patient_evaluations.id',
+      //     )
+      //     .whereRef(
+      //       'patient_evaluations.evaluates_record_id',
+      //       '=',
+      //       eb.ref('patient_records.id'),
+      //     ).select([
+      //       'evaluation_records.record_id',
+      //       'evaluation_records.created_at',
+      //       'evaluation_records.patient_encounter_id',
+      //       'evaluation_records.root_snomed_concept',
+      //       'evaluation_records.specific_snomed_concept',
+      //       'evaluation_records.value',
+      //     ]),
+      // ).as('evaluations'),
 
-      jsonArrayFrom(
-        eb.selectFrom('patient_record_relations')
-          .innerJoin(
-            'patient_records as relation_records',
-            'relation_records.id',
-            'patient_record_relations.id',
-          )
-          .whereRef(
-            'patient_record_relations.destination_id',
-            '=',
-            'patient_records.id',
-          )
-          .select((eb_source) => [
-            'patient_record_relations.source_id',
-            asText(eb_source, 'relation_records.root_snomed_concept_id').as(
-              'root_snomed_concept_id',
-            ),
-            asText(eb_source, 'relation_records.specific_snomed_concept_id').as(
-              'specific_snomed_concept_id',
-            ),
-          ]),
-      ).as('source_relations'),
-      // sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
-      //   'qualifiers',
-      // ),
+      // jsonArrayFrom(
+      //   eb.selectFrom('patient_record_relations')
+      //     .innerJoin(
+      //       'patient_records as relation_records',
+      //       'relation_records.id',
+      //       'patient_record_relations.id',
+      //     )
+      //     .whereRef(
+      //       'patient_record_relations.source_id',
+      //       '=',
+      //       'patient_records.id',
+      //     )
+      //     .select((eb_destination) => [
+      //       'patient_record_relations.destination_id',
+      //       asText(eb_destination, 'relation_records.root_snomed_concept_id')
+      //         .as(
+      //           'root_snomed_concept_id',
+      //         ),
+      //       asText(
+      //         eb_destination,
+      //         'relation_records.specific_snomed_concept_id',
+      //       ).as(
+      //         'specific_snomed_concept_id',
+      //       ),
+      //     ]),
+      // ).as('destination_relations'),
 
-      jsonArrayFrom(
-        patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
-          .where(
-            'qualifiers_1.qualifies_record_id',
-            '=',
-            eb.ref('patient_records.id'),
-          )
-          .select((eb_qualifiers_1) => [
-            jsonArrayFrom(
-              patient_record_qualifiers.baseQuery(trx, 'qualifiers_2' as const)
-                .where(
-                  'qualifiers_2.qualifies_record_id',
-                  '=',
-                  eb_qualifiers_1.ref('qualifiers_1.record_id'),
-                )
-                .select((eb_qualifiers_2) => [
-                  jsonArrayFrom(
-                    patient_record_qualifiers.baseQuery(
-                      trx,
-                      'qualifiers_3' as const,
-                    )
-                      .where(
-                        'qualifiers_3.qualifies_record_id',
-                        '=',
-                        eb_qualifiers_2.ref('qualifiers_2.record_id'),
-                      )
-                      .select((eb_qualifiers_3) => [
-                        jsonArrayFrom(
-                          patient_record_qualifiers.baseQuery(
-                            trx,
-                            'qualifiers_4' as const,
-                          )
-                            .where(
-                              'qualifiers_4.qualifies_record_id',
-                              '=',
-                              eb_qualifiers_3.ref('qualifiers_3.record_id'),
-                            )
-                            .select((_eb_qualifiers_4) => [
-                              // At max depth, just return an empty array, satisfying the typedefs
-                              sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
-                                'qualifiers',
-                              ),
-                            ]),
-                        ).as('qualifiers'),
-                      ]),
-                  ).as('qualifiers'),
-                ]),
-            ).as('qualifiers'),
-          ]),
-      ).as('qualifiers'),
+      // jsonArrayFrom(
+      //   eb.selectFrom('patient_record_relations')
+      //     .innerJoin(
+      //       'patient_records as relation_records',
+      //       'relation_records.id',
+      //       'patient_record_relations.id',
+      //     )
+      //     .whereRef(
+      //       'patient_record_relations.destination_id',
+      //       '=',
+      //       'patient_records.id',
+      //     )
+      //     .select((eb_source) => [
+      //       'patient_record_relations.source_id',
+      //       asText(eb_source, 'relation_records.root_snomed_concept_id').as(
+      //         'root_snomed_concept_id',
+      //       ),
+      //       asText(eb_source, 'relation_records.specific_snomed_concept_id').as(
+      //         'specific_snomed_concept_id',
+      //       ),
+      //     ]),
+      // ).as('source_relations'),
+
+      sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
+        'qualifiers',
+      ),
+
+      // jsonArrayFrom(
+      //   patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
+      //     .where(
+      //       'qualifiers_1.qualifies_record_id',
+      //       '=',
+      //       eb.ref('patient_records.id'),
+      //     )
+      //     .select((eb_qualifiers_1) => [
+      //       jsonArrayFrom(
+      //         patient_record_qualifiers.baseQuery(trx, 'qualifiers_2' as const)
+      //           .where(
+      //             'qualifiers_2.qualifies_record_id',
+      //             '=',
+      //             eb_qualifiers_1.ref('qualifiers_1.record_id'),
+      //           )
+      //           .select((eb_qualifiers_2) => [
+      //             jsonArrayFrom(
+      //               patient_record_qualifiers.baseQuery(
+      //                 trx,
+      //                 'qualifiers_3' as const,
+      //               )
+      //                 .where(
+      //                   'qualifiers_3.qualifies_record_id',
+      //                   '=',
+      //                   eb_qualifiers_2.ref('qualifiers_2.record_id'),
+      //                 )
+      //                 .select((eb_qualifiers_3) => [
+      //                   jsonArrayFrom(
+      //                     patient_record_qualifiers.baseQuery(
+      //                       trx,
+      //                       'qualifiers_4' as const,
+      //                     )
+      //                       .where(
+      //                         'qualifiers_4.qualifies_record_id',
+      //                         '=',
+      //                         eb_qualifiers_3.ref('qualifiers_3.record_id'),
+      //                       )
+      //                       .select((_eb_qualifiers_4) => [
+      //                         // At max depth, just return an empty array, satisfying the typedefs
+      //                         sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
+      //                           'qualifiers',
+      //                         ),
+      //                       ]),
+      //                   ).as('qualifiers'),
+      //                 ]),
+      //             ).as('qualifiers'),
+      //           ]),
+      //       ).as('qualifiers'),
+      //     ]),
+      // ).as('qualifiers'),
     ])
 }
 

@@ -114,11 +114,11 @@ export function baseQuery(
           '=',
           'patient_records.id',
         )
-        .where(
-          'triage_patient_records.id',
-          'not in',
-          nowInvalidRecords(trx),
-        )
+        // .where(
+        //   'triage_patient_records.id',
+        //   'not in',
+        //   nowInvalidRecords(trx),
+        // )
         .select('triage_snomed_inferred_canonical_name_and_category.name')
         .$castTo<Priority | null>()
         .as('priority'),
@@ -139,11 +139,11 @@ export function baseQuery(
           '=',
           'patient_records.id',
         )
-        .where(
-          'score_patient_records.id',
-          'not in',
-          nowInvalidRecords(trx),
-        )
+        // .where(
+        //   'score_patient_records.id',
+        //   'not in',
+        //   nowInvalidRecords(trx),
+        // )
         .select('patient_evaluation_scores.score')
         .as('score'),
     ])

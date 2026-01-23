@@ -121,6 +121,26 @@ export function nonGroupedBaseQuery(
       'specific_snomed_concept.id',
     )
     .leftJoin(
+      'patient_findings as maybe_findings',
+      'patient_records.id',
+      'maybe_findings.id',
+    )
+    .leftJoin(
+      'patient_evaluations as maybe_evaluations',
+      'patient_records.id',
+      'maybe_evaluations.id',
+    )
+    .leftJoin(
+      'patient_procedures as maybe_procedures',
+      'patient_records.id',
+      'maybe_procedures.id',
+    )
+    .leftJoin(
+      'patient_record_qualifiers as maybe_record_qualifiers',
+      'patient_records.id',
+      'maybe_record_qualifiers.id',
+    )
+    .leftJoin(
       'snomed_inferred_canonical_name_and_category as value_snomed_concept',
       'patient_records.value_snomed_concept_id',
       'value_snomed_concept.id',
@@ -154,6 +174,18 @@ export function nonGroupedBaseQuery(
       'patient_records.id as record_id',
       'patient_records.created_at',
       'patient_records.patient_encounter_id',
+      'maybe_evaluations.evaluates_record_id',
+      eb.case()
+        .when('maybe_findings.id', 'is not', null)
+        .then('finding')
+        .when('maybe_evaluations.id', 'is not', null)
+        .then('evaluation')
+        .when('maybe_procedures.id', 'is not', null)
+        .then('procedure')
+        .when('maybe_record_qualifiers.id', 'is not', null)
+        .then('qualifier')
+      .end()
+      .as('type'),
       jsonBuildObject({
         snomed_concept_id: asText(
           eb,
