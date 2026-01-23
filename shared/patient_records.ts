@@ -90,13 +90,15 @@ const findingToDisplayableRecord = logArgsOnError(
     assert(finding.specific_snomed_concept, 'Expected specific_snomed_concept')
 
     return {
-      record_id: '',
+      id: '',
       created_at: '',
       patient_encounter_id: '',
-      root_snomed_concept: toRenderedSnomedConcept(finding.root_snomed_concept),
-      specific_snomed_concept: toRenderedSnomedConcept(
-        finding.specific_snomed_concept,
-      ),
+      root_snomed_concept_id: '',
+      root_snomed_concept_name: finding.root_snomed_concept.name,
+      root_snomed_concept_category: finding.root_snomed_concept.category,
+      specific_snomed_concept_id: '',
+      specific_snomed_concept_name: finding.specific_snomed_concept.name,
+      specific_snomed_concept_category: finding.specific_snomed_concept.category,
       value: finding.value_snomed_concept
         ? {
           type: 'snomed_concept',
@@ -104,30 +106,26 @@ const findingToDisplayableRecord = logArgsOnError(
         }
         : null,
       qualifiers: finding.qualifiers.map((q) => ({
-        record_id: '',
+        id: '',
         created_at: '',
         patient_encounter_id: '',
-        root_snomed_concept: {
-          snomed_concept_id: '',
-          name: 'Qualifier value',
-          category: 'qualifier value' as const,
-        },
-        specific_snomed_concept: toRenderedSnomedConcept(
-          q.specific_snomed_concept,
-        ),
+        root_snomed_concept_id: '',
+        root_snomed_concept_name: 'Qualifier value',
+        root_snomed_concept_category: 'qualifier value' as const,
+        specific_snomed_concept_id: '',
+        specific_snomed_concept_name: q.specific_snomed_concept.name,
+        specific_snomed_concept_category: q.specific_snomed_concept.category,
         value: null,
         qualifiers: q.qualifiers.map((nested) => ({
-          record_id: '',
+          id: '',
           created_at: '',
           patient_encounter_id: '',
-          root_snomed_concept: {
-            snomed_concept_id: '',
-            name: 'Qualifier value',
-            category: 'qualifier value' as const,
-          },
-          specific_snomed_concept: toRenderedSnomedConcept(
-            nested.specific_snomed_concept,
-          ),
+          root_snomed_concept_id: '',
+          root_snomed_concept_name: 'Qualifier value',
+          root_snomed_concept_category: 'qualifier value' as const,
+          specific_snomed_concept_id: '',
+          specific_snomed_concept_name: nested.specific_snomed_concept.name,
+          specific_snomed_concept_category: nested.specific_snomed_concept.category,
           value: null,
         })),
       })),
@@ -140,13 +138,15 @@ const measurementToDisplayableRecord = logArgsOnError(
     measurement: Lang['measurement'],
   ): WithProperRecordValue<DisplayableRecord> {
     return {
-      record_id: '',
+      id: '',
       created_at: '',
       patient_encounter_id: '',
-      root_snomed_concept: MEASUREMENT_FINDING,
-      specific_snomed_concept: toRenderedSnomedConcept(
-        measurement.snomed_concept,
-      ),
+      root_snomed_concept_id: MEASUREMENT_FINDING.id,
+      root_snomed_concept_name: MEASUREMENT_FINDING.name,
+      root_snomed_concept_category: MEASUREMENT_FINDING.category,
+      specific_snomed_concept_id: '',
+      specific_snomed_concept_name: measurement.snomed_concept.name,
+      specific_snomed_concept_category: measurement.snomed_concept.category,
       value: null,
       qualifiers: [],
     }
@@ -188,10 +188,9 @@ function valueDisplay(
 }
 
 function includeRootSnomedConceptName(
-  root_snomed_concept: RenderedSnomedConcept,
-  specific_snomed_concept: RenderedSnomedConcept,
+  record: DisplayableRecord,
 ): boolean {
-  switch (root_snomed_concept.name) {
+  switch (record.root_snomed_concept_name) {
     case 'Attribute':
     case 'Event':
     case 'Measurement finding':
@@ -200,7 +199,7 @@ function includeRootSnomedConceptName(
     case 'Evaluation - action':
       return false
     case 'Procedure':
-      return specific_snomed_concept.name !== 'Reference documentation'
+      return record.specific_snomed_concept_name !== 'Reference documentation'
     default:
       return true
   }
@@ -209,7 +208,7 @@ function includeRootSnomedConceptName(
 // In English, certain words connect things at the end
 function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
   if (!qualifier) return false
-  switch (qualifier.specific_snomed_concept.name) {
+  switch (qualifier.specific_snomed_concept_name) {
     case 'For':
     case 'With':
       return true
@@ -218,15 +217,13 @@ function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
   }
 }
 
-function massageSpecificConceptDisplay(specific_snomed_concept: null | undefined, value: RecordValue | null): null
-function massageSpecificConceptDisplay(specific_snomed_concept: RenderedSnomedConcept, value: RecordValue | null): string
-function massageSpecificConceptDisplay(specific_snomed_concept: Maybe<RenderedSnomedConcept>, value: RecordValue | null): string | null {
-  if (!specific_snomed_concept) return null
+function massageSpecificConceptDisplay(record: DisplayableRecord): string | null {
+  if (!record.specific_snomed_concept_name) return null
 
-  const replaced = specific_snomed_concept.name
+  const replaced = record.specific_snomed_concept_name
     .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
 
-  if (value?.type !== 'measurement') return replaced
+  if (record.value?.type !== 'measurement') return replaced
 
   return replaced
     .replace(/^Body /, '')
@@ -238,8 +235,6 @@ function buildDisplays(
   postfix?: boolean,
 ): RecordDisplays {
   const {
-    root_snomed_concept,
-    specific_snomed_concept,
     value,
     qualifiers = [],
   } = record
@@ -255,14 +250,12 @@ function buildDisplays(
 
   const qualifier_displays = qualifiers.map((prefix) => buildDisplays(addNodeIfValueIsSExpression(prefix), use_postfix).full)
 
-  const specific_concept_display = capitalize(
-    massageSpecificConceptDisplay(specific_snomed_concept, value),
-    { just_first: true },
-  )
+  const specific_concept_display = massageSpecificConceptDisplay(record)
+  const specific_concept_display_capitalized = specific_concept_display && capitalize(specific_concept_display, { just_first: true })
 
-  const maybe_root_concept_name = includeRootSnomedConceptName(root_snomed_concept, specific_snomed_concept) && root_snomed_concept.name
+  const maybe_root_concept_name = includeRootSnomedConceptName(record) && record.root_snomed_concept_name
 
-  const finding_displays = compact([specific_concept_display, maybe_root_concept_name])
+  const finding_displays = compact([specific_concept_display_capitalized, maybe_root_concept_name])
 
   const finding_displays_qualified = use_postfix ? [...finding_displays, ...qualifier_displays] : [...qualifier_displays, ...finding_displays]
 
@@ -328,7 +321,7 @@ export function formatRecord<
 
   const [modifiers, unformatted_attributes] = partition(
     qualifiers || [],
-    (qualifier) => qualifier.root_snomed_concept.name === 'Qualifier value',
+    (qualifier) => qualifier.root_snomed_concept_name === 'Qualifier value',
   )
 
   const attributes = unformatted_attributes.map(addNodeIfValueIsSExpression).map(addDisplay)
@@ -364,7 +357,11 @@ function toSnomedConcept(
 function toQualifier(modifier: IntermediateBaseRecord): Lang['qualifier'] {
   return {
     atom: 'qualifier',
-    specific_snomed_concept: toSnomedConcept(modifier.specific_snomed_concept),
+    specific_snomed_concept: {
+      atom: 'snomed_concept',
+      name: modifier.specific_snomed_concept_name,
+      category: modifier.specific_snomed_concept_category,
+    },
     qualifiers: [],
   }
 }
@@ -385,7 +382,11 @@ export function asNormalFormSExpression<Rest>(
       const value = attr.value as { type: 'event'; datetime: Date | string }
       return {
         atom: 'attribute',
-        specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+        specific_snomed_concept: {
+          atom: 'snomed_concept',
+          name: attr.specific_snomed_concept_name,
+          category: attr.specific_snomed_concept_category,
+        },
         value: {
           atom: 'event' as const,
           datetime: isDate(value.datetime) ? value.datetime.toISOString() : value.datetime,
@@ -396,15 +397,25 @@ export function asNormalFormSExpression<Rest>(
     // Regular attribute (snomed concept value or null)
     return {
       atom: 'attribute',
-      specific_snomed_concept: toSnomedConcept(attr.specific_snomed_concept),
+      specific_snomed_concept: {
+        atom: 'snomed_concept',
+        name: attr.specific_snomed_concept_name,
+        category: attr.specific_snomed_concept_category,
+      },
       value: toSnomedConcept(attr.value),
     }
   })
 
-  const root_snomed_concept = toSnomedConcept(record.root_snomed_concept)
-  const specific_snomed_concept = toSnomedConcept(
-    record.specific_snomed_concept,
-  )
+  const root_snomed_concept = {
+    atom: 'snomed_concept' as const,
+    name: record.root_snomed_concept_name,
+    category: record.root_snomed_concept_category,
+  }
+  const specific_snomed_concept = {
+    atom: 'snomed_concept' as const,
+    name: record.specific_snomed_concept_name,
+    category: record.specific_snomed_concept_category,
+  }
   const value_snomed_concept = record.value?.type === 'snomed_concept' ? toSnomedConcept(record.value) : null
 
   return inverseSExpression(asNode())

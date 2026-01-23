@@ -18,7 +18,7 @@ export const health_worker_registration_status = {
     health_worker_id: string | IdSelection,
   ) {
     if (SKIP_NURSE_REGISTRATION) {
-      return []
+      return Promise.resolve(null)
     }
 
     return trx.selectFrom('nurse_registration_details')

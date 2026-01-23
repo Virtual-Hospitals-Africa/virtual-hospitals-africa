@@ -133,18 +133,18 @@ async function sortedVitals(
       excluding_patient_encounter_id: patient_encounter_id,
       measurement_snomed_concept_ids: this_encounter_vitals.measurements.map((
         v,
-      ) => v.specific_snomed_concept.snomed_concept_id),
+      ) => v.specific_snomed_concept_id),
       assessment_snomed_concept_ids: this_encounter_vitals.assessments.flatMap((
         v,
-      ) => v.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id)),
+      ) => v.evaluations.map((e) => e.root_snomed_concept_id)),
     })
 
   const measurements_unsorted_with_reference_ranges = this_encounter_vitals
     .measurements.map(
       (finding) => {
         const previous = previous_vitals.measurements.find((m) =>
-          m.specific_snomed_concept.snomed_concept_id ===
-            finding.specific_snomed_concept.snomed_concept_id
+          m.specific_snomed_concept_id ===
+            finding.specific_snomed_concept_id
         ) ?? null
 
         return {
@@ -152,7 +152,7 @@ async function sortedVitals(
           previous,
           type: 'measurement' as const,
           reference_ranges: buildReferenceRanges(
-            finding.specific_snomed_concept.snomed_concept_id,
+            finding.specific_snomed_concept_id,
             age_determination,
             compact([finding.value.value, previous?.value.value]),
           ),
@@ -166,13 +166,13 @@ async function sortedVitals(
     vitalAssessmentOrder,
   ).map((finding) => {
     const evaluation_snomed_concept_ids = intersection(
-      finding.evaluations.map((e) => e.root_snomed_concept.snomed_concept_id),
+      finding.evaluations.map((e) => e.root_snomed_concept_id),
       Object.values(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS).map((concept) => concept.id),
     )
     const previous = previous_vitals.assessments.find((a) => {
       a.evaluations.some((e) =>
         evaluation_snomed_concept_ids.includes(
-          e.root_snomed_concept.snomed_concept_id,
+          e.root_snomed_concept_id,
         )
       )
     }) ?? null
@@ -189,7 +189,7 @@ async function sortedVitals(
     (m) =>
       MEASUREMENTS_ORDERED.indexOf(
         vitalMeasurementFromSnomedConceptId(
-          m.finding.specific_snomed_concept.snomed_concept_id,
+          m.finding.specific_snomed_concept_id,
         ),
       ),
   )
@@ -197,7 +197,7 @@ async function sortedVitals(
   const other_measurements = sortBy(
     other_measurements_unsorted,
     (m) =>
-      m.finding.specific_snomed_concept.snomed_concept_id ===
+      m.finding.specific_snomed_concept_id ===
           VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_diastolic.id
         ? 0
         : 1,

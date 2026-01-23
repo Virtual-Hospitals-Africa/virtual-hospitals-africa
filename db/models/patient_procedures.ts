@@ -34,7 +34,7 @@ export function baseQuery(
     .innerJoin(
       'patient_procedures',
       'patient_procedures.id',
-      'patient_records.id',
+      'patient_records_aggregated.id',
     )
     .select([
       literalString('procedure').$castTo<'procedure'>().as('type'),
@@ -54,21 +54,21 @@ export const patient_procedures = base({
     assert(!opts.search, 'TODO support')
     if (opts.patient_id) {
       qb = qb.where(
-        'patient_records.patient_id',
+        'patient_records_aggregated.patient_id',
         '=',
         opts.patient_id,
       )
     }
     if (opts.patient_encounter_id) {
       qb = qb.where(
-        'patient_records.patient_encounter_id',
+        'patient_records_aggregated.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
       )
     }
     if (opts.specific_snomed_concept_id) {
       qb = qb.where(
-        'patient_records.specific_snomed_concept_id',
+        'patient_records_aggregated.specific_snomed_concept_id',
         'in',
         [opts.specific_snomed_concept_id].flat(),
       )

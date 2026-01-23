@@ -86,19 +86,15 @@ describeParallel('db/models/patient_findings.ts', () => {
 
       assertMatches(finding.attributes, [
         {
-          'record_id': z.string().uuid(),
+          'id': z.string().uuid(),
           'created_at': z.iso.datetime({ offset: true }),
           'patient_encounter_id': z.string().uuid(),
-          'root_snomed_concept': {
-            'category': 'attribute',
-            'snomed_concept_id': '246061005',
-            'name': 'Attribute',
-          },
-          'specific_snomed_concept': {
-            'snomed_concept_id': '363698007',
-            'name': 'Finding site',
-            'category': 'attribute',
-          },
+          'root_snomed_concept_id': '246061005',
+          'root_snomed_concept_name': 'Attribute',
+          'root_snomed_concept_category': 'attribute',
+          'specific_snomed_concept_id': '363698007',
+          'specific_snomed_concept_name': 'Finding site',
+          'specific_snomed_concept_category': 'attribute',
           'value': {
             'type': 'snomed_concept',
             'snomed_concept_id': '368208006',
@@ -231,12 +227,10 @@ describeParallel('db/models/patient_findings.ts', () => {
 
     assertLength(finding.attributes, 1)
     assertMatches(finding.attributes[0], {
-      'record_id': z.string().uuid(),
-      'root_snomed_concept': {
-        'category': 'event',
-        'snomed_concept_id': '272379006',
-        'name': 'Event',
-      },
+      'id': z.string().uuid(),
+      'root_snomed_concept_id': '272379006',
+      'root_snomed_concept_category': 'event',
+      'root_snomed_concept_name': 'Event',
       'displays': {
         'finding': 'Time of onset',
         'value': '2:51:18 am SAST | Monday, December 29, 2025', // The display is converted from EST (-05) to SAST (+02)
@@ -244,11 +238,9 @@ describeParallel('db/models/patient_findings.ts', () => {
       },
       'created_at': z.iso.datetime({ offset: true }),
       'patient_encounter_id': z.string().uuid(),
-      'specific_snomed_concept': {
-        'snomed_concept_id': '263501003',
-        'name': 'Time of onset',
-        'category': 'observable entity',
-      },
+      'specific_snomed_concept_id': '263501003',
+      'specific_snomed_concept_name': 'Time of onset',
+      'specific_snomed_concept_category': 'observable entity',
       'value': {
         'type': 'event',
         'datetime': '2025-12-29T00:51:18.275362+00:00', // The database is in UTC

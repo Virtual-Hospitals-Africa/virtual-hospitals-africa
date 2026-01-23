@@ -1,6 +1,6 @@
 import { Selecting, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { asText, jsonBuildNullableObject, jsonBuildObject, literalString, success_true } from '../helpers.ts'
+import { asText, success_true } from '../helpers.ts'
 import { ALTERED, ENTERED_IN_ERROR, EVALUATION_ACTION } from '../../shared/snomed_concepts.ts'
 
 export const RECORD_NOW_INVALID = {
@@ -109,136 +109,20 @@ export type IntermediateBaseRecord = Selecting<
 export function nonGroupedBaseQuery(
   trx: TrxOrDbOrQueryCreator,
 ) {
-  return trx.selectFrom('patient_records')
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category as root_snomed_concept',
-      'patient_records.root_snomed_concept_id',
-      'root_snomed_concept.id',
-    )
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category as specific_snomed_concept',
-      'patient_records.specific_snomed_concept_id',
-      'specific_snomed_concept.id',
-    )
-    .leftJoin(
-      'snomed_inferred_canonical_name_and_category as value_snomed_concept',
-      'patient_records.value_snomed_concept_id',
-      'value_snomed_concept.id',
-    )
-    .leftJoin(
-      'patient_events as maybe_events',
-      'patient_records.id',
-      'maybe_events.id',
-    )
-    .leftJoin(
-      'patient_measurements as maybe_measurements',
-      'patient_records.id',
-      'maybe_measurements.id',
-    )
-    .leftJoin(
-      'patient_evaluation_scores as maybe_scores',
-      'patient_records.id',
-      'maybe_scores.id',
-    )
-    .leftJoin(
-      'patient_record_s_expressions as maybe_s_expressions',
-      'patient_records.id',
-      'maybe_s_expressions.id',
-    )
-    .leftJoin(
-      'patient_record_links as maybe_links',
-      'patient_records.id',
-      'maybe_links.id',
-    )
+  return trx.selectFrom('patient_records_aggregated')
+    .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records_aggregated.id')
     .select((eb) => [
-      'patient_records.id as record_id',
-      'patient_records.created_at',
-      'patient_records.patient_encounter_id',
-      jsonBuildObject({
-        snomed_concept_id: asText(
-          eb,
-          'root_snomed_concept.id',
-        ),
-        name: eb.ref('root_snomed_concept.name'),
-        category: eb.ref(
-          'root_snomed_concept.category',
-        ),
-      }).as('root_snomed_concept'),
-
-      jsonBuildObject({
-        snomed_concept_id: asText(
-          eb,
-          'specific_snomed_concept.id',
-        ),
-        name: eb.ref('specific_snomed_concept.name'),
-        category: eb.ref(
-          'specific_snomed_concept.category',
-        ),
-      }).as('specific_snomed_concept'),
-
-      eb.fn.coalesce(
-        jsonBuildNullableObject(
-          eb.ref('patient_records.value_snomed_concept_id'),
-          {
-            type: literalString('snomed_concept' as const),
-            snomed_concept_id: asText(
-              eb,
-              'value_snomed_concept.id',
-            ).$notNull(),
-            name: eb.ref(
-              'value_snomed_concept.name',
-            )
-              .$notNull(),
-            category: eb.ref(
-              'value_snomed_concept.category',
-            ).$notNull(),
-          },
-        ),
-        jsonBuildNullableObject(
-          eb.ref('maybe_events.id'),
-          {
-            type: literalString('event' as const),
-            datetime: eb.ref('maybe_events.datetime').$notNull(),
-          },
-        ),
-        jsonBuildNullableObject(
-          eb.ref('maybe_measurements.id'),
-          {
-            type: literalString('measurement' as const),
-            value: asText(eb, 'maybe_measurements.value').$notNull(),
-            units: eb.ref('maybe_measurements.units').$notNull(),
-          },
-        ),
-        jsonBuildNullableObject(
-          eb.ref('maybe_scores.id'),
-          {
-            type: literalString('score' as const),
-            score: asText(eb, 'maybe_scores.score').$notNull(),
-          },
-        ),
-        jsonBuildNullableObject(
-          eb.ref('maybe_s_expressions.id'),
-          {
-            type: literalString('s_expression' as const),
-            s_expression: asText(eb, 'maybe_s_expressions.s_expression')
-              .$notNull(),
-          },
-        ),
-        // @ts-ignore coalesce should handle these just fine
-        jsonBuildNullableObject(
-          eb.ref('maybe_links.id'),
-          {
-            type: literalString('link' as const),
-            title: eb.ref('maybe_links.title').$notNull(),
-            href: eb.ref('maybe_links.href').$notNull(),
-            thumbnail_href: eb.ref('maybe_links.thumbnail_href'),
-          },
-        ),
-      ).as('value'),
+      'patient_records_aggregated.id',
+      'patient_records_aggregated.created_at',
+      'patient_records_aggregated.patient_id',
+      'patient_records_aggregated.patient_encounter_id',
+      asText(eb, 'patient_records_aggregated.root_snomed_concept_id').as('root_snomed_concept_id'),
+      'patient_records_aggregated.root_snomed_concept_name',
+      'patient_records_aggregated.root_snomed_concept_category',
+      asText(eb, 'patient_records_aggregated.specific_snomed_concept_id').as('specific_snomed_concept_id'),
+      'patient_records_aggregated.specific_snomed_concept_name',
+      'patient_records_aggregated.specific_snomed_concept_category',
+      'patient_records_aggregated.existence',
+      'patient_records_aggregated.value',
     ])
-    .where(
-      'patient_records.id',
-      'not in',
-      nowInvalidRecords(trx),
-    )
 }

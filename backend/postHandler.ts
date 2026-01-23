@@ -2,7 +2,8 @@ import z from 'zod'
 import { parseRequest } from './parseForm.ts'
 import { LoggedInHealthWorkerContext } from '../types.ts'
 import db from '../db/db.ts'
-import { setApplicationNameAndAttachTrx } from './attachTrx.ts'
+
+import { timeout, TimeoutError } from '../util/timeout.ts'
 
 export function postHandler<
   // deno-lint-ignore no-explicit-any
@@ -26,8 +27,19 @@ export function postHandler<
         .transaction()
         .setIsolationLevel('read committed')
         .execute(async (trx) => {
-          await setApplicationNameAndAttachTrx(ctx, trx)
-          return Promise.resolve(callback(ctx, form_values))
+          ctx.state.trx = trx
+          const response = Promise.resolve(callback(ctx, form_values))
+          const timer = timeout(10000)
+          try {
+            return await Promise.race([response, timer])
+          } catch (err) {
+            if (err instanceof TimeoutError) {
+              console.error(`TIMEOUT ${ctx.req.method}:${ctx.url.pathname}`)
+            }
+            throw err
+          } finally {
+            timer.cancel()
+          }
         })
     },
   }

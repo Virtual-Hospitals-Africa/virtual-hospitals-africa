@@ -64,19 +64,15 @@ describeParallel('db/models/s_expression.ts', () => {
 
       assertMatches(findings, [
         {
-          'record_id': z.string().uuid(),
+          'id': z.string().uuid(),
           'created_at': z.date(),
           'patient_encounter_id': z.string().uuid(),
-          'root_snomed_concept': {
-            'snomed_concept_id': '404684003',
-            'name': 'Clinical finding',
-            'category': 'finding',
-          },
-          'specific_snomed_concept': {
-            'snomed_concept_id': '125666000',
-            'name': 'Burn',
-            'category': 'disorder',
-          },
+          'root_snomed_concept_id': '404684003',
+          'root_snomed_concept_name': 'Clinical finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_id': '125666000',
+          'specific_snomed_concept_name': 'Burn',
+          'specific_snomed_concept_category': 'disorder',
           'value': null,
           'evaluations': [],
           'destination_relations': [],
@@ -84,35 +80,27 @@ describeParallel('db/models/s_expression.ts', () => {
           'type': 'finding',
           'patient_encounter_employee_id': z.string().uuid(),
           'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
-            'root_snomed_concept': {
-              'snomed_concept_id': '71388002',
-              'name': 'Procedure',
-              'category': 'procedure',
-            },
-            'specific_snomed_concept': {
-              'snomed_concept_id': '225390008',
-              'name': 'Triage',
-              'category': 'procedure',
-            },
+            'id': z.string().uuid(),
+            'root_snomed_concept_id': '71388002',
+            'root_snomed_concept_name': 'Procedure',
+            'root_snomed_concept_category': 'procedure',
+            'specific_snomed_concept_id': '225390008',
+            'specific_snomed_concept_name': 'Triage',
+            'specific_snomed_concept_category': 'procedure',
           },
           'priority': null,
           'score': null,
           'modifiers': [
             {
-              'record_id': z.string().uuid(),
+              'id': z.string().uuid(),
               'created_at': z.iso.datetime({ offset: true }),
               'patient_encounter_id': z.string().uuid(),
-              'root_snomed_concept': {
-                'snomed_concept_id': '362981000',
-                'name': 'Qualifier value',
-                'category': 'qualifier value',
-              },
-              'specific_snomed_concept': {
-                'snomed_concept_id': '255593009',
-                'name': 'Circumferential',
-                'category': 'qualifier value',
-              },
+              'root_snomed_concept_id': '362981000',
+              'root_snomed_concept_name': 'Qualifier value',
+              'root_snomed_concept_category': 'qualifier value',
+              'specific_snomed_concept_id': '255593009',
+              'specific_snomed_concept_name': 'Circumferential',
+              'specific_snomed_concept_category': 'qualifier value',
               'value': null,
               'qualifiers': [],
             },
@@ -183,11 +171,9 @@ describeParallel('db/models/s_expression.ts', () => {
 
       assertLength(nasal_structure_findings, 1)
       assertMatches(nasal_structure_findings[0], {
-        'record_id': z.string().uuid(),
-        'specific_snomed_concept': {
-          'name': 'Nasal discharge',
-          'category': 'finding',
-        },
+        'id': z.string().uuid(),
+        'specific_snomed_concept_name': 'Nasal discharge',
+        'specific_snomed_concept_category': 'finding',
       })
 
       const face_structure_findings = await patient_findings.findAll(db, {

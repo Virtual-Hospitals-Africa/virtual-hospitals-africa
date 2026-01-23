@@ -301,10 +301,10 @@ export function debugReplaceAll(
     const sql_index = `$${i + 1}`
     sql = sql.replace(sql_index, debugReplace(p))
   })
-  return sql
-  // return formatter.format(sql, {
-  //   language: 'postgresql',
-  // })
+  // return sql
+  return formatter.format(sql, {
+    language: 'postgresql',
+  })
 }
 
 export function asCompiledSql(
@@ -376,6 +376,39 @@ export function literalLocation(loc: Coordinates) {
   return sql<
     string
   >`ST_SetSRID(ST_MakePoint(${loc.longitude}, ${loc.latitude}), 4326)`
+}
+
+export function trigger(
+  table: keyof DB,
+  fn_name: string,
+  computation: string,
+  when: 'BEFORE' | 'AFTER',
+) {
+  const fn_full_name = `${table}_${fn_name}`.toLowerCase()
+  const trigger_name = `${fn_full_name}_trigger`
+
+  return {
+    up(db: Kysely<DB>) {
+      return sql`
+        CREATE OR REPLACE FUNCTION ${sql.raw(fn_full_name)}()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            ${sql.raw(computation)};
+        END;
+        $$ LANGUAGE plpgsql;
+
+        CREATE OR REPLACE TRIGGER ${sql.raw(fn_full_name)}_trigger
+        ${sql.raw(when)} INSERT OR UPDATE ON "${sql.raw(table)}"
+        FOR EACH ROW
+        EXECUTE FUNCTION ${sql.raw(fn_full_name)}();
+      `.execute(db)
+    },
+    down(db: Kysely<DB>) {
+      return sql`
+        DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} on "${sql.raw(table)}"
+      `.execute(db)
+    },
+  }
 }
 
 export function upsertTrigger(

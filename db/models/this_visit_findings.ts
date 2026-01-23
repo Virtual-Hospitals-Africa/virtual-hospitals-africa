@@ -20,11 +20,11 @@ function* findAndCombineBloodPressure(
   let blood_pressure_diastolic: RenderedFindingRelativeToHealthWorker | undefined
 
   for (const record of records) {
-    if (record.specific_snomed_concept.snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id) {
+    if (record.specific_snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id) {
       blood_pressure_systolic = record
       continue
     }
-    if (record.specific_snomed_concept.snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_diastolic.id) {
+    if (record.specific_snomed_concept_id === VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_diastolic.id) {
       blood_pressure_diastolic = record
       continue
     }
@@ -70,7 +70,7 @@ function groupRecordsByWorkflows(
 ): RenderedSidebarWorkflow[] {
   const records_by_procedure = groupBy(
     records,
-    (record) => record.as_part_of_procedure.specific_snomed_concept.snomed_concept_id,
+    (record) => record.as_part_of_procedure.specific_snomed_concept_id,
   )
 
   const grouped_records = compactMap(WORKFLOWS, (workflow) => {

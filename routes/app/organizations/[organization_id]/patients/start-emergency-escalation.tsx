@@ -10,6 +10,7 @@ export const handler = postHandler(
   z.object({}),
   async (ctx: OrganizationContext) => {
     const { trx, organization, organization_employment, present_encounter } = ctx.state
+    console.log({ organization, organization_employment, present_encounter })
     // No time to fidget with your current patient, just say they're in the waiting room
     if (present_encounter) {
       await waiting_room.moveTo(trx, { organization, organization_employment, encounter: present_encounter })
@@ -19,6 +20,7 @@ export const handler = postHandler(
       trx,
       { organization, organization_employment, current_workflow: 'emergency_escalation', next_workflows: ['stabilization'] },
     )
+    console.log({ success, patient_id })
     assert(success)
     return redirect(
       `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/emergency_escalation/identify_patient`,

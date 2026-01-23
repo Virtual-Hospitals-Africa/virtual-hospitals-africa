@@ -61,7 +61,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       {
         'due_to': [
           {
-            'record_id': z.string().uuid(),
+            'id': z.string().uuid(),
             'created_at': z.date(),
             'snomed_concept_id': '118245000',
             'patient_encounter_id': z.string().uuid(),
@@ -78,7 +78,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
             ],
             'qualifiers': [
               {
-                'record_id': z.string().uuid(),
+                'id': z.string().uuid(),
                 'snomed_concept_id': '103228002',
                 'category': 'observable entity',
                 'name': 'Hemoglobin saturation with oxygen',
@@ -89,7 +89,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
             'type': 'finding',
             'patient_encounter_employee_id': z.string().uuid(),
             'as_part_of_procedure': {
-              'record_id': z.string().uuid(),
+              'id': z.string().uuid(),
               'snomed_concept_id': '410188000',
               'name': 'Taking patient vital signs assessment',
             },
@@ -217,7 +217,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         'tasks': [
           {
             'task': {
-              'record_id': z.string().uuid(),
+              'id': z.string().uuid(),
               'created_at': z.date(),
               'snomed_concept_id': '57485005',
               'patient_encounter_id': z.string().uuid(),
@@ -401,7 +401,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 //     assertMatches(measurements, [
 //       {
 //         'type': 'finding',
-//         'record_id': z.string().uuid(),
+//         'id': z.string().uuid(),
 //         'created_at': z.date(),
 //         'snomed_concept_id': '118245000',
 //         'patient_encounter_id': z.string().uuid(),
@@ -421,7 +421,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 //           },
 //         ],
 //         'as_part_of_procedure': {
-//           'record_id': z.string().uuid(),
+//           'id': z.string().uuid(),
 //           'snomed_concept_id': '410188000',
 //           'name': 'Taking patient vital signs assessment',
 //         },
@@ -446,7 +446,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
 //     assertMatches(action_status, {
 //       'type': 'evaluation',
-//       'record_id': z.string().uuid(),
+//       'id': z.string().uuid(),
 //       'created_at': z.date(),
 //       'snomed_concept_id': '385641008',
 //       'patient_encounter_id': z.string().uuid(),
@@ -471,7 +471,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 //     )
 
 //     assertMatches(planned_procedure, {
-//       'record_id': z.string().uuid(),
+//       'id': z.string().uuid(),
 //       'created_at': z.date(),
 //       'snomed_concept_id': '57485005',
 //       'patient_encounter_id': z.string().uuid(),

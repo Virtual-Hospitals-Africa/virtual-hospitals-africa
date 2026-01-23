@@ -26,7 +26,7 @@ export default function VitalInputWithEvaluation({
     snomed_concept_id: string
   }
 }) {
-  const name = `findings.${measurement.record_id}`
+  const name = `findings.${measurement.id}`
   const has_existing_note = !!existingEvaluation?.note
 
   const getVitalName = (snomed_concept_id: string) => {
@@ -58,7 +58,7 @@ export default function VitalInputWithEvaluation({
             label={
               <div className='flex items-center gap-2'>
                 {getVitalName(
-                  measurement.specific_snomed_concept.snomed_concept_id,
+                  measurement.specific_snomed_concept_id,
                 )}
                 {computed && (
                   <span className='inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full'>
@@ -87,7 +87,7 @@ export default function VitalInputWithEvaluation({
           <PriorityDropdown
             name={name}
             vitalName={getVitalName(
-              measurement.specific_snomed_concept.snomed_concept_id,
+              measurement.specific_snomed_concept_id,
             )}
             initialPriority={existingEvaluation?.priority}
           />
@@ -96,7 +96,7 @@ export default function VitalInputWithEvaluation({
             className='inline-flex items-center justify-center border border-gray-300 rounded-md cursor-pointer size-12 hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700'
             title={`Add note for ${
               getVitalName(
-                measurement.specific_snomed_concept.snomed_concept_id,
+                measurement.specific_snomed_concept_id,
               )
             }`}
           >
@@ -104,11 +104,11 @@ export default function VitalInputWithEvaluation({
           </label>
           <HiddenInput
             name={`${name}.snomed_concept_id`}
-            value={measurement.specific_snomed_concept.snomed_concept_id}
+            value={measurement.specific_snomed_concept_id}
           />
           <HiddenInput
             name={`${name}.finding_id`}
-            value={measurement.record_id}
+            value={measurement.id}
           />
         </div>
       </div>
@@ -121,7 +121,7 @@ export default function VitalInputWithEvaluation({
               label='Clinical Notes'
               placeholder={`Add clinical notes for ${
                 getVitalName(
-                  measurement.specific_snomed_concept.snomed_concept_id,
+                  measurement.specific_snomed_concept_id,
                 )
               }...`}
               rows={3}

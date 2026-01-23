@@ -90,7 +90,7 @@ export const handler = postHandler(
     })
 
     for (const previous_finding of previously_reported) {
-      const just_submitted = form_values.warning_signs.find((submitted) => submitted.existing_record?.id === previous_finding.record_id)
+      const just_submitted = form_values.warning_signs.find((submitted) => submitted.existing_record?.id === previous_finding.id)
       assertOr409(
         just_submitted,
         `It is expected that the frontend resubmit previously submitted records. Missing: ${humanReadableJson(previous_finding)}`,
@@ -99,7 +99,7 @@ export const handler = postHandler(
       const was_indeed_altered = just_submitted.existence !== previous_finding.existence
       assertOr409(
         client_said_was_altered === was_indeed_altered,
-        `It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${previous_finding.record_id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
+        `It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${previous_finding.id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
       )
     }
 
@@ -260,7 +260,7 @@ function* signsMatchedWithPriorRecords(
       value: null,
     })
     const existing_record = {
-      id: finding.record_id,
+      id: finding.id,
       existence: finding.existence,
     }
 
@@ -296,8 +296,8 @@ function* signsMatchedWithPriorRecords(
     yield {
       sats_priority: finding.priority,
       clinical_finding_s_expression: finding.normal_form_s_expression,
-      primary_name: finding.specific_snomed_concept.name,
-      secondary_text: finding.specific_snomed_concept.category,
+      primary_name: finding.specific_snomed_concept_name,
+      secondary_text: finding.specific_snomed_concept_category,
       existing_record: finding.existing_record,
       category: 'Prior record' as const,
     }

@@ -52,28 +52,28 @@ export const patient_vitals = base({
     assert(!opts.search, 'TODO support')
     if (opts.patient_id) {
       qb = qb.where(
-        'patient_records.patient_id',
+        'patient_records_aggregated.patient_id',
         '=',
         opts.patient_id,
       )
     }
     if (opts.patient_encounter_id) {
       qb = qb.where(
-        'patient_records.patient_encounter_id',
+        'patient_records_aggregated.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
       )
     }
     if (opts.excluding_patient_encounter_id) {
       qb = qb.where(
-        'patient_records.patient_encounter_id',
+        'patient_records_aggregated.patient_encounter_id',
         '!=',
         opts.excluding_patient_encounter_id,
       )
     }
     if (opts.s_expression) {
       qb = qb.where(
-        'patient_records.id',
+        'patient_records_aggregated.id',
         'in',
         buildExpression(
           trx,
@@ -146,29 +146,29 @@ export const patient_vitals = base({
         'ranked_findings',
         (qb) =>
           baseQuery(qb)
-            .where('patient_records.patient_id', '=', patient_id)
+            .where('patient_records_aggregated.patient_id', '=', patient_id)
             .where(
-              'patient_records.specific_snomed_concept_id',
+              'patient_records_aggregated.specific_snomed_concept_id',
               'in',
               snomed_concept_ids!,
             )
             .$if(!!patient_encounter_id, (qb) =>
               qb.where(
-                'patient_records.patient_encounter_id',
+                'patient_records_aggregated.patient_encounter_id',
                 '=',
                 patient_encounter_id!,
               ))
             .$if(!!excluding_patient_encounter_id, (qb) =>
               qb.where(
-                'patient_records.patient_encounter_id',
+                'patient_records_aggregated.patient_encounter_id',
                 '!=',
                 excluding_patient_encounter_id!,
               ))
             .select(
-              sql`ROW_NUMBER() OVER (PARTITION BY patient_records.specific_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+              sql`ROW_NUMBER() OVER (PARTITION BY patient_records_aggregated.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
                 .as('rank'),
             )
-            .orderBy('patient_records.created_at', 'desc'),
+            .orderBy('patient_records_aggregated.created_at', 'desc'),
       ).selectFrom('ranked_findings')
         .where('ranked_findings.rank', '=', 1)
         .selectAll('ranked_findings')
@@ -222,7 +222,7 @@ export const patient_vitals = base({
               'evaluation_records.id',
               'patient_evaluations.id',
             )
-            .where('patient_records.patient_id', '=', patient_id)
+            .where('patient_records_aggregated.patient_id', '=', patient_id)
             .where(
               'evaluation_records.specific_snomed_concept_id',
               'in',
@@ -230,21 +230,21 @@ export const patient_vitals = base({
             )
             .$if(!!patient_encounter_id, (qb) =>
               qb.where(
-                'patient_records.patient_encounter_id',
+                'patient_records_aggregated.patient_encounter_id',
                 '=',
                 patient_encounter_id!,
               ))
             .$if(!!excluding_patient_encounter_id, (qb) =>
               qb.where(
-                'patient_records.patient_encounter_id',
+                'patient_records_aggregated.patient_encounter_id',
                 '!=',
                 excluding_patient_encounter_id!,
               ))
             .select(
-              sql`ROW_NUMBER() OVER (PARTITION BY evaluation_records.specific_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+              sql`ROW_NUMBER() OVER (PARTITION BY evaluation_records.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
                 .as('rank'),
             )
-            .orderBy('patient_records.created_at', 'desc'),
+            .orderBy('patient_records_aggregated.created_at', 'desc'),
       ).selectFrom('ranked_findings')
         .where('ranked_findings.rank', '=', 1)
         .selectAll('ranked_findings')

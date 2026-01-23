@@ -86,7 +86,7 @@ export function baseQuery(
   return patient_records.baseQuery(trx).innerJoin(
     'patient_evaluations',
     'patient_evaluations.id',
-    'patient_records.id',
+    'patient_records_aggregated.id',
   )
     .select([
       literalString('evaluation').$castTo<'evaluation'>().as('type'),
@@ -127,14 +127,14 @@ export const patient_evaluations = base({
     // }
     if (opts.patient_id) {
       qb = qb.where(
-        'patient_records.patient_id',
+        'patient_records_aggregated.patient_id',
         '=',
         opts.patient_id,
       )
     }
     if (opts.patient_encounter_id) {
       qb = qb.where(
-        'patient_records.patient_encounter_id',
+        'patient_records_aggregated.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
       )
@@ -148,7 +148,7 @@ export const patient_evaluations = base({
     }
     if (opts.s_expression) {
       qb = qb.where(
-        'patient_records.id',
+        'patient_records_aggregated.id',
         'in',
         buildExpression(
           trx,

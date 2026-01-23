@@ -83,8 +83,6 @@ export const handler = {
 
     const session = await sessions.getByIdOptional(db, session_id)
 
-    console.log({ x: '1290120991', session })
-
     if (!session) {
       const response = await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))
       deleteCookie(response.headers, cookie.session_key)

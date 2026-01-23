@@ -81,7 +81,7 @@ export function FindingPanel(
                   </svg>
                 </div>
                 <p className='text-sm font-medium text-gray-900'>
-                  during {finding.as_part_of_procedure.specific_snomed_concept.name}
+                  during {finding.as_part_of_procedure.specific_snomed_concept_name}
                 </p>
               </div>
             )}
@@ -170,7 +170,7 @@ export function FindingPanel(
               <div className='flex flex-col gap-1'>
                 {finding.evaluations.map((evaluation) => (
                   <p
-                    key={evaluation.record_id}
+                    key={evaluation.id}
                     className='text-sm text-gray-600'
                   >
                     <span className='text-sm text-gray-600'>

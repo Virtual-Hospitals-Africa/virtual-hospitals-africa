@@ -64,7 +64,6 @@ describeParallel('/login', () => {
         profession: 'doctor',
         organization_id: organization.id,
       })
-      console.log({ organization, mock })
 
       const response = await mock.fetch(`/app`)
 

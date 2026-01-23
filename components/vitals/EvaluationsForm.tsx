@@ -39,7 +39,7 @@ export function VitalsEvaluationsForm({
             <div className='space-y-4'>
               {computed_measurements.map((measurement) => (
                 <VitalInputWithEvaluation
-                  key={measurement.record_id}
+                  key={measurement.id}
                   measurement={measurement}
                   computed
                   existingEvaluation={measurement.evaluation}
@@ -51,7 +51,7 @@ export function VitalsEvaluationsForm({
             <div className='space-y-4'>
               {manual_measurements.map((measurement) => (
                 <VitalInputWithEvaluation
-                  key={measurement.record_id}
+                  key={measurement.id}
                   measurement={measurement}
                   computed={false}
                   existingEvaluation={measurement.evaluation}
