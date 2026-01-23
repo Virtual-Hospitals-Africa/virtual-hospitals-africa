@@ -13,7 +13,6 @@ import { Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { ATTRIBUTE, EVALUATION_ACTION, EVENT, NO_QUALIFIER, PRIORITY, PROCEDURE, UNKNOWN_QUALIFIER, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
-import { nowInvalidRecords } from './patient_records_base.ts'
 import isString from '../../util/isString.ts'
 
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
@@ -25,7 +24,7 @@ export function baseQuery(
     .innerJoin(
       'patient_findings',
       'patient_findings.id',
-      'patient_records.id',
+      'patient_records_aggregated.id',
     )
     .innerJoin(
       'patient_procedures',
@@ -52,46 +51,29 @@ export function baseQuery(
       'patient_findings.patient_encounter_employee_id',
 
       jsonBuildObject({
-        record_id: eb.ref('patient_procedure_records.id'),
-        root_snomed_concept: jsonBuildObject({
-          snomed_concept_id: asText(
-            eb,
-            'procedure_root_snomed_concept.id',
-          ),
-          name: eb.ref(
-            'procedure_root_snomed_concept.name',
-          ),
-          category: eb.ref(
-            'procedure_root_snomed_concept.category',
-          ),
-        }),
-        specific_snomed_concept: jsonBuildObject({
-          snomed_concept_id: asText(
-            eb,
-            'procedure_specific_snomed_concept.id',
-          ),
-          name: eb.ref(
-            'procedure_specific_snomed_concept.name',
-          ),
-          category: eb.ref(
-            'procedure_specific_snomed_concept.category',
-          ),
-        }),
+        id: eb.ref('patient_procedure_records.id'),
+        root_snomed_concept_id: asText(
+          eb,
+          'procedure_root_snomed_concept.id',
+        ),
+        root_snomed_concept_name: eb.ref(
+          'procedure_root_snomed_concept.name',
+        ),
+        root_snomed_concept_category: eb.ref(
+          'procedure_root_snomed_concept.category',
+        ),
+        specific_snomed_concept_id: asText(
+          eb,
+          'procedure_specific_snomed_concept.id',
+        ),
+        specific_snomed_concept_name: eb.ref(
+          'procedure_specific_snomed_concept.name',
+        ),
+        specific_snomed_concept_category: eb.ref(
+          'procedure_specific_snomed_concept.category',
+        ),
         workflow_step_name: caseWhenMatching(eb, eb.ref('procedure_specific_snomed_concept.id'), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
       }).as('as_part_of_procedure'),
-
-      eb.case()
-        .when('patient_records.value_snomed_concept_id', '=', NO_QUALIFIER.id)
-        .then('No' as const)
-        .when(
-          'patient_records.value_snomed_concept_id',
-          '=',
-          UNKNOWN_QUALIFIER.id,
-        )
-        .then('Unknown' as const)
-        .else('Yes' as const)
-        .end()
-        .as('existence'), // yields Yes/No/Unknown
 
       eb.selectFrom('patient_triage_level')
         .innerJoin(
@@ -99,6 +81,7 @@ export function baseQuery(
           'patient_triage_level.id',
           'triage_patient_records.id',
         )
+        .innerJoin('patient_records_still_valid as triage_valid', 'triage_valid.id', 'triage_patient_records.id')
         .innerJoin(
           'patient_evaluations as triage_evaluations',
           'patient_triage_level.id',
@@ -112,12 +95,7 @@ export function baseQuery(
         .whereRef(
           'triage_evaluations.evaluates_record_id',
           '=',
-          'patient_records.id',
-        )
-        .where(
-          'triage_patient_records.id',
-          'not in',
-          nowInvalidRecords(trx),
+          'patient_records_aggregated.id',
         )
         .select('triage_snomed_inferred_canonical_name_and_category.name')
         .$castTo<Priority | null>()
@@ -129,6 +107,7 @@ export function baseQuery(
           'patient_evaluation_scores.id',
           'score_patient_records.id',
         )
+        .innerJoin('patient_records_still_valid as score_valid', 'score_valid.id', 'score_patient_records.id')
         .innerJoin(
           'patient_evaluations as score_evaluations',
           'patient_evaluation_scores.id',
@@ -137,12 +116,7 @@ export function baseQuery(
         .whereRef(
           'score_evaluations.evaluates_record_id',
           '=',
-          'patient_records.id',
-        )
-        .where(
-          'score_patient_records.id',
-          'not in',
-          nowInvalidRecords(trx),
+          'patient_records_aggregated.id',
         )
         .select('patient_evaluation_scores.score')
         .as('score'),
@@ -212,14 +186,14 @@ export const patient_findings = base({
     // }
     if (opts.patient_id) {
       qb = qb.where(
-        'patient_records.patient_id',
+        'patient_records_aggregated.patient_id',
         '=',
         opts.patient_id,
       )
     }
     if (opts.patient_encounter_id) {
       qb = qb.where(
-        'patient_records.patient_encounter_id',
+        'patient_records_aggregated.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
       )
@@ -232,22 +206,10 @@ export const patient_findings = base({
       )
     }
     if (!opts.include_negative) {
-      qb = qb.where((eb) =>
-        eb.or([
-          eb('patient_records.value_snomed_concept_id', 'is', null),
-          eb.and([
-            eb(
-              'patient_records.value_snomed_concept_id',
-              '!=',
-              NO_QUALIFIER.id,
-            ),
-            eb(
-              'patient_records.value_snomed_concept_id',
-              '!=',
-              UNKNOWN_QUALIFIER.id,
-            ),
-          ]),
-        ])
+      qb = qb.where(
+        'patient_records_aggregated.existence',
+        '=',
+        'Yes',
       )
     }
     if (opts.not_measurements) {
@@ -260,7 +222,7 @@ export const patient_findings = base({
     if (opts.s_expression) {
       assert(opts.patient_id)
       qb = qb.where(
-        'patient_records.id',
+        'patient_records_aggregated.id',
         'in',
         buildExpression(
           trx,
@@ -274,7 +236,7 @@ export const patient_findings = base({
     }
     if (opts.before) {
       qb = qb.where(
-        'patient_records.created_at',
+        'patient_records_aggregated.created_at',
         '<',
         opts.before,
       )

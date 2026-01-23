@@ -129,7 +129,7 @@ export const handler = postHandler(
               procedure_id,
               employment_id,
               patient_encounter_id,
-              altered_record_id: prior_matching_finding.record_id,
+              altered_record_id: prior_matching_finding.id,
             })
 
           const inserting = patient_findings.insertOneNested(

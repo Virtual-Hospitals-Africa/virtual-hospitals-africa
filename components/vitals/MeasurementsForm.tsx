@@ -51,7 +51,7 @@ export function VitalsMeasurementsForm({
             vital={vital}
             most_recent_patient_finding={most_recent_patient_vitals.find(
               (patient_vital) =>
-                patient_vital.specific_snomed_concept.snomed_concept_id ===
+                patient_vital.specific_snomed_concept_id ===
                   vital.snomed_concept_id,
             )}
             organization_id={organization_id}

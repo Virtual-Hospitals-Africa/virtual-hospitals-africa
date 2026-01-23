@@ -23,7 +23,7 @@ function TaskCheckbox({
 }: {
   task: RenderedTask
 }) {
-  const name = `just_do_it_tasks.${task.procedure.record_id}`
+  const name = `just_do_it_tasks.${task.procedure.id}`
 
   return (
     <label class='flex gap-4 items-center cursor-pointer p-4 rounded-lg border border-gray-300 bg-white hover:border-gray-400 transition-colors'>
@@ -59,7 +59,7 @@ function CheckForTaskInput({
   task: CheckForTask
 }) {
   assert(task.procedure.displays.value)
-  const name = `check_for.${task.procedure.record_id}`
+  const name = `check_for.${task.procedure.id}`
 
   // Parse the current value from the s-expression if it exists
   let value: 'Yes' | 'No' | 'Unknown' | undefined
@@ -114,7 +114,7 @@ function TaskGroupCard({
             </span>
             {group.due_to.map((finding) => (
               <MostRecentFinding
-                key={finding.record_id}
+                key={finding.id}
                 finding={finding}
                 organization_id={organization_id}
               />
@@ -128,7 +128,7 @@ function TaskGroupCard({
         <YesNoGrid title='Check for'>
           {check_for_tasks.map((task) => (
             <CheckForTaskInput
-              key={task.procedure.record_id}
+              key={task.procedure.id}
               task={task}
             />
           ))}
@@ -137,8 +137,8 @@ function TaskGroupCard({
 
       {measure_tasks.map((task) => (
         <MeasurementInput
-          key={task.procedure.record_id}
-          name={`measurements.${task.procedure.record_id}`}
+          key={task.procedure.id}
+          name={`measurements.${task.procedure.id}`}
           required
           s_expression={task.procedure.value.s_expression}
           units={task.procedure.value.node.units}
@@ -151,7 +151,7 @@ function TaskGroupCard({
         <div class='flex flex-col gap-2'>
           {just_do_it_tasks.map((task) => (
             <TaskCheckbox
-              key={task.procedure.record_id}
+              key={task.procedure.id}
               task={task}
             />
           ))}

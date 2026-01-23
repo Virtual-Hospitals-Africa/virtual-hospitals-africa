@@ -11,7 +11,7 @@ export const patient_record_qualifiers = {
         .innerJoin(
           'patient_record_qualifiers',
           'patient_record_qualifiers.id',
-          'qualifier_records.record_id',
+          'qualifier_records.id',
         )
         .selectAll('qualifier_records')
         .select([
@@ -23,11 +23,15 @@ export const patient_record_qualifiers = {
         )
         .as(alias),
     ).select([
-      `${alias}.record_id`,
+      `${alias}.id`,
       `${alias}.created_at`,
       `${alias}.patient_encounter_id`,
-      `${alias}.root_snomed_concept`,
-      `${alias}.specific_snomed_concept`,
+      `${alias}.root_snomed_concept_id`,
+      `${alias}.root_snomed_concept_name`,
+      `${alias}.root_snomed_concept_category`,
+      `${alias}.specific_snomed_concept_id`,
+      `${alias}.specific_snomed_concept_name`,
+      `${alias}.specific_snomed_concept_category`,
       `${alias}.value`,
     ])
   },

@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import { DB } from '../../../db.d.ts'
 import { directoryExists, rmrf, runCommandAssertExitCodeZero } from '../../../util/command.ts'
 import { chunkTsvResource } from '../../parseTsvResource.ts'

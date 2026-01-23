@@ -9,13 +9,14 @@ import { isUUID } from '../../util/uuid.ts'
 import { once } from '../../util/once.ts'
 import { timeout } from '../../util/timeout.ts'
 import keys from '../../util/keys.ts'
+import { exists } from '../../util/exists.ts'
 // @ts-types="preact"
 
 /**
  * We need a dedicated query for the listener.
  * Provides the ability to subscribe to processed events by id or in general
  */
-const initializeAllProcessedPubSub = once(
+export const initializeAllProcessedPubSub = once(
   async function initializeAllProcessedPubSub() {
     const client = new Client(opts || {})
 
@@ -28,7 +29,9 @@ const initializeAllProcessedPubSub = once(
     client.on('notification', function (event) {
       const event_id = event.payload
       assert(isUUID(event_id))
+      // console.log(`event_all_processed ${event_id}`)
       const by_id_subscriptions = by_id_subscribers.get(event_id)
+      // console.log({ by_id_subscriptions })
       if (!by_id_subscriptions?.size) return
       for (const subscription of by_id_subscriptions) {
         subscription()
@@ -40,11 +43,14 @@ const initializeAllProcessedPubSub = once(
 
     // TODO stop accepting new subscriptions after shutdown
     return {
-      // am I a pythonista? 🐍
       by_id: {
         subscribe(event_id: string, callback: () => void) {
+          // console.log('subscribing', event_id)
           assert(isUUID(event_id))
-          const subscriptions = by_id_subscribers.get(event_id) || new Set()
+          if (!by_id_subscribers.has(event_id)) {
+            by_id_subscribers.set(event_id, new Set())
+          }
+          const subscriptions = exists(by_id_subscribers.get(event_id))
           subscriptions.add(callback)
         },
         unsubscribe(event_id: string, callback: () => void) {
@@ -61,6 +67,7 @@ const initializeAllProcessedPubSub = once(
           any_subscribers.delete(callback)
         },
       },
+      // am I a pythonista? 🐍
       __client__: client,
     }
   },
@@ -79,12 +86,14 @@ export const events = {
     { type, data }: EventInsertAny,
   ): Promise<{ id: string }> {
     const event_def = EVENTS[type]
+    const listener_names = keys(event_def.listeners)
     return trx
       .insertInto('events')
       .values({
         type,
         data: event_def.schema.parse(data),
-        listener_names: keys(event_def.listeners),
+        listener_names,
+        all_processed_at: listener_names.length ? null : now,
       })
       .returning('id')
       .executeTakeFirstOrThrow()
@@ -242,7 +251,7 @@ export const events = {
    */
   async allProcessedForEncounter(
     trx: TrxOrDb,
-    { patient_encounter_id, timeout_ms = 30000 }: {
+    { patient_encounter_id, timeout_ms = 10000 }: {
       patient_encounter_id: string
       timeout_ms?: number
     },
@@ -255,7 +264,10 @@ export const events = {
 
     async function unprocessedEventsRelatedToThisEncounter() {
       try {
-        pub_sub.any.subscribe(events_seen_while_waiting.add)
+        pub_sub.any.subscribe((event_id) => {
+          // console.log('events_seen_while_waiting.add(event_id)', event_id)
+          events_seen_while_waiting.add(event_id)
+        })
         return await trx
           .selectFrom('events')
           .where(
@@ -273,6 +285,8 @@ export const events = {
 
     const unprocessed_events_related_to_this_encounter = await unprocessedEventsRelatedToThisEncounter()
 
+    // console.log({ unprocessed_events_related_to_this_encounter, events_seen_while_waiting })
+
     if (!unprocessed_events_related_to_this_encounter.length) return
 
     const unprocessed_events_related_to_this_encounter_for_sure = unprocessed_events_related_to_this_encounter.filter((e) => {
@@ -288,9 +302,13 @@ export const events = {
     await Promise.all(
       unprocessed_events_related_to_this_encounter_for_sure.map(async (e) => {
         const promise = Promise.withResolvers<void>()
+        pub_sub.by_id.subscribe(e.id, () => {
+          // console.log('pub_sub.by_id', e.id)
+          promise.resolve()
+        })
         try {
-          pub_sub.by_id.subscribe(e.id, promise.resolve)
-          await Promise.race([promise, timer])
+          await Promise.race([promise.promise, timer])
+          console.log(`processedz ${e.id}`)
         } finally {
           pub_sub.by_id.unsubscribe(e.id, promise.resolve)
         }

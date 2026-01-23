@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import { sql } from 'kysely'
+
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -20,28 +20,30 @@ export function ctxFromTrx(trx: TrxOrDb) {
 }
 
 // application_name limited to 63 bytes, so saving some space
-function truncatePath(pathname: string): string {
-  return pathname
-    .replaceAll(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g, ':id')
-    .replace('/organizations', '/orgs')
-    .replace('/patients', '/ps')
-    .replace('/open_encounter', '/o_e')
-}
+// function truncatePath(pathname: string): string {
+//   return pathname
+//     .replaceAll(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g, ':id')
+//     .replace('/organizations', '/orgs')
+//     .replace('/patients', '/ps')
+//     .replace('/open_encounter', '/o_e')
+// }
 
-export async function setApplicationNameAndAttachTrx(ctx: TrxContext, trx: TrxOrDb) {
-  // Tag this connection with application_name for monitoring
-  const tag = `${ctx.req.method}:${truncatePath(ctx.url.pathname)}`
-  await sql`SET application_name = ${sql.lit(tag)};`.execute(trx)
-  trx_context_map.set(trx, ctx)
-  ctx.state.trx = trx
-}
+// export async function setApplicationNameAndAttachTrx(ctx: TrxContext, trx: TrxOrDb) {
+// Tag this connection with application_name for monitoring
+// const tag = `${ctx.req.method}:${truncatePath(ctx.url.pathname)}`
+// await sql`SET application_name = ${sql.lit(tag)};`.execute(trx)
+// trx_context_map.set(trx, ctx)
+// }
 
-
-export function attachTrx(
+export async function attachTrx(
   ctx: TrxContext,
 ) {
-  return db.connection().execute(async (conn) => {
-    await setApplicationNameAndAttachTrx(ctx, conn)
-    return await ctx.next()
-  })
+  console.log('attachTrx')
+  ctx.state.trx = db
+  const response = await ctx.next()
+  console.log('got response')
+  return response
+  // return db.connection().execute(async (conn) => {
+  //   setApplicationNameAndAttachTrx(ctx, conn)
+  // })
 }

@@ -6,9 +6,9 @@ export function patientAgeDetermination(
 ): AgeDetermination {
   assert(typeof patient.age_years === 'number')
   assert(patient.age_years >= 0)
-  assert(patient.most_recent_height_cm_measurement != null)
+  // assert(patient.most_recent_height_cm_measurement != null)
 
-  const height_cm = parseFloat(patient.most_recent_height_cm_measurement)
+  const height_cm = parseFloat(patient.most_recent_height_cm_measurement || 'NaN')
 
   if (height_cm >= 150) {
     return 'adult'

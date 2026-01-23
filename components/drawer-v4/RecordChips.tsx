@@ -12,7 +12,7 @@ export function RecordChips(
     <div className='box-border content-center flex flex-wrap gap-1 items-center justify-start px-px py-0 shrink-0 w-full'>
       {records.map((record) => (
         <RecordChipWithPopover
-          key={record.record_id}
+          key={record.id}
           record={record}
           organization_id={organization_id}
         />

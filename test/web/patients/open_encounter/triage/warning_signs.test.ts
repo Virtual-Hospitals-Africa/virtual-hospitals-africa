@@ -197,29 +197,21 @@ describeParallel('triage/warning_signs', () => {
 
         assertMatches(this_patient_findings, [
           {
-            'record_id': z.string().uuid(),
+            'id': z.string().uuid(),
             'created_at': z.date(),
-            'root_snomed_concept': {
-              'name': 'Clinical finding',
-              'category': 'finding',
-              'snomed_concept_id': CLINICAL_FINDING.id,
-            },
-            'specific_snomed_concept': {
-              'snomed_concept_id': '410429000',
-            },
+            'root_snomed_concept_name': 'Clinical finding',
+            'root_snomed_concept_category': 'finding',
+            'root_snomed_concept_id': CLINICAL_FINDING.id,
+            'specific_snomed_concept_id': '410429000',
             'patient_encounter_id': patient_encounter_id,
             'as_part_of_procedure': {
-              'record_id': z.string().uuid(),
-              'root_snomed_concept': {
-                'snomed_concept_id': '71388002',
-                'name': 'Procedure',
-                'category': 'procedure',
-              },
-              'specific_snomed_concept': {
-                'snomed_concept_id': '245581009',
-                'name': 'Emergency examination for triage',
-                'category': 'procedure',
-              },
+              'id': z.string().uuid(),
+              'root_snomed_concept_id': '71388002',
+              'root_snomed_concept_name': 'Procedure',
+              'root_snomed_concept_category': 'procedure',
+              'specific_snomed_concept_id': '245581009',
+              'specific_snomed_concept_name': 'Emergency examination for triage',
+              'specific_snomed_concept_category': 'procedure',
             },
           },
         ])
@@ -234,44 +226,37 @@ describeParallel('triage/warning_signs', () => {
           warning_signs: asWarningSigns(['Seizure'], { pregnant: false }),
         })
 
-        const this_patient_findings = await patient_findings.findAll(db, {
-          patient_id,
-        })
-
         await events.allProcessedForEncounter(db, {
           patient_encounter_id,
         })
 
+        const this_patient_findings = await patient_findings.findAll(db, {
+          patient_id,
+        })
+
         assertMatches(this_patient_findings, [
           {
-            'record_id': z.string().uuid(),
+            'id': z.string().uuid(),
             'created_at': z.date(),
-            'root_snomed_concept': {
-              'snomed_concept_id': CLINICAL_FINDING.id,
-              'name': 'Clinical finding',
-              'category': 'finding',
-            },
+            'root_snomed_concept_id': CLINICAL_FINDING.id,
+            'root_snomed_concept_name': 'Clinical finding',
+            'root_snomed_concept_category': 'finding',
+            'patient_id': patient_id,
             'patient_encounter_id': patient_encounter_id,
             'patient_encounter_employee_id': z.string().uuid(),
             'type': 'finding',
             'value': null,
-            'specific_snomed_concept': {
-              'snomed_concept_id': '91175000',
-              'name': 'Seizure',
-              'category': 'finding',
-            },
+            'specific_snomed_concept_id': '91175000',
+            'specific_snomed_concept_name': 'Seizure',
+            'specific_snomed_concept_category': 'finding',
             'as_part_of_procedure': {
-              'record_id': z.string().uuid(),
-              'root_snomed_concept': {
-                'snomed_concept_id': '71388002',
-                'name': 'Procedure',
-                'category': 'procedure',
-              },
-              'specific_snomed_concept': {
-                'snomed_concept_id': '245581009',
-                'name': 'Emergency examination for triage',
-                'category': 'procedure',
-              },
+              'id': z.string().uuid(),
+              'root_snomed_concept_id': '71388002',
+              'root_snomed_concept_name': 'Procedure',
+              'root_snomed_concept_category': 'procedure',
+              'specific_snomed_concept_id': '245581009',
+              'specific_snomed_concept_name': 'Emergency examination for triage',
+              'specific_snomed_concept_category': 'procedure',
             },
             'priority': 'Emergency',
             'score': null,
@@ -380,27 +365,19 @@ describeParallel('triage/warning_signs', () => {
         assertEquals(this_patient_findings.length, 2)
 
         // Both should be Clinical findings with the appropriate qualifiers
-        const cardiac_arrest_finding = this_patient_findings.find((f) => f.specific_snomed_concept.snomed_concept_id === '410429000')
-        const chest_pain_finding = this_patient_findings.find((f) => f.specific_snomed_concept.snomed_concept_id === '29857009')
+        const cardiac_arrest_finding = this_patient_findings.find((f) => f.specific_snomed_concept_id === '410429000')
+        const chest_pain_finding = this_patient_findings.find((f) => f.specific_snomed_concept_id === '29857009')
 
         assertMatches(cardiac_arrest_finding, {
-          'root_snomed_concept': {
-            'snomed_concept_id': CLINICAL_FINDING.id,
-            'name': 'Clinical finding',
-          },
-          'specific_snomed_concept': {
-            'snomed_concept_id': '410429000',
-          },
+          'root_snomed_concept_id': CLINICAL_FINDING.id,
+          'root_snomed_concept_name': 'Clinical finding',
+          'specific_snomed_concept_id': '410429000',
         })
 
         assertMatches(chest_pain_finding, {
-          'root_snomed_concept': {
-            'snomed_concept_id': CLINICAL_FINDING.id,
-            'name': 'Clinical finding',
-          },
-          'specific_snomed_concept': {
-            'snomed_concept_id': '29857009',
-          },
+          'root_snomed_concept_id': CLINICAL_FINDING.id,
+          'root_snomed_concept_name': 'Clinical finding',
+          'specific_snomed_concept_id': '29857009',
         })
       },
     )
@@ -720,12 +697,8 @@ describeParallel('triage/warning_signs', () => {
         })
 
         assertMatches(finding, {
-          root_snomed_concept: {
-            snomed_concept_id: CLINICAL_FINDING.id,
-          },
-          specific_snomed_concept: {
-            name: 'Pain of ear',
-          },
+          root_snomed_concept_id: CLINICAL_FINDING.id,
+          specific_snomed_concept_name: 'Pain of ear',
           priority: 'Non-urgent',
         })
 
@@ -803,12 +776,8 @@ describeParallel('triage/warning_signs', () => {
         assertLength(findings, 1)
 
         assertMatches(findings[0], {
-          root_snomed_concept: {
-            snomed_concept_id: CLINICAL_FINDING.id,
-          },
-          specific_snomed_concept: {
-            name: 'Appendicular pain',
-          },
+          root_snomed_concept_id: CLINICAL_FINDING.id,
+          specific_snomed_concept_name: 'Appendicular pain',
           priority: 'Very urgent',
         })
 
@@ -844,12 +813,8 @@ describeParallel('triage/warning_signs', () => {
         assertLength(findings, 1)
 
         assertMatches(findings[0], {
-          root_snomed_concept: {
-            snomed_concept_id: CLINICAL_FINDING.id,
-          },
-          specific_snomed_concept: {
-            name: 'Nasal discharge',
-          },
+          root_snomed_concept_id: CLINICAL_FINDING.id,
+          specific_snomed_concept_name: 'Nasal discharge',
           priority: 'Non-urgent',
         })
 

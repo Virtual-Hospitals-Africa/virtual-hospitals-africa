@@ -641,7 +641,7 @@ export function isAssessmentFor(
   f: RenderedFindingRelativeToHealthWorker,
   evaluation_snomed_concept_id: string,
 ): boolean {
-  const has_matching_evaluation = f.evaluations.some((e) => e.specific_snomed_concept.snomed_concept_id === evaluation_snomed_concept_id)
+  const has_matching_evaluation = f.evaluations.some((e) => e.specific_snomed_concept_id === evaluation_snomed_concept_id)
   if (!has_matching_evaluation) return false
 
   // const specific_snomed_concept_id = f.specific_snomed_concept.snomed_concept_id
@@ -672,10 +672,10 @@ export function matchingAssessment(
   ) {
     for (const evaluation of f.evaluations) {
       if (
-        evaluation.root_snomed_concept.snomed_concept_id ===
+        evaluation.root_snomed_concept_id ===
           evaluation_snomed_concept.id
       ) {
-        const specific_snomed_concept_id = f.specific_snomed_concept.snomed_concept_id
+        const specific_snomed_concept_id = f.specific_snomed_concept_id
         return {
           vital,
           specific_snomed_concept_id,

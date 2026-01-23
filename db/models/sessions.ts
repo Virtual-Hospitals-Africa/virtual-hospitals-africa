@@ -10,10 +10,10 @@ export const sessions = base({
   top_level_table: 'sessions' as const,
   baseQuery,
   formatResult: identity,
-  caching: {
-    number_of_items: 100,
-    cache_writes: true,
-  },
+  // caching: {
+  //   number_of_items: 100,
+  //   cache_writes: true,
+  // },
   handleSearch(qb, search_terms: {
     entity_type: EntityType
   }) {
@@ -43,15 +43,29 @@ export const sessions = base({
       .where('id', '=', session_id)
       .select('entity_id as id')
   },
-  tickUpdatedAt(trx: TrxOrDb, session_id: string) {
-    const session = sessions.getFromCache(session_id)
-    const updates = { updated_at: new Date() }
-    if (session) {
-      Object.assign(session, updates)
-    }
-    return trx
-      .updateTable('sessions')
-      .where('id', '=', session_id)
-      .set(updates)
+  // deno-lint-ignore require-await
+  async tickUpdatedAt(_trx: TrxOrDb, _session_id: string) {
+    return
+    // console.log('session_id', session_id)
+    // const session = sessions.getFromCache(session_id)
+    // console.log('const session = sessions.getFromCache(session_id)', session)
+    // const updates = { updated_at: new Date() }
+    // console.log('const updates = { updated_at: new Date() }', updates)
+    // if (session) {
+    //   Object.assign(session, updates)
+    // }
+
+    // debugLog(trx
+    //   .updateTable('sessions')
+    //   .where('id', '=', session_id)
+    //   .set(updates))
+
+    // await trx
+    //   .updateTable('sessions')
+    //   .where('id', '=', session_id)
+    //   .set(updates)
+    //   .execute()
+
+    // console.log('updated session')
   },
 })

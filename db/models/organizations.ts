@@ -176,9 +176,9 @@ export type OrganizationSearch = {
 
 export const organizations = base({
   top_level_table: 'organizations',
-  caching: {
-    number_of_items: 100,
-  },
+  // caching: {
+  //   number_of_items: 100,
+  // },
   baseQuery,
   formatResult: (org): RenderedOrganization => org,
   handleSearch(

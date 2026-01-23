@@ -71,7 +71,7 @@ function mostRecentFindings(
             qb.selectFrom('patient_findings_matching_common_conditions')
               .selectAll('patient_findings_matching_common_conditions')
               .as('pfmcc'),
-            (join) => join.onRef('patient_records.id', '=', 'pfmcc.id'),
+            (join) => join.onRef('patient_records_aggregated.id', '=', 'pfmcc.id'),
           )
           .select([
             'pfmcc.pertaining_to_key',
@@ -105,7 +105,7 @@ function mostRecentFinding<
 
   const findings_of_condition_grouped_by_concept = groupBy(
     findings_of_condition,
-    (f) => f.specific_snomed_concept.snomed_concept_id,
+    (f) => f.specific_snomed_concept_id,
   ) as Map<string, NonEmptyArray<Finding>>
   const most_recent_parent_concept_finding = first(
     findings_of_condition_grouped_by_concept.get(parent_snomed_concept_id) ||
@@ -117,7 +117,7 @@ function mostRecentFinding<
 
     const most_recent_finding_of_concept = first(
       findings_of_condition_grouped_by_concept.get(
-        finding.specific_snomed_concept.snomed_concept_id,
+        finding.specific_snomed_concept_id,
       )!,
     )
     assert(most_recent_finding_of_concept)
