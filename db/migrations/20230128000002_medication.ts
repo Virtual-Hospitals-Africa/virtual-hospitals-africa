@@ -130,6 +130,42 @@ export async function up(db: Kysely<DB>) {
             ),
         ),
   )
+
+  await db.schema
+    .createIndex('idx_medications_drug_id')
+    .on('medications')
+    .column('drug_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_manufactured_medications_medication_id')
+    .on('manufactured_medications')
+    .column('medication_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_manufactured_medication_strengths_manufactured_medication_id')
+    .on('manufactured_medication_strengths')
+    .column('manufactured_medication_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_manufactured_medication_strengths_consumable_id')
+    .on('manufactured_medication_strengths')
+    .column('consumable_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_manufactured_medication_availabilities_manufactured_medication_id')
+    .on('manufactured_medication_availabilities')
+    .column('manufactured_medication_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_manufactured_medication_availabilities_country')
+    .on('manufactured_medication_availabilities')
+    .column('country')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

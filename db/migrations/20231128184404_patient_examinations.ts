@@ -100,6 +100,48 @@ export async function up(
           (col) => col.notNull().references('snomed_concept.id'),
         ),
   )
+
+  await db.schema
+    .createIndex('idx_patient_examinations_patient_id')
+    .on('patient_examinations')
+    .column('patient_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_examinations_patient_encounter_employee_id')
+    .on('patient_examinations')
+    .column('patient_encounter_employee_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_examinations_examination_identifier')
+    .on('patient_examinations')
+    .column('examination_identifier')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_examination_findings_patient_examination_id')
+    .on('patient_examination_findings')
+    .column('patient_examination_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_examination_findings_snomed_concept_id')
+    .on('patient_examination_findings')
+    .column('snomed_concept_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_examination_finding_body_sites_patient_examination_finding_id')
+    .on('patient_examination_finding_body_sites')
+    .column('patient_examination_finding_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_examination_finding_body_sites_snomed_concept_id')
+    .on('patient_examination_finding_body_sites')
+    .column('snomed_concept_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

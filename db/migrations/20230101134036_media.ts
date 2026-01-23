@@ -61,6 +61,12 @@ export async function up(db: Kysely<DB>) {
         .addColumn('language_code', 'varchar(3)', (col) => col.notNull().references('languages.iso_639_2_b')),
   )
 
+  await db.schema
+    .createIndex('idx_media_speeches_language_code')
+    .on('media_speeches')
+    .column('language_code')
+    .execute()
+
   await createStandardTable(
     db,
     'speech_transcriptions',
@@ -76,6 +82,12 @@ export async function up(db: Kysely<DB>) {
       )`,
         ),
   )
+
+  await db.schema
+    .createIndex('idx_speech_transcriptions_media_speech_id')
+    .on('speech_transcriptions')
+    .column('media_speech_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

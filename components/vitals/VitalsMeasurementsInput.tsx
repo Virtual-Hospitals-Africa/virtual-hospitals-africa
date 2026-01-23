@@ -19,7 +19,7 @@ export default function VitalMeasurementsInput(
       label={vital.vital}
       organization_id={organization_id}
       input_width='w-32'
-      input={<MeasurementInput name={name} {...vital} />}
+      input={<MeasurementInput {...vital} name={name} label='' />}
     />
   )
 }

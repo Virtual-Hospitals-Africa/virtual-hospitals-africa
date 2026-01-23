@@ -50,6 +50,18 @@ export async function up(db: Kysely<DB>) {
       guardian_patient_id != dependent_patient_id
     `,
       ))
+
+  await db.schema
+    .createIndex('idx_patient_guardians_guardian_relation')
+    .on('patient_guardians')
+    .column('guardian_relation')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_patient_guardians_dependent_patient_id')
+    .on('patient_guardians')
+    .column('dependent_patient_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

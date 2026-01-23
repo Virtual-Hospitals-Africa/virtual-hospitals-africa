@@ -28,19 +28,20 @@ function truncatePath(pathname: string): string {
     .replace('/open_encounter', '/o_e')
 }
 
+export async function setApplicationNameAndAttachTrx(ctx: TrxContext, trx: TrxOrDb) {
+  // Tag this connection with application_name for monitoring
+  const tag = `${ctx.req.method}:${truncatePath(ctx.url.pathname)}`
+  await sql`SET application_name = ${sql.lit(tag)};`.execute(trx)
+  trx_context_map.set(trx, ctx)
+  ctx.state.trx = trx
+}
+
+
 export function attachTrx(
   ctx: TrxContext,
 ) {
   return db.connection().execute(async (conn) => {
-    
-    // Tag this connection with application_name for monitoring
-    const tag = `${ctx.req.method}:${truncatePath(ctx.url.pathname)}`
-    await sql.raw(`SET application_name = ${sql.val(tag)}`).execute(conn)
-    
-    trx_context_map.set(conn, ctx)
-
-    ctx.state.trx = conn
-
+    await setApplicationNameAndAttachTrx(ctx, conn)
     return await ctx.next()
   })
 }

@@ -15,6 +15,30 @@ export async function up(db: Kysely<DB>) {
           boolean
         >`("doctor_review_id" IS NOT NULL) = ("patient_encounter_id" IS NULL)`,
       ))
+
+  await db.schema
+    .createIndex('idx_diagnoses_patient_condition_id')
+    .on('diagnoses')
+    .column('patient_condition_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_diagnoses_provider_id')
+    .on('diagnoses')
+    .column('provider_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_diagnoses_doctor_review_id')
+    .on('diagnoses')
+    .column('doctor_review_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_diagnoses_patient_encounter_id')
+    .on('diagnoses')
+    .column('patient_encounter_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

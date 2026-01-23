@@ -134,6 +134,24 @@ export async function up(db: Kysely<DB>) {
     CREATE INDEX whatsapp_messages_sent_phone_number_index ON whatsapp_messages_sent (chatbot_name, sent_to_phone_number);
     CREATE INDEX whatsapp_messages_sent_phone_number_created_at_index ON whatsapp_messages_sent (chatbot_name, sent_to_phone_number, created_at);
   `.execute(db)
+
+  await db.schema
+    .createIndex('idx_whatsapp_messages_received_media_id')
+    .on('whatsapp_messages_received')
+    .column('media_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_whatsapp_messages_sent_responding_to_received_id')
+    .on('whatsapp_messages_sent')
+    .column('responding_to_received_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_whatsapp_messages_sent_corresponding_message_id')
+    .on('whatsapp_messages_sent')
+    .column('corresponding_message_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

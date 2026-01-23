@@ -21,6 +21,13 @@ export async function up(db: Kysely<DB>) {
           (col) => col.notNull(),
         ),
   )
+
+  await db.schema
+    .createIndex('idx_patient_workflows_patient_encounter_id')
+    .on('patient_workflows')
+    .column('patient_encounter_id')
+    .execute()
+
   await createPointerTable(
     db,
     'patient_workflows_completed',

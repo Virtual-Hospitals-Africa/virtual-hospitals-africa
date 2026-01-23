@@ -40,6 +40,24 @@ export async function up(db: Kysely<DB>) {
     // ),
   )
 
+  await db.schema
+    .createIndex('idx_organizations_country')
+    .on('organizations')
+    .column('country')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organizations_address_id')
+    .on('organizations')
+    .column('address_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organizations_most_common_language_code')
+    .on('organizations')
+    .column('most_common_language_code')
+    .execute()
+
   await createStandardTable(
     db,
     'organization_departments',
@@ -59,6 +77,18 @@ export async function up(db: Kysely<DB>) {
           'name',
         ]),
   )
+
+  await db.schema
+    .createIndex('idx_organization_departments_name')
+    .on('organization_departments')
+    .column('name')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_organization_departments_address_id')
+    .on('organization_departments')
+    .column('address_id')
+    .execute()
 }
 
 // deno-lint-ignore no-explicit-any

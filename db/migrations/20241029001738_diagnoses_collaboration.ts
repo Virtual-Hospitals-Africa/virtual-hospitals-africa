@@ -9,6 +9,18 @@ export async function up(db: Kysely<DB>) {
       .addColumn('approver_id', 'uuid', (col) => col.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('is_approved', 'boolean', (col) => col.notNull())
       .addColumn('disagree_reason', 'varchar(255)'))
+
+  await db.schema
+    .createIndex('idx_diagnoses_collaboration_diagnosis_id')
+    .on('diagnoses_collaboration')
+    .column('diagnosis_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_diagnoses_collaboration_approver_id')
+    .on('diagnoses_collaboration')
+    .column('approver_id')
+    .execute()
 }
 
 export async function down(db: Kysely<DB>) {

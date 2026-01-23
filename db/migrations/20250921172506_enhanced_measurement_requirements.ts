@@ -158,6 +158,30 @@ export async function up(db: Kysely<unknown>) {
     // deno-lint-ignore no-explicit-any
     .where('active' as any, '=', true)
     .execute()
+
+  await db.schema
+    .createIndex('idx_age_measurement_requirements_required_measurement_snomed_concept_id')
+    .on('age_measurement_requirements')
+    .column('required_measurement_snomed_concept_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_condition_measurement_requirements_condition_snomed_concept_id')
+    .on('condition_measurement_requirements')
+    .column('condition_snomed_concept_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_condition_measurement_requirements_required_measurement_snomed_concept_id')
+    .on('condition_measurement_requirements')
+    .column('required_measurement_snomed_concept_id')
+    .execute()
+
+  await db.schema
+    .createIndex('idx_measurement_reference_ranges_measurement_snomed_concept_id')
+    .on('measurement_reference_ranges')
+    .column('measurement_snomed_concept_id')
+    .execute()
 }
 
 export async function down(db: Kysely<unknown>) {
