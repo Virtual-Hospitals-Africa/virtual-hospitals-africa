@@ -181,78 +181,114 @@ export const handler = postHandler(
       )
     }
 
-    const [inserted_measurements, inserted_assessments] = await Promise.all([
-      pMap(
-        entries(form_values.measurements),
-        async ([vital, measurement]) => {
-          if (!measurement) return
+    // Prepare measurements for bulk insert
+    const measurements_to_insert = compact(
+      entries(form_values.measurements).map(([vital, measurement]) => {
+        if (!measurement) return undefined
+        const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
+        const measurement_comparison = parseWithSchema(
+          `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
+          comparator,
+        )
+        const score = getScoreForMeasurement(
+          age_determination,
+          vital,
+          measurement_comparison.right,
+        )
+        return {
+          vital,
+          measurement_comparison,
+          score,
+        }
+      }),
+    )
 
-          const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
-          const measurement_comparison = parseWithSchema(
-            `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
-            comparator,
-          )
-          const result = await patient_measurements.insertOneNested(trx, {
-            patient_id,
-            patient_encounter_id,
-            patient_encounter_employee_id,
-            procedure_id,
+    // Prepare assessments for bulk insert
+    const assessments_to_insert = compact(
+      entries(form_values.assessments).map(([vital, assessment]) => {
+        if (!assessment) return undefined
+        assert(assessment.s_expression)
+        const score = getScoreForAssessment(
+          age_determination,
+          vital,
+          assessment.s_expression,
+        )
+        return {
+          vital,
+          finding: assessment.s_expression,
+          score,
+        }
+      }),
+    )
+
+    // Bulk insert measurements and assessments
+    const [inserted_measurements_result, inserted_assessments_result] = await Promise.all([
+      measurements_to_insert.length > 0
+        ? patient_measurements.insertMany(trx, {
+          patient_id,
+          patient_encounter_id,
+          patient_encounter_employee_id,
+          procedure_id,
+          measurements: measurements_to_insert.map(({ measurement_comparison }) => ({
             measurement_comparison,
-          })
+          })),
+        })
+        : Promise.resolve({ measurement_ids: [] }),
+      assessments_to_insert.length > 0
+        ? patient_findings.insertMany(trx, {
+          patient_id,
+          patient_encounter_id,
+          patient_encounter_employee_id,
+          employment_id: health_worker_id,
+          procedure: { procedure_id },
+          findings: assessments_to_insert.map(({ finding }) => finding),
+        })
+        : Promise.resolve({ finding_ids: [] }),
+    ])
 
-          const score = getScoreForMeasurement(
-            age_determination,
-            vital,
-            measurement_comparison.right,
-          )
-          if (score != null) {
-            await patient_evaluation_scores.insertOneNested(trx, {
-              score,
-              patient_id,
-              patient_encounter_id,
-              by_system: true,
-              evaluates_record_id: result.measurement_id,
-              evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${SEVERITY_SCORE.s_expression})`,
-            })
-          }
-          return result.measurement_id
-        },
-      ),
-      pMap(
-        entries(form_values.assessments),
-        async ([vital, assessment]) => {
-          if (!assessment) return
-          assert(assessment.s_expression)
-
-          const result = await patient_findings.insertOneNested(trx, {
+    // Insert evaluation scores for measurements (in parallel with IDs from bulk insert)
+    await pMap(
+      measurements_to_insert.map((m, i) => ({
+        ...m,
+        measurement_id: inserted_measurements_result.measurement_ids[i],
+      })),
+      async ({ measurement_id, score }) => {
+        if (score != null) {
+          await patient_evaluation_scores.insertOneNested(trx, {
+            score,
             patient_id,
             patient_encounter_id,
-            patient_encounter_employee_id,
-            procedure_id,
-            finding: assessment.s_expression,
+            by_system: true,
+            evaluates_record_id: measurement_id,
+            evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${SEVERITY_SCORE.s_expression})`,
           })
+        }
+      },
+    )
 
-          const score = getScoreForAssessment(
-            age_determination,
-            vital,
-            assessment.s_expression,
-          )
-          if (score != null) {
-            const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
+    // Insert evaluation scores for assessments (in parallel with IDs from bulk insert)
+    await pMap(
+      assessments_to_insert.map((a, i) => ({
+        ...a,
+        finding_id: inserted_assessments_result.finding_ids[i],
+      })),
+      async ({ vital, finding_id, score }) => {
+        if (score != null) {
+          const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
+          await patient_evaluation_scores.insertOneNested(trx, {
+            score,
+            patient_id,
+            patient_encounter_id,
+            by_system: true,
+            evaluates_record_id: finding_id,
+            evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${evaluation_snomed_concept.s_expression})`,
+          })
+        }
+      },
+    )
 
-            await patient_evaluation_scores.insertOneNested(trx, {
-              score,
-              patient_id,
-              patient_encounter_id,
-              by_system: true,
-              evaluates_record_id: result.finding_id,
-              evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${evaluation_snomed_concept.s_expression})`,
-            })
-          }
-          return result.finding_id
-        },
-      ),
-    ])
+    const inserted_measurements = inserted_measurements_result.measurement_ids
+    const inserted_assessments = inserted_assessments_result.finding_ids
 
     const all_inserted = compact([...inserted_measurements, ...inserted_assessments]).map((id) => ({
       id,
