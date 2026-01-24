@@ -1,17 +1,14 @@
 import { JSX } from 'preact/compat/jsx-dev-runtime'
 import { ComponentChild, ComponentChildren, TargetedSubmitEvent } from 'preact'
 import { ButtonsContainer } from '../islands/form/buttons.tsx'
-import { OpenEncounterWorkflowContext } from '../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/_middleware.tsx'
 import capitalize from '../util/capitalize.ts'
-import last from '../util/last.ts'
 import PatientDrawerV4 from './drawer-v4/DrawerV4.tsx'
 import { Button } from './library/Button.tsx'
-import Form from './library/Form.tsx'
-import { HealthWorkerSidebarBottom } from './library/HealthWorkerSidebarBottom.tsx'
+
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { StepsSidebar } from './library/Sidebar.tsx'
-import { PatientDrawerV4Props, RenderedEmployee } from '../types.ts'
+import { PatientDrawerV4Props } from '../types.ts'
 import { Workflow } from '../db.d.ts'
 
 export function OpenEncounterWorkflowLayout({
@@ -28,7 +25,7 @@ export function OpenEncounterWorkflowLayout({
   organization_id,
   this_visit_findings,
   steps_completed,
-  employee,
+  sidebar_bottom,
   patient_history,
   ContainerTag,
   workflow,
@@ -42,17 +39,16 @@ export function OpenEncounterWorkflowLayout({
   workflow: Workflow
   next_step_text?: string
   nav_links: {
-    step: string;
-    route: string;
+    step: string
+    route: string
   }[]
   steps_completed: string[]
-  employee: RenderedEmployee
+  sidebar_bottom: ComponentChild
   buttons?: ComponentChild
   children: ComponentChildren
   ContainerTag: 'form' | 'div'
   onSubmit?: (event: TargetedSubmitEvent<HTMLButtonElement>) => void
 } & PatientDrawerV4Props): JSX.Element {
-
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       url={url}
@@ -64,7 +60,7 @@ export function OpenEncounterWorkflowLayout({
           params={params}
           nav_links={nav_links}
           steps_completed={steps_completed}
-          bottom={<HealthWorkerSidebarBottom employee={employee} />}
+          bottom={sidebar_bottom}
         />
       }
       drawer={workflow !== 'registration'

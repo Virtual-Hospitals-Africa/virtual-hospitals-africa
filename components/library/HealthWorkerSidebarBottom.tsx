@@ -8,7 +8,11 @@ export function HealthWorkerSidebarBottom({ employee }: {
 }) {
   return (
     <div className='space-y-3'>
-      <EmergencyCallButton organization_id={employee.organization_id} />
+      <EmergencyCallButton
+        type='submit'
+        method='POST'
+        action={`/app/organizations/${employee.organization_id}/patients/start-emergency-escalation`}
+      />
 
       <HealthWorker
         {...employeeDisplay(employee)}

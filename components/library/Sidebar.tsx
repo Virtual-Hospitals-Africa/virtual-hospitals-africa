@@ -1,5 +1,5 @@
 import { ComponentChild } from 'preact'
-import { Context } from 'fresh'
+
 import { LinkDef, LinkProps } from '../../types.ts'
 import * as ProgressIcons from './icons/progress.tsx'
 import { matchActiveLink } from '../../util/matchActiveLink.ts'
@@ -221,7 +221,7 @@ type StepsSidebarProps = {
 }
 
 function defaultTop(url: URL) {
-  if (url.pathname.startsWith('/app')) {
+  if (url.pathname.startsWith('/app') || url.pathname.startsWith('/tutorial')) {
     return HealthWorkerDefaultTop
   }
   if (url.pathname.startsWith('/regulator')) {

@@ -1,121 +1,89 @@
-import { useSignal } from '@preact/signals'
-import { Button } from '../components/library/Button.tsx'
-import PageHeader from '../components/library/typography/PageHeader.tsx'
-import { cls } from '../util/cls.ts'
+import { effect, useSignal } from '@preact/signals'
 import WarningSigns from './WarningSigns.tsx'
-import { WARNING_SIGNS } from '../shared/warning_signs.ts'
-import { COMMON_SYMPTOMS } from '../shared/common_symptoms.ts'
-import { YesNoGrid, YesNoQuestion } from './form/inputs/yes_no.tsx'
-import { COMMON_CONDITIONS } from '../shared/brief_history.ts'
-import { Existence } from '../types.ts'
+import { RenderedEmployee, RenderedPatient, RenderedSidebarWorkflow, WarningSign } from '../types.ts'
+import { OpenEncounterWorkflowLayout } from '../components/OpenEncounterWorkflowLayout.tsx'
+import { useLocationHash } from '../util/useLocationHash.ts'
+import { HealthWorker } from '../components/library/HealthWorker.tsx'
+import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
+import { EmergencyCallButton } from '../components/library/EmergencyCallButton.tsx'
+import { WORKFLOW_NAV_LINKS } from '../shared/workflow.ts'
 
 type TutorialProgress =
-  | { type: 'warning_signs' }
-  | { type: 'brief_history' }
+  | { action: 'warning_signs' }
+  | { action: 'brief_history' }
+  | { action: 'none' }
 
-type Patient = {
-  first_names: string
-  surname: string
-  sex: 'male' | 'female'
-  date_of_birth: string
-  national_id_number: string
-  country: string
-  gender: string
-  preferred_language_code_iso_639_2_b: string
+type Patient = RenderedPatient
+
+function isState(params: Record<string, string>): params is TutorialProgress {
+  console.log({ params })
+  return true
 }
 
-function WarningSignsPage({
-  show,
-  patient,
-  onNext,
-}: {
-  show: boolean
-  patient: Patient
-  onNext(): void
-}) {
-  const warning_signs = [...WARNING_SIGNS, ...COMMON_SYMPTOMS]
+export function TriageTutorial(
+  { url, route, patient, employee, warning_signs }: { url: URL; route: string; patient: Patient; employee: RenderedEmployee; warning_signs: WarningSign[] },
+) {
+  const this_visit_findings = useSignal<RenderedSidebarWorkflow[]>([])
+  const location_hash = useLocationHash<TutorialProgress>(isState)
 
-  return (
-    <div className={cls('flex flex-col gap-4', !show && 'hidden')}>
-      <PageHeader className='h1'>
-        Warning Signs - {patient.first_names} {patient.surname}
-      </PageHeader>
-      <p className='text-gray-600'>
-        This is a tutorial demonstrating the triage warning signs assessment. Select any warning signs or symptoms the patient is experiencing.
-      </p>
-      <WarningSigns
-        search_route='/tutorial/snomed-warning-signs'
-        warning_signs={warning_signs}
-      />
-      <div className='flex justify-end mt-4'>
-        <Button type='button' onClick={onNext}>
-          Next<span aria-hidden='true'>&nbsp;&nbsp;&rarr;</span>
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-function BriefHistoryPage({
-  show,
-  patient,
-}: {
-  show: boolean
-  patient: Patient
-}) {
-  const conditions = useSignal<Record<string, Existence | null>>({})
-
-  return (
-    <div className={cls('flex flex-col gap-4', !show && 'hidden')}>
-      <PageHeader className='h1'>
-        Brief History - {patient.first_names} {patient.surname}
-      </PageHeader>
-      <p className='text-gray-600'>
-        This is a tutorial demonstrating the brief medical history assessment. Indicate if the patient has any of these conditions.
-      </p>
-      <YesNoGrid title='Condition'>
-        {COMMON_CONDITIONS.map((condition) => (
-          <YesNoQuestion
-            key={condition.key}
-            name={`${condition.key}.existence`}
-            required={condition.required}
-            value={condition.key === 'pregnancy' && patient.sex === 'male' ? 'No' : conditions.value[condition.key] as Existence | undefined}
-            label={condition.label}
-            onChange={(value) => {
-              conditions.value = {
-                ...conditions.value,
-                [condition.key]: value,
-              }
-            }}
-          />
-        ))}
-      </YesNoGrid>
-      <div className='flex justify-end mt-4'>
-        <Button type='button'>
-          Complete Tutorial<span aria-hidden='true'>&nbsp;&nbsp;&rarr;</span>
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-export function TriageTutorial({ patient }: { patient: Patient }) {
-  const progress = useSignal<TutorialProgress>({ type: 'warning_signs' })
+  effect(() => {
+    if (location_hash.value.action === 'none') {
+      location_hash.value = { action: 'warning_signs' }
+    }
+  })
 
   function goToBriefHistory() {
-    progress.value = { type: 'brief_history' }
+    // progress.value = { action: 'brief_history' }
   }
 
   return (
-    <div className='py-8 overflow-hidden bg-white'>
-      <div className='px-6 mx-auto max-w-7xl'>
-        <WarningSignsPage
-          show={progress.value.type === 'warning_signs'}
-          patient={patient}
-          onNext={goToBriefHistory}
+    <OpenEncounterWorkflowLayout
+      id='triage'
+      url={url}
+      route={route}
+      params={{}}
+      next_step_text='Next'
+      nav_links={WORKFLOW_NAV_LINKS.triage.map((link) => ({
+        ...link,
+        route: link.route.replace('/app/organizations/:organization_id/patients/:patient_id/open_encounter/', '#'),
+      }))}
+      patient={patient}
+      priority={null}
+      organization_id='foo'
+      this_visit_findings={this_visit_findings.value}
+      steps_completed={[]}
+      patient_history={{
+        pre_existing_conditions: [],
+        allergies: [],
+        family_history: [],
+        major_surgeries: [],
+        medications: [],
+        lifestyle: [],
+      }}
+      ContainerTag='div'
+      workflow='triage'
+      // todo, add
+      care_team={[]}
+      sidebar_bottom={
+        <div className='space-y-3'>
+          <EmergencyCallButton href='#emergency' />
+
+          <HealthWorker
+            {...employeeDisplay(employee)}
+          />
+        </div>
+      }
+      onSubmit={(event) => {
+        console.log('x', { event })
+        goToBriefHistory()
+      }}
+    >
+      {['warning_signs', 'none'].includes(location_hash.value.action) && (
+        <WarningSigns
+          search_route='foo'
+          warning_signs={warning_signs}
         />
-        <BriefHistoryPage show={progress.value.type === 'brief_history'} patient={patient} />
-      </div>
-    </div>
+      )}
+    </OpenEncounterWorkflowLayout>
   )
 }

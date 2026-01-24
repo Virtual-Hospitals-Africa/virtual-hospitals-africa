@@ -1,17 +1,21 @@
 import { Button } from './Button.tsx'
 import { PhoneIcon } from './icons/heroicons/outline.tsx'
 
-export function EmergencyCallButton({ organization_id }: {
-  organization_id: string
-}) {
+type EmergencyCallButtonProps = {
+  type: 'submit'
+  method: 'POST'
+  action: string
+} | {
+  href: string
+}
+
+export function EmergencyCallButton(props: EmergencyCallButtonProps) {
   return (
     <Button
-      type='submit'
       variant='destructive'
       className='w-full'
-      method='POST'
-      action={`/app/organizations/${organization_id}/patients/start-emergency-escalation`}
       left_icon={<PhoneIcon />}
+      {...props}
     >
       Emergency
     </Button>

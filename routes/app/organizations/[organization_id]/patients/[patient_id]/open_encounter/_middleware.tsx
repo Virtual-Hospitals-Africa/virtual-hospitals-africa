@@ -1,6 +1,5 @@
 import { ComponentChildren, JSX } from 'preact'
 import { assert } from 'std/assert/assert.ts'
-import Form from '../../../../../../../components/library/Form.tsx'
 import {
   AgeDetermination,
   LoggedInHealthWorkerContext,
@@ -18,14 +17,10 @@ import { patient_encounters } from '../../../../../../../db/models/patient_encou
 import { this_visit_findings } from '../../../../../../../db/models/this_visit_findings.ts'
 import { patient_history } from '../../../../../../../db/models/patient_history.ts'
 import { events } from '../../../../../../../db/models/events.ts'
-
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
-import { StepsSidebar } from '../../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../../util/capitalize.ts'
 import redirect from '../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
-import { ButtonsContainer } from '../../../../../../../islands/form/buttons.tsx'
-import { Button } from '../../../../../../../components/library/Button.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 
@@ -39,6 +34,7 @@ import {
   isWorkflow,
   lastStep,
   prettyStepName,
+  WORKFLOW_NAV_LINKS,
   WORKFLOW_SNOMED_CONCEPTS,
   WORKFLOW_STEPS,
   workflowStepSnomedConcept,
@@ -53,14 +49,11 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { success } from '../../../../../../../util/alerts.ts'
 import { ComponentChild } from 'preact'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
-import HealthWorkerContentsWithSidebarAndDrawer from '../../../../../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { presentWithPatient } from '../../../../../../../shared/patient_encounters.ts'
 import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
-import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.tsx'
 import { PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
-import { ArrowRightIcon } from '../../../../../../../components/library/icons/heroicons/solid.tsx'
 import { get } from '../../../../../../../util/get.ts'
 import { patientAgeDetermination } from '../../../../../../../shared/patient_age_determination.ts'
 import { completedPersonal } from '../../../../../../../shared/patient_registration.ts'
@@ -99,19 +92,6 @@ export type OpenEncounterContext<T = Record<never, never>> = LoggedInHealthWorke
 export type OpenEncounterWorkflowContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
   OpenEncounterWorkflowState & T
 >
-
-export const nav_links: {
-  [w in Workflow]: {
-    step: string
-    route: string
-    title: string
-  }[]
-} = mapEntries(WORKFLOW_STEPS, (steps, workflow) =>
-  steps.map((step) => ({
-    step,
-    route: `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${step}`,
-    title: prettyStepName(step),
-  })))
 
 export function completeLastStep(
   { state: { trx, workflow, step, workflow_status } }: OpenEncounterWorkflowContext,
@@ -423,13 +403,16 @@ export function OpenEncounterWorkflowLayoutCtx({
       next_step_text={next_step_text}
       buttons={buttons}
       priority={ctx.state.encounter.priority?.name || null}
-      nav_links={nav_links[ctx.state.workflow]}
+      nav_links={WORKFLOW_NAV_LINKS[ctx.state.workflow]}
       steps_completed={ctx.state.workflow_status.steps_completed}
-                  care_team={[]}
-            // care_team={ctx.state.patient.primary_doctor
-            //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
-            //   : []}
-      {...ctx}
+      care_team={[]}
+      sidebar_bottom={<HealthWorkerSidebarBottom employee={ctx.state.employee} />}
+      {
+        // care_team={ctx.state.patient.primary_doctor
+        //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
+        //   : []}
+        ...ctx
+      }
       {...ctx.state}
     >
       {children}
