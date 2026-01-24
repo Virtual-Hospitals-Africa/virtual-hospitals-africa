@@ -1,5 +1,5 @@
-import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { literalString, success_true } from '../helpers.ts'
+import { IdSelection, InsertRows, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { arrayAggIds, debugLog, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
@@ -10,6 +10,7 @@ import { formatRecord } from '../../shared/patient_records.ts'
 import { Comparisons, Lang } from '../../shared/s_expression_schemas.ts'
 import { isMeasurement } from '../../shared/vitals.ts'
 import { MEASUREMENT_FINDING } from '../../shared/snomed_concepts.ts'
+import { baseInsertMany } from './patient_records.ts'
 
 type MeasurementInsert = {
   patient_id: string
@@ -18,6 +19,17 @@ type MeasurementInsert = {
   patient_encounter_employee_id: string
   measurement_id?: string
   measurement_comparison: Lang[Comparisons]
+}
+
+type MeasurementsInsert = {
+  patient_id: string
+  procedure_id: string
+  patient_encounter_id: string
+  patient_encounter_employee_id: string
+  measurements: Array<{
+    measurement_id?: string
+    measurement_comparison: Lang[Comparisons]
+  }>
 }
 
 export function baseQuery(
@@ -81,6 +93,88 @@ export const patient_measurements = base({
     }
 
     return qb
+  },
+  insertMany(
+    trx: TrxOrDb,
+    {
+      patient_id,
+      procedure_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      measurements,
+    }: MeasurementsInsert,
+  ) {
+    if (measurements.length === 0) {
+      throw new Error('insertMany requires at least one measurement')
+    }
+
+    // Parse measurements and generate IDs
+    const records = measurements.map(({ measurement_id = generateUUID(), measurement_comparison }) => {
+      const { left: { snomed_concept, units }, right: value } = measurement_comparison
+      return {
+        patient_id,
+        patient_encounter_id,
+        record_id: measurement_id,
+        root_snomed_concept: { atom: 'snomed_concept' as const, ...MEASUREMENT_FINDING } as Lang['snomed_concept'],
+        specific_snomed_concept: snomed_concept,
+        value_snomed_concept: null,
+        units,
+        value: value.toFixed(),
+      }
+    })
+
+    const measurement_values: InsertRows<'patient_measurements'> = records.map(({ record_id, units, value }) => ({
+      id: record_id,
+      units,
+      value,
+    }))
+
+    debugLog(
+      baseInsertMany(trx, records)
+        .with(
+          'inserting_findings',
+          (qb) =>
+            qb.insertInto('patient_findings').values(
+              records.map(({ record_id }) => ({
+                id: record_id,
+                procedure_id,
+                patient_encounter_employee_id,
+              })),
+            ),
+        )
+        .with(
+          'inserting_measurements',
+          (qb) => qb.insertInto('patient_measurements').values(measurement_values),
+        )
+        .selectFrom('inserting_records')
+        .select((eb) => [
+          success_true,
+          arrayAggIds(eb.ref('inserting_records.id')).as('measurement_ids'),
+        ]),
+    )
+
+    return baseInsertMany(trx, records)
+      .with(
+        'inserting_findings',
+        (qb) =>
+          qb.insertInto('patient_findings').values(
+            records.map(({ record_id }) => ({
+              id: record_id,
+              procedure_id,
+              patient_encounter_employee_id,
+            })),
+          ),
+      )
+      .with(
+        'inserting_measurements',
+        (qb) => qb.insertInto('patient_measurements').values(measurement_values),
+      )
+      .selectFrom('inserting_records')
+      .select((eb) => [
+        success_true,
+        arrayAggIds(eb.ref('inserting_records.id')).as('measurement_ids'),
+      ])
+      .executeTakeFirstOrThrow()
   },
   insertOneNested(
     trx: TrxOrDb,
