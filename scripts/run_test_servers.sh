@@ -1,6 +1,11 @@
 #! /usr/bin/env bash
 set -xeo pipefail
 
+# shellcheck source=.env disable=SC1091
+source .env
+HTTP_SERVER_PORT=${HTTP_SERVER_PORT:-8004}
+HTTPS_PROXY_SERVER_PORT=${HTTPS_PROXY_SERVER_PORT:-8005}
+
 fail() {
   >&2 echo "$@"
   exit 1
@@ -17,8 +22,6 @@ elif [ -f .env.docker ]; then
   cmp --silent .env .env.docker || fail $'.env differs from .env.docker\nrun deno task switch:docker before running tests'
 fi
 
-HTTP_SERVER_PORT=8004
-HTTPS_PROXY_SERVER_PORT=8005
 https_proxy_server_pid=""
 http_server_pid=""
 
@@ -64,10 +67,10 @@ print_server_log_info() {
 }
 
 cleanup() {
-  if [ ! -z $http_server_pid ]; then
+  if [ -n "$http_server_pid" ]; then
     kill $http_server_pid || true
   fi
-  if [ ! -z $https_proxy_server_pid ]; then
+  if [ -n "$https_proxy_server_pid" ]; then
     kill $https_proxy_server_pid || true
   fi
   if [[ "${CI:-}" == "true" ]]; then
@@ -100,7 +103,7 @@ start_https_proxy_server() {
 
 ensure_test_servers_not_already_running
 
-trap cleanup EXIT
+trap cleanup EXIT INT TERM HUP
 
 start_https_proxy_server &
 https_proxy_server_pid="$!"

@@ -11,6 +11,4 @@ export const handler = jsonSearchHandler<
   location: ctx.state.encounter.organization.location!,
   excluding_id: ctx.state.encounter_employee_presence.organization_id,
   // has_doctors: true,
-}), {
-  verbose: true, // turn on to log every query
-})
+}))
