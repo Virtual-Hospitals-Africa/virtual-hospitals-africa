@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 
 # Usage: ./scripts/worktree-claude.sh <branch-name> [prompt]
 # Example: ./scripts/worktree-claude.sh fix-bug "Fix the authentication bug in the login flow"
