@@ -10,7 +10,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
 
-import { CommonSymptom, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
+import { CommonSymptom, TrxOrDb, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
 import { normalForm, parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
@@ -219,8 +219,9 @@ function getAllFindingsReportedPreviouslyOnThisPage(
   })
 }
 
-async function getWarningSignsForPatient(
-  { state: { trx, patient_id } }: OpenEncounterWorkflowContext,
+export async function getWarningSignsForPatient(
+  trx: TrxOrDb,
+  patient_id: string,
 ): Promise<WarningSign[]> {
   const [having_prompt_when, no_prompt_when] = partition(
     WARNING_SIGNS,
@@ -312,7 +313,7 @@ export async function TriageWarningSignsPage(
     warning_signs_for_patient,
   } = await promiseProps({
     prior_findings: getAllFindingsReportedPreviouslyOnThisPage(ctx),
-    warning_signs_for_patient: getWarningSignsForPatient(ctx),
+    warning_signs_for_patient: getWarningSignsForPatient(ctx.state.trx, ctx.state.patient_id),
   })
 
   const warning_signs = signsMatchedWithPriorRecords(

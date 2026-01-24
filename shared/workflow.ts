@@ -5,6 +5,7 @@ import first from '../util/first.ts'
 import { departmentNames, departmentResponsibleForWorkflow } from './departments.ts'
 import capitalize from '../util/capitalize.ts'
 import isKeyOf from '../util/isKeyOf.ts'
+import mapEntries from '../util/mapEntries.ts'
 import {
   BODY_MEASUREMENT,
   DISPENSING_MEDICATION,
@@ -191,3 +192,16 @@ export function canPerform(
 export function prettyStepName(step: string) {
   return capitalize(step).replace(' And ', ' & ')
 }
+
+export const WORKFLOW_NAV_LINKS: {
+  [w in Workflow]: {
+    step: string
+    route: string
+    title: string
+  }[]
+} = mapEntries(WORKFLOW_STEPS, (steps, workflow) =>
+  steps.map((step) => ({
+    step,
+    route: `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${step}`,
+    title: prettyStepName(step),
+  })))

@@ -1,5 +1,5 @@
 import { ComponentChild } from 'preact'
-import { Context } from 'fresh'
+
 import { LinkDef, LinkProps } from '../../types.ts'
 import * as ProgressIcons from './icons/progress.tsx'
 import { matchActiveLink } from '../../util/matchActiveLink.ts'
@@ -209,8 +209,9 @@ type StepsSidebarProps = {
     href: string
     child: ComponentChild
   }
-  // deno-lint-ignore no-explicit-any
-  ctx: Context<any>
+  url: URL
+  route?: string | null
+  params: Record<string, string>
   bottom?: ComponentChild
   nav_links: {
     step: string
@@ -219,27 +220,26 @@ type StepsSidebarProps = {
   steps_completed: string[]
 }
 
-// deno-lint-ignore no-explicit-any
-function defaultTop(ctx: Context<any>) {
-  if (ctx.url.pathname.startsWith('/app')) {
+function defaultTop(url: URL) {
+  if (url.pathname.startsWith('/app') || url.pathname.startsWith('/tutorial')) {
     return HealthWorkerDefaultTop
   }
-  if (ctx.url.pathname.startsWith('/regulator')) {
+  if (url.pathname.startsWith('/regulator')) {
     return RegulatorDefaultTop
   }
-  throw new Error(`Could not compute home page top for url: ${ctx.url}`)
+  throw new Error(`Could not compute home page top for url: ${url}`)
 }
 
 export function StepsSidebar(
-  { top, bottom, ctx, nav_links, steps_completed }: StepsSidebarProps,
+  { top, bottom, nav_links, steps_completed, url, route, params }: StepsSidebarProps,
 ) {
   return (
     <GenericSidebar
-      top={top || defaultTop(ctx)}
+      top={top || defaultTop(url)}
       bottom={bottom}
-      route={ctx.route!}
-      params={ctx.params}
-      urlSearchParams={ctx.url.searchParams}
+      route={route!}
+      params={params}
+      urlSearchParams={url.searchParams}
       nav_links={nav_links.map((link) => ({
         ...link,
         title: prettyStepName(link.step),

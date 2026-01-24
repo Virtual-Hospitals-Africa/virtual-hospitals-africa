@@ -51,7 +51,9 @@ export function useLocationHash<
       return signal.value
     },
     set value(state: State | { action: 'none' }) {
-      self.location.hash = asHash(state)
+      if (self.location) {
+        self.location.hash = asHash(state)
+      }
     },
     asHref(state: State | { action: 'none' }) {
       return '#' + asHash(state)
