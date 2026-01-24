@@ -7,7 +7,7 @@ import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
 import { addTestRegulatorWithSession } from '../_helpers/regulators.ts'
 import { createTestOrganization, withTestOrganization } from '../_helpers/organizations.ts'
 import sample from '../../util/sample.ts'
-import { route } from '../_route.ts'
+import { port, route } from '../_route.ts'
 import selfUrl from '../../util/selfUrl.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 import assertIncludes from '../../util/assertIncludes.ts'
@@ -23,7 +23,7 @@ describeParallel('/login', () => {
     assert(redirect_location, `Is self_url the issue? ${selfUrl()}`)
     assert(
       redirect_location.startsWith(
-        'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A8005%2Flogged-in',
+        `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A${port}%2Flogged-in`,
       ),
       redirect_location,
     )

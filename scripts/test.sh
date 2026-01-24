@@ -1,6 +1,11 @@
 #! /usr/bin/env bash
 set -eo pipefail
 
+# shellcheck source=.env disable=SC1091
+source .env
+HTTP_SERVER_PORT=${HTTP_SERVER_PORT:-8004}
+HTTPS_PROXY_SERVER_PORT=${HTTPS_PROXY_SERVER_PORT:-8005}
+
 fail() {
   >&2 echo "$@"
   exit 1
@@ -8,6 +13,7 @@ fail() {
 
 MAX_PARALLEL_TESTS=8
 parallel_opts="--parallel"
+
 
 # On CI builds set MAX_PARALLEL_TESTS=2
 # On non-CI builds ensure the .env matches either .env.local or .env.docker
@@ -78,17 +84,14 @@ else
   done
 fi
 
-HTTP_SERVER_PORT=8004
-HTTPS_PROXY_SERVER_PORT=8005
-
 if lsof -i "tcp:$HTTP_SERVER_PORT" > /dev/null && lsof -i "tcp:$HTTPS_PROXY_SERVER_PORT" > /dev/null; then
   test_servers_were_already_running=true
 fi
 
 cleanup() {
   if ! [ -z $test_servers_pid ]; then
-    ./scripts/kill_process_on_port.sh $HTTP_SERVER_PORT || true
-    ./scripts/kill_process_on_port.sh $HTTPS_PROXY_SERVER_PORT || true
+    ./scripts/kill_process_on_port.sh "$HTTP_SERVER_PORT" || true
+    ./scripts/kill_process_on_port.sh "$HTTPS_PROXY_SERVER_PORT" || true
     kill $test_servers_pid > /dev/null || true
   fi
 }

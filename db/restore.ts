@@ -6,14 +6,17 @@ import readLines from '../util/readLines.ts'
 export async function restore(name: string, ...additional_args: string[]) {
   const dump_file = `./db/dumps/${name}`
   console.log(`Restoring database from ${dump_file}...`)
-
+  // console.log(db.opts)
+  // console.log(Deno.cwd())
+  // console.log(new TextDecoder().decode(Deno.readFileSync(Deno.cwd() + '/.env')))
+  // Deno.exit(1)
   const args = ['--no-owner', '-v', '-d', db.uri, dump_file, ...additional_args]
 
   const process = Command('pg_restore', {
     args,
     stdout: 'piped',
     stderr: 'piped',
-    verbose: true,
+    // verbose: true,
   }).spawn()
 
   const logStdOut = async () => {
