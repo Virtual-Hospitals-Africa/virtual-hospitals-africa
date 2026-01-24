@@ -64,6 +64,7 @@ import { ArrowRightIcon } from '../../../../../../../components/library/icons/he
 import { get } from '../../../../../../../util/get.ts'
 import { patientAgeDetermination } from '../../../../../../../shared/patient_age_determination.ts'
 import { completedPersonal } from '../../../../../../../shared/patient_registration.ts'
+import { OpenEncounterWorkflowLayout } from '../../../../../../../components/OpenEncounterWorkflowLayout.tsx'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -99,7 +100,7 @@ export type OpenEncounterWorkflowContext<T = Record<never, never>> = LoggedInHea
   OpenEncounterWorkflowState & T
 >
 
-const nav_links: {
+export const nav_links: {
   [w in Workflow]: {
     step: string
     route: string
@@ -402,7 +403,7 @@ export function assertAllPriorStepsCompleted(
   assertOrRedirect(false, `${url}?warning=${warning}`)
 }
 
-export function OpenEncounterWorkflowLayout({
+export function OpenEncounterWorkflowLayoutCtx({
   ctx,
   next_step_text,
   buttons,
@@ -416,55 +417,23 @@ export function OpenEncounterWorkflowLayout({
   const id = last(ctx.route!.split('/'))!
 
   return (
-    <HealthWorkerContentsWithSidebarAndDrawer
-      url={ctx.url}
-      title={capitalize(ctx.state.workflow)}
-      sidebar={
-        <StepsSidebar
-          ctx={ctx}
-          nav_links={nav_links[ctx.state.workflow]}
-          steps_completed={ctx.state.workflow_status.steps_completed}
-          bottom={<HealthWorkerSidebarBottom employee={ctx.state.employee} />}
-        />
-      }
-      drawer={ctx.state.workflow !== 'registration'
-        ? (
-          <PatientDrawerV4
-            patient={ctx.state.patient}
-            encounter={ctx.state.encounter}
-            organization_id={ctx.state.organization.id}
-            this_visit_findings={ctx.state.this_visit_findings}
-            patient_history={ctx.state.patient_history}
-            care_team={[]}
+    <OpenEncounterWorkflowLayout
+      id={id}
+      ContainerTag='form'
+      next_step_text={next_step_text}
+      buttons={buttons}
+      priority={ctx.state.encounter.priority?.name || null}
+      nav_links={nav_links[ctx.state.workflow]}
+      steps_completed={ctx.state.workflow_status.steps_completed}
+                  care_team={[]}
             // care_team={ctx.state.patient.primary_doctor
             //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
             //   : []}
-          />
-        )
-        : undefined}
+      {...ctx}
+      {...ctx.state}
     >
-      <Form method='POST' className='h-full flex flex-col' id={id}>
-        <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>
-          {children}
-        </div>
-        <ButtonsContainer className='h-16 mt-auto flex flex-row items-center'>
-          {buttons || (
-            <Button
-              type='submit'
-              size='xl'
-              // className='flex-1 max-w-xl'
-            >
-              {next_step_text || (
-                <span className='flex gap-2 items-center'>
-                  Next
-                  <ArrowRightIcon />
-                </span>
-              )}
-            </Button>
-          )}
-        </ButtonsContainer>
-      </Form>
-    </HealthWorkerContentsWithSidebarAndDrawer>
+      {children}
+    </OpenEncounterWorkflowLayout>
   )
 }
 
@@ -503,13 +472,13 @@ export function OpenEncounterWorkflowPage<
     }
 
     return (
-      <OpenEncounterWorkflowLayout
+      <OpenEncounterWorkflowLayoutCtx
         ctx={ctx}
         next_step_text={next_step_text}
         buttons={buttons}
       >
         {children}
-      </OpenEncounterWorkflowLayout>
+      </OpenEncounterWorkflowLayoutCtx>
     )
   }
 }

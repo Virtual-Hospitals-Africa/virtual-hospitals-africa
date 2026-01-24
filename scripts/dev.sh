@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-HTTP_SERVER_PORT=8001
-HTTPS_PROXY_SERVER_PORT=8000
+source .env
+HTTP_SERVER_PORT="${HTTP_SERVER_PORT-8001}"
+HTTPS_PROXY_SERVER_PORT="${HTTPS_PROXY_SERVER_PORT-8000}"
 PROXY_PID=
 
 ensure_no_process_on_port() {
@@ -17,12 +18,12 @@ clean_up() {
   [ ! -z $PROXY_PID ] && kill $PROXY_PID || true
 }
 
-ensure_no_process_on_port $HTTP_SERVER_PORT
-ensure_no_process_on_port $HTTPS_PROXY_SERVER_PORT
+ensure_no_process_on_port "$HTTP_SERVER_PORT"
+ensure_no_process_on_port "$HTTPS_PROXY_SERVER_PORT"
 
-deno task proxy &
+HTTP_SERVER_PORT=$HTTP_SERVER_PORT HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT deno task proxy &
 PROXY_PID="$!"
 
 trap 'clean_up' EXIT
 
-HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT deno task vite
+PORT=$HTTP_SERVER_PORT HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT deno task vite

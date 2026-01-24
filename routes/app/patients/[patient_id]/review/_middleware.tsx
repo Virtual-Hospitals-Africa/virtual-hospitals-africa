@@ -96,7 +96,7 @@ export function ReviewLayout({
       title={capitalize(ctx.state.doctor_review.encounter.reason) + ' Review'}
       sidebar={
         <StepsSidebar
-          ctx={ctx}
+          {...ctx}
           nav_links={nav_links}
           steps_completed={ctx.state.doctor_review.steps_completed}
         />
