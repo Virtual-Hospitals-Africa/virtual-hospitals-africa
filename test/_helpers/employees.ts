@@ -1,9 +1,11 @@
 import * as cheerio from 'cheerio'
 import { sessions } from '../../db/models/sessions.ts'
-import { addTestEmployee, TestHealthWorkerOpts } from '../../mocks/testEmployee.ts'
-import { TrxOrDb, Maybe, Falsy } from '../../types.ts'
+import { Falsy, Maybe, TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import { route } from '../_route.ts'
+import { addTestEmployee, TestHealthWorkerOpts } from '../../mocks/testEmployee.ts'
+export { addTestEmployee }
+export type { TestHealthWorkerOpts }
 
 export type TestEmployeeWithSession = Awaited<ReturnType<typeof addTestEmployeeWithSession>>
 

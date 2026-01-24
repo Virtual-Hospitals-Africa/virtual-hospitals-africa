@@ -24,25 +24,21 @@ export async function insertRegistrationWithEmployeeForTest(
     is_tutorial?: boolean
   },
 ) {
-  console.log('mmoo')
-  // assert(Deno.env.get('IS_TEST') || is_tutorial)
+  assert(Deno.env.get('IS_TEST') || is_tutorial)
   const { organization, health_worker } = await promiseProps({
     organization: organizations.getById(trx, organization_id),
     health_worker: health_workers.getEmployed(trx, {
       health_worker_id: healthWorkerIdOfEmploymentId(trx, employment_id),
     }),
   })
-  console.log('zzz',{ organization, health_worker } )
   const organization_employment = health_worker.organizations.find((o) => o.id === organization_id)
   assert(organization_employment, 'No organization_employment')
-  console.log('fff')
 
   const result = await patient_registration.start(
     trx,
     organization,
     organization_employment,
   )
-  console.log('ggg', result)
   return {
     ...result,
     organization,
@@ -55,7 +51,7 @@ export function completeAllStepsForTest(
   trx: TrxOrDb,
   workflow: Workflow,
   patient_workflow_id: string,
-  is_tutorial?: boolean
+  is_tutorial?: boolean,
 ) {
   assert(Deno.env.get('IS_TEST') || is_tutorial)
   const steps = WORKFLOW_STEPS[workflow]
@@ -117,7 +113,7 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
       trx,
       'registration',
       patient_workflow_id,
-      is_tutorial
+      is_tutorial,
     ),
     patient_workflows.completedWorkflow(trx, { patient_workflow_id }),
     patient_encounters.updateOne(trx, patient_encounter_id, {

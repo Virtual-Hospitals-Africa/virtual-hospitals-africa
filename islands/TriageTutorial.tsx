@@ -32,10 +32,6 @@ export function TriageTutorial(
     }
   })
 
-  function goToBriefHistory() {
-    // progress.value = { action: 'brief_history' }
-  }
-
   return (
     <OpenEncounterWorkflowLayout
       id='triage'
@@ -45,7 +41,7 @@ export function TriageTutorial(
       next_step_text='Next'
       nav_links={WORKFLOW_NAV_LINKS.triage.map((link) => ({
         ...link,
-        route: link.route.replace('/app/organizations/:organization_id/patients/:patient_id/open_encounter/', '#'),
+        route: link.route.replace('/app/organizations/:organization_id/patients/:patient_id/open_encounter/triage', '#action='),
       }))}
       patient={patient}
       priority={null}
@@ -75,7 +71,7 @@ export function TriageTutorial(
       }
       onSubmit={(event) => {
         console.log('x', { event })
-        goToBriefHistory()
+        location_hash.value = { action: 'warning_signs' }
       }}
     >
       {['warning_signs', 'none'].includes(location_hash.value.action) && (
