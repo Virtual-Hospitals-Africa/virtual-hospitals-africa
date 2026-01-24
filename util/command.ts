@@ -35,7 +35,6 @@ export function Command(
   command: string,
   { args, verbose, ...opts }: Opts = {},
 ) {
-  console.log({ USE_DOCKER_FOR_POSTGRES })
   assert(
     !command.includes('\n'),
     'No newlines allowed. If forming a complex command, use the args option',

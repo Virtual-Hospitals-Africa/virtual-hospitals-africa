@@ -28,18 +28,16 @@ export const system_priority_determinations = {
       }[]
     },
   ) {
-    console.log('mmmkkkkkkkk', findings)
     // TODO, maybe handle negative findings? There could be system_priority_determinations that call for them
     const positive_finding_ids = findings
       .filter((f) => f.existence === 'Yes')
       .map((f) => f.id)
     if (!positive_finding_ids.length) return
 
-    console.log('bbbbbbb')
     const patient = await patients.getById(trx, patient_id)
-    console.log('ccccccc', patient)
+
     assert(completedPersonal(patient), `Could not determine system priorities for patient id ${patient_id} because we do not have their personal information`)
-    console.log('dddddd', patient)
+
     const age_determination = patientAgeDetermination(patient)
 
     const to_consider = compactMap(
@@ -47,7 +45,7 @@ export const system_priority_determinations = {
       (determination) => determination.age_determinations.includes(age_determination) && determination.system_priority_determination,
     )
 
-    console.log('fff', to_consider)
+    if (!to_consider.length) return
 
     // The new finding could match either the primary or other findings
     // If so, we want to check for whether the system determination applies (all other findings match)

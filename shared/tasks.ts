@@ -1,7 +1,6 @@
 import { OXYGEN_THERAPY, PROCEDURE, REFERENCE_DOCUMENTATION } from './snomed_concepts.ts'
 import { parseWithSchema } from './s_expression.ts'
-import { CheckForTask, MeasureTask, RenderedTask } from '../types.ts'
-import { keyBy } from '../util/keyBy.ts'
+import { AgeDetermination, CheckForTask, MeasureTask, RenderedTask } from '../types.ts'
 import entries from '../util/entries.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED } from './adult_pac_table_of_contents_to_snomed.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -9,11 +8,16 @@ import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from './pack-adult.ts'
 import { task } from './s_expression_schemas.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from './vitals.ts'
 
-function asTask(task_s_expression: string) {
-  return parseWithSchema(
-    task_s_expression,
-    task,
-  )
+type TaskDef = ['all' | AgeDetermination[], string]
+
+function asTask([age_determinations, task_s_expression]: TaskDef) {
+  return {
+    age_determinations: age_determinations === 'all' ? ['adult' as const, 'older child' as const, 'younger child' as const] : age_determinations,
+    task: parseWithSchema(
+      task_s_expression,
+      task,
+    ),
+  }
 }
 /*
 // Triage nurse has permission.
@@ -29,11 +33,12 @@ function asTask(task_s_expression: string) {
   In fact, this is the _reason_ for transfer
 */
 
-const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED).flatMap(([table_of_contents_name, snomed_mapping]) => {
+const MEDICAL_GUIDANCE_TASKS: TaskDef[] = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED).flatMap(([table_of_contents_name, snomed_mapping]) => {
   const page_number = ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS[table_of_contents_name as unknown as keyof typeof ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS]
   assert(page_number, `No page for ${table_of_contents_name}`)
 
-  return snomed_mapping.map((concept) =>
+  return snomed_mapping.map((concept): TaskDef => [
+    ['adult' as const],
     `(task
     "Display medical guidance for ${table_of_contents_name === 'Lump, neck/axilla/groin' ? concept.name : table_of_contents_name}"
       ${concept.clinical_finding_s_expression}
@@ -45,57 +50,81 @@ const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_S
           "/medical-resources/primary-care/adult.pdf#page=${page_number}"
           "/medical-resources/za/primary-care/adult/thumbnails/${page_number}.png"
         )
-        ))`
-  )
+        ))`,
+  ])
 })
 
-export const TASKS = [
+const TASK_DEFS: TaskDef[] = [
   ...MEDICAL_GUIDANCE_TASKS,
-  `(task
+  [
+    ['adult' as const],
+    `(task
     "Check Sp0₂ if respiratory rate < 9 bpm"
       (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.s_expression} bpm) 9)
       (measure (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %)))`,
-  `(task
+  ],
+  [
+    ['adult' as const],
+    `(task
     "Check Sp0₂ if respiratory rate >= 15 bpm"
       (>= (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.s_expression} bpm) 15)
       (measure (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %)))`,
-  `(task
+  ],
+  [
+    ['adult' as const],
+    `(task
     "Give oxygen if saturation below 92%"
       (< (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.s_expression} %) 92)
       (procedure ${PROCEDURE.s_expression} ${OXYGEN_THERAPY.s_expression}))`,
-  `(task
+  ],
+  [
+    ['adult' as const],
+    `(task
     "Check for head injury for any nose symptoms"
     (clinical_finding
       (finding_site (snomed_concept "Nasal structure" "body structure")))
     (check_for
       (clinical_finding (snomed_concept "Injury of head" "disorder"))))`,
-  `(task
+  ],
+  [
+    ['adult' as const],
+    `(task
     "Check for nausea in case of chest pain"
     (clinical_finding
       (snomed_concept "Chest pain" "finding"))
     (check_for
       (clinical_finding (snomed_concept "Nausea" "finding"))))`,
-  `(task
+  ],
+  [
+    ['adult' as const],
+    `(task
     "Check for vomiting in case of chest pain"
     (clinical_finding
       (snomed_concept "Chest pain" "finding"))
     (check_for
       (clinical_finding (snomed_concept "Vomiting" "disorder"))))`,
-  `(task
+  ],
+  [
+    ['adult' as const],
+    `(task
     "Check for pallor in case of chest pain"
     (clinical_finding
       (snomed_concept "Chest pain" "finding"))
     (check_for
       (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))))`,
-  `(task
+  ],
+  [
+    ['adult' as const],
+    `(task
     "Check for sweating in case of chest pain"
     (clinical_finding
       (snomed_concept "Chest pain" "finding"))
     (check_for
       (clinical_finding (snomed_concept "Sweating" "finding"))))`,
-].map(asTask)
+  ],
+]
 
-export const KEYED_TASKS = keyBy(TASKS, 'description')
+export const TASKS = TASK_DEFS.map(asTask)
 
 export function isCheckForTask(task: RenderedTask): task is CheckForTask {
   const { value } = task.procedure

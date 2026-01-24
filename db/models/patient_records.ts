@@ -18,29 +18,20 @@ export function baseQuery(
 ) {
   return nonGroupedBaseQuery(trx)
     .select((eb) => [
-      // TODO: we likely need the values here...
-      // Probably worth extracting another baseQuery
       jsonArrayFrom(
         trx.selectFrom(
           nonGroupedBaseQuery(trx).as('evaluation_records'),
         )
           .innerJoin(
             'patient_evaluations',
-            'evaluation_records.record_id',
+            'evaluation_records.id',
             'patient_evaluations.id',
           )
           .whereRef(
             'patient_evaluations.evaluates_record_id',
             '=',
-            eb.ref('patient_records.id'),
-          ).select([
-            'evaluation_records.record_id',
-            'evaluation_records.created_at',
-            'evaluation_records.patient_encounter_id',
-            'evaluation_records.root_snomed_concept',
-            'evaluation_records.specific_snomed_concept',
-            'evaluation_records.value',
-          ]),
+            eb.ref('patient_records_aggregated.id'),
+          ).selectAll('evaluation_records'),
       ).as('evaluations'),
 
       jsonArrayFrom(
@@ -53,7 +44,7 @@ export function baseQuery(
           .whereRef(
             'patient_record_relations.source_id',
             '=',
-            'patient_records.id',
+            'patient_records_aggregated.id',
           )
           .select((eb_destination) => [
             'patient_record_relations.destination_id',
@@ -80,7 +71,7 @@ export function baseQuery(
           .whereRef(
             'patient_record_relations.destination_id',
             '=',
-            'patient_records.id',
+            'patient_records_aggregated.id',
           )
           .select((eb_source) => [
             'patient_record_relations.source_id',
@@ -92,16 +83,13 @@ export function baseQuery(
             ),
           ]),
       ).as('source_relations'),
-      // sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
-      //   'qualifiers',
-      // ),
 
       jsonArrayFrom(
         patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
           .where(
             'qualifiers_1.qualifies_record_id',
             '=',
-            eb.ref('patient_records.id'),
+            eb.ref('patient_records_aggregated.id'),
           )
           .select((eb_qualifiers_1) => [
             jsonArrayFrom(
@@ -109,7 +97,7 @@ export function baseQuery(
                 .where(
                   'qualifiers_2.qualifies_record_id',
                   '=',
-                  eb_qualifiers_1.ref('qualifiers_1.record_id'),
+                  eb_qualifiers_1.ref('qualifiers_1.id'),
                 )
                 .select((eb_qualifiers_2) => [
                   jsonArrayFrom(
@@ -120,7 +108,7 @@ export function baseQuery(
                       .where(
                         'qualifiers_3.qualifies_record_id',
                         '=',
-                        eb_qualifiers_2.ref('qualifiers_2.record_id'),
+                        eb_qualifiers_2.ref('qualifiers_2.id'),
                       )
                       .select((eb_qualifiers_3) => [
                         jsonArrayFrom(
@@ -131,7 +119,7 @@ export function baseQuery(
                             .where(
                               'qualifiers_4.qualifies_record_id',
                               '=',
-                              eb_qualifiers_3.ref('qualifiers_3.record_id'),
+                              eb_qualifiers_3.ref('qualifiers_3.id'),
                             )
                             .select((_eb_qualifiers_4) => [
                               // At max depth, just return an empty array, satisfying the typedefs
@@ -379,7 +367,11 @@ type PatientRecordsSearch = {
 export const patient_records = base({
   top_level_table: 'patient_records',
   baseQuery,
-  formatResult: formatRecord,
+  formatResult(x) {
+    const y = formatRecord(x)
+
+    return y
+  },
   baseInsert,
   handleSearch(
     qb,
@@ -400,21 +392,21 @@ export const patient_records = base({
     // }
     if (opts.patient_id) {
       qb = qb.where(
-        'patient_records.patient_id',
+        'patient_records_aggregated.patient_id',
         '=',
         opts.patient_id,
       )
     }
     if (opts.patient_encounter_id) {
       qb = qb.where(
-        'patient_records.patient_encounter_id',
+        'patient_records_aggregated.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
       )
     }
     if (opts.s_expression) {
       qb = qb.where(
-        'patient_records.id',
+        'patient_records_aggregated.id',
         'in',
         buildExpression(
           trx,

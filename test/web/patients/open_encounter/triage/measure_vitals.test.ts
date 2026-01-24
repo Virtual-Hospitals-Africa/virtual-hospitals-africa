@@ -29,6 +29,9 @@ import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 
 describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
+  before(async () => {
+    await events.initializeAllProcessedPubSub()
+  })
   afterAll(() => db.destroy())
   afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
@@ -550,26 +553,23 @@ describeParallel('triage/measure_vitals', () => {
         )
 
         const respiratory_rate_measurement = measurements.find((m) =>
-          m.specific_snomed_concept.snomed_concept_id ===
+          m.specific_snomed_concept_id ===
             VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.id
         )!
 
         assertMatches(respiratory_rate_measurement, {
           'type': 'finding',
-          'record_id': z.string().uuid(),
+          'id': z.string().uuid(),
           'created_at': z.date(),
+          'patient_id': z.string().uuid(),
           'patient_encounter_id': z.string().uuid(),
           'patient_encounter_employee_id': z.string().uuid(),
-          'root_snomed_concept': {
-            'snomed_concept_id': '118245000',
-            'name': 'Measurement finding',
-            'category': 'finding',
-          },
-          'specific_snomed_concept': {
-            'snomed_concept_id': '86290005',
-            'name': 'Respiratory rate',
-            'category': 'observable entity',
-          },
+          'root_snomed_concept_id': '118245000',
+          'root_snomed_concept_name': 'Measurement finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_id': '86290005',
+          'specific_snomed_concept_name': 'Respiratory rate',
+          'specific_snomed_concept_category': 'observable entity',
           'displays': {
             'finding': 'Respiratory rate',
             'value': `12\u00A0bpm`,
@@ -578,17 +578,13 @@ describeParallel('triage/measure_vitals', () => {
           'destination_relations': [],
           'source_relations': [],
           'as_part_of_procedure': {
-            'record_id': z.string().uuid(),
-            'root_snomed_concept': {
-              'snomed_concept_id': '71388002',
-              'name': 'Procedure',
-              'category': 'procedure',
-            },
-            'specific_snomed_concept': {
-              'snomed_concept_id': '410188000',
-              'name': 'Taking patient vital signs assessment',
-              'category': 'procedure',
-            },
+            'id': z.string().uuid(),
+            'root_snomed_concept_id': '71388002',
+            'root_snomed_concept_name': 'Procedure',
+            'root_snomed_concept_category': 'procedure',
+            'specific_snomed_concept_id': '410188000',
+            'specific_snomed_concept_name': 'Taking patient vital signs assessment',
+            'specific_snomed_concept_category': 'procedure',
           },
           'priority': null,
           'score': 0,
@@ -600,19 +596,15 @@ describeParallel('triage/measure_vitals', () => {
           'modifiers': [],
           'attributes': [],
           'evaluations': [{
-            'record_id': z.string().uuid(),
+            'id': z.string().uuid(),
             'created_at': z.iso.datetime({ offset: true }),
             'patient_encounter_id': z.string().uuid(),
-            'root_snomed_concept': {
-              'snomed_concept_id': '129265001',
-              'name': 'Evaluation - action',
-              'category': 'qualifier value',
-            },
-            'specific_snomed_concept': {
-              'snomed_concept_id': '278305009',
-              'name': 'Severity score',
-              'category': 'qualifier value',
-            },
+            'root_snomed_concept_id': '129265001',
+            'root_snomed_concept_name': 'Evaluation - action',
+            'root_snomed_concept_category': 'qualifier value',
+            'specific_snomed_concept_id': '278305009',
+            'specific_snomed_concept_name': 'Severity score',
+            'specific_snomed_concept_category': 'qualifier value',
             'value': { 'type': 'score', 'score': '0' },
             'displays': {
               'finding': 'Severity score',
@@ -641,10 +633,10 @@ describeParallel('triage/measure_vitals', () => {
 
         const finding_scores = await pMap(
           component_scores,
-          async ({ score, evaluates_record_id, specific_snomed_concept }) => {
-            if (specific_snomed_concept.name !== 'Severity score') {
+          async ({ score, evaluates_record_id, specific_snomed_concept_name }) => {
+            if (specific_snomed_concept_name !== 'Severity score') {
               return {
-                finding_name: specific_snomed_concept.name,
+                finding_name: specific_snomed_concept_name,
                 score,
               }
             }
@@ -652,7 +644,7 @@ describeParallel('triage/measure_vitals', () => {
               db,
               evaluates_record_id,
             )
-            return { finding_name: finding.specific_snomed_concept.name, score }
+            return { finding_name: finding.specific_snomed_concept_name, score }
           },
         )
 
@@ -771,10 +763,10 @@ describeParallel('triage/measure_vitals', () => {
 
         const finding_scores = await pMap(
           component_scores,
-          async ({ score, evaluates_record_id, specific_snomed_concept }) => {
-            if (specific_snomed_concept.name !== 'Severity score') {
+          async ({ score, evaluates_record_id, specific_snomed_concept_name }) => {
+            if (specific_snomed_concept_name !== 'Severity score') {
               return {
-                finding_name: specific_snomed_concept.name,
+                finding_name: specific_snomed_concept_name,
                 score,
               }
             }
@@ -783,7 +775,7 @@ describeParallel('triage/measure_vitals', () => {
               evaluates_record_id,
             )
             return {
-              finding_name: finding.specific_snomed_concept.name,
+              finding_name: finding.specific_snomed_concept_name,
               score,
             }
           },
@@ -795,7 +787,9 @@ describeParallel('triage/measure_vitals', () => {
         assertEquals(total_score.score, sumBy(expected_scores, 'score'))
 
         if (expected_tasks) {
+          // await delay(500)
           const tasks = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
+          console.log({ tasks })
           assertMatches(tasks, expected_tasks)
         }
       }, opts)
@@ -881,25 +875,17 @@ describeParallel('triage/measure_vitals', () => {
         {
           'due_to': [
             {
-              'root_snomed_concept': {
-                'name': 'Measurement finding',
-              },
-              'specific_snomed_concept': {
-                'name': 'Respiratory rate',
-              },
+              'root_snomed_concept_name': 'Measurement finding',
+              'specific_snomed_concept_name': 'Respiratory rate',
               'value': { 'type': 'measurement', 'value': '8', 'units': 'bpm' },
               'evaluations': [
                 {
-                  'root_snomed_concept': {
-                    'snomed_concept_id': '129265001',
-                    'name': 'Evaluation - action',
-                    'category': 'qualifier value',
-                  },
-                  'specific_snomed_concept': {
-                    'snomed_concept_id': '278305009',
-                    'name': 'Severity score',
-                    'category': 'qualifier value',
-                  },
+                  'root_snomed_concept_id': '129265001',
+                  'root_snomed_concept_name': 'Evaluation - action',
+                  'root_snomed_concept_category': 'qualifier value',
+                  'specific_snomed_concept_id': '278305009',
+                  'specific_snomed_concept_name': 'Severity score',
+                  'specific_snomed_concept_category': 'qualifier value',
                   'value': { 'type': 'score', 'score': '2' },
                   'displays': { 'finding': 'Severity score', 'value': '2', 'full': 'Severity score: 2' },
                 },
@@ -909,16 +895,12 @@ describeParallel('triage/measure_vitals', () => {
           'tasks': [
             {
               'procedure': {
-                'root_snomed_concept': {
-                  'snomed_concept_id': '71388002',
-                  'name': 'Procedure',
-                  'category': 'procedure',
-                },
-                'specific_snomed_concept': {
-                  'snomed_concept_id': '122869004',
-                  'name': 'Measurement procedure',
-                  'category': 'procedure',
-                },
+                'root_snomed_concept_id': '71388002',
+                'root_snomed_concept_name': 'Procedure',
+                'root_snomed_concept_category': 'procedure',
+                'specific_snomed_concept_id': '122869004',
+                'specific_snomed_concept_name': 'Measurement procedure',
+                'specific_snomed_concept_category': 'procedure',
                 'value': {
                   'type': 's_expression',
                   's_expression': '(measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)',
@@ -934,16 +916,12 @@ describeParallel('triage/measure_vitals', () => {
                 },
                 'evaluations': [
                   {
-                    'root_snomed_concept': {
-                      'snomed_concept_id': '129265001',
-                      'name': 'Evaluation - action',
-                      'category': 'qualifier value',
-                    },
-                    'specific_snomed_concept': {
-                      'snomed_concept_id': '385641008',
-                      'name': 'Action status',
-                      'category': 'attribute',
-                    },
+                    'root_snomed_concept_id': '129265001',
+                    'root_snomed_concept_name': 'Evaluation - action',
+                    'root_snomed_concept_category': 'qualifier value',
+                    'specific_snomed_concept_id': '385641008',
+                    'specific_snomed_concept_name': 'Action status',
+                    'specific_snomed_concept_category': 'attribute',
                     'value': {
                       'type': 'snomed_concept',
                       'snomed_concept_id': '385643006',
@@ -971,6 +949,7 @@ describeParallel('triage/measure_vitals', () => {
       { ...default_measurements_adult, respiratory_rate: 9 },
       default_assessments_adult,
       baseScores({ 'Respiratory rate': 0 }),
+      [],
     )
 
     testCase(

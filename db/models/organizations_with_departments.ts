@@ -39,9 +39,9 @@ function baseQuery(trx: TrxOrDb) {
 
 export const organizations_with_departments = base({
   top_level_table: 'organizations',
-  caching: {
-    number_of_items: 100,
-  },
+  // caching: {
+  //   number_of_items: 100,
+  // },
   baseQuery,
   formatResult: (x: RenderedOrganizationWithDepartments): RenderedOrganizationWithDepartments => x,
   handleSearch(

@@ -54,7 +54,7 @@ async function hydrateIntermediateRecords<
     )
     assert(
       matching_encounter,
-      `Matching encounter not found ${record.patient_encounter_id} ${record.record_id}`,
+      `Matching encounter not found ${record.patient_encounter_id} ${record.id}`,
     )
 
     const matching_employee = matching_encounter.all_employees_seen.find((
@@ -65,7 +65,7 @@ async function hydrateIntermediateRecords<
     )
     assert(
       matching_employee,
-      `Matching employee not found ${record.patient_encounter_employee_id} ${record.record_id}`,
+      `Matching employee not found ${record.patient_encounter_employee_id} ${record.id}`,
     )
 
     return {

@@ -3,8 +3,8 @@ import { COUNTRIES } from '../../../shared/countries.ts'
 
 export default define(['countries'], (trx) =>
   trx.insertInto('countries')
-    .values(COUNTRIES.map(country => ({
+    .values(COUNTRIES.map((country) => ({
       ...country,
-      alternate_names: country.alternate_names ? [country.alternate_names] : []
+      alternate_names: country.alternate_names ? [country.alternate_names] : [],
     })))
     .execute())

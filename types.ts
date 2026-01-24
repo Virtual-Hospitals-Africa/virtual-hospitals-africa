@@ -3497,9 +3497,13 @@ export type RenderedRecordProvider = RenderedEmployee & {
 }
 
 export type AsPartOfProcedure = {
-  record_id: string
-  root_snomed_concept: RenderedSnomedConcept
-  specific_snomed_concept: RenderedSnomedConcept
+  id: string
+  root_snomed_concept_id: string
+  root_snomed_concept_name: string
+  root_snomed_concept_category: SnomedCategory
+  specific_snomed_concept_id: string
+  specific_snomed_concept_name: string
+  specific_snomed_concept_category: SnomedCategory
   workflow_step_name: string | null
 }
 
@@ -3560,12 +3564,16 @@ export type IntermediateRecordValue =
   | Omit<RecordValueSExpression, 'node'>
 
 export type IntermediateBaseRecord = {
-  record_id: string
+  id: string
   created_at: Date | string
   patient_encounter_id: string
-  root_snomed_concept: RenderedSnomedConcept
-  specific_snomed_concept: RenderedSnomedConcept
-  value: null | IntermediateRecordValue
+  root_snomed_concept_id: string
+  root_snomed_concept_name: string
+  root_snomed_concept_category: SnomedCategory
+  specific_snomed_concept_id: string
+  specific_snomed_concept_name: string
+  specific_snomed_concept_category: SnomedCategory
+  value: any
 }
 
 export type RenderedEvaluation = IntermediateBaseRecord & {
@@ -3676,7 +3684,7 @@ export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShar
 
 export type IntermediateProcedureRecord = {
   created_at: Date
-  record_id: string
+  id: string
   snomed_concept_id: string
   name: string
   patient_encounter_id: string

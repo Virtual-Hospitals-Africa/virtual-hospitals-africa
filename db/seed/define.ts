@@ -59,7 +59,7 @@ export function define(
     console.log('here')
     await runCommandAssertExitCodeZero('./db/seed/tsv_load.sh', {
       args: [uri].concat(table_names),
-      verbose: true
+      verbose: true,
     })
   }
   async function dump() {

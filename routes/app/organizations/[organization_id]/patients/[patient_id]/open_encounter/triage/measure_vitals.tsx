@@ -142,7 +142,7 @@ export const handler = postHandler(
       }
 
       const measured_previously = previous_measurements_this_encounter.some(
-        (v) => v.specific_snomed_concept.snomed_concept_id === snomed_concept_id,
+        (v) => v.specific_snomed_concept_id === snomed_concept_id,
       )
       assertOr400(
         measured_previously,
@@ -171,7 +171,7 @@ export const handler = postHandler(
       const assessed_previously = previous_assessments_this_encounter.some(
         (finding) =>
           finding.evaluations.some((evaluation) =>
-            evaluation.specific_snomed_concept.snomed_concept_id ===
+            evaluation.specific_snomed_concept_id ===
               evaluation_snomed_concept_id
           ),
       )
@@ -335,7 +335,7 @@ export async function TriageMeasureVitalsPage(
     if (!def.required) return def
     const already_done_this_encounter = most_recent_patient_measurements.some(
       (v) =>
-        v.specific_snomed_concept.snomed_concept_id === def.snomed_concept_id &&
+        v.specific_snomed_concept_id === def.snomed_concept_id &&
         v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,
     )
     return {
@@ -354,7 +354,7 @@ export async function TriageMeasureVitalsPage(
     const already_done_this_encounter = most_recent_patient_assessments.some(
       (v) =>
         v.evaluations.some((e) =>
-          e.specific_snomed_concept.snomed_concept_id ===
+          e.specific_snomed_concept_id ===
             def.evaluation_snomed_concept_id
         ) &&
         v.patient_encounter_id === ctx.state.encounter.patient_encounter_id,

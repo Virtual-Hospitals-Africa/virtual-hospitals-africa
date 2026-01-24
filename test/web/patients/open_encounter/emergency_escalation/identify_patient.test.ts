@@ -18,6 +18,7 @@ describeParallel(
 
     itParallel('creates a patient for initial use, loading a page to fill in their details', async () => {
       const { $, initial_patient_id } = await setupEmergencyEscalation({})
+      console.log('getting here')
       assertIncludes($.url, '/open_encounter/emergency_escalation/identify_patient')
       assertIncludes($.url, initial_patient_id)
 

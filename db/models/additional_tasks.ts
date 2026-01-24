@@ -23,6 +23,10 @@ import { assert } from 'std/assert/assert.ts'
 import sortBy from '../../util/sortBy.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { asNormalFormSExpression } from '../../shared/patient_records.ts'
+import { patientAgeDetermination } from '../../shared/patient_age_determination.ts'
+import { completedPersonal } from '../../shared/patient_registration.ts'
+import compactMap from '../../util/compactMap.ts'
+import { patients } from './patients.ts'
 
 export const additional_tasks = {
   async insertTasksIfNotAlreadyIdentified(
@@ -44,7 +48,22 @@ export const additional_tasks = {
       .map((f) => f.id)
     if (!positive_finding_ids.length) return
 
-    const [first_task, ...other_tasks] = TASKS.map(
+    const patient = await patients.getById(trx, patient_id)
+
+    assert(completedPersonal(patient), `Could not determine system priorities for patient id ${patient_id} because we do not have their personal information`)
+
+    const age_determination = patientAgeDetermination(patient)
+
+    console.log({ age_determination })
+
+    const to_consider = compactMap(
+      TASKS,
+      (task) => task.age_determinations.includes(age_determination) && task.task,
+    )
+
+    if (!to_consider.length) return
+
+    const [first_task, ...other_tasks] = to_consider.map(
       ({ description, when, procedure }) =>
         trx.selectNoFrom([
           literalString(description).as('description'),
@@ -68,8 +87,6 @@ export const additional_tasks = {
         ]),
     )
 
-    console.log('xyzppp', TASKS[0].procedure)
-
     const all_tasks_query = other_tasks.reduce(
       (acc, curr) => acc.unionAll(curr),
       first_task,
@@ -78,11 +95,10 @@ export const additional_tasks = {
     debugLog(all_tasks_query)
 
     const all_t = await all_tasks_query.execute()
-    console.log({ all_t })
 
     const task_results = zip(
       all_t,
-      TASKS,
+      to_consider,
     )
 
     await pMap(task_results, async ([task_result, task]) => {
@@ -195,12 +211,12 @@ export const additional_tasks = {
     return Array.from(
       task_group_map.entries().map(([finding_id, evaluations]): TaskGroup => {
         const due_to = exists(
-          findings.find(matching({ record_id: finding_id })),
+          findings.find(matching({ id: finding_id })),
         )
         const tasks_unsorted = evaluations.map((evaluation) => {
           const procedure = exists(
             procedures.find(
-              matching({ record_id: evaluation.evaluates_record_id }),
+              matching({ id: evaluation.evaluates_record_id }),
             ),
           )
           return {
@@ -212,7 +228,7 @@ export const additional_tasks = {
         // TODO: also compare findings in case there are 2 ways of getting to the same procedure
         const tasks = sortBy(
           tasks_unsorted,
-          (task) => TASKS.findIndex((task_def) => inverseSExpression(task_def.procedure) === asNormalFormSExpression(task.procedure)),
+          (task) => TASKS.findIndex((task_def) => inverseSExpression(task_def.task.procedure) === asNormalFormSExpression(task.procedure)),
         )
         return { due_to: [due_to], tasks }
       }),

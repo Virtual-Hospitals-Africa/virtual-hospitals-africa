@@ -26,7 +26,7 @@ export function baseQuery(
     .select([
       'patient_evaluation_scores.score',
     ])
-    .orderBy('patient_records.created_at', 'desc')
+    .orderBy('patient_records_aggregated.created_at', 'desc')
 }
 
 type PatientEvaluationScoresSearch = {
@@ -59,21 +59,21 @@ export const patient_evaluation_scores = base({
     // }
     if (opts.patient_id) {
       qb = qb.where(
-        'patient_records.patient_id',
+        'patient_records_aggregated.patient_id',
         '=',
         opts.patient_id,
       )
     }
     if (opts.patient_encounter_id) {
       qb = qb.where(
-        'patient_records.patient_encounter_id',
+        'patient_records_aggregated.patient_encounter_id',
         '=',
         opts.patient_encounter_id,
       )
     }
     if (opts.s_expression) {
       qb = qb.where(
-        'patient_records.id',
+        'patient_records_aggregated.id',
         'in',
         buildExpression(
           trx,
@@ -126,15 +126,15 @@ export const patient_evaluation_scores = base({
     //       //   'patient_evaluations.evaluates_record_id',
     //       // )
     //       .where(
-    //         'patient_records.patient_encounter_id',
+    //         'patient_records_aggregated.patient_encounter_id',
     //         '=',
     //         patient_encounter_id,
     //       )
     //       .select(
-    //         sql`ROW_NUMBER() OVER (PARTITION BY evaluates_record.specific_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+    //         sql`ROW_NUMBER() OVER (PARTITION BY evaluates_record.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
     //           .as('rank'),
     //       )
-    //       .orderBy('patient_records.created_at', 'desc')
+    //       .orderBy('patient_records_aggregated.created_at', 'desc')
     //       .execute()
 
     // console.log(x)
@@ -150,15 +150,15 @@ export const patient_evaluation_scores = base({
           //   'patient_evaluations.evaluates_record_id',
           // )
           .where(
-            'patient_records.patient_encounter_id',
+            'patient_records_aggregated.patient_encounter_id',
             '=',
             patient_encounter_id,
           )
           .select(
-            sql`ROW_NUMBER() OVER (PARTITION BY evaluates_record.specific_snomed_concept_id ORDER BY patient_records.created_at DESC)`
+            sql`ROW_NUMBER() OVER (PARTITION BY evaluates_record.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
               .as('rank'),
           )
-          .orderBy('patient_records.created_at', 'desc'),
+          .orderBy('patient_records_aggregated.created_at', 'desc'),
     ).selectFrom('ranked')
       .where('ranked.rank', '=', 1)
       .select(sql<number>`sum(ranked.score)::integer`.as('total_score'))
