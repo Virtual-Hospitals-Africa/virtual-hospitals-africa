@@ -5,8 +5,8 @@ set -e
 # Example: ./scripts/worktree-isolated.sh fix-bug "Fix the authentication bug in the login flow"
 
 if [ -z "$1" ]; then
-  echo "Error: Branch name is required"
-  echo "Usage: $0 <branch-name> [prompt]"
+  echo "Error: Branch name is required" >&2
+  echo "Usage: $0 <branch-name> [prompt]" >&2
   exit 1
 fi
 
@@ -14,8 +14,8 @@ BRANCH_NAME="$1"
 
 # Assert branch name is in camelCase format
 if ! [[ "$BRANCH_NAME" =~ ^[a-z][a-z_0-9]*$ ]]; then
-  echo "Error: Branch name must be in snake_case format in order to be used as part of a database name"
-  echo "Provided: $BRANCH_NAME"
+  echo "Error: Branch name must be in snake_case format in order to be used as part of a database name" >&2
+  echo "Provided: $BRANCH_NAME" >&2
   exit 1
 fi
 
@@ -35,8 +35,8 @@ start_dir=$(pwd)
 latest_dump="${start_dir}/db/dumps/latest"
 
 if [ ! -f "$latest_dump" ]; then
-  echo "Need a latest dump to make a worktree. Please run"
-  echo "deno task db:rebuild && deno task db:dump > ./db/dumps/latest"
+  echo "Need a latest dump to make a worktree. Please run" >&2
+  echo "deno task db:rebuild && deno task db:dump > ./db/dumps/latest" >&2
   exit 1
 fi
 
@@ -67,7 +67,7 @@ if [ -d "$WORKTREE_DIR" ]; then
   echo "Worktree already exists at $WORKTREE_DIR"
 
   [ -f "$WORKTREE_DIR/.env.local" ] || { 
-    echo "no .env.local file found in ${WORKTREE_DIR}"
+    echo "no .env.local file found in ${WORKTREE_DIR}" >&2
     exit 1
   }
   cd "$WORKTREE_DIR"
