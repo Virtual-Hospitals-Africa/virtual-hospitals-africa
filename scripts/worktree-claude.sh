@@ -28,9 +28,7 @@ cd "$WORKTREE_DIR"
 echo "Running Claude Code with prompt: $PROMPT"
 echo "This will run with all permissions and create a PR when done..."
 
-  # Run Claude Code with the prompt, auto-approving all permissions
-  # The --yes flag (if available) or we pipe 'yes' to auto-approve
-echo "$PROMPT" | claude --yes 2>/dev/null
+echo "$PROMPT" | claude --dangerously-skip-permissions --print
 
 attempts=0
 max_attempts=2
@@ -68,7 +66,7 @@ while true; do
 
   rm "$test_output"
   echo "Asking Claude to fix the issues..."
-  echo -e "$retry_prompt" | claude --yes 2>/dev/null
+  echo -e "$retry_prompt" | claude --dangerously-skip-permissions --print
 done
 
 if ! $tests_passed; then
