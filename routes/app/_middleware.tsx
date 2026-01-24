@@ -60,11 +60,8 @@ export function getLoggedInHealthWorker(
     // deno-lint-ignore no-explicit-any
     ctx: Context<any>,
   ) {
-    console.log('getLoggedInHealthWorker')
     const session_id = cookie.get(ctx.req)
     assert(session_id)
-
-    console.log('x')
 
     const health_worker_id_selection = sessions.getHealthWorkerId(
       db,
@@ -87,14 +84,11 @@ export function getLoggedInHealthWorker(
       ),
     })
 
-    console.log('z', { health_worker, present_encounter })
-
     if (
       health_worker && (
         !require_employment || health_workers.isEmployed(health_worker)
       )
     ) {
-      console.log('mm')
       ctx.state.session_id = session_id
       ctx.state.health_worker = health_worker
       ctx.state.health_worker_id = health_worker.id
@@ -105,9 +99,7 @@ export function getLoggedInHealthWorker(
     assertOr401(isGettingHtml(ctx.req))
 
     const from_login = ctx.url.searchParams.has('from_login')
-    console.log('ff')
     const response = from_login ? redirect(loginHref()) : noSession()
-    console.log('gg', response)
     deleteCookie(response.headers, cookie.session_key)
     return response
   }

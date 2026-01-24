@@ -56,7 +56,7 @@ describeParallel('Connection Pool Management', () => {
       organization_id: organization.id,
     })
 
-    // Fire 12 concurrent GET requests to /app which goes through middleware
+    // Fire concurrent GET requests to /app which goes through middleware
     // The middleware calls sessions.tickUpdatedAt(db, session_id)
     // If attachTrx doesn't properly manage connections, they will leak
     const requests = Array.from({ length: 150 }, () =>

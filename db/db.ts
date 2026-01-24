@@ -53,6 +53,29 @@ export const uri = DATABASE_URL
 export const opts = uri ? parseConnectionString(uri) : null
 
 const LOG_ALL_QUERIES = Deno.env.has('LOG_ALL_QUERIES')
+const LOG_POOL_EVENTS = true || Deno.env.has('LOG_POOL_EVENTS')
+
+// Create pool separately so we can attach event listeners
+const pool = NO_EXTERNAL_CONNECT ? null : new Pool(opts || {})
+
+// Add connection pool logging
+if (pool && LOG_POOL_EVENTS) {
+  pool.on('connect', () => {
+    console.log(`[POOL] Client connected (total: ${pool.totalCount}, idle: ${pool.idleCount}, waiting: ${pool.waitingCount})`)
+  })
+
+  pool.on('acquire', () => {
+    console.log(`[POOL] Client acquired (total: ${pool.totalCount}, idle: ${pool.idleCount}, waiting: ${pool.waitingCount})`)
+  })
+
+  pool.on('remove', () => {
+    console.log(`[POOL] Client removed (total: ${pool.totalCount}, idle: ${pool.idleCount}, waiting: ${pool.waitingCount})`)
+  })
+
+  pool.on('error', (err) => {
+    console.error('[POOL] Unexpected error on idle client:', err)
+  })
+}
 
 const db = (NO_EXTERNAL_CONNECT ? undefined : new Kysely<DB>({
   dialect: {
@@ -61,7 +84,7 @@ const db = (NO_EXTERNAL_CONNECT ? undefined : new Kysely<DB>({
     },
     createDriver() {
       return new PostgresDriver({
-        pool: new Pool(opts || {}),
+        pool: pool!,
         cursor: Cursor,
       })
     },
