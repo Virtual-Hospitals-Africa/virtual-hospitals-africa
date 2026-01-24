@@ -3412,7 +3412,7 @@ export type CurrentWorkflowState = {
 
 export type PatientDrawerV4Props = {
   patient: RenderedPatient
-  encounter: RenderedPatientEncounter
+  priority: Priority | null
   organization_id: string
   this_visit_findings: RenderedSidebarWorkflow[]
   patient_history: RenderedPatientHistory
