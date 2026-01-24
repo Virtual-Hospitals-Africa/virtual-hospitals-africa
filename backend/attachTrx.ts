@@ -2,7 +2,7 @@ import { Context } from 'fresh'
 
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
-import { assert } from 'std/assert/assert.ts'
+// import { assert } from 'std/assert/assert.ts'
 
 export type TrxContext = Context<
   {
@@ -10,14 +10,27 @@ export type TrxContext = Context<
   }
 >
 
-// Map trx/db objects to their associated context
-const trx_context_map = new WeakMap<TrxOrDb, TrxContext>()
-
-export function ctxFromTrx(trx: TrxOrDb) {
-  const ctx = trx_context_map.get(trx)
-  assert(ctx, 'trx not found in context map')
-  return ctx
+export async function attachTrx(
+  ctx: TrxContext,
+) {
+  console.log('attachTrx')
+  ctx.state.trx = db
+  const response = await ctx.next()
+  console.log('got response')
+  return response
+  // return db.connection().execute(async (conn) => {
+  //   setApplicationNameAndAttachTrx(ctx, conn)
+  // })
 }
+
+// Map trx/db objects to their associated context
+// const trx_context_map = new WeakMap<TrxOrDb, TrxContext>()
+
+// export function ctxFromTrx(trx: TrxOrDb) {
+//   const ctx = trx_context_map.get(trx)
+//   assert(ctx, 'trx not found in context map')
+//   return ctx
+// }
 
 // application_name limited to 63 bytes, so saving some space
 // function truncatePath(pathname: string): string {
@@ -34,16 +47,3 @@ export function ctxFromTrx(trx: TrxOrDb) {
 // await sql`SET application_name = ${sql.lit(tag)};`.execute(trx)
 // trx_context_map.set(trx, ctx)
 // }
-
-export async function attachTrx(
-  ctx: TrxContext,
-) {
-  console.log('attachTrx')
-  ctx.state.trx = db
-  const response = await ctx.next()
-  console.log('got response')
-  return response
-  // return db.connection().execute(async (conn) => {
-  //   setApplicationNameAndAttachTrx(ctx, conn)
-  // })
-}

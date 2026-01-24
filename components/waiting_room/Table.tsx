@@ -101,9 +101,6 @@ export default function WaitingRoomTable(
     can_register_patients: boolean
   },
 ) {
-  console.log('z', {
-    waiting_room,
-  })
   return (
     <Table
       columns={columns}

@@ -98,9 +98,9 @@ const initializeEventListener = once(
     await client.query(`LISTEN event_listener_to_be_processed`)
 
     client.on('notification', function (event) {
-      console.log('zzzz', event)
       const { payload: event_listener_id } = event
       assert(isUUID(event_listener_id))
+      console.log('event_listener_to_be_processed', event_listener_id)
       onEventListener(event_listener_id)
     })
 

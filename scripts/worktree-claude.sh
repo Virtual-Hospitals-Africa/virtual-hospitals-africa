@@ -100,30 +100,28 @@ else
   deno task local db:restore latest
 fi
 
-deno task test '/login'
+deno task test
 
+# If prompt provided, run Claude Code with full permissions and create PR
+if [ -n "$PROMPT" ]; then
+  echo "Running Claude Code with prompt: $PROMPT"
+  echo "This will run with all permissions and create a PR when done..."
 
+  # Run Claude Code with the prompt, auto-approving all permissions
+  # The --yes flag (if available) or we pipe 'yes' to auto-approve
+  echo "$PROMPT
 
-# # If prompt provided, run Claude Code with full permissions and create PR
-# if [ -n "$PROMPT" ]; then
-#   echo "Running Claude Code with prompt: $PROMPT"
-#   echo "This will run with all permissions and create a PR when done..."
+When you're done:
+1. Commit all changes with an appropriate commit message including 'Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>'
+2. Push the branch to remote
+3. Create a PR using: gh pr create --fill" | claude --yes 2>/dev/null || echo "$PROMPT
 
-#   # Run Claude Code with the prompt, auto-approving all permissions
-#   # The --yes flag (if available) or we pipe 'yes' to auto-approve
-#   echo "$PROMPT
-
-# When you're done:
-# 1. Commit all changes with an appropriate commit message including 'Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>'
-# 2. Push the branch to remote
-# 3. Create a PR using: gh pr create --fill" | claude --yes 2>/dev/null || echo "$PROMPT
-
-# When you're done:
-# 1. Commit all changes with an appropriate commit message including 'Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>'
-# 2. Push the branch to remote
-# 3. Create a PR using: gh pr create --fill" | claude
-# else
-#   # Just drop into Claude Code interactively
-#   echo "Starting Claude Code in worktree: $WORKTREE_DIR"
-#   claude
-# fi
+When you're done:
+1. Commit all changes with an appropriate commit message including 'Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>'
+2. Push the branch to remote
+3. Create a PR using: gh pr create --fill" | claude
+else
+  # Just drop into Claude Code interactively
+  echo "Starting Claude Code in worktree: $WORKTREE_DIR"
+  claude
+fi
