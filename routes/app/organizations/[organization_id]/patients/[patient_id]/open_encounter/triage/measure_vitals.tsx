@@ -24,7 +24,6 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
-import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } from '../../../../../../../../types.ts'
@@ -56,7 +55,7 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
   })
 
   const { trx, health_worker, patient, patient_age_determination, encounter } = ctx.state
-  assert(completedPersonal(patient))
+  assert(patient_age_determination, `Age unknown`)
 
   const patient_id = patient.id
   const { diabetes } = await brief_history.renderedMostRecentFindings(
@@ -93,7 +92,52 @@ export const handler = postHandler(
       workflow_step_snomed_concept,
     } = ctx.state
 
+    assert(patient_age_determination, `Age unknown`)
     const completed_procedure = completedProcedure(ctx)
+
+    // Prepare measurements for bulk insert
+    const measurements_to_insert = compact(
+      entries(form_values.measurements).map(([vital, measurement]) => {
+        if (!measurement) return undefined
+        const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
+        const measurement_comparison = parseWithSchema(
+          `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
+          comparator,
+        )
+        const score = getScoreForMeasurement(
+          patient_age_determination,
+          vital,
+          measurement_comparison.right,
+        )
+        return {
+          ...measurement_comparison,
+          score,
+        }
+      }),
+    )
+
+    // Prepare assessments for bulk insert
+    const assessments_to_insert = compact(
+      entries(form_values.assessments).map(([vital, assessment]) => {
+        if (!assessment) return undefined
+        assert(assessment.s_expression)
+        const score = getScoreForAssessment(
+          patient_age_determination,
+          vital,
+          assessment.s_expression,
+        )
+        const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
+        return {
+          ...assessment.s_expression,
+          score: score != null
+            ? {
+              value: score,
+              evaluation_snomed_concept_id: evaluation_snomed_concept.id,
+            }
+            : undefined,
+        }
+      }),
+    )
 
     const {
       insert_result,
@@ -132,50 +176,6 @@ export const handler = postHandler(
     })
 
     function insertAll() {
-      // Prepare measurements for bulk insert
-      const measurements_to_insert = compact(
-        entries(form_values.measurements).map(([vital, measurement]) => {
-          if (!measurement) return undefined
-          const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
-          const measurement_comparison = parseWithSchema(
-            `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
-            comparator,
-          )
-          const score = getScoreForMeasurement(
-            patient_age_determination,
-            vital,
-            measurement_comparison.right,
-          )
-          return {
-            ...measurement_comparison,
-            score,
-          }
-        }),
-      )
-
-      // Prepare assessments for bulk insert
-      const assessments_to_insert = compact(
-        entries(form_values.assessments).map(([vital, assessment]) => {
-          if (!assessment) return undefined
-          assert(assessment.s_expression)
-          const score = getScoreForAssessment(
-            patient_age_determination,
-            vital,
-            assessment.s_expression,
-          )
-          const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
-          return {
-            ...assessment.s_expression,
-            score: score != null
-              ? {
-                value: score,
-                evaluation_snomed_concept_id: evaluation_snomed_concept.id,
-              }
-              : undefined,
-          }
-        }),
-      )
-
       if (!measurements_to_insert.length && assessments_to_insert.length) {
         assertOr400(completed_procedure, 'Must have assessments/measurements to insert')
         return Promise.resolve({

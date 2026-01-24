@@ -67,7 +67,7 @@ import { completedPersonal } from '../../../../../../../shared/patient_registrat
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
-  patient_age_determination: AgeDetermination
+  patient_age_determination: AgeDetermination | null
   patient_id: string
   encounter: RenderedPatientOpenEncounter
   patient_encounter_id: string
@@ -344,8 +344,6 @@ export async function handler(
     }),
   ) ?? null
 
-  assert(completedPersonal(encounter.patient))
-
   const encounter_props: OpenEncounterState = {
     ...ctx.state,
     encounter,
@@ -353,7 +351,7 @@ export async function handler(
     patient: encounter.patient,
     patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
-    patient_age_determination: patientAgeDetermination(encounter.patient),
+    patient_age_determination: completedPersonal(encounter.patient) ? patientAgeDetermination(encounter.patient) : null,
   }
 
   Object.assign(ctx.state, encounter_props)

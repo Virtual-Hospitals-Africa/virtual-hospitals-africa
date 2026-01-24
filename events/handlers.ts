@@ -70,7 +70,7 @@ export const EVENTS = {
       workflow: z.enum(WORKFLOWS),
       step: z.string(),
       patient_id: z.string().uuid(),
-      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']).or(z.null()),
       patient_encounter_id: z.string().uuid(),
       procedure_id: z.string().uuid(),
       findings: z.object({
@@ -88,6 +88,7 @@ export const EVENTS = {
       async insertTotalScoreAfterMeasureVitals(trx, { data: { workflow, step, patient_id, patient_age_determination, patient_encounter_id, procedure_id } }) {
         const completed_measure_vitals = workflow === 'triage' && step === 'measure_vitals'
         if (!completed_measure_vitals) return
+        assert(patient_age_determination != null, `Age unknown`)
 
         const { total_score } = await patient_evaluation_scores
           .totalTEWSEncounterScore(trx, { patient_encounter_id })
