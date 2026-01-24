@@ -19,25 +19,30 @@ import { InsertObject } from 'kysely'
 export async function insertRegistrationWithEmployeeForTest(
   trx: TrxOrDb,
   organization_id: string,
-  { employment_id }: {
+  { employment_id, is_tutorial }: {
     employment_id: string
+    is_tutorial?: boolean
   },
 ) {
-  assert(Deno.env.get('IS_TEST'))
+  console.log('mmoo')
+  // assert(Deno.env.get('IS_TEST') || is_tutorial)
   const { organization, health_worker } = await promiseProps({
     organization: organizations.getById(trx, organization_id),
     health_worker: health_workers.getEmployed(trx, {
       health_worker_id: healthWorkerIdOfEmploymentId(trx, employment_id),
     }),
   })
+  console.log('zzz',{ organization, health_worker } )
   const organization_employment = health_worker.organizations.find((o) => o.id === organization_id)
-  assert(organization_employment)
+  assert(organization_employment, 'No organization_employment')
+  console.log('fff')
 
   const result = await patient_registration.start(
     trx,
     organization,
     organization_employment,
   )
+  console.log('ggg', result)
   return {
     ...result,
     organization,
@@ -50,8 +55,9 @@ export function completeAllStepsForTest(
   trx: TrxOrDb,
   workflow: Workflow,
   patient_workflow_id: string,
+  is_tutorial?: boolean
 ) {
-  assert(Deno.env.get('IS_TEST'))
+  assert(Deno.env.get('IS_TEST') || is_tutorial)
   const steps = WORKFLOW_STEPS[workflow]
   const insert: InsertObject<DB, 'patient_workflow_steps_completed'>[] = steps
     .map(
@@ -77,9 +83,10 @@ export type TestEncounterRelativeToHealthWorker = Awaited<ReturnType<typeof inse
 export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
   trx: TrxOrDb,
   organization_id: string,
-  { employment_id, patient_demographics }: {
+  { employment_id, patient_demographics, is_tutorial }: {
     employment_id: string
     patient_demographics?: PartialPatientDemographics
+    is_tutorial?: boolean
   },
 ) {
   const {
@@ -93,9 +100,9 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
   } = await insertRegistrationWithEmployeeForTest(
     trx,
     organization_id,
-    { employment_id },
+    { employment_id, is_tutorial },
   )
-  assert(success)
+  assert(success, 'Nope!')
   const patient_information = randomDemographics()
   if (patient_demographics) {
     Object.assign(patient_information, patient_demographics)
@@ -110,6 +117,7 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
       trx,
       'registration',
       patient_workflow_id,
+      is_tutorial
     ),
     patient_workflows.completedWorkflow(trx, { patient_workflow_id }),
     patient_encounters.updateOne(trx, patient_encounter_id, {

@@ -70,7 +70,7 @@ export const EVENTS = {
       workflow: z.enum(WORKFLOWS),
       step: z.string(),
       patient_id: z.string().uuid(),
-      patient_age_determination: z.enum(['adult', 'older child', 'younger child']).or(z.null()),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
       patient_encounter_id: z.string().uuid(),
       procedure_id: z.string().uuid(),
       findings: z.object({
