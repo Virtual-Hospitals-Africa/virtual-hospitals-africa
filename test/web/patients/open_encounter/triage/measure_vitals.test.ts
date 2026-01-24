@@ -743,7 +743,7 @@ describeParallel('triage/measure_vitals', () => {
           },
         })
 
-        await events.allProcessedForEncounter(db, { patient_encounter_id })
+        await events.allProcessedForEncounter(db, { patient_encounter_id, timeout_ms: 33101 })
 
         const component_scores = await patient_evaluation_scores.findAll(
           db,

@@ -1,12 +1,11 @@
 import {
   assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
-  createProcedureIfNotAlreadyCompleted,
+  completedProcedure,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
@@ -14,12 +13,10 @@ import {
   getScoreForAssessment,
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
-  triageLevelFromTEWSTotal,
   VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS,
   VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
 } from '../../../../../../../../shared/vitals.ts'
 import { parseWithSchema, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
-import { pMap } from '../../../../../../../../util/inParallel.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import keys from '../../../../../../../../util/keys.ts'
 import entries from '../../../../../../../../util/entries.ts'
@@ -27,18 +24,15 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
-import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import { patient_evaluation_scores } from '../../../../../../../../db/models/patient_evaluation_scores.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } from '../../../../../../../../types.ts'
-import { patient_triage } from '../../../../../../../../db/models/patient_triage.ts'
-import { EVALUATION_ACTION, SEVERITY_SCORE } from '../../../../../../../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { comparator, defined_finding } from '../../../../../../../../shared/s_expression_schemas.ts'
+import { exists } from '../../../../../../../../util/exists.ts'
 
 export const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -61,10 +55,9 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
     attempting_to_complete_workflow: false,
   })
 
-  const { trx, health_worker, patient, encounter } = ctx.state
+  const { trx, health_worker, patient, patient_age_determination, encounter } = ctx.state
   assert(completedPersonal(patient))
 
-  const age_determination = patientAgeDetermination(patient)
   const patient_id = patient.id
   const { diabetes } = await brief_history.renderedMostRecentFindings(
     trx,
@@ -77,32 +70,40 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
   )
 
   const { measurements, assessments } = measureVitalsInputDefinitions({
-    age_determination,
+    age_determination: patient_age_determination,
     has_diabetes: diabetes?.existence === 'Yes',
   })
 
-  return { age_determination, measurements, assessments }
+  return { measurements, assessments }
 }
 
 export const handler = postHandler(
   TriageMeasureVitalsSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    console.log('got here', form_values)
     const {
       trx,
       health_worker_id,
+      employment_id,
       patient_id,
       patient_encounter_id,
+      patient_age_determination,
       patient_encounter_employee_id,
+      workflow,
+      step,
+      workflow_step_snomed_concept,
     } = ctx.state
 
+    const completed_procedure = completedProcedure(ctx)
+
     const {
-      procedure: { procedure_id },
-      shared: { age_determination, measurements, assessments },
+      insert_result,
+      response,
+      shared: { measurements, assessments },
       previous_measurements_this_encounter,
       previous_assessments_this_encounter,
     } = await promiseProps({
-      procedure: createProcedureIfNotAlreadyCompleted(ctx),
+      insert_result: insertAll(),
+      response: completeAndProceedToNextStep(ctx),
       shared: sharedVitalsDeterminations(ctx),
       previous_measurements_this_encounter: patient_vitals
         .getMostRecentMeasurements(
@@ -129,6 +130,73 @@ export const handler = postHandler(
           },
         ),
     })
+
+    function insertAll() {
+      // Prepare measurements for bulk insert
+      const measurements_to_insert = compact(
+        entries(form_values.measurements).map(([vital, measurement]) => {
+          if (!measurement) return undefined
+          const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
+          const measurement_comparison = parseWithSchema(
+            `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
+            comparator,
+          )
+          const score = getScoreForMeasurement(
+            patient_age_determination,
+            vital,
+            measurement_comparison.right,
+          )
+          return {
+            ...measurement_comparison,
+            score,
+          }
+        }),
+      )
+
+      // Prepare assessments for bulk insert
+      const assessments_to_insert = compact(
+        entries(form_values.assessments).map(([vital, assessment]) => {
+          if (!assessment) return undefined
+          assert(assessment.s_expression)
+          const score = getScoreForAssessment(
+            patient_age_determination,
+            vital,
+            assessment.s_expression,
+          )
+          const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
+          return {
+            ...assessment.s_expression,
+            score: score != null
+              ? {
+                value: score,
+                evaluation_snomed_concept_id: evaluation_snomed_concept.id,
+              }
+              : undefined,
+          }
+        }),
+      )
+
+      if (!measurements_to_insert.length && assessments_to_insert.length) {
+        assertOr400(completed_procedure, 'Must have assessments/measurements to insert')
+        return Promise.resolve({
+          success: true,
+          procedure_id: completed_procedure.procedure_id,
+          finding_ids: [],
+        })
+      }
+
+      return patient_findings.insertMany(trx, {
+        patient_id,
+        patient_encounter_id,
+        patient_encounter_employee_id,
+        employment_id,
+        procedure: completed_procedure || {
+          create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
+        },
+        findings: assessments_to_insert,
+        measurements: measurements_to_insert,
+      })
+    }
 
     // Assert all required measurements are present or were already measured this encounter
     for (const { vital, units, snomed_concept_id } of measurements) {
@@ -181,160 +249,23 @@ export const handler = postHandler(
       )
     }
 
-    // Prepare measurements for bulk insert
-    const measurements_to_insert = compact(
-      entries(form_values.measurements).map(([vital, measurement]) => {
-        if (!measurement) return undefined
-        const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
-        const measurement_comparison = parseWithSchema(
-          `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
-          comparator,
-        )
-        const score = getScoreForMeasurement(
-          age_determination,
-          vital,
-          measurement_comparison.right,
-        )
-        return {
-          vital,
-          measurement_comparison,
-          score,
-        }
-      }),
-    )
-
-    // Prepare assessments for bulk insert
-    const assessments_to_insert = compact(
-      entries(form_values.assessments).map(([vital, assessment]) => {
-        if (!assessment) return undefined
-        assert(assessment.s_expression)
-        const score = getScoreForAssessment(
-          age_determination,
-          vital,
-          assessment.s_expression,
-        )
-        return {
-          vital,
-          finding: assessment.s_expression,
-          score,
-        }
-      }),
-    )
-
-    // Bulk insert measurements and assessments
-    const [inserted_measurements_result, inserted_assessments_result] = await Promise.all([
-      measurements_to_insert.length > 0
-        ? patient_measurements.insertMany(trx, {
-          patient_id,
-          patient_encounter_id,
-          patient_encounter_employee_id,
-          procedure_id,
-          measurements: measurements_to_insert.map(({ measurement_comparison }) => ({
-            measurement_comparison,
-          })),
-        })
-        : Promise.resolve({ measurement_ids: [] }),
-      assessments_to_insert.length > 0
-        ? patient_findings.insertMany(trx, {
-          patient_id,
-          patient_encounter_id,
-          patient_encounter_employee_id,
-          employment_id: health_worker_id,
-          procedure: { procedure_id },
-          findings: assessments_to_insert.map(({ finding }) => finding),
-        })
-        : Promise.resolve({ finding_ids: [] }),
-    ])
-
-    // Insert evaluation scores for measurements (in parallel with IDs from bulk insert)
-    await pMap(
-      measurements_to_insert.map((m, i) => ({
-        ...m,
-        measurement_id: inserted_measurements_result.measurement_ids[i],
-      })),
-      async ({ measurement_id, score }) => {
-        if (score != null) {
-          await patient_evaluation_scores.insertOneNested(trx, {
-            score,
-            patient_id,
-            patient_encounter_id,
-            by_system: true,
-            evaluates_record_id: measurement_id,
-            evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${SEVERITY_SCORE.s_expression})`,
-          })
-        }
-      },
-    )
-
-    // Insert evaluation scores for assessments (in parallel with IDs from bulk insert)
-    await pMap(
-      assessments_to_insert.map((a, i) => ({
-        ...a,
-        finding_id: inserted_assessments_result.finding_ids[i],
-      })),
-      async ({ vital, finding_id, score }) => {
-        if (score != null) {
-          const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
-          await patient_evaluation_scores.insertOneNested(trx, {
-            score,
-            patient_id,
-            patient_encounter_id,
-            by_system: true,
-            evaluates_record_id: finding_id,
-            evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${evaluation_snomed_concept.s_expression})`,
-          })
-        }
-      },
-    )
-
-    const inserted_measurements = inserted_measurements_result.measurement_ids
-    const inserted_assessments = inserted_assessments_result.finding_ids
-
-    const all_inserted = compact([...inserted_measurements, ...inserted_assessments]).map((id) => ({
-      id,
-      existence: 'Yes' as const,
-    }))
-
-    const { total_score } = await patient_evaluation_scores
-      .totalTEWSEncounterScore(trx, { patient_encounter_id })
-
-    const score_evaluation = await patient_evaluation_scores.insertOneNested(
-      trx,
-      {
-        score: total_score,
-        patient_id,
-        patient_encounter_id,
-        by_system: true,
-        evaluates_record_id: procedure_id,
-        evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${SEVERITY_SCORE.s_expression})`,
-      },
-    )
-
-    await patient_triage.insertLevel(trx, {
-      patient_id,
-      patient_encounter_id,
-      procedure_id,
-      by_system: true,
-      evaluates_record_id: score_evaluation.evaluation_id,
-      triage_level: triageLevelFromTEWSTotal(total_score, age_determination),
-    })
-
     await events.insert(trx, {
       type: 'ProcedureCompleted',
       data: {
+        workflow,
+        step,
         patient_id,
         patient_encounter_id,
-        procedure_id,
-        findings: all_inserted,
+        patient_age_determination,
+        procedure_id: insert_result.procedure_id,
+        findings: insert_result.finding_ids.map((id) => ({
+          id,
+          existence: 'Yes' as const,
+        })),
       },
     })
 
-    // await additional_tasks.insertTasksIfNotAlreadyIdentified(trx, {
-    //   patient_id,
-    //   patient_encounter_id,
-    // })
-
-    return completeAndProceedToNextStep(ctx)
+    return response
   },
 )
 
