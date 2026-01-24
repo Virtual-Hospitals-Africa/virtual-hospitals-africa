@@ -8,6 +8,8 @@ temp_files/
 scripts/**
 !scripts/web.sh
 
+.env*
+
 # Ignore everything in db except models, db.ts, and helpers.ts
 db/**
 !db/models/
