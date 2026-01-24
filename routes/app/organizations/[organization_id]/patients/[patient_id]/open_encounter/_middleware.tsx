@@ -2,6 +2,7 @@ import { ComponentChildren, JSX } from 'preact'
 import { assert } from 'std/assert/assert.ts'
 import Form from '../../../../../../../components/library/Form.tsx'
 import {
+  AgeDetermination,
   LoggedInHealthWorkerContext,
   PreviouslyCompletedProcedures,
   RenderedPatient,
@@ -61,9 +62,12 @@ import PatientDrawerV4 from '../../../../../../../components/drawer-v4/DrawerV4.
 import { PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
 import { ArrowRightIcon } from '../../../../../../../components/library/icons/heroicons/solid.tsx'
 import { get } from '../../../../../../../util/get.ts'
+import { patientAgeDetermination } from '../../../../../../../shared/patient_age_determination.ts'
+import { completedPersonal } from '../../../../../../../shared/patient_registration.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
+  patient_age_determination: AgeDetermination
   patient_id: string
   encounter: RenderedPatientOpenEncounter
   patient_encounter_id: string
@@ -155,17 +159,11 @@ export async function completeStep(
   const already_completed = steps_completed_previously.includes(step)
   // TODO: parallelize
   if (!already_completed) {
-    console.log('zxxxxxxxxx', {
-      workflow,
-      step,
-      patient_workflow_id: workflow_status.patient_workflow_id,
-    })
     await patient_workflows.completedStep(ctx.state.trx, {
       workflow,
       step,
       patient_workflow_id: workflow_status.patient_workflow_id,
     })
-    console.log('mmmmm')
   }
 
   const steps_completed = already_completed ? steps_completed_previously : steps_completed_previously.concat([step])
@@ -346,6 +344,8 @@ export async function handler(
     }),
   ) ?? null
 
+  assert(completedPersonal(encounter.patient))
+
   const encounter_props: OpenEncounterState = {
     ...ctx.state,
     encounter,
@@ -353,6 +353,7 @@ export async function handler(
     patient: encounter.patient,
     patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
+    patient_age_determination: patientAgeDetermination(encounter.patient),
   }
 
   Object.assign(ctx.state, encounter_props)
