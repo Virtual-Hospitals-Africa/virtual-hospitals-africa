@@ -35,6 +35,7 @@ export function MostRecentFinding(
         <a
           href={`#most-recent-finding-${finding.pertaining_to_key || finding.id}`}
           className='text-blue-500'
+          tabIndex={-1}
         >
           {finding.displays.full}
         </a>{' '}
