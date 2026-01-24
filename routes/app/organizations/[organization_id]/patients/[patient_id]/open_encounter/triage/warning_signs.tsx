@@ -67,9 +67,12 @@ export const handler = postHandler(
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
     const {
       trx,
+      workflow,
+      step,
       patient_id,
       employment_id,
       patient_encounter_id,
+      patient_age_determination,
       patient_encounter_employee_id,
       workflow_step_snomed_concept,
     } = ctx.state
@@ -163,8 +166,11 @@ export const handler = postHandler(
       return events.insert(trx, {
         type: 'ProcedureCompleted',
         data: {
+          workflow,
+          step,
           patient_id,
           patient_encounter_id,
+          patient_age_determination,
           ...inserted,
         },
       })
