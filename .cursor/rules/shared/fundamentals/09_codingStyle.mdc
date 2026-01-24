@@ -8,3 +8,6 @@ Use shorthands where possible. Examples include:
 - object structuring / destructuring
 - .length check `if (x.length)` is better than `if (x.length > 0)`
 Prefer expressions. Use the ternary operator, but no nested ternaries.
+Everyone can read code here, so no need for comments that are 1:1 with what's happening below. An exmaple to avoid
+// Re-export from mocks/testEmployee.ts
+export { addTestEmployee } from 'mocks/testEmployee.ts'

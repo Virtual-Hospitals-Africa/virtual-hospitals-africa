@@ -33,13 +33,11 @@ import {
   firstStep,
   isWorkflow,
   lastStep,
-  prettyStepName,
   WORKFLOW_NAV_LINKS,
   WORKFLOW_SNOMED_CONCEPTS,
   WORKFLOW_STEPS,
   workflowStepSnomedConcept,
 } from '../../../../../../../shared/workflow.ts'
-import mapEntries from '../../../../../../../util/mapEntries.ts'
 import { patient_workflows, PresentWithAnotherPatientError } from '../../../../../../../db/models/patient_workflows.ts'
 import last from '../../../../../../../util/last.ts'
 import compact from '../../../../../../../util/compact.ts'

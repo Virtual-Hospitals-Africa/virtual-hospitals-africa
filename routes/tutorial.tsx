@@ -6,8 +6,6 @@ import { TriageTutorial } from '../islands/TriageTutorial.tsx'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
 import { getWarningSignsForPatient } from './app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
 
-
-
 export default async function TutorialPage(
   ctx: Context<unknown>,
 ) {
@@ -21,7 +19,7 @@ export default async function TutorialPage(
     {
       patient_demographics: {},
       employment_id: employee.employee_id,
-      is_tutorial: true
+      is_tutorial: true,
     },
   )
   console.log('kewlewlk')
