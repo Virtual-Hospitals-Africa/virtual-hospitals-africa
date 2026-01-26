@@ -296,14 +296,14 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
                 'type': 'link',
                 'title': 'Chest pain page',
                 'href': '/medical-resources/primary-care/adult.pdf#page=37',
-                'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/37.png',
+                'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/150/37.png',
               },
               'displays': {
                 'finding': 'Reference documentation',
                 'value': {
                   'title': 'Chest pain page',
                   'href': '/medical-resources/primary-care/adult.pdf#page=37',
-                  'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/37.png',
+                  'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/150/37.png',
                 },
               },
             },

@@ -48,7 +48,7 @@ const MEDICAL_GUIDANCE_TASKS: TaskDef[] = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CO
         (link 
           "${table_of_contents_name} page"
           "/medical-resources/primary-care/adult.pdf#page=${page_number}"
-          "/medical-resources/za/primary-care/adult/thumbnails/${page_number}.png"
+          "/medical-resources/za/primary-care/adult/thumbnails/150/${page_number}.png"
         )
         ))`,
   ])

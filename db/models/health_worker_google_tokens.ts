@@ -1,5 +1,4 @@
 import { DeleteResult, UpdateResult } from 'kysely'
-import isDate from '../../util/isDate.ts'
 import { GoogleTokens, TrxOrDb } from '../../types.ts'
 import pick from '../../util/pick.ts'
 import { health_workers } from './health_workers.ts'
