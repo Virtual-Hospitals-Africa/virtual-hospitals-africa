@@ -2,7 +2,6 @@ import { z } from 'zod'
 import { assertOr400, assertOr403 } from '../../../../../../../util/assertOr.ts'
 import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../../util/redirect.ts'
-import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 import { OpenEncounterContext } from './_middleware.tsx'
 import { canPerform, Workflow, WORKFLOW_STEPS } from '../../../../../../../shared/workflow.ts'
 import { patient_workflows } from '../../../../../../../db/models/patient_workflows.ts'
@@ -28,6 +27,7 @@ export async function startWorkflow<T>(
   opts: {
     planning: 'create_if_unplanned' | 'only_if_planned'
     patient_presence: 'move_into_specificed_workflow' | 'leave_in_current_workflow'
+    workflow_frequency: 'only_once_per_encounter' | 'multiple_times_allowed'
   },
 ) {
   const { trx, organization_employment, encounter } = ctx.state
@@ -58,10 +58,12 @@ export async function startWorkflow<T>(
     }
   }
 
-  assertOr400(
-    workflow_status.status !== 'completed',
-    `${workflow} workflow already completed`,
-  )
+  if (opts.workflow_frequency === 'only_once_per_encounter') {
+    assertOr400(
+      workflow_status.status !== 'completed',
+      `${workflow} workflow already completed`,
+    )
+  }
 
   const { employment_id } = organization_employment
 
@@ -95,15 +97,15 @@ export async function startWorkflow<T>(
     if (arrayIsEmpty(workflow_status.steps_completed)) return true
     return !workflow_status.steps_completed.includes(s)
   })
-  assert(
-    first_incomplete_step,
-    'There must be some incomplete step if the workflow is not completed',
-  )
 
-  return replaceParams(
-    `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${first_incomplete_step}`,
-    ctx.params,
-  )
+  if (opts.workflow_frequency === 'only_once_per_encounter') {
+    assert(
+      first_incomplete_step,
+      'There must be some incomplete step if the workflow is not completed',
+    )
+  }
+
+  return `${ctx.state.open_encounter_pathname}/${workflow}/${first_incomplete_step || WORKFLOW_STEPS[workflow][0]}`
 }
 
 export const handler = postHandler(
@@ -112,6 +114,10 @@ export const handler = postHandler(
     startWorkflow(
       ctx,
       workflow,
-      { planning: 'only_if_planned', patient_presence: 'move_into_specificed_workflow' },
+      {
+        planning: 'only_if_planned',
+        patient_presence: 'move_into_specificed_workflow',
+        workflow_frequency: 'only_once_per_encounter',
+      },
     ).then(redirect),
 )

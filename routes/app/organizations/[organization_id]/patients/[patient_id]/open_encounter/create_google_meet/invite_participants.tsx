@@ -1,15 +1,15 @@
 import { z } from 'zod'
 import { HealthWorkerGoogleClient } from '../../../../../../../../external-clients/google.ts'
-import { employees } from '../../../../../../../../db/models/employees.ts'
 import { GCalEvent, RenderedEmployee } from '../../../../../../../../types.ts'
 import { alert } from '../../../../../../../../util/alerts.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import InviteParticipantsList from '../../../../../../../../islands/InviteParticipantsList.tsx'
-import { sql } from 'kysely'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { completeLastStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { TEST_ORGANIZATION_UUIDS } from 'test/_helpers/organizations.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
+import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
+import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 type EmployeeWithPresence = RenderedEmployee & {
   at_work: boolean
@@ -19,67 +19,26 @@ const InviteParticipantsSchema = z.object({
   participant_emails: z.string().array(),
 })
 
-async function getEmployeesWithPresence(
+function getEmployeesWithPresence(
   ctx: OpenEncounterWorkflowContext,
 ): Promise<{
   facility_employees: EmployeeWithPresence[]
   hospital_employees: EmployeeWithPresence[]
 }> {
-  const { trx, organization } = ctx.state
-
-  // Get employees at current facility
-  const facility_employees_results = await employees.baseQuery(trx)
-    .where('employment.organization_id', '=', organization.id)
-    .leftJoin(
-      'employment_presence',
-      'employment_presence.id',
-      'employment.id',
-    )
-    .select([
-      sql<boolean>`COALESCE(employment_presence.at_work, false)`.as('at_work'),
-    ])
-    .execute()
-
-  const facility_employees = [] as EmployeeWithPresence[]
-  for (const result of facility_employees_results) {
-    const formatted = employees.formatResult(result)
-    facility_employees.push({
-      ...formatted,
-      at_work: result.at_work,
-    })
-  }
-
+  const { trx, organization_id, health_worker_id } = ctx.state
+  // TODO get this for real
   const nearest_hospital_id = TEST_ORGANIZATION_UUIDS.ZA.hospital
-  // // Get patient's nearest hospital
-  // const nearest_hospital = await patient_nearest_organization.get(trx, {
-  //   patient_id,
-  // })
 
-  const hospital_employees = [] as EmployeeWithPresence[]
-  if (nearest_hospital_id !== organization.id) {
-    const hospital_employees_results = await employees.baseQuery(trx)
-      .where('employment.organization_id', '=', nearest_hospital_id)
-      .where('employment.profession', 'in', ['doctor', 'nurse'])
-      .leftJoin(
-        'employment_presence',
-        'employment_presence.id',
-        'employment.id',
-      )
-      .select([
-        sql<boolean>`COALESCE(employment_presence.at_work, false)`.as('at_work'),
-      ])
-      .execute()
-
-    for (const result of hospital_employees_results) {
-      const formatted = employees.formatResult(result)
-      hospital_employees.push({
-        ...formatted,
-        at_work: result.at_work,
-      })
-    }
-  }
-
-  return { facility_employees, hospital_employees }
+  return promiseProps({
+    facility_employees: employees_presence.findAll(trx, {
+      organization_id,
+      excluding_health_worker_id: health_worker_id,
+    }),
+    hospital_employees: employees_presence.findAll(trx, {
+      organization_id: nearest_hospital_id,
+      excluding_health_worker_id: health_worker_id,
+    }),
+  })
 }
 
 export const handler = postHandler(
