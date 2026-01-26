@@ -175,6 +175,7 @@ addEventListener('submit', function (event) {
     if (error_message.startsWith('{')) {
       var json = JSON.parse(error_message)
       if (json.name === 'ZodError') {
+        console.log('js', json)
         json.issues.forEach(function (issue, index) {
           var is_first_issue = index === 0
           var path = issue.path.join('.')

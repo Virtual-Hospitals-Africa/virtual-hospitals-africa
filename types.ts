@@ -1690,8 +1690,8 @@ export type ProviderAppointmentSlot = {
   start: ParsedDateTime
   end: ParsedDateTime
   providers: RenderedAppointmentProvider[]
-  physicalLocation?: undefined
-  virtualLocation?: undefined
+  physical_location?: undefined
+  virtual_location?: undefined
 }
 
 export type ProviderAppointment = {
@@ -1702,10 +1702,10 @@ export type ProviderAppointment = {
   start: ParsedDateTime
   end: ParsedDateTime
   providers?: RenderedAppointmentProvider[]
-  physicalLocation?: {
+  physical_location?: {
     organization: HasStringId<Organization>
   }
-  virtualLocation?: {
+  virtual_location?: {
     href: string
   }
 }
@@ -1718,10 +1718,10 @@ export type PatientAppointment = {
   start: ParsedDateTime
   end: ParsedDateTime
   providers: RenderedAppointmentProvider[]
-  physicalLocation?: {
+  physical_location?: {
     organization: HasStringId<Organization>
   }
-  virtualLocation?: {
+  virtual_location?: {
     href: string
   }
 }
@@ -3643,7 +3643,7 @@ export type Alert = {
   message: string
   level: 'error' | 'warning' | 'success'
   actions?: {
-    name: string
+    text: string
     href: string
     method?: 'GET' | 'POST'
   }[]
@@ -3850,3 +3850,8 @@ export type EvaluatedRecord = DeepMaybe<{
 }>
 
 export type SnomedConcept = { id: string; name: string; category: SnomedCategory; s_expression: string; snomed_concept_id: string }
+
+export type NavLinks = {
+  step: string
+  route: string
+}[]

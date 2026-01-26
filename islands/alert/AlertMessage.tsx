@@ -44,6 +44,8 @@ export default function AlertMessage(
   const style = styles[level]
   const Icon = style.Icon
 
+  console.log('mmm', actions)
+
   return (
     <div className={cls('rounded-md p-4', style.bg)}>
       <div className='grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-2'>

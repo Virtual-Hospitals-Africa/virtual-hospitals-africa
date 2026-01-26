@@ -469,3 +469,8 @@ export const OXYGEN_THERAPY = asConcept({
   name: 'Oxygen therapy',
   category: 'procedure' as const,
 })
+export const TELEMEDICINE_CONSULTATION_WITH_PATIENT = asConcept({
+  id: '448337001',
+  name: 'Telemedicine consultation with patient',
+  category: 'procedure' as const,
+})

@@ -19,6 +19,7 @@ import {
   REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
   STABILIZATION,
   TAKING_PATIENT_VITAL_SIGNS_ASSESSMENT,
+  TELEMEDICINE_CONSULTATION_WITH_PATIENT,
   TRIAGE,
 } from './snomed_concepts.ts'
 
@@ -31,6 +32,7 @@ export const WORKFLOWS = [
   'maternity' as const,
   'prescription_refill' as const,
   'doctor_review' as const,
+  'create_google_meet' as const,
   // 'resuscitation' as const,
 ]
 
@@ -45,6 +47,7 @@ export const WORKFLOW_SNOMED_CONCEPTS = {
   maternity: PRENATAL_EXAMINATION_AND_CARE_OF_MOTHER,
   prescription_refill: DISPENSING_MEDICATION,
   doctor_review: EVALUATION_OF_CARE_PLAN,
+  create_google_meet: TELEMEDICINE_CONSULTATION_WITH_PATIENT,
 } satisfies {
   [w in Workflow]: unknown
 }
@@ -72,6 +75,9 @@ export const WORKFLOW_STEPS = {
     'identify_patient',
     'emergency_reason',
     'notify_staff',
+  ],
+  create_google_meet: [
+    'invite_participants',
   ],
   stabilization: [
     'monitor_patient',

@@ -3,6 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import {
   AgeDetermination,
   LoggedInHealthWorkerContext,
+  NavLinks,
   PreviouslyCompletedProcedures,
   RenderedPatient,
   RenderedPatientEncounterEmployee,
@@ -381,12 +382,7 @@ export function assertAllPriorStepsCompleted(
   assertOrRedirect(false, `${url}?warning=${warning}`)
 }
 
-export function OpenEncounterWorkflowLayoutCtx({
-  ctx,
-  next_step_text,
-  buttons,
-  children,
-}: {
+export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, children }: {
   ctx: OpenEncounterWorkflowContext
   next_step_text?: string
   buttons?: ComponentChild

@@ -3,6 +3,7 @@ import cls from '../util/cls.ts'
 import { OrganizationCard } from './request-review/OrganizationCard.tsx'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
 import { OrganizationLike } from '../types.ts'
+import { RadioButtonGroup } from '../components/library/RadioButtonGroup.tsx'
 
 function OrganizationSelectOption(
   { organization, selected, toggleSelection }: {
@@ -45,27 +46,20 @@ function OrganizationSelectOption(
 }
 
 export default function OrganizationsSelect(
-  { organizations, onSelect }: {
+  { organizations }: {
     organizations: OrganizationLike[]
-    onSelect?: (organization: OrganizationLike) => void
   },
 ) {
-  const selected = useSignal<OrganizationLike>(organizations[0])
+  // const selected = useSignal<OrganizationLike>(organizations[0])
 
   return (
-    <fieldset className='flex flex-col gap-2 w-full'>
-      {organizations.map((organization) => (
-        <OrganizationSelectOption
-          key={organization.id}
-          organization={organization}
-          selected={selected.value.id === organization.id}
-          toggleSelection={() => {
-            selected.value = organization
-            onSelect?.(organization)
-          }}
-        />
-      ))}
-      <HiddenInput value={{ organization_id: selected.value.id }} />
-    </fieldset>
+    <RadioButtonGroup
+      name='organization_id'
+      variant='panel-with-border'
+      options={organizations.map((organization) => ({
+        ...organization,
+        description: organization.formatted_address,
+      }))}
+    />
   )
 }

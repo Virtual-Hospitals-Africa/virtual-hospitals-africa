@@ -27,6 +27,9 @@ const StartWorkflowSchema = z.object({
 export async function startWorkflow<T>(
   ctx: OpenEncounterContext<T>,
   workflow: Workflow,
+  opts: {
+    planning: 'create_if_unplanned' | 'only_if_planned'
+  }
 ) {
   const { trx, organization_employment, encounter } = ctx.state
 
@@ -37,8 +40,24 @@ export async function startWorkflow<T>(
     `You must be employed in the ${WORKFLOW_DEPARTMENTS[workflow].join(' or ')} department to start ${workflow}`,
   )
 
-  const workflow_status = encounter.workflows[workflow]
-  assertOr400(workflow_status, `${workflow} workflow not planned`)
+  let workflow_status = encounter.workflows[workflow]
+  if (!workflow_status) {
+    assertOr400(opts.planning !== 'only_if_planned', `${workflow} workflow not planned`)
+    const patient_workflow = await patient_workflows.insertOne(
+      trx,
+      {
+        workflow, 
+        patient_encounter_id: ctx.state.patient_encounter_id
+      }
+    )
+    workflow_status = {
+      patient_workflow_id: patient_workflow.id,
+      workflow,
+      status: 'not started',
+      steps_completed: [],
+      seen_patient_encounter_employee_ids: [],
+    }
+  }
 
   assertOr400(
     workflow_status.status !== 'completed',
@@ -81,13 +100,13 @@ export async function startWorkflow<T>(
     'There must be some incomplete step if the workflow is not completed',
   )
 
-  return redirect(replaceParams(
+  return replaceParams(
     `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${first_incomplete_step}`,
     ctx.params,
-  ))
+  )
 }
 
 export const handler = postHandler(
   StartWorkflowSchema,
-  (ctx: OpenEncounterContext, { workflow }) => startWorkflow(ctx, workflow),
+  (ctx: OpenEncounterContext, { workflow }) => startWorkflow(ctx, workflow, { planning: 'only_if_planned' }).then(redirect),
 )

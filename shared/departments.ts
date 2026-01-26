@@ -55,6 +55,7 @@ export const WORKFLOW_DEPARTMENTS = {
   prescription_refill: ['Pharmacy'],
   doctor_review: ['Remote care'],
   stabilization: ['Emergency'],
+  create_google_meet: DEPARTMENTS as NonEmptyArray<Department>,
 } satisfies {
   [w in Workflow]: NonEmptyArray<Department>
 }
@@ -124,13 +125,14 @@ export function departmentsOfProfession(
     }
     case 'doctor': {
       assert(specialty)
-      switch (specialty) {
-        case 'Primary care':
-          return ['Primary care', 'Triage', 'Reception']
-        default: {
-          throw new StatusError(`${specialty} not yet supported`, 400)
-        }
-      }
+      // TODO: maybe something different? I'm not sure the departments matter as much for doctors
+      return ['Primary care']
+      // switch (specialty) {
+      //   case 'Primary care':
+      //   default: {
+      //     throw new StatusError(`${specialty} not yet supported`, 400)
+      //   }
+      // }
     }
     case 'receptionist': {
       return ['Reception']

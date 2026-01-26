@@ -107,7 +107,7 @@ export default HealthWorkerHomePageLayout(
           duration_minutes: Math.round(duration / (1000 * 60)),
           start: parseDateTime(start_time),
           end: parseDateTime(end_time),
-          virtualLocation: gcal_item.hangoutLink
+          virtual_location: gcal_item.hangoutLink
             ? {
               href: gcal_item.hangoutLink,
             }

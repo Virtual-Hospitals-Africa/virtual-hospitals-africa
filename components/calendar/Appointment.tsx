@@ -44,7 +44,7 @@ function AppointmentContents(
               </time>
             </dd>
           </div>
-          {appointment.physicalLocation && (
+          {appointment.physical_location && (
             <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
               <dt>
                 <span className='sr-only'>Location</span>
@@ -52,16 +52,16 @@ function AppointmentContents(
                   className='h-5 w-5 text-gray-400'
                   aria-hidden='true'
                 />
-                {appointment.physicalLocation.organization.name}
+                {appointment.physical_location.organization.name}
               </dt>
             </div>
           )}
-          {appointment.virtualLocation && (
+          {appointment.virtual_location && (
             <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
               <dt>
                 <span className='sr-only'>Link</span>
                 <a
-                  href={appointment.virtualLocation.href}
+                  href={appointment.virtual_location.href}
                   className='text-indigo-600 font-bold flex'
                 >
                   <GoogleMeetIcon className='w-5 mr-1' />
