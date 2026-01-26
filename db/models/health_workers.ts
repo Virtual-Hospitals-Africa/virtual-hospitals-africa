@@ -117,6 +117,7 @@ export type HealthWorkerSearch = {
   organization_id?: string | string[] | IdSelection
   professions?: Maybe<Profession[]>
   prioritize_organization_id?: Maybe<string>
+  excluding_health_worker_id?: string
 }
 
 export const health_workers = base({
@@ -178,6 +179,10 @@ export const health_workers = base({
           ),
         'desc',
       )
+    }
+
+    if (opts.excluding_health_worker_id) {
+      qb = qb.where('health_workers.id', '!=', opts.excluding_health_worker_id)
     }
 
     return qb

@@ -46,12 +46,12 @@ function baseQuery(
       sql<string>`'https://maps.google.com'`.as('google_maps_link'),
       sql<string>`'Open'`.as('status'),
       jsonArrayFrom(
-        employees.baseQuery(trx)
+        employees.baseQuery(trx, {})
           .where('employment.is_admin', '=', true)
           .where('employment.organization_id', '=', eb.ref('organizations.id')),
       ).as('admins'),
       jsonArrayFrom(
-        employees.baseQuery(trx)
+        employees.baseQuery(trx, {})
           .where('employment.profession', '=', 'doctor')
           .where('employment.organization_id', '=', eb.ref('organizations.id')),
       ).as('doctors'),

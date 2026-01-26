@@ -178,7 +178,7 @@ export const inventory = {
         'procurement.id as procurement_id',
         sql<'consumption'>`'consumption'`.as('interaction'),
         jsonObjectFrom(
-          employees.baseQuery(trx)
+          employees.baseQuery(trx, {})
             .where('employment.id', '=', eb.ref('consumption.created_by')),
         ).$notNull().as('created_by'),
         sql<null>`NULL`.as('procured_from'),
@@ -217,7 +217,7 @@ export const inventory = {
         'procurement.id as procurement_id',
         sql<'procurement'>`'procurement'`.as('interaction'),
         jsonObjectFrom(
-          employees.baseQuery(trx)
+          employees.baseQuery(trx, {})
             .where('employment.id', '=', eb.ref('procurement.created_by')),
         ).$notNull().as('created_by'),
         jsonBuildObject({

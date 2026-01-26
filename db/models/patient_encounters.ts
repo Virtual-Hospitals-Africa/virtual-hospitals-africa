@@ -96,7 +96,7 @@ function baseQuery(trx: TrxOrDb) {
             'appointments.id',
             'appointments.start',
             jsonArrayFrom(
-              employees.baseQuery(trx)
+              employees.baseQuery(trx, {})
                 .innerJoin(
                   'appointment_providers',
                   'appointment_providers.provider_id',

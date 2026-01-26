@@ -6,7 +6,7 @@ import { base, identity } from './_base.ts'
 export const patient_encounter_employees = base({
   top_level_table: 'patient_encounter_employees' as const,
   baseQuery(trx: TrxOrDb) {
-    return employees.baseQuery(trx)
+    return employees.baseQuery(trx, {})
       .innerJoin(
         'patient_encounter_employees',
         'employment.id',
