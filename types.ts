@@ -2449,6 +2449,7 @@ export type ExtendedActionData = {
   href?: string
   method?: 'GET' | 'POST'
   disabled?: boolean
+  target?: '_blank'
 }
 
 export type RenderedWaitingRoom = {
@@ -3646,6 +3647,7 @@ export type Alert = {
     text: string
     href: string
     method?: 'GET' | 'POST'
+    target?: '_blank'
   }[]
 }
 
