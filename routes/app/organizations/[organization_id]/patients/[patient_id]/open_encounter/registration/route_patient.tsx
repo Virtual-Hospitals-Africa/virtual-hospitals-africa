@@ -60,7 +60,7 @@ export const handler = postHandler(
 
     await Promise.all([
       completeLastStep(ctx),
-      patient_workflows.insert(trx, [
+      patient_workflows.insertMany(trx, [
         {
           patient_encounter_id: encounter.patient_encounter_id,
           workflow: 'triage' as const,

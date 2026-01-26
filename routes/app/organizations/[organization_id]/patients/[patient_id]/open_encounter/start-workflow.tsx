@@ -10,8 +10,6 @@ import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_presence } from '../../../../../../../db/models/patient_presence.ts'
-import { UpdateShape } from '../../../../../../../types.ts'
-import { DB } from '../../../../../../../db.d.ts'
 
 const StartWorkflowSchema = z.object({
   workflow: z.enum([
@@ -27,6 +25,10 @@ const StartWorkflowSchema = z.object({
 export async function startWorkflow<T>(
   ctx: OpenEncounterContext<T>,
   workflow: Workflow,
+  opts: {
+    planning: 'create_if_unplanned' | 'only_if_planned'
+    patient_presence: 'move_into_specificed_workflow' | 'leave_in_current_workflow'
+  },
 ) {
   const { trx, organization_employment, encounter } = ctx.state
 
@@ -37,8 +39,24 @@ export async function startWorkflow<T>(
     `You must be employed in the ${WORKFLOW_DEPARTMENTS[workflow].join(' or ')} department to start ${workflow}`,
   )
 
-  const workflow_status = encounter.workflows[workflow]
-  assertOr400(workflow_status, `${workflow} workflow not planned`)
+  let workflow_status = encounter.workflows[workflow]
+  if (!workflow_status) {
+    assertOr400(opts.planning !== 'only_if_planned', `${workflow} workflow not planned`)
+    const patient_workflow = await patient_workflows.insertOne(
+      trx,
+      {
+        workflow,
+        patient_encounter_id: ctx.state.patient_encounter_id,
+      },
+    )
+    workflow_status = {
+      patient_workflow_id: patient_workflow.id,
+      workflow,
+      status: 'not started',
+      steps_completed: [],
+      seen_patient_encounter_employee_ids: [],
+    }
+  }
 
   assertOr400(
     workflow_status.status !== 'completed',
@@ -61,16 +79,17 @@ export async function startWorkflow<T>(
     },
   )
 
-  const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
-    current_workflow: workflow,
-    department_name: department_handling_workflow,
-    next_workflow: null,
+  if (opts.patient_presence === 'move_into_specificed_workflow') {
+    await patient_presence.set(
+      ctx.state.trx,
+      encounter.patient.id,
+      {
+        current_workflow: workflow,
+        department_name: department_handling_workflow,
+        next_workflow: null,
+      },
+    )
   }
-  await patient_presence.set(
-    ctx.state.trx,
-    encounter.patient.id,
-    patient_presence_updates,
-  )
 
   const first_incomplete_step = WORKFLOW_STEPS[workflow].find((s) => {
     if (arrayIsEmpty(workflow_status.steps_completed)) return true
@@ -81,13 +100,18 @@ export async function startWorkflow<T>(
     'There must be some incomplete step if the workflow is not completed',
   )
 
-  return redirect(replaceParams(
+  return replaceParams(
     `/app/organizations/:organization_id/patients/:patient_id/open_encounter/${workflow}/${first_incomplete_step}`,
     ctx.params,
-  ))
+  )
 }
 
 export const handler = postHandler(
   StartWorkflowSchema,
-  (ctx: OpenEncounterContext, { workflow }) => startWorkflow(ctx, workflow),
+  (ctx: OpenEncounterContext, { workflow }) =>
+    startWorkflow(
+      ctx,
+      workflow,
+      { planning: 'only_if_planned', patient_presence: 'move_into_specificed_workflow' },
+    ).then(redirect),
 )

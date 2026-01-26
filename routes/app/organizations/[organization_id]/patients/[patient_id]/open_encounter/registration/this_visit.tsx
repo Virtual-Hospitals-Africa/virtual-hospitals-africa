@@ -76,7 +76,7 @@ export const handler = postHandler(
 
         await Promise.all([
           completeStep(ctx),
-          patient_workflows.insert(trx, {
+          patient_workflows.insertOne(trx, {
             id: patient_workflow_id,
             patient_encounter_id: encounter.patient_encounter_id,
             workflow: 'triage',
@@ -105,7 +105,7 @@ export const handler = postHandler(
             encounter.status.patient_presence,
             patient_presence_updates,
           )
-          return startWorkflow(ctx, 'triage')
+          return startWorkflow(ctx, 'triage', { planning: 'only_if_planned', patient_presence: 'move_into_specificed_workflow' }).then(redirect)
         }
 
         await events.insert(trx, {

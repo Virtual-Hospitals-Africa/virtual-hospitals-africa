@@ -237,14 +237,16 @@ export class GoogleClient {
   }
 
   updateEvent(
-    { calendarId, eventId, details }: {
+    { calendarId, eventId, details, sendUpdates }: {
       calendarId: string
       eventId: string
       details: DeepPartial<GCalEvent>
+      sendUpdates?: 'all' | 'externalOnly' | 'none'
     },
   ): Promise<GCalEvent> {
+    const params = sendUpdates ? `?sendUpdates=${sendUpdates}` : ''
     return this.makeCalendarRequest(
-      `/calendars/${calendarId}/events/${eventId}`,
+      `/calendars/${calendarId}/events/${eventId}${params}`,
       {
         method: 'put',
         data: details,
@@ -347,10 +349,10 @@ export class GoogleClient {
     return this.makeRequest('/oauth2/v3/userinfo')
   }
 
-  async createGoogleMeet(
-    summary: string,
-    description?: string,
-  ): Promise<{ hangoutLink: string; htmlLink: string }> {
+  async createGoogleMeet(details: {
+    summary: string
+    description?: string
+  }): Promise<{ hangout_link: string; html_link: string; event_id: string }> {
     const start = new Date()
     const end = new Date(start.getTime() + 60 * 60 * 1000)
 
@@ -359,8 +361,7 @@ export class GoogleClient {
       {
         method: 'post',
         data: {
-          summary,
-          description,
+          ...details,
           start: {
             dateTime: start.toISOString(),
             timeZone: 'Africa/Johannesburg',
@@ -383,11 +384,29 @@ export class GoogleClient {
 
     assert(event.hangoutLink, 'No hangout link in created event')
     assert(event.htmlLink, 'No html link in created event')
+    assert(event.id, 'No id in created event')
 
     return {
-      hangoutLink: event.hangoutLink,
-      htmlLink: event.htmlLink,
+      hangout_link: event.hangoutLink,
+      html_link: event.htmlLink,
+      event_id: event.id,
     }
+  }
+
+  sendCalendarInvite(details: {
+    summary: string
+    description?: string
+    start: { dateTime: string; timeZone: string }
+    end: { dateTime: string; timeZone: string }
+    attendees: Array<{ email: string }>
+  }): Promise<GCalEvent> {
+    return this.makeCalendarRequest(
+      '/calendars/primary/events?sendUpdates=all',
+      {
+        method: 'post',
+        data: details,
+      },
+    )
   }
 }
 

@@ -3,7 +3,6 @@ import { DrawerCareTeam } from './CareTeam.tsx'
 import { DrawerHistory } from './History.tsx'
 import { DrawerPatientCard } from './PatientCard.tsx'
 import { DrawerThisVisit } from './ThisVisit.tsx'
-import CreateGoogleMeetButton from '../../islands/CreateGoogleMeetButton.tsx'
 
 export default function PatientDrawerV4({
   patient,
@@ -23,18 +22,12 @@ export default function PatientDrawerV4({
         organization_id={organization_id}
         priority={priority}
       />
-      <div className='px-3'>
-        <CreateGoogleMeetButton
-          organization_id={organization_id}
-          patient_id={patient.id}
-        />
-      </div>
       <DrawerThisVisit
         this_visit_findings={this_visit_findings}
         organization_id={organization_id}
       />
       <DrawerHistory history={patient_history} />
-      <DrawerCareTeam care_team={care_team} />
+      <DrawerCareTeam care_team={care_team} organization_id={organization_id} patient_id={patient.id} />
     </div>
   )
 }
