@@ -3,7 +3,6 @@ import { RenderedEmployee } from '../types.ts'
 import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
 import words from '../util/words.ts'
-import { ActionButton } from '../components/library/ActionButton.tsx'
 
 type EmployeeWithPresence = RenderedEmployee & {
   at_work: boolean
@@ -87,7 +86,7 @@ function ParticipantOption({
 export default function InviteParticipantsList({
   facility_employees,
   hospital_employees,
-  hangout_link,
+  // hangout_link,
 }: {
   facility_employees: EmployeeWithPresence[]
   hospital_employees: EmployeeWithPresence[]
@@ -103,73 +102,73 @@ export default function InviteParticipantsList({
         Invite Participants to Consultation
       </h1>
 
-        <div className='space-y-6'>
-          {facility_employees.length > 0 && (
-            <div>
-              <h2 className='text-lg font-semibold text-gray-900 mb-3'>
-                Your Facility
-              </h2>
-              <fieldset className='grid grid-cols-1 gap-2'>
-                {facility_employees.map((employee) => (
-                  <ParticipantOption
-                    key={employee.employee_id}
-                    employee={employee}
-                    selected={selected.value.has(employee)}
-                    toggleSelection={() => {
-                      const new_selected = new Set(selected.value)
-                      if (selected.value.has(employee)) {
-                        new_selected.delete(employee)
-                      } else {
-                        new_selected.add(employee)
-                      }
-                      selected.value = new_selected
-                    }}
-                  />
-                ))}
-              </fieldset>
-            </div>
-          )}
+      <div className='space-y-6'>
+        {facility_employees.length > 0 && (
+          <div>
+            <h2 className='text-lg font-semibold text-gray-900 mb-3'>
+              Your Facility
+            </h2>
+            <fieldset className='grid grid-cols-1 gap-2'>
+              {facility_employees.map((employee) => (
+                <ParticipantOption
+                  key={employee.employee_id}
+                  employee={employee}
+                  selected={selected.value.has(employee)}
+                  toggleSelection={() => {
+                    const new_selected = new Set(selected.value)
+                    if (selected.value.has(employee)) {
+                      new_selected.delete(employee)
+                    } else {
+                      new_selected.add(employee)
+                    }
+                    selected.value = new_selected
+                  }}
+                />
+              ))}
+            </fieldset>
+          </div>
+        )}
 
-          {hospital_employees.length > 0 && (
-            <div>
-              <h2 className='text-lg font-semibold text-gray-900 mb-3'>
-                Nearest Hospital
-              </h2>
-              <fieldset className='grid grid-cols-1 gap-2'>
-                {hospital_employees.map((employee) => (
-                  <ParticipantOption
-                    key={employee.employee_id}
-                    employee={employee}
-                    selected={selected.value.has(employee)}
-                    toggleSelection={() => {
-                      const new_selected = new Set(selected.value)
-                      if (selected.value.has(employee)) {
-                        new_selected.delete(employee)
-                      } else {
-                        new_selected.add(employee)
-                      }
-                      selected.value = new_selected
-                    }}
-                  />
-                ))}
-              </fieldset>
-            </div>
-          )}
+        {hospital_employees.length > 0 && (
+          <div>
+            <h2 className='text-lg font-semibold text-gray-900 mb-3'>
+              Nearest Hospital
+            </h2>
+            <fieldset className='grid grid-cols-1 gap-2'>
+              {hospital_employees.map((employee) => (
+                <ParticipantOption
+                  key={employee.employee_id}
+                  employee={employee}
+                  selected={selected.value.has(employee)}
+                  toggleSelection={() => {
+                    const new_selected = new Set(selected.value)
+                    if (selected.value.has(employee)) {
+                      new_selected.delete(employee)
+                    } else {
+                      new_selected.add(employee)
+                    }
+                    selected.value = new_selected
+                  }}
+                />
+              ))}
+            </fieldset>
+          </div>
+        )}
 
-          {all_employees.length === 0 && (
-            <p className='text-gray-500 text-center py-8'>
-              No health workers available at this time.
-            </p>
-          )}
+        {all_employees.length === 0 && (
+          <p className='text-gray-500 text-center py-8'>
+            No health workers available at this time.
+          </p>
+        )}
 
-          {selected.value.size > 0 && (
-            <input
-              type='hidden'
-              name='participant_emails'
-              value={JSON.stringify([...selected.value].map((p) => p.email))}
-            />
-          )}
-        </div>
+        {selected.value.size > 0 && (
+          <input
+            type='hidden'
+            name='participant_emails'
+            value={JSON.stringify([...selected.value].map((p) => p.email))}
+          />
+        )}
+      </div>
     </div>
   )
 }

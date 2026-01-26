@@ -14,9 +14,13 @@ function initialAlert(url: URL): Alert | null {
   const error = url.searchParams.get('error')
   const warning = url.searchParams.get('warning')
   const success = url.searchParams.get('success')
+  const alert = url.searchParams.has('alert') ? JSON.parse(url.searchParams.get('alert')!) : null
 
-  const flags = Number(!!error) + Number(!!warning) + Number(!!success)
+  const flags = Number(!!error) + Number(!!warning) + Number(!!success) + Number(!!alert)
   assert(flags <= 1, 'Cannot have more than one of success, error, or warning')
+  if (alert) {
+    return alert
+  }
   if (error) {
     return { message: error, level: 'error' }
   }

@@ -10,8 +10,6 @@ import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_presence } from '../../../../../../../db/models/patient_presence.ts'
-import { UpdateShape } from '../../../../../../../types.ts'
-import { DB } from '../../../../../../../db.d.ts'
 
 const StartWorkflowSchema = z.object({
   workflow: z.enum([
@@ -29,7 +27,8 @@ export async function startWorkflow<T>(
   workflow: Workflow,
   opts: {
     planning: 'create_if_unplanned' | 'only_if_planned'
-  }
+    patient_presence: 'move_into_specificed_workflow' | 'leave_in_current_workflow'
+  },
 ) {
   const { trx, organization_employment, encounter } = ctx.state
 
@@ -46,9 +45,9 @@ export async function startWorkflow<T>(
     const patient_workflow = await patient_workflows.insertOne(
       trx,
       {
-        workflow, 
-        patient_encounter_id: ctx.state.patient_encounter_id
-      }
+        workflow,
+        patient_encounter_id: ctx.state.patient_encounter_id,
+      },
     )
     workflow_status = {
       patient_workflow_id: patient_workflow.id,
@@ -80,16 +79,17 @@ export async function startWorkflow<T>(
     },
   )
 
-  const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
-    current_workflow: workflow,
-    department_name: department_handling_workflow,
-    next_workflow: null,
+  if (opts.patient_presence === 'move_into_specificed_workflow') {
+    await patient_presence.set(
+      ctx.state.trx,
+      encounter.patient.id,
+      {
+        current_workflow: workflow,
+        department_name: department_handling_workflow,
+        next_workflow: null,
+      },
+    )
   }
-  await patient_presence.set(
-    ctx.state.trx,
-    encounter.patient.id,
-    patient_presence_updates,
-  )
 
   const first_incomplete_step = WORKFLOW_STEPS[workflow].find((s) => {
     if (arrayIsEmpty(workflow_status.steps_completed)) return true
@@ -108,5 +108,10 @@ export async function startWorkflow<T>(
 
 export const handler = postHandler(
   StartWorkflowSchema,
-  (ctx: OpenEncounterContext, { workflow }) => startWorkflow(ctx, workflow, { planning: 'only_if_planned' }).then(redirect),
+  (ctx: OpenEncounterContext, { workflow }) =>
+    startWorkflow(
+      ctx,
+      workflow,
+      { planning: 'only_if_planned', patient_presence: 'move_into_specificed_workflow' },
+    ).then(redirect),
 )

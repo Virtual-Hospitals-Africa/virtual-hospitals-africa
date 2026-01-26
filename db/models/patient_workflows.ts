@@ -151,7 +151,7 @@ export const patient_workflows = {
   },
   insertMany(
     trx: TrxOrDb,
-    to_insert:  InsertObject<
+    to_insert: InsertObject<
       DB,
       'patient_workflows'
     >[],
@@ -161,10 +161,10 @@ export const patient_workflows = {
   },
   insertOne(
     trx: TrxOrDb,
-    to_insert: InsertObject<DB, 'patient_workflows'>
+    to_insert: InsertObject<DB, 'patient_workflows'>,
   ) {
-    return trx.
-      insertInto('patient_workflows')
+    return trx
+      .insertInto('patient_workflows')
       .values(to_insert)
       .returning('id')
       .executeTakeFirstOrThrow()

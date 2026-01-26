@@ -8,7 +8,6 @@ import { HealthWorkerGoogleClient } from '../../../../../../../external-clients/
 import { employeeDisplay } from '../../../../../../../util/healthWorkerDisplay.ts'
 import selfUrl from '../../../../../../../util/selfUrl.ts'
 import redirect from '../../../../../../../util/redirect.ts'
-import { path } from '../../../../../../../util/path.ts'
 // import { employeeDisplay } from '../../../../../util/healthWorkerDisplay.ts'
 // import selfUrl from '../../../../../util/selfUrl.ts'
 
@@ -30,13 +29,13 @@ export const handler = postHandler(
 
     const patient_link = selfUrl() + `/app/patients/${patient_id}`
 
-    const next_url = await startWorkflow(ctx, 'create_google_meet', { planning: 'create_if_unplanned' })
+    const next_url = await startWorkflow(ctx, 'create_google_meet', { planning: 'create_if_unplanned', patient_presence: 'leave_in_current_workflow' })
 
     const google_meet = await google_client.createGoogleMeet({
       summary: `${consultation_text} with ${display_name}`,
       description: `Concerning patient ${patient_link}`,
     })
 
-    return redirect(path(next_url, google_meet))
+    return redirect(next_url, google_meet)
   },
 )
