@@ -7,7 +7,7 @@ import { assertAllJohannesburg, convertToTime, formatJohannesburg, todayISOInJoh
 import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
 import { parseDateTime } from '../../../../util/date.ts'
-import { ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs } from '../../../logged-in.tsx'
+import {} from '../../../logged-in.tsx'
 import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
 import { forEach } from '../../../../util/inParallel.ts'
 import { postHandler } from '../../../../backend/postHandler.ts'
@@ -131,11 +131,7 @@ async function writeCalendarsToGoogle(
   )
 
   if (!gcal_availability_calendar_id) {
-    const [calendars] = await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
-      ctx.state.trx,
-      google_client,
-      [ctx.state.organization.id],
-    )
+    const calendars = await google_client.ensureHasAppointmentsAndAvailabilityCalendars(ctx.state.organization)
     await employment_calendars.add(
       ctx.state.trx,
       [{
