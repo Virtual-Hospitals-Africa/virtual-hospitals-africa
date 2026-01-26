@@ -47,6 +47,7 @@ const ONLY_WHEN_PREGNANCY_STATUS = {
 export function asWarningSigns(
   sign_keys: Array<keyof typeof KEYED_WARNING_SIGNS>,
   opts: { pregnant: boolean },
+  ...other_finding_s_expressions: string[]
 ): z.input<typeof TriageWarningSignsSchema> {
   return { warning_signs: fromEntries(applicableWarningSigns()) }
 

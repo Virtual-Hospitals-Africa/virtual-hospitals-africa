@@ -1,7 +1,9 @@
 import db from '../../db/db.ts'
-import type { Handlers } from 'fresh/compat'
 import type { SnomedCategory } from '../../db.d.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import { sql } from 'kysely'
+import { asText } from '../../db/helpers.ts'
+import { Context } from 'fresh'
 
 const MCP_VERSION = '2024-11-05'
 
@@ -24,28 +26,33 @@ type JsonRpcResponse = {
 }
 
 type SnomedResult = {
-  snomed_concept_id: string
+  id: string
   name: string
   category: SnomedCategory
 }
 
-async function searchSnomed(
+function searchSnomed(
   query: string,
   limit = 20,
 ): Promise<SnomedResult[]> {
-  const results = await db
+  return db
     .selectFrom('snomed_inferred_canonical_name_and_category')
-    .select(['id', 'name', 'category'])
+    .innerJoin(
+      'snomed_description',
+      'snomed_inferred_canonical_name_and_category.id',
+      'snomed_description.concept_id',
+    )
+    .select(eb => [
+      asText(eb, 'snomed_inferred_canonical_name_and_category.id').as('id'),
+      'snomed_inferred_canonical_name_and_category.name',
+      'snomed_inferred_canonical_name_and_category.category',
+    ])
     .where('name', 'ilike', `%${query}%`)
-    .orderBy('name', 'asc')
+    .where(sql<boolean>`term % ${query}`)
+    .groupBy('snomed_inferred_canonical_name_and_category.id')
+    .orderBy(sql<number>`max(similarity(term, ${query}))`, 'desc')
     .limit(limit)
     .execute()
-
-  return results.map((row) => ({
-    snomed_concept_id: String(row.id),
-    name: row.name,
-    category: row.category,
-  }))
 }
 
 function createResponse(
@@ -103,7 +110,7 @@ async function handleRequest(
         tools: [
           {
             name: 'search_snomed',
-            description: 'Search for SNOMED CT concepts by name. Returns snomed_concept_id, name, and category for matching concepts.',
+            description: 'Search for SNOMED CT concepts by name. Returns id, name, and category for matching concepts.',
             inputSchema: {
               type: 'object',
               properties: {
@@ -163,8 +170,8 @@ async function handleRequest(
   }
 }
 
-export const handler: Handlers = {
-  async POST(ctx) {
+export const handler = {
+  async POST(ctx: Context<unknown>) {
     const body: JsonRpcRequest = await ctx.req.json()
     const response = await handleRequest(body)
 
@@ -178,7 +185,7 @@ export const handler: Handlers = {
     })
   },
 
-  GET(_ctx) {
+  GET(_ctx: Context<unknown>) {
     return new Response(
       JSON.stringify({
         name: 'vha-snomed-server',
