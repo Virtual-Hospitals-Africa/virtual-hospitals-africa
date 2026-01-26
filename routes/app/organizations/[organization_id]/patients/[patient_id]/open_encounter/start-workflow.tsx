@@ -9,6 +9,7 @@ import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_presence } from '../../../../../../../db/models/patient_presence.ts'
+import { WorkflowStatus } from '../../../../../../../types.ts'
 
 const StartWorkflowSchema = z.object({
   workflow: z.enum([
@@ -25,9 +26,8 @@ export async function startWorkflow<T>(
   ctx: OpenEncounterContext<T>,
   workflow: Workflow,
   opts: {
-    planning: 'create_if_unplanned' | 'only_if_planned'
+    planning: 'create_anew_every_time' | 'do_not_create_only_start_if_already_planned'
     patient_presence: 'move_into_specificed_workflow' | 'leave_in_current_workflow'
-    workflow_frequency: 'only_once_per_encounter' | 'multiple_times_allowed'
   },
 ) {
   const { trx, organization_employment, encounter } = ctx.state
@@ -39,26 +39,27 @@ export async function startWorkflow<T>(
     `You must be employed in the ${WORKFLOW_DEPARTMENTS[workflow].join(' or ')} department to start ${workflow}`,
   )
 
-  let workflow_status = encounter.workflows[workflow]
-  if (!workflow_status) {
-    assertOr400(opts.planning !== 'only_if_planned', `${workflow} workflow not planned`)
-    const patient_workflow = await patient_workflows.insertOne(
-      trx,
-      {
-        workflow,
-        patient_encounter_id: ctx.state.patient_encounter_id,
-      },
-    )
-    workflow_status = {
-      patient_workflow_id: patient_workflow.id,
+  const do_create_workflow = !encounter.workflows[workflow] || opts.planning === 'create_anew_every_time'
+  const created_workflow = do_create_workflow && await patient_workflows.insertOne(
+    trx,
+    {
       workflow,
-      status: 'not started',
+      patient_encounter_id: ctx.state.patient_encounter_id,
+    },
+  )
+  const workflow_status: WorkflowStatus | undefined = created_workflow
+    ? {
+      patient_workflow_id: created_workflow.id,
+      workflow,
+      status: 'not started' as const,
       steps_completed: [],
       seen_patient_encounter_employee_ids: [],
     }
-  }
+    : encounter.workflows[workflow]
 
-  if (opts.workflow_frequency === 'only_once_per_encounter') {
+  assertOr400(workflow_status, `${workflow} workflow not planned`)
+
+  if (opts.planning === 'do_not_create_only_start_if_already_planned') {
     assertOr400(
       workflow_status.status !== 'completed',
       `${workflow} workflow already completed`,
@@ -98,7 +99,7 @@ export async function startWorkflow<T>(
     return !workflow_status.steps_completed.includes(s)
   })
 
-  if (opts.workflow_frequency === 'only_once_per_encounter') {
+  if (opts.planning === 'do_not_create_only_start_if_already_planned') {
     assert(
       first_incomplete_step,
       'There must be some incomplete step if the workflow is not completed',
@@ -115,9 +116,8 @@ export const handler = postHandler(
       ctx,
       workflow,
       {
-        planning: 'only_if_planned',
+        planning: 'do_not_create_only_start_if_already_planned',
         patient_presence: 'move_into_specificed_workflow',
-        workflow_frequency: 'only_once_per_encounter',
       },
     ).then(redirect),
 )

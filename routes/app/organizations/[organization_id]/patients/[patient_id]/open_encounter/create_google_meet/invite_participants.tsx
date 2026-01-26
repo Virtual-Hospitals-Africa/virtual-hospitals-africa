@@ -10,6 +10,7 @@ import { TEST_ORGANIZATION_UUIDS } from 'test/_helpers/organizations.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+import { pluralize } from '../../../../../../../../util/pluralize.ts'
 
 type EmployeeWithPresence = RenderedEmployee & {
   at_work: boolean
@@ -78,11 +79,12 @@ export const handler = postHandler(
       alert(
         {
           level: 'success',
-          message: `Invited ${form_values.participant_emails.length} participant${form_values.participant_emails.length === 1 ? '' : 's'} to the consultation`,
+          message: `Invited ${pluralize('participant', form_values.participant_emails.length)} to the consultation`,
           actions: [
             {
-              text: 'Join',
+              text: 'Join the call',
               href: hangout_link,
+              target: '_blank',
             },
           ],
         },
@@ -105,6 +107,8 @@ async function CreateGoogleMeetInviteParticipantsPage(
   assertOr400(event_id, 'event_id is required')
 
   const { facility_employees, hospital_employees } = await getEmployeesWithPresence(ctx)
+
+  console.log('mwelklwek', ctx.state.encounter.workflows.create_google_meet)
 
   return (
     <InviteParticipantsList

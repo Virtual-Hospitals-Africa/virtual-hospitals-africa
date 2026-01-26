@@ -26,6 +26,7 @@ function actionButtonProps(
   }
   return {
     href,
+    target: action.target,
   }
 }
 
