@@ -108,8 +108,6 @@ async function CreateGoogleMeetInviteParticipantsPage(
 
   const { facility_employees, hospital_employees } = await getEmployeesWithPresence(ctx)
 
-  console.log('mwelklwek', ctx.state.encounter.workflows.create_google_meet)
-
   return (
     <InviteParticipantsList
       facility_employees={facility_employees}
