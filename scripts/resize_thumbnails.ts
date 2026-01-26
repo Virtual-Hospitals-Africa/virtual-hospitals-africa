@@ -12,6 +12,9 @@
  *   - ImageMagick (convert command) must be installed
  */
 
+import { runCommandAssertExitCodeZero } from '../util/command.ts'
+import sortBy from '../util/sortBy.ts'
+
 const DEFAULT_WIDTH = 150
 const SOURCE_DIR = 'static/medical-resources/za/primary-care/adult/thumbnails'
 
@@ -19,8 +22,7 @@ async function main() {
   const target_width = parseInt(Deno.args[0] || String(DEFAULT_WIDTH))
 
   if (isNaN(target_width) || target_width <= 0) {
-    console.error('Error: Width must be a positive number')
-    Deno.exit(1)
+    throw new Error('Width must be a positive number')
   }
 
   const target_dir = `${SOURCE_DIR}/${target_width}`
@@ -30,53 +32,33 @@ async function main() {
   console.log(`Target: ${target_dir}\n`)
 
   // Check if ImageMagick is available
-  try {
-    const check = await new Deno.Command('convert', {
-      args: ['-version'],
-      stdout: 'null',
-      stderr: 'null',
-    }).output()
+  const check = await new Deno.Command('convert', {
+    args: ['-version'],
+    stdout: 'null',
+    stderr: 'null',
+  }).output()
 
-    if (!check.success) {
-      throw new Error('ImageMagick not available')
-    }
-  } catch {
-    console.error('Error: ImageMagick is not installed or not in PATH')
-    console.error('Install with: brew install imagemagick')
-    Deno.exit(1)
+  if (!check.success) {
+    throw new Error('ImageMagick not available')
   }
 
   // Create target directory
-  try {
-    await Deno.mkdir(target_dir, { recursive: true })
-  } catch (error) {
-    console.error(`Error creating directory ${target_dir}:`, error)
-    Deno.exit(1)
-  }
+  await Deno.mkdir(target_dir, { recursive: true })
 
   // Get all PNG files
-  const files: string[] = []
-  try {
-    for await (const entry of Deno.readDir(SOURCE_DIR)) {
-      if (entry.isFile && entry.name.endsWith('.png')) {
-        files.push(entry.name)
-      }
+  const files_unsorted: string[] = []
+  for await (const entry of Deno.readDir(SOURCE_DIR)) {
+    if (entry.isFile && entry.name.endsWith('.png')) {
+      files_unsorted.push(entry.name)
     }
-  } catch (error) {
-    console.error(`Error reading directory ${SOURCE_DIR}:`, error)
-    Deno.exit(1)
   }
 
-  if (files.length === 0) {
+  if (files_unsorted.length === 0) {
     console.log('No PNG files found to resize')
     return
   }
 
-  files.sort((a, b) => {
-    const numA = parseInt(a.replace('.png', ''))
-    const numB = parseInt(b.replace('.png', ''))
-    return numA - numB
-  })
+  const files = sortBy(files_unsorted, (file) => parseInt(file.replace('.png', '')))
 
   console.log(`Found ${files.length} PNG files to resize\n`)
 
@@ -90,7 +72,7 @@ async function main() {
     // -resize: resize to width, maintain aspect ratio
     // -strip: remove metadata to reduce file size
     // -quality: PNG quality setting
-    const command = new Deno.Command('convert', {
+    await runCommandAssertExitCodeZero('convert', {
       args: [
         source_path,
         '-resize',
@@ -101,13 +83,6 @@ async function main() {
       stdout: 'null',
       stderr: 'piped',
     })
-
-    const output = await command.output()
-
-    if (!output.success) {
-      const errorText = new TextDecoder().decode(output.stderr)
-      throw new Error(errorText)
-    }
 
     processed++
 
@@ -120,10 +95,10 @@ async function main() {
   console.log(`\nComplete!`)
   console.log(`Successfully processed: ${processed}`)
 
-  const firstFile = files[0]
-  const sourceStats = await Deno.stat(`${SOURCE_DIR}/${firstFile}`)
-  const targetStats = await Deno.stat(`${target_dir}/${firstFile}`)
-  const reduction = ((1 - targetStats.size / sourceStats.size) * 100).toFixed(
+  const first_file = files[0]
+  const source_stats = await Deno.stat(`${SOURCE_DIR}/${first_file}`)
+  const target_stats = await Deno.stat(`${target_dir}/${first_file}`)
+  const reduction = ((1 - target_stats.size / source_stats.size) * 100).toFixed(
     1,
   )
   console.log(`\nExample size reduction: ~${reduction}% smaller`)
