@@ -19,7 +19,7 @@ import isObjectLike from '../util/isObjectLike.ts'
 import memoize from '../util/memoize.ts'
 import selfUrl from '../util/selfUrl.ts'
 import { assertOr401 } from '../util/assertOr.ts'
-import { health_worker_google_tokens } from '../db/models/health_worker_google_tokens.ts'
+
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 
 const google_apis_url = 'https://www.googleapis.com'

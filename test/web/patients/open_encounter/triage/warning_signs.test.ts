@@ -297,7 +297,7 @@ describeParallel('triage/warning_signs', () => {
                     'type': 'link',
                     'title': 'Seizures page',
                     'href': '/medical-resources/primary-care/adult.pdf#page=19',
-                    'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/19.png',
+                    'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/150/19.png',
                   },
                   'evaluations': [
                     {
