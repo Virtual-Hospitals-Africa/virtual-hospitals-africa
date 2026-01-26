@@ -53,7 +53,7 @@ export const uri = DATABASE_URL
 export const opts = uri ? parseConnectionString(uri) : null
 
 const LOG_ALL_QUERIES = Deno.env.has('LOG_ALL_QUERIES')
-const LOG_POOL_EVENTS = true || Deno.env.has('LOG_POOL_EVENTS')
+const LOG_POOL_EVENTS = Deno.env.has('LOG_POOL_EVENTS')
 
 // Create pool separately so we can attach event listeners
 const pool = NO_EXTERNAL_CONNECT ? null : new Pool(opts || {})
