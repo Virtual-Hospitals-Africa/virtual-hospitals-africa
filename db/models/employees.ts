@@ -1,17 +1,22 @@
 import { sql } from 'kysely'
 import { EmployedHealthWorker, RenderedEmployee, TrxOrDb } from '../../types.ts'
 import { health_workers, type HealthWorkerSearch } from './health_workers.ts'
-import { base } from './_base.ts'
+import { base, identity } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 import isString from '../../util/isString.ts'
 import { Workflow } from '../../shared/workflow.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { exists } from '../../util/exists.ts'
 import matching from '../../util/matching.ts'
 
-function baseQuery(trx: TrxOrDb) {
-  return health_workers.baseQuery(trx)
+export type EmployeesSearch = HealthWorkerSearch & {
+  // TODO
+  include_incomplete_registration?: boolean
+  can_perform_workflow?: Workflow
+}
+
+function baseQuery(trx: TrxOrDb, opts: EmployeesSearch) {
+  let qb = health_workers.baseQuery(trx)
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
     .select([
       'employment.id as employee_id',
@@ -23,6 +28,61 @@ function baseQuery(trx: TrxOrDb) {
         '/app/organizations/' || employment.organization_id::text || '/employees/' || employment.health_worker_id::text
       `.as('href'),
     ])
+
+  if (opts.search) {
+    qb = qb.where('health_workers.name', 'ilike', `%${opts.search}%`)
+  }
+
+  if (opts.professions) {
+    assertOr400(opts.professions.length > 0, 'professions must not be empty')
+    qb = qb.where(
+      'employment.profession',
+      'in',
+      opts.professions,
+    )
+  }
+
+  if (opts.organization_id) {
+    qb = qb.where(
+      'employment.organization_id',
+      'in',
+      isString(opts.organization_id) ? [opts.organization_id] : opts.organization_id,
+    )
+  }
+
+  if (opts.prioritize_organization_id) {
+    qb = qb.orderBy(
+      (eb) =>
+        eb(
+          'employment.organization_id',
+          '=',
+          opts.prioritize_organization_id!,
+        ),
+      'desc',
+    )
+  }
+
+  if (opts.can_perform_workflow) {
+    const department = WORKFLOW_DEPARTMENTS[opts.can_perform_workflow]
+
+    qb = qb.innerJoin(
+      'department_employment',
+      'department_employment.employment_id',
+      'employment.id',
+    )
+      .innerJoin(
+        'organization_departments',
+        'organization_departments.id',
+        'department_employment.department_id',
+      )
+      .where('organization_departments.name', '=', department)
+  }
+
+  if (opts.excluding_health_worker_id) {
+    qb = qb.where('health_workers.id', '!=', opts.excluding_health_worker_id)
+  }
+
+  return qb
 }
 
 function fromHealthWorker(
@@ -48,72 +108,6 @@ function fromHealthWorker(
 export const employees = base({
   top_level_table: 'employment',
   baseQuery,
-  formatResult: (
-    { organizations, ...employee },
-  ): RenderedEmployee => {
-    assertArrayNonEmpty(organizations)
-    return {
-      ...employee,
-      organizations,
-    }
-  },
-  handleSearch(
-    qb,
-    opts: HealthWorkerSearch & {
-      // TODO
-      include_incomplete_registration?: boolean
-      can_perform_workflow?: Workflow
-    },
-  ) {
-    if (opts.search) {
-      qb = qb.where('health_workers.name', 'ilike', `%${opts.search}%`)
-    }
-
-    if (opts.professions) {
-      assertOr400(opts.professions.length > 0, 'professions must not be empty')
-      qb = qb.where(
-        'employment.profession',
-        'in',
-        opts.professions,
-      )
-    }
-
-    if (opts.organization_id) {
-      qb = qb.where(
-        'employment.organization_id',
-        'in',
-        isString(opts.organization_id) ? [opts.organization_id] : opts.organization_id,
-      )
-    }
-
-    if (opts.prioritize_organization_id) {
-      qb = qb.orderBy(
-        (eb) =>
-          eb(
-            'employment.organization_id',
-            '=',
-            opts.prioritize_organization_id!,
-          ),
-        'desc',
-      )
-    }
-    if (opts.can_perform_workflow) {
-      const department = WORKFLOW_DEPARTMENTS[opts.can_perform_workflow]
-
-      qb = qb.innerJoin(
-        'department_employment',
-        'department_employment.employment_id',
-        'employment.id',
-      )
-        .innerJoin(
-          'organization_departments',
-          'organization_departments.id',
-          'department_employment.department_id',
-        )
-        .where('organization_departments.name', '=', department)
-    }
-
-    return qb
-  },
+  formatResult: identity,
   fromHealthWorker,
 })

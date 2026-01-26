@@ -7,7 +7,7 @@ export const patient_primary_doctor = {
     trx: TrxOrDb,
     { patient_id }: { patient_id: string },
   ) {
-    return employees.baseQuery(trx)
+    return employees.baseQuery(trx, {})
       .where(
         'employment.id',
         '=',

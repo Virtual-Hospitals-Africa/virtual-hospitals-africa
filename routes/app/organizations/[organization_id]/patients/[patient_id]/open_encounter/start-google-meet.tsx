@@ -29,7 +29,15 @@ export const handler = postHandler(
 
     const patient_link = selfUrl() + `/app/patients/${patient_id}`
 
-    const next_url = await startWorkflow(ctx, 'create_google_meet', { planning: 'create_if_unplanned', patient_presence: 'leave_in_current_workflow' })
+    const next_url = await startWorkflow(
+      ctx,
+      'create_google_meet',
+      {
+        planning: 'create_if_unplanned',
+        patient_presence: 'leave_in_current_workflow',
+        workflow_frequency: 'multiple_times_allowed',
+      },
+    )
 
     const google_meet = await google_client.createGoogleMeet({
       summary: `${consultation_text} with ${display_name}`,
