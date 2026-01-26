@@ -45,10 +45,9 @@ function getEmployeesWithPresence(
 export const handler = postHandler(
   InviteParticipantsSchema,
   async (ctx, form_values) => {
-    const url = new URL(ctx.req.url)
-    const hangout_link = url.searchParams.get('hangout_link')
-    const html_link = url.searchParams.get('html_link')
-    const event_id = url.searchParams.get('event_id')
+    const hangout_link = ctx.url.searchParams.get('hangout_link')
+    const html_link = ctx.url.searchParams.get('html_link')
+    const event_id = ctx.url.searchParams.get('event_id')
 
     assertOr400(hangout_link, 'hangout_link is required')
     assertOr400(html_link, 'html_link is required')
@@ -97,10 +96,9 @@ export const handler = postHandler(
 async function CreateGoogleMeetInviteParticipantsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const url = new URL(ctx.req.url)
-  const hangout_link = url.searchParams.get('hangout_link')
-  const html_link = url.searchParams.get('html_link')
-  const event_id = url.searchParams.get('event_id')
+  const hangout_link = ctx.url.searchParams.get('hangout_link')
+  const html_link = ctx.url.searchParams.get('html_link')
+  const event_id = ctx.url.searchParams.get('event_id')
 
   assertOr400(hangout_link, 'hangout_link is required')
   assertOr400(html_link, 'html_link is required')

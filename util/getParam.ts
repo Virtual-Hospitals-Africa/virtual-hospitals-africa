@@ -1,5 +1,6 @@
 import { Context } from 'fresh'
 import { assertOr400, assertOr404 } from './assertOr.ts'
+import fromEntries from './fromEntries.ts'
 
 export function getParam(
   ctx: Context<unknown> | URLSearchParams,
@@ -17,6 +18,14 @@ export function getRequiredParam(
   const param = getParam(ctx, param_name)
   assertOr404(param, `Missing required parameter: ${param_name}`)
   return param
+}
+
+export function getRequiredParams<Param extends string>(
+  // deno-lint-ignore no-explicit-any
+  ctx: Context<any> | URLSearchParams,
+  ...param_names: Param[]
+): { [p in Param]: string } {
+  return fromEntries(param_names.map(param => [param, getRequiredParam(ctx, param)]))
 }
 
 const uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/

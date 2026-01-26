@@ -68,9 +68,6 @@ export class GoogleClient {
     console.log(
       `${method} ${url}`,
       ...(opts?.data ? [JSON.stringify(opts?.data)] : []),
-      {
-        Authorization: `Bearer ${this.tokens.access_token}`,
-      },
     )
     const response = await fetch(url, {
       method,
