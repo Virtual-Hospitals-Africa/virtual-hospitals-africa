@@ -347,10 +347,10 @@ export class GoogleClient {
     return this.makeRequest('/oauth2/v3/userinfo')
   }
 
-  async createGoogleMeet(
-    summary: string,
-    description?: string,
-  ): Promise<{ hangoutLink: string; htmlLink: string }> {
+  async createGoogleMeet(details: {
+    summary: string
+    description?: string
+  }): Promise<{ hangoutLink: string; htmlLink: string }> {
     const start = new Date()
     const end = new Date(start.getTime() + 60 * 60 * 1000)
 
@@ -359,8 +359,7 @@ export class GoogleClient {
       {
         method: 'post',
         data: {
-          summary,
-          description,
+          ...details,
           start: {
             dateTime: start.toISOString(),
             timeZone: 'Africa/Johannesburg',
@@ -388,6 +387,22 @@ export class GoogleClient {
       hangoutLink: event.hangoutLink,
       htmlLink: event.htmlLink,
     }
+  }
+
+  sendCalendarInvite(details: {
+    summary: string
+    description?: string
+    start: { dateTime: string; timeZone: string }
+    end: { dateTime: string; timeZone: string }
+    attendees: Array<{ email: string }>
+  }): Promise<GCalEvent> {
+    return this.makeCalendarRequest(
+      '/calendars/primary/events?sendUpdates=all',
+      {
+        method: 'post',
+        data: details,
+      },
+    )
   }
 }
 

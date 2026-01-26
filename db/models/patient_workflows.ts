@@ -149,14 +149,24 @@ export const patient_workflows = {
       .onConflict((oc) => oc.constraint('patient_workflows_started_once').doNothing())
       .execute()
   },
-  insert(
+  insertMany(
     trx: TrxOrDb,
-    to_insert: InsertObject<DB, 'patient_workflows'> | InsertObject<
+    to_insert:  InsertObject<
       DB,
       'patient_workflows'
     >[],
   ) {
     return trx.insertInto('patient_workflows')
       .values(to_insert).execute()
+  },
+  insertOne(
+    trx: TrxOrDb,
+    to_insert: InsertObject<DB, 'patient_workflows'>
+  ) {
+    return trx.
+      insertInto('patient_workflows')
+      .values(to_insert)
+      .returning('id')
+      .executeTakeFirstOrThrow()
   },
 }

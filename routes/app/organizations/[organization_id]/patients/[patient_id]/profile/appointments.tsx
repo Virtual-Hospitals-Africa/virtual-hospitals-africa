@@ -72,12 +72,12 @@ export default PatientProfilePage(
           start: parseDateTime(appt.start),
           end: parseDateTime(appt.end),
           providers: appt.providers,
-          physicalLocation: organizations_with_addresses.length
+          physical_location: organizations_with_addresses.length
             ? {
               organization: organizations_with_addresses[0],
             }
             : undefined,
-          virtualLocation: gcal_item.hangoutLink
+          virtual_location: gcal_item.hangoutLink
             ? {
               href: gcal_item.hangoutLink,
             }

@@ -138,8 +138,6 @@ function SelectOrganization(
     organizations: OrganizationLike[]
   },
 ) {
-  const organziation = useSignal(organizations[0])
-
   return (
     <div
       className={cls(
@@ -151,9 +149,6 @@ function SelectOrganization(
       <FormRow className='mt-2'>
         <OrganizationsSelect
           organizations={organizations}
-          onSelect={(org) => {
-            organziation.value = org
-          }}
         />
       </FormRow>
       <div className='flex mt-10'>
