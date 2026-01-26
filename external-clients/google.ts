@@ -62,11 +62,15 @@ export class GoogleClient {
     if (Deno.env.get('IS_TEST')) {
       return testServerMock(path, opts)
     }
+
     const url = `${google_apis_url}${path}`
     const method = opts?.method || 'get'
     console.log(
       `${method} ${url}`,
       ...(opts?.data ? [JSON.stringify(opts?.data)] : []),
+      {
+        Authorization: `Bearer ${this.tokens.access_token}`,
+      },
     )
     const response = await fetch(url, {
       method,
@@ -278,34 +282,27 @@ export class GoogleClient {
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(
-    organizations: { id: string; name: string }[],
+    organization: { id: string; name: string },
   ): Promise<{
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
-  }[]> {
+  }> {
     const { items } = await this.getCalendarList()
 
-    const calendars: {
-      gcal_appointments_calendar_id: string
-      gcal_availability_calendar_id: string
-    }[] = []
-    for (const organization of organizations) {
-      const appointments_calendar_name = `${organization.name} Appointments`
-      const availability_calendar_name = `${organization.name} Availability`
-      const appointments_calendar = await this.ensureCalendarExists(
-        items,
-        appointments_calendar_name,
-      )
-      const availability_calendar = await this.ensureCalendarExists(
-        items,
-        availability_calendar_name,
-      )
-      calendars.push({
-        gcal_appointments_calendar_id: appointments_calendar.id,
-        gcal_availability_calendar_id: availability_calendar.id,
-      })
+    const appointments_calendar_name = `${organization.name} Appointments`
+    const availability_calendar_name = `${organization.name} Availability`
+    const appointments_calendar = await this.ensureCalendarExists(
+      items,
+      appointments_calendar_name,
+    )
+    const availability_calendar = await this.ensureCalendarExists(
+      items,
+      availability_calendar_name,
+    )
+    return {
+      gcal_appointments_calendar_id: appointments_calendar.id,
+      gcal_availability_calendar_id: availability_calendar.id,
     }
-    return calendars
   }
 
   async getFreeBusy({
@@ -447,12 +444,6 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     },
   ) {
     super(health_worker)
-    assert(
-      health_worker_google_tokens.isHealthWorkerWithGoogleTokens(
-        this.health_worker,
-      ),
-      'You must have google tokens to use this client',
-    )
   }
 
   static async fromHealthWorkerContext<T>(
@@ -464,6 +455,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
       'health_worker',
       id,
     )
+    console.log({ tokens })
     assertOr401(tokens, `No google tokens found for health worker ${id}`)
     return new HealthWorkerGoogleClient(
       ctx.state.trx,

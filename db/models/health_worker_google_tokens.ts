@@ -79,20 +79,6 @@ export const health_worker_google_tokens = {
         'expires_at',
       ])
   },
-  isHealthWorkerWithGoogleTokens(
-    health_worker: unknown,
-  ): health_worker is HealthWorkerWithGoogleTokens {
-    return (
-      health_workers.isHealthWorker(health_worker) &&
-      'access_token' in health_worker &&
-      typeof health_worker.access_token === 'string' &&
-      'refresh_token' in health_worker &&
-      typeof health_worker.refresh_token === 'string' &&
-      'expires_at' in health_worker &&
-      (typeof health_worker.expires_at === 'string' ||
-        isDate(health_worker.expires_at))
-    )
-  },
   updateAccessToken(
     trx: TrxOrDb,
     health_worker_id: string,

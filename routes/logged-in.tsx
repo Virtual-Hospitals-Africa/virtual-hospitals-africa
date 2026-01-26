@@ -48,22 +48,6 @@ async function downloadAndSaveAvatar(
 const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
 assert(!USE_INVITE_SYSTEM, 'Not supported until further notice.')
 
-export async function ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
-  trx: TrxOrDb,
-  google_client: google.GoogleClient,
-  organization_ids: string[],
-) {
-  const my_orgs = await organizations.getByIds(trx, organization_ids)
-  const calendars = await google_client
-    .ensureHasAppointmentsAndAvailabilityCalendars(my_orgs)
-  return Array.from(zip(my_orgs, calendars)).map((
-    [organization, calendars],
-  ) => ({
-    organization_id: organization.id,
-    ...calendars,
-  }))
-}
-
 export async function initializeHealthWorkerWithoutInvites(
   trx: TrxOrDb,
   google_client: google.GoogleClient,
