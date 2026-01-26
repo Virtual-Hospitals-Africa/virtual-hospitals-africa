@@ -349,6 +349,49 @@ export class GoogleClient {
   getProfile(): Promise<GoogleProfile> {
     return this.makeRequest('/oauth2/v3/userinfo')
   }
+
+  async createGoogleMeet(
+    summary: string,
+    description?: string,
+  ): Promise<{ hangoutLink: string; htmlLink: string }> {
+    const start = new Date()
+    const end = new Date(start.getTime() + 60 * 60 * 1000)
+
+    const event: GCalEvent = await this.makeCalendarRequest(
+      '/calendars/primary/events?conferenceDataVersion=1',
+      {
+        method: 'post',
+        data: {
+          summary,
+          description,
+          start: {
+            dateTime: start.toISOString(),
+            timeZone: 'Africa/Johannesburg',
+          },
+          end: {
+            dateTime: end.toISOString(),
+            timeZone: 'Africa/Johannesburg',
+          },
+          conferenceData: {
+            createRequest: {
+              requestId: crypto.randomUUID(),
+              conferenceSolutionKey: {
+                type: 'hangoutsMeet',
+              },
+            },
+          },
+        },
+      },
+    )
+
+    assert(event.hangoutLink, 'No hangout link in created event')
+    assert(event.htmlLink, 'No html link in created event')
+
+    return {
+      hangoutLink: event.hangoutLink,
+      htmlLink: event.htmlLink,
+    }
+  }
 }
 
 const requests_to_google: [string, RequestOpts | undefined][] = []
