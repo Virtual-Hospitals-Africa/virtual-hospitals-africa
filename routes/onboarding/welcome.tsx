@@ -79,6 +79,12 @@ export const handler = postHandler(
       health_worker_id: health_worker.id,
       is_admin: false,
     })
+
+    await trx.insertInto('employment_presence')
+      .values({
+        id: result.id,
+        at_work: true,
+      }).execute()
     assert(result.id)
 
     return redirect('/app')

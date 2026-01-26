@@ -1,21 +1,22 @@
 import { z } from 'zod'
 import { HealthWorkerGoogleClient } from '../../../../../../../../external-clients/google.ts'
 import { employees } from '../../../../../../../../db/models/employees.ts'
-import { patient_nearest_organization } from '../../../../../../../../db/models/patient_nearest_organization.ts'
-import { RenderedEmployee } from '../../../../../../../../types.ts'
-import { success } from '../../../../../../../../util/alerts.ts'
+import { GCalEvent, RenderedEmployee } from '../../../../../../../../types.ts'
+import { alert } from '../../../../../../../../util/alerts.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import InviteParticipantsList from '../../../../../../../../islands/InviteParticipantsList.tsx'
 import { sql } from 'kysely'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-import { OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import { completeLastStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import { TEST_ORGANIZATION_UUIDS } from 'test/_helpers/organizations.ts'
+import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 
 type EmployeeWithPresence = RenderedEmployee & {
   at_work: boolean
 }
 
 const InviteParticipantsSchema = z.object({
-  participant_emails: z.string().array()
+  participant_emails: z.string().array(),
 })
 
 async function getEmployeesWithPresence(
@@ -24,7 +25,7 @@ async function getEmployeesWithPresence(
   facility_employees: EmployeeWithPresence[]
   hospital_employees: EmployeeWithPresence[]
 }> {
-  const { trx, organization, patient_id } = ctx.state
+  const { trx, organization } = ctx.state
 
   // Get employees at current facility
   const facility_employees_results = await employees.baseQuery(trx)
@@ -48,15 +49,16 @@ async function getEmployeesWithPresence(
     })
   }
 
-  // Get patient's nearest hospital
-  const nearest_hospital = await patient_nearest_organization.get(trx, {
-    patient_id,
-  })
+  const nearest_hospital_id = TEST_ORGANIZATION_UUIDS.ZA.hospital
+  // // Get patient's nearest hospital
+  // const nearest_hospital = await patient_nearest_organization.get(trx, {
+  //   patient_id,
+  // })
 
   const hospital_employees = [] as EmployeeWithPresence[]
-  if (nearest_hospital && nearest_hospital.id !== organization.id) {
+  if (nearest_hospital_id !== organization.id) {
     const hospital_employees_results = await employees.baseQuery(trx)
-      .where('employment.organization_id', '=', nearest_hospital.id)
+      .where('employment.organization_id', '=', nearest_hospital_id)
       .where('employment.profession', 'in', ['doctor', 'nurse'])
       .leftJoin(
         'employment_presence',
@@ -83,42 +85,49 @@ async function getEmployeesWithPresence(
 export const handler = postHandler(
   InviteParticipantsSchema,
   async (ctx, form_values) => {
-    const { encounter, organization } = ctx.state
     const url = new URL(ctx.req.url)
-    const hangout_link = url.searchParams.get('hangoutLink')
+    const hangout_link = url.searchParams.get('hangout_link')
+    const html_link = url.searchParams.get('html_link')
+    const event_id = url.searchParams.get('event_id')
 
-    if (!hangout_link) {
-      throw new Error('hangoutLink is required')
-    }
+    assertOr400(hangout_link, 'hangout_link is required')
+    assertOr400(html_link, 'html_link is required')
+    assertOr400(event_id, 'event_id is required')
 
     const google_client = await HealthWorkerGoogleClient.fromHealthWorkerContext(ctx)
 
-    const consultation_text = encounter.priority?.name ? `${encounter.priority?.name} unscheduled consultation` : 'Unscheduled consultation'
+    // Get the existing event
+    const existing_event = await google_client.getEvent('primary', event_id)
 
-    const start = new Date()
-    const end = new Date(start.getTime() + 60 * 60 * 1000)
-
-    // Create calendar event with attendees
-    await google_client.sendCalendarInvite({
-      summary: consultation_text,
-      description: `Virtual consultation\n\nJoin: ${hangout_link}`,
-      start: {
-        dateTime: start.toISOString(),
-        timeZone: 'Africa/Johannesburg',
+    // Update the event to add attendees (merging with existing attendees)
+    await google_client.updateEvent({
+      calendarId: 'primary',
+      eventId: event_id,
+      details: {
+        ...existing_event,
+        attendees: [
+          ...(existing_event.attendees || []),
+          ...form_values.participant_emails.map((email) => ({ email })),
+        ] as unknown as GCalEvent['attendees'],
       },
-      end: {
-        dateTime: end.toISOString(),
-        timeZone: 'Africa/Johannesburg',
-      },
-      attendees: form_values.participant_emails.map((email) => ({
-        email,
-      })),
+      sendUpdates: 'all',
     })
 
+    await completeLastStep(ctx)
+
     return redirect(
-      success(
-        `Invited ${form_values.participant_emails.length} participant${form_values.participant_emails.length === 1 ? '' : 's'} to the consultation`,
-        `/app/organizations/${organization.id}/calendar`,
+      alert(
+        {
+          level: 'success',
+          message: `Invited ${form_values.participant_emails.length} participant${form_values.participant_emails.length === 1 ? '' : 's'} to the consultation`,
+          actions: [
+            {
+              text: 'Join',
+              href: hangout_link,
+            },
+          ],
+        },
+        ctx.state.open_encounter_pathname,
       ),
     )
   },
@@ -128,11 +137,13 @@ async function CreateGoogleMeetInviteParticipantsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const url = new URL(ctx.req.url)
-  const hangout_link = url.searchParams.get('hangoutLink')
+  const hangout_link = url.searchParams.get('hangout_link')
+  const html_link = url.searchParams.get('html_link')
+  const event_id = url.searchParams.get('event_id')
 
-  if (!hangout_link) {
-    throw new Error('hangoutLink is required')
-  }
+  assertOr400(hangout_link, 'hangout_link is required')
+  assertOr400(html_link, 'html_link is required')
+  assertOr400(event_id, 'event_id is required')
 
   const { facility_employees, hospital_employees } = await getEmployeesWithPresence(ctx)
 

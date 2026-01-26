@@ -3,7 +3,6 @@ import { assert } from 'std/assert/assert.ts'
 import {
   AgeDetermination,
   LoggedInHealthWorkerContext,
-  NavLinks,
   PreviouslyCompletedProcedures,
   RenderedPatient,
   RenderedPatientEncounterEmployee,
@@ -12,7 +11,6 @@ import {
   RenderedSidebarWorkflow,
   SnomedConcept,
   WorkflowStatus,
-  WorkflowStatusInProgress,
 } from '../../../../../../../types.ts'
 import { patient_encounters } from '../../../../../../../db/models/patient_encounters.ts'
 import { this_visit_findings } from '../../../../../../../db/models/this_visit_findings.ts'
@@ -25,7 +23,7 @@ import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 
-import { assertOr400, assertOr404, assertOr405, assertOrRedirect } from '../../../../../../../util/assertOr.ts'
+import { assertOr400, assertOr404, assertOrRedirect } from '../../../../../../../util/assertOr.ts'
 
 import { PatientPresence, Workflow } from '../../../../../../../db.d.ts'
 import {
@@ -57,6 +55,7 @@ import { get } from '../../../../../../../util/get.ts'
 import { patientAgeDetermination } from '../../../../../../../shared/patient_age_determination.ts'
 import { completedPersonal } from '../../../../../../../shared/patient_registration.ts'
 import { OpenEncounterWorkflowLayout } from '../../../../../../../components/OpenEncounterWorkflowLayout.tsx'
+import { arrayIsNonEmpty } from '../../../../../../../util/arraySize.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -66,6 +65,7 @@ type OpenEncounterState = OrganizationState & {
   patient_encounter_id: string
   encounter_employee_presence: RenderedPatientEncounterEmployee | null
   encounter_expected_to_not_exist_after_post?: true
+  open_encounter_pathname: string
 }
 
 type WorkflowState = {
@@ -194,26 +194,20 @@ function workflowStepFromUrl(
   assertOrRedirect(
     step,
     `/app/organizations/${ctx.state.encounter.organization.id}/patients/${ctx.state.encounter.patient.id}/open_encounter/${ctx.state.encounter.status.patient_presence.current_workflow}/${
-      firstIncompleteStepStatus(getWorkflowStatusInProgress(ctx, workflow))
+      firstIncompleteStepStatus(getWorkflowStatus(ctx, workflow))
     }`,
   )
   assert(WORKFLOW_STEPS[workflow].includes(step), `Invalid step: ${step}`)
   return { workflow, step }
 }
 
-export function getWorkflowStatusInProgress(
+export function getWorkflowStatus(
   ctx: OpenEncounterContext,
   workflow: Workflow,
-): WorkflowStatusInProgress {
-  const { status, workflows } = ctx.state.encounter
-  assertOr405(
-    status.patient_presence.current_workflow === workflow,
-    `${workflow} is not the current workflow`,
-  )
+) {
+  const { workflows } = ctx.state.encounter
   const workflow_status = workflows[workflow]
   assert(workflow_status, `No workflow status found for ${workflow}`)
-  assert(workflow_status.status === 'in progress')
-
   return workflow_status
 }
 
@@ -223,7 +217,7 @@ export async function workflowHandler(
   const { trx, encounter, encounter_employee_presence } = ctx.state
   const { workflow, step } = workflowStepFromUrl(ctx)
 
-  const workflow_status = getWorkflowStatusInProgress(ctx, workflow)
+  const workflow_status = getWorkflowStatus(ctx, workflow)
 
   assertOr400(
     encounter_employee_presence,
@@ -266,7 +260,7 @@ export async function workflowHandler(
     ),
   })
 
-  const previously_completed_step = workflow_status.steps_completed.includes(
+  const previously_completed_step = arrayIsNonEmpty(workflow_status.steps_completed) && workflow_status.steps_completed.includes(
     step,
   )
 
@@ -312,7 +306,7 @@ async function findPatientOpenEncounter(
 export async function handler(
   ctx: OrganizationContext,
 ) {
-  const { trx, organization_employment } = ctx.state
+  const { trx, organization_id, organization_employment } = ctx.state
 
   const encounter = await findPatientOpenEncounter(ctx)
 
@@ -324,12 +318,17 @@ export async function handler(
     }),
   ) ?? null
 
+  const patient_id = encounter.patient.id
+  const open_encounter_pathname = `/app/organizations/${organization_id}/patients/${patient_id}/open_encounter`
+  assert(ctx.url.pathname.includes(open_encounter_pathname))
+
   const encounter_props: OpenEncounterState = {
     ...ctx.state,
     encounter,
+    patient_id,
+    open_encounter_pathname,
     encounter_employee_presence,
     patient: encounter.patient,
-    patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
     patient_age_determination: completedPersonal(encounter.patient) ? patientAgeDetermination(encounter.patient) : null,
   }
@@ -466,7 +465,7 @@ export function WorkflowRedirectPage(
   const workflow = last(ctx.route!.split('/'))
   assert(workflow)
   assert(isWorkflow(workflow))
-  const workflow_status = getWorkflowStatusInProgress(ctx, workflow)
+  const workflow_status = getWorkflowStatus(ctx, workflow)
   const first_incomplete_step = firstIncompleteStepStatus(workflow_status)
   assert(first_incomplete_step)
   return redirect(

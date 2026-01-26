@@ -105,7 +105,7 @@ export const handler = postHandler(
             encounter.status.patient_presence,
             patient_presence_updates,
           )
-          return startWorkflow(ctx, 'triage', { planning: 'only_if_planned' }).then(redirect)
+          return startWorkflow(ctx, 'triage', { planning: 'only_if_planned', patient_presence: 'move_into_specificed_workflow' }).then(redirect)
         }
 
         await events.insert(trx, {

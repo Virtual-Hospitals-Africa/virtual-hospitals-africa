@@ -1,22 +1,13 @@
-import { assert } from 'std/assert/assert.ts'
-import isString from './isString.ts'
-
-function redirectTo(location: string | URL): string {
-  if (location instanceof URL) {
-    return location.toString()
-  }
-  assert(isString(location))
-  return location
-}
+import { path } from './path.ts'
 
 export default function redirect(
   location: string | URL,
-  status = 302,
+  search_params?: Record<string, unknown> | URLSearchParams,
 ): Response {
   return new Response('Found', {
-    status,
+    status: 302,
     headers: {
-      Location: redirectTo(location),
+      Location: path(location, search_params),
     },
   })
 }
