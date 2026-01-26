@@ -30,11 +30,13 @@ export type ButtonLinkProps =
     action: string
     method: 'POST'
     type: 'submit'
+    target?: never
   }
   | {
     href?: string
     action?: never
     method?: never
+    target?: '_blank'
   }
 
 export type ButtonProps =
@@ -55,6 +57,7 @@ export function Button({
   size = 'md',
   className,
   href,
+  target,
   action,
   method,
   type = 'submit',
@@ -104,6 +107,7 @@ export function Button({
         href={href}
         className={className}
         {...(props as unknown as AnchorHTMLAttributes<HTMLAnchorElement>)}
+        target={target}
       >
         {content}
       </a>

@@ -106,9 +106,8 @@ export const handler = postHandler(
             patient_presence_updates,
           )
           return startWorkflow(ctx, 'triage', {
-            planning: 'only_if_planned',
+            planning: 'do_not_create_only_start_if_already_planned',
             patient_presence: 'move_into_specificed_workflow',
-            workflow_frequency: 'only_once_per_encounter',
           }).then(redirect)
         }
 

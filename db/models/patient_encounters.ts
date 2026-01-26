@@ -49,6 +49,9 @@ import { organization_rooms } from './organization_rooms.ts'
 import { isPriority, PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
 import { nowInvalidRecords } from './patient_records_base.ts'
 import { PRIORITY } from '../../shared/snomed_concepts.ts'
+import { groupBy } from '../../util/groupBy.ts'
+import sortBy from '../../util/sortBy.ts'
+import last from '../../util/last.ts'
 
 type EncounterExistingOrToCreate = {
   create: false
@@ -392,8 +395,11 @@ function asWorkflows(
   status: RenderedPatientEncounterStatus,
 ): RenderedPatientEncounter['workflows'] {
   const workflows: RenderedPatientEncounter['workflows'] = {}
-  for (const workflow_item of workflows_array) {
-    workflows[workflow_item.workflow] = asWorkflowStatus(workflow_item, status)
+  const by_workflow = groupBy(workflows_array, 'workflow')
+  for (const [workflow, workflow_items] of by_workflow.entries()) {
+    const using_workflow = workflow_items.find((w) => !w.completed_at) ||
+      last(sortBy(workflow_items, 'completed_at'))!
+    workflows[workflow] = asWorkflowStatus(using_workflow, status)
   }
   return workflows
 }

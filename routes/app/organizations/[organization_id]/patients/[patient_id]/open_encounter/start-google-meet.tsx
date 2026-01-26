@@ -33,9 +33,8 @@ export const handler = postHandler(
       ctx,
       'create_google_meet',
       {
-        planning: 'create_if_unplanned',
+        planning: 'create_anew_every_time',
         patient_presence: 'leave_in_current_workflow',
-        workflow_frequency: 'multiple_times_allowed',
       },
     )
 
