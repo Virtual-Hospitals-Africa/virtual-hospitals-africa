@@ -1,3 +1,4 @@
+;; Procedure prompting more findings
 (task 
   "Check for Anaphylaxis"
   (any (clinical_finding (snomed_concept "Itching" "finding"))
@@ -24,3 +25,25 @@
   ))
   (suspected_diagnosis (snomed_concept "Anaphylaxis" "disorder"))
 )
+
+;; Takes place after you've done your check_fors
+;; Findings -> Evaluation
+(task 
+  "Diagnose Anaphylaxis"
+  (sudden_onset (any 2 sudden onset of ≥ 2 of: 1) Generalised itch/rash or face/tongue swelling
+2) Difficulty breathing 3) BP < 90/60 or dizziness/collapse 4) Abdominal pain or vomiting))
+  (diagnosis (snomed_concept "Anaphylaxis" "disorder"))
+)
+
+;; Evaluation -> Procedure (incl. prescriptions / orders)
+(task 
+  "Treat Anaphylaxis"
+  (medications ) (procedures)
+)
+
+
+
+check for things (sometimes based on a suspected_diagnosis)
+measure things
+refer patients
+prescribe medications (based on a diagnosis)

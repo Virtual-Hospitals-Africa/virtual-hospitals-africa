@@ -71,7 +71,7 @@ export function TriageTutorial(
       }
       onSubmit={(event) => {
         console.log('x', { event })
-        location_hash.value = { action: 'warning_signs' }
+        location_hash.value = { action: 'brief_history' }
       }}
     >
       {['warning_signs', 'none'].includes(location_hash.value.action) && (
