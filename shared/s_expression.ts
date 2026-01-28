@@ -144,7 +144,7 @@ export const UNITS_ARRAY = Array.from(UNITS)
 
 export type Units = typeof UNITS_ARRAY[number]
 
-function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>): string {
+export function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>): string {
   if (rest.length === 0) return `(${atom})`
   const terms = rest.map((item, index) => {
     if (Array.isArray(item)) return fastNormalize(item)
