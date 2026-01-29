@@ -154,6 +154,22 @@ export function inverseSExpression(node: AnyNode): string {
       return `(task "${node.description}" ${inverseSExpression(node.when)} ${inverseSExpression(node.procedure)})`
     }
 
+    case 'ntask': {
+      const parts: string[] = ['ntask', quoted(node.description)]
+
+      // Handle ages - if single age, output directly; if multiple, wrap in (ages ...)
+      parts.push(`(ages ${node.ages.join(' ')})`)
+
+      parts.push(inverseSExpression(node.when))
+      parts.push(inverseSExpression(node.procedure))
+
+      if (node.diagnosis) {
+        parts.push(inverseSExpression(node.diagnosis))
+      }
+
+      return `(${parts.join(' ')})`
+    }
+
     case 'system_priority_determination': {
       const parts = [
         'system_priority_determination',
@@ -165,6 +181,20 @@ export function inverseSExpression(node: AnyNode): string {
         parts.push(inverseSExpression(other_finding))
       }
       return `(${parts.join(' ')})`
+    }
+
+    case 'ncheck_for': {
+      const parts = [
+        'ncheck_for',
+      ]
+      for (const finding of node.check_for) {
+        parts.push(inverseSExpression(finding))
+      }
+      return `(${parts.join(' ')})`
+    }
+
+    case 'diagnosis': {
+      return `(diagnosis ${node.certainty_qualifier} ${snomedConceptToString(node.snomed_concept)})`
     }
 
     default: {

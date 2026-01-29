@@ -6,7 +6,7 @@ import partition from '../util/partition.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom, Units, UNITS_ARRAY } from './s_expression.ts'
-import { Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
+import { AgeDetermination, Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
 import { CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, MEASUREMENT_PROCEDURE, PROCEDURE } from './snomed_concepts.ts'
@@ -86,6 +86,20 @@ type BaseLang =
     }
     or: {
       expressions: AnyNode[]
+    }
+    diagnosis: {
+      certainty_qualifier: 'definite' | 'equivocal' | 'possible' | 'probable'
+      snomed_concept: Lang['snomed_concept']
+    }
+    ntask: {
+      description: string
+      ages: AgeDetermination[]
+      when: Lang[Comparisons | 'finding' | 'any' | 'all']
+      procedure: Lang['ncheck_for']
+      diagnosis: null | Lang['diagnosis']
+    }
+    ncheck_for: {
+      check_for: Lang['finding'][]
     }
     task: {
       description: string
@@ -562,6 +576,17 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
     })),
 ).describe('active_condition')
 
+export const ncheck_for: z.ZodType<Lang['ncheck_for']> = z.lazy(
+  () =>
+    z.object({
+      atom: z.literal('ncheck_for'),
+      args: finding.array(),
+    }).transform(({ args: check_for }) => ({
+      atom: 'ncheck_for' as const,
+      check_for
+    })),
+).describe('ncheck_for')
+
 export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
   () =>
     z.object({
@@ -663,6 +688,40 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   }))
 ).describe('task')
 
+const age_determination = z.enum(['adult', 'older child', 'younger child'])
+const ages = z.lazy(() =>
+  z.object({
+    atom: z.literal('ages'),
+    args: age_determination.array(),
+  }).or(age_determination.transform(age => ({
+    atom: 'ages' as const,
+    args: [age],
+  }))).transform(({ atom, args: ages }) => ({
+    atom, ages
+  }))
+).describe('ages')
+
+export const ntask: z.ZodType<Lang['ntask']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('ntask'),
+    args: z.tuple([
+      z.string(),
+      ages,
+      comparator.or(finding).or(any).or(all),
+      // procedure.or(check_for).or(measure),
+      ncheck_for,
+      diagnosis.optional()
+    ]),
+  }).transform(({ atom, args: [description, { ages }, when, procedure, diagnosis = null] }) => ({
+    atom,
+    description,
+    ages,
+    when,
+    procedure,
+    diagnosis,
+  }))
+).describe('ntask')
+
 const finding_like = comparator.or(finding)
 
 export const system_priority_determination: z.ZodType<Lang['system_priority_determination']> = z.lazy(() =>
@@ -739,6 +798,20 @@ export const all: z.ZodType<Lang['all']> = z.lazy(() =>
   }))
 ).describe('all')
 
+export const diagnosis: z.ZodType<Lang['diagnosis']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('diagnosis'),
+    args: z.tuple([
+      z.enum(['definite', 'probable', 'equivocal', 'possible']),
+      snomed_concept,
+    ]),
+  }).transform(({ atom, args: [certainty_qualifier, snomed_concept] }) => ({
+    atom,
+    certainty_qualifier,
+    snomed_concept,
+  }))
+).describe('diagnosis')
+
 export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
   z.union([
     snomed_concept,
@@ -755,6 +828,7 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     comparator,
     qualifier,
     task,
+    ntask,
     system_priority_determination,
     exact,
     or,
@@ -763,5 +837,6 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     any,
     all,
     link,
+    diagnosis,
   ])
 ).describe('any_expression')

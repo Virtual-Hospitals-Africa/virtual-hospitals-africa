@@ -42,7 +42,7 @@ function searchSnomed(
       'snomed_inferred_canonical_name_and_category.id',
       'snomed_description.concept_id',
     )
-    .select(eb => [
+    .select((eb) => [
       asText(eb, 'snomed_inferred_canonical_name_and_category.id').as('id'),
       'snomed_inferred_canonical_name_and_category.name',
       'snomed_inferred_canonical_name_and_category.category',

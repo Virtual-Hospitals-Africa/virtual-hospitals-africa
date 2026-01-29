@@ -7,6 +7,7 @@ import { assert } from 'std/assert/assert.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from './pack-adult.ts'
 import { task } from './s_expression_schemas.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from './vitals.ts'
+import { NTASKS } from '../s_expression/ntasks.ts'
 
 type TaskDef = ['all' | AgeDetermination[], string]
 
@@ -123,39 +124,11 @@ export const TASK_DEFS: TaskDef[] = [
       (clinical_finding (snomed_concept "Sweating" "finding"))))`,
   ],
   // TODO load the anaphylaxis page too
-  [
-    'all',
-    `(task 
-  "Check for Anaphylaxis"
-  (any (clinical_finding (snomed_concept "Itching" "finding"))
-       (clinical_finding (snomed_concept "Eruption" "morphologic abnormality"))
-       (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
-       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
-  )
-  (check_for
-    (any (attribute (snomed_concept "Sudden onset" "qualifier value"))
-         (clinical_finding (snomed_concept "Itching" "finding"))
-         (clinical_finding (snomed_concept "Eruption" "morphologic abnormality"))
-         (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-         (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
-         (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
-         (clinical_finding (snomed_concept "Dizziness" "finding"))
-         (clinical_finding (snomed_concept "Collapse" "finding"))
-         (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-         (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))
-         (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))
-         (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Eggs (edible)" "substance"))
-         (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))
-         (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))
-  ))
-  (suspected_diagnosis (snomed_concept "Anaphylaxis" "disorder"))
-)
-`
-  ]
 ]
 
 export const TASKS = TASK_DEFS.map(asTask)
+
+console.log({ NTASKS })
 
 export function isCheckForTask(task: RenderedTask): task is CheckForTask {
   const { value } = task.procedure
