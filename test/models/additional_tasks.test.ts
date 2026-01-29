@@ -38,6 +38,6 @@ describeParallel('db/models/additional_tasks.ts', () => {
   )
 
   itParallel.only('foo', () => {
-    console.log(TASK_DEFS.map(t => normalForm(t[1])).join('\n'))
+    console.log(TASK_DEFS.map((t) => normalForm(t[1])).join('\n'))
   })
 })

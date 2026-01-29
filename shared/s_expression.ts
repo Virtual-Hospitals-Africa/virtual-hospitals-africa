@@ -154,6 +154,15 @@ export function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, st
       assert(UNITS.has(item as unknown as Units), `Update UNITS to include ${item}`)
       return item
     }
+    if (atom === 'diagnosis' && index === 0) {
+      return item
+    }
+    // if (atom === 'ntask' && index === 1) {
+    //   return item
+    // }
+    if (atom === 'ages') {
+      return item
+    }
     if (atom === 'system_priority_determination' && index === 2) {
       assert(isTriageLevel(item))
       return item
