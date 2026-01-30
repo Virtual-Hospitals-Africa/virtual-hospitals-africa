@@ -1,54 +1,11 @@
 import { sql } from 'kysely'
-import { assert } from 'std/assert/assert.ts'
 import { IdSelection, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
 import { base } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
-import { buildExpression } from './s_expression.ts'
-import { EVALUATION_ACTION, PRIORITY, PROCEDURE, TRIAGE_PROCEDURE } from '../../shared/snomed_concepts.ts'
-
-export function insertProcedure(
-  trx: TrxOrDb,
-  {
-    patient_id,
-    patient_encounter_id,
-    employment_id,
-  }: {
-    patient_id: string
-    patient_encounter_id: string
-    employment_id: string
-  },
-) {
-  const triage_procedure_id = generateUUID()
-
-  return trx.with(
-    'inserting_record',
-    (qb) =>
-      qb.insertInto('patient_records')
-        .values({
-          id: triage_procedure_id,
-          patient_id,
-          patient_encounter_id,
-          root_snomed_concept_id: PROCEDURE.id,
-          specific_snomed_concept_id: TRIAGE_PROCEDURE.s_expression,
-        }),
-  ).with('inserting_procedure', (qb) =>
-    qb.insertInto('patient_procedures')
-      .values({
-        id: triage_procedure_id,
-        employment_id,
-        by_system: false,
-      })
-      .returning('id'))
-    .selectFrom('inserting_procedure')
-    .select([
-      'id as triage_procedure_id',
-      success_true,
-    ])
-    .executeTakeFirstOrThrow()
-}
+import { EVALUATION_ACTION, PRIORITY } from '../../shared/snomed_concepts.ts'
 
 function insertLevel(
   trx: TrxOrDb,
@@ -126,8 +83,9 @@ type InsertLevelInput = {
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
+  opts: PatientEvaluationTriageSearch,
 ) {
-  return patient_evaluations.baseQuery(trx).innerJoin(
+  return patient_evaluations.baseQuery(trx, opts).innerJoin(
     'patient_triage_level',
     'patient_evaluations.id',
     'patient_triage_level.id',
@@ -149,52 +107,4 @@ export const patient_triage = base({
   baseQuery,
   insertLevel,
   formatResult: (x) => x,
-  handleSearch(
-    qb,
-    opts: PatientEvaluationTriageSearch,
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    assert(
-      opts.patient_id,
-      'For now, you must always provide a patient_id as part of a query',
-    )
-    // if (opts.search) {
-    //   qb = qb.where(
-    //     'snomed_inferred_canonical_name_and_category.name',
-    //     'ilike',
-    //     `%${opts.search}%`,
-    //   )
-    // }
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.s_expression) {
-      qb = qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression,
-        ),
-      )
-    }
-
-    return qb
-  },
 })

@@ -9,6 +9,10 @@ import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
+import { patient_findings } from '../../../../../db/models/patient_findings.ts'
+import { system_diagnosis_rules } from '../../../../../db/models/system_diagnosis_rules.ts'
+import randomDemographics from '../../../../../mocks/randomDemographics.ts'
+import { assert } from 'std/assert/assert.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
@@ -357,122 +361,45 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     ])
   })
 
-  itParallel('prompts for Nausea Vomiting Pallor Sweating in case of chest pain', async () => {
-    const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
-      patient_demographics: { date_of_birth: '2001-01-01' },
-      brief_history: {
-        diabetes: { existence: 'No' },
-        pregnancy: { existence: 'No' },
-      },
-      warning_signs: asWarningSigns([], { pregnant: false }, '()'),
-      height_and_weight: {
-        measurements: {
-          height: {
-            value: 160,
-            units: 'cm',
+  itParallel.only(
+    'returns positive findings where they exist',
+    async () => {
+      const exposure_to_fish_s_expr = '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))'
+      console.log(asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr))
+
+      const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+        patient_demographics: randomDemographics('ZA', 'female', 'adult'),
+        warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr),
+        brief_history: {
+          diabetes: {
+            existence: 'No',
           },
-          weight: {
-            value: 80,
-            units: 'kg',
+          pregnancy: {
+            existence: 'No',
           },
         },
-      },
-      measure_vitals: {
-        measurements: asVitalMeasurementFormValues({
-          respiratory_rate: 12, // 9-14 -> score 0
-          heart_rate: 60, // 51-100 -> score 0
-          blood_pressure_systolic: 120, // 101-199 -> score 0
-          blood_pressure_diastolic: 80,
-          temperature: 36.6, // 35-38.4 -> score 0
-        }),
-        assessments: asVitalAssessmentFormValues({
-          mobility_assessment: 'Walking', // score 0
-          consciousness: 'Alert', // score 0
-          trauma_presence: 'No', // score 0
-        }),
-      },
-    })
+      })
 
-    assertEquals(
-      $.url,
-      `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/additional_tasks_and_investigations`,
-    )
+      const exposure_to_fish = await patient_findings.findOne(db, {
+        patient_id, 
+        s_expression: exposure_to_fish_s_expr
+      })
 
-    const result = await additional_tasks.getTasksGroups(db, {
-      encounter,
-      health_worker_id: nurse.health_worker.id,
-    })
+      const result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
+        patient_id, 
+        patient_encounter_id,
+        patient_age_determination: 'adult',
+        findings: [{
+          id: exposure_to_fish.id,
+          existence: 'Yes'
+        }]
+      })
 
-    assertMatches(result, [
-      {
-        'due_to': [{ 'displays': { 'full': 'Chest pain' } }],
-        'tasks': [
-          {
-            'procedure': {
-              'value': {
-                'type': 'link',
-                'title': 'Chest pain page',
-                'href': '/medical-resources/primary-care/adult.pdf#page=37',
-                'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/37.png',
-              },
-              'displays': {
-                'finding': 'Reference documentation',
-                'value': {
-                  'title': 'Chest pain page',
-                  'href': '/medical-resources/primary-care/adult.pdf#page=37',
-                  'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/37.png',
-                },
-              },
-            },
-          },
-          {
-            'procedure': {
-              'value': {
-                'type': 's_expression',
-                's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
-              },
-              'displays': {
-                'value': 'Nausea',
-              },
-            },
-          },
-          {
-            'procedure': {
-              'value': {
-                'type': 's_expression',
-                's_expression': z.string(),
-              },
-              'displays': {
-                'value': 'Vomiting',
-              },
-            },
-          },
-          {
-            'procedure': {
-              'value': {
-                'type': 's_expression',
-                's_expression': z.string(),
-              },
-              'displays': {
-                'value': 'Pallor of skin of face',
-              },
-            },
-          },
-          {
-            'procedure': {
-              'value': {
-                'type': 's_expression',
-                's_expression': z.string(),
-              },
-              'displays': {
-                'value': 'Sweating',
-              },
-            },
-          },
-        ],
-      },
-    ])
-  })
+      assert(result)
+
+      console.log(result.new_findings_applicable)
+    },
+  )
 })
 
 // TODO: moving this

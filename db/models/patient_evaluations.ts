@@ -82,8 +82,9 @@ export function insertOneNested(
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
+  opts: PatientEvaluationsSearch,
 ) {
-  return patient_records.baseQuery(trx).innerJoin(
+  let qb = patient_records.baseQuery(trx).innerJoin(
     'patient_evaluations',
     'patient_evaluations.id',
     'patient_records_aggregated.id',
@@ -94,37 +95,7 @@ export function baseQuery(
       'patient_evaluations.by_system',
       'patient_evaluations.evaluates_record_id',
     ])
-}
 
-type PatientEvaluationsSearch = {
-  patient_id: string | IdSelection
-  patient_encounter_id?: string | IdSelection
-  evaluates_record_id?: string | IdSelection
-  s_expression?: string | Lang['evaluation']
-  search?: string
-}
-
-export const patient_evaluations = base({
-  top_level_table: 'patient_evaluations',
-  baseQuery,
-  formatResult: formatRecord,
-  handleSearch(
-    qb,
-    opts: PatientEvaluationsSearch,
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    assert(
-      opts.patient_id,
-      'For now, you must always provide a patient_id as part of a query',
-    )
-    // if (opts.search) {
-    //   qb = qb.where(
-    //     'snomed_inferred_canonical_name_and_category.name',
-    //     'ilike',
-    //     `%${opts.search}%`,
-    //   )
-    // }
     if (opts.patient_id) {
       qb = qb.where(
         'patient_records_aggregated.patient_id',
@@ -147,22 +118,38 @@ export const patient_evaluations = base({
       )
     }
     if (opts.s_expression) {
-      qb = qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression,
-        ),
+      assert(
+        opts.patient_id,
+        'For now, you must always provide a patient_id as part of a query',
       )
-    }
+      qb = qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      buildExpression(
+        trx,
+        {
+          patient_id: opts.patient_id,
+          patient_encounter_id: opts.patient_encounter_id,
+        },
+        opts.s_expression,
+      ),
+    )
+  }
 
-    return qb
-  },
+  return qb
+}
+
+export type PatientEvaluationsSearch = {
+  patient_id?: string | IdSelection
+  patient_encounter_id?: string | IdSelection
+  evaluates_record_id?: string | IdSelection
+  s_expression?: string | Lang['evaluation']
+}
+
+export const patient_evaluations = base({
+  top_level_table: 'patient_evaluations',
+  baseQuery,
+  formatResult: formatRecord,
   insertOneNested,
   insertOneNestedQuery,
 })

@@ -24,6 +24,7 @@ import { patient_evaluation_scores } from '../db/models/patient_evaluation_score
 import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, SEVERITY_SCORE } from '../shared/snomed_concepts.ts'
 import { triageLevelFromTEWSTotal } from '../shared/vitals.ts'
+import { system_diagnosis_rules } from '../db/models/system_diagnosis_rules.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -85,13 +86,19 @@ export const EVENTS = {
           payload.data,
         )
       },
+      async insertSystemDiagnosesIfNotAlreadyIdentified(trx, payload) {
+        await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
+          trx,
+          payload.data,
+        )
+      },
       async insertTotalScoreAfterMeasureVitals(trx, { data: { workflow, step, patient_id, patient_age_determination, patient_encounter_id, procedure_id } }) {
         const completed_measure_vitals = workflow === 'triage' && step === 'measure_vitals'
         if (!completed_measure_vitals) return
         assert(patient_age_determination != null, `Age unknown`)
 
         const { total_score } = await patient_evaluation_scores
-          .totalTEWSEncounterScore(trx, { patient_encounter_id })
+          .totalTEWSEncounterScore(trx, { patient_id, patient_encounter_id })
 
         const score_evaluation = await patient_evaluation_scores.insertOneNested(
           trx,

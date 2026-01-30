@@ -494,3 +494,28 @@ export const POSSIBLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER = asConcept({
   name: 'Possible diagnosis (contextual qualifier)',
   category: 'qualifier value' as const,
 })
+export const SUDDEN_ONSET = asConcept({
+  id: '385315009',
+  name: 'Sudden onset',
+  category: 'qualifier value' as const,
+})
+export const IMPROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER = asConcept({
+  id: '385434005',
+  name: 'Improbable diagnosis (contextual qualifier)',
+  category: 'qualifier value' as const,
+})
+export const EVIDENCE_OF_CONTEXTUAL_QUALIFIER = asConcept({
+  id: '18669006',
+  name: 'Evidence of (contextual qualifier)',
+  category: 'qualifier value' as const,
+})
+export const ALLERGIC_PROCESS = asConcept({
+  id: '472964009',
+  name: 'Allergic process',
+  category: 'qualifier value' as const,
+})
+export const CAUSATIVE_AGENT = asConcept({
+  id: '246075003',
+  name: 'Causative agent',
+  category: 'attribute' as const,
+})

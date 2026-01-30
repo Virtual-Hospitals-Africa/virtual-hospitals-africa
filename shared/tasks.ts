@@ -128,8 +128,6 @@ export const TASK_DEFS: TaskDef[] = [
 
 export const TASKS = TASK_DEFS.map(asTask)
 
-console.log({ NTASKS })
-
 export function isCheckForTask(task: RenderedTask): task is CheckForTask {
   const { value } = task.procedure
   if (!value) return false

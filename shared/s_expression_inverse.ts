@@ -140,14 +140,9 @@ export function inverseSExpression(node: AnyNode): string {
       return `(or ${parts.join(' ')})`
     }
 
-    case 'any': {
-      const parts = node.findings.map(inverseSExpression)
-      return `(any ${parts.join(' ')})`
-    }
-
-    case 'all': {
-      const parts = node.findings.map(inverseSExpression)
-      return `(all ${parts.join(' ')})`
+    case 'any2': {
+      const parts = node.expressions.map(inverseSExpression)
+      return `(any2 ${parts.join(' ')})`
     }
 
     case 'task': {
@@ -160,7 +155,7 @@ export function inverseSExpression(node: AnyNode): string {
       // Handle ages - if single age, output directly; if multiple, wrap in (ages ...)
       parts.push(`(ages ${node.ages.join(' ')})`)
 
-      parts.push(inverseSExpression(node.when))
+      parts.push(inverseSExpression(node.applies_when))
       parts.push(inverseSExpression(node.procedure))
 
       if (node.diagnosis) {
@@ -194,7 +189,15 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'diagnosis': {
-      return `(diagnosis ${node.certainty_qualifier} ${snomedConceptToString(node.snomed_concept)})`
+      return `(diagnosis ${snomedConceptToString(node.snomed_concept)} ${node.certainty_qualifier})`
+    }
+    
+    case 'system_diagnosis_rule': {
+      const ages = node.ages.length === 1
+        ? node.ages[0]
+        : `(ages ${node.ages.join(' ')})`
+  
+      return `(system_diagnosis_rule ${inverseSExpression(node.diagnosis)} ${ages} ${inverseSExpression(node.evidence)})`
     }
 
     default: {

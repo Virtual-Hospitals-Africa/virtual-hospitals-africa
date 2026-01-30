@@ -1,7 +1,12 @@
 import parse from 's-expression'
-import { walk } from 'jsr:@std/fs@1/walk'
-import { basename } from 'jsr:@std/path@1/basename'
-import { fastNormalize, normalForm } from '../shared/s_expression.ts'
+import { walk } from 'std/fs/mod.ts'
+import { basename } from 'std/path/mod.ts'
+import * as schemas from '../shared/s_expression_schemas.ts'
+import { parseWithSchema } from '../shared/s_expression.ts'
+import isKeyOf from '../util/isKeyOf.ts'
+import { inverseSExpression } from '../shared/s_expression_inverse.ts'
+import { assert } from 'std/assert/assert.ts'
+import { forEach } from '../util/inParallel.ts'
 
 /**
  * Strip Lisp-style comments (lines starting with ;;) from the input text
@@ -9,7 +14,10 @@ import { fastNormalize, normalForm } from '../shared/s_expression.ts'
 function stripComments(text: string): string {
   return text
     .split('\n')
-    .filter((line) => !line.trim().startsWith(';;'))
+    .map((line) => {
+      const commentIndex = line.indexOf(';;')
+      return commentIndex >= 0 ? line.substring(0, commentIndex) : line
+    })
     .join('\n')
 }
 
@@ -18,50 +26,19 @@ function stripComments(text: string): string {
  * Returns an array of s-expression strings
  */
 function extractSExpressions(text: string): string[] {
-  const withoutComments = stripComments(text)
-  const expressions: string[] = []
-
-  let depth = 0
-  let currentExpr = ''
-  let inString = false
-
-  for (let i = 0; i < withoutComments.length; i++) {
-    const char = withoutComments[i]
-
-    // Handle string literals
-    if (char === '"' && (i === 0 || withoutComments[i - 1] !== '\\')) {
-      inString = !inString
-      currentExpr += char
-      continue
-    }
-
-    if (inString) {
-      currentExpr += char
-      continue
-    }
-
-    // Track parentheses depth
-    if (char === '(') {
-      if (depth === 0) {
-        currentExpr = ''
-      }
-      depth++
-      currentExpr += char
-    } else if (char === ')') {
-      currentExpr += char
-      depth--
-
-      if (depth === 0 && currentExpr.trim()) {
-        const normalized = normalForm(currentExpr.trim())
-        expressions.push(normalized)
-        currentExpr = ''
-      }
-    } else if (depth > 0) {
-      currentExpr += char
-    }
+  const parsed = parse(`(${stripComments(text)})`)
+  if (parsed instanceof Error) {
+    throw parsed
   }
-
-  return expressions
+  assert(Array.isArray(parsed))
+  return parsed.map(expr => {
+    const atom = expr[0]
+    if (!isKeyOf(atom, schemas)) {
+      throw new Error(`No schema for ${atom}`)
+    }
+    const schema = schemas[atom]
+    return inverseSExpression(parseWithSchema(expr, schema))
+  })
 }
 
 /**
@@ -75,66 +52,43 @@ function filenameToConstName(filename: string): string {
 /**
  * Process a single .lisp file and generate corresponding .ts file
  */
-async function processLispFile(lispPath: string) {
-  console.log(`Processing ${lispPath}...`)
+async function processLispFile(lisp_path: string) {
+  console.log(`Processing ${lisp_path}...`)
 
-  const content = await Deno.readTextFile(lispPath)
+  const content = await Deno.readTextFile(lisp_path)
   const expressions = extractSExpressions(content)
 
-  const constName = filenameToConstName(lispPath)
-  const tsPath = lispPath.replace(/\.lisp$/, '.ts')
+  const const_name = filenameToConstName(lisp_path)
+  const ts_path = lisp_path.replace(/\.lisp$/, '.ts')
 
   // Generate TypeScript file content
-  const tsContent = `// Auto-generated from ${basename(lispPath)}
+  const ts_content = `// Auto-generated from ${basename(lisp_path)}
 // Do not edit manually
-import { parseWithSchema } from '../shared/s_expression.ts'
-import { ntask } from '../shared/s_expression_schemas.ts'
 
-function parseAsNTask(expr: string) {
-  return parseWithSchema(expr, ntask)
-}
-
-export const ${constName} = [
+export const ${const_name} = [
 ${expressions.map((expr) => `  \`${expr}\`,`).join('\n')}
-].map(parseAsNTask)
+]
 `
 
-  await Deno.writeTextFile(tsPath, tsContent)
-  console.log(`  ✓ Generated ${tsPath} with ${expressions.length} expression(s)`)
+  await Deno.writeTextFile(ts_path, ts_content)
+  console.log(`  ✓ Generated ${ts_path} with ${expressions.length} expression(s)`)
 }
 
 /**
  * Main function - process all .lisp files in s_expression directory
  */
 async function main() {
-  const sExpressionDir = 's_expression'
+  const s_expression_dir = 's_expression'
 
-  // Check if directory exists
-  try {
-    await Deno.stat(sExpressionDir)
-  } catch {
-    console.error(`Directory ${sExpressionDir} not found`)
-    Deno.exit(1)
-  }
+  let processed = 0
+  await forEach(walk(s_expression_dir, { exts: ['.lisp'] }), async entry => {
+    assert(entry.isFile) 
+    await processLispFile(entry.path)
+    processed++
+  })
 
-  // Find all .lisp files
-  const lispFiles: string[] = []
-  for await (const entry of walk(sExpressionDir, { exts: ['.lisp'] })) {
-    if (entry.isFile) {
-      lispFiles.push(entry.path)
-    }
-  }
-
-  if (lispFiles.length === 0) {
-    console.log('No .lisp files found')
-    return
-  }
-
-  console.log(`Found ${lispFiles.length} .lisp file(s)\n`)
-
-  // Process each file
-  for (const lispFile of lispFiles) {
-    await processLispFile(lispFile)
+  if (!processed) {
+    throw new Error(`No files found in s_expression_dir ${s_expression_dir}`)
   }
 
   console.log('\n✓ All files processed successfully')
