@@ -12,6 +12,8 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { Values } from '../types.ts'
 import { wrapError } from '../util/wrapError.ts'
 import { isTriageLevel } from './priorities.ts'
+import { safeParseWithValues } from '../util/assertMatches.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
 
 type SExpressionNode = {
   atom: string
@@ -36,26 +38,28 @@ function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
 type SExpressionSimpleNode = string | SExpressionSimpleNode[]
 
 export function parseWithSchema<Schema extends Values<typeof schemas>>(
-  expression: string,
+  expression: string | SExpressionSimpleNode,
   schema: Schema,
 ): z.infer<Schema> {
   assert(schema.description)
-  const parsed = s_expression(expression) as SExpressionSimpleNode
+  const parsed = Array.isArray(expression) ? expression : s_expression(expression) as SExpressionSimpleNode
   if (parsed instanceof Error) {
     throw wrapError(`Error parsing ${expression}`, parsed)
   }
   assert(Array.isArray(parsed))
   const first_pass = recursiveTreePass(parsed)
-  const second_pass = schema.safeParse(first_pass)
+  const second_pass = safeParseWithValues(schema, first_pass)
   if (!second_pass.success) {
-    throw wrapError(`Error parsing ${expression} using schema ${schema.description}`, second_pass.error)
+    const issue = second_pass.error.issues[0]
+    
+    throw new Error(`Error parsing ${expression} using schema ${schema.description}\npath: ${issue.path}\nsaw: ${humanReadableJson((issue as any).actual_value)}`)
   }
 
   // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions
   const normal_form_by_inverse = inverseSExpression(second_pass.data)
   const normalized = fastNormalForm(normal_form_by_inverse)
   assertEquals(normal_form_by_inverse, normalized, `${normal_form_by_inverse} ; ${normalized}`)
-  return second_pass.data as z.infer<Schema>
+  return second_pass.data
 }
 
 export function parseExpression(
@@ -154,7 +158,10 @@ export function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, st
       assert(UNITS.has(item as unknown as Units), `Update UNITS to include ${item}`)
       return item
     }
-    if (atom === 'diagnosis' && index === 0) {
+    if (atom === 'diagnosis' && index === 1) {
+      return item
+    }
+    if (atom === 'system_diagnosis_rule' && index === 1) {
       return item
     }
     // if (atom === 'ntask' && index === 1) {

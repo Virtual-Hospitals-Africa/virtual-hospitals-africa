@@ -60,7 +60,7 @@ export const COMMON_SYMPTOMS: CommonSymptom[] = [
   },
   {
     'key': 'Vomiting' as const,
-    'clinical_finding_s_expression': normalForm(`(clinical_finding (snomed_concept "Vomiting" "disorder"))`),
+    'clinical_finding_s_expression': normalForm(`(clinical_finding (snomed_concept "Finding of vomiting" "finding"))`),
     'primary_name': 'Vomiting',
     'secondary_text': null,
     'category': 'Common Symptoms' as const,

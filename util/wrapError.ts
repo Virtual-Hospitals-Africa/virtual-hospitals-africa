@@ -1,10 +1,11 @@
 import { MostlyJsonSerializable } from '../types.ts'
 import { errorMessageWithJsonContext } from './errorMessageWithJsonContext.ts'
+// import { logReadableJson } from './humanReadableJson.ts'
 
 export function wrapError(message: string, error: unknown, context?: MostlyJsonSerializable): Error {
-  console.log('is_error', error instanceof Error)
-  console.log('is_errorm', error.message)
-  console.log('cause', error)
+  // console.log('is_error', error instanceof Error)
+  // logReadableJson(error.message)
+  // console.log('cause', error)
   const cause = error instanceof Error ? error : new Error(String(error))
 
   const full_message = context ? errorMessageWithJsonContext(message, context) : message

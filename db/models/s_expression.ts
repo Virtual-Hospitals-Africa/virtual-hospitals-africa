@@ -1,4 +1,4 @@
-import { IdSelection, Maybe, TrxOrDb } from '../../types.ts'
+import { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
 import { nowInvalidRecords } from './patient_records_base.ts'
 import { DB } from '../../db.d.ts'
@@ -31,7 +31,7 @@ type SatisfyingResult = {
 }
 
 export function nameAndCategorySnomedConceptBase(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   snomed_concept: Lang['snomed_concept'],
 ) {
   return trx
@@ -42,7 +42,7 @@ export function nameAndCategorySnomedConceptBase(
 }
 
 export function snomedConceptBase(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   snomed_concept: Lang['snomed_concept'],
 ) {
   assert(isAtom(snomed_concept, 'snomed_concept'))
@@ -50,14 +50,14 @@ export function snomedConceptBase(
 }
 
 export function maybeSnomedConceptBase(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   snomed_concept: Lang['snomed_concept'] | null,
 ) {
   return snomed_concept && snomedConceptBase(trx, snomed_concept)
 }
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   {
     patient_id,
     patient_encounter_id,
@@ -219,7 +219,7 @@ function baseQuery(
 
 export const satisfyingSExpression = deduplicate(
   async function satisfyingSExpression(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { s_expression, ...patient }: {
       s_expression: string | AnyNode
     } & PatientIdentifiers,
@@ -245,7 +245,7 @@ export const satisfyingSExpression = deduplicate(
 )
 
 function measurement(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   patient: PatientIdentifiers,
   { snomed_concept, units }: Lang['measurement'],
 ) {
@@ -286,17 +286,19 @@ export const EXPRESSION_BUILDERS = {
       qualifiers,
       attributes,
       exact,
+      history,
     },
   ) {
     return baseQuery(trx, {
       patient_id,
-      patient_encounter_id,
       root_snomed_concept,
       specific_snomed_concept,
       value_snomed_concept,
       qualifiers,
       attributes,
       exact,
+      // For historical findings, look for findings at any point in the patient's history
+      patient_encounter_id: history ? null : patient_encounter_id,
     })
       .innerJoin(
         'patient_findings',
@@ -568,14 +570,14 @@ export const EXPRESSION_BUILDERS = {
   },
 } satisfies {
   [T in Atom]?: (
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient: PatientIdentifiers,
     node: AnyNode & { atom: T },
   ) => SelectQueryBuilder<DB, 'patient_records', { id: string }>
 }
 
 export function buildExpression(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   patient: PatientIdentifiers,
   node: AnyNode | string,
 ): SelectQueryBuilder<DB, 'patient_records', { id: string }> {

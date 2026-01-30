@@ -2,13 +2,12 @@ import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 
-import { TASK_DEFS, TASKS } from '../../shared/tasks.ts'
+import { TASKS } from '../../shared/tasks.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { nameAndCategorySnomedConceptBase } from '../../db/models/s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
 import { snomed_concept_id } from '../../util/validators.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { normalForm } from '../../shared/s_expression.ts'
 
 describeParallel('db/models/additional_tasks.ts', () => {
   afterAll(() => db.destroy())
@@ -36,8 +35,4 @@ describeParallel('db/models/additional_tasks.ts', () => {
       })
     },
   )
-
-  itParallel.only('foo', () => {
-    console.log(TASK_DEFS.map((t) => normalForm(t[1])).join('\n'))
-  })
 })
