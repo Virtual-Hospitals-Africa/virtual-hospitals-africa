@@ -9,7 +9,14 @@ import { isAtom, Units, UNITS_ARRAY } from './s_expression.ts'
 import { AgeDetermination, Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
-import { ALLERGIC_CONDITION, CAUSATIVE_AGENT, CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, MEASUREMENT_PROCEDURE, PROCEDURE } from './snomed_concepts.ts'
+import {
+  ALLERGIC_CONDITION,
+  CAUSATIVE_AGENT,
+  CLINICAL_FINDING,
+  EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS,
+  MEASUREMENT_PROCEDURE,
+  PROCEDURE,
+} from './snomed_concepts.ts'
 
 export type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
@@ -334,7 +341,7 @@ export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'r
         qualifiers,
         attributes,
         exact: false,
-        history: false
+        history: false,
       }
     },
   )
@@ -594,30 +601,30 @@ export const allergy: z.ZodType<DefinedFinding & { history: true }> = z.lazy(
       args: z.tuple([snomed_concept]),
     }).transform(({ args: [snomed_concept] }) => ({
       atom: 'finding' as const,
-    root_snomed_concept: {
-      atom: 'snomed_concept' as const,
-      name: CLINICAL_FINDING.name,
-      category: CLINICAL_FINDING.category,
-    },
-    specific_snomed_concept: {
-      atom: 'snomed_concept' as const,
-      name: ALLERGIC_CONDITION.name,
-      category: ALLERGIC_CONDITION.category,
-    },
-    value_snomed_concept: null,
-    qualifiers: [],
-    attributes: [{
-      atom: 'attribute' as const,
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: CLINICAL_FINDING.name,
+        category: CLINICAL_FINDING.category,
+      },
       specific_snomed_concept: {
         atom: 'snomed_concept' as const,
-        name: CAUSATIVE_AGENT.name,
-        category: CAUSATIVE_AGENT.category
+        name: ALLERGIC_CONDITION.name,
+        category: ALLERGIC_CONDITION.category,
       },
-      value: snomed_concept,
-    }],
-    exact: false,
-    history: true as const
-  })),
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [{
+        atom: 'attribute' as const,
+        specific_snomed_concept: {
+          atom: 'snomed_concept' as const,
+          name: CAUSATIVE_AGENT.name,
+          category: CAUSATIVE_AGENT.category,
+        },
+        value: snomed_concept,
+      }],
+      exact: false,
+      history: true as const,
+    })),
 ).describe('allergy')
 
 export const ncheck_for: z.ZodType<Lang['ncheck_for']> = z.lazy(
@@ -627,7 +634,7 @@ export const ncheck_for: z.ZodType<Lang['ncheck_for']> = z.lazy(
       args: finding.array(),
     }).transform(({ args: check_for }) => ({
       atom: 'ncheck_for' as const,
-      check_for
+      check_for,
     })),
 ).describe('ncheck_for')
 
@@ -748,7 +755,7 @@ const ages = z.lazy(() =>
     atom: z.literal('ages'),
     args: age_determination.array(),
   }).transform(({ args }) => args)
-  .or(age_determination.transform(age => [age]))
+    .or(age_determination.transform((age) => [age]))
 ).describe('ages')
 
 export const ntask: z.ZodType<Lang['ntask']> = z.lazy(() =>
@@ -760,7 +767,7 @@ export const ntask: z.ZodType<Lang['ntask']> = z.lazy(() =>
       comparator.or(finding),
       // procedure.or(check_for).or(measure),
       ncheck_for,
-      diagnosis.optional()
+      diagnosis.optional(),
     ]),
   }).transform(({ atom, args: [description, ages, applies_when, procedure, diagnosis = null] }) => ({
     atom,
@@ -799,9 +806,9 @@ export const system_priority_determination: z.ZodType<Lang['system_priority_dete
 ).describe('system_priority_determination')
 
 // TODO: might need to change this to include negative findings
-export const positive_finding_like: z.ZodType<LookingFor> = z.lazy(() =>
-  comparator.or(defined_finding).or(allergy).or(or).or(and).or(any2)
-).describe('positive_finding_like')
+export const positive_finding_like: z.ZodType<LookingFor> = z.lazy(() => comparator.or(defined_finding).or(allergy).or(or).or(and).or(any2)).describe(
+  'positive_finding_like',
+)
 
 export const not: z.ZodType<Lang['not']> = z.lazy(() =>
   z.object({
@@ -857,16 +864,17 @@ export const diagnosis: z.ZodType<Lang['diagnosis']> = z.lazy(() =>
   }))
 ).describe('diagnosis')
 
-
 export const system_diagnosis_rule: z.ZodType<Lang['system_diagnosis_rule']> = z.lazy(() =>
   z.object({
     atom: z.literal('system_diagnosis_rule'),
     args: z.tuple([diagnosis, ages, positive_finding_like]),
   }).transform(({ atom, args: [diagnosis, ages, evidence] }) => ({
     atom,
-    diagnosis, ages, evidence
-  })
-)).describe('system_diagnosis_rule')
+    diagnosis,
+    ages,
+    evidence,
+  }))
+).describe('system_diagnosis_rule')
 
 export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
   z.union([

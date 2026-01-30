@@ -7,6 +7,4 @@ function parseAsNTask(expr: string) {
   return parseWithSchema(expr, ntask)
 }
 
-export const NTASKS = [
-
-].map(parseAsNTask)
+export const NTASKS = [].map(parseAsNTask)

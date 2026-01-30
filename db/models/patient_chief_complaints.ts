@@ -1,7 +1,7 @@
 import { Maybe, TrxOrDb } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { markAltered, nowInvalidRecords } from './patient_records_base.ts'
+import { markAltered } from './patient_records_base.ts'
 import {
   AUDIO_RECORDING_OF_SUBJECT_INTERVIEW,
   CHIEF_COMPLAINT,
@@ -188,6 +188,7 @@ export const patient_chief_complaints = {
         'patient_findings.id',
         'patient_records.id',
       )
+      .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
       .innerJoin(
         'patient_chief_complaints',
         'patient_chief_complaints.id',
@@ -200,11 +201,6 @@ export const patient_chief_complaints = {
       )
       .where('patient_records.patient_id', '=', patient_id)
       .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
-      .where(
-        'patient_records.id',
-        'not in',
-        nowInvalidRecords(trx),
-      )
       .leftJoin(
         'patient_finding_media_speeches',
         'patient_finding_media_speeches.finding_id',

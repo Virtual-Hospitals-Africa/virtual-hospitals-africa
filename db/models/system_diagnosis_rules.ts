@@ -4,7 +4,16 @@ import { patient_evaluations, type PatientEvaluationsSearch } from './patient_ev
 import { buildExpression } from './s_expression.ts'
 import { AgeDetermination, TrxOrDb } from '../../types.ts'
 import { arrayAggIds, debugLog, literalString, success_true, temporaryTable } from '../helpers.ts'
-import { DIAGNOSIS, DEFINITE, PROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER, EQUIVOCAL, POSSIBLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER, IMPROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER, EVIDENCE_OF_CONTEXTUAL_QUALIFIER, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
+import {
+  DEFINITE,
+  DIAGNOSIS,
+  EQUIVOCAL,
+  EVIDENCE_OF_CONTEXTUAL_QUALIFIER,
+  IMPROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER,
+  POSSIBLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER,
+  PROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER,
+  RELATIONSHIP,
+} from '../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { Comparisons, Lang, LookingFor, system_diagnosis_rule } from '../../shared/s_expression_schemas.ts'
@@ -12,12 +21,12 @@ import { SYSTEM_DIAGNOSIS_RULES } from '../../s_expression/system_diagnosis_rule
 import compactMap from '../../util/compactMap.ts'
 import generateUUID from '../../util/uuid.ts'
 
-export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map(d => parseWithSchema(d, system_diagnosis_rule))
+export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map((d) => parseWithSchema(d, system_diagnosis_rule))
 
 const rules_by_age = {
-  'adult': SYSTEM_DIAGNOSIS_RULES_PARSED.filter(rule => rule.ages.includes('adult')),
-  'older child': SYSTEM_DIAGNOSIS_RULES_PARSED.filter(rule => rule.ages.includes('older child')),
-  'younger child': SYSTEM_DIAGNOSIS_RULES_PARSED.filter(rule => rule.ages.includes('younger child')),
+  'adult': SYSTEM_DIAGNOSIS_RULES_PARSED.filter((rule) => rule.ages.includes('adult')),
+  'older child': SYSTEM_DIAGNOSIS_RULES_PARSED.filter((rule) => rule.ages.includes('older child')),
+  'younger child': SYSTEM_DIAGNOSIS_RULES_PARSED.filter((rule) => rule.ages.includes('younger child')),
 }
 
 const finding_nodes_to_s_expressions = new Map<Lang['finding' | Comparisons], string>()
@@ -32,7 +41,7 @@ for (const rule of SYSTEM_DIAGNOSIS_RULES_PARSED) {
     finding_nodes_to_s_expressions.set(finding, finding_s_expr)
     finding_s_expressions_to_nodes.set(finding_s_expr, finding)
     finding_s_expressions.push(finding_s_expr)
-    
+
     if (!finding_s_expressions_to_rules.has(finding_s_expr)) {
       finding_s_expressions_to_rules.set(finding_s_expr, new Set())
     }
@@ -40,7 +49,7 @@ for (const rule of SYSTEM_DIAGNOSIS_RULES_PARSED) {
   }
 }
 
-function * allFindingsToLookFor(node: Lang['or' | 'and' | 'any2' | 'finding' | Comparisons]): Generator<Lang['finding' | Comparisons]> {
+function* allFindingsToLookFor(node: Lang['or' | 'and' | 'any2' | 'finding' | Comparisons]): Generator<Lang['finding' | Comparisons]> {
   switch (node.atom) {
     case 'finding':
     case '<':
@@ -54,7 +63,7 @@ function * allFindingsToLookFor(node: Lang['or' | 'and' | 'any2' | 'finding' | C
     case 'and':
     case 'any2':
       for (const expression of node.expressions) {
-        yield * allFindingsToLookFor(expression)
+        yield* allFindingsToLookFor(expression)
       }
       break
   }
@@ -102,7 +111,7 @@ export const system_diagnosis_rules = {
       patient_id: string
       patient_encounter_id: string
       // procedure_id: string
-      patient_age_determination: AgeDetermination | null,
+      patient_age_determination: AgeDetermination | null
       findings: {
         id: string
         existence: 'Yes' | 'No'
@@ -114,7 +123,7 @@ export const system_diagnosis_rules = {
     // TODO, maybe handle negative findings? There could be diagnoses that call for them
     const positive_findings = findings
       .filter((f) => f.existence === 'Yes')
-    
+
     console.log('mmm', positive_findings)
     if (!positive_findings.length) return
 
@@ -122,35 +131,35 @@ export const system_diagnosis_rules = {
 
     if (!rules_of_age.length) return
 
-    rules_of_age.forEach(rule => {
+    rules_of_age.forEach((rule) => {
       assert(rule.diagnosis.certainty_qualifier === 'probable', 'Only supporting probable rules for the first pass')
     })
 
     assert(finding_s_expressions_to_nodes.size)
 
     const new_findings_applicable_query = trx
-    .with('positive_findings', () => temporaryTable(trx, positive_findings))
-    .with('all_findings', qb => {
-      const [first_diagnosis_rule, ...other_diagnosis_rules] = rules_of_age.flatMap(
-        (rule) =>
-          rules_to_finding_s_expressions.get(rule)!.map(finding_s_expression => 
-            qb.selectNoFrom([
-              literalString(finding_s_expression).as('finding_s_expression'),
-              arrayAggIds(
-                buildExpression(
-                  trx,
-                  { patient_id, patient_encounter_id },
-                  finding_s_expressions_to_nodes.get(finding_s_expression)!,
-                ).where(
-                  'patient_records.id',
-                  'in',
-                  'positive_findings.id',
-                ),
-              ).as('matching_finding_ids'),
-            ]),
-          )
+      .with('positive_findings', () => temporaryTable(trx, positive_findings))
+      .with('all_findings', (qb) => {
+        const [first_diagnosis_rule, ...other_diagnosis_rules] = rules_of_age.flatMap(
+          (rule) =>
+            rules_to_finding_s_expressions.get(rule)!.map((finding_s_expression) =>
+              qb.selectNoFrom([
+                literalString(finding_s_expression).as('finding_s_expression'),
+                arrayAggIds(
+                  buildExpression(
+                    trx,
+                    { patient_id, patient_encounter_id },
+                    finding_s_expressions_to_nodes.get(finding_s_expression)!,
+                  ).where(
+                    'patient_records_aggregated.id',
+                    'in',
+                    qb.selectFrom('positive_findings').select('id'),
+                  ),
+                ).as('matching_finding_ids'),
+              ])
+            ),
         )
-        
+
         return other_diagnosis_rules.reduce(
           (acc, curr) => acc.unionAll(curr),
           first_diagnosis_rule,
@@ -159,8 +168,8 @@ export const system_diagnosis_rules = {
       .selectFrom('all_findings')
       .selectAll()
       .where(sql`cardinality(matching_finding_ids)`, '>', 0)
-    
-      console.log('zz')
+
+    console.log('zz')
     debugLog(new_findings_applicable_query)
 
     const new_findings_applicable = await new_findings_applicable_query.execute()
@@ -179,13 +188,12 @@ export const system_diagnosis_rules = {
     // First see if the positive finding could possibly contribute as evidence
     // Only for those where it could do you need to look further
 
-
     // const new_findings_applicable = await new_findings_applicable_query.execute()
 
     if (!new_findings_applicable.length) return
 
     const rules_for_which_new_findings_applicable = new Set<Lang['system_diagnosis_rule']>()
-    for (const {finding_s_expression} of new_findings_applicable) {
+    for (const { finding_s_expression } of new_findings_applicable) {
       const rules = finding_s_expressions_to_rules.get(finding_s_expression)
       assert(rules)
       for (const rule of rules) {
@@ -209,26 +217,26 @@ export const system_diagnosis_rules = {
 
     if (!all_finding_s_expressions_for_applicable_rules.size) return
 
-    const [first_all_findings_rule, ...other_all_findings_rules] =
-      all_finding_s_expressions_for_applicable_rules.entries().map(
-        ([finding_s_expression, node]) =>
-          trx.selectNoFrom([
-            literalString(finding_s_expression).as('finding_s_expression'),
-            arrayAggIds(
-              buildExpression(
-                trx,
-                { patient_id, patient_encounter_id },
-                node,
-              )
-            ).as('matching_finding_ids'),
-          ]),
-      )
+    const [first_all_findings_rule, ...other_all_findings_rules] = all_finding_s_expressions_for_applicable_rules.entries().map(
+      ([finding_s_expression, node]) =>
+        trx.selectNoFrom([
+          literalString(finding_s_expression).as('finding_s_expression'),
+          arrayAggIds(
+            buildExpression(
+              trx,
+              { patient_id, patient_encounter_id },
+              node,
+            ),
+          ).as('matching_finding_ids'),
+        ]),
+    )
 
     const all_findings_for_rules_query = trx
-      .with('all_findings_for_rules', () => other_all_findings_rules.reduce(
-        (acc, curr) => acc.unionAll(curr),
-        first_all_findings_rule,
-      ))
+      .with('all_findings_for_rules', () =>
+        other_all_findings_rules.reduce(
+          (acc, curr) => acc.unionAll(curr),
+          first_all_findings_rule,
+        ))
       .selectFrom('all_findings_for_rules')
       .where(sql`cardinality(matching_finding_ids)`, '>', 0)
       .selectAll()
@@ -243,7 +251,7 @@ export const system_diagnosis_rules = {
       findings_map.set(finding_s_expression, matching_finding_ids)
     }
 
-    const rules_for_which_to_make_new_diagnosis = compactMap(rules_for_which_new_findings_applicable, rule => {
+    const rules_for_which_to_make_new_diagnosis = compactMap(rules_for_which_new_findings_applicable, (rule) => {
       const x = evaluateEvidence(rule.evidence)
       if (x.result) return { rule, contributing_finding_ids: x.contributing_finding_ids }
     })
@@ -285,11 +293,9 @@ export const system_diagnosis_rules = {
 
     // return patient_evaluations.insertOneNested()
 
-
     function evaluateEvidence(evidence: LookingFor):
-      | { result: true, contributing_finding_ids: Set<string> }
+      | { result: true; contributing_finding_ids: Set<string> }
       | { result: false } {
-        
       const contributing_finding_ids = new Set<string>()
       switch (evidence.atom) {
         case 'or': {

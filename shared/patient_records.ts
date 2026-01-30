@@ -436,7 +436,7 @@ export function asNormalFormSExpression<Rest>(
           qualifiers,
           attributes,
           exact: false,
-          history: false
+          history: false,
         }
       }
       case 'evaluation': {

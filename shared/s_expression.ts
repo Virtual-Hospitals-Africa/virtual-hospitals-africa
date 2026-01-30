@@ -51,8 +51,11 @@ export function parseWithSchema<Schema extends Values<typeof schemas>>(
   const second_pass = safeParseWithValues(schema, first_pass)
   if (!second_pass.success) {
     const issue = second_pass.error.issues[0]
-    
-    throw new Error(`Error parsing ${expression} using schema ${schema.description}\npath: ${issue.path}\nsaw: ${humanReadableJson((issue as any).actual_value)}`)
+
+    throw new Error(
+      // deno-lint-ignore no-explicit-any
+      `Error parsing ${expression} using schema ${schema.description}\npath: ${issue.path}\nsaw: ${humanReadableJson((issue as any).actual_value)}`,
+    )
   }
 
   // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions

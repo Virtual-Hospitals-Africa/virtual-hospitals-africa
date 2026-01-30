@@ -7,7 +7,6 @@ import { assert } from 'std/assert/assert.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from './pack-adult.ts'
 import { task } from './s_expression_schemas.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from './vitals.ts'
-import { NTASKS } from '../s_expression/ntasks.ts'
 
 type TaskDef = ['all' | AgeDetermination[], string]
 

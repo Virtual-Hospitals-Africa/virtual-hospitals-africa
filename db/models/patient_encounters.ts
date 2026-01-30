@@ -47,7 +47,6 @@ import matching from '../../util/matching.ts'
 import { exists } from '../../util/exists.ts'
 import { organization_rooms } from './organization_rooms.ts'
 import { isPriority, PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
-import { nowInvalidRecords } from './patient_records_base.ts'
 import { PRIORITY } from '../../shared/snomed_concepts.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import sortBy from '../../util/sortBy.ts'
@@ -126,6 +125,11 @@ function baseQuery(trx: TrxOrDb) {
             'patient_records.id',
           )
           .innerJoin(
+            'patient_records_still_valid',
+            'patient_records.id',
+            'patient_records_still_valid.id',
+          )
+          .innerJoin(
             'snomed_inferred_canonical_name_and_category',
             'patient_records.value_snomed_concept_id',
             'snomed_inferred_canonical_name_and_category.id',
@@ -134,11 +138,6 @@ function baseQuery(trx: TrxOrDb) {
             'patient_records.patient_encounter_id',
             '=',
             'patient_encounters.id',
-          )
-          .where(
-            'patient_triage_level.id',
-            'not in',
-            nowInvalidRecords(trx),
           )
           .select((eb_patient_triage_level) => [
             asText(

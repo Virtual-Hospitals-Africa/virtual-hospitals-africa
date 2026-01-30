@@ -73,7 +73,7 @@ export const additional_tasks = {
               { patient_id },
               when,
             ).where(
-              'patient_records.id',
+              'patient_records_aggregated.id',
               'in',
               positive_finding_ids,
             ),
@@ -180,7 +180,10 @@ export const additional_tasks = {
       return []
     }
 
-    const procedure_ids = evaluations.map((e) => e.evaluates_record_id)
+    const procedure_ids = evaluations.map((e) => {
+      assert(e.evaluates_record_id)
+      return e.evaluates_record_id
+    })
 
     const finding_ids = evaluations.map((evaluation) => {
       assertLength(evaluation.destination_relations, 1)
