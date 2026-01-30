@@ -48,20 +48,21 @@ export const system_diagnosis_rules = {
       assert(rule.diagnosis.certainty_qualifier === 'probable', 'Only supporting probable rules for the first pass')
     })
 
-    const finding_s_expressions_to_finding_nodes = new Map<string, Lang['finding' | Comparisons]>()
-    const findings_s_expressions_to_rules = new Map<string, Set<Lang['system_diagnosis_rule']>>()
-    const rules_to_finding_nodes = new Map<Lang['system_diagnosis_rule'], Array<Lang['finding' | Comparisons]>>()
+    const finding_s_expressions_to_nodes = new Map<string, Lang['finding' | Comparisons]>()
+    const finding_s_expressions_to_rules = new Map<string, Set<Lang['system_diagnosis_rule']>>()
+    const rules_to_finding_s_expressions = new Map<Lang['system_diagnosis_rule'], string[]>()
     for (const rule of to_consider) {
-      const finding_nodes: Array<Lang['finding' | Comparisons]> = []
-      rules_to_finding_nodes.set(rule, finding_nodes)
+      const finding_s_expressions: string[] = []
+      rules_to_finding_s_expressions.set(rule, finding_s_expressions)
       for (const finding of allFindingsToLookFor(rule.evidence)) {
-        finding_nodes.push(finding)
         const finding_s_expr = inverseSExpression(finding)
-        finding_s_expressions_to_finding_nodes.set(finding_s_expr, finding)
-        if (!findings_s_expressions_to_rules.has(finding_s_expr)) {
-          findings_s_expressions_to_rules.set(finding_s_expr, new Set())
+        finding_s_expressions_to_nodes.set(finding_s_expr, finding)
+        finding_s_expressions.push(finding_s_expr)
+        
+        if (!finding_s_expressions_to_rules.has(finding_s_expr)) {
+          finding_s_expressions_to_rules.set(finding_s_expr, new Set())
         }
-        findings_s_expressions_to_rules.get(finding_s_expr)!.add(rule)
+        finding_s_expressions_to_rules.get(finding_s_expr)!.add(rule)
       }
     }
 
@@ -85,12 +86,12 @@ export const system_diagnosis_rules = {
       }
     }
 
-    assert(finding_s_expressions_to_finding_nodes.size)
+    assert(finding_s_expressions_to_nodes.size)
 
-    const [first_diagnosis, ...other_diagnoses] = finding_s_expressions_to_finding_nodes.entries().map(
-      ([s_expr, node]) =>
+    const [first_diagnosis_rule, ...other_diagnosis_rules] = finding_s_expressions_to_nodes.entries().map(
+      ([finding_s_expression, node]) =>
         trx.selectNoFrom([
-          literalString(s_expr).as('s_expr'),
+          literalString(finding_s_expression).as('finding_s_expression'),
           arrayAggIds(
             buildExpression(
               trx,
@@ -106,9 +107,9 @@ export const system_diagnosis_rules = {
     )
 
     const new_findings_applicable_query = trx
-      .with('all_findings', () => other_diagnoses.reduce(
+      .with('all_findings', () => other_diagnosis_rules.reduce(
         (acc, curr) => acc.unionAll(curr),
-        first_diagnosis,
+        first_diagnosis_rule,
       ))
       .selectFrom('all_findings')
       .selectAll()
@@ -122,12 +123,67 @@ export const system_diagnosis_rules = {
 
     // If a diagnosis of this level or 
 
-
-    debugLog(new_findings_applicable_query)
-
     const new_findings_applicable = await new_findings_applicable_query.execute()
 
-    return { new_findings_applicable, finding_s_expressions_to_finding_nodes, findings_s_expressions_to_rules, rules_to_finding_nodes}
+    if (!new_findings_applicable.length) return
+
+    const rules_for_which_new_findings_applicable = new Set<Lang['system_diagnosis_rule']>()
+    for (const {finding_s_expression} of new_findings_applicable) {
+      const rules = finding_s_expressions_to_rules.get(finding_s_expression)
+      assert(rules)
+      for (const rule of rules) {
+        rules_for_which_new_findings_applicable.add(rule)
+      }
+    }
+
+    // Second round: For rules where new findings are applicable, check ALL patient records
+    // (not just the newly created findings) to see if evidence is satisfied
+    const all_finding_s_expressions_for_applicable_rules = new Map<string, Lang['finding' | Comparisons]>()
+
+    for (const rule of rules_for_which_new_findings_applicable) {
+      const finding_s_expressions = rules_to_finding_s_expressions.get(rule)
+      assert(finding_s_expressions)
+      for (const finding_s_expr of finding_s_expressions) {
+        const node = finding_s_expressions_to_nodes.get(finding_s_expr)
+        assert(node)
+        all_finding_s_expressions_for_applicable_rules.set(finding_s_expr, node)
+      }
+    }
+
+    if (!all_finding_s_expressions_for_applicable_rules.size) return
+
+    const [first_all_findings_rule, ...other_all_findings_rules] =
+      all_finding_s_expressions_for_applicable_rules.entries().map(
+        ([finding_s_expression, node]) =>
+          trx.selectNoFrom([
+            literalString(finding_s_expression).as('finding_s_expression'),
+            arrayAggIds(
+              buildExpression(
+                trx,
+                { patient_id, patient_encounter_id },
+                node,
+              )
+            ).as('matching_finding_ids'),
+          ]),
+      )
+
+    const all_findings_for_rules_query = trx
+      .with('all_findings_for_rules', () => other_all_findings_rules.reduce(
+        (acc, curr) => acc.unionAll(curr),
+        first_all_findings_rule,
+      ))
+      .selectFrom('all_findings_for_rules')
+      .where(sql`cardinality(matching_finding_ids)`, '>', 0)
+      .selectAll()
+
+    debugLog(all_findings_for_rules_query)
+
+    const all_findings_for_rules = await all_findings_for_rules_query.execute()
+
+    return all_findings_for_rules
+
+
+    // return { new_findings_applicable, finding_s_expressions_to_nodes, findings_s_expressions_to_rules, rules_to_finding_nodes}
 
     // await pMap(diagnosis_results, async ([diagnosis_result, diagnosis]) => {
     //   assertEquals(diagnosis_result.description, diagnosis.description)

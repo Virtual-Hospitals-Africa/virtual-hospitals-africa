@@ -1069,7 +1069,7 @@ export interface PatientEncounters {
 export interface PatientEvaluations {
   by_system: boolean
   employment_id: string | null
-  evaluates_record_id: string
+  evaluates_record_id: string | null
   id: string
   procedure_id: string | null
 }

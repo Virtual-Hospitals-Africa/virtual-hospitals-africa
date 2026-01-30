@@ -172,7 +172,10 @@ export const additional_tasks = {
       return []
     }
 
-    const procedure_ids = evaluations.map((e) => e.evaluates_record_id)
+    const procedure_ids = evaluations.map((e) => {
+      assert(e.evaluates_record_id)
+      return e.evaluates_record_id
+    })
 
     const finding_ids = evaluations.map((evaluation) => {
       assertLength(evaluation.destination_relations, 1)
