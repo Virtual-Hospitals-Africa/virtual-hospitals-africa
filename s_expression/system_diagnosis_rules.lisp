@@ -1,6 +1,6 @@
 (system_diagnosis_rule
-  (diagnosis 
-    (snomed_concept "Anaphylasis" "disorder")
+  (diagnosis
+    (snomed_concept "Anaphylaxis" "disorder")
     probable
   )
   adult
