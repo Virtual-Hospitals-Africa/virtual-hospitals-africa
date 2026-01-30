@@ -7,7 +7,7 @@ import { arrayAggIds, debugLog, literalString } from '../helpers.ts'
 import { DIAGNOSIS } from '../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-import { Comparisons, Lang, system_diagnosis_rule } from '../../shared/s_expression_schemas.ts'
+import { Comparisons, Lang, LookingFor, system_diagnosis_rule } from '../../shared/s_expression_schemas.ts'
 import { SYSTEM_DIAGNOSIS_RULES } from '../../s_expression/system_diagnosis_rules.ts'
 
 export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map(d => parseWithSchema(d, system_diagnosis_rule))
@@ -16,6 +16,8 @@ export function baseQuery(trx: TrxOrDb, opts: PatientEvaluationsSearch) {
   return patient_evaluations.baseQuery(trx, opts)
     .where('patient_records_aggregated.root_snomed_concept_id', '=', DIAGNOSIS.id)
 }
+
+
 
 export const system_diagnosis_rules = {
   async insertSystemDiagnosesIfNotAlreadyIdentified(
@@ -180,69 +182,90 @@ export const system_diagnosis_rules = {
 
     const all_findings_for_rules = await all_findings_for_rules_query.execute()
 
-    return all_findings_for_rules
+    // Create a map for quick lookup of findings by their s-expression
+    const findings_map = new Map<string, string[]>()
+    for (const { finding_s_expression, matching_finding_ids } of all_findings_for_rules) {
+      findings_map.set(finding_s_expression, matching_finding_ids)
+    }
 
+    return Array.from(rules_for_which_new_findings_applicable).map(rule => ({
+      rule,
+      ...evaluateEvidence(rule.evidence)
+    }))
 
-    // return { new_findings_applicable, finding_s_expressions_to_nodes, findings_s_expressions_to_rules, rules_to_finding_nodes}
+    function evaluateEvidence(evidence: LookingFor):
+      | { result: true, contributing_finding_ids: Set<string> }
+      | { result: false } {
+        
+      const contributing_finding_ids = new Set<string>()
+      switch (evidence.atom) {
+        case 'or': {
+          let any_true = false
 
-    // await pMap(diagnosis_results, async ([diagnosis_result, diagnosis]) => {
-    //   assertEquals(diagnosis_result.description, diagnosis.description)
+          for (const expr of evidence.expressions) {
+            const evaluation = evaluateEvidence(expr)
+            if (evaluation.result) {
+              any_true = true
+              for (const id of evaluation.contributing_finding_ids) {
+                contributing_finding_ids.add(id)
+              }
+            }
+          }
 
-    //   if (arrayIsEmpty(diagnosis_result.matching_finding_ids)) {
-    //     return null
-    //   }
-    //   // TODO: the procedure was already identified, so probably nothing to do here
-    //   // Technically we could add the finding as Due to
-    //   if (diagnosis_result.procedure_id) {
-    //     return null
-    //   }
+          if (any_true) {
+            return { result: true, contributing_finding_ids }
+          }
+          return { result: false }
+        }
 
-    //   const procedure = await patient_procedures
-    //     .insertOneNested(
-    //       trx,
-    //       {
-    //         patient_id,
-    //         patient_encounter_id,
-    //         by_system: true,
-    //         procedure: diagnosis.procedure,
-    //       },
-    //     )
+        case 'and': {
+          for (const expr of evidence.expressions) {
+            const evaluation = evaluateEvidence(expr)
+            if (!evaluation.result) {
+              return { result: false }
+            }
+            for (const id of evaluation.contributing_finding_ids) {
+              contributing_finding_ids.add(id)
+            }
+          }
 
-    //   assert(procedure.inserted_new)
+          return { result: true, contributing_finding_ids }
+        }
 
-    //   const evaluation_id = generateUUID()
-    //   const relations = diagnosis_result.matching_finding_ids.map((finding_id) => ({
-    //     id: generateUUID(),
-    //     source_id: evaluation_id,
-    //     destination_id: finding_id,
-    //   }))
+        case 'any2': {
+          let true_count = 0
 
-    //   await patient_evaluations.insertOneNestedQuery(
-    //     trx,
-    //     {
-    //       evaluation_id,
-    //       patient_id,
-    //       patient_encounter_id,
-    //       by_system: true,
-    //       evaluates_record_id: procedure.procedure_id,
-    //       evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
-    //     },
-    //   ).with(
-    //     'inserting_relation_patient_records',
-    //     (qb) =>
-    //       qb.insertInto('patient_records').values(relations.map(({ id }) => ({
-    //         id,
-    //         patient_id,
-    //         patient_encounter_id,
-    //         root_snomed_concept_id: RELATIONSHIP.id,
-    //         specific_snomed_concept_id: DUE_TO.id,
-    //       }))),
-    //   ).with(
-    //     'inserting_relations',
-    //     (qb) => qb.insertInto('patient_record_relations').values(relations),
-    //   ).selectNoFrom([
-    //     success_true,
-    //   ]).executeTakeFirstOrThrow()
-    // })
+          for (const expr of evidence.expressions) {
+            const evaluation = evaluateEvidence(expr)
+            if (evaluation.result) {
+              true_count++
+              for (const id of evaluation.contributing_finding_ids) {
+                contributing_finding_ids.add(id)
+              }
+            }
+          }
+
+          if (true_count >= 2) {
+            return { result: true, contributing_finding_ids }
+          }
+          return { result: false }
+        }
+
+        case 'finding':
+        case '<':
+        case '<=':
+        case '=':
+        case '>':
+        case '>=': {
+          const finding_s_expr = inverseSExpression(evidence)
+          const matching_finding_ids = findings_map.get(finding_s_expr)
+
+          if (matching_finding_ids && matching_finding_ids.length > 0) {
+            return { result: true, contributing_finding_ids: new Set(matching_finding_ids) }
+          }
+          return { result: false }
+        }
+      }
+    }
   },
 }

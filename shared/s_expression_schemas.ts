@@ -9,7 +9,7 @@ import { isAtom, Units, UNITS_ARRAY } from './s_expression.ts'
 import { AgeDetermination, Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
-import { ALLERGIC_PROCESS, CAUSATIVE_AGENT, CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, MEASUREMENT_PROCEDURE, PROCEDURE } from './snomed_concepts.ts'
+import { ALLERGIC_CONDITION, CAUSATIVE_AGENT, CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, MEASUREMENT_PROCEDURE, PROCEDURE } from './snomed_concepts.ts'
 
 export type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
@@ -601,8 +601,8 @@ export const allergy: z.ZodType<DefinedFinding & { history: true }> = z.lazy(
     },
     specific_snomed_concept: {
       atom: 'snomed_concept' as const,
-      name: ALLERGIC_PROCESS.name,
-      category: ALLERGIC_PROCESS.category,
+      name: ALLERGIC_CONDITION.name,
+      category: ALLERGIC_CONDITION.category,
     },
     value_snomed_concept: null,
     qualifiers: [],

@@ -509,13 +509,13 @@ export const EVIDENCE_OF_CONTEXTUAL_QUALIFIER = asConcept({
   name: 'Evidence of (contextual qualifier)',
   category: 'qualifier value' as const,
 })
-export const ALLERGIC_PROCESS = asConcept({
-  id: '472964009',
-  name: 'Allergic process',
-  category: 'qualifier value' as const,
-})
 export const CAUSATIVE_AGENT = asConcept({
   id: '246075003',
   name: 'Causative agent',
   category: 'attribute' as const,
+})
+export const ALLERGIC_CONDITION = asConcept({
+  id: '473011001',
+  name: 'Allergic condition',
+  category: 'finding' as const,
 })
