@@ -17,8 +17,8 @@ export type PatientEvaluationInsert =
     evaluation_id?: string
     patient_id: string
     patient_encounter_id: string
-    evaluates_record_id: string
     evaluation: string | Lang['evaluation']
+    evaluates_record_id?: string | null
   }
   & (
     {
@@ -80,6 +80,15 @@ export function insertOneNested(
     ])
 }
 
+export type PatientEvaluationsSearch = {
+  patient_id?: string | IdSelection
+  root_snomed_concept_id?: string
+  specific_snomed_concept_id?: string
+  patient_encounter_id?: string | IdSelection
+  evaluates_record_id?: string | IdSelection
+  s_expression?: string | Lang['evaluation']
+}
+
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
   opts: PatientEvaluationsSearch,
@@ -110,6 +119,20 @@ export function baseQuery(
         opts.patient_encounter_id,
       )
     }
+    if (opts.root_snomed_concept_id) {
+      qb = qb.where(
+        'patient_records_aggregated.root_snomed_concept_id',
+        '=',
+        opts.root_snomed_concept_id,
+      )
+    }
+    if (opts.specific_snomed_concept_id) {
+      qb = qb.where(
+        'patient_records_aggregated.specific_snomed_concept_id',
+        '=',
+        opts.specific_snomed_concept_id,
+      )
+    }
     if (opts.evaluates_record_id) {
       qb = qb.where(
         'patient_evaluations.evaluates_record_id',
@@ -137,13 +160,6 @@ export function baseQuery(
   }
 
   return qb
-}
-
-export type PatientEvaluationsSearch = {
-  patient_id?: string | IdSelection
-  patient_encounter_id?: string | IdSelection
-  evaluates_record_id?: string | IdSelection
-  s_expression?: string | Lang['evaluation']
 }
 
 export const patient_evaluations = base({

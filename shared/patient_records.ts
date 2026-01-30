@@ -162,6 +162,12 @@ function toDisplayableRecord(node: Lang['measurement' | 'finding']): WithProperR
   }
 }
 
+function snomedConceptDisplay(name: string): string {
+  return name
+    .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
+    .replace(' (contextual qualifier)', '')
+}
+
 function valueDisplay(
   value: Exclude<NonNullable<WithProperRecordValue<DisplayableRecord>['value']>, string>,
 ): string | RecordValueLink {
@@ -169,7 +175,7 @@ function valueDisplay(
     case 'event':
       return formatEventDatetime(value.datetime)
     case 'snomed_concept':
-      return value.name
+      return snomedConceptDisplay(value.name)
     case 'measurement':
       return measurementValueDisplay(value)
     case 'score':
@@ -220,8 +226,7 @@ function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
 function massageSpecificConceptDisplay(record: DisplayableRecord): string | null {
   if (!record.specific_snomed_concept_name) return null
 
-  const replaced = record.specific_snomed_concept_name
-    .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
+  const replaced = snomedConceptDisplay(record.specific_snomed_concept_name)
 
   if (record.value?.type !== 'measurement') return replaced
 
