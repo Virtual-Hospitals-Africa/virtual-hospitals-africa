@@ -1,6 +1,5 @@
 import { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
-import { nowInvalidRecords } from './patient_records_base.ts'
 import { DB } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
@@ -84,11 +83,7 @@ function baseQuery(
 ) {
   const query = trx.selectFrom('patient_records')
     .where('patient_records.patient_id', '=', patient_id)
-    .where(
-      'patient_records.id',
-      'not in',
-      nowInvalidRecords(trx),
-    )
+    .innerJoin('patient_records_still_valid', 'patient_records.id', 'patient_records_still_valid.id')
     .$if(
       !!patient_encounter_id,
       (qb) => qb.where('patient_encounter_id', '=', patient_encounter_id!),
