@@ -397,7 +397,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       assert(result)
 
-      console.log(result.new_findings_applicable)
+      console.log(result)
     },
   )
 })
