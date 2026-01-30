@@ -9,7 +9,7 @@ import randomNationalId from './randomNationalId.ts'
 export default function randomDemographics(
   country: 'ZA' | 'ZW' = 'ZA',
   sex?: 'male' | 'female',
-  age_determination?: AgeDetermination
+  age_determination?: AgeDetermination,
 ) {
   const date_of_birth = randomDateOfBirth(age_determination)
   const names_and_sex = randomNamesAndSex(country, sex)

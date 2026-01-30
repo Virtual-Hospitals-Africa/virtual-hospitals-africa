@@ -11,7 +11,7 @@ type PatientEvaluationScoreInsert = PatientEvaluationInsert & {
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
-  opts: PatientEvaluationScoresSearch
+  opts: PatientEvaluationScoresSearch,
 ) {
   return patient_evaluations.baseQuery(trx, opts).innerJoin(
     'patient_evaluation_scores',
@@ -66,7 +66,8 @@ export const patient_evaluation_scores = base({
   totalTEWSEncounterScore(
     trx: TrxOrDb,
     { patient_id, patient_encounter_id }: {
-      patient_id: string , patient_encounter_id: string
+      patient_id: string
+      patient_encounter_id: string
     },
   ) {
     // const x = await  baseQuery(trx)

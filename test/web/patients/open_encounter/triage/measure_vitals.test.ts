@@ -634,6 +634,7 @@ describeParallel('triage/measure_vitals', () => {
         const finding_scores = await pMap(
           component_scores,
           async ({ score, evaluates_record_id, specific_snomed_concept_name }) => {
+            assert(evaluates_record_id)
             if (specific_snomed_concept_name !== 'Severity score') {
               return {
                 finding_name: specific_snomed_concept_name,
@@ -764,6 +765,7 @@ describeParallel('triage/measure_vitals', () => {
         const finding_scores = await pMap(
           component_scores,
           async ({ score, evaluates_record_id, specific_snomed_concept_name }) => {
+            assert(evaluates_record_id)
             if (specific_snomed_concept_name !== 'Severity score') {
               return {
                 finding_name: specific_snomed_concept_name,

@@ -75,7 +75,7 @@ export function asWarningSigns(
       // Unless submitting twice, these don't matter
       yield [generateUUID(), {
         s_expression: other_finding_s_expression,
-        existence: 'Yes'
+        existence: 'Yes',
       }]
     }
   }

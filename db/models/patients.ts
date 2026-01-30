@@ -8,7 +8,6 @@ import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
-import { nowInvalidRecords } from './patient_records_base.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -59,28 +58,24 @@ function baseQuery(trx: TrxOrDb) {
         preferred_name: eb.ref('patients.preferred_name').$notNull(),
       }).as('names'),
       // TODO make its own function?
-      eb.selectFrom('patient_records')
+      eb.selectFrom('patient_records_aggregated')
+        .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records_aggregated.id')
         .innerJoin(
           'patient_measurements',
-          'patient_records.id',
+          'patient_records_aggregated.id',
           'patient_measurements.id',
         )
         .where(
-          'patient_records.patient_id',
+          'patient_records_aggregated.patient_id',
           '=',
           eb.ref('patients.id'),
         )
         .where(
-          'patient_records.specific_snomed_concept_id',
+          'patient_records_aggregated.specific_snomed_concept_id',
           '=',
           VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.id,
         )
-        .where(
-          'patient_records.id',
-          'not in',
-          nowInvalidRecords(trx),
-        )
-        .orderBy('patient_records.created_at', 'desc')
+        .orderBy('patient_records_aggregated.created_at', 'desc')
         .select('patient_measurements.value')
         .limit(1)
         .as('most_recent_height_cm_measurement'),

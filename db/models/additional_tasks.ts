@@ -32,7 +32,7 @@ export const additional_tasks = {
       patient_id: string
       patient_encounter_id: string
       procedure_id: string
-      patient_age_determination: AgeDetermination | null,
+      patient_age_determination: AgeDetermination | null
       findings: {
         id: string
         existence: 'Yes' | 'No'
@@ -65,7 +65,7 @@ export const additional_tasks = {
               { patient_id },
               when,
             ).where(
-              'patient_records.id',
+              'patient_records_aggregated.id',
               'in',
               positive_finding_ids,
             ),

@@ -105,47 +105,47 @@ export function baseQuery(
       'patient_evaluations.evaluates_record_id',
     ])
 
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.root_snomed_concept_id) {
-      qb = qb.where(
-        'patient_records_aggregated.root_snomed_concept_id',
-        '=',
-        opts.root_snomed_concept_id,
-      )
-    }
-    if (opts.specific_snomed_concept_id) {
-      qb = qb.where(
-        'patient_records_aggregated.specific_snomed_concept_id',
-        '=',
-        opts.specific_snomed_concept_id,
-      )
-    }
-    if (opts.evaluates_record_id) {
-      qb = qb.where(
-        'patient_evaluations.evaluates_record_id',
-        '=',
-        opts.evaluates_record_id,
-      )
-    }
-    if (opts.s_expression) {
-      assert(
-        opts.patient_id,
-        'For now, you must always provide a patient_id as part of a query',
-      )
-      qb = qb.where(
+  if (opts.patient_id) {
+    qb = qb.where(
+      'patient_records_aggregated.patient_id',
+      '=',
+      opts.patient_id,
+    )
+  }
+  if (opts.patient_encounter_id) {
+    qb = qb.where(
+      'patient_records_aggregated.patient_encounter_id',
+      '=',
+      opts.patient_encounter_id,
+    )
+  }
+  if (opts.root_snomed_concept_id) {
+    qb = qb.where(
+      'patient_records_aggregated.root_snomed_concept_id',
+      '=',
+      opts.root_snomed_concept_id,
+    )
+  }
+  if (opts.specific_snomed_concept_id) {
+    qb = qb.where(
+      'patient_records_aggregated.specific_snomed_concept_id',
+      '=',
+      opts.specific_snomed_concept_id,
+    )
+  }
+  if (opts.evaluates_record_id) {
+    qb = qb.where(
+      'patient_evaluations.evaluates_record_id',
+      '=',
+      opts.evaluates_record_id,
+    )
+  }
+  if (opts.s_expression) {
+    assert(
+      opts.patient_id,
+      'For now, you must always provide a patient_id as part of a query',
+    )
+    qb = qb.where(
       'patient_records_aggregated.id',
       'in',
       buildExpression(

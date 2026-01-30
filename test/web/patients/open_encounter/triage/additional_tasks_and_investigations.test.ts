@@ -9,8 +9,7 @@ import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
-import { patient_findings } from '../../../../../db/models/patient_findings.ts'
-import { system_diagnosis_rules } from '../../../../../db/models/system_diagnosis_rules.ts'
+
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
@@ -391,9 +390,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const anaphylaxis_diagnosis = await patient_evaluations.findOneOptional(
         db,
         {
-          patient_id, patient_encounter_id,
-          root_snomed_concept_id: DIAGNOSIS.id
-        }
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
       )
 
       // TODO: possible diagnosis!
@@ -425,16 +425,17 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const anaphylaxis_diagnosis = await patient_evaluations.findOneOptional(
         db,
         {
-          patient_id, patient_encounter_id,
-          root_snomed_concept_id: DIAGNOSIS.id
-        }
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
       )
 
       // TODO: possible diagnosis!
       assertMatches(anaphylaxis_diagnosis, {
         displays: {
-          full: "Anaphylaxis Diagnosis: Probable diagnosis"
-        }
+          full: 'Anaphylaxis Diagnosis: Probable diagnosis',
+        },
       })
     },
   )

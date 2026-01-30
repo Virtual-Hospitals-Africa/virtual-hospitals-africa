@@ -15,8 +15,8 @@ function stripComments(text: string): string {
   return text
     .split('\n')
     .map((line) => {
-      const commentIndex = line.indexOf(';;')
-      return commentIndex >= 0 ? line.substring(0, commentIndex) : line
+      const comment_index = line.indexOf(';;')
+      return comment_index >= 0 ? line.substring(0, comment_index) : line
     })
     .join('\n')
 }
@@ -31,7 +31,7 @@ function extractSExpressions(text: string): string[] {
     throw parsed
   }
   assert(Array.isArray(parsed))
-  return parsed.map(expr => {
+  return parsed.map((expr) => {
     const atom = expr[0]
     if (!isKeyOf(atom, schemas)) {
       throw new Error(`No schema for ${atom}`)
@@ -81,8 +81,8 @@ async function main() {
   const s_expression_dir = 's_expression'
 
   let processed = 0
-  await forEach(walk(s_expression_dir, { exts: ['.lisp'] }), async entry => {
-    assert(entry.isFile) 
+  await forEach(walk(s_expression_dir, { exts: ['.lisp'] }), async (entry) => {
+    assert(entry.isFile)
     await processLispFile(entry.path)
     processed++
   })

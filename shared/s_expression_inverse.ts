@@ -191,12 +191,10 @@ export function inverseSExpression(node: AnyNode): string {
     case 'diagnosis': {
       return `(diagnosis ${snomedConceptToString(node.snomed_concept)} ${node.certainty_qualifier})`
     }
-    
+
     case 'system_diagnosis_rule': {
-      const ages = node.ages.length === 1
-        ? node.ages[0]
-        : `(ages ${node.ages.join(' ')})`
-  
+      const ages = node.ages.length === 1 ? node.ages[0] : `(ages ${node.ages.join(' ')})`
+
       return `(system_diagnosis_rule ${inverseSExpression(node.diagnosis)} ${ages} ${inverseSExpression(node.evidence)})`
     }
 
