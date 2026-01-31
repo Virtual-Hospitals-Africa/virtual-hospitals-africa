@@ -152,3 +152,5 @@ export const snomed_category: z.ZodEnum<
   'tumor staging',
   'unit of presentation',
 ])
+
+export const diagnosis_certainty = z.enum(['definite', 'probable', 'equivocal', 'possible', 'improbable'])

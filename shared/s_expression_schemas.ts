@@ -868,7 +868,7 @@ export const diagnosis: z.ZodType<Lang['diagnosis']> = z.lazy(() =>
     atom: z.literal('diagnosis'),
     args: z.tuple([
       snomed_concept,
-      z.enum(['definite', 'probable', 'equivocal', 'possible', 'improbable']),
+      validators.diagnosis_certainty,
     ]),
   }).transform(({ atom, args: [snomed_concept, certainty_qualifier] }) => ({
     atom,
