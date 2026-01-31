@@ -32,15 +32,15 @@ const rules_by_age = {
 const finding_nodes_to_s_expressions = new Map<Lang['finding' | Comparisons], string>()
 const finding_s_expressions_to_nodes = new Map<string, Lang['finding' | Comparisons]>()
 const finding_s_expressions_to_rules = new Map<string, Set<Lang['system_diagnosis_rule']>>()
-const rules_to_finding_s_expressions = new Map<Lang['system_diagnosis_rule'], string[]>()
+const rules_to_finding_s_expressions = new Map<Lang['system_diagnosis_rule'], Set<string>>()
 for (const rule of SYSTEM_DIAGNOSIS_RULES_PARSED) {
-  const finding_s_expressions: string[] = []
+  const finding_s_expressions = new Set<string>()
   rules_to_finding_s_expressions.set(rule, finding_s_expressions)
   for (const finding of allFindingsToLookFor(rule.evidence)) {
     const finding_s_expr = inverseSExpression(finding)
     finding_nodes_to_s_expressions.set(finding, finding_s_expr)
     finding_s_expressions_to_nodes.set(finding_s_expr, finding)
-    finding_s_expressions.push(finding_s_expr)
+    finding_s_expressions.add(finding_s_expr)
 
     if (!finding_s_expressions_to_rules.has(finding_s_expr)) {
       finding_s_expressions_to_rules.set(finding_s_expr, new Set())
@@ -142,7 +142,7 @@ export const system_diagnosis_rules = {
       .with('all_findings', (qb) => {
         const [first_diagnosis_rule, ...other_diagnosis_rules] = rules_of_age.flatMap(
           (rule) =>
-            rules_to_finding_s_expressions.get(rule)!.map((finding_s_expression) =>
+            Array.from(rules_to_finding_s_expressions.get(rule)!).map((finding_s_expression) =>
               qb.selectNoFrom([
                 literalString(finding_s_expression).as('finding_s_expression'),
                 arrayAggIds(
@@ -356,7 +356,8 @@ export const system_diagnosis_rules = {
         case '=':
         case '>':
         case '>=': {
-          const finding_s_expr = inverseSExpression(evidence)
+          const finding_s_expr = finding_nodes_to_s_expressions.get(evidence)
+          assert(finding_s_expr)
           const matching_finding_ids = findings_map.get(finding_s_expr)
 
           if (matching_finding_ids && matching_finding_ids.length > 0) {
