@@ -5,7 +5,6 @@
   )
   adult
   (or
-    ;; TODO Prolog unification!
     (and (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))
          (allergy (snomed_concept "Fish" "substance")))
     (and (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))

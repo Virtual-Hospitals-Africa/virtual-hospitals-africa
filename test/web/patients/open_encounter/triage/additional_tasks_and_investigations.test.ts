@@ -367,7 +367,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     ])
   })
 
-  itParallel.only(
+  itParallel(
     'does not give a probable diagnosis for anaphylaxis if exposed to fish without an allergy',
     async () => {
       const exposure_to_fish_s_expr = '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))'
@@ -401,7 +401,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     },
   )
 
-  itParallel.only(
+  itParallel(
     'does give a probable diagnosis for anaphylaxis if exposed to fish with an allergy',
     async () => {
       const exposure_to_fish_s_expr = '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))'
