@@ -1,6 +1,7 @@
 import { readBooleanEnvironmentVariable, readPositiveIntegerEnvironmentVariable } from './util/env.ts'
 import { onProduction, opts as db_opts } from './db/db.ts'
 import { bgRgb8, bold, cyan, rgb8 } from 'std/fmt/colors.ts'
+import generateUUID from './util/uuid.ts'
 
 const VERBOSE = readBooleanEnvironmentVariable('VERBOSE')
 
@@ -36,7 +37,8 @@ try {
 }
 
 async function handleRequest(request: Request): Promise<Response> {
-  debug(`${request.method} ${request.url}`)
+  const correlation_id = generateUUID()
+  debug(`${request.method} ${request.url} ${correlation_id}`)
   const url = new URL(request.url)
 
   // Check if this is a WebSocket upgrade request
@@ -58,6 +60,7 @@ async function handleRequest(request: Request): Promise<Response> {
     proxy_headers.set('x-forwarded-proto', 'https')
     proxy_headers.set('x-forwarded-host', url.hostname)
     proxy_headers.set('x-forwarded-port', String(HTTPS_PROXY_SERVER_PORT))
+    proxy_headers.set('x-correlation-id', correlation_id)
 
     const proxy_request = new Request(url, {
       method: request.method,
@@ -80,7 +83,7 @@ async function handleRequest(request: Request): Promise<Response> {
       headers: response.headers,
     })
   } catch (error) {
-    console.error(`Failed to proxy ${request.url}:`, error)
+    console.error(`Failed to proxy ${request.method} ${request.url} ${correlation_id}:`, error)
     return new Response('Bad Gateway', { status: 502 })
   }
 }

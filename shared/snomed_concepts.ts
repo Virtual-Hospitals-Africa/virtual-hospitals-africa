@@ -474,3 +474,48 @@ export const TELEMEDICINE_CONSULTATION_WITH_PATIENT = asConcept({
   name: 'Telemedicine consultation with patient',
   category: 'procedure' as const,
 })
+export const DEFINITE = asConcept({
+  id: '255545003',
+  name: 'Definite',
+  category: 'qualifier value' as const,
+})
+export const PROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER = asConcept({
+  id: '2931005',
+  name: 'Probable diagnosis (contextual qualifier)',
+  category: 'qualifier value' as const,
+})
+export const EQUIVOCAL = asConcept({
+  id: '42425007',
+  name: 'Equivocal',
+  category: 'qualifier value' as const,
+})
+export const POSSIBLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER = asConcept({
+  id: '60022001',
+  name: 'Possible diagnosis (contextual qualifier)',
+  category: 'qualifier value' as const,
+})
+export const SUDDEN_ONSET = asConcept({
+  id: '385315009',
+  name: 'Sudden onset',
+  category: 'qualifier value' as const,
+})
+export const IMPROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER = asConcept({
+  id: '385434005',
+  name: 'Improbable diagnosis (contextual qualifier)',
+  category: 'qualifier value' as const,
+})
+export const EVIDENCE_OF_CONTEXTUAL_QUALIFIER = asConcept({
+  id: '18669006',
+  name: 'Evidence of (contextual qualifier)',
+  category: 'qualifier value' as const,
+})
+export const CAUSATIVE_AGENT = asConcept({
+  id: '246075003',
+  name: 'Causative agent',
+  category: 'attribute' as const,
+})
+export const ALLERGIC_CONDITION = asConcept({
+  id: '473011001',
+  name: 'Allergic condition',
+  category: 'finding' as const,
+})

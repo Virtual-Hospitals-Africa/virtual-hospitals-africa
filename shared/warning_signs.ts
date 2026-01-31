@@ -54,7 +54,7 @@ const WARNING_SIGN_ORDER: {
 const WARNING_SIGN_DEFS = [
   {
     key: 'Obstructed airway' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Respiratory obstruction" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Respiratory obstruction" "disorder"))',
     primary_name: 'Obstructed airway',
     secondary_text: 'Not breathing',
     sats_priority: 'Emergency' as const,
@@ -62,7 +62,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Cardiac arrest' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Cardiac arrest" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Cardiac arrest" "disorder"))',
     primary_name: 'Cardiac arrest',
     secondary_text: 'Heart attack',
     sats_priority: 'Emergency' as const,
@@ -70,7 +70,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Seizure' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Seizure" "finding"))',
     primary_name: 'Seizure',
     secondary_text: 'Current',
     sats_priority: 'Emergency' as const,
@@ -78,7 +78,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Burn Facial' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn of face" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Burn of face" "disorder"))',
     primary_name: 'Burn',
     secondary_text: 'Facial',
     sats_priority: 'Emergency' as const,
@@ -86,7 +86,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Burn Inhalation' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Inhalation burn due to hot gas" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Inhalation burn due to hot gas" "disorder"))',
     primary_name: 'Burn',
     secondary_text: 'Inhalation',
     sats_priority: 'Emergency' as const,
@@ -95,7 +95,7 @@ const WARNING_SIGN_DEFS = [
   {
     key: 'Acute shortness of breath' as const,
     clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dyspnea" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Dyspnea" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
     primary_name: 'Shortness of breath',
     secondary_text: 'acute',
     sats_priority: 'Very urgent' as const,
@@ -103,7 +103,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Chest pain' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Chest pain" "finding"))',
     primary_name: 'Chest pain',
     secondary_text: null,
     sats_priority: 'Very urgent' as const,
@@ -111,7 +111,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Seizure - post ictal' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Post-ictal state" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Post-ictal state" "finding"))',
     primary_name: 'Seizure',
     secondary_text: 'Post ictal',
     sats_priority: 'Very urgent' as const,
@@ -119,7 +119,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Focal neurology' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Cerebrovascular accident" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Cerebrovascular accident" "disorder"))',
     primary_name: 'Focal neurology',
     secondary_text: 'acute; Stroke',
     sats_priority: 'Very urgent' as const,
@@ -128,7 +128,7 @@ const WARNING_SIGN_DEFS = [
 
   {
     key: 'Burn Chemical' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chemical burn" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Chemical burn" "disorder"))',
     primary_name: 'Burn',
     secondary_text: 'Chemical',
     sats_priority: 'Very urgent' as const,
@@ -136,7 +136,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Poisoning' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Poisoning" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Poisoning" "disorder"))',
     primary_name: 'Poisoning',
     secondary_text: 'Overdose',
     sats_priority: 'Very urgent' as const,
@@ -144,7 +144,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Aggression' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Aggressive behavior" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Aggressive behavior" "finding"))',
     primary_name: 'Aggression',
     secondary_text: null,
     sats_priority: 'Very urgent' as const,
@@ -153,7 +153,7 @@ const WARNING_SIGN_DEFS = [
 
   {
     key: 'Dislocation of larger joint' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Dislocation" "morphologic abnormality"))',
     excluding_s_expression:
       '(or (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Finger structure" "body structure")) (finding (snomed_concept "Finding site" "attribute") (snomed_concept "Toe structure" "body structure")))',
     primary_name: 'Dislocation of larger joint',
@@ -164,7 +164,7 @@ const WARNING_SIGN_DEFS = [
   {
     key: 'Severe limb ischemia' as const,
     clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Limb ischemia" "disorder") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Limb ischemia" "disorder") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
     primary_name: 'Severe limb ischemia',
     secondary_text: 'Threatened limb',
     sats_priority: 'Very urgent' as const,
@@ -173,8 +173,7 @@ const WARNING_SIGN_DEFS = [
 
   {
     key: 'Burn Circumferential' as const,
-    clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value")))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value")))',
     primary_name: 'Burn',
     secondary_text: 'Circumferential',
     sats_priority: 'Very urgent' as const,
@@ -182,7 +181,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Vomiting fresh blood' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Vomiting blood - fresh" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Vomiting blood - fresh" "disorder"))',
     primary_name: 'Vomiting fresh blood',
     secondary_text: null,
     sats_priority: 'Very urgent' as const,
@@ -190,7 +189,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Coughing blood' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Hemoptysis" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Hemoptysis" "finding"))',
     primary_name: 'Coughing blood',
     secondary_text: null,
     sats_priority: 'Very urgent' as const,
@@ -198,7 +197,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Stabbed neck' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Stab wound of neck" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Stab wound of neck" "disorder"))',
     primary_name: 'Stabbed neck',
     secondary_text: null,
     sats_priority: 'Very urgent' as const,
@@ -206,7 +205,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Eye injury' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury of globe of eye" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Injury of globe of eye" "disorder"))',
     primary_name: 'Eye injury',
     secondary_text: null,
     sats_priority: 'Very urgent' as const,
@@ -214,8 +213,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Burn Over 20%' as const,
-    clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burns classified according to percentage of body surface involved" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Burns classified according to percentage of body surface involved" "disorder"))',
     primary_name: 'Burn',
     secondary_text: 'Over 20%',
     sats_priority: 'Very urgent' as const,
@@ -224,7 +222,7 @@ const WARNING_SIGN_DEFS = [
 
   {
     key: 'High energy transfer' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Injury caused by causative force" "disorder"))',
     primary_name: 'High energy transfer',
     secondary_text: 'Severe mechanism of injury',
     sats_priority: 'Very urgent' as const,
@@ -232,8 +230,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Haemorrhage Uncontrolled' as const,
-    clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Uncontrolled" "qualifier value")))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Uncontrolled" "qualifier value")))',
     primary_name: 'Haemorrhage',
     secondary_text: 'Uncontrolled',
     sats_priority: 'Very urgent' as const,
@@ -241,7 +238,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Compound Fracture' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Fracture, open" "morphologic abnormality"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Fracture, open" "morphologic abnormality"))',
     primary_name: 'Compound fracture',
     secondary_text: 'with a break in the skin',
     sats_priority: 'Very urgent' as const,
@@ -249,7 +246,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Severe pain' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Severe pain" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Severe pain" "finding"))',
     primary_name: 'Severe pain',
     secondary_text: null,
     sats_priority: 'Very urgent' as const,
@@ -258,7 +255,7 @@ const WARNING_SIGN_DEFS = [
   {
     key: 'Burn Moderate severity' as const,
     clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Moderate (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Moderate (severity modifier)" "qualifier value")))',
     primary_name: 'Burn',
     secondary_text: 'Moderate severity',
     sats_priority: 'Very urgent' as const,
@@ -266,7 +263,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Pregnancy and abdominal trauma' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Traumatic injury" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Traumatic injury" "disorder"))',
     primary_name: 'Pregnancy and abdominal trauma',
     secondary_text: null,
     prompt_when_s_expression: '(active_condition (snomed_concept "Pregnancy" "finding"))',
@@ -275,7 +272,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Pregnancy and abdominal pain' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Abdominal pain" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Abdominal pain" "finding"))',
     primary_name: 'Pregnancy and abdominal pain',
     secondary_text: null,
     prompt_when_s_expression: '(active_condition (snomed_concept "Pregnancy" "finding"))',
@@ -284,7 +281,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Persistent vomiting' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Persistent vomiting" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Persistent vomiting" "disorder"))',
     primary_name: 'Persistent vomiting',
     secondary_text: null,
     sats_priority: 'Urgent' as const,
@@ -292,7 +289,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Dislocation of finger' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation of digit of hand" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Dislocation of digit of hand" "disorder"))',
     primary_name: 'Dislocation of finger',
     secondary_text: null,
     sats_priority: 'Urgent' as const,
@@ -300,7 +297,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Dislocation of toe joint' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation of toe joint" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Dislocation of toe joint" "disorder"))',
     primary_name: 'Dislocation of toe joint',
     secondary_text: null,
     sats_priority: 'Urgent' as const,
@@ -308,7 +305,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Moderate pain' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Moderate pain" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Moderate pain" "finding"))',
     primary_name: 'Moderate pain',
     secondary_text: null,
     sats_priority: 'Urgent' as const,
@@ -316,9 +313,9 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Burn Other' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Burn" "disorder"))',
     excluding_s_expression:
-      '(or (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value"))) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Inhalation burn due to hot gas" "disorder")) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chemical burn" "disorder")) (finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Burn of face" "disorder")))',
+      '(or (clinical_finding (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value"))) (clinical_finding (snomed_concept "Inhalation burn due to hot gas" "disorder")) (clinical_finding (snomed_concept "Chemical burn" "disorder")) (clinical_finding (snomed_concept "Burn of face" "disorder")))',
     primary_name: 'Burn',
     secondary_text: 'Other',
     sats_priority: 'Urgent' as const,
@@ -326,8 +323,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Haemorrhage Controlled' as const,
-    clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Controlled" "qualifier value")))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Controlled" "qualifier value")))',
     primary_name: 'Haemorrhage',
     secondary_text: 'Controlled',
     sats_priority: 'Urgent' as const,
@@ -335,7 +331,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Closed fracture' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Closed fracture of bone" "disorder"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Closed fracture of bone" "disorder"))',
     primary_name: 'Closed fracture',
     secondary_text: 'no break in the skin',
     sats_priority: 'Urgent' as const,
@@ -343,7 +339,7 @@ const WARNING_SIGN_DEFS = [
   },
   {
     key: 'Abdominal pain' as const,
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Abdominal pain" "finding"))',
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Abdominal pain" "finding"))',
     primary_name: 'Abdominal pain',
     secondary_text: null,
     sats_priority: 'Urgent' as const,

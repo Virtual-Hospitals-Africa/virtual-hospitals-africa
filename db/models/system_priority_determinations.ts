@@ -64,13 +64,13 @@ export const system_priority_determinations = {
               { patient_id },
               when_primary_finding,
             )
-              .leftJoin('patient_evaluations', 'patient_evaluations.evaluates_record_id', 'patient_records.id')
+              .leftJoin('patient_evaluations', 'patient_evaluations.evaluates_record_id', 'patient_records_aggregated.id')
               .leftJoin('patient_records as eval_records', 'eval_records.id', 'patient_evaluations.id')
               .leftJoin('patient_triage_level', 'patient_triage_level.id', 'patient_evaluations.id')
               .leftJoin('snomed_inferred_canonical_name_and_category as sptl', 'sptl.id', 'eval_records.value_snomed_concept_id')
               .where((eb) =>
                 eb.or([
-                  eb('patient_records.id', 'in', positive_finding_ids),
+                  eb('patient_records_aggregated.id', 'in', positive_finding_ids),
                   eb.and([
                     eb('sptl.name', 'is not', null),
                     eb('sptl.name', '!=', priority),

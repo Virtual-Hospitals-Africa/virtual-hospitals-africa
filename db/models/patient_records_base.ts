@@ -83,25 +83,6 @@ export function markEnteredInError(
   })
 }
 
-export function nowInvalidRecords(
-  trx: TrxOrDbOrQueryCreator,
-) {
-  return trx.selectFrom(
-    'patient_records as now_invalid_patient_records',
-  )
-    .innerJoin(
-      'patient_evaluations as now_invalid_patient_evaluations',
-      'now_invalid_patient_evaluations.id',
-      'now_invalid_patient_records.id',
-    )
-    .where(
-      'now_invalid_patient_records.specific_snomed_concept_id',
-      'in',
-      [ALTERED.id, ENTERED_IN_ERROR.id],
-    )
-    .select('now_invalid_patient_evaluations.evaluates_record_id')
-}
-
 export type IntermediateBaseRecord = Selecting<
   ReturnType<typeof nonGroupedBaseQuery>
 >

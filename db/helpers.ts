@@ -18,7 +18,7 @@ import {
 } from 'kysely'
 import * as formatter from 'sql-formatter'
 import { DB } from '../db.d.ts'
-import { Coordinates, NonEmptyArray, type TrxOrDb } from '../types.ts'
+import { Coordinates, IdSelection, NonEmptyArray, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
@@ -98,8 +98,21 @@ export function jsonAgg<O>(
 }
 
 export function arrayAggIds(
-  expr: Expression<string>,
+  expr: Expression<string | IdSelection>,
+): RawBuilder<string[]>
+
+export function arrayAggIds(
+  expr: SelectQueryBuilder<any, any, { id: string | IdSelection }>,
+): RawBuilder<string[]>
+
+export function arrayAggIds(
+  expr: Expression<string | IdSelection> | SelectQueryBuilder<any, any, { id: string | IdSelection }>,
 ): RawBuilder<string[]> {
+  // If it's a SelectQueryBuilder (has a 'compile' method), wrap it in a subquery
+  if ('compile' in expr && typeof expr.compile === 'function') {
+    return sql<string[]>`(SELECT array_agg(id) FROM ${expr} as agg)`
+  }
+  // Otherwise treat it as a simple expression
   return sql<string[]>`array_agg(${expr})`
 }
 
@@ -526,9 +539,13 @@ export function temporaryTable<T extends Record<string, unknown>>(
   trx: TrxOrDb,
   records: T[],
 ) {
-  return records.map((record) => trx.selectNoFrom(() => entries(record).map(([key, value]) => sql.lit(value).as(key as string)))).reduce((acc, curr) =>
-    acc.unionAll(curr)
-  ) as unknown as SelectQueryBuilder<
+  return records.map((record) =>
+    trx.selectNoFrom(() =>
+      entries(record).map(([key, value]) =>
+        typeof value === 'string' && isUUID(value) ? sql.raw(`'${value}'::uuid`).as(key as string) : sql.lit(value).as(key as string)
+      )
+    )
+  ).reduce((acc, curr) => acc.unionAll(curr)) as unknown as SelectQueryBuilder<
     DB,
     never,
     T
@@ -614,4 +631,8 @@ export function deduplicate<T extends Array<any>, U>(
     pending.set(key, promise)
     return promise
   }
+}
+
+export function looksLikeSExpression(column_name: string) {
+  return sql`left(${column_name}, 1) = '(' AND right(${column_name}, 1) = ')'`
 }

@@ -3857,3 +3857,5 @@ export type NavLinks = {
   step: string
   route: string
 }[]
+
+// export type

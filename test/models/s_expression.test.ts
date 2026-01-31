@@ -1,6 +1,6 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { findingQueryExpression, KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
@@ -35,8 +35,9 @@ describeParallel('db/models/s_expression.ts', () => {
         },
       )
 
-      const finding = parseExpression(
+      const finding = parseExpressionExpectingAtom(
         KEYED_WARNING_SIGNS['Burn Circumferential'].clinical_finding_s_expression,
+        'finding',
       )
       assert(finding.atom === 'finding')
 
@@ -116,9 +117,7 @@ describeParallel('db/models/s_expression.ts', () => {
       const query = buildExpression(
         db,
         { patient_id: encounter.patient.id },
-        parseExpression(
-          findingQueryExpression(KEYED_WARNING_SIGNS['Burn Other']),
-        ),
+        findingQueryExpression(KEYED_WARNING_SIGNS['Burn Other']),
       )
 
       const result = await query.execute()

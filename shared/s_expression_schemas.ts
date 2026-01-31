@@ -6,10 +6,17 @@ import partition from '../util/partition.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom, Units, UNITS_ARRAY } from './s_expression.ts'
-import { Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
+import { AgeDetermination, Coordinates, Maybe, NonNullableProperty, Priority } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory } from '../db.d.ts'
-import { CLINICAL_FINDING, EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS, MEASUREMENT_PROCEDURE, PROCEDURE } from './snomed_concepts.ts'
+import {
+  ALLERGIC_CONDITION,
+  CAUSATIVE_AGENT,
+  CLINICAL_FINDING,
+  EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS,
+  MEASUREMENT_PROCEDURE,
+  PROCEDURE,
+} from './snomed_concepts.ts'
 
 export type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
@@ -24,9 +31,33 @@ export type EventValue = {
   location: Coordinates | null
 }
 
-type BaseLang =
+type NonQueryableBaseLang = {
+  snomed_concept: SnomedConcept
+  ntask: {
+    description: string
+    ages: AgeDetermination[]
+    applies_when: Lang[Comparisons | 'finding']
+    procedure: Lang['ncheck_for']
+    diagnosis: null | Lang['diagnosis']
+  }
+  ncheck_for: {
+    check_for: Lang['finding'][]
+  }
+  task: {
+    description: string
+    when: Lang[Comparisons | 'finding']
+    procedure: Lang['procedure']
+  }
+  system_priority_determination: {
+    description: string
+    when_primary_finding: Lang[Comparisons | 'finding']
+    when_other_findings_also_present: Lang[Comparisons | 'finding'][]
+    priority: Priority
+  }
+}
+
+type QueryableBaseLang =
   & {
-    snomed_concept: SnomedConcept
     finding: {
       root_snomed_concept: Lang['snomed_concept'] | null
       specific_snomed_concept: Lang['snomed_concept'] | null
@@ -34,6 +65,8 @@ type BaseLang =
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
       exact: boolean
+      history: boolean
+      existence: 'Yes' | 'No' | 'Unknown'
     }
     procedure: {
       root_snomed_concept: Lang['snomed_concept'] | null
@@ -55,7 +88,7 @@ type BaseLang =
       attributes: Lang['attribute'][]
     }
     evaluates: {
-      expression: AnyNode
+      expression: QueryableNode
     }
     attribute: {
       specific_snomed_concept: Lang['snomed_concept']
@@ -65,6 +98,15 @@ type BaseLang =
       specific_snomed_concept: Lang['snomed_concept']
       qualifiers: Lang['qualifier'][]
     }
+    diagnosis: {
+      snomed_concept: Lang['snomed_concept']
+      certainty_qualifier: 'definite' | 'probable' | 'equivocal' | 'possible' | 'improbable'
+    }
+    system_diagnosis_rule: {
+      diagnosis: Lang['diagnosis']
+      ages: AgeDetermination[]
+      evidence: QueryableNode
+    }
     measurement: {
       snomed_concept: Lang['snomed_concept']
       units: Units
@@ -72,31 +114,17 @@ type BaseLang =
     active_condition: {
       snomed_concept: Lang['snomed_concept']
     }
-    any: {
-      findings: Lang[Comparisons | 'finding'][]
-    }
-    all: {
-      findings: Lang[Comparisons | 'finding'][]
-    }
     not: {
-      expression: AnyNode
+      expression: QueryableNode
     }
     and: {
-      expressions: AnyNode[]
+      expressions: QueryableNode[]
     }
     or: {
-      expressions: AnyNode[]
+      expressions: QueryableNode[]
     }
-    task: {
-      description: string
-      when: Lang[Comparisons | 'finding' | 'any' | 'all']
-      procedure: Lang['procedure']
-    }
-    system_priority_determination: {
-      description: string
-      when_primary_finding: Lang[Comparisons | 'finding']
-      when_other_findings_also_present: Lang[Comparisons | 'finding'][]
-      priority: Priority
+    any2: {
+      expressions: QueryableNode[]
     }
     link: {
       title: string
@@ -111,6 +139,8 @@ type BaseLang =
     }
   }
 
+type BaseLang = NonQueryableBaseLang & QueryableBaseLang
+
 export type Lang = {
   [Atom in keyof BaseLang]: {
     atom: Atom
@@ -118,6 +148,12 @@ export type Lang = {
 }
 
 export type AnyNode = Lang[keyof Lang]
+
+export type QueryableNode = Lang[keyof QueryableBaseLang]
+
+export type InsertableFindingBase = NonNullableProperty<Lang['finding'], 'root_snomed_concept' | 'specific_snomed_concept'>
+
+export type InsertableFinding = InsertableFindingBase | Lang[Comparisons]
 
 const snomed_concept_name_and_category: z.ZodType<Lang['snomed_concept']> = z
   .object({
@@ -253,11 +289,15 @@ export const finding_base: z.ZodType<Lang['finding']> = z.lazy(() =>
         qualifiers,
         attributes,
         exact: false,
+        history: false,
+        existence: 'Yes' as const,
       }
     },
   )
 ).describe('finding_base')
 
+// TODO: this or this or that approach makes the error messages super hard to read
+// Perhaps we look and see what the person put there and then try parsing with that
 export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'root_snomed_concept'>> = z.lazy(() =>
   z.object({
     atom: z.literal('clinical_finding'),
@@ -310,14 +350,16 @@ export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'r
         qualifiers,
         attributes,
         exact: false,
+        history: false,
+        existence: 'Yes' as const,
       }
     },
   )
 ).describe('clinical_finding')
 
-export const finding: z.ZodType<Lang['finding']> = z.lazy(() => finding_base.or(clinical_finding)).describe('finding')
+export const finding: z.ZodType<Lang['finding']> = z.lazy(() => finding_base.or(clinical_finding).or(allergy)).describe('finding')
 
-export const defined_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'root_snomed_concept' | 'specific_snomed_concept'>> = finding
+export const insertable_finding_base: z.ZodType<InsertableFindingBase> = finding
   // .refine doesn't do type winnowing
   .transform((finding) => finding as NonNullableProperty<typeof finding, 'root_snomed_concept' | 'specific_snomed_concept'>)
   .refine(
@@ -333,12 +375,12 @@ export const defined_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'ro
       message: 'specific_snomed_concept is required for a defined clinical finding',
       path: ['args'],
     },
-  ).describe('defined_finding')
+  ).describe('insertable_finding_base')
 
 export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
   z.object({
     atom: z.literal('evaluates'),
-    args: z.tuple([any_expression]),
+    args: z.tuple([any_query]),
   }).transform(({ atom, args: [expression] }) => ({
     atom,
     expression,
@@ -447,7 +489,7 @@ export const event: z.ZodType<Lang['attribute']> = z.lazy(() =>
   }))
 ).describe('event')
 
-export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() => z.union([attribute_base, finding_site])).describe('attribute')
+export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() => z.union([attribute_base, finding_site, event])).describe('attribute')
 
 const attribute_base: z.ZodType<Lang['attribute']> = z.lazy(() =>
   z.object({
@@ -562,6 +604,51 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
     })),
 ).describe('active_condition')
 
+export const allergy: z.ZodType<InsertableFindingBase & { history: true }> = z.lazy(
+  () =>
+    z.object({
+      atom: z.literal('allergy'),
+      args: z.tuple([snomed_concept]),
+    }).transform(({ args: [snomed_concept] }) => ({
+      atom: 'finding' as const,
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: CLINICAL_FINDING.name,
+        category: CLINICAL_FINDING.category,
+      },
+      specific_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: ALLERGIC_CONDITION.name,
+        category: ALLERGIC_CONDITION.category,
+      },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [{
+        atom: 'attribute' as const,
+        specific_snomed_concept: {
+          atom: 'snomed_concept' as const,
+          name: CAUSATIVE_AGENT.name,
+          category: CAUSATIVE_AGENT.category,
+        },
+        value: snomed_concept,
+      }],
+      exact: false,
+      history: true as const,
+      existence: 'Yes' as const,
+    })),
+).describe('allergy')
+
+export const ncheck_for: z.ZodType<Lang['ncheck_for']> = z.lazy(
+  () =>
+    z.object({
+      atom: z.literal('ncheck_for'),
+      args: finding.array(),
+    }).transform(({ args: check_for }) => ({
+      atom: 'ncheck_for' as const,
+      check_for,
+    })),
+).describe('ncheck_for')
+
 export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
   () =>
     z.object({
@@ -625,6 +712,16 @@ export const comparator: z.ZodType<Lang[Comparisons]> = z.lazy(() =>
   }))
 ).describe('comparator')
 
+export const history: z.ZodType<Lang['finding'] & { history: true }> = z.lazy(() =>
+  z.object({
+    atom: z.literal('history'),
+    args: z.tuple([finding]),
+  }).transform(({ args: [finding] }) => ({
+    ...finding,
+    history: true as const,
+  }))
+).describe('history')
+
 export const exact: z.ZodType<Lang['finding'] & { exact: true }> = z.lazy(() =>
   z.object({
     atom: z.literal('exact'),
@@ -652,7 +749,7 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
     atom: z.literal('task'),
     args: z.tuple([
       z.string(),
-      comparator.or(finding).or(any).or(all),
+      comparator.or(finding),
       procedure.or(check_for).or(measure),
     ]),
   }).transform(({ atom, args: [description, when, procedure] }) => ({
@@ -662,6 +759,36 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
     procedure,
   }))
 ).describe('task')
+
+const age_determination = z.enum(['adult', 'older child', 'younger child'])
+const ages = z.lazy(() =>
+  z.object({
+    atom: z.literal('ages'),
+    args: age_determination.array(),
+  }).transform(({ args }) => args)
+    .or(age_determination.transform((age) => [age]))
+).describe('ages')
+
+export const ntask: z.ZodType<Lang['ntask']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('ntask'),
+    args: z.tuple([
+      z.string(),
+      ages,
+      comparator.or(finding),
+      // procedure.or(check_for).or(measure),
+      ncheck_for,
+      diagnosis.optional(),
+    ]),
+  }).transform(({ atom, args: [description, ages, applies_when, procedure, diagnosis = null] }) => ({
+    atom,
+    description,
+    ages,
+    applies_when,
+    procedure,
+    diagnosis,
+  }))
+).describe('ntask')
 
 const finding_like = comparator.or(finding)
 
@@ -689,10 +816,17 @@ export const system_priority_determination: z.ZodType<Lang['system_priority_dete
   }))
 ).describe('system_priority_determination')
 
+// TODO: might need to change this to include negative findings
+export const insertable_finding: z.ZodType<InsertableFinding> = z.lazy(() => comparator.or(insertable_finding_base)).describe(
+  'insertable_finding',
+)
+
+// .or(or).or(and).or(any2)
+
 export const not: z.ZodType<Lang['not']> = z.lazy(() =>
   z.object({
     atom: z.literal('not'),
-    args: z.tuple([any_expression]),
+    args: z.tuple([any_query]),
   }).transform(({ atom, args: [expression] }) => ({
     atom,
     expression,
@@ -702,7 +836,7 @@ export const not: z.ZodType<Lang['not']> = z.lazy(() =>
 export const or: z.ZodType<Lang['or']> = z.lazy(() =>
   z.object({
     atom: z.literal('or'),
-    args: z.array(any_expression),
+    args: z.array(any_query),
   }).transform(({ atom, args }) => ({
     atom,
     expressions: args,
@@ -712,56 +846,65 @@ export const or: z.ZodType<Lang['or']> = z.lazy(() =>
 export const and: z.ZodType<Lang['and']> = z.lazy(() =>
   z.object({
     atom: z.literal('and'),
-    args: z.array(any_expression),
+    args: z.array(any_query),
   }).transform(({ atom, args }) => ({
     atom,
     expressions: args,
   }))
 ).describe('and')
 
-export const any: z.ZodType<Lang['any']> = z.lazy(() =>
+export const any2: z.ZodType<Lang['any2']> = z.lazy(() =>
   z.object({
-    atom: z.literal('any'),
-    args: z.array(comparator.or(finding)),
+    atom: z.literal('any2'),
+    args: z.array(any_query),
   }).transform(({ atom, args }) => ({
     atom,
-    findings: args,
+    expressions: args,
   }))
-).describe('any')
+).describe('any2')
 
-export const all: z.ZodType<Lang['all']> = z.lazy(() =>
+export const diagnosis: z.ZodType<Lang['diagnosis']> = z.lazy(() =>
   z.object({
-    atom: z.literal('all'),
-    args: z.array(comparator.or(finding)),
-  }).transform(({ atom, args }) => ({
+    atom: z.literal('diagnosis'),
+    args: z.tuple([
+      snomed_concept,
+      z.enum(['definite', 'probable', 'equivocal', 'possible', 'improbable']),
+    ]),
+  }).transform(({ atom, args: [snomed_concept, certainty_qualifier] }) => ({
     atom,
-    findings: args,
-  }))
-).describe('all')
-
-export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
-  z.union([
+    certainty_qualifier,
     snomed_concept,
+  }))
+).describe('diagnosis')
+
+export const system_diagnosis_rule: z.ZodType<Lang['system_diagnosis_rule']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('system_diagnosis_rule'),
+    args: z.tuple([diagnosis, ages, any_query]),
+  }).transform(({ atom, args: [diagnosis, ages, evidence] }) => ({
+    atom,
+    diagnosis,
+    ages,
+    evidence,
+  }))
+).describe('system_diagnosis_rule')
+
+export const any_query: z.ZodType<QueryableNode> = z.lazy(() =>
+  z.union([
     event,
     finding,
     evaluation,
     procedure,
-    attribute,
-    finding_site,
     measurement,
     active_condition,
-    check_for,
-    measure,
     comparator,
     qualifier,
-    task,
-    system_priority_determination,
     exact,
     or,
     and,
     not,
-    any,
-    all,
+    any2,
     link,
+    diagnosis,
   ])
-).describe('any_expression')
+).describe('any_query')

@@ -140,18 +140,29 @@ export function inverseSExpression(node: AnyNode): string {
       return `(or ${parts.join(' ')})`
     }
 
-    case 'any': {
-      const parts = node.findings.map(inverseSExpression)
-      return `(any ${parts.join(' ')})`
-    }
-
-    case 'all': {
-      const parts = node.findings.map(inverseSExpression)
-      return `(all ${parts.join(' ')})`
+    case 'any2': {
+      const parts = node.expressions.map(inverseSExpression)
+      return `(any2 ${parts.join(' ')})`
     }
 
     case 'task': {
       return `(task "${node.description}" ${inverseSExpression(node.when)} ${inverseSExpression(node.procedure)})`
+    }
+
+    case 'ntask': {
+      const parts: string[] = ['ntask', quoted(node.description)]
+
+      // Handle ages - if single age, output directly; if multiple, wrap in (ages ...)
+      parts.push(`(ages ${node.ages.join(' ')})`)
+
+      parts.push(inverseSExpression(node.applies_when))
+      parts.push(inverseSExpression(node.procedure))
+
+      if (node.diagnosis) {
+        parts.push(inverseSExpression(node.diagnosis))
+      }
+
+      return `(${parts.join(' ')})`
     }
 
     case 'system_priority_determination': {
@@ -165,6 +176,26 @@ export function inverseSExpression(node: AnyNode): string {
         parts.push(inverseSExpression(other_finding))
       }
       return `(${parts.join(' ')})`
+    }
+
+    case 'ncheck_for': {
+      const parts = [
+        'ncheck_for',
+      ]
+      for (const finding of node.check_for) {
+        parts.push(inverseSExpression(finding))
+      }
+      return `(${parts.join(' ')})`
+    }
+
+    case 'diagnosis': {
+      return `(diagnosis ${snomedConceptToString(node.snomed_concept)} ${node.certainty_qualifier})`
+    }
+
+    case 'system_diagnosis_rule': {
+      const ages = node.ages.length === 1 ? node.ages[0] : `(ages ${node.ages.join(' ')})`
+
+      return `(system_diagnosis_rule ${inverseSExpression(node.diagnosis)} ${ages} ${inverseSExpression(node.evidence)})`
     }
 
     default: {

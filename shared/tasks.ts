@@ -54,7 +54,7 @@ const MEDICAL_GUIDANCE_TASKS: TaskDef[] = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CO
   ])
 })
 
-const TASK_DEFS: TaskDef[] = [
+export const TASK_DEFS: TaskDef[] = [
   ...MEDICAL_GUIDANCE_TASKS,
   [
     ['adult' as const],
@@ -122,6 +122,7 @@ const TASK_DEFS: TaskDef[] = [
     (check_for
       (clinical_finding (snomed_concept "Sweating" "finding"))))`,
   ],
+  // TODO load the anaphylaxis page too
 ]
 
 export const TASKS = TASK_DEFS.map(asTask)

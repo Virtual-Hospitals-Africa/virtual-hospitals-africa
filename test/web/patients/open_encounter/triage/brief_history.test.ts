@@ -532,7 +532,7 @@ describeParallel('triage/brief_history', () => {
           },
         )
 
-        assert(!findings_from_returning_encounter.satisfies)
+        assert(findings_from_returning_encounter.satisfies)
 
         const most_recent_finding = getDOMTree(
           $brief_history_after_returning_encounter_start,

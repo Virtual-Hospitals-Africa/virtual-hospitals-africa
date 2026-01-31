@@ -10,9 +10,19 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
 import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
 
+import randomDemographics from '../../../../../mocks/randomDemographics.ts'
+import { assert } from 'std/assert/assert.ts'
+import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
+import { DIAGNOSIS } from '../../../../../shared/snomed_concepts.ts'
+import { events } from '../../../../../db/models/events.ts'
+
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
+  before(async () => {
+    await events.initializeAllProcessedPubSub()
+  })
   afterAll(() => db.destroy())
+  afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
   itParallel.skip('loads on the page', async () => {
     const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
@@ -240,7 +250,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     ])
   })
 
-  itParallel('prompts for Nausea Vomiting Pallor Sweating', async () => {
+  itParallel('prompts for Nausea Vomiting Pallor Sweating in case of chest pain', async () => {
     const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
       patient_demographics: { date_of_birth: '2001-01-01' },
       brief_history: {
@@ -356,6 +366,79 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       },
     ])
   })
+
+  itParallel(
+    'does not give a probable diagnosis for anaphylaxis if exposed to fish without an allergy',
+    async () => {
+      const exposure_to_fish_s_expr = '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))'
+
+      const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+        patient_demographics: randomDemographics('ZA', 'female', 'adult'),
+        warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr),
+        brief_history: {
+          diabetes: {
+            existence: 'No',
+          },
+          pregnancy: {
+            existence: 'No',
+          },
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+      const anaphylaxis_diagnosis = await patient_evaluations.findOneOptional(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      // TODO: possible diagnosis!
+      assert(!anaphylaxis_diagnosis)
+    },
+  )
+
+  itParallel(
+    'does give a probable diagnosis for anaphylaxis if exposed to fish with an allergy',
+    async () => {
+      const exposure_to_fish_s_expr = '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))'
+      const allergy_to_fish_s_expr = '(allergy (snomed_concept "Fish" "substance"))'
+
+      const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+        patient_demographics: randomDemographics('ZA', 'female', 'adult'),
+        warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr, allergy_to_fish_s_expr),
+        brief_history: {
+          diabetes: {
+            existence: 'No',
+          },
+          pregnancy: {
+            existence: 'No',
+          },
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+      const anaphylaxis_diagnosis = await patient_evaluations.findOneOptional(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      // TODO: possible diagnosis!
+      assertMatches(anaphylaxis_diagnosis, {
+        displays: {
+          full: 'Anaphylaxis Diagnosis: Probable diagnosis',
+        },
+      })
+    },
+  )
 })
 
 // TODO: moving this

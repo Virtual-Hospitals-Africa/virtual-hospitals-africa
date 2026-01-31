@@ -23,6 +23,7 @@ import { CheerioAPI } from 'cheerio'
 import entries from '../../../../../util/entries.ts'
 import keys from '../../../../../util/keys.ts'
 import isKeyOf from '../../../../../util/isKeyOf.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 export type TriageSteps = {
   warning_signs?: z.input<typeof TriageWarningSignsSchema>
@@ -47,6 +48,7 @@ const ONLY_WHEN_PREGNANCY_STATUS = {
 export function asWarningSigns(
   sign_keys: Array<keyof typeof KEYED_WARNING_SIGNS>,
   opts: { pregnant: boolean },
+  ...other_finding_s_expressions: string[]
 ): z.input<typeof TriageWarningSignsSchema> {
   return { warning_signs: fromEntries(applicableWarningSigns()) }
 
@@ -68,6 +70,13 @@ export function asWarningSigns(
         field.existence = 'Yes'
       }
       yield [sign.key, field]
+    }
+    for (const other_finding_s_expression of other_finding_s_expressions) {
+      // Unless submitting twice, these don't matter
+      yield [generateUUID(), {
+        s_expression: other_finding_s_expression,
+        existence: 'Yes',
+      }]
     }
   }
 }

@@ -3,8 +3,6 @@ import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { base } from './_base.ts'
-import { assert } from 'std/assert/assert.ts'
-import { buildExpression } from './s_expression.ts'
 import { patient_evaluations, PatientEvaluationInsert } from './patient_evaluations.ts'
 
 type PatientEvaluationScoreInsert = PatientEvaluationInsert & {
@@ -13,8 +11,9 @@ type PatientEvaluationScoreInsert = PatientEvaluationInsert & {
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
+  opts: PatientEvaluationScoresSearch,
 ) {
-  return patient_evaluations.baseQuery(trx).innerJoin(
+  return patient_evaluations.baseQuery(trx, opts).innerJoin(
     'patient_evaluation_scores',
     'patient_evaluations.id',
     'patient_evaluation_scores.id',
@@ -40,54 +39,6 @@ export const patient_evaluation_scores = base({
   top_level_table: 'patient_evaluation_scores',
   baseQuery,
   formatResult: (x) => x,
-  handleSearch(
-    qb,
-    opts: PatientEvaluationScoresSearch,
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    assert(
-      opts.patient_id,
-      'For now, you must always provide a patient_id as part of a query',
-    )
-    // if (opts.search) {
-    //   qb = qb.where(
-    //     'snomed_inferred_canonical_name_and_category.name',
-    //     'ilike',
-    //     `%${opts.search}%`,
-    //   )
-    // }
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.s_expression) {
-      qb = qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression,
-        ),
-      )
-    }
-
-    return qb
-  },
   insertOneNested(
     trx: TrxOrDb,
     {
@@ -114,7 +65,8 @@ export const patient_evaluation_scores = base({
   },
   totalTEWSEncounterScore(
     trx: TrxOrDb,
-    { patient_encounter_id }: {
+    { patient_id, patient_encounter_id }: {
+      patient_id: string
       patient_encounter_id: string
     },
   ) {
@@ -142,18 +94,13 @@ export const patient_evaluation_scores = base({
     return trx.with(
       'ranked',
       (qb) =>
-        baseQuery(qb)
+        baseQuery(qb, { patient_id, patient_encounter_id })
           // The total score will be included also, so by joining with the findings we only get the score components
           // .innerJoin(
           //   'patient_findings',
           //   'patient_findings.id',
           //   'patient_evaluations.evaluates_record_id',
           // )
-          .where(
-            'patient_records_aggregated.patient_encounter_id',
-            '=',
-            patient_encounter_id,
-          )
           .select(
             sql`ROW_NUMBER() OVER (PARTITION BY evaluates_record.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
               .as('rank'),

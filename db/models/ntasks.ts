@@ -5,9 +5,9 @@ import { patient_evaluations } from './patient_evaluations.ts'
 
 import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
-import { AgeDetermination, RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
+import { RenderedPatientEncounter, TaskGroup, TrxOrDb } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -23,33 +23,41 @@ import { assert } from 'std/assert/assert.ts'
 import sortBy from '../../util/sortBy.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { asNormalFormSExpression } from '../../shared/patient_records.ts'
+import { patientAgeDetermination } from '../../shared/patient_age_determination.ts'
+import { completedPersonal } from '../../shared/patient_registration.ts'
 import compactMap from '../../util/compactMap.ts'
+import { patients } from './patients.ts'
 
 export const additional_tasks = {
   async insertTasksIfNotAlreadyIdentified(
     trx: TrxOrDb,
-    { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ findings }: {
+    { patient_id, patient_encounter_id, /*procedure_id, */ findings }: {
       patient_id: string
       patient_encounter_id: string
       procedure_id: string
-      patient_age_determination: AgeDetermination | null
       findings: {
         id: string
         existence: 'Yes' | 'No'
       }[]
     },
   ) {
-    if (!patient_age_determination) return
-
     // TODO, maybe handle negative findings? There could be tasks that call for them
     const positive_finding_ids = findings
       .filter((f) => f.existence === 'Yes')
       .map((f) => f.id)
     if (!positive_finding_ids.length) return
 
+    const patient = await patients.getById(trx, patient_id)
+
+    assert(completedPersonal(patient), `Could not determine system priorities for patient id ${patient_id} because we do not have their personal information`)
+
+    const age_determination = patientAgeDetermination(patient)
+
+    console.log({ age_determination })
+
     const to_consider = compactMap(
       TASKS,
-      (task) => task.age_determinations.includes(patient_age_determination) && task.task,
+      (task) => task.age_determinations.includes(age_determination) && task.task,
     )
 
     if (!to_consider.length) return
@@ -83,7 +91,7 @@ export const additional_tasks = {
       first_task,
     )
 
-    // debugLog(all_tasks_query)
+    debugLog(all_tasks_query)
 
     const all_t = await all_tasks_query.execute()
 

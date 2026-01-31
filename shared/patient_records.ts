@@ -19,8 +19,8 @@ import omit from '../util/omit.ts'
 import assertOneOf from '../util/assertOneOf.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
-import { Lang } from './s_expression_schemas.ts'
-import { parseExpression, parseExpressionExpectingAtom } from './s_expression.ts'
+import { any_query, Lang } from './s_expression_schemas.ts'
+import { parseExpressionExpectingAtom, parseWithSchema } from './s_expression.ts'
 import { logArgsOnError } from '../util/decorators.ts'
 import capitalize from '../util/capitalize.ts'
 import isString from '../util/isString.ts'
@@ -162,6 +162,12 @@ function toDisplayableRecord(node: Lang['measurement' | 'finding']): WithProperR
   }
 }
 
+function snomedConceptDisplay(name: string): string {
+  return name
+    .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
+    .replace(' (contextual qualifier)', '')
+}
+
 function valueDisplay(
   value: Exclude<NonNullable<WithProperRecordValue<DisplayableRecord>['value']>, string>,
 ): string | RecordValueLink {
@@ -169,7 +175,7 @@ function valueDisplay(
     case 'event':
       return formatEventDatetime(value.datetime)
     case 'snomed_concept':
-      return value.name
+      return snomedConceptDisplay(value.name)
     case 'measurement':
       return measurementValueDisplay(value)
     case 'score':
@@ -220,8 +226,7 @@ function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
 function massageSpecificConceptDisplay(record: DisplayableRecord): string | null {
   if (!record.specific_snomed_concept_name) return null
 
-  const replaced = record.specific_snomed_concept_name
-    .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
+  const replaced = snomedConceptDisplay(record.specific_snomed_concept_name)
 
   if (record.value?.type !== 'measurement') return replaced
 
@@ -301,7 +306,7 @@ function addNodeIfValueIsSExpression<DR extends DisplayableRecord>(record: DR): 
     value: record.value && (record.value.type === 's_expression'
       ? {
         ...record.value,
-        node: parseExpression(record.value.s_expression),
+        node: parseWithSchema(record.value.s_expression, any_query),
       }
       : record.value),
   }
@@ -423,6 +428,8 @@ export function asNormalFormSExpression<Rest>(
   function asNode(): Lang['finding'] | Lang['evaluation'] | Lang['procedure'] {
     switch (record.type) {
       case 'finding': {
+        assert('existence' in record)
+        assertOneOf(record.existence, ['Yes' as const, 'No' as const, 'Unknown' as const])
         return {
           atom: 'finding',
           root_snomed_concept,
@@ -431,6 +438,8 @@ export function asNormalFormSExpression<Rest>(
           qualifiers,
           attributes,
           exact: false,
+          history: false,
+          existence: record.existence,
         }
       }
       case 'evaluation': {

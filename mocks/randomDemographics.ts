@@ -1,4 +1,5 @@
 import { OFFICIAL_LANGUAGES } from '../shared/languages.ts'
+import { AgeDetermination } from '../types.ts'
 import isKeyOf from '../util/isKeyOf.ts'
 import sample from '../util/sample.ts'
 import randomDateOfBirth from './randomDateOfBirth.ts'
@@ -8,8 +9,9 @@ import randomNationalId from './randomNationalId.ts'
 export default function randomDemographics(
   country: 'ZA' | 'ZW' = 'ZA',
   sex?: 'male' | 'female',
+  age_determination?: AgeDetermination,
 ) {
-  const date_of_birth = randomDateOfBirth()
+  const date_of_birth = randomDateOfBirth(age_determination)
   const names_and_sex = randomNamesAndSex(country, sex)
   const national_id_number = randomNationalId({
     country,

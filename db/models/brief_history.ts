@@ -14,7 +14,6 @@ import { groupBy } from '../../util/groupBy.ts'
 import first from '../../util/first.ts'
 import { CommonCondition, CommonConditionKey, commonConditionSnomedConcept } from '../../shared/brief_history.ts'
 import fromEntries from '../../util/fromEntries.ts'
-import { nowInvalidRecords } from './patient_records_base.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import compact from '../../util/compact.ts'
@@ -41,12 +40,8 @@ function mostRecentFindings(
             'patient_findings.id',
             'patient_records.id',
           )
+          .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_findings.id')
           .where('patient_records.patient_id', '=', patient_id)
-          .where(
-            'patient_records.id',
-            'not in',
-            nowInvalidRecords(trx),
-          )
           .innerJoin(
             'common_conditions',
             (join) =>

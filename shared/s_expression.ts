@@ -12,6 +12,9 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { Values } from '../types.ts'
 import { wrapError } from '../util/wrapError.ts'
 import { isTriageLevel } from './priorities.ts'
+import { safeParseWithValues } from '../util/assertMatches.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
+import isKeyOf from '../util/isKeyOf.ts'
 
 type SExpressionNode = {
   atom: string
@@ -36,32 +39,31 @@ function recursiveTreePass(parsed: SExpressionSimpleNode): SExpressionNode {
 type SExpressionSimpleNode = string | SExpressionSimpleNode[]
 
 export function parseWithSchema<Schema extends Values<typeof schemas>>(
-  expression: string,
+  expression: string | SExpressionSimpleNode,
   schema: Schema,
 ): z.infer<Schema> {
   assert(schema.description)
-  const parsed = s_expression(expression) as SExpressionSimpleNode
+  const parsed = Array.isArray(expression) ? expression : s_expression(expression) as SExpressionSimpleNode
   if (parsed instanceof Error) {
     throw wrapError(`Error parsing ${expression}`, parsed)
   }
   assert(Array.isArray(parsed))
   const first_pass = recursiveTreePass(parsed)
-  const second_pass = schema.safeParse(first_pass)
+  const second_pass = safeParseWithValues(schema, first_pass)
   if (!second_pass.success) {
-    throw wrapError(`Error parsing ${expression} using schema ${schema.description}`, second_pass.error)
+    const issue = second_pass.error.issues[0]
+
+    throw new Error(
+      // deno-lint-ignore no-explicit-any
+      `Error parsing ${expression} using schema ${schema.description}\npath: ${issue.path}\nsaw: ${humanReadableJson((issue as any).actual_value)}`,
+    )
   }
 
   // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions
   const normal_form_by_inverse = inverseSExpression(second_pass.data)
   const normalized = fastNormalForm(normal_form_by_inverse)
   assertEquals(normal_form_by_inverse, normalized, `${normal_form_by_inverse} ; ${normalized}`)
-  return second_pass.data as z.infer<Schema>
-}
-
-export function parseExpression(
-  expression: string,
-) {
-  return parseWithSchema(expression, schemas.any_expression)
+  return second_pass.data
 }
 
 export type Atom = schemas.AnyNode['atom']
@@ -73,7 +75,7 @@ export function isAtom<T extends Atom>(
   return obj.atom === atom
 }
 
-function schemaByAtom(atom: Atom) {
+function schemaByAtom(atom: string) {
   switch (atom) {
     case '>':
     case '<':
@@ -81,8 +83,13 @@ function schemaByAtom(atom: Atom) {
     case '<=':
     case '=':
       return schemas.comparator
-    default:
+    default: {
+      if (!isKeyOf(atom, schemas)) {
+        console.log(schemas)
+        throw new Error(`No schema for ${atom}`)
+      }
       return schemas[atom]
+    }
   }
 }
 
@@ -113,12 +120,16 @@ export function asNode<
 export function sExpressionZodValidator<Schema extends Values<typeof schemas>>(
   schema: Schema,
 ) {
-  return z.string()
-    .transform((expression) => parseWithSchema(expression, schema))
+  return z.string().transform((expression) => parseWithSchema(expression, schema))
 }
 
 export function normalForm(s_expression: string): string {
-  return inverseSExpression(parseExpression(s_expression))
+  const trimmed = s_expression.trim()
+  const match = trimmed.match(/^\(([a-z|\d|_]+)\s/)
+  assert(match, `${trimmed} is not an s expression${trimmed[0]}x`)
+  const atom = match[1]
+  const schema = schemaByAtom(atom)
+  return inverseSExpression(parseWithSchema(trimmed, schema))
 }
 
 export function fastNormalForm(expr: string): string {
@@ -144,7 +155,7 @@ export const UNITS_ARRAY = Array.from(UNITS)
 
 export type Units = typeof UNITS_ARRAY[number]
 
-function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>): string {
+export function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>): string {
   if (rest.length === 0) return `(${atom})`
   const terms = rest.map((item, index) => {
     if (Array.isArray(item)) return fastNormalize(item)
@@ -152,6 +163,18 @@ function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, string>):
     if (positive_decimal.safeParse(item).success) return String(item)
     if (atom === 'measurement' && index === 1) {
       assert(UNITS.has(item as unknown as Units), `Update UNITS to include ${item}`)
+      return item
+    }
+    if (atom === 'diagnosis' && index === 1) {
+      return item
+    }
+    if (atom === 'system_diagnosis_rule' && index === 1) {
+      return item
+    }
+    // if (atom === 'ntask' && index === 1) {
+    //   return item
+    // }
+    if (atom === 'ages') {
       return item
     }
     if (atom === 'system_priority_determination' && index === 2) {

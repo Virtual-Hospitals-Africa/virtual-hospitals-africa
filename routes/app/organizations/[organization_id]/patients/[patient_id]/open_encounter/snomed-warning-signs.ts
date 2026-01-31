@@ -8,8 +8,8 @@ export const handler = jsonSearchHandler(
     patient_id: ctx.state.patient_id,
     categories: [
       'finding' as const,
-      'disorder' as const,
       'morphologic abnormality' as const,
+      'disorder' as const,
     ],
   }),
   {

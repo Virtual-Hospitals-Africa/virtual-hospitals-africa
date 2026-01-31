@@ -17,8 +17,8 @@ export type PatientEvaluationInsert =
     evaluation_id?: string
     patient_id: string
     patient_encounter_id: string
-    evaluates_record_id: string
     evaluation: string | Lang['evaluation']
+    evaluates_record_id?: string | null
   }
   & (
     {
@@ -80,10 +80,20 @@ export function insertOneNested(
     ])
 }
 
+export type PatientEvaluationsSearch = {
+  patient_id?: string | IdSelection
+  root_snomed_concept_id?: string
+  specific_snomed_concept_id?: string
+  patient_encounter_id?: string | IdSelection
+  evaluates_record_id?: string | IdSelection
+  s_expression?: string | Lang['evaluation']
+}
+
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
+  opts: PatientEvaluationsSearch,
 ) {
-  return patient_records.baseQuery(trx).innerJoin(
+  let qb = patient_records.baseQuery(trx).innerJoin(
     'patient_evaluations',
     'patient_evaluations.id',
     'patient_records_aggregated.id',
@@ -94,75 +104,68 @@ export function baseQuery(
       'patient_evaluations.by_system',
       'patient_evaluations.evaluates_record_id',
     ])
-}
 
-type PatientEvaluationsSearch = {
-  patient_id: string | IdSelection
-  patient_encounter_id?: string | IdSelection
-  evaluates_record_id?: string | IdSelection
-  s_expression?: string | Lang['evaluation']
-  search?: string
+  if (opts.patient_id) {
+    qb = qb.where(
+      'patient_records_aggregated.patient_id',
+      '=',
+      opts.patient_id,
+    )
+  }
+  if (opts.patient_encounter_id) {
+    qb = qb.where(
+      'patient_records_aggregated.patient_encounter_id',
+      '=',
+      opts.patient_encounter_id,
+    )
+  }
+  if (opts.root_snomed_concept_id) {
+    qb = qb.where(
+      'patient_records_aggregated.root_snomed_concept_id',
+      '=',
+      opts.root_snomed_concept_id,
+    )
+  }
+  if (opts.specific_snomed_concept_id) {
+    qb = qb.where(
+      'patient_records_aggregated.specific_snomed_concept_id',
+      '=',
+      opts.specific_snomed_concept_id,
+    )
+  }
+  if (opts.evaluates_record_id) {
+    qb = qb.where(
+      'patient_evaluations.evaluates_record_id',
+      '=',
+      opts.evaluates_record_id,
+    )
+  }
+  if (opts.s_expression) {
+    assert(
+      opts.patient_id,
+      'For now, you must always provide a patient_id as part of a query',
+    )
+    qb = qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      buildExpression(
+        trx,
+        {
+          patient_id: opts.patient_id,
+          patient_encounter_id: opts.patient_encounter_id,
+        },
+        opts.s_expression,
+      ),
+    )
+  }
+
+  return qb
 }
 
 export const patient_evaluations = base({
   top_level_table: 'patient_evaluations',
   baseQuery,
   formatResult: formatRecord,
-  handleSearch(
-    qb,
-    opts: PatientEvaluationsSearch,
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    assert(
-      opts.patient_id,
-      'For now, you must always provide a patient_id as part of a query',
-    )
-    // if (opts.search) {
-    //   qb = qb.where(
-    //     'snomed_inferred_canonical_name_and_category.name',
-    //     'ilike',
-    //     `%${opts.search}%`,
-    //   )
-    // }
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.evaluates_record_id) {
-      qb = qb.where(
-        'patient_evaluations.evaluates_record_id',
-        '=',
-        opts.evaluates_record_id,
-      )
-    }
-    if (opts.s_expression) {
-      qb = qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression,
-        ),
-      )
-    }
-
-    return qb
-  },
   insertOneNested,
   insertOneNestedQuery,
 })
