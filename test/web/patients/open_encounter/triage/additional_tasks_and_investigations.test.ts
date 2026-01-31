@@ -15,6 +15,8 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
 import { DIAGNOSIS } from '../../../../../shared/snomed_concepts.ts'
 import { events } from '../../../../../db/models/events.ts'
+import { system_diagnosis_rules } from '../../../../../db/models/system_diagnosis_rules.ts'
+import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
@@ -396,7 +398,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
       )
 
-      // TODO: possible diagnosis!
       assert(!anaphylaxis_diagnosis)
     },
   )
@@ -420,9 +421,24 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
       })
 
+      const allergy_to_fish = await patient_findings.findOne(db, {
+        patient_id,
+        s_expression: allergy_to_fish_s_expr,
+      })
+
       await events.allProcessedForEncounter(db, { patient_encounter_id })
 
-      const anaphylaxis_diagnosis = await patient_evaluations.findOneOptional(
+      await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
+        patient_id,
+        patient_encounter_id,
+        patient_age_determination: 'adult',
+        findings: [{
+          id: allergy_to_fish.id,
+          existence: 'Yes',
+        }],
+      })
+
+      const anaphylaxis_diagnosis = await patient_evaluations.findOne(
         db,
         {
           patient_id,
@@ -431,12 +447,96 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
       )
 
-      // TODO: possible diagnosis!
       assertMatches(anaphylaxis_diagnosis, {
         displays: {
           full: 'Anaphylaxis Diagnosis: Probable diagnosis',
         },
       })
+
+      // Running again has no effect
+      await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
+        patient_id,
+        patient_encounter_id,
+        patient_age_determination: 'adult',
+        findings: [{
+          id: allergy_to_fish.id,
+          existence: 'Yes',
+        }],
+      })
+
+      const same_anaphylaxis_diagnosis = await patient_evaluations.findOne(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      assertEquals(anaphylaxis_diagnosis, same_anaphylaxis_diagnosis)
+    },
+  )
+
+  itParallel(
+    'does give a possible diagnosis for anaphylaxis for an insect bite',
+    async () => {
+      const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
+      const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+        patient_demographics: randomDemographics('ZA', 'female', 'adult'),
+        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        brief_history: {
+          diabetes: {
+            existence: 'No',
+          },
+          pregnancy: {
+            existence: 'No',
+          },
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+      const anaphylaxis_diagnosis = await patient_evaluations.findOne(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      assertMatches(anaphylaxis_diagnosis, {
+        displays: {
+          full: 'Anaphylaxis Diagnosis: Possible diagnosis',
+        },
+      })
+
+      const insect_bite = await patient_findings.findOne(db, {
+        patient_id,
+        s_expression: insect_bite_s_expr,
+      })
+
+      // Running again has no effect
+      await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
+        patient_id,
+        patient_encounter_id,
+        patient_age_determination: 'adult',
+        findings: [{
+          id: insect_bite.id,
+          existence: 'Yes',
+        }],
+      })
+
+      const same_anaphylaxis_diagnosis = await patient_evaluations.findOne(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      assertEquals(anaphylaxis_diagnosis, same_anaphylaxis_diagnosis)
     },
   )
 })
