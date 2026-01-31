@@ -56,3 +56,16 @@
     )
   )
 )
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Anaphylaxis" "disorder")
+    possible
+  )
+  adult
+  (or (clinical_finding (snomed_concept "Itching" "finding"))
+      (clinical_finding (snomed_concept "Eruption" "morphologic abnormality"))
+      (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+      (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+      (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
+  )
+)
