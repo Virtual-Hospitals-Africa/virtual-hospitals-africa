@@ -1,19 +1,18 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { parseExpression, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
-import { buildExpression, satisfyingSExpression } from '../../db/models/s_expression.ts'
+import { satisfyingSExpression } from '../../db/models/s_expression.ts'
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { patient_record_providers } from '../../db/models/patient_record_providers.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
-import { debugLog } from '../../db/helpers.ts'
 import { CLINICAL_FINDING, PROCEDURE } from '../../shared/snomed_concepts.ts'
 import assertLength from '../../util/assertLength.ts'
 import { asNormalFormSExpression } from '../../shared/patient_records.ts'
@@ -121,25 +120,6 @@ describeParallel('db/models/patient_findings.ts', () => {
         satisfies: true,
         record_ids: [finding_id],
       })
-
-      console.log(parseExpression(`
-          (clinical_finding 
-            (snomed_concept "Burn" "disorder")
-            (attribute (snomed_concept "Finding site" "attribute") 
-                        (snomed_concept "Right upper arm structure" "body structure")))
-        `))
-      debugLog(
-        buildExpression(
-          db,
-          { patient_id },
-          `
-          (clinical_finding 
-            (snomed_concept "Burn" "disorder")
-            (attribute (snomed_concept "Finding site" "attribute") 
-                        (snomed_concept "Right upper arm structure" "body structure")))
-        `,
-        ),
-      )
 
       const records_slightly_off = await satisfyingSExpression(
         db,

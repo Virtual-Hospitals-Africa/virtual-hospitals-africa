@@ -5,7 +5,7 @@ import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
 import { assert } from 'std/assert/assert.ts'
-import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
+import { Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
@@ -360,7 +360,7 @@ export function baseInsertMany(
 type PatientRecordsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
-  s_expression?: string | AnyNode
+  s_expression?: string | QueryableNode
   search?: string
 }
 

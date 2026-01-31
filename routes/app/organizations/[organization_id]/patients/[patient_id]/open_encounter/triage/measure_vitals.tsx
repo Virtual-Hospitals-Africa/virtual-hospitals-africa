@@ -30,7 +30,7 @@ import { VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } f
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
-import { comparator, defined_finding } from '../../../../../../../../shared/s_expression_schemas.ts'
+import { comparator, insertable_finding_base } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 
 export const TriageMeasureVitalsSchema = z.object({
@@ -44,7 +44,7 @@ export const TriageMeasureVitalsSchema = z.object({
   assessments: z.partialRecord(
     z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS)),
     z.object({
-      s_expression: sExpressionZodValidator(defined_finding),
+      s_expression: sExpressionZodValidator(insertable_finding_base),
     }).strict(),
   ).default({}),
 }).strict()

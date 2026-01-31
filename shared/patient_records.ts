@@ -19,8 +19,8 @@ import omit from '../util/omit.ts'
 import assertOneOf from '../util/assertOneOf.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
-import { Lang } from './s_expression_schemas.ts'
-import { parseExpression, parseExpressionExpectingAtom } from './s_expression.ts'
+import { any_query, Lang } from './s_expression_schemas.ts'
+import { parseExpressionExpectingAtom, parseWithSchema } from './s_expression.ts'
 import { logArgsOnError } from '../util/decorators.ts'
 import capitalize from '../util/capitalize.ts'
 import isString from '../util/isString.ts'
@@ -306,7 +306,7 @@ function addNodeIfValueIsSExpression<DR extends DisplayableRecord>(record: DR): 
     value: record.value && (record.value.type === 's_expression'
       ? {
         ...record.value,
-        node: parseExpression(record.value.s_expression),
+        node: parseWithSchema(record.value.s_expression, any_query),
       }
       : record.value),
   }
@@ -428,6 +428,8 @@ export function asNormalFormSExpression<Rest>(
   function asNode(): Lang['finding'] | Lang['evaluation'] | Lang['procedure'] {
     switch (record.type) {
       case 'finding': {
+        assert('existence' in record)
+        assertOneOf(record.existence, ['Yes' as const, 'No' as const, 'Unknown' as const])
         return {
           atom: 'finding',
           root_snomed_concept,
@@ -437,6 +439,7 @@ export function asNormalFormSExpression<Rest>(
           attributes,
           exact: false,
           history: false,
+          existence: record.existence,
         }
       }
       case 'evaluation': {

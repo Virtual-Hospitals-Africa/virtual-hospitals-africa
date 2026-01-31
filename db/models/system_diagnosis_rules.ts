@@ -16,7 +16,7 @@ import {
 } from '../../shared/snomed_concepts.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-import { Comparisons, Lang, LookingFor, system_diagnosis_rule } from '../../shared/s_expression_schemas.ts'
+import { Comparisons, Lang, QueryableNode, system_diagnosis_rule } from '../../shared/s_expression_schemas.ts'
 import { SYSTEM_DIAGNOSIS_RULES } from '../../s_expression/system_diagnosis_rules.ts'
 import compactMap from '../../util/compactMap.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -49,7 +49,7 @@ for (const rule of SYSTEM_DIAGNOSIS_RULES_PARSED) {
   }
 }
 
-function* allFindingsToLookFor(node: Lang['or' | 'and' | 'any2' | 'finding' | Comparisons]): Generator<Lang['finding' | Comparisons]> {
+function* allFindingsToLookFor(node: QueryableNode): Generator<Lang['finding' | Comparisons]> {
   switch (node.atom) {
     case 'finding':
     case '<':
@@ -66,6 +66,8 @@ function* allFindingsToLookFor(node: Lang['or' | 'and' | 'any2' | 'finding' | Co
         yield* allFindingsToLookFor(expression)
       }
       break
+    default:
+      throw new Error(`Not supported ${node.atom}`)
   }
 }
 
@@ -293,7 +295,7 @@ export const system_diagnosis_rules = {
 
     // return patient_evaluations.insertOneNested()
 
-    function evaluateEvidence(evidence: LookingFor):
+    function evaluateEvidence(evidence: QueryableNode):
       | { result: true; contributing_finding_ids: Set<string> }
       | { result: false } {
       const contributing_finding_ids = new Set<string>()
@@ -365,6 +367,8 @@ export const system_diagnosis_rules = {
           }
           return { result: false }
         }
+        default:
+          throw new Error(`Not supported ${evidence.atom}`)
       }
     }
   },

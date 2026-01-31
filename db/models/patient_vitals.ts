@@ -16,9 +16,8 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_findings } from './patient_findings.ts'
 import { patient_encounter_employees } from './patient_encounter_employees.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-
 import { buildExpression } from './s_expression.ts'
-import { AnyNode } from '../../shared/s_expression_schemas.ts'
+import { QueryableNode } from '../../shared/s_expression_schemas.ts'
 import { base } from './_base.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { isMeasurement } from '../../shared/vitals.ts'
@@ -35,7 +34,7 @@ type VitalsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
   excluding_patient_encounter_id?: string | IdSelection
-  s_expression?: string | AnyNode
+  s_expression?: string | QueryableNode
   search?: string
   not_measurements?: boolean
 }

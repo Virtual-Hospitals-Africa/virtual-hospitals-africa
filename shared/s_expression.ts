@@ -14,6 +14,7 @@ import { wrapError } from '../util/wrapError.ts'
 import { isTriageLevel } from './priorities.ts'
 import { safeParseWithValues } from '../util/assertMatches.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
+import isKeyOf from '../util/isKeyOf.ts'
 
 type SExpressionNode = {
   atom: string
@@ -65,12 +66,6 @@ export function parseWithSchema<Schema extends Values<typeof schemas>>(
   return second_pass.data
 }
 
-export function parseExpression(
-  expression: string,
-) {
-  return parseWithSchema(expression, schemas.any_expression)
-}
-
 export type Atom = schemas.AnyNode['atom']
 
 export function isAtom<T extends Atom>(
@@ -80,7 +75,7 @@ export function isAtom<T extends Atom>(
   return obj.atom === atom
 }
 
-function schemaByAtom(atom: Atom) {
+function schemaByAtom(atom: string) {
   switch (atom) {
     case '>':
     case '<':
@@ -88,8 +83,13 @@ function schemaByAtom(atom: Atom) {
     case '<=':
     case '=':
       return schemas.comparator
-    default:
+    default: {
+      if (!isKeyOf(atom, schemas)) {
+        console.log(schemas)
+        throw new Error(`No schema for ${atom}`)
+      }
       return schemas[atom]
+    }
   }
 }
 
@@ -120,12 +120,16 @@ export function asNode<
 export function sExpressionZodValidator<Schema extends Values<typeof schemas>>(
   schema: Schema,
 ) {
-  return z.string()
-    .transform((expression) => parseWithSchema(expression, schema))
+  return z.string().transform((expression) => parseWithSchema(expression, schema))
 }
 
 export function normalForm(s_expression: string): string {
-  return inverseSExpression(parseExpression(s_expression))
+  const trimmed = s_expression.trim()
+  const match = trimmed.match(/^\(([a-z|\d|_]+)\s/)
+  assert(match, `${trimmed} is not an s expression${trimmed[0]}x`)
+  const atom = match[1]
+  const schema = schemaByAtom(atom)
+  return inverseSExpression(parseWithSchema(trimmed, schema))
 }
 
 export function fastNormalForm(expr: string): string {

@@ -1,13 +1,13 @@
 import { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { SelectQueryBuilder, sql } from 'kysely'
-import { DB } from '../../db.d.ts'
+import { DB, Existence } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
-import { Atom, isAtom, parseExpression } from '../../shared/s_expression.ts'
-import { deduplicate } from '../helpers.ts'
-import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
+import { Atom, isAtom, parseWithSchema } from '../../shared/s_expression.ts'
+import { debugLog, deduplicate } from '../helpers.ts'
+import { any_query, Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { ATTRIBUTE, EVENT, MEASUREMENT_FINDING, QUALIFIER_VALUE, STATUS_ATTRIBUTE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
+import { ATTRIBUTE, EVENT, MEASUREMENT_FINDING, QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 
 type PatientIdentifiers = {
@@ -54,10 +54,11 @@ function baseQuery(
     root_snomed_concept,
     specific_snomed_concept,
     value_snomed_concept,
+    existence,
+    include_negative,
     qualifiers = [],
     attributes = [],
     exact = false,
-    include_negative = false,
   }: PatientIdentifiers & {
     root_snomed_concept?: Maybe<Lang['snomed_concept']>
     specific_snomed_concept?: Maybe<Lang['snomed_concept']>
@@ -68,10 +69,15 @@ function baseQuery(
     attributes?: Array<
       Lang['attribute']
     >
+    existence?: Existence
     exact?: boolean
     include_negative?: boolean
   },
 ) {
+  if (include_negative != null) {
+    assert(!existence, 'Cannot specify both existence & include_negative')
+  }
+
   const query = trx.selectFrom('patient_records_aggregated')
     .innerJoin('patient_records_still_valid', 'patient_records_aggregated.id', 'patient_records_still_valid.id')
     .where('patient_records_aggregated.patient_id', '=', patient_id)
@@ -122,11 +128,13 @@ function baseQuery(
             ])
           }),
     )
-    // TODO there's other types of negation in SNOMED, but we're not using them?
-    // A more general approach use Finding context: Known absent
     .$if(
       !include_negative,
       (qb) => qb.where('patient_records_aggregated.existence', '=', 'Yes'),
+    )
+    .$if(
+      !!existence,
+      (qb) => qb.where('patient_records_aggregated.existence', '=', existence!),
     )
     .select('patient_records_aggregated.id')
 
@@ -192,10 +200,10 @@ export const satisfyingSExpression = deduplicate(
   async function satisfyingSExpression(
     trx: TrxOrDbOrQueryCreator,
     { s_expression, ...patient }: {
-      s_expression: string | AnyNode
+      s_expression: string | QueryableNode
     } & PatientIdentifiers,
   ): Promise<SatisfyingResult> {
-    const node = isString(s_expression) ? parseExpression(s_expression) : s_expression
+    const node = isString(s_expression) ? parseWithSchema(s_expression, any_query) : s_expression
 
     if (isAtom(node, 'not')) {
       const any_matching = await buildExpression(trx, patient, node.expression)
@@ -207,6 +215,7 @@ export const satisfyingSExpression = deduplicate(
       }
     }
     const qb = buildExpression(trx, patient, node)
+    debugLog(qb)
     const rows = await qb.execute()
     return {
       record_ids: rows.map((row) => row.id),
@@ -475,15 +484,16 @@ export const EXPRESSION_BUILDERS = {
       )
   },
   measurement,
-  active_condition(trx, patient, { snomed_concept }) {
-    const snomed_concept_s_expression = inverseSExpression(snomed_concept)
-    return buildExpression(
-      trx,
-      patient,
-      parseExpression(`
-        (or (clinical_finding ${snomed_concept_s_expression})
-            (finding ${STATUS_ATTRIBUTE.s_expression} ${snomed_concept_s_expression} ${YES_QUALIFIER.s_expression}))
-      `),
+  // TODO: this is not quite right as this would pull historical findings
+  active_condition(trx, { patient_id }, { snomed_concept }) {
+    return baseQuery(trx, {
+      patient_id,
+      existence: 'Yes',
+      specific_snomed_concept: snomed_concept,
+    }).innerJoin(
+      'patient_findings',
+      'patient_records_aggregated.id',
+      'patient_findings.id',
     )
   },
   '>'(trx, patient, { left, right }) {
@@ -543,18 +553,16 @@ export const EXPRESSION_BUILDERS = {
   [T in Atom]?: (
     trx: TrxOrDbOrQueryCreator,
     patient: PatientIdentifiers,
-    node: AnyNode & { atom: T },
+    node: QueryableNode & { atom: T },
   ) => SelectQueryBuilder<DB, 'patient_records_aggregated', { id: string }>
 }
 
 export function buildExpression(
   trx: TrxOrDbOrQueryCreator,
   patient: PatientIdentifiers,
-  node: AnyNode | string,
+  s_expression: QueryableNode | string,
 ): SelectQueryBuilder<DB, 'patient_records_aggregated', { id: string }> {
-  if (typeof node === 'string') {
-    node = parseExpression(node)
-  }
+  const node = typeof s_expression === 'string' ? parseWithSchema(s_expression, any_query) : s_expression
 
   if (!isKeyOf(node.atom, EXPRESSION_BUILDERS)) {
     throw new Error(`${node.atom} is not directly queryable`)
