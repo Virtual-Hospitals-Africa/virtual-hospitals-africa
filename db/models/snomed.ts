@@ -7,8 +7,9 @@ import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_sign
 import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
 import { jsonBuildObject, literalString } from '../helpers.ts'
 import { buildExpression } from './s_expression.ts'
-import { isAtom, parseExpression } from '../../shared/s_expression.ts'
+import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
 import { asConceptSExpression } from '../../shared/snomed_concepts.ts'
+import { any_query } from '../../shared/s_expression_schemas.ts'
 
 type SearchTerms = {
   search: string
@@ -42,7 +43,7 @@ function getPriorityOfSnomedConcept<
     // TODO: probably move this idea into db/models/s_expression.ts
     // Build the prompt_when check for the patient
     // Handle 'not' expressions specially: use NOT EXISTS instead of EXISTS on the negated query
-    const parsed = parseExpression(sign.prompt_when_s_expression)
+    const parsed = parseWithSchema(sign.prompt_when_s_expression, any_query)
 
     const prompt_when = isAtom(parsed, 'not')
       ? eb.not(eb.exists(buildExpression(

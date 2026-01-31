@@ -106,7 +106,6 @@ export async function addTestEmployeeWithSession(
   }
 
   return {
-    ...health_worker,
     session_id,
     Cookie,
     health_worker,

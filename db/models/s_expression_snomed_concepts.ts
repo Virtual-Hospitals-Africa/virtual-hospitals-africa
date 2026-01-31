@@ -1,8 +1,8 @@
 import { Maybe } from '../../types.ts'
 import { ExpressionBuilder, RawBuilder, sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { isAtom, parseExpression } from '../../shared/s_expression.ts'
-import { AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
+import { isAtom, parseExpressionExpectingAtom, parseWithSchema } from '../../shared/s_expression.ts'
+import { any_query, AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { STATUS_ATTRIBUTE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import { DB } from '../../db.d.ts'
@@ -80,10 +80,13 @@ const PREDICATE_BUILDERS = {
   },
   active_condition(column_ref, { snomed_concept }) {
     const snomed_concept_s_expression = inverseSExpression(snomed_concept)
-    const expanded_expression = parseExpression(`
+    const expanded_expression = parseExpressionExpectingAtom(
+      `
       (or (clinical_finding ${snomed_concept_s_expression})
           (finding ${STATUS_ATTRIBUTE.s_expression} ${snomed_concept_s_expression} ${YES_QUALIFIER.s_expression}))
-    `)
+    `,
+      'or',
+    )
     return internalBuildExpressionPredicate(column_ref, expanded_expression)
   },
 } satisfies {
@@ -95,11 +98,9 @@ const PREDICATE_BUILDERS = {
 
 function internalBuildExpressionPredicate(
   column_ref: string,
-  node: AnyNode | string,
+  s_expression: AnyNode | string,
 ): RawBuilder<boolean> {
-  if (typeof node === 'string') {
-    node = parseExpression(node)
-  }
+  const node = typeof s_expression === 'string' ? parseWithSchema(s_expression, any_query) : s_expression
 
   if (!isKeyOf(node.atom, PREDICATE_BUILDERS)) {
     throw new Error(`${node.atom} is not supported as a predicate`)

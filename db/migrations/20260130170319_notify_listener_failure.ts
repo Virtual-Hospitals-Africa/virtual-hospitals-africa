@@ -1,4 +1,4 @@
-import { Kysely, sql } from "kysely"
+import { Kysely, sql } from 'kysely'
 import { DB } from '../../db.d.ts'
 
 export async function up(db: Kysely<DB>) {
@@ -27,10 +27,9 @@ export async function up(db: Kysely<DB>) {
     FOR EACH ROW
     EXECUTE FUNCTION notify_event_listener_failure();
   `.execute(db)
-
 }
 
-export async function down(db: Kysely<DB>){
+export async function down(db: Kysely<DB>) {
   await sql`DROP TRIGGER IF EXISTS event_listener_failure_trigger ON event_listeners`.execute(db)
   await sql`DROP FUNCTION IF EXISTS notify_event_listener_failure`.execute(db)
 }

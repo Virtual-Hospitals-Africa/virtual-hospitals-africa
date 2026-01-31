@@ -31,9 +31,33 @@ export type EventValue = {
   location: Coordinates | null
 }
 
-type BaseLang =
+type NonQueryableBaseLang = {
+  snomed_concept: SnomedConcept
+  ntask: {
+    description: string
+    ages: AgeDetermination[]
+    applies_when: Lang[Comparisons | 'finding']
+    procedure: Lang['ncheck_for']
+    diagnosis: null | Lang['diagnosis']
+  }
+  ncheck_for: {
+    check_for: Lang['finding'][]
+  }
+  task: {
+    description: string
+    when: Lang[Comparisons | 'finding']
+    procedure: Lang['procedure']
+  }
+  system_priority_determination: {
+    description: string
+    when_primary_finding: Lang[Comparisons | 'finding']
+    when_other_findings_also_present: Lang[Comparisons | 'finding'][]
+    priority: Priority
+  }
+}
+
+type QueryableBaseLang =
   & {
-    snomed_concept: SnomedConcept
     finding: {
       root_snomed_concept: Lang['snomed_concept'] | null
       specific_snomed_concept: Lang['snomed_concept'] | null
@@ -42,6 +66,7 @@ type BaseLang =
       attributes: Lang['attribute'][]
       exact: boolean
       history: boolean
+      existence: 'Yes' | 'No' | 'Unknown'
     }
     procedure: {
       root_snomed_concept: Lang['snomed_concept'] | null
@@ -63,7 +88,7 @@ type BaseLang =
       attributes: Lang['attribute'][]
     }
     evaluates: {
-      expression: AnyNode
+      expression: QueryableNode
     }
     attribute: {
       specific_snomed_concept: Lang['snomed_concept']
@@ -80,7 +105,7 @@ type BaseLang =
     system_diagnosis_rule: {
       diagnosis: Lang['diagnosis']
       ages: AgeDetermination[]
-      evidence: LookingFor
+      evidence: QueryableNode
     }
     measurement: {
       snomed_concept: Lang['snomed_concept']
@@ -90,37 +115,16 @@ type BaseLang =
       snomed_concept: Lang['snomed_concept']
     }
     not: {
-      expression: LookingFor | Lang['active_condition']
+      expression: QueryableNode
     }
     and: {
-      expressions: LookingFor[]
+      expressions: QueryableNode[]
     }
     or: {
-      expressions: LookingFor[]
+      expressions: QueryableNode[]
     }
     any2: {
-      expressions: LookingFor[]
-    }
-    ntask: {
-      description: string
-      ages: AgeDetermination[]
-      applies_when: Lang[Comparisons | 'finding']
-      procedure: Lang['ncheck_for']
-      diagnosis: null | Lang['diagnosis']
-    }
-    ncheck_for: {
-      check_for: Lang['finding'][]
-    }
-    task: {
-      description: string
-      when: Lang[Comparisons | 'finding']
-      procedure: Lang['procedure']
-    }
-    system_priority_determination: {
-      description: string
-      when_primary_finding: Lang[Comparisons | 'finding']
-      when_other_findings_also_present: Lang[Comparisons | 'finding'][]
-      priority: Priority
+      expressions: QueryableNode[]
     }
     link: {
       title: string
@@ -135,6 +139,8 @@ type BaseLang =
     }
   }
 
+type BaseLang = NonQueryableBaseLang & QueryableBaseLang
+
 export type Lang = {
   [Atom in keyof BaseLang]: {
     atom: Atom
@@ -143,9 +149,11 @@ export type Lang = {
 
 export type AnyNode = Lang[keyof Lang]
 
-export type DefinedFinding = NonNullableProperty<Lang['finding'], 'root_snomed_concept' | 'specific_snomed_concept'>
+export type QueryableNode = Lang[keyof QueryableBaseLang]
 
-export type LookingFor = DefinedFinding | Lang[Comparisons] | Lang['or' | 'and' | 'any2']
+export type InsertableFindingBase = NonNullableProperty<Lang['finding'], 'root_snomed_concept' | 'specific_snomed_concept'>
+
+export type InsertableFinding = InsertableFindingBase | Lang[Comparisons]
 
 const snomed_concept_name_and_category: z.ZodType<Lang['snomed_concept']> = z
   .object({
@@ -282,6 +290,7 @@ export const finding_base: z.ZodType<Lang['finding']> = z.lazy(() =>
         attributes,
         exact: false,
         history: false,
+        existence: 'Yes' as const,
       }
     },
   )
@@ -342,6 +351,7 @@ export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'r
         attributes,
         exact: false,
         history: false,
+        existence: 'Yes' as const,
       }
     },
   )
@@ -349,7 +359,7 @@ export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'r
 
 export const finding: z.ZodType<Lang['finding']> = z.lazy(() => finding_base.or(clinical_finding).or(allergy)).describe('finding')
 
-export const defined_finding: z.ZodType<DefinedFinding> = finding
+export const insertable_finding_base: z.ZodType<InsertableFindingBase> = finding
   // .refine doesn't do type winnowing
   .transform((finding) => finding as NonNullableProperty<typeof finding, 'root_snomed_concept' | 'specific_snomed_concept'>)
   .refine(
@@ -365,12 +375,12 @@ export const defined_finding: z.ZodType<DefinedFinding> = finding
       message: 'specific_snomed_concept is required for a defined clinical finding',
       path: ['args'],
     },
-  ).describe('defined_finding')
+  ).describe('insertable_finding_base')
 
 export const evaluates: z.ZodType<Lang['evaluates']> = z.lazy(() =>
   z.object({
     atom: z.literal('evaluates'),
-    args: z.tuple([any_expression]),
+    args: z.tuple([any_query]),
   }).transform(({ atom, args: [expression] }) => ({
     atom,
     expression,
@@ -594,7 +604,7 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
     })),
 ).describe('active_condition')
 
-export const allergy: z.ZodType<DefinedFinding & { history: true }> = z.lazy(
+export const allergy: z.ZodType<InsertableFindingBase & { history: true }> = z.lazy(
   () =>
     z.object({
       atom: z.literal('allergy'),
@@ -624,6 +634,7 @@ export const allergy: z.ZodType<DefinedFinding & { history: true }> = z.lazy(
       }],
       exact: false,
       history: true as const,
+      existence: 'Yes' as const,
     })),
 ).describe('allergy')
 
@@ -806,14 +817,16 @@ export const system_priority_determination: z.ZodType<Lang['system_priority_dete
 ).describe('system_priority_determination')
 
 // TODO: might need to change this to include negative findings
-export const positive_finding_like: z.ZodType<LookingFor> = z.lazy(() => comparator.or(defined_finding).or(allergy).or(or).or(and).or(any2)).describe(
-  'positive_finding_like',
+export const insertable_finding: z.ZodType<InsertableFinding> = z.lazy(() => comparator.or(insertable_finding_base)).describe(
+  'insertable_finding',
 )
+
+// .or(or).or(and).or(any2)
 
 export const not: z.ZodType<Lang['not']> = z.lazy(() =>
   z.object({
     atom: z.literal('not'),
-    args: z.tuple([positive_finding_like.or(active_condition)]),
+    args: z.tuple([any_query]),
   }).transform(({ atom, args: [expression] }) => ({
     atom,
     expression,
@@ -823,7 +836,7 @@ export const not: z.ZodType<Lang['not']> = z.lazy(() =>
 export const or: z.ZodType<Lang['or']> = z.lazy(() =>
   z.object({
     atom: z.literal('or'),
-    args: z.array(positive_finding_like),
+    args: z.array(any_query),
   }).transform(({ atom, args }) => ({
     atom,
     expressions: args,
@@ -833,7 +846,7 @@ export const or: z.ZodType<Lang['or']> = z.lazy(() =>
 export const and: z.ZodType<Lang['and']> = z.lazy(() =>
   z.object({
     atom: z.literal('and'),
-    args: z.array(positive_finding_like),
+    args: z.array(any_query),
   }).transform(({ atom, args }) => ({
     atom,
     expressions: args,
@@ -843,7 +856,7 @@ export const and: z.ZodType<Lang['and']> = z.lazy(() =>
 export const any2: z.ZodType<Lang['any2']> = z.lazy(() =>
   z.object({
     atom: z.literal('any2'),
-    args: z.array(positive_finding_like),
+    args: z.array(any_query),
   }).transform(({ atom, args }) => ({
     atom,
     expressions: args,
@@ -867,7 +880,7 @@ export const diagnosis: z.ZodType<Lang['diagnosis']> = z.lazy(() =>
 export const system_diagnosis_rule: z.ZodType<Lang['system_diagnosis_rule']> = z.lazy(() =>
   z.object({
     atom: z.literal('system_diagnosis_rule'),
-    args: z.tuple([diagnosis, ages, positive_finding_like]),
+    args: z.tuple([diagnosis, ages, any_query]),
   }).transform(({ atom, args: [diagnosis, ages, evidence] }) => ({
     atom,
     diagnosis,
@@ -876,25 +889,16 @@ export const system_diagnosis_rule: z.ZodType<Lang['system_diagnosis_rule']> = z
   }))
 ).describe('system_diagnosis_rule')
 
-export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
+export const any_query: z.ZodType<QueryableNode> = z.lazy(() =>
   z.union([
-    snomed_concept,
     event,
     finding,
     evaluation,
     procedure,
-    attribute,
-    finding_site,
     measurement,
     active_condition,
-    allergy,
-    check_for,
-    measure,
     comparator,
     qualifier,
-    task,
-    ntask,
-    system_priority_determination,
     exact,
     or,
     and,
@@ -903,4 +907,4 @@ export const any_expression: z.ZodType<AnyNode> = z.lazy(() =>
     link,
     diagnosis,
   ])
-).describe('any_expression')
+).describe('any_query')

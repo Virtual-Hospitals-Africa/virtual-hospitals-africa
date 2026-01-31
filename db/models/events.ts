@@ -19,10 +19,9 @@ import { promiseProps } from '../../util/promiseProps.ts'
  */
 export const initializeAllProcessedPubSub = once(
   async function initializeAllProcessedPubSub() {
-
     const by_id_subscribers = new Map<string, Set<(err?: Error) => void>>()
     const any_subscribers = new Set<(event_id: string, err?: Error) => void>()
-    
+
     const all_processed_client = new Client(opts || {})
     await all_processed_client.connect()
     await all_processed_client.query(`LISTEN event_all_processed`)
@@ -45,7 +44,7 @@ export const initializeAllProcessedPubSub = once(
     await event_failure_client.connect()
     await event_failure_client.query(`LISTEN event_listener_failure`)
     event_failure_client.on('notification', function (event) {
-      console.log("FAILURE", event)
+      console.log('FAILURE', event)
       assert(event.payload)
       const event_listener = JSON.parse(event.payload)
       assertHasProperty(event_listener, 'id')
@@ -286,8 +285,6 @@ export const events = {
     // Do we care about events that come in later?
     // const start = Date.now()
 
-    console.log('mmmmmm')
-
     const pub_sub = await initializeAllProcessedPubSub()
     const events_processed_while_waiting = new Set<string>()
     const events_failed_while_waiting = new Map<string, Error>()
@@ -301,7 +298,6 @@ export const events = {
     }
 
     async function unprocessedEventsRelatedToThisEncounter() {
-      console.log('started thisxxxx')
       try {
         pub_sub.any.subscribe(callback)
         return await trx
@@ -318,7 +314,7 @@ export const events = {
     }
 
     async function alreadyErroredListenersRelatedToThisEncounter() {
-       return await trx
+      return await trx
         .selectFrom('events')
         .innerJoin('event_listeners', 'event_listeners.event_id', 'events.id')
         .where(
@@ -332,14 +328,14 @@ export const events = {
 
     const { unprocessed_events_related_to_this_encounter, already_errored_listeners_related_to_this_encounter } = await promiseProps({
       unprocessed_events_related_to_this_encounter: unprocessedEventsRelatedToThisEncounter(),
-      already_errored_listeners_related_to_this_encounter: alreadyErroredListenersRelatedToThisEncounter()
+      already_errored_listeners_related_to_this_encounter: alreadyErroredListenersRelatedToThisEncounter(),
     })
 
     if (already_errored_listeners_related_to_this_encounter.length) {
       const message = already_errored_listeners_related_to_this_encounter
         .map((listener) => `[${listener.listener_name}] ${listener.error_message}`)
         .join('\n\n')
-    
+
       throw new AggregateError(already_errored_listeners_related_to_this_encounter.map((listener) => listener.error_message), message)
     }
 
@@ -356,7 +352,7 @@ export const events = {
           const error = events_failed_while_waiting.get(e.id)
           throw error
         }
-        
+
         const promise = Promise.withResolvers<void>()
         const callback = (err: unknown) => {
           if (err) {
