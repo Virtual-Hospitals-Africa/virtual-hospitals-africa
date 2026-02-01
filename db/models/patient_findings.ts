@@ -38,52 +38,26 @@ export function baseQuery(
       'patient_records_aggregated.id',
     )
     .innerJoin(
-      'patient_procedures',
+      'patient_records_aggregated as procedures_aggregated',
       'patient_findings.procedure_id',
-      'patient_procedures.id',
-    )
-    .innerJoin(
-      'patient_records as patient_procedure_records',
-      'patient_procedures.id',
-      'patient_procedure_records.id',
-    )
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category as procedure_root_snomed_concept',
-      'patient_procedure_records.root_snomed_concept_id',
-      'procedure_root_snomed_concept.id',
-    )
-    .innerJoin(
-      'snomed_inferred_canonical_name_and_category as procedure_specific_snomed_concept',
-      'patient_procedure_records.specific_snomed_concept_id',
-      'procedure_specific_snomed_concept.id',
+      'procedures_aggregated.id',
     )
     .select((eb) => [
       literalString('finding').$castTo<'finding'>().as('type'),
       'patient_findings.patient_encounter_employee_id',
 
       jsonBuildObject({
-        id: eb.ref('patient_procedure_records.id'),
-        root_snomed_concept_id: asText(
-          eb,
-          'procedure_root_snomed_concept.id',
-        ),
-        root_snomed_concept_name: eb.ref(
-          'procedure_root_snomed_concept.name',
-        ),
-        root_snomed_concept_category: eb.ref(
-          'procedure_root_snomed_concept.category',
-        ),
+        id: eb.ref('procedures_aggregated.id'),
+        root_snomed_concept_id: asText(eb, 'procedures_aggregated.root_snomed_concept_id'),
+        root_snomed_concept_name: eb.ref('procedures_aggregated.root_snomed_concept_name'),
+        root_snomed_concept_category: eb.ref('procedures_aggregated.root_snomed_concept_category'),
         specific_snomed_concept_id: asText(
           eb,
-          'procedure_specific_snomed_concept.id',
+          'procedures_aggregated.specific_snomed_concept_id',
         ),
-        specific_snomed_concept_name: eb.ref(
-          'procedure_specific_snomed_concept.name',
-        ),
-        specific_snomed_concept_category: eb.ref(
-          'procedure_specific_snomed_concept.category',
-        ),
-        workflow_step_name: caseWhenMatching(eb, eb.ref('procedure_specific_snomed_concept.id'), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
+        specific_snomed_concept_name: eb.ref('procedures_aggregated.specific_snomed_concept_name'),
+        specific_snomed_concept_category: eb.ref('procedures_aggregated.specific_snomed_concept_category'),
+        workflow_step_name: caseWhenMatching(eb, eb.ref('procedures_aggregated.specific_snomed_concept_id'), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
       }).as('as_part_of_procedure'),
 
       eb.selectFrom('patient_triage_level')

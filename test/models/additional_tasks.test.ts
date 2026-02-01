@@ -16,22 +16,25 @@ describeParallel('db/models/additional_tasks.ts', () => {
     'all of the findings referenced to check_for actually exist',
     async () => {
       await pMap(TASKS, async (task) => {
-        if (task.task.procedure.value?.atom !== 'finding') return
+        if (!Array.isArray(task.procedure.value)) return
 
-        const finding = task.task.procedure.value
-        assert(finding.specific_snomed_concept)
+        for (const finding of task.procedure.value) {
+          const snomed_concept = finding.atom === 'measurement' ? finding.snomed_concept : finding.specific_snomed_concept
 
-        const { id } = await nameAndCategorySnomedConceptBase(
-          db,
-          finding.specific_snomed_concept,
-        )
-          .executeTakeFirstOrThrow()
-          .catch((err) => {
-            err.message = inverseSExpression(finding) + ' does not exist. ' +
-              err.message
-            throw err
-          })
-        snomed_concept_id.parse(id)
+          assert(snomed_concept)
+
+          const { id } = await nameAndCategorySnomedConceptBase(
+            db,
+            snomed_concept,
+          )
+            .executeTakeFirstOrThrow()
+            .catch((err) => {
+              err.message = inverseSExpression(finding) + ' does not exist. ' +
+                err.message
+              throw err
+            })
+          snomed_concept_id.parse(id)
+        }
       })
     },
   )

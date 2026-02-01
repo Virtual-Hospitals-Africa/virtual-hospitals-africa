@@ -22,7 +22,7 @@ type IntermediateBriefHistory = IntermediateFinding & {
   pertaining_to_key: CommonConditionKey
 }
 
-function mostRecentFindings(
+function mostRecentRecords(
   trx: TrxOrDb,
   { patient_id, conditions }: {
     patient_id: string
@@ -78,7 +78,7 @@ function mostRecentFindings(
     .execute()
 }
 
-function mostRecentFinding<
+function mostRecentRecord<
   Finding extends ReturnType<typeof formatRecord<IntermediateBriefHistory>> & {
     existence: Existence
   },
@@ -133,8 +133,8 @@ function mostRecentFinding<
 }
 
 export const brief_history = {
-  mostRecentFindings,
-  async renderedMostRecentFindings(
+  mostRecentRecords,
+  async renderedMostRecentRecords(
     trx: TrxOrDb,
     { patient_id, encounter, health_worker_id, conditions }: {
       patient_id: string
@@ -143,7 +143,7 @@ export const brief_history = {
       conditions: CommonCondition[]
     },
   ): Promise<MostRecentBriefHistoryFindings> {
-    const most_recent_findings = await mostRecentFindings(trx, {
+    const most_recent_findings = await mostRecentRecords(trx, {
       patient_id,
       conditions,
     }).then((findings) => findings.map(formatRecord))
@@ -153,7 +153,7 @@ export const brief_history = {
       'pertaining_to_key',
     )
       .values()
-      .map(mostRecentFinding)
+      .map(mostRecentRecord)
       .toArray()
 
     const with_providers: RenderedBriefHistoryRelativeToHealthWorker[] = await patient_record_providers.hydrateIntermediateRecords(trx, {

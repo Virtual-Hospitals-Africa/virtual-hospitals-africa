@@ -24,6 +24,8 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import matching from '../../util/matching.ts'
 import uniq from '../../util/uniq.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
+import { events } from './events.ts'
+import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 
 export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map((d) => parseWithSchema(d, system_diagnosis_rule))
 
@@ -35,33 +37,17 @@ const rules_by_age = {
 
 const finding_nodes_to_s_expressions = new Map<Lang['finding' | Comparisons], string>()
 const finding_s_expressions_to_nodes = new Map<string, Lang['finding' | Comparisons]>()
-const finding_s_expressions_to_rules = new Map<string, Set<Lang['system_diagnosis_rule']>>()
 const rules_to_finding_s_expressions = new Map<Lang['system_diagnosis_rule'], Set<string>>()
-const rules_to_diagnosis_s_expressions = new Map<Lang['system_diagnosis_rule'], string>()
 const rules_to_diagnosis_concept_s_expressions = new Map<Lang['system_diagnosis_rule'], string>()
-const diagnosis_s_expressions_to_nodes = new Map<string, Lang['diagnosis']>()
-const diagnosis_s_expressions_to_evaluations = new Map<string, Lang['evaluation']>()
 for (const rule of SYSTEM_DIAGNOSIS_RULES_PARSED) {
   const finding_s_expressions = new Set<string>()
-  const diagnosis_s_expression = inverseSExpression(rule.diagnosis)
   rules_to_finding_s_expressions.set(rule, finding_s_expressions)
-  rules_to_diagnosis_s_expressions.set(rule, diagnosis_s_expression)
   rules_to_diagnosis_concept_s_expressions.set(rule, inverseSExpression(rule.diagnosis.snomed_concept))
-  if (!diagnosis_s_expressions_to_nodes.has(diagnosis_s_expression)) {
-    diagnosis_s_expressions_to_nodes.set(diagnosis_s_expression, rule.diagnosis)
-    assert(!diagnosis_s_expressions_to_evaluations.has(diagnosis_s_expression))
-    diagnosis_s_expressions_to_evaluations.set(diagnosis_s_expression, diagnosisToEvaluation(rule.diagnosis))
-  }
   for (const finding of allFindingsToLookFor(rule.evidence)) {
     const finding_s_expr = inverseSExpression(finding)
     finding_nodes_to_s_expressions.set(finding, finding_s_expr)
     finding_s_expressions_to_nodes.set(finding_s_expr, finding)
     finding_s_expressions.add(finding_s_expr)
-
-    if (!finding_s_expressions_to_rules.has(finding_s_expr)) {
-      finding_s_expressions_to_rules.set(finding_s_expr, new Set())
-    }
-    finding_s_expressions_to_rules.get(finding_s_expr)!.add(rule)
   }
 }
 
@@ -90,39 +76,6 @@ function* allFindingsToLookFor(node: QueryableNode): Generator<Lang['finding' | 
 export function baseQuery(trx: TrxOrDb, opts: PatientEvaluationsSearch) {
   return patient_evaluations.baseQuery(trx, opts)
     .where('patient_records_aggregated.root_snomed_concept_id', '=', DIAGNOSIS.id)
-}
-
-function diagnosisToEvaluation(diagnosis: {
-  snomed_concept: Lang['snomed_concept']
-  certainty_qualifier?: Lang['diagnosis']['certainty_qualifier']
-}): Lang['evaluation'] {
-  const certainty_qualifier_map = {
-    'definite': DEFINITE,
-    'probable': PROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER,
-    'equivocal': EQUIVOCAL,
-    'possible': POSSIBLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER,
-    'improbable': IMPROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER,
-  } as const
-
-  const certainty_qualifier_concept = diagnosis.certainty_qualifier ? certainty_qualifier_map[diagnosis.certainty_qualifier] : null
-
-  return {
-    atom: 'evaluation',
-    root_snomed_concept: {
-      atom: 'snomed_concept',
-      name: DIAGNOSIS.name,
-      category: DIAGNOSIS.category,
-    },
-    specific_snomed_concept: diagnosis.snomed_concept,
-    value_snomed_concept: certainty_qualifier_concept && {
-      atom: 'snomed_concept',
-      name: certainty_qualifier_concept.name,
-      category: certainty_qualifier_concept.category,
-    },
-    evaluates: null,
-    qualifiers: [],
-    attributes: [],
-  }
 }
 
 export const system_diagnosis_rules = {
@@ -191,7 +144,6 @@ export const system_diagnosis_rules = {
       .where('matching_diagnosis', 'is not', null)
       .execute()
 
-    console.log({ already_present_diagnoses })
     // If we've already made diagnoses of equal or higher certainty, there's no need to reevaluate certain rules
     const rules_to_consider = rules_of_age.filter((rule) => {
       const diagnosis_concept_s_expression = rules_to_diagnosis_concept_s_expressions.get(rule)
@@ -327,8 +279,8 @@ export const system_diagnosis_rules = {
       const evaluation_id = generateUUID()
       const relations = Array.from(contributing_finding_ids).map((finding_id) => ({
         id: generateUUID(),
-        source_id: finding_id,
-        destination_id: evaluation_id,
+        source_id: evaluation_id,
+        destination_id: finding_id,
       }))
 
       await patient_evaluations.insertOneNestedQuery(trx, {
@@ -353,6 +305,19 @@ export const system_diagnosis_rules = {
       ).selectNoFrom([
         success_true,
       ]).executeTakeFirstOrThrow()
+
+      await events.insert(
+        trx,
+        {
+          type: 'SystemDiagnosisCreated',
+          data: {
+            patient_id,
+            patient_age_determination,
+            patient_encounter_id,
+            evaluation_id,
+          },
+        },
+      )
     }
 
     function evaluateEvidence(evidence: QueryableNode):

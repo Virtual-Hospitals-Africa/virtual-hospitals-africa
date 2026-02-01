@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { literalString, success_true } from '../helpers.ts'
+import { asText, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { patient_records } from './patient_records.ts'
@@ -11,6 +11,7 @@ import isString from '../../util/isString.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
+import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -98,11 +99,32 @@ export function baseQuery(
     'patient_evaluations.id',
     'patient_records_aggregated.id',
   )
-    .select([
+    .leftJoin(
+      'patient_records_aggregated as procedures_aggregated',
+      'patient_evaluations.procedure_id',
+      'procedures_aggregated.id',
+    )
+    .select((eb) => [
       literalString('evaluation').$castTo<'evaluation'>().as('type'),
       'patient_evaluations.employment_id',
       'patient_evaluations.by_system',
       'patient_evaluations.evaluates_record_id',
+      jsonBuildNullableObject(
+        eb.ref('procedures_aggregated.id'),
+        {
+          id: eb.ref('procedures_aggregated.id').$notNull(),
+          root_snomed_concept_id: asText(eb, 'procedures_aggregated.root_snomed_concept_id').$notNull(),
+          root_snomed_concept_name: eb.ref('procedures_aggregated.root_snomed_concept_name').$notNull(),
+          root_snomed_concept_category: eb.ref('procedures_aggregated.root_snomed_concept_category').$notNull(),
+          specific_snomed_concept_id: asText(
+            eb,
+            'procedures_aggregated.specific_snomed_concept_id',
+          ).$notNull(),
+          specific_snomed_concept_name: eb.ref('procedures_aggregated.specific_snomed_concept_name').$notNull(),
+          specific_snomed_concept_category: eb.ref('procedures_aggregated.specific_snomed_concept_category').$notNull(),
+          workflow_step_name: caseWhenMatching(eb, eb.ref('procedures_aggregated.specific_snomed_concept_id').$notNull(), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
+        },
+      ).as('as_part_of_procedure'),
     ])
 
   if (opts.patient_id) {

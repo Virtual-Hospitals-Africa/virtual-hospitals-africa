@@ -14,7 +14,7 @@ import { brief_history } from '../../../../../../../../db/models/brief_history.t
 import entries from '../../../../../../../../util/entries.ts'
 import { forEach } from '../../../../../../../../util/inParallel.ts'
 import { Existence, Maybe, MostRecentBriefHistoryFindings, RenderedBriefHistoryRelativeToHealthWorker, Sex } from '../../../../../../../../types.ts'
-import { MostRecentFinding } from '../../../../../../../../components/library/MostRecentFinding.tsx'
+import { MostRecentRecord } from '../../../../../../../../islands/MostRecentRecord.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { COMMON_CONDITIONS, CommonCondition, CommonConditionKey, commonConditionSnomedConcept } from '../../../../../../../../shared/brief_history.ts'
@@ -53,9 +53,9 @@ export const TriageBriefHistorySchema = z.object(
   },
 )
 
-function mostRecentFindings({ state }: OpenEncounterWorkflowContext) {
+function MostRecentRecords({ state }: OpenEncounterWorkflowContext) {
   const { trx, encounter, patient_id, health_worker_id } = state
-  return brief_history.renderedMostRecentFindings(trx, {
+  return brief_history.renderedMostRecentRecords(trx, {
     encounter,
     patient_id,
     health_worker_id,
@@ -95,7 +95,7 @@ export const handler = postHandler(
     async function insertBriefHistory() {
       const { procedure: { procedure_id }, most_recent_findings } = await promiseProps({
         procedure: createProcedureIfNotAlreadyCompleted(ctx),
-        most_recent_findings: mostRecentFindings(ctx),
+        most_recent_findings: MostRecentRecords(ctx),
       })
 
       return forEach(
@@ -170,8 +170,8 @@ function CommonConditionRow(
       value={value}
       label={condition.label}
       most_recent_finding={
-        <MostRecentFinding
-          finding={most_recent_finding}
+        <MostRecentRecord
+          record={most_recent_finding}
           organization_id={organization_id}
         />
       }
@@ -215,7 +215,7 @@ export async function TriageBriefHistoryPage(
 
   return (
     <BriefHistorySection
-      most_recent_findings={await mostRecentFindings(ctx)}
+      most_recent_findings={await MostRecentRecords(ctx)}
       sex={patient.sex}
       organization_id={organization_employment.id}
     />

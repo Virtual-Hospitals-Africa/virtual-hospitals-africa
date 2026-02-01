@@ -126,7 +126,7 @@ describeParallel('triage/warning_signs', () => {
         })
 
         const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
+          .renderedMostRecentRecords(db, {
             patient_id,
             encounter,
             health_worker_id: nurse.health_worker.id,
@@ -268,9 +268,9 @@ describeParallel('triage/warning_signs', () => {
             'modifiers': z.array(z.any()),
             'destination_relations': [],
             'source_relations': [{
-              'source_id': z.string().uuid(),
-              'root_snomed_concept_id': '263498003',
-              'specific_snomed_concept_id': '42752001',
+              'source_id': z.string().uuid().optional(),
+              'root_snomed_concept_id': 129265001,
+              'specific_snomed_concept_id': 385641008,
             }],
             'evaluations': z.array(z.any()),
             'attributes': [],

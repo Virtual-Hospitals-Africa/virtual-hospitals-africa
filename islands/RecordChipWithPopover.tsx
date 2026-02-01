@@ -1,6 +1,6 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { recordChipClassName } from '../components/drawer-v4/recordChipClassName.ts'
-import { FindingPanel } from '../components/library/FindingPanel.tsx'
+import { RecordPanel } from '../components/library/RecordPanel.tsx'
 import { RenderedFindingRelativeToHealthWorker } from '../types.ts'
 
 export function RecordChipWithPopover({
@@ -19,7 +19,7 @@ export function RecordChipWithPopover({
         anchor={{ to: 'bottom start', gap: 8, padding: 8 }}
         className='panel z-50 transition duration-100 ease-out'
       >
-        <FindingPanel finding={record} organization_id={organization_id} />
+        <RecordPanel record={record} organization_id={organization_id} />
       </PopoverPanel>
     </Popover>
   )

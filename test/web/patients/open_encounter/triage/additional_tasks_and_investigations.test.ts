@@ -322,45 +322,40 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           },
           {
             'procedure': {
-              'value': {
-                'type': 's_expression',
-                's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
-              },
-              'displays': {
-                'value': 'Nausea',
-              },
-            },
-          },
-          {
-            'procedure': {
+              'specific_snomed_concept_id': '409060008',
+              'specific_snomed_concept_name': 'Evaluation for signs and symptoms of physical health problems',
               'value': {
                 'type': 's_expression',
                 's_expression': z.string(),
+                'nodes': [
+                  {
+                    'atom': 'finding',
+                    'displays': {
+                      'finding': 'Nausea',
+                    },
+                  },
+                  {
+                    'atom': 'finding',
+                    'displays': {
+                      'finding': 'Vomiting',
+                    },
+                  },
+                  {
+                    'atom': 'finding',
+                    'displays': {
+                      'finding': 'Pallor of skin of face',
+                    },
+                  },
+                  {
+                    'atom': 'finding',
+                    'displays': {
+                      'finding': 'Sweating',
+                    },
+                  },
+                ],
               },
               'displays': {
-                'value': 'Vomiting',
-              },
-            },
-          },
-          {
-            'procedure': {
-              'value': {
-                'type': 's_expression',
-                's_expression': z.string(),
-              },
-              'displays': {
-                'value': 'Pallor of skin of face',
-              },
-            },
-          },
-          {
-            'procedure': {
-              'value': {
-                'type': 's_expression',
-                's_expression': z.string(),
-              },
-              'displays': {
-                'value': 'Sweating',
+                'value': 'Nausea; Vomiting; Pallor of skin of face; Sweating',
               },
             },
           },

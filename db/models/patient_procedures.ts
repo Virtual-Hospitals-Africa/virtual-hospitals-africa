@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import { IdSelection, PreviouslyCompletedProcedures, SnomedConcept, TrxOrDb } from '../../types.ts'
-import { blankSelection, literalString, success_true } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records } from './patient_records.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -9,7 +9,9 @@ import { formatRecord } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
-import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 
 type ProcedureInsert =
   & {
@@ -36,10 +38,31 @@ export function baseQuery(
       'patient_procedures.id',
       'patient_records_aggregated.id',
     )
-    .select([
+    .leftJoin(
+      'patient_records_aggregated as procedures_aggregated',
+      'patient_procedures.as_part_of_procedure_id',
+      'procedures_aggregated.id',
+    )
+    .select((eb) => [
       literalString('procedure').$castTo<'procedure'>().as('type'),
       'patient_procedures.by_system',
       'patient_procedures.employment_id',
+      jsonBuildNullableObject(
+        eb.ref('procedures_aggregated.id'),
+        {
+          id: eb.ref('procedures_aggregated.id').$notNull(),
+          root_snomed_concept_id: asText(eb, 'procedures_aggregated.root_snomed_concept_id').$notNull(),
+          root_snomed_concept_name: eb.ref('procedures_aggregated.root_snomed_concept_name').$notNull(),
+          root_snomed_concept_category: eb.ref('procedures_aggregated.root_snomed_concept_category').$notNull(),
+          specific_snomed_concept_id: asText(
+            eb,
+            'procedures_aggregated.specific_snomed_concept_id',
+          ).$notNull(),
+          specific_snomed_concept_name: eb.ref('procedures_aggregated.specific_snomed_concept_name').$notNull(),
+          specific_snomed_concept_category: eb.ref('procedures_aggregated.specific_snomed_concept_category').$notNull(),
+          workflow_step_name: caseWhenMatching(eb, eb.ref('procedures_aggregated.specific_snomed_concept_id').$notNull(), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
+        },
+      ).as('as_part_of_procedure'),
     ])
 }
 
@@ -148,18 +171,18 @@ export const patient_procedures = base({
       .with(
         'inserting_record_s_expression',
         (qb) =>
-          procedure.value && ('atom' in procedure.value) && procedure.value.atom !== 'link'
+          Array.isArray(procedure.value)
             ? qb.insertInto('patient_record_s_expressions')
               .values({
                 id: procedure_id,
-                s_expression: inverseSExpression(procedure.value),
+                s_expression: inverseSExpressions(procedure.value),
               })
             : blankSelection(qb),
       )
       .with(
         'inserting_record_link',
         (qb) =>
-          procedure.value?.atom === 'link'
+          isObjectLike(procedure.value) && procedure.value.atom === 'link'
             ? qb.insertInto('patient_record_links')
               .values({
                 id: procedure_id,

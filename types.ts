@@ -24,7 +24,7 @@ import { type CommonConditionKey } from './shared/brief_history.ts'
 import { type VitalAssessment, type VitalMeasurement } from './shared/vitals.ts'
 import { type WarningSignKey } from './shared/warning_signs.ts'
 import { type Decimal } from './util/decimal.ts'
-import { AnyNode, Lang } from './shared/s_expression_schemas.ts'
+import { Investigation } from './shared/s_expression_schemas.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -3539,10 +3539,14 @@ export type RecordValueScore = {
   score: string
 }
 
+export type RecordValueSExpressionNode = Investigation & {
+  s_expression: string
+  displays: RecordDisplays
+}
 export type RecordValueSExpression = {
   type: 's_expression'
   s_expression: string
-  node: AnyNode
+  nodes: RecordValueSExpressionNode[]
 }
 
 export type RecordValueLink = {
@@ -3562,7 +3566,7 @@ export type RecordValue =
 
 export type IntermediateRecordValue =
   | Exclude<RecordValue, RecordValueSExpression>
-  | Omit<RecordValueSExpression, 'node'>
+  | Omit<RecordValueSExpression, 'nodes' | 's_expression'>
 
 export type IntermediateBaseRecord = {
   id: string
@@ -3594,19 +3598,18 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
         displays: RecordDisplays
       }
     >
+    destination_relations: Array<
+      IntermediateBaseRecord & {
+        relation_name: string
+        displays: RecordDisplays
+      }
+    >
     value: null | RecordValue
   }
 
-export type RenderedEvaluationEvaluatedBy =
-  | { system: true }
-  | ({
-    system: false
-    provider: RenderedRecordProvider
-    as_part_of_procedure: AsPartOfProcedure
-  })
-
 export type RenderedEvaluationRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'evaluation', {
-  evaluated_by: RenderedEvaluationEvaluatedBy
+  provider: null | RenderedRecordProvider
+  as_part_of_procedure: null | AsPartOfProcedure
 }>
 
 export type RenderedFindingRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'finding', {
@@ -3618,7 +3621,8 @@ export type RenderedFindingRelativeToHealthWorker = RenderedRecordRelativeToHeal
 }>
 
 export type RenderedProcedureRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'procedure', {
-  provider?: RenderedRecordProvider
+  provider: null | RenderedRecordProvider
+  as_part_of_procedure: null | AsPartOfProcedure
 }>
 
 export type RenderedRecordRelativeToHealthWorker =
@@ -3701,24 +3705,20 @@ export type RenderedRoom = {
     id: string
     name: string | null
   }
-  // employees: RenderedEmployee[]
 }
 
+export type RenderedTaskProcedureValue = null | RecordValueSExpression | RecordValueLink
+
+export type RenderedTaskProcedure = RenderedProcedureRelativeToHealthWorker & {
+  value: RenderedTaskProcedureValue
+}
 export type RenderedTask = {
-  procedure: RenderedProcedureRelativeToHealthWorker
   completed: boolean
-}
-
-export type CheckForTask = RenderedTask & {
-  procedure: { value: RecordValueSExpression & { node: Lang['finding'] } }
-}
-
-export type MeasureTask = RenderedTask & {
-  procedure: { value: RecordValueSExpression & { node: Lang['measurement'] } }
+  procedure: RenderedTaskProcedure
 }
 
 export type TaskGroup = {
-  due_to: RenderedFindingRelativeToHealthWorker[]
+  due_to: Array<RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker>
   tasks: RenderedTask[]
 }
 
@@ -3857,5 +3857,3 @@ export type NavLinks = {
   step: string
   route: string
 }[]
-
-// export type
