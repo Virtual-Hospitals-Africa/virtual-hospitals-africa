@@ -1,12 +1,14 @@
 import { assert } from 'std/assert/assert.ts'
-import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
-import type { CheckForTask, RecordValueLink, RenderedTask, TaskGroup } from '../../types.ts'
+import { MostRecentRecord } from '../../islands/MostRecentRecord.tsx'
+import type { RecordValueLink, RecordValueSExpressionNode, RenderedTask, TaskGroup } from '../../types.ts'
 import partition from '../../util/partition.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
-import { isCheckForTask, isMeasureTask } from '../../shared/tasks.ts'
 import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
 import isString from '../../util/isString.ts'
 import MeasurementInput from '../vitals/MeasurementInput.tsx'
+import { isCheckFor, isMeasure, isNotJustDoIt } from '../../shared/tasks.ts'
+import { hyphenate } from '../../util/hyphenate.ts'
+import memoize from '../../util/memoize.ts'
 
 function ValueDisplay({ value }: { value: string | RecordValueLink }) {
   if (isString(value)) return value
@@ -53,40 +55,45 @@ function TaskCheckbox({
   )
 }
 
-function CheckForTaskInput({
-  task,
+const uniqueIdentifier = memoize(
+  function uniqueIdentifier({ atom, displays }: RecordValueSExpressionNode) {
+    return `${atom}-${hyphenate(displays.full).toLowerCase()}`
+  },
+)
+
+function CheckForInput({
+  node,
 }: {
-  task: CheckForTask
+  node: RecordValueSExpressionNode & { atom: 'finding' }
 }) {
-  assert(task.procedure.displays.value)
-  const name = `check_for.${task.procedure.id}`
+  const name = `check_for.${uniqueIdentifier(node)}`
 
   // Parse the current value from the s-expression if it exists
-  let value: 'Yes' | 'No' | 'Unknown' | undefined
-  if (task.completed && task.procedure.value) {
-    // Extract the value from the s-expression
-    // The s-expression contains qualifiers that tell us if something was found or not
-    const sexp = task.procedure.value.s_expression
-    if (sexp.includes('(qualifier 410515003)')) { // Known present
-      value = 'Yes'
-    } else if (sexp.includes('(qualifier 410516002)')) { // Known absent
-      value = 'No'
-    } else if (sexp.includes('(qualifier 261665006)')) { // Unknown
-      value = 'Unknown'
-    }
-  }
+  // let value: 'Yes' | 'No' | 'Unknown' | undefined
+  // if (task.completed && task.procedure.value) {
+  //   // Extract the value from the s-expression
+  //   // The s-expression contains qualifiers that tell us if something was found or not
+  //   const sexp = task.procedure.value.s_expression
+  //   if (sexp.includes('(qualifier 410515003)')) { // Known present
+  //     value = 'Yes'
+  //   } else if (sexp.includes('(qualifier 410516002)')) { // Known absent
+  //     value = 'No'
+  //   } else if (sexp.includes('(qualifier 261665006)')) { // Unknown
+  //     value = 'Unknown'
+  //   }
+  // }
 
   return (
     <>
       <HiddenInput
         name={`${name}.s_expression`}
-        value={task.procedure.value.s_expression}
+        value={node.s_expression}
       >
       </HiddenInput>
       <YesNoQuestion
         name={`${name}.existence`}
-        value={value}
-        label={task.procedure.displays.value}
+        // value={value}
+        label={node.displays.full}
         required
       />
     </>
@@ -100,8 +107,11 @@ function TaskGroupCard({
   group: TaskGroup
   organization_id: string
 }) {
-  const [check_for_tasks, other_tasks] = partition(group.tasks, isCheckForTask)
-  const [measure_tasks, just_do_it_tasks] = partition(other_tasks, isMeasureTask)
+  const [solicit_findings_tasks, just_do_it_tasks] = partition(group.tasks, isNotJustDoIt)
+  const finding_nodes = solicit_findings_tasks.flatMap((task) => task.procedure.value.nodes)
+  const [check_for_nodes, other_nodes] = partition(finding_nodes, isCheckFor)
+  const [measure_nodes, none] = partition(other_nodes, isMeasure)
+  assert(none.length === 0)
 
   return (
     <div class='flex flex-col gap-4'>
@@ -112,10 +122,10 @@ function TaskGroupCard({
             <span class='font-semibold text-gray-600'>
               {'Due to: '}
             </span>
-            {group.due_to.map((finding) => (
-              <MostRecentFinding
-                key={finding.id}
-                finding={finding}
+            {group.due_to.map((record) => (
+              <MostRecentRecord
+                key={record.id}
+                record={record}
                 organization_id={organization_id}
               />
             ))}
@@ -124,25 +134,25 @@ function TaskGroupCard({
       </div>
 
       {/* Check-for Tasks (YesNoGrid) */}
-      {check_for_tasks.length > 0 && (
+      {check_for_nodes.length > 0 && (
         <YesNoGrid title='Check for'>
-          {check_for_tasks.map((task) => (
-            <CheckForTaskInput
-              key={task.procedure.id}
-              task={task}
+          {check_for_nodes.map((node) => (
+            <CheckForInput
+              key={uniqueIdentifier(node)}
+              node={node}
             />
           ))}
         </YesNoGrid>
       )}
 
-      {measure_tasks.map((task) => (
+      {measure_nodes.map((node) => (
         <MeasurementInput
-          key={task.procedure.id}
-          name={`measurements.${task.procedure.id}`}
+          key={uniqueIdentifier(node)}
+          name={`measurements.${uniqueIdentifier(node)}`}
           required
-          s_expression={task.procedure.value.s_expression}
-          units={task.procedure.value.node.units}
-          label={task.procedure.value.node.snomed_concept.name}
+          s_expression={node.s_expression}
+          units={node.units}
+          label={node.snomed_concept.name}
         />
       ))}
 

@@ -66,6 +66,16 @@ export function parseWithSchema<Schema extends Values<typeof schemas>>(
   return second_pass.data
 }
 
+export function parseArrayWithSchema<Schema extends Values<typeof schemas>>(
+  expression: string,
+  schema: Schema,
+): z.infer<Schema>[] {
+  assert(expression.startsWith('(('), 'Expression must start with (( to be interpreted as an array of s expressions')
+  const parsed = s_expression(expression)
+  assert(Array.isArray(parsed))
+  return parsed.map((s_expression) => parseWithSchema(s_expression, schema))
+}
+
 export type Atom = schemas.AnyNode['atom']
 
 export function isAtom<T extends Atom>(
@@ -171,9 +181,9 @@ export function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, st
     if (atom === 'system_diagnosis_rule' && index === 1) {
       return item
     }
-    // if (atom === 'ntask' && index === 1) {
-    //   return item
-    // }
+    if (atom === 'task' && index === 1) {
+      return item
+    }
     if (atom === 'ages') {
       return item
     }

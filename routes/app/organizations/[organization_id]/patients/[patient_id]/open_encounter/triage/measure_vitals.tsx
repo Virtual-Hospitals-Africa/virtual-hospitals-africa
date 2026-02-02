@@ -58,7 +58,7 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
   assert(patient_age_determination, `Age unknown`)
 
   const patient_id = patient.id
-  const { diabetes } = await brief_history.renderedMostRecentFindings(
+  const { diabetes } = await brief_history.renderedMostRecentRecords(
     trx,
     {
       patient_id,

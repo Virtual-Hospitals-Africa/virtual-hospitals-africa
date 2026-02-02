@@ -74,6 +74,12 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'procedure': {
+      if (Array.isArray(node.value)) {
+        const atom = node.value[0].atom === 'finding' ? 'check_for' : 'measure'
+        const parts: string[] = [atom, ...node.value.map(inverseSExpression)]
+        return `(${parts.join(' ')})`
+      }
+
       const parts: string[] = ['procedure']
       if (node.root_snomed_concept) {
         parts.push(snomedConceptToString(node.root_snomed_concept))
@@ -146,22 +152,12 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'task': {
-      return `(task "${node.description}" ${inverseSExpression(node.when)} ${inverseSExpression(node.procedure)})`
-    }
-
-    case 'ntask': {
-      const parts: string[] = ['ntask', quoted(node.description)]
-
+      const parts: string[] = ['task', quoted(node.description)]
       // Handle ages - if single age, output directly; if multiple, wrap in (ages ...)
-      parts.push(`(ages ${node.ages.join(' ')})`)
-
-      parts.push(inverseSExpression(node.applies_when))
+      const ages = node.ages.length === 1 ? node.ages[0] : `(ages ${node.ages.join(' ')})`
+      parts.push(ages)
+      parts.push(inverseSExpression(node.due_to))
       parts.push(inverseSExpression(node.procedure))
-
-      if (node.diagnosis) {
-        parts.push(inverseSExpression(node.diagnosis))
-      }
-
       return `(${parts.join(' ')})`
     }
 
@@ -174,16 +170,6 @@ export function inverseSExpression(node: AnyNode): string {
       ]
       for (const other_finding of node.when_other_findings_also_present) {
         parts.push(inverseSExpression(other_finding))
-      }
-      return `(${parts.join(' ')})`
-    }
-
-    case 'ncheck_for': {
-      const parts = [
-        'ncheck_for',
-      ]
-      for (const finding of node.check_for) {
-        parts.push(inverseSExpression(finding))
       }
       return `(${parts.join(' ')})`
     }
@@ -203,4 +189,8 @@ export function inverseSExpression(node: AnyNode): string {
       throw new Error(`Unknown node type: ${(_exhaustive as AnyNode).atom}`)
     }
   }
+}
+
+export function inverseSExpressions(nodes: AnyNode[]): string {
+  return `(${nodes.map(inverseSExpression).join(' ')})`
 }

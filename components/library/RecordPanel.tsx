@@ -1,6 +1,6 @@
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { organizationOf } from '../../shared/employees.ts'
-import { RenderedFindingRelativeToHealthWorker } from '../../types.ts'
+import { RenderedEvaluationRelativeToHealthWorker, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Button } from './Button.tsx'
@@ -8,15 +8,16 @@ import {
   BuildingOffice2Icon,
   CalendarIcon,
   ChatBubbleLeftIcon,
+  CpuChipIcon,
   UserIcon,
   // XMarkIcon,
 } from './icons/heroicons/outline.tsx'
 
-export function FindingPanel(
-  { finding, organization_id }: {
-    finding:
+export function RecordPanel(
+  { record, organization_id }: {
+    record:
       | RenderedFindingRelativeToHealthWorker
-      | RenderedFindingRelativeToHealthWorker
+      | RenderedEvaluationRelativeToHealthWorker
     organization_id: string
   },
 ) {
@@ -27,7 +28,7 @@ export function FindingPanel(
         <div className='flex items-start justify-between'>
           <div className='flex-1'>
             <h3 className='text-lg font-semibold leading-6 text-red-800'>
-              {finding.displays.full}
+              {record.displays.full}
             </h3>
           </div>
           {
@@ -57,18 +58,31 @@ export function FindingPanel(
 
           {/* Provider info */}
           <div className='flex flex-col gap-1'>
-            <p className='text-xs text-gray-600'>Recorded by:</p>
+            <p className='text-xs text-gray-600'>{record.type === 'finding' ? 'Recorded' : 'Evaluated'} by:</p>
 
             {/* Provider name */}
             <div className='flex gap-1.5 items-center'>
-              <UserIcon className='w-4 h-4 text-indigo-700' />
-              <p className='text-sm font-medium text-gray-900'>
-                {employeeDisplay(finding.provider).display_name}
-              </p>
+              {record.provider
+                ? (
+                  <>
+                    <UserIcon className='w-4 h-4 text-indigo-700' />
+                    <p className='text-sm font-medium text-gray-900'>
+                      {employeeDisplay(record.provider).display_name}
+                    </p>
+                  </>
+                )
+                : (
+                  <>
+                    <CpuChipIcon className='w-4 h-4 text-indigo-700' />
+                    <p className='text-sm font-medium text-gray-900'>
+                      System
+                    </p>
+                  </>
+                )}
             </div>
 
             {/* Procedure context */}
-            {finding.as_part_of_procedure && (
+            {record.as_part_of_procedure && (
               <div className='flex gap-1.5 items-center'>
                 <div className='w-4 h-4'>
                   <svg
@@ -81,35 +95,37 @@ export function FindingPanel(
                   </svg>
                 </div>
                 <p className='text-sm font-medium text-gray-900'>
-                  during {finding.as_part_of_procedure.specific_snomed_concept_name}
+                  during {record.as_part_of_procedure.specific_snomed_concept_name}
                 </p>
               </div>
             )}
 
             {/* Organization */}
-            <div className='flex gap-1.5 items-center'>
-              <BuildingOffice2Icon className='w-4 h-4 text-indigo-700' />
-              <p className='text-sm font-medium text-gray-900'>
-                at {organizationOf(finding.provider).name}
-              </p>
-            </div>
+            {record.provider && (
+              <div className='flex gap-1.5 items-center'>
+                <BuildingOffice2Icon className='w-4 h-4 text-indigo-700' />
+                <p className='text-sm font-medium text-gray-900'>
+                  at {organizationOf(record.provider).name}
+                </p>
+              </div>
+            )}
 
             {/* Date */}
             <div className='flex gap-1.5 items-center'>
               <CalendarIcon className='w-4 h-4 text-indigo-700' />
               <p className='text-sm font-medium text-gray-900'>
                 <LocalTime
-                  timestamp={finding.created_at}
+                  timestamp={record.created_at}
                   expected_time_range='past'
                 />
               </p>
             </div>
 
             {/* Message */}
-            {!finding.provider.is_me && (
+            {record.provider && !record.provider.is_me && (
               <Button
                 variant='secondary'
-                href={`/app/organizations/${organization_id}/messaging/drafts/${generateUUID()}?targets.employee.${finding.provider.employee_id}=true`}
+                href={`/app/organizations/${organization_id}/messaging/drafts/${generateUUID()}?targets.employee.${record.provider.employee_id}=true`}
                 left_icon={<ChatBubbleLeftIcon className='w-4 h-4 text-indigo-700' />}
               >
                 Message
@@ -146,11 +162,11 @@ export function FindingPanel(
 
           {/* TODO: switch this to a referent findings section */}
           {/* Qualifiers section */}
-          {finding.attributes.length > 0 && (
+          {record.attributes.length > 0 && (
             <>
               <hr className='border-gray-200' />
               <div className='flex flex-col gap-1'>
-                {finding.attributes.map((attribute, idx) => (
+                {record.attributes.map((attribute, idx) => (
                   <div key={idx} className='flex items-center gap-1'>
                     <span className='text-sm text-gray-600'>
                       {attribute.displays.finding}:
@@ -164,11 +180,11 @@ export function FindingPanel(
             </>
           )}
 
-          {finding.evaluations.length > 0 && (
+          {record.evaluations.length > 0 && (
             <>
               <hr className='border-gray-200' />
               <div className='flex flex-col gap-1'>
-                {finding.evaluations.map((evaluation) => (
+                {record.evaluations.map((evaluation) => (
                   <p
                     key={evaluation.id}
                     className='text-sm text-gray-600'
@@ -179,6 +195,28 @@ export function FindingPanel(
                     &nbsp;
                     <span className='text-sm font-medium text-gray-900'>
                       {evaluation.displays.value}
+                    </span>
+                  </p>
+                ))}
+              </div>
+            </>
+          )}
+
+          {record.destination_relations.length > 0 && (
+            <>
+              <hr className='border-gray-200' />
+              <div className='flex flex-col gap-1'>
+                {record.destination_relations.map((destination_relation) => (
+                  <p
+                    key={destination_relation.id}
+                    className='text-sm text-gray-600'
+                  >
+                    <span className='text-sm text-gray-600'>
+                      {destination_relation.displays.full}
+                    </span>
+                    &nbsp;→&nbsp;
+                    <span className='text-sm font-medium text-gray-900'>
+                      {destination_relation.relation_name}
                     </span>
                   </p>
                 ))}

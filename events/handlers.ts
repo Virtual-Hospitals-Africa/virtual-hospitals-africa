@@ -66,6 +66,28 @@ export const EVENTS = {
     }),
     {},
   ),
+  SystemDiagnosisCreated: defineEvent(
+    z.object({
+      patient_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
+      patient_encounter_id: z.string().uuid(),
+      evaluation_id: z.string().uuid(),
+    }),
+    {
+      async insertTasksIfNotAlreadyIdentified(trx, { data }) {
+        await additional_tasks.insertTasksIfNotAlreadyIdentified(
+          trx,
+          {
+            ...data,
+            findings: [{
+              id: data.evaluation_id,
+              existence: 'Yes' as const,
+            }],
+          },
+        )
+      },
+    },
+  ),
   ProcedureCompleted: defineEvent(
     z.object({
       workflow: z.enum(WORKFLOWS),

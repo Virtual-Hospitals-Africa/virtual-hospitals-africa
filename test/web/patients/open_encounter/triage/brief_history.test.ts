@@ -302,7 +302,7 @@ describeParallel('triage/brief_history', () => {
         ])
 
         const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
+          .renderedMostRecentRecords(db, {
             patient_id,
             encounter,
             health_worker_id: nurse.health_worker.id,
@@ -725,7 +725,7 @@ describeParallel('triage/brief_history', () => {
         assertIncludes($.url, triageRoute('height_and_weight'))
 
         const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
+          .renderedMostRecentRecords(db, {
             patient_id,
             encounter,
             health_worker_id: nurse.health_worker.id,
@@ -827,7 +827,7 @@ describeParallel('triage/brief_history', () => {
         })
 
         const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
+          .renderedMostRecentRecords(db, {
             patient_id: initial.patient_id,
             encounter: returning.encounter,
             health_worker_id: other_nurse.health_worker.id,
@@ -936,7 +936,7 @@ describeParallel('triage/brief_history', () => {
         })
 
         const most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
+          .renderedMostRecentRecords(db, {
             patient_id,
             encounter,
             health_worker_id: nurse.health_worker.id,
@@ -1006,7 +1006,7 @@ describeParallel('triage/brief_history', () => {
         })
 
         const prior_to_fix_findings = await brief_history
-          .renderedMostRecentFindings(db, {
+          .renderedMostRecentRecords(db, {
             patient_id: initial.encounter.patient.id,
             encounter: initial.encounter,
             health_worker_id: initial.nurse.health_worker.id,
@@ -1043,7 +1043,7 @@ describeParallel('triage/brief_history', () => {
         })
 
         const initial_most_recent_findings = await brief_history
-          .renderedMostRecentFindings(
+          .renderedMostRecentRecords(
             db,
             {
               patient_id: initial.encounter.patient.id,
@@ -1081,7 +1081,7 @@ describeParallel('triage/brief_history', () => {
         })
 
         const returning_most_recent_findings = await brief_history
-          .renderedMostRecentFindings(db, {
+          .renderedMostRecentRecords(db, {
             patient_id: returning.patient_id,
             encounter: returning.encounter,
             health_worker_id: returning.nurse.health_worker.id,

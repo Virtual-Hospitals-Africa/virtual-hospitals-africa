@@ -1,6 +1,6 @@
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { asText, blankSelection, jsonArrayFrom } from '../helpers.ts'
+import { blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
@@ -37,51 +37,45 @@ export function baseQuery(
       jsonArrayFrom(
         eb.selectFrom('patient_record_relations')
           .innerJoin(
-            'patient_records as relation_records',
+            'patient_records_aggregated as relation_records',
             'relation_records.id',
             'patient_record_relations.id',
+          )
+          .innerJoin(
+            'patient_records_aggregated as destination_records',
+            'destination_records.id',
+            'patient_record_relations.destination_id',
           )
           .whereRef(
             'patient_record_relations.source_id',
             '=',
             'patient_records_aggregated.id',
           )
-          .select((eb_destination) => [
-            'patient_record_relations.destination_id',
-            asText(eb_destination, 'relation_records.root_snomed_concept_id')
-              .as(
-                'root_snomed_concept_id',
-              ),
-            asText(
-              eb_destination,
-              'relation_records.specific_snomed_concept_id',
-            ).as(
-              'specific_snomed_concept_id',
-            ),
-          ]),
+          .selectAll('destination_records')
+          .select('relation_records.specific_snomed_concept_id as relation_snomed_concept_id')
+          .select('relation_records.specific_snomed_concept_name as relation_name'),
       ).as('destination_relations'),
 
       jsonArrayFrom(
         eb.selectFrom('patient_record_relations')
           .innerJoin(
-            'patient_records as relation_records',
+            nonGroupedBaseQuery(trx).as('relation_records'),
             'relation_records.id',
             'patient_record_relations.id',
+          )
+          .innerJoin(
+            'patient_records_aggregated as source_records',
+            'source_records.id',
+            'patient_record_relations.source_id',
           )
           .whereRef(
             'patient_record_relations.destination_id',
             '=',
             'patient_records_aggregated.id',
           )
-          .select((eb_source) => [
-            'patient_record_relations.source_id',
-            asText(eb_source, 'relation_records.root_snomed_concept_id').as(
-              'root_snomed_concept_id',
-            ),
-            asText(eb_source, 'relation_records.specific_snomed_concept_id').as(
-              'specific_snomed_concept_id',
-            ),
-          ]),
+          .selectAll('source_records')
+          .select('relation_records.specific_snomed_concept_id as relation_snomed_concept_id')
+          .select('relation_records.specific_snomed_concept_name as relation_name'),
       ).as('source_relations'),
 
       jsonArrayFrom(
@@ -367,11 +361,7 @@ type PatientRecordsSearch = {
 export const patient_records = base({
   top_level_table: 'patient_records',
   baseQuery,
-  formatResult(x) {
-    const y = formatRecord(x)
-
-    return y
-  },
+  formatResult: formatRecord,
   baseInsert,
   handleSearch(
     qb,

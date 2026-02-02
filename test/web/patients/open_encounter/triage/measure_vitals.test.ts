@@ -905,16 +905,18 @@ describeParallel('triage/measure_vitals', () => {
                 'specific_snomed_concept_category': 'procedure',
                 'value': {
                   'type': 's_expression',
-                  's_expression': '(measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)',
-                  'node': {
-                    'atom': 'measurement',
-                    'snomed_concept': {
-                      'atom': 'snomed_concept',
-                      'name': 'Hemoglobin saturation with oxygen',
-                      'category': 'observable entity',
+                  's_expression': '((measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %))',
+                  'nodes': [
+                    {
+                      'atom': 'measurement',
+                      'snomed_concept': {
+                        'atom': 'snomed_concept',
+                        'name': 'Hemoglobin saturation with oxygen',
+                        'category': 'observable entity',
+                      },
+                      'units': '%',
                     },
-                    'units': '%',
-                  },
+                  ],
                 },
                 'evaluations': [
                   {

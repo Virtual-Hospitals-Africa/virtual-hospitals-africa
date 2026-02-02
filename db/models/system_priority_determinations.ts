@@ -3,7 +3,7 @@ import { pMap } from '../../util/inParallel.ts'
 import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Priority, TrxOrDb } from '../../types.ts'
-import { debugLog, jsonBuildObject, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
+import { jsonBuildObject, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
 import { DUE_TO, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 import { assert } from 'std/assert/assert.ts'
 import { SYSTEM_PRIORITY_DETERMINATIONS } from '../../shared/system_priority_determinations.ts'
@@ -130,9 +130,6 @@ export const system_priority_determinations = {
       (acc, curr) => acc.unionAll(curr),
       first_system_priority_determination,
     )
-
-    console.log('gaaamiop', all_system_priority_determinations_query)
-    debugLog(all_system_priority_determinations_query)
 
     const all_sys = await trx.selectFrom(all_system_priority_determinations_query.as('all_possible_system_priority_determinations'))
       .selectAll('all_possible_system_priority_determinations')

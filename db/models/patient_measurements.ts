@@ -1,5 +1,5 @@
 import { IdSelection, InsertRows, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { arrayAggIds, debugLog, literalString, success_true } from '../helpers.ts'
+import { arrayAggIds, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
 import { base } from './_base.ts'
@@ -128,30 +128,6 @@ export const patient_measurements = base({
       units,
       value,
     }))
-
-    debugLog(
-      baseInsertMany(trx, records)
-        .with(
-          'inserting_findings',
-          (qb) =>
-            qb.insertInto('patient_findings').values(
-              records.map(({ record_id }) => ({
-                id: record_id,
-                procedure_id,
-                patient_encounter_employee_id,
-              })),
-            ),
-        )
-        .with(
-          'inserting_measurements',
-          (qb) => qb.insertInto('patient_measurements').values(measurement_values),
-        )
-        .selectFrom('inserting_records')
-        .select((eb) => [
-          success_true,
-          arrayAggIds(eb.ref('inserting_records.id')).as('measurement_ids'),
-        ]),
-    )
 
     return baseInsertMany(trx, records)
       .with(

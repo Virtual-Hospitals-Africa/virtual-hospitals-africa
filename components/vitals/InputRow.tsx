@@ -2,7 +2,7 @@ import { Maybe, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { Label } from '../../components/library/Label.tsx'
 import { LabelSpan } from '../../islands/form/inputs/labelled.tsx'
-import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
+import { MostRecentRecord } from '../../islands/MostRecentRecord.tsx'
 import { ComponentChildren } from 'preact'
 import cls from '../../util/cls.ts'
 
@@ -42,8 +42,8 @@ export default function VitalsInputRow(
         >
           {input}
         </div>
-        <MostRecentFinding
-          finding={most_recent_patient_finding}
+        <MostRecentRecord
+          record={most_recent_patient_finding}
           organization_id={organization_id}
           className='@md:col-start-1 @md:row-start-2'
         />

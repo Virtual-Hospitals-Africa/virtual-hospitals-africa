@@ -3,12 +3,14 @@ import { SelectQueryBuilder, sql } from 'kysely'
 import { DB, Existence } from '../../db.d.ts'
 import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
-import { Atom, isAtom, parseWithSchema } from '../../shared/s_expression.ts'
-import { debugLog, deduplicate } from '../helpers.ts'
+import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
+import { deduplicate } from '../helpers.ts'
 import { any_query, Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
-import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
 import { ATTRIBUTE, EVENT, MEASUREMENT_FINDING, QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 
 type PatientIdentifiers = {
   patient_id: string | IdSelection
@@ -215,7 +217,6 @@ export const satisfyingSExpression = deduplicate(
       }
     }
     const qb = buildExpression(trx, patient, node)
-    debugLog(qb)
     const rows = await qb.execute()
     return {
       record_ids: rows.map((row) => row.id),
@@ -253,6 +254,43 @@ function measurement(
       snomedConceptBase(trx, snomed_concept),
     )
     .where('patient_measurements.units', '=', units)
+}
+
+function evaluation(
+  trx: TrxOrDbOrQueryCreator,
+  { patient_id, patient_encounter_id }: PatientIdentifiers,
+  {
+    root_snomed_concept,
+    specific_snomed_concept,
+    value_snomed_concept,
+    evaluates,
+    qualifiers,
+    /* attributes */
+  }: Lang['evaluation'],
+) {
+  return baseQuery(trx, {
+    patient_id,
+    patient_encounter_id,
+    root_snomed_concept,
+    specific_snomed_concept,
+    value_snomed_concept,
+    qualifiers,
+  })
+    .innerJoin(
+      'patient_evaluations',
+      'patient_records_aggregated.id',
+      'patient_evaluations.id',
+    )
+    .$if(!!evaluates, (qb) =>
+      qb.where(
+        'patient_evaluations.evaluates_record_id',
+        'in',
+        buildExpression(
+          trx,
+          { patient_id, patient_encounter_id },
+          evaluates!.expression,
+        ),
+      ))
 }
 
 export const EXPRESSION_BUILDERS = {
@@ -301,7 +339,7 @@ export const EXPRESSION_BUILDERS = {
       value,
     },
   ) {
-    return baseQuery(trx, {
+    let qb = baseQuery(trx, {
       patient_id,
       patient_encounter_id,
       // root_snomed_concept,
@@ -313,71 +351,34 @@ export const EXPRESSION_BUILDERS = {
         'patient_records_aggregated.id',
         'patient_procedures.id',
       )
-      .$if(
-        !!value?.atom && value?.atom !== 'link',
-        (qb) =>
-          qb.innerJoin(
-            'patient_record_s_expressions',
-            'patient_record_s_expressions.id',
-            'patient_records_aggregated.id',
-          )
-            .where(
-              'patient_record_s_expressions.s_expression',
-              '=',
-              inverseSExpression(value!),
-            ),
-      )
-      .$if(
-        value?.atom === 'link',
-        (qb) =>
-          qb.innerJoin(
-            'patient_record_links',
-            'patient_record_links.id',
-            'patient_records_aggregated.id',
-          )
-            .where(
-              'patient_record_links.href',
-              '=',
-              (value as Lang['link']).href,
-            ),
-      )
-  },
-  evaluation(
-    trx,
-    { patient_id, patient_encounter_id },
-    {
-      root_snomed_concept,
-      specific_snomed_concept,
-      value_snomed_concept,
-      evaluates,
-      qualifiers,
-      /* attributes */
-    },
-  ) {
-    return baseQuery(trx, {
-      patient_id,
-      patient_encounter_id,
-      root_snomed_concept,
-      specific_snomed_concept,
-      value_snomed_concept,
-      qualifiers,
-    })
-      .innerJoin(
-        'patient_evaluations',
+
+    if (isObjectLike(value) && value.atom === 'link') {
+      qb = qb.innerJoin(
+        'patient_record_links',
+        'patient_record_links.id',
         'patient_records_aggregated.id',
-        'patient_evaluations.id',
       )
-      .$if(!!evaluates, (qb) =>
-        qb.where(
-          'patient_evaluations.evaluates_record_id',
-          'in',
-          buildExpression(
-            trx,
-            { patient_id, patient_encounter_id },
-            evaluates!.expression,
-          ),
-        ))
+        .where(
+          'patient_record_links.href',
+          '=',
+          value.href,
+        )
+    }
+    if (Array.isArray(value)) {
+      qb = qb.innerJoin(
+        'patient_record_s_expressions',
+        'patient_record_s_expressions.id',
+        'patient_records_aggregated.id',
+      )
+        .where(
+          'patient_record_s_expressions.s_expression',
+          '=',
+          inverseSExpressions(value),
+        )
+    }
+    return qb
   },
+  evaluation,
   qualifier(
     trx,
     { patient_id, patient_encounter_id },
@@ -483,6 +484,9 @@ export const EXPRESSION_BUILDERS = {
           )),
       )
   },
+  diagnosis(trx, patient, diagnosis) {
+    return evaluation(trx, patient, diagnosisToEvaluation(diagnosis))
+  },
   measurement,
   // TODO: this is not quite right as this would pull historical findings
   active_condition(trx, { patient_id }, { snomed_concept }) {
@@ -549,8 +553,30 @@ export const EXPRESSION_BUILDERS = {
       .where('patient_measurements.comparator', '=', '=')
       .where('patient_measurements.value', '=', String(right))
   },
+  any2(trx, patient, { expressions }) {
+    return baseQuery(trx, patient)
+      .where((eb) => {
+        // Create a CASE expression for each input expression that evaluates to 1 if true, 0 if false
+        const conditions = expressions.map((expression) =>
+          eb.case()
+            .when(
+              eb(
+                'patient_records_aggregated.id',
+                'in',
+                buildExpression(trx, patient, expression),
+              ),
+            )
+            .then(1)
+            .else(0)
+            .end()
+        )
+
+        // Sum all the boolean-to-int conversions and check if >= 2
+        return sql<boolean>`(${sql.join(conditions, sql` + `)}) >= 2`
+      })
+  },
 } satisfies {
-  [T in Atom]?: (
+  [T in QueryableNode['atom']]: (
     trx: TrxOrDbOrQueryCreator,
     patient: PatientIdentifiers,
     node: QueryableNode & { atom: T },
