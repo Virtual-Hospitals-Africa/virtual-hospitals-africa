@@ -120,7 +120,7 @@ function TaskGroupCard({
         <div class='flex flex-col gap-1'>
           <p class='text-sm leading-5'>
             <span class='font-semibold text-gray-600'>
-              {'Due to: '}
+              {'Due to '}
             </span>
             {group.due_to.map((record) => (
               <MostRecentRecord
