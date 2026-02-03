@@ -4,7 +4,6 @@ import {
   RecordDisplays,
   RecordValue,
   RecordValueLink,
-  RecordValueSExpression,
   RenderedAttribute,
   RenderedEvaluation,
   RenderedRecordRelativeToHealthWorkerDef,
@@ -20,15 +19,22 @@ import omit from '../util/omit.ts'
 import assertOneOf from '../util/assertOneOf.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
-import { investigation, Lang, procedure_check_for } from './s_expression_schemas.ts'
-import { parseArrayWithSchema } from './s_expression.ts'
+import { Lang } from './s_expression_schemas.ts'
 import capitalize from '../util/capitalize.ts'
 import isString from '../util/isString.ts'
 import { MEASUREMENT_FINDING } from './snomed_concepts.ts'
 import { SnomedCategory } from '../db.d.ts'
+import last from '../util/last.ts'
+import words from '../util/words.ts'
+import { exists } from '../util/exists.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
+}
+
+type FormattableRecord = DisplayableRecord & {
+  evaluations: DisplayableRecord[]
+  destination_relations: Array<DisplayableRecord & { relation_name: string }>
 }
 
 type WithProperRecordValue<DR extends DisplayableRecord> = Omit<DR, 'value'> & {
@@ -84,7 +90,7 @@ function toRenderedSnomedConcept(
 
 function qualifierToDisplayableRecord(
   qualifier: Lang['qualifier'],
-): WithProperRecordValue<DisplayableRecord> {
+): DisplayableRecord {
   return {
     id: '',
     created_at: '',
@@ -100,9 +106,35 @@ function qualifierToDisplayableRecord(
   }
 }
 
+function attributeToDisplayableRecord(
+  attribute: Lang['attribute'],
+): DisplayableRecord {
+  return {
+    id: '',
+    created_at: '',
+    patient_encounter_id: '',
+    root_snomed_concept_id: '',
+    root_snomed_concept_name: 'Attribute',
+    root_snomed_concept_category: 'attribute' as const,
+    specific_snomed_concept_id: '',
+    specific_snomed_concept_name: attribute.specific_snomed_concept.name,
+    specific_snomed_concept_category: attribute.specific_snomed_concept.category,
+    value: attribute.value.atom === 'snomed_concept'
+      ? {
+        type: 'snomed_concept',
+        ...toRenderedSnomedConcept(attribute.value),
+      }
+      : {
+        type: 'event',
+        datetime: attribute.value.datetime,
+        // location: attribute.value.location,
+      },
+  }
+}
+
 function findingToDisplayableRecord(
   finding: Lang['finding'],
-): WithProperRecordValue<DisplayableRecord> {
+): FormattableRecord {
   assert(finding.root_snomed_concept, 'Expected root_snomed_concept')
   assert(finding.specific_snomed_concept, 'Expected specific_snomed_concept')
 
@@ -122,13 +154,18 @@ function findingToDisplayableRecord(
         ...toRenderedSnomedConcept(finding.value_snomed_concept),
       }
       : null,
-    qualifiers: finding.qualifiers.map(qualifierToDisplayableRecord),
+    qualifiers: [
+      ...finding.qualifiers.map(qualifierToDisplayableRecord),
+      ...finding.attributes.map(attributeToDisplayableRecord),
+    ],
+    evaluations: [],
+    destination_relations: [],
   }
 }
 
 function measurementToDisplayableRecord(
   measurement: Lang['measurement'],
-): WithProperRecordValue<DisplayableRecord> {
+): FormattableRecord {
   return {
     id: '',
     created_at: '',
@@ -141,10 +178,12 @@ function measurementToDisplayableRecord(
     specific_snomed_concept_category: measurement.snomed_concept.category,
     value: null,
     qualifiers: [],
+    evaluations: [],
+    destination_relations: [],
   }
 }
 
-function toDisplayableRecord(node: Lang['measurement' | 'finding']): WithProperRecordValue<DisplayableRecord> {
+export function toDisplayableRecord(node: Lang['measurement' | 'finding']): FormattableRecord {
   switch (node.atom) {
     case 'finding':
       return findingToDisplayableRecord(node)
@@ -161,7 +200,7 @@ function snomedConceptDisplay(name: string): string {
 
 function valueDisplay(
   value: Exclude<NonNullable<WithProperRecordValue<DisplayableRecord>['value']>, string>,
-): string | RecordValueLink {
+): null | string | RecordValueLink {
   switch (value.type) {
     case 'event':
       return formatEventDatetime(value.datetime)
@@ -171,11 +210,11 @@ function valueDisplay(
       return measurementValueDisplay(value)
     case 'score':
       return value.score
-    case 's_expression': {
-      return value.nodes.map((node) => node.displays.full).join('; ')
-    }
     case 'link': {
       return value
+    }
+    case 's_expression': {
+      return null
     }
     default: {
       throw new Error(`Unexpected type in ${humanReadableJson(value)}`)
@@ -201,16 +240,21 @@ function includeRootSnomedConceptName(
   }
 }
 
-// In English, certain words connect things at the end
-function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
-  if (!qualifier) return false
-  switch (qualifier.specific_snomed_concept_name) {
-    case 'For':
-    case 'With':
+function isConnectingWord(word: string): boolean {
+  switch (word.toLowerCase()) {
+    case 'to':
+    case 'for':
+    case 'with':
       return true
     default:
       return false
   }
+}
+
+// In English, certain words connect things at the end
+function qualifierIsPostfix(qualifier: Maybe<DisplayableRecord>): boolean {
+  if (!qualifier) return false
+  return isConnectingWord(qualifier.specific_snomed_concept_name)
 }
 
 function massageSpecificConceptDisplay(record: DisplayableRecord): string | null {
@@ -226,11 +270,12 @@ function massageSpecificConceptDisplay(record: DisplayableRecord): string | null
 }
 
 function buildDisplays(
-  record: WithProperRecordValue<DisplayableRecord>,
+  record: WithProperRecordValue<DisplayableRecord> & {
+    attributes?: Array<WithProperRecordValue<DisplayableRecord> & { displays: RecordDisplays }>
+  },
   postfix?: boolean,
 ): RecordDisplays {
   const {
-    value,
     qualifiers = [],
   } = record
 
@@ -241,20 +286,32 @@ function buildDisplays(
       `Expected only prefixes (without value) saw ${humanReadableJson(qualifier)}`,
     )
   }
-  const use_postfix = postfix || qualifierIsPostfix(qualifiers[0])
 
-  const qualifier_displays = qualifiers.map((prefix) => buildDisplays(addNodesIfValueIsSExpression(prefix), use_postfix).full)
+  const finding_sites = (record.attributes || [])
+    .filter((attribute) => attribute.specific_snomed_concept_name === 'Finding site')
+    .map((finding_site) => `(${exists(finding_site.displays.value)})`)
+
+  const qualifier_is_postfix = postfix || qualifierIsPostfix(qualifiers[0])
+
+  const qualifier_displays = qualifiers.map((prefix) => buildDisplays(prefix, qualifier_is_postfix).full)
 
   const specific_concept_display = massageSpecificConceptDisplay(record)
   const specific_concept_display_capitalized = specific_concept_display && capitalize(specific_concept_display, { just_first: true })
 
-  const maybe_root_concept_name = includeRootSnomedConceptName(record) && record.root_snomed_concept_name
+  const maybe_root_concept_name = includeRootSnomedConceptName(record) ? snomedConceptDisplay(record.root_snomed_concept_name) : null
+  const root_concept_first = maybe_root_concept_name && isConnectingWord(last(words(maybe_root_concept_name))!)
 
-  const finding_displays = compact([specific_concept_display_capitalized, maybe_root_concept_name])
+  const finding_displays = compact(
+    root_concept_first ? [maybe_root_concept_name, specific_concept_display_capitalized] : [specific_concept_display_capitalized, maybe_root_concept_name],
+  )
 
-  const finding_displays_qualified = use_postfix ? [...finding_displays, ...qualifier_displays] : [...qualifier_displays, ...finding_displays]
+  const finding_displays_qualified = qualifier_is_postfix
+    ? [...finding_displays, ...qualifier_displays, ...finding_sites]
+    : [...qualifier_displays, ...finding_displays, ...finding_sites]
 
   const finding_display = finding_displays_qualified.join(' ')
+
+  const value = record.value ? valueDisplay(record.value) : null
 
   if (!value) {
     return {
@@ -264,12 +321,10 @@ function buildDisplays(
     }
   }
 
-  const value_display = valueDisplay(value)
-
   return {
     finding: finding_display,
-    value: value_display,
-    full: `${finding_display}: ${isString(value_display) ? value_display : value_display.title}`,
+    value,
+    full: `${finding_display}: ${isString(value) ? value : value.title}`,
   }
 }
 
@@ -289,26 +344,8 @@ function addDisplay<DR extends WithProperRecordValue<DisplayableRecord>>(
   }
 }
 
-// Little hacky. Maybe we put this in the database
-function addNodesIfValueIsSExpression<DR extends DisplayableRecord>(record: DR): WithProperRecordValue<DR> {
-  if (record.value?.type !== 's_expression') return record
-  const value: RecordValueSExpression = {
-    ...record.value,
-    // TODO: the back and forth is a little silly
-    nodes: parseArrayWithSchema(record.value.s_expression, investigation).map((node) => ({
-      ...node,
-      s_expression: inverseSExpression(node),
-      displays: buildDisplays(toDisplayableRecord(node)),
-    })),
-  }
-  return { ...record, value }
-}
-
 export function formatRecord<
-  DR extends DisplayableRecord & {
-    evaluations: DisplayableRecord[]
-    destination_relations: Array<DisplayableRecord & { relation_name: string }>
-  },
+  DR extends FormattableRecord,
 >(record: DR): Omit<WithProperRecordValue<DR>, 'qualifiers'> & {
   displays: RecordDisplays
   modifiers: IntermediateBaseRecord[]
@@ -327,7 +364,7 @@ export function formatRecord<
     (qualifier) => qualifier.root_snomed_concept_name === 'Qualifier value',
   )
 
-  const attributes = unformatted_attributes.map(addNodesIfValueIsSExpression).map(addDisplay)
+  const attributes = unformatted_attributes.map(addDisplay)
   assertAll(attributes, (attribute): asserts attribute is RenderedAttribute => {
     if (attribute.value) {
       assertOneOf(attribute.value.type, [
@@ -337,14 +374,14 @@ export function formatRecord<
     }
   })
 
-  const evaluations = record.evaluations.map(addNodesIfValueIsSExpression).map(addDisplay)
-  const destination_relations = record.destination_relations.map(addNodesIfValueIsSExpression).map(addDisplay).map((destination_relation) => ({
+  const evaluations = record.evaluations.map(addDisplay)
+  const destination_relations = record.destination_relations.map(addDisplay).map((destination_relation) => ({
     ...destination_relation,
     relation_name: snomedConceptDisplay(destination_relation.relation_name),
   }))
 
   return {
-    ...addDisplay({ ...addNodesIfValueIsSExpression(record), qualifiers: modifiers }),
+    ...addDisplay({ ...record, qualifiers: modifiers, attributes }),
     modifiers,
     attributes,
     evaluations,
@@ -457,7 +494,8 @@ export function asNormalFormSExpression<Rest>(
         }
       }
       case 'procedure': {
-        const value = !record.value ? null : record.value.type === 's_expression' ? parseArrayWithSchema(record.value.s_expression, procedure_check_for) : (
+        assert(record.value?.type !== 's_expression', 'Revisit this whole idea')
+        const value = !record.value ? null : (
           assert(record.value.type === 'link'), {
             atom: 'link' as const,
             ...record.value,

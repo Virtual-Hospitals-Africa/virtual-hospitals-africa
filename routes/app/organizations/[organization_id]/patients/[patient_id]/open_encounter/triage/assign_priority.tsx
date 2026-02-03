@@ -11,7 +11,7 @@ import {
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
-import { RenderedFindingRelativeToHealthWorker, TriageAssignPriorityTableRow } from '../../../../../../../../types.ts'
+import { RenderedEvaluationRelativeToHealthWorker, RenderedFindingRelativeToHealthWorker, TriageAssignPriorityTableRow } from '../../../../../../../../types.ts'
 import { TriageAssignPriorityTable } from '../../../../../../../../components/triage/AssignPriorityTable.tsx'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -28,6 +28,14 @@ import { patient_evaluation_scores } from '../../../../../../../../db/models/pat
 import { intersection } from '../../../../../../../../util/intersection.ts'
 import { patient_procedures } from '../../../../../../../../db/models/patient_procedures.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../../../../../../../shared/workflow.ts'
+import { patient_evaluations } from '../../../../../../../../db/models/patient_evaluations.ts'
+import { DIAGNOSIS } from '../../../../../../../../shared/snomed_concepts.ts'
+import { sql } from 'kysely'
+import { formatRecord } from '../../../../../../../../shared/patient_records.ts'
+import { events } from '../../../../../../../../db/models/events.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
+import sumBy from '../../../../../../../../util/sumBy.ts'
 
 const TriageAssignPrioritySchema = z.object({})
 
@@ -71,6 +79,42 @@ async function findingsFromWarningSignsOrAdditionalTasksAndInvestigations(
 
   return patient_record_providers.hydrateIntermediateRecords(trx, {
     records: findings,
+    health_worker_id,
+    encounter,
+  })
+}
+
+async function getDiagnoses(
+  {
+    state: {
+      trx,
+      encounter,
+      patient_id,
+      patient_encounter_id,
+      health_worker_id,
+    },
+  }: OpenEncounterWorkflowContext,
+): Promise<RenderedEvaluationRelativeToHealthWorker[]> {
+  const diagnoses = await trx.with('ranked_diagnoses', () =>
+    patient_evaluations.searchQuery(
+      trx,
+      {
+        patient_id,
+        patient_encounter_id,
+        root_snomed_concept_id: DIAGNOSIS.id,
+      },
+    )
+      .select(
+        sql`ROW_NUMBER() OVER (PARTITION BY patient_records_aggregated.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
+          .as('rank'),
+      ))
+    .selectFrom('ranked_diagnoses')
+    .where('ranked_diagnoses.rank', '=', 1)
+    .selectAll('ranked_diagnoses')
+    .execute()
+
+  return patient_record_providers.hydrateIntermediateRecords(trx, {
+    records: diagnoses.map(formatRecord),
     health_worker_id,
     encounter,
   })
@@ -219,28 +263,55 @@ export async function TriageAssignPriorityPage(
     attempting_to_complete_workflow: false,
   })
 
+  await events.allProcessedForEncounter(ctx.state.trx, { patient_encounter_id: ctx.state.patient_encounter_id })
+
   const priority = exists(ctx.state.encounter.priority).name
 
-  const { vitals, total_score, with_triage_level_findings } = await promiseProps({
+  const { vitals, total_score, diagnoses, with_triage_level_findings } = await promiseProps({
     vitals: sortedVitals(ctx),
     total_score: totalScore(ctx),
-    with_triage_level_findings: findingsFromWarningSignsOrAdditionalTasksAndInvestigations(ctx),
+    diagnoses: getDiagnoses(ctx).then((diagnoses) =>
+      diagnoses.map((diagnosis) => ({
+        type: 'chief complaint/warning sign' as const,
+        previous: null,
+        finding: diagnosis,
+      }))
+    ),
+    with_triage_level_findings: findingsFromWarningSignsOrAdditionalTasksAndInvestigations(ctx)
+      .then((findings) =>
+        findings.map((finding) => ({
+          type: 'chief complaint/warning sign' as const,
+          previous: null, // TODO populate this from last encounter
+          finding,
+        }))
+      ),
   })
 
   // TODO: need this back on
-  // assertEquals(
-  //   total_score.score,
-  //   sumBy(vitals, (vital) => vital.finding.score || 0),
-  // )
-  // assert(
-  //   ORDERED_PRIORITIES.indexOf(priority) <=
-  //     ORDERED_PRIORITIES.indexOf(total_score.priority),
-  // )
+  assertEquals(
+    total_score.score,
+    sumBy(vitals, (vital) => ('score' in vital.finding && vital.finding.score) || 0),
+  )
+  assert(
+    ORDERED_PRIORITIES.indexOf(priority) <=
+      ORDERED_PRIORITIES.indexOf(total_score.priority),
+  )
+
+  const [warning_signs, additional_tasks] = partition(
+    with_triage_level_findings,
+    ({ finding }) => finding.as_part_of_procedure.workflow_step_name === 'warning_signs',
+  )
+
+  const rows: TriageAssignPriorityTableRow[] = [
+    ...diagnoses,
+    ...warning_signs,
+    ...vitals,
+    ...additional_tasks,
+  ]
 
   return (
     <TriageAssignPriorityTable
-      with_triage_level_findings={with_triage_level_findings}
-      vitals={vitals}
+      rows={rows}
       priority={priority}
       total_score={total_score.score}
     />

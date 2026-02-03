@@ -1,9 +1,8 @@
+import { assert } from 'std/assert/assert.ts'
 import { PROCEDURE, REFERENCE_DOCUMENTATION } from './snomed_concepts.ts'
 import { parseWithSchema } from './s_expression.ts'
-import { RecordValueSExpression, RecordValueSExpressionNode, RenderedTask } from '../types.ts'
 import entries from '../util/entries.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED } from './adult_pac_table_of_contents_to_snomed.ts'
-import { assert } from 'std/assert/assert.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from './pack-adult.ts'
 import { task } from './s_expression_schemas.ts'
 import { NTASKS } from '../s_expression/ntasks.ts'
@@ -11,19 +10,6 @@ import { NTASKS } from '../s_expression/ntasks.ts'
 function asTask(task_s_expression: string) {
   return parseWithSchema(task_s_expression, task)
 }
-/*
-// Triage nurse has permission.
-  check_for finding              Yes
-  do measurement                 Most of the time
-  suspected diagnosis            Sometimes
-  make diagnosis                 Generally no
-  administer medication          Depends
-*/
-
-/*
-  The tasks must be done even if the triage nurse can't do them.
-  In fact, this is the _reason_ for transfer
-*/
 
 const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED).flatMap(([table_of_contents_name, snomed_mapping]) => {
   const page_number = ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS[table_of_contents_name as unknown as keyof typeof ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS]
@@ -52,19 +38,20 @@ export const TASK_DEFS = [
 ]
 
 export const TASKS = TASK_DEFS.map(asTask)
-
-export function isNotJustDoIt(task: RenderedTask): task is RenderedTask & { procedure: { value: RecordValueSExpression } } {
-  return task.procedure.value?.type === 's_expression'
-}
-
-export function isCheckFor(node: RecordValueSExpressionNode): node is RecordValueSExpressionNode & { atom: 'finding' } {
-  return node.atom === 'finding'
-}
-
-export function isMeasure(node: RecordValueSExpressionNode): node is RecordValueSExpressionNode & { atom: 'measurement' } {
-  return node.atom === 'measurement'
-}
+/*
+// Triage nurse has permission.
+  check_for finding              Yes
+  do measurement                 Most of the time
+  suspected diagnosis            Sometimes
+  make diagnosis                 Generally no
+  administer medication          Depends
+*/
 
 // TODO Separate function for permission around tasks
 // That is, put the task in for analgesia, but there's separate logic to
 // say who has permissions to prescribe what
+
+/*
+  The tasks must be done even if the triage nurse can't do them.
+  In fact, this is the _reason_ for transfer
+*/

@@ -19,7 +19,7 @@ import { promiseProps } from '../util/promiseProps.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { WORKFLOWS } from '../shared/workflow.ts'
 import { additional_tasks } from '../db/models/additional_tasks.ts'
-import { system_priority_determinations } from '../db/models/system_priority_determinations.ts'
+import { system_priority_evaluations } from '../db/models/system_priority_evaluations.ts'
 import { patient_evaluation_scores } from '../db/models/patient_evaluation_scores.ts'
 import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, SEVERITY_SCORE } from '../shared/snomed_concepts.ts'
@@ -79,7 +79,7 @@ export const EVENTS = {
           trx,
           {
             ...data,
-            findings: [{
+            records: [{
               id: data.evaluation_id,
               existence: 'Yes' as const,
             }],
@@ -96,9 +96,9 @@ export const EVENTS = {
       patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
       patient_encounter_id: z.string().uuid(),
       procedure_id: z.string().uuid(),
-      findings: z.object({
+      records: z.object({
         id: z.string().uuid(),
-        existence: z.enum(['Yes', 'No']),
+        existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
     }),
     {
@@ -139,12 +139,12 @@ export const EVENTS = {
           patient_encounter_id,
           procedure_id,
           by_system: true,
-          evaluates_record_id: score_evaluation.evaluation_id,
+          evaluates_record_ids: [score_evaluation.evaluation_id],
           triage_level: triageLevelFromTEWSTotal(total_score, patient_age_determination),
         })
       },
-      async insertSystemPriorityDeterminationsIfNotAlreadyIdentified(trx, payload) {
-        await system_priority_determinations.insertSystemPriorityDeterminationsIfNotAlreadyIdentified(
+      async insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, payload) {
+        await system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
           trx,
           payload.data,
         )

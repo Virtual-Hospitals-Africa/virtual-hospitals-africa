@@ -880,7 +880,7 @@ describeParallel('triage/warning_signs', () => {
           })
 
           const tasks = task_groups.flatMap((group) => group.tasks)
-          const medical_guidance_task = tasks.some((task) => task.procedure.value?.type === 'link')
+          const medical_guidance_task = tasks.some((task) => task.atom === 'link')
 
           const no_guidance_expected = new Set([
             'Obstructed airway',

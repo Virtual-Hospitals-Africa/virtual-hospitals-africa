@@ -154,3 +154,5 @@ export const snomed_category: z.ZodEnum<
 ])
 
 export const diagnosis_certainty = z.enum(['definite', 'probable', 'equivocal', 'possible', 'improbable'])
+
+export const priority = z.enum(['definite', 'probable', 'equivocal', 'possible', 'improbable'])

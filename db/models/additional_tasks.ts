@@ -1,22 +1,21 @@
 import { TASKS } from '../../shared/tasks.ts'
 import { pMap } from '../../util/inParallel.ts'
-import { patient_procedures } from './patient_procedures.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 
 import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
 import {
   AgeDetermination,
+  RecordValueMeasurement,
   RenderedEvaluationRelativeToHealthWorker,
+  RenderedFindingRelativeToHealthWorker,
   RenderedPatientEncounter,
-  RenderedProcedureRelativeToHealthWorker,
   RenderedTask,
-  RenderedTaskProcedureValue,
   TaskGroup,
   TrxOrDb,
 } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -25,36 +24,39 @@ import matching from '../../util/matching.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
 
-import { ACTION_STATUS, DUE_TO, EVALUATION_ACTION, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
+import { ACTION_STATUS, DUE_TO, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
 import zip from '../../util/zip.ts'
 
 import { assert } from 'std/assert/assert.ts'
-import sortBy from '../../util/sortBy.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { asNormalFormSExpression } from '../../shared/patient_records.ts'
+import { formatRecord, toDisplayableRecord } from '../../shared/patient_records.ts'
 import { patient_findings } from './patient_findings.ts'
+import { parseWithSchema } from '../../shared/s_expression.ts'
+import { investigation, Lang } from '../../shared/s_expression_schemas.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import compactMap from '../../util/compactMap.ts'
 
 export const additional_tasks = {
   async insertTasksIfNotAlreadyIdentified(
     trx: TrxOrDb,
-    { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ findings }: {
+    { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records: findings }: {
       patient_id: string
       patient_encounter_id: string
       // procedure_id: string
       patient_age_determination: AgeDetermination | null
-      findings: {
+      records: {
         id: string
-        existence: 'Yes' | 'No'
+        existence: 'Yes' | 'No' | 'Unknown'
       }[]
     },
   ) {
     if (!patient_age_determination) return
 
     // TODO, maybe handle negative findings? There could be tasks that call for them
-    const positive_finding_ids = findings
+    const positive_record_ids = findings
       .filter((f) => f.existence === 'Yes')
       .map((f) => f.id)
-    if (!positive_finding_ids.length) return
+    if (!positive_record_ids.length) return
 
     const to_consider = TASKS.filter(
       (task) => task.ages.includes(patient_age_determination),
@@ -75,7 +77,7 @@ export const additional_tasks = {
             ).where(
               'patient_records_aggregated.id',
               'in',
-              positive_finding_ids,
+              positive_record_ids,
             ),
           ).as('matching_finding_ids'),
           buildExpression(
@@ -110,19 +112,6 @@ export const additional_tasks = {
         return null
       }
 
-      const procedure = await patient_procedures
-        .insertOneNested(
-          trx,
-          {
-            patient_id,
-            patient_encounter_id,
-            by_system: true,
-            procedure: task.procedure,
-          },
-        )
-
-      assert(procedure.inserted_new)
-
       const evaluation_id = generateUUID()
       const relations = task_result.matching_finding_ids.map((finding_id) => ({
         id: generateUUID(),
@@ -137,8 +126,11 @@ export const additional_tasks = {
           patient_id,
           patient_encounter_id,
           by_system: true,
-          evaluates_record_id: procedure.procedure_id,
-          evaluation: `(evaluation ${EVALUATION_ACTION.s_expression} ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
+          evaluation: `(evaluation ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
+          value: {
+            type: 's_expression' as const,
+            s_expression: inverseSExpression(task.procedure),
+          },
         },
       ).with(
         'inserting_relation_patient_records',
@@ -165,22 +157,72 @@ export const additional_tasks = {
       encounter: RenderedPatientEncounter
     },
   ): Promise<TaskGroup[]> {
-    const patient_id = encounter.patient.id
+    const { patient, patient_encounter_id } = encounter
+    const patient_id = patient.id
 
     const evaluations = await patient_evaluations.findAll(trx, {
       patient_id,
-      patient_encounter_id: encounter.patient_encounter_id,
-      s_expression: `(evaluation ${EVALUATION_ACTION.s_expression} ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
+      patient_encounter_id,
+      s_expression: `(evaluation ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
     })
 
     if (arrayIsEmpty(evaluations)) {
       return []
     }
 
-    const procedure_ids = evaluations.map((e) => {
-      assert(e.evaluates_record_id)
-      return e.evaluates_record_id
+    const evaluations_with_proto_tasks = evaluations.map((evaluation) => {
+      assert(evaluation.value)
+      assert(evaluation.value.type === 's_expression')
+      const procedure = parseWithSchema(evaluation.value.s_expression, investigation)
+      const tasks: Lang['link' | 'finding' | 'measurement'][] = isObjectLike(procedure.value) ? [procedure.value] : procedure.value
+      return { ...evaluation, tasks }
     })
+
+    const all_finding_s_expressions = new Map(
+      compactMap(evaluations_with_proto_tasks.flatMap((e) => e.tasks), (task) => {
+        if (task.atom === 'finding' || task.atom === 'measurement') {
+          return [inverseSExpression(task), task]
+        }
+      }),
+    )
+    console.log({ evaluations_with_proto_tasks })
+
+    function existingFindings() {
+      if (!all_finding_s_expressions.size) return Promise.resolve([])
+
+      const existing_findings_query = trx.with('all_findings', (qb) => {
+        const [first, ...others] = all_finding_s_expressions.entries().map(([finding_s_expression, node]) =>
+          qb.selectNoFrom([
+            literalString(finding_s_expression).as('finding_s_expression'),
+            buildExpression(
+              trx,
+              { patient_id, patient_encounter_id },
+              node,
+            )
+              .orderBy('patient_records_aggregated.created_at', 'desc')
+              .limit(1)
+              .as('finding_id'),
+          ])
+        )
+
+        return others.reduce(
+          (acc, curr) => acc.unionAll(curr),
+          first,
+        )
+      })
+        .selectFrom('all_findings')
+        .innerJoin(
+          patient_findings.baseQuery(trx).as('join_against'),
+          'join_against.id',
+          'all_findings.finding_id',
+        )
+        .select('all_findings.finding_s_expression')
+        .selectAll('join_against')
+
+      debugLog(existing_findings_query)
+
+      return existing_findings_query.execute()
+    }
 
     const due_to_record_ids = evaluations.map((evaluation) => {
       assertLength(evaluation.destination_relations, 1)
@@ -191,10 +233,17 @@ export const additional_tasks = {
       return evaluation.destination_relations[0].id
     })
 
-    const { procedures, due_to_findings, due_to_evaluations } = await promiseProps({
-      procedures: patient_procedures.getByIds(trx, procedure_ids).then((procedures) =>
+    const { /* procedures,*/ existing_findings, due_to_findings, due_to_evaluations } = await promiseProps({
+      // procedures: patient_procedures.getByIds(trx, procedure_ids).then((procedures) =>
+      //   patient_record_providers.hydrateIntermediateRecords(trx, {
+      //     records: procedures,
+      //     encounter,
+      //     health_worker_id,
+      //   })
+      // ),
+      existing_findings: existingFindings().then((findings) =>
         patient_record_providers.hydrateIntermediateRecords(trx, {
-          records: procedures,
+          records: findings.map(formatRecord),
           encounter,
           health_worker_id,
         })
@@ -216,7 +265,7 @@ export const additional_tasks = {
     })
 
     const task_group_map = groupBy(
-      evaluations,
+      evaluations_with_proto_tasks,
       (evaluation) => evaluation.destination_relations[0].id,
     )
 
@@ -225,33 +274,51 @@ export const additional_tasks = {
         due_to_findings.find(matching({ id: record_id })) ||
           due_to_evaluations.find(matching({ id: record_id })),
       )
-      const tasks_unsorted: RenderedTask[] = evaluations.map((evaluation) => {
-        const procedure = exists(
-          procedures.find(
-            matching({ id: evaluation.evaluates_record_id }),
-          ),
-        )
-        assert(isCheckForProcedure(procedure))
+      const tasks: RenderedTask[] = evaluations
+        .flatMap((evaluation) => evaluation.tasks)
+        .map((task): RenderedTask => {
+          if (task.atom === 'link') {
+            return task
+          }
+          const { displays } = formatRecord(toDisplayableRecord(task))
 
-        // TODO consider completed and also go grab past findings which may indeed be done
-        return {
-          procedure,
-          completed: false,
-        }
-      })
+          const finding_s_expression = inverseSExpression(task)
+          const existing_finding: null | RenderedFindingRelativeToHealthWorker = existing_findings.find(matching({ finding_s_expression })) || null
 
-      // TODO: also compare findings in case there are 2 ways of getting to the same procedure
-      const tasks = sortBy(
-        tasks_unsorted,
-        (task) => TASKS.findIndex((task_def) => inverseSExpression(task_def.procedure) === asNormalFormSExpression(task.procedure)),
-      )
+          if (task.atom === 'finding') {
+            return {
+              ...task,
+              s_expression: finding_s_expression,
+              displays,
+              existing_finding,
+            }
+          }
+
+          assert(task.atom === 'measurement')
+          if (!existing_finding) {
+            return {
+              ...task,
+              s_expression: finding_s_expression,
+              displays,
+              existing_measurement: null,
+            }
+          }
+
+          assert(isMeasurement(existing_finding))
+
+          return {
+            ...task,
+            s_expression: finding_s_expression,
+            displays,
+            existing_measurement: existing_finding,
+          }
+        })
+
       return { due_to: [due_to], tasks }
     }).toArray()
   },
 }
 
-function isCheckForProcedure(procedure: RenderedProcedureRelativeToHealthWorker): procedure is RenderedProcedureRelativeToHealthWorker & {
-  value: RenderedTaskProcedureValue
-} {
-  return !procedure.value || procedure.value.type === 's_expression' || procedure.value.type === 'link'
+function isMeasurement(finding: RenderedFindingRelativeToHealthWorker): finding is RenderedFindingRelativeToHealthWorker & { value: RecordValueMeasurement } {
+  return finding.value?.type === 'measurement'
 }

@@ -11,7 +11,7 @@ import { positive_decimal, snomed_concept_id } from '../util/validators.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { Values } from '../types.ts'
 import { wrapError } from '../util/wrapError.ts'
-import { isTriageLevel } from './priorities.ts'
+
 import { safeParseWithValues } from '../util/assertMatches.ts'
 import { humanReadableJson } from '../util/humanReadableJson.ts'
 import isKeyOf from '../util/isKeyOf.ts'
@@ -176,19 +176,6 @@ export function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, st
       return item
     }
     if (atom === 'diagnosis' && index === 1) {
-      return item
-    }
-    if (atom === 'system_diagnosis_rule' && index === 1) {
-      return item
-    }
-    if (atom === 'task' && index === 1) {
-      return item
-    }
-    if (atom === 'ages') {
-      return item
-    }
-    if (atom === 'system_priority_determination' && index === 2) {
-      assert(isTriageLevel(item))
       return item
     }
     if (isString(item)) return `"${item}"`

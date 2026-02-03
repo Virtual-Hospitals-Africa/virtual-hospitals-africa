@@ -5,7 +5,7 @@ import { success_true } from '../helpers.ts'
 import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
 import { base } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
-import { EVALUATION_ACTION, PRIORITY } from '../../shared/snomed_concepts.ts'
+import { DUE_TO, EVALUATION_ACTION, PRIORITY, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 
 function insertLevel(
   trx: TrxOrDb,
@@ -15,7 +15,7 @@ function insertLevel(
     employment_id,
     by_system = false,
     procedure_id,
-    evaluates_record_id,
+    evaluates_record_ids,
     triage_level,
   }: {
     patient_id: string
@@ -23,13 +23,19 @@ function insertLevel(
     employment_id?: string
     by_system?: boolean
     procedure_id?: Maybe<string>
-    evaluates_record_id: string
+    evaluates_record_ids: string[]
     triage_level: TriageLevel
   },
 ) {
   const triage_level_evaluation_id = generateUUID()
   const value_snomed_concept_id = PRIORITY_SNOMED_CODES[triage_level]
   const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[triage_level]
+
+  const relations = evaluates_record_ids.map((record_id) => ({
+    id: generateUUID(),
+    source_id: triage_level_evaluation_id,
+    destination_id: record_id,
+  }))
 
   return trx.with(
     'inserting_evaluation_records',
@@ -47,7 +53,6 @@ function insertLevel(
     qb.insertInto('patient_evaluations')
       .values({
         id: triage_level_evaluation_id,
-        evaluates_record_id,
         employment_id,
         by_system,
         procedure_id,
@@ -63,6 +68,21 @@ function insertLevel(
           })
           .returningAll(),
     )
+    .with(
+      'inserting_relation_patient_records',
+      (qb) =>
+        qb.insertInto('patient_records').values(relations.map(({ id }) => ({
+          id,
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: RELATIONSHIP.id,
+          specific_snomed_concept_id: DUE_TO.id,
+        }))),
+    )
+    .with(
+      'inserting_relations',
+      (qb) => qb.insertInto('patient_record_relations').values(relations),
+    )
     .selectFrom('inserting_triage_level')
     .selectAll('inserting_triage_level')
     .select([
@@ -77,7 +97,7 @@ type InsertLevelInput = {
   employment_id?: string
   by_system?: boolean
   procedure_id: string
-  evaluates_record_id: string
+  evaluates_record_ids: string[]
   triage_level: TriageLevel
 }
 

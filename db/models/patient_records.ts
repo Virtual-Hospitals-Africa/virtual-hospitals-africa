@@ -1,4 +1,4 @@
-import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { IdSelection, InsertRows, Priority, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
@@ -10,8 +10,7 @@ import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
 import { IntermediateBaseRecord, nonGroupedBaseQuery } from './patient_records_base.ts'
-import { InsertObject, sql } from 'kysely'
-import { DB } from '../../db.d.ts'
+import { sql } from 'kysely'
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
@@ -33,6 +32,34 @@ export function baseQuery(
             eb.ref('patient_records_aggregated.id'),
           ).selectAll('evaluation_records'),
       ).as('evaluations'),
+
+      eb.selectFrom('patient_triage_level')
+        .innerJoin(
+          'patient_records as triage_patient_records',
+          'patient_triage_level.id',
+          'triage_patient_records.id',
+        )
+        .innerJoin('patient_records_still_valid as triage_valid', 'triage_valid.id', 'triage_patient_records.id')
+        .innerJoin(
+          'patient_record_relations as triage_relations',
+          'triage_relations.source_id',
+          'patient_triage_level.id',
+        )
+        .innerJoin(
+          'snomed_inferred_canonical_name_and_category as triage_snomed_inferred_canonical_name_and_category',
+          'triage_patient_records.value_snomed_concept_id',
+          'triage_snomed_inferred_canonical_name_and_category.id',
+        )
+        .whereRef(
+          'triage_relations.destination_id',
+          '=',
+          'patient_records_aggregated.id',
+        )
+        .select('triage_snomed_inferred_canonical_name_and_category.name')
+        .orderBy('triage_patient_records.created_at', 'desc')
+        .limit(1)
+        .$castTo<Priority | null>()
+        .as('priority'),
 
       jsonArrayFrom(
         eb.selectFrom('patient_record_relations')
@@ -142,19 +169,6 @@ type RecordInsert = {
   attributes?: Lang['attribute'][]
 }
 
-type RecordsInsert = {
-  patient_id: string
-  patient_encounter_id: string
-  records: {
-    record_id?: string
-    root_snomed_concept: Lang['snomed_concept']
-    specific_snomed_concept: Lang['snomed_concept']
-    value_snomed_concept: Lang['snomed_concept'] | null
-    qualifiers?: Lang['qualifier'][]
-    attributes?: Lang['attribute'][]
-  }[]
-}
-
 export function baseInsert(
   trx: TrxOrDb,
   insert: RecordInsert,
@@ -259,9 +273,9 @@ export function baseInsertMany(
   }
 
   // Collect all patient_records inserts and qualifier inserts
-  const patient_record_values: InsertObject<DB, 'patient_records'>[] = []
-  const qualifier_record_values: InsertObject<DB, 'patient_records'>[] = []
-  const qualifier_link_values: InsertObject<DB, 'patient_record_qualifiers'>[] = []
+  const patient_record_rows: InsertRows<'patient_records'> = []
+  const qualifier_record_rows: InsertRows<'patient_records'> = []
+  const qualifier_link_rows: InsertRows<'patient_record_qualifiers'> = []
 
   function collectQualifiers(
     qualifier: Lang['qualifier'],
@@ -272,7 +286,7 @@ export function baseInsertMany(
     assertHasProperty(qualifier, 'specific_snomed_concept')
     const qualifier_id = generateUUID()
 
-    qualifier_record_values.push({
+    qualifier_record_rows.push({
       id: qualifier_id,
       patient_id,
       patient_encounter_id,
@@ -283,7 +297,7 @@ export function baseInsertMany(
       ),
     })
 
-    qualifier_link_values.push({
+    qualifier_link_rows.push({
       id: qualifier_id,
       qualifies_record_id,
     })
@@ -310,7 +324,7 @@ export function baseInsertMany(
       qualifiers = [],
     } = record
 
-    patient_record_values.push({
+    patient_record_rows.push({
       id: record_id,
       patient_id,
       patient_encounter_id,
@@ -334,21 +348,22 @@ export function baseInsertMany(
   return trx.with(
     'inserting_records',
     (qb) =>
-      qb.insertInto('patient_records').values(patient_record_values).returning(
+      qb.insertInto('patient_records').values(patient_record_rows).returning(
         'id',
       ),
-  ).with(
-    'inserting_qualifier_records',
-    (qb) => qualifier_record_values.length ? qb.insertInto('patient_records').values(qualifier_record_values) : blankSelection(qb),
-  ).with(
-    'inserting_qualifier_links',
-    (qb) =>
-      qualifier_record_values.length
-        ? qb.insertInto('patient_record_qualifiers').values(
-          qualifier_link_values,
-        )
-        : blankSelection(qb),
   )
+    .with(
+      'inserting_qualifier_records',
+      (qb) => qualifier_record_rows.length ? qb.insertInto('patient_records').values(qualifier_record_rows) : blankSelection(qb),
+    ).with(
+      'inserting_qualifier_links',
+      (qb) =>
+        qualifier_record_rows.length
+          ? qb.insertInto('patient_record_qualifiers').values(
+            qualifier_link_rows,
+          )
+          : blankSelection(qb),
+    )
 }
 
 type PatientRecordsSearch = {

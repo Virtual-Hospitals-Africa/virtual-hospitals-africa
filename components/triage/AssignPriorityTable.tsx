@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { Priority, RenderedFindingRelativeToHealthWorker, TriageAssignPriorityTableRow } from '../../types.ts'
+import { Priority, TriageAssignPriorityTableRow } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 import { ReferenceRangeIndicator } from '../vitals/SimpleReferenceRangeIndicator.tsx'
@@ -10,8 +10,7 @@ import findMatching from '../../util/findMatching.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
 
 type TriageAssignPriorityTableProps = {
-  vitals: TriageAssignPriorityTableRow[]
-  with_triage_level_findings: RenderedFindingRelativeToHealthWorker[]
+  rows: TriageAssignPriorityTableRow[]
   total_score: number
   priority: Priority
 }
@@ -20,10 +19,10 @@ function assessmentDisplay(row: TriageAssignPriorityTableRow) {
   if (row.type === 'assessment') {
     return findMatching(row.finding.evaluations, (evaluation) => evaluation.value?.type === 'score').displays.finding
   }
-  if (row.type === 'measurement') {
+  if (row.type === 'measurement' || row.finding.type === 'evaluation') {
     return row.finding.displays.finding
   }
-  if (row.finding.as_part_of_procedure.workflow_step_name) {
+  if (row.finding.as_part_of_procedure?.workflow_step_name) {
     return row.finding.as_part_of_procedure.workflow_step_name
   }
   throw new Error(humanReadableJson(row))
@@ -96,9 +95,9 @@ const columns: TableColumn<TriageAssignPriorityTableRow>[] = [
     type: 'content',
 
     headerClassName: 'text-center!',
-    tdClassName: ({ finding: { score, priority } }) => {
-      if (priority == null && score == null) return ''
-      const colors = colorFromPriorityOrScoreComponent(score, priority)
+    tdClassName: ({ finding }) => {
+      if (finding.priority == null && finding.score == null) return ''
+      const colors = colorFromPriorityOrScoreComponent(finding.score, finding.priority)
       return cls(colors.bg, colors.text)
     },
     cellClassName: 'text-center font-semibold',
@@ -134,16 +133,8 @@ function ConclusionRow(
 }
 
 export function TriageAssignPriorityTable(
-  { vitals, with_triage_level_findings, total_score, priority }: TriageAssignPriorityTableProps,
+  { rows, total_score, priority }: TriageAssignPriorityTableProps,
 ) {
-  const rows: TriageAssignPriorityTableRow[] = [
-    ...with_triage_level_findings.map((finding) => ({
-      type: 'chief complaint/warning sign' as const,
-      previous: null, // TODO populate this from last encounter
-      finding,
-    })),
-    ...vitals,
-  ]
   return (
     <div className='relative'>
       <Table
