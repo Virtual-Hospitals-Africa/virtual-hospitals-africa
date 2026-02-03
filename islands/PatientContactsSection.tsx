@@ -19,7 +19,7 @@ function formatAddress(street?: string, locality?: string, country?: string) {
 
 async function fetchPlaceDetails(place_id: string): Promise<Address | null> {
   try {
-    const url = new URL(globalThis.location.href)
+    const url = new URL(`${globalThis.location.origin}/app/organizations/${organization_id}/google_maps_responses`)
     url.search = ''
     url.searchParams.set('place_id', place_id)
 

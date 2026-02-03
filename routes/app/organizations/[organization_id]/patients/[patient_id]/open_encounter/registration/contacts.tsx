@@ -7,7 +7,6 @@ import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
 import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'
 import { EmergencyContactSchema } from '../../../../../../../../shared/family.ts'
-import { addressSearchHandler } from '../../../../../../../../util/googleMapsResponses.ts'
 
 export const PatientRegistrationContactsSchema = z.object({
   address: z.object({
@@ -25,42 +24,25 @@ export const PatientRegistrationContactsSchema = z.object({
   emergency_contacts: z.array(EmergencyContactSchema).min(1),
 })
 
-const address_search = addressSearchHandler<OpenEncounterWorkflowContext>({
-  country: 'za',
-})
-
-export const handler = {
-  async GET(ctx: OpenEncounterWorkflowContext) {
-    if (ctx.req.headers.get('accept') === 'application/json') {
-      if (
-        ctx.url.searchParams.has('search') ||
-        ctx.url.searchParams.has('place_id')
-      ) {
-        return await address_search.GET(ctx)
-      }
-    }
-    return PatientRegistrationContactsPage(ctx)
+export const handler = postHandler(
+  PatientRegistrationContactsSchema,
+  async (
+    ctx: OpenEncounterWorkflowContext,
+    { address, emergency_contacts },
+  ) => {
+    await Promise.all([
+      patient_emergency_contacts.setContacts(
+        ctx.state.trx,
+        { patient_id: ctx.state.patient.id, contacts: emergency_contacts },
+      ),
+      patient_address.updateById(
+        ctx.state.trx,
+        { patient_id: ctx.state.patient.id, address: address },
+      ),
+    ])
+    return completeAndProceedToNextStep(ctx)
   },
-  ...postHandler(
-    PatientRegistrationContactsSchema,
-    async (
-      ctx: OpenEncounterWorkflowContext,
-      { address, emergency_contacts },
-    ) => {
-      await Promise.all([
-        patient_emergency_contacts.setContacts(
-          ctx.state.trx,
-          { patient_id: ctx.state.patient.id, contacts: emergency_contacts },
-        ),
-        patient_address.updateById(
-          ctx.state.trx,
-          { patient_id: ctx.state.patient.id, address: address },
-        ),
-      ])
-      return completeAndProceedToNextStep(ctx)
-    },
-  ),
-}
+)
 
 export async function PatientRegistrationContactsPage(
   ctx: OpenEncounterWorkflowContext,
