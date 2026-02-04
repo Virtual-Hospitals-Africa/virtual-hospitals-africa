@@ -457,6 +457,7 @@ export interface EventListeners {
   listener_name: string
   processed_at: Timestamp | null
   started_processing_at: Timestamp | null
+  success_message: string | null
   updated_at: Generated<Timestamp>
 }
 

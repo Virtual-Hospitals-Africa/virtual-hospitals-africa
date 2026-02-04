@@ -3746,6 +3746,7 @@ export type ReferenceRangeX = {
 
 export type TriageAssignPriorityTableRow = {
   type: 'chief complaint/warning sign' | 'measurement' | 'assessment'
+  organization_id: string
   finding: RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker
   previous: RenderedFindingRelativeToHealthWorker | null
   reference_ranges?: Maybe<ReferenceRangeX[]>

@@ -8,6 +8,7 @@ import { colorFromPriorityOrScoreComponent } from '../../shared/vitals.ts'
 import { PRIORITY_COLORS } from '../../shared/priorities.ts'
 import findMatching from '../../util/findMatching.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import { MostRecentRecord } from '../../islands/MostRecentRecord.tsx'
 
 type TriageAssignPriorityTableProps = {
   rows: TriageAssignPriorityTableRow[]
@@ -33,6 +34,7 @@ const columns: TableColumn<TriageAssignPriorityTableRow>[] = [
     label: 'Assessment',
     type: 'content',
     tdClassName: 'max-w-12 word-break',
+    // Like "merge cells" in Excel, only print unique values
     data: (row, index, rows) => {
       const display = assessmentDisplay(row)
       const prior_row_display = index && assessmentDisplay(rows[index - 1])
@@ -44,7 +46,12 @@ const columns: TableColumn<TriageAssignPriorityTableRow>[] = [
     label: 'Finding',
     type: 'content',
     data: (row) => (
-      row.finding.displays.value || row.finding.displays.finding
+      <MostRecentRecord
+        record={row.finding}
+        organization_id={row.organization_id}
+        display_variant='value'
+        omit_timestamp
+      />
     ),
   },
   {

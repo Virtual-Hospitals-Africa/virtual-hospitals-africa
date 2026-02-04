@@ -17,7 +17,9 @@ export async function up(db: Kysely<DB>) {
       .addColumn('listener_name', 'varchar(255)', (col) => col.notNull())
       .addColumn('started_processing_at', 'timestamptz')
       .addColumn('error_message', 'text')
+      .addColumn('success_message', 'text')
       .addColumn('processed_at', 'timestamptz')
+      .addCheckConstraint('not_both_error_and_success_event_listeners', sql`((error_message is null) or (success_message is null))`)
       .addUniqueConstraint('single_listener', ['event_id', 'listener_name']))
 
   await sql`

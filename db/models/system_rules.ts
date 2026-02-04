@@ -1,20 +1,21 @@
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
 import { AgeDetermination, Priority, TrxOrDb } from '../../types.ts'
-import { literalString, temporaryTable } from '../helpers.ts'
+import { debugLog, literalString, temporaryTable } from '../helpers.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { Comparisons, Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import compactMap from '../../util/compactMap.ts'
 import uniq from '../../util/uniq.ts'
 import { isPriority } from '../../shared/priorities.ts'
 
-type Evidence = Lang['finding' | 'evaluation' | Comparisons]
+type Evidence = Lang['finding' | 'evaluation' | 'diagnosis' | Comparisons]
 type Record = { id: string; existence: 'Yes' | 'No' | 'Unknown' }
 
 export function* allEvidenceToLookFor(node: QueryableNode): Generator<Evidence> {
   switch (node.atom) {
     case 'finding':
     case 'evaluation':
+    case 'diagnosis':
     case '<':
     case '<=':
     case '=':
@@ -315,6 +316,7 @@ export function ruleRunner<
 
         case 'finding':
         case 'evaluation':
+        case 'diagnosis':
         case '<':
         case '<=':
         case '=':

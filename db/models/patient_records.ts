@@ -83,27 +83,27 @@ export function baseQuery(
           .select('relation_records.specific_snomed_concept_name as relation_name'),
       ).as('destination_relations'),
 
-      jsonArrayFrom(
-        eb.selectFrom('patient_record_relations')
-          .innerJoin(
-            nonGroupedBaseQuery(trx).as('relation_records'),
-            'relation_records.id',
-            'patient_record_relations.id',
-          )
-          .innerJoin(
-            'patient_records_aggregated as source_records',
-            'source_records.id',
-            'patient_record_relations.source_id',
-          )
-          .whereRef(
-            'patient_record_relations.destination_id',
-            '=',
-            'patient_records_aggregated.id',
-          )
-          .selectAll('source_records')
-          .select('relation_records.specific_snomed_concept_id as relation_snomed_concept_id')
-          .select('relation_records.specific_snomed_concept_name as relation_name'),
-      ).as('source_relations'),
+      // jsonArrayFrom(
+      //   eb.selectFrom('patient_record_relations')
+      //     .innerJoin(
+      //       nonGroupedBaseQuery(trx).as('relation_records'),
+      //       'relation_records.id',
+      //       'patient_record_relations.id',
+      //     )
+      //     .innerJoin(
+      //       'patient_records_aggregated as source_records',
+      //       'source_records.id',
+      //       'patient_record_relations.source_id',
+      //     )
+      //     .whereRef(
+      //       'patient_record_relations.destination_id',
+      //       '=',
+      //       'patient_records_aggregated.id',
+      //     )
+      //     .selectAll('source_records')
+      //     .select('relation_records.specific_snomed_concept_id as relation_snomed_concept_id')
+      //     .select('relation_records.specific_snomed_concept_name as relation_name'),
+      // ).as('source_relations'),
 
       jsonArrayFrom(
         patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)

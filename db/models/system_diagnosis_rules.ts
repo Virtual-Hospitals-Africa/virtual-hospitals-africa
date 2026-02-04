@@ -114,9 +114,14 @@ export const system_diagnosis_rules = {
       }[]
     },
   ) {
-    if (!patient_age_determination) return
+    if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
     const make_new_diagnosis = await findMatchingRecords(trx, { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records })
 
+    if (!make_new_diagnosis.matching_rules.length) {
+      return make_new_diagnosis.message
+    }
+
+    const inserted_diagnoses: string[] = []
     for (const { rule, contributing_records } of make_new_diagnosis.matching_rules) {
       const evaluation_id = generateUUID()
       const relations = contributing_records.map((record) => ({
@@ -160,6 +165,12 @@ export const system_diagnosis_rules = {
           },
         },
       )
+
+      inserted_diagnoses.push(`${rule.diagnosis.certainty_qualifier} ${rule.diagnosis.snomed_concept.name}`)
     }
+
+    return inserted_diagnoses.length
+      ? `Inserted ${inserted_diagnoses.length} diagnosis(es): ${inserted_diagnoses.join(', ')}`
+      : 'No new system diagnoses to insert'
   },
 }

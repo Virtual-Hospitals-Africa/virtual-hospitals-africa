@@ -17,6 +17,7 @@ import {
 import { TriageBriefHistorySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/brief_history.tsx'
 import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
 import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
+import { TriageAdditionalTasksAndInvestigationsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_tasks_and_investigations.tsx'
 import fromEntries from '../../../../../util/fromEntries.ts'
 import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { CheerioAPI } from 'cheerio'
@@ -36,6 +37,7 @@ export type TriageSteps = {
     typeof TriageHeightAndWeightSchema
   >
   measure_vitals?: z.input<typeof TriageMeasureVitalsSchema>
+  additional_tasks_and_investigations?: z.input<typeof TriageAdditionalTasksAndInvestigationsSchema>
 }
 
 export type TriageScenarioNewPatient = TriageSteps & {

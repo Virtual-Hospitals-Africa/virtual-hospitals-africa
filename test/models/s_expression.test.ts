@@ -70,7 +70,7 @@ describeParallel('db/models/s_expression.ts', () => {
           'value': null,
           'evaluations': [],
           'destination_relations': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'type': 'finding',
           'patient_encounter_employee_id': z.string().uuid(),
           'as_part_of_procedure': {

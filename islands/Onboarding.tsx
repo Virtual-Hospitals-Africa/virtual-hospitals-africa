@@ -201,7 +201,7 @@ export function Onboarding(
                 <img
                   src='/doctor-holding-phone.png'
                   alt='Welcome'
-                  className='aspect-[7/5] w-[37rem] max-w-none rounded-2xl bg-gray-50 object-cover'
+                  className='aspect-7/5 w-148 max-w-none rounded-2xl bg-gray-50 object-cover'
                 />
               </div>
             </div>

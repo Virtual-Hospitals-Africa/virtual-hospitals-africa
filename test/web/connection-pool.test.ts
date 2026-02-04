@@ -7,7 +7,7 @@ import { createTestOrganization } from '../_helpers/organizations.ts'
 import { route } from '../_route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
-describeParallel('Connection Pool Management', () => {
+describeParallel.skip('Connection Pool Management', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 

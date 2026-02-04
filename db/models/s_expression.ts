@@ -104,13 +104,30 @@ function baseQuery(
             trx,
             specific_snomed_concept!,
           )
-          return exact
-            ? eb(
-              'patient_records_aggregated.specific_snomed_concept_id',
-              '=',
-              snomed_concept,
-            )
-            : sql<boolean>`is_descendant(${eb.ref('patient_records_aggregated.specific_snomed_concept_id')}, ${snomed_concept}::bigint)`
+          const exact_match = eb(
+            'patient_records_aggregated.specific_snomed_concept_id',
+            '=',
+            snomed_concept,
+          )
+
+          if (exact) return exact_match
+
+          // If non-exact matches are allowed, this only refers to "Yes" findings
+          // This prevents a "No" finding for a descendant being interpreted as a
+          // "No" for the whole parent concept
+          return eb.or([
+            exact_match,
+            eb.and([
+              eb(
+                'patient_records_aggregated.existence',
+                '=',
+                'Yes',
+              ),
+              sql<boolean>`
+                is_descendant(${eb.ref('patient_records_aggregated.specific_snomed_concept_id')}, ${snomed_concept}::bigint)
+              `,
+            ]),
+          ])
         }),
     )
     .$if(

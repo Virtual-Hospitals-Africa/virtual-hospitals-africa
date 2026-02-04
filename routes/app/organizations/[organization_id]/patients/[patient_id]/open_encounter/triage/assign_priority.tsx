@@ -150,7 +150,7 @@ async function totalScore(
 
 async function sortedVitals(
   {
-    state: { trx, patient, patient_id, patient_encounter_id, health_worker_id },
+    state: { trx, organization_id, patient, patient_id, patient_encounter_id, health_worker_id },
   }: OpenEncounterWorkflowContext,
 ): Promise<TriageAssignPriorityTableRow[]> {
   assert(completedPersonal(patient))
@@ -253,7 +253,10 @@ async function sortedVitals(
     ...assessments_sorted,
     ...tews_measurements,
     ...other_measurements,
-  ]
+  ].map((row) => ({
+    ...row,
+    organization_id,
+  }))
 }
 
 export async function TriageAssignPriorityPage(
@@ -263,9 +266,11 @@ export async function TriageAssignPriorityPage(
     attempting_to_complete_workflow: false,
   })
 
-  await events.allProcessedForEncounter(ctx.state.trx, { patient_encounter_id: ctx.state.patient_encounter_id })
+  const { trx, encounter, organization_id, patient_encounter_id } = ctx.state
 
-  const priority = exists(ctx.state.encounter.priority).name
+  await events.allProcessedForEncounter(trx, { patient_encounter_id })
+
+  const priority = exists(encounter.priority).name
 
   const { vitals, total_score, diagnoses, with_triage_level_findings } = await promiseProps({
     vitals: sortedVitals(ctx),
@@ -275,19 +280,20 @@ export async function TriageAssignPriorityPage(
         type: 'chief complaint/warning sign' as const,
         previous: null,
         finding: diagnosis,
+        organization_id,
       }))
     ),
     with_triage_level_findings: findingsFromWarningSignsOrAdditionalTasksAndInvestigations(ctx)
       .then((findings) =>
         findings.map((finding) => ({
           type: 'chief complaint/warning sign' as const,
-          previous: null, // TODO populate this from last encounter
+          previous: null, // TODO populate this from last encounter?
           finding,
+          organization_id,
         }))
       ),
   })
 
-  // TODO: need this back on
   assertEquals(
     total_score.score,
     sumBy(vitals, (vital) => ('score' in vital.finding && vital.finding.score) || 0),

@@ -50,19 +50,19 @@ export const additional_tasks = {
       }[]
     },
   ) {
-    if (!patient_age_determination) return
+    if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
 
     // TODO, maybe handle negative findings? There could be tasks that call for them
     const positive_record_ids = findings
       .filter((f) => f.existence === 'Yes')
       .map((f) => f.id)
-    if (!positive_record_ids.length) return
+    if (!positive_record_ids.length) return 'Skipped: no positive findings to check'
 
     const to_consider = TASKS.filter(
       (task) => task.ages.includes(patient_age_determination),
     )
 
-    if (!to_consider.length) return
+    if (!to_consider.length) return 'Skipped: no tasks apply to this age group'
 
     const [first_task, ...other_tasks] = to_consider.map(
       ({ description, due_to, procedure }) =>
@@ -100,7 +100,7 @@ export const additional_tasks = {
       to_consider,
     )
 
-    await pMap(task_results, async ([task_result, task]) => {
+    const results = await pMap(task_results, async ([task_result, task]) => {
       assertEquals(task_result.description, task.description)
 
       if (arrayIsEmpty(task_result.matching_finding_ids)) {
@@ -148,7 +148,12 @@ export const additional_tasks = {
       ).selectNoFrom([
         success_true,
       ]).executeTakeFirstOrThrow()
+
+      return task_result.description
     })
+
+    const inserted = results.filter((r) => r != null)
+    return inserted.length ? `Inserted ${inserted.length} task(s): ${inserted.join(', ')}` : 'No new tasks to insert'
   },
   async getTasksGroups(
     trx: TrxOrDb,
@@ -185,7 +190,6 @@ export const additional_tasks = {
         }
       }),
     )
-    console.log({ evaluations_with_proto_tasks })
 
     function existingFindings() {
       if (!all_finding_s_expressions.size) return Promise.resolve([])
@@ -218,8 +222,6 @@ export const additional_tasks = {
         )
         .select('all_findings.finding_s_expression')
         .selectAll('join_against')
-
-      debugLog(existing_findings_query)
 
       return existing_findings_query.execute()
     }

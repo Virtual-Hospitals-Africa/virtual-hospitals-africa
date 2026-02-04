@@ -5,7 +5,7 @@ import { cls } from '../util/cls.ts'
 import { RecordPanel } from '../components/library/RecordPanel.tsx'
 
 export function MostRecentRecord(
-  { record, organization_id, className }: {
+  { record, organization_id, omit_timestamp, display_variant = 'full', className }: {
     record: Maybe<
       (
         | RenderedFindingRelativeToHealthWorker
@@ -16,10 +16,14 @@ export function MostRecentRecord(
       }
     >
     organization_id: string
+    display_variant?: 'value' | 'full'
+    omit_timestamp?: boolean
     className?: string
   },
 ) {
   if (!record) return null
+
+  const display = display_variant === 'full' ? record.displays.full : (record.displays.value || record.displays.finding)
   return (
     <span
       tabIndex={0}
@@ -44,9 +48,14 @@ export function MostRecentRecord(
           className='text-blue-500'
           href={`#most-recent-finding-${record.pertaining_to_key || record.id}`}
         >
-          {record.displays.full}
-        </a>{' '}
-        <LocalTime timestamp={record.created_at} expected_time_range='past' preceding_past_participle='recorded' />
+          {display}
+        </a>
+        {!omit_timestamp && (
+          <>
+            {' '}
+            <LocalTime timestamp={record.created_at} expected_time_range='past' preceding_past_participle='recorded' />
+          </>
+        )}
       </span>
 
       <div className='absolute left-0 z-50 hidden pt-2 top-full group-hover:block group-focus-within:block hover:block'>

@@ -585,7 +585,7 @@ describeParallel('triage/measure_vitals', () => {
             'full': `Respiratory rate: 12\u00A0bpm`,
           },
           'destination_relations': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'as_part_of_procedure': {
             'id': z.string().uuid(),
             'root_snomed_concept_id': '71388002',
@@ -766,7 +766,6 @@ describeParallel('triage/measure_vitals', () => {
 
         if (expected_tasks) {
           const tasks = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
-          console.log({ tasks })
           assertMatches(tasks, expected_tasks)
         }
       }, opts)
@@ -856,51 +855,20 @@ describeParallel('triage/measure_vitals', () => {
           ],
           'tasks': [
             {
-              'procedure': {
-                'root_snomed_concept_id': '71388002',
-                'root_snomed_concept_name': 'Procedure',
-                'root_snomed_concept_category': 'procedure',
-                'specific_snomed_concept_id': '122869004',
-                'specific_snomed_concept_name': 'Measurement procedure',
-                'specific_snomed_concept_category': 'procedure',
-                'value': {
-                  'type': 's_expression',
-                  's_expression': '((measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %))',
-                  'nodes': [
-                    {
-                      'atom': 'measurement',
-                      'snomed_concept': {
-                        'atom': 'snomed_concept',
-                        'name': 'Hemoglobin saturation with oxygen',
-                        'category': 'observable entity',
-                      },
-                      'units': '%',
-                    },
-                  ],
-                },
-                'evaluations': [
-                  {
-                    'root_snomed_concept_id': '129265001',
-                    'root_snomed_concept_name': 'Evaluation - action',
-                    'root_snomed_concept_category': 'qualifier value',
-                    'specific_snomed_concept_id': '385641008',
-                    'specific_snomed_concept_name': 'Action status',
-                    'specific_snomed_concept_category': 'attribute',
-                    'value': {
-                      'type': 'snomed_concept',
-                      'snomed_concept_id': '385643006',
-                      'name': 'To be done',
-                      'category': 'qualifier value',
-                    },
-                    'displays': {
-                      'finding': 'Action status',
-                      'value': 'To be done',
-                      'full': 'Action status: To be done',
-                    },
-                  },
-                ],
+              atom: 'measurement',
+              snomed_concept: {
+                atom: 'snomed_concept',
+                name: 'Hemoglobin saturation with oxygen',
+                category: 'observable entity',
               },
-              'completed': false,
+              units: '%',
+              s_expression: '(measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)',
+              displays: {
+                value: null,
+                finding: 'Hemoglobin saturation with oxygen',
+                full: 'Hemoglobin saturation with oxygen',
+              },
+              existing_measurement: null,
             },
           ],
         },

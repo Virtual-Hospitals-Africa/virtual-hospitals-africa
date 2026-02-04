@@ -182,6 +182,7 @@ export const handler = postHandler(
           success: true,
           procedure_id: completed_procedure.procedure_id,
           finding_ids: [],
+          measurement_ids: [],
         })
       }
 
@@ -258,7 +259,10 @@ export const handler = postHandler(
         patient_encounter_id,
         patient_age_determination,
         procedure_id: insert_result.procedure_id,
-        records: insert_result.finding_ids.map((id) => ({
+        records: [
+          ...insert_result.finding_ids,
+          ...insert_result.measurement_ids,
+        ].map((id) => ({
           id,
           existence: 'Yes' as const,
         })),

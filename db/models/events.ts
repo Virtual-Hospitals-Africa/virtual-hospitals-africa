@@ -206,14 +206,15 @@ export const events = {
   },
   processedListener(
     trx: TrxOrDb,
-    { event_listener_id }: { event_listener_id: string },
+    { event_listener_id, success_message }: { event_listener_id: string; success_message: string },
   ) {
     return trx
       .updateTable('event_listeners')
       .set({
+        success_message,
         error_message: null,
-        // backoff_until: null,
         processed_at: now,
+        // backoff_until: null,
       })
       .where('id', '=', event_listener_id)
       .executeTakeFirstOrThrow()

@@ -61,23 +61,18 @@ async function onEventListener(event_listener_id: string) {
 
   try {
     console.log('starting trx', event_listener)
-    await db.transaction().setIsolationLevel('read committed').execute(
-      async (trx) => {
-        console.log('inside trx', event_listener)
-        await listener(trx, {
+    const success_message = await db.transaction().setIsolationLevel('read committed').execute(
+      (trx) =>
+        listener(trx, {
           id: event_listener.event_id,
           // deno-lint-ignore no-explicit-any
           data: parse_result.data as any,
-          // metadata: {
-          //   error_count: event_listener.error_count,
-          // },
-        })
-        console.log('listener complete', event_listener)
-      },
+        }),
     )
     console.log('events.processedListener', event_listener)
     await events.processedListener(db, {
       event_listener_id: event_listener.id,
+      success_message,
     })
   } catch (error) {
     console.error(error)

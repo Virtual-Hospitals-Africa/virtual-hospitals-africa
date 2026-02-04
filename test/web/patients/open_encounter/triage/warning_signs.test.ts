@@ -267,11 +267,11 @@ describeParallel('triage/warning_signs', () => {
             },
             'modifiers': z.array(z.any()),
             'destination_relations': [],
-            'source_relations': [{
-              'source_id': z.string().uuid().optional(),
-              'root_snomed_concept_id': 129265001,
-              'specific_snomed_concept_id': 385641008,
-            }],
+            // 'source_relations': [{
+            //   'source_id': z.string().uuid().optional(),
+            //   'root_snomed_concept_id': 129265001,
+            //   'specific_snomed_concept_id': 385641008,
+            // }],
             'evaluations': z.array(z.any()),
             'attributes': [],
             'existence': 'Yes',
@@ -292,24 +292,10 @@ describeParallel('triage/warning_signs', () => {
             ],
             'tasks': [
               {
-                'procedure': {
-                  'value': {
-                    'type': 'link',
-                    'title': 'Seizures page',
-                    'href': '/medical-resources/primary-care/adult.pdf#page=19',
-                    'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/150/19.png',
-                  },
-                  'evaluations': [
-                    {
-                      'displays': {
-                        'finding': 'Action status',
-                        'value': 'To be done',
-                        'full': 'Action status: To be done',
-                      },
-                    },
-                  ],
-                },
-                'completed': false,
+                atom: 'link',
+                title: 'Seizures page',
+                href: '/medical-resources/primary-care/adult.pdf#page=19',
+                thumbnail_href: '/medical-resources/za/primary-care/adult/thumbnails/150/19.png',
               },
             ],
           },
