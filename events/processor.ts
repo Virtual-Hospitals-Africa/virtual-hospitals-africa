@@ -23,7 +23,7 @@ async function onEventListener(event_listener_id: string) {
       event_listener_id,
     )
   }
-  console.log('got listener', event_listener)
+  console.log(event_listener.listener_name, event_listener.id, 'got listener')
 
   if (!isEventType(event_listener.type)) {
     return events.markUnrecoverableError(
@@ -60,16 +60,18 @@ async function onEventListener(event_listener_id: string) {
   }
 
   try {
-    console.log('starting trx', event_listener)
+    console.log(event_listener.listener_name, event_listener.id, 'starting trx')
     const success_message = await db.transaction().setIsolationLevel('read committed').execute(
       (trx) =>
         listener(trx, {
-          id: event_listener.event_id,
+          event_id: event_listener.event_id,
+          listener_id: event_listener.id,
+          listener_name: event_listener.listener_name,
           // deno-lint-ignore no-explicit-any
           data: parse_result.data as any,
         }),
     )
-    console.log('events.processedListener', event_listener)
+    console.log(event_listener.listener_name, event_listener.id, 'events.processedListener')
     await events.processedListener(db, {
       event_listener_id: event_listener.id,
       success_message,

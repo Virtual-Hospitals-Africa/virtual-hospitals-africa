@@ -41,7 +41,6 @@ export function noSession() {
 
 // deno-lint-ignore no-explicit-any
 export function ensureCookiePresent(ctx: Context<any>) {
-  console.log('ensureCookiePresent')
   return cookie.get(ctx.req) ? ctx.next() : noSession()
 }
 
@@ -108,7 +107,6 @@ export function getLoggedInHealthWorker(
 function redirectIfRegistrationNeeded(
   ctx: LoggedInHealthWorkerContext,
 ) {
-  console.log('redirectIfRegistrationNeeded')
   assertEquals(
     SKIP_NURSE_REGISTRATION,
     true,

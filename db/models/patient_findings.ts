@@ -136,9 +136,6 @@ export const patient_findings = base({
   top_level_table: 'patient_findings',
   baseQuery,
   formatResult: (finding) => {
-    if (finding.priority) {
-      assert(finding.score == null, 'Use score or priority, but not both')
-    }
     if (finding.score != null) {
       tews_component.parse(finding.score)
     }

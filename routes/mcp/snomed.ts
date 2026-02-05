@@ -47,7 +47,6 @@ function searchSnomed(
       'snomed_inferred_canonical_name_and_category.name',
       'snomed_inferred_canonical_name_and_category.category',
     ])
-    .where('name', 'ilike', `%${query}%`)
     .where(sql<boolean>`term % ${query}`)
     .groupBy('snomed_inferred_canonical_name_and_category.id')
     .orderBy(sql<number>`max(similarity(term, ${query}))`, 'desc')

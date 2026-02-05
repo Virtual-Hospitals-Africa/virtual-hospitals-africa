@@ -322,7 +322,6 @@ export default function Table<T extends Row>(
   }
 
   const columns_with_contents = [...columnsWithSomeNonNullValue({ columns, rows })]
-  console.log(columns_with_contents.find((c) => c.label === 'Employees'))
 
   const table = (
     <div

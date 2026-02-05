@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { assertOr400, StatusError } from './assertOr.ts'
+import { StatusError } from './assertOr.ts'
 import isObjectLike from './isObjectLike.ts'
 import last from './last.ts'
 

@@ -1,6 +1,6 @@
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { organizationOf } from '../../shared/employees.ts'
-import { RenderedEvaluationRelativeToHealthWorker, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
+import { RecordValueLink, RenderedEvaluationRelativeToHealthWorker, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Button } from './Button.tsx'
@@ -12,6 +12,47 @@ import {
   UserIcon,
   // XMarkIcon,
 } from './icons/heroicons/outline.tsx'
+
+type AdditionalContextLineProps = { left: string; right: string | RecordValueLink | null; separator: string }
+
+function AdditionalContextLine({ left, right, separator }: AdditionalContextLineProps) {
+  if (right === null) return null
+
+  return (
+    <li className='flex flex-col gap-1'>
+      <p className='text-sm text-gray-600'>
+        <span className='text-sm text-gray-600'>
+          {left}
+          {separator}
+        </span>
+        {typeof right === 'string'
+          ? <span className='text-sm font-medium text-gray-900'>{right}</span>
+          : (
+            <a href={right.href} target='_blank' rel='noopener noreferrer' className='text-sm font-medium text-indigo-600 hover:underline'>
+              {right.title}
+            </a>
+          )}
+      </p>
+    </li>
+  )
+}
+
+function keyOf(line: AdditionalContextLineProps) {
+  const right = line.right === null ? '' : typeof line.right === 'string' ? line.right : line.right.href
+  return `${line.left} ${right} ${line.separator}`
+}
+
+function AdditionalContext({ context }: { context: AdditionalContextLineProps[] }) {
+  if (!context.length) return null
+  return (
+    <>
+      <hr className='border-gray-200' />
+      <ul className='flex flex-col gap-1'>
+        {context.map((line) => <AdditionalContextLine key={keyOf(line)} {...line} />)}
+      </ul>
+    </>
+  )
+}
 
 export function RecordPanel(
   { record, organization_id }: {
@@ -31,31 +72,10 @@ export function RecordPanel(
               {record.displays.full}
             </h3>
           </div>
-          {
-            /* <div className='flex gap-2'>
-            <button type='button' className='p-1 rounded-full'>
-              <XMarkIcon className='w-3 h-3 text-gray-400' />
-            </button>
-          </div> */
-          }
         </div>
 
         {/* Details section */}
         <div className='flex flex-col gap-2'>
-          {
-            /* Duration
-          {duration_text && (
-            <div className='flex items-center gap-1'>
-              <p className='text-sm text-gray-600'>Duration:</p>
-              <p className='text-sm font-medium text-gray-900'>
-                {duration_text}
-              </p>
-            </div>
-          )} */
-          }
-
-          {/* <hr className='border-gray-200' /> */}
-
           {/* Provider info */}
           <div className='flex flex-col gap-1'>
             <p className='text-xs text-gray-600'>{record.type === 'finding' ? 'Recorded' : 'Evaluated'} by:</p>
@@ -132,97 +152,26 @@ export function RecordPanel(
               </Button>
             )}
           </div>
-
-          {/* Notes section */}
-          {
-            /* {(finding.notes || []).length > 0 && (
-            <>
-              <hr className='border-gray-200' />
-              <div className='flex flex-col gap-1'>
-                {finding.notes!.map((note, idx) => (
-                  <div
-                    key={idx}
-                    className='flex flex-col gap-2 p-2 bg-gray-200 rounded'
-                  >
-                    <p className='text-sm leading-5 text-gray-900'>
-                      {note.note}
-                    </p>
-                    <p className='text-xs leading-4 text-gray-600 truncate'>
-                      <LocalTime
-                        timestamp={note.created_at}
-                        expected_time_range='past'
-                      />
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </>
-          )} */
-          }
-
-          {/* TODO: switch this to a referent findings section */}
-          {/* Qualifiers section */}
-          {record.attributes.length > 0 && (
-            <>
-              <hr className='border-gray-200' />
-              <div className='flex flex-col gap-1'>
-                {record.attributes.map((attribute, idx) => (
-                  <div key={idx} className='flex items-center gap-1'>
-                    <span className='text-sm text-gray-600'>
-                      {attribute.displays.finding}:
-                    </span>
-                    <span className='text-sm font-medium text-gray-900'>
-                      {attribute.displays.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-
-          {record.evaluations.length > 0 && (
-            <>
-              <hr className='border-gray-200' />
-              <div className='flex flex-col gap-1'>
-                {record.evaluations.map((evaluation) => (
-                  <p
-                    key={evaluation.id}
-                    className='text-sm text-gray-600'
-                  >
-                    <span className='text-sm text-gray-600'>
-                      {evaluation.displays.finding}:
-                    </span>
-                    &nbsp;
-                    <span className='text-sm font-medium text-gray-900'>
-                      {evaluation.displays.value}
-                    </span>
-                  </p>
-                ))}
-              </div>
-            </>
-          )}
-
-          {record.destination_relations.length > 0 && (
-            <>
-              <hr className='border-gray-200' />
-              <div className='flex flex-col gap-1'>
-                {record.destination_relations.map((destination_relation) => (
-                  <p
-                    key={destination_relation.id}
-                    className='text-sm text-gray-600'
-                  >
-                    <span className='text-sm text-gray-600'>
-                      {destination_relation.displays.full}
-                    </span>
-                    &nbsp;→&nbsp;
-                    <span className='text-sm font-medium text-gray-900'>
-                      {destination_relation.relation_name}
-                    </span>
-                  </p>
-                ))}
-              </div>
-            </>
-          )}
+          <AdditionalContext
+            context={[
+              ...(record.priority ? [{ left: 'Priority', right: record.priority, separator: ': ' }] : []),
+              ...record.attributes.map((attribute) => ({
+                left: attribute.displays.finding,
+                right: attribute.displays.value,
+                separator: ': ',
+              })),
+              ...record.evaluations.map((evaluation) => ({
+                left: evaluation.displays.finding,
+                right: evaluation.displays.value,
+                separator: ': ',
+              })),
+              ...record.destination_relations.map((destination_relation) => ({
+                left: destination_relation.displays.full,
+                right: destination_relation.relation_name,
+                separator: ' → ',
+              })),
+            ]}
+          />
         </div>
       </div>
     </div>

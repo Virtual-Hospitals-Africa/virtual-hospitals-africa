@@ -20,7 +20,7 @@ import {
 
 export type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
-type SnomedConcept = {
+export type SnomedConcept = {
   name: string
   category: SnomedCategory
 }

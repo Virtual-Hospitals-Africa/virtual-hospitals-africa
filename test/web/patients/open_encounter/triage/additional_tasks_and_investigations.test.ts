@@ -150,32 +150,172 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         'displays': { 'value': null, 'finding': 'Sweating', 'full': 'Sweating' },
         'existing_finding': null,
       },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Radiating chest pain', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Radiating chest pain" "finding"))',
+        'displays': { 'value': null, 'finding': 'Radiating chest pain', 'full': 'Radiating chest pain' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Pain radiating to jaw', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to jaw" "finding"))',
+        'displays': { 'value': null, 'finding': 'Pain radiating to jaw', 'full': 'Pain radiating to jaw' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Pain radiating to neck', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to neck" "finding"))',
+        'displays': { 'value': null, 'finding': 'Pain radiating to neck', 'full': 'Pain radiating to neck' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Pain radiating to left arm',
+          'category': 'finding',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to left arm" "finding"))',
+        'displays': { 'value': null, 'finding': 'Pain radiating to left arm', 'full': 'Pain radiating to left arm' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Pain radiating to right arm',
+          'category': 'finding',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to right arm" "finding"))',
+        'displays': { 'value': null, 'finding': 'Pain radiating to right arm', 'full': 'Pain radiating to right arm' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Ischemic heart disease',
+          'category': 'disorder',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Ischemic heart disease" "disorder"))',
+        'displays': { 'value': null, 'finding': 'Ischemic heart disease', 'full': 'Ischemic heart disease' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Difficulty breathing', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
+        'displays': { 'value': null, 'finding': 'Difficulty breathing', 'full': 'Difficulty breathing' },
+        'existing_finding': null,
+      },
     ])
 
     const form_labels = getFormLabels($)
     const form_values = getFormValues($)
 
-    assertEquals(form_labels, {
-      'check_for': {
-        'finding-nausea': { 'existence': 'Nausea*' },
-        'finding-vomiting': { 'existence': 'Vomiting*' },
-        'finding-pallor-of-skin-of-face': { 'existence': 'Pallor of skin of face*' },
-        'finding-sweating': { 'existence': 'Sweating*' },
+    assertEquals({ form_labels, form_values }, {
+      'form_labels': {
+        'check_for': {
+          'finding-nausea': { 'existence': 'Nausea*' },
+          'finding-vomiting': { 'existence': 'Vomiting*' },
+          'finding-pallor-of-skin-of-face': { 'existence': 'Pallor of skin of face*' },
+          'finding-sweating': { 'existence': 'Sweating*' },
+          'finding-radiating-chest-pain': { 'existence': 'Radiating chest pain*' },
+          'finding-pain-radiating-to-jaw': { 'existence': 'Pain radiating to jaw*' },
+          'finding-pain-radiating-to-neck': { 'existence': 'Pain radiating to neck*' },
+          'finding-pain-radiating-to-left-arm': { 'existence': 'Pain radiating to left arm*' },
+          'finding-pain-radiating-to-right-arm': { 'existence': 'Pain radiating to right arm*' },
+          'finding-ischemic-heart-disease': { 'existence': 'Ischemic heart disease*' },
+          'finding-difficulty-breathing': { 'existence': 'Difficulty breathing*' },
+        },
       },
-    })
-    assertEquals(form_values, {
-      'check_for': {
-        'finding-nausea': {
-          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
-        },
-        'finding-vomiting': {
-          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Vomiting" "disorder"))',
-        },
-        'finding-pallor-of-skin-of-face': {
-          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pallor of skin of face" "finding"))',
-        },
-        'finding-sweating': {
-          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Sweating" "finding"))',
+      'form_values': {
+        'check_for': {
+          'finding-nausea': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
+          },
+          'finding-vomiting': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Vomiting" "disorder"))',
+          },
+          'finding-pallor-of-skin-of-face': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pallor of skin of face" "finding"))',
+          },
+          'finding-sweating': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Sweating" "finding"))',
+          },
+          'finding-radiating-chest-pain': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Radiating chest pain" "finding"))',
+          },
+          'finding-pain-radiating-to-jaw': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to jaw" "finding"))',
+          },
+          'finding-pain-radiating-to-neck': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to neck" "finding"))',
+          },
+          'finding-pain-radiating-to-left-arm': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to left arm" "finding"))',
+          },
+          'finding-pain-radiating-to-right-arm': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to right arm" "finding"))',
+          },
+          'finding-ischemic-heart-disease': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Ischemic heart disease" "disorder"))',
+          },
+          'finding-difficulty-breathing': {
+            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
+          },
         },
       },
     })
@@ -240,16 +380,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       await events.allProcessedForEncounter(db, { patient_encounter_id })
 
-      await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
-        patient_id,
-        patient_encounter_id,
-        patient_age_determination: 'adult',
-        records: [{
-          id: allergy_to_fish.id,
-          existence: 'Yes',
-        }],
-      })
-
       const anaphylaxis_diagnosis = await patient_evaluations.findOne(
         db,
         {
@@ -267,6 +397,8 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       // Running again has no effect
       await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
+        listener_id: 'TEST',
+        listener_name: 'TEST',
         patient_id,
         patient_encounter_id,
         patient_age_determination: 'adult',
@@ -356,6 +488,8 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       // Running again has no effect
       await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
+        listener_id: 'TEST',
+        listener_name: 'TEST',
         patient_id,
         patient_encounter_id,
         patient_age_determination: 'adult',
@@ -564,11 +698,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       })
 
       const table = getTableDisplay($assign_priority)
-      console.log(table[0])
       assertMatches(table[0], {
         Assessment: 'Anaphylaxis Diagnosis',
         Finding: z.string().regex(
-          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Itching→Evidence ofDifficulty breathing→Evidence of$/,
+          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Priority: UrgentSudden onset Itching → Evidence ofDifficulty breathing → Evidence of$/,
         ),
         'Reference Range': '',
         'Priority / Score': 'Urgent',

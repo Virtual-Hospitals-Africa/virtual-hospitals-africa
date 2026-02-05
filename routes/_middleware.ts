@@ -13,16 +13,15 @@ export function grokPostgresError(err: Record<string, unknown>) {
 
 export const handler = async (ctx: Context<unknown>) => {
   try {
-    console.log(`Starting ${ctx.req.method} ${ctx.req.url}`)
+    console.time(`${ctx.req.method} ${ctx.req.url} Response`)
     const response = await ctx.next()
-    console.log(`Ending ${ctx.req.method} ${ctx.req.url}`, response)
+    console.timeEnd(`${ctx.req.method} ${ctx.req.url} Response`)
     return response
   } catch (error) {
     if (!isObjectLike(error)) {
       console.error(error)
       return new Response('Unexpected error', { status: 500 })
     }
-    console.log('IN ERROR HANDLER')
     if (error.status === 302) {
       assert(error.location, '302 redirect must have a location')
       assert(typeof error.location === 'string', '302 redirect must have a location')
