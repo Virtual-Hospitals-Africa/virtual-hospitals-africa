@@ -190,7 +190,7 @@ describeParallel('triage/brief_history', () => {
             'root_snomed_concept_name': 'Status',
             'root_snomed_concept_category': 'attribute',
             'destination_relations': [],
-            'source_relations': [],
+            // 'source_relations': [],
             'evaluations': [],
             'attributes': [],
             'type': 'finding',
@@ -229,7 +229,7 @@ describeParallel('triage/brief_history', () => {
             'root_snomed_concept_name': 'Status',
             'root_snomed_concept_category': 'attribute',
             'destination_relations': [],
-            'source_relations': [],
+            // 'source_relations': [],
             'evaluations': [],
             'attributes': [],
             'type': 'finding',
@@ -268,7 +268,7 @@ describeParallel('triage/brief_history', () => {
             'root_snomed_concept_name': 'Status',
             'root_snomed_concept_category': 'attribute',
             'destination_relations': [],
-            'source_relations': [],
+            // 'source_relations': [],
             'evaluations': [],
             'attributes': [],
             'type': 'finding',
@@ -355,7 +355,7 @@ describeParallel('triage/brief_history', () => {
           },
           'attributes': [],
 
-          'source_relations': [],
+          // 'source_relations': [],
           'destination_relations': [],
         })
 
@@ -403,7 +403,7 @@ describeParallel('triage/brief_history', () => {
             'seen_at': z.string().datetime({ offset: true }),
           },
           'attributes': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'destination_relations': [],
         })
 
@@ -749,7 +749,7 @@ describeParallel('triage/brief_history', () => {
             'name': 'Yes',
           },
           'destination_relations': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'as_part_of_procedure': {
             'id': z.string().uuid(),
             'root_snomed_concept_id': '71388002',
@@ -853,7 +853,7 @@ describeParallel('triage/brief_history', () => {
             'category': 'qualifier value',
           },
           'destination_relations': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'as_part_of_procedure': {
             'id': z.string().uuid(),
             'specific_snomed_concept_id': '203421005',
@@ -913,7 +913,7 @@ describeParallel('triage/brief_history', () => {
             'id': other_nurse.health_worker.id,
             'employee_id': other_nurse.health_worker.employee_id,
           },
-          'source_relations': [],
+          // 'source_relations': [],
           'destination_relations': [],
         })
       },
@@ -960,7 +960,7 @@ describeParallel('triage/brief_history', () => {
           'specific_snomed_concept_id': '77386006',
           'specific_snomed_concept_name': 'Pregnancy',
           'destination_relations': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'as_part_of_procedure': {
             'id': z.string().uuid(),
             'root_snomed_concept_id': '71388002',

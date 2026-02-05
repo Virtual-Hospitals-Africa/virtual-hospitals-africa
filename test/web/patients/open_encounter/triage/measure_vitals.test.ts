@@ -6,7 +6,17 @@ import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts
 import { getFormLabels, getFormOptions, getFormValues } from '../../../../_helpers/form.ts'
 import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
-import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
+import {
+  asVitalAssessmentFormValues,
+  asVitalMeasurementFormValues,
+  asWarningSigns,
+  dateOfBirth,
+  DEFAULT_ASSESSMENTS,
+  DEFAULT_MEASUREMENTS,
+  heightOf,
+  setupTriageNewPatient,
+  weightOf,
+} from './_setup.ts'
 import {
   assessmentOptionSExpression,
   VITAL_MEASUREMENTS_SNOMED_CONCEPTS,
@@ -23,7 +33,6 @@ import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 import { AgeDetermination } from '../../../../../types.ts'
 import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
-import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 
@@ -576,7 +585,7 @@ describeParallel('triage/measure_vitals', () => {
             'full': `Respiratory rate: 12\u00A0bpm`,
           },
           'destination_relations': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'as_part_of_procedure': {
             'id': z.string().uuid(),
             'root_snomed_concept_id': '71388002',
@@ -667,39 +676,6 @@ describeParallel('triage/measure_vitals', () => {
       },
     )
 
-    function dateOfBirth(age_determination: AgeDetermination): string {
-      switch (age_determination) {
-        case 'adult':
-          return '1990-01-01'
-        case 'older child':
-          return '2020-01-01'
-        case 'younger child':
-          return '2025-01-01'
-      }
-    }
-
-    function heightOf(age_determination: AgeDetermination): number {
-      switch (age_determination) {
-        case 'adult':
-          return 160
-        case 'older child':
-          return 100
-        case 'younger child':
-          return 70
-      }
-    }
-
-    function weightOf(age_determination: AgeDetermination): number {
-      switch (age_determination) {
-        case 'adult':
-          return 70
-        case 'older child':
-          return 38
-        case 'younger child':
-          return 15
-      }
-    }
-
     function testCase(
       description: string,
       age_determination: AgeDetermination,
@@ -789,9 +765,7 @@ describeParallel('triage/measure_vitals', () => {
         assertEquals(total_score.score, sumBy(expected_scores, 'score'))
 
         if (expected_tasks) {
-          // await delay(500)
           const tasks = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
-          console.log({ tasks })
           assertMatches(tasks, expected_tasks)
         }
       }, opts)
@@ -813,21 +787,6 @@ describeParallel('triage/measure_vitals', () => {
         .map(([finding_name, score]) => ({ finding_name, score }))
     }
 
-    // Default values that score 0 for all vitals
-    const default_measurements_adult = {
-      respiratory_rate: 12, // 9-14 -> score 0
-      heart_rate: 60, // 51-100 -> score 0
-      blood_pressure_systolic: 120, // 101-199 -> score 0
-      blood_pressure_diastolic: 80,
-      temperature: 36.6, // 35-38.4 -> score 0
-    }
-
-    const default_assessments_adult = {
-      mobility_assessment: 'Walking', // score 0
-      consciousness: 'Alert', // score 0
-      trauma_presence: 'No', // score 0
-    } as const
-
     // =========================================
     // MOBILITY ASSESSMENT
     // =========================================
@@ -835,17 +794,17 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, mobility: Walking -> score: 0',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, mobility_assessment: 'Walking' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], mobility_assessment: 'Walking' },
       baseScores({ 'Assessment of mobility': 0 }),
     )
 
     testCase(
       'adult, mobility: Difficulty walking -> score: 1',
       'adult',
-      default_measurements_adult,
+      DEFAULT_MEASUREMENTS['adult'],
       {
-        ...default_assessments_adult,
+        ...DEFAULT_ASSESSMENTS['adult'],
         mobility_assessment: 'Difficulty walking',
       },
       baseScores({ 'Assessment of mobility': 1 }),
@@ -854,9 +813,9 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, mobility: Stretcher/Immobile -> score: 2',
       'adult',
-      default_measurements_adult,
+      DEFAULT_MEASUREMENTS['adult'],
       {
-        ...default_assessments_adult,
+        ...DEFAULT_ASSESSMENTS['adult'],
         mobility_assessment: 'Stretcher/Immobile',
       },
       baseScores({ 'Assessment of mobility': 2 }),
@@ -870,8 +829,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, respiratory_rate: 8 (less than 9) -> score: 2',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 8 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 8 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 2 }),
       [
         {
@@ -896,51 +855,20 @@ describeParallel('triage/measure_vitals', () => {
           ],
           'tasks': [
             {
-              'procedure': {
-                'root_snomed_concept_id': '71388002',
-                'root_snomed_concept_name': 'Procedure',
-                'root_snomed_concept_category': 'procedure',
-                'specific_snomed_concept_id': '122869004',
-                'specific_snomed_concept_name': 'Measurement procedure',
-                'specific_snomed_concept_category': 'procedure',
-                'value': {
-                  'type': 's_expression',
-                  's_expression': '((measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %))',
-                  'nodes': [
-                    {
-                      'atom': 'measurement',
-                      'snomed_concept': {
-                        'atom': 'snomed_concept',
-                        'name': 'Hemoglobin saturation with oxygen',
-                        'category': 'observable entity',
-                      },
-                      'units': '%',
-                    },
-                  ],
-                },
-                'evaluations': [
-                  {
-                    'root_snomed_concept_id': '129265001',
-                    'root_snomed_concept_name': 'Evaluation - action',
-                    'root_snomed_concept_category': 'qualifier value',
-                    'specific_snomed_concept_id': '385641008',
-                    'specific_snomed_concept_name': 'Action status',
-                    'specific_snomed_concept_category': 'attribute',
-                    'value': {
-                      'type': 'snomed_concept',
-                      'snomed_concept_id': '385643006',
-                      'name': 'To be done',
-                      'category': 'qualifier value',
-                    },
-                    'displays': {
-                      'finding': 'Action status',
-                      'value': 'To be done',
-                      'full': 'Action status: To be done',
-                    },
-                  },
-                ],
+              atom: 'measurement',
+              snomed_concept: {
+                atom: 'snomed_concept',
+                name: 'Hemoglobin saturation with oxygen',
+                category: 'observable entity',
               },
-              'completed': false,
+              units: '%',
+              s_expression: '(measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)',
+              displays: {
+                value: null,
+                finding: 'Hemoglobin saturation with oxygen',
+                full: 'Hemoglobin saturation with oxygen',
+              },
+              existing_measurement: null,
             },
           ],
         },
@@ -950,8 +878,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, respiratory_rate: 9 (boundary, 9-14 range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 9 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 9 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 0 }),
       [],
     )
@@ -959,56 +887,56 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, respiratory_rate: 14 (9-14 range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 14 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 14 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 0 }),
     )
 
     testCase(
       'adult, respiratory_rate: 15 (boundary, 15-20 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 15 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 15 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 1 }),
     )
 
     testCase(
       'adult, respiratory_rate: 20 (15-20 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 20 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 20 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 1 }),
     )
 
     testCase(
       'adult, respiratory_rate: 21 (boundary, 21-29 range) -> score: 2',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 21 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 21 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'adult, respiratory_rate: 29 (21-29 range) -> score: 2',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 29 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 29 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'adult, respiratory_rate: 30 (boundary, >=30) -> score: 3',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 30 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 30 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 3 }),
     )
 
     testCase(
       'adult, respiratory_rate: 35 (>=30) -> score: 3',
       'adult',
-      { ...default_measurements_adult, respiratory_rate: 35 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 35 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 3 }),
     )
 
@@ -1020,88 +948,88 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, heart_rate: 40 (less than 41) -> score: 2',
       'adult',
-      { ...default_measurements_adult, heart_rate: 40 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 40 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'adult, heart_rate: 41 (boundary, 41-50 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, heart_rate: 41 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 41 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 1 }),
     )
 
     testCase(
       'adult, heart_rate: 50 (41-50 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, heart_rate: 50 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 50 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 1 }),
     )
 
     testCase(
       'adult, heart_rate: 51 (boundary, 51-100 range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, heart_rate: 51 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 51 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 0 }),
     )
 
     testCase(
       'adult, heart_rate: 100 (51-100 range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, heart_rate: 100 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 100 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 0 }),
     )
 
     testCase(
       'adult, heart_rate: 101 (boundary, 101-110 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, heart_rate: 101 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 101 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 1 }),
     )
 
     testCase(
       'adult, heart_rate: 110 (101-110 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, heart_rate: 110 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 110 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 1 }),
     )
 
     testCase(
       'adult, heart_rate: 111 (boundary, 111-129 range) -> score: 2',
       'adult',
-      { ...default_measurements_adult, heart_rate: 111 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 111 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'adult, heart_rate: 129 (111-129 range) -> score: 2',
       'adult',
-      { ...default_measurements_adult, heart_rate: 129 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 129 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'adult, heart_rate: 130 (boundary, >=130) -> score: 3',
       'adult',
-      { ...default_measurements_adult, heart_rate: 130 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 130 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 3 }),
     )
 
     testCase(
       'adult, heart_rate: 150 (>=130) -> score: 3',
       'adult',
-      { ...default_measurements_adult, heart_rate: 150 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 150 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 3 }),
     )
 
@@ -1113,72 +1041,72 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, blood_pressure_systolic: 70 (less than 71) -> score: 3',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 70 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 70 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 3 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 71 (boundary, 71-80 range) -> score: 2',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 71 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 71 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 2 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 80 (71-80 range) -> score: 2',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 80 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 80 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 2 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 81 (boundary, 81-100 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 81 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 81 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 1 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 100 (81-100 range) -> score: 1',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 100 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 100 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 1 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 101 (boundary, 101-199 range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 101 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 101 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 0 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 199 (101-199 range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 199 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 199 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 0 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 200 (boundary, >=200) -> score: 2',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 200 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 200 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 2 }),
     )
 
     testCase(
       'adult, blood_pressure_systolic: 220 (>=200) -> score: 2',
       'adult',
-      { ...default_measurements_adult, blood_pressure_systolic: 220 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 220 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Systolic blood pressure': 2 }),
     )
 
@@ -1190,48 +1118,48 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, temperature: 34 (Cold/Under 35) -> score: 2',
       'adult',
-      { ...default_measurements_adult, temperature: 34 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], temperature: 34 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Body temperature': 2 }),
     )
 
     testCase(
       'adult, temperature: 35 (boundary, normal range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, temperature: 35 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], temperature: 35 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Body temperature': 0 }),
     )
 
     testCase(
       'adult, temperature: 37 (normal range) -> score: 0',
       'adult',
-      { ...default_measurements_adult, temperature: 37 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], temperature: 37 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Body temperature': 0 }),
     )
 
     testCase(
       'adult, temperature: 38.4 (normal range upper) -> score: 0',
       'adult',
-      { ...default_measurements_adult, temperature: 38.4 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], temperature: 38.4 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Body temperature': 0 }),
     )
 
     testCase(
       'adult, temperature: 38.5 (boundary, Hot/Over 38.4) -> score: 2',
       'adult',
-      { ...default_measurements_adult, temperature: 38.5 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], temperature: 38.5 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Body temperature': 2 }),
     )
 
     testCase(
       'adult, temperature: 40 (Hot/Over 38.4) -> score: 2',
       'adult',
-      { ...default_measurements_adult, temperature: 40 },
-      default_assessments_adult,
+      { ...DEFAULT_MEASUREMENTS['adult'], temperature: 40 },
+      DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Body temperature': 2 }),
     )
 
@@ -1243,40 +1171,40 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, consciousness: Alert -> score: 0',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, consciousness: 'Alert' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], consciousness: 'Alert' },
       baseScores({ 'Alert Confusion Voice Pain Unresponsive scale score': 0 }),
     )
 
     testCase(
       'adult, consciousness: Reacts to voice -> score: 1',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, consciousness: 'Reacts to voice' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], consciousness: 'Reacts to voice' },
       baseScores({ 'Alert Confusion Voice Pain Unresponsive scale score': 1 }),
     )
 
     testCase(
       'adult, consciousness: Confused -> score: 2',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, consciousness: 'Confused' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], consciousness: 'Confused' },
       baseScores({ 'Alert Confusion Voice Pain Unresponsive scale score': 2 }),
     )
 
     testCase(
       'adult, consciousness: Reacts to pain -> score: 2',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, consciousness: 'Reacts to pain' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], consciousness: 'Reacts to pain' },
       baseScores({ 'Alert Confusion Voice Pain Unresponsive scale score': 2 }),
     )
 
     testCase(
       'adult, consciousness: Unresponsive -> score: 3',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, consciousness: 'Unresponsive' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], consciousness: 'Unresponsive' },
       baseScores({ 'Alert Confusion Voice Pain Unresponsive scale score': 3 }),
     )
 
@@ -1288,16 +1216,16 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'adult, trauma: No -> score: 0',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, trauma_presence: 'No' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], trauma_presence: 'No' },
       baseScores({ 'Trauma score': 0 }),
     )
 
     testCase(
       'adult, trauma: Yes -> score: 1',
       'adult',
-      default_measurements_adult,
-      { ...default_assessments_adult, trauma_presence: 'Yes' },
+      DEFAULT_MEASUREMENTS['adult'],
+      { ...DEFAULT_ASSESSMENTS['adult'], trauma_presence: 'Yes' },
       baseScores({ 'Trauma score': 1 }),
     )
 
@@ -1320,19 +1248,6 @@ describeParallel('triage/measure_vitals', () => {
         .map(([finding_name, score]) => ({ finding_name, score }))
     }
 
-    // Default values that score 0 for older child
-    const default_measurements_older_child = {
-      respiratory_rate: 19, // 17-21 -> score 0
-      heart_rate: 90, // 80-99 -> score 0
-      temperature: 36.6, // 35-38.4 -> score 0
-    }
-
-    const default_assessments_older_child = {
-      mobility_assessment: 'Normal for age', // Normal for age -> score 0
-      consciousness: 'Alert', // score 0
-      trauma_presence: 'No', // score 0
-    } as const
-
     // =========================================
     // OLDER CHILD - MOBILITY ASSESSMENT
     // Normal for age -> 0, Unable to walk as normal -> 2
@@ -1341,9 +1256,9 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, mobility: Unable to walk as normal -> score: 2',
       'older child',
-      default_measurements_older_child,
+      DEFAULT_MEASUREMENTS['older child'],
       {
-        ...default_assessments_older_child,
+        ...DEFAULT_ASSESSMENTS['older child'],
         mobility_assessment: 'Unable to walk as normal',
       },
       baseScoresOlderChild({ 'Assessment of mobility': 2 }),
@@ -1357,72 +1272,72 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, respiratory_rate: 14 (less than 15) -> score: 3',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 14 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 14 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 3 }),
     )
 
     testCase(
       'older child, respiratory_rate: 15 (boundary, 15-16 range) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 15 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 15 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'older child, respiratory_rate: 16 (15-16 range) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 16 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 16 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'older child, respiratory_rate: 17 (boundary, 17-21 range) -> score: 0',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 17 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 17 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 0 }),
     )
 
     testCase(
       'older child, respiratory_rate: 21 (17-21 range) -> score: 0',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 21 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 21 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 0 }),
     )
 
     testCase(
       'older child, respiratory_rate: 22 (boundary, 22-26 range) -> score: 1',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 22 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 22 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 1 }),
     )
 
     testCase(
       'older child, respiratory_rate: 26 (22-26 range) -> score: 1',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 26 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 26 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 1 }),
     )
 
     testCase(
       'older child, respiratory_rate: 27 (boundary, >=27) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 27 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 27 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'older child, respiratory_rate: 35 (>=27) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, respiratory_rate: 35 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], respiratory_rate: 35 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Respiratory rate': 2 }),
     )
 
@@ -1434,72 +1349,72 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, heart_rate: 59 (less than 60) -> score: 3',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 59 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 59 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 3 }),
     )
 
     testCase(
       'older child, heart_rate: 60 (boundary, 60-79 range) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 60 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 60 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'older child, heart_rate: 79 (60-79 range) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 79 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 79 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'older child, heart_rate: 80 (boundary, 80-99 range) -> score: 0',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 80 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 80 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 0 }),
     )
 
     testCase(
       'older child, heart_rate: 99 (80-99 range) -> score: 0',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 99 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 99 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 0 }),
     )
 
     testCase(
       'older child, heart_rate: 100 (boundary, 100-129 range) -> score: 1',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 100 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 100 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 1 }),
     )
 
     testCase(
       'older child, heart_rate: 129 (100-129 range) -> score: 1',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 129 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 129 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 1 }),
     )
 
     testCase(
       'older child, heart_rate: 130 (boundary, >=130) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 130 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 130 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'older child, heart_rate: 150 (>=130) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, heart_rate: 150 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], heart_rate: 150 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Pulse, function': 2 }),
     )
 
@@ -1511,48 +1426,48 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, temperature: 34 (Cold/Under 35) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, temperature: 34 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], temperature: 34 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Body temperature': 2 }),
     )
 
     testCase(
       'older child, temperature: 35 (boundary, normal range) -> score: 0',
       'older child',
-      { ...default_measurements_older_child, temperature: 35 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], temperature: 35 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Body temperature': 0 }),
     )
 
     testCase(
       'older child, temperature: 37 (normal range) -> score: 0',
       'older child',
-      { ...default_measurements_older_child, temperature: 37 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], temperature: 37 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Body temperature': 0 }),
     )
 
     testCase(
       'older child, temperature: 38.4 (normal range upper) -> score: 0',
       'older child',
-      { ...default_measurements_older_child, temperature: 38.4 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], temperature: 38.4 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Body temperature': 0 }),
     )
 
     testCase(
       'older child, temperature: 38.5 (boundary, Hot/Over 38.4) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, temperature: 38.5 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], temperature: 38.5 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Body temperature': 2 }),
     )
 
     testCase(
       'older child, temperature: 40 (Hot/Over 38.4) -> score: 2',
       'older child',
-      { ...default_measurements_older_child, temperature: 40 },
-      default_assessments_older_child,
+      { ...DEFAULT_MEASUREMENTS['older child'], temperature: 40 },
+      DEFAULT_ASSESSMENTS['older child'],
       baseScoresOlderChild({ 'Body temperature': 2 }),
     )
 
@@ -1564,8 +1479,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, consciousness: Alert -> score: 0',
       'older child',
-      default_measurements_older_child,
-      { ...default_assessments_older_child, consciousness: 'Alert' },
+      DEFAULT_MEASUREMENTS['older child'],
+      { ...DEFAULT_ASSESSMENTS['older child'], consciousness: 'Alert' },
       baseScoresOlderChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 0,
       }),
@@ -1574,8 +1489,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, consciousness: Reacts to voice -> score: 1',
       'older child',
-      default_measurements_older_child,
-      { ...default_assessments_older_child, consciousness: 'Reacts to voice' },
+      DEFAULT_MEASUREMENTS['older child'],
+      { ...DEFAULT_ASSESSMENTS['older child'], consciousness: 'Reacts to voice' },
       baseScoresOlderChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 1,
       }),
@@ -1584,8 +1499,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, consciousness: Confused -> score: 2',
       'older child',
-      default_measurements_older_child,
-      { ...default_assessments_older_child, consciousness: 'Confused' },
+      DEFAULT_MEASUREMENTS['older child'],
+      { ...DEFAULT_ASSESSMENTS['older child'], consciousness: 'Confused' },
       baseScoresOlderChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 2,
       }),
@@ -1594,8 +1509,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, consciousness: Reacts to pain -> score: 2',
       'older child',
-      default_measurements_older_child,
-      { ...default_assessments_older_child, consciousness: 'Reacts to pain' },
+      DEFAULT_MEASUREMENTS['older child'],
+      { ...DEFAULT_ASSESSMENTS['older child'], consciousness: 'Reacts to pain' },
       baseScoresOlderChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 2,
       }),
@@ -1604,8 +1519,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, consciousness: Unresponsive -> score: 3',
       'older child',
-      default_measurements_older_child,
-      { ...default_assessments_older_child, consciousness: 'Unresponsive' },
+      DEFAULT_MEASUREMENTS['older child'],
+      { ...DEFAULT_ASSESSMENTS['older child'], consciousness: 'Unresponsive' },
       baseScoresOlderChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 3,
       }),
@@ -1619,16 +1534,16 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'older child, trauma: No -> score: 0',
       'older child',
-      default_measurements_older_child,
-      { ...default_assessments_older_child, trauma_presence: 'No' },
+      DEFAULT_MEASUREMENTS['older child'],
+      { ...DEFAULT_ASSESSMENTS['older child'], trauma_presence: 'No' },
       baseScoresOlderChild({ 'Trauma score': 0 }),
     )
 
     testCase(
       'older child, trauma: Yes -> score: 1',
       'older child',
-      default_measurements_older_child,
-      { ...default_assessments_older_child, trauma_presence: 'Yes' },
+      DEFAULT_MEASUREMENTS['older child'],
+      { ...DEFAULT_ASSESSMENTS['older child'], trauma_presence: 'Yes' },
       baseScoresOlderChild({ 'Trauma score': 1 }),
     )
 
@@ -1651,19 +1566,6 @@ describeParallel('triage/measure_vitals', () => {
         .map(([finding_name, score]) => ({ finding_name, score }))
     }
 
-    // Default values that score 0 for younger child
-    const default_measurements_younger_child = {
-      respiratory_rate: 30, // 26-39 -> score 0
-      heart_rate: 100, // 80-130 -> score 0
-      temperature: 36.6, // 35-38.4 -> score 0
-    }
-
-    const default_assessments_younger_child = {
-      mobility_assessment: 'Normal for age', // Normal for age -> score 0
-      consciousness: 'Alert', // score 0
-      trauma_presence: 'No', // score 0
-    } as const
-
     // =========================================
     // YOUNGER CHILD - MOBILITY ASSESSMENT
     // Normal for age -> 0, Unable to move as normal -> 2
@@ -1672,9 +1574,9 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, mobility: Normal for age -> score: 0',
       'younger child',
-      default_measurements_younger_child,
+      DEFAULT_MEASUREMENTS['younger child'],
       {
-        ...default_assessments_younger_child,
+        ...DEFAULT_ASSESSMENTS['younger child'],
         mobility_assessment: 'Normal for age',
       },
       baseScoresYoungerChild({ 'Assessment of mobility': 0 }),
@@ -1683,9 +1585,9 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, mobility: Unable to move as normal -> score: 2',
       'younger child',
-      default_measurements_younger_child,
+      DEFAULT_MEASUREMENTS['younger child'],
       {
-        ...default_assessments_younger_child,
+        ...DEFAULT_ASSESSMENTS['younger child'],
         mobility_assessment: 'Unable to move as normal',
       },
       baseScoresYoungerChild({ 'Assessment of mobility': 2 }),
@@ -1699,72 +1601,72 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, respiratory_rate: 19 (less than 20) -> score: 3',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 19 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 19 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 3 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 20 (boundary, 20-25 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 20 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 20 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 25 (20-25 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 25 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 25 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 26 (boundary, 26-39 range) -> score: 0',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 26 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 26 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 0 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 39 (26-39 range) -> score: 0',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 39 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 39 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 0 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 40 (boundary, 40-49 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 40 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 40 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 49 (40-49 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 49 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 49 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 2 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 50 (boundary, >=50) -> score: 3',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 50 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 50 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 3 }),
     )
 
     testCase(
       'younger child, respiratory_rate: 60 (>=50) -> score: 3',
       'younger child',
-      { ...default_measurements_younger_child, respiratory_rate: 60 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], respiratory_rate: 60 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Respiratory rate': 3 }),
     )
 
@@ -1776,72 +1678,72 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, heart_rate: 69 (less than 70) -> score: 3',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 69 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 69 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 3 }),
     )
 
     testCase(
       'younger child, heart_rate: 70 (boundary, 70-79 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 70 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 70 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'younger child, heart_rate: 79 (70-79 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 79 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 79 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'younger child, heart_rate: 80 (boundary, 80-130 range) -> score: 0',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 80 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 80 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 0 }),
     )
 
     testCase(
       'younger child, heart_rate: 130 (80-130 range) -> score: 0',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 130 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 130 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 0 }),
     )
 
     testCase(
       'younger child, heart_rate: 131 (boundary, 131-159 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 131 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 131 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'younger child, heart_rate: 159 (131-159 range) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 159 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 159 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 2 }),
     )
 
     testCase(
       'younger child, heart_rate: 160 (boundary, >=160) -> score: 3',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 160 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 160 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 3 }),
     )
 
     testCase(
       'younger child, heart_rate: 180 (>=160) -> score: 3',
       'younger child',
-      { ...default_measurements_younger_child, heart_rate: 180 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], heart_rate: 180 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Pulse, function': 3 }),
     )
 
@@ -1853,48 +1755,48 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, temperature: 34 (Cold/Under 35) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, temperature: 34 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], temperature: 34 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Body temperature': 2 }),
     )
 
     testCase(
       'younger child, temperature: 35 (boundary, normal range) -> score: 0',
       'younger child',
-      { ...default_measurements_younger_child, temperature: 35 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], temperature: 35 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Body temperature': 0 }),
     )
 
     testCase(
       'younger child, temperature: 37 (normal range) -> score: 0',
       'younger child',
-      { ...default_measurements_younger_child, temperature: 37 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], temperature: 37 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Body temperature': 0 }),
     )
 
     testCase(
       'younger child, temperature: 38.4 (normal range upper) -> score: 0',
       'younger child',
-      { ...default_measurements_younger_child, temperature: 38.4 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], temperature: 38.4 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Body temperature': 0 }),
     )
 
     testCase(
       'younger child, temperature: 38.5 (boundary, Hot/Over 38.4) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, temperature: 38.5 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], temperature: 38.5 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Body temperature': 2 }),
     )
 
     testCase(
       'younger child, temperature: 40 (Hot/Over 38.4) -> score: 2',
       'younger child',
-      { ...default_measurements_younger_child, temperature: 40 },
-      default_assessments_younger_child,
+      { ...DEFAULT_MEASUREMENTS['younger child'], temperature: 40 },
+      DEFAULT_ASSESSMENTS['younger child'],
       baseScoresYoungerChild({ 'Body temperature': 2 }),
     )
 
@@ -1906,8 +1808,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, consciousness: Alert -> score: 0',
       'younger child',
-      default_measurements_younger_child,
-      { ...default_assessments_younger_child, consciousness: 'Alert' },
+      DEFAULT_MEASUREMENTS['younger child'],
+      { ...DEFAULT_ASSESSMENTS['younger child'], consciousness: 'Alert' },
       baseScoresYoungerChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 0,
       }),
@@ -1916,9 +1818,9 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, consciousness: Reacts to voice -> score: 1',
       'younger child',
-      default_measurements_younger_child,
+      DEFAULT_MEASUREMENTS['younger child'],
       {
-        ...default_assessments_younger_child,
+        ...DEFAULT_ASSESSMENTS['younger child'],
         consciousness: 'Reacts to voice',
       },
       baseScoresYoungerChild({
@@ -1929,8 +1831,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, consciousness: Reacts to pain -> score: 2',
       'younger child',
-      default_measurements_younger_child,
-      { ...default_assessments_younger_child, consciousness: 'Reacts to pain' },
+      DEFAULT_MEASUREMENTS['younger child'],
+      { ...DEFAULT_ASSESSMENTS['younger child'], consciousness: 'Reacts to pain' },
       baseScoresYoungerChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 2,
       }),
@@ -1939,8 +1841,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, consciousness: Unresponsive -> score: 3',
       'younger child',
-      default_measurements_younger_child,
-      { ...default_assessments_younger_child, consciousness: 'Unresponsive' },
+      DEFAULT_MEASUREMENTS['younger child'],
+      { ...DEFAULT_ASSESSMENTS['younger child'], consciousness: 'Unresponsive' },
       baseScoresYoungerChild({
         'Alert Confusion Voice Pain Unresponsive scale score': 3,
       }),
@@ -1954,8 +1856,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, trauma: No -> score: 0',
       'younger child',
-      default_measurements_younger_child,
-      { ...default_assessments_younger_child, trauma_presence: 'No' },
+      DEFAULT_MEASUREMENTS['younger child'],
+      { ...DEFAULT_ASSESSMENTS['younger child'], trauma_presence: 'No' },
       baseScoresYoungerChild({ 'Trauma score': 0 }),
       [],
     )
@@ -1963,8 +1865,8 @@ describeParallel('triage/measure_vitals', () => {
     testCase(
       'younger child, trauma: Yes -> score: 1',
       'younger child',
-      default_measurements_younger_child,
-      { ...default_assessments_younger_child, trauma_presence: 'Yes' },
+      DEFAULT_MEASUREMENTS['younger child'],
+      { ...DEFAULT_ASSESSMENTS['younger child'], trauma_presence: 'Yes' },
       baseScoresYoungerChild({ 'Trauma score': 1 }),
     )
   })

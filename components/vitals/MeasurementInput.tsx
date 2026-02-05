@@ -6,10 +6,11 @@ type MeasurementInputProps = Omit<VitalMeasurementFormInputDefition, 'vital' | '
   name: string
   s_expression?: string
   label?: Maybe<string>
+  value?: Maybe<string>
 }
 
 export default function MeasurementInput(
-  { name, label, units, s_expression, required }: MeasurementInputProps,
+  { name, label, units, value, s_expression, required }: MeasurementInputProps,
 ) {
   return (
     <>
@@ -19,7 +20,7 @@ export default function MeasurementInput(
         id={name}
         name={`${name}.value`}
         label={label}
-        value={null}
+        value={value}
         className='justify-end'
         min={0}
         suffix={units}

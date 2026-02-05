@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import compact from '../util/compact.ts'
 import { AnyNode, EventValue, Lang } from './s_expression_schemas.ts'
+import { AgeDetermination } from '../types.ts'
 
 // TODO: come back to this idea maybe.
 // As it stands two s_expressions could refer to the same snomed concept,
@@ -20,6 +21,10 @@ function snomedConceptToString(node: Lang['snomed_concept']): string {
 function quoted(str: string): string {
   assert(str, `attempting to enquote falsy value ${str}`)
   return `"${str}"`
+}
+
+function ages(node: { ages: AgeDetermination[] }) {
+  return node.ages.length === 1 ? quoted(node.ages[0]) : `(ages ${node.ages.map(quoted).join(' ')})`
 }
 
 export function inverseSExpression(node: AnyNode): string {
@@ -152,26 +157,11 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'task': {
-      const parts: string[] = ['task', quoted(node.description)]
-      // Handle ages - if single age, output directly; if multiple, wrap in (ages ...)
-      const ages = node.ages.length === 1 ? node.ages[0] : `(ages ${node.ages.join(' ')})`
-      parts.push(ages)
-      parts.push(inverseSExpression(node.due_to))
-      parts.push(inverseSExpression(node.procedure))
-      return `(${parts.join(' ')})`
+      return `(task ${quoted(node.description)} ${ages(node)} ${inverseSExpression(node.due_to)} ${inverseSExpression(node.procedure)})`
     }
 
-    case 'system_priority_determination': {
-      const parts = [
-        'system_priority_determination',
-        `"${node.description}"`,
-        inverseSExpression(node.when_primary_finding),
-        node.priority,
-      ]
-      for (const other_finding of node.when_other_findings_also_present) {
-        parts.push(inverseSExpression(other_finding))
-      }
-      return `(${parts.join(' ')})`
+    case 'system_priority_evaluation': {
+      return `(system_priority_evaluation ${ages(node)} ${quoted(node.priority)} ${inverseSExpression(node.due_to)})`
     }
 
     case 'diagnosis': {
@@ -179,9 +169,7 @@ export function inverseSExpression(node: AnyNode): string {
     }
 
     case 'system_diagnosis_rule': {
-      const ages = node.ages.length === 1 ? node.ages[0] : `(ages ${node.ages.join(' ')})`
-
-      return `(system_diagnosis_rule ${inverseSExpression(node.diagnosis)} ${ages} ${inverseSExpression(node.evidence)})`
+      return `(system_diagnosis_rule ${inverseSExpression(node.diagnosis)} ${ages(node)} ${inverseSExpression(node.due_to)})`
     }
 
     default: {

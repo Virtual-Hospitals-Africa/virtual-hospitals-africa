@@ -11,7 +11,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { assert } from 'std/assert/assert.ts'
 
 import { CommonSymptom, TrxOrDb, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
-import { normalForm, parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
+import { normalForm, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
@@ -31,11 +31,10 @@ import compactMap from '../../../../../../../../util/compactMap.ts'
 import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.ts'
 
 import sortBy from '../../../../../../../../util/sortBy.ts'
+import { insertable_finding_base } from '../../../../../../../../shared/s_expression_schemas.ts'
 
 export const TriageWarningSignSchema = z.object({
-  s_expression: z.string().transform((
-    value,
-  ) => parseExpressionExpectingAtom(value, 'finding')),
+  s_expression: sExpressionZodValidator(insertable_finding_base),
   existence: z.enum(['Yes', 'No']).optional().transform((existence) => existence || 'No'),
   warning_sign_key: z.string().optional(),
   priority_level: z.enum(ORDERED_PRIORITIES).optional(),
@@ -59,7 +58,7 @@ const NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges = Symbol(
 
 type InsertedSummary = {
   procedure_id: string
-  findings: { id: string; existence: 'Yes' | 'No' }[]
+  records: { id: string; existence: 'Yes' | 'No' }[]
 } | typeof NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
 
 export const handler = postHandler(
@@ -149,14 +148,14 @@ export const handler = postHandler(
       assert(success)
       assert(procedure_id)
 
-      const findings = Array.from(
+      const records = Array.from(
         zip(finding_ids, needing_insert).map(([id, { existence }]) => ({
           id,
           existence,
         })),
       )
 
-      return { findings, procedure_id }
+      return { records, procedure_id }
     }
 
     function dispatchEvent(

@@ -56,6 +56,7 @@ export default function OrganizationsSelect(
     <RadioButtonGroup
       name='organization_id'
       variant='panel-with-border'
+      defaultValue={organizations[0].id}
       options={organizations.map((organization) => ({
         ...organization,
         description: organization.formatted_address,

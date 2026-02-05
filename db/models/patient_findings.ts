@@ -1,5 +1,5 @@
 import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { arrayAggIds, asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, success_true } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, literalUUIDArray, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records } from './patient_records.ts'
 import { RawBuilder, sql } from 'kysely'
@@ -9,17 +9,19 @@ import { buildExpression, maybeSnomedConceptBase, satisfyingSExpression, snomedC
 import { Priority, PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
-import { Comparisons, Lang } from '../../shared/s_expression_schemas.ts'
+import { Comparisons, InsertableFindingBase, Lang } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
   ATTRIBUTE,
+  DUE_TO,
   EVALUATION_ACTION,
   EVENT,
   MEASUREMENT_FINDING,
   NO_QUALIFIER,
   PRIORITY,
   PROCEDURE,
+  RELATIONSHIP,
   SEVERITY_SCORE,
   UNKNOWN_QUALIFIER,
   YES_QUALIFIER,
@@ -59,32 +61,6 @@ export function baseQuery(
         specific_snomed_concept_category: eb.ref('procedures_aggregated.specific_snomed_concept_category'),
         workflow_step_name: caseWhenMatching(eb, eb.ref('procedures_aggregated.specific_snomed_concept_id'), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
       }).as('as_part_of_procedure'),
-
-      eb.selectFrom('patient_triage_level')
-        .innerJoin(
-          'patient_records as triage_patient_records',
-          'patient_triage_level.id',
-          'triage_patient_records.id',
-        )
-        .innerJoin('patient_records_still_valid as triage_valid', 'triage_valid.id', 'triage_patient_records.id')
-        .innerJoin(
-          'patient_evaluations as triage_evaluations',
-          'patient_triage_level.id',
-          'triage_evaluations.id',
-        )
-        .innerJoin(
-          'snomed_inferred_canonical_name_and_category as triage_snomed_inferred_canonical_name_and_category',
-          'triage_patient_records.value_snomed_concept_id',
-          'triage_snomed_inferred_canonical_name_and_category.id',
-        )
-        .whereRef(
-          'triage_evaluations.evaluates_record_id',
-          '=',
-          'patient_records_aggregated.id',
-        )
-        .select('triage_snomed_inferred_canonical_name_and_category.name')
-        .$castTo<Priority | null>()
-        .as('priority'),
 
       eb.selectFrom('patient_evaluation_scores')
         .innerJoin(
@@ -126,7 +102,7 @@ type InsertCommon = {
   patient_encounter_employee_id: string
 }
 
-export type FindingNodeToInsert = Lang['finding'] & {
+export type FindingNodeToInsert = InsertableFindingBase & {
   priority?: Maybe<{
     level: Priority
     by_system: boolean
@@ -304,6 +280,8 @@ export const patient_findings = base({
     const triage_level_records: InsertRows<'patient_records'> = []
     const triage_level_evaluations: InsertRows<'patient_evaluations'> = []
     const triage_level_values: InsertRows<'patient_triage_level'> = []
+    const triage_relation_records: InsertRows<'patient_records'> = []
+    const triage_relations: InsertRows<'patient_record_relations'> = []
     const score_records: InsertRows<'patient_records'> = []
     const score_evaluations: InsertRows<'patient_evaluations'> = []
     const score_values: InsertRows<'patient_evaluation_scores'> = []
@@ -360,6 +338,7 @@ export const patient_findings = base({
       // Collect priority/triage level
       if (priority) {
         const triage_level_evaluation_id = generateUUID()
+        const relation_id = generateUUID()
         const value_snomed_concept_id = PRIORITY_SNOMED_CODES[priority.level]
         const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[priority.level]
 
@@ -374,7 +353,6 @@ export const patient_findings = base({
 
         triage_level_evaluations.push({
           id: triage_level_evaluation_id,
-          evaluates_record_id: record_id,
           employment_id: priority.by_system ? null : employment_id,
           by_system: priority.by_system,
           procedure_id,
@@ -383,6 +361,20 @@ export const patient_findings = base({
         triage_level_values.push({
           id: triage_level_evaluation_id,
           target_treatment_time: sql<Date>`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
+        })
+
+        triage_relation_records.push({
+          id: relation_id,
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: RELATIONSHIP.id,
+          specific_snomed_concept_id: DUE_TO.id,
+        })
+
+        triage_relations.push({
+          id: relation_id,
+          source_id: triage_level_evaluation_id,
+          destination_id: record_id,
         })
       }
 
@@ -506,6 +498,12 @@ export const patient_findings = base({
         'inserting_triage_levels',
         (qb) => triage_level_values.length ? qb.insertInto('patient_triage_level').values(triage_level_values) : blankSelection(qb),
       ).with(
+        'inserting_triage_relation_records',
+        (qb) => triage_relation_records.length ? qb.insertInto('patient_records').values(triage_relation_records) : blankSelection(qb),
+      ).with(
+        'inserting_triage_relations',
+        (qb) => triage_relations.length ? qb.insertInto('patient_record_relations').values(triage_relations) : blankSelection(qb),
+      ).with(
         'inserting_score_records',
         (qb) => score_records.length ? qb.insertInto('patient_records').values(score_records) : blankSelection(qb),
       ).with(
@@ -522,10 +520,11 @@ export const patient_findings = base({
       ).selectFrom('inserting_records')
       .innerJoin('inserting_procedure_record', (join) => join.onTrue())
       .groupBy('inserting_procedure_record.id')
-      .select((eb) => [
+      .select([
         success_true,
         'inserting_procedure_record.id as procedure_id',
-        arrayAggIds(eb.ref('inserting_records.id')).as('finding_ids'),
+        literalUUIDArray(findings_to_insert.map((f) => f.record_id)).as('finding_ids'),
+        literalUUIDArray(measurements_to_insert.map((m) => m.record_id)).as('measurement_ids'),
       ])
       .executeTakeFirstOrThrow()
   },

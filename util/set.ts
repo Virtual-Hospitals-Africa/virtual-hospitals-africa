@@ -1,4 +1,5 @@
-import { assertOr400 } from './assertOr.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertOr400, StatusError } from './assertOr.ts'
 import isObjectLike from './isObjectLike.ts'
 import last from './last.ts'
 
@@ -33,14 +34,18 @@ export default function set(obj: any, path: string, value: any) {
     current = current[key]
   })
 
-  if (!isObjectLike(current)) {
-    const earlier_keys_str = earlier_keys.join('.')
-    assertOr400(
-      false,
-      `attempting to assign property ${last_key} to ${earlier_keys_str}, but ${earlier_keys_str} is a ${typeof current}`,
-    )
+  if (Array.isArray(current)) {
+    const index = parseInt(last_key)
+    assert(!isNaN(index), `Trying to set ${last_key} on an array`)
+    current[index] = value
+    return obj
   }
 
-  current[last_key] = value
-  return obj
+  if (isObjectLike(current)) {
+    current[last_key] = value
+    return obj
+  }
+
+  const earlier_keys_str = earlier_keys.join('.')
+  throw new StatusError(`attempting to assign property ${last_key} to ${earlier_keys_str}, but ${earlier_keys_str} is a ${typeof current}`, 400)
 }

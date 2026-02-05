@@ -80,7 +80,7 @@ describeParallel('db/models/patient_findings.ts', () => {
 
       assertEquals(
         finding.displays.full,
-        'Burn',
+        'Burn (Left upper arm structure)',
       )
 
       assertMatches(finding.attributes, [

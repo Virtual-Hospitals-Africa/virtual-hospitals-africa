@@ -17,6 +17,7 @@ import {
 import { TriageBriefHistorySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/brief_history.tsx'
 import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
 import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
+import { TriageAdditionalTasksAndInvestigationsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_tasks_and_investigations.tsx'
 import fromEntries from '../../../../../util/fromEntries.ts'
 import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { CheerioAPI } from 'cheerio'
@@ -24,6 +25,10 @@ import entries from '../../../../../util/entries.ts'
 import keys from '../../../../../util/keys.ts'
 import isKeyOf from '../../../../../util/isKeyOf.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import { VitalAssessment } from '../../../../../db.d.ts'
+import { assessmentOptionSExpression, VITAL_MEASUREMENTS_UNITS, VitalMeasurement } from '../../../../../shared/vitals.ts'
+import { AgeDetermination } from '../../../../../types.ts'
+import mapEntries from '../../../../../util/mapEntries.ts'
 
 export type TriageSteps = {
   warning_signs?: z.input<typeof TriageWarningSignsSchema>
@@ -32,6 +37,7 @@ export type TriageSteps = {
     typeof TriageHeightAndWeightSchema
   >
   measure_vitals?: z.input<typeof TriageMeasureVitalsSchema>
+  additional_tasks_and_investigations?: z.input<typeof TriageAdditionalTasksAndInvestigationsSchema>
 }
 
 export type TriageScenarioNewPatient = TriageSteps & {
@@ -194,4 +200,96 @@ export async function setupTriageReturningPatient(
   )
 
   return setupTriage({ clinic, nurse, encounter, steps })
+}
+
+export function dateOfBirth(age_determination: AgeDetermination): string {
+  switch (age_determination) {
+    case 'adult':
+      return '1990-01-01'
+    case 'older child':
+      return '2020-01-01'
+    case 'younger child':
+      return '2025-01-01'
+  }
+}
+
+export function heightOf(age_determination: AgeDetermination): number {
+  switch (age_determination) {
+    case 'adult':
+      return 160
+    case 'older child':
+      return 100
+    case 'younger child':
+      return 70
+  }
+}
+
+export function weightOf(age_determination: AgeDetermination): number {
+  switch (age_determination) {
+    case 'adult':
+      return 70
+    case 'older child':
+      return 38
+    case 'younger child':
+      return 15
+  }
+}
+
+export function asVitalMeasurementFormValues(
+  measurement_values: Partial<Record<VitalMeasurement, number>>,
+) {
+  return mapEntries(measurement_values, (value, vital) => ({
+    value,
+    units: VITAL_MEASUREMENTS_UNITS[vital],
+  }))
+}
+
+export function asVitalAssessmentFormValues(
+  assessment_values: { [v in VitalAssessment]: string },
+) {
+  return mapEntries(assessment_values, (value, vital) => ({
+    s_expression: assessmentOptionSExpression(
+      vital,
+      value,
+    ),
+  }))
+}
+
+// Default values that score 0 for all vitals
+export const DEFAULT_MEASUREMENTS = {
+  'adult': {
+    respiratory_rate: 12, // 9-14 -> score 0
+    heart_rate: 60, // 51-100 -> score 0
+    blood_pressure_systolic: 120, // 101-199 -> score 0
+    blood_pressure_diastolic: 80,
+    temperature: 36.6, // 35-38.4 -> score 0
+  },
+  'older child': {
+    respiratory_rate: 19, // 17-21 -> score 0
+    heart_rate: 90, // 80-99 -> score 0
+    temperature: 36.6, // 35-38.4 -> score 0
+  },
+  'younger child': {
+    respiratory_rate: 30, // 26-39 -> score 0
+    heart_rate: 100, // 80-130 -> score 0
+    temperature: 36.6, // 35-38.4 -> score 0
+  },
+}
+
+export const DEFAULT_ASSESSMENTS = {
+  'adult': {
+    mobility_assessment: 'Walking', // score 0
+    consciousness: 'Alert', // score 0
+    trauma_presence: 'No', // score 0
+  },
+  'older child': {
+    mobility_assessment: 'Normal for age', // Normal for age -> score 0
+    consciousness: 'Alert', // score 0
+    trauma_presence: 'No', // score 0
+  },
+  'younger child': {
+    mobility_assessment: 'Normal for age', // Normal for age -> score 0
+    consciousness: 'Alert', // score 0
+    trauma_presence: 'No', // score 0
+  },
 }

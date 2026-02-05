@@ -19,7 +19,7 @@ import { promiseProps } from '../util/promiseProps.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { WORKFLOWS } from '../shared/workflow.ts'
 import { additional_tasks } from '../db/models/additional_tasks.ts'
-import { system_priority_determinations } from '../db/models/system_priority_determinations.ts'
+import { system_priority_evaluations } from '../db/models/system_priority_evaluations.ts'
 import { patient_evaluation_scores } from '../db/models/patient_evaluation_scores.ts'
 import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, SEVERITY_SCORE } from '../shared/snomed_concepts.ts'
@@ -41,6 +41,7 @@ export const EVENTS = {
 
         const message = `Health worker ${health_worker.name} has logged in for the first time`
         await sendToHealthWorkerLoggedInChannel(message)
+        return message
       },
     },
   ),
@@ -74,12 +75,24 @@ export const EVENTS = {
       evaluation_id: z.string().uuid(),
     }),
     {
-      async insertTasksIfNotAlreadyIdentified(trx, { data }) {
-        await additional_tasks.insertTasksIfNotAlreadyIdentified(
+      insertTasksIfNotAlreadyIdentified(trx, { data }) {
+        return additional_tasks.insertTasksIfNotAlreadyIdentified(
           trx,
           {
             ...data,
-            findings: [{
+            records: [{
+              id: data.evaluation_id,
+              existence: 'Yes' as const,
+            }],
+          },
+        )
+      },
+      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, { data }) {
+        return system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
+          trx,
+          {
+            ...data,
+            records: [{
               id: data.evaluation_id,
               existence: 'Yes' as const,
             }],
@@ -96,27 +109,27 @@ export const EVENTS = {
       patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
       patient_encounter_id: z.string().uuid(),
       procedure_id: z.string().uuid(),
-      findings: z.object({
+      records: z.object({
         id: z.string().uuid(),
-        existence: z.enum(['Yes', 'No']),
+        existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
     }),
     {
-      async insertTasksIfNotAlreadyIdentified(trx, payload) {
-        await additional_tasks.insertTasksIfNotAlreadyIdentified(
+      insertTasksIfNotAlreadyIdentified(trx, payload) {
+        return additional_tasks.insertTasksIfNotAlreadyIdentified(
           trx,
           payload.data,
         )
       },
-      async insertSystemDiagnosesIfNotAlreadyIdentified(trx, payload) {
-        await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
+      insertSystemDiagnosesIfNotAlreadyIdentified(trx, payload) {
+        return system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
           trx,
           payload.data,
         )
       },
       async insertTotalScoreAfterMeasureVitals(trx, { data: { workflow, step, patient_id, patient_age_determination, patient_encounter_id, procedure_id } }) {
         const completed_measure_vitals = workflow === 'triage' && step === 'measure_vitals'
-        if (!completed_measure_vitals) return
+        if (!completed_measure_vitals) return 'Skipped: procedure is not measure_vitals in triage'
         assert(patient_age_determination != null, `Age unknown`)
 
         const { total_score } = await patient_evaluation_scores
@@ -134,17 +147,19 @@ export const EVENTS = {
           },
         )
 
+        const triage_level = triageLevelFromTEWSTotal(total_score, patient_age_determination)
         await patient_triage.insertLevel(trx, {
           patient_id,
           patient_encounter_id,
           procedure_id,
           by_system: true,
-          evaluates_record_id: score_evaluation.evaluation_id,
-          triage_level: triageLevelFromTEWSTotal(total_score, patient_age_determination),
+          evaluates_record_ids: [score_evaluation.evaluation_id],
+          triage_level,
         })
+        return `Inserted TEWS total score ${total_score} and triage level ${triage_level}`
       },
-      async insertSystemPriorityDeterminationsIfNotAlreadyIdentified(trx, payload) {
-        await system_priority_determinations.insertSystemPriorityDeterminationsIfNotAlreadyIdentified(
+      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, payload) {
+        return system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
           trx,
           payload.data,
         )
@@ -167,7 +182,7 @@ export const EVENTS = {
           trx,
           payload.data.review_request_id,
         )
-        if (!doctor_review_request.requesting.doctor_id) return
+        if (!doctor_review_request.requesting.doctor_id) return 'Skipped: no doctor_id on review request'
 
         await notifications.insert(trx, {
           action_title: 'Review',
@@ -183,6 +198,7 @@ export const EVENTS = {
           title: 'Review Requested',
           action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
         })
+        return 'Notified requested doctor of review'
       },
       async notifyDoctorsOrOrganization(trx, payload) {
         const doctor_review_request = await doctor_reviews.requestById(
@@ -191,7 +207,7 @@ export const EVENTS = {
         )
 
         const { organization_id } = doctor_review_request.requesting
-        if (!organization_id) return
+        if (!organization_id) return 'Skipped: no organization_id on review request'
 
         const doctors_at_organization = await employees.findAll(
           trx,
@@ -217,6 +233,7 @@ export const EVENTS = {
             action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
           })
         }
+        return `Notified ${doctors_at_organization.length} doctor(s) at organization of review request`
       },
     },
   ),
@@ -240,7 +257,7 @@ export const EVENTS = {
           (p) => p.table_name === 'pharmacists',
         )
 
-        if (!pharmacist_participants.length) return
+        if (!pharmacist_participants.length) return 'Skipped: no pharmacist participants in thread'
 
         for (const pharmacist_participant of pharmacist_participants) {
           const pharmacist_chatbot_user = await trx.selectFrom(
@@ -281,6 +298,7 @@ export const EVENTS = {
             body: JSON.stringify(whatsapp_to_send),
           })
         }
+        return `Sent WhatsApp to ${pharmacist_participants.length} pharmacist(s)`
       },
     },
   ),
@@ -311,7 +329,7 @@ export const EVENTS = {
           console.warn(
             `No health workers can perform triage for organization ${patient_encounter.organization.id}`,
           )
-          return
+          return 'Skipped: no health workers can perform triage at this organization'
         }
 
         for (const employee of can_perform_triage) {
@@ -328,6 +346,7 @@ export const EVENTS = {
               `/app/organizations/${patient_encounter.organization.id}/patients/${patient_encounter.patient.id}/open_encounter/respond-to-immediate-triage-request`,
           })
         }
+        return `Notified ${can_perform_triage.length} health worker(s) of immediate triage request`
       },
     },
   ),
@@ -340,7 +359,7 @@ export const EVENTS = {
         const review = await doctor_reviews.getById(trx, payload.data.review_id)
         const doctor = await employees.getById(trx, review.employment_id)
 
-        return notifications.insert(trx, {
+        await notifications.insert(trx, {
           action_title: 'View completed review',
           avatar_url: doctor.avatar_url ||
             '/images/heroicons/24/solid/slipboard-document-list.svg',
@@ -352,6 +371,7 @@ export const EVENTS = {
           title: 'Review Requested',
           action_href: `/app/patients/${review.patient.id}/review/clinical_notes`,
         })
+        return `Notified original requester of completed review by ${doctor.name}`
       },
     },
   ),
@@ -363,6 +383,7 @@ export const EVENTS = {
       // deno-lint-ignore no-unused-vars require-await
       async sendToPharmacistWhatsapp(trx, payload) {
         console.log('TODO!')
+        return 'TODO: not yet implemented'
       },
     },
   ),
@@ -422,7 +443,7 @@ export function defineEvent<T extends z.ZodRawShape>(
         data: z.infer<z.ZodObject<T>>
         // metadata: { error_count: number }
       },
-    ) => Promise<unknown>
+    ) => Promise<string>
   >,
 ) {
   return {

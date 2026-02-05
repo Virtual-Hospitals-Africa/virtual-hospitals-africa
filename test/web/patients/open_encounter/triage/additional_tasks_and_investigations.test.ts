@@ -3,13 +3,21 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
+import {
+  asVitalAssessmentFormValues,
+  asVitalMeasurementFormValues,
+  asWarningSigns,
+  dateOfBirth,
+  DEFAULT_ASSESSMENTS,
+  DEFAULT_MEASUREMENTS,
+  heightOf,
+  setupTriageNewPatient,
+  weightOf,
+} from './_setup.ts'
 import { route } from '../../../../_route.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import { z } from 'zod'
-import { asVitalAssessmentFormValues, asVitalMeasurementFormValues } from '../../../../../shared/vitals.ts'
-
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
@@ -18,6 +26,9 @@ import { events } from '../../../../../db/models/events.ts'
 import { system_diagnosis_rules } from '../../../../../db/models/system_diagnosis_rules.ts'
 import { patient_findings } from '../../../../../db/models/patient_findings.ts'
 
+import { getFormLabels, getFormValues } from 'test/_helpers/form.ts'
+import { getTableDisplay } from 'test/_helpers/table.ts'
+
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
   before(async () => {
@@ -25,232 +36,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   })
   afterAll(() => db.destroy())
   afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
-
-  itParallel.skip('loads on the page', async () => {
-    const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
-      patient_demographics: { date_of_birth: '2023-01-01' },
-      brief_history: {
-        diabetes: { existence: 'Yes' },
-        pregnancy: { existence: 'No' },
-      },
-      warning_signs: {
-        warning_signs: {},
-      },
-      height_and_weight: {
-        measurements: {
-          height: {
-            value: 160,
-            units: 'cm',
-          },
-          weight: {
-            value: 80,
-            units: 'kg',
-          },
-        },
-      },
-      measure_vitals: {
-        measurements: {
-          blood_oxygen_saturation: {
-            value: 91,
-            units: '%',
-          },
-        },
-        assessments: {},
-      },
-    })
-
-    assertEquals(
-      $.url,
-      `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/additional_tasks_and_investigations`,
-    )
-
-    const result = await additional_tasks.getTasksGroups(db, {
-      encounter,
-      health_worker_id: nurse.health_worker.id,
-    })
-
-    assertMatches(result, [
-      {
-        'due_to': [
-          {
-            'id': z.string().uuid(),
-            'created_at': z.date(),
-            'snomed_concept_id': '118245000',
-            'patient_encounter_id': z.string().uuid(),
-            'name': 'Measurement finding',
-            'category': 'finding',
-            'value_snomed_concept_id': null,
-
-            'destination_relations': [],
-            'source_relations': [
-              {
-                'source_id': z.string().uuid(),
-                'snomed_concept_id': '42752001',
-              },
-            ],
-            'qualifiers': [
-              {
-                'id': z.string().uuid(),
-                'snomed_concept_id': '103228002',
-                'category': 'observable entity',
-                'name': 'Hemoglobin saturation with oxygen',
-
-                'qualifiers': [],
-              },
-            ],
-            'type': 'finding',
-            'patient_encounter_employee_id': z.string().uuid(),
-            'as_part_of_procedure': {
-              'id': z.string().uuid(),
-              'snomed_concept_id': '410188000',
-              'name': 'Taking patient vital signs assessment',
-            },
-            'priority': null,
-            'full_display': 'Hemoglobin saturation with oxygen Measurement finding',
-            'provider': {
-              'is_me': true,
-              'id': z.string().uuid(),
-              'name': z.string(),
-              'first_names': 'Test Health Worker',
-              'surname': z.string().uuid(),
-              'preferred_name': 'Test',
-              'email': z.string().email(),
-              'avatar_url': z.string(),
-              'organizations': [
-                {
-                  'id': z.string().uuid(),
-                  'name': z.string(),
-                  'category': 'Clinic',
-                  'is_test': false,
-                  'country': 'ZA',
-                  'ownership': null,
-                  'inactive_reason': null,
-                  'most_common_language_code': null,
-                  'formatted_address': '123 Test St, Test City, South Africa, 12345',
-                  'description': '123 Test St, Test City, South Africa, 12345',
-                  'waiting_room_id': z.string().uuid(),
-                  'reception_id': z.string().uuid(),
-                  'location': {
-                    'longitude': 0,
-                    'latitude': 0,
-                  },
-                  'departments': [
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Primary care',
-                      'requires_triage': true,
-                      'workflows': [
-                        'consultation',
-                      ],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Maternity',
-                      'requires_triage': true,
-                      'workflows': [
-                        'maternity',
-                      ],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Immunizations',
-                      'requires_triage': true,
-                      'workflows': [],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Chronic diseases',
-                      'requires_triage': true,
-                      'workflows': [],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Reception',
-                      'requires_triage': false,
-                      'workflows': [
-                        'registration',
-                      ],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Waiting room',
-                      'requires_triage': false,
-                      'workflows': [],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Triage',
-                      'requires_triage': false,
-                      'workflows': [
-                        'triage',
-                      ],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Administration',
-                      'requires_triage': false,
-                      'workflows': [],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Pharmacy',
-                      'requires_triage': false,
-                      'workflows': [
-                        'prescription_refill',
-                      ],
-                    },
-                    {
-                      'id': z.string().uuid(),
-                      'name': 'Emergency',
-                      'requires_triage': false,
-                      'workflows': [
-                        'stabilization',
-                      ],
-                    },
-                  ],
-                  'employment_id': z.string().uuid(),
-                  'profession': 'nurse',
-                  'specialty': 'Primary care',
-                  'is_admin': false,
-                  'department_ids': z.array(z.string().uuid()),
-                },
-              ],
-              'employee_id': z.string().uuid(),
-              'organization_id': z.string().uuid(),
-              'profession': 'nurse',
-              'specialty': 'Primary care',
-              'is_admin': false,
-              'href': z.string(),
-              'patient_encounter_employee_id': z.string().uuid(),
-              'seen_at': z.string(),
-            },
-          },
-        ],
-        'tasks': [
-          {
-            'task': {
-              'id': z.string().uuid(),
-              'created_at': z.date(),
-              'snomed_concept_id': '57485005',
-              'patient_encounter_id': z.string().uuid(),
-              'name': 'Oxygen therapy',
-              'category': 'procedure',
-              'value_snomed_concept_id': null,
-
-              'destination_relations': [],
-              'source_relations': [],
-              'qualifiers': [],
-              'type': 'procedure',
-              'by_system': true,
-              'employment_id': null,
-              'full_display': 'Oxygen therapy',
-            },
-            'completed': false,
-          },
-        ],
-      },
-    ])
-  })
 
   itParallel('prompts for Nausea Vomiting Pallor Sweating in case of chest pain', async () => {
     const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
@@ -293,75 +78,107 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/additional_tasks_and_investigations`,
     )
 
-    const result = await additional_tasks.getTasksGroups(db, {
+    const task_groups = await additional_tasks.getTasksGroups(db, {
       encounter,
       health_worker_id: nurse.health_worker.id,
     })
 
-    assertMatches(result, [
+    assertEquals(task_groups.length, 1)
+    const [task_group] = task_groups
+    assertMatches(task_group.due_to, [{ 'displays': { 'full': 'Chest pain' } }])
+
+    assertEquals(task_group.tasks, [
       {
-        'due_to': [{ 'displays': { 'full': 'Chest pain' } }],
-        'tasks': [
-          {
-            'procedure': {
-              'value': {
-                'type': 'link',
-                'title': 'Chest pain page',
-                'href': '/medical-resources/primary-care/adult.pdf#page=37',
-                'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/150/37.png',
-              },
-              'displays': {
-                'finding': 'Reference documentation',
-                'value': {
-                  'title': 'Chest pain page',
-                  'href': '/medical-resources/primary-care/adult.pdf#page=37',
-                  'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/150/37.png',
-                },
-              },
-            },
-          },
-          {
-            'procedure': {
-              'specific_snomed_concept_id': '409060008',
-              'specific_snomed_concept_name': 'Evaluation for signs and symptoms of physical health problems',
-              'value': {
-                'type': 's_expression',
-                's_expression': z.string(),
-                'nodes': [
-                  {
-                    'atom': 'finding',
-                    'displays': {
-                      'finding': 'Nausea',
-                    },
-                  },
-                  {
-                    'atom': 'finding',
-                    'displays': {
-                      'finding': 'Vomiting',
-                    },
-                  },
-                  {
-                    'atom': 'finding',
-                    'displays': {
-                      'finding': 'Pallor of skin of face',
-                    },
-                  },
-                  {
-                    'atom': 'finding',
-                    'displays': {
-                      'finding': 'Sweating',
-                    },
-                  },
-                ],
-              },
-              'displays': {
-                'value': 'Nausea; Vomiting; Pallor of skin of face; Sweating',
-              },
-            },
-          },
-        ],
+        'atom': 'link',
+        'title': 'Chest pain page',
+        'href': '/medical-resources/primary-care/adult.pdf#page=37',
+        'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/150/37.png',
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Nausea', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
+        'displays': { 'value': null, 'finding': 'Nausea', 'full': 'Nausea' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Vomiting', 'category': 'disorder' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Vomiting" "disorder"))',
+        'displays': { 'value': null, 'finding': 'Vomiting', 'full': 'Vomiting' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Pallor of skin of face', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pallor of skin of face" "finding"))',
+        'displays': { 'value': null, 'finding': 'Pallor of skin of face', 'full': 'Pallor of skin of face' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Sweating', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Sweating" "finding"))',
+        'displays': { 'value': null, 'finding': 'Sweating', 'full': 'Sweating' },
+        'existing_finding': null,
       },
     ])
+
+    const form_labels = getFormLabels($)
+    const form_values = getFormValues($)
+
+    assertEquals(form_labels, {
+      'check_for': {
+        'finding-nausea': { 'existence': 'Nausea*' },
+        'finding-vomiting': { 'existence': 'Vomiting*' },
+        'finding-pallor-of-skin-of-face': { 'existence': 'Pallor of skin of face*' },
+        'finding-sweating': { 'existence': 'Sweating*' },
+      },
+    })
+    assertEquals(form_values, {
+      'check_for': {
+        'finding-nausea': {
+          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
+        },
+        'finding-vomiting': {
+          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Vomiting" "disorder"))',
+        },
+        'finding-pallor-of-skin-of-face': {
+          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pallor of skin of face" "finding"))',
+        },
+        'finding-sweating': {
+          's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Sweating" "finding"))',
+        },
+      },
+    })
   })
 
   itParallel(
@@ -427,7 +244,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_id,
         patient_encounter_id,
         patient_age_determination: 'adult',
-        findings: [{
+        records: [{
           id: allergy_to_fish.id,
           existence: 'Yes',
         }],
@@ -453,7 +270,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_id,
         patient_encounter_id,
         patient_age_determination: 'adult',
-        findings: [{
+        records: [{
           id: allergy_to_fish.id,
           existence: 'Yes',
         }],
@@ -476,7 +293,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     'does give a possible diagnosis for anaphylaxis for an insect bite',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
-      const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+      const { $, patient_id, patient_encounter_id } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -486,6 +303,32 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           pregnancy: {
             existence: 'No',
           },
+        },
+        height_and_weight: {
+          measurements: {
+            height: {
+              value: 160,
+              units: 'cm',
+            },
+            weight: {
+              value: 80,
+              units: 'kg',
+            },
+          },
+        },
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues({
+            respiratory_rate: 12, // 9-14 -> score 0
+            heart_rate: 60, // 51-100 -> score 0
+            blood_pressure_systolic: 120, // 101-199 -> score 0
+            blood_pressure_diastolic: 80,
+            temperature: 36.6, // 35-38.4 -> score 0
+          }),
+          assessments: asVitalAssessmentFormValues({
+            mobility_assessment: 'Walking', // score 0
+            consciousness: 'Alert', // score 0
+            trauma_presence: 'No', // score 0
+          }),
         },
       })
 
@@ -516,7 +359,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_id,
         patient_encounter_id,
         patient_age_determination: 'adult',
-        findings: [{
+        records: [{
           id: insect_bite.id,
           existence: 'Yes',
         }],
@@ -532,138 +375,339 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       )
 
       assertEquals(anaphylaxis_diagnosis, same_anaphylaxis_diagnosis)
+
+      const form_values = getFormValues($)
+
+      assertMatches(form_values, {
+        check_for: {
+          'finding-sudden-onset-itching': {
+            s_expression:
+              '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+          },
+          'finding-sudden-onset-eruption': {
+            s_expression:
+              '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+          },
+          'finding-insect-bite-wound': {
+            s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Insect bite - wound" "disorder"))',
+            existing_finding: {
+              id: z.string().uuid(),
+              existence: 'Yes',
+            },
+            existence: 'Yes',
+          },
+          'finding-sudden-onset-swelling-face-structure': {
+            s_expression:
+              '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+          },
+          'finding-sudden-onset-swelling-tongue-structure': {
+            s_expression:
+              '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+          },
+          'finding-dizziness': {
+            s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dizziness" "finding"))',
+          },
+          'finding-collapse': {
+            s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Collapse" "finding"))',
+          },
+          'finding-difficulty-breathing': {
+            s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
+          },
+          'finding-exposure-to-peanut': {
+            s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))',
+          },
+          'finding-exposure-to-tree-nut': {
+            s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))',
+          },
+          'finding-exposure-to-eggs-edible': {
+            s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Eggs (edible)" "substance"))',
+          },
+          'finding-exposure-to-milk': {
+            s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))',
+          },
+          'finding-exposure-to-fish': {
+            s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))',
+          },
+        },
+      }, { strict: true })
     },
   )
+
+  itParallel(
+    'upgrades a possible diagnosis for anaphylaxis to a probable diagnosis after meeting prompted for checks',
+    async () => {
+      const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
+      const { $, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
+        patient_demographics: randomDemographics('ZA', 'female', 'adult'),
+        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        brief_history: {
+          diabetes: {
+            existence: 'No',
+          },
+          pregnancy: {
+            existence: 'No',
+          },
+        },
+        height_and_weight: {
+          measurements: {
+            height: {
+              value: 160,
+              units: 'cm',
+            },
+            weight: {
+              value: 80,
+              units: 'kg',
+            },
+          },
+        },
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues({
+            respiratory_rate: 12, // 9-14 -> score 0
+            heart_rate: 60, // 51-100 -> score 0
+            blood_pressure_systolic: 120, // 101-199 -> score 0
+            blood_pressure_diastolic: 80,
+            temperature: 36.6, // 35-38.4 -> score 0
+          }),
+          assessments: asVitalAssessmentFormValues({
+            mobility_assessment: 'Walking', // score 0
+            consciousness: 'Alert', // score 0
+            trauma_presence: 'No', // score 0
+          }),
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+      const anaphylaxis_diagnosis = await patient_evaluations.findOne(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      assertMatches(anaphylaxis_diagnosis, {
+        displays: {
+          full: 'Anaphylaxis Diagnosis: Possible diagnosis',
+        },
+      })
+
+      // deno-lint-ignore no-explicit-any
+      const form_values: any = getFormValues($)
+
+      const $assign_priority = await postStep({
+        additional_tasks_and_investigations: {
+          check_for: {
+            'finding-sudden-onset-itching': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'Yes',
+            },
+            'finding-sudden-onset-eruption': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'No',
+            },
+            'finding-insect-bite-wound': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Insect bite - wound" "disorder"))',
+              existing_finding: {
+                id: form_values['check_for']['finding-insect-bite-wound']['existing_finding']['id'] as string,
+                existence: 'Yes',
+              },
+              existence: 'Yes',
+            },
+            'finding-sudden-onset-swelling-face-structure': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'No',
+            },
+            'finding-sudden-onset-swelling-tongue-structure': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'No',
+            },
+            'finding-dizziness': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dizziness" "finding"))',
+              existence: 'No',
+            },
+            'finding-collapse': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Collapse" "finding"))',
+              existence: 'No',
+            },
+            'finding-difficulty-breathing': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
+              existence: 'Yes',
+            },
+            'finding-exposure-to-peanut': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-tree-nut': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-eggs-edible': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Eggs (edible)" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-milk': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-fish': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))',
+              existence: 'No',
+            },
+          },
+        },
+      })
+
+      const table = getTableDisplay($assign_priority)
+      console.log(table[0])
+      assertMatches(table[0], {
+        Assessment: 'Anaphylaxis Diagnosis',
+        Finding: z.string().regex(
+          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Itching→Evidence ofDifficulty breathing→Evidence of$/,
+        ),
+        'Reference Range': '',
+        'Priority / Score': 'Urgent',
+      }, { strict: true })
+    },
+  )
+
+  itParallel.skip('creates an additional task if oxygen saturation is below 92%', async () => {
+    const age_determination = 'adult' as const
+    /*const { nurse, encounter, patient_encounter_id } =*/ await setupTriageNewPatient({
+      patient_demographics: {
+        date_of_birth: dateOfBirth(age_determination),
+      },
+      warning_signs: asWarningSigns([], { pregnant: false }),
+      brief_history: {
+        diabetes: { existence: 'No' },
+        pregnancy: { existence: 'No' },
+      },
+      height_and_weight: {
+        measurements: {
+          height: {
+            value: heightOf(age_determination),
+            units: 'cm',
+          },
+          weight: {
+            value: weightOf(age_determination),
+            units: 'kg',
+          },
+        },
+      },
+      measure_vitals: {
+        measurements: asVitalMeasurementFormValues({
+          ...DEFAULT_MEASUREMENTS['adult'],
+          respiratory_rate: 8,
+        }),
+        assessments: asVitalAssessmentFormValues(DEFAULT_ASSESSMENTS['adult']),
+      },
+    })
+
+    // const measurements = await patient_measurements.findAll(
+    //   db,
+    //   {
+    //     patient_id: encounter.patient.id,
+    //     s_expression: `
+    //       (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
+    //            (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight})))
+    //     `,
+    //   },
+    // )
+
+    // assertMatches(measurements, [
+    //   {
+    //     'type': 'finding',
+    //     'id': z.string().uuid(),
+    //     'created_at': z.date(),
+    //     'snomed_concept_id': '118245000',
+    //     'patient_encounter_id': z.string().uuid(),
+    //     'patient_encounter_employee_id': z.string().uuid(),
+    //     'name': 'Measurement finding',
+    //     'category': 'finding',
+    //     'destination_relations': [],
+    //     'value_snomed_concept_id': null,
+
+    //     'specific_snomed_concept_id': '103228002',
+    //     'finding_name': 'Hemoglobin saturation with oxygen',
+    //     'value_display': '91%',
+    //     'source_relations': [
+    //       {
+    //         'source_id': z.string().uuid(),
+    //         'snomed_concept_id': '42752001',
+    //       },
+    //     ],
+    //     'as_part_of_procedure': {
+    //       'id': z.string().uuid(),
+    //       'snomed_concept_id': '410188000',
+    //       'name': 'Taking patient vital signs assessment',
+    //     },
+    //     'priority': null,
+    //     'qualifiers': [],
+    //     'value': '91',
+    //     'units': '%',
+    //     'full_display': 'Hemoglobin saturation with oxygen: 91%',
+    //   },
+    // ], { strict: true })
+
+    // const evaluations = await patient_evaluations.findAll(
+    //   db,
+    //   {
+    //     patient_id: encounter.patient.id,
+    //   },
+    // )
+
+    // const action_status = findMatching(evaluations, {
+    //   name: 'Action status',
+    // })
+
+    // assertMatches(action_status, {
+    //   'type': 'evaluation',
+    //   'id': z.string().uuid(),
+    //   'created_at': z.date(),
+    //   'snomed_concept_id': '385641008',
+    //   'patient_encounter_id': z.string().uuid(),
+    //   'evaluates_record_id': z.string().uuid(),
+    //   'employment_id': null,
+    //   'by_system': true,
+    //   'name': 'Action status',
+    //   'category': 'attribute',
+    //   'value_snomed_concept_id': '385643006',
+    //   'value_name': 'To be done',
+    //   'qualifiers': [],
+    //   'source_relations': [],
+    //   'destination_relations': [{
+    //     'destination_id': z.string().uuid(),
+    //     'snomed_concept_id': '42752001',
+    //   }],
+    // }, { strict: true })
+
+    // const planned_procedure = await patient_procedures.getById(
+    //   db,
+    //   action_status.evaluates_record_id,
+    // )
+
+    // assertMatches(planned_procedure, {
+    //   'id': z.string().uuid(),
+    //   'created_at': z.date(),
+    //   'snomed_concept_id': '57485005',
+    //   'patient_encounter_id': z.string().uuid(),
+    //   'name': 'Oxygen therapy',
+    //   'value_snomed_concept_id': null,
+
+    //   'qualifiers': [],
+    //   'source_relations': [],
+    //   'destination_relations': [],
+    //   'full_display': 'Oxygen therapy',
+    //   'value_display': 'Oxygen therapy',
+    //   'category': 'procedure',
+    //   'type': 'procedure',
+    //   'by_system': true,
+    //   'employment_id': null,
+    // }, { strict: true })
+  })
 })
-
-// TODO: moving this
-// describeParallel('POST', () => {
-//   itParallel('creates an additional task if oxygen saturation is below 92%', async () => {
-//     const { encounter } = await setupTriageNewPatient({
-//       patient_demographics: { date_of_birth: '2023-01-01' },
-//       warning_signs: [],
-//       conditions: ['diabetes'],
-//       height_and_weight: {
-// measurements: {
-//         height: {
-//           value: 160,
-//           units: 'cm',
-//         },
-//         weight: {
-//           value: 80,
-//           units: 'kg',
-//         },}
-//       },
-//       vitals: {
-//         measurements: {
-//           blood_oxygen_saturation: {
-//             value: 91,
-//             units: '%',
-//           },
-//         },
-//         assessments: {},
-//       },
-//     })
-
-//     const measurements = await patient_measurements.findAll(
-//       db,
-//       {
-//         patient_id: encounter.patient.id,
-//         s_expression: `
-//           (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.height}))
-//                (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPT_IDS.weight})))
-//         `,
-//       },
-//     )
-
-//     assertMatches(measurements, [
-//       {
-//         'type': 'finding',
-//         'id': z.string().uuid(),
-//         'created_at': z.date(),
-//         'snomed_concept_id': '118245000',
-//         'patient_encounter_id': z.string().uuid(),
-//         'patient_encounter_employee_id': z.string().uuid(),
-//         'name': 'Measurement finding',
-//         'category': 'finding',
-//         'destination_relations': [],
-//         'value_snomed_concept_id': null,
-//
-//         'specific_snomed_concept_id': '103228002',
-//         'finding_name': 'Hemoglobin saturation with oxygen',
-//         'value_display': '91%',
-//         'source_relations': [
-//           {
-//             'source_id': z.string().uuid(),
-//             'snomed_concept_id': '42752001',
-//           },
-//         ],
-//         'as_part_of_procedure': {
-//           'id': z.string().uuid(),
-//           'snomed_concept_id': '410188000',
-//           'name': 'Taking patient vital signs assessment',
-//         },
-//         'priority': null,
-//         'qualifiers': [],
-//         'value': '91',
-//         'units': '%',
-//         'full_display': 'Hemoglobin saturation with oxygen: 91%',
-//       },
-//     ], { strict: true })
-
-//     const evaluations = await patient_evaluations.findAll(
-//       db,
-//       {
-//         patient_id: encounter.patient.id,
-//       },
-//     )
-
-//     const action_status = findMatching(evaluations, {
-//       name: 'Action status',
-//     })
-
-//     assertMatches(action_status, {
-//       'type': 'evaluation',
-//       'id': z.string().uuid(),
-//       'created_at': z.date(),
-//       'snomed_concept_id': '385641008',
-//       'patient_encounter_id': z.string().uuid(),
-//       'evaluates_record_id': z.string().uuid(),
-//       'employment_id': null,
-//       'by_system': true,
-//       'name': 'Action status',
-//       'category': 'attribute',
-//       'value_snomed_concept_id': '385643006',
-//       'value_name': 'To be done',
-//       'qualifiers': [],
-//       'source_relations': [],
-//       'destination_relations': [{
-//         'destination_id': z.string().uuid(),
-//         'snomed_concept_id': '42752001',
-//       }],
-//     }, { strict: true })
-
-//     const planned_procedure = await patient_procedures.getById(
-//       db,
-//       action_status.evaluates_record_id,
-//     )
-
-//     assertMatches(planned_procedure, {
-//       'id': z.string().uuid(),
-//       'created_at': z.date(),
-//       'snomed_concept_id': '57485005',
-//       'patient_encounter_id': z.string().uuid(),
-//       'name': 'Oxygen therapy',
-//       'value_snomed_concept_id': null,
-//
-//       'qualifiers': [],
-//       'source_relations': [],
-//       'destination_relations': [],
-//       'full_display': 'Oxygen therapy',
-//       'value_display': 'Oxygen therapy',
-//       'category': 'procedure',
-//       'type': 'procedure',
-//       'by_system': true,
-//       'employment_id': null,
-//     }, { strict: true })
-//   })

@@ -17,10 +17,10 @@ export default function deepOmit<
   T extends object,
   K extends string,
 >(obj: T, keys: K[]): DeepOmit<T, K> {
-  if (!isObjectLike(obj)) return obj as any
   if (Array.isArray(obj)) {
     return obj.map((item: any) => deepOmit(item as any, keys)) as any
   }
+  if (!isObjectLike(obj)) return obj as any
 
   const result: any = {}
 

@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
 
-# Usage: ./scripts/worktree-claude.sh <branch-name> [prompt]
-# Example: ./scripts/worktree-claude.sh fix-bug "Fix the authentication bug in the login flow"
+usage() {
+  cat <<EOF
+Usage: $0 <branch-name> <prompt>
 
-if [ -z "$1" ]; then
-  echo "Error: Branch name is required"
-  echo "Usage: $0 <branch-name> <prompt>"
-  exit 1
-fi
+Create a git worktree, run Claude Code with the given prompt, retry failing
+tests up to twice, then commit and open a pull request.
 
-if [ -z "$2" ]; then
-  echo "Error: Prompt is required"
-  echo "Usage: $0 <branch-name> <prompt>"
+Arguments:
+  branch-name   Name of the new branch (created from the current branch).
+  prompt        Instructions to pass to Claude Code. The first line is also
+                used as the git commit message.
+
+Examples:
+  $0 fix-auth-bug "Fix the authentication bug in the login flow"
+  $0 add-search  "Add full-text search to the products table"
+EOF
+}
+
+if [ $# -lt 2 ]; then
+  usage
   exit 1
 fi
 

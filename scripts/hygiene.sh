@@ -13,7 +13,7 @@ declare -A rules=(
 rule_no_camel_case() {
   # Note that we can ignore specific variable names like onClick at the front
   # and we can ignore functions/patterns that return functions at the back like const getById = model.getById
-  ! rg -n --pcre2 --color=always 'const (?!createCommand)(?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*)(:| =| of| in)(?! \(.+\) =>)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! once)(?! logArgsOnError)(?! deduplicate)(?! simpleBaseQuery)(?! cacheable)(?! model\.)(?! pick\()\s' --glob '**/*.ts' --glob '**/*.tsx'
+  ! rg -n --pcre2 --color=always 'const (?!createCommand)(?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*)(:| =| of| in)(?! \(.+\) =>)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! ruleRunner)(?! once)(?! logArgsOnError)(?! deduplicate)(?! simpleBaseQuery)(?! cacheable)(?! model\.)(?! pick\()\s' --glob '**/*.ts' --glob '**/*.tsx'
 }
 
 rule_no_node_imports() {

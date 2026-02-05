@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { patient_records } from './patient_records.ts'
@@ -20,6 +20,10 @@ export type PatientEvaluationInsert =
     patient_encounter_id: string
     evaluation: string | Lang['evaluation']
     evaluates_record_id?: string | null
+    value?: null | {
+      type: 's_expression'
+      s_expression: string
+    }
   }
   & (
     {
@@ -41,6 +45,7 @@ export function insertOneNestedQuery(
     evaluation,
     employment_id,
     by_system,
+    value,
   }: PatientEvaluationInsert,
 ) {
   const evaluation_node = isString(evaluation) ? parseExpressionExpectingAtom(evaluation, 'evaluation') : evaluation
@@ -66,6 +71,17 @@ export function insertOneNestedQuery(
           by_system: by_system || false,
         }).returning('id'),
   )
+    .with(
+      'inserting_s_expression',
+      (qb) =>
+        value
+          ? qb.insertInto('patient_record_s_expressions')
+            .values({
+              id: evaluation_id,
+              s_expression: value.s_expression,
+            })
+          : blankSelection(qb),
+    )
 }
 
 export function insertOneNested(
@@ -109,6 +125,7 @@ export function baseQuery(
       'patient_evaluations.employment_id',
       'patient_evaluations.by_system',
       'patient_evaluations.evaluates_record_id',
+
       jsonBuildNullableObject(
         eb.ref('procedures_aggregated.id'),
         {

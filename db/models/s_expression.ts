@@ -7,7 +7,7 @@ import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
 import { any_query, Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
-import { ATTRIBUTE, EVENT, MEASUREMENT_FINDING, QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
+import { ATTRIBUTE, DUE_TO, EVENT, MEASUREMENT_FINDING, QUALIFIER_VALUE, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
@@ -71,7 +71,7 @@ function baseQuery(
     attributes?: Array<
       Lang['attribute']
     >
-    existence?: Existence
+    existence?: Existence | 'Any'
     exact?: boolean
     include_negative?: boolean
   },
@@ -104,13 +104,30 @@ function baseQuery(
             trx,
             specific_snomed_concept!,
           )
-          return exact
-            ? eb(
-              'patient_records_aggregated.specific_snomed_concept_id',
-              '=',
-              snomed_concept,
-            )
-            : sql<boolean>`is_descendant(${eb.ref('patient_records_aggregated.specific_snomed_concept_id')}, ${snomed_concept}::bigint)`
+          const exact_match = eb(
+            'patient_records_aggregated.specific_snomed_concept_id',
+            '=',
+            snomed_concept,
+          )
+
+          if (exact) return exact_match
+
+          // If non-exact matches are allowed, this only refers to "Yes" findings
+          // This prevents a "No" finding for a descendant being interpreted as a
+          // "No" for the whole parent concept
+          return eb.or([
+            exact_match,
+            eb.and([
+              eb(
+                'patient_records_aggregated.existence',
+                '=',
+                'Yes',
+              ),
+              sql<boolean>`
+                is_descendant(${eb.ref('patient_records_aggregated.specific_snomed_concept_id')}, ${snomed_concept}::bigint)
+              `,
+            ]),
+          ])
         }),
     )
     .$if(
@@ -131,12 +148,8 @@ function baseQuery(
           }),
     )
     .$if(
-      !include_negative,
-      (qb) => qb.where('patient_records_aggregated.existence', '=', 'Yes'),
-    )
-    .$if(
-      !!existence,
-      (qb) => qb.where('patient_records_aggregated.existence', '=', existence!),
+      !!existence && (existence !== 'Any'),
+      (qb) => qb.where('patient_records_aggregated.existence', '=', existence as Existence),
     )
     .select('patient_records_aggregated.id')
 
@@ -282,14 +295,41 @@ function evaluation(
       'patient_evaluations.id',
     )
     .$if(!!evaluates, (qb) =>
-      qb.where(
-        'patient_evaluations.evaluates_record_id',
-        'in',
-        buildExpression(
-          trx,
-          { patient_id, patient_encounter_id },
-          evaluates!.expression,
-        ),
+      qb.where((eb) =>
+        eb.or([
+          eb(
+            'patient_evaluations.evaluates_record_id',
+            'in',
+            buildExpression(
+              trx,
+              { patient_id, patient_encounter_id },
+              evaluates!.expression,
+            ),
+          ),
+          eb(
+            'patient_evaluations.id',
+            'in',
+            buildExpression(
+              trx,
+              { patient_id, patient_encounter_id },
+              evaluates!.expression,
+            )
+              .clearSelect()
+              .innerJoin(
+                'patient_record_relations',
+                'patient_records_aggregated.id',
+                'patient_record_relations.destination_id',
+              )
+              .innerJoin(
+                'patient_records as relation_records',
+                'relation_records.id',
+                'patient_record_relations.id',
+              )
+              .where('relation_records.root_snomed_concept_id', '=', RELATIONSHIP.id)
+              .where('relation_records.specific_snomed_concept_id', '=', DUE_TO.id)
+              .select('patient_record_relations.source_id'),
+          ),
+        ])
       ))
 }
 
@@ -304,6 +344,7 @@ export const EXPRESSION_BUILDERS = {
       qualifiers,
       attributes,
       exact,
+      existence,
       history,
     },
   ) {
@@ -315,6 +356,7 @@ export const EXPRESSION_BUILDERS = {
       qualifiers,
       attributes,
       exact,
+      existence,
       // For historical findings, look for findings at any point in the patient's history
       patient_encounter_id: history ? null : patient_encounter_id,
     })

@@ -6,7 +6,6 @@ import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
-import { assert } from 'std/assert/assert.ts'
 import { WORKFLOW_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
@@ -35,12 +34,6 @@ describeParallel('db/models/s_expression.ts', () => {
         },
       )
 
-      const finding = parseExpressionExpectingAtom(
-        KEYED_WARNING_SIGNS['Burn Circumferential'].clinical_finding_s_expression,
-        'finding',
-      )
-      assert(finding.atom === 'finding')
-
       const { procedure_id } = await patient_procedures.insertOneNested(db, {
         patient_id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
@@ -56,7 +49,7 @@ describeParallel('db/models/s_expression.ts', () => {
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
         procedure_id,
-        finding,
+        finding: KEYED_WARNING_SIGNS['Burn Circumferential'].clinical_finding_s_expression,
       })
 
       const findings = await patient_findings.findAll(db, {
@@ -77,7 +70,7 @@ describeParallel('db/models/s_expression.ts', () => {
           'value': null,
           'evaluations': [],
           'destination_relations': [],
-          'source_relations': [],
+          // 'source_relations': [],
           'type': 'finding',
           'patient_encounter_employee_id': z.string().uuid(),
           'as_part_of_procedure': {

@@ -1,5 +1,5 @@
 export default function isObjectLike(
   value: unknown,
 ): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
+  return value != null && !Array.isArray(value) && typeof value === 'object'
 }
