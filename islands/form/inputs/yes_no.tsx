@@ -1,5 +1,6 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import { Existence, Maybe } from '../../../types.ts'
+import { useRef } from 'preact/hooks'
 
 export function YesNoQuestion({
   name,
@@ -16,6 +17,24 @@ export function YesNoQuestion({
   required?: boolean
   onChange?(value: Existence | null): void
 }) {
+  function Input({ existence }: { existence: Existence }) {
+    return (
+      <div className='flex justify-center align-top'>
+        <input
+          id={`${name}-${existence.toLowerCase()}`}
+          name={name}
+          type='radio'
+          checked={value === existence}
+          className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
+          value={existence}
+          required={required}
+          aria-labelledby={`${name}-label`}
+          onChange={() => onChange?.(existence)}
+        />
+      </div>
+    )
+  }
+
   return (
     <>
       <div className='flex flex-col gap-0.5 pl-4'>
@@ -28,46 +47,9 @@ export function YesNoQuestion({
         </label>
         {most_recent_finding}
       </div>
-
-      <div className='flex justify-center align-top'>
-        <input
-          id={`${name}-yes`}
-          name={name}
-          type='radio'
-          checked={value === 'Yes'}
-          className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='Yes'
-          required={required}
-          aria-labelledby={`${name}-label`}
-          onChange={() => onChange?.('Yes')}
-        />
-      </div>
-      <div className='flex justify-center align-top'>
-        <input
-          id={`${name}-no`}
-          name={name}
-          type='radio'
-          checked={value === 'No'}
-          className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='No'
-          required={required}
-          aria-labelledby={`${name}-label`}
-          onChange={() => onChange?.('No')}
-        />
-      </div>
-      <div className='flex justify-center align-top pr-4'>
-        <input
-          id={`${name}-unknown`}
-          name={name}
-          type='radio'
-          checked={value === 'Unknown'}
-          className='w-5 h-5 text-indigo-600 border-gray-400 focus:ring-indigo-600'
-          value='Unknown'
-          required={required}
-          aria-labelledby={`${name}-label`}
-          onChange={() => onChange?.('Unknown')}
-        />
-      </div>
+      <Input existence='Yes' />
+      <Input existence='No' />
+      <Input existence='Unknown' />
     </>
   )
 }
@@ -75,20 +57,38 @@ export function YesNoQuestion({
 export function YesNoGrid(
   { title, children }: { title: string; children: ComponentChildren },
 ) {
+  const ref = useRef<HTMLInputElement>(null)
+
+  function Header({ existence }: { existence: Existence }) {
+    function checkAll() {
+      const inputs = ref.current!.querySelectorAll<HTMLInputElement>(`input[value="${existence}"]`)
+      for (const input of inputs) {
+        input.click()
+      }
+    }
+
+    return (
+      <button
+        type='button'
+        className='cursor-pointer text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'
+        onClick={checkAll}
+      >
+        {existence}
+      </button>
+    )
+  }
+
   return (
-    <div className='overflow-hidden border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-3 xl:gap-y-5 items-start pb-4'>
+    <div
+      className='overflow-hidden border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-3 xl:gap-y-5 items-start pb-4'
+      ref={ref}
+    >
       <div className='text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-b border-gray-300 pl-4 py-4'>
         {title}
       </div>
-      <div className='text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'>
-        Yes
-      </div>
-      <div className='text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'>
-        No
-      </div>
-      <div className='text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4 pr-4'>
-        Unknown
-      </div>
+      <Header existence='Yes' />
+      <Header existence='No' />
+      <Header existence='Unknown' />
       {children}
     </div>
   )
