@@ -77,6 +77,7 @@ export const WORKFLOW_STEPS = {
     'notify_staff',
   ],
   create_google_meet: [
+    'set_context',
     'invite_participants',
   ],
   stabilization: [
