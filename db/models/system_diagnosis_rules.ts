@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { EXPRESSION_BUILDERS } from './s_expression.ts'
-import { AgeDetermination, TrxOrDb } from '../../types.ts'
+import { TrxOrDb } from '../../types.ts'
 import { jsonObjectFrom, literalString, success_true } from '../helpers.ts'
 import {
   DEFINITE,
@@ -22,7 +22,7 @@ import matching from '../../util/matching.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 import { events } from './events.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
-import { ruleRunner } from './system_rules.ts'
+import { ruleRunner, RuleRunnerInput } from './system_rules.ts'
 
 export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map((d) => parseWithSchema(d, system_diagnosis_rule))
 
@@ -103,19 +103,11 @@ const findMatchingRecords = ruleRunner(
 export const system_diagnosis_rules = {
   async insertSystemDiagnosesIfNotAlreadyIdentified(
     trx: TrxOrDb,
-    { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: {
-      patient_id: string
-      patient_encounter_id: string
-      // procedure_id: string
-      patient_age_determination: AgeDetermination | null
-      records: {
-        id: string
-        existence: 'Yes' | 'No' | 'Unknown'
-      }[]
-    },
+    input: RuleRunnerInput,
   ) {
+    const { patient_id, patient_encounter_id, patient_age_determination } = input
     if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
-    const make_new_diagnosis = await findMatchingRecords(trx, { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records })
+    const make_new_diagnosis = await findMatchingRecords(trx, input)
 
     if (!make_new_diagnosis.matching_rules.length) {
       return make_new_diagnosis.message

@@ -9,14 +9,21 @@ const GOOGLE_MAPS_API_KEY = getEnvVariableRequiredOutsideDockerQuickstart(
   'GOOGLE_MAPS_API_KEY',
 )
 
-export const getLocationAddress = cacheable(
-  async function getLocationAddress(
-    { longitude, latitude }: Coordinates,
-  ): Promise<AddressInsert | null> {
-    const results = await getGeocodeData(latitude, longitude)
-    return getAddressFromData(results)
-  },
-)
+// export const getLocationAddress = cacheable(
+//   async function getLocationAddress(
+//     { longitude, latitude }: Coordinates,
+//   ): Promise<AddressInsert | null> {
+//     const results = await getGeocodeData(latitude, longitude)
+//     return getAddressFromData(results)
+//   },
+// )
+
+export async function getLocationAddress(
+  { longitude, latitude }: Coordinates,
+): Promise<AddressInsert | null> {
+  const results = await getGeocodeData(latitude, longitude)
+  return getAddressFromData(results)
+}
 
 export async function getGeocodeData(
   latitude: number,

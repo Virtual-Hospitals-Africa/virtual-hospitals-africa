@@ -17,7 +17,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertAll } from '../util/assertAll.ts'
 import omit from '../util/omit.ts'
 import assertOneOf from '../util/assertOneOf.ts'
-import { humanReadableJson, logReadableJson } from '../util/humanReadableJson.ts'
+import { humanReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
 import capitalize from '../util/capitalize.ts'
@@ -279,7 +279,6 @@ function buildDisplays(
     qualifiers = [],
   } = record
 
-  console.log({ qualifiers })
   assert(qualifiers.length <= 1, 'qualifiers.length <= 1')
   for (const qualifier of qualifiers) {
     assert(

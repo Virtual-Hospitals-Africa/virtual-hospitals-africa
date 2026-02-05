@@ -291,7 +291,6 @@ export const events = {
     const events_failed_while_waiting = new Map<string, Error>()
 
     const callback = (event_id: string, err?: Error) => {
-      console.log({ event_id, err })
       if (err) {
         return events_failed_while_waiting.set(event_id, err)
       }
@@ -314,8 +313,8 @@ export const events = {
       }
     }
 
-    async function alreadyErroredListenersRelatedToThisEncounter() {
-      return await trx
+    function alreadyErroredListenersRelatedToThisEncounter() {
+      return trx
         .selectFrom('events')
         .innerJoin('event_listeners', 'event_listeners.event_id', 'events.id')
         .where(

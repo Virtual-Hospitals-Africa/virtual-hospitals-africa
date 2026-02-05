@@ -166,8 +166,6 @@ export default function Search<
 
   const search_field = multi ? `${name}.search` : just_name ? name : name && (is_array_or_record_item ? `${name}.name` : `${name}_name`)
 
-  console.log({ search_field })
-
   const id_field = just_name ? undefined : name &&
     (is_array_or_record_item ? `${name}.id` : `${name}_id`)
 

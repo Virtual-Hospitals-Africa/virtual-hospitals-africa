@@ -75,25 +75,29 @@ export const EVENTS = {
       evaluation_id: z.string().uuid(),
     }),
     {
-      insertTasksIfNotAlreadyIdentified(trx, { data }) {
+      insertTasksIfNotAlreadyIdentified(trx, payload) {
         return additional_tasks.insertTasksIfNotAlreadyIdentified(
           trx,
           {
-            ...data,
+            ...payload.data,
+            // listener_id: payload.listener_id,
+            // listener_name: payload.listener_name,
             records: [{
-              id: data.evaluation_id,
+              id: payload.data.evaluation_id,
               existence: 'Yes' as const,
             }],
           },
         )
       },
-      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, { data }) {
+      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, payload) {
         return system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
           trx,
           {
-            ...data,
+            ...payload.data,
+            listener_id: payload.listener_id,
+            listener_name: payload.listener_name,
             records: [{
-              id: data.evaluation_id,
+              id: payload.data.evaluation_id,
               existence: 'Yes' as const,
             }],
           },
@@ -118,13 +122,21 @@ export const EVENTS = {
       insertTasksIfNotAlreadyIdentified(trx, payload) {
         return additional_tasks.insertTasksIfNotAlreadyIdentified(
           trx,
-          payload.data,
+          {
+            ...payload.data,
+            // listener_id: payload.listener_id,
+            // listener_name: payload.listener_name,
+          },
         )
       },
       insertSystemDiagnosesIfNotAlreadyIdentified(trx, payload) {
         return system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
           trx,
-          payload.data,
+          {
+            ...payload.data,
+            listener_id: payload.listener_id,
+            listener_name: payload.listener_name,
+          },
         )
       },
       async insertTotalScoreAfterMeasureVitals(trx, { data: { workflow, step, patient_id, patient_age_determination, patient_encounter_id, procedure_id } }) {
@@ -161,7 +173,11 @@ export const EVENTS = {
       insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, payload) {
         return system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
           trx,
-          payload.data,
+          {
+            ...payload.data,
+            listener_id: payload.listener_id,
+            listener_name: payload.listener_name,
+          },
         )
       },
     },
@@ -439,7 +455,9 @@ export function defineEvent<T extends z.ZodRawShape>(
     (
       trx: TrxOrDb,
       payload: {
-        id: string
+        event_id: string
+        listener_id: string
+        listener_name: string
         data: z.infer<z.ZodObject<T>>
         // metadata: { error_count: number }
       },

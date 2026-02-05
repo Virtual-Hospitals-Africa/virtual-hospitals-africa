@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
 import { AgeDetermination, Priority, TrxOrDb } from '../../types.ts'
-import { debugLog, literalString, temporaryTable } from '../helpers.ts'
+import { literalString, temporaryTable } from '../helpers.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { Comparisons, Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import compactMap from '../../util/compactMap.ts'
@@ -43,6 +43,19 @@ function isPositive(record: Record): record is Record & { existence: 'Yes' } {
   return record.existence === 'Yes'
 }
 
+export type RuleRunnerInput = {
+  listener_id: string
+  listener_name: string
+  patient_id: string
+  patient_encounter_id: string
+  // procedure_id: string
+  patient_age_determination: AgeDetermination | null
+  records: {
+    id: string
+    existence: 'Yes' | 'No' | 'Unknown'
+  }[]
+}
+
 export function ruleRunner<
   Rule extends {
     ages: AgeDetermination[]
@@ -82,16 +95,7 @@ export function ruleRunner<
 
   return async function findMatchingRecords(
     trx: TrxOrDb,
-    { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: {
-      patient_id: string
-      patient_encounter_id: string
-      // procedure_id: string
-      patient_age_determination: AgeDetermination | null
-      records: {
-        id: string
-        existence: 'Yes' | 'No' | 'Unknown'
-      }[]
-    },
+    { listener_id, listener_name, patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: RuleRunnerInput,
   ): Promise<{
     message: string
     matching_rules: {
@@ -102,6 +106,7 @@ export function ruleRunner<
       }[]
     }[]
   }> {
+    console.log(listener_name, listener_id, 'in processor')
     if (!patient_age_determination) return noMatchingRules('No patient age determination')
 
     const positive_records = records.filter(isPositive)
@@ -114,9 +119,12 @@ export function ruleRunner<
 
     assert(record_s_expressions_to_nodes.size)
 
+    console.time(`${listener_name} ${listener_id} toConsiderFilter`)
     const rules_to_consider = toConsiderFilter
       ? await toConsiderFilter(trx, { patient_id, patient_encounter_id }, rules_of_age, positive_records)
       : rules_of_age
+
+    console.timeEnd(`${listener_name} ${listener_id} toConsiderFilter`)
 
     if (!rules_to_consider.length) return noMatchingRules('No rules to consider after filter')
 
@@ -151,7 +159,9 @@ export function ruleRunner<
       .selectFrom('all_records')
       .selectAll()
 
+    console.time(`${listener_name} ${listener_id} new_records_applicable`)
     const new_records_applicable = await new_records_applicable_query.execute()
+    console.timeEnd(`${listener_name} ${listener_id} new_records_applicable`)
 
     if (!new_records_applicable.length) return noMatchingRules('No rules to consider after filter')
 
@@ -232,7 +242,9 @@ export function ruleRunner<
           .as('priority'),
       ])
 
+    console.time(`${listener_name} ${listener_id} all_records_for_rules`)
     const all_records_for_rules = await all_records_for_rules_query.execute()
+    console.timeEnd(`${listener_name} ${listener_id} all_records_for_rules`)
 
     // Create a map for quick lookup of findings by their s-expression
     const findings_map = new Map<string, { record_id: string; priority: Priority | null }[]>()
