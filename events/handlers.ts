@@ -70,8 +70,8 @@ export const EVENTS = {
   SystemDiagnosisCreated: defineEvent(
     z.object({
       patient_id: z.string().uuid(),
-      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
       patient_encounter_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
       evaluation_id: z.string().uuid(),
     }),
     {

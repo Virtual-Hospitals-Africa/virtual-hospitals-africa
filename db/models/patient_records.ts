@@ -80,7 +80,22 @@ export function baseQuery(
           )
           .selectAll('destination_records')
           .select('relation_records.specific_snomed_concept_id as relation_snomed_concept_id')
-          .select('relation_records.specific_snomed_concept_name as relation_name'),
+          .select('relation_records.specific_snomed_concept_name as relation_name')
+          .select((eb) => [
+            jsonArrayFrom(
+              patient_record_qualifiers.baseQuery(trx, 'qualifiers_1' as const)
+                .where(
+                  'qualifiers_1.qualifies_record_id',
+                  '=',
+                  eb.ref('destination_records.id'),
+                )
+                .select((_eb_qualifiers_1) => [
+                  sql<IntermediateBaseRecord[]>`ARRAY[]::int[]`.as(
+                    'qualifiers',
+                  ),
+                ]),
+            ).as('qualifiers'),
+          ]),
       ).as('destination_relations'),
 
       // jsonArrayFrom(

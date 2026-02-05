@@ -17,7 +17,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertAll } from '../util/assertAll.ts'
 import omit from '../util/omit.ts'
 import assertOneOf from '../util/assertOneOf.ts'
-import { humanReadableJson } from '../util/humanReadableJson.ts'
+import { humanReadableJson, logReadableJson } from '../util/humanReadableJson.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
 import { Lang } from './s_expression_schemas.ts'
 import capitalize from '../util/capitalize.ts'
@@ -279,7 +279,8 @@ function buildDisplays(
     qualifiers = [],
   } = record
 
-  assert(qualifiers.length <= 1)
+  console.log({ qualifiers })
+  assert(qualifiers.length <= 1, 'qualifiers.length <= 1')
   for (const qualifier of qualifiers) {
     assert(
       !qualifier.value,
@@ -344,18 +345,12 @@ function addDisplay<DR extends WithProperRecordValue<DisplayableRecord>>(
   }
 }
 
-export function formatRecord<
-  DR extends FormattableRecord,
+export function divideQualifiersAndAddDisplay<
+  DR extends DisplayableRecord,
 >(record: DR): Omit<WithProperRecordValue<DR>, 'qualifiers'> & {
   displays: RecordDisplays
   modifiers: IntermediateBaseRecord[]
   attributes: RenderedAttribute[]
-  evaluations: RenderedEvaluation[]
-  destination_relations: Array<
-    DR['destination_relations'][number] & {
-      displays: RecordDisplays
-    }
-  >
 } {
   const qualifiers = record.qualifiers || []
 
@@ -374,16 +369,34 @@ export function formatRecord<
     }
   })
 
-  const evaluations = record.evaluations.map(addDisplay)
-  const destination_relations = record.destination_relations.map(addDisplay).map((destination_relation) => ({
+  return {
+    ...addDisplay({ ...record, qualifiers: modifiers, attributes }),
+    modifiers,
+    attributes,
+  }
+}
+
+export function formatRecord<
+  DR extends FormattableRecord,
+>(record: DR): Omit<WithProperRecordValue<DR>, 'qualifiers'> & {
+  displays: RecordDisplays
+  modifiers: IntermediateBaseRecord[]
+  attributes: RenderedAttribute[]
+  evaluations: RenderedEvaluation[]
+  destination_relations: Array<
+    DR['destination_relations'][number] & {
+      displays: RecordDisplays
+    }
+  >
+} {
+  const evaluations = record.evaluations.map(divideQualifiersAndAddDisplay)
+  const destination_relations = record.destination_relations.map(divideQualifiersAndAddDisplay).map((destination_relation) => ({
     ...destination_relation,
     relation_name: snomedConceptDisplay(destination_relation.relation_name),
   }))
 
   return {
-    ...addDisplay({ ...record, qualifiers: modifiers, attributes }),
-    modifiers,
-    attributes,
+    ...divideQualifiersAndAddDisplay(record),
     evaluations,
     destination_relations,
   }
@@ -468,7 +481,7 @@ export function asNormalFormSExpression<Rest>(
   function asNode(): Lang['finding'] | Lang['evaluation'] | Lang['procedure'] {
     switch (record.type) {
       case 'finding': {
-        assert('existence' in record)
+        assert('existence' in record, "'existence' in record")
         assertOneOf(record.existence, ['Yes' as const, 'No' as const, 'Unknown' as const])
         return {
           atom: 'finding',
