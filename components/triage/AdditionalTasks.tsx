@@ -260,11 +260,13 @@ function NoTasks() {
 }
 
 export default function AdditionalTasks({
-  task_groups,
   organization_id,
+  evaluation_ids,
+  task_groups,
 }: {
-  task_groups: TaskGroup[]
   organization_id: string
+  evaluation_ids: string[]
+  task_groups: TaskGroup[]
 }) {
   if (!task_groups.length) {
     return <NoTasks />
@@ -287,12 +289,10 @@ export default function AdditionalTasks({
         total_count={total_tasks}
       /> */
       }
-      {
-        /* <HiddenInput
+      <HiddenInput
         name='evaluation_ids'
-        value={task_groups.map(task_group => task_group.evaluation_id)}
-      /> */
-      }
+        value={evaluation_ids}
+      />
 
       {task_groups.map((group, index) => (
         <TaskGroupCard

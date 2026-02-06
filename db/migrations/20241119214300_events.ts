@@ -8,6 +8,7 @@ export async function up(db: Kysely<DB>) {
       .addColumn('type', 'varchar(255)', (col) => col.notNull())
       .addColumn('data', 'jsonb', (col) => col.notNull())
       .addColumn('listener_names', sql`varchar(255)[]`, (col) => col.notNull())
+      .addColumn('patient_encounter_id', 'uuid', (col) => col.references('patient_encounters.id'))
       .addColumn('error_message', 'text')
       .addColumn('all_processed_at', 'timestamptz'))
 
@@ -61,6 +62,53 @@ export async function up(db: Kysely<DB>) {
   `.execute(db)
 
   await sql`
+    CREATE OR REPLACE FUNCTION set_event_patient_encounter_id()
+    RETURNS TRIGGER AS $$
+    BEGIN
+      NEW.patient_encounter_id := (NEW.data->>'patient_encounter_id')::uuid;
+      RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+  `.execute(db)
+
+  await sql`
+    CREATE TRIGGER event_set_patient_encounter_id_trigger
+    BEFORE INSERT ON events
+    FOR EACH ROW
+    EXECUTE FUNCTION set_event_patient_encounter_id();
+  `.execute(db)
+
+  await sql`
+    CREATE OR REPLACE FUNCTION check_all_events_settled_for_patient_encounter()
+    RETURNS TRIGGER AS $$
+    BEGIN
+      -- Only fire when all_processed_at is set (was null, now not null)
+      -- and the event belongs to a patient encounter
+      IF OLD.all_processed_at IS NULL AND NEW.all_processed_at IS NOT NULL AND NEW.patient_encounter_id IS NOT NULL THEN
+        -- Use advisory lock to prevent concurrent notifications for the same encounter
+        PERFORM pg_advisory_xact_lock(hashtext(NEW.patient_encounter_id::text));
+
+        IF NOT EXISTS (
+          SELECT 1 FROM events
+          WHERE events.patient_encounter_id = NEW.patient_encounter_id
+            AND events.all_processed_at IS NULL
+        ) THEN
+          PERFORM pg_notify('all_events_settled_for_patient_encounter', NEW.patient_encounter_id::text);
+        END IF;
+      END IF;
+      RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+  `.execute(db)
+
+  await sql`
+    CREATE TRIGGER event_all_events_settled_for_patient_encounter_trigger
+    AFTER UPDATE ON events
+    FOR EACH ROW
+    EXECUTE FUNCTION check_all_events_settled_for_patient_encounter();
+  `.execute(db)
+
+  await sql`
     CREATE OR REPLACE FUNCTION create_event_listeners_on_event_insert()
     RETURNS TRIGGER AS $$
     DECLARE
@@ -75,6 +123,7 @@ export async function up(db: Kysely<DB>) {
 
         PERFORM pg_notify('event_listener_to_be_processed', new_event_listener_id::text);
       END LOOP;
+      PERFORM pg_notify('event_inserted', json_build_object('id', NEW.id, 'data', NEW.data)::text);
       RETURN NEW;
     END;
     $$ LANGUAGE plpgsql;
@@ -104,6 +153,14 @@ export async function down(db: Kysely<DB>) {
   await sql`DROP TRIGGER IF EXISTS event_insert_trigger ON events`
     .execute(db)
   await sql`DROP FUNCTION IF EXISTS create_event_listeners_on_event_insert`
+    .execute(db)
+  await sql`DROP TRIGGER IF EXISTS event_set_patient_encounter_id_trigger ON events`
+    .execute(db)
+  await sql`DROP FUNCTION IF EXISTS set_event_patient_encounter_id`
+    .execute(db)
+  await sql`DROP TRIGGER IF EXISTS event_all_events_settled_for_patient_encounter_trigger ON events`
+    .execute(db)
+  await sql`DROP FUNCTION IF EXISTS check_all_events_settled_for_patient_encounter`
     .execute(db)
   await sql`DROP TRIGGER IF EXISTS event_listener_processed_trigger ON event_listeners`
     .execute(db)

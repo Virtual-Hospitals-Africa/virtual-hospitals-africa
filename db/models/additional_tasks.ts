@@ -24,7 +24,7 @@ import matching from '../../util/matching.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
 
-import { ACTION_STATUS, DUE_TO, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
+import { ACTION_STATUS, DONE, DUE_TO, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
 import zip from '../../util/zip.ts'
 
 import { assert } from 'std/assert/assert.ts'
@@ -161,7 +161,10 @@ export const additional_tasks = {
       health_worker_id: string
       encounter: RenderedPatientEncounter
     },
-  ): Promise<TaskGroup[]> {
+  ): Promise<{
+    evaluation_ids: string[]
+    task_groups: TaskGroup[]
+  }> {
     const { patient, patient_encounter_id } = encounter
     const patient_id = patient.id
 
@@ -172,7 +175,7 @@ export const additional_tasks = {
     })
 
     if (arrayIsEmpty(evaluations)) {
-      return []
+      return { evaluation_ids: [], task_groups: [] }
     }
 
     const evaluations_with_proto_tasks = evaluations.map((evaluation) => {
@@ -271,20 +274,34 @@ export const additional_tasks = {
       (evaluation) => evaluation.destination_relations[0].id,
     )
 
-    return task_group_map.entries().map(([record_id, evaluations]): TaskGroup => {
+    const evaluation_ids: string[] = []
+    const task_groups: TaskGroup[] = []
+    const seen_finding_s_expressions = new Set<string>()
+
+    for (const [record_id, evaluations] of task_group_map) {
       const due_to = exists(
         due_to_findings.find(matching({ id: record_id })) ||
           due_to_evaluations.find(matching({ id: record_id })),
       )
-      const tasks: RenderedTask[] = evaluations
-        .flatMap((evaluation) => evaluation.tasks)
-        .map((task): RenderedTask => {
+
+      const tasks: RenderedTask[] = compactMap(
+        evaluations.flatMap((evaluation) => {
+          evaluation_ids.push(evaluation.id)
+          return evaluation.tasks
+        }),
+        (task): RenderedTask | undefined => {
           if (task.atom === 'link') {
             return task
           }
-          const { displays } = formatRecord(toDisplayableRecord(task))
 
           const finding_s_expression = inverseSExpression(task)
+
+          if (seen_finding_s_expressions.has(finding_s_expression)) {
+            return undefined
+          }
+          seen_finding_s_expressions.add(finding_s_expression)
+
+          const { displays } = formatRecord(toDisplayableRecord(task))
           const existing_finding: null | RenderedFindingRelativeToHealthWorker = existing_findings.find(matching({ finding_s_expression })) || null
 
           if (task.atom === 'finding') {
@@ -314,10 +331,47 @@ export const additional_tasks = {
             displays,
             existing_measurement: existing_finding,
           }
-        })
+        },
+      )
 
-      return { due_to: [due_to], tasks }
-    }).toArray()
+      task_groups.push({ due_to: [due_to], tasks })
+    }
+
+    return { evaluation_ids, task_groups }
+  },
+  async procedureCompletedTasks(
+    trx: TrxOrDb,
+    { procedure_id, evaluation_ids, patient_id, patient_encounter_id }: {
+      procedure_id: string
+      evaluation_ids: string[]
+      patient_id: string
+      patient_encounter_id: string
+    },
+  ) {
+    if (!evaluation_ids.length) return
+
+    const relations = evaluation_ids.map((evaluation_id) => ({
+      id: generateUUID(),
+      source_id: procedure_id,
+      destination_id: evaluation_id,
+    }))
+
+    await trx.with(
+      'inserting_relation_patient_records',
+      (qb) =>
+        qb.insertInto('patient_records').values(relations.map(({ id }) => ({
+          id,
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: ACTION_STATUS.id,
+          specific_snomed_concept_id: DONE.id,
+        }))),
+    ).with(
+      'inserting_relations',
+      (qb) => qb.insertInto('patient_record_relations').values(relations),
+    ).selectNoFrom([
+      success_true,
+    ]).executeTakeFirstOrThrow()
   },
 }
 

@@ -2,6 +2,7 @@ import { z } from 'zod'
 import isDate from './isDate.ts'
 import { humanReadableJson } from './humanReadableJson.ts'
 import { JsonSerializable } from '../types.ts'
+import isObjectLike from './isObjectLike.ts'
 
 function isZodType(value: unknown): value is z.ZodType {
   return value !== null &&
@@ -86,6 +87,14 @@ export function parseWithValues<
 ) {
   const result = safeParseWithValues(schema, object)
   if (result.success) return result.data
+  if (isObjectLike(object) && 'patient_id' in object) {
+    throw new Error(
+      humanReadableJson({
+        patient_id: object.patient_id as JsonSerializable,
+        issues: result.error.issues as unknown as JsonSerializable,
+      }),
+    )
+  }
   throw new Error(
     humanReadableJson(result.error.issues as unknown as JsonSerializable),
   )

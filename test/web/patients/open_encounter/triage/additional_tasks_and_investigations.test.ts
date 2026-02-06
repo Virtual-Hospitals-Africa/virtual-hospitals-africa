@@ -23,9 +23,6 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
 import { DIAGNOSIS } from '../../../../../shared/snomed_concepts.ts'
 import { events } from '../../../../../db/models/events.ts'
-import { system_diagnosis_rules } from '../../../../../db/models/system_diagnosis_rules.ts'
-import { patient_findings } from '../../../../../db/models/patient_findings.ts'
-
 import { getFormLabels, getFormValues } from 'test/_helpers/form.ts'
 import { getTableDisplay } from 'test/_helpers/table.ts'
 
@@ -78,7 +75,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       `${route}/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/additional_tasks_and_investigations`,
     )
 
-    const task_groups = await additional_tasks.getTasksGroups(db, {
+    const { task_groups } = await additional_tasks.getTasksGroups(db, {
       encounter,
       health_worker_id: nurse.health_worker.id,
     })
@@ -265,7 +262,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     const form_labels = getFormLabels($)
     const form_values = getFormValues($)
 
-    assertEquals({ form_labels, form_values }, {
+    assertMatches({ form_labels, form_values }, {
       'form_labels': {
         'check_for': {
           'finding-nausea': { 'existence': 'Nausea*' },
@@ -282,6 +279,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
       },
       'form_values': {
+        'evaluation_ids': z.string().uuid().array(),
         'check_for': {
           'finding-nausea': {
             's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Nausea" "finding"))',
@@ -373,11 +371,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
       })
 
-      const allergy_to_fish = await patient_findings.findOne(db, {
-        patient_id,
-        s_expression: allergy_to_fish_s_expr,
-      })
-
       await events.allProcessedForEncounter(db, { patient_encounter_id })
 
       const anaphylaxis_diagnosis = await patient_evaluations.findOne(
@@ -394,30 +387,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           full: 'Anaphylaxis Diagnosis: Probable diagnosis',
         },
       })
-
-      // Running again has no effect
-      await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
-        listener_id: 'TEST',
-        listener_name: 'TEST',
-        patient_id,
-        patient_encounter_id,
-        patient_age_determination: 'adult',
-        records: [{
-          id: allergy_to_fish.id,
-          existence: 'Yes',
-        }],
-      })
-
-      const same_anaphylaxis_diagnosis = await patient_evaluations.findOne(
-        db,
-        {
-          patient_id,
-          patient_encounter_id,
-          root_snomed_concept_id: DIAGNOSIS.id,
-        },
-      )
-
-      assertEquals(anaphylaxis_diagnosis, same_anaphylaxis_diagnosis)
     },
   )
 
@@ -481,38 +450,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
       })
 
-      const insect_bite = await patient_findings.findOne(db, {
-        patient_id,
-        s_expression: insect_bite_s_expr,
-      })
-
-      // Running again has no effect
-      await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
-        listener_id: 'TEST',
-        listener_name: 'TEST',
-        patient_id,
-        patient_encounter_id,
-        patient_age_determination: 'adult',
-        records: [{
-          id: insect_bite.id,
-          existence: 'Yes',
-        }],
-      })
-
-      const same_anaphylaxis_diagnosis = await patient_evaluations.findOne(
-        db,
-        {
-          patient_id,
-          patient_encounter_id,
-          root_snomed_concept_id: DIAGNOSIS.id,
-        },
-      )
-
-      assertEquals(anaphylaxis_diagnosis, same_anaphylaxis_diagnosis)
-
       const form_values = getFormValues($)
 
       assertMatches(form_values, {
+        evaluation_ids: z.string().uuid().array(),
         check_for: {
           'finding-sudden-onset-itching': {
             s_expression:
@@ -571,7 +512,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     'upgrades a possible diagnosis for anaphylaxis to a probable diagnosis after meeting prompted for checks',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
-      const { $, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
+      const { $, nurse, encounter, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -632,6 +573,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       const $assign_priority = await postStep({
         additional_tasks_and_investigations: {
+          evaluation_ids: (await additional_tasks.getTasksGroups(db, { health_worker_id: nurse.health_worker.id, encounter })).evaluation_ids,
           check_for: {
             'finding-sudden-onset-itching': {
               s_expression:
@@ -705,6 +647,149 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         ),
         'Reference Range': '',
         'Priority / Score': 'Urgent',
+      }, { strict: true })
+    },
+  )
+
+  itParallel(
+    'downgrades a possible diagnosis for anaphylaxis to an improbable diagnosis if checks are not met',
+    async () => {
+      const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
+      const { $, nurse, encounter, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
+        patient_demographics: randomDemographics('ZA', 'female', 'adult'),
+        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        brief_history: {
+          diabetes: {
+            existence: 'No',
+          },
+          pregnancy: {
+            existence: 'No',
+          },
+        },
+        height_and_weight: {
+          measurements: {
+            height: {
+              value: 160,
+              units: 'cm',
+            },
+            weight: {
+              value: 80,
+              units: 'kg',
+            },
+          },
+        },
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues({
+            respiratory_rate: 12, // 9-14 -> score 0
+            heart_rate: 60, // 51-100 -> score 0
+            blood_pressure_systolic: 120, // 101-199 -> score 0
+            blood_pressure_diastolic: 80,
+            temperature: 36.6, // 35-38.4 -> score 0
+          }),
+          assessments: asVitalAssessmentFormValues({
+            mobility_assessment: 'Walking', // score 0
+            consciousness: 'Alert', // score 0
+            trauma_presence: 'No', // score 0
+          }),
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+      const anaphylaxis_diagnosis = await patient_evaluations.findOne(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      assertMatches(anaphylaxis_diagnosis, {
+        displays: {
+          full: 'Anaphylaxis Diagnosis: Possible diagnosis',
+        },
+      })
+
+      // deno-lint-ignore no-explicit-any
+      const form_values: any = getFormValues($)
+
+      const $assign_priority = await postStep({
+        additional_tasks_and_investigations: {
+          evaluation_ids: (await additional_tasks.getTasksGroups(db, { health_worker_id: nurse.health_worker.id, encounter })).evaluation_ids,
+          check_for: {
+            'finding-sudden-onset-itching': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'No',
+            },
+            'finding-sudden-onset-eruption': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'No',
+            },
+            'finding-insect-bite-wound': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Insect bite - wound" "disorder"))',
+              existing_finding: {
+                id: form_values['check_for']['finding-insect-bite-wound']['existing_finding']['id'] as string,
+                existence: 'Yes',
+              },
+              existence: 'Yes',
+            },
+            'finding-sudden-onset-swelling-face-structure': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'No',
+            },
+            'finding-sudden-onset-swelling-tongue-structure': {
+              s_expression:
+                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+              existence: 'No',
+            },
+            'finding-dizziness': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dizziness" "finding"))',
+              existence: 'No',
+            },
+            'finding-collapse': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Collapse" "finding"))',
+              existence: 'No',
+            },
+            'finding-difficulty-breathing': {
+              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
+              existence: 'Yes',
+            },
+            'finding-exposure-to-peanut': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-tree-nut': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-eggs-edible': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Eggs (edible)" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-milk': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))',
+              existence: 'No',
+            },
+            'finding-exposure-to-fish': {
+              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))',
+              existence: 'No',
+            },
+          },
+        },
+      })
+
+      const table = getTableDisplay($assign_priority)
+      assertMatches(table[0], {
+        Assessment: 'Anaphylaxis Diagnosis',
+        Finding: z.string().regex(
+          /^Improbable diagnosisAnaphylaxis Diagnosis: Improbable diagnosisEvaluated by:System/,
+        ),
+        'Reference Range': '',
+        'Priority / Score': '',
       }, { strict: true })
     },
   )

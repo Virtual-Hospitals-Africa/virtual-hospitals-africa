@@ -35,10 +35,6 @@ export function* allEvidenceToLookFor(node: QueryableNode): Generator<Evidence> 
   }
 }
 
-function noMatchingRules(message: string) {
-  return { message, matching_rules: [] }
-}
-
 function isPositive(record: Record): record is Record & { existence: 'Yes' } {
   return record.existence === 'Yes'
 }
@@ -48,7 +44,6 @@ export type RuleRunnerInput = {
   listener_name: string
   patient_id: string
   patient_encounter_id: string
-  // procedure_id: string
   patient_age_determination: AgeDetermination | null
   records: {
     id: string
@@ -95,7 +90,7 @@ export function ruleRunner<
 
   return async function findMatchingRecords(
     trx: TrxOrDb,
-    { listener_id, listener_name, patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: RuleRunnerInput,
+    input: RuleRunnerInput,
   ): Promise<{
     message: string
     matching_rules: {
@@ -105,28 +100,32 @@ export function ruleRunner<
         priority: Priority | null
       }[]
     }[]
+    other_rules_evaluated: Rule[]
   }> {
+    function noMatchingRules(message: string, other_rules_evaluated: Rule[]) {
+      return { message, other_rules_evaluated, matching_rules: [] }
+    }
+
+    const { listener_id, listener_name, patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records } = input
     console.log(listener_name, listener_id, 'in processor')
-    if (!patient_age_determination) return noMatchingRules('No patient age determination')
+    if (!patient_age_determination) return noMatchingRules('No patient age determination', [])
 
     const positive_records = records.filter(isPositive)
 
-    if (!positive_records.length) return noMatchingRules('No positive findings; TODO, maybe handle negative findings?')
+    if (!positive_records.length) return noMatchingRules('No positive findings; TODO, maybe handle negative findings?', [])
 
     const rules_of_age = rules_by_age[patient_age_determination]
 
-    if (!rules_of_age.length) return noMatchingRules(`No rules for age ${patient_age_determination}`)
+    if (!rules_of_age.length) return noMatchingRules(`No rules for age ${patient_age_determination}`, [])
 
     assert(record_s_expressions_to_nodes.size)
 
     console.time(`${listener_name} ${listener_id} toConsiderFilter`)
-    const rules_to_consider = toConsiderFilter
-      ? await toConsiderFilter(trx, { patient_id, patient_encounter_id }, rules_of_age, positive_records)
-      : rules_of_age
+    const rules_to_consider = toConsiderFilter ? await toConsiderFilter(trx, input, rules_of_age, positive_records) : rules_of_age
 
     console.timeEnd(`${listener_name} ${listener_id} toConsiderFilter`)
 
-    if (!rules_to_consider.length) return noMatchingRules('No rules to consider after filter')
+    if (!rules_to_consider.length) return noMatchingRules('No rules to consider after filter', [])
 
     const new_records_applicable_query = trx
       .with('positive_records', () => temporaryTable(trx, positive_records))
@@ -163,7 +162,7 @@ export function ruleRunner<
     const new_records_applicable = await new_records_applicable_query.execute()
     console.timeEnd(`${listener_name} ${listener_id} new_records_applicable`)
 
-    if (!new_records_applicable.length) return noMatchingRules('No rules to consider after filter')
+    if (!new_records_applicable.length) return noMatchingRules('No rules to consider after filter', rules_to_consider)
 
     const rules_for_which_new_records_applicable = rules_to_consider.filter((rule) => {
       const record_s_expressions = rules_to_record_s_expressions.get(rule)!
@@ -264,9 +263,13 @@ export function ruleRunner<
       if (result.satisfies) return { rule, contributing_records: Array.from(result.contributing_records) }
     })
 
+    const matching_rules_set = new Set(matching_rules.map((r) => r.rule))
+    const other_rules_evaluated = rules_for_which_new_records_applicable.filter((rule) => !matching_rules_set.has(rule))
+
     return {
       message: 'success',
       matching_rules,
+      other_rules_evaluated,
     }
 
     function evaluateEvidence(evidence: QueryableNode):

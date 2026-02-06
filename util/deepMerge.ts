@@ -1,15 +1,15 @@
+import { assert } from 'std/assert/assert.ts'
+import { DeepPartial } from '../types.ts'
 import isObjectLike from './isObjectLike.ts'
 
-export function deepMerge<T>(target: T, ...sources: T[]): T {
-  if (!sources.length) return target
-  const source = sources.shift()
-  if (isObjectLike(target) && isObjectLike(source)) {
+export function deepMerge<T>(target: T, ...sources: DeepPartial<T>[]): T {
+  if (!isObjectLike(target)) return target
+  const result: Record<string, unknown> = { ...target }
+  for (const source of sources) {
+    assert(isObjectLike(source))
     for (const key in source) {
-      if (isObjectLike(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} })
-        deepMerge(target[key], source[key])
-      } else Object.assign(target, { [key]: source[key] })
+      result[key] = isObjectLike(source[key]) ? deepMerge(result[key] ?? {}, source[key]) : source[key]
     }
   }
-  return deepMerge(target, ...sources)
+  return result as T
 }
