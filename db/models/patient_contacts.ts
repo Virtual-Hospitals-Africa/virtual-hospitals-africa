@@ -14,4 +14,17 @@ export const patient_contacts = {
       .where('patients.id', '=', patient_id)
       .executeTakeFirst()
   },
+
+  updatePhoneNumber(
+    trx: TrxOrDb,
+    { patient_id, phone_number }: {
+      patient_id: string
+      phone_number: string
+    },
+  ) {
+    return trx.updateTable('patients')
+      .set({ phone_number })
+      .where('id', '=', patient_id)
+      .executeTakeFirst()
+  },
 }

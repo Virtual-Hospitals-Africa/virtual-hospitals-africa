@@ -1,4 +1,5 @@
 import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
+import { SelectHTMLAttributes } from 'preact/compat'
 
 // Hardcoded country data from db/resources/countries.tsv
 const COUNTRIES = [
@@ -262,7 +263,7 @@ interface CountrySelectProps {
   required?: boolean
   value?: string
   blank_option?: string | true
-  onChange?: (event: Event) => void
+  onChange?: SelectHTMLAttributes<HTMLSelectElement>['onChange']
   className?: string
   disabled?: boolean
   defaultValue?: string

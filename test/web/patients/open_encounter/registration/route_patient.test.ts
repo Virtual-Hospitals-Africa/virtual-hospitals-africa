@@ -45,6 +45,7 @@ describeParallel(
               postal_code: '8000',
               unit: null,
             },
+            phone_number: randomPhoneNumber('ZA'),
             emergency_contacts: [{
               ...randomDemographics(),
               phone_number: randomPhoneNumber('ZA'),
