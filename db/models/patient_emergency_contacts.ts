@@ -195,12 +195,12 @@ export const patient_emergency_contacts = {
     return trx
       .insertInto('patient_emergency_contacts')
       .values(
-        contacts.map((contact) => ({
+        contacts.map((contact, idx) => ({
           patient_id,
           name: contact.name.trim(),
           relationship: contact.relationship,
           phone_number: contact.phone_number,
-          contact_order: contact.contact_order ?? 0,
+          contact_order: contact.contact_order ?? idx,
         })),
       )
       .returningAll()

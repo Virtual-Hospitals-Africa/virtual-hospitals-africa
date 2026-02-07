@@ -5,11 +5,10 @@ import { OrganizationContext } from './_middleware.ts'
 import { SERVER_COUNTRY } from '../../../../db/models/countries.ts'
 import { assert } from 'std/assert/assert.ts'
 
-
-type GoogleMapsContext = {
-  url: URL
-  req: Request
-}
+// type GoogleMapsContext = {
+//   url: URL
+//   req: Request
+// }
 
 type AddressSuggestionResult = {
   id: string
@@ -41,7 +40,6 @@ export const handler = {
     }
 
     if (search_query !== null) {
-
       const suggestions = await getAddressSuggestions(search_query, {
         location,
         radius: location ? 50000 : undefined,
