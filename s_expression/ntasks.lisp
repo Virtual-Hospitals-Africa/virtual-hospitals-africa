@@ -56,7 +56,6 @@
     (clinical_finding (snomed_concept "Pain radiating to neck" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to left arm" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
-    (clinical_finding (snomed_concept "Ischemic heart disease" "disorder"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
 )
@@ -141,9 +140,6 @@
   adult
   (clinical_finding (snomed_concept "Groin mass" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Strangulated inguinal hernia" "disorder"))
-    (clinical_finding (snomed_concept "Irreducible inguinal hernia" "disorder"))
-    (clinical_finding (snomed_concept "Aneurysm" "disorder") (qualifier (snomed_concept "Pulsatile" "qualifier value")))
     (clinical_finding (snomed_concept "Severe pain" "finding"))
     (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
     (clinical_finding (snomed_concept "Unable to break wind" "finding"))
@@ -257,7 +253,6 @@
   adult
   (clinical_finding (snomed_concept "Pain in eye" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Orbital cellulitis" "disorder"))
     (clinical_finding (snomed_concept "Sees haloes around lights" "finding"))
     (clinical_finding (snomed_concept "Blurring of visual image" "finding"))
     (clinical_finding (snomed_concept "Sudden visual loss" "disorder"))
@@ -273,7 +268,6 @@
   adult
   (clinical_finding (snomed_concept "Facial swelling" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Cellulitis of face" "disorder"))
     (clinical_finding (snomed_concept "Blood in urine" "finding"))
     (clinical_finding (snomed_concept "Proteinuria" "finding"))
   )
