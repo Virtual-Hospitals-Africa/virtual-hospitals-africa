@@ -519,3 +519,8 @@ export const ALLERGIC_CONDITION = asConcept({
   name: 'Allergic condition',
   category: 'finding' as const,
 })
+export const DONE = asConcept({
+  id: '385658003',
+  name: 'Done',
+  category: 'qualifier value' as const,
+})

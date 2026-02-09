@@ -278,7 +278,7 @@ describeParallel('triage/warning_signs', () => {
           },
         ], { strict: true })
 
-        const task_groups = await additional_tasks.getTasksGroups(db, {
+        const { task_groups } = await additional_tasks.getTasksGroups(db, {
           encounter,
           health_worker_id: nurse.health_worker.id,
         })
@@ -808,7 +808,7 @@ describeParallel('triage/warning_signs', () => {
           patient_encounter_id,
         })
 
-        const task_groups = await additional_tasks.getTasksGroups(db, {
+        const { task_groups } = await additional_tasks.getTasksGroups(db, {
           encounter,
           health_worker_id: nurse.health_worker.id,
         })
@@ -860,7 +860,7 @@ describeParallel('triage/warning_signs', () => {
 
           await events.allProcessedForEncounter(db, { patient_encounter_id })
 
-          const task_groups = await additional_tasks.getTasksGroups(db, {
+          const { task_groups } = await additional_tasks.getTasksGroups(db, {
             encounter,
             health_worker_id: nurse.health_worker.id,
           })

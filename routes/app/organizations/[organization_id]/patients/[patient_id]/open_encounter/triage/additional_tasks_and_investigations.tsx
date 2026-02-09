@@ -19,6 +19,7 @@ import zip from '../../../../../../../../util/zip.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 
 export const TriageAdditionalTasksAndInvestigationsSchema = z.object({
+  evaluation_ids: z.string().uuid().array(),
   just_do_it_tasks: z.record(
     z.string(),
     z.object({
@@ -86,7 +87,13 @@ export const handler = postHandler(
     })
 
     await promiseProps({
-      x: dispatchEvent(inserted),
+      _: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges ? Promise.resolve() : additional_tasks.procedureCompletedTasks(trx, {
+        patient_id,
+        patient_encounter_id,
+        procedure_id: inserted.procedure_id,
+        evaluation_ids: form_values.evaluation_ids,
+      }),
+      dispatched: dispatchEvent(inserted),
       records_altered: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
         ? Promise.resolve()
         : markAlteredRecords(inserted.procedure_id),
@@ -195,14 +202,15 @@ export const handler = postHandler(
 export async function TriageAdditionalTasksAndInvestigationsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, encounter, health_worker_id, patient_encounter_id } = ctx.state
+  const { trx, encounter, health_worker_id, organization_id, patient_encounter_id } = ctx.state
   await events.allProcessedForEncounter(trx, { patient_encounter_id })
-  const task_groups = await additional_tasks.getTasksGroups(trx, { health_worker_id, encounter })
+  const { evaluation_ids, task_groups } = await additional_tasks.getTasksGroups(trx, { health_worker_id, encounter })
 
   return (
     <AdditionalTasks
+      organization_id={organization_id}
+      evaluation_ids={evaluation_ids}
       task_groups={task_groups}
-      organization_id={ctx.state.organization.id}
     />
   )
 }

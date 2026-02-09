@@ -200,7 +200,7 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'evaluates_record_id',
           'uuid',
-          (col) => col.notNull().references('patient_records.id').onDelete('cascade'),
+          (col) => col.references('patient_records.id').onDelete('cascade'),
         )
         .addCheckConstraint(
           'evaluation_is_either_by_system_or_by_person',

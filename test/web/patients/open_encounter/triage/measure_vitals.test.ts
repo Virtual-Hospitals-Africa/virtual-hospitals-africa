@@ -689,7 +689,7 @@ describeParallel('triage/measure_vitals', () => {
         finding_name: string
         score: number
       }[],
-      expected_tasks?: unknown[],
+      expected_task_groups?: unknown[],
       opts: { only?: boolean; skip?: boolean } = {},
     ) {
       itParallel(description, async () => {
@@ -764,9 +764,9 @@ describeParallel('triage/measure_vitals', () => {
         assertEquals(sorted_finding_scores, expected_scores)
         assertEquals(total_score.score, sumBy(expected_scores, 'score'))
 
-        if (expected_tasks) {
-          const tasks = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
-          assertMatches(tasks, expected_tasks)
+        if (expected_task_groups) {
+          const { task_groups } = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
+          assertMatches(task_groups, expected_task_groups)
         }
       }, opts)
     }
