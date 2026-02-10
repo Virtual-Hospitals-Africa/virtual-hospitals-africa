@@ -4,18 +4,31 @@ import { blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
-import { assert } from 'std/assert/assert.ts'
 import { Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
 import { IntermediateBaseRecord, nonGroupedBaseQuery } from './patient_records_base.ts'
-import { sql } from 'kysely'
+import { RawBuilder, sql } from 'kysely'
+import { assert } from 'std/assert/assert.ts'
+import isString from '../../util/isString.ts'
+
+export type PatientRecordsSearch = {
+  patient_id?: string | IdSelection
+  patient_encounter_id?: string | IdSelection
+  root_snomed_concept_id?: string | string[]
+  specific_snomed_concept_id?: string | string[]
+  s_expression?: string | QueryableNode
+  search?: string
+  include_invalid?: boolean
+  before?: RawBuilder<Date> | Date
+}
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
+  opts?: PatientRecordsSearch,
 ) {
-  return nonGroupedBaseQuery(trx)
+  let qb = nonGroupedBaseQuery(trx, { include_invalid: opts?.include_invalid })
     .select((eb) => [
       jsonArrayFrom(
         trx.selectFrom(
@@ -171,6 +184,59 @@ export function baseQuery(
           ]),
       ).as('qualifiers'),
     ])
+
+  if (opts?.patient_id) {
+    qb = qb.where(
+      'patient_records_aggregated.patient_id',
+      '=',
+      opts.patient_id,
+    )
+  }
+  if (opts?.patient_encounter_id) {
+    qb = qb.where(
+      'patient_records_aggregated.patient_encounter_id',
+      '=',
+      opts.patient_encounter_id,
+    )
+  }
+  if (opts?.root_snomed_concept_id) {
+    qb = qb.where(
+      'patient_records_aggregated.root_snomed_concept_id',
+      isString(opts.root_snomed_concept_id) ? '=' : 'in',
+      opts.root_snomed_concept_id,
+    )
+  }
+  if (opts?.specific_snomed_concept_id) {
+    qb = qb.where(
+      'patient_records_aggregated.specific_snomed_concept_id',
+      isString(opts.specific_snomed_concept_id) ? '=' : 'in',
+      opts.specific_snomed_concept_id,
+    )
+  }
+  if (opts?.s_expression) {
+    assert(opts.patient_id, 'Must have patient id when using s_expression')
+    qb = qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      buildExpression(
+        trx,
+        {
+          patient_id: opts.patient_id,
+          patient_encounter_id: opts.patient_encounter_id,
+        },
+        opts.s_expression,
+      ),
+    )
+  }
+  if (opts?.before) {
+    qb = qb.where(
+      'patient_records_aggregated.created_at',
+      '<',
+      opts.before,
+    )
+  }
+
+  return qb
 }
 
 type RecordInsert = {
@@ -381,64 +447,9 @@ export function baseInsertMany(
     )
 }
 
-type PatientRecordsSearch = {
-  patient_id: string | IdSelection
-  patient_encounter_id?: string | IdSelection
-  s_expression?: string | QueryableNode
-  search?: string
-}
-
 export const patient_records = base({
   top_level_table: 'patient_records',
   baseQuery,
   formatResult: formatRecord,
   baseInsert,
-  handleSearch(
-    qb,
-    opts: PatientRecordsSearch,
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    assert(
-      opts.patient_id,
-      'For now, you must always provide a patient_id as part of a query',
-    )
-    // if (opts.search) {
-    //   qb = qb.where(
-    //     'snomed_inferred_canonical_name_and_category.name',
-    //     'ilike',
-    //     `%${opts.search}%`,
-    //   )
-    // }
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.s_expression) {
-      qb = qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression,
-        ),
-      )
-    }
-
-    return qb
-  },
 })

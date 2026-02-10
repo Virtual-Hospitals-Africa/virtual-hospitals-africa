@@ -21,6 +21,7 @@ import { SELF_REPORTED_QUALIFIER, STATUS_ATTRIBUTE } from '../../../../../../../
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
+import { events } from '../../../../../../../../db/models/events.ts'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -220,8 +221,9 @@ export async function TriageBriefHistoryPage(
     attempting_to_complete_workflow: false,
   })
 
-  const { encounter, organization_employment } = ctx.state
+  const { trx, encounter, patient_encounter_id, organization_employment } = ctx.state
   const { patient } = encounter
+  await events.allProcessedForEncounter(trx, { patient_encounter_id })
 
   assert(completedPersonal(patient))
 

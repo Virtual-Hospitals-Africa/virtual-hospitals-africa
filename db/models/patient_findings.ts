@@ -1,11 +1,11 @@
 import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, literalUUIDArray, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { baseInsertMany, patient_records } from './patient_records.ts'
-import { RawBuilder, sql } from 'kysely'
+import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
+import { sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
-import { assert } from 'std/assert/assert.ts'
-import { buildExpression, maybeSnomedConceptBase, satisfyingSExpression, snomedConceptBase } from './s_expression.ts'
+
+import { maybeSnomedConceptBase, satisfyingSExpression, snomedConceptBase } from './s_expression.ts'
 import { Priority, PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
@@ -30,10 +30,18 @@ import isString from '../../util/isString.ts'
 
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 
+export type PatientFindingsSearch = PatientRecordsSearch & {
+  procedure_id?: string | IdSelection
+  s_expression?: string | Lang['finding']
+  not_measurements?: boolean
+  include_negative?: boolean
+}
+
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
+  opts?: PatientFindingsSearch,
 ) {
-  return patient_records.baseQuery(trx)
+  let qb = patient_records.baseQuery(trx, opts)
     .innerJoin(
       'patient_findings',
       'patient_findings.id',
@@ -82,20 +90,32 @@ export function baseQuery(
         .select('patient_evaluation_scores.score')
         .as('score'),
     ])
+
+  if (opts?.procedure_id) {
+    qb = qb.where(
+      'patient_findings.procedure_id',
+      isString(opts.procedure_id) ? '=' : 'in',
+      opts.procedure_id,
+    )
+  }
+  if (!opts?.include_negative) {
+    qb = qb.where(
+      'patient_records_aggregated.existence',
+      '=',
+      'Yes',
+    )
+  }
+  if (opts?.not_measurements) {
+    qb = qb.leftJoin(
+      'patient_measurements',
+      'patient_findings.id',
+      'patient_measurements.id',
+    ).where('patient_measurements.id', 'is', null)
+  }
+  return qb
 }
 
 export type IntermediateFinding = QueryResult<typeof baseQuery>
-export type PatientFindingsSearch = {
-  patient_id?: string | IdSelection
-  patient_encounter_id?: string | IdSelection
-  procedure_id?: string | IdSelection
-  s_expression?: string | Lang['finding']
-  search?: string
-  not_measurements?: boolean
-  include_negative?: boolean
-  before?: RawBuilder<Date> | Date
-}
-
 type InsertCommon = {
   patient_id: string
   patient_encounter_id: string
@@ -141,79 +161,6 @@ export const patient_findings = base({
     }
 
     return formatRecord(finding)
-  },
-  handleSearch(
-    qb,
-    opts: PatientFindingsSearch,
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    // if (opts.search) {
-    //   qb = qb.where(
-    //     'snomed_inferred_canonical_name_and_category.name',
-    //     'ilike',
-    //     `%${opts.search}%`,
-    //   )
-    // }
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.procedure_id) {
-      qb = qb.where(
-        'patient_findings.procedure_id',
-        isString(opts.procedure_id) ? '=' : 'in',
-        opts.procedure_id,
-      )
-    }
-    if (!opts.include_negative) {
-      qb = qb.where(
-        'patient_records_aggregated.existence',
-        '=',
-        'Yes',
-      )
-    }
-    if (opts.not_measurements) {
-      qb = qb.leftJoin(
-        'patient_measurements',
-        'patient_findings.id',
-        'patient_measurements.id',
-      ).where('patient_measurements.id', 'is', null)
-    }
-    if (opts.s_expression) {
-      assert(opts.patient_id)
-      qb = qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression,
-        ),
-      )
-    }
-    if (opts.before) {
-      qb = qb.where(
-        'patient_records_aggregated.created_at',
-        '<',
-        opts.before,
-      )
-    }
-
-    return qb
   },
   insertMany(
     trx: TrxOrDb,

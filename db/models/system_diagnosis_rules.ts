@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { EXPRESSION_BUILDERS } from './s_expression.ts'
-import { AgeDetermination, TrxOrDb } from '../../types.ts'
-import { blankSelection, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
+import { TrxOrDb } from '../../types.ts'
+import { blankSelection, debugLog, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
 import {
   DEFINITE,
   DONE,
@@ -28,7 +28,8 @@ import { ruleRunner, RuleRunnerInput } from './system_rules.ts'
 import compactMap from '../../util/compactMap.ts'
 import findMatching from '../../util/findMatching.ts'
 import { deepMerge } from '../../util/deepMerge.ts'
-import { assertArrayNonEmpty } from '../../util/arraySize.ts'
+
+import { logReadableJson } from '../../util/humanReadableJson.ts'
 
 export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map((d) => parseWithSchema(d, system_diagnosis_rule))
 
@@ -53,13 +54,13 @@ const findMatchingRecords = ruleRunner(
   async (trx, patient_identifiers, rules_of_age) => {
     const concepts_to_consider = new Map<string, Lang['snomed_concept']>()
     for (const rule of rules_of_age) {
-      const diagnosis_concept_s_expression = inverseSExpression(rule.diagnosis)
+      const diagnosis_concept_s_expression = inverseSExpression(rule.diagnosis.snomed_concept)
       if (!concepts_to_consider.has(diagnosis_concept_s_expression)) {
         concepts_to_consider.set(diagnosis_concept_s_expression, rule.diagnosis.snomed_concept)
       }
     }
 
-    const already_present_diagnoses = await trx.with('all_diagnoses', (qb) => {
+    const already_present_diagnoses_query = trx.with('all_diagnoses', (qb) => {
       const [first_diagnosis_rule, ...other_diagnosis_rules] = concepts_to_consider.entries().map(
         ([diagnosis_concept_s_expression, snomed_concept]) =>
           qb.selectNoFrom([
@@ -87,7 +88,11 @@ const findMatchingRecords = ruleRunner(
       .selectFrom('all_diagnoses')
       .selectAll()
       .where('matching_diagnosis', 'is not', null)
-      .execute()
+
+    console.log('hjwehhhkjlwelkeklw')
+    debugLog(already_present_diagnoses_query)
+
+    const already_present_diagnoses = await already_present_diagnoses_query.execute()
 
     const existing_diagnoses: ExistingDiagnosis[] = already_present_diagnoses.map(({ diagnosis_concept_s_expression, matching_diagnosis }) => {
       assert(matching_diagnosis)
@@ -111,7 +116,7 @@ const findMatchingRecords = ruleRunner(
 
     // If we've already made diagnoses of equal or higher certainty, there's no need to reevaluate certain rules
     return rules_of_age.filter((rule) => {
-      const diagnosis_concept_s_expression = inverseSExpression(rule.diagnosis)
+      const diagnosis_concept_s_expression = inverseSExpression(rule.diagnosis.snomed_concept)
       const present_diagnosis = existing_diagnoses.find(matching({ diagnosis_concept_s_expression }))
       if (!present_diagnosis) return true
       switch (present_diagnosis.certainty) {
@@ -129,107 +134,6 @@ const findMatchingRecords = ruleRunner(
 )
 
 export const system_diagnosis_rules = {
-  async reevaluateForAlteredRecord(
-    trx: TrxOrDb,
-    input: {
-      patient_id: string
-      patient_encounter_id: string
-      patient_age_determination: AgeDetermination | null
-      altered_record_ids: string[]
-      listener_id: string
-      listener_name: string
-    },
-  ) {
-    const { patient_id, patient_encounter_id, patient_age_determination, altered_record_ids } = input
-    assertArrayNonEmpty(altered_record_ids)
-    if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
-
-    // 1. Find diagnoses that use the altered record as evidence
-    const affected_diagnoses = await trx
-      .selectFrom('patient_record_relations')
-      .innerJoin('patient_records', 'patient_records.id', 'patient_record_relations.id')
-      .where('patient_record_relations.destination_id', 'in', altered_record_ids)
-      .where('patient_records.specific_snomed_concept_id', '=', EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id)
-      .select('patient_record_relations.source_id as diagnosis_id')
-      .execute()
-
-    if (!affected_diagnoses.length) return 'No diagnoses use this record as evidence'
-
-    // 2. Get all valid records for the encounter to use as evidence for reevaluation
-    const valid_records = await trx
-      .selectFrom('patient_records_aggregated')
-      .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records_aggregated.id')
-      .where('patient_records_aggregated.patient_id', '=', patient_id)
-      .where('patient_records_aggregated.patient_encounter_id', '=', patient_encounter_id)
-      .select(['patient_records_aggregated.id', 'patient_records_aggregated.existence'])
-      .execute()
-
-    const records = valid_records.map((r) => ({ id: r.id, existence: r.existence }))
-
-    // 3. Re-run system diagnosis rules with current valid records
-    const make_new_diagnosis = await findMatchingRecords(trx, { ...input, records })
-
-    if (!make_new_diagnosis.matching_rules.length) {
-      return `Reevaluated after invalidation of ${altered_record_ids.join(', ')}: ${make_new_diagnosis.message}`
-    }
-
-    const inserted_diagnoses: string[] = []
-    for (const { rule, contributing_records } of make_new_diagnosis.matching_rules) {
-      const evaluation_id = generateUUID()
-      const relations = contributing_records.map((record) => ({
-        id: generateUUID(),
-        source_id: evaluation_id,
-        destination_id: record.record_id,
-      }))
-
-      await patient_evaluations.insertOneNestedQuery(trx, {
-        evaluation_id,
-        patient_id,
-        patient_encounter_id,
-        evaluation: diagnosisToEvaluation(rule.diagnosis),
-        by_system: true,
-      }).with(
-        'inserting_relation_patient_records',
-        (qb) =>
-          relations.length
-            ? qb.insertInto('patient_records').values(relations.map(({ id }) => ({
-              id,
-              patient_id,
-              patient_encounter_id,
-              root_snomed_concept_id: RELATIONSHIP.id,
-              specific_snomed_concept_id: EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id,
-            })))
-            : blankSelection(qb),
-      ).with(
-        'inserting_relations',
-        (qb) => relations.length ? qb.insertInto('patient_record_relations').values(relations) : blankSelection(qb),
-      ).selectNoFrom([
-        success_true,
-      ]).executeTakeFirstOrThrow()
-
-      await events.insert(
-        trx,
-        {
-          type: 'SystemDiagnosisCreated',
-          data: {
-            patient_id,
-            patient_encounter_id,
-            patient_age_determination,
-            evaluation_id,
-          },
-        },
-      )
-
-      inserted_diagnoses.push(`${rule.diagnosis.certainty_qualifier} ${rule.diagnosis.snomed_concept.name}`)
-    }
-
-    return inserted_diagnoses.length
-      ? `Reevaluated after invalidation of ${altered_record_ids.join(', ')}: inserted ${inserted_diagnoses.length} diagnosis(es): ${
-        inserted_diagnoses.join(', ')
-      }`
-      : `Reevaluated after invalidation of ${altered_record_ids.join(', ')}: no new system diagnoses to insert`
-  },
-
   async insertSystemDiagnosesIfNotAlreadyIdentified(
     trx: TrxOrDb,
     input: RuleRunnerInput & {
@@ -240,13 +144,24 @@ export const system_diagnosis_rules = {
     if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
     const make_new_diagnosis = await findMatchingRecords(trx, input)
 
+    console.log('ffff')
+    logReadableJson({ make_new_diagnosis })
+
     const existing_diagnoses = ALREADY_PRESENT_DIAGNOSES.get(input) || []
+
+    if (existing_diagnoses.length) {
+      const x = await trx.selectFrom('patient_records_still_valid')
+        .where('id', '=', existing_diagnoses[0].matching_diagnosis_id)
+        .select('id')
+        .execute()
+      logReadableJson({ existing_diagnoses, x })
+    }
 
     // Check for probable rules that didn't match but have a possible existing diagnosis with completed tasks
     // If so, mark them as improbable
     const probable_rules_with_possible_diagnosis = compactMap(make_new_diagnosis.other_rules_evaluated, (rule) => {
       if (rule.diagnosis.certainty_qualifier !== 'probable') return
-      const diagnosis_concept_s_expression = inverseSExpression(rule.diagnosis)
+      const diagnosis_concept_s_expression = inverseSExpression(rule.diagnosis.snomed_concept)
       const existing_diagnosis = existing_diagnoses.find(matching({ diagnosis_concept_s_expression }))
       if (!existing_diagnosis) return
       if (existing_diagnosis.certainty !== 'possible') return
@@ -279,7 +194,10 @@ export const system_diagnosis_rules = {
             certainty_qualifier: 'improbable',
           },
         }),
-        contributing_records: [],
+        contributing_records: compactMap(input.records, (record) =>
+          record.existence === 'No' && {
+            record_id: record.id,
+          }),
       }
     })
 
@@ -289,7 +207,7 @@ export const system_diagnosis_rules = {
     ]
 
     if (!to_insert.length) {
-      return make_new_diagnosis.message
+      return `${make_new_diagnosis.message}`
     }
 
     const inserted_diagnoses: string[] = []

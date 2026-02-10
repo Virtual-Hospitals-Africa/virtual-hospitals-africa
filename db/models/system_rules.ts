@@ -110,13 +110,10 @@ export function ruleRunner<
     console.log(listener_name, listener_id, 'in processor')
     if (!patient_age_determination) return noMatchingRules('No patient age determination', [])
 
-    const positive_records = records.filter(isPositive)
-
-    if (!positive_records.length) return noMatchingRules('No positive findings; TODO, maybe handle negative findings?', [])
-
     const rules_of_age = rules_by_age[patient_age_determination]
 
     if (!rules_of_age.length) return noMatchingRules(`No rules for age ${patient_age_determination}`, [])
+    const positive_records = records.filter(isPositive)
 
     assert(record_s_expressions_to_nodes.size)
 
@@ -125,7 +122,15 @@ export function ruleRunner<
 
     console.timeEnd(`${listener_name} ${listener_id} toConsiderFilter`)
 
-    if (!rules_to_consider.length) return noMatchingRules('No rules to consider after filter', [])
+    if (!rules_to_consider.length) return noMatchingRules('No rules to consider after filter', rules_of_age)
+
+    if (!positive_records.length) {
+      return {
+        message: 'vacuous success',
+        matching_rules: [],
+        other_rules_evaluated: rules_of_age,
+      }
+    }
 
     const new_records_applicable_query = trx
       .with('positive_records', () => temporaryTable(trx, positive_records))
@@ -266,6 +271,11 @@ export function ruleRunner<
     const matching_rules_set = new Set(matching_rules.map((r) => r.rule))
     const other_rules_evaluated = rules_for_which_new_records_applicable.filter((rule) => !matching_rules_set.has(rule))
 
+    console.log({
+      message: 'success',
+      matching_rules,
+      other_rules_evaluated,
+    })
     return {
       message: 'success',
       matching_rules,

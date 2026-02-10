@@ -83,7 +83,7 @@ export const handler = postHandler(
     const { response, inserted } = await promiseProps({
       response: completeAndProceedToNextStep(ctx),
       task_groups: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }),
-      inserted: insertFindings(),
+      inserted: markAlteredRecords().then(() => insertFindings()),
     })
 
     await promiseProps({
@@ -94,9 +94,6 @@ export const handler = postHandler(
         evaluation_ids: form_values.evaluation_ids,
       }),
       dispatched: dispatchEvent(inserted),
-      records_altered: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
-        ? Promise.resolve()
-        : markAlteredRecords(inserted.procedure_id),
     })
 
     return response
@@ -181,7 +178,8 @@ export const handler = postHandler(
       })
     }
 
-    function markAlteredRecords(procedure_id: string) {
+    function markAlteredRecords() {
+      if (!completed_procedure) return Promise.resolve()
       const altered_record_ids = compactMap(
         form_values.check_for,
         ({ existence, existing_finding }) => (existing_finding && existing_finding.existence != existence) && existing_finding.id,
@@ -192,7 +190,7 @@ export const handler = postHandler(
         employment_id,
         patient_encounter_id,
         altered_record_ids,
-        procedure_id,
+        procedure_id: completed_procedure.procedure_id,
       })
     }
   },

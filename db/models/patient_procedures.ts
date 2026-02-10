@@ -1,9 +1,8 @@
-import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-import { IdSelection, PreviouslyCompletedProcedures, SnomedConcept, TrxOrDb } from '../../types.ts'
+import { PreviouslyCompletedProcedures, SnomedConcept, TrxOrDb } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
-import { patient_records } from './patient_records.ts'
+import { patient_records, PatientRecordsSearch } from './patient_records.ts'
 import generateUUID from '../../util/uuid.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
@@ -31,8 +30,9 @@ type ProcedureInsert =
 
 export function baseQuery(
   trx: TrxOrDb,
+  opts: PatientRecordsSearch,
 ) {
-  return patient_records.baseQuery(trx)
+  return patient_records.baseQuery(trx, opts)
     .innerJoin(
       'patient_procedures',
       'patient_procedures.id',
@@ -70,34 +70,6 @@ export const patient_procedures = base({
   top_level_table: 'patient_procedures',
   baseQuery,
   formatResult: formatRecord,
-  handleSearch(
-    qb,
-    opts: { search?: string; patient_id: string | IdSelection; patient_encounter_id?: string; specific_snomed_concept_id?: string | string[] },
-  ) {
-    assert(!opts.search, 'TODO support')
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.specific_snomed_concept_id) {
-      qb = qb.where(
-        'patient_records_aggregated.specific_snomed_concept_id',
-        'in',
-        [opts.specific_snomed_concept_id].flat(),
-      )
-    }
-    return qb
-  },
   async previouslyCompleted(
     trx: TrxOrDb,
     {
