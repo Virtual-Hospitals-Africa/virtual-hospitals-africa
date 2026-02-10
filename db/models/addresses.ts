@@ -1,21 +1,12 @@
-import { Maybe, TrxOrDb } from '../../types.ts'
+import { InsertObject } from 'kysely'
+import { InsertShapeLiteral, Maybe, TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
-import { assertOr400, StatusError } from '../../util/assertOr.ts'
+import { StatusError } from '../../util/assertOr.ts'
 import { COUNTRIES } from '../../shared/countries.ts'
+import { DB } from '../../db.d.ts'
 
-export type AddressInsert = {
-  id?: string
-  street_number?: string
-  route?: string
-  unit?: string
-  street?: string
-  locality: string
-  administrative_area_level_1?: string
-  administrative_area_level_2?: string
-  country: string
-  postal_code?: string
-}
+export type AddressInsert = InsertShapeLiteral<InsertObject<DB, 'addresses'>>
 
 const isApartmentOrUnit = (word: string) => {
   const lower_word = word.toLowerCase()
@@ -47,9 +38,6 @@ export const addresses = {
       street,
       country,
     } = address
-    if (route) {
-      assertOr400(!street, 'street is not allowed when route is present')
-    }
 
     let country_full_name = country
     let country_iso_3601 = country
@@ -61,15 +49,8 @@ export const addresses = {
       throw new StatusError(`Unrecognized country ${country}`, 400)
     }
 
-    // Extract street number, route, and unit from street if present
-    if (street) {
-      assertOr400(
-        !street_number,
-        'street_number is not allowed when street is present',
-      )
-      assertOr400(!route, 'route is not allowed when street is present')
-      assertOr400(!unit, 'unit is not allowed when street is present')
-
+    // Extract street number, route, and unit from street if it is present and route is not
+    if (street && !route) {
       const street_parts = compact(street.split(' '))
       if (street_parts.length > 1 && !isNaN(parseInt(street_parts[0]))) {
         street_number = street_parts.shift()
@@ -90,7 +71,7 @@ export const addresses = {
       route = street_parts.join(' ')
     }
 
-    street = compact([
+    street = street || compact([
       street_number,
       route,
       unit,
@@ -124,7 +105,7 @@ export const addresses = {
     address: AddressInsert,
   ) {
     return trx.insertInto('addresses')
-      .values(addresses.insertValues(address))
+      .values(address)
       .returningAll()
       .executeTakeFirstOrThrow()
   },

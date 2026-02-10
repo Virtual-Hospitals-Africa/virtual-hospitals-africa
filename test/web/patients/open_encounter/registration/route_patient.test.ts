@@ -33,6 +33,8 @@ describeParallel(
             },
           },
           contacts: {
+            google_maps_place_id: '',
+            phone_number: randomPhoneNumber('ZA'),
             emergency_contacts: [{
               ...randomDemographics(),
               phone_number: randomPhoneNumber('ZA'),

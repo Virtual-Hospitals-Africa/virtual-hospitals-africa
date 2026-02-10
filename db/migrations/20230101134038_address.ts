@@ -7,7 +7,9 @@ export async function up(db: Kysely<DB>) {
     db,
     'addresses',
     (qb) =>
-      qb.addColumn('formatted', 'varchar(255)', (col) => col.notNull())
+      qb
+        .addColumn('google_maps_place_id', 'varchar(255)')
+        .addColumn('formatted', 'varchar(255)', (col) => col.notNull())
         .addColumn('street_number', 'varchar(255)')
         .addColumn('route', 'varchar(255)')
         .addColumn('unit', 'varchar(255)')

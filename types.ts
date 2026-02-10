@@ -481,6 +481,7 @@ export type Address = {
   unit: Maybe<string>
   street: Maybe<string>
   postal_code: Maybe<string>
+  google_maps_place_id: Maybe<string>
 }
 
 export type PatientFamily = {

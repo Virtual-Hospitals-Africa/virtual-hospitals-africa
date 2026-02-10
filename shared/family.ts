@@ -5,6 +5,7 @@ import { GuardianRelationName } from '../types.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
 import isKeyOf from '../util/isKeyOf.ts'
+import { international_phone_number } from '../util/validators.ts'
 
 type UnsexedRelation = [GuardianRelationName, string]
 type SexedRelation = [
@@ -165,6 +166,9 @@ export const EMERGENCY_CONTACT_RELATIONSHIPS = [
   'Parent',
   'Sibling',
   'Friend',
+  'Spouse',
+  'Child',
+  'Guardian',
   'Other',
 ] as const
 
@@ -177,5 +181,5 @@ export const EMERGENCY_CONTACT_RELATIONSHIPS_SCHEMA = z.enum(
 export const EmergencyContactSchema = z.object({
   name: z.string().min(1),
   relationship: EMERGENCY_CONTACT_RELATIONSHIPS_SCHEMA,
-  phone_number: z.string().min(1),
+  phone_number: international_phone_number.optional(),
 })

@@ -84,14 +84,14 @@ describeParallel.skip(
           body.set('address.country', address.country)
           body.set(
             'address.administrative_area_level_1',
-            address.administrative_area_level_1,
+            address.administrative_area_level_1!,
           )
           body.set(
             'address.administrative_area_level_2',
-            address.administrative_area_level_2,
+            address.administrative_area_level_2!,
           )
-          body.set('address.locality', address.locality)
-          body.set('address.street', address.street)
+          body.set('address.locality', address.locality!)
+          body.set('address.street', address.street!)
 
           const post_response = await fetch(
             `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,

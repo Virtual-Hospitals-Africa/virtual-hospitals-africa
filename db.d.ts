@@ -14,7 +14,7 @@ export type Comparator = '<' | '<=' | '=' | '>' | '>='
 
 export type DoctorReviewStep = 'clinical_notes' | 'diagnosis' | 'orders' | 'prescriptions' | 'referral' | 'revert'
 
-export type EmergencyContactRelationship = 'Friend' | 'Other' | 'Parent' | 'Sibling'
+export type EmergencyContactRelationship = 'Child' | 'Friend' | 'Guardian' | 'Other' | 'Parent' | 'Sibling' | 'Spouse'
 
 export type EncounterReason = 'administration' | 'checkup' | 'follow up' | 'maternity' | 'referral' | 'seeking treatment'
 
@@ -178,6 +178,7 @@ export interface Addresses {
   country: string
   created_at: Generated<Timestamp>
   formatted: string
+  google_maps_place_id: string | null
   id: Generated<string>
   locality: string | null
   postal_code: string | null
@@ -1041,7 +1042,7 @@ export interface PatientEmergencyContacts {
   id: Generated<string>
   name: string
   patient_id: string
-  phone_number: string
+  phone_number: string | null
   relationship: EmergencyContactRelationship
   updated_at: Generated<Timestamp>
 }

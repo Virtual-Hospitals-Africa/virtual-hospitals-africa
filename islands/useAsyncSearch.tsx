@@ -36,7 +36,7 @@ export default function useAsyncSearch<
       }))
     }
 
-    const url = new URL(`${location.origin}${search_route}`)
+    const url = new URL(search_route, location.href)
     url.searchParams.set('page', String(search.page))
     if (search.query) {
       url.searchParams.set('search', search.query)

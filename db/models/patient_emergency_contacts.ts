@@ -17,7 +17,7 @@ export type RenderedPatientEmergencyContact = {
   id: string
   name: string
   relationship: EmergencyContactRelationship
-  phone_number: string
+  phone_number: string | null
   contact_order: number
 }
 
@@ -177,7 +177,7 @@ export const patient_emergency_contacts = {
       contacts: Array<{
         name: string
         relationship: EmergencyContactRelationship
-        phone_number: string
+        phone_number?: string
         contact_order?: number
       }>
     },
@@ -195,12 +195,12 @@ export const patient_emergency_contacts = {
     return trx
       .insertInto('patient_emergency_contacts')
       .values(
-        contacts.map((contact) => ({
+        contacts.map((contact, idx) => ({
           patient_id,
           name: contact.name.trim(),
           relationship: contact.relationship,
           phone_number: contact.phone_number,
-          contact_order: contact.contact_order ?? 0,
+          contact_order: contact.contact_order ?? idx,
         })),
       )
       .returningAll()
