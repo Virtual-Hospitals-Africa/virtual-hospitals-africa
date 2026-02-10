@@ -15,7 +15,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -225,9 +225,6 @@ export const additional_tasks = {
         )
         .select('all_findings.finding_s_expression')
         .selectAll('join_against')
-
-      console.log('kekkwke')
-      debugLog(existing_findings_query)
 
       return existing_findings_query.execute()
     }
