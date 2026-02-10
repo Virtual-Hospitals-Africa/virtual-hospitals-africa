@@ -152,13 +152,15 @@
   adult
   (clinical_finding (snomed_concept "Fatigue" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding") (qualifier "Sudden onset" "qualifier value"))
+    (clinical_finding (snomed_concept "Numbness of face" "finding") (qualifier "Sudden onset" "qualifier value"))
     (clinical_finding (snomed_concept "Difficulty talking" "finding"))
     (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
     (clinical_finding (snomed_concept "Chest pain" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
     (clinical_finding (snomed_concept "Orthopnea" "finding"))
     (clinical_finding (snomed_concept "Leg swelling symptom" "finding"))
+    (clinical_finding (snomed_concept "Weakness" "finding") (finding_site "Leg structure" "body structure"))
     (clinical_finding (snomed_concept "Signs of dehydration" "finding"))
     (clinical_finding (snomed_concept "Anemia" "disorder"))
   )
@@ -251,7 +253,7 @@
 (task
   "Check for urgent eye conditions"
   adult
-  (clinical_finding (snomed_concept "Pain in eye" "finding"))
+  (clinical_finding (finding_site (snomed_concept "Structure of visual system" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Sees haloes around lights" "finding"))
     (clinical_finding (snomed_concept "Blurring of visual image" "finding"))

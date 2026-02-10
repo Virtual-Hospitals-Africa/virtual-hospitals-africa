@@ -15,7 +15,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -219,12 +219,15 @@ export const additional_tasks = {
       })
         .selectFrom('all_findings')
         .innerJoin(
-          patient_findings.baseQuery(trx).as('join_against'),
+          patient_findings.baseQuery(trx, { include_negative: true }).as('join_against'),
           'join_against.id',
           'all_findings.finding_id',
         )
         .select('all_findings.finding_s_expression')
         .selectAll('join_against')
+
+      console.log('kekkwke')
+      debugLog(existing_findings_query)
 
       return existing_findings_query.execute()
     }
@@ -253,14 +256,14 @@ export const additional_tasks = {
           health_worker_id,
         })
       ),
-      due_to_findings: patient_findings.getByIds(trx, due_to_record_ids).then((findings) =>
+      due_to_findings: patient_findings.getByIds(trx, due_to_record_ids, { include_invalid: true }).then((findings) =>
         patient_record_providers.hydrateIntermediateRecords(trx, {
           records: findings,
           encounter,
           health_worker_id,
         })
       ),
-      due_to_evaluations: patient_evaluations.getByIds(trx, due_to_record_ids).then((evaluations) =>
+      due_to_evaluations: patient_evaluations.getByIds(trx, due_to_record_ids, { include_invalid: true }).then((evaluations) =>
         patient_record_providers.hydrateIntermediateRecords(trx, {
           records: evaluations,
           encounter,

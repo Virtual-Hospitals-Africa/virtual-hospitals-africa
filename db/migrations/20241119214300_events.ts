@@ -8,7 +8,7 @@ export async function up(db: Kysely<DB>) {
       .addColumn('type', 'varchar(255)', (col) => col.notNull())
       .addColumn('data', 'jsonb', (col) => col.notNull())
       .addColumn('listener_names', sql`varchar(255)[]`, (col) => col.notNull())
-      .addColumn('patient_encounter_id', 'uuid', (col) => col.references('patient_encounters.id'))
+      .addColumn('patient_encounter_id', 'uuid', (col) => col.references('patient_encounters.id').onDelete('cascade'))
       .addColumn('error_message', 'text')
       .addColumn('all_processed_at', 'timestamptz'))
 

@@ -6,7 +6,7 @@ import { additional_tasks } from '../../../../../../../../db/models/additional_t
 import { positive_decimal, yes_no_unknown } from '../../../../../../../../util/validators.ts'
 import { sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
 import { FindingNodeToInsert, MeasurementToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
-import { forEach } from '../../../../../../../../util/inParallel.ts'
+
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { insertable_finding_base, investigation, measurement } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
@@ -83,7 +83,7 @@ export const handler = postHandler(
     const { response, inserted } = await promiseProps({
       response: completeAndProceedToNextStep(ctx),
       task_groups: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }),
-      inserted: insertFindings(),
+      inserted: markAlteredRecords().then(() => insertFindings()),
     })
 
     await promiseProps({
@@ -94,9 +94,6 @@ export const handler = postHandler(
         evaluation_ids: form_values.evaluation_ids,
       }),
       dispatched: dispatchEvent(inserted),
-      records_altered: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
-        ? Promise.resolve()
-        : markAlteredRecords(inserted.procedure_id),
     })
 
     return response
@@ -181,20 +178,20 @@ export const handler = postHandler(
       })
     }
 
-    function markAlteredRecords(procedure_id: string) {
+    function markAlteredRecords() {
+      if (!completed_procedure) return Promise.resolve()
       const altered_record_ids = compactMap(
         form_values.check_for,
         ({ existence, existing_finding }) => (existing_finding && existing_finding.existence != existence) && existing_finding.id,
       )
 
-      return forEach(altered_record_ids, (altered_record_id) =>
-        markEnteredInError(trx, {
-          patient_id,
-          employment_id,
-          patient_encounter_id,
-          altered_record_id,
-          procedure_id,
-        }))
+      return markEnteredInError(trx, {
+        patient_id,
+        employment_id,
+        patient_encounter_id,
+        altered_record_ids,
+        procedure_id: completed_procedure.procedure_id,
+      })
     }
   },
 )

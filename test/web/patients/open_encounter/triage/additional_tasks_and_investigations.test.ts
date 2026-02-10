@@ -25,6 +25,7 @@ import { DIAGNOSIS } from '../../../../../shared/snomed_concepts.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { getFormLabels, getFormValues } from 'test/_helpers/form.ts'
 import { getTableDisplay } from 'test/_helpers/table.ts'
+import { deepMerge } from '../../../../../util/deepMerge.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
@@ -228,24 +229,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       {
         'atom': 'finding',
         'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Ischemic heart disease',
-          'category': 'disorder',
-        },
-        'value_snomed_concept': null,
-        'qualifiers': [],
-        'attributes': [],
-        'exact': false,
-        'history': false,
-        'existence': 'Any',
-        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Ischemic heart disease" "disorder"))',
-        'displays': { 'value': null, 'finding': 'Ischemic heart disease', 'full': 'Ischemic heart disease' },
-        'existing_finding': null,
-      },
-      {
-        'atom': 'finding',
-        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
         'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Difficulty breathing', 'category': 'finding' },
         'value_snomed_concept': null,
         'qualifiers': [],
@@ -274,7 +257,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           'finding-pain-radiating-to-neck': { 'existence': 'Pain radiating to neck*' },
           'finding-pain-radiating-to-left-arm': { 'existence': 'Pain radiating to left arm*' },
           'finding-pain-radiating-to-right-arm': { 'existence': 'Pain radiating to right arm*' },
-          'finding-ischemic-heart-disease': { 'existence': 'Ischemic heart disease*' },
           'finding-difficulty-breathing': { 'existence': 'Difficulty breathing*' },
         },
       },
@@ -307,9 +289,6 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           },
           'finding-pain-radiating-to-right-arm': {
             's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to right arm" "finding"))',
-          },
-          'finding-ischemic-heart-disease': {
-            's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Ischemic heart disease" "disorder"))',
           },
           'finding-difficulty-breathing': {
             's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
@@ -790,6 +769,126 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         ),
         'Reference Range': '',
         'Priority / Score': '',
+      }, { strict: true })
+    },
+  )
+
+  itParallel(
+    'reevaluates from improbable to probable after posting different signs on additional_tasks',
+    async () => {
+      const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
+      const { $, patient_id, patient_encounter_id, postStep, getStep } = await setupTriageNewPatient({
+        patient_demographics: randomDemographics('ZA', 'female', 'adult'),
+        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        brief_history: {
+          diabetes: {
+            existence: 'No',
+          },
+          pregnancy: {
+            existence: 'No',
+          },
+        },
+        height_and_weight: {
+          measurements: {
+            height: {
+              value: 160,
+              units: 'cm',
+            },
+            weight: {
+              value: 80,
+              units: 'kg',
+            },
+          },
+        },
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues({
+            respiratory_rate: 12, // 9-14 -> score 0
+            heart_rate: 60, // 51-100 -> score 0
+            blood_pressure_systolic: 120, // 101-199 -> score 0
+            blood_pressure_diastolic: 80,
+            temperature: 36.6, // 35-38.4 -> score 0
+          }),
+          assessments: asVitalAssessmentFormValues({
+            mobility_assessment: 'Walking', // score 0
+            consciousness: 'Alert', // score 0
+            trauma_presence: 'No', // score 0
+          }),
+        },
+      })
+
+      const anaphylaxis_diagnosis = await patient_evaluations.findOne(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      )
+
+      assertMatches(anaphylaxis_diagnosis, {
+        displays: {
+          full: 'Anaphylaxis Diagnosis: Possible diagnosis',
+        },
+      })
+
+      // deno-lint-ignore no-explicit-any
+      const form_values: any = getFormValues($)
+
+      // First POST: all symptoms "No" → improbable
+      const post_data = structuredClone(form_values)
+      for (const key in post_data.check_for) {
+        post_data.check_for[key].existence = post_data.check_for[key].existence || 'No'
+      }
+
+      const $after_first_post = await postStep({
+        additional_tasks_and_investigations: post_data,
+      })
+
+      // Verify improbable diagnosis after first POST
+      const table_1 = getTableDisplay($after_first_post)
+      assertMatches(table_1[0], {
+        Assessment: 'Anaphylaxis Diagnosis',
+        Finding: z.string().regex(
+          /^Improbable diagnosisAnaphylaxis Diagnosis: Improbable diagnosisEvaluated by:System/,
+        ),
+        'Reference Range': '',
+        'Priority / Score': '',
+      }, { strict: true })
+
+      // GET the additional_tasks page again to get updated form values with existing_finding IDs
+      const $additional_tasks_2 = await getStep('additional_tasks_and_investigations')
+
+      // deno-lint-ignore no-explicit-any
+      const form_values_2: any = getFormValues($additional_tasks_2)
+
+      const second_post = deepMerge(
+        form_values_2,
+        {
+          check_for: {
+            'finding-sudden-onset-itching': {
+              existence: 'Yes',
+            },
+            'finding-difficulty-breathing': {
+              existence: 'Yes',
+            },
+          },
+        },
+      )
+
+      // Second POST: change itching and difficulty-breathing to "Yes" → probable
+      const $after_second_post = await postStep({
+        additional_tasks_and_investigations: second_post,
+      })
+
+      // Verify probable diagnosis after second POST
+      const table_2 = getTableDisplay($after_second_post)
+      assertMatches(table_2[0], {
+        Assessment: 'Anaphylaxis Diagnosis',
+        Finding: z.string().regex(
+          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Priority: UrgentSudden onset Itching → Evidence ofDifficulty breathing → Evidence of$/,
+        ),
+        'Reference Range': '',
+        'Priority / Score': 'Urgent',
       }, { strict: true })
     },
   )

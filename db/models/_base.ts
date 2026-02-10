@@ -156,12 +156,13 @@ type BaseModel<
     trx: TrxOrDb,
     to_insert: InsertObject<DB, TopLevelTable>,
   ): Promise<string>
-  getById(trx: TrxOrDb, id: string | IdSelection): Promise<RenderedResult>
+  getById(trx: TrxOrDb, id: string | IdSelection, terms?: SearchTerms): Promise<RenderedResult>
   getByIdOptional(
     trx: TrxOrDb,
     id: string | IdSelection,
+    terms?: SearchTerms,
   ): Promise<RenderedResult | null>
-  getByIds(trx: TrxOrDb, ids: string[] | IdSelection): Promise<RenderedResult[]>
+  getByIds(trx: TrxOrDb, ids: string[] | IdSelection, terms?: SearchTerms): Promise<RenderedResult[]>
   updateById(
     trx: TrxOrDb,
     id: string,
@@ -297,7 +298,9 @@ export function base<
     ...input,
     buildQuery(
       trx: TrxOrDb,
-      search_terms: SearchTerms,
+      search_terms: SearchTerms & {
+        id?: string | string[] | IdSelection
+      },
       callback: (
         qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
       ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
@@ -421,18 +424,20 @@ export function base<
     async getById(
       trx: TrxOrDb,
       id: string | IdSelection,
+      search?: SearchTerms,
     ): Promise<RenderedResult> {
-      const result = await this.getByIdOptional(trx, id)
+      const result = await this.getByIdOptional(trx, id, search)
       assertOr404(result, `Not found: (${input.top_level_table}.id = '${id}')`)
       return result
     },
     async getByIdOptional(
       trx: TrxOrDb,
       id: string | IdSelection,
+      search?: SearchTerms,
     ): Promise<RenderedResult | null> {
       const cache_result = lru?.get(id)
       if (cache_result) return cache_result
-      const query = this.buildQuery(trx, {} as SearchTerms, (qb) =>
+      const query = this.buildQuery(trx, search || {} as SearchTerms, (qb) =>
         qb.where(
           `${top_level_table}.id` as ReferenceExpression<Tables, SelectingFrom>,
           '=',
@@ -474,13 +479,14 @@ export function base<
     async getByIds(
       trx: TrxOrDb,
       ids: string[] | IdSelection,
+      terms?: SearchTerms,
     ): Promise<RenderedResult[]> {
       if (Array.isArray(ids)) {
         assert(ids.length > 0)
       }
       const intermediate_results = await this.buildQuery(
         trx,
-        {} as SearchTerms,
+        terms || {} as SearchTerms,
         (qb) =>
           qb.where(
             `${top_level_table}.id` as ReferenceExpression<

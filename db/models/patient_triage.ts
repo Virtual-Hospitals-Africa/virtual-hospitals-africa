@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { IdSelection, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { debugLog, success_true } from '../helpers.ts'
+import { success_true } from '../helpers.ts'
 import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
 import { base } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
@@ -36,60 +36,6 @@ function insertLevel(
     source_id: triage_level_evaluation_id,
     destination_id: record_id,
   }))
-
-  debugLog(
-    trx.with(
-      'inserting_evaluation_records',
-      (qb) =>
-        qb.insertInto('patient_records')
-          .values({
-            id: triage_level_evaluation_id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: EVALUATION_ACTION.id,
-            specific_snomed_concept_id: PRIORITY.id,
-            value_snomed_concept_id,
-          }),
-    ).with('inserting_evaluations', (qb) =>
-      qb.insertInto('patient_evaluations')
-        .values({
-          id: triage_level_evaluation_id,
-          employment_id,
-          by_system,
-          procedure_id,
-        })
-        .returning('id'))
-      .with(
-        'inserting_triage_level',
-        (qb) =>
-          qb.insertInto('patient_triage_level')
-            .values({
-              id: triage_level_evaluation_id,
-              target_treatment_time: sql`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
-            })
-            .returningAll(),
-      )
-      .with(
-        'inserting_relation_patient_records',
-        (qb) =>
-          qb.insertInto('patient_records').values(relations.map(({ id }) => ({
-            id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: RELATIONSHIP.id,
-            specific_snomed_concept_id: DUE_TO.id,
-          }))),
-      )
-      .with(
-        'inserting_relations',
-        (qb) => qb.insertInto('patient_record_relations').values(relations),
-      )
-      .selectFrom('inserting_triage_level')
-      .selectAll('inserting_triage_level')
-      .select([
-        success_true,
-      ]),
-  )
 
   return trx.with(
     'inserting_evaluation_records',

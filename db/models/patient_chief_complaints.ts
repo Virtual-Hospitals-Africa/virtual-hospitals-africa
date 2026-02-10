@@ -75,7 +75,7 @@ export const patient_chief_complaints = {
         patient_encounter_id,
         employment_id,
         procedure_id,
-        altered_record_id: altered_patient_chief_complaint_id,
+        altered_record_ids: [altered_patient_chief_complaint_id],
       })
     }
 

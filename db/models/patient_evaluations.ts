@@ -3,10 +3,8 @@ import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
-import { patient_records } from './patient_records.ts'
+import { patient_records, PatientRecordsSearch } from './patient_records.ts'
 import { base } from './_base.ts'
-import { assert } from 'std/assert/assert.ts'
-import { buildExpression } from './s_expression.ts'
 import isString from '../../util/isString.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
@@ -97,11 +95,7 @@ export function insertOneNested(
     ])
 }
 
-export type PatientEvaluationsSearch = {
-  patient_id?: string | IdSelection
-  root_snomed_concept_id?: string
-  specific_snomed_concept_id?: string
-  patient_encounter_id?: string | IdSelection
+export type PatientEvaluationsSearch = PatientRecordsSearch & {
   evaluates_record_id?: string | IdSelection
   s_expression?: string | Lang['evaluation']
 }
@@ -110,7 +104,7 @@ export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
   opts: PatientEvaluationsSearch,
 ) {
-  let qb = patient_records.baseQuery(trx).innerJoin(
+  let qb = patient_records.baseQuery(trx, opts).innerJoin(
     'patient_evaluations',
     'patient_evaluations.id',
     'patient_records_aggregated.id',
@@ -144,57 +138,11 @@ export function baseQuery(
       ).as('as_part_of_procedure'),
     ])
 
-  if (opts.patient_id) {
-    qb = qb.where(
-      'patient_records_aggregated.patient_id',
-      '=',
-      opts.patient_id,
-    )
-  }
-  if (opts.patient_encounter_id) {
-    qb = qb.where(
-      'patient_records_aggregated.patient_encounter_id',
-      '=',
-      opts.patient_encounter_id,
-    )
-  }
-  if (opts.root_snomed_concept_id) {
-    qb = qb.where(
-      'patient_records_aggregated.root_snomed_concept_id',
-      '=',
-      opts.root_snomed_concept_id,
-    )
-  }
-  if (opts.specific_snomed_concept_id) {
-    qb = qb.where(
-      'patient_records_aggregated.specific_snomed_concept_id',
-      '=',
-      opts.specific_snomed_concept_id,
-    )
-  }
   if (opts.evaluates_record_id) {
     qb = qb.where(
       'patient_evaluations.evaluates_record_id',
       '=',
       opts.evaluates_record_id,
-    )
-  }
-  if (opts.s_expression) {
-    assert(
-      opts.patient_id,
-      'For now, you must always provide a patient_id as part of a query',
-    )
-    qb = qb.where(
-      'patient_records_aggregated.id',
-      'in',
-      buildExpression(
-        trx,
-        {
-          patient_id: opts.patient_id,
-          patient_encounter_id: opts.patient_encounter_id,
-        },
-        opts.s_expression,
-      ),
     )
   }
 
