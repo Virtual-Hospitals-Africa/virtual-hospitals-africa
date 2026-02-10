@@ -4,6 +4,7 @@ import { Coordinates, GoogleAddressComponent, LocationDistance } from '../types.
 import { cacheable } from './cache.ts'
 import { AddressInsert } from '../db/models/addresses.ts'
 import { getEnvVariableRequiredOutsideDockerQuickstart } from '../util/getEnvVariableRequiredOutsideDockerQuickstart.ts'
+import { formatAddress } from '../shared/addresses.ts'
 
 const GOOGLE_MAPS_API_KEY = getEnvVariableRequiredOutsideDockerQuickstart(
   'GOOGLE_MAPS_API_KEY',
@@ -177,9 +178,25 @@ export async function getAddressSuggestions(
 }
 
 export async function getPlaceDetails(
-  place_id: string,
+  google_maps_place_id: string,
 ): Promise<AddressInsert | null> {
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${GOOGLE_MAPS_API_KEY}`
+  if (Deno.env.get('IS_TEST')) {
+    return {
+      google_maps_place_id,
+      formatted: '123 Main St, Cape Town, ZA',
+      country: 'ZA',
+      locality: 'Cape Town',
+      street: '123 Main St',
+      administrative_area_level_1: 'Western Cape',
+      administrative_area_level_2: 'City of Cape Town',
+      route: 'Main St',
+      street_number: '123',
+      postal_code: '8000',
+      unit: null,
+    }
+  }
+
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${google_maps_place_id}&key=${GOOGLE_MAPS_API_KEY}`
   const response = await fetch(url)
 
   if (!response.ok) {
@@ -191,7 +208,7 @@ export async function getPlaceDetails(
   console.log('Place details response:', {
     status: data.status,
     error_message: data.error_message,
-    place_id,
+    place_id: google_maps_place_id,
   })
 
   if (data.status !== 'OK' || !data.result) {
@@ -213,15 +230,16 @@ export async function getPlaceDetails(
 
   const street = (components.route || components.street_number) ? `${components.street_number || ''} ${components.route || ''}`.trim() : ''
 
-  return {
-    street: street || undefined,
+  return formatAddress({
+    street,
+    google_maps_place_id,
     locality: components.locality || '',
-    administrative_area_level_2: components.administrative_area_level_2 || undefined,
-    administrative_area_level_1: components.administrative_area_level_1 || undefined,
+    administrative_area_level_2: components.administrative_area_level_2,
+    administrative_area_level_1: components.administrative_area_level_1,
     country: components.country || '',
-    postal_code: components.postal_code || undefined,
-    route: components.route || undefined,
-    street_number: components.street_number || undefined,
+    postal_code: components.postal_code,
+    route: components.route,
+    street_number: components.street_number,
     unit: undefined,
-  }
+  })
 }

@@ -17,7 +17,7 @@ export type RenderedPatientEmergencyContact = {
   id: string
   name: string
   relationship: EmergencyContactRelationship
-  phone_number: string
+  phone_number: string | null
   contact_order: number
 }
 
@@ -177,7 +177,7 @@ export const patient_emergency_contacts = {
       contacts: Array<{
         name: string
         relationship: EmergencyContactRelationship
-        phone_number: string
+        phone_number?: string
         contact_order?: number
       }>
     },

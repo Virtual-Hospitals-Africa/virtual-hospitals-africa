@@ -1,5 +1,5 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { getAddressSuggestions, getPlaceDetails } from '../../../../external-clients/google-maps.ts'
+import { getAddressSuggestions } from '../../../../external-clients/google-maps.ts'
 import { json } from '../../../../util/responses.ts'
 import { OrganizationContext } from './_middleware.ts'
 import { SERVER_COUNTRY } from '../../../../db/models/countries.ts'
@@ -25,12 +25,11 @@ export const handler = {
     const url = ctx.url
 
     const search_query = url.searchParams.get('search')
-    const place_id = url.searchParams.get('place_id')
     const country = url.searchParams.get('country') || SERVER_COUNTRY
     const { location } = ctx.state.organization
     assert(location, 'Only supporting organizations with a location')
 
-    if (!search_query && !place_id) {
+    if (!search_query) {
       return json({
         results: [],
         total: 0,
@@ -62,11 +61,6 @@ export const handler = {
         page: 1,
         has_next_page: false,
       })
-    }
-
-    if (place_id) {
-      const details = await getPlaceDetails(place_id)
-      return json(details)
     }
 
     return json({

@@ -1,43 +1,20 @@
 import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { patient_emergency_contacts } from '../../../../../../../../db/models/patient_emergency_contacts.ts'
-import * as patient_address from '../../../../../../../../db/models/patient_address.ts'
+import { patient_address } from '../../../../../../../../db/models/patient_address.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import PatientContactInformationSection from '../../../../../../../../islands/PatientContactsSection.tsx'
 import EmergencyContactSection from '../../../../../../../../islands/EmergencyContactsSection.tsx'
 import { EmergencyContactSchema } from '../../../../../../../../shared/family.ts'
 import { patient_contacts } from '../../../../../../../../db/models/patient_contacts.ts'
-
-const AddressSchema = z.preprocess(
-  (v) => {
-    if (typeof v === 'string') {
-      try {
-        return JSON.parse(v)
-      } catch {
-        return v
-      }
-    }
-    return v
-  },
-  z.object({
-    formatted: z.string(),
-    country: z.string(),
-    administrative_area_level_1: z.string().nullable(),
-    administrative_area_level_2: z.string().nullable(),
-    locality: z.string().nullable(),
-    route: z.string().nullable(),
-    street_number: z.string().nullable(),
-    unit: z.string().nullable(),
-    street: z.string().nullable(),
-    postal_code: z.string().nullable(),
-  }),
-)
-
-export const PhoneNumberSchema = z.string()
+import { SERVER_COUNTRY } from '../../../../../../../../db/models/countries.ts'
+import { getPlaceDetails } from '../../../../../../../../external-clients/google-maps.ts'
+import { assertOr404 } from '../../../../../../../../util/assertOr.ts'
+import { international_phone_number } from '../../../../../../../../util/validators.ts'
 
 export const PatientRegistrationContactsSchema = z.object({
-  address: AddressSchema,
-  phone_number: PhoneNumberSchema,
+  google_maps_place_id: z.string(),
+  phone_number: international_phone_number.optional(),
   emergency_contacts: z.array(EmergencyContactSchema).min(1),
 })
 
@@ -45,17 +22,27 @@ export const handler = postHandler(
   PatientRegistrationContactsSchema,
   async (
     ctx: OpenEncounterWorkflowContext,
-    { address, phone_number, emergency_contacts },
+    { google_maps_place_id, phone_number, emergency_contacts },
   ) => {
     await Promise.all([
       patient_emergency_contacts.setContacts(
         ctx.state.trx,
         { patient_id: ctx.state.patient.id, contacts: emergency_contacts },
       ),
-      patient_address.updateById(
-        ctx.state.trx,
-        { patient_id: ctx.state.patient.id, address: address },
-      ),
+      getPlaceDetails(google_maps_place_id).then((address) => {
+        assertOr404(address, `No google maps place exists with id ${google_maps_place_id}`)
+
+        return patient_address.updateByPatientId(
+          ctx.state.trx,
+          {
+            patient_id: ctx.state.patient.id,
+            address: {
+              ...address,
+              google_maps_place_id,
+            },
+          },
+        )
+      }),
       patient_contacts.updatePhoneNumber(
         ctx.state.trx,
         { patient_id: ctx.state.patient.id, phone_number },
@@ -68,7 +55,7 @@ export const handler = postHandler(
 export async function PatientRegistrationContactsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const address = await patient_address.getById(ctx.state.trx, {
+  const address = await patient_address.getByPatientId(ctx.state.trx, {
     patient_id: ctx.state.patient.id,
   })
   const existing_contacts = await patient_emergency_contacts.getByPatientId(
@@ -84,6 +71,7 @@ export async function PatientRegistrationContactsPage(
     <>
       <PatientContactInformationSection
         address={address}
+        default_country={SERVER_COUNTRY}
         phone_number={patient_phone}
         organization_id={ctx.state.organization.id}
       />

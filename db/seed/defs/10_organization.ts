@@ -9,6 +9,7 @@ import z from 'zod'
 import { decimal } from '../../../util/validators.ts'
 import { TO_COUNTRY_ISO_3601_2 } from '../../models/addresses.ts'
 import { getLocationAddress } from '../../../external-clients/google-maps.ts'
+import { formatAddress } from '../../../shared/addresses.ts'
 
 export default define(
   ['addresses', 'organizations'],
@@ -26,13 +27,13 @@ export async function addTestOrganizations(trx: TrxOrDb) {
     is_test: true,
     ownership: 'Govt.',
     country: 'ZA',
-    address: {
+    address: formatAddress({
       street_number: '123',
       route: 'Main St',
       locality: 'Polokwane',
       country: 'South Africa',
       postal_code: '23456',
-    },
+    }),
     location: {
       latitude: -19.4554096,
       longitude: 29.7739353,
@@ -47,13 +48,13 @@ export async function addTestOrganizations(trx: TrxOrDb) {
     is_test: true,
     ownership: 'Govt.',
     country: 'ZA',
-    address: {
+    address: formatAddress({
       street_number: '12356',
       route: 'Main St',
       locality: 'Polokwane',
       country: 'South Africa',
       postal_code: '23456',
-    },
+    }),
     location: {
       latitude: -19.4555096,
       longitude: 29.7738353,
@@ -67,13 +68,13 @@ export async function addTestOrganizations(trx: TrxOrDb) {
     is_test: true,
     ownership: 'Govt.',
     country: 'ZW',
-    address: {
+    address: formatAddress({
       street_number: '123',
       route: 'Main St',
       locality: 'Gweru',
       country: 'Zimbabwe',
       postal_code: '23456',
-    },
+    }),
     location: {
       latitude: -19.4554096,
       longitude: 29.7739353,
@@ -87,13 +88,13 @@ export async function addTestOrganizations(trx: TrxOrDb) {
     is_test: true,
     ownership: 'Govt.',
     country: 'ZW',
-    address: {
+    address: formatAddress({
       street_number: '12356',
       route: 'Main St',
       locality: 'Gweru',
       country: 'Zimbabwe',
       postal_code: '23456',
-    },
+    }),
     location: {
       latitude: -19.4555096,
       longitude: 29.7738353,

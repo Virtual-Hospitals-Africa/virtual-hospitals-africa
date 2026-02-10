@@ -5,6 +5,7 @@ import generateUUID from '../../util/uuid.ts'
 import { OrganizationInsert } from '../../db/models/organizations.ts'
 import { Department } from '../../shared/departments.ts'
 import { organizations } from '../../db/models/organizations.ts'
+import { formatAddress } from '../../shared/addresses.ts'
 
 export const TEST_ORGANIZATION_UUIDS = {
   ZA: {
@@ -126,12 +127,12 @@ export function createTestOrganization(
       name,
       room_names: testOrganizationRoomNames(name),
     })),
-    address: {
+    address: formatAddress({
       street: '123 Test St',
       locality: 'Test City',
       country: 'ZA',
       postal_code: '12345',
-    },
+    }),
     location: { latitude: 0, longitude: 0 },
   }
 
@@ -161,12 +162,12 @@ export async function withTestOrganizations(
       name,
       room_names: testOrganizationRoomNames(name),
     })),
-    address: {
+    address: formatAddress({
       street: '123 Test St',
       locality: 'Test City',
       country: 'US',
       postal_code: '12345',
-    },
+    }),
     location: { latitude: 0, longitude: 0 },
   }))
 

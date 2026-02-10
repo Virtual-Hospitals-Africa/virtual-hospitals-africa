@@ -24,7 +24,7 @@ export async function up(db: Kysely<DB>) {
           sql`emergency_contact_relationship`,
           (col) => col.notNull(),
         )
-        .addColumn('phone_number', 'varchar(50)', (col) => col.notNull())
+        .addColumn('phone_number', 'varchar(50)')
         .addColumn(
           'contact_order',
           'integer',

@@ -5,6 +5,7 @@ import { Button } from '../components/library/Button.tsx'
 import { PhoneNumberInput } from './form/inputs/phone_number.tsx'
 import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
 import { TextInput } from './form/inputs/text.tsx'
+import { Maybe } from '../types.ts'
 
 const RELATIONSHIP_OPTIONS = [
   'Parent',
@@ -22,7 +23,7 @@ export default function EmergencyContactSection({
   existing_contacts?: Array<{
     name: string
     relationship: string
-    phone_number: string
+    phone_number: Maybe<string>
   }>
 }) {
   const contacts = useSignal(
@@ -70,8 +71,6 @@ export default function EmergencyContactSection({
             <PhoneNumberInput
               name={`emergency_contacts[${index}].phone_number`}
               label='Phone Number'
-              placeholder='(000)-000-0000'
-              required
               value={contact.phone_number}
             />
           </FormRow>

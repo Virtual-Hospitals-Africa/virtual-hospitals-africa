@@ -72,6 +72,7 @@ export const PersonalFormFields = z.object({
     administrative_area_level_2: z.string(),
     locality: z.string(),
     street: z.string(),
+    formatted: z.string(),
   }),
 })
 

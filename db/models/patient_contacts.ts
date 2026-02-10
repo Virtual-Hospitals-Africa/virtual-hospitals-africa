@@ -19,11 +19,11 @@ export const patient_contacts = {
     trx: TrxOrDb,
     { patient_id, phone_number }: {
       patient_id: string
-      phone_number: string
+      phone_number?: string
     },
   ) {
     return trx.updateTable('patients')
-      .set({ phone_number })
+      .set({ phone_number: phone_number || null })
       .where('id', '=', patient_id)
       .executeTakeFirst()
   },
