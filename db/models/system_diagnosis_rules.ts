@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { EXPRESSION_BUILDERS } from './s_expression.ts'
-import { TrxOrDb } from '../../types.ts'
+import { AgeDetermination, TrxOrDb } from '../../types.ts'
 import { blankSelection, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
 import {
   DEFINITE,
@@ -28,6 +28,7 @@ import { ruleRunner, RuleRunnerInput } from './system_rules.ts'
 import compactMap from '../../util/compactMap.ts'
 import findMatching from '../../util/findMatching.ts'
 import { deepMerge } from '../../util/deepMerge.ts'
+import { assertArrayNonEmpty } from '../../util/arraySize.ts'
 
 export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map((d) => parseWithSchema(d, system_diagnosis_rule))
 
@@ -128,6 +129,107 @@ const findMatchingRecords = ruleRunner(
 )
 
 export const system_diagnosis_rules = {
+  async reevaluateForAlteredRecord(
+    trx: TrxOrDb,
+    input: {
+      patient_id: string
+      patient_encounter_id: string
+      patient_age_determination: AgeDetermination | null
+      altered_record_ids: string[]
+      listener_id: string
+      listener_name: string
+    },
+  ) {
+    const { patient_id, patient_encounter_id, patient_age_determination, altered_record_ids } = input
+    assertArrayNonEmpty(altered_record_ids)
+    if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
+
+    // 1. Find diagnoses that use the altered record as evidence
+    const affected_diagnoses = await trx
+      .selectFrom('patient_record_relations')
+      .innerJoin('patient_records', 'patient_records.id', 'patient_record_relations.id')
+      .where('patient_record_relations.destination_id', 'in', altered_record_ids)
+      .where('patient_records.specific_snomed_concept_id', '=', EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id)
+      .select('patient_record_relations.source_id as diagnosis_id')
+      .execute()
+
+    if (!affected_diagnoses.length) return 'No diagnoses use this record as evidence'
+
+    // 2. Get all valid records for the encounter to use as evidence for reevaluation
+    const valid_records = await trx
+      .selectFrom('patient_records_aggregated')
+      .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records_aggregated.id')
+      .where('patient_records_aggregated.patient_id', '=', patient_id)
+      .where('patient_records_aggregated.patient_encounter_id', '=', patient_encounter_id)
+      .select(['patient_records_aggregated.id', 'patient_records_aggregated.existence'])
+      .execute()
+
+    const records = valid_records.map((r) => ({ id: r.id, existence: r.existence }))
+
+    // 3. Re-run system diagnosis rules with current valid records
+    const make_new_diagnosis = await findMatchingRecords(trx, { ...input, records })
+
+    if (!make_new_diagnosis.matching_rules.length) {
+      return `Reevaluated after invalidation of ${altered_record_ids.join(', ')}: ${make_new_diagnosis.message}`
+    }
+
+    const inserted_diagnoses: string[] = []
+    for (const { rule, contributing_records } of make_new_diagnosis.matching_rules) {
+      const evaluation_id = generateUUID()
+      const relations = contributing_records.map((record) => ({
+        id: generateUUID(),
+        source_id: evaluation_id,
+        destination_id: record.record_id,
+      }))
+
+      await patient_evaluations.insertOneNestedQuery(trx, {
+        evaluation_id,
+        patient_id,
+        patient_encounter_id,
+        evaluation: diagnosisToEvaluation(rule.diagnosis),
+        by_system: true,
+      }).with(
+        'inserting_relation_patient_records',
+        (qb) =>
+          relations.length
+            ? qb.insertInto('patient_records').values(relations.map(({ id }) => ({
+              id,
+              patient_id,
+              patient_encounter_id,
+              root_snomed_concept_id: RELATIONSHIP.id,
+              specific_snomed_concept_id: EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id,
+            })))
+            : blankSelection(qb),
+      ).with(
+        'inserting_relations',
+        (qb) => relations.length ? qb.insertInto('patient_record_relations').values(relations) : blankSelection(qb),
+      ).selectNoFrom([
+        success_true,
+      ]).executeTakeFirstOrThrow()
+
+      await events.insert(
+        trx,
+        {
+          type: 'SystemDiagnosisCreated',
+          data: {
+            patient_id,
+            patient_encounter_id,
+            patient_age_determination,
+            evaluation_id,
+          },
+        },
+      )
+
+      inserted_diagnoses.push(`${rule.diagnosis.certainty_qualifier} ${rule.diagnosis.snomed_concept.name}`)
+    }
+
+    return inserted_diagnoses.length
+      ? `Reevaluated after invalidation of ${altered_record_ids.join(', ')}: inserted ${inserted_diagnoses.length} diagnosis(es): ${
+        inserted_diagnoses.join(', ')
+      }`
+      : `Reevaluated after invalidation of ${altered_record_ids.join(', ')}: no new system diagnoses to insert`
+  },
+
   async insertSystemDiagnosesIfNotAlreadyIdentified(
     trx: TrxOrDb,
     input: RuleRunnerInput & {

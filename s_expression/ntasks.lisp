@@ -251,7 +251,7 @@
 (task
   "Check for urgent eye conditions"
   adult
-  (clinical_finding (snomed_concept "Pain in eye" "finding"))
+  (clinical_finding (finding_site (snomed_concept "Structure of visual system" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Sees haloes around lights" "finding"))
     (clinical_finding (snomed_concept "Blurring of visual image" "finding"))

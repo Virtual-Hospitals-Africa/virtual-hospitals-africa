@@ -2,6 +2,9 @@ import { Selecting, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { asText, success_true } from '../helpers.ts'
 import { ALTERED, ENTERED_IN_ERROR, EVALUATION_ACTION } from '../../shared/snomed_concepts.ts'
+import { inBackground } from '../../util/inBackground.ts'
+import { events } from './events.ts'
+import zip from '../../util/zip.ts'
 
 export const RECORD_NOW_INVALID = {
   ALTERED,
@@ -10,45 +13,57 @@ export const RECORD_NOW_INVALID = {
 
 function markInvalid(
   trx: TrxOrDb,
-  {
-    patient_id,
-    patient_encounter_id,
-    employment_id,
-    procedure_id,
-    altered_record_id,
-    snomed_concept,
-  }: {
+  input: {
     patient_id: string
     patient_encounter_id: string
     employment_id: string
     procedure_id: string
-    altered_record_id: string
+    altered_record_ids: string[]
     snomed_concept: keyof typeof RECORD_NOW_INVALID
   },
 ) {
-  const id = generateUUID()
+  const {
+    patient_id,
+    patient_encounter_id,
+    employment_id,
+    procedure_id,
+    altered_record_ids,
+    snomed_concept,
+  } = input
 
-  return trx.with('inserting_record', (qb) =>
-    qb.insertInto('patient_records')
-      .values({
-        id,
-        patient_id,
-        patient_encounter_id,
-        root_snomed_concept_id: EVALUATION_ACTION.id,
-        specific_snomed_concept_id: RECORD_NOW_INVALID[snomed_concept].id,
-      }).returning('id')).with(
-      'inserting_evaluation',
-      (qb) =>
-        qb.insertInto('patient_evaluations')
-          .values({
-            id,
-            employment_id,
-            procedure_id,
-            evaluates_record_id: altered_record_id,
-            by_system: false,
-          }),
-    ).selectNoFrom(success_true)
-    .executeTakeFirstOrThrow()
+  if (!altered_record_ids.length) return
+
+  const records = altered_record_ids.map(() => ({
+    id: generateUUID(),
+    patient_id,
+    patient_encounter_id,
+    root_snomed_concept_id: EVALUATION_ACTION.id,
+    specific_snomed_concept_id: RECORD_NOW_INVALID[snomed_concept].id,
+  }))
+  const evaluations = zip(altered_record_ids, records).map(([altered_record_id, { id }]) => ({
+    id,
+    employment_id,
+    procedure_id,
+    evaluates_record_id: altered_record_id,
+    by_system: false,
+  })).toArray()
+
+  return inBackground(
+    events.insert(trx, {
+      type: 'RecordMarkedInvalid',
+      data: input,
+    }),
+    () =>
+      trx.with('inserting_record', (qb) =>
+        qb.insertInto('patient_records')
+          .values(records).returning('id')).with(
+          'inserting_evaluation',
+          (qb) =>
+            qb.insertInto('patient_evaluations')
+              .values(evaluations),
+        ).selectNoFrom(success_true)
+        .executeTakeFirstOrThrow(),
+  )
 }
 
 export function markAltered(
@@ -58,7 +73,7 @@ export function markAltered(
     patient_encounter_id: string
     employment_id: string
     procedure_id: string
-    altered_record_id: string
+    altered_record_ids: string[]
   },
 ) {
   return markInvalid(trx, {
@@ -74,7 +89,7 @@ export function markEnteredInError(
     patient_encounter_id: string
     employment_id: string
     procedure_id: string
-    altered_record_id: string
+    altered_record_ids: string[]
   },
 ) {
   return markInvalid(trx, {

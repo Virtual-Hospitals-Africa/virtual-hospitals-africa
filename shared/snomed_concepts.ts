@@ -524,3 +524,8 @@ export const DONE = asConcept({
   name: 'Done',
   category: 'qualifier value' as const,
 })
+export const STRUCTURE_OF_VISUAL_SYSTEM = asConcept({
+  id: '49549006',
+  name: 'Structure of visual system',
+  category: 'body structure' as const,
+})

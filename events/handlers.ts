@@ -25,6 +25,9 @@ import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, SEVERITY_SCORE } from '../shared/snomed_concepts.ts'
 import { triageLevelFromTEWSTotal } from '../shared/vitals.ts'
 import { system_diagnosis_rules } from '../db/models/system_diagnosis_rules.ts'
+import { patients } from '../db/models/patients.ts'
+import { patientAgeDetermination } from '../shared/patient_age_determination.ts'
+import { completedPersonal } from '../shared/patient_registration.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -400,6 +403,30 @@ export const EVENTS = {
       async sendToPharmacistWhatsapp(trx, payload) {
         console.log('TODO!')
         return 'TODO: not yet implemented'
+      },
+    },
+  ),
+  RecordMarkedInvalid: defineEvent(
+    z.object({
+      patient_id: z.string().uuid(),
+      patient_encounter_id: z.string().uuid(),
+      altered_record_ids: z.string().uuid().array(),
+    }),
+    {
+      async reevaluateSystemDiagnoses(trx, payload) {
+        const patient = await patients.getById(trx, payload.data.patient_id)
+        if (!completedPersonal(patient)) return 'Patient did not complete personal information'
+        const patient_age_determination = patientAgeDetermination(patient)
+
+        return system_diagnosis_rules.reevaluateForAlteredRecord(
+          trx,
+          {
+            ...payload.data,
+            patient_age_determination,
+            listener_id: payload.listener_id,
+            listener_name: payload.listener_name,
+          },
+        )
       },
     },
   ),

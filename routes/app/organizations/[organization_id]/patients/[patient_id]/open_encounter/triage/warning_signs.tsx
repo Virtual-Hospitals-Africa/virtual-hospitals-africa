@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
-import { filter, forEach } from '../../../../../../../../util/inParallel.ts'
+import { filter } from '../../../../../../../../util/inParallel.ts'
 import { WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
@@ -191,14 +191,13 @@ export const handler = postHandler(
         (sign) => sign.existing_record?.altered && sign.existing_record.id,
       )
 
-      return forEach(altered_record_ids, (altered_record_id) =>
-        markEnteredInError(trx, {
-          patient_id,
-          employment_id,
-          patient_encounter_id,
-          altered_record_id,
-          ...completed_procedure,
-        }))
+      return markEnteredInError(trx, {
+        patient_id,
+        employment_id,
+        patient_encounter_id,
+        altered_record_ids,
+        ...completed_procedure,
+      })
     }
   },
 )
