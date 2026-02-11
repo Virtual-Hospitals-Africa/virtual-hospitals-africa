@@ -97,6 +97,7 @@ const [
   components,
   islands,
   mocks,
+  backend,
 ] = await loadAll([
   './db/models',
   './db/migrations',
@@ -107,6 +108,7 @@ const [
   './components',
   './islands',
   './mocks',
+  './backend',
 ])
 
 await loadAllModules('./db').then((x) => {

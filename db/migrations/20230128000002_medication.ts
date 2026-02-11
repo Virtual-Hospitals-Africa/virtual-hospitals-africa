@@ -5,47 +5,36 @@ import { createStandardTable } from '../createTable.ts'
 export async function up(db: Kysely<DB>) {
   await createStandardTable(
     db,
-    'drugs',
+    'drug_ingredients',
     (qb) =>
       qb.addColumn(
-        'generic_name',
+        'name',
         'varchar(255)',
         (col) => col.notNull().unique(),
       ),
   )
 
-  await createStandardTable(db, 'medications', (qb) =>
-    qb.addColumn(
-      'drug_id',
-      'uuid',
-      (col) => col.notNull().references('drugs.id').onDelete('cascade'),
-    )
-      .addColumn('form', 'varchar(255)', (col) => col.notNull())
-      .addColumn('routes', sql`varchar(255)[]`, (col) => col.notNull())
-      .addColumn(
-        'strength_numerators',
-        sql`decimal[]`,
-        (col) => col.notNull(),
-      )
-      .addColumn(
-        'strength_numerator_unit',
-        'varchar(255)',
-        (col) => col.notNull(),
-      )
-      .addColumn('strength_denominator', 'decimal', (col) => col.notNull())
-      .addColumn(
-        'strength_denominator_unit',
-        'varchar(255)',
-        (col) => col.notNull(),
-      )
-      .addCheckConstraint(
-        'at_least_one_strength_check',
-        sql`array_length(strength_numerators, 1) >= 1`,
-      )
-      .addCheckConstraint(
-        'at_least_one_route_check',
-        sql`array_length(routes, 1) >= 1`,
-      ))
+  await createStandardTable(
+    db,
+    'medications',
+    (qb) =>
+      qb.addColumn('trade_name', 'varchar(1024)', (col) => col.notNull())
+        .addColumn('applicant_name', 'varchar(1024)', (col) => col.notNull())
+        .addColumn('manufacturer_name', 'varchar(2048)', (col) => col.notNull())
+        .addColumn('form', 'varchar(255)', (col) => col.notNull())
+        .addColumn('routes', sql`varchar(255)[]`, (col) => col.notNull())
+        .addColumn('consumable_id', 'uuid', (col) => col.notNull().references('consumables.id').onDelete('cascade'))
+        .addColumn('strength_denominator', 'decimal', (col) => col.notNull())
+        .addColumn(
+          'strength_denominator_unit',
+          'varchar(255)',
+          (col) => col.notNull(),
+        )
+        .addCheckConstraint(
+          'at_least_one_route_check',
+          sql`array_length(routes, 1) >= 1`,
+        ),
+  )
 
   await sql`
     ALTER TABLE medications
@@ -71,53 +60,37 @@ export async function up(db: Kysely<DB>) {
 
   await createStandardTable(
     db,
-    'manufactured_medications',
+    'medication_ingredients',
     (qb) =>
-      qb.addColumn('trade_name', 'varchar(1024)', (col) => col.notNull())
-        .addColumn('applicant_name', 'varchar(1024)', (col) => col.notNull())
-        .addColumn('manufacturer_name', 'varchar(2048)', (col) => col.notNull())
-        .addColumn(
-          'medication_id',
-          'uuid',
-          (col) => col.notNull().references('medications.id').onDelete('cascade'),
-        )
-        .addColumn(
-          'strength_numerators',
-          sql`decimal[]`,
-          (col) => col.notNull(),
-        ),
-  )
-
-  await createStandardTable(
-    db,
-    'manufactured_medication_strengths',
-    (qb) =>
-      qb
+      qb.addColumn('medication_id', 'uuid', (col) =>
+        col.notNull().references('medications.id').onDelete(
+          'cascade',
+        ))
+        .addColumn('drug_ingredient_id', 'uuid', (col) =>
+          col.notNull().references('drug_ingredients.id').onDelete(
+            'cascade',
+          ))
         .addColumn(
           'strength_numerator',
           'decimal',
           (col) => col.notNull(),
         )
         .addColumn(
-          'manufactured_medication_id',
-          'uuid',
-          (col) =>
-            col.notNull().references('manufactured_medications.id').onDelete(
-              'cascade',
-            ),
-        )
-        .addColumn('consumable_id', 'uuid', (col) => col.notNull().references('consumables.id').onDelete('cascade')),
+          'strength_numerator_unit',
+          'varchar(255)',
+          (col) => col.notNull(),
+        ),
   )
 
   await createStandardTable(
     db,
-    'manufactured_medication_availabilities',
+    'medication_availabilities',
     (qb) =>
       qb.addColumn(
-        'manufactured_medication_id',
+        'medication_id',
         'uuid',
         (col) =>
-          col.notNull().references('manufactured_medications.id').onDelete(
+          col.notNull().references('medications.id').onDelete(
             'cascade',
           ),
       )
@@ -130,48 +103,11 @@ export async function up(db: Kysely<DB>) {
             ),
         ),
   )
-
-  await db.schema
-    .createIndex('idx_medications_drug_id')
-    .on('medications')
-    .column('drug_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_manufactured_medications_medication_id')
-    .on('manufactured_medications')
-    .column('medication_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_manufactured_medication_strengths_manufactured_medication_id')
-    .on('manufactured_medication_strengths')
-    .column('manufactured_medication_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_manufactured_medication_strengths_consumable_id')
-    .on('manufactured_medication_strengths')
-    .column('consumable_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_manufactured_medication_availabilities_manufactured_medication_id')
-    .on('manufactured_medication_availabilities')
-    .column('manufactured_medication_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_manufactured_medication_availabilities_country')
-    .on('manufactured_medication_availabilities')
-    .column('country')
-    .execute()
 }
 
 export async function down(db: Kysely<DB>) {
-  await db.schema.dropTable('manufactured_medication_availabilities').execute()
-  await db.schema.dropTable('manufactured_medication_strengths').execute()
-  await db.schema.dropTable('manufactured_medications').execute()
+  await db.schema.dropTable('medication_availabilities').execute()
+  await db.schema.dropTable('medication_ingredients').execute()
   await db.schema.dropTable('medications').execute()
-  await db.schema.dropTable('drugs').execute()
+  await db.schema.dropTable('drug_ingredients').execute()
 }

@@ -43,30 +43,17 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'medication_id',
           'uuid',
-          (col) => col.references('medications.id').onDelete('cascade'),
-        )
-        .addColumn(
-          'manufactured_medication_id',
-          'uuid',
-          (col) => col.references('manufactured_medications.id').onDelete('cascade'),
+          (col) => col.notNull().references('medications.id').onDelete('cascade'),
         )
         .addColumn('strength', 'decimal', (col) => col.notNull())
         .addColumn('route', 'varchar(255)', (col) => col.notNull())
         .addColumn('special_instructions', 'text')
         .addColumn('start_date', 'date')
         .addColumn('schedules', sql`medication_schedule[]`)
-        .addCheckConstraint(
-          'patient_condition_medications_med_id_check',
-          sql`
-        (manufactured_medication_id IS NOT NULL AND medication_id IS NULL) OR
-        (medication_id IS NOT NULL AND manufactured_medication_id IS NULL)
-      `,
-        )
         .addCheckConstraint('schedules_check', sql`cardinality(schedules) > 0`)
         .addUniqueConstraint('patient_condition_medication_unique', [
           'patient_condition_id',
           'medication_id',
-          'manufactured_medication_id',
           'start_date',
         ], (constraint) => constraint.nullsNotDistinct()),
   )
@@ -75,12 +62,6 @@ export async function up(db: Kysely<DB>) {
     .createIndex('idx_patient_condition_medications_medication_id')
     .on('patient_condition_medications')
     .column('medication_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_patient_condition_medications_manufactured_medication_id')
-    .on('patient_condition_medications')
-    .column('manufactured_medication_id')
     .execute()
 
   await db.schema

@@ -3,13 +3,13 @@ import { Kysely } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
-  await createStandardTable(db, 'manufactured_medication_recalls', (qb) =>
+  await createStandardTable(db, 'medication_recalls', (qb) =>
     qb
       .addColumn(
-        'manufactured_medication_id',
+        'medication_id',
         'uuid',
         (col) =>
-          col.notNull().references('manufactured_medications.id').onDelete(
+          col.notNull().references('medications.id').onDelete(
             'cascade',
           ),
       )
@@ -25,18 +25,18 @@ export async function up(db: Kysely<DB>) {
       ))
 
   await db.schema
-    .createIndex('idx_manufactured_medication_recalls_manufactured_medication_id')
-    .on('manufactured_medication_recalls')
-    .column('manufactured_medication_id')
+    .createIndex('idx_medication_recalls_medication_id')
+    .on('medication_recalls')
+    .column('medication_id')
     .execute()
 
   await db.schema
-    .createIndex('idx_manufactured_medication_recalls_recalled_by')
-    .on('manufactured_medication_recalls')
+    .createIndex('idx_medication_recalls_recalled_by')
+    .on('medication_recalls')
     .column('recalled_by')
     .execute()
 }
 
 export async function down(db: Kysely<DB>) {
-  await db.schema.dropTable('manufactured_medication_recalls').execute()
+  await db.schema.dropTable('medication_recalls').execute()
 }

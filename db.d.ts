@@ -414,10 +414,10 @@ export interface Doctors {
   id: string
 }
 
-export interface Drugs {
+export interface DrugIngredients {
   created_at: Generated<Timestamp>
-  generic_name: string
   id: Generated<string>
+  name: string
   updated_at: Generated<Timestamp>
 }
 
@@ -648,43 +648,6 @@ export interface MailingList {
   updated_at: Generated<Timestamp>
 }
 
-export interface ManufacturedMedicationAvailabilities {
-  country: string
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  manufactured_medication_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface ManufacturedMedicationRecalls {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  manufactured_medication_id: string
-  recalled_at: Timestamp
-  recalled_by: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface ManufacturedMedications {
-  applicant_name: string
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  manufacturer_name: string
-  medication_id: string
-  strength_numerators: ArrayType<Numeric>
-  trade_name: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface ManufacturedMedicationStrengths {
-  consumable_id: string
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  manufactured_medication_id: string
-  strength_numerator: Numeric
-  updated_at: Generated<Timestamp>
-}
-
 export interface MeasurementReferenceRanges {
   active: Generated<boolean>
   age_max_days: number | null
@@ -737,18 +700,46 @@ export interface MediaVideos {
   id: string
 }
 
-export interface Medications {
+export interface MedicationAvailabilities {
+  country: string
   created_at: Generated<Timestamp>
-  drug_id: string
+  id: Generated<string>
+  medication_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface MedicationIngredients {
+  created_at: Generated<Timestamp>
+  drug_ingredient_id: string
+  id: Generated<string>
+  medication_id: string
+  strength_numerator: Numeric
+  strength_numerator_unit: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface MedicationRecalls {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  medication_id: string
+  recalled_at: Timestamp
+  recalled_by: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface Medications {
+  applicant_name: string
+  consumable_id: string
+  created_at: Generated<Timestamp>
   form: string
   form_route: Generated<string>
   id: Generated<string>
+  manufacturer_name: string
   routes: string[]
   strength_denominator: Numeric
   strength_denominator_is_units: Generated<boolean>
   strength_denominator_unit: string
-  strength_numerator_unit: string
-  strength_numerators: ArrayType<Numeric>
+  trade_name: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1013,8 +1004,7 @@ export interface PatientComputedFindingsInputs {
 export interface PatientConditionMedications {
   created_at: Generated<Timestamp>
   id: Generated<string>
-  manufactured_medication_id: string | null
-  medication_id: string | null
+  medication_id: string
   patient_condition_id: string
   route: string
   schedules: string[] | null
@@ -1930,7 +1920,7 @@ export interface DB {
   doctor_review_steps: DoctorReviewSteps
   doctor_reviews: DoctorReviews
   doctors: Doctors
-  drugs: Drugs
+  drug_ingredients: DrugIngredients
   employment: Employment
   employment_calendars: EmploymentCalendars
   employment_presence: EmploymentPresence
@@ -1955,10 +1945,6 @@ export interface DB {
   icd10_sections: Icd10Sections
   languages: Languages
   mailing_list: MailingList
-  manufactured_medication_availabilities: ManufacturedMedicationAvailabilities
-  manufactured_medication_recalls: ManufacturedMedicationRecalls
-  manufactured_medication_strengths: ManufacturedMedicationStrengths
-  manufactured_medications: ManufacturedMedications
   measurement_reference_ranges: MeasurementReferenceRanges
   media: Media
   media_audios: MediaAudios
@@ -1966,6 +1952,9 @@ export interface DB {
   media_images_or_videos: MediaImagesOrVideos
   media_speeches: MediaSpeeches
   media_videos: MediaVideos
+  medication_availabilities: MedicationAvailabilities
+  medication_ingredients: MedicationIngredients
+  medication_recalls: MedicationRecalls
   medications: Medications
   message_draft_concerning: MessageDraftConcerning
   message_draft_targets: MessageDraftTargets
