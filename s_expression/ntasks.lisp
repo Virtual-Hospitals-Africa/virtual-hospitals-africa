@@ -21,7 +21,7 @@
 (task
   "Check Sp0₂ if respiratory rate < 9 bpm"
   adult
-  (< (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 9)
+  (< (measurement (snomed_concept "Respiratory rate" "observable entity") Breaths/minute (qualifier value)) 9)
   (measure (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %))
 )
 (task
