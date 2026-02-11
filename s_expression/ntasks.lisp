@@ -8,7 +8,7 @@
     (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
     (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
     (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
-    (clinical_finding (snomed_concept "Dizziness" "finding"))
+    (clinical_finding (snomed_concept "Dizziness" "finding")or blood pressure < or equal to systolic 90/diastolic 60)
     (clinical_finding (snomed_concept "Collapse" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
     (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))
