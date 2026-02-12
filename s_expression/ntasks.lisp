@@ -47,6 +47,14 @@
   adult
   (clinical_finding (snomed_concept "Chest pain" "finding"))
   (check_for
+(>= (measurement (snomed_concept "Respiratory rate" "observable entity") bpm) 30) OR
+clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+  )
+) >=measurement (snomed_concept "Systolic blood pressure "180)
+>=measurement (snomed_concept "Diastolic blood pressure" 110
+OR
+<=measurement (snomed_concept "Systolic blood pressure" 90)
+<=measurement (snomed_concept "Diastolic blood pressure"60)
     (clinical_finding (snomed_concept "Nausea" "finding"))
     (clinical_finding (snomed_concept "Vomiting" "disorder"))
     (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
@@ -56,9 +64,7 @@
     (clinical_finding (snomed_concept "Pain radiating to neck" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to left arm" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
-    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
-  )
-)
+    (
 (task
   "Check for urgent burn conditions"
   adult
