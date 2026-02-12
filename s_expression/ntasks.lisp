@@ -47,6 +47,7 @@
   adult
   (clinical_finding (snomed_concept "Chest pain" "finding"))
   (check_for
+(clinical_finding (snomed_concept "Severe pain" (finding)
     (clinical_finding (snomed_concept "Nausea" "finding"))
     (clinical_finding (snomed_concept "Vomiting" "disorder"))
     (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
