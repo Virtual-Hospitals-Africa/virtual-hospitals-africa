@@ -58,6 +58,15 @@
     (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
+clinical_finding (snomed_concept “Finding of increased risk level (finding)” Myocardial infarction (disorder)
+ANY
+	(clinical_finding (snomed_concept “Diabetes mellitus” (disorder)
+	(clinical_finding (snomed_concept “Smoker” (finding)
+	(clinical_finding (snomed_concept “Hypertensive disorder, systemic arterial” (disorder)
+	(clinical_finding (snomed_concept “ Hypercholesterolemia” (disorder)
+	(clinical_finding (snomed_concept “Known present” (qualifier value) “Risk of cardiovascular disease” (observable entity) Percent (property) (qualifier value) 20)
+	situation (snomed_concept “Family history of ischemic heart disease” (situation)
+
 )
 (task
   "Check for urgent burn conditions"
