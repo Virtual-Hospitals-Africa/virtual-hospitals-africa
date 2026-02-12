@@ -51,6 +51,13 @@
     (clinical_finding (snomed_concept "Vomiting" "disorder"))
     (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
     (clinical_finding (snomed_concept "Sweating" "finding"))
+(clinical_finding (snomed_concept New (qualifier value)Central (qualifier value)Chest pain (finding)
+OR
+(clinical_finding (snomed_concept New (qualifier value) Left sided (qualifier value)Chest pain (finding)
+OR
+clinical_finding (snomed_concept New (qualifier value) Central (qualifier value)Chest discomfort (finding)
+OR
+(clinical_finding (snomed_concept New (qualifier value) Left sided (qualifier value)Chest discomfort (finding)
     (clinical_finding (snomed_concept "Radiating chest pain" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to jaw" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to neck" "finding"))
