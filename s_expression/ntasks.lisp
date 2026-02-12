@@ -41,7 +41,7 @@
   adult
   (clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure")))
   (check_for (clinical_finding (snomed_concept "Injury of head" "disorder")))
-)
+check for clinical finding (Snomed_concept "Cerebrospinal fluid rhinorrhea" (disorder))
 (task
   "Check in case of chest pain"
   adult
