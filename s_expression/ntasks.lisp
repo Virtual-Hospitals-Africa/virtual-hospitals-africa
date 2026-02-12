@@ -58,7 +58,32 @@
     (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
+procedure (snomed_concept “Assessment for risk of cardiovascular disease” (procedure)
+measurement (snomed_concept “Body mass index (observable entity) 
+formula (snomed_concept “Body weight” (observable entity) kilogram (qualifier value) / “Body height” (observable entity) Square meter (qualifier value)
+measurement (snomed_concept “Blood pressure” (observable entity)
+
+calculation (snomed_concept “Risk of “ (contextual qualifier) “Cardiovascular event” (event) (qualifier value) year (qualifier value) 10)) Calculation (calculation)
+person (snomed_concept “Man” (person)
+person (snomed_concept “Woman” (person)
+age (snomed_concept “Age” (qualifier value) 40-44, 45-49, 50-54,55-59,60-64, 65-69, 70-74) “year” (qualifier value)
+clinical_finding (snomed_concept “Finding of body mass index” (finding) <20, 20-24, 25-29, 30-34, >35
+clinical_finding (snomed_concept “Body mass index less than 20” (finding)
+clinical_finding (snomed_concept “Body mass index 20-24” - normal (finding)
+clinical_finding (snomed_concept “Body mass index 25-29” - overweight (finding)
+clinical_finding (snomed_concept “Body mass index 30+ “- obesity (finding) 
+clinical_finding (snomed_concept “Body mass index 40+” - severely obese (finding) 
+clinical_finding (snomed_concept “Systolic blood pressure”(observable entity) <120, 120-139, 140-159, 160-179, >180
+clinical_finding (snomed_concept “Systolic arterial pressure within reference range” (finding)
+clinical_finding (snomed_concept “Systolic arterial pressure outside reference range” (finding)
+clinical_finding (snomed_concept “Systolic arterial pressure above reference range” (finding)
+clinical_finding (snomed_concept “Systolic arterial pressure below reference range” (finding) 
+clinical_finding (snomed_concept “Finding of tobacco smoking behavior” (finding)
+clinical_finding (snomed_concept “Non-smoker (finding)”
+clinical_finding (snomed_concept “Smoker (finding)”
+
 )
+
 (task
   "Check for urgent burn conditions"
   adult
