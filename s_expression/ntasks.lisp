@@ -59,6 +59,28 @@
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
 )
+)
+OR
+calculation (snomed_concept “Framingham cardiovascular disease 10 year risk score” (assessment scale) Calculation (calculation)
+USE ONLY
+clinical_finding (snomed_concept “Absent” (qualifier value) “Disorder of cardiovascular system” (disorder)
+clinical_finding (snomed_concept “Absent” (qualifier value) “Familial hypercholesterolemia” (disorder)
+
+Calculation (calculation)
+person (snomed_concept “Man” (person)
+person (snomed_concept “Woman” (person)
+age (snomed_concept “Age” (qualifier value) 30–34, 35–39, 40–44, 45–49, 50–54, 55–59, 60–64, 65–69, 70–74, 75–79 
+  “year” (qualifier value)
+procedure (snomed_concept “Total cholesterol measurement “(procedure) Millimole/liter (qualifier value) <4.1, 4.1–5.19, 5.2 – 6.19, 6.2–7.2, >7.2
+procedure (snomed_concept “High density lipoprotein cholesterol measurement” (procedure) Millimole/liter (qualifier value)
+>1.5, 1.3–1.49, 1.2–1.29, 0.9–1.119, <0.9 
+clinical_finding (snomed_concept “Smoker (finding)”
+(clinical_finding (snomed_concept “Diabetes mellitus” (disorder)
+clinical_finding (snomed_concept “Systolic blood pressure”(observable entity) Systolic BP (mmHg) 
+<120, 120–129, 130–139, 140–149, 150–159, ≥160
+therapy (snomed_concept “Monitoring hypertension treatment “ (regime/therapy) Pre-starting action status (qualifier value)
+therapy (snomed_concept “Monitoring hypertension treatment “ (regime/therapy) Post-starting action status (qualifier value)
+)
 (task
   "Check for urgent burn conditions"
   adult
