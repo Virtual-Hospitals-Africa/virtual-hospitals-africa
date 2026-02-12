@@ -58,8 +58,7 @@
     (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
-)
-(task
+situation(snomed_concept (History of treatment for ischemic heart disease (situation)
   "Check for urgent burn conditions"
   adult
   (clinical_finding (snomed_concept "Burn" "disorder"))
