@@ -47,7 +47,12 @@
   adult
   (clinical_finding (snomed_concept "Chest pain" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Nausea" "finding"))
+(clinical_finding (snomed_concept "Pulse irregular (finding)
+OR
+>measurement (snomed_concept "Pulse rate"Beats/minute (qualifier value)100)
+OR
+<measurement (snomed_concept "Pulse rate" Beats/minute (qualifier value) 50)
+  (clinical_finding (snomed_concept "Nausea" "finding"))
     (clinical_finding (snomed_concept "Vomiting" "disorder"))
     (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
     (clinical_finding (snomed_concept "Sweating" "finding"))
