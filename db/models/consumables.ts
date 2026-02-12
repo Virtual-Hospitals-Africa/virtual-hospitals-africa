@@ -11,7 +11,7 @@ export default base({
       .where(
         'id',
         'not in',
-        trx.selectFrom('manufactured_medication_strengths')
+        trx.selectFrom('medication_strengths')
           .select('consumable_id')
           .distinct(),
       )

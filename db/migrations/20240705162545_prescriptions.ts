@@ -1,9 +1,18 @@
 import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createTable.ts'
+import { createPointerTable, createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
   await sql`
+    CREATE DOMAIN decimal_text AS text CHECK (VALUE ~ '^[0-9]+(\.[0-9]+)?$');
+
+    CREATE TYPE medication_schedule AS (
+      dosage_multiplier decimal_text,
+      frequency medication_frequency,
+      duration integer,
+      duration_unit duration_units
+    );
+
     CREATE OR REPLACE FUNCTION generate_unique_code()
     RETURNS VARCHAR(6) AS $$
     DECLARE
@@ -32,57 +41,21 @@ export async function up(db: Kysely<DB>) {
     $$ LANGUAGE plpgsql;
   `.execute(db)
 
-  await createStandardTable(db, 'prescriptions', (qb) =>
+  await createPointerTable(db, 'patient_prescriptions', { references: 'patient_procedures', primary_key_type: 'uuid' }, qb => 
     qb
-      .addColumn('prescriber_id', 'uuid', (col) =>
-        col.notNull().references('employment.id').onDelete(
-          'cascade',
-        ))
-      .addColumn('patient_id', 'uuid', (col) => col.notNull().references('patients.id').onDelete('cascade'))
-      .addColumn('doctor_review_id', 'uuid', (col) =>
-        col.references('doctor_reviews.id').onDelete(
-          'cascade',
-        ))
-      .addColumn('patient_encounter_id', 'uuid', (col) =>
-        col.references('patient_encounters.id').onDelete(
-          'cascade',
-        ))
-      .addCheckConstraint(
-        'either_doctor_review_or_patient_encounter',
-        sql<
-          boolean
-        >`("doctor_review_id" IS NOT NULL) = ("patient_encounter_id" IS NULL)`,
-      ))
+      .addColumn('medication_id', 'uuid', col => col.notNull().references('medications.id').onDelete('cascade'))
+      .addColumn('schedules', sql`medication_schedule[]`)
+      .addColumn('route', 'varchar(255)', (col) => col.notNull())
+      .addColumn('special_instructions', 'text')
+  )
 
-  await createStandardTable(db, 'prescription_codes', (qb) =>
+  await createStandardTable(db, 'patient_prescription_codes', (qb) =>
     qb
       .addColumn(
         'alphanumeric_code',
         'varchar(6)',
         (col) => col.notNull().unique().defaultTo(sql`generate_unique_code()`),
       )
-      .addColumn('prescription_id', 'uuid', (col) =>
-        col.notNull().references('prescriptions.id').onDelete(
-          'cascade',
-        )))
-
-  await createStandardTable(
-    db,
-    'prescription_medications',
-    (qb) =>
-      qb.addColumn(
-        'patient_condition_medication_id',
-        'uuid',
-        (col) =>
-          col.notNull().references('patient_condition_medications.id').onDelete(
-            'cascade',
-          ),
-      )
-        .addColumn(
-          'prescription_id',
-          'uuid',
-          (col) => col.notNull().references('prescriptions.id').onDelete('cascade'),
-        ),
   )
 
   await createStandardTable(
@@ -101,63 +74,15 @@ export async function up(db: Kysely<DB>) {
           'prescription_medication_id',
         ]),
   )
-
-  await db.schema
-    .createIndex('idx_prescriptions_prescriber_id')
-    .on('prescriptions')
-    .column('prescriber_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescriptions_patient_id')
-    .on('prescriptions')
-    .column('patient_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescriptions_doctor_review_id')
-    .on('prescriptions')
-    .column('doctor_review_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescriptions_patient_encounter_id')
-    .on('prescriptions')
-    .column('patient_encounter_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescription_codes_prescription_id')
-    .on('prescription_codes')
-    .column('prescription_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescription_medications_patient_condition_medication_id')
-    .on('prescription_medications')
-    .column('patient_condition_medication_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescription_medications_prescription_id')
-    .on('prescription_medications')
-    .column('prescription_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescription_medications_filled_pharmacist_id')
-    .on('prescription_medications_filled')
-    .column('pharmacist_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_prescription_medications_filled_pharmacy_id')
-    .on('prescription_medications_filled')
-    .column('pharmacy_id')
-    .execute()
 }
 
 export async function down(db: Kysely<DB>) {
+    await db.schema.dropTable('patient_condition_medications').execute()
+  await db.schema.dropType('medication_schedule').execute()
+  await sql`DROP DOMAIN IF EXISTS decimal_text`.execute(db)
+  await db.schema.dropType('duration_units').execute()
+  await db.schema.dropType('medication_frequency').execute()
+
   await db.schema.dropTable('prescription_medications_filled').execute()
   await db.schema.dropTable('prescription_medications').execute()
   await db.schema.dropTable('prescription_codes').execute()

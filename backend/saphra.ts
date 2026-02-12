@@ -1,7 +1,5 @@
 import { z } from 'zod'
 import { parseWithValues } from '../util/assertMatches.ts'
-import shuffle from '../util/shuffle.ts'
-
 const contents = new TextDecoder().decode(Deno.readFileSync('./db/resources/sahpra.json'))
 
 const date = z.string().regex(/^\d{4}\/\d{2}\/\d{2}$/).transform((d) => d.split('/').join('-'))

@@ -1,7 +1,7 @@
 import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../components/inventory/MedicineForm.tsx'
 import { inventory } from '../../../../../db/models/inventory.ts'
-import { manufactured_medications } from '../../../../../db/models/manufactured_medications.ts'
+import { medications } from '../../../../../db/models/medications.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInJohannesburg } from '../../../../../util/date.ts'
@@ -13,8 +13,8 @@ import { positive_decimal, positive_integer, string_or_number_as_string } from '
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
 
 const AddMedicineSchema = z.object({
-  manufactured_medication_id: z.string(),
-  manufactured_medication: z.object({
+  medication_id: z.string(),
+  medication: z.object({
     strength: positive_decimal.transform((d) => d.toFixed()),
   }),
   quantity: positive_integer,
@@ -30,7 +30,7 @@ export const handler = postHandler(
   AddMedicineSchema,
   async (
     ctx: OrganizationContext,
-    { manufactured_medication, ...form_values },
+    { medication, ...form_values },
   ): Promise<Response> => {
     const { organization, organization_employment, trx } = ctx.state
     const admin_role = roleByProfession(organization_employment, 'admin')
@@ -42,7 +42,7 @@ export const handler = postHandler(
       {
         created_by: admin_role.employment_id,
         ...form_values,
-        strength: manufactured_medication.strength,
+        strength: medication.strength,
       },
     )
 
@@ -63,31 +63,29 @@ export default HealthWorkerHomePageLayout(
   ) {
     const strength = searchParams.has('strength') ? positive_decimal.parse(searchParams.get('strength')).toFixed() : null
 
-    const manufactured_medication_id = searchParams.get(
-      'manufactured_medication_id',
+    const medication_id = searchParams.get(
+      'medication_id',
     )
 
-    const { manufactured_medication, last_procurement } = !manufactured_medication_id
-      ? { manufactured_medication: null, last_procurement: null }
-      : await promiseProps({
-        last_procurement: inventory.getLatestProcurement(
-          trx,
-          {
-            manufactured_medication_id,
-            strength,
-            organization_id: organization.id,
-          },
-        ),
-        manufactured_medication: manufactured_medications.getById(
-          trx,
-          manufactured_medication_id,
-        ),
-      })
+    const { medication, last_procurement } = !medication_id ? { medication: null, last_procurement: null } : await promiseProps({
+      last_procurement: inventory.getLatestProcurement(
+        trx,
+        {
+          medication_id,
+          strength,
+          organization_id: organization.id,
+        },
+      ),
+      medication: medications.getById(
+        trx,
+        medication_id,
+      ),
+    })
 
     return (
       <InventoryMedicineForm
         today={todayISOInJohannesburg()}
-        manufactured_medication={manufactured_medication}
+        medication={medication}
         last_procurement={last_procurement}
       />
     )

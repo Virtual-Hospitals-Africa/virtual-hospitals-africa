@@ -3,14 +3,14 @@ import SectionHeader from '../library/typography/SectionHeader.tsx'
 import Form from '../library/Form.tsx'
 import FormRow from '../library/FormRow.tsx'
 import { Button } from '../library/Button.tsx'
-import ManufacturedMedicationInput from '../../islands/manufactured_medication/Input.tsx'
-import { RenderedManufacturedMedication } from '../../types.ts'
+import MedicationInput from '../../islands/medication/Input.tsx'
+import { RenderedMedication } from '../../types.ts'
 import { Maybe } from '../../types.ts'
 
 export default function InventoryMedicineForm(
-  { today, manufactured_medication, last_procurement }: {
+  { today, medication, last_procurement }: {
     today: string
-    manufactured_medication: null | RenderedManufacturedMedication
+    medication: null | RenderedMedication
     last_procurement?: Maybe<{
       strength: string
       quantity: number
@@ -32,9 +32,9 @@ export default function InventoryMedicineForm(
       <div>
         <Form method='post'>
           <div className='flex flex-col w-full gap-2'>
-            <ManufacturedMedicationInput
-              name='manufactured_medication'
-              manufactured_medication={manufactured_medication}
+            <MedicationInput
+              name='medication'
+              medication={medication}
               last_procurement={last_procurement}
               today={today}
             />

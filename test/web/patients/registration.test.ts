@@ -261,7 +261,7 @@
 //     body.set('pre_existing_conditions.0.medications.0.route', tablet.routes[0])
 //     body.set('pre_existing_conditions.0.medications.0.dosage', '2')
 //     body.set(
-//       'pre_existing_conditions.0.medications.0.registration_frequency',
+//       'pre_existing_conditions.0.medications.0.medication_frequency',
 //       'qod',
 //     )
 
@@ -305,7 +305,7 @@
 //       drug.generic_name,
 //     )
 //     assertEquals(
-//       preExistingCondition.medications[0].registration_frequency,
+//       preExistingCondition.medications[0].medication_frequency,
 //       'qod',
 //     )
 //     assertEquals(preExistingCondition.medications[0].medication_id, tablet.id)
@@ -328,7 +328,7 @@
 //       deepOmit({ pre_existing_conditions }, [
 //         'patient_condition_id',
 //         'patient_condition_medication_id',
-//         'manufactured_medication_id',
+//         'medication_id',
 //       ]),
 //       'The form should be 1:1 with the conditions in the DB',
 //     )
@@ -351,7 +351,7 @@
 //               medication_id: 'TABLET, COATED; ORAL',
 //               strength: '150MG/TABLET',
 //               dosage: '2 TABLETS (300MG)',
-//               registration_frequency: 'alternate days',
+//               medication_frequency: 'alternate days',
 //               special_instructions: null,
 //             },
 //           ],
@@ -516,7 +516,7 @@
 //     body.set('pre_existing_conditions.1.medications.0.route', tablet.routes[0])
 //     body.set('pre_existing_conditions.1.medications.0.dosage', '2')
 //     body.set(
-//       'pre_existing_conditions.1.medications.0.registration_frequency',
+//       'pre_existing_conditions.1.medications.0.medication_frequency',
 //       'qod',
 //     )
 
@@ -559,7 +559,7 @@
 //       drug.generic_name,
 //     )
 //     assertEquals(
-//       preExistingCondition.medications[0].registration_frequency,
+//       preExistingCondition.medications[0].medication_frequency,
 //       'qod',
 //     )
 //     assertEquals(preExistingCondition.medications[0].medication_id, tablet.id)

@@ -22,7 +22,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFromColumn, jsonObjectFrom, literalNumber, literalOptionalDate, literalString, longFormattedDateTime } from '../helpers.ts'
-import { manufactured_medications } from './manufactured_medications.ts'
+import { medications } from './medications.ts'
 import { employees } from './employees.ts'
 import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
@@ -70,16 +70,16 @@ export const inventory = {
         'consumables.id',
       )
       .leftJoin(
-        'manufactured_medication_strengths',
+        'medication_strengths',
         'consumables.id',
-        'manufactured_medication_strengths.consumable_id',
+        'medication_strengths.consumable_id',
       )
       .where(
         'organization_consumables.organization_id',
         '=',
         opts.organization_id,
       )
-      .where('manufactured_medication_strengths.id', 'is', null)
+      .where('medication_strengths.id', 'is', null)
       .select([
         'consumables.name as name',
         'consumables.id as consumable_id',
@@ -109,19 +109,19 @@ export const inventory = {
         'consumables.id',
       )
       .innerJoin(
-        'manufactured_medication_strengths',
+        'medication_strengths',
         'consumables.id',
-        'manufactured_medication_strengths.consumable_id',
-      )
-      .innerJoin(
-        'manufactured_medications',
-        'manufactured_medications.id',
-        'manufactured_medication_strengths.manufactured_medication_id',
+        'medication_strengths.consumable_id',
       )
       .innerJoin(
         'medications',
         'medications.id',
-        'manufactured_medications.medication_id',
+        'medication_strengths.medication_id',
+      )
+      .innerJoin(
+        'medications',
+        'medications.id',
+        'medications.medication_id',
       )
       .innerJoin(
         'drugs',
@@ -135,18 +135,18 @@ export const inventory = {
       )
       .select([
         'drugs.generic_name',
-        'manufactured_medications.applicant_name',
+        'medications.applicant_name',
         'medications.form',
-        'manufactured_medications.trade_name',
+        'medications.trade_name',
         'consumables.id as consumable_id',
         'quantity_on_hand',
-        manufactured_medications.strengthDisplay(
-          sql`manufactured_medication_strengths.strength_numerator::text`,
+        medications.strengthDisplay(
+          sql`medication_strengths.strength_numerator::text`,
         ).as('strength_display'),
         jsonBuildObject({
           add: sql<string>`
-          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, 
-          '&strength=', manufactured_medication_strengths.strength_numerator::text)
+          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/add_medicine?medication_id=', medications.id::text, 
+          '&strength=', medication_strengths.strength_numerator::text)
         `,
           history: sql<string>`
           concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
@@ -285,25 +285,25 @@ export const inventory = {
   },
   getLatestProcurement(
     trx: TrxOrDb,
-    { organization_id, manufactured_medication_id, strength }: {
+    { organization_id, medication_id, strength }: {
       organization_id: string
-      manufactured_medication_id: string
+      medication_id: string
       strength: string | null
     },
   ): Promise<MedicationProcurement | undefined> {
     let query = inventory.procurementQuery(trx, { organization_id })
       .innerJoin(
-        'manufactured_medication_strengths',
+        'medication_strengths',
         'procurement.consumable_id',
-        'manufactured_medication_strengths.consumable_id',
+        'medication_strengths.consumable_id',
       )
       .where(
-        'manufactured_medication_strengths.manufactured_medication_id',
+        'medication_strengths.medication_id',
         '=',
-        manufactured_medication_id,
+        medication_id,
       )
       .select([
-        'manufactured_medication_strengths.strength_numerator as strength',
+        'medication_strengths.strength_numerator as strength',
         'procurement.quantity',
         'procurement.container_size',
         'procurement.number_of_containers',
@@ -312,7 +312,7 @@ export const inventory = {
 
     if (strength) {
       query = query.where(
-        'manufactured_medication_strengths.strength_numerator',
+        'medication_strengths.strength_numerator',
         '=',
         strength,
       )
@@ -353,7 +353,7 @@ export const inventory = {
     organization_id: string,
     medicine: {
       created_by: string
-      manufactured_medication_id: string
+      medication_id: string
       procured_from_id?: string
       procured_from_name?: string
       quantity: number
@@ -385,14 +385,14 @@ export const inventory = {
       ])
       .expression((eb) =>
         // Find the matching consumable for this medicine
-        eb.selectFrom('manufactured_medication_strengths')
+        eb.selectFrom('medication_strengths')
           .where(
-            'manufactured_medication_strengths.manufactured_medication_id',
+            'medication_strengths.medication_id',
             '=',
-            medicine.manufactured_medication_id,
+            medicine.medication_id,
           )
           .where(
-            'manufactured_medication_strengths.strength_numerator',
+            'medication_strengths.strength_numerator',
             '=',
             medicine.strength,
           )

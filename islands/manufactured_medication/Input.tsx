@@ -1,7 +1,7 @@
 import { computed, effect, useSignal } from '@preact/signals'
-import { Maybe, RenderedManufacturedMedication } from '../../types.ts'
+import { Maybe, RenderedMedication } from '../../types.ts'
 import FormRow from '../../components/library/FormRow.tsx'
-import ManufacturedMedicationSearch from './Search.tsx'
+import MedicationSearch from './Search.tsx'
 import AsyncSearch from '../AsyncSearch.tsx'
 import { containerLabels, denominatorPlural } from '../../shared/medication.ts'
 import { DateInput } from '../form/inputs/date.tsx'
@@ -9,9 +9,9 @@ import { NumberInput } from '../form/inputs/number.tsx'
 import { Select } from '../form/inputs/select.tsx'
 import { TextInput } from '../form/inputs/text.tsx'
 
-export default function ManufacturedMedicationInput(props: {
+export default function MedicationInput(props: {
   name: string
-  manufactured_medication: null | RenderedManufacturedMedication
+  medication: null | RenderedMedication
   last_procurement?: Maybe<{
     strength: string
     quantity: number
@@ -25,7 +25,7 @@ export default function ManufacturedMedicationInput(props: {
   }>
   today: string
 }) {
-  const manufactured_medication = useSignal(props.manufactured_medication)
+  const medication = useSignal(props.medication)
   const strength = useSignal<string | null>(
     props.last_procurement?.strength ??
       null,
@@ -37,32 +37,32 @@ export default function ManufacturedMedicationInput(props: {
 
   effect(() => {
     if (
-      manufactured_medication.value && !strength.value &&
-      manufactured_medication.value.strength_numerators.length === 1
+      medication.value && !strength.value &&
+      medication.value.strength_numerators.length === 1
     ) {
-      strength.value = manufactured_medication.value.strength_numerators[0]
+      strength.value = medication.value.strength_numerators[0]
     }
   })
 
-  const container_labels = computed(() => containerLabels(manufactured_medication.value?.form || ''))
+  const container_labels = computed(() => containerLabels(medication.value?.form || ''))
 
   const total_quantity = computed(() => container_size.value * number_of_containers.value)
 
   const total_quantity_label_end = computed(() => {
-    if (!manufactured_medication.value) return ''
-    return ` (${denominatorPlural(manufactured_medication.value)})`
+    if (!medication.value) return ''
+    return ` (${denominatorPlural(medication.value)})`
   })
 
   return (
     <div className='w-full justify-normal'>
       <FormRow className='w-full justify-normal'>
-        <ManufacturedMedicationSearch
+        <MedicationSearch
           label='Medication'
           name={props.name}
-          value={manufactured_medication.value}
+          value={medication.value}
           required
           onSelect={(value) => {
-            manufactured_medication.value = value ?? null
+            medication.value = value ?? null
             strength.value = null
           }}
         />
@@ -72,7 +72,7 @@ export default function ManufacturedMedicationInput(props: {
           name={`${props.name}.strength`}
           required
           label='Strength'
-          disabled={!manufactured_medication.value}
+          disabled={!medication.value}
           onChange={(event) => {
             if (event.currentTarget.value) {
               strength.value = event.currentTarget.value
@@ -80,7 +80,7 @@ export default function ManufacturedMedicationInput(props: {
           }}
         >
           <option value=''>Select Strength</option>
-          {manufactured_medication.value?.strength_numerators.map((
+          {medication.value?.strength_numerators.map((
             numerator,
           ) => (
             <option
@@ -88,12 +88,12 @@ export default function ManufacturedMedicationInput(props: {
               selected={strength.value === numerator}
             >
               {numerator.toString()}
-              {manufactured_medication.value!
-                .strength_numerator_unit}/{manufactured_medication.value!
+              {medication.value!
+                .strength_numerator_unit}/{medication.value!
                   .strength_denominator === '1'
                 ? ''
-                : manufactured_medication.value!.strength_denominator}
-              {manufactured_medication.value!.strength_denominator_unit}
+                : medication.value!.strength_denominator}
+              {medication.value!.strength_denominator_unit}
             </option>
           ))}
         </Select>

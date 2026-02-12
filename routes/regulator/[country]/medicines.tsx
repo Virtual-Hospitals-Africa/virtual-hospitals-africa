@@ -1,6 +1,6 @@
 import { MedicinesTable } from '../../../components/regulator/MedicinesTable.tsx'
 import { LoggedInRegulator } from '../../../types.ts'
-import { manufactured_medications } from '../../../db/models/manufactured_medications.ts'
+import { medications } from '../../../db/models/medications.ts'
 import type { Context } from 'fresh'
 import { MedicinesSearch } from '../../../components/regulator/MedicinesSearch.tsx'
 import Form from '../../../components/library/Form.tsx'
@@ -16,7 +16,7 @@ export default RegulatorHomePageLayout(
     const page = searchPage(ctx)
     const search = ctx.url.searchParams.get('search')
 
-    const search_results = await manufactured_medications.search(
+    const search_results = await medications.search(
       ctx.state.trx,
       { search, country },
       { page },

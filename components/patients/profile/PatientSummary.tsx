@@ -79,7 +79,7 @@ export default function PatientSummary(
                 medication.schedules[0].frequency,
               ),
               name: 'frequency',
-              href: `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.registration_frequency`,
+              href: `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.medication_frequency`,
               action: DescriptionListCellAction.View,
               leading_separator: ' ',
             },

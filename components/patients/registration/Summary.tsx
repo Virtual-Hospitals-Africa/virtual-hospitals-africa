@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-irregular-whitespace
 import { DescriptionList, DescriptionListCell, DescriptionListCellAction, type DescriptionListRows } from '../../library/DescriptionList.tsx'
-import type { Maybe, RegistrationPatientSummary } from '../../../types.ts'
+import type { Maybe, PatientProfileSummary } from '../../../types.ts'
 // import { registrationFrequencyText } from '../../../shared/medication.ts'
 // import { international_phone_number } from '../../../util/validators.ts'
 // import { dosageDisplay, strengthDisplay } from '../../../shared/medication.ts'
@@ -35,7 +35,7 @@ export function nonEmptyRows(rows: MaybeCell[][]): DescriptionListRows {
 export default function PatientRegistrationSummary(
   { organization_id, patient, this_visit }: {
     organization_id: string
-    patient: RegistrationPatientSummary
+    patient: PatientProfileSummary
     this_visit: {
       reason: Maybe<EncounterReason>
       notes?: Maybe<string>
@@ -442,8 +442,8 @@ export default function PatientRegistrationSummary(
   //               strength_numerator: Decimal(medication.strength),
   //               strength_denominator: Decimal(medication.strength_denominator),
   //               strength_denominator_unit: medication.strength_denominator_unit,
-  //               strength_denominator_is_units:
-  //                 medication.strength_denominator_is_units,
+  //               dosage_descriptor_is_units:
+  //                 medication.dosage_descriptor_is_units,
   //               strength_numerator_unit: medication.strength_numerator_unit,
   //             }),
   //             name: 'dosage',
@@ -465,7 +465,7 @@ export default function PatientRegistrationSummary(
   //             ),
   //             name: 'frequency',
   //             href:
-  //               `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.registration_frequency`,
+  //               `${registration_href}/conditions#focus=pre_existing_conditions.${index}.medications.${medIndex}.medication_frequency`,
   //             action: DescriptionListCellAction.Edit,
   //             leading_separator: ' ',
   //           },

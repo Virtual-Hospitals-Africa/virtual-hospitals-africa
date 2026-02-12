@@ -24,9 +24,9 @@ export default function DrugInput({
     string | null
   >(value?.strength ?? null)
 
-  const registration_frequency = useSignal<
+  const medication_frequency = useSignal<
     string | null
-  >(value?.registration_frequency ?? null)
+  >(value?.medication_frequency ?? null)
 
   const dosage = useSignal<string | null>(
     value?.dosage ?? null,
@@ -82,7 +82,7 @@ export default function DrugInput({
             medication_id.value = null
             strength_numerator.value = null
             dosage.value = null
-            registration_frequency.value = null
+            medication_frequency.value = null
           }}
         />
       </FormRow>
@@ -202,7 +202,7 @@ export default function DrugInput({
             })}
         </Select>
         <Select
-          name={`${name}.registration_frequency`}
+          name={`${name}.medication_frequency`}
           required
           label='Frequency'
           disabled={!drug}
@@ -212,7 +212,7 @@ export default function DrugInput({
             Object.entries(RegistrationFrequencies).map(([code, label]) => (
               <option
                 value={code}
-                selected={registration_frequency.value === code}
+                selected={medication_frequency.value === code}
               >
                 {label}
               </option>

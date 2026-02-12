@@ -1,0 +1,1948 @@
+[
+    {
+        "medication": {
+            "id"             : "33",
+            "trade_name"     : "ACID COMPONENT HAEMODIALYSIS CONCENTRATE",
+            "generic_name"   : "ACID COMPONENT HAEMODIALYSIS CONCENTRATE",
+            "forms"          : "SOLUTION",
+            "strength"       : "210.7; 5.22; 3.56; 9; 6.31G",
+            "category"       : "P",
+            "registration_no": "92/23.3.2/2616",
+            "applicant_name" : "DATLABS PRIVATE LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "41",
+            "trade_name": "ACTIFED COLD SYRUP",
+            "generic_name": "TRIPOLIDINE HYDROCHLORIDE; PSEUDOEPHEDRINE HYDROCHLORIDE;",
+            "forms": "SYRUP; ORAL",
+            "strength": "30; 1.25MG",
+            "category": "P",
+            "registration_no": "77/22.2.5/882",
+            "applicant_name": "GLAXOSMITHKLINE SOUTH AFRICA (PTY) LTD",
+            "manufacturers": "GLAXO R.S.A.(PTY) LTD MIDRAND SOUTH AFRICA;  GLAXOSMITHKLINE SOUTH AFRICA (PTY) LTD CAPE TOWN SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "78",
+            "trade_name"     : "ADDAVEN",
+            "generic_name"   : "MULTINGREDIENT",
+            "forms"          : "INJECTABLE; IV (INFUSION)",
+            "strength"       : "540.0MCG; 10.50MCG; 19.79MCG; 102.3MCG; 17.29MCG;",
+            "category"       : "PP",
+            "registration_no": "2018/25.1/5610",
+            "applicant_name" : "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "FRESENIUS KABI NORGE AS HALDEN NORWAY;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "370",
+            "trade_name"     : "BIO-AMOXYCILLIN AND CLAVULANIC ACID",
+            "generic_name"   : "AMOXICILLIN; CLAVULANATE POTASSIUM",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "625MG",
+            "category"       : "PP",
+            "registration_no": "97/7.1.2/3267",
+            "applicant_name" : "BIOTECH LABS PTY LTD",
+            "manufacturers"  : "LEK PHARMACEUTICAL  ; CHEMICAL WORKS  SLOLVENIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "371",
+            "trade_name"     : "BIO-AMOXYCILLIN AND CLAVULANIC ACID",
+            "generic_name"   : "AMOXICILLIN; CLAVULANATE POTASSIUM",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "375MG",
+            "category"       : "PP",
+            "registration_no": "97/7.1.2/3266",
+            "applicant_name" : "BIOTECH LABS PTY LTD",
+            "manufacturers"  : "LEK PHARMACEUTICAL  ; CHEMICAL WORKS  SLOLVENIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "375",
+            "trade_name"     : "BIOPLUS",
+            "generic_name"   : "DEXTROMETHORPHAN; DIPHENHYDRAMINE HYDROCHLORIDE; PHENYLEPHRINE HYDROCHLORIDE",
+            "forms"          : "LIQUID; ORAL",
+            "strength"       : "0.27; 0.27; 1.35G; 51MCG; 15.5MG; 63; 12.7; 21.7MG",
+            "category"       : "HR",
+            "registration_no": "74/24.6.3/0308",
+            "applicant_name" : "ADCOCK INGRAM LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   8\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "383",
+            "trade_name"     : "BIVALENT ORAL POLIO MERIEUX",
+            "generic_name"   : "POLIO VIRUS (TYPE1; TYPES 3;  ORAL)",
+            "forms"          : "VACCINE",
+            "strength"       : "6.0; 5.8MG",
+            "category"       : "PP",
+            "registration_no": "2016/18.2/5182",
+            "applicant_name" : "SANOFI-AVENTIS SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "SANOFI PASTEUR S. A VAL-DE-REUIL FRANCE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "396",
+            "trade_name"     : "BSS ALCON",
+            "generic_name"   : "MAGNESIUM CHLORIDE; POTASSIUM CHLORIDE; SODIUM CHLORIDE",
+            "forms"          : "SOLUTION",
+            "strength"       : "0.64 % M/V",
+            "category"       : "PP",
+            "registration_no": "2016/20.4/5196",
+            "applicant_name" : "ALCON LABORATORIES",
+            "manufacturers"  : "ALCON LABORATORIES INCORPORATED, USA FORT WORTH USA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "411",
+            "trade_name"     : "CALAMINE LOTION",
+            "generic_name"   : "CALAMINE; GLYCEROL; PHENOL; ZINC OXIDE",
+            "forms"          : "SUSPENSION",
+            "strength"       : "150; 5; 50MG",
+            "category"       : "P",
+            "registration_no": "82/14.13/5978",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "418",
+            "trade_name"     : "CALYZID",
+            "generic_name"   : "CALCIUM CARBONATE; LYSINE HYDROCHLORIDE; VITAMIN D3; ZINC GLUCONATE",
+            "forms"          : "SUSPENSION; ORAL",
+            "strength"       : "625 MG",
+            "category"       : "P",
+            "registration_no": "2016/24.5/5230",
+            "applicant_name" : "SK AGE EXPORTS",
+            "manufacturers"  : "S KANT HEALTHCARE LTD VAPI INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "428",
+            "trade_name"     : "CANDID-B",
+            "generic_name"   : "BECLOMETHASONE DIPROPIONATE; CLOTRIMAZOLE",
+            "forms"          : "LOTION; TOPICAL",
+            "strength"       : "1 % W/V",
+            "category"       : "PP",
+            "registration_no": "2000/14.1.3/3668",
+            "applicant_name" : "GLENMARK PHARMACEUTICAL LIMITED",
+            "manufacturers"  : "GLENMARK PHARMACEUTICALS LTD NASIK INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "493",
+            "trade_name"     : "CERVARIX",
+            "generic_name"   : "HUMAN PAPILLOMA VIRUS TYPES 16; 7; 18 (RECOMBINANT)",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "20; 20MCG",
+            "category"       : "PP",
+            "registration_no": "2012/18.2/4739",
+            "applicant_name" : "GLAXOSMITHKLINE S.A (PTY) LTD",
+            "manufacturers"  : "GLAXOSMITHKLINE S.A (PTY) LTD BRYANSTON SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "495",
+            "trade_name"     : "CHAMPIX",
+            "generic_name"   : "VARENICLINE TARTRATE",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "0.5; 1MG",
+            "category"       : "PP",
+            "registration_no": "2014/6.3.2/4853",
+            "applicant_name" : "PFIZER LABORATORIES (PTY) LTD",
+            "manufacturers"  : "PFIZER INCORPORATION  USA;  R-PHARM GERMANY GMBH ILLERTISSEN GERMANY;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "509",
+            "trade_name"     : "CHOATS CLEER RUB",
+            "generic_name"   : "CAMPHOR; MENTHOL; METHYLSALICYLATE",
+            "forms"          : "OINTMENT; TOPICAL",
+            "strength"       : "5; 0.5; 1.5; 2; 2; 1; 0.1; 4.5G",
+            "category"       : "HR",
+            "registration_no": "75/22.3/456",
+            "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
+            "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   8\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "510",
+            "trade_name"     : "CHOATS EXTRACT OF LETTUCE",
+            "generic_name"   : "TOLUBALSAM; HONEY PURIFIED",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "80; 400; 0.32; 1.5; 12; 195MG",
+            "category"       : "HR",
+            "registration_no": "76/22.2.5/610",
+            "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
+            "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "532",
+            "trade_name"     : "CIPYNE",
+            "generic_name"   : "CODEINE PHOSPHATE; IBUPROFEN; PARACETAMOL;",
+            "forms"          : "CAPSULE; ORAL",
+            "strength"       : "10; 200; 250MG",
+            "category"       : "P",
+            "registration_no": "2016/2.2/5224",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "541",
+            "trade_name"     : "CLEDOMOX 625",
+            "generic_name"   : "AMOXICILLIN; CLAVULANATE POTASSIUM",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "625 MG",
+            "category"       : "PP",
+            "registration_no": "2019/7/5934",
+            "applicant_name" : "MEDOPHARM",
+            "manufacturers"  : "MEDOPHARM PRIVATE LTD GUDUVANCHERY INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "587",
+            "trade_name": "COMBIWAVE SF 250",
+            "generic_name": "FLUTICASONE PROPIONATE; SALMETEROL XINAFOATE",
+            "forms": "INHALATION",
+            "strength": "250 MCG",
+            "category": "PP",
+            "registration_no": "2016/22.1.14/5270",
+            "applicant_name": "GLENMARK PHARMACEUTICAL LIMITED",
+            "manufacturers": "GLEMARK PHARMACEUTICAL LTD PRADESH INDIA;  GLENMARK PHARAMACEUTICALS LTD TEHSIL BADDI INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "588",
+            "trade_name"     : "COMPOUND SODIUM LACTATE",
+            "generic_name"   : "SODIUM LACTATE; SODIUM CHLORIDE; POTASSIUM CHLORIDE; CALCIUM CHLORIDE",
+            "forms"          : "SOLUTION",
+            "strength"       : "0.006; 0.003G",
+            "category"       : "PP",
+            "registration_no": "2017/23.2.1/5340",
+            "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
+            "manufacturers"  : "OTSUKA PHARMACEUTICALS INDIA PRIVATE LIMITED SANAND INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "589",
+            "trade_name": "COMPOUND SODIUM LACTATE",
+            "generic_name": "COMPOUND SODIUM LACTATE",
+            "forms": "INJECTABLE; IV (INFUSION)",
+            "strength": "3.2; 6; 0.4; 0.27G",
+            "category": "PP",
+            "registration_no": "2013/23.2.1/4782",
+            "applicant_name": "ACULIFE HEALTHCARE PRIVATE LTD",
+            "manufacturers": "NIRMA LTD (HEALTH DIVISION) AHMEDABAD INDIA;  ACULIFE HEALTHCARE PRIVATE LTD GUJARAT INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "612",
+            "trade_name"     : "COTRIMOXAZOLE",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "480MG",
+            "category"       : "PP",
+            "registration_no": "2016/7.2.5/5181",
+            "applicant_name" : "MACLEODS PHARMACEUTICALS LTD",
+            "manufacturers"  : "MACLEODS PHARMACEUTICALS LTD  ;  MACLEODS PHARMACEUTICALS LTD DAMAN INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "613",
+            "trade_name": "CO-TRIMOXAZOLE",
+            "generic_name": "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms": "TABLET; ORAL",
+            "strength": "480 MG",
+            "category": "PP",
+            "registration_no": "90/7.2.3/2342",
+            "applicant_name": "DATLABS PRIVATE LIMITED",
+            "manufacturers": "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "614",
+            "trade_name": "COTRINOL",
+            "generic_name": "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms": "TABLET; ORAL",
+            "strength": "480MG",
+            "category": "PP",
+            "registration_no": "92/7.2.3/2724",
+            "applicant_name": "PLUS FIVE PHARMACEUTICALS (PVT) LTD",
+            "manufacturers": "PLUS FIVE PHARMACEUTICALS PVT LTD BULAWAYO ZIMBABWE;  GAMMA PHARMACEUTICALS  NDOLA ZAMBIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "615",
+            "trade_name": "COTRINOL",
+            "generic_name": "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms": "SUSPENSION; ORAL",
+            "strength": "240MG/5ML",
+            "category": "PP",
+            "registration_no": "92/7.2.3/2725",
+            "applicant_name": "PLUS FIVE PHARMACEUTICALS (PVT) LTD",
+            "manufacturers": "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;  PLUS FIVE PHARMACEUTICALS PVT LTD BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "616",
+            "trade_name"     : "COTRIZOLE",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "480MG",
+            "category"       : "PP",
+            "registration_no": "91/7.2.3/2572",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "617",
+            "trade_name"     : "COTRIZOLE",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "SUSPENSION",
+            "strength"       : "240MG/5ML",
+            "category"       : "PP",
+            "registration_no": "91/7.2.3/2559",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "618",
+            "trade_name"     : "COTRIZOLE DS",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "960MG",
+            "category"       : "PP",
+            "registration_no": "2002/7.23/4038",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "624",
+            "trade_name": "CREAM E45",
+            "generic_name": "PARAFIN SOFT WHITE; LIQUID PARAFIN; WOOL FAT",
+            "forms": "CREAM; TOPICAL",
+            "strength": "MULTIPLE",
+            "category": "HR",
+            "registration_no": "2016/14.4/5231",
+            "applicant_name": "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
+            "manufacturers": "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;  RECKITT BENKISER HEALTHCARE INTERNATIONAL LTD NOTIINGHAM UK;  PHARMACEUTICAL CONTRACTORS (PTY) LTD ISANDO SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "661",
+            "trade_name"     : "DATVITAMIN SYRUP",
+            "generic_name"   : "MULTIVITAMINS",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "0.042; 0.0077; 0.0015; 0.002G; 2800IU",
+            "category"       : "HR",
+            "registration_no": "77/23.4/986",
+            "applicant_name" : "DATLABS PRIVATE LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "674",
+            "trade_name"     : "DERMAPAL - CALAMINE CREAM",
+            "generic_name"   : "CALAMINE; ZINC OXIDE",
+            "forms"          : "CREAM; TOPICAL",
+            "strength"       : "4/3 % W/W",
+            "category"       : "HR",
+            "registration_no": "2015/14.19/5143",
+            "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
+            "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "675",
+            "trade_name"     : "DERMAPAL - CALAMINE CREAM",
+            "generic_name"   : "CALAMINE; ZINC OXIDE",
+            "forms"          : "LOTION; TOPICAL",
+            "strength"       : "15/5 % W/W",
+            "category"       : "HR",
+            "registration_no": "2015/14.19/5144",
+            "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
+            "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "676",
+            "trade_name"     : "DERMAPAL - G& I",
+            "generic_name"   : "GLYCERINE; ICHTHAMMOL",
+            "forms"          : "SOLUTION",
+            "strength"       : "10% W/W",
+            "category"       : "P",
+            "registration_no": "2015/14.1.2/5141",
+            "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
+            "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "684",
+            "trade_name": "DESCOVY",
+            "generic_name": "EMTRICITABINE; TENOFOVIR ALAFENAMIDE",
+            "forms": "TABLET, COATED; ORAL",
+            "strength": "200MG/10MG",
+            "category": "PP",
+            "registration_no": "2017/7.13/5445",
+            "applicant_name": "GILEAD SCIENCES INC",
+            "manufacturers": "PATHEON INC MISSISSAUGA CANADA;  ROTTENDORF PHARMA GMBH, ENNIGERLOH GERMANY;  GILEAD SCIENCES INC FOSTER CITY USA;  MILLMOUNT HEALTHCARE LTD AD BLADE IRELAND;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "686",
+            "trade_name"     : "DESOGESTREL/ETHINYL ESTRADIOL",
+            "generic_name"   : "DESOGESTREL; ETHINYL ESTRADIOL",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "0.15MG/0.03MG",
+            "category"       : "PP",
+            "registration_no": "2018/21.2.1/5545",
+            "applicant_name" : "LUPIN LIMITED",
+            "manufacturers"  : "LUPIN LIMITED MADHYA PRADESH INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "825",
+            "trade_name"     : "ENHANCIN",
+            "generic_name"   : "AMOXICILLIN; CLAVULANATE POTASSIUM",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "1.2G/20ML",
+            "category"       : "PP",
+            "registration_no": "2006/7.1.2/4462",
+            "applicant_name" : "RANBAXY LABS LTD",
+            "manufacturers"  : "RANBAXY LABS LTD DEWAS INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "826",
+            "trade_name": "ENO ACTIVE FRUIT SALT (REGULAR)",
+            "generic_name": "CITRIC ACID; SODIUM BICARBONATE; SODIUM CARBONATE",
+            "forms": "GRANULE, EFFERVESCENT; ORAL",
+            "strength": "25MG",
+            "category": "HR",
+            "registration_no": "82/16.1/1606",
+            "applicant_name": "GROUP LABS S.A PTY LTD",
+            "manufacturers": "ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;  SMITHLINE BEECHAM CAPE TOWN SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "831",
+            "trade_name"     : "ENTAMIZOLE",
+            "generic_name"   : "DILOXANIDE FUROATE; METRONIDAZOLE",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "250/200 MG",
+            "category"       : "PP",
+            "registration_no": "83/7.6/1743",
+            "applicant_name" : "ABBOTT LABORATORIES SA (PTY) LTD",
+            "manufacturers"  : "BOOTS CO LTD, NOTTINGHAM, UK  ;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "879",
+            "trade_name": "EUCORUB",
+            "generic_name": "UNICORN CAMPHOR RUB",
+            "forms": "OINTMENT; TOPICAL",
+            "strength": "15.56; 0.61; 2.77; 0.16; 0.12; 0.62G",
+            "category": "HR",
+            "registration_no": "72/22.3/27",
+            "applicant_name": "ZIMBABWE PHARMACEUTICALS HEALTHCARE",
+            "manufacturers": "ECOMED MANUFACTURING (PVT) LTD BULAWAYO ZIMBABWE;  ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "904",
+            "trade_name"     : "FERRIMED",
+            "generic_name"   : "IRON POLYMALTOSE; FOLIC ACID",
+            "forms"          : "CAPSULE; ORAL",
+            "strength"       : "",
+            "category"       : "P",
+            "registration_no": "75/10.1.4/438",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "908",
+            "trade_name"     : "FIBROSAL",
+            "generic_name"   : "POVIDONE IODINE",
+            "forms"          : "CREAM; TOPICAL",
+            "strength"       : "1; 1; 5% W/W",
+            "category"       : "HR",
+            "registration_no": "76/14.15/766",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "922",
+            "trade_name"     : "FLUMED",
+            "generic_name"   : "CHLORPHENIRAMINE MALEATE; PARACETAMOL; PHENYLEHRINE HYDROCHLORIDE",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "2MG/5ML",
+            "category"       : "P",
+            "registration_no": "2015/22.2.5/5079",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "932",
+            "trade_name": "FOSENEMA",
+            "generic_name": "SODIUM PHOSPHATE",
+            "forms": "LIQUID; ORAL",
+            "strength": "9; 24G/150ML",
+            "category": "PP",
+            "registration_no": "98/16.5.4/3398",
+            "applicant_name": "DATLABS PRIVATE LIMITED",
+            "manufacturers": "ADCOCK INGRAM CRITICAL CARE ISANDO SOUTH AFRICA;  DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "941",
+            "trade_name"     : "FULPHILA",
+            "generic_name"   : "PEGFILGRASTIM",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "6; 0.6MG/ML",
+            "category"       : "PP",
+            "registration_no": "2019/10/5772",
+            "applicant_name" : "MYLAN PHARMACEUTICALS PVT LTD",
+            "manufacturers"  : "BIOCON LIMITED BANGALORE INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "962",
+            "trade_name"     : "GAMMA BENZENE HEXACHLORIDE IN LIQUID PARAFFIN",
+            "generic_name"   : "GAMMA BENZENE HEXACHLORIDE; LIQIUD PARAFFIN",
+            "forms"          : "SOLUTION",
+            "strength"       : "1%",
+            "category"       : "P",
+            "registration_no": "82/14.1.5/5879",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "964",
+            "trade_name"     : "GARDASIL",
+            "generic_name"   : "HUMAN PAPPILOMAVIRUS",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "20; 40; 40; 20 MG",
+            "category"       : "PP",
+            "registration_no": "2014/18.2/4958",
+            "applicant_name" : "MSD PTY LTD",
+            "manufacturers"  : "MSD B V HAARLEM HARLEM HOLLAND;  MERCK SHARP AND DOHM CORP WEST POINT  USA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "966",
+            "trade_name"     : "GAVISCON ADVANCED LIQUID ANISEED",
+            "generic_name"   : "SODIUM ALGINATE",
+            "forms"          : "SUSPENSION",
+            "strength"       : "150; 180; 200; 500; 600MG",
+            "category"       : "HR",
+            "registration_no": "2013/16.1/4819",
+            "applicant_name" : "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
+            "manufacturers"  : "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "969",
+            "trade_name"     : "GAVISCON LIQUID ANISEED",
+            "generic_name"   : "SODIUM ALGINATE",
+            "forms"          : "SUSPENSION",
+            "strength"       : "500; 267; 160MG/5ML",
+            "category"       : "HR",
+            "registration_no": "2013/16.1/4820",
+            "applicant_name" : "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
+            "manufacturers"  : "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "970",
+            "trade_name"     : "GAVISCON LIQUID PEPPERMINT",
+            "generic_name"   : "CALCIUM CARBONATE; SODIUM ALGINATE; SODIUM BICARBONATE",
+            "forms"          : "SUSPENSION",
+            "strength"       : "500MG",
+            "category"       : "HR",
+            "registration_no": "2013/16.1/4821",
+            "applicant_name" : "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
+            "manufacturers"  : "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "971",
+            "trade_name"     : "GCP ANTISEPTIC LIQUID",
+            "generic_name"   : "FLUMETHRIN",
+            "forms"          : "LIQUID; ORAL",
+            "strength"       : "5.00; 1.75; 0.95; 0.50MG/ML",
+            "category"       : "HR",
+            "registration_no": "77/14.1.4/925",
+            "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
+            "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "972",
+            "trade_name"     : "GCP OINTMENT",
+            "generic_name"   : "DIGOXIN",
+            "forms"          : "OINTMENT; TOPICAL",
+            "strength"       : "",
+            "category"       : "HR",
+            "registration_no": "",
+            "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
+            "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason"    : ""
+    },
+    {
+        "medication": {
+            "id"             : "973",
+            "trade_name"     : "GEES LINCTUS",
+            "generic_name"   : "MORPHINE; SQUILL OXYMEL",
+            "forms"          : "LINCTUS; ORAL",
+            "strength"       : "33.33; 33.33; 100%",
+            "category"       : "P",
+            "registration_no": "2006/22.2.1/4419",
+            "applicant_name" : "GEDDES LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;  LANCASTER INDUSTRIAL PVT LTD BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "974",
+            "trade_name"     : "GEES LINCTUS (OPIATE SQUILL LINCTUS)",
+            "generic_name"   : "MORPHINE; SQUILL OXYMEL",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "0.83MG/5ML",
+            "category"       : "P",
+            "registration_no": "2002/22.2.1/4048",
+            "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
+            "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "979",
+            "trade_name"     : "GENPAYNE",
+            "generic_name"   : "CODEINE PHOSPHATE; IBUPROFEN; PARACETAMOL;",
+            "forms"          : "CAPSULE; ORAL",
+            "strength"       : "250; 200; 10MG",
+            "category"       : "P",
+            "registration_no": "2016/2.2/5239",
+            "applicant_name" : "DATLABS PRIVATE LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ADCOCK INGRAM LIMITED BANGALORE INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,007",
+            "trade_name"     : "GLYCERIN AND ROSE WATER",
+            "generic_name"   : "GLYCERIN; ROSE WATER",
+            "forms"          : "SOLUTION",
+            "strength"       : "50%",
+            "category"       : "HR",
+            "registration_no": "81/14.14/5866",
+            "applicant_name" : "ZIMBABWE PHARMACEUTICALS HEALTHCARE",
+            "manufacturers"  : "ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,019",
+            "trade_name"     : "GRAYS COUGH SYRUP",
+            "generic_name"   : "HONEY; PINE TAR",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "MULTIPLE",
+            "category"       : "HR",
+            "registration_no": "95/22.5.5/3017",
+            "applicant_name" : "MULLER & PHIPPS",
+            "manufacturers"  : "PHARMANOVA (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,020",
+            "trade_name"     : "GRAYS GRIPE WATER",
+            "generic_name"   : "GRIPE WATER",
+            "forms"          : "SOLUTION",
+            "strength"       : "1; 0.05; 0.08; 0.0059; 0.0109; 0.0028G",
+            "category"       : "HR",
+            "registration_no": "95/16.1/3024",
+            "applicant_name" : "PHARMANOVA (PVT) LTD",
+            "manufacturers"  : "PHARMANOVA (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "1,030",
+            "trade_name": "GULF GRIPE MIXTURE",
+            "generic_name": "GRIPE WATER",
+            "forms": "SOLUTION",
+            "strength": "2.5; 87.5MG",
+            "category": "HR",
+            "registration_no": "95/16.1/3006",
+            "applicant_name": "GULF DRUG COMAPANY",
+            "manufacturers": "GULF DRUG CO HARARE ZIMBABWE;  GULF DRUG COMPANY (PVT) LTD HARARE ZIMBABWE;  GEDDES LTD BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,031",
+            "trade_name"     : "GUROSAN C EFFERVESCENT TABLETS",
+            "generic_name"   : "CAFFEINE; GLUCORONOLACTONE; GLUCORONAMIDE; VITAMIN C",
+            "forms"          : "TABLET, EFFERVESCENT; ORAL",
+            "strength"       : "300; 200; 500 MG",
+            "category"       : "P",
+            "registration_no": "5/33/411",
+            "applicant_name" : "PHARMACARE LIMITED",
+            "manufacturers"  : "LENNON LTD PORT ELIZABETH SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,042",
+            "trade_name"     : "HALF STRENGTH DARROWS WITH 5% GLUCOSE",
+            "generic_name"   : "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
+            "forms"          : "INJECTABLE; IV (INFUSION)",
+            "strength"       : "0.2; 0.13; 5% W/W",
+            "category"       : "PP",
+            "registration_no": "98/23.2.1/3466",
+            "applicant_name" : "AUTOSTERILE",
+            "manufacturers"  : "AUTOSTERILE HARARE ZIMBABWE;  AUTOSTERILE NAMIBIA (PTY) LTD WINDHOEK NAMIBIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "1,043",
+            "trade_name": "HALF-STRENGTH DARROWS WITH GLUCOSE 5%",
+            "generic_name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
+            "forms": "INJECTABLE; IV (INFUSION)",
+            "strength": "3; 2; 1.3; 100G",
+            "category": "PP",
+            "registration_no": "2002/23.2.1/4080",
+            "applicant_name": "DATLABS PRIVATE LIMITED",
+            "manufacturers": "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ADCOCK INGRAM CRITICAL CARE ISANDO SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,047",
+            "trade_name"     : "HEMATONIC",
+            "generic_name"   : "FERRIC AMMONIUM CITRATE; FOLIC ACID; VITAMIN B12; VITAMIN B6; ZINC SULPHATE",
+            "forms"          : "SUSPENSION; ORAL",
+            "strength"       : "200; 0.5; 1.5; 1.455MG; 50MCG",
+            "category"       : "P",
+            "registration_no": "2016/24.5/5228",
+            "applicant_name" : "SK AGE EXPORTS",
+            "manufacturers"  : "S KANT HEALTHCARE LTD VAPI INDIA;"
+        },
+        "reason"    : "Expected array to be length 1. Actual length 2. Actual value\n[\"MG\", \"MCG\"]\n"
+    },
+    {
+        "medication": {
+            "id": "1,059",
+            "trade_name": "HEXAXIM",
+            "generic_name": "BORDETELLA PERTUSIS; DIPHERIA TOXOID; HEPATITIS; POLIOVIRUS; TETANUS TOXOID",
+            "forms": "VACCINE",
+            "strength": "0.5 ML",
+            "category": "PP",
+            "registration_no": "2015/18.2/5072",
+            "applicant_name": "SANOFI-AVENTIS SOUTH AFRICA (PTY) LTD",
+            "manufacturers": "SANOFI PASTEUR S. A MARCY-LÉTOILE FRANCE;  SANOFI PASTEUR S. A VAL-DE-REUIL FRANCE;  GRUPPO LEPETIT SRL ANAGNI ITALY;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   5\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,118",
+            "trade_name"     : "INACTIVATED POLIOMYELITIS VACCINE TYPES 1,2,3",
+            "generic_name"   : "POLIOMYELITIS  (TYPES 1,2,3; INACTIVATED)",
+            "forms"          : "VACCINE",
+            "strength"       : "40; 8; 32 D ANTIGEN",
+            "category"       : "PP",
+            "registration_no": "2016/18.2/5226",
+            "applicant_name" : "BILTHOVEN BIOLOGICALS B.V,",
+            "manufacturers"  : "BILTHOVEN BIOLOGICALS B.V, BILTHOVEN THE NETHERLANDS;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,119",
+            "trade_name"     : "INACTIVATED POLIOMYELITIS VACCINE TYPES 1,2,3",
+            "generic_name"   : "POLIOMYELITIS  (TYPES 1,2,3; INACTIVATED)",
+            "forms"          : "VACCINE",
+            "strength"       : "40; 8; 32 D ANTIGEN",
+            "category"       : "PP",
+            "registration_no": "2016/18.2/5227",
+            "applicant_name" : "BILTHOVEN BIOLOGICALS B.V,",
+            "manufacturers"  : "BILTHOVEN BIOLOGICALS B.V, BILTHOVEN THE NETHERLANDS;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "1,126",
+            "trade_name": "INFLUVAC",
+            "generic_name": "INFLUENZA VACCINE (SURFACE ANTIGEN, INACTIVATED)",
+            "forms": "INJECTABLE; INJECTION",
+            "strength": "15; 15; 15MCG/ML",
+            "category": "PP",
+            "registration_no": "2016/18.2/5264",
+            "applicant_name": "ABBOTT LABORATORIES SA (PTY) LTD",
+            "manufacturers": "ABBOTT BIOLOGICALS PRIVATE LIMITED OLST NETHERLANDS;  ABBOTT BIOLOGICALS B.V WEESP NETHERLANDS;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,131",
+            "trade_name"     : "INNOFER",
+            "generic_name"   : "IRON SUCROSE",
+            "forms"          : "LIQUID; ORAL",
+            "strength"       : "100MG;5ML",
+            "category"       : "PP",
+            "registration_no": "2017/10.1.1/5464",
+            "applicant_name" : "INNOVATA PHARMACEUTICALS LTD",
+            "manufacturers"  : "GLOBAL REMEDIES (PVT) LTD HOSUR INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,186",
+            "trade_name"     : "KAOLIN AND MORPHINE MIXTURE",
+            "generic_name"   : "CHLOROFORM; KAOLIN LIGHT;   MORPHINE HYDROCHLORIDE; SODIUM BICARBONATE",
+            "forms"          : "SUSPENSION",
+            "strength"       : "4V/V; 20%M/V; 5%M/V",
+            "category"       : "P",
+            "registration_no": "82/16.6/5976",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,195",
+            "trade_name"     : "KEMOPLAT",
+            "generic_name"   : "CISPLATIN",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "0,5MG/ML",
+            "category"       : "PP",
+            "registration_no": "2001/9.4/3928",
+            "applicant_name" : "FRESENIUS KABI ONCOLOGY LTD",
+            "manufacturers"  : "DABUR PHARMA LTD(PHARM. DIV.)  INDIA;  FRESENIUS KABI ONCOLOGY LTD GHAZI BAD INDIA;"
+        },
+        "reason": "[\n  {\n    \"code\": \"custom\",\n    \"path\": [],\n    \"message\": \"Expected a positive decimal number\"\n  }\n]"
+    },
+    {
+        "medication": {
+            "id": "1,200",
+            "trade_name": "KETOSTERIL",
+            "generic_name": "KETOISOLEUCINE; KETOLEUCINE; KETOPHENYLALANINE; KETOVALINE; HYROXYMETHIONINE; LYSINE; THREONINE; TRYPTOPHAN; HISTIDINE; TYROSINE",
+            "forms": "TABLET, COATED; ORAL",
+            "strength": "800MG",
+            "category": "PP",
+            "registration_no": "2019/23.7/5832",
+            "applicant_name": "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
+            "manufacturers": "LABESFAL LABORATORIOS ALMIROS S.A SANTIAGO DE BESTEIRO PORTUGAL;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   10\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,211",
+            "trade_name"     : "KOCITAF",
+            "generic_name"   : "DOLUTEGRAVIR EMTRICITABINE TENOFOVIR ALAFENAMIDE",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "50; 200; 25MG",
+            "category"       : "PP",
+            "registration_no": "2018/7.13/5725",
+            "applicant_name" : "MYLAN LABORATORIES LIMITED",
+            "manufacturers"  : "MYLAN LABORATORIES LIMITED BAVLA INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,233",
+            "trade_name"     : "LAMIVUDINE + ZIDOVUDINE",
+            "generic_name"   : "LAMIVUDINE; ZIDOVUDINE",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "150/300MG",
+            "category"       : "PP",
+            "registration_no": "2003/7.13/4191",
+            "applicant_name" : "CIPLA LTD",
+            "manufacturers"  : "CIPLA LTD MUMBAI INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "1,303",
+            "trade_name": "LISTERINE ANTISEPTIC",
+            "generic_name": "LISTERINE",
+            "forms": "LIQUID; ORAL",
+            "strength": "5.680ML; 18.44MG; 8.5MG; 13.2; 12.781MG",
+            "category": "HR",
+            "registration_no": "98/20.3.4/3409",
+            "applicant_name": "JOHNSON & JOHNSON (PVT) LTD",
+            "manufacturers": "ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;  JOHNSON  ; JOHNSON (PVT) LTD CAPETOWN SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,317",
+            "trade_name"     : "LOPINAVIR; RITONAVIR",
+            "generic_name"   : "LOPINAVIR; RITONAVIR",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "200/50 MG",
+            "category"       : "PP",
+            "registration_no": "2016/7.13/5179",
+            "applicant_name" : "MACLEODS PHARMACEUTICALS LTD",
+            "manufacturers"  : "MACLEODS PHARMACEUTICALS LTD TEHSIL NALAGARH INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,351",
+            "trade_name"     : "MABTHERA SC 1400",
+            "generic_name"   : "RITUXIMAB",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "1400; 11.7MG/ML",
+            "category"       : "PP10",
+            "registration_no": "2017/9.7/5511",
+            "applicant_name" : "ROCHE PRODUCTS (PTY) LTD",
+            "manufacturers"  : "F. HOFFMAN LA ROCHE LTD KAISERUGST SWITZERLAND;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,356",
+            "trade_name"     : "MAINTELYTE",
+            "generic_name"   : "MAINTELYTE",
+            "forms"          : "SOLUTION; INJECTION",
+            "strength"       : "2.05; 1.86; 0.51G",
+            "category"       : "PP",
+            "registration_no": "2004/23.2.1/4242",
+            "applicant_name" : "DATLABS PRIVATE LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,366",
+            "trade_name"     : "MAXITROL",
+            "generic_name"   : "DEXAMETHASONE; NEOMYCIN SULPHATE; POLYMYXIN B",
+            "forms"          : "SOLUTION/DROPS; OPHTHALMIC",
+            "strength"       : "1MG/3500; 6000 IU/ML",
+            "category"       : "PP",
+            "registration_no": "98/19.2.2/3365",
+            "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,367",
+            "trade_name"     : "MAXITROL",
+            "generic_name"   : "DEXAMETHASONE; NEOMYCIN SULPHATE; POLYMYXIN B",
+            "forms"          : "SOLUTION/DROPS; OPHTHALMIC",
+            "strength"       : "1MG/3500; 6000 IU/ML",
+            "category"       : "PP",
+            "registration_no": "98/19.2.2/3365",
+            "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,368",
+            "trade_name"     : "MAXITROL",
+            "generic_name"   : "DEXAMETHASONE; NEOMYCIN SULPHATE; POLYMYXIN B SULPHATE",
+            "forms"          : "OINTMENT; OPHTHALMIC",
+            "strength"       : "1MG/3500; 6000IU/G",
+            "category"       : "PP",
+            "registration_no": "98/19.2.2/3322",
+            "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,369",
+            "trade_name"     : "MAXITROL",
+            "generic_name"   : "DEXAMETHASONE; NEOMYCIN SULPHATE; POLYMYXIN B SULPHATE",
+            "forms"          : "OINTMENT; OPHTHALMIC",
+            "strength"       : "1MG/3500; 6000IU/G",
+            "category"       : "PP",
+            "registration_no": "98/19.2.2/3322",
+            "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,385",
+            "trade_name"     : "MEDOX MULTIVITAMIN",
+            "generic_name"   : "MULTIVITAMIN",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "1500IU; 1MG; 2MG; 20MG; 200IU; 5MG",
+            "category"       : "P",
+            "registration_no": "88/24.3/2150",
+            "applicant_name" : "CAPS INTERNATIONAL EST",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,386",
+            "trade_name"     : "MEDOX SUPER 12 + 12",
+            "generic_name"   : "MULTIVITAMIN; MULTIMINERAL",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "MULTIINGREDIENT",
+            "category"       : "P",
+            "registration_no": "77/22.5/980",
+            "applicant_name" : "CAPS INTERNATIONAL EST",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,388",
+            "trade_name"     : "MEDOX VITAMIN B",
+            "generic_name"   : "VITAMIN B COMPLEX",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "2; 2.0; 0.5; 1MG",
+            "category"       : "P",
+            "registration_no": "88/24.2/2148",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,389",
+            "trade_name"     : "MEDOX VITAMIN B FORTE",
+            "generic_name"   : "VITAMIN B COMPLEX FORTE",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "50; 10; 15; 15MG",
+            "category"       : "P",
+            "registration_no": "88/24.2/2149",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "1,397",
+            "trade_name": "MENTHIES PEPPERMINT & MENTHOL COUGH SYRUP",
+            "generic_name": "MENTHOL; PEPPERMINT OIL",
+            "forms": "SYRUP; ORAL",
+            "strength": "0.4% M/M",
+            "category": "HR",
+            "registration_no": "98/22.2.1/3453",
+            "applicant_name": "GULF DRUG COMAPANY",
+            "manufacturers": "GULF DRUG CO HARARE ZIMBABWE;  GULF DRUG COMPANY (PVT) LTD HARARE ZIMBABWE;  VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,399",
+            "trade_name"     : "MENTHOLATUM DEEP HEAT RUB",
+            "generic_name"   : "MENTHOLATUM DEEP HEAT RUB",
+            "forms"          : "OINTMENT; TOPICAL",
+            "strength"       : " 12.80%; 5.91%; 1.97%;1.47%",
+            "category"       : "HR",
+            "registration_no": "92/14.15/1583",
+            "applicant_name" : "MENTHOLATUM R.S.A PTY LTD",
+            "manufacturers"  : "MENTHOLATUM (THE) CO LTD  UK;  THE MENTHOLATUM CO LTD KILBRIDGE UK;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,426",
+            "trade_name"     : "MEZENOL",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "480MG",
+            "category"       : "PP",
+            "registration_no": "75/7.2.3/478",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,427",
+            "trade_name"     : "MEZENOL",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "SUSPENSION",
+            "strength"       : "240MG/5ML",
+            "category"       : "PP",
+            "registration_no": "75/7.2.3/479",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,428",
+            "trade_name"     : "MEZENOL DS",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "960MG",
+            "category"       : "PP",
+            "registration_no": "78/7.2.3/1007",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,429",
+            "trade_name"     : "MEZENOL PAEDIATRIC",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "120 MG",
+            "category"       : "PP",
+            "registration_no": "92/7.2.3/2638",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "1,438",
+            "trade_name": "MICOVAR CREAM",
+            "generic_name": "HYDROCORTISONE; MICONAZOLE NITRATE",
+            "forms": "CREAM; TOPICAL",
+            "strength": "2%",
+            "category": "PIM",
+            "registration_no": "91/14.1.3/2534",
+            "applicant_name": "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers": "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;  VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,453",
+            "trade_name"     : "MIST KAOLIN ET PECTIN",
+            "generic_name"   : "KAOLIN LIGHT; PECTIN",
+            "forms"          : "SUSPENSION",
+            "strength"       : "",
+            "category"       : "P",
+            "registration_no": "",
+            "applicant_name" : "GEDDES LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;  LANCASTER INDUSTRIAL PVT LTD BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,464",
+            "trade_name"     : "MORTIN",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "480MG",
+            "category"       : "PP",
+            "registration_no": "2000/7.2.3/3725",
+            "applicant_name" : "MICRO LABS LTD",
+            "manufacturers"  : "MICRO LABS LTD HOSUR INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,472",
+            "trade_name"     : "MR STRONG 500",
+            "generic_name"   : "CHLOROFORM; ETHER; LIQUORICE; MENTHOL; SODIUM CITRATE",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "5.8; 5MG",
+            "category"       : "HR",
+            "registration_no": "75/22.2.5/477",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   5\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,475",
+            "trade_name"     : "MYCLAV",
+            "generic_name"   : "AMOXICILLIN; CLAVULANATE POTASSIUM",
+            "forms"          : "POWDER, FOR SUSPENSION; ORAL",
+            "strength"       : "228.5 MG",
+            "category"       : "PP",
+            "registration_no": "2016/7.1.2/5219",
+            "applicant_name" : "UNICHEM LABORATORIES LIMITED",
+            "manufacturers"  : "UNICHEM LABORATORIES LTD SOLAN INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,476",
+            "trade_name"     : "MYCLAV",
+            "generic_name"   : "AMOXICILLIN; CLAVULANATE POTASSIUM",
+            "forms"          : "POWDER, FOR SUSPENSION; ORAL",
+            "strength"       : "156.25 MG",
+            "category"       : "PP",
+            "registration_no": "2016/7.1.2/5218",
+            "applicant_name" : "UNICHEM LABORATORIES LIMITED",
+            "manufacturers"  : "UNICHEM LABORATORIES LTD SOLAN INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,540",
+            "trade_name"     : "NOPAYNE",
+            "generic_name"   : "ASPIRIN; CAFFEINE",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "225/30 MG",
+            "category"       : "HR",
+            "registration_no": "91/2.2/2466",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,551",
+            "trade_name"     : "NOVABACT",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "480MG",
+            "category"       : "PP",
+            "registration_no": "94/7.2.3/2856",
+            "applicant_name" : "PHARMANOVA (PVT) LTD",
+            "manufacturers"  : "PHARMANOVA (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,584",
+            "trade_name"     : "OCUDOR-T",
+            "generic_name"   : "DORZOLAMIDE HYDROCHLORIDE; TIMOLOL MALEATE",
+            "forms"          : "SOLUTION",
+            "strength"       : "20MG/5MG",
+            "category"       : "PP",
+            "registration_no": "2019/19.10. /5897",
+            "applicant_name" : "FDC LIMITED",
+            "manufacturers"  : "FDC LIMITED AURANGABAD INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,601",
+            "trade_name"     : "ORAL REHYDRATION SALT",
+            "generic_name"   : "DEXTROSE; POTASSIUM CHLORIDE; SODIUM CHLORIDE: SODIUM CITRATE",
+            "forms"          : "POWDER, SOLUBLE; ORAL",
+            "strength"       : "2.6; 1.5; 2.9; 13.5G",
+            "category"       : "PP",
+            "registration_no": "2008/23.1.1/4529",
+            "applicant_name" : "FDC LIMITED",
+            "manufacturers"  : "FDC LTD DIST-NASIK INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,622",
+            "trade_name"     : "PACIX",
+            "generic_name"   : "PACLITAXEL",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "30; 5 MG/ML",
+            "category"       : "PP",
+            "registration_no": "2018/9.4/5561",
+            "applicant_name" : "EMCURE PHARMACEUTICALS LTD",
+            "manufacturers"  : "EMCURE PHARMACEUTICALS LTD PUNE INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,652",
+            "trade_name"     : "PAREBEX",
+            "generic_name"   : "VITAMIN B COMPLEX",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "50; 2; 3; 20MG",
+            "category"       : "P",
+            "registration_no": "87/24.2/2103",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,669",
+            "trade_name"     : "PHARMA-Q ATROPINE",
+            "generic_name"   : "ATROPINE SULPHATE",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "IMG/ML",
+            "category"       : "PP",
+            "registration_no": "2014/6.2/4832",
+            "applicant_name" : "PHARMA-Q (PTY) LTD T/A COSI PHARMACEUTICALS",
+            "manufacturers"  : "PHARMA-Q (PTY) LTD T/A COSI PHARMACEUTICALS JOHANNESBURG SOUTH AFRICA;"
+        },
+        "reason"    : "[DecimalError] Invalid argument: "
+    },
+    {
+        "medication": {
+            "id"             : "1,704",
+            "trade_name"     : "PIPRANIR-TZ",
+            "generic_name"   : "PIPERACILLIN; TAZOBACTAM",
+            "forms"          : "POWDER/INJECTABLE; INJECTION",
+            "strength"       : "4.5MG",
+            "category"       : "PP",
+            "registration_no": "2018/7.1.2/5732",
+            "applicant_name" : "ACULIFE HEALTHCARE PRIVATE LTD",
+            "manufacturers"  : "NIRMA LTD (HEALTH DIVISION) AHMEDABAD INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,733",
+            "trade_name"     : "PREGNATAL",
+            "generic_name"   : "VITAMINS; MINERALS",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "MULTIINGREDIENT",
+            "category"       : "P",
+            "registration_no": "91/24.5/2026",
+            "applicant_name" : "SCANPHARM A/S",
+            "manufacturers"  : "SCANPHARM A/S COPENHAGEN DENMARK;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,745",
+            "trade_name"     : "PREVENAR 13",
+            "generic_name"   : "PNEUMOCOCCAL CONJUGATE 13 VALENT",
+            "forms"          : "VACCINE",
+            "strength"       : "2.2; 2.2; 2.2; 2.2; 2.2; 4.4; 2.2; 2.2; 2.2; 2.2;",
+            "category"       : "PP",
+            "registration_no": "2018/18.2/5747",
+            "applicant_name" : "PFIZER LABORATORIES (PTY) LTD, S.A",
+            "manufacturers"  : "PFIZER MANUFACTURING PUURS BELGIUM;  PFIZER IRELAND PHARMACEUTICALS DUBLIN IRELAND;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   11\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,760",
+            "trade_name"     : "PROPAIN TABLETS",
+            "generic_name"   : "PROPAIN",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "50; 10; 5 400MG",
+            "category"       : "P",
+            "registration_no": "77/2.2/909",
+            "applicant_name" : "ADCOCK INGRAM",
+            "manufacturers"  : "ADCOCK INGRAM LTD JOHANNESBURG SOUTH AFRICA;  ADCOCK INGRAM LTD GERM SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,783",
+            "trade_name"     : "Q-TIB",
+            "generic_name"   : "ISONIAZID; SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "800; 160; 300; 25MG",
+            "category"       : "PP",
+            "registration_no": "2017/7.3/5435",
+            "applicant_name" : "CIPLA LTD",
+            "manufacturers"  : "CIPLA LTD  INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,791",
+            "trade_name"     : "RANFERON-12",
+            "generic_name"   : "FERROUS FUMARATE, VITAMIN B12, VITAMIN C",
+            "forms"          : "CAPSULE; ORAL",
+            "strength"       : "112.5; 10; 305; 1.13; 5MG",
+            "category"       : "P",
+            "registration_no": "99/7.1.1/3536",
+            "applicant_name" : "RANBAXY LABS LTD",
+            "manufacturers"  : "RANBAXY LABS LTD DEWAS INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,801",
+            "trade_name"     : "RELESTAT",
+            "generic_name"   : "EPINASTINE HYDROCHLORIDE",
+            "forms"          : "SOLUTION/DROPS; OPHTHALMIC",
+            "strength"       : "2 /5 MG/ML",
+            "category"       : "PP",
+            "registration_no": "2014/19.9/4899",
+            "applicant_name" : "ALLERGAN PHARMACEUTICALS PTY LTD",
+            "manufacturers"  : "ALLERGAN PHARMACEUTICALS MAYO IRELAND;"
+        },
+        "reason"    : "Expected array to be length 1. Actual length 0. Actual value\n[]\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,829",
+            "trade_name"     : "RINGER LACTATE",
+            "generic_name"   : "RINGER'S LACTATE",
+            "forms"          : "INJECTABLE; IV (INFUSION)",
+            "strength"       : "0.6; 0.04; 0.32; 0.027%",
+            "category"       : "PP",
+            "registration_no": "98/23.2.1/3465",
+            "applicant_name" : "AUTOSTERILE",
+            "manufacturers"  : "AUTOSTERILE HARARE ZIMBABWE;  AUTOSTERILE NAMIBIA (PTY) LTD WINDHOEK NAMIBIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "1,830",
+            "trade_name": "RINGER LACTATE ADCOCARE",
+            "generic_name": "RINGER'S LACTATE",
+            "forms": "INJECTABLE; IV (INFUSION)",
+            "strength": "5.94G; 0.396G; 0.267G; 3.17G PER 100ML",
+            "category": "PP",
+            "registration_no": "92/23.2.1/2665",
+            "applicant_name": "DATLABS PRIVATE LIMITED",
+            "manufacturers": "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ADCOCK INGRAM CRITICAL CARE ISANDO SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,905",
+            "trade_name"     : "SII BCG VACCINE BP (FREEZE DRIED)",
+            "generic_name"   : "BACILLUS CALMETTE–GUERIN",
+            "forms"          : "VACCINE",
+            "strength"       : "1X10^5; 33X10^5 CFU/0.1ML",
+            "category"       : "PP",
+            "registration_no": "2005/18.2/4402",
+            "applicant_name" : "SERUM INSTITUTE OF INDIA PVT LTD",
+            "manufacturers"  : "SERUM INSTITUTE OF INDIA PVT LTD PUNE INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,916",
+            "trade_name"     : "SILVER SULPHADIAZINE CREAM",
+            "generic_name"   : "SILVER SULPHADIAZINE",
+            "forms"          : "CREAM; TOPICAL",
+            "strength"       : "0.48%; 0.70%",
+            "category"       : "P",
+            "registration_no": "82/14.1.2/5982",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,925",
+            "trade_name"     : "SINUTAB ADULT NASAL SPRAY ADVANCE",
+            "generic_name"   : "XYLOMETAZOLINE HCL, DEXPANTHENOL",
+            "forms"          : "SOLUTION",
+            "strength"       : "50; 1MG",
+            "category"       : "P",
+            "registration_no": "2020/20.2.4/6029",
+            "applicant_name" : "JOHNSON & JOHNSON (PVT) LTD",
+            "manufacturers"  : "FAMAR HEALTH CARE SERVICES MADRID MADRID SPAIN;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,926",
+            "trade_name"     : "SINUTAB CHILDRENS NASAL SPRAY ADVANCE",
+            "generic_name"   : "XYLOMETAZOLINE HCL, DEXPANTHENOL",
+            "forms"          : "SOLUTION",
+            "strength"       : "50; 0.5MG",
+            "category"       : "P",
+            "registration_no": "2020/20.2.4/6028",
+            "applicant_name" : "JOHNSON & JOHNSON (PVT) LTD",
+            "manufacturers"  : "FAMAR HEALTH CARE SERVICES MADRID MADRID SPAIN;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,946",
+            "trade_name"     : "SMOFKABIVEN EMULSION FOR INFUSION",
+            "generic_name"   : "GLUCOSE; AMINO ACIDS",
+            "forms"          : "SOLUTION",
+            "strength"       : "42; 10; 20%",
+            "category"       : "PP",
+            "registration_no": "2017/25.1/5500",
+            "applicant_name" : "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "FRESENIUS KABI AB UPPSALA SWEDEN;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,947",
+            "trade_name"     : "SMOFKABIVEN PERIPHERAL EMULSION FOR INFUSION",
+            "generic_name"   : "GLUCOSE; AMINO ACIDS",
+            "forms"          : "SOLUTION",
+            "strength"       : "13; 10; 20%",
+            "category"       : "PP",
+            "registration_no": "2017/25.1/5501",
+            "applicant_name" : "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
+            "manufacturers"  : "FRESENIUS KABI AB UPPSALA SWEDEN;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,961",
+            "trade_name"     : "SOLPHYLLIN",
+            "generic_name"   : "THEOPHYLLINE; ETOPHYLLINE; ALCOHOL",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "80; 10MG/15ML",
+            "category"       : "P",
+            "registration_no": "6/10.1/0652",
+            "applicant_name" : "ADCOCK INGRAM LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,980",
+            "trade_name"     : "STERILIZED WATER FORINJECTION",
+            "generic_name"   : "WATER FOR INJECTION",
+            "forms"          : "INJECTABLE; INJECTION",
+            "strength"       : "00000",
+            "category"       : "PP",
+            "registration_no": "2012/23.2.2/4737",
+            "applicant_name" : "AMANTA HEALTHCARE LTD",
+            "manufacturers"  : "AMANTA HEALTHCARE LTD AHMEDABAD INDIA;"
+        },
+        "reason": "[\n  {\n    \"code\": \"custom\",\n    \"path\": [],\n    \"message\": \"Expected a positive decimal number\"\n  }\n]"
+    },
+    {
+        "medication": {
+            "id": "1,986",
+            "trade_name": "STREPSILS EUCALYPTUS MENTHOL",
+            "generic_name": "STREPSILS EUCALYPTUS MENTHOL",
+            "forms": "TROCHE/LOZENGE; ORAL",
+            "strength": "1.20; 0.60; 8.0MG",
+            "category": "HR",
+            "registration_no": "96/20.3.5/3170",
+            "applicant_name": "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
+            "manufacturers": "BOOTS CO PTY LTD ISANDO SOUTH AFRICA;  RECKITT BENKISER HEALTHCARE INTERNATIONAL LTD NOTIINGHAM UK;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "1,994",
+            "trade_name"     : "STRITRIM",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "480MG",
+            "category"       : "PP",
+            "registration_no": "97/7.2.3/3232",
+            "applicant_name" : "STRIDES ARCOLAB",
+            "manufacturers"  : "CARYL PHARMA (PVT) LTD BANGALORE INDIA;  GLOBAL REMEDIES (PVT) LTD HOSUR INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "2,003",
+            "trade_name": "SUPRADYN",
+            "generic_name": "MULTIVITAMIN; MULTIMINERAL",
+            "forms": "TABLET, EFFERVESCENT; ORAL",
+            "strength": "",
+            "category": "P",
+            "registration_no": "76/24.5/728",
+            "applicant_name": "BAYER (PTY) LTD",
+            "manufacturers": "ROCHE PRODUCTS PTY LTD JOHANNESBURG SOUTH AFRICA;  HOFFMAN LA ROCHE BASLE SWITZERLAND;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,063",
+            "trade_name"     : "TENORIC-50",
+            "generic_name"   : "ATENOLOL; CHLORTHALIDONE",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "50MG",
+            "category"       : "PP",
+            "registration_no": "2010/12.3.2/4623",
+            "applicant_name" : "IPCA LABORATORIES LTD",
+            "manufacturers"  : "IPCA LABS LTD  INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "2,080",
+            "trade_name": "TINY TOT COUGH MIXTURE",
+            "generic_name": "ACETIC ACID; AMMONIUM BICARBONATE; AMMONIA",
+            "forms": "MIXTURE; ORAL",
+            "strength": "",
+            "category": "P",
+            "registration_no": "77/22.2.5/904",
+            "applicant_name": "WALLACE LABORATORIES PVT LTD",
+            "manufacturers": "WALLACE LABORATORIES PVT LTD BULAWAYO ZIMBABWE;  PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "2,081",
+            "trade_name": "TINY TOT GRIPE WATER",
+            "generic_name": "SODIUM BICARBONATE; DILL OIL",
+            "forms": "LIQUID; ORAL",
+            "strength": "0.05MG/ML",
+            "category": "HR",
+            "registration_no": "77/16.1/905",
+            "applicant_name": "WALLACE LABORATORIES PVT LTD",
+            "manufacturers": "WALLACE LABORATORIES PVT LTD BULAWAYO ZIMBABWE;  PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "2,143",
+            "trade_name": "ULTIBRO BREEZHALER",
+            "generic_name": "GLYCOPYRRONIUM BROMIDE",
+            "forms": "CAPSULE",
+            "strength": "110; 50MCG",
+            "category": "PP10",
+            "registration_no": "2019/22.1.4/5851",
+            "applicant_name": "NOVARTIS PHARMA SERVICES AG",
+            "manufacturers": "NOVARTIS PHARMA STEIN AG STEIN SWITZERLAND;  NOVARTIS FARMACEUTICA S.A BARCELONA SPAIN;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,147",
+            "trade_name"     : "UMOXAZOLE",
+            "generic_name"   : "SULFAMETHOXAZOLE; TRIMETHOPRIM",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "",
+            "category"       : "PP",
+            "registration_no": "2000/7.2.3/3724",
+            "applicant_name" : "UMEDICA",
+            "manufacturers"  : "UMEDICA MUMBAI INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,192",
+            "trade_name"     : "VARI-HYDRASALTS",
+            "generic_name"   : "ORAL REHYDRATION SALT",
+            "forms"          : "POWDER, SOLUBLE; ORAL",
+            "strength"       : "13.5; 2.6; 1.5; 2.9G",
+            "category"       : "P",
+            "registration_no": "2013/23.1.1/4771",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,193",
+            "trade_name"     : "VARI-HYDRASALTS ORANGE",
+            "generic_name"   : "ORANGE FLAVOURED LOW OSMOLARITY ORAL REHYDRATION SALTS",
+            "forms"          : "POWDER; ORAL",
+            "strength"       : "",
+            "category"       : "P",
+            "registration_no": "2016/23.1.1/5237",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "SMITHKLINE BEECHAM  UK;  VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason"    : ""
+    },
+    {
+        "medication": {
+            "id"             : "2,205",
+            "trade_name"     : "VARIVAR PAEDIATRIC",
+            "generic_name"   : "LAMIVUDINE; ZIDOVUDINE",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "30/60 MG",
+            "category"       : "PP",
+            "registration_no": "2009/7.13/4575",
+            "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
+            "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,212",
+            "trade_name"     : "VAXIGRIP",
+            "generic_name"   : "INFLUENZA  (INACTIVATED SPLIT VIRION)",
+            "forms"          : "SOLUTION",
+            "strength"       : "15; 15; 15 MCG",
+            "category"       : "PP",
+            "registration_no": "98/18.2/3341",
+            "applicant_name" : "AVENTIS CROP SCIENCE",
+            "manufacturers"  : "AVENTIS PASTEUR  FRANCE;  AVENTIS PASTEUR  FRANCE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,233",
+            "trade_name"     : "VIAGRA",
+            "generic_name"   : "SILDENAFIL CITRATE",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "50",
+            "category"       : "PP",
+            "registration_no": "2000/21.8/3778",
+            "applicant_name" : "PFIZER LABS PTY LTD",
+            "manufacturers"  : "FAREVA AMBOISE POCE SUR CISSE FRANCE;"
+        },
+        "reason"    : "Expected array to be length 1. Actual length 0. Actual value\n[]\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,249",
+            "trade_name"     : "VITAL ZINC",
+            "generic_name"   : "ZINC GLUCONATE",
+            "forms"          : "TABLET; ORAL",
+            "strength"       : "33; 15MG",
+            "category"       : "HR",
+            "registration_no": "99/24.4.1/3606",
+            "applicant_name" : "VITAL HEALTH FOODS (PTY) LTD",
+            "manufacturers"  : "VITAL HEALTH FOODS (PTY) LTD KUILS RIVER SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,252",
+            "trade_name"     : "VITAMAKS",
+            "generic_name"   : "MULTIVITAMIN; MULTIMINERAL",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "5 ML",
+            "category"       : "HR",
+            "registration_no": "2016/24.5/5229",
+            "applicant_name" : "SK AGE EXPORTS",
+            "manufacturers"  : "S KANT HEALTHCARE LTD VAPI INDIA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,254",
+            "trade_name"     : "VITAMIN B CO.",
+            "generic_name"   : "VITAMIN B COMPLEX",
+            "forms"          : "TABLET, COATED; ORAL",
+            "strength"       : "",
+            "category"       : "P",
+            "registration_no": "2017/24.2/5457",
+            "applicant_name" : "DATLABS PRIVATE LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
+        },
+        "reason"    : ""
+    },
+    {
+        "medication": {
+            "id"             : "2,273",
+            "trade_name"     : "WATER FOR INJECTION WITH CHLOROCRESOL",
+            "generic_name"   : "WATER FOR INJECTION; CHLOROCRESOL",
+            "forms"          : "LIQUID; ORAL",
+            "strength"       : "5ML",
+            "category"       : "PP",
+            "registration_no": "91/23.02.02/2467",
+            "applicant_name" : "CAPS PVT LTD",
+            "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,282",
+            "trade_name"     : "WOODS PEPPERMINT COUGH SYRUP FOR CHILDREN",
+            "generic_name"   : "GUAIFENESIN; PEPPERMINT",
+            "forms"          : "SYRUP; ORAL",
+            "strength"       : "50MG/5ML",
+            "category"       : "HR",
+            "registration_no": "92/22.2.2/2659",
+            "applicant_name" : "PT KALBE FARMA",
+            "manufacturers"  : "WRAPSA (PTY) LTD CENTURION SOUTH AFRICA;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id"             : "2,285",
+            "trade_name"     : "XALACOM",
+            "generic_name"   : "LATANOPROST; TIMOLOL",
+            "forms"          : "SOLUTION/DROPS; OPHTHALMIC",
+            "strength"       : "50MCG",
+            "category"       : "PP",
+            "registration_no": "2010/19.10/4604",
+            "applicant_name" : "PFIZER SPECIALITIES LTD",
+            "manufacturers"  : "PFIZER MANUFACTURING PUURS BELGIUM;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+    },
+    {
+        "medication": {
+            "id": "2,299",
+            "trade_name": "ZAM BUK HERBAL",
+            "generic_name": "CAMPHOR; EUCALYPTUS OIL; SASSAFRAS; THYME OIL",
+            "forms": "OINTMENT; TOPICAL",
+            "strength": "100G",
+            "category": "HR",
+            "registration_no": "99/14.15/3597",
+            "applicant_name": "BAYER (PTY) LTD",
+            "manufacturers": "ROCHE PRODUCTS PTY LTD JOHANNESBURG SOUTH AFRICA;  ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
+        },
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+    }
+]

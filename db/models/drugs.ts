@@ -25,27 +25,27 @@ function baseQuery(opts: { include_recalled: boolean }) {
               'strength_denominator',
             ),
             'medications.strength_denominator_unit',
-            'medications.strength_denominator_is_units',
+            'medications.dosage_descriptor_is_units',
             jsonArrayFrom(
               eb_medications
-                .selectFrom('manufactured_medications')
+                .selectFrom('medications')
                 .leftJoin(
-                  'manufactured_medication_recalls',
-                  'manufactured_medication_recalls.manufactured_medication_id',
-                  'manufactured_medications.id',
+                  'medication_recalls',
+                  'medication_recalls.medication_id',
+                  'medications.id',
                 )
                 .select((eb_mm) => [
-                  'manufactured_medications.id as manufactured_medication_id',
-                  'manufactured_medications.trade_name',
-                  'manufactured_medications.applicant_name',
-                  'manufactured_medication_recalls.recalled_at',
+                  'medications.id as medication_id',
+                  'medications.trade_name',
+                  'medications.applicant_name',
+                  'medication_recalls.recalled_at',
                   asTextArray(
                     eb_mm,
-                    'manufactured_medications.strength_numerators',
+                    'medications.strength_numerators',
                   ).as('strength_numerators'),
                 ])
                 .whereRef(
-                  'manufactured_medications.medication_id',
+                  'medications.medication_id',
                   '=',
                   'medications.id',
                 )
@@ -53,13 +53,13 @@ function baseQuery(opts: { include_recalled: boolean }) {
                   !opts.include_recalled,
                   (qb) =>
                     qb.where(
-                      'manufactured_medication_recalls.recalled_at',
+                      'medication_recalls.recalled_at',
                       'is',
                       null,
                     ),
                 )
-                .orderBy('manufactured_medications.trade_name', 'asc')
-                .orderBy('manufactured_medications.strength_numerators', 'asc'),
+                .orderBy('medications.trade_name', 'asc')
+                .orderBy('medications.strength_numerators', 'asc'),
             ).as('manufacturers'),
           ])
           .whereRef('medications.drug_id', '=', 'drugs.id')
@@ -68,14 +68,14 @@ function baseQuery(opts: { include_recalled: boolean }) {
     ])
       .$if(!opts.include_recalled, (qb) => {
         const non_recalled_medications = trx.selectFrom(
-          'manufactured_medications',
+          'medications',
         )
           .select('medication_id')
           .distinct()
           .leftJoin(
-            'manufactured_medication_recalls',
-            'manufactured_medication_recalls.manufactured_medication_id',
-            'manufactured_medications.id',
+            'medication_recalls',
+            'medication_recalls.medication_id',
+            'medications.id',
           )
           .where('recalled_at', 'is', null)
 
@@ -162,8 +162,8 @@ export const drugs = base({
   ) => {
     if (!terms.search) return qb
 
-    const matching_manufactured_medications = trx
-      .selectFrom('manufactured_medications')
+    const matching_medications = trx
+      .selectFrom('medications')
       .select('medication_id')
       .where('trade_name', 'ilike', `%${terms.search}%`)
       .distinct()
@@ -171,7 +171,7 @@ export const drugs = base({
     const matching_drugs = trx
       .selectFrom('medications')
       .select('drug_id')
-      .where('id', 'in', matching_manufactured_medications)
+      .where('id', 'in', matching_medications)
       .distinct()
 
     return qb.where((eb) =>

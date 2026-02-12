@@ -25,7 +25,7 @@ function dosageText(dosage: string): string {
   return matching[0]
 }
 
-export const RegistrationFrequencies = {
+export const MedicationFrequencies = {
   ac: 'before meals',
   am: 'morning',
   bd: '2 times daily',
@@ -63,26 +63,26 @@ export const RegistrationFrequencies = {
   prn: 'when necessary',
 }
 
-export function registrationFrequencyText(frequency: string): string {
-  assertRegistrationFrequency(frequency)
-  return RegistrationFrequencies[frequency]
+export function medicationFrequencyText(frequency: string): string {
+  assertMedicationFrequency(frequency)
+  return MedicationFrequencies[frequency]
 }
 
-type RegistrationFrequency = keyof typeof RegistrationFrequencies
+type medicationFrequency = keyof typeof MedicationFrequencies
 
-export function isRegistrationFrequency(
+export function isMedicationFrequency(
   frequency: string,
-): frequency is RegistrationFrequency {
-  return frequency in RegistrationFrequencies
+): frequency is medicationFrequency {
+  return frequency in MedicationFrequencies
 }
 
-export function assertRegistrationFrequency(
+export function assertMedicationFrequency(
   frequency: string,
-): asserts frequency is RegistrationFrequency {
-  assert(isRegistrationFrequency(frequency))
+): asserts frequency is medicationFrequency {
+  assert(isMedicationFrequency(frequency))
 }
 
-export const RegistrationDosesPerDay = {
+export const medicationDosesPerDay = {
   ac: 3,
   am: 1,
   bd: 2,
@@ -119,7 +119,7 @@ export const RegistrationDosesPerDay = {
   tm: 3 / 30,
   prn: 1,
 } satisfies {
-  [frequency in RegistrationFrequency]: number
+  [frequency in medicationFrequency]: number
 }
 
 type DosageDisplayParams = {
@@ -128,19 +128,19 @@ type DosageDisplayParams = {
   strength_numerator: string
   strength_denominator: string
   strength_denominator_unit: string
-  strength_denominator_is_units: boolean
+  dosage_descriptor_is_units: boolean
   strength_numerator_unit: string
 }
 
 export const denominatorPlural = memoize(
   (
-    { strength_denominator_unit, strength_denominator_is_units }: {
+    { strength_denominator_unit, dosage_descriptor_is_units }: {
       strength_denominator_unit: string
-      strength_denominator_is_units: boolean
+      dosage_descriptor_is_units: boolean
     },
   ) => {
     assert(strength_denominator_unit)
-    if (strength_denominator_is_units) return strength_denominator_unit
+    if (dosage_descriptor_is_units) return strength_denominator_unit
     if (strength_denominator_unit === 'SUPPOSITORY') return 'SUPPOSITORIES'
     return strength_denominator_unit + 'S'
   },
@@ -150,7 +150,7 @@ export function dosageDisplay(params: DosageDisplayParams) {
   const {
     strength_numerator_unit,
     strength_denominator_unit,
-    strength_denominator_is_units,
+    dosage_descriptor_is_units,
     dosage_text,
   } = params
   const strength_numerator = new Decimal(params.strength_numerator)
@@ -161,7 +161,7 @@ export function dosageDisplay(params: DosageDisplayParams) {
 
   let display = strength_denominator.equals(1) ? (dosage_text ?? dosageText(params.dosage)) : String(single_dose)
 
-  if (!strength_denominator_is_units) {
+  if (!dosage_descriptor_is_units) {
     display += ' '
   }
   display += dosage.equals(1) ? strength_denominator_unit : denominatorPlural(params)
@@ -212,8 +212,8 @@ export function scheduleDisplay(
 ): string {
   const { frequency, dosage, duration, duration_unit } = schedule
 
-  assertRegistrationFrequency(frequency)
-  const frequency_display = RegistrationFrequencies[frequency]
+  assertMedicationFrequency(frequency)
+  const frequency_display = MedicationFrequencies[frequency]
 
   const dosage_display = dosageDisplay({
     dosage,
@@ -227,10 +227,10 @@ export function scheduleDisplay(
 // export function describe(
 //   medication: PrescriptionMedication,
 // ): string {
-//   assert(typeof medication.registration_frequency === 'string')
-//   assertRegistrationFrequency(medication.registration_frequency)
+//   assert(typeof medication.medication_frequency === 'string')
+//   assertMedicationFrequency(medication.medication_frequency)
 
-//   const dosesPer_day =RegistrationDosesPerDay[medication.registration_frequency]
+//   const dosesPer_day =medicationDosesPerDay[medication.medication_frequency]
 
 //   const single_dosage =dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,

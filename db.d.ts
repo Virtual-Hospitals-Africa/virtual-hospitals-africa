@@ -713,9 +713,13 @@ export interface MedicationIngredients {
   drug_ingredient_id: string
   id: Generated<string>
   medication_id: string
-  strength_numerator: Numeric
-  strength_numerator_unit: string
   updated_at: Generated<Timestamp>
+}
+
+export interface MedicationIngredientStrengths {
+  id: string
+  units: string
+  value: Numeric
 }
 
 export interface MedicationRecalls {
@@ -731,14 +735,14 @@ export interface Medications {
   applicant_name: string
   consumable_id: string
   created_at: Generated<Timestamp>
+  dosage_descriptor: string
+  dosage_descriptor_is_units: Generated<boolean>
+  dosage_value: Numeric
   form: string
   form_route: Generated<string>
   id: Generated<string>
   manufacturer_name: string
   routes: string[]
-  strength_denominator: Numeric
-  strength_denominator_is_units: Generated<boolean>
-  strength_denominator_unit: string
   trade_name: string
   updated_at: Generated<Timestamp>
 }
@@ -1953,6 +1957,7 @@ export interface DB {
   media_speeches: MediaSpeeches
   media_videos: MediaVideos
   medication_availabilities: MedicationAvailabilities
+  medication_ingredient_strengths: MedicationIngredientStrengths
   medication_ingredients: MedicationIngredients
   medication_recalls: MedicationRecalls
   medications: Medications

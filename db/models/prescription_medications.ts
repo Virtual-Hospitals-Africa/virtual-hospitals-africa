@@ -13,11 +13,6 @@ export const prescription_medications = {
         'prescription_medications.prescription_id',
       )
       .innerJoin(
-        'patient_condition_medications',
-        'prescription_medications.patient_condition_medication_id',
-        'patient_condition_medications.id',
-      )
-      .innerJoin(
         'medications',
         'patient_condition_medications.medication_id',
         'medications.id',
@@ -51,7 +46,7 @@ export const prescription_medications = {
         'medications.strength_numerator_unit',
         'medications.strength_denominator',
         'medications.strength_denominator_unit',
-        'medications.strength_denominator_is_units',
+        'medications.dosage_descriptor_is_units',
         'patient_condition_medications.special_instructions',
         'conditions.name as condition_name',
         eb('prescription_medications_filled.id', 'is not', null).as(

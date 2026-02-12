@@ -1,11 +1,11 @@
 import Table, { TableColumn } from '../library/Table.tsx'
-import { Maybe, RenderedManufacturedMedication } from '../../types.ts'
+import { Maybe, RenderedMedication } from '../../types.ts'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { path } from '../../util/path.ts'
 import { Plussable } from '../library/icons/Plussable.tsx'
 import { MedicineIcon } from '../library/icons/Medicines.tsx'
 
-const columns: TableColumn<RenderedManufacturedMedication>[] = [
+const columns: TableColumn<RenderedMedication>[] = [
   {
     label: 'Generic Name',
     data: 'name',
@@ -33,7 +33,7 @@ const columns: TableColumn<RenderedManufacturedMedication>[] = [
 ]
 
 type MedicinesTableProps = {
-  results: RenderedManufacturedMedication[]
+  results: RenderedMedication[]
   page: number
   has_next_page: boolean
   search_terms: {

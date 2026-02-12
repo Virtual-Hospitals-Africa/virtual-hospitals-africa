@@ -1,6 +1,6 @@
 import { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
-import { createStandardTable } from '../createTable.ts'
+import { createPointerTable, createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
   await createStandardTable(
@@ -24,9 +24,9 @@ export async function up(db: Kysely<DB>) {
         .addColumn('form', 'varchar(255)', (col) => col.notNull())
         .addColumn('routes', sql`varchar(255)[]`, (col) => col.notNull())
         .addColumn('consumable_id', 'uuid', (col) => col.notNull().references('consumables.id').onDelete('cascade'))
-        .addColumn('strength_denominator', 'decimal', (col) => col.notNull())
+        .addColumn('dosage_value', 'decimal', (col) => col.notNull())
         .addColumn(
-          'strength_denominator_unit',
+          'dosage_descriptor',
           'varchar(255)',
           (col) => col.notNull(),
         )
@@ -51,9 +51,9 @@ export async function up(db: Kysely<DB>) {
 
   await sql`
     ALTER TABLE medications
-    ADD strength_denominator_is_units BOOLEAN NOT NULL
+    ADD dosage_descriptor_is_units BOOLEAN NOT NULL
     GENERATED ALWAYS AS (
-      strength_denominator_unit IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
+      dosage_descriptor IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
     )
     STORED
   `.execute(db)
@@ -69,15 +69,26 @@ export async function up(db: Kysely<DB>) {
         .addColumn('drug_ingredient_id', 'uuid', (col) =>
           col.notNull().references('drug_ingredients.id').onDelete(
             'cascade',
-          ))
+          )),
+  )
+
+  await createPointerTable(
+    db,
+    'medication_ingredient_strengths',
+    {
+      references: 'medication_ingredients',
+      primary_key_type: 'uuid',
+    },
+    (qb) =>
+      qb
         .addColumn(
-          'strength_numerator',
+          'value',
           'decimal',
           (col) => col.notNull(),
         )
         .addColumn(
-          'strength_numerator_unit',
-          'varchar(255)',
+          'units',
+          'varchar(16)',
           (col) => col.notNull(),
         ),
   )
@@ -107,6 +118,7 @@ export async function up(db: Kysely<DB>) {
 
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('medication_availabilities').execute()
+  await db.schema.dropTable('medication_ingredient_strengths').execute()
   await db.schema.dropTable('medication_ingredients').execute()
   await db.schema.dropTable('medications').execute()
   await db.schema.dropTable('drug_ingredients').execute()

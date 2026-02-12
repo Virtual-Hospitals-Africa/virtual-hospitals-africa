@@ -1,12 +1,12 @@
-import { RenderedManufacturedMedication } from '../../types.ts'
+import { RenderedMedication } from '../../types.ts'
 import AsyncSearch, { AsyncSearchPropsSingular } from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
 
-function ManufacturedMedicationOption({
+function MedicationOption({
   option,
   selected,
 }: {
-  option: RenderedManufacturedMedication
+  option: RenderedMedication
   selected: boolean
 }) {
   return (
@@ -30,16 +30,16 @@ function ManufacturedMedicationOption({
   )
 }
 
-export default function ManufacturedMedicationSearch(
+export default function MedicationSearch(
   props: Omit<
-    AsyncSearchPropsSingular<RenderedManufacturedMedication>,
+    AsyncSearchPropsSingular<RenderedMedication>,
     'Option' | 'search_route'
   >,
 ) {
   return (
     <AsyncSearch
-      search_route='/app/manufactured_medications'
-      Option={ManufacturedMedicationOption}
+      search_route='/app/medications'
+      Option={MedicationOption}
       {...props}
     />
   )
@@ -49,8 +49,8 @@ export function AddMedicineSearch(
   { organization_id }: { organization_id: string },
 ) {
   return (
-    <ManufacturedMedicationSearch
-      optionHref={(option) => `/app/organizations/${organization_id}/inventory/add_medicine?manufactured_medication_id=${option.id}`}
+    <MedicationSearch
+      optionHref={(option) => `/app/organizations/${organization_id}/inventory/add_medicine?medication_id=${option.id}`}
     />
   )
 }

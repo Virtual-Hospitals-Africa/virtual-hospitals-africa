@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { HealthWorkerOrganization, RegistrationPatientSummary, RenderedOrganization, TrxOrDb } from '../../types.ts'
+import { HealthWorkerOrganization, PatientProfileSummary, RenderedOrganization, TrxOrDb } from '../../types.ts'
 import { patient_occupations } from './patient_occupations.ts'
 import { patient_conditions } from './patient_conditions.ts'
 import { family as patient_family } from './family.ts'
@@ -30,7 +30,7 @@ export const patient_new = {
   async getSummaryById(
     trx: TrxOrDb,
     patient_id: string,
-  ): Promise<RegistrationPatientSummary> {
+  ): Promise<PatientProfileSummary> {
     const getting_review = trx
       .selectFrom('patients')
       .leftJoin('addresses', 'addresses.id', 'patients.address_id')
@@ -124,7 +124,7 @@ export const patient_new = {
 
     return {
       ...review,
-      family,
+      family_history: family,
       occupation: occupation ?? null,
       allergies: allergies ?? null,
       pre_existing_conditions,

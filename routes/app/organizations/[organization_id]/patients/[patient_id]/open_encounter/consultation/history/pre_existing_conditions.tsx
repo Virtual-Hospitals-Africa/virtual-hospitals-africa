@@ -28,17 +28,17 @@ export const ConditionsSchema = z.object({
           id: z.string().uuid().optional(),
           name: z.string().optional(),
           medication_id: z.string().uuid().optional(),
-          manufactured_medication_id: z.string().optional(),
+          medication_id: z.string().optional(),
           route: z.string(),
           strength: positive_decimal.transform((d) => d.toFixed()),
           dosage: positive_decimal.transform((d) => d.toFixed()),
-          registration_frequency: z.string(),
+          medication_frequency: z.string(),
           start_date: z.string().date(),
           end_date: z.string().date().optional(),
           special_instructions: z.string().optional(),
         })
           .refine(
-            (medication) => medication.medication_id || medication.manufactured_medication_id,
+            (medication) => medication.medication_id || medication.medication_id,
             {
               message: 'Must provide either medication or manufactured medication',
               path: ['medication_id'],
