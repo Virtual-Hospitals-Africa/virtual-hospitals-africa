@@ -56,6 +56,8 @@
     (clinical_finding (snomed_concept "Pain radiating to neck" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to left arm" "finding"))
     (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
+clinical_finding (snomed_concept "Pain radiating to left shoulder" "finding"))
+    (clinical_finding (snomed_concept "Pain radiating to right shoulder" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
 )
