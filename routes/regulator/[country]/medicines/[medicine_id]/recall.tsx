@@ -7,6 +7,7 @@ import redirect from '../../../../../util/redirect.ts'
 import { Context } from 'fresh'
 import Form from '../../../../../components/library/Form.tsx'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
+import { medication_availabilities } from '../../../../../db/models/medication_availabilities.ts'
 
 export const handler = {
   POST: async function RecallMedication(
@@ -23,7 +24,7 @@ export const handler = {
 
     const regulator_id = ctx.state.regulator.id
 
-    await medications.recall(ctx.state.trx, {
+    await medication_availabilities.recall(ctx.state.trx, {
       medication_id: medicine_id,
       regulator_id: regulator_id,
     })
@@ -54,10 +55,8 @@ export default RegulatorHomePageLayout(
 
     return (
       <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-        Recall {medication.generic_name} (Trade Name: {medication.trade_name}) by {medication.applicant_name} ?
+        Recall {medication.name} by {medication.applicant_name} ?
         <br />
-        Strength Summary: {medication.strength_summary}
-
         <Form method='POST'>
           <Button type='submit'>Recall</Button>
         </Form>

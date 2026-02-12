@@ -53,7 +53,7 @@ function Description({ option }: { option: Option }) {
 
 function PanelWithBorderOption(props: RadioInputProps) {
   return (
-    <label className='relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus-within:outline-none hover:border-indigo-600 hover:ring-2 hover:ring-indigo-600 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 border-gray-300'>
+    <label className='relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus-within:outline-none hover:border-indigo-600 hover:ring-2 hover:ring-indigo-600 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 has-[:checked]:border-indigo-600 has-[:checked]:ring-2 has-[:checked]:ring-indigo-600 border-gray-300'>
       <RadioInput {...props} className='sr-only' />
       <span className='flex flex-col gap-2'>
         <Description option={props.option} />

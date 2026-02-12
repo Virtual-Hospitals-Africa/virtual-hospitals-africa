@@ -116,7 +116,7 @@
 //         'strength_numerator_unit': 'MG',
 //         'strength_denominator': '1',
 //         'strength_denominator_unit': 'TABLET',
-//         'dosage_descriptor_is_units': false,
+//         'description_is_units': false,
 //         'manufacturers': [
 //           {
 //             'strength_numerators': ['20'],

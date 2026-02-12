@@ -140,16 +140,16 @@
 //           frequency: 'qw',
 //         }])
 
-//         // Check prescription_medications
-//         const prescription_medication = await trx
-//           .selectFrom('prescription_medications')
+//         // Check prescriptions
+//         const prescription = await trx
+//           .selectFrom('prescriptions')
 //           .where('prescription_id', '=', result.id)
 //           .select('patient_condition_medication_id')
 //           .executeTakeFirstOrThrow()
 
 //         assertEquals(
 //           patient_medication.id,
-//           prescription_medication.patient_condition_medication_id!,
+//           prescription.patient_condition_medication_id!,
 //         )
 //       },
 //     )

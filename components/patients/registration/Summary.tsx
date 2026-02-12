@@ -442,8 +442,8 @@ export default function PatientRegistrationSummary(
   //               strength_numerator: Decimal(medication.strength),
   //               strength_denominator: Decimal(medication.strength_denominator),
   //               strength_denominator_unit: medication.strength_denominator_unit,
-  //               dosage_descriptor_is_units:
-  //                 medication.dosage_descriptor_is_units,
+  //               description_is_units:
+  //                 medication.description_is_units,
   //               strength_numerator_unit: medication.strength_numerator_unit,
   //             }),
   //             name: 'dosage',

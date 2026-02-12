@@ -1,27 +1,28 @@
-import { PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
-import { conversations } from '../../db/models/conversations.ts'
-import { prescriptions } from '../../db/models/prescriptions.ts'
+// TODO: rewrite against new patient_prescriptions model
+// import { PharmacistChatbotUserState, TrxOrDb } from '../../types.ts'
+// import { conversations } from '../../db/models/conversations.ts'
+// import { patient_prescriptions } from '../../db/models/patient_prescriptions.ts'
 
-export async function handlePrescriptionCode(
-  trx: TrxOrDb,
-  pharmacistState: PharmacistChatbotUserState,
-) {
-  const code = pharmacistState.unhandled_message.trimmed_body!
-  const prescription = await prescriptions.getByCode(trx, code)
-  if (!prescription) {
-    return 'onboarded:fill_prescription:reenter_code'
-  }
+// export async function handlePrescriptionCode(
+//   trx: TrxOrDb,
+//   pharmacistState: PharmacistChatbotUserState,
+// ) {
+//   const code = pharmacistState.unhandled_message.trimmed_body!
+//   const prescription = await patient_prescriptions.getByCode(trx, code)
+//   if (!prescription) {
+//     return 'onboarded:fill_prescription:reenter_code'
+//   }
 
-  await conversations.updateChatbotUser(
-    trx,
-    pharmacistState.chatbot_user,
-    {
-      data: {
-        prescription_code: code,
-        prescription_id: prescription.id,
-      },
-    },
-  )
+//   await conversations.updateChatbotUser(
+//     trx,
+//     pharmacistState.chatbot_user,
+//     {
+//       data: {
+//         prescription_code: code,
+//         prescription_id: prescription.id,
+//       },
+//     },
+//   )
 
-  return 'onboarded:fill_prescription:send_pdf' as const
-}
+//   return 'onboarded:fill_prescription:send_pdf' as const
+// }

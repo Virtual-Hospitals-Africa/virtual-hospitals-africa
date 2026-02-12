@@ -5,30 +5,17 @@ import { createPointerTable, createStandardTable } from '../createTable.ts'
 export async function up(db: Kysely<DB>) {
   await createStandardTable(
     db,
-    'drug_ingredients',
-    (qb) =>
-      qb.addColumn(
-        'name',
-        'varchar(255)',
-        (col) => col.notNull().unique(),
-      ),
-  )
-
-  await createStandardTable(
-    db,
     'medications',
     (qb) =>
-      qb.addColumn('trade_name', 'varchar(1024)', (col) => col.notNull())
-        .addColumn('applicant_name', 'varchar(1024)', (col) => col.notNull())
-        .addColumn('manufacturer_name', 'varchar(2048)', (col) => col.notNull())
+      qb.addColumn('trade_name', 'varchar(255)', (col) => col.notNull())
+        .addColumn('applicant_name', 'varchar(255)', (col) => col.notNull())
+        .addColumn('manufacturer_name', 'varchar(511)', (col) => col.notNull())
         .addColumn('form', 'varchar(255)', (col) => col.notNull())
         .addColumn('routes', sql`varchar(255)[]`, (col) => col.notNull())
-        .addColumn('consumable_id', 'uuid', (col) => col.notNull().references('consumables.id').onDelete('cascade'))
-        .addColumn('dosage_value', 'decimal', (col) => col.notNull())
         .addColumn(
-          'dosage_descriptor',
-          'varchar(255)',
-          (col) => col.notNull(),
+          'snomed_concept_id',
+          'bigint',
+          (col) => col.notNull().references('snomed_concept.id').onDelete('cascade'),
         )
         .addCheckConstraint(
           'at_least_one_route_check',
@@ -49,34 +36,55 @@ export async function up(db: Kysely<DB>) {
     ) STORED
   `.execute(db)
 
+  await createPointerTable(
+    db,
+    'medication_doses',
+    {
+      references: 'consumables',
+      primary_key_type: 'uuid',
+    },
+    (qb) =>
+      qb
+        .addColumn('medication_id', 'uuid', (col) =>
+          col.notNull().references('medications.id').onDelete(
+            'cascade',
+          ))
+        .addColumn('value', 'decimal', (col) => col.notNull())
+        .addColumn(
+          'description',
+          'varchar(255)',
+          (col) => col.notNull(),
+        ),
+  )
+
   await sql`
-    ALTER TABLE medications
-    ADD dosage_descriptor_is_units BOOLEAN NOT NULL
+    ALTER TABLE medication_doses
+    ADD description_is_units BOOLEAN NOT NULL
     GENERATED ALWAYS AS (
-      dosage_descriptor IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
+      "description" IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
     )
     STORED
   `.execute(db)
 
   await createStandardTable(
     db,
-    'medication_ingredients',
+    'medication_dose_ingredients',
     (qb) =>
-      qb.addColumn('medication_id', 'uuid', (col) =>
-        col.notNull().references('medications.id').onDelete(
+      qb.addColumn('medication_dose_id', 'uuid', (col) =>
+        col.notNull().references('medication_doses.id').onDelete(
           'cascade',
         ))
-        .addColumn('drug_ingredient_id', 'uuid', (col) =>
-          col.notNull().references('drug_ingredients.id').onDelete(
+        .addColumn('snomed_concept_id', 'bigint', (col) =>
+          col.notNull().references('snomed_inferred_canonical_name_and_category.id').onDelete(
             'cascade',
           )),
   )
 
   await createPointerTable(
     db,
-    'medication_ingredient_strengths',
+    'medication_dose_ingredient_strengths',
     {
-      references: 'medication_ingredients',
+      references: 'medication_dose_ingredients',
       primary_key_type: 'uuid',
     },
     (qb) =>
@@ -106,20 +114,44 @@ export async function up(db: Kysely<DB>) {
           ),
       )
         .addColumn(
+          'registration_number',
+          'varchar(255)',
+          (col) => col.notNull(),
+        )
+        .addColumn(
           'country',
           'varchar(2)',
           (col) =>
             col.notNull().references('countries.iso_3166_2').onDelete(
               'cascade',
             ),
-        ),
+        )
+        .addUniqueConstraint('medication_country_registration_number', ['registration_number', 'country']),
   )
+
+  // GIN trigram indexes for fast fuzzy search
+  await sql`
+    CREATE INDEX idx_medications_trade_name_gin ON medications
+    USING GIN (trade_name gin_trgm_ops)
+  `.execute(db)
+
+  // Indexes on foreign key columns
+  await db.schema.createIndex('idx_medication_doses_medication_id').on('medication_doses').column('medication_id').execute()
+  await db.schema.createIndex('idx_medication_dose_ingredients_medication_dose_id').on('medication_dose_ingredients').column('medication_dose_id').execute()
+  await db.schema.createIndex('idx_medication_availabilities_medication_id').on('medication_availabilities').column('medication_id').execute()
+  await db.schema.createIndex('idx_medication_availabilities_country').on('medication_availabilities').column('country').execute()
 }
 
 export async function down(db: Kysely<DB>) {
+  await db.schema.dropIndex('idx_medication_availabilities_country').execute()
+  await db.schema.dropIndex('idx_medication_availabilities_medication_id').execute()
+  await db.schema.dropIndex('idx_medication_dose_ingredients_medication_dose_id').execute()
+  await db.schema.dropIndex('idx_medication_doses_medication_id').execute()
+  await db.schema.dropIndex('idx_medications_trade_name_gin').execute()
+
   await db.schema.dropTable('medication_availabilities').execute()
-  await db.schema.dropTable('medication_ingredient_strengths').execute()
-  await db.schema.dropTable('medication_ingredients').execute()
+  await db.schema.dropTable('medication_dose_ingredient_strengths').execute()
+  await db.schema.dropTable('medication_dose_ingredients').execute()
+  await db.schema.dropTable('medication_doses').execute()
   await db.schema.dropTable('medications').execute()
-  await db.schema.dropTable('drug_ingredients').execute()
 }

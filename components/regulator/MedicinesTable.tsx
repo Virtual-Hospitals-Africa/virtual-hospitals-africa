@@ -7,12 +7,8 @@ import { MedicineIcon } from '../library/icons/Medicines.tsx'
 
 const columns: TableColumn<RenderedMedication>[] = [
   {
-    label: 'Generic Name',
+    label: 'Name',
     data: 'name',
-  },
-  {
-    label: 'Trade Name',
-    data: 'trade_name',
   },
   {
     label: 'Applicant Name',
@@ -22,10 +18,10 @@ const columns: TableColumn<RenderedMedication>[] = [
     label: 'Form',
     data: 'form',
   },
-  {
-    label: 'Strength Summary',
-    data: 'strength_summary',
-  },
+  // {
+  //   label: 'Strength Summary',
+  //   data: 'strength_summary',
+  // },
   {
     label: 'Actions',
     type: 'actions',

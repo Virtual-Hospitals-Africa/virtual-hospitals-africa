@@ -1,121 +1,122 @@
-import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-import { DiagnosesCollaboration, Diagnosis } from '../../../../../types.ts'
-import FormButtons from '../../../../../islands/form/buttons.tsx'
-import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { diagnoses } from '../../../../../db/models/diagnoses.ts'
-// import { patient_symptoms } from '../../../../../db/models/patient_symptoms.ts'
-import FormSection from '../../../../../components/library/FormSection.tsx'
-import DiagnosesForm from '../../../../../islands/diagnoses/Form.tsx'
-// import { min } from '../../../../../util/min.ts'
+export const handler = () => new Response('TODO')
+// import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
+// import { DiagnosesCollaboration, Diagnosis } from '../../../../../types.ts'
+// import FormButtons from '../../../../../islands/form/buttons.tsx'
+// import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
+// import isObjectLike from '../../../../../util/isObjectLike.ts'
+// import { assertOr400 } from '../../../../../util/assertOr.ts'
+// import { diagnoses } from '../../../../../db/models/diagnoses.ts'
+// // import { patient_symptoms } from '../../../../../db/models/patient_symptoms.ts'
+// import FormSection from '../../../../../components/library/FormSection.tsx'
+// import DiagnosesForm from '../../../../../islands/diagnoses/Form.tsx'
+// // import { min } from '../../../../../util/min.ts'
 
-type DiagnosisData = {
-  diagnoses: Diagnosis[]
-  diagnoses_collaborations: DiagnosesCollaboration[]
-}
+// type DiagnosisData = {
+//   diagnoses: Diagnosis[]
+//   diagnoses_collaborations: DiagnosesCollaboration[]
+// }
 
-function assertIsDiagnoses(
-  data: unknown,
-): asserts data is DiagnosisData {
-  assertOr400(isObjectLike(data), 'Invalid form values')
-  if (data.diagnoses !== undefined) {
-    assertOr400(
-      Array.isArray(data.diagnoses),
-      'diagnoses must be an array',
-    )
-    for (const diagnosis of data.diagnoses) {
-      assertOr400(
-        typeof diagnosis.id === 'string',
-        'Each diagnosis must have an id of type string',
-      )
-    }
-  }
-  if (data.diagnoses_collaborations !== undefined) {
-    assertOr400(
-      Array.isArray(data.diagnoses_collaborations),
-      'diagnoses_collaborations must be an array',
-    )
-    for (const diagnoses_collaboration of data.diagnoses_collaborations) {
-      assertOr400(
-        typeof diagnoses_collaboration.diagnosis_id === 'string',
-        'Each diagnoses_collaboration must have an diagnosis_id of type string',
-      )
-      if (diagnoses_collaboration.approval === 'disagree') {
-        assertOr400(
-          diagnoses_collaboration.disagree_reason?.length > 0,
-          'Must provide a disagree reason',
-        )
-      }
-    }
-  }
-}
+// function assertIsDiagnoses(
+//   data: unknown,
+// ): asserts data is DiagnosisData {
+//   assertOr400(isObjectLike(data), 'Invalid form values')
+//   if (data.diagnoses !== undefined) {
+//     assertOr400(
+//       Array.isArray(data.diagnoses),
+//       'diagnoses must be an array',
+//     )
+//     for (const diagnosis of data.diagnoses) {
+//       assertOr400(
+//         typeof diagnosis.id === 'string',
+//         'Each diagnosis must have an id of type string',
+//       )
+//     }
+//   }
+//   if (data.diagnoses_collaborations !== undefined) {
+//     assertOr400(
+//       Array.isArray(data.diagnoses_collaborations),
+//       'diagnoses_collaborations must be an array',
+//     )
+//     for (const diagnoses_collaboration of data.diagnoses_collaborations) {
+//       assertOr400(
+//         typeof diagnoses_collaboration.diagnosis_id === 'string',
+//         'Each diagnoses_collaboration must have an diagnosis_id of type string',
+//       )
+//       if (diagnoses_collaboration.approval === 'disagree') {
+//         assertOr400(
+//           diagnoses_collaboration.disagree_reason?.length > 0,
+//           'Must provide a disagree reason',
+//         )
+//       }
+//     }
+//   }
+// }
 
-export const handler = {
-  async POST(ctx: ReviewContext) {
-    const req = ctx.req
-    const data = await parseRequestAsserts(
-      req,
-      assertIsDiagnoses,
-    )
+// export const handler = {
+//   async POST(ctx: ReviewContext) {
+//     const req = ctx.req
+//     const data = await parseRequestAsserts(
+//       req,
+//       assertIsDiagnoses,
+//     )
 
-    const patient_diagnoses = (data.diagnoses || []).map((d) => ({
-      condition_id: d.id,
-      start_date: d.start_date,
-    }))
+//     const patient_diagnoses = (data.diagnoses || []).map((d) => ({
+//       condition_id: d.id,
+//       start_date: d.start_date,
+//     }))
 
-    const diagnoses_collaborations = (data.diagnoses_collaborations || [])
-      .filter((d) => 'approval' in d).map(
-        (d) => ({
-          diagnosis_id: d.diagnosis_id,
-          is_approved: d.approval === 'agree',
-          disagree_reason: d.disagree_reason ?? null,
-        }),
-      )
+//     const diagnoses_collaborations = (data.diagnoses_collaborations || [])
+//       .filter((d) => 'approval' in d).map(
+//         (d) => ({
+//           diagnosis_id: d.diagnosis_id,
+//           is_approved: d.approval === 'agree',
+//           disagree_reason: d.disagree_reason ?? null,
+//         }),
+//       )
 
-    await diagnoses.upsertForReview(
-      ctx.state.trx,
-      {
-        review_id: ctx.state.doctor_review.review_id,
-        patient_id: ctx.state.doctor_review.patient.id,
-        patient_encounter_id: ctx.state.doctor_review.encounter.id,
-        employment_id: ctx.state.doctor_review.employment_id,
-        diagnoses: patient_diagnoses,
-        diagnoses_collaborations,
-      },
-    )
+//     await diagnoses.upsertForReview(
+//       ctx.state.trx,
+//       {
+//         review_id: ctx.state.doctor_review.review_id,
+//         patient_id: ctx.state.doctor_review.patient.id,
+//         patient_encounter_id: ctx.state.doctor_review.encounter.id,
+//         employment_id: ctx.state.doctor_review.employment_id,
+//         diagnoses: patient_diagnoses,
+//         diagnoses_collaborations,
+//       },
+//     )
 
-    const completing_step = completeStep(ctx)
-    return completing_step
-  },
-}
+//     const completing_step = completeStep(ctx)
+//     return completing_step
+//   },
+// }
 
-export default async function DiagnosisPage(
-  ctx: ReviewContext,
-) {
-  const { trx, doctor_review: { review_id } } = ctx.state
-  const patient_diagnoses = await diagnoses.getFromReview(trx, {
-    review_id,
-    employment_id: ctx.state.doctor_review.employment_id,
-    patient_encounter_id: ctx.state.doctor_review.encounter.id,
-  })
+// export default async function DiagnosisPage(
+//   ctx: ReviewContext,
+// ) {
+//   const { trx, doctor_review: { review_id } } = ctx.state
+//   const patient_diagnoses = await diagnoses.getFromReview(trx, {
+//     review_id,
+//     employment_id: ctx.state.doctor_review.employment_id,
+//     patient_encounter_id: ctx.state.doctor_review.encounter.id,
+//   })
 
-  // const symptoms = await patient_symptoms.getEncounter(trx, {
-  //   patient_encounter_id: ctx.state.doctor_review.encounter.id,
-  //   patient_id: ctx.state.doctor_review.patient.id,
-  // })
-  // const earliest_date = min(symptoms.map((s) => s.start_date))
-  const earliest_date = undefined
+//   // const symptoms = await patient_symptoms.getEncounter(trx, {
+//   //   patient_encounter_id: ctx.state.doctor_review.encounter.id,
+//   //   patient_id: ctx.state.doctor_review.patient.id,
+//   // })
+//   // const earliest_date = min(symptoms.map((s) => s.start_date))
+//   const earliest_date = undefined
 
-  return (
-    <ReviewLayout ctx={ctx}>
-      <FormSection header='Diagnoses'>
-        <DiagnosesForm
-          diagnoses={patient_diagnoses}
-          earliestSymptomDate={earliest_date}
-        />
-      </FormSection>
-      <FormButtons />
-    </ReviewLayout>
-  )
-}
+//   return (
+//     <ReviewLayout ctx={ctx}>
+//       <FormSection header='Diagnoses'>
+//         <DiagnosesForm
+//           diagnoses={patient_diagnoses}
+//           earliestSymptomDate={earliest_date}
+//         />
+//       </FormSection>
+//       <FormButtons />
+//     </ReviewLayout>
+//   )
+// }

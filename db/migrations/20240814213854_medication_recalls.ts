@@ -6,10 +6,10 @@ export async function up(db: Kysely<DB>) {
   await createStandardTable(db, 'medication_recalls', (qb) =>
     qb
       .addColumn(
-        'medication_id',
+        'medication_availability_id',
         'uuid',
         (col) =>
-          col.notNull().references('medications.id').onDelete(
+          col.notNull().references('medication_availabilities.id').onDelete(
             'cascade',
           ),
       )
@@ -25,9 +25,9 @@ export async function up(db: Kysely<DB>) {
       ))
 
   await db.schema
-    .createIndex('idx_medication_recalls_medication_id')
+    .createIndex('idx_medication_recalls_medication_availability_id')
     .on('medication_recalls')
-    .column('medication_id')
+    .column('medication_availability_id')
     .execute()
 
   await db.schema

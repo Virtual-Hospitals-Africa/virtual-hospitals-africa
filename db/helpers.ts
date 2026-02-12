@@ -18,11 +18,14 @@ import {
 } from 'kysely'
 import * as formatter from 'sql-formatter'
 import { DB } from '../db.d.ts'
-import { Coordinates, IdSelection, NonEmptyArray, type TrxOrDb } from '../types.ts'
+import { Coordinates, IdSelection, InsertRows, NonEmptyArray, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
 import entries from '../util/entries.ts'
+
+import { chunk } from '../util/chunk.ts'
+import isString from '../util/isString.ts'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -348,12 +351,12 @@ export function debugLog(
   )
 }
 
-export function literalNumber(value: number, as: string) {
+export function literalNumber(value: number) {
   assert(
     Number.isFinite(value),
-    `Value for ${as} must be a finite number. Got ${value}`,
+    `Value for must be a finite number. Got ${value}`,
   )
-  return sql.lit<number>(value).as(as)
+  return sql.lit<number>(value)
 }
 
 export function literalString<Value extends string>(value: Value) {
@@ -556,6 +559,12 @@ export function temporaryTable<T extends Record<string, unknown>>(
   >
 }
 
+export function concat(
+  ...args: (string | ExpressionWrapper<any, any, any>)[]
+): RawBuilder<string> {
+  return sql<string>`concat(${sql.join(args.map((arg) => isString(arg) ? sql.lit(arg) : arg))})`
+}
+
 export function asText<EB extends ExpressionBuilder<DB, any>>(
   eb: EB,
   ref: Parameters<EB['ref']>[0],
@@ -639,4 +648,10 @@ export function deduplicate<T extends Array<any>, U>(
 
 export function looksLikeSExpression(column_name: string) {
   return sql`left(${column_name}, 1) = '(' AND right(${column_name}, 1) = ')'`
+}
+
+export async function insertChunks<Table extends keyof DB>(trx: TrxOrDb, table: Table, rows: InsertRows<Table>) {
+  for (const batch of chunk(rows, 1000)) {
+    await trx.insertInto(table).values(batch).execute()
+  }
 }

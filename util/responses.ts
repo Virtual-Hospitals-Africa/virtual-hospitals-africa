@@ -1,6 +1,15 @@
+import { humanReadableJson } from './humanReadableJson.ts'
+
 // deno-lint-ignore no-explicit-any
 export function json(data: any) {
   const response = new Response(JSON.stringify(data), { status: 200 })
+  response.headers.set('content-type', 'application/json')
+  return response
+}
+
+// deno-lint-ignore no-explicit-any
+json.humanReadable = function (data: any) {
+  const response = new Response(humanReadableJson(data), { status: 200 })
   response.headers.set('content-type', 'application/json')
   return response
 }

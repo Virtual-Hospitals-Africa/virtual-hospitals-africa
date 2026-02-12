@@ -3,6 +3,7 @@ import { ZodError } from 'zod'
 import redirect from '../util/redirect.ts'
 import { Context } from 'fresh'
 import isObjectLike from '../util/isObjectLike.ts'
+import { stripAnsiCode } from 'std/fmt/colors.ts'
 
 export function grokPostgresError(err: Record<string, unknown>) {
   // deno-lint-ignore no-explicit-any
@@ -44,6 +45,6 @@ export const handler = async (ctx: Context<unknown>) => {
     const status = Number(error.status) || 500
     const message: string = grokPostgresError(error) || String(error.message) ||
       'Internal Server Error'
-    return new Response(message, { status })
+    return new Response(stripAnsiCode(message), { status })
   }
 }

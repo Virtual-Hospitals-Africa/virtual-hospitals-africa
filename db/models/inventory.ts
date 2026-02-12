@@ -18,11 +18,9 @@ import {
   RenderedInventoryHistoryProcurement,
   RenderedOrganizationConsumable,
   RenderedOrganizationDevice,
-  RenderedOrganizationMedicine,
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFromColumn, jsonObjectFrom, literalNumber, literalOptionalDate, literalString, longFormattedDateTime } from '../helpers.ts'
-import { medications } from './medications.ts'
 import { employees } from './employees.ts'
 import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
@@ -70,16 +68,16 @@ export const inventory = {
         'consumables.id',
       )
       .leftJoin(
-        'medication_strengths',
+        'medications',
         'consumables.id',
-        'medication_strengths.consumable_id',
+        'medications.consumable_id',
       )
       .where(
         'organization_consumables.organization_id',
         '=',
         opts.organization_id,
       )
-      .where('medication_strengths.id', 'is', null)
+      .where('medications.id', 'is', null)
       .select([
         'consumables.name as name',
         'consumables.id as consumable_id',
@@ -95,12 +93,14 @@ export const inventory = {
       ])
       .execute()
   },
+  // TODO: update return type to match RenderedOrganizationMedication or create dedicated type
   getMedicines(
     trx: TrxOrDb,
     opts: {
       organization_id: string
     },
-  ): Promise<RenderedOrganizationMedicine[]> {
+    // deno-lint-ignore no-explicit-any
+  ): Promise<any[]> {
     return trx
       .selectFrom('organization_consumables')
       .innerJoin(
@@ -109,24 +109,14 @@ export const inventory = {
         'consumables.id',
       )
       .innerJoin(
-        'medication_strengths',
+        'medication_doses',
+        'medication_doses.consumable_id',
         'consumables.id',
-        'medication_strengths.consumable_id',
       )
       .innerJoin(
         'medications',
+        'medication_doses.medication_id',
         'medications.id',
-        'medication_strengths.medication_id',
-      )
-      .innerJoin(
-        'medications',
-        'medications.id',
-        'medications.medication_id',
-      )
-      .innerJoin(
-        'drugs',
-        'medications.drug_id',
-        'drugs.id',
       )
       .where(
         'organization_consumables.organization_id',
@@ -134,19 +124,20 @@ export const inventory = {
         opts.organization_id,
       )
       .select([
-        'drugs.generic_name',
+        'consumables.name',
         'medications.applicant_name',
         'medications.form',
         'medications.trade_name',
         'consumables.id as consumable_id',
         'quantity_on_hand',
-        medications.strengthDisplay(
-          sql`medication_strengths.strength_numerator::text`,
-        ).as('strength_display'),
+        sql<string>`COALESCE((
+          SELECT string_agg(md.value::text || ' ' || md.description, '; ')
+          FROM medication_doses md
+          WHERE md.medication_id = medications.id
+        ), '')`.as('strength_display'),
         jsonBuildObject({
           add: sql<string>`
-          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/add_medicine?medication_id=', medications.id::text, 
-          '&strength=', medication_strengths.strength_numerator::text)
+          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/add_medicine?medication_id=', medications.id::text)
         `,
           history: sql<string>`
           concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
@@ -285,39 +276,29 @@ export const inventory = {
   },
   getLatestProcurement(
     trx: TrxOrDb,
-    { organization_id, medication_id, strength }: {
+    { organization_id, medication_id }: {
       organization_id: string
       medication_id: string
-      strength: string | null
     },
   ): Promise<MedicationProcurement | undefined> {
-    let query = inventory.procurementQuery(trx, { organization_id })
+    return inventory.procurementQuery(trx, { organization_id })
       .innerJoin(
-        'medication_strengths',
+        'medication_doses',
         'procurement.consumable_id',
-        'medication_strengths.consumable_id',
+        'medication_doses.consumable_id',
       )
       .where(
-        'medication_strengths.medication_id',
+        'medication_doses.medication_id',
         '=',
         medication_id,
       )
       .select([
-        'medication_strengths.strength_numerator as strength',
         'procurement.quantity',
         'procurement.container_size',
         'procurement.number_of_containers',
       ])
       .orderBy('procurement.created_at', 'desc')
-
-    if (strength) {
-      query = query.where(
-        'medication_strengths.strength_numerator',
-        '=',
-        strength,
-      )
-    }
-    return query.executeTakeFirst()
+      .executeTakeFirst()
   },
   getAvailableTests(
     trx: TrxOrDb,
@@ -359,7 +340,6 @@ export const inventory = {
       quantity: number
       number_of_containers: number
       container_size: number
-      strength: string
       expiry_date?: string
       batch_number?: string
     },
@@ -384,28 +364,22 @@ export const inventory = {
         'batch_number',
       ])
       .expression((eb) =>
-        // Find the matching consumable for this medicine
-        eb.selectFrom('medication_strengths')
+        // Find the consumable for this medication
+        eb.selectFrom('medications')
           .where(
-            'medication_strengths.medication_id',
+            'medications.id',
             '=',
             medicine.medication_id,
           )
-          .where(
-            'medication_strengths.strength_numerator',
-            '=',
-            medicine.strength,
-          )
           .select([
-            'consumable_id',
+            'medications.consumable_id',
             literalString(medicine.created_by).as('created_by'),
             literalString(organization_id).as('organization_id'),
-            literalNumber(medicine.quantity, 'quantity'),
+            literalNumber(medicine.quantity).as('quantity'),
             literalNumber(
               medicine.number_of_containers,
-              'number_of_containers',
-            ),
-            literalNumber(medicine.container_size, 'container_size'),
+            ).as('number_of_containers'),
+            literalNumber(medicine.container_size).as('container_size'),
             literalString(procured_from.id).as('procured_from'),
             literalOptionalDate(medicine.expiry_date).as('expiry_date'),
             sql.lit<string | undefined>(medicine.batch_number).as(

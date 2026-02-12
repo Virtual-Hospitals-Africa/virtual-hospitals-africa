@@ -1,127 +1,100 @@
+import { ExpressionBuilder, RawBuilder, sql } from 'kysely'
 import type { Maybe, RenderedMedication, TrxOrDb } from '../../types.ts'
-import { asText, isoDate, jsonArrayFrom, now } from '../helpers.ts'
-import { base } from './_base.ts'
-
-// function strengthDisplay(
-//   builder: RawBuilder<string>,
-// ): RawBuilder<string> {
-//   return sql<string>`
-//     ${builder} || strength_numerator_unit || (
-//       CASE WHEN strength_denominator_unit NOT IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
-//         THEN ''
-//         ELSE (
-//           '/' || (
-//             CASE WHEN strength_denominator = 1
-//               THEN ''
-//               ELSE strength_denominator::text
-//             END
-//           ) || strength_denominator_unit
-//         )
-//       END
-//     )
-//   `
-// }
-
-function baseQuery(trx: TrxOrDb, opts: {
-  include_recalled?: boolean
-  search?: string | null
-  country?: Maybe<string>
-}) {
-  let qb = trx
-    .selectFrom('medications')
-    .leftJoin(
-      'medication_recalls',
-      'medication_recalls.medication_id',
-      'medications.id',
-    )
-    // .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
-    .select((eb) => [
-      'medications.id',
-      'medications.trade_name',
-      'medications.applicant_name',
-      'medications.form',
-      // 'medications.strength_numerators',
-      // 'medications.strength_numerator_unit',
-      'medications.strength_denominator',
-      'medications.strength_denominator_unit',
-      'medications.dosage_descriptor_is_units',
-      isoDate(eb.ref('medication_recalls.recalled_at'))
-        .as('recalled_at'),
-      jsonArrayFrom(
-        eb.selectFrom('medication_ingredients')
-          .innerJoin('drug_ingredients', 'medication_ingredients.drug_ingredient_id', 'drug_ingredients.id')
-          .whereRef('medication_ingredients.medication_id', '=', 'medications.id')
-          .select((eb_ingredients) => [
-            'drug_ingredient_id',
-            'name',
-            asText(eb_ingredients, 'medication_ingredients.strength_numerator').as('value'),
-            'medication_ingredients.strength_numerator_unit as units',
-          ]),
-      ).as('ingredients'),
-    ])
-    .$if(
-      !opts.include_recalled,
-      (eb) => eb.where('medication_recalls.recalled_at', 'is', null),
-    )
-    .orderBy('medications.trade_name', 'asc')
-
-  if (opts.country) {
-    qb = qb.where(
-      'medications.id',
-      'in',
-      trx.selectFrom('medication_availabilities')
-        .select('medication_id').where(
-          'country',
-          '=',
-          opts.country,
-        ),
-    )
-  }
-
-  if (!opts.search) return qb
-
-  return qb.where((eb) =>
-    eb.or([
-      // TODO search by drug ingredient
-      // eb('drugs.generic_name', 'ilike', `%${opts.search}%`),
-      eb('medications.trade_name', 'ilike', `%${opts.search}%`),
-    ])
-  )
-}
+import { asText, jsonArrayFrom, jsonBuildObject, success_true } from '../helpers.ts'
+import { base, identity } from './_base.ts'
+import { DB, SnomedInferredCanonicalNameAndCategory } from '../../db.d.ts'
 
 export const medications = base({
   top_level_table: 'medications',
-  baseQuery,
-  formatResult(result): RenderedMedication {
-    return {
-      ...result,
-      name: result.recalled_at ? `${result.trade_name} (recalled ${result.recalled_at})` : result.trade_name,
-      actions: {
-        recall: result.recalled_at ? null : `/regulator/medicines/${result.id}/recall`,
+  baseQuery(trx: TrxOrDb, opts: { search?: Maybe<string> }) {
+    const qb = trx
+      .selectFrom('medications')
+      .innerJoin('snomed_inferred_canonical_name_and_category as medication_snomed', 'medication_snomed.id', 'medications.snomed_concept_id')
+      .select((eb) => [
+        'medications.id',
+        jsonBuildObject({
+          snomed_concept_id: asText(eb, 'medication_snomed.id'),
+          name: eb.ref('medication_snomed.name'),
+          category: eb.ref('medication_snomed.category'),
+        }).as('snomed_concept'),
+        'medications.trade_name as name',
+        'medications.applicant_name',
+        'medications.form',
+        'medications.routes',
+        jsonArrayFrom(
+          eb.selectFrom('medication_doses')
+            .whereRef('medication_doses.medication_id', '=', 'medications.id')
+            .select((eb_doses) => [
+              'medication_doses.id as medication_dose_id',
+              asText(eb_doses, 'medication_doses.value').as('value'),
+              'medication_doses.description',
+              'medication_doses.description_is_units',
+              jsonArrayFrom(
+                eb_doses.selectFrom('medication_dose_ingredients')
+                  .innerJoin(
+                    'snomed_inferred_canonical_name_and_category as ingredient_snomed',
+                    'ingredient_snomed.id',
+                    'medication_dose_ingredients.snomed_concept_id',
+                  )
+                  .innerJoin('medication_dose_ingredient_strengths', 'medication_dose_ingredient_strengths.id', 'medication_dose_ingredients.id')
+                  .whereRef('medication_dose_ingredients.medication_dose_id', '=', 'medication_doses.id')
+                  .select((eb_ingredients) => [
+                    asText(eb_ingredients, 'medication_dose_ingredient_strengths.value').as('value'),
+                    'medication_dose_ingredient_strengths.units',
+                    jsonBuildObject({
+                      snomed_concept_id: asText(eb_ingredients, 'ingredient_snomed.id'),
+                      name: eb_ingredients.ref('ingredient_snomed.name'),
+                      category: eb_ingredients.ref('ingredient_snomed.category'),
+                    }).as('snomed_concept'),
+                  ]),
+              ).as('ingredients'),
+            ]),
+        ).as('doses'),
+      ])
+
+    if (!opts.search) return qb.orderBy('medications.trade_name', 'asc')
+
+    const fuzzy = sql<boolean>`snomed_description.term % ${opts.search}`
+    const exact = sql<boolean>`lower(snomed_description.term) = lower(${opts.search})`
+
+    type EB = ExpressionBuilder<
+      DB & {
+        medication_snomed: SnomedInferredCanonicalNameAndCategory
       },
-    }
-  },
+      'medications' | 'medication_snomed'
+    >
 
-  recall(
-    trx: TrxOrDb,
-    data: {
-      medication_id: string
-      regulator_id: string
-    },
-  ) {
-    return trx.insertInto('medication_recalls').values({
-      medication_id: data.medication_id,
-      recalled_at: now,
-      recalled_by: data.regulator_id,
-    })
-      .returning('id')
-      .executeTakeFirstOrThrow()
-  },
+    const medicationSnomedMatch = (eb: EB, condition: RawBuilder<boolean>) =>
+      eb.exists(
+        eb.selectFrom('snomed_description')
+          .whereRef('snomed_description.concept_id', '=', 'medications.snomed_concept_id')
+          .where(condition)
+          .select(success_true),
+      )
 
-  unrecall(trx: TrxOrDb, data: { id: string }) {
-    return trx.deleteFrom('medication_recalls')
-      .where('id', '=', data.id)
-      .execute()
+    const ingredientSnomedMatch = (eb: EB, condition: RawBuilder<boolean>) =>
+      eb.exists(
+        eb.selectFrom('medication_doses')
+          .innerJoin('medication_dose_ingredients', 'medication_dose_ingredients.medication_dose_id', 'medication_doses.id')
+          .innerJoin('snomed_description', 'snomed_description.concept_id', 'medication_dose_ingredients.snomed_concept_id')
+          .whereRef('medication_doses.medication_id', '=', 'medications.id')
+          .where(condition)
+          .select(success_true),
+      )
+
+    return qb.where((eb) =>
+      eb.or([
+        sql<boolean>`${opts.search} <% trade_name`,
+        medicationSnomedMatch(eb, fuzzy),
+        ingredientSnomedMatch(eb, fuzzy),
+      ])
+    )
+      .select([
+        sql`word_similarity(${opts.search}, trade_name)`.as('similarity'),
+      ])
+      .orderBy((eb) => medicationSnomedMatch(eb, exact), 'desc')
+      .orderBy((eb) => ingredientSnomedMatch(eb, exact), 'desc')
+      .orderBy(sql`word_similarity(${opts.search}, trade_name)`, 'desc')
   },
-  // strengthDisplay,
+  formatResult: identity<RenderedMedication>,
 })

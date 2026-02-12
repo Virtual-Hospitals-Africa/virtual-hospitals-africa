@@ -1,10 +1,13 @@
-import { RenderedOrganizationMedicine } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../library/FormRow.tsx'
-import { AddMedicineSearch } from '../../islands/medication/Search.tsx'
+// import { AddMedicineSearch } from '../../islands/medication/Search.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
+
+// TODO: update to use RenderedOrganizationMedication once inventory model is rewritten
+// deno-lint-ignore no-explicit-any
+type OrganizationMedicine = any
 
 function breakSemicolons(str: string) {
   return (
@@ -19,7 +22,7 @@ function breakSemicolons(str: string) {
   )
 }
 
-const columns: TableColumn<RenderedOrganizationMedicine>[] = [
+const columns: TableColumn<OrganizationMedicine>[] = [
   {
     label: 'Generic Name',
     data(row) {
@@ -58,7 +61,7 @@ const columns: TableColumn<RenderedOrganizationMedicine>[] = [
 
 export default function OrganizationMedicinesTable(
   { medicines, organization_id, is_admin }: {
-    medicines: RenderedOrganizationMedicine[]
+    medicines: OrganizationMedicine[]
     organization_id: string
     is_admin: boolean
   },
@@ -68,7 +71,7 @@ export default function OrganizationMedicinesTable(
     <>
       {is_admin && (
         <FormRow className='mb-2'>
-          <AddMedicineSearch organization_id={organization_id} />
+          {/* <AddMedicineSearch organization_id={organization_id} /> */}
           <Button
             type='button'
             href={`/app/organizations/${organization_id}/inventory/add_medicine`}

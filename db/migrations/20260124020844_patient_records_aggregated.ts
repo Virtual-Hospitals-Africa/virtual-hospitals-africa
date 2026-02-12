@@ -1,8 +1,18 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely, RawBuilder, sql } from 'kysely'
 import { DB } from '../../db.d.ts'
 import { createPointerTable } from '../createTable.ts'
-import { asCompiledSql, asText, jsonBuildObject, literalString } from '../helpers.ts'
+import { asCompiledSql, asText, jsonArrayFrom, jsonBuildObject, jsonObjectFrom, literalString } from '../helpers.ts'
 import { NO_QUALIFIER, UNKNOWN_QUALIFIER } from '../../shared/snomed_concepts.ts'
+import {
+  RecordValueEvent,
+  RecordValueLink,
+  RecordValueMeasurement,
+  RecordValuePrescriptionMedication,
+  RecordValueScore,
+  RecordValueSExpression,
+  RecordValueSnomedConcept,
+} from '../../types.ts'
+import { medications } from '../models/medications.ts'
 
 export async function up(db: Kysely<DB>) {
   await db.schema.createType('existence').asEnum(['Yes', 'No', 'Unknown']).execute()
@@ -85,6 +95,16 @@ export async function up(db: Kysely<DB>) {
       'patient_records.id',
       'maybe_links.id',
     )
+    .leftJoin(
+      'patient_record_links as maybe_links',
+      'patient_records.id',
+      'maybe_links.id',
+    )
+    .leftJoin(
+      'patient_prescription_medications as maybe_patient_prescription_medications',
+      'patient_records.id',
+      'maybe_patient_prescription_medications.id',
+    )
     .select((eb) => [
       'patient_records.id',
       'patient_records.created_at',
@@ -114,47 +134,70 @@ export async function up(db: Kysely<DB>) {
           jsonBuildObject({
             type: literalString('snomed_concept' as const),
             snomed_concept_id: asText(eb, 'value_snomed_concept.id'),
-            name: eb.ref('value_snomed_concept.name'),
-            category: eb.ref('value_snomed_concept.category'),
-          }),
+            name: eb.ref('value_snomed_concept.name').$notNull(),
+            category: eb.ref('value_snomed_concept.category').$notNull(),
+          }) satisfies RawBuilder<RecordValueSnomedConcept>,
         )
         .when('maybe_events.id', 'is not', null)
         .then(
           jsonBuildObject({
             type: literalString('event' as const),
-            datetime: eb.ref('maybe_events.datetime'),
-          }),
+            datetime: eb.ref('maybe_events.datetime').$notNull(),
+          }) satisfies RawBuilder<RecordValueEvent>,
         )
         .when('maybe_measurements.id', 'is not', null)
         .then(
           jsonBuildObject({
             type: literalString('measurement' as const),
-            value: asText(eb, 'maybe_measurements.value'),
-            units: eb.ref('maybe_measurements.units'),
-          }),
+            value: asText(eb, 'maybe_measurements.value').$notNull(),
+            units: eb.ref('maybe_measurements.units').$notNull(),
+          }) satisfies RawBuilder<RecordValueMeasurement>,
         )
         .when('maybe_scores.id', 'is not', null)
         .then(
           jsonBuildObject({
             type: literalString('score' as const),
-            score: asText(eb, 'maybe_scores.score'),
-          }),
+            score: asText(eb, 'maybe_scores.score').$notNull(),
+          }) satisfies RawBuilder<RecordValueScore>,
         )
         .when('maybe_s_expressions.id', 'is not', null)
         .then(
           jsonBuildObject({
             type: literalString('s_expression' as const),
-            s_expression: asText(eb, 'maybe_s_expressions.s_expression'),
-          }),
+            s_expression: asText(eb, 'maybe_s_expressions.s_expression').$notNull(),
+          }) satisfies RawBuilder<RecordValueSExpression>,
         )
         .when('maybe_links.id', 'is not', null)
         .then(
           jsonBuildObject({
             type: literalString('link' as const),
-            title: eb.ref('maybe_links.title'),
-            href: eb.ref('maybe_links.href'),
-            thumbnail_href: eb.ref('maybe_links.thumbnail_href'),
-          }),
+            title: eb.ref('maybe_links.title').$notNull(),
+            href: eb.ref('maybe_links.href').$notNull(),
+            thumbnail_href: eb.ref('maybe_links.thumbnail_href').$notNull(),
+          }) satisfies RawBuilder<RecordValueLink>,
+        )
+        .when('maybe_patient_prescription_medications.id', 'is not', null)
+        .then(
+          jsonBuildObject({
+            type: literalString('prescription_medication' as const),
+            special_instructions: eb.ref('maybe_patient_prescription_medications.special_instructions').$notNull(),
+            medication: jsonObjectFrom(
+              medications.baseQuery(db, {})
+                .where('medications.id', '=', eb.ref('maybe_patient_prescription_medications.medication_id')),
+            ).$notNull(),
+            schedules: jsonArrayFrom(
+              eb.selectFrom('patient_prescription_medication_schedules')
+                .whereRef('patient_prescription_medication_schedules.patient_prescription_medications_id', '=', 'maybe_patient_prescription_medications.id')
+                .select([
+                  'patient_prescription_medication_schedules.medication_dose_id',
+                  'patient_prescription_medication_schedules.dosage',
+                  'patient_prescription_medication_schedules.frequency',
+                  'patient_prescription_medication_schedules.duration',
+                  'patient_prescription_medication_schedules.duration_unit',
+                ])
+                .orderBy('patient_prescription_medication_schedules.order', 'asc'),
+            ) as unknown as RawBuilder<RecordValuePrescriptionMedication['schedules']>,
+          }) satisfies RawBuilder<RecordValuePrescriptionMedication>,
         )
         .end().as('value'),
     ])

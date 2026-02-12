@@ -14,6 +14,8 @@ export type Comparator = '<' | '<=' | '=' | '>' | '>='
 
 export type DoctorReviewStep = 'clinical_notes' | 'diagnosis' | 'orders' | 'prescriptions' | 'referral' | 'revert'
 
+export type DurationUnits = 'days' | 'indefinitely' | 'months' | 'weeks' | 'years'
+
 export type EmergencyContactRelationship = 'Child' | 'Friend' | 'Guardian' | 'Other' | 'Parent' | 'Sibling' | 'Spouse'
 
 export type EncounterReason = 'administration' | 'checkup' | 'follow up' | 'maternity' | 'referral' | 'seeking treatment'
@@ -57,6 +59,43 @@ export type LanguageScope = 'Collective' | 'Individual' | 'Local' | 'Macrolangua
 export type LanguageType = 'Constructed' | 'Extinct' | 'Genetic' | 'Genetic-like' | 'Geographic' | 'Historical' | 'Living' | 'Special'
 
 export type MaritalStatus = 'Co-habiting' | 'Divorced' | 'Married' | 'Never Married' | 'Separated' | 'Single' | 'Widowed'
+
+export type MedicationFrequency =
+  | 'ac'
+  | 'am'
+  | 'bd'
+  | 'bm'
+  | 'bw'
+  | 'hs'
+  | 'mane'
+  | 'nocte'
+  | 'od'
+  | 'pm'
+  | 'prn'
+  | 'q15'
+  | 'q1h'
+  | 'q24h'
+  | 'q2h'
+  | 'q30'
+  | 'q30h'
+  | 'q48h'
+  | 'q4h'
+  | 'q6h'
+  | 'q72h'
+  | 'q8h'
+  | 'qd'
+  | 'qhs'
+  | 'qid'
+  | 'qm'
+  | 'qmane'
+  | 'qn'
+  | 'qod'
+  | 'qs'
+  | 'qw'
+  | 'stat'
+  | 'tds'
+  | 'tm'
+  | 'tw'
 
 export type MessageConcerningType = 'patient' | 'patient_record'
 
@@ -270,7 +309,6 @@ export interface Conditions {
 export interface Consumables {
   created_at: Generated<Timestamp>
   id: Generated<string>
-  is_medication: boolean | null
   name: string
   updated_at: Generated<Timestamp>
 }
@@ -321,26 +359,6 @@ export interface Devices {
   id: Generated<string>
   manufacturer: string
   name: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface Diagnoses {
-  created_at: Generated<Timestamp>
-  doctor_review_id: string | null
-  id: Generated<string>
-  patient_condition_id: string
-  patient_encounter_id: string | null
-  provider_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface DiagnosesCollaboration {
-  approver_id: string
-  created_at: Generated<Timestamp>
-  diagnosis_id: string
-  disagree_reason: string | null
-  id: Generated<string>
-  is_approved: boolean
   updated_at: Generated<Timestamp>
 }
 
@@ -412,13 +430,6 @@ export interface DoctorReviewSteps {
 
 export interface Doctors {
   id: string
-}
-
-export interface DrugIngredients {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  name: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface Employment {
@@ -705,27 +716,36 @@ export interface MedicationAvailabilities {
   created_at: Generated<Timestamp>
   id: Generated<string>
   medication_id: string
+  registration_number: string
   updated_at: Generated<Timestamp>
 }
 
-export interface MedicationIngredients {
+export interface MedicationDoseIngredients {
   created_at: Generated<Timestamp>
-  drug_ingredient_id: string
   id: Generated<string>
-  medication_id: string
+  medication_dose_id: string
+  snomed_concept_id: Int8
   updated_at: Generated<Timestamp>
 }
 
-export interface MedicationIngredientStrengths {
+export interface MedicationDoseIngredientStrengths {
   id: string
   units: string
+  value: Numeric
+}
+
+export interface MedicationDoses {
+  description: string
+  description_is_units: Generated<boolean>
+  id: string
+  medication_id: string
   value: Numeric
 }
 
 export interface MedicationRecalls {
   created_at: Generated<Timestamp>
   id: Generated<string>
-  medication_id: string
+  medication_availability_id: string
   recalled_at: Timestamp
   recalled_by: string
   updated_at: Generated<Timestamp>
@@ -733,16 +753,13 @@ export interface MedicationRecalls {
 
 export interface Medications {
   applicant_name: string
-  consumable_id: string
   created_at: Generated<Timestamp>
-  dosage_descriptor: string
-  dosage_descriptor_is_units: Generated<boolean>
-  dosage_value: Numeric
   form: string
   form_route: Generated<string>
   id: Generated<string>
   manufacturer_name: string
   routes: string[]
+  snomed_concept_id: Int8
   trade_name: string
   updated_at: Generated<Timestamp>
 }
@@ -926,14 +943,6 @@ export interface PatientAge {
   patient_id: string | null
 }
 
-export interface PatientAllergies {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_id: string
-  snomed_concept_id: Int8
-  updated_at: Generated<Timestamp>
-}
-
 export interface PatientAppointmentOfferedTimes {
   created_at: Generated<Timestamp>
   declined: Generated<boolean>
@@ -1005,31 +1014,6 @@ export interface PatientComputedFindingsInputs {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientConditionMedications {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  medication_id: string
-  patient_condition_id: string
-  route: string
-  schedules: string[] | null
-  special_instructions: string | null
-  start_date: Timestamp | null
-  strength: Numeric
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientConditions {
-  comorbidity_of_condition_id: string | null
-  condition_id: string
-  created_at: Generated<Timestamp>
-  end_date: Timestamp | null
-  id: Generated<string>
-  patient_examination_id: string | null
-  patient_id: string
-  start_date: Timestamp
-  updated_at: Generated<Timestamp>
-}
-
 export interface PatientEmergencyContacts {
   contact_order: Generated<number>
   created_at: Generated<Timestamp>
@@ -1081,36 +1065,6 @@ export interface PatientEvents {
   datetime: Timestamp
   id: string
   location: string | null
-}
-
-export interface PatientExaminationFindingBodySites {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_examination_finding_id: string
-  snomed_concept_id: Int8
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientExaminationFindings {
-  additional_notes: string | null
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_examination_id: string
-  snomed_concept_id: Int8
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientExaminations {
-  completed: Generated<boolean>
-  created_at: Generated<Timestamp>
-  examination_identifier: string
-  id: Generated<string>
-  ordered: Generated<boolean>
-  patient_encounter_employee_id: string
-  patient_encounter_id: string
-  patient_id: string
-  skipped: Generated<boolean>
-  updated_at: Generated<Timestamp>
 }
 
 export interface PatientFamily {
@@ -1173,19 +1127,6 @@ export interface PatientKin {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientLifestyle {
-  alcohol: Json | null
-  created_at: Generated<Timestamp>
-  diet: Json | null
-  exercise: Json | null
-  id: Generated<string>
-  patient_id: string
-  sexual_activity: Json | null
-  smoking: Json | null
-  substance_use: Json | null
-  updated_at: Generated<Timestamp>
-}
-
 export interface PatientMeasurements {
   comparator: Generated<Comparator>
   id: string
@@ -1193,12 +1134,39 @@ export interface PatientMeasurements {
   value: Numeric
 }
 
-export interface PatientOccupations {
+export interface PatientPrescriptionMedications {
+  id: string
+  medication_id: string
+  special_instructions: string | null
+}
+
+export interface PatientPrescriptionMedicationSchedules {
+  dosage: string | null
+  duration: number | null
+  duration_unit: DurationUnits | null
+  frequency: MedicationFrequency
+  id: string
+  medication_dose_id: string
+  order: number
+  patient_prescription_medications_id: string
+  route: string
+}
+
+export interface PatientPrescriptionRedemptionCodes {
+  alphanumeric_code: Generated<string>
   created_at: Generated<Timestamp>
   id: Generated<string>
-  occupation: Json | null
-  patient_id: string
+  patient_prescription_signature_id: string
   updated_at: Generated<Timestamp>
+}
+
+export interface PatientPrescriptionsFilled {
+  id: string
+  patient_prescription_medication_id: string
+}
+
+export interface PatientPrescriptionSignatures {
+  id: string
 }
 
 export interface PatientPresence {
@@ -1215,9 +1183,7 @@ export interface PatientPresence {
 
 export interface PatientProcedures {
   as_part_of_procedure_id: string | null
-  by_system: boolean
-  employment_id: string | null
-  form_label: string | null
+  employment_id: string
   id: string
 }
 
@@ -1466,41 +1432,6 @@ export interface PharmacyEmployment {
   is_supervisor: boolean
   pharmacist_id: string
   pharmacy_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface PrescriptionCodes {
-  alphanumeric_code: Generated<string>
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  prescription_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface PrescriptionMedications {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_condition_medication_id: string
-  prescription_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface PrescriptionMedicationsFilled {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  pharmacist_id: string
-  pharmacy_id: string | null
-  prescription_medication_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface Prescriptions {
-  created_at: Generated<Timestamp>
-  doctor_review_id: string | null
-  id: Generated<string>
-  patient_encounter_id: string | null
-  patient_id: string
-  prescriber_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1915,8 +1846,6 @@ export interface DB {
   departments: Departments
   device_capabilities: DeviceCapabilities
   devices: Devices
-  diagnoses: Diagnoses
-  diagnoses_collaboration: DiagnosesCollaboration
   doctor_registration_details: DoctorRegistrationDetails
   doctor_registration_details_in_progress: DoctorRegistrationDetailsInProgress
   doctor_review: DoctorReview
@@ -1924,7 +1853,6 @@ export interface DB {
   doctor_review_steps: DoctorReviewSteps
   doctor_reviews: DoctorReviews
   doctors: Doctors
-  drug_ingredients: DrugIngredients
   employment: Employment
   employment_calendars: EmploymentCalendars
   employment_presence: EmploymentPresence
@@ -1957,8 +1885,9 @@ export interface DB {
   media_speeches: MediaSpeeches
   media_videos: MediaVideos
   medication_availabilities: MedicationAvailabilities
-  medication_ingredient_strengths: MedicationIngredientStrengths
-  medication_ingredients: MedicationIngredients
+  medication_dose_ingredient_strengths: MedicationDoseIngredientStrengths
+  medication_dose_ingredients: MedicationDoseIngredients
+  medication_doses: MedicationDoses
   medication_recalls: MedicationRecalls
   medications: Medications
   message_draft_concerning: MessageDraftConcerning
@@ -1980,7 +1909,6 @@ export interface DB {
   organization_rooms: OrganizationRooms
   organizations: Organizations
   patient_age: PatientAge
-  patient_allergies: PatientAllergies
   patient_appointment_offered_times: PatientAppointmentOfferedTimes
   patient_appointment_request_media: PatientAppointmentRequestMedia
   patient_appointment_requests: PatientAppointmentRequests
@@ -1989,17 +1917,12 @@ export interface DB {
   patient_chief_complaints: PatientChiefComplaints
   patient_computed_findings: PatientComputedFindings
   patient_computed_findings_inputs: PatientComputedFindingsInputs
-  patient_condition_medications: PatientConditionMedications
-  patient_conditions: PatientConditions
   patient_emergency_contacts: PatientEmergencyContacts
   patient_encounter_employees: PatientEncounterEmployees
   patient_encounters: PatientEncounters
   patient_evaluation_scores: PatientEvaluationScores
   patient_evaluations: PatientEvaluations
   patient_events: PatientEvents
-  patient_examination_finding_body_sites: PatientExaminationFindingBodySites
-  patient_examination_findings: PatientExaminationFindings
-  patient_examinations: PatientExaminations
   patient_family: PatientFamily
   patient_finding_media_images: PatientFindingMediaImages
   patient_finding_media_speeches: PatientFindingMediaSpeeches
@@ -2007,9 +1930,12 @@ export interface DB {
   patient_guardians: PatientGuardians
   patient_insurance: PatientInsurance
   patient_kin: PatientKin
-  patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
-  patient_occupations: PatientOccupations
+  patient_prescription_medication_schedules: PatientPrescriptionMedicationSchedules
+  patient_prescription_medications: PatientPrescriptionMedications
+  patient_prescription_redemption_codes: PatientPrescriptionRedemptionCodes
+  patient_prescription_signatures: PatientPrescriptionSignatures
+  patient_prescriptions_filled: PatientPrescriptionsFilled
   patient_presence: PatientPresence
   patient_procedures: PatientProcedures
   patient_record_links: PatientRecordLinks
@@ -2035,10 +1961,6 @@ export interface DB {
   pharmacist_chatbot_users: PharmacistChatbotUsers
   pharmacists: Pharmacists
   pharmacy_employment: PharmacyEmployment
-  prescription_codes: PrescriptionCodes
-  prescription_medications: PrescriptionMedications
-  prescription_medications_filled: PrescriptionMedicationsFilled
-  prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers
   providers: Providers

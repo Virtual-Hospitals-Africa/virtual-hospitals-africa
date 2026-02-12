@@ -11,7 +11,7 @@
             "applicant_name" : "DATLABS PRIVATE LIMITED",
             "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   5\n+   1\n"
     },
     {
         "medication": {
@@ -25,7 +25,7 @@
             "applicant_name": "GLAXOSMITHKLINE SOUTH AFRICA (PTY) LTD",
             "manufacturers": "GLAXO R.S.A.(PTY) LTD MIDRAND SOUTH AFRICA;  GLAXOSMITHKLINE SOUTH AFRICA (PTY) LTD CAPE TOWN SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -39,7 +39,7 @@
             "applicant_name" : "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "FRESENIUS KABI NORGE AS HALDEN NORWAY;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   6\n+   1\n"
     },
     {
         "medication": {
@@ -53,7 +53,7 @@
             "applicant_name" : "BIOTECH LABS PTY LTD",
             "manufacturers"  : "LEK PHARMACEUTICAL  ; CHEMICAL WORKS  SLOLVENIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -67,7 +67,7 @@
             "applicant_name" : "BIOTECH LABS PTY LTD",
             "manufacturers"  : "LEK PHARMACEUTICAL  ; CHEMICAL WORKS  SLOLVENIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -81,7 +81,7 @@
             "applicant_name" : "ADCOCK INGRAM LIMITED",
             "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   8\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   8\n+   3\n"
     },
     {
         "medication": {
@@ -95,7 +95,7 @@
             "applicant_name" : "SANOFI-AVENTIS SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "SANOFI PASTEUR S. A VAL-DE-REUIL FRANCE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -109,7 +109,7 @@
             "applicant_name" : "ALCON LABORATORIES",
             "manufacturers"  : "ALCON LABORATORIES INCORPORATED, USA FORT WORTH USA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   3\n"
     },
     {
         "medication": {
@@ -123,7 +123,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   4\n"
     },
     {
         "medication": {
@@ -137,7 +137,7 @@
             "applicant_name" : "SK AGE EXPORTS",
             "manufacturers"  : "S KANT HEALTHCARE LTD VAPI INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   4\n"
     },
     {
         "medication": {
@@ -151,7 +151,7 @@
             "applicant_name" : "GLENMARK PHARMACEUTICAL LIMITED",
             "manufacturers"  : "GLENMARK PHARMACEUTICALS LTD NASIK INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -165,7 +165,7 @@
             "applicant_name" : "GLAXOSMITHKLINE S.A (PTY) LTD",
             "manufacturers"  : "GLAXOSMITHKLINE S.A (PTY) LTD BRYANSTON SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -179,7 +179,7 @@
             "applicant_name" : "PFIZER LABORATORIES (PTY) LTD",
             "manufacturers"  : "PFIZER INCORPORATION  USA;  R-PHARM GERMANY GMBH ILLERTISSEN GERMANY;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -193,7 +193,7 @@
             "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
             "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   8\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   8\n+   3\n"
     },
     {
         "medication": {
@@ -207,7 +207,7 @@
             "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
             "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   6\n+   2\n"
     },
     {
         "medication": {
@@ -221,7 +221,7 @@
             "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   4\n"
     },
     {
         "medication": {
@@ -235,7 +235,7 @@
             "applicant_name" : "MEDOPHARM",
             "manufacturers"  : "MEDOPHARM PRIVATE LTD GUDUVANCHERY INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -249,7 +249,7 @@
             "applicant_name": "GLENMARK PHARMACEUTICAL LIMITED",
             "manufacturers": "GLEMARK PHARMACEUTICAL LTD PRADESH INDIA;  GLENMARK PHARAMACEUTICALS LTD TEHSIL BADDI INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -263,7 +263,7 @@
             "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
             "manufacturers"  : "OTSUKA PHARMACEUTICALS INDIA PRIVATE LIMITED SANAND INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   4\n"
     },
     {
         "medication": {
@@ -277,7 +277,7 @@
             "applicant_name": "ACULIFE HEALTHCARE PRIVATE LTD",
             "manufacturers": "NIRMA LTD (HEALTH DIVISION) AHMEDABAD INDIA;  ACULIFE HEALTHCARE PRIVATE LTD GUJARAT INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -291,7 +291,7 @@
             "applicant_name" : "MACLEODS PHARMACEUTICALS LTD",
             "manufacturers"  : "MACLEODS PHARMACEUTICALS LTD  ;  MACLEODS PHARMACEUTICALS LTD DAMAN INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -305,7 +305,7 @@
             "applicant_name": "DATLABS PRIVATE LIMITED",
             "manufacturers": "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -319,7 +319,7 @@
             "applicant_name": "PLUS FIVE PHARMACEUTICALS (PVT) LTD",
             "manufacturers": "PLUS FIVE PHARMACEUTICALS PVT LTD BULAWAYO ZIMBABWE;  GAMMA PHARMACEUTICALS  NDOLA ZAMBIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -333,7 +333,7 @@
             "applicant_name": "PLUS FIVE PHARMACEUTICALS (PVT) LTD",
             "manufacturers": "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;  PLUS FIVE PHARMACEUTICALS PVT LTD BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -347,7 +347,7 @@
             "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -361,7 +361,7 @@
             "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -375,7 +375,7 @@
             "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -389,7 +389,7 @@
             "applicant_name": "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
             "manufacturers": "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;  RECKITT BENKISER HEALTHCARE INTERNATIONAL LTD NOTIINGHAM UK;  PHARMACEUTICAL CONTRACTORS (PTY) LTD ISANDO SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   3\n"
     },
     {
         "medication": {
@@ -403,7 +403,7 @@
             "applicant_name" : "DATLABS PRIVATE LIMITED",
             "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   5\n+   1\n"
     },
     {
         "medication": {
@@ -417,7 +417,7 @@
             "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
             "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -431,7 +431,7 @@
             "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
             "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -445,7 +445,7 @@
             "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
             "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -459,7 +459,7 @@
             "applicant_name": "GILEAD SCIENCES INC",
             "manufacturers": "PATHEON INC MISSISSAUGA CANADA;  ROTTENDORF PHARMA GMBH, ENNIGERLOH GERMANY;  GILEAD SCIENCES INC FOSTER CITY USA;  MILLMOUNT HEALTHCARE LTD AD BLADE IRELAND;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -473,7 +473,7 @@
             "applicant_name" : "LUPIN LIMITED",
             "manufacturers"  : "LUPIN LIMITED MADHYA PRADESH INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -487,7 +487,7 @@
             "applicant_name" : "RANBAXY LABS LTD",
             "manufacturers"  : "RANBAXY LABS LTD DEWAS INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -501,7 +501,7 @@
             "applicant_name": "GROUP LABS S.A PTY LTD",
             "manufacturers": "ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;  SMITHLINE BEECHAM CAPE TOWN SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   3\n"
     },
     {
         "medication": {
@@ -515,7 +515,7 @@
             "applicant_name" : "ABBOTT LABORATORIES SA (PTY) LTD",
             "manufacturers"  : "BOOTS CO LTD, NOTTINGHAM, UK  ;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -529,7 +529,7 @@
             "applicant_name": "ZIMBABWE PHARMACEUTICALS HEALTHCARE",
             "manufacturers": "ECOMED MANUFACTURING (PVT) LTD BULAWAYO ZIMBABWE;  ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   6\n+   1\n"
     },
     {
         "medication": {
@@ -543,7 +543,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -557,7 +557,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -571,7 +571,7 @@
             "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   3\n"
     },
     {
         "medication": {
@@ -585,7 +585,7 @@
             "applicant_name": "DATLABS PRIVATE LIMITED",
             "manufacturers": "ADCOCK INGRAM CRITICAL CARE ISANDO SOUTH AFRICA;  DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -599,7 +599,7 @@
             "applicant_name" : "MYLAN PHARMACEUTICALS PVT LTD",
             "manufacturers"  : "BIOCON LIMITED BANGALORE INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -613,7 +613,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -627,7 +627,7 @@
             "applicant_name" : "MSD PTY LTD",
             "manufacturers"  : "MSD B V HAARLEM HARLEM HOLLAND;  MERCK SHARP AND DOHM CORP WEST POINT  USA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -641,7 +641,7 @@
             "applicant_name" : "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
             "manufacturers"  : "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   5\n+   1\n"
     },
     {
         "medication": {
@@ -655,7 +655,7 @@
             "applicant_name" : "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
             "manufacturers"  : "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -669,7 +669,7 @@
             "applicant_name" : "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
             "manufacturers"  : "RECKITT BENCKISER HEALTHCARE (UK) LTD HULL UK;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   3\n"
     },
     {
         "medication": {
@@ -683,7 +683,7 @@
             "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
             "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -693,7 +693,7 @@
             "forms"          : "OINTMENT; TOPICAL",
             "strength"       : "",
             "category"       : "HR",
-            "registration_no": "",
+            "registration_no": "ad1a3bd7-bad2-40ba-8b10-97380f2b988e",
             "applicant_name" : "GRANITESIDE CHEMICALS (PVT) LTD",
             "manufacturers"  : "GRANITESIDE CHEMICALS (PVT) LTD HARARE ZIMBABWE;"
         },
@@ -711,7 +711,7 @@
             "applicant_name" : "GEDDES LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;  LANCASTER INDUSTRIAL PVT LTD BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   2\n"
     },
     {
         "medication": {
@@ -725,7 +725,7 @@
             "applicant_name" : "PLUS FIVE PHARMACEUTICALS PVT LTD",
             "manufacturers"  : "PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -739,7 +739,7 @@
             "applicant_name" : "DATLABS PRIVATE LIMITED",
             "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ADCOCK INGRAM LIMITED BANGALORE INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   4\n"
     },
     {
         "medication": {
@@ -753,7 +753,7 @@
             "applicant_name" : "ZIMBABWE PHARMACEUTICALS HEALTHCARE",
             "manufacturers"  : "ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -767,7 +767,7 @@
             "applicant_name" : "MULLER & PHIPPS",
             "manufacturers"  : "PHARMANOVA (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -781,7 +781,7 @@
             "applicant_name" : "PHARMANOVA (PVT) LTD",
             "manufacturers"  : "PHARMANOVA (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   6\n+   1\n"
     },
     {
         "medication": {
@@ -795,7 +795,7 @@
             "applicant_name": "GULF DRUG COMAPANY",
             "manufacturers": "GULF DRUG CO HARARE ZIMBABWE;  GULF DRUG COMPANY (PVT) LTD HARARE ZIMBABWE;  GEDDES LTD BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -809,7 +809,7 @@
             "applicant_name" : "PHARMACARE LIMITED",
             "manufacturers"  : "LENNON LTD PORT ELIZABETH SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   4\n"
     },
     {
         "medication": {
@@ -823,7 +823,7 @@
             "applicant_name" : "AUTOSTERILE",
             "manufacturers"  : "AUTOSTERILE HARARE ZIMBABWE;  AUTOSTERILE NAMIBIA (PTY) LTD WINDHOEK NAMIBIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -837,7 +837,7 @@
             "applicant_name": "DATLABS PRIVATE LIMITED",
             "manufacturers": "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ADCOCK INGRAM CRITICAL CARE ISANDO SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -865,7 +865,7 @@
             "applicant_name": "SANOFI-AVENTIS SOUTH AFRICA (PTY) LTD",
             "manufacturers": "SANOFI PASTEUR S. A MARCY-LÉTOILE FRANCE;  SANOFI PASTEUR S. A VAL-DE-REUIL FRANCE;  GRUPPO LEPETIT SRL ANAGNI ITALY;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   5\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   5\n"
     },
     {
         "medication": {
@@ -879,7 +879,7 @@
             "applicant_name" : "BILTHOVEN BIOLOGICALS B.V,",
             "manufacturers"  : "BILTHOVEN BIOLOGICALS B.V, BILTHOVEN THE NETHERLANDS;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   2\n"
     },
     {
         "medication": {
@@ -893,7 +893,7 @@
             "applicant_name" : "BILTHOVEN BIOLOGICALS B.V,",
             "manufacturers"  : "BILTHOVEN BIOLOGICALS B.V, BILTHOVEN THE NETHERLANDS;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   2\n"
     },
     {
         "medication": {
@@ -907,7 +907,7 @@
             "applicant_name": "ABBOTT LABORATORIES SA (PTY) LTD",
             "manufacturers": "ABBOTT BIOLOGICALS PRIVATE LIMITED OLST NETHERLANDS;  ABBOTT BIOLOGICALS B.V WEESP NETHERLANDS;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -921,7 +921,7 @@
             "applicant_name" : "INNOVATA PHARMACEUTICALS LTD",
             "manufacturers"  : "GLOBAL REMEDIES (PVT) LTD HOSUR INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -935,7 +935,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   4\n"
     },
     {
         "medication": {
@@ -963,7 +963,7 @@
             "applicant_name": "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
             "manufacturers": "LABESFAL LABORATORIOS ALMIROS S.A SANTIAGO DE BESTEIRO PORTUGAL;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   10\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   10\n"
     },
     {
         "medication": {
@@ -977,7 +977,7 @@
             "applicant_name" : "MYLAN LABORATORIES LIMITED",
             "manufacturers"  : "MYLAN LABORATORIES LIMITED BAVLA INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -991,7 +991,7 @@
             "applicant_name" : "CIPLA LTD",
             "manufacturers"  : "CIPLA LTD MUMBAI INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1005,7 +1005,7 @@
             "applicant_name": "JOHNSON & JOHNSON (PVT) LTD",
             "manufacturers": "ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;  JOHNSON  ; JOHNSON (PVT) LTD CAPETOWN SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   5\n+   1\n"
     },
     {
         "medication": {
@@ -1019,7 +1019,7 @@
             "applicant_name" : "MACLEODS PHARMACEUTICALS LTD",
             "manufacturers"  : "MACLEODS PHARMACEUTICALS LTD TEHSIL NALAGARH INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1033,7 +1033,7 @@
             "applicant_name" : "ROCHE PRODUCTS (PTY) LTD",
             "manufacturers"  : "F. HOFFMAN LA ROCHE LTD KAISERUGST SWITZERLAND;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1047,7 +1047,7 @@
             "applicant_name" : "DATLABS PRIVATE LIMITED",
             "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -1061,7 +1061,7 @@
             "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -1075,7 +1075,7 @@
             "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -1089,7 +1089,7 @@
             "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -1103,7 +1103,7 @@
             "applicant_name" : "NOVARTIS SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "S. A. ALCON-COUVREUR N. V PUURS BELGIUM;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -1117,7 +1117,7 @@
             "applicant_name" : "CAPS INTERNATIONAL EST",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   6\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   6\n+   1\n"
     },
     {
         "medication": {
@@ -1131,7 +1131,7 @@
             "applicant_name" : "CAPS INTERNATIONAL EST",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1145,7 +1145,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -1159,7 +1159,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -1173,7 +1173,7 @@
             "applicant_name": "GULF DRUG COMAPANY",
             "manufacturers": "GULF DRUG CO HARARE ZIMBABWE;  GULF DRUG COMPANY (PVT) LTD HARARE ZIMBABWE;  VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1187,7 +1187,7 @@
             "applicant_name" : "MENTHOLATUM R.S.A PTY LTD",
             "manufacturers"  : "MENTHOLATUM (THE) CO LTD  UK;  THE MENTHOLATUM CO LTD KILBRIDGE UK;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -1201,7 +1201,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1215,7 +1215,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1229,7 +1229,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1243,7 +1243,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1257,7 +1257,7 @@
             "applicant_name": "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers": "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;  VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1267,11 +1267,11 @@
             "forms"          : "SUSPENSION",
             "strength"       : "",
             "category"       : "P",
-            "registration_no": "",
+            "registration_no": "a48eb7a7-6bf8-4234-b6af-4a9f12227a97",
             "applicant_name" : "GEDDES LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;  LANCASTER INDUSTRIAL PVT LTD BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1285,7 +1285,7 @@
             "applicant_name" : "MICRO LABS LTD",
             "manufacturers"  : "MICRO LABS LTD HOSUR INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1299,7 +1299,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   5\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   5\n"
     },
     {
         "medication": {
@@ -1313,7 +1313,7 @@
             "applicant_name" : "UNICHEM LABORATORIES LIMITED",
             "manufacturers"  : "UNICHEM LABORATORIES LTD SOLAN INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1327,7 +1327,7 @@
             "applicant_name" : "UNICHEM LABORATORIES LIMITED",
             "manufacturers"  : "UNICHEM LABORATORIES LTD SOLAN INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1341,7 +1341,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1355,7 +1355,7 @@
             "applicant_name" : "PHARMANOVA (PVT) LTD",
             "manufacturers"  : "PHARMANOVA (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1369,7 +1369,7 @@
             "applicant_name" : "FDC LIMITED",
             "manufacturers"  : "FDC LIMITED AURANGABAD INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1383,7 +1383,7 @@
             "applicant_name" : "FDC LIMITED",
             "manufacturers"  : "FDC LTD DIST-NASIK INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   3\n"
     },
     {
         "medication": {
@@ -1397,7 +1397,7 @@
             "applicant_name" : "EMCURE PHARMACEUTICALS LTD",
             "manufacturers"  : "EMCURE PHARMACEUTICALS LTD PUNE INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1411,7 +1411,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -1439,7 +1439,7 @@
             "applicant_name" : "ACULIFE HEALTHCARE PRIVATE LTD",
             "manufacturers"  : "NIRMA LTD (HEALTH DIVISION) AHMEDABAD INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1453,7 +1453,7 @@
             "applicant_name" : "SCANPHARM A/S",
             "manufacturers"  : "SCANPHARM A/S COPENHAGEN DENMARK;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1467,7 +1467,7 @@
             "applicant_name" : "PFIZER LABORATORIES (PTY) LTD, S.A",
             "manufacturers"  : "PFIZER MANUFACTURING PUURS BELGIUM;  PFIZER IRELAND PHARMACEUTICALS DUBLIN IRELAND;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   11\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   11\n+   1\n"
     },
     {
         "medication": {
@@ -1481,7 +1481,7 @@
             "applicant_name" : "ADCOCK INGRAM",
             "manufacturers"  : "ADCOCK INGRAM LTD JOHANNESBURG SOUTH AFRICA;  ADCOCK INGRAM LTD GERM SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -1495,7 +1495,7 @@
             "applicant_name" : "CIPLA LTD",
             "manufacturers"  : "CIPLA LTD  INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   3\n"
     },
     {
         "medication": {
@@ -1509,7 +1509,7 @@
             "applicant_name" : "RANBAXY LABS LTD",
             "manufacturers"  : "RANBAXY LABS LTD DEWAS INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   5\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   5\n+   1\n"
     },
     {
         "medication": {
@@ -1537,7 +1537,7 @@
             "applicant_name" : "AUTOSTERILE",
             "manufacturers"  : "AUTOSTERILE HARARE ZIMBABWE;  AUTOSTERILE NAMIBIA (PTY) LTD WINDHOEK NAMIBIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -1551,7 +1551,7 @@
             "applicant_name": "DATLABS PRIVATE LIMITED",
             "manufacturers": "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ADCOCK INGRAM CRITICAL CARE ISANDO SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -1565,7 +1565,7 @@
             "applicant_name" : "SERUM INSTITUTE OF INDIA PVT LTD",
             "manufacturers"  : "SERUM INSTITUTE OF INDIA PVT LTD PUNE INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1579,7 +1579,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1593,7 +1593,7 @@
             "applicant_name" : "JOHNSON & JOHNSON (PVT) LTD",
             "manufacturers"  : "FAMAR HEALTH CARE SERVICES MADRID MADRID SPAIN;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1607,7 +1607,7 @@
             "applicant_name" : "JOHNSON & JOHNSON (PVT) LTD",
             "manufacturers"  : "FAMAR HEALTH CARE SERVICES MADRID MADRID SPAIN;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1621,7 +1621,7 @@
             "applicant_name" : "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "FRESENIUS KABI AB UPPSALA SWEDEN;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   2\n"
     },
     {
         "medication": {
@@ -1635,7 +1635,7 @@
             "applicant_name" : "FRESENIUS KABI SOUTH AFRICA (PTY) LTD",
             "manufacturers"  : "FRESENIUS KABI AB UPPSALA SWEDEN;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   2\n"
     },
     {
         "medication": {
@@ -1649,7 +1649,7 @@
             "applicant_name" : "ADCOCK INGRAM LIMITED",
             "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   3\n"
     },
     {
         "medication": {
@@ -1677,7 +1677,7 @@
             "applicant_name": "RECKITT BENCKISSER PHARMACEUTICALS PTY LTD",
             "manufacturers": "BOOTS CO PTY LTD ISANDO SOUTH AFRICA;  RECKITT BENKISER HEALTHCARE INTERNATIONAL LTD NOTIINGHAM UK;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -1691,7 +1691,7 @@
             "applicant_name" : "STRIDES ARCOLAB",
             "manufacturers"  : "CARYL PHARMA (PVT) LTD BANGALORE INDIA;  GLOBAL REMEDIES (PVT) LTD HOSUR INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1705,7 +1705,7 @@
             "applicant_name": "BAYER (PTY) LTD",
             "manufacturers": "ROCHE PRODUCTS PTY LTD JOHANNESBURG SOUTH AFRICA;  HOFFMAN LA ROCHE BASLE SWITZERLAND;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1719,7 +1719,7 @@
             "applicant_name" : "IPCA LABORATORIES LTD",
             "manufacturers"  : "IPCA LABS LTD  INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1733,7 +1733,7 @@
             "applicant_name": "WALLACE LABORATORIES PVT LTD",
             "manufacturers": "WALLACE LABORATORIES PVT LTD BULAWAYO ZIMBABWE;  PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   3\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   3\n"
     },
     {
         "medication": {
@@ -1747,7 +1747,7 @@
             "applicant_name": "WALLACE LABORATORIES PVT LTD",
             "manufacturers": "WALLACE LABORATORIES PVT LTD BULAWAYO ZIMBABWE;  PLUS FIVE PHARMACEUTICALS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1761,7 +1761,7 @@
             "applicant_name": "NOVARTIS PHARMA SERVICES AG",
             "manufacturers": "NOVARTIS PHARMA STEIN AG STEIN SWITZERLAND;  NOVARTIS FARMACEUTICA S.A BARCELONA SPAIN;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1775,7 +1775,7 @@
             "applicant_name" : "UMEDICA",
             "manufacturers"  : "UMEDICA MUMBAI INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1789,7 +1789,7 @@
             "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   4\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   4\n+   1\n"
     },
     {
         "medication": {
@@ -1817,7 +1817,7 @@
             "applicant_name" : "VARICHEM PHARMACEUTICALS (PVT) LTD",
             "manufacturers"  : "VARICHEM PHARMACEUTICALS (PVT) LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1831,7 +1831,7 @@
             "applicant_name" : "AVENTIS CROP SCIENCE",
             "manufacturers"  : "AVENTIS PASTEUR  FRANCE;  AVENTIS PASTEUR  FRANCE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   3\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   3\n+   1\n"
     },
     {
         "medication": {
@@ -1859,7 +1859,7 @@
             "applicant_name" : "VITAL HEALTH FOODS (PTY) LTD",
             "manufacturers"  : "VITAL HEALTH FOODS (PTY) LTD KUILS RIVER SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   2\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   1\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   2\n+   1\n"
     },
     {
         "medication": {
@@ -1873,7 +1873,7 @@
             "applicant_name" : "SK AGE EXPORTS",
             "manufacturers"  : "S KANT HEALTHCARE LTD VAPI INDIA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1901,7 +1901,7 @@
             "applicant_name" : "CAPS PVT LTD",
             "manufacturers"  : "CAPS PVT LTD HARARE ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1915,7 +1915,7 @@
             "applicant_name" : "PT KALBE FARMA",
             "manufacturers"  : "WRAPSA (PTY) LTD CENTURION SOUTH AFRICA;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1929,7 +1929,7 @@
             "applicant_name" : "PFIZER SPECIALITIES LTD",
             "manufacturers"  : "PFIZER MANUFACTURING PUURS BELGIUM;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   2\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   2\n"
     },
     {
         "medication": {
@@ -1943,6 +1943,6 @@
             "applicant_name": "BAYER (PTY) LTD",
             "manufacturers": "ROCHE PRODUCTS PTY LTD JOHANNESBURG SOUTH AFRICA;  ZIMBABWE PHARMACEUTICALS HEALTHCARE BULAWAYO ZIMBABWE;"
         },
-        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   1\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   4\u001b[22m\u001b[39m\n"
+        "reason": "Values are not equal: Drug has more strengths listed than ingredients\n\n\n    [Diff] Actual / Expected\n\n\n-   1\n+   4\n"
     }
 ]

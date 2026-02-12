@@ -1,10 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
-import { MedicationDetails, MedicationSchedule } from '../types.ts'
 import memoize from '../util/memoize.ts'
 import { Decimal } from '../util/decimal.ts'
-import { unpluralize } from '../util/pluralize.ts'
 
-export const Dosages: [string, string][] = [
+export const DOSAGES: [string, string][] = [
   ['¼', '0.25'],
   ['½', '0.5'],
   ['1', '1'],
@@ -20,12 +18,12 @@ export const Dosages: [string, string][] = [
 ]
 
 function dosageText(dosage: string): string {
-  const matching = Dosages.find(([, value]) => value === dosage)
+  const matching = DOSAGES.find(([, value]) => value === dosage)
   assert(matching)
   return matching[0]
 }
 
-export const MedicationFrequencies = {
+export const PrescriptionFrequencies = {
   ac: 'before meals',
   am: 'morning',
   bd: '2 times daily',
@@ -42,17 +40,15 @@ export const MedicationFrequencies = {
   qd: 'every day',
   qid: '4 times a day',
   qod: 'alternate days',
-  qs: 'sufficient enough quantity',
   mane: 'morning',
   qmane: 'every morning',
   qn: 'every night',
-  stat: 'immediately, now',
   tds: '3 times a day',
   q24h: 'every 24 hours',
   q30h: 'every 30 hours',
   q48h: 'every 48 hours',
   q72h: 'every 72 hours',
-  hs: 'at bedtime  ',
+  hs: 'at bedtime',
   qhs: 'daily at bedtime',
   qw: 'once a week',
   bw: 'twice a week',
@@ -60,29 +56,31 @@ export const MedicationFrequencies = {
   qm: 'once a month',
   bm: 'twice a month',
   tm: 'three times a month',
+  qs: 'sufficient enough quantity',
+  stat: 'immediately, now',
   prn: 'when necessary',
 }
 
-export function medicationFrequencyText(frequency: string): string {
-  assertMedicationFrequency(frequency)
-  return MedicationFrequencies[frequency]
+export function prescriptionFrequencyText(frequency: string): string {
+  assertPrescriptionFrequency(frequency)
+  return PrescriptionFrequencies[frequency]
 }
 
-type medicationFrequency = keyof typeof MedicationFrequencies
+export type PrescriptionFrequency = keyof typeof PrescriptionFrequencies
 
-export function isMedicationFrequency(
+export function isPrescriptionFrequency(
   frequency: string,
-): frequency is medicationFrequency {
-  return frequency in MedicationFrequencies
+): frequency is PrescriptionFrequency {
+  return frequency in PrescriptionFrequencies
 }
 
-export function assertMedicationFrequency(
+export function assertPrescriptionFrequency(
   frequency: string,
-): asserts frequency is medicationFrequency {
-  assert(isMedicationFrequency(frequency))
+): asserts frequency is PrescriptionFrequency {
+  assert(isPrescriptionFrequency(frequency))
 }
 
-export const medicationDosesPerDay = {
+export const MEDICATION_DOSES_PER_DAY = {
   ac: 3,
   am: 1,
   bd: 2,
@@ -99,11 +97,9 @@ export const medicationDosesPerDay = {
   qd: 1,
   qid: 4,
   qod: 0.5,
-  qs: 1,
   mane: 1,
   qmane: 1,
   qn: 1,
-  stat: 1,
   tds: 3,
   q24h: 1,
   q30h: 0.8,
@@ -117,10 +113,13 @@ export const medicationDosesPerDay = {
   qm: 1 / 30,
   bm: 2 / 30,
   tm: 3 / 30,
-  prn: 1,
 } satisfies {
-  [frequency in medicationFrequency]: number
+  [frequency in PrescriptionFrequency]?: number
 }
+
+export type PrescriptionFrequencyFixed = keyof typeof MEDICATION_DOSES_PER_DAY
+
+export type PrescriptionFrequencyFluid = Exclude<PrescriptionFrequency, PrescriptionFrequencyFixed>
 
 type DosageDisplayParams = {
   dosage_text?: string
@@ -128,19 +127,19 @@ type DosageDisplayParams = {
   strength_numerator: string
   strength_denominator: string
   strength_denominator_unit: string
-  dosage_descriptor_is_units: boolean
+  description_is_units: boolean
   strength_numerator_unit: string
 }
 
 export const denominatorPlural = memoize(
   (
-    { strength_denominator_unit, dosage_descriptor_is_units }: {
+    { strength_denominator_unit, description_is_units }: {
       strength_denominator_unit: string
-      dosage_descriptor_is_units: boolean
+      description_is_units: boolean
     },
   ) => {
     assert(strength_denominator_unit)
-    if (dosage_descriptor_is_units) return strength_denominator_unit
+    if (description_is_units) return strength_denominator_unit
     if (strength_denominator_unit === 'SUPPOSITORY') return 'SUPPOSITORIES'
     return strength_denominator_unit + 'S'
   },
@@ -150,7 +149,7 @@ export function dosageDisplay(params: DosageDisplayParams) {
   const {
     strength_numerator_unit,
     strength_denominator_unit,
-    dosage_descriptor_is_units,
+    description_is_units,
     dosage_text,
   } = params
   const strength_numerator = new Decimal(params.strength_numerator)
@@ -161,7 +160,7 @@ export function dosageDisplay(params: DosageDisplayParams) {
 
   let display = strength_denominator.equals(1) ? (dosage_text ?? dosageText(params.dosage)) : String(single_dose)
 
-  if (!dosage_descriptor_is_units) {
+  if (!description_is_units) {
     display += ' '
   }
   display += dosage.equals(1) ? strength_denominator_unit : denominatorPlural(params)
@@ -206,33 +205,34 @@ export function strengthDisplay({
   return strength_display + strength_denominator_unit
 }
 
-export function scheduleDisplay(
-  schedule: MedicationSchedule,
-  medication: MedicationDetails,
-): string {
-  const { frequency, dosage, duration, duration_unit } = schedule
+// TODO: rewrite to work with new RenderedMedication type (doses array instead of flat strength fields)
+// export function scheduleDisplay(
+//   schedule: MedicationSchedule,
+//   medication: RenderedMedication,
+// ): string {
+//   const { frequency, dosage, duration, duration_unit } = schedule
+//
+//   assertPrescriptionFrequency(frequency)
+//   const frequency_display = PrescriptionFrequencies[frequency]
+//
+//   const dosage_display = dosageDisplay({
+//     dosage,
+//     ...medication,
+//   })
+//
+//   return `${dosage_display} ${frequency_display} for ${duration} ${unpluralize(duration_unit, duration)}`
+// }
 
-  assertMedicationFrequency(frequency)
-  const frequency_display = MedicationFrequencies[frequency]
-
-  const dosage_display = dosageDisplay({
-    dosage,
-    ...medication,
-  })
-
-  return `${dosage_display} ${frequency_display} for ${duration} ${unpluralize(duration_unit, duration)}`
-}
-
-// // 2 tablets (50mg) per dose * 4 doses per day * 6 days = 48 tablets (50mg)
+// // // 2 tablets (50mg) per dose * 4 doses per day * 6 days = 48 tablets (50mg)
 // export function describe(
 //   medication: PrescriptionMedication,
 // ): string {
 //   assert(typeof medication.medication_frequency === 'string')
-//   assertMedicationFrequency(medication.medication_frequency)
+//   assertPrescriptionFrequency(medication.medication_frequency)
 
-//   const dosesPer_day =medicationDosesPerDay[medication.medication_frequency]
+//   const doses_per_day = medication_doses_per_day[medication.medication_frequency]
 
-//   const single_dosage =dosageDisplay({
+//   const single_dosage = dosageDisplay({
 //     dosage: medication.dosage / medication.strength_denominator,
 //     ...omit(medication, ['dosage']),
 //   })

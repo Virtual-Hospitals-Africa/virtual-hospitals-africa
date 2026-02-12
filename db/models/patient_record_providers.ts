@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { RenderedPatientEncounter, RenderedRecordProvider, TrxOrDb } from '../../types.ts'
+import { IdSelection, RenderedPatientEncounter, RenderedRecordProvider, TrxOrDb } from '../../types.ts'
 import { groupByUniq } from '../../util/groupBy.ts'
 import uniq from '../../util/uniq.ts'
 import { patient_encounters } from './patient_encounters.ts'
@@ -14,7 +14,7 @@ async function hydrateIntermediateRecords<
   trx: TrxOrDb,
   { records, encounter, health_worker_id }: {
     records: IntermediateRecord[]
-    health_worker_id: string
+    health_worker_id: string | IdSelection
     encounter?: RenderedPatientEncounter
   },
 ): Promise<
@@ -30,7 +30,7 @@ async function hydrateIntermediateRecords<
   trx: TrxOrDb,
   { records, encounter, health_worker_id }: {
     records: IntermediateRecord[]
-    health_worker_id: string
+    health_worker_id: string | IdSelection
     encounter?: RenderedPatientEncounter
   },
 ): Promise<
@@ -53,7 +53,7 @@ async function hydrateIntermediateRecords<
   trx: TrxOrDb,
   { records, encounter, health_worker_id }: {
     records: IntermediateRecord[]
-    health_worker_id: string
+    health_worker_id: string | IdSelection
     encounter?: RenderedPatientEncounter
   },
 ): Promise<

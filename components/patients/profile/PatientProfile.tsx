@@ -1,10 +1,10 @@
-import { RegistrationPatientSummary } from '../../../types.ts'
+import { PatientProfileSummary } from '../../../types.ts'
 import { DescriptionList, DescriptionListCellAction, type DescriptionListRows } from '../../library/DescriptionList.tsx'
 import { nonEmptyRows } from '../registration/Summary.tsx'
 
 export default function PatientSummary(
   { patient }: {
-    patient: RegistrationPatientSummary
+    patient: PatientProfileSummary
   },
 ) {
   const registration_href = `/app/patients/${patient.id}/registration`

@@ -529,3 +529,13 @@ export const STRUCTURE_OF_VISUAL_SYSTEM = asConcept({
   name: 'Structure of visual system',
   category: 'body structure' as const,
 })
+export const HAS_ACTIVE_INGREDIENT = asConcept({
+  id: '127489000',
+  name: 'Has active ingredient',
+  category: 'attribute' as const,
+})
+export const IS_MODIFICATION_OF = asConcept({
+  id: '738774007',
+  name: 'Is modification of',
+  category: 'attribute' as const,
+})
