@@ -58,6 +58,10 @@
     (clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
+
+(clinical_finding (snomed_concept “Chest pain” (finding) “Worse” (qualifier value) Recumbent body position (finding)
+clinical_finding (snomed_concept “Chest pain” (finding) “Worse” (qualifier value) Palpation (procedure)
+clinical_finding (snomed_concept “Chest pain on breathing” (finding)Deep breathing (finding)
 )
 (task
   "Check for urgent burn conditions"
