@@ -59,6 +59,15 @@
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
   )
 )
+(procedure (snomed_concept “Electrocardiographic procedure” (procedure)
+clinical_finding (snomed_concept “Electrocardiogram normal’ (finding)
+clinical_finding (snomed_concept “Electrocardiogram abnormal’ (finding)
+clinical_finding (snomed_concept “ST segment elevation” (finding)
+clinical_finding (snomed_concept “ST segment depression” (finding)
+clinical_finding (snomed_concept “Electrocardiographic left bundle branch block” (finding)
+clinical_finding (snomed_concept “Inadequate electrocardiogram tracing” (finding)
+clinical_finding (snomed_concept “Electrocardiogram not done” (situation)
+)
 (task
   "Check for urgent burn conditions"
   adult
