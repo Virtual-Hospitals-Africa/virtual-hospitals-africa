@@ -1630,10 +1630,6 @@ export interface SnomedDescription {
   type_id: Int8
 }
 
-export interface SnomedFamilyHistory {
-  id: Int8
-}
-
 export interface SnomedIisssccRefsetExtendedMap {
   active: boolean
   correlation_id: Int8
@@ -1990,7 +1986,6 @@ export interface DB {
   snomed_cisscc_refset_mrcm_attribute_domain: SnomedCissccRefsetMrcmAttributeDomain
   snomed_concept: SnomedConcept
   snomed_description: SnomedDescription
-  snomed_family_history: SnomedFamilyHistory
   snomed_iissscc_refset_extended_map: SnomedIisssccRefsetExtendedMap
   snomed_inferred_canonical_name_and_category: SnomedInferredCanonicalNameAndCategory
   snomed_refset_simple: SnomedRefsetSimple
