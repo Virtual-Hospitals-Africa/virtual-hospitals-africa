@@ -17,17 +17,4 @@ export const patient_new = {
       ...values,
     })
   },
-  completed(
-    trx: TrxOrDb,
-    {
-      patient_id,
-    }: {
-      patient_id: string
-    },
-  ) {
-    return trx.updateTable('patients')
-      .where('id', '=', patient_id)
-      .set({ completed_registration: true })
-      .execute()
-  },
 }
