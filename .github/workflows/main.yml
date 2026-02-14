@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+permissions:
+  actions: write
+  contents: read
+
 jobs:
   cache:
     runs-on: ubuntu-latest
@@ -22,6 +26,11 @@ jobs:
       - name: Deno install
         run: deno install --allow-scripts
 
+      - name: Delete existing deno modules cache
+        run: gh cache delete deno-modules || true
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - uses: actions/cache/save@v4
         name: Save deno modules
         with:
@@ -31,8 +40,20 @@ jobs:
       - name: Git lfs pull
         run: git lfs pull
 
+      - name: Delete existing git lfs cache
+        run: gh cache delete git-lfs || true
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - uses: actions/cache/save@v4
         name: Save git lfs cache
         with:
           path: .git/lfs/objects
           key: git-lfs
+
+      - name: Verify caches saved
+        run: |
+          gh cache list --key deno-modules --json key --jq '.[0].key' | grep -q deno-modules
+          gh cache list --key git-lfs --json key --jq '.[0].key' | grep -q git-lfs
+        env:
+          GH_TOKEN: ${{ github.token }}
