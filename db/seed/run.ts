@@ -16,6 +16,7 @@ export const seeds: Record<
   }
 > = {}
 for (const seed_file of Deno.readDirSync('./db/seed/defs')) {
+  if (!seed_file.isFile) continue
   const seed_name = seed_file.name
   const seed = await import(`./defs/${seed_name}`)
   seeds[seed_name] = seed.default || seed

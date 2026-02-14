@@ -1,4 +1,3 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import { json } from '../util/responses.ts'
 import type { LoggedInHealthWorkerContext, SearchResults, TrxOrDb } from '../types.ts'
 
@@ -30,7 +29,9 @@ export function jsonSearchHandler<
           state: ctx.state,
         })
       }
-      assertEquals(ctx.req.headers.get('accept'), 'application/json')
+      const accepts_json = ctx.req.headers.get('accept') === 'application/json'
+      const response = accepts_json ? json : json.humanReadable
+
       let page = 1
       // deno-lint-ignore no-explicit-any
       const search_terms: any = typeof default_search_terms === 'function'
@@ -58,7 +59,7 @@ export function jsonSearchHandler<
 
       return model
         .search(ctx.state.trx, search_terms, { ...opts, page })
-        .then(json)
+        .then(response)
     },
   }
 }

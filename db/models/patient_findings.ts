@@ -379,7 +379,6 @@ export const patient_findings = base({
               .values({
                 id: procedure_id,
                 employment_id,
-                by_system: false,
               })
             : blankSelection(qb),
       )

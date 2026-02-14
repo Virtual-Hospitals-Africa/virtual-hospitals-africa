@@ -39,7 +39,7 @@ export const sex = z.enum(['male', 'female', 'other', 'prefer not to say'])
 export const varchar255 = z.string().min(1).max(255)
 
 export const positive_decimal = z.number().or(
-  z.string().regex(/^-?\d*(\.\d+)?$/),
+  z.string().regex(/^\d*(\.\d+)?$/),
 )
   .transform((n) => new Decimal(n))
   .refine((n) => n.greaterThan(0), {

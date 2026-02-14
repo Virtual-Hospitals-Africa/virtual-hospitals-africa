@@ -1,9 +1,10 @@
 import z from 'zod'
-import { parseRequest } from './parseForm.ts'
+import { requestAsRecord } from './parseForm.ts'
 import { LoggedInHealthWorkerContext } from '../types.ts'
 import db from '../db/db.ts'
-
 import { timeout, TimeoutError } from '../util/timeout.ts'
+// import { assert } from 'std/assert/assert.ts'
+import { parseWithValues } from '../util/assertMatches.ts'
 
 export function postHandler<
   // deno-lint-ignore no-explicit-any
@@ -16,12 +17,11 @@ export function postHandler<
     form_values: z.infer<Schema>,
   ) => Response | Promise<Response>,
 ) {
+  // assert(schema.description, 'All schemas must include a description')
   return {
     async POST(ctx: Ctx) {
-      const form_values = await parseRequest(
-        ctx.req,
-        schema.parse,
-      )
+      const record = await requestAsRecord(ctx.req)
+      const form_values = parseWithValues(schema, record)
 
       return await db
         .transaction()

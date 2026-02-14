@@ -1,4 +1,4 @@
-import { RenderedOrganizationConsumable, RenderedOrganizationDevice, RenderedOrganizationMedicine } from '../../types.ts'
+import { RenderedOrganizationConsumable, RenderedOrganizationDevice, RenderedOrganizationMedication } from '../../types.ts'
 import { TabProps, Tabs } from '../library/Tabs.tsx'
 import OrganizationConsumablesTable from './ConsumablesTable.tsx'
 import OrganizationDevicesTable from './DevicesTable.tsx'
@@ -8,7 +8,7 @@ export default function inventoryView(
   { devices, consumables, medicines, organization_id, is_admin, active_tab }: {
     devices: RenderedOrganizationDevice[]
     consumables: RenderedOrganizationConsumable[]
-    medicines: RenderedOrganizationMedicine[]
+    medicines: RenderedOrganizationMedication[]
     organization_id: string
     is_admin: boolean
     active_tab: string

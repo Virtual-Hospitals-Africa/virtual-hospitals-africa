@@ -101,7 +101,6 @@ export const patient_chief_complaints = {
             .values({
               id: procedure_id,
               employment_id,
-              by_system: false,
             })
           : blankSelection(qb),
     ).with('inserting_finding_records', (qb) =>

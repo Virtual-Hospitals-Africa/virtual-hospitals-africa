@@ -32,8 +32,7 @@ export async function up(db: Kysely<DB>) {
 
   await createStandardTable(db, 'consumables', (qb) =>
     qb
-      .addColumn('name', 'text', (col) => col.notNull())
-      .addColumn('is_medication', 'boolean'))
+      .addColumn('name', 'text', (col) => col.notNull()))
 
   await createStandardTable(db, 'organization_consumables', (qb) =>
     qb

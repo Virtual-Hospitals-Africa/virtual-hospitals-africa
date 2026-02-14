@@ -1,26 +1,23 @@
+import { z } from 'zod'
 import { LoggedInHealthWorkerContext, RenderedDevice } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
-import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 import { inventory } from '../../../../../db/models/inventory.ts'
-
-import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
+import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
 import devices from '../../../../../db/models/devices.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 
-export function assertIsUpsertDevice(
-  obj: unknown,
-): asserts obj is { device_id: string; serial_number?: string } {
-  assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.device_id === 'string')
-}
+const AddDeviceSchema = z.object({
+  device_id: z.string(),
+  serial_number: z.string().optional(),
+}).describe('Add device')
 
-export const handler = {
-  async POST(ctx: OrganizationContext) {
-    const req = ctx.req
+export const handler = postHandler(
+  AddDeviceSchema,
+  async (ctx: OrganizationContext, to_add) => {
     const admin_role = roleByProfession(
       ctx.state.organization_employment,
       'admin',
@@ -28,11 +25,6 @@ export const handler = {
     assertOr403(admin_role)
 
     const { organization_id } = ctx.params
-
-    const to_add = await parseRequestAsserts(
-      req,
-      assertIsUpsertDevice,
-    )
 
     await inventory.addOrganizationDevice(ctx.state.trx, {
       organization_id,
@@ -49,7 +41,7 @@ export const handler = {
       `/app/organizations/${organization_id}/inventory?success=${success}`,
     )
   },
-}
+)
 
 export default HealthWorkerHomePageLayout(
   'Add Device',

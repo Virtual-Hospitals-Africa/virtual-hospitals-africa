@@ -1,23 +1,20 @@
-import { Procurer } from '../../../../../types.ts'
+import { z } from 'zod'
 import redirect from '../../../../../util/redirect.ts'
-import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 import { inventory } from '../../../../../db/models/inventory.ts'
-
-import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
+import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 
-export function assertIsUpsertProcurer(obj: unknown): asserts obj {
-  assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.name === 'string')
-}
+const AddProcurerSchema = z.object({
+  name: z.string(),
+}).describe('Add procurer')
 
-export const handler = {
-  async POST(ctx: OrganizationContext) {
-    const req = ctx.req
+export const handler = postHandler(
+  AddProcurerSchema,
+  async (ctx: OrganizationContext, to_upsert) => {
     const admin_role = roleByProfession(
       ctx.state.organization_employment,
       'admin',
@@ -26,12 +23,7 @@ export const handler = {
 
     const { organization_id } = ctx.params
 
-    const to_upsert = await parseRequestAsserts(
-      req,
-      assertIsUpsertProcurer,
-    )
-
-    await inventory.upsertProcurer(ctx.state.trx, to_upsert as Procurer)
+    await inventory.upsertProcurer(ctx.state.trx, to_upsert)
 
     const success = encodeURIComponent(
       `Procurer added successfully!`,
@@ -41,7 +33,7 @@ export const handler = {
       `/app/organizations/${organization_id}/inventory?active_tab=consumables&success=${success}`,
     )
   },
-}
+)
 
 export default HealthWorkerHomePageLayout(
   'Add Procurer',

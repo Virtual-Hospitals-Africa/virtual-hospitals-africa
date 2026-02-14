@@ -10,7 +10,7 @@
           "strength_denominator": 1000,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1",
           "trade_name": "0.9% SODIUM CHLORIDE SOLUTION CHLORIDE FOR INFUSION B. BRAUN",
           "generic_name": "SODIUM CHLORIDE",
@@ -31,7 +31,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,956",
           "trade_name": "SODIUM CHLORIDE IV",
           "generic_name": "SODIUM CHLORIDE",
@@ -57,7 +57,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,951",
           "trade_name": "SODIUM CHLORIDE",
           "generic_name": "SODIUM CHLORIDE",
@@ -78,7 +78,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,952",
           "trade_name": "SODIUM CHLORIDE 0.9% ADCOCARE",
           "generic_name": "SODIUM CHLORIDE",
@@ -99,7 +99,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,954",
           "trade_name": "SODIUM CHLORIDE FRESENIUS 0.9%",
           "generic_name": "SODIUM CHLORIDE",
@@ -120,7 +120,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "V"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,955",
           "trade_name": "SODIUM CHLORIDE INTRAVENOUS INFUSION",
           "generic_name": "SODIUM CHLORIDE",
@@ -174,7 +174,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,284",
           "trade_name": "WORMED",
           "generic_name": "ALBENDAZOLE",
@@ -195,7 +195,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,303",
           "trade_name": "ZENTEL",
           "generic_name": "ALBENDAZOLE",
@@ -221,7 +221,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "M"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "47",
           "trade_name": "ACYCLOVIR",
           "generic_name": "ACYCLOVIR",
@@ -242,7 +242,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "58",
           "trade_name": "ADCO-ACYCLOVIR",
           "generic_name": "ACYCLOVIR",
@@ -263,7 +263,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "299",
           "trade_name": "AXCEL ACYCLOVIR",
           "generic_name": "ACYCLOVIR",
@@ -284,7 +284,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,241",
           "trade_name": "VIRAMED",
           "generic_name": "ACYCLOVIR",
@@ -305,7 +305,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,243",
           "trade_name": "VIRATAK",
           "generic_name": "ACYCLOVIR",
@@ -326,7 +326,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,351",
           "trade_name": "ZOVIRAX",
           "generic_name": "ACYCLOVIR",
@@ -422,7 +422,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "514",
           "trade_name": "CILOXAN",
           "generic_name": "CIPROFLOXACIN",
@@ -443,7 +443,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,352",
           "trade_name": "ZOXAN FLOXAN",
           "generic_name": "CIPROFLOXACIN",
@@ -497,7 +497,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "64",
           "trade_name": "ADCO-BETAMETHASONE",
           "generic_name": "BETAMETHASONE",
@@ -518,7 +518,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "300",
           "trade_name": "AXCEL BETAMETHASONE",
           "generic_name": "BETAMETHASONE",
@@ -558,7 +558,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "68",
           "trade_name": "ADCO-CLOTRIMAZOLE",
           "generic_name": "CLOTRIMAZOLE",
@@ -579,7 +579,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "69",
           "trade_name": "ADCO-CLOTRIMAZOLE",
           "generic_name": "CLOTRIMAZOLE",
@@ -600,7 +600,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "422",
           "trade_name": "CANDID",
           "generic_name": "CLOTRIMAZOLE",
@@ -621,7 +621,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "431",
           "trade_name": "CANDIDEX",
           "generic_name": "CLOTRIMAZOLE",
@@ -642,7 +642,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "432",
           "trade_name": "CANDIDEX",
           "generic_name": "CLOTRIMAZOLE",
@@ -663,7 +663,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "433",
           "trade_name": "CANDID-V",
           "generic_name": "CLOTRIMAZOLE",
@@ -684,7 +684,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "436",
           "trade_name": "CANESTEN",
           "generic_name": "CLOTRIMAZOLE",
@@ -705,7 +705,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "437",
           "trade_name": "CANESTEN",
           "generic_name": "CLOTRIMAZOLE",
@@ -726,7 +726,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "552",
           "trade_name": "CLOSCRIPT",
           "generic_name": "CLOTRIMAZOLE",
@@ -747,7 +747,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "554",
           "trade_name": "CLOTRIDERM",
           "generic_name": "CLOTRIMAZOLE",
@@ -768,7 +768,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,928",
           "trade_name": "SKAN-DID",
           "generic_name": "CLOTRIMAZOLE",
@@ -878,7 +878,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "81",
           "trade_name": "ADRIM-10",
           "generic_name": "DOXORUBICIN HYDROCHLORIDE",
@@ -899,7 +899,7 @@
           "strength_denominator": 25,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "82",
           "trade_name": "ADRIM-50",
           "generic_name": "DOXORUBICIN HYDROCHLORIDE",
@@ -920,7 +920,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,840",
           "trade_name": "ROBOL",
           "generic_name": "DOXORUBICIN HYDROCHLORIDE",
@@ -941,7 +941,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,841",
           "trade_name": "ROBOL -50",
           "generic_name": "DOXORUBICIN HYDROCHLORIDE",
@@ -1009,7 +1009,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "M"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "102",
           "trade_name": "ALLERDERM",
           "generic_name": "HYDROCORTISONE",
@@ -1030,7 +1030,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "682",
           "trade_name": "DERVACORT",
           "generic_name": "HYDROCORTISONE",
@@ -1112,7 +1112,7 @@
           "strength_denominator": 3,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "110",
           "trade_name": "ALMIRAL",
           "generic_name": "DICLOFENAC SODIUM",
@@ -1133,7 +1133,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "710",
           "trade_name": "DICLOFENAC",
           "generic_name": "DICLOFENAC SODIUM",
@@ -1154,7 +1154,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "714",
           "trade_name": "DICLOZED",
           "generic_name": "DICLOFENAC SODIUM",
@@ -1175,7 +1175,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,636",
           "trade_name": "PANAMOR-75",
           "generic_name": "DICLOFENAC SODIUM",
@@ -1196,7 +1196,7 @@
           "strength_denominator": 3,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,128",
           "trade_name": "TRI-DICLOFENAC",
           "generic_name": "DICLOFENAC SODIUM",
@@ -1222,7 +1222,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "701",
           "trade_name": "DFLAM",
           "generic_name": "DICLOFENAC SODIUM",
@@ -1243,7 +1243,7 @@
           "strength_denominator": 3,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,798",
           "trade_name": "RELAXO",
           "generic_name": "DICLOFENAC SODIUM",
@@ -1311,7 +1311,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,649",
           "trade_name": "PARACETAMOL SANDOZ",
           "generic_name": "PARACETAMOL",
@@ -1332,7 +1332,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,016",
           "trade_name": "TAMIN",
           "generic_name": "PARACETAMOL",
@@ -1353,7 +1353,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,076",
           "trade_name": "THERMODOL",
           "generic_name": "PARACETAMOL",
@@ -1393,7 +1393,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "936",
           "trade_name": "FRUDIS",
           "generic_name": "FUROSEMIDE",
@@ -1414,7 +1414,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "939",
           "trade_name": "FRUSID",
           "generic_name": "FUROSEMIDE",
@@ -1435,7 +1435,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "949",
           "trade_name": "FUROSEMIDE",
           "generic_name": "FUROSEMIDE",
@@ -1456,7 +1456,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "950",
           "trade_name": "FUROSEMIDE FRESENIUS",
           "generic_name": "FUROSEMIDE",
@@ -1477,7 +1477,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,866",
           "trade_name": "SABAX FUROSEMIDE",
           "generic_name": "FUROSEMIDE",
@@ -1531,7 +1531,7 @@
           "strength_denominator": 2.5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "240",
           "trade_name": "ASTHALIN RESPULES",
           "generic_name": "SALBUTAMOL SULPHATE",
@@ -1552,7 +1552,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,213",
           "trade_name": "VENTEZE",
           "generic_name": "SALBUTAMOL SULPHATE",
@@ -1606,7 +1606,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "257",
           "trade_name": "ATROPINE SULPHATE",
           "generic_name": "ATROPINE SULPHATE",
@@ -1627,7 +1627,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "258",
           "trade_name": "ATROPINE SULPHATE FRESENIUS",
           "generic_name": "ATROPINE SULPHATE",
@@ -1648,7 +1648,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,669",
           "trade_name": "PHARMA-Q ATROPINE",
           "generic_name": "ATROPINE SULPHATE",
@@ -1758,7 +1758,7 @@
           "strength_denominator": 10,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "267",
           "trade_name": "AVACIS 10",
           "generic_name": "CISPLASTIN",
@@ -1779,7 +1779,7 @@
           "strength_denominator": 50,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "268",
           "trade_name": "AVACIS 50",
           "generic_name": "CISPLASTIN",
@@ -1819,7 +1819,7 @@
           "strength_denominator": 3,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "273",
           "trade_name": "AVADOC 120",
           "generic_name": "DOCETAXEL",
@@ -1840,7 +1840,7 @@
           "strength_denominator": 0.5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "274",
           "trade_name": "AVADOC 20",
           "generic_name": "DOCETAXEL",
@@ -1861,7 +1861,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "275",
           "trade_name": "AVADOC 80",
           "generic_name": "DOCETAXEL",
@@ -1882,7 +1882,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "729",
           "trade_name": "DOCETAXEL MYLAN",
           "generic_name": "DOCETAXEL",
@@ -1903,7 +1903,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "730",
           "trade_name": "DOCETAXEL MYLAN",
           "generic_name": "DOCETAXEL",
@@ -1929,7 +1929,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "663",
           "trade_name": "DAXOTEL",
           "generic_name": "DOCETAXEL",
@@ -1950,7 +1950,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "664",
           "trade_name": "DAXOTEL",
           "generic_name": "DOCETAXEL",
@@ -1990,7 +1990,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "279",
           "trade_name": "AVAPLAT-150",
           "generic_name": "CARBOPLATIN",
@@ -2011,7 +2011,7 @@
           "strength_denominator": 45,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "280",
           "trade_name": "AVAPLAT-450",
           "generic_name": "CARBOPLATIN",
@@ -2032,7 +2032,7 @@
           "strength_denominator": 45,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "448",
           "trade_name": "CARBOL",
           "generic_name": "CARBOPLATIN",
@@ -2053,7 +2053,7 @@
           "strength_denominator": 15,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "449",
           "trade_name": "CARBOL",
           "generic_name": "CARBOPLATIN",
@@ -2074,7 +2074,7 @@
           "strength_denominator": 45,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,193",
           "trade_name": "KEMOCARB",
           "generic_name": "CARBOPLATIN",
@@ -2095,7 +2095,7 @@
           "strength_denominator": 15,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,194",
           "trade_name": "KEMOCARB",
           "generic_name": "CARBOPLATIN",
@@ -2121,7 +2121,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "288",
           "trade_name": "AVATOP",
           "generic_name": "ETOPOSIDE",
@@ -2142,7 +2142,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "955",
           "trade_name": "FYTOSID",
           "generic_name": "ETOPOSIDE",
@@ -2163,7 +2163,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,883",
           "trade_name": "SEDOL INJECTION",
           "generic_name": "ETOPOSIDE",
@@ -2217,7 +2217,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "482",
           "trade_name": "CELPROTEC",
           "generic_name": "MISOPROSTOL",
@@ -2238,7 +2238,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "644",
           "trade_name": "CYTOTEC",
           "generic_name": "MISOPROSTOL",
@@ -2259,7 +2259,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,451",
           "trade_name": "MISOPROST-200",
           "generic_name": "MISOPROSTOL",
@@ -2355,7 +2355,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "303",
           "trade_name": "AXCEL MICONAZOLE",
           "generic_name": "MICONAZOLE NITRATE",
@@ -2376,7 +2376,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "648",
           "trade_name": "DAKTARIN",
           "generic_name": "MICONAZOLE NITRATE",
@@ -2397,7 +2397,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,033",
           "trade_name": "GYNO-DAKTARIN",
           "generic_name": "MICONAZOLE NITRATE",
@@ -2418,7 +2418,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,034",
           "trade_name": "GYNO-MICOVAR",
           "generic_name": "MICONAZOLE NITRATE",
@@ -2439,7 +2439,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "M"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,434",
           "trade_name": "MICONAZOLE NITRATE",
           "generic_name": "MICONAZOLE NITRATE",
@@ -2479,7 +2479,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "695",
           "trade_name": "DEXTROSE",
           "generic_name": "DEXTROSE",
@@ -2500,7 +2500,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "696",
           "trade_name": "DEXTROSE",
           "generic_name": "DEXTROSE",
@@ -2521,7 +2521,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "697",
           "trade_name": "DEXTROSE 10%",
           "generic_name": "DEXTROSE",
@@ -2542,7 +2542,7 @@
           "strength_denominator": 50,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "698",
           "trade_name": "DEXTROSE FRESENIUS",
           "generic_name": "DEXTROSE",
@@ -2563,7 +2563,7 @@
           "strength_denominator": 1000,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "700",
           "trade_name": "DEXTROSE FRESENIUS 5%",
           "generic_name": "DEXTROSE",
@@ -2584,7 +2584,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,004",
           "trade_name": "GLUCOSE INJECTION",
           "generic_name": "DEXTROSE",
@@ -2610,7 +2610,7 @@
           "strength_denominator": 20,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "699",
           "trade_name": "DEXTROSE FRESENIUS",
           "generic_name": "DEXTROSE",
@@ -2631,7 +2631,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,003",
           "trade_name": "GLUCOSE",
           "generic_name": "DEXTROSE",
@@ -2671,7 +2671,7 @@
           "strength_denominator": 50,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "315",
           "trade_name": "BACTERIOSTATIC WATER FOR INJECTION",
           "generic_name": "WATER FOR INJECTION",
@@ -2692,7 +2692,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,272",
           "trade_name": "WATER FOR INJECTION",
           "generic_name": "WATER FOR INJECTION",
@@ -2732,7 +2732,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "322",
           "trade_name": "BEMOCIN 15 UNITS",
           "generic_name": "BLEOMYCIN SULPHATE",
@@ -2753,7 +2753,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "VIAL"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "384",
           "trade_name": "BLEOCIP",
           "generic_name": "BLEOMYCIN SULPHATE",
@@ -2793,7 +2793,7 @@
           "strength_denominator": 10,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "327",
           "trade_name": "BENYLIN CHILDRENS WET COUGH",
           "generic_name": "GUAIFENESIN",
@@ -2814,7 +2814,7 @@
           "strength_denominator": 10,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "331",
           "trade_name": "BENYLIN WET COUGH",
           "generic_name": "GUAIFENESIN",
@@ -2835,7 +2835,7 @@
           "strength_denominator": 10,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "332",
           "trade_name": "BENYLIN WET COUGH MENTHOL",
           "generic_name": "GUAIFENESIN",
@@ -2856,7 +2856,7 @@
           "strength_denominator": 10,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "891",
           "trade_name": "EXPELINCT",
           "generic_name": "GUAIFENESIN",
@@ -2877,7 +2877,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,024",
           "trade_name": "GRAYS PEPPERMINT AND HONEY COUGH REMEDY",
           "generic_name": "GUAIFENESIN",
@@ -2898,7 +2898,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,029",
           "trade_name": "GUAIPHENESIN BETAMINT",
           "generic_name": "GUAIFENESIN",
@@ -2919,7 +2919,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,218",
           "trade_name": "KOSOREX",
           "generic_name": "GUAIFENESIN",
@@ -2973,7 +2973,7 @@
           "strength_denominator": 1000,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "333",
           "trade_name": "BENZYL BENZOATE APPLICATION",
           "generic_name": "BENZYL BENZOATE",
@@ -2994,7 +2994,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "334",
           "trade_name": "BENZYL BENZOATE APPLICATION",
           "generic_name": "BENZYL BENZOATE",
@@ -3020,7 +3020,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "335",
           "trade_name": "BENZYLPENICILLIN",
           "generic_name": "BENZYLPENICILLIN",
@@ -3041,7 +3041,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "336",
           "trade_name": "BENZYLPENICILLIN FRESENIUS 5MU",
           "generic_name": "BENZYLPENICILLIN",
@@ -3062,7 +3062,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "337",
           "trade_name": "BENZYLPENICILLIN SODIUM",
           "generic_name": "BENZYLPENICILLIN",
@@ -3083,7 +3083,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "338",
           "trade_name": "BENZYLPENICILLIN SODIUM",
           "generic_name": "BENZYLPENICILLIN",
@@ -3165,7 +3165,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "344",
           "trade_name": "BETACIDE ANTISEPTIC",
           "generic_name": "POVIDONE IODINE",
@@ -3186,7 +3186,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "681",
           "trade_name": "DERMOVIDONE",
           "generic_name": "POVIDONE IODINE",
@@ -3207,7 +3207,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,718",
           "trade_name": "POVICIDE",
           "generic_name": "POVIDONE IODINE",
@@ -3228,7 +3228,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,888",
           "trade_name": "SEPTICIDE MOUTHWASH",
           "generic_name": "POVIDONE IODINE",
@@ -3249,7 +3249,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,183",
           "trade_name": "VARICIDE",
           "generic_name": "POVIDONE IODINE",
@@ -3270,7 +3270,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,185",
           "trade_name": "VARICIDE",
           "generic_name": "POVIDONE IODINE",
@@ -3296,7 +3296,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "M"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "984",
           "trade_name": "GERMSTOP",
           "generic_name": "POVIDONE IODINE",
@@ -3317,7 +3317,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "M"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,719",
           "trade_name": "POVICIDE",
           "generic_name": "POVIDONE IODINE",
@@ -3338,7 +3338,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,184",
           "trade_name": "VARICIDE",
           "generic_name": "POVIDONE IODINE",
@@ -3420,7 +3420,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "358",
           "trade_name": "BETASONE",
           "generic_name": "BETAMETHASONE VALERATE",
@@ -3441,7 +3441,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "M"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,553",
           "trade_name": "NOVADERM",
           "generic_name": "BETAMETHASONE VALERATE",
@@ -3481,7 +3481,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "390",
           "trade_name": "BRIMONIDINE",
           "generic_name": "BRIMONIDINE TATRATE",
@@ -3502,7 +3502,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "391",
           "trade_name": "BRIMONIDINE TARTRATE",
           "generic_name": "BRIMONIDINE TATRATE",
@@ -3641,7 +3641,7 @@
           "strength_denominator": 1000,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "409",
           "trade_name": "CALAMINE LOTION",
           "generic_name": "CALAMINE; ZINC OXIDE",
@@ -3663,7 +3663,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "410",
           "trade_name": "CALAMINE LOTION",
           "generic_name": "CALAMINE; ZINC OXIDE",
@@ -3684,7 +3684,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "675",
           "trade_name": "DERMAPAL - CALAMINE CREAM",
           "generic_name": "CALAMINE; ZINC OXIDE",
@@ -3766,7 +3766,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "440",
           "trade_name": "CANOL",
           "generic_name": "TOPOTECAN HYDROCHLORIDE",
@@ -3787,7 +3787,7 @@
           "strength_denominator": 2.5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,086",
           "trade_name": "TOPOTEL 2.5",
           "generic_name": "TOPOTECAN HYDROCHLORIDE",
@@ -3808,7 +3808,7 @@
           "strength_denominator": 4,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,087",
           "trade_name": "TOPOTEL 4",
           "generic_name": "TOPOTECAN HYDROCHLORIDE",
@@ -3862,7 +3862,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "VIAL"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "471",
           "trade_name": "CEFTRIAXONE",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -3883,7 +3883,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "VIAL"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "472",
           "trade_name": "CEFTRIAXONE SODIUM",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -3904,7 +3904,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "473",
           "trade_name": "CEFTRIAXONE SODIUM",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -3925,7 +3925,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "474",
           "trade_name": "CEFTRIAXONE SODIUM FOR INJECTION BP",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -3946,7 +3946,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "622",
           "trade_name": "CP-CEFTRIAXONE 250",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -3967,7 +3967,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,108",
           "trade_name": "IMMUNOX",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -3988,7 +3988,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,842",
           "trade_name": "ROCEPHIN",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -4009,7 +4009,7 @@
           "strength_denominator": 15,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,843",
           "trade_name": "ROCETRAX",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -4030,7 +4030,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,885",
           "trade_name": "SEFIXI 1000",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -4051,7 +4051,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,886",
           "trade_name": "SEFTRIAX",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -4072,7 +4072,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,121",
           "trade_name": "TRAXOL 1000",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -4093,7 +4093,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,159",
           "trade_name": "UTRIXONE",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -4114,7 +4114,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,160",
           "trade_name": "UTRIXONE-500",
           "generic_name": "CEFTRIAXONE SODIUM",
@@ -4210,7 +4210,7 @@
           "strength_denominator": 0.2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "543",
           "trade_name": "CLEXANE 20",
           "generic_name": "ENOXAPARIN SODIUM",
@@ -4231,7 +4231,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "544",
           "trade_name": "CLEXANE 40",
           "generic_name": "ENOXAPARIN SODIUM",
@@ -4252,7 +4252,7 @@
           "strength_denominator": 0.6,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "545",
           "trade_name": "CLEXANE 60",
           "generic_name": "ENOXAPARIN SODIUM",
@@ -4273,7 +4273,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "546",
           "trade_name": "CLEXANE 80",
           "generic_name": "ENOXAPARIN SODIUM",
@@ -4294,7 +4294,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,312",
           "trade_name": "LOMOH-40",
           "generic_name": "ENOXAPARIN SODIUM",
@@ -4320,7 +4320,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "549",
           "trade_name": "CLOPAMON",
           "generic_name": "METOCLOPRAMIDE HYDROCHLORIDE",
@@ -4341,7 +4341,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,414",
           "trade_name": "METOCLOPRAMIDE",
           "generic_name": "METOCLOPRAMIDE HYDROCHLORIDE",
@@ -4362,7 +4362,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,677",
           "trade_name": "PHARMA-Q METOCLOPRAMIDE",
           "generic_name": "METOCLOPRAMIDE HYDROCHLORIDE",
@@ -4388,7 +4388,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "560",
           "trade_name": "CLOXACILLIN SODIUM",
           "generic_name": "CLOXACILLIN SODIUM",
@@ -4409,7 +4409,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "561",
           "trade_name": "CLOXACILLIN SODIUM",
           "generic_name": "CLOXACILLIN SODIUM",
@@ -4430,7 +4430,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "562",
           "trade_name": "CLOXACILLIN SODIUM",
           "generic_name": "CLOXACILLIN SODIUM",
@@ -4624,7 +4624,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INHALATION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "912",
           "trade_name": "FLIXOTIDE",
           "generic_name": "FLUTICASONE PROPIONATE",
@@ -4645,7 +4645,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INHALATION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "913",
           "trade_name": "FLIXOTIDE",
           "generic_name": "FLUTICASONE PROPIONATE",
@@ -4666,7 +4666,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INHALATION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "914",
           "trade_name": "FLIXOTIDE 50",
           "generic_name": "FLUTICASONE PROPIONATE",
@@ -4707,7 +4707,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "645",
           "trade_name": "DAISY-30",
           "generic_name": "DESOGESTREL; ETHINYL ESTRADIOL",
@@ -4728,7 +4728,7 @@
           "strength_denominator": 0.03,
           "strength_denominator_unit": "MG"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "686",
           "trade_name": "DESOGESTREL/ETHINYL ESTRADIOL",
           "generic_name": "DESOGESTREL; ETHINYL ESTRADIOL",
@@ -4750,7 +4750,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,361",
           "trade_name": "MARVELON 28",
           "generic_name": "DESOGESTREL; ETHINYL ESTRADIOL",
@@ -4772,7 +4772,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,425",
           "trade_name": "MEURI",
           "generic_name": "DESOGESTREL; ETHINYL ESTRADIOL",
@@ -4827,7 +4827,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,436",
           "trade_name": "MICORT",
           "generic_name": "HYDROCORTISONE; MICONAZOLE NITRATE",
@@ -4848,7 +4848,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,438",
           "trade_name": "MICOVAR CREAM",
           "generic_name": "HYDROCORTISONE; MICONAZOLE NITRATE",
@@ -4944,7 +4944,7 @@
           "strength_denominator": 10,
           "strength_denominator_unit": "MG"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "684",
           "trade_name": "DESCOVY",
           "generic_name": "EMTRICITABINE; TENOFOVIR ALAFENAMIDE",
@@ -4966,7 +4966,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "811",
           "trade_name": "EMTRICITABINE; TENOFOVIR ALAFENAMIDE",
           "generic_name": "EMTRICITABINE; TENOFOVIR ALAFENAMIDE",
@@ -5048,7 +5048,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "754",
           "trade_name": "DORMICUM",
           "generic_name": "MIDAZOLAM",
@@ -5069,7 +5069,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,884",
           "trade_name": "SEDOZ",
           "generic_name": "MIDAZOLAM",
@@ -5109,7 +5109,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "M"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "774",
           "trade_name": "ECODERM",
           "generic_name": "ECONAZOLE NITRATE",
@@ -5130,7 +5130,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "946",
           "trade_name": "FUNGISTOP TOPICAL",
           "generic_name": "ECONAZOLE NITRATE",
@@ -5151,7 +5151,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,032",
           "trade_name": "GYNOCIDE",
           "generic_name": "ECONAZOLE NITRATE",
@@ -5219,7 +5219,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "819",
           "trade_name": "ENDULIN VIAL",
           "generic_name": "INSULIN GLARGINE",
@@ -5240,7 +5240,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "820",
           "trade_name": "ENDULIN VIAL",
           "generic_name": "INSULIN GLARGINE",
@@ -5261,7 +5261,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,252",
           "trade_name": "LANTUS",
           "generic_name": "INSULIN GLARGINE",
@@ -5287,7 +5287,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "818",
           "trade_name": "ENDULIN SELECT",
           "generic_name": "INSULIN",
@@ -5308,7 +5308,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,123",
           "trade_name": "TRESIBA FLEXTOUCH",
           "generic_name": "INSULIN",
@@ -5446,7 +5446,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "901",
           "trade_name": "FENTANYL  (2ML)",
           "generic_name": "FENTANYL CITRATE",
@@ -5467,7 +5467,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "902",
           "trade_name": "FENTANYL (10ML)",
           "generic_name": "FENTANYL CITRATE",
@@ -5488,7 +5488,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,673",
           "trade_name": "PHARMA-Q FENTANYL",
           "generic_name": "FENTANYL CITRATE",
@@ -5528,7 +5528,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "910",
           "trade_name": "FLAGENTYL",
           "generic_name": "SECNIDAZOLE",
@@ -5549,7 +5549,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,014",
           "trade_name": "TAGERA FORTE",
           "generic_name": "SECNIDAZOLE",
@@ -5575,7 +5575,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,716",
           "trade_name": "POTASSIUM CHLORIDE",
           "generic_name": "POTASSIUM CHLORIDE",
@@ -5596,7 +5596,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,979",
           "trade_name": "STERILE POTASSIUM CHLORIDE SOLUTION",
           "generic_name": "POTASSIUM CHLORIDE",
@@ -5636,7 +5636,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "934",
           "trade_name": "FRESENIUS PROPOVEN",
           "generic_name": "PROPOFOL",
@@ -5657,7 +5657,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,761",
           "trade_name": "PROPOFOL 1% FRESENIUS",
           "generic_name": "PROPOFOL",
@@ -5683,7 +5683,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,536",
           "trade_name": "NIRFOL",
           "generic_name": "PROPOFOL",
@@ -5704,7 +5704,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,762",
           "trade_name": "PROPOFOL-LIPURO 1%",
           "generic_name": "PROPOFOL",
@@ -5814,7 +5814,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "977",
           "trade_name": "GEMTERO",
           "generic_name": "GEMCITABINE HYDROCHLORIDE",
@@ -5835,7 +5835,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "978",
           "trade_name": "GEMTERO",
           "generic_name": "GEMCITABINE HYDROCHLORIDE",
@@ -5861,7 +5861,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "980",
           "trade_name": "GENTAMYCIN FRESENIUS",
           "generic_name": "GENTAMICIN SULPHATE",
@@ -5882,7 +5882,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "981",
           "trade_name": "GENTAMYCIN FRESENIUS",
           "generic_name": "GENTAMICIN SULPHATE",
@@ -5903,7 +5903,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "982",
           "trade_name": "GENTAMYCIN SULPHATE",
           "generic_name": "GENTAMICIN SULPHATE",
@@ -6013,7 +6013,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,037",
           "trade_name": "HALF STRENGTH DARROWS SOLN WITH DETROSE 10%",
           "generic_name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
@@ -6034,7 +6034,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,040",
           "trade_name": "HALF STRENGTH DARROWS SOLUTION WITH DEXTROSE 2.5%",
           "generic_name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
@@ -6057,7 +6057,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,042",
           "trade_name": "HALF STRENGTH DARROWS WITH 5% GLUCOSE",
           "generic_name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
@@ -6081,7 +6081,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INFUSION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,043",
           "trade_name": "HALF-STRENGTH DARROWS WITH GLUCOSE 5%",
           "generic_name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
@@ -6110,7 +6110,7 @@
           "strength_denominator": 1000,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,038",
           "trade_name": "HALF STRENGTH DARROWS SOLUTION WITH 5 % DEXTROSE FRESENIUS",
           "generic_name": "DEXTROSE; POTASSIUM CHLORIDE; SODIUM CHLORIDE; SODIUM LACTATE",
@@ -6134,7 +6134,7 @@
           "strength_denominator": 500,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,039",
           "trade_name": "HALF STRENGTH DARROWS SOLUTION WITH 5% DEXTROSE FRESENIUS",
           "generic_name": "DEXTROSE; POTASSIUM CHLORIDE; SODIUM CHLORIDE; SODIUM LACTATE",
@@ -6174,7 +6174,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,048",
           "trade_name": "HEMLIBRA",
           "generic_name": "EMICIZUMAB",
@@ -6195,7 +6195,7 @@
           "strength_denominator": 0.7,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,049",
           "trade_name": "HEMLIBRA",
           "generic_name": "EMICIZUMAB",
@@ -6216,7 +6216,7 @@
           "strength_denominator": 0.4,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,050",
           "trade_name": "HEMLIBRA",
           "generic_name": "EMICIZUMAB",
@@ -6237,7 +6237,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,051",
           "trade_name": "HEMLIBRA",
           "generic_name": "EMICIZUMAB",
@@ -6305,7 +6305,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,085",
           "trade_name": "I PILL",
           "generic_name": "LEVONORGESTREL",
@@ -6326,7 +6326,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,715",
           "trade_name": "POSTINOR",
           "generic_name": "LEVONORGESTREL",
@@ -6347,7 +6347,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,759",
           "trade_name": "PRONTA 1",
           "generic_name": "LEVONORGESTREL",
@@ -6368,7 +6368,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,815",
           "trade_name": "REVOKE 72",
           "generic_name": "LEVONORGESTREL",
@@ -6394,7 +6394,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,151",
           "trade_name": "IRINOTEL",
           "generic_name": "IRINOTECAN HYDROCHLORIDE",
@@ -6415,7 +6415,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,152",
           "trade_name": "IRINOTEL 40MG",
           "generic_name": "IRINOTECAN HYDROCHLORIDE",
@@ -6469,7 +6469,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,141",
           "trade_name": "INTAXEL",
           "generic_name": "PACLITAXEL",
@@ -6490,7 +6490,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,142",
           "trade_name": "INTAXEL",
           "generic_name": "PACLITAXEL",
@@ -6512,7 +6512,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,622",
           "trade_name": "PACIX",
           "generic_name": "PACLITAXEL",
@@ -6533,7 +6533,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,623",
           "trade_name": "PACLITERO 100",
           "generic_name": "PACLITAXEL",
@@ -6554,7 +6554,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,624",
           "trade_name": "PACLITERO 30",
           "generic_name": "PACLITAXEL",
@@ -6575,7 +6575,7 @@
           "strength_denominator": 50,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,625",
           "trade_name": "PACLITERO 300",
           "generic_name": "PACLITAXEL",
@@ -6596,7 +6596,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,657",
           "trade_name": "PAXOL",
           "generic_name": "PACLITAXEL",
@@ -6617,7 +6617,7 @@
           "strength_denominator": 16.7,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,658",
           "trade_name": "PAXOL",
           "generic_name": "PACLITAXEL",
@@ -6657,7 +6657,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,184",
           "trade_name": "KANAMAC-1000",
           "generic_name": "KANAMYCIN SULPHATE",
@@ -6678,7 +6678,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,185",
           "trade_name": "KANAMYCIN",
           "generic_name": "KANAMYCIN SULPHATE",
@@ -6760,7 +6760,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,288",
           "trade_name": "LIGNOCAINE HYDROCHLORIDE",
           "generic_name": "LIGNOCAINE HYDROCHLORIDE",
@@ -6781,7 +6781,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,289",
           "trade_name": "LIGNOCAINE HYDROCHLORIDE FRESENIUS",
           "generic_name": "LIGNOCAINE HYDROCHLORIDE",
@@ -6802,7 +6802,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,290",
           "trade_name": "LIGNOTOX",
           "generic_name": "LIGNOCAINE HYDROCHLORIDE",
@@ -7066,7 +7066,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "VIAL"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,431",
           "trade_name": "MIBZO",
           "generic_name": "BORTEZOMIB",
@@ -7087,7 +7087,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,486",
           "trade_name": "MYZOMIB",
           "generic_name": "BORTEZOMIB",
@@ -7114,7 +7114,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,446",
           "trade_name": "MINESSE",
           "generic_name": "ETHINYLOESTRADIOL; GESTODENE",
@@ -7136,7 +7136,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "TABLET"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,447",
           "trade_name": "MINULET",
           "generic_name": "ETHINYLOESTRADIOL; GESTODENE",
@@ -7274,7 +7274,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,565",
           "trade_name": "NOVOMIX 30 FLEXPEN",
           "generic_name": "INSULIN ASPART",
@@ -7295,7 +7295,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,566",
           "trade_name": "NOVORAPID FLEXPEN",
           "generic_name": "INSULIN ASPART",
@@ -7321,7 +7321,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,582",
           "trade_name": "OCCUMOL",
           "generic_name": "TIMOLOL",
@@ -7342,7 +7342,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,079",
           "trade_name": "TIMOLOL MALEATE",
           "generic_name": "TIMOLOL",
@@ -7368,7 +7368,7 @@
           "strength_denominator": 4,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,596",
           "trade_name": "ONDANSETRON FRESENIUS",
           "generic_name": "ONDANSETRON HYDROCHLORIDE",
@@ -7389,7 +7389,7 @@
           "strength_denominator": 4,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,336",
           "trade_name": "ZOFRAN",
           "generic_name": "ONDANSETRON HYDROCHLORIDE",
@@ -7410,7 +7410,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,337",
           "trade_name": "ZOFRAN",
           "generic_name": "ONDANSETRON HYDROCHLORIDE",
@@ -7492,7 +7492,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,616",
           "trade_name": "OXITAN 100MG",
           "generic_name": "OXALIPLATIN",
@@ -7513,7 +7513,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,617",
           "trade_name": "OXITAN 50",
           "generic_name": "OXALIPLATIN",
@@ -7534,7 +7534,7 @@
           "strength_denominator": 50,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,619",
           "trade_name": "OXOL",
           "generic_name": "OXALIPLATIN",
@@ -7560,7 +7560,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,620",
           "trade_name": "OXYTOCIN",
           "generic_name": "OXYTOCIN",
@@ -7581,7 +7581,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,965",
           "trade_name": "SPEC OXYTOCIN",
           "generic_name": "OXYTOCIN",
@@ -7602,7 +7602,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,009",
           "trade_name": "SYNTOCINON",
           "generic_name": "OXYTOCIN",
@@ -7623,7 +7623,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,010",
           "trade_name": "SYNTOCINON",
           "generic_name": "OXYTOCIN",
@@ -7644,7 +7644,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,107",
           "trade_name": "TOSININ 10",
           "generic_name": "OXYTOCIN",
@@ -7670,7 +7670,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,664",
           "trade_name": "PETHIDINE",
           "generic_name": "PETHIDINE HYDROCHLORIDE",
@@ -7691,7 +7691,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,665",
           "trade_name": "PETHIDINE",
           "generic_name": "PETHIDINE HYDROCHLORIDE",
@@ -7712,7 +7712,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,680",
           "trade_name": "PHARMA-Q PETHIDINE",
           "generic_name": "PETHIDINE HYDROCHLORIDE",
@@ -7733,7 +7733,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,681",
           "trade_name": "PHARMA-Q PETHIDINE",
           "generic_name": "PETHIDINE HYDROCHLORIDE",
@@ -7759,7 +7759,7 @@
           "strength_denominator": 2,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,682",
           "trade_name": "PHARMA-Q SUXAMETHONIUM",
           "generic_name": "SUXAMETHONIUM CHLORIDE",
@@ -7780,7 +7780,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,007",
           "trade_name": "SUXAMETHONIUM CHLORIDE",
           "generic_name": "SUXAMETHONIUM CHLORIDE",
@@ -7918,7 +7918,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,908",
           "trade_name": "SII HEPATITIS-B (RDNA) (ADULT)",
           "generic_name": "HEPATITIS B SURFACE ANTIGEN",
@@ -7939,7 +7939,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "VACCINE"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,909",
           "trade_name": "SII HEPATITIS-B (RDNA) (PAEDIATRIC)",
           "generic_name": "HEPATITIS B SURFACE ANTIGEN",
@@ -7982,7 +7982,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,829",
           "trade_name": "RINGER LACTATE",
           "generic_name": "RINGER'S LACTATE",
@@ -8006,7 +8006,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INFUSION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,830",
           "trade_name": "RINGER LACTATE ADCOCARE",
           "generic_name": "RINGER'S LACTATE",
@@ -8158,7 +8158,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "G"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,948",
           "trade_name": "SODIUM BICARBONATE",
           "generic_name": "SODIUM BICARBONATE",
@@ -8179,7 +8179,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,949",
           "trade_name": "SODIUM BICARBONATE",
           "generic_name": "SODIUM BICARBONATE",
@@ -8200,7 +8200,7 @@
           "strength_denominator": 100,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,950",
           "trade_name": "SODIUM BICARBONATE FRESENIUS 8.5% INJECTION",
           "generic_name": "SODIUM BICARBONATE",
@@ -8226,7 +8226,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "1,978",
           "trade_name": "STERILE PENICILLIN BENZATHINE",
           "generic_name": "BENZATHINE PENICILLIN",
@@ -8247,7 +8247,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,144",
           "trade_name": "ULTRACILLIN LA",
           "generic_name": "BENZATHINE PENICILLIN",
@@ -8329,7 +8329,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "INJECTION"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,077",
           "trade_name": "THIOPENTONE",
           "generic_name": "THIOPENTONE SODIUM",
@@ -8350,7 +8350,7 @@
           "strength_denominator": 20,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,078",
           "trade_name": "THIOPENTONE SODIUM FRESENIUS 0.5G/20ML",
           "generic_name": "THIOPENTONE SODIUM",
@@ -8600,7 +8600,7 @@
           "strength_denominator": 1,
           "strength_denominator_unit": "VIAL"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,342",
           "trade_name": "ZOLDRO",
           "generic_name": "ZOLEDRONIC ACID",
@@ -8621,7 +8621,7 @@
           "strength_denominator": 5,
           "strength_denominator_unit": "ML"
         },
-        "manufactured_medication": {
+        "medication": {
           "id": "2,348",
           "trade_name": "ZOMETA",
           "generic_name": "ZOLEDRONIC ACID",

@@ -19,8 +19,6 @@ export default function MessageDraft({ draft = {} }: DraftProps) {
 
   const targets = groupByCategory(draft.targets || [])
 
-  console.log(targets)
-
   return (
     <div class='max-w-6xl mx-auto p-8'>
       <Form

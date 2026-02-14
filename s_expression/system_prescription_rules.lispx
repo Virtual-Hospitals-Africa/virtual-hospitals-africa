@@ -1,0 +1,13 @@
+(system_prescription_rule
+  (diagnosis
+    (snomed_concept "Anaphylaxis" "disorder")
+    probable
+  )
+  adult
+  (prescription
+    (medication 
+      (snomed_concept "Epinephrine" "substance")
+      
+    )
+  )
+)

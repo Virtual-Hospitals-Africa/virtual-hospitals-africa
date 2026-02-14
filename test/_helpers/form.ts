@@ -1,7 +1,6 @@
 import * as cheerio from 'cheerio'
 import set from '../../util/set.ts'
 import { parseParam } from '../../backend/parseForm.ts'
-import last from '../../util/last.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
@@ -23,19 +22,17 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
       return
     }
     if (el.attribs.type !== 'radio' || ('checked' in el.attribs)) {
-      const key = el.attribs.name && last(el.attribs.name.split('.'))
       set(
         form_values,
         el.attribs.name,
-        el.attribs.value ? parseParam(key, el.attribs.value) : null,
+        el.attribs.value ? parseParam(el.attribs.value) : null,
       )
     }
   })
   $('form select').each((_i, el) => {
     let value = null
     $(el).find('option[selected]').each((_i, option) => {
-      const key = option.attribs.name && last(el.attribs.name.split('!'))
-      value = option.attribs.value && parseParam(key, option.attribs.value)
+      value = option.attribs.value && parseParam(option.attribs.value)
     })
     if (el.attribs.name) {
       set(

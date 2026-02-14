@@ -17,7 +17,6 @@ import {
 import db from './db/db.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { type Department } from './shared/departments.ts'
-import { type DietFrequency } from './shared/diet.ts'
 import { type Priority } from './shared/priorities.ts'
 import { type MessageTargetCategory } from './shared/message_targets.ts'
 import { type CommonConditionKey } from './shared/brief_history.ts'
@@ -25,6 +24,7 @@ import { type VitalAssessment, type VitalMeasurement } from './shared/vitals.ts'
 import { type WarningSignKey } from './shared/warning_signs.ts'
 import { type Decimal } from './util/decimal.ts'
 import { Lang } from './shared/s_expression_schemas.ts'
+import { PrescriptionFrequency } from './shared/prescription.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -61,17 +61,12 @@ export type DeepMaybe<T> = T extends Record<string, unknown> ? {
 
 export type NonEmptyArray<T> = [T, ...T[]]
 
-export type DigitChar =
-  | '0'
-  | '1'
-  | '2'
-  | '3'
-  | '4'
-  | '5'
-  | '6'
-  | '7'
-  | '8'
-  | '9'
+export type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+export type NumberIndexable<T> = {
+  [index: number]: T
+  length: number
+}
 
 export type JsonSerializable =
   | string
@@ -139,29 +134,9 @@ export type SelectShape<T> = {
     : T[K]
 }
 
-// type X<I> = I extends string
-//   ? I | RawBuilder<I> | SelectQueryBuilder<DB, any, { id: string }>
-//   : I | RawBuilder<I>
-
-// export type Y<Table extends keyof DB, XDB extends DB> =
-//   InsertObject<DB, "patient_presence">
-
-// export type InsertObject<DB, T> = OptionalMaybeFields<
-//   {
-//     [K in keyof T]: T[K] extends ColumnType<any, infer I, any> ? X<I>
-//       : T[K] extends null | ColumnType<any, infer NullableI, any>
-//         ? null | X<NullableI>
-//       : X<T[K]>
-//   }
-// >
-
-// Helper type to exclude RawBuilder from a union type
-// type ExcludeRawBuilder<T> = T extends RawBuilder<any> ? never : T
-
 type ExtractValueType<T> = T extends ValueExpression<any, any, infer V> ? V
   : never
 
-/** */
 export type InsertShapeLiteral<T extends InsertObject<DB, any>> = OptionalMaybeFields<
   {
     [K in keyof T]: ExtractValueType<T[K]>
@@ -169,16 +144,6 @@ export type InsertShapeLiteral<T extends InsertObject<DB, any>> = OptionalMaybeF
 >
 
 export type InsertRows<Table extends keyof DB> = InsertObject<DB, Table>[]
-
-// export type InsertShapeLiteral<T> = OptionalMaybeFields<
-//   {
-//     [K in keyof T]: T[K] extends ColumnType<any, infer I, any>
-//       ? ExcludeRawBuilder<I>
-//       : T[K] extends null | ColumnType<any, infer NullableI, any>
-//         ? null | ExcludeRawBuilder<NullableI>
-//       : ExcludeRawBuilder<T[K]>
-//   }
-// >
 
 export type UpdateShape<T> = OptionalMaybeFields<
   {
@@ -368,99 +333,6 @@ export type Condition = {
   info_link_text: Maybe<string>
 }
 
-export type PatientCondition = {
-  id: string
-  patient_id: string
-  condition_id: string
-  start_date: string
-  end_date: Maybe<string>
-  comorbidity_of_condition_id: Maybe<string>
-}
-
-export type MedicalConditionBase = {
-  id: string
-  name: string
-  start_date: string
-  patient_condition_id: string
-}
-
-export type PreExistingCondition = MedicalConditionBase & {
-  comorbidities: {
-    id: string
-    patient_condition_id: string
-    name: string
-    start_date?: Maybe<string>
-  }[]
-  medications: {
-    id: string
-    medication_id: string
-    manufactured_medication_id: string | null
-    patient_condition_medication_id: string
-    strength: string
-    dosage: string
-    route: string
-    special_instructions?: Maybe<string>
-    registration_frequency: string
-    name: string
-    start_date: string
-    end_date?: Maybe<string>
-  }[]
-}
-
-export type PatientConditionMedication = {
-  id: string
-  drug: DrugSearchResult
-  manufactured_medication_id: string | null
-  medication_id: string | null
-  strength: string
-  route: string
-  dosage: string
-  registration_frequency: string
-  name: string
-  start_date: string
-  end_date?: Maybe<string>
-  special_instructions?: Maybe<string>
-}
-
-export type PreExistingConditionWithDrugs = MedicalConditionBase & {
-  comorbidities: {
-    id: string
-    name: string
-    start_date?: Maybe<string>
-  }[]
-  medications: PatientConditionMedication[]
-}
-
-export type DiagnosisGroup = {
-  all: Diagnosis[]
-  approved_by_self: Diagnosis[]
-  self: Diagnosis[]
-  others: DiagnosesCollaboration[]
-}
-
-export type Diagnosis = MedicalConditionBase & { diagnosis_id: string }
-
-export type DiagnosesCollaboration = MedicalConditionBase & {
-  diagnosis_id: string
-  diagnosed_by: string
-  diagnosed_at: string
-  approval_by?: Maybe<string>
-  approval?: Maybe<'agree' | 'disagree'>
-  disagree_reason?: Maybe<string>
-}
-
-export type PreExistingAllergy = {
-  id?: Maybe<string>
-  allergy_id: string
-  name?: Maybe<string>
-}
-
-export type PastMedicalCondition = MedicalConditionBase & {
-  end_date: string
-}
-
-export type MajorSurgery = MedicalConditionBase
-
 export type RenderedPatientAge = {
   age: string
   age_display: string
@@ -537,15 +409,6 @@ export type FamilyUpsert = {
   under_18?: boolean
 }
 
-export type LifestyleUpsert = {
-  sexual_activity: any
-  alcohol: any
-  smoking: any
-  substance_use: any
-  exercise: any
-  diet: any
-}
-
 export type PatientAppointmentOfferedTime = {
   patient_appointment_request_id: string
   provider_id: string
@@ -576,15 +439,16 @@ export type PharmacistConversationState =
   | 'not_onboarded:reshare_location'
   | 'not_onboarded:licence_expired'
   | 'not_onboarded:pharmacy_licence_expired'
-  | 'onboarded:fill_prescription:enter_code'
-  | 'onboarded:fill_prescription:reenter_code'
-  | 'onboarded:fill_prescription:send_pdf'
-  | 'onboarded:fill_prescription:ask_dispense_one'
-  | 'onboarded:fill_prescription:ask_dispense_all'
-  | 'onboarded:fill_prescription:confirm_done'
-  | 'onboarded:fill_prescription:decision'
-  | 'onboarded:fill_prescription:ask_prescriber'
-  | 'onboarded:fill_prescription:ask_prescriber_continue'
+  // TODO: rewrite prescription-related states against new patient_prescriptions model
+  // | 'onboarded:fill_prescription:enter_code'
+  // | 'onboarded:fill_prescription:reenter_code'
+  // | 'onboarded:fill_prescription:send_pdf'
+  // | 'onboarded:fill_prescription:ask_dispense_one'
+  // | 'onboarded:fill_prescription:ask_dispense_all'
+  // | 'onboarded:fill_prescription:confirm_done'
+  // | 'onboarded:fill_prescription:decision'
+  // | 'onboarded:fill_prescription:ask_prescriber'
+  // | 'onboarded:fill_prescription:ask_prescriber_continue'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
   | 'error'
@@ -1273,21 +1137,6 @@ export type RenderedOrganizationConsumable = {
     history: string
   }
 }
-
-export type RenderedOrganizationMedicine = {
-  generic_name: string
-  consumable_id: string
-  trade_name: string
-  applicant_name: string
-  form: string
-  strength_display: string
-  quantity_on_hand: number
-  actions: {
-    add: string
-    history: string
-  }
-}
-
 export type RenderedInventoryHistoryProcurement = {
   interaction: 'procurement'
   created_at: Date
@@ -1375,7 +1224,6 @@ export type RenderedInventoryHistory =
   | RenderedInventoryHistoryExpiry
 
 export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
-  strength: string
   quantity: number
   container_size: number
   number_of_containers: number
@@ -1926,65 +1774,40 @@ export type MailingListRecipient = {
   entrypoint: string
 }
 
-export type Drug = {
-  generic_name: string
-}
-export type Medication = {
-  drug_id: string
-  form: string
-  routes: string[]
-  form_route: string
-  strength_numerators: number[]
-  strength_numerator_unit: string
-  strength_denominator: string
-  strength_denominator_unit: string
-  strength_denominator_is_units: boolean
+// export type PatientMedication = {
+//   patient_condition_id: string
+//   strength: string
+//   start_date: string
+//   schedules: MedicationSchedule[]
+//   route: string
+//   special_instructions: string | null
+//   medication_id: string
+// }
+
+export type RenderedMedicationIngredient = {
+  value: string
+  units: string
+  snomed_concept: RenderedSnomedConcept
 }
 
-export type ManufacturedMedication = {
-  medication_id: string
-  trade_name: string
-  applicant_name: string
-  manufacturer_name: string
-  strength_numerators: number[]
-}
-
-export type PatientMedication =
-  & {
-    patient_condition_id: string
-    strength: string
-    start_date: string
-    schedules: MedicationSchedule[]
-    route: string
-    special_instructions: string | null
-  }
-  & (
-    | { medication_id: null; manufactured_medication_id: string }
-    | { medication_id: string; manufactured_medication_id: null }
-  )
-
-export type MedicationDetails = {
-  form: string
-  route: string
-  strength_numerator: string
-  strength_numerator_unit: string
-  strength_denominator: string
-  strength_denominator_unit: string
-  strength_denominator_is_units: boolean
-}
-
-export type PrescriptionMedication = MedicationDetails & {
-  prescription_medication_id: string
-  patient_condition_id: string
-  medication_id: string
-  drug_generic_name: string
-  drug_id: string
-  special_instructions: string | null
-  condition_id: string
-  condition_name: string
-  schedules: MedicationSchedule[]
-  filled_at?: Date
-}
+// export type PrescriptionMedication = {
+//   form: string
+//   route: string
+//   ingredients: RenderedMedicationIngredient[]
+//   strength_denominator: string
+//   strength_denominator_unit: string
+//   description_is_units: boolean
+//   prescription_id: string
+//   patient_condition_id: string
+//   medication_id: string
+//   drug_generic_name: string
+//   drug_id: string
+//   special_instructions: string | null
+//   condition_id: string
+//   condition_name: string
+//   schedules: MedicationSchedule[]
+//   filled_at: Date | null
+// }
 
 export type DurationUnit =
   | 'days'
@@ -2005,34 +1828,7 @@ export type DefiniteDuration = {
 
 export type MedicationSchedule = Duration & {
   dosage: string
-  frequency: string
-}
-
-export type DrugSearchResultMedication = {
-  medication_id: string
-  form: string
-  form_route: string
-  strength_summary: string
-  routes: string[]
-  strength_numerators: string[]
-  strength_numerator_unit: string
-  strength_denominator: string
-  strength_denominator_unit: string
-  strength_denominator_is_units: boolean
-  manufacturers: {
-    manufactured_medication_id: string
-    strength_numerators: string[]
-    applicant_name: string
-    trade_name: string
-  }[]
-}
-
-export type DrugSearchResult = {
-  id: string
-  name: string
-  distinct_trade_names: string[]
-  medications: DrugSearchResultMedication[]
-  all_recalled: boolean
+  frequency: PrescriptionFrequency
 }
 
 export type GuardianRelationName =
@@ -2059,258 +1855,9 @@ export type PatientGuardian = {
   dependent_patient_id: string
 }
 
-export type School =
-  | {
-    status: 'never attended'
-  }
-  | {
-    status: 'in school'
-    current: CurrentSchool
-  }
-  | {
-    status: 'stopped school'
-    past: PastSchool
-  }
-  | {
-    status: 'adult in school'
-    education_level: string
-  }
-  | {
-    status: 'adult stopped school'
-    education_level: string
-    reason: string
-    desire_to_return: Existence
-  }
-
-export type CurrentSchool = {
-  grade: string
-  grades_dropping_reason: string | null
-  happy: Existence | null
-  inappropriate_reason: string | null
-}
-
-export type PastSchool = {
-  stopped_last_grade: string
-  stopped_reason: string
-}
-
-export type Job = {
-  happy: Existence
-  descendants_employed: Existence
-  require_assistance: Existence
-  profession: string
-  work_satisfaction: string
-}
-
-export type Occupation = {
-  school: School
-  sport?: Existence
-  job?: Job | null
-}
-
-export type PatientOccupation = {
-  patient_id: string
-  occupation: Occupation
-}
-
-export type Question = {
-  name?: string
-  label: string
-  value?: boolean
-}
-
-export type Lifestyle = {
-  sexual_activity: SexualActivity | null
-  alcohol: Alcohol | null
-  smoking: Smoking | null
-  exercise: Exercise | null
-  diet: Diet | null
-  substance_use: SubstanceUse | null
-} //fix type names
-
-export type SexualActivity =
-  | {
-    ever_been_sexually_active: 'No' | 'Unknown' | null
-  }
-  | {
-    ever_been_sexually_active: 'Yes'
-    currently_sexually_active?: Maybe<Existence>
-    first_encounter?: Maybe<number>
-    current_sexual_partners?: Maybe<number>
-    attracted_to?: Maybe<string>
-    has_traded_sex_for_favors?: Maybe<Existence>
-    had_sex_after_drugs?: Maybe<Existence>
-    recently_treated_for_stis?: Maybe<Existence>
-    recently_hiv_tested?: Maybe<Existence>
-    know_partner_hiv_status?: Maybe<Existence>
-    partner_hiv_status?: Maybe<Existence>
-  }
-
-export type Alcohol =
-  | {
-    has_ever_drank: 'No' | 'Unknown' | null
-  }
-  | {
-    has_ever_drank: 'Yes'
-    currently_drinks?: Existence | null
-    binge_drinking?: Existence | null
-    drawn_to_cut_down?: Existence | null
-    annoyed_by_critics?: Existence | null
-    eye_opener?: Existence | null
-    guilty?: Existence | null
-    missed_work?: Existence | null
-    criticized?: Existence | null
-    arrested?: Existence | null
-    attempted_to_stop?: Existence | null
-    withdrawal?: Existence | null
-    quit_for_six_or_more_months?: Existence | null
-    abstinence_length_months?: number | null
-    first_drink?: number | null
-    years_drinking?: number | null
-    number_drinks_per_sitting?: number | null
-    alcohol_products_used?: string[] | null
-  }
-
-export type Smoking =
-  | {
-    has_ever_smoked: 'No' | 'Unknown' | null
-  }
-  | {
-    has_ever_smoked: 'Yes'
-    currently_smokes?: Maybe<Existence>
-    first_smoke_age?: number
-    weekly_smokes?: number | null
-    number_of_products?: number | null
-    felt_to_cutdown?: Existence | null
-    annoyed_by_criticism?: Existence | null
-    guilty?: Existence | null
-    forbidden_place?: Existence | null
-    attempt_to_quit?: Existence | null
-    quit_more_than_six_months?: Existence | null
-    quit_smoking_years?: number | null
-    tobacco_products_used?: string[] | null
-  }
-
-export type SubstanceUse =
-  | {
-    has_ever_used_substance: 'No' | 'Unknown' | null
-  }
-  | {
-    has_ever_used_substance: 'Yes'
-    substances_used: {
-      name: string
-      injected_substance: Existence | null
-      annoyed_by_criticism: Existence | null
-      attempt_to_stop: Existence | null
-      withdrawal_symptoms: Existence | null
-      quit_more_than_six_months: Existence | null
-      quit_substance_use_years: number | null
-      first_use_age: number | null
-      used_regularly_years: number | null
-      times_used_in_a_week: number | null
-    }[]
-  }
-
-export type Exercise =
-  | {
-    currently_exercises: 'No' | 'Unknown' | null
-  }
-  | {
-    currently_exercises: 'Yes'
-    physical_activities: {
-      name: string
-      frequency: string
-    }[]
-    sports: {
-      name: string
-      frequency: string
-    }[]
-    types_of_exercises?: string[]
-    physical_injuries_or_disability: {
-      disabilities: string[]
-      musculoskeletal_injuries: string[]
-    }
-    limitations: {
-      limits: string[]
-      structural_conditions: string[]
-      medical_conditions: string[]
-    }
-  }
-
-export type Diet = {
-  meals_per_day: number
-  typical_foods_eaten: Meal[]
-  eating_takeout_fast_food_frequency: string
-  eating_home_cooked_frequency: string
-  patient_skips_meals: boolean
-  patient_travels_often: boolean
-  reasons_for_eating_other_than_hunger: string[]
-  fats_used_in_cooking: string[]
-  staple_foods: string[]
-  non_meats: FoodFrequency[]
-  drinks: FoodFrequency[]
-  meats: FoodFrequency[]
-  junk_foods: FoodFrequency[]
-  past_special_diets: string[]
-  supplements_taken: string[]
-  eats_five_portions_of_fruits_vegetables_daily: boolean
-  eats_four_varieties_of_fruit_weekly: boolean
-  eats_four_varieties_of_vegetables_weekly: boolean
-  chooses_low_fat_products: boolean
-  chooses_baked_steamed_grilled_rather_than_fried: boolean
-  chooses_lean_cuts_or_removes_visible_fat: boolean
-  eats_oily_fish: boolean
-  bases_meals_around_starchy_foods: boolean
-  regularly_chooses_wholemeal_bread: boolean
-  regularly_eats_wholegrain_cereals_without_added_sugar: boolean
-  regularly_eats_pulses: boolean
-  regularly_eats_snacks_throughout_day: boolean
-  regularly_adds_sugar_to_drinks: boolean
-  regularly_adds_salt_during_or_after_cooking: boolean
-  regularly_drinks_sweet_fizzy_drinks: boolean
-  drinks_plenty_of_fluids_regularly_throughout_day: boolean
-  skips_meals_more_than_once_a_week: boolean
-}
-
-export type FoodFrequency = {
-  name: string
-  frequency: DietFrequency
-}
-
-export type Meal = {
-  meal: string
-  time: string
-  foods_eaten: string
-}
-
-export type PatientLifestyle = {
-  patient_id: string
-  lifestyle: Lifestyle
-}
-
-export type Allergy = {
-  id: string
-  snomed_concept_id: string
-  name: string
-}
-
 export type PatientAllergies = {
   patient_id: string
   allergy_id: string
-}
-
-export type PatientEncounter = {
-  patient_id: string
-  reason: EncounterReason
-  closed_at: null | Date
-  appointment_id: string | null
-  notes: null | string
-}
-
-export type PatientEncounterProvider = {
-  patient_encounter_id: string
-  provider_id: string
-  seen_at: null | Date
 }
 
 export type RenderedOrganization = HasStringId<Organization> & {
@@ -2497,12 +2044,11 @@ export type PatientMedicationUpsert = {
   id?: Maybe<string>
   dosage: string
   strength: string
-  registration_frequency: string
+  medication_frequency: string
   route: string
   start_date?: Maybe<string>
   end_date?: Maybe<string>
-  medication_id?: Maybe<string>
-  manufactured_medication_id?: Maybe<string>
+  medication_id: string
   special_instructions?: Maybe<string>
 }
 
@@ -3103,23 +2649,39 @@ export type DetailedPharmacist = {
   pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
 }
 
-export type RenderedManufacturedMedication = {
+export type RenderedMedication = {
   id: string
+  snomed_concept: RenderedSnomedConcept
   name: string
-  generic_name: string
-  trade_name: string
   applicant_name: string
   form: string
-  strength_summary: string
-  strength_numerators: string[]
-  strength_numerator_unit: string
-  strength_denominator: string
-  strength_denominator_unit: string
-  strength_denominator_is_units: boolean
+  routes: string[]
+  doses: {
+    medication_dose_id: string
+    value: string
+    description: string
+    description_is_units: boolean
+    ingredients: RenderedMedicationIngredient[]
+  }[]
+}
+
+export type RenderedMedicationAvailbility = RenderedMedication & {
+  recalled_at: string | null
   actions: {
     recall: string | null
   }
-  recalled_at: string | null
+}
+
+export type RenderedOrganizationMedication = RenderedMedicationAvailbility & {
+  organization_id: string
+  organization_doses: {
+    medication_dose_id: string
+    quantity_on_hand: number
+    actions: {
+      add: string
+      history: string
+    }
+  }[]
 }
 
 export type Regulator = {
@@ -3139,14 +2701,6 @@ export type RenderedPrescription = {
   prescriber_name: string
   prescriber_email: string | null
   prescriber_mobile_number: string | null
-}
-
-export type PrescriptionMedicationWithDrug = PrescriptionMedication & {
-  drug: DrugSearchResult
-}
-
-export type RenderedPrescriptionWithMedications = RenderedPrescription & {
-  medications: PrescriptionMedicationWithDrug[]
 }
 
 export type RenderedPatientExaminationFinding = {
@@ -3552,6 +3106,10 @@ export type RecordValueLink = {
   thumbnail_href: string | null
 }
 
+export type RenderedMedicationSchedule = MedicationSchedule & {
+  medication_dose_id: string
+}
+
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
@@ -3618,7 +3176,7 @@ export type RenderedFindingRelativeToHealthWorker = RenderedRecordRelativeToHeal
 }>
 
 export type RenderedProcedureRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'procedure', {
-  provider: null | RenderedRecordProvider
+  provider: RenderedRecordProvider
   as_part_of_procedure: null | AsPartOfProcedure
 }>
 
@@ -3801,7 +3359,7 @@ export type NearestOrganizationSearchResult = {
   }
 }
 
-export type RegistrationPatientSummary = {
+export type PatientProfileSummary = {
   id: string
   personal: {
     name: string
@@ -3830,12 +3388,12 @@ export type RegistrationPatientSummary = {
   }
   age: RenderedPatientAge | null
   completed_registration: boolean | null
-  family: PatientFamily
-  occupation: Maybe<Occupation>
-  allergies: Allergy[]
-  pre_existing_conditions: import('./db/models/patient_conditions.ts').PreExistingConditionSummary[]
-  past_medical_conditions: PastMedicalCondition[]
-  major_surgeries: MajorSurgery[]
+  family_history: RenderedRecordRelativeToHealthWorker[]
+  occupation: RenderedRecordRelativeToHealthWorker[]
+  allergies: RenderedRecordRelativeToHealthWorker[]
+  pre_existing_conditions: RenderedRecordRelativeToHealthWorker[]
+  past_medical_conditions: RenderedRecordRelativeToHealthWorker[]
+  major_surgeries: RenderedRecordRelativeToHealthWorker[]
 }
 
 export type SearchResults<SearchTerms, RenderedResult> = {

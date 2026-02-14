@@ -59,20 +59,9 @@ export async function up(db: Kysely<DB>) {
           'employment_id',
           'uuid',
           (col) =>
-            col.references('employment.id').onDelete(
+            col.notNull().references('employment.id').onDelete(
               'cascade',
             ),
-        )
-        .addColumn(
-          'by_system',
-          'boolean',
-          (col) => col.notNull(),
-        )
-        .addCheckConstraint(
-          'procedure_added_either_by_system_or_by_person',
-          sql`(
-            by_system or employment_id is not null
-          )`,
         ),
   )
 

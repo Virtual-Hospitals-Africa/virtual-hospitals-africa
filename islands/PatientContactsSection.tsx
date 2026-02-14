@@ -17,8 +17,6 @@ export default function PatientContactInformationSection(
 ) {
   const country = useSignal(address?.country || default_country)
 
-  console.log({ address })
-
   return (
     <FormSection header='Patient Contact Information'>
       <FormGrid columns={2}>

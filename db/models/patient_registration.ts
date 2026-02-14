@@ -1,13 +1,7 @@
 import { sql } from 'kysely'
-import { HealthWorkerOrganization, RegistrationPatientSummary, RenderedOrganization, TrxOrDb } from '../../types.ts'
-import { patient_occupations } from './patient_occupations.ts'
-import { patient_conditions } from './patient_conditions.ts'
-import { family as patient_family } from './family.ts'
-import { patient_allergies } from './patient_allergies.ts'
+import { HealthWorkerOrganization, PatientProfileSummary, RenderedOrganization, TrxOrDb } from '../../types.ts'
 import { isoDate, jsonBuildObject } from '../helpers.ts'
-import { assertOr404 } from '../../util/assertOr.ts'
 import { RenderedPatientAge } from '../../types.ts'
-import { promiseProps } from '../../util/promiseProps.ts'
 import { description_sql } from './patients.ts'
 import { patient_new } from './patient_new.ts'
 
@@ -25,8 +19,8 @@ export const patient_registration = {
   async getSummaryById(
     trx: TrxOrDb,
     patient_id: string,
-  ): Promise<RegistrationPatientSummary> {
-    const getting_review = trx
+  ): Promise<PatientProfileSummary> {
+    const summary = await trx
       .selectFrom('patients')
       .leftJoin('addresses', 'addresses.id', 'patients.address_id')
       .leftJoin(
@@ -84,47 +78,16 @@ export const patient_registration = {
         'completed_registration',
       ])
       .where('patients.id', '=', patient_id)
-
-    const q = { patient_id }
-
-    // const review = await getting_review
-    // assertOr404(review)
-
-    const {
-      review,
-      family,
-      occupation,
-      allergies,
-      pre_existing_conditions,
-      past_medical_conditions,
-      major_surgeries,
-    } = await promiseProps({
-      review: getting_review.executeTakeFirst(),
-      family: patient_family.get(trx, q),
-      occupation: patient_occupations.get(trx, q),
-      allergies: patient_allergies.getWithName(trx, patient_id),
-      pre_existing_conditions: patient_conditions
-        .getPreExistingConditionsSummary(
-          trx,
-          q,
-        ),
-      past_medical_conditions: patient_conditions.getPastMedicalConditions(
-        trx,
-        q,
-      ),
-      major_surgeries: patient_conditions.getMajorSurgeries(trx, q),
-    })
-
-    assertOr404(review)
+      .executeTakeFirstOrThrow()
 
     return {
-      ...review,
-      family,
-      occupation: occupation ?? null,
-      allergies: allergies ?? null,
-      pre_existing_conditions,
-      past_medical_conditions,
-      major_surgeries,
+      ...summary,
+      family_history: [],
+      occupation: [],
+      allergies: [],
+      pre_existing_conditions: [],
+      past_medical_conditions: [],
+      major_surgeries: [],
     }
   },
   completed(

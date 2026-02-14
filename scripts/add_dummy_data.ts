@@ -459,20 +459,20 @@
 //   //       .executeTakeFirstOrThrow()
 //   //   )
 
-//   // const manufactured_medication_ids = await db.selectFrom(
-//   //   'manufactured_medications',
+//   // const medication_ids = await db.selectFrom(
+//   //   'medications',
 //   // )
 //   //   .select('id')
 //   //   .orderBy('id', 'desc')
 //   //   .limit(200)
 //   //   .execute()
 
-//   // const manufactured_meds = await manufactured_medications.getByIds(
+//   // const manufactured_meds = await medications.getByIds(
 //   //   db,
-//   //   manufactured_medication_ids.map(({ id }) => id),
+//   //   medication_ids.map(({ id }) => id),
 //   // )
 
-//   // for (const manufactured_medication of manufactured_meds) {
+//   // for (const medication of manufactured_meds) {
 //   //   const container_size = sample([10, 20, 40, 100])
 //   //   const number_of_containers = sample([40, 100, 200])
 
@@ -481,12 +481,12 @@
 //   //     '00000000-0000-1000-8000-000000000001',
 //   //     {
 //   //       created_by: admin.employee_id!,
-//   //       manufactured_medication_id: manufactured_medication.id,
+//   //       medication_id: medication.id,
 //   //       procured_from_id: procurer.id,
 //   //       quantity: number_of_containers * container_size,
 //   //       number_of_containers,
 //   //       container_size,
-//   //       strength: sample(manufactured_medication.strength_numerators),
+//   //       strength: sample(medication.strength_numerators),
 //   //       expiry_date: '2025-03-01',
 //   //       batch_number: '622',
 //   //     },

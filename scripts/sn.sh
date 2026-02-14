@@ -171,7 +171,7 @@ camel_vars=(
   longitudeMatch
   longString
   mainTerm
-  manufacturedMedication
+  Medication
   matchingDrugs
   matchingProvider
   mediaData

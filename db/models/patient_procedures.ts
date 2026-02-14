@@ -12,21 +12,12 @@ import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 
-type ProcedureInsert =
-  & {
-    patient_id: string
-    patient_encounter_id: string
-    procedure: Lang['procedure']
-  }
-  & (
-    {
-      employment_id: string
-      by_system?: never
-    } | {
-      employment_id?: never
-      by_system: true
-    }
-  )
+type ProcedureInsert = {
+  patient_id: string
+  patient_encounter_id: string
+  procedure: Lang['procedure']
+  employment_id: string
+}
 
 export function baseQuery(
   trx: TrxOrDb,
@@ -45,7 +36,6 @@ export function baseQuery(
     )
     .select((eb) => [
       literalString('procedure').$castTo<'procedure'>().as('type'),
-      'patient_procedures.by_system',
       'patient_procedures.employment_id',
       jsonBuildNullableObject(
         eb.ref('procedures_aggregated.id'),
@@ -114,7 +104,6 @@ export const patient_procedures = base({
       employment_id,
       patient_encounter_id,
       procedure,
-      by_system,
     }: ProcedureInsert,
   ) {
     assertHasProperty(procedure, 'root_snomed_concept')
@@ -137,7 +126,6 @@ export const patient_procedures = base({
           .values({
             id: procedure_id,
             employment_id,
-            by_system: by_system || false,
           }),
     )
       .with(

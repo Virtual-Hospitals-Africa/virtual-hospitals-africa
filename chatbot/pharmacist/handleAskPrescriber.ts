@@ -1,75 +1,76 @@
-import { assert } from 'std/assert/assert.ts'
-import { PharmacistChatbotUserState, PharmacistConversationState, TrxOrDb } from '../../types.ts'
-import { message_threads } from '../../db/models/message_threads.ts'
-import { messages } from '../../db/models/messages.ts'
-import { conversations } from '../../db/models/conversations.ts'
-import { prescriptions } from '../../db/models/prescriptions.ts'
-import { handleDispense } from './prescriptionMedications.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
+// TODO: rewrite against new patient_prescriptions model
+// import { assert } from 'std/assert/assert.ts'
+// import { PharmacistChatbotUserState, PharmacistConversationState, TrxOrDb } from '../../types.ts'
+// import { message_threads } from '../../db/models/message_threads.ts'
+// import { messages } from '../../db/models/messages.ts'
+// import { conversations } from '../../db/models/conversations.ts'
+// import { patient_prescriptions } from '../../db/models/patient_prescriptions.ts'
+// import { handleDispense } from './prescriptionMedications.ts'
+// import isObjectLike from '../../util/isObjectLike.ts'
 
-export async function handleAskPrescriber(
-  trx: TrxOrDb,
-  pharmacistState: PharmacistChatbotUserState,
-): Promise<PharmacistConversationState> {
-  const body = pharmacistState.unhandled_message.trimmed_body
-  if (body === 'done' || body === 'dispense') {
-    return handleDispense(trx, pharmacistState)
-  }
+// export async function handleAskPrescriber(
+//   trx: TrxOrDb,
+//   pharmacistState: PharmacistChatbotUserState,
+// ): Promise<PharmacistConversationState> {
+//   const body = pharmacistState.unhandled_message.trimmed_body
+//   if (body === 'done' || body === 'dispense') {
+//     return handleDispense(trx, pharmacistState)
+//   }
 
-  assert(body, 'Expected a message, not an attachment or something else')
+//   assert(body, 'Expected a message, not an attachment or something else')
 
-  const { prescription_id, thread } = pharmacistState.chatbot_user.data
-  assert(
-    typeof prescription_id === 'string',
-    'Cannot messsage prescriber about prescription as no prescription can be found',
-  )
+//   const { prescription_id, thread } = pharmacistState.chatbot_user.data
+//   assert(
+//     typeof prescription_id === 'string',
+//     'Cannot messsage prescriber about prescription as no prescription can be found',
+//   )
 
-  const prescription = await prescriptions.getById(trx, prescription_id)
-  assert(
-    prescription,
-    'Cannot messsage prescriber about prescription as no prescription can be found',
-  )
+//   const prescription = await patient_prescriptions.getById(trx, prescription_id)
+//   assert(
+//     prescription,
+//     'Cannot messsage prescriber about prescription as no prescription can be found',
+//   )
 
-  if (
-    isObjectLike(thread) && typeof thread.thread_id === 'string' &&
-    typeof thread.sender_participant_id === 'string'
-  ) {
-    await messages.send(trx, {
-      body,
-      thread_id: thread.thread_id,
-      sender_participant_id: thread.sender_participant_id,
-    })
-  } else {
-    const thread = await message_threads.create(trx, {
-      sender: {
-        table_name: 'pharmacists',
-        row_id: pharmacistState.chatbot_user.entity_id!,
-      },
-      recipient: {
-        table_name: 'employment',
-        row_id: prescription.prescriber_id,
-      },
-      subjects: [
-        { table_name: 'prescriptions', row_id: prescription.id },
-        { table_name: 'patients', row_id: prescription.patient_id },
-      ],
-      initial_message: {
-        body,
-      },
-    })
-    await conversations.updateChatbotUser(
-      trx,
-      pharmacistState.chatbot_user,
-      {
-        data: {
-          ...pharmacistState.chatbot_user.data,
-          thread: {
-            thread_id: thread.thread_id,
-            sender_participant_id: thread.sender_participant_id,
-          },
-        },
-      },
-    )
-  }
-  return 'onboarded:fill_prescription:ask_prescriber_continue' as const
-}
+//   if (
+//     isObjectLike(thread) && typeof thread.thread_id === 'string' &&
+//     typeof thread.sender_participant_id === 'string'
+//   ) {
+//     await messages.send(trx, {
+//       body,
+//       thread_id: thread.thread_id,
+//       sender_participant_id: thread.sender_participant_id,
+//     })
+//   } else {
+//     const thread = await message_threads.create(trx, {
+//       sender: {
+//         table_name: 'pharmacists',
+//         row_id: pharmacistState.chatbot_user.entity_id!,
+//       },
+//       recipient: {
+//         table_name: 'employment',
+//         row_id: prescription.prescriber_id,
+//       },
+//       subjects: [
+//         { table_name: 'prescriptions', row_id: prescription.id },
+//         { table_name: 'patients', row_id: prescription.patient_id },
+//       ],
+//       initial_message: {
+//         body,
+//       },
+//     })
+//     await conversations.updateChatbotUser(
+//       trx,
+//       pharmacistState.chatbot_user,
+//       {
+//         data: {
+//           ...pharmacistState.chatbot_user.data,
+//           thread: {
+//             thread_id: thread.thread_id,
+//             sender_participant_id: thread.sender_participant_id,
+//           },
+//         },
+//       },
+//     )
+//   }
+//   return 'onboarded:fill_prescription:ask_prescriber_continue' as const
+// }

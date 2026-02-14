@@ -8,6 +8,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { route } from '../../../../_route.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import asFormData from '../../../../../util/asFormData.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/terms_and_conditions',
@@ -75,10 +76,7 @@ describeParallel(
           {
             method: 'POST',
             body: asFormData({
-              address: {
-                locality: 'Johannesburg',
-                country: 'ZA',
-              },
+              google_maps_place_id: 'TEST GOOGLE MAPS PLACE ' + generateUUID(),
               emergency_contacts: [
                 {
                   name: 'Jane Doe',

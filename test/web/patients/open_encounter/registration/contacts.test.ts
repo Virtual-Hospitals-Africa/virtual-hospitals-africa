@@ -9,6 +9,7 @@ import { route } from '../../../../_route.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import asFormData from '../../../../../util/asFormData.ts'
 import { assert } from 'std/assert/assert.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/contacts',
@@ -84,11 +85,7 @@ describeParallel(
           {
             method: 'POST',
             body: asFormData({
-              address: {
-                street: '123 Main Street',
-                locality: 'Johannesburg',
-                country: 'ZA',
-              },
+              google_maps_place_id: 'TEST GOOGLE MAPS PLACE ' + generateUUID(),
               emergency_contacts: [
                 {
                   name: 'Jane Doe',
@@ -167,102 +164,17 @@ describeParallel(
           {
             method: 'POST',
             body: asFormData({
-              address: {
-                locality: 'Cape Town',
-                country: 'ZA',
-              },
+              google_maps_place_id: 'TEST GOOGLE MAPS PLACE ' + generateUUID(),
               emergency_contacts: [
                 {
                   name: 'John Smith',
-                  relationship: 'Father',
+                  relationship: 'Parent',
                   phone_number: '+27829876543',
                 },
                 {
                   name: 'Mary Smith',
-                  relationship: 'Mother',
+                  relationship: 'Parent',
                   phone_number: '+27821112222',
-                },
-              ],
-            }),
-          },
-        )
-
-        assertEquals(
-          $confirm_details.url,
-          `${route}/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/registration/confirm_details`,
-        )
-      },
-    )
-
-    itParallel(
-      'can submit with minimal address info',
-      async () => {
-        const organization = await createTestOrganization(db)
-        const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
-          registration_status: 'approved',
-          organization_id: organization.id,
-        })
-
-        // Start registration
-        const $personal = await fetchCheerio(
-          `/app/organizations/${organization.id}/patients/start-registration`,
-          {
-            method: 'POST',
-          },
-        )
-        const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
-
-        // Submit personal info
-        const $this_visit = await fetchCheerio(
-          $personal.url,
-          {
-            method: 'POST',
-            body: asFormData(randomDemographics('ZA')),
-          },
-        )
-
-        // Submit this_visit with continue_with_registration
-        const $primary_care = await fetchCheerio(
-          $this_visit.url,
-          {
-            method: 'POST',
-            body: asFormData({
-              next_workflow: 'continue_with_registration',
-            }),
-          },
-        )
-
-        // Submit primary_care with no insurance
-        const $contacts = await fetchCheerio(
-          $primary_care.url,
-          {
-            method: 'POST',
-            body: asFormData({
-              primary_doctor_name: 'Dr. Smith',
-              nearest_organization_id: organization.id,
-              insurance: {
-                has_no_insurance: true,
-              },
-            }),
-          },
-        )
-
-        // Submit contacts with minimal address (only locality and country required)
-        const $confirm_details = await fetchCheerio(
-          $contacts.url,
-          {
-            method: 'POST',
-            body: asFormData({
-              address: {
-                locality: 'Durban',
-                country: 'ZA',
-              },
-              emergency_contacts: [
-                {
-                  name: 'Emergency Contact',
-                  relationship: 'Friend',
-                  phone_number: '+27823334444',
                 },
               ],
             }),

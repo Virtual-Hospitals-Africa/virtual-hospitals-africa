@@ -1,26 +1,26 @@
-import { ConversationStates, PharmacistChatbotUserState, PharmacistConversationState, TrxOrDb, WhatsAppSingleSendable } from '../../types.ts'
+// TODO: rewrite prescription-related states against new patient_prescriptions model
+import { ConversationStates, PharmacistChatbotUserState, PharmacistConversationState, TrxOrDb } from '../../types.ts'
 import { conversations } from '../../db/models/conversations.ts'
 import { pharmacists } from '../../db/models/pharmacists.ts'
 import { pharmacies } from '../../db/models/pharmacies.ts'
-import { prescription_medications } from '../../db/models/prescription_medications.ts'
 import { assert } from 'std/assert/assert.ts'
-import { generate } from '../../util/pdf.ts'
+// import { generate } from '../../util/pdf.ts'
 import { handleLicenceInput, handlePharmacyLicenceInput } from './handleLicenceInput.ts'
-import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
-import {
-  activePresciptionMedication,
-  dispenseAll,
-  dispenseExit,
-  dispenseOne,
-  dispenseRestart,
-  dispenseSkip,
-  dispenseType,
-  getPrescriber,
-  handleDispense,
-  medicationDisplay,
-} from './prescriptionMedications.ts'
+// import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
+// import {
+//   activePresciptionMedication,
+//   dispenseAll,
+//   dispenseExit,
+//   dispenseOne,
+//   dispenseRestart,
+//   dispenseSkip,
+//   dispenseType,
+//   getPrescriber,
+//   handleDispense,
+//   medicationDisplay,
+// } from './prescriptionMedications.ts'
 import { handleShareLocation } from './handleShareLocation.ts'
-import { handleAskPrescriber } from './handleAskPrescriber.ts'
+// import { handleAskPrescriber } from './handleAskPrescriber.ts'
 
 async function checkOnboardingStatus(
   trx: TrxOrDb,
@@ -43,9 +43,9 @@ async function checkOnboardingStatus(
   return 'not_onboarded:enter_licence_number' as const
 }
 
-const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL') ||
-  'https://localhost:8000'
-assert(PRESCRIPTIONS_BASE_URL, 'PRESCRIPTIONS_BASE_URL should be set')
+// const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL') ||
+//   'https://localhost:8000'
+// assert(PRESCRIPTIONS_BASE_URL, 'PRESCRIPTIONS_BASE_URL should be set')
 
 const welcome =
   'Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, select the items from the following menu'
@@ -74,20 +74,21 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       return `Hello ${pharmacist.given_name}, what can I help you with today?`
     },
     options: [
-      {
-        id: 'fill_prescription',
-        title: 'Fill Prescription',
-        onExit(
-          trx: TrxOrDb,
-          pharmacistState: PharmacistChatbotUserState,
-        ) {
-          return checkOnboardingStatus(
-            trx,
-            pharmacistState,
-            'onboarded:fill_prescription:enter_code',
-          )
-        },
-      },
+      // TODO: rewrite prescription filling flow against new patient_prescriptions model
+      // {
+      //   id: 'fill_prescription',
+      //   title: 'Fill Prescription',
+      //   onExit(
+      //     trx: TrxOrDb,
+      //     pharmacistState: PharmacistChatbotUserState,
+      //   ) {
+      //     return checkOnboardingStatus(
+      //       trx,
+      //       pharmacistState,
+      //       'onboarded:fill_prescription:enter_code',
+      //     )
+      //   },
+      // },
       {
         id: 'view_inventory',
         title: 'View Inventory',
@@ -269,191 +270,16 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       },
     ],
   },
-  'onboarded:fill_prescription:enter_code': {
-    type: 'string',
-    prompt: 'Please enter your prescription code',
-    onExit: handlePrescriptionCode,
-  },
-  'onboarded:fill_prescription:reenter_code': {
-    type: 'select',
-    prompt: 'The code you entered is invalid. Please check and try again.',
-    options: [
-      {
-        id: 'retry',
-        title: 'Retry',
-        onExit: 'onboarded:fill_prescription:enter_code',
-      },
-      {
-        id: 'main_menu',
-        title: 'Back to main menu',
-        onExit: 'initial_message',
-      },
-    ],
-  },
-  'onboarded:fill_prescription:send_pdf': {
-    type: 'send_document',
-    prompt: '',
-    async getMessages(trx, pharmacistState) {
-      const { prescription_id, prescription_code } = pharmacistState.chatbot_user.data
-      assert(typeof prescription_id === 'string')
-      assert(typeof prescription_code === 'string')
-
-      const file_path = await generate(
-        `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
-      )
-
-      const unfilled_medications = await prescription_medications
-        .getByPrescriptionId(
-          trx,
-          prescription_id,
-          { unfilled: true },
-        )
-
-      assert(unfilled_medications.length > 0)
-
-      const document_message: WhatsAppSingleSendable = {
-        type: 'document',
-        message_body: `Here is the patient's prescription including the following medications:\n* ${
-          unfilled_medications.map((m) => m.drug_generic_name).join('\n* ')
-        }`,
-        file_path,
-      }
-
-      const button_message: WhatsAppSingleSendable = {
-        type: 'buttons',
-        message_body: 'Click below to continue dispensing medications',
-        buttonText: 'Back to main menu',
-        options: [{
-          id: 'dispense',
-          title: 'Dispense',
-        }, {
-          id: 'ask_prescriber',
-          title: 'Ask Prescriber',
-        }, {
-          id: 'main_menu',
-          title: 'Back to Menu',
-        }],
-      }
-      return [document_message, button_message]
-    },
-
-    onExit: dispenseType,
-  },
-  'onboarded:fill_prescription:decision': {
-    type: 'select',
-    prompt: 'Click below to continue dispensing medications',
-    options: [{
-      id: 'dispense',
-      title: 'Dispense',
-      onExit: handleDispense,
-    }, {
-      id: 'ask_prescriber',
-      title: 'Ask Prescriber',
-      onExit: 'onboarded:fill_prescription:ask_prescriber',
-    }, {
-      id: 'main_menu',
-      title: 'Back to Menu',
-      onExit: 'initial_message',
-    }],
-  },
-  'onboarded:fill_prescription:ask_prescriber': {
-    type: 'string',
-    prompt: 'Chat with the prescriber here. When finished type you may type done or click the dispense button.',
-    onExit: handleAskPrescriber,
-  },
-  'onboarded:fill_prescription:ask_prescriber_continue': {
-    type: 'string',
-    prompt: "Your message has been sent to the prescriber. You'll receive a message here when they reply.",
-    onExit: handleAskPrescriber,
-  },
-  'onboarded:fill_prescription:ask_dispense_one': {
-    type: 'select',
-    async prompt(
-      trx: TrxOrDb,
-      pharmacistState: PharmacistChatbotUserState,
-    ) {
-      const medication = await activePresciptionMedication(
-        trx,
-        pharmacistState,
-      )
-
-      return `Are you dispensing this medication?\n\n${medicationDisplay(medication)}`
-    },
-    options: [
-      {
-        id: 'Yes',
-        title: 'Yes',
-        onExit: dispenseOne,
-      },
-      {
-        id: 'No',
-        title: 'No',
-        onExit: dispenseSkip,
-      },
-    ],
-  },
-  'onboarded:fill_prescription:ask_dispense_all': {
-    type: 'select',
-    prompt: 'Do you want to dispense all undispensed medications?',
-    options: [
-      {
-        id: 'Yes',
-        title: 'Yes',
-        onExit: dispenseAll,
-      },
-      {
-        id: 'No',
-        title: 'No',
-        async onExit(trx, pharmacistState) {
-          const unfilled_medications = await prescription_medications
-            .getByPrescriptionId(
-              trx,
-              pharmacistState.chatbot_user.data.prescription_id as string,
-              {
-                unfilled: true,
-              },
-            )
-
-          await conversations.updateChatbotUser(
-            trx,
-            pharmacistState.chatbot_user,
-            {
-              data: {
-                ...pharmacistState.chatbot_user.data,
-                prescription_medication_id: unfilled_medications[0].prescription_medication_id,
-              },
-            },
-          )
-
-          return 'onboarded:fill_prescription:ask_dispense_one' as const
-        },
-      },
-    ],
-  },
-  'onboarded:fill_prescription:confirm_done': {
-    type: 'select',
-    async prompt(
-      trx: TrxOrDb,
-      pharmacistState: PharmacistChatbotUserState,
-    ) {
-      return `Thank you for assisting "${await getPrescriber(
-        trx,
-        pharmacistState,
-      )}" do you want to Print or Share the Prescription Note, or restart dispense`
-    },
-    options: [
-      {
-        id: 'restart_dispense',
-        title: 'Restart Dispense',
-        onExit: dispenseRestart,
-      },
-      {
-        id: 'main_menu',
-        title: 'Back To Main Menu',
-        onExit: dispenseExit,
-      },
-    ],
-  },
+  // TODO: rewrite prescription-related states against new patient_prescriptions model
+  // 'onboarded:fill_prescription:enter_code': { ... },
+  // 'onboarded:fill_prescription:reenter_code': { ... },
+  // 'onboarded:fill_prescription:send_pdf': { ... },
+  // 'onboarded:fill_prescription:decision': { ... },
+  // 'onboarded:fill_prescription:ask_prescriber': { ... },
+  // 'onboarded:fill_prescription:ask_prescriber_continue': { ... },
+  // 'onboarded:fill_prescription:ask_dispense_one': { ... },
+  // 'onboarded:fill_prescription:ask_dispense_all': { ... },
+  // 'onboarded:fill_prescription:confirm_done': { ... },
   'end_of_demo': {
     type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',

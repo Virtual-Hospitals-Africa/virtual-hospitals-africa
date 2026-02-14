@@ -10,6 +10,7 @@ import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { getTableDisplay } from 'test/_helpers/table.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 describeParallel(
   '/app/organizations/[organization_id]/patients/[patient_id]/open_encounters/registration/route_patient',
@@ -33,7 +34,7 @@ describeParallel(
             },
           },
           contacts: {
-            google_maps_place_id: '',
+            google_maps_place_id: 'TEST GOOGLE MAPS PLACE ' + generateUUID(),
             phone_number: randomPhoneNumber('ZA'),
             emergency_contacts: [{
               ...randomDemographics(),

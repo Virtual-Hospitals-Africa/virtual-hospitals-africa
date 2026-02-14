@@ -1,244 +1,244 @@
-import { DrugSearchResult as DrugSearchResultData, PreExistingConditionWithDrugs } from '../../types.ts'
-import FormRow from '../../components/library/FormRow.tsx'
-import MedicationSearch from './Search.tsx'
-import { dosageDisplay, Dosages, RegistrationFrequencies, strengthDisplay } from '../../shared/medication.ts'
-import { computed, effect, useSignal } from '@preact/signals'
-import { Select } from '../form/inputs/select.tsx'
-import { DateInput } from '../form/inputs/date.tsx'
-import { TextArea } from '../form/inputs/textarea.tsx'
+// import { DrugSearchResult as DrugSearchResultData, PreExistingConditionWithDrugs } from '../../types.ts'
+// import FormRow from '../../components/library/FormRow.tsx'
+// import MedicationSearch from './Search.tsx'
+// import { dosageDisplay, Dosages, RegistrationFrequencies, strengthDisplay } from '../../shared/prescription.ts'
+// import { computed, effect, useSignal } from '@preact/signals'
+// import { Select } from '../form/inputs/select.tsx'
+// import { DateInput } from '../form/inputs/date.tsx'
+// import { TextArea } from '../form/inputs/textarea.tsx'
 
-export default function DrugInput({
-  name,
-  value,
-}: {
-  name: string
-  value?: PreExistingConditionWithDrugs['medications'][number]
-}) {
-  const drug = useSignal<DrugSearchResultData | null>(
-    value?.drug || null,
-  )
-  const medication_id = useSignal<string | null>(
-    value?.medication_id || null,
-  )
-  const strength_numerator = useSignal<
-    string | null
-  >(value?.strength ?? null)
+// export default function DrugInput({
+//   name,
+//   value,
+// }: {
+//   name: string
+//   value?: PreExistingConditionWithDrugs['medications'][number]
+// }) {
+//   const drug = useSignal<DrugSearchResultData | null>(
+//     value?.drug || null,
+//   )
+//   const medication_id = useSignal<string | null>(
+//     value?.medication_id || null,
+//   )
+//   const strength_numerator = useSignal<
+//     string | null
+//   >(value?.strength ?? null)
 
-  const registration_frequency = useSignal<
-    string | null
-  >(value?.registration_frequency ?? null)
+//   const medication_frequency = useSignal<
+//     string | null
+//   >(value?.medication_frequency ?? null)
 
-  const dosage = useSignal<string | null>(
-    value?.dosage ?? null,
-  )
-  const route = useSignal<string | null>(
-    value?.route ?? null,
-  )
-  const special_instructions = useSignal<string | null>(
-    value?.special_instructions ?? null,
-  )
+//   const dosage = useSignal<string | null>(
+//     value?.dosage ?? null,
+//   )
+//   const route = useSignal<string | null>(
+//     value?.route ?? null,
+//   )
+//   const special_instructions = useSignal<string | null>(
+//     value?.special_instructions ?? null,
+//   )
 
-  const medication = computed(() =>
-    drug.value?.medications.find(
-      (m) => m.medication_id === medication_id.value,
-    )
-  )
+//   const medication = computed(() =>
+//     drug.value?.medications.find(
+//       (m) => m.medication_id === medication_id.value,
+//     )
+//   )
 
-  const strength_numerator_options = computed(() => medication.value?.strength_numerators)
+//   const strength_numerator_options = computed(() => medication.value?.strength_numerators)
 
-  effect(() => {
-    if (!drug.value) return
-    if (medication_id.value) return
-    if (drug.value.medications.length === 1) {
-      medication_id.value = drug.value.medications[0].medication_id
-    }
-  })
+//   effect(() => {
+//     if (!drug.value) return
+//     if (medication_id.value) return
+//     if (drug.value.medications.length === 1) {
+//       medication_id.value = drug.value.medications[0].medication_id
+//     }
+//   })
 
-  effect(() => {
-    if (!medication.value) return
-    if (strength_numerator.value) return
-    if (medication.value.strength_numerators.length === 1) {
-      strength_numerator.value = medication.value.strength_numerators[0]
-    }
-  })
+//   effect(() => {
+//     if (!medication.value) return
+//     if (strength_numerator.value) return
+//     if (medication.value.strength_numerators.length === 1) {
+//       strength_numerator.value = medication.value.strength_numerators[0]
+//     }
+//   })
 
-  effect(() => {
-    if (!medication.value) return
-    if (!strength_numerator.value) return
-    if (dosage.value) return
-    dosage.value = medication.value.strength_denominator
-  })
+//   effect(() => {
+//     if (!medication.value) return
+//     if (!strength_numerator.value) return
+//     if (dosage.value) return
+//     dosage.value = medication.value.strength_denominator
+//   })
 
-  return (
-    <div className='w-full justify-normal'>
-      <FormRow className='w-full justify-normal'>
-        <MedicationSearch
-          label='Drug'
-          name={name}
-          value={drug.value}
-          required
-          onSelect={(d) => {
-            drug.value = d ?? null
-            medication_id.value = null
-            strength_numerator.value = null
-            dosage.value = null
-            registration_frequency.value = null
-          }}
-        />
-      </FormRow>
-      <FormRow className='w-full justify-normal'>
-        <Select
-          name={`${name}.medication_id`}
-          required
-          label='Form'
-          disabled={!drug}
-          onChange={(event) => {
-            if (event.currentTarget.value) {
-              medication_id.value = event.currentTarget.value
-            }
-          }}
-        >
-          <option value=''>Select Form</option>
-          {drug.value?.medications.map((medication) => (
-            <option
-              value={medication.medication_id}
-              selected={medication_id.value === medication.medication_id}
-            >
-              {medication.form_route}
-            </option>
-          ))}
-        </Select>
-        {medication.value && (medication.value.routes.length > 1) && (
-          <Select
-            name={`${name}.route`}
-            required
-            label='Route'
-            disabled={!drug}
-            onChange={(event) => route.value = event.currentTarget.value}
-          >
-            <option value=''>Select Form</option>
-            {medication.value.routes.map((route_option) => (
-              <option
-                value={route_option}
-                selected={route_option === route.value}
-              >
-                {route_option}
-              </option>
-            ))}
-          </Select>
-        )}
-        {medication.value && (medication.value.routes.length === 1) && (
-          <input
-            name={`${name}.route`}
-            type='hidden'
-            value={medication.value.routes[0]}
-          />
-        )}
-        <Select
-          name={`${name}.strength`}
-          required
-          label='Strength'
-          disabled={!medication}
-          onChange={(event) => {
-            if (event.currentTarget.value) {
-              strength_numerator.value = event.currentTarget.value
-            } else {
-              strength_numerator.value = null
-            }
-          }}
-        >
-          <option value=''>Select Strength</option>
-          {medication.value &&
-            strength_numerator_options.value?.map((
-              strength_numerator_option,
-            ) => (
-              <option
-                value={strength_numerator_option.toString()}
-                selected={strength_numerator.value ===
-                  strength_numerator_option}
-              >
-                {strengthDisplay({
-                  strength_numerator: strength_numerator_option,
-                  strength_numerator_unit: medication.value!.strength_numerator_unit,
-                  strength_denominator: medication.value!.strength_denominator,
-                  strength_denominator_unit: medication.value!.strength_denominator_unit,
-                })}
-              </option>
-            ))}
-        </Select>
-      </FormRow>
-      <FormRow className='w-full justify-normal'>
-        <Select
-          name={`${name}.dosage`}
-          label='Dosage'
-          disabled={!(medication.value && strength_numerator.value)}
-        >
-          <option value=''>Select Dosage</option>
-          {medication.value && strength_numerator.value &&
-            Dosages.map(([dosage_text, dosage_value]) => {
-              const option_value = String(
-                parseFloat(medication.value!.strength_denominator) *
-                  parseFloat(dosage_value),
-              )
+//   return (
+//     <div className='w-full justify-normal'>
+//       <FormRow className='w-full justify-normal'>
+//         <MedicationSearch
+//           label='Drug'
+//           name={name}
+//           value={drug.value}
+//           required
+//           onSelect={(d) => {
+//             drug.value = d ?? null
+//             medication_id.value = null
+//             strength_numerator.value = null
+//             dosage.value = null
+//             medication_frequency.value = null
+//           }}
+//         />
+//       </FormRow>
+//       <FormRow className='w-full justify-normal'>
+//         <Select
+//           name={`${name}.medication_id`}
+//           required
+//           label='Form'
+//           disabled={!drug}
+//           onChange={(event) => {
+//             if (event.currentTarget.value) {
+//               medication_id.value = event.currentTarget.value
+//             }
+//           }}
+//         >
+//           <option value=''>Select Form</option>
+//           {drug.value?.medications.map((medication) => (
+//             <option
+//               value={medication.medication_id}
+//               selected={medication_id.value === medication.medication_id}
+//             >
+//               {medication.form_route}
+//             </option>
+//           ))}
+//         </Select>
+//         {medication.value && (medication.value.routes.length > 1) && (
+//           <Select
+//             name={`${name}.route`}
+//             required
+//             label='Route'
+//             disabled={!drug}
+//             onChange={(event) => route.value = event.currentTarget.value}
+//           >
+//             <option value=''>Select Form</option>
+//             {medication.value.routes.map((route_option) => (
+//               <option
+//                 value={route_option}
+//                 selected={route_option === route.value}
+//               >
+//                 {route_option}
+//               </option>
+//             ))}
+//           </Select>
+//         )}
+//         {medication.value && (medication.value.routes.length === 1) && (
+//           <input
+//             name={`${name}.route`}
+//             type='hidden'
+//             value={medication.value.routes[0]}
+//           />
+//         )}
+//         <Select
+//           name={`${name}.strength`}
+//           required
+//           label='Strength'
+//           disabled={!medication}
+//           onChange={(event) => {
+//             if (event.currentTarget.value) {
+//               strength_numerator.value = event.currentTarget.value
+//             } else {
+//               strength_numerator.value = null
+//             }
+//           }}
+//         >
+//           <option value=''>Select Strength</option>
+//           {medication.value &&
+//             strength_numerator_options.value?.map((
+//               strength_numerator_option,
+//             ) => (
+//               <option
+//                 value={strength_numerator_option.toString()}
+//                 selected={strength_numerator.value ===
+//                   strength_numerator_option}
+//               >
+//                 {strengthDisplay({
+//                   strength_numerator: strength_numerator_option,
+//                   strength_numerator_unit: medication.value!.strength_numerator_unit,
+//                   strength_denominator: medication.value!.strength_denominator,
+//                   strength_denominator_unit: medication.value!.strength_denominator_unit,
+//                 })}
+//               </option>
+//             ))}
+//         </Select>
+//       </FormRow>
+//       <FormRow className='w-full justify-normal'>
+//         <Select
+//           name={`${name}.dosage`}
+//           label='Dosage'
+//           disabled={!(medication.value && strength_numerator.value)}
+//         >
+//           <option value=''>Select Dosage</option>
+//           {medication.value && strength_numerator.value &&
+//             Dosages.map(([dosage_text, dosage_value]) => {
+//               const option_value = String(
+//                 parseFloat(medication.value!.strength_denominator) *
+//                   parseFloat(dosage_value),
+//               )
 
-              // const option_value = new Decimal.Decimal(
-              //   medication.value!.strength_denominator,
-              // ).mul(
-              //   dosage_value,
-              // ).toFixed()
-              return (
-                <option
-                  value={option_value}
-                  selected={dosage.value === option_value}
-                >
-                  {dosageDisplay({
-                    dosage_text,
-                    dosage: dosage_value,
-                    strength_numerator: strength_numerator.value!,
-                    ...medication.value!,
-                  })}
-                </option>
-              )
-            })}
-        </Select>
-        <Select
-          name={`${name}.registration_frequency`}
-          required
-          label='Frequency'
-          disabled={!drug}
-        >
-          <option value=''>Select Frequency</option>
-          {drug &&
-            Object.entries(RegistrationFrequencies).map(([code, label]) => (
-              <option
-                value={code}
-                selected={registration_frequency.value === code}
-              >
-                {label}
-              </option>
-            ))}
-        </Select>
-        <DateInput
-          name={`${name}.start_date`}
-          label='Start Date'
-          required
-          value={value?.start_date}
-        />
-        <DateInput
-          name={`${name}.end_date`}
-          label='End Date'
-          value={value?.end_date}
-        />
-      </FormRow>
-      <FormRow>
-        <TextArea
-          name={`${name}.special_instructions`}
-          className='w-full'
-          label='Special Instructions'
-          value={special_instructions.value}
-          onInput={(event) => special_instructions.value = event.currentTarget.value}
-        />
-      </FormRow>
-    </div>
-  )
-}
+//               // const option_value = new Decimal.Decimal(
+//               //   medication.value!.strength_denominator,
+//               // ).mul(
+//               //   dosage_value,
+//               // ).toFixed()
+//               return (
+//                 <option
+//                   value={option_value}
+//                   selected={dosage.value === option_value}
+//                 >
+//                   {dosageDisplay({
+//                     dosage_text,
+//                     dosage: dosage_value,
+//                     strength_numerator: strength_numerator.value!,
+//                     ...medication.value!,
+//                   })}
+//                 </option>
+//               )
+//             })}
+//         </Select>
+//         <Select
+//           name={`${name}.medication_frequency`}
+//           required
+//           label='Frequency'
+//           disabled={!drug}
+//         >
+//           <option value=''>Select Frequency</option>
+//           {drug &&
+//             Object.entries(RegistrationFrequencies).map(([code, label]) => (
+//               <option
+//                 value={code}
+//                 selected={medication_frequency.value === code}
+//               >
+//                 {label}
+//               </option>
+//             ))}
+//         </Select>
+//         <DateInput
+//           name={`${name}.start_date`}
+//           label='Start Date'
+//           required
+//           value={value?.start_date}
+//         />
+//         <DateInput
+//           name={`${name}.end_date`}
+//           label='End Date'
+//           value={value?.end_date}
+//         />
+//       </FormRow>
+//       <FormRow>
+//         <TextArea
+//           name={`${name}.special_instructions`}
+//           className='w-full'
+//           label='Special Instructions'
+//           value={special_instructions.value}
+//           onInput={(event) => special_instructions.value = event.currentTarget.value}
+//         />
+//       </FormRow>
+//     </div>
+//   )
+// }
