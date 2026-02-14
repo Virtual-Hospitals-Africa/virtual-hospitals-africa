@@ -1,0 +1,38 @@
+name: Main
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+        with:
+          lfs: false
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.6.4
+
+      - name: Deno install
+        run: deno install --allow-scripts
+
+      - uses: actions/cache/save@v4
+        name: Save deno modules
+        with:
+          path: ~/.cache/deno
+          key: deno-modules
+
+      - name: Git lfs pull
+        run: git lfs pull
+
+      - uses: actions/cache/save@v4
+        name: Save git lfs cache
+        with:
+          path: .git/lfs/objects
+          key: git-lfs

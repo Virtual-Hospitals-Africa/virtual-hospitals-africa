@@ -1,0 +1,27 @@
+name: Setup Deno
+description: Checkout, set up Deno, restore module cache, and install dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v5
+      with:
+        lfs: false
+
+    - name: Set up Deno
+      uses: denoland/setup-deno@v2
+      with:
+        deno-version: v2.6.4
+
+    - uses: actions/cache/restore@v4
+      name: Restore deno modules
+      id: cache-deno-modules-restore
+      with:
+        path: ~/.cache/deno
+        key: deno-modules
+        restore-keys: deno-modules
+
+    - name: Deno install
+      run: deno install --allow-scripts
+      shell: bash

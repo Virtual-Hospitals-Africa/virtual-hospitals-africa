@@ -1,0 +1,47 @@
+name: Test with Database
+
+on:
+  workflow_call:
+    inputs:
+      setup-lfs:
+        type: boolean
+        default: false
+      run:
+        type: string
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_USER: runner
+          POSTGRES_PASSWORD: testpw
+          POSTGRES_DB: vha_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: ./.github/actions/setup-deno
+
+      - uses: ./.github/actions/setup-lfs
+        if: ${{ inputs.setup-lfs }}
+
+      - uses: ./.github/actions/write-test-env
+
+      - name: Run
+        run: ${{ inputs.run }}

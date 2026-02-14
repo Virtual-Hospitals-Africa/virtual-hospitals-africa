@@ -1,0 +1,17 @@
+name: Setup LFS
+description: Restore git LFS cache and pull LFS objects
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache/restore@v4
+      name: Restore git lfs cache
+      id: cache-git-lfs-restore
+      with:
+        path: .git/lfs/objects
+        key: git-lfs
+        restore-keys: git-lfs
+
+    - name: Git lfs pull
+      run: git lfs pull
+      shell: bash

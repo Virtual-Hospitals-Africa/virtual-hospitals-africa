@@ -1,0 +1,12 @@
+name: Write Test Env
+description: Write the .env file for test jobs
+
+runs:
+  using: composite
+  steps:
+    - name: Write .env file
+      run: |
+        echo "DATABASE_URL=postgres://runner:testpw@localhost:5432/vha_test" > .env
+        echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
+        echo "SKIP_GOOGLE_MAPS=true" >> .env
+      shell: bash
