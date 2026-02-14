@@ -3105,19 +3105,11 @@ export type RenderedMedicationSchedule = MedicationSchedule & {
   medication_dose_id: string
 }
 
-export type RecordValuePrescriptionMedication = {
-  type: 'prescription_medication'
-  medication: RenderedMedication
-  schedules: RenderedMedicationSchedule[]
-  special_instructions: string | null
-}
-
 export type RecordValue =
   | RecordValueEvent
   | RecordValueSnomedConcept
   | RecordValueMeasurement
   | RecordValueScore
-  | RecordValuePrescriptionMedication
   | RecordValueSExpression
   | RecordValueLink
 
