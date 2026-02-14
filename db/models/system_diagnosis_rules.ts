@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { EXPRESSION_BUILDERS } from './s_expression.ts'
 import { TrxOrDb } from '../../types.ts'
-import { blankSelection, debugLog, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
+import { blankSelection, jsonObjectFrom, literalString, success_true } from '../helpers.ts'
 import {
   DEFINITE,
   DONE,
@@ -28,8 +28,6 @@ import { ruleRunner, RuleRunnerInput } from './system_rules.ts'
 import compactMap from '../../util/compactMap.ts'
 import findMatching from '../../util/findMatching.ts'
 import { deepMerge } from '../../util/deepMerge.ts'
-
-import { logReadableJson } from '../../util/humanReadableJson.ts'
 
 export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map((d) => parseWithSchema(d, system_diagnosis_rule))
 
@@ -89,9 +87,6 @@ const findMatchingRecords = ruleRunner(
       .selectAll()
       .where('matching_diagnosis', 'is not', null)
 
-    console.log('hjwehhhkjlwelkeklw')
-    debugLog(already_present_diagnoses_query)
-
     const already_present_diagnoses = await already_present_diagnoses_query.execute()
 
     const existing_diagnoses: ExistingDiagnosis[] = already_present_diagnoses.map(({ diagnosis_concept_s_expression, matching_diagnosis }) => {
@@ -144,18 +139,7 @@ export const system_diagnosis_rules = {
     if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
     const make_new_diagnosis = await findMatchingRecords(trx, input)
 
-    console.log('ffff')
-    logReadableJson({ make_new_diagnosis })
-
     const existing_diagnoses = ALREADY_PRESENT_DIAGNOSES.get(input) || []
-
-    if (existing_diagnoses.length) {
-      const x = await trx.selectFrom('patient_records_still_valid')
-        .where('id', '=', existing_diagnoses[0].matching_diagnosis_id)
-        .select('id')
-        .execute()
-      logReadableJson({ existing_diagnoses, x })
-    }
 
     // Check for probable rules that didn't match but have a possible existing diagnosis with completed tasks
     // If so, mark them as improbable

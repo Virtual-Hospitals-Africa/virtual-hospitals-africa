@@ -1,33 +1,20 @@
-import { parseRequestAsserts } from '../backend/parseForm.ts'
+import { z } from 'zod'
+import { parseRequest } from '../backend/parseForm.ts'
 import * as slack from '../external-clients/slack.ts'
 import redirect from '../util/redirect.ts'
-import { assertOr400 } from '../util/assertOr.ts'
-import isObjectLike from '../util/isObjectLike.ts'
 import { CONTACT_REASON_OPTIONS, ContactReason } from '../components/library/ContactForm.tsx'
 import { Handlers } from 'fresh/compat'
 
-function assertIsMailingListRecipient(
-  form_values: unknown,
-): asserts form_values is {
-  name: string
-  email: string
-  reason: ContactReason
-  interest?: string
-  message?: string
-  support?: string
-} {
-  assertOr400(isObjectLike(form_values))
-  assertOr400('name' in form_values && typeof form_values['name'] == 'string')
-  assertOr400(
-    'reason' in form_values &&
-      typeof form_values['reason'] == 'string' &&
-      CONTACT_REASON_OPTIONS.some(
-        (option) => option.value === form_values['reason'],
-      ),
-  )
-  assertOr400('email' in form_values && typeof form_values['email'] == 'string')
-  assertOr400(form_values['email'].includes('@'))
-}
+const contact_reasons = CONTACT_REASON_OPTIONS.map((o) => o.value) as [ContactReason, ...ContactReason[]]
+
+const MailingListRecipientSchema = z.object({
+  name: z.string(),
+  email: z.string().includes('@'),
+  reason: z.enum(contact_reasons),
+  interest: z.string().optional(),
+  message: z.string().optional(),
+  support: z.string().optional(),
+})
 
 const success_messages = {
   general_inquiry: (name: string) => `Thanks for your interest ${name}! Our team has received your inquiry and will respond as soon as possible 🚀`,
@@ -38,10 +25,9 @@ const success_messages = {
 
 export const handler: Handlers = {
   async POST(ctx) {
-    const req = ctx.req
-    const recipient = await parseRequestAsserts(
-      req,
-      assertIsMailingListRecipient,
+    const recipient = await parseRequest(
+      ctx.req,
+      (obj) => MailingListRecipientSchema.parse(obj),
     )
 
     // await mailing_list.add(db, recipient)

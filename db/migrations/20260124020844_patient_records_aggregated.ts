@@ -3,14 +3,7 @@ import { DB } from '../../db.d.ts'
 import { createPointerTable } from '../createTable.ts'
 import { asCompiledSql, asText, jsonBuildObject, literalString } from '../helpers.ts'
 import { NO_QUALIFIER, UNKNOWN_QUALIFIER } from '../../shared/snomed_concepts.ts'
-import {
-  RecordValueEvent,
-  RecordValueLink,
-  RecordValueMeasurement,
-  RecordValueScore,
-  RecordValueSExpression,
-  RecordValueSnomedConcept,
-} from '../../types.ts'
+import { RecordValueEvent, RecordValueLink, RecordValueMeasurement, RecordValueScore, RecordValueSExpression, RecordValueSnomedConcept } from '../../types.ts'
 
 export async function up(db: Kysely<DB>) {
   await db.schema.createType('existence').asEnum(['Yes', 'No', 'Unknown']).execute()

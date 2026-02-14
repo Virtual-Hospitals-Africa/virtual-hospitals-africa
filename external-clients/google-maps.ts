@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 
 import { Coordinates, GoogleAddressComponent, LocationDistance } from '../types.ts'
-import { cacheable } from './cache.ts'
+// import { cacheable } from './cache.ts'
 import { AddressInsert } from '../db/models/addresses.ts'
 import { getEnvVariableRequiredOutsideDockerQuickstart } from '../util/getEnvVariableRequiredOutsideDockerQuickstart.ts'
 import { formatAddress } from '../shared/addresses.ts'
@@ -80,42 +80,44 @@ function getAddressFromData(
   return address
 }
 
-export const getWalkingDistance = cacheable(
-  async function getWalkingDistance(
-    locations: LocationDistance,
-  ): Promise<string | null> {
-    const origin_coords = `${locations.origin.latitude},${locations.origin.longitude}`
-    const dest_coords = `${locations.destination.latitude},${locations.destination.longitude}`
-    const mode = `walking`
+export async function getWalkingDistance(
+  locations: LocationDistance,
+): Promise<string | null> {
+  const origin_coords = `${locations.origin.latitude},${locations.origin.longitude}`
+  const dest_coords = `${locations.destination.latitude},${locations.destination.longitude}`
+  const mode = `walking`
 
-    const url =
-      `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin_coords}&destinations=${dest_coords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
+  const url =
+    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin_coords}&destinations=${dest_coords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
 
-    const result = await fetch(url)
-    //assert(result.ok, 'Failed to fetch walking distance')
-    if (!result.ok) {
-      console.error('Failed to fetch walking distance')
-      return null
-    }
-    const json = await result.json()
-    //assert(json.status === 'OK', 'Invalid response from Google Maps API')
-    if (json.status !== 'OK') {
-      console.error('Invalid response from Google Maps API')
-      return null
-    }
+  const result = await fetch(url)
+  //assert(result.ok, 'Failed to fetch walking distance')
+  if (!result.ok) {
+    console.error('Failed to fetch walking distance')
+    return null
+  }
+  const json = await result.json()
+  //assert(json.status === 'OK', 'Invalid response from Google Maps API')
+  if (json.status !== 'OK') {
+    console.error('Invalid response from Google Maps API')
+    return null
+  }
 
-    if (
-      json.rows[0].elements[0].status === 'ZERO_RESULTS' ||
-      json.rows[0].elements[0].status === 'NOT_FOUND'
-    ) {
-      return null
-    }
+  if (
+    json.rows[0].elements[0].status === 'ZERO_RESULTS' ||
+    json.rows[0].elements[0].status === 'NOT_FOUND'
+  ) {
+    return null
+  }
 
-    const distance = json.rows[0].elements[0].distance.text
+  const distance = json.rows[0].elements[0].distance.text
 
-    return distance
-  },
-)
+  return distance
+}
+
+// export const getWalkingDistance = cacheable(
+//   getWalkingDistance
+// )
 
 export async function getAddressSuggestions(
   input: string,

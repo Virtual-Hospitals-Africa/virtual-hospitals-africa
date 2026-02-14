@@ -1,31 +1,18 @@
+import { z } from 'zod'
 import { completeStep, ReviewContext, ReviewLayout } from './_middleware.tsx'
-
 import FormButtons from '../../../../../islands/form/buttons.tsx'
-import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 
-type OrdersFormValues = {
-  orders: unknown
-}
+const OrdersSchema = z.object({
+  orders: z.unknown().optional(),
+}).describe('Orders')
 
-function assertIsOrders(
-  form_values: unknown,
-): asserts form_values is OrdersFormValues {
-  assertOr400(isObjectLike(form_values))
-}
-
-export const handler = {
-  async POST(ctx: ReviewContext) {
-    const req = ctx.req
-    const _form_values = await parseRequestAsserts(
-      req,
-      assertIsOrders,
-    )
-    const completing_step = completeStep(ctx)
-    return completing_step
+export const handler = postHandler(
+  OrdersSchema,
+  async (ctx: ReviewContext, _form_values) => {
+    return await completeStep(ctx)
   },
-}
+)
 
 // deno-lint-ignore require-await
 export default async function OrdersPage(

@@ -1,36 +1,26 @@
+import { z } from 'zod'
 import { LoggedInHealthWorkerContext } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
-import { parseRequestAsserts } from '../../../../../backend/parseForm.ts'
 import { inventory } from '../../../../../db/models/inventory.ts'
-
-import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
+import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { todayISOInJohannesburg } from '../../../../../util/date.ts'
 import consumables from '../../../../../db/models/consumables.ts'
-import isNumber from '../../../../../util/isNumber.ts'
-import isString from '../../../../../util/isString.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
+import { postHandler } from '../../../../../backend/postHandler.ts'
 
-export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
-  quantity: number
-  consumable_id: string
-  procured_from_name: string
-  procured_from_id?: string
-} {
-  assertOr400(isObjectLike(obj))
-  assertOr400(isNumber(obj.quantity))
-  assertOr400(
-    isNumber(obj.procured_from_id) || isString(obj.procured_from_name),
-  )
-  assertOr400(isNumber(obj.consumable_id))
-}
+const AddConsumableSchema = z.object({
+  quantity: z.number(),
+  consumable_id: z.string(),
+  procured_from_name: z.string(),
+  procured_from_id: z.string().optional(),
+}).describe('Add consumable')
 
-export const handler = {
-  async POST(ctx: OrganizationContext) {
-    const req = ctx.req
+export const handler = postHandler(
+  AddConsumableSchema,
+  async (ctx: OrganizationContext, to_add) => {
     const admin_role = roleByProfession(
       ctx.state.organization_employment,
       'admin',
@@ -38,11 +28,6 @@ export const handler = {
     assertOr403(admin_role)
 
     const { organization_id } = ctx.params
-
-    const to_add = await parseRequestAsserts(
-      req,
-      assertIsUpsertConsumer,
-    )
 
     await inventory.procureConsumable(
       ctx.state.trx,
@@ -68,7 +53,7 @@ export const handler = {
       `/app/organizations/${organization_id}/inventory?active_tab=consumables&success=${success}`,
     )
   },
-}
+)
 
 export default HealthWorkerHomePageLayout(
   'Add Consumable',

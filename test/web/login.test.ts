@@ -197,7 +197,6 @@ describeParallel('/login', () => {
 
           const $ = await mock.fetchCheerio(`${route}/app`)
 
-          console.log($.html())
           const waiting_room_add_link = $(
             `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
           )

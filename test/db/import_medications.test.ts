@@ -92,7 +92,7 @@ describe('seed', () => {
     assertEquals(parseMedicationSouthAfrica(xylotox_row), xylotox_parsed)
   })
 
-  it.only('determines that xylotox is a |Product containing only epinephrine and lidocaine (medicinal product)|', async () => {
+  it('determines that xylotox is a |Product containing only epinephrine and lidocaine (medicinal product)|', async () => {
     const medication = await performLookups(db, [xylotox_parsed], { write_failure_files: false })
     const medicinal_product = await db.selectFrom('snomed_inferred_canonical_name_and_category').selectAll().where('id', '=', medication[0].snomed_concept_id)
       .executeTakeFirst()

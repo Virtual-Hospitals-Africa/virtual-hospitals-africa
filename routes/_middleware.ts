@@ -4,6 +4,7 @@ import redirect from '../util/redirect.ts'
 import { Context } from 'fresh'
 import isObjectLike from '../util/isObjectLike.ts'
 import { stripAnsiCode } from 'std/fmt/colors.ts'
+import generateUUID from '../util/uuid.ts'
 
 export function grokPostgresError(err: Record<string, unknown>) {
   // deno-lint-ignore no-explicit-any
@@ -14,9 +15,10 @@ export function grokPostgresError(err: Record<string, unknown>) {
 
 export const handler = async (ctx: Context<unknown>) => {
   try {
-    console.time(`${ctx.req.method} ${ctx.req.url} Response`)
+    const traceparent = generateUUID()
+    console.time(`${ctx.req.method} ${ctx.req.url} ${traceparent} Response`)
     const response = await ctx.next()
-    console.timeEnd(`${ctx.req.method} ${ctx.req.url} Response`)
+    console.timeEnd(`${ctx.req.method} ${ctx.req.url} ${traceparent} Response`)
     return response
   } catch (error) {
     if (!isObjectLike(error)) {

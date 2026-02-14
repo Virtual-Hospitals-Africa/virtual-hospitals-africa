@@ -3,20 +3,22 @@ import { Maybe } from '../types.ts'
 import set from '../util/set.ts'
 import { assertOr400 } from '../util/assertOr.ts'
 import deepRemoveHoles from '../util/deepRemoveHoles.ts'
+import last from '../util/last.ts'
+import first from '../util/first.ts'
 
 type Primitive = string | number | boolean
 
 export type FormValue = Primitive | FormValue[]
 
-export function parseParam(_key: string | undefined, param: string): FormValue {
+export function parseParam(param: string): FormValue {
   if (param === 'true') return true
   if (param === 'on') return true
   if (param === 'false') return false
   if (param === 'off') return false
-  if (param[0] === '[' && param.lastIndexOf(']') === (param.length - 1)) {
+  if (first(param) === '[' && last(param) === ']') {
     return JSON.parse(param)
   }
-  if (param[0] === '{' && param.lastIndexOf('}') === (param.length - 1)) {
+  if (first(param) === '{' && last(param) === '}') {
     return JSON.parse(param)
   }
   return param
@@ -29,7 +31,7 @@ function parseFormWithoutFilesNoTypeCheck(
   params.forEach((value, key) => {
     assert(typeof value === 'string')
     if (value === '') return
-    set(parsed, key, parseParam(key, value))
+    set(parsed, key, parseParam(value))
   })
   return deepRemoveHoles(parsed)
 }
@@ -51,10 +53,9 @@ function isBlank(form_data: Maybe<FormData>) {
   return true
 }
 
-export async function parseRequest<T extends Record<string, unknown>>(
+export async function requestAsRecord(
   req: Request,
-  parse: (obj: unknown) => T,
-): Promise<T> {
+): Promise<Record<string, unknown>> {
   assert(['POST', 'GET'].includes(req.method))
 
   const content_type = req.headers.get('content-type')
@@ -69,7 +70,6 @@ export async function parseRequest<T extends Record<string, unknown>>(
   let values_map: URLSearchParams | FormData
   if (isBlank(form_data)) {
     const text = !body_consumed ? await req.text() : undefined
-
     values_map = (req.method === 'POST' && text) ? new URLSearchParams(text) : new URL(req.url).searchParams
   } else {
     values_map = form_data!
@@ -88,7 +88,7 @@ export async function parseRequest<T extends Record<string, unknown>>(
   })
   Object.keys(files).forEach((key) => values_map.delete(key))
 
-  const parsed = parseFormWithoutFilesNoTypeCheck(values_map)
+  const record = parseFormWithoutFilesNoTypeCheck(values_map)
 
   // We could write to a file instead of to memory. Either way, better than lugging around the db/trx just for this
   await Promise.all(
@@ -96,7 +96,7 @@ export async function parseRequest<T extends Record<string, unknown>>(
       const buffer = await value.arrayBuffer()
       const binary_data = new Uint8Array(buffer)
 
-      set(parsed, key, {
+      set(record, key, {
         binary_data,
         name: value.name,
         mime_type: value.type,
@@ -104,19 +104,14 @@ export async function parseRequest<T extends Record<string, unknown>>(
     }),
   )
 
-  delete parsed.omit
+  assert(!record.omit, 'record.omit?')
 
-  // console.log({ parsed })
-
-  return parse(parsed)
+  return record
 }
 
-export function parseRequestAsserts<T extends Record<string, unknown>>(
+export async function parseRequest<T extends Record<string, unknown>>(
   req: Request,
-  typeCheck: (obj: unknown) => asserts obj is T,
+  parse: (obj: unknown) => T,
 ): Promise<T> {
-  return parseRequest(req, (obj) => {
-    typeCheck(obj)
-    return obj
-  })
+  return parse(await requestAsRecord(req))
 }

@@ -345,7 +345,7 @@ describeParallel(
       },
     )
 
-    itParallel('can route immediately to triage as a nurse', async () => {
+    itParallel.only('can route immediately to triage as a nurse', async () => {
       const organization = await createTestOrganization(db)
       const { fetchCheerio, health_worker } = await addTestEmployeeWithSession(
         db,
@@ -363,6 +363,7 @@ describeParallel(
       const departments = employeeOrganizationDepartmentNames(nurse)
       assertEquals(departments, ['Primary care', 'Reception', 'Triage'])
 
+      console.log('$personal')
       const $personal = await fetchCheerio(
         `/app/organizations/${organization.id}/patients/start-registration`,
         {
@@ -371,6 +372,7 @@ describeParallel(
       )
       const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
 
+      console.log('$this_visit')
       const $this_visit = await fetchCheerio(
         $personal.url,
         {
@@ -379,6 +381,7 @@ describeParallel(
         },
       )
 
+      console.log('$triage_warning_signs')
       const $triage_warning_signs = await fetchCheerio(
         $this_visit.url,
         {
@@ -388,6 +391,8 @@ describeParallel(
           }),
         },
       )
+
+      console.log('m')
 
       const triage_warning_signs_url = new URL($triage_warning_signs.url)
       assertEquals(

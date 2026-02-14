@@ -237,8 +237,6 @@ export default function Search<
                     key={selected.id}
                     display={(selected.display_name || selected.name)!}
                     remove={() => {
-                      console.log(selected_multi.value)
-                      console.log(selected)
                       selected_multi.value = remove(
                         selected_multi.value,
                         selected,
@@ -252,7 +250,6 @@ export default function Search<
                   name={search_field}
                   className='flex-1 min-w-50 border-none outline-none focus:ring-0 p-0 bg-transparent text-black-900 placeholder:text-gray-400 sm:text-sm/6 dark:focus:text-black-900'
                   onChange={(event) => {
-                    console.log('onChange', event)
                     const query = event.currentTarget.value
                     onSelect?.(undefined)
                     setQuery(query)

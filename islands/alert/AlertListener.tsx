@@ -48,7 +48,6 @@ export function AlertListener({
 
   useEffect(() => {
     function listener(event: Event) {
-      console.log('listener', event)
       assert(event instanceof CustomEvent)
       alert.value = wrapAlert(event.detail)
     }
