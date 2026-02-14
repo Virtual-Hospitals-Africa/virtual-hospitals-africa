@@ -22,11 +22,21 @@ export const handler = {
 
     assertOr404(medication, 'Medicine not found')
 
-    const regulator_id = ctx.state.regulator.id
+    const regulator = ctx.state.regulator
+
+    // Get the medication availability for this medication in the regulator's country
+    const availability = await ctx.state.trx
+      .selectFrom('medication_availabilities')
+      .where('medication_id', '=', medicine_id)
+      .where('country', '=', regulator.country)
+      .select('id')
+      .executeTakeFirst()
+
+    assertOr404(availability, 'Medication availability not found')
 
     await medication_availabilities.recall(ctx.state.trx, {
-      medication_id: medicine_id,
-      regulator_id: regulator_id,
+      medication_availability_id: availability.id,
+      regulator_id: regulator.id,
     })
 
     const success = encodeURIComponent(

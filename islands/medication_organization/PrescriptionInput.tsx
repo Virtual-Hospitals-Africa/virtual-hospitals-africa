@@ -131,7 +131,7 @@ export default function MedicationOrganizationPrescriptionInput({
 type Dose = RenderedOrganizationMedication['doses'][number]
 
 function doseLabel(dose: Dose): string {
-  const ingredients = dose.ingredients.map((ing) => `${ing.value}${ing.units} ${ing.name}`).join(', ')
+  const ingredients = dose.ingredients.map((ing) => `${ing.value}${ing.units} ${ing.snomed_concept.name}`).join(', ')
   return ingredients ? `${dose.value} ${dose.description} (${ingredients})` : `${dose.value} ${dose.description}`
 }
 

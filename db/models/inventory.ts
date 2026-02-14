@@ -68,16 +68,16 @@ export const inventory = {
         'consumables.id',
       )
       .leftJoin(
-        'medications',
+        'medication_doses',
         'consumables.id',
-        'medications.consumable_id',
+        'medication_doses.id',
       )
       .where(
         'organization_consumables.organization_id',
         '=',
         opts.organization_id,
       )
-      .where('medications.id', 'is', null)
+      .where('medication_doses.id', 'is', null)
       .select([
         'consumables.name as name',
         'consumables.id as consumable_id',
@@ -110,7 +110,7 @@ export const inventory = {
       )
       .innerJoin(
         'medication_doses',
-        'medication_doses.consumable_id',
+        'medication_doses.id',
         'consumables.id',
       )
       .innerJoin(
@@ -285,7 +285,7 @@ export const inventory = {
       .innerJoin(
         'medication_doses',
         'procurement.consumable_id',
-        'medication_doses.consumable_id',
+        'medication_doses.id',
       )
       .where(
         'medication_doses.medication_id',
@@ -364,15 +364,15 @@ export const inventory = {
         'batch_number',
       ])
       .expression((eb) =>
-        // Find the consumable for this medication
-        eb.selectFrom('medications')
+        // Find the consumable for this medication (via medication_doses)
+        eb.selectFrom('medication_doses')
           .where(
-            'medications.id',
+            'medication_doses.medication_id',
             '=',
             medicine.medication_id,
           )
           .select([
-            'medications.consumable_id',
+            'medication_doses.id as consumable_id',
             literalString(medicine.created_by).as('created_by'),
             literalString(organization_id).as('organization_id'),
             literalNumber(medicine.quantity).as('quantity'),
@@ -386,6 +386,7 @@ export const inventory = {
               'batch_number',
             ),
           ])
+          .limit(1)
       )
       .returning('consumable_id')
       .executeTakeFirstOrThrow()

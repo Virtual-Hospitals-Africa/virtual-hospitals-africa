@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { TrxOrDb } from '../../../../types.ts'
 import { pMap } from '../../../../util/inParallel.ts'
-import { asText, debugLog } from '../../../helpers.ts'
+import { asText } from '../../../helpers.ts'
 import { ParsedMedication, ParsedMedicationWhoseIngredientsAreSnomedConcepts, ParsedMedicationWithSnomedConceptMedicinalProduct } from './shared.ts'
 import { assert } from 'std/assert/assert.ts'
 import { humanReadableJson } from '../../../../util/humanReadableJson.ts'
@@ -88,7 +88,7 @@ export async function lookupMedicationSnomedConceptIds(
 
   const total = unique_drug_ingredient_joined_snomed_concept_strings.size
   let i = 0
-  const medicinal_products = await pMap(unique_drug_ingredient_joined_snomed_concept_strings, async (ingredient_combination) => {
+  const medicinal_products = await pMap(unique_drug_ingredient_joined_snomed_concept_strings, (ingredient_combination) => {
     i++
     if (i % 100 === 0 || i === 1 || i === total) {
       console.log(`  SNOMED lookup ${i}/${total}: "${ingredient_combination}"`)

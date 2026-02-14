@@ -345,7 +345,7 @@ describeParallel(
       },
     )
 
-    itParallel.only('can route immediately to triage as a nurse', async () => {
+    itParallel('can route immediately to triage as a nurse', async () => {
       const organization = await createTestOrganization(db)
       const { fetchCheerio, health_worker } = await addTestEmployeeWithSession(
         db,
