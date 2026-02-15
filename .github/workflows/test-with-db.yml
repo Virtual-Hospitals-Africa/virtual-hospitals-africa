@@ -36,6 +36,8 @@ jobs:
           --health-retries 5
 
     steps:
+      - uses: actions/checkout@v5
+
       - uses: ./.github/actions/setup-deno
 
       - uses: ./.github/actions/setup-lfs
