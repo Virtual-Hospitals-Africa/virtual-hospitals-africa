@@ -52,7 +52,9 @@ export type NonNullableProperty<R, K extends keyof R> =
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
-  : T
+  : T extends Array<infer U> ? Array<DeepPartial<U>>
+  :
+  T
 
 export type DeepMaybe<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepMaybe<T[P]>
@@ -1020,8 +1022,8 @@ export type GCalFreeBusy = {
 export type GoogleProfile = {
   sub: string
   name: string
-  given_name: string
-  family_name: string
+  first_names: string
+  surname: string
   picture: string
   email: string
   email_verified: boolean
@@ -1037,8 +1039,6 @@ export type HealthWorkerInvitee = {
 export type OrganizationEmployeeOrInvitee =
   | OrganizationEmployee
   | OrganizationEmployeeInvitee
-
-export type RegistrationStatus = 'pending_approval' | 'approved' | 'incomplete'
 export type OrganizationEmployee = {
   name: string
   is_invitee: false
@@ -1047,12 +1047,10 @@ export type OrganizationEmployee = {
     employee_id: string
     profession: Profession
     specialty: string | null
-    registration_status: RegistrationStatus
   }[]
   avatar_url: null | string
   email: string
   display_name: string
-  registration_status: RegistrationStatus
   actions: {
     view: string
   }
@@ -1084,7 +1082,6 @@ export type OrganizationEmployeeInvitee = {
   avatar_url: null
   email: string
   display_name: string
-  registration_status: 'pending_approval' | 'approved' | 'incomplete'
   actions: {
     view: null
   }
@@ -1421,6 +1418,10 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker
+
+export type RenderedCountryHealthWorker = PossiblyEmployedHealthWorker & {
+  licences: RenderedLicence[]
+}
 
 export type Availability = {
   start: string
@@ -2762,14 +2763,15 @@ export type HealthWorkerDisplay = {
 }
 
 export type RenderedLicence = {
-    licence_number: string
-    name: string
-    expiry_date: string | Date
-    address: Address
-    revoked_at: null | string | Date
-    revoked_by: null | string
-    country: string
-  }
+  licence_number: string
+  name: string
+  profession: Profession
+  expiry_date: string | Date
+  address: Address
+  revoked_at: null | string | Date
+  revoked_by: null | string
+  country: string
+}
 
 export type RenderedEmployee = EmployedHealthWorker & {
   organization_id: string

@@ -29,8 +29,8 @@
 
 //       const $ = cheerio.load(page_contents)
 
-//       assert($('input[name="given_name"]').length === 1)
-//       assert($('input[name="family_name"]').length === 1)
+//       assert($('input[name="first_names"]').length === 1)
+//       assert($('input[name="surname"]').length === 1)
 //       assert($('input[name="licence_number"]').length === 1)
 //       assert($('input[name="expiry_date"]').length === 1)
 //       assert($('input[name="town"]').length === 1)
@@ -43,12 +43,12 @@
 //       const { fetchOk, regulator } = await addTestRegulatorWithSession(db)
 
 //       {
-//         const given_name = `Test Given Name ${generateUUID()}`
-//         const family_name = `Test Family Name ${generateUUID()}`
+//         const first_names = `Test Given Name ${generateUUID()}`
+//         const surname = `Test Family Name ${generateUUID()}`
 //         const licence_number = 'P01-0805-2024'
 //         const body = new FormData()
-//         body.set('given_name', given_name)
-//         body.set('family_name', family_name)
+//         body.set('first_names', first_names)
+//         body.set('surname', surname)
 //         body.set('licence_number', licence_number)
 //         body.set('expiry_date', '2030-01-01')
 //         body.set('town', 'Test Town')
@@ -74,13 +74,13 @@
 
 //         const invited_pharmacist = await db
 //           .selectFrom('pharmacists')
-//           .where('given_name', '=', given_name)
-//           .where('family_name', '=', family_name)
-//           .select(['given_name', 'family_name', 'licence_number'])
+//           .where('first_names', '=', first_names)
+//           .where('surname', '=', surname)
+//           .select(['first_names', 'surname', 'licence_number'])
 //           .executeTakeFirst()
 
-//         assertEquals(invited_pharmacist?.given_name, given_name)
-//         assertEquals(invited_pharmacist?.family_name, family_name)
+//         assertEquals(invited_pharmacist?.first_names, first_names)
+//         assertEquals(invited_pharmacist?.surname, surname)
 //         assertEquals(invited_pharmacist?.licence_number, licence_number)
 //       }
 //     })

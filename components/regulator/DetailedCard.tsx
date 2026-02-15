@@ -1,9 +1,9 @@
-import { Renderedhealth_worker } from '../../types.ts'
+import { RenderedCountryHealthWorker } from '../../types.ts'
 
 export default function health_workerDetailedCard({
   health_worker,
 }: {
-  health_worker: RenderedEmployee
+  health_worker: RenderedCountryHealthWorker
 }) {
   return (
     <>
@@ -27,42 +27,46 @@ export default function health_workerDetailedCard({
                   'N/A'}
               </dd>
             </div>
-            <div class=' py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                health_worker Type
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {health_worker.licence.health_worker_type}
-              </dd>
-            </div>
-            <div class='py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Licence Number
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {health_worker.licence.licence_number}
-              </dd>
-            </div>
-            <div class='py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Address
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {health_worker.licence.address.formatted}
-              </dd>
-            </div>
-            {health_worker.organizations.map((pharmacy) => (
+            {health_worker.licences.map((licence) => (
+              <>
+                <div class=' py-6 sm:col-span-1 sm:px-0'>
+                  <dt class='text-sm font-bold leading-6 text-gray-900'>
+                    Profession
+                  </dt>
+                  <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+                    {licence.profession}
+                  </dd>
+                </div>
+                <div class='py-6 sm:col-span-1 sm:px-0'>
+                  <dt class='text-sm font-bold leading-6 text-gray-900'>
+                    Licence Number
+                  </dt>
+                  <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+                    {licence.licence_number}
+                  </dd>
+                </div>
+                <div class='py-6 sm:col-span-1 sm:px-0'>
+                  <dt class='text-sm font-bold leading-6 text-gray-900'>
+                    Address
+                  </dt>
+                  <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+                    {licence.address.formatted}
+                  </dd>
+                </div>
+              </>
+            ))}
+            {health_worker.organizations.map((organization) => (
               <>
                 <div class='border-t border-gray-100 py-6 sm:col-span-2 sm:px-0'>
                   <dt class='text-sm font-bold leading-6 text-gray-900'>
-                    Pharmacy
+                    Organization
                   </dt>
                   <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                     <a
                       className='text-indigo-600 hover:text-indigo-900'
-                      href={pharmacy.hrefs.regulator_view}
+                      href={organization.hrefs.regulator_view}
                     >
-                      {pharmacy.name}
+                      {organization.name}
                     </a>
                   </dd>
                 </div>
@@ -71,7 +75,7 @@ export default function health_workerDetailedCard({
                     Role
                   </dt>
                   <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                    {pharmacy.profession}
+                    {organization.profession}
                   </dd>
                 </div>
               </>

@@ -26,7 +26,6 @@ describe('db/models/health_workers.ts', () => {
 
         const health_worker = await addTestEmployee(db, {
           profession: 'nurse',
-          registration_status: 'not started',
         })
 
         const result = await health_workers.getById(db, health_worker.id)
@@ -73,7 +72,7 @@ describe('db/models/health_workers.ts', () => {
       async () => {
         const health_worker = await addTestEmployee(db, {
           profession: 'nurse',
-          registration_status: 'approved',
+
           is_admin: true,
         })
 
@@ -106,7 +105,7 @@ describe('db/models/health_workers.ts', () => {
 
         const health_worker = await addTestEmployee(db, {
           profession: 'doctor',
-          registration_status: 'approved',
+
           organization_id: TEST_ORGANIZATION_UUIDS.ZA.hospital,
         })
 

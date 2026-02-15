@@ -23,7 +23,6 @@ describeParallel('db/models/s_expression.ts', () => {
     async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
-        registration_status: 'approved',
       })
 
       const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -123,7 +122,6 @@ describeParallel('db/models/s_expression.ts', () => {
     async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
-        registration_status: 'approved',
       })
 
       const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(

@@ -20,7 +20,7 @@
 //         const { health_worker, fetch } = await addTestEmployeeWithSession(
 //           db,
 //           {
-//             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//             profession: 'nurse', specialty: 'Primary care',
 //           },
 //         )
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
@@ -84,7 +84,7 @@
 //       itParallel('removes existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
 //         const { health_worker, fetch, fetchCheerio } =
 //           await addTestEmployeeWithSession(db, {
-//             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//             profession: 'nurse', specialty: 'Primary care',
 //           })
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
@@ -174,7 +174,7 @@
 //       itParallel('updates existing assessment findings on POST, showing the categories as "all normal" on refetch', async () => {
 //         const { health_worker, fetch, fetchCheerio } =
 //           await addTestEmployeeWithSession(db, {
-//             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//             profession: 'nurse', specialty: 'Primary care',
 //           })
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
@@ -288,7 +288,7 @@
 //       itParallel('renders a blank form on initial GET, including "all normal"', async () => {
 //         const { health_worker, fetchCheerio } =
 //           await addTestEmployeeWithSession(db, {
-//             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//             profession: 'nurse', specialty: 'Primary care',
 //           })
 //         const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //           db,
@@ -360,7 +360,7 @@
 //         itParallel('shows a form without a an orders field for a nurse', async () => {
 //           const { health_worker, fetchCheerio } =
 //             await addTestEmployeeWithSession(db, {
-//               profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//               profession: 'nurse', specialty: 'Primary care',
 //             })
 //           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(
 //             db,
@@ -461,7 +461,7 @@
 //           const { health_worker, fetch } = await addTestEmployeeWithSession(
 //             db,
 //             {
-//               profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//               profession: 'nurse', specialty: 'Primary care',
 //             },
 //           )
 //           const encounter = await patient_encounters.insertSeekingTreatmentWithEmployeeForTest(

@@ -17,7 +17,6 @@ describeParallel(
       const { fetch } = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
         specialty: 'Primary care',
-        registration_status: 'approved',
       })
       const response = await fetch(
         `${route}/app/organizations?search=VHA Test`,

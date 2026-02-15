@@ -1,11 +1,12 @@
 import { z } from 'zod'
 import { Context } from 'fresh'
-import OrganizationForm from '../../../../islands/regulator/OrganizationForm.tsx'
-import redirect from '../../../../util/redirect.ts'
-import { parseRequest } from '../../../../backend/parseForm.ts'
-import { organizations } from '../../../../db/models/organizations.ts'
-import { LoggedInRegulator } from '../../../../types.ts'
-import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
+import OrganizationForm from '../../../islands/regulator/OrganizationForm.tsx'
+import redirect from '../../../util/redirect.ts'
+import { organizations } from '../../../db/models/organizations.ts'
+import { LoggedInRegulator } from '../../../types.ts'
+import { RegulatorHomePageLayout } from '../../regulator/_middleware.tsx'
+import { SERVER_COUNTRY } from '../../../db/models/countries.ts'
+import { postHandler } from '../../../backend/postHandler.ts'
 
 const UpsertOrganizationSchema = z.object({
   name: z.string(),
@@ -30,19 +31,15 @@ const UpsertOrganizationSchema = z.object({
   town: z.string(),
 })
 
-export const handler = {
-  async POST(ctx: Context<LoggedInRegulator>) {
-    const req = ctx.req
-    const { country } = ctx.params
+export const handler = postHandler(
+  UpsertOrganizationSchema,
+  async (ctx: Context<LoggedInRegulator>, form_values) => {
     const { trx } = ctx.state
-    const pharmacy = await parseRequest(
-      req,
-      UpsertOrganizationSchema.parse,
-    )
+    
 
-    const { id } = await organizations.insert(trx, {
-      ...pharmacy,
-      country,
+    const id = await organizations.insertOne(trx, {
+      ...form_values,
+      country: SERVER_COUNTRY,
     })
 
     const success = encodeURIComponent(
@@ -50,10 +47,11 @@ export const handler = {
     )
 
     return redirect(
-      `/regulator/${country}/organizations/${id}?success=${success}`,
+      `/regulator/organizations/${id}?success=${success}`,
     )
-  },
-}
+  }
+)
+
 
 export default RegulatorHomePageLayout(
   'Pharmacies',

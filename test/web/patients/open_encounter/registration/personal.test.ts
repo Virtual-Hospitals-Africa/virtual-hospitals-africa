@@ -39,7 +39,6 @@ describeParallel(
       async () => {
         const { fetchCheerio, fetchOk } = await addTestEmployeeWithSession(db, {
           profession: 'receptionist',
-          registration_status: 'approved',
         })
 
         const $ = await fetchCheerio(

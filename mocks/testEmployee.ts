@@ -1,18 +1,14 @@
 import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { employment } from '../db/models/employment.ts'
 import { employment_calendars } from '../db/models/employment_calendars.ts'
 import { health_worker_google_tokens, HealthWorkerWithGoogleTokens } from '../db/models/health_worker_google_tokens.ts'
-import { nurse_registration_details } from '../db/models/nurse_registration_details.ts'
 import { organizations_with_departments } from '../db/models/organizations_with_departments.ts'
 import { organizationDepartmentIdsOfProfession } from '../shared/departments.ts'
 import { insertHealthWorker, testHealthWorker } from 'test/_helpers/health_workers.ts'
 import { Maybe, Names, TrxOrDb } from '../types.ts'
 import { asMaybeNames, asNames } from '../util/asNames.ts'
-import omit from '../util/omit.ts'
 import testCalendars from './testCalendars.ts'
-import { testNurseRegistrationDetails } from './testRegistrationDetails.ts'
 
 export type TestHealthWorkerOpts = {
   profession?:
@@ -23,7 +19,7 @@ export type TestHealthWorkerOpts = {
     | 'none'
   specialty?: string
   is_admin?: boolean
-  registration_status?: 'approved' | 'awaiting approval' | 'not started'
+
   organization_id?: string
   health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
 }
@@ -49,20 +45,12 @@ export async function addTestEmployee(
     profession = 'nurse',
     organization_id = '00000000-0000-1000-8000-000000000001',
     health_worker_attrs = {},
-    registration_status = 'approved',
     specialty,
     is_admin,
   }: TestHealthWorkerOpts = {},
 ): Promise<TestEmployee> {
   if (!specialty && ['nurse', 'doctor'].includes(profession)) {
     specialty = 'Primary care'
-  }
-  if (profession !== 'nurse') {
-    assertEquals(
-      registration_status,
-      'approved',
-      'No logic yet to handle registration for non-nurses',
-    )
   }
 
   const health_worker: HealthWorkerWithGoogleTokens = await insertHealthWorker(
@@ -129,7 +117,7 @@ export async function addTestEmployee(
     }],
   )
 
-  if (profession === 'nurse' && registration_status !== 'not started') {
+  if (profession === 'nurse') {
     const admin = await health_worker_google_tokens.insertWithGoogleCredentials(
       trx,
       testHealthWorker(),
@@ -138,19 +126,7 @@ export async function addTestEmployee(
       organization,
       'admin',
     )
-    const details = await testNurseRegistrationDetails(trx, {
-      health_worker_id: health_worker.id,
-    })
 
-    await nurse_registration_details.add(
-      trx,
-      omit(details, [
-        'name',
-        'first_names',
-        'surname',
-        'preferred_name',
-      ]),
-    )
     await employment.addOne(trx, {
       organization_id,
       health_worker_id: admin.id,
@@ -158,13 +134,6 @@ export async function addTestEmployee(
       is_admin: true,
       department_ids: admin_department_ids,
     })
-
-    if (registration_status === 'approved') {
-      await nurse_registration_details.approve(trx, {
-        approved_by: admin.id,
-        health_worker_id: health_worker.id,
-      })
-    }
   }
 
   assert(health_worker.first_names)

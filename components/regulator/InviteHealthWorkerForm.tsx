@@ -19,10 +19,10 @@ export default function InviteHealthWorkerForm({
         </FormRow>
         <PersonSearch
           name='health_worker'
-          search_route={`/regulator/${country}/health_workers`}
+          search_route={`/regulator/health_workers`}
           label=''
           addable={{
-            href: `/regulator/${country}/health_workers/invite?health_worker_name=`,
+            href: `/regulator/health_workers/invite?health_worker_name=`,
           }}
         />
         <FormRow>
@@ -40,7 +40,7 @@ export default function InviteHealthWorkerForm({
           </label>
         </FormRow>
         <FormRow>
-          <TextArea name='given_name' label='' />
+          <TextArea name='first_names' label='' />
         </FormRow>
 
         <FormRow>
@@ -49,7 +49,7 @@ export default function InviteHealthWorkerForm({
           </label>
         </FormRow>
         <FormRow>
-          <TextArea name='family_name' label='' />
+          <TextArea name='surname' label='' />
         </FormRow>
 
         <FormRow>

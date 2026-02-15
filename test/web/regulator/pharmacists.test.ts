@@ -42,7 +42,7 @@ describeParallel.skip(
         const new_pharmacist = await addTestPharmacist(db)
         const { fetch, regulator } = await addTestRegulatorWithSession(db)
 
-        const pharmacist_name = `${new_pharmacist.given_name} ${new_pharmacist.family_name}`
+        const pharmacist_name = `${new_pharmacist.first_names} ${new_pharmacist.surname}`
 
         const response = await fetch(
           path(`/regulator/${regulator.country}/pharmacists`, {

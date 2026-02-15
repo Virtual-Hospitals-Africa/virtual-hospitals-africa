@@ -25,7 +25,6 @@ describeParallel('db/models/patient_findings.ts', () => {
     async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
-        registration_status: 'approved',
       })
 
       const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -145,7 +144,6 @@ describeParallel('db/models/patient_findings.ts', () => {
   itParallel('can insert/find records with an event attribute', async () => {
     const nurse = await addTestEmployee(db, {
       profession: 'nurse',
-      registration_status: 'approved',
     })
 
     const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -233,7 +231,6 @@ describeParallel('db/models/patient_findings.ts', () => {
     async () => {
       const nurse = await addTestEmployee(db, {
         profession: 'nurse',
-        registration_status: 'approved',
       })
 
       const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(

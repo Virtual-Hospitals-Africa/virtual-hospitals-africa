@@ -1,4 +1,4 @@
-import { PharmaciesTable } from '../../components/regulator/PharmaciesTable.tsx'
+import { OrganizationsTable } from '../../components/regulator/OrganizationsTable.tsx'
 import { LoggedInRegulator } from '../../types.ts'
 import { organizations } from '../../db/models/organizations.ts'
 import { Context } from 'fresh'
@@ -8,7 +8,7 @@ import Form from '../../components/library/Form.tsx'
 import { searchPage } from '../../util/searchPage.ts'
 
 import { json } from '../../util/responses.ts'
-import { RegulatorHomePageLayout } from '_middleware.tsx'
+import { RegulatorHomePageLayout } from './_middleware.tsx'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
 
 export default RegulatorHomePageLayout(
@@ -48,7 +48,7 @@ export default RegulatorHomePageLayout(
             Search
           </Button>
         </FormRow>
-        <PharmaciesTable country={country} {...search_results} />
+        <OrganizationsTable country={country} {...search_results} />
       </Form>
     )
   },

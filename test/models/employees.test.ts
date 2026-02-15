@@ -29,7 +29,7 @@ describeParallel('db/models/employees.ts', () => {
 
       const health_worker = await addTestEmployee(db, {
         profession: 'doctor',
-        registration_status: 'approved',
+
         organization_id: TEST_ORGANIZATION_UUIDS.ZA.hospital,
       })
 
@@ -122,12 +122,12 @@ describeParallel('db/models/employees.ts', () => {
     await Promise.all([
       addTestEmployee(db, {
         profession: 'receptionist',
-        registration_status: 'approved',
+
         organization_id: organization.id,
       }),
       addTestEmployee(db, {
         profession: 'nurse',
-        registration_status: 'approved',
+
         organization_id: organization.id,
       }),
     ])
@@ -146,7 +146,6 @@ describeParallel('db/models/employees.ts', () => {
       async () => {
         const health_worker = await addTestEmployee(db, {
           profession: 'nurse',
-          registration_status: 'not started',
         })
 
         const { results } = await employees.search(db, {
@@ -189,7 +188,6 @@ describeParallel('db/models/employees.ts', () => {
     itParallel('searches by profession', async () => {
       const health_worker = await addTestEmployee(db, {
         profession: 'nurse',
-        registration_status: 'not started',
       })
 
       const doctor_search = await employees.search(db, {
@@ -250,7 +248,6 @@ describeParallel('db/models/employees.ts', () => {
     itParallel('can filter by organization_id', async () => {
       const health_worker = await addTestEmployee(db, {
         profession: 'nurse',
-        registration_status: 'not started',
       })
 
       await employment.addOne(db, {

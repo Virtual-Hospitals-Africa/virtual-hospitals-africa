@@ -19,7 +19,7 @@
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse',
 //         specialty: 'Primary care',
-//         registration_status: 'approved',
+//
 //       })
 
 //       const test_patient =await patients.insert(db, {
@@ -52,7 +52,7 @@
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse',
 //         specialty: 'Primary care',
-//         registration_status: 'approved',
+//
 //       })
 
 //       const body = new FormData()
@@ -106,7 +106,7 @@
 //       const { fetch } = await addTestEmployeeWithSession(db, {
 //         profession: 'nurse',
 //         specialty: 'Primary care',
-//         registration_status: 'approved',
+//
 //       })
 
 //       const patient_name = generateUUID()

@@ -88,7 +88,7 @@
 //             const health_worker = await addTestEmployee(trx, {
 //               profession: 'nurse',
 //               specialty: 'Primary care',
-//               registration_status: 'approved',
+//
 //             })
 //             const patient = await patients.insert(trx, {
 //               name: 'Test Woman',
@@ -159,7 +159,7 @@
 //           const nurse = await addTestEmployee(trx, {
 //             profession: 'nurse',
 //             specialty: 'Primary care',
-//             registration_status: 'approved',
+//
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
 //           const encounter = await patient_encounters
@@ -1019,7 +1019,7 @@
 //           const nurse = await addTestEmployee(trx, {
 //             profession: 'nurse',
 //             specialty: 'Primary care',
-//             registration_status: 'approved',
+//
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
 //           const encounter = await patient_encounters

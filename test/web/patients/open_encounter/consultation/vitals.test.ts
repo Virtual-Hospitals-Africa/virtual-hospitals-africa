@@ -25,7 +25,7 @@
 //       const { health_worker, fetch } = await addTestEmployeeWithSession(
 //         db,
 //         {
-//           profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//           profession: 'nurse', specialty: 'Primary care',
 //         },
 //       )
 //       const encounter = await patient_encounters
@@ -101,7 +101,7 @@
 //     itParallel('404s on a GET for a patient with no open encounter', async () => {
 //       const patient = await patients.insert(db, { name: 'Test Patient' })
 //       const { fetch } = await addTestEmployeeWithSession(db, {
-//         profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//         profession: 'nurse', specialty: 'Primary care',
 //       })
 
 //       const response = await fetch(
@@ -116,7 +116,7 @@
 //       const { health_worker, fetch } = await addTestEmployeeWithSession(
 //         db,
 //         {
-//           profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//           profession: 'nurse', specialty: 'Primary care',
 //         },
 //       )
 //       const encounter = await patient_encounters

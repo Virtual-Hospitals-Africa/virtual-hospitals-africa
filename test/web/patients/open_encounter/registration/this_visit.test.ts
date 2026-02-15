@@ -25,7 +25,6 @@ describeParallel(
       async () => {
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
           profession: 'receptionist',
-          registration_status: 'approved',
         })
 
         const $personal = await fetchCheerio(
@@ -84,7 +83,7 @@ describeParallel(
           db,
           {
             profession: 'receptionist',
-            registration_status: 'approved',
+
             organization_id: organization.id,
           },
         )
@@ -93,7 +92,7 @@ describeParallel(
         //   db,
         //   {
         //     profession: 'nurse',
-        //     registration_status: 'approved',
+        //
         //     organization_id: organization.id,
         //   },
         // )
@@ -225,7 +224,7 @@ describeParallel(
           db,
           {
             profession: 'receptionist',
-            registration_status: 'approved',
+
             organization_id: organization.id,
           },
         )
@@ -351,7 +350,7 @@ describeParallel(
         db,
         {
           profession: 'nurse',
-          registration_status: 'approved',
+
           organization_id: organization.id,
         },
       )

@@ -3,7 +3,6 @@ import { deleteCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
 import { employees } from '../../db/models/employees.ts'
-import { health_worker_registration_status } from '../../db/models/health_worker_registration_status.ts'
 import { patient_encounters } from '../../db/models/patient_encounters.ts'
 import { notifications } from '../../db/models/notifications.ts'
 import { sessions } from '../../db/models/sessions.ts'
@@ -17,8 +16,6 @@ import db from '../../db/db.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 import { attachTrx } from '../../backend/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { SKIP_NURSE_REGISTRATION } from '../../db/models/health_worker_registration_status.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { HealthWorkerHomePageSidebar } from '../../components/library/Sidebar.tsx'
 import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
@@ -27,7 +24,6 @@ import { HealthWorkerSidebarBottom } from '../../components/library/HealthWorker
 export default [
   ensureCookiePresent,
   getLoggedInHealthWorker({ require_employment: true }),
-  redirectIfRegistrationNeeded,
   attachTrx,
 ]
 
@@ -77,10 +73,6 @@ export function getLoggedInHealthWorker(
         is_open: true,
         presence_health_worker_id: health_worker_id_selection,
       }),
-      registration_status: health_worker_registration_status.getByIdOptional(
-        db,
-        health_worker_id_selection,
-      ),
     })
 
     if (
@@ -102,40 +94,6 @@ export function getLoggedInHealthWorker(
     deleteCookie(response.headers, cookie.session_key)
     return response
   }
-}
-
-function redirectIfRegistrationNeeded(
-  ctx: LoggedInHealthWorkerContext,
-) {
-  assertEquals(
-    SKIP_NURSE_REGISTRATION,
-    true,
-    'Expecting registration to be skipped for now',
-  )
-  // function redirectIfNotAlreadyOnPage(
-  //   page: string,
-  //   params?: Record<string, string>,
-  // ) {
-  //   const current_url = ctx.url.pathname + ctx.url.search
-  //   const on_page = current_url.startsWith(page)
-  //   return on_page
-  //     ? ctx.next()
-  //     : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)
-  // }
-
-  // const { registration_status } = ctx.state
-
-  // if (role_needing_registration) {
-  //   return redirectIfNotAlreadyOnPage(
-  //     `/app/organizations/${role_needing_registration.organization.id}/register`,
-  //   )
-  // }
-
-  // if (role_pending_approval) {
-  //   return redirectIfNotAlreadyOnPage('/app/pending_approval')
-  // }
-
-  return ctx.next()
 }
 
 type RenderedSeparately = {

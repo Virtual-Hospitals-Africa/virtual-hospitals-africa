@@ -19,7 +19,6 @@ describeParallel(
         {
           profession: 'nurse',
           specialty: 'Primary care',
-          registration_status: 'approved',
         },
       )
       const response = await fetch(

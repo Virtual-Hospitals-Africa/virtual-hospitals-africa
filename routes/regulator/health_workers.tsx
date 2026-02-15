@@ -1,5 +1,3 @@
-import HealthWorkersTable from '../../components/regulator/HealthWorkersTable.tsx'
-import { interpretLicenceSearchAsSuch } from '../../db/models/health_workers.ts'
 import { Context } from 'fresh'
 import { LoggedInRegulator } from '../../types.ts'
 import Form from '../../components/library/Form.tsx'
@@ -11,18 +9,22 @@ import { json } from '../../util/responses.ts'
 import { RegulatorHomePageLayout } from './_middleware.tsx'
 import { TextInput } from '../../islands/form/inputs/text.tsx'
 import { SERVER_COUNTRY } from '../../db/models/countries.ts'
-import { regulator_health_workers } from '../../db/models/regulator_health_workers.ts'
+import { country_health_workers } from '../../db/models/country_health_workers.ts'
+import { interpretLicenceSearchAsSuch } from '../../db/models/employees.ts'
+import HealthWorkersTable from '../../components/regulator/HealthWorkerTable.tsx'
 
 export default RegulatorHomePageLayout(
-  'HealthWorkers',
+  'Health Workers',
   async function HealthWorkersPage(
     ctx: Context<LoggedInRegulator>,
   ) {
     const page = searchPage(ctx)
     const search = ctx.url.searchParams.get('search')
-    const search_results = await regulator_health_workers.search(
-      ctx.state.trx,
-      interpretLicenceSearchAsSuch({ search, country: SERVER_COUNTRY, licence_status: 'all' }),
+    const search_results = await country_health_workers.search(
+      ctx.state.trx,{
+        ...interpretLicenceSearchAsSuch({ search, licence_status: 'all' }),
+        country: SERVER_COUNTRY
+      },
       { page },
     )
 

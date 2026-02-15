@@ -2,12 +2,12 @@ import { JSX } from 'preact'
 import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
-import { RenderedPharmacy } from '../../types.ts'
+import { RenderedOrganization } from '../../types.ts'
 import { Person } from '../library/Person.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { path } from '../../util/path.ts'
 
-const columns: TableColumn<RenderedPharmacy>[] = [
+const columns: TableColumn<RenderedOrganization>[] = [
   {
     label: 'Name',
     data: 'name',
@@ -29,7 +29,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
     data: 'licensee',
   },
   {
-    label: 'Pharmacy Type',
+    label: 'HealthWorker Type',
     data: 'pharmacies_types',
   },
   {
@@ -51,7 +51,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
 
 type PharmaciesTableProps = {
   country: string
-  results: RenderedPharmacy[]
+  results: RenderedOrganization[]
   has_next_page: boolean
   page: number
   search_terms: {
@@ -60,7 +60,7 @@ type PharmaciesTableProps = {
   }
 }
 
-export function PharmaciesTable(
+export function OrgnizationsTable(
   { country, results, search_terms, page, has_next_page }: PharmaciesTableProps,
 ): JSX.Element {
   return (
@@ -76,8 +76,8 @@ export function PharmaciesTable(
             'If there should be, click below to add it',
           ]}
           button={{
-            children: 'Add Pharmacy',
-            href: path(`/regulator/${country}/pharmacies/add`, {
+            children: 'Add HealthWorker',
+            href: path(`/regulator/organizations/add`, {
               name: search_terms.name_search,
               licence_number: search_terms.licence_number_search,
             }),

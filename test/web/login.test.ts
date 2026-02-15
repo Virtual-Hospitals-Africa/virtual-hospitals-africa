@@ -104,7 +104,6 @@ describeParallel('/login', () => {
       async () => {
         const mock = await addTestEmployeeWithSession(db, {
           profession: 'nurse',
-          registration_status: 'not started',
         })
         const response = await mock.fetch(`/app`)
         assertEquals(
@@ -123,7 +122,6 @@ describeParallel('/login', () => {
         const mock = await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           specialty: 'Primary care',
-          registration_status: 'awaiting approval',
         })
         const response = await mock.fetch(`/app`)
         assertEquals(response.url, `${route}/app/pending_approval`)
@@ -136,7 +134,7 @@ describeParallel('/login', () => {
       const mock = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
         specialty: 'Primary care',
-        registration_status: 'approved',
+
         organization_id: organization.id,
       })
       const $ = await mock.fetchCheerio(`${route}/app`)
@@ -150,7 +148,7 @@ describeParallel('/login', () => {
           const mock = await addTestEmployeeWithSession(db, {
             profession: 'nurse',
             specialty: 'Primary care',
-            registration_status: 'approved',
+
             organization_id,
           })
 
@@ -191,7 +189,7 @@ describeParallel('/login', () => {
         withTestOrganization(db, async (organization_id) => {
           const mock = await addTestEmployeeWithSession(db, {
             profession: 'receptionist',
-            registration_status: 'approved',
+
             organization_id,
           })
 

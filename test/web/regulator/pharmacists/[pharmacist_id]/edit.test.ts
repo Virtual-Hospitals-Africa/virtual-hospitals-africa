@@ -35,15 +35,15 @@
 
 //         const $ = cheerio.load(page_contents)
 
-//         assert($('input[name="given_name"]').length === 1)
+//         assert($('input[name="first_names"]').length === 1)
 //         assert(
-//           $('input[name="given_name"]').attr('value') ===
-//             new_pharmacist.given_name,
+//           $('input[name="first_names"]').attr('value') ===
+//             new_pharmacist.first_names,
 //         )
-//         assert($('input[name="family_name"]').length === 1)
+//         assert($('input[name="surname"]').length === 1)
 //         assert(
-//           $('input[name="family_name"]').attr('value') ===
-//             new_pharmacist.family_name,
+//           $('input[name="surname"]').attr('value') ===
+//             new_pharmacist.surname,
 //         )
 //         assert($('input[name="licence_number"]').length === 1)
 //         assert(
@@ -92,12 +92,12 @@
 //       )
 
 //       {
-//         const given_name = `New Given Name ${generateUUID()}`
-//         const family_name = `New Family Name ${generateUUID()}`
+//         const first_names = `New Given Name ${generateUUID()}`
+//         const surname = `New Family Name ${generateUUID()}`
 //         const licence_number = 'P01-0805-2025'
 //         const body = new FormData()
-//         body.set('given_name', given_name)
-//         body.set('family_name', family_name)
+//         body.set('first_names', first_names)
+//         body.set('surname', surname)
 //         body.set('licence_number', licence_number)
 //         body.set('expiry_date', new_pharmacist.expiry_date)
 //         body.set('town', new_pharmacist.town as string)
@@ -129,11 +129,11 @@
 //         const updated_pharmacist = await db
 //           .selectFrom('pharmacists')
 //           .where('id', '=', new_pharmacist.id)
-//           .select(['given_name', 'family_name', 'licence_number'])
+//           .select(['first_names', 'surname', 'licence_number'])
 //           .executeTakeFirst()
 
-//         assertEquals(updated_pharmacist?.given_name, given_name)
-//         assertEquals(updated_pharmacist?.family_name, family_name)
+//         assertEquals(updated_pharmacist?.first_names, first_names)
+//         assertEquals(updated_pharmacist?.surname, surname)
 //         assertEquals(updated_pharmacist?.licence_number, licence_number)
 //       }
 //     })

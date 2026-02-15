@@ -22,7 +22,6 @@ describeParallel('db/models/patient_measurements.ts', () => {
       async () => {
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
-          registration_status: 'approved',
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -118,7 +117,6 @@ describeParallel('db/models/patient_measurements.ts', () => {
       async () => {
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
-          registration_status: 'approved',
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -171,7 +169,6 @@ describeParallel('db/models/patient_measurements.ts', () => {
       async () => {
         const nurse = await addTestEmployee(db, {
           profession: 'nurse',
-          registration_status: 'approved',
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(

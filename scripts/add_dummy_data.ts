@@ -133,7 +133,7 @@
 //       return addTestEmployee(db, {
 //         profession: 'nurse',
 //         specialty: 'Primary care',
-//         registration_status: 'not started',
+//
 //         health_worker_attrs: {
 //           name: demo.name,
 //           avatar_media_id: randomAvatarMediaIdNotYetUsed(demo.sex),

@@ -1,14 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
-import { EmployedHealthWorker, IdSelection, Maybe, NonEmptyArray, PossiblyEmployedHealthWorker, TrxOrDb } from '../../types.ts'
-import { organizations } from './organizations.ts'
-import { concat, jsonArrayFrom, orderByArrayPosition } from '../helpers.ts'
-import { Profession } from '../../db.d.ts'
+import type { EmployedHealthWorker, IdSelection, PossiblyEmployedHealthWorker, TrxOrDb } from '../../types.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 import { NameInputs } from '../../util/asNames.ts'
 import { base, identity } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
-import { DEPARTMENTS } from '../../shared/departments.ts'
-import isString from '../../util/isString.ts'
+import { health_workers_base, HealthWorkerSearch } from './health_workers_base.ts'
+import { health_worker_organizations } from './health_worker_organizations.ts'
 
 export type HealthWorkerUpsert =
   & {
@@ -18,163 +15,23 @@ export type HealthWorkerUpsert =
   }
   & NameInputs
 
-export type HealthWorkerSearch = {
-  search?: Maybe<string>
-  organization_id?: string | string[] | IdSelection
-  professions?: Maybe<Profession[]>
-  prioritize_organization_id?: Maybe<string>
-  excluding_health_worker_id?: string
-}
-
 export const health_workers = base({
   top_level_table: 'health_workers',
   // caching: {
   //   number_of_items: 100,
   // },
   baseQuery(trx: TrxOrDb, opts: HealthWorkerSearch) {
-    let qb = trx
-      .selectFrom('health_workers')
-      .leftJoin('health_worker_accounts', 'health_worker_accounts.id', 'health_workers.id')
+    return health_workers_base.baseQuery(trx, opts)
       .select((eb) => [
-        'health_workers.id',
-        'health_workers.name',
-        'health_workers.first_names',
-        'health_workers.surname',
-        'health_workers.preferred_name',
-        'health_worker_accounts.email',
-        eb.case()
-          .when('health_worker_accounts.avatar_media_id', 'is not', null)
-          .then(concat('/health_workers/', eb.ref('health_workers.id'), '/avatar'))
-          .end()
-          .as('avatar_url'),
         jsonArrayFrom(
-          organizations.baseQuery(trx, {})
+          health_worker_organizations.baseQuery(trx, {})
             .where(
-              'organizations.id',
-              'in',
-              eb.selectFrom('employment')
-                .whereRef(
-                  'employment.health_worker_id',
-                  '=',
-                  'health_workers.id',
-                )
-                .select('employment.organization_id')
-                .distinct(),
-            )
-            .innerJoin(
-              'employment',
-              (join) =>
-                join.onRef('employment.organization_id', '=', 'organizations.id')
-                  .on(
-                    'employment.health_worker_id',
-                    '=',
-                    eb.ref('health_workers.id'),
-                  ),
-            )
-            .select((eb_employment) => [
-              'employment.id as employment_id',
-              'profession',
-              'specialty',
-              'is_admin',
-              jsonArrayFrom(
-                eb_employment.selectFrom('department_employment')
-                  .innerJoin(
-                    'organization_departments',
-                    'organization_departments.id',
-                    'department_employment.department_id',
-                  )
-                  .whereRef(
-                    'department_employment.employment_id',
-                    '=',
-                    'employment.id',
-                  )
-                  .select([
-                    'organization_departments.id',
-                    'organization_departments.name',
-                  ])
-                  .orderBy(
-                    (eb_employment_departments_order) =>
-                      orderByArrayPosition(
-                        eb_employment_departments_order,
-                        'organization_departments.name',
-                        DEPARTMENTS as NonEmptyArray<string>,
-                      ),
-                    'desc',
-                  ),
-              ).as('in_departments'),
-            ]).orderBy(
-              // TODO order by most recently interacted with?
-              (eb_organization_order) =>
-                eb_organization_order.case().when(
-                  'organizations.category',
-                  'ilike',
-                  '%ent%',
-                ).then(2).when(
-                  'organizations.category',
-                  'ilike',
-                  '%ospital%',
-                ).then(1)
-                  .else(0)
-                  .end(),
-              'desc',
+              'employment.health_worker_id',
+              '=',
+              eb.ref('health_workers.id'),
             ),
         ).as('organizations'),
       ])
-
-    if (opts.search) {
-      qb = qb.where('health_workers.name', 'ilike', `%${opts.search}%`)
-    }
-
-    if (opts.professions) {
-      assertOr400(opts.professions.length > 0, 'professions must not be empty')
-      qb = qb.where(
-        'health_workers.id',
-        'in',
-        trx.selectFrom('employment')
-          .where('profession', 'in', opts.professions)
-          .select('health_worker_id'),
-      )
-    }
-
-    if (opts.organization_id) {
-      qb = qb.where(
-        'health_workers.id',
-        'in',
-        trx.selectFrom('employment')
-          .where(
-            'organization_id',
-            'in',
-            isString(opts.organization_id) ? [opts.organization_id] : opts.organization_id,
-          )
-          .select('health_worker_id'),
-      )
-    }
-
-    if (opts.prioritize_organization_id) {
-      qb = qb.orderBy(
-        (eb) =>
-          eb.exists(
-            eb.selectFrom('employment')
-              .whereRef(
-                'employment.health_worker_id',
-                '=',
-                'health_workers.id',
-              )
-              .where(
-                'employment.organization_id',
-                '=',
-                opts.prioritize_organization_id!,
-              ),
-          ),
-        'desc',
-      )
-    }
-
-    if (opts.excluding_health_worker_id) {
-      qb = qb.where('health_workers.id', '!=', opts.excluding_health_worker_id)
-    }
-
-    return qb
   },
   formatResult: identity<PossiblyEmployedHealthWorker>,
   getIdByEmail(

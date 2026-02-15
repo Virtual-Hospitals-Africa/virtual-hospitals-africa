@@ -27,13 +27,13 @@ export async function setupEmergencyEscalation(
 
   // const nurse = await addTestEmployeeWithSession(db, {
   //   profession: 'nurse',
-  //   registration_status: 'approved',
+  //
   //   organization_id: clinic.id,
   // })
 
   const receptionist = await addTestEmployeeWithSession(db, {
     profession: 'receptionist',
-    registration_status: 'approved',
+
     organization_id: clinic.id,
   })
 

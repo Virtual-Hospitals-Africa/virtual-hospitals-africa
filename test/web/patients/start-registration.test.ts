@@ -21,7 +21,6 @@ describeParallel(
         const { fetchOk } = await addTestEmployeeWithSession(db, {
           profession: 'nurse',
           specialty: 'Primary care',
-          registration_status: 'approved',
         })
 
         const response = await fetchOk(

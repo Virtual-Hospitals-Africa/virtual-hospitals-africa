@@ -19,7 +19,6 @@ describe('getEmployeeInfo', () => {
     async (trx) => {
       const health_worker = await addTestEmployee(trx, {
         profession: 'nurse',
-        registration_status: 'not started',
       })
 
       await employment.add(trx, [{
@@ -71,7 +70,6 @@ describe('getEmployeeInfo', () => {
     async (trx) => {
       const health_worker = await addTestEmployee(trx, {
         profession: 'nurse',
-        registration_status: 'not started',
       })
 
       const [secondEmployment] = await employment.add(trx, [{
@@ -147,7 +145,6 @@ describe('getEmployeeInfo', () => {
   itUsesTrxAnd('returns documents where applicable', async (trx) => {
     const health_worker = await addTestEmployee(trx, {
       profession: 'nurse',
-      registration_status: 'not started',
     })
 
     await employment.add(trx, [{

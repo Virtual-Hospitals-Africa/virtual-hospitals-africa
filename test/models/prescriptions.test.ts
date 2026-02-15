@@ -18,7 +18,7 @@
 //       async (trx) => {
 //         const nurse = await addTestEmployee(trx, {
 //           profession: 'nurse',
-//           registration_status: 'not started',
+//
 //         })
 //         const doctor = await addTestEmployee(trx, {
 //           profession: 'doctor',

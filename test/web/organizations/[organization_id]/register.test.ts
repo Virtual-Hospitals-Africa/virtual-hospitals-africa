@@ -19,7 +19,6 @@ describeParallel.skip(
     itParallel('renders a registration page on GET', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
         profession: 'nurse',
-        registration_status: 'not started',
       })
 
       const response = await fetch(
@@ -64,7 +63,6 @@ describeParallel.skip(
           db,
           {
             profession: 'nurse',
-            registration_status: 'not started',
           },
         )
         const address = createTestAddress()

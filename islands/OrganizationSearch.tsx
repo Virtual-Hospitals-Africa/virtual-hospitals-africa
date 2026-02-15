@@ -23,6 +23,7 @@ export default function OrganizationSearch(
       specialties?: Array<string>
       is_physical?: boolean
       is_test?: boolean
+      country?: string
     }
     sort?: {
       by: OrganizationSortOptions

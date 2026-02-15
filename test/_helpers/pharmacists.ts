@@ -7,8 +7,8 @@ export function testPharmacist() {
   return {
     licence_number: `P01-${randomDigits(4)}-2026`,
     prefix: 'Mrs' as const,
-    given_name: `A Test Given Name ${generateUUID()}`,
-    family_name: `A Test Family Name ${generateUUID()}`,
+    first_names: `A Test Given Name ${generateUUID()}`,
+    surname: `A Test Family Name ${generateUUID()}`,
     address: 'Test Address',
     town: 'Test Town',
     expiry_date: '2030-01-01',

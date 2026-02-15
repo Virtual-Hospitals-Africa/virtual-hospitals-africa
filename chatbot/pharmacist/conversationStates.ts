@@ -71,7 +71,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         return welcome
       }
 
-      return `Hello ${pharmacist.given_name}, what can I help you with today?`
+      return `Hello ${pharmacist.first_names}, what can I help you with today?`
     },
     options: [
       // TODO: rewrite prescription filling flow against new patient_prescriptions model
@@ -145,7 +145,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         pharmacist,
         'The chatbot should not have let the pharmacist proceed with a licence number not corresponding with an extant pharmacist',
       )
-      return `We have a record for ${pharmacist.given_name} with that licence. Is this you?`
+      return `We have a record for ${pharmacist.first_names} with that licence. Is this you?`
     },
     options: [
       {

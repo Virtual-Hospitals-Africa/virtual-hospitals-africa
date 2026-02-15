@@ -1,12 +1,12 @@
-import { RenderedPharmacy } from '../../types.ts'
+import { RenderedHealthWorker } from '../../types.ts'
 import { Person } from '../library/Person.tsx'
 
-type PharmacyDetailedCardProps = {
-  pharmacy: RenderedPharmacy
+type HealthWorkerDetailedCardProps = {
+  pharmacy: RenderedHealthWorker
 }
 
-export default function PharmacyDetailedCard(
-  { pharmacy }: PharmacyDetailedCardProps,
+export default function HealthWorkerDetailedCard(
+  { pharmacy }: HealthWorkerDetailedCardProps,
 ) {
   return (
     <>
@@ -39,7 +39,7 @@ export default function PharmacyDetailedCard(
             </div>
             <div class='px-0 py-6 sm:col-span-1'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Pharmacy Types
+                HealthWorker Types
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 {pharmacy.pharmacies_types}

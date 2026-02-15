@@ -12,8 +12,8 @@ import z from 'zod'
 export const HealthWorkerUpsertSchema = z.object({
   licence_number: z.string(),
   prefix: z.enum(['Mr', 'Mrs', 'Ms', 'Miss', 'Dr']),
-  given_name: z.string(),
-  family_name: z.string(),
+  first_names: z.string(),
+  surname: z.string(),
   address: z.string(),
   town: z.string(),
   expiry_date: z.string(),
@@ -43,7 +43,7 @@ export const handler = postHandler(
     )
 
     return redirect(
-      `/regulator/${country}/health_workers?success=${success}`,
+      `/regulator/health_workers?success=${success}`,
     )
   },
 )
@@ -64,7 +64,7 @@ export default RegulatorHomePageLayout(
       return new Response(null, {
         status: 302,
         headers: {
-          Location: `/regulator/${country}/health_workers?error=` +
+          Location: `/regulator/health_workers?error=` +
             encodeURIComponent('HealthWorker not found'),
         },
       })

@@ -36,7 +36,7 @@ const columns: TableColumn<RenderedRegulatorHealthWorker>[] = [
     },
   },
   // {
-  //   label: 'Pharmacy',
+  //   label: 'HealthWorker',
   //   data(row) {
   //     return (
   //       <div className='flex flex-col'>
@@ -91,7 +91,7 @@ export default function HealthWorkersTable({
           ]}
           button={{
             children: 'Invite HealthWorker',
-            href: path(`/regulator/${country}/health_workers/invite`, {
+            href: path(`/regulator/health_workers/invite`, {
               name: search_terms.search,
               licence_number: search_terms.licence_number,
             }),

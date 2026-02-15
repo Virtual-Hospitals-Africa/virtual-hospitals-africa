@@ -156,3 +156,7 @@ export const snomed_category: z.ZodEnum<
 export const diagnosis_certainty = z.enum(['definite', 'probable', 'equivocal', 'possible', 'improbable'])
 
 export const priority = z.enum(['definite', 'probable', 'equivocal', 'possible', 'improbable'])
+
+export const profession = z.enum(['doctor', 'nurse', 'pharmacist', 'receptionist'])
+
+export const profession_or_admin = z.enum(['doctor', 'nurse', 'pharmacist', 'receptionist', 'admin'])

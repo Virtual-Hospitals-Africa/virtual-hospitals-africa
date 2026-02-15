@@ -24,7 +24,7 @@ export const handler = {
       regulator_id: ctx.state.regulator.id,
     })
 
-    return redirect(`/regulator/${country}/health_workers`)
+    return redirect(`/regulator/health_workers`)
   },
 }
 
@@ -41,7 +41,7 @@ export default RegulatorHomePageLayout(
 
     return (
       <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-        Revoke {health_worker.given_name} {health_worker.family_name} ?
+        Revoke {health_worker.first_names} {health_worker.surname} ?
         <Form method='POST'>
           <Button type='submit'>Revoke</Button>
         </Form>

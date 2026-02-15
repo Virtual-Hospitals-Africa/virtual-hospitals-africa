@@ -23,7 +23,7 @@ describeParallel(
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
           profession: 'receptionist',
-          registration_status: 'approved',
+
           organization_id: organization.id,
         })
 
@@ -92,7 +92,7 @@ describeParallel(
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
           profession: 'receptionist',
-          registration_status: 'approved',
+
           organization_id: organization.id,
         })
 
@@ -164,7 +164,7 @@ describeParallel(
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
           profession: 'receptionist',
-          registration_status: 'approved',
+
           organization_id: organization.id,
         })
 
@@ -228,7 +228,7 @@ describeParallel(
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
           profession: 'receptionist',
-          registration_status: 'approved',
+
           organization_id: organization.id,
         })
 

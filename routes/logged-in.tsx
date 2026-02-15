@@ -67,8 +67,8 @@ export async function initializeHealthWorkerWithoutInvites(
     email: profile.email,
     avatar_media_id,
     ...asNames({
-      first_names: profile.given_name,
-      surname: profile.family_name,
+      first_names: profile.first_names,
+      surname: profile.surname,
       name: profile.name,
     }),
   }
@@ -284,8 +284,8 @@ export const handler = {
 //     email: profile.email,
 //     avatar_media_id,
 //     ...asNames({
-//       first_names: profile.given_name,
-//       surname: profile.family_name,
+//       first_names: profile.first_names,
+//       surname: profile.surname,
 //       name: profile.name,
 //     }),
 //   },
