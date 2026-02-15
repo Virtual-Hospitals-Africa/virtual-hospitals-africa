@@ -1326,7 +1326,7 @@ export type Specialties = {
 }
 
 export type HealthWorker = Names & {
-  email: string
+  email: string | null
   avatar_url: string | null
   phone_number?: Maybe<string>
 }
@@ -1863,6 +1863,10 @@ export type PatientAllergies = {
 export type RenderedOrganization = HasStringId<Organization> & {
   waiting_room_id: string | null
   reception_id: string | null
+  hrefs: {
+    regulator_view: string
+    health_worker_view: string
+  }
 }
 
 export type RenderedOrganizationWithDepartments = RenderedOrganization & {
@@ -2597,26 +2601,7 @@ export type PharmacistInPharmacy = RenderedPharmacy & {
   is_supervisor: boolean
 }
 
-export type RenderedPharmacist = {
-  id: string
-  licence_number: string
-  prefix: Prefix | null
-  name: string
-  given_name: string
-  family_name: string
-  address: string | null
-  full_address?: string | null
-  country: string
-  town: string | null
-  address_display: string | null
-  expiry_date: string
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Pharmacy Technician'
-  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
-  href: string
+export type RenderedRegulatorPharmacist = RenderedEmployee & {
   actions: {
     view: string
     revoke: string
@@ -2630,25 +2615,6 @@ export type Supervisor = {
   name: string
   prefix: Prefix | null
 }
-
-export type DetailedPharmacist = {
-  id?: string
-  licence_number: string
-  prefix: Prefix | null
-  name?: string
-  given_name: string
-  family_name: string
-  address: string | null
-  town: string | null
-  expiry_date: string
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Pharmacy Technician'
-  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
-}
-
 export type RenderedMedication = {
   id: string
   snomed_concept: RenderedSnomedConcept
@@ -2795,6 +2761,16 @@ export type HealthWorkerDisplay = {
   avatar_url: string | null
 }
 
+export type RenderedLicence = {
+    licence_number: string
+    name: string
+    expiry_date: string | Date
+    address: Address
+    revoked_at: null | string | Date
+    revoked_by: null | string
+    country: string
+  }
+
 export type RenderedEmployee = EmployedHealthWorker & {
   organization_id: string
   employee_id: string
@@ -2802,6 +2778,7 @@ export type RenderedEmployee = EmployedHealthWorker & {
   is_admin: boolean
   specialty: string | null
   href: string
+  licence: null | RenderedLicence
 }
 
 export type MessageTargetEntities = {

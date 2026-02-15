@@ -1,5 +1,5 @@
 import { InsertObject } from 'kysely'
-import { DB } from '../db.d.ts'
+import type { DB } from '../db.d.ts'
 import { InsertShapeLiteral } from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
 import compact from '../util/compact.ts'

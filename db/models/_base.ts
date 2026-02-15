@@ -105,7 +105,7 @@ export function simpleBaseQuery<TableName extends StandardTables>(
   trx: TrxOrDb,
 ) => SelectQueryBuilder<DB, TableName, SelectShape<DB[TableName]>> {
   const fn = (trx: TrxOrDb) =>
-    trx.selectFrom(table_name).selectAll() as unknown as SelectQueryBuilder<
+    trx.selectFrom(table_name).selectAll(table_name) as unknown as SelectQueryBuilder<
       DB,
       TableName,
       SelectShape<DB[TableName]>

@@ -1,11 +1,11 @@
-import { DeleteResult, UpdateResult } from 'kysely'
-import { GoogleTokens, TrxOrDb } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import type { DeleteResult, UpdateResult } from 'kysely'
+import type { GoogleTokens, TrxOrDb } from '../../types.ts'
+import type { HealthWorkerUpsert } from './health_workers.ts'
 import pick from '../../util/pick.ts'
 import { health_workers } from './health_workers.ts'
 import { google_tokens } from './google_tokens.ts'
 import { combine } from '../../util/combine.ts'
-import { type HealthWorkerUpsert } from './health_workers.ts'
-import { assert } from 'std/assert/assert.ts'
 import { asNames, NameInputs } from '../../util/asNames.ts'
 
 export type HealthWorkerWithGoogleTokens = Awaited<
@@ -61,22 +61,6 @@ export const health_worker_google_tokens = {
       email,
       tokens,
     )
-  },
-  getWithTokensQuery(trx: TrxOrDb) {
-    return trx
-      .selectFrom('health_workers')
-      .innerJoin('google_tokens', (join) =>
-        join
-          .onRef('health_workers.id', '=', 'google_tokens.entity_id')
-          .on('google_tokens.entity_type', '=', 'health_worker'))
-      .select([
-        'health_workers.id',
-        'email',
-        'name',
-        'access_token',
-        'refresh_token',
-        'expires_at',
-      ])
   },
   updateAccessToken(
     trx: TrxOrDb,

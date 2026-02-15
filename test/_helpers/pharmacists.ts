@@ -1,10 +1,11 @@
 import { TrxOrDb } from '../../types.ts'
 import { type PharmacistInsert, pharmacists } from '../../db/models/pharmacists.ts'
 import generateUUID from '../../util/uuid.ts'
+import randomDigits from '../../mocks/randomDigits.ts'
 
 export function testPharmacist() {
   return {
-    licence_number: 'P01-0805-2024',
+    licence_number: `P01-${randomDigits(4)}-2026`,
     prefix: 'Mrs' as const,
     given_name: `A Test Given Name ${generateUUID()}`,
     family_name: `A Test Family Name ${generateUUID()}`,
@@ -29,11 +30,4 @@ export async function addTestPharmacist(
     ...dummy_pharmacist,
     id,
   }
-}
-
-export function removeTestPharmacist(
-  trx: TrxOrDb,
-  pharmacistId: string,
-) {
-  return pharmacists.remove(trx, pharmacistId)
 }

@@ -1,7 +1,7 @@
 import { InsertObject, sql, UpdateObject } from 'kysely'
 import { Coordinates, IdSelection, InsertShapeLiteral, Maybe, RenderedPatient, RenderedPatientCompletedRegistration, TrxOrDb } from '../../types.ts'
 import { isoDate, jsonBuildNullableObject, literalLocation, longFormattedDate } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { base } from './_base.ts'
 import { asMaybeNames, asNames, NameInputs } from '../../util/asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'

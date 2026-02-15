@@ -1,7 +1,7 @@
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 
 export async function up(db: Kysely<DB>) {
   await db.schema.createType('doctor_review_step')

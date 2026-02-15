@@ -1,4 +1,4 @@
-import { pharmacists } from '../../../../../db/models/pharmacists.ts'
+import { health_workers } from '../../../../../db/models/health_workers.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { LoggedInRegulator } from '../../../../../types.ts'
@@ -9,39 +9,39 @@ import Form from '../../../../../components/library/Form.tsx'
 import { RegulatorHomePageLayout } from '../../../../regulator/_middleware.tsx'
 
 export const handler = {
-  POST: async function RevokePharmacist(
+  POST: async function RevokeHealthWorker(
     ctx: Context<LoggedInRegulator>,
   ) {
     const { country } = ctx.params
-    const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
+    const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
-    const pharmacist = await pharmacists.getById(ctx.state.trx, pharmacist_id)
+    const health_worker = await health_workers.getById(ctx.state.trx, health_worker_id)
 
-    assertOr404(pharmacist, 'Pharmacist not found')
+    assertOr404(health_worker, 'HealthWorker not found')
 
-    await pharmacists.revoke(ctx.state.trx, {
-      pharmacist_id,
+    await health_workers.revoke(ctx.state.trx, {
+      health_worker_id,
       regulator_id: ctx.state.regulator.id,
     })
 
-    return redirect(`/regulator/${country}/pharmacists`)
+    return redirect(`/regulator/${country}/health_workers`)
   },
 }
 
 export default RegulatorHomePageLayout(
-  'Pharmacist Profile',
-  async function PharmacistPage(
+  'HealthWorker Profile',
+  async function HealthWorkerPage(
     ctx: Context<LoggedInRegulator>,
   ) {
-    const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
+    const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
-    const pharmacist = await pharmacists.getById(ctx.state.trx, pharmacist_id)
+    const health_worker = await health_workers.getById(ctx.state.trx, health_worker_id)
 
-    assertOr404(pharmacist, 'Pharmacist not found')
+    assertOr404(health_worker, 'HealthWorker not found')
 
     return (
       <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-        Revoke {pharmacist.given_name} {pharmacist.family_name} ?
+        Revoke {health_worker.given_name} {health_worker.family_name} ?
         <Form method='POST'>
           <Button type='submit'>Revoke</Button>
         </Form>

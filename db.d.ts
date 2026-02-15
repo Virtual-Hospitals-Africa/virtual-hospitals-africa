@@ -110,13 +110,9 @@ export type MessageTargetType =
   | 'organization_category'
   | 'profession'
 
-export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
-
 export type Numeric = ColumnType<string, number | string, number | string>
 
 export type PatientCohabitation = 'Father' | 'Foster Parent' | 'Grandparent(s)' | 'Mother' | 'Orphanage' | 'Other Relative' | 'Sibling' | 'Uncle or Aunt'
-
-export type PharmacistType = 'Dispensing Medical Practitioner' | 'Ind Clinic Nurse' | 'Pharmacist' | 'Pharmacy Technician'
 
 export type Profession = 'doctor' | 'nurse' | 'pharmacist' | 'receptionist'
 
@@ -348,34 +344,6 @@ export interface Devices {
   updated_at: Generated<Timestamp>
 }
 
-export interface DoctorRegistrationDetails {
-  address_id: string | null
-  approved_by: string | null
-  created_at: Generated<Timestamp>
-  date_of_birth: Timestamp
-  date_of_first_practice: Timestamp
-  doctor_practicing_cert_media_id: string | null
-  face_picture_media_id: string | null
-  gender: string
-  health_worker_id: string
-  id: Generated<string>
-  mobile_number: string | null
-  national_id_media_id: string | null
-  national_id_number: string
-  ncz_registration_card_media_id: string | null
-  ncz_registration_number: string
-  sex: Sex
-  updated_at: Generated<Timestamp>
-}
-
-export interface DoctorRegistrationDetailsInProgress {
-  created_at: Generated<Timestamp>
-  data: Generated<Json>
-  health_worker_id: string
-  id: Generated<string>
-  updated_at: Generated<Timestamp>
-}
-
 export interface DoctorReview {
   order: Int8
   step: DoctorReviewStep
@@ -520,6 +488,12 @@ export interface GuardianRelations {
   male_guardian: string | null
 }
 
+export interface HealthWorkerAccounts {
+  avatar_media_id: string | null
+  email: string
+  id: string
+}
+
 export interface HealthWorkerInvitees {
   created_at: Generated<Timestamp>
   email: string
@@ -530,10 +504,35 @@ export interface HealthWorkerInvitees {
   updated_at: Generated<Timestamp>
 }
 
-export interface HealthWorkers {
-  avatar_media_id: string | null
+export interface HealthWorkerLicenceRevocations {
   created_at: Generated<Timestamp>
-  email: string
+  health_worker_license_id: string
+  id: Generated<string>
+  revoked_at: Generated<Timestamp>
+  revoked_by: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerLicences {
+  additional_data: Json | null
+  address_id: string | null
+  country: string
+  created_at: Generated<Timestamp>
+  expiry_date: Timestamp
+  gender: string
+  health_worker_id: string
+  id: Generated<string>
+  licence_number: string
+  media_id: string | null
+  mobile_phone_number: string | null
+  name: string
+  profession: Profession
+  sex: Sex
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkers {
+  created_at: Generated<Timestamp>
   first_names: string
   id: Generated<string>
   name: string
@@ -817,35 +816,6 @@ export interface MessageThreadSubjects {
   row_id: string
   table_name: string
   thread_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface NurseRegistrationDetails {
-  address_id: string | null
-  approved_by: string | null
-  country: string | null
-  created_at: Generated<Timestamp>
-  date_of_birth: Timestamp
-  date_of_first_practice: Timestamp
-  face_picture_media_id: string | null
-  gender: string
-  health_worker_id: string
-  id: Generated<string>
-  mobile_number: string | null
-  national_id_media_id: string | null
-  national_id_number: string
-  ncz_registration_card_media_id: string | null
-  ncz_registration_number: string
-  nurse_practicing_cert_media_id: string | null
-  sex: Sex
-  updated_at: Generated<Timestamp>
-}
-
-export interface NurseRegistrationDetailsInProgress {
-  created_at: Generated<Timestamp>
-  data: Generated<Json>
-  health_worker_id: string
-  id: Generated<string>
   updated_at: Generated<Timestamp>
 }
 
@@ -1381,42 +1351,8 @@ export interface PharmacistChatbotUserWhatsappMessagesReceived {
   whatsapp_message_received_id: string
 }
 
-export interface PharmacistLicenceRevocations {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  pharmacist_license_id: string
-  revoked_at: Generated<Timestamp>
-  revoked_by: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface PharmacistLicences {
-  address: string | null
-  country: string
-  created_at: Generated<Timestamp>
-  expiry_date: Timestamp
-  family_name: string
-  given_name: string
-  id: Generated<string>
-  licence_number: string
-  pharmacist_id: string
-  pharmacist_type: PharmacistType
-  prefix: NamePrefix | null
-  town: string | null
-  updated_at: Generated<Timestamp>
-}
-
 export interface Pharmacists {
   id: string
-}
-
-export interface PharmacyLicences {
-  created_at: Generated<Timestamp>
-  expiry_date: Timestamp | null
-  id: Generated<string>
-  licensee_id: string
-  organization_id: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface Procurement {
@@ -1830,8 +1766,6 @@ export interface DB {
   departments: Departments
   device_capabilities: DeviceCapabilities
   devices: Devices
-  doctor_registration_details: DoctorRegistrationDetails
-  doctor_registration_details_in_progress: DoctorRegistrationDetailsInProgress
   doctor_review: DoctorReview
   doctor_review_requests: DoctorReviewRequests
   doctor_review_steps: DoctorReviewSteps
@@ -1847,7 +1781,10 @@ export interface DB {
   geometry_columns: GeometryColumns
   google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
+  health_worker_accounts: HealthWorkerAccounts
   health_worker_invitees: HealthWorkerInvitees
+  health_worker_licence_revocations: HealthWorkerLicenceRevocations
+  health_worker_licences: HealthWorkerLicences
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories
@@ -1882,8 +1819,6 @@ export interface DB {
   message_thread_subjects: MessageThreadSubjects
   message_threads: MessageThreads
   messages: Messages
-  nurse_registration_details: NurseRegistrationDetails
-  nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
   nurses: Nurses
   organization_admins: OrganizationAdmins
   organization_consumables: OrganizationConsumables
@@ -1942,10 +1877,7 @@ export interface DB {
   pg_stat_statements_info: PgStatStatementsInfo
   pharmacist_chatbot_user_whatsapp_messages_received: PharmacistChatbotUserWhatsappMessagesReceived
   pharmacist_chatbot_users: PharmacistChatbotUsers
-  pharmacist_licence_revocations: PharmacistLicenceRevocations
-  pharmacist_licences: PharmacistLicences
   pharmacists: Pharmacists
-  pharmacy_licences: PharmacyLicences
   procurement: Procurement
   procurers: Procurers
   providers: Providers

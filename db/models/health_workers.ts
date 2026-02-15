@@ -1,22 +1,14 @@
 import { assert } from 'std/assert/assert.ts'
-import { sql } from 'kysely'
 import { EmployedHealthWorker, IdSelection, Maybe, NonEmptyArray, PossiblyEmployedHealthWorker, TrxOrDb } from '../../types.ts'
 import { organizations } from './organizations.ts'
-import { jsonArrayFrom, orderByArrayPosition } from '../helpers.ts'
+import { concat, jsonArrayFrom, orderByArrayPosition } from '../helpers.ts'
 import { Profession } from '../../db.d.ts'
 import { NameInputs } from '../../util/asNames.ts'
-import { base } from './_base.ts'
+import { base, identity } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DEPARTMENTS } from '../../shared/departments.ts'
 import isString from '../../util/isString.ts'
-
-export const avatar_url_sql = sql<string | null>`
-  CASE WHEN health_workers.avatar_media_id IS NOT NULL
-    THEN concat('/health_workers/', health_workers.id::text, '/avatar')
-    ELSE NULL
-  END
-`
 
 export type HealthWorkerUpsert =
   & {
@@ -25,92 +17,6 @@ export type HealthWorkerUpsert =
     email: string
   }
   & NameInputs
-
-export function baseQuery(trx: TrxOrDb) {
-  return trx
-    .selectFrom('health_workers')
-    .select((eb) => [
-      'health_workers.id',
-      'health_workers.name',
-      'health_workers.first_names',
-      'health_workers.surname',
-      'health_workers.preferred_name',
-      'health_workers.email',
-      avatar_url_sql.as('avatar_url'),
-      jsonArrayFrom(
-        organizations.baseQuery(trx, {})
-          .where(
-            'organizations.id',
-            'in',
-            eb.selectFrom('employment')
-              .whereRef(
-                'employment.health_worker_id',
-                '=',
-                'health_workers.id',
-              )
-              .select('employment.organization_id')
-              .distinct(),
-          )
-          .innerJoin(
-            'employment',
-            (join) =>
-              join.onRef('employment.organization_id', '=', 'organizations.id')
-                .on(
-                  'employment.health_worker_id',
-                  '=',
-                  eb.ref('health_workers.id'),
-                ),
-          )
-          .select((eb_employment) => [
-            'employment.id as employment_id',
-            'profession',
-            'specialty',
-            'is_admin',
-            jsonArrayFrom(
-              eb_employment.selectFrom('department_employment')
-                .innerJoin(
-                  'organization_departments',
-                  'organization_departments.id',
-                  'department_employment.department_id',
-                )
-                .whereRef(
-                  'department_employment.employment_id',
-                  '=',
-                  'employment.id',
-                )
-                .select([
-                  'organization_departments.id',
-                  'organization_departments.name',
-                ])
-                .orderBy(
-                  (eb_employment_departments_order) =>
-                    orderByArrayPosition(
-                      eb_employment_departments_order,
-                      'organization_departments.name',
-                      DEPARTMENTS as NonEmptyArray<string>,
-                    ),
-                  'desc',
-                ),
-            ).as('in_departments'),
-          ]).orderBy(
-            // TODO order by most recently interacted with?
-            (eb_organization_order) =>
-              eb_organization_order.case().when(
-                'organizations.category',
-                'ilike',
-                '%ent%',
-              ).then(2).when(
-                'organizations.category',
-                'ilike',
-                '%ospital%',
-              ).then(1)
-                .else(0)
-                .end(),
-            'desc',
-          ),
-      ).as('organizations'),
-    ])
-}
 
 export type HealthWorkerSearch = {
   search?: Maybe<string>
@@ -125,13 +31,96 @@ export const health_workers = base({
   // caching: {
   //   number_of_items: 100,
   // },
-  baseQuery,
-  formatResult: (x): PossiblyEmployedHealthWorker => x,
-  handleSearch(
-    qb,
-    opts: HealthWorkerSearch,
-    trx,
-  ) {
+  baseQuery(trx: TrxOrDb, opts: HealthWorkerSearch) {
+    let qb = trx
+      .selectFrom('health_workers')
+      .leftJoin('health_worker_accounts', 'health_worker_accounts.id', 'health_workers.id')
+      .select((eb) => [
+        'health_workers.id',
+        'health_workers.name',
+        'health_workers.first_names',
+        'health_workers.surname',
+        'health_workers.preferred_name',
+        'health_worker_accounts.email',
+        eb.case()
+          .when('health_worker_accounts.avatar_media_id', 'is not', null)
+          .then(concat('/health_workers/', eb.ref('health_workers.id'), '/avatar'))
+          .end()
+          .as('avatar_url'),
+        jsonArrayFrom(
+          organizations.baseQuery(trx, {})
+            .where(
+              'organizations.id',
+              'in',
+              eb.selectFrom('employment')
+                .whereRef(
+                  'employment.health_worker_id',
+                  '=',
+                  'health_workers.id',
+                )
+                .select('employment.organization_id')
+                .distinct(),
+            )
+            .innerJoin(
+              'employment',
+              (join) =>
+                join.onRef('employment.organization_id', '=', 'organizations.id')
+                  .on(
+                    'employment.health_worker_id',
+                    '=',
+                    eb.ref('health_workers.id'),
+                  ),
+            )
+            .select((eb_employment) => [
+              'employment.id as employment_id',
+              'profession',
+              'specialty',
+              'is_admin',
+              jsonArrayFrom(
+                eb_employment.selectFrom('department_employment')
+                  .innerJoin(
+                    'organization_departments',
+                    'organization_departments.id',
+                    'department_employment.department_id',
+                  )
+                  .whereRef(
+                    'department_employment.employment_id',
+                    '=',
+                    'employment.id',
+                  )
+                  .select([
+                    'organization_departments.id',
+                    'organization_departments.name',
+                  ])
+                  .orderBy(
+                    (eb_employment_departments_order) =>
+                      orderByArrayPosition(
+                        eb_employment_departments_order,
+                        'organization_departments.name',
+                        DEPARTMENTS as NonEmptyArray<string>,
+                      ),
+                    'desc',
+                  ),
+              ).as('in_departments'),
+            ]).orderBy(
+              // TODO order by most recently interacted with?
+              (eb_organization_order) =>
+                eb_organization_order.case().when(
+                  'organizations.category',
+                  'ilike',
+                  '%ent%',
+                ).then(2).when(
+                  'organizations.category',
+                  'ilike',
+                  '%ospital%',
+                ).then(1)
+                  .else(0)
+                  .end(),
+              'desc',
+            ),
+        ).as('organizations'),
+      ])
+
     if (opts.search) {
       qb = qb.where('health_workers.name', 'ilike', `%${opts.search}%`)
     }
@@ -187,12 +176,12 @@ export const health_workers = base({
 
     return qb
   },
-
+  formatResult: identity<PossiblyEmployedHealthWorker>,
   getIdByEmail(
     trx: TrxOrDb,
     email: string,
   ) {
-    return trx.selectFrom('health_workers')
+    return trx.selectFrom('health_worker_accounts')
       .where('email', '=', email)
       .select('id')
       .executeTakeFirst()
@@ -221,9 +210,9 @@ export const health_workers = base({
   getAvatar(trx: TrxOrDb, opts: { health_worker_id: string }) {
     return trx
       .selectFrom('media')
-      .innerJoin('health_workers', 'health_workers.avatar_media_id', 'media.id')
+      .innerJoin('health_worker_accounts', 'health_worker_accounts.avatar_media_id', 'media.id')
       .select(['media.mime_type', 'media.binary_data'])
-      .where('health_workers.id', '=', opts.health_worker_id)
+      .where('health_worker_accounts.id', '=', opts.health_worker_id)
       .executeTakeFirst()
   },
 

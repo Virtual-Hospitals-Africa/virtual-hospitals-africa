@@ -1,7 +1,7 @@
 import { Kysely, sql } from 'kysely'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
 import { createStandardTable } from '../createTable.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 
 export async function up(db: Kysely<DB>) {
   await db.schema

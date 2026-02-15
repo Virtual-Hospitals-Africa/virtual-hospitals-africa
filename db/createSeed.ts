@@ -46,7 +46,7 @@ function* remapSeedFiles(placement: string) {
 
 function initialSeedFileContents(table_name: string) {
   return `import z from 'zod'
-import { DB } from '../../../db.d.ts'
+import type { DB } from '../../../db.d.ts'
 import { InsertShape } from '../../../types.ts'
 import { define } from '../define.ts'
 import { collectTsvResource } from '../../parseTsvResource.ts'

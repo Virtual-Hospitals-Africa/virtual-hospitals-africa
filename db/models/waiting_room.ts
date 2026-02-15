@@ -10,7 +10,7 @@ import { Department, departmentResponsibleForWorkflow } from '../../shared/depar
 import { assertAll } from '../../util/assertAll.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { InsertObject } from 'kysely'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { exists } from '../../util/exists.ts'
 
 function asWaitingRoom(

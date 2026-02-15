@@ -1,25 +1,28 @@
-import PharmacistsTable from '../../../components/regulator/PharmacistsTable.tsx'
-import { pharmacists } from '../../../db/models/pharmacists.ts'
+import { PharmaciesTable } from '../../components/regulator/PharmaciesTable.tsx'
+import { LoggedInRegulator } from '../../types.ts'
+import { organizations } from '../../db/models/organizations.ts'
 import { Context } from 'fresh'
-import { LoggedInRegulator } from '../../../types.ts'
-import Form from '../../../components/library/Form.tsx'
-import FormRow from '../../../components/library/FormRow.tsx'
-import { Button } from '../../../components/library/Button.tsx'
-import { searchPage } from '../../../util/searchPage.ts'
+import FormRow from '../../components/library/FormRow.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import Form from '../../components/library/Form.tsx'
+import { searchPage } from '../../util/searchPage.ts'
 
-import { json } from '../../../util/responses.ts'
-import { RegulatorHomePageLayout } from '../../regulator/_middleware.tsx'
-import { TextInput } from '../../../islands/form/inputs/text.tsx'
+import { json } from '../../util/responses.ts'
+import { RegulatorHomePageLayout } from '_middleware.tsx'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
 
 export default RegulatorHomePageLayout(
-  'Pharmacists',
-  async function PharmacistsPage(
+  'Pharmacies',
+  async function PharmaciesPage(
     ctx: Context<LoggedInRegulator>,
   ) {
+    const { country } = ctx.params
     const page = searchPage(ctx)
     const search = ctx.url.searchParams.get('search')
-    const search_terms = pharmacists.toSearchTerms(ctx.params.country, search)
-    const search_results = await pharmacists.search(
+
+    const search_terms = organizations.toSearchTerms(country, search)
+
+    const search_results = await organizations.search(
       ctx.state.trx,
       search_terms,
       { page },
@@ -42,10 +45,10 @@ export default RegulatorHomePageLayout(
             type='submit'
             className='grid self-end p-2 text-white border-0 rounded-md shadow-sm w-max ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 whitespace-nowrap place-items-center'
           >
-            Invite
+            Search
           </Button>
         </FormRow>
-        <PharmacistsTable {...search_results} country={ctx.params.country} />
+        <PharmaciesTable country={country} {...search_results} />
       </Form>
     )
   },

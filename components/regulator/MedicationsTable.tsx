@@ -52,10 +52,10 @@ export function MedicinesTable(
             `No medicine matched the search term "${search_terms.search}"`,
             'If there should be, click below to add it',
           ]}
-          // TODO: create /regulator/medicines/add page
+          // TODO: create /regulator/medications/add page
           button={{
             children: 'Add Medicine',
-            href: path('/regulator/medicines/add', {
+            href: path('/regulator/medications/add', {
               name: search_terms.search,
             }),
           }}

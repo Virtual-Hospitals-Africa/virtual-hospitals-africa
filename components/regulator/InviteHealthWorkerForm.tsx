@@ -4,7 +4,7 @@ import PersonSearch from '../../islands/PersonSearch.tsx'
 import FormRow from '../library/FormRow.tsx'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
-export default function InvitePharmacistForm({
+export default function InviteHealthWorkerForm({
   country,
 }: {
   country: string
@@ -14,15 +14,15 @@ export default function InvitePharmacistForm({
       <div className='flex flex-col w-full gap-2'>
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            Pharmacist
+            HealthWorker
           </label>
         </FormRow>
         <PersonSearch
-          name='pharmacist'
-          search_route={`/regulator/${country}/pharmacists`}
+          name='health_worker'
+          search_route={`/regulator/${country}/health_workers`}
           label=''
           addable={{
-            href: `/regulator/${country}/pharmacists/invite?pharmacist_name=`,
+            href: `/regulator/${country}/health_workers/invite?health_worker_name=`,
           }}
         />
         <FormRow>
@@ -90,15 +90,15 @@ export default function InvitePharmacistForm({
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            Pharmacist Type
+            HealthWorker Type
           </label>
         </FormRow>
         <FormRow>
-          <TextArea name='pharmacist_type' label='' />
+          <TextArea name='health_worker_type' label='' />
         </FormRow>
 
         <FormRow>
-          <Button type='submit' name='pharmacist' value='pharmacist'>
+          <Button type='submit' name='health_worker' value='health_worker'>
             Invite
           </Button>
         </FormRow>

@@ -1,5 +1,5 @@
 import { Kysely } from 'kysely'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { createPointerTable } from '../createTable.ts'
 import { trigger } from '../helpers.ts'
 

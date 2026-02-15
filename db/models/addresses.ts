@@ -1,10 +1,11 @@
 import { InsertObject } from 'kysely'
-import { InsertShapeLiteral, Maybe, TrxOrDb } from '../../types.ts'
+import { Address, InsertShapeLiteral, Maybe, TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
 import { StatusError } from '../../util/assertOr.ts'
 import { COUNTRIES } from '../../shared/countries.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
+import { base, identity, simpleBaseQuery } from './_base.ts'
 
 export type AddressInsert = InsertShapeLiteral<InsertObject<DB, 'addresses'>>
 
@@ -28,8 +29,12 @@ COUNTRIES.forEach((country) => {
   }
 })
 
-export const addresses = {
-  insertValues(address: AddressInsert) {
+export const addresses = base({
+  top_level_table: 'addresses',
+  baseQuery: simpleBaseQuery('addresses'),
+  formatResult: identity<Address>,
+
+  insertValues(address: Omit<AddressInsert, 'formatted'>) {
     let {
       id,
       street_number,
@@ -180,4 +185,4 @@ export const addresses = {
     }
     return qb.execute()
   },
-}
+})

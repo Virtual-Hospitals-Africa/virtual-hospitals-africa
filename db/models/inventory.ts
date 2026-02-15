@@ -26,7 +26,7 @@ import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 
 export const inventory = {
   getDevices(

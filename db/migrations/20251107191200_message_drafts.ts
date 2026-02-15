@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { createStandardTable } from '../createTable.ts'
 import { assertOnInsert } from '../helpers.ts'
 

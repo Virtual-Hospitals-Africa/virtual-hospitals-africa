@@ -95,7 +95,7 @@ const regulator_home_page_nav_links: LinkDef[] = [
     Icon: PharmaciesIcon,
   },
   {
-    route: '/regulator/:country/medicines',
+    route: '/regulator/:country/medications',
     title: 'Medicines',
     Icon: MedicineIcon,
   },

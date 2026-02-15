@@ -6,6 +6,8 @@ import { health_workers } from '../../models/health_workers.ts'
 import z from 'zod'
 import { sql } from 'kysely'
 import type { NamePrefix } from '../../../db.d.ts'
+import { addresses } from '../../models/addresses.ts'
+import { employees } from '../../models/employees.ts'
 
 const VHA_TEST_CLINIC_ZIMBABWE_ID = '00000000-0000-0000-0000-000000000003'
 
@@ -22,11 +24,11 @@ const ZimbabwePharmacistRow = z.object({
   family_name: z.string(),
   address: z.string().nullable(),
   town: z.string().nullable(),
-  expiry_date: z.string(),
+  expiry_date: z.string().transform(parseExpiryDate),
 })
 
 export default define(
-  ['health_workers', 'employment', 'pharmacist_licences'],
+  ['health_workers', 'employment', 'health_worker_licences'],
   importFromCsv,
 )
 
@@ -45,7 +47,6 @@ async function importFromCsv(trx: TrxOrDb) {
   ) {
     const address = row.address === 'LOCUM' ? null : row.address
     const health_worker_id = await health_workers.insertOne(trx, {
-      email: `pharmacist-${row.licence_number}@seed.zw`,
       first_names: row.given_name,
       surname: row.family_name,
       name: `${row.given_name} ${row.family_name}`,
@@ -57,15 +58,24 @@ async function importFromCsv(trx: TrxOrDb) {
       profession: 'pharmacist',
       is_admin: false,
     })
-    await trx.insertInto('pharmacist_licences').values({
+    const inserted_address = address
+      ? await addresses.insert(
+        trx,
+        addresses.insertValues({
+          country: 'ZW',
+          locality: row.town,
+          street: address,
+        }),
+      )
+      : null
+    await trx.insertInto('health_worker_licences').values({
       pharmacist_id: employment_row.id,
       licence_number: row.licence_number,
       prefix: (row.prefix as NamePrefix | null) ?? null,
       given_name: row.given_name,
       family_name: row.family_name,
-      address,
-      town: row.town ?? null,
-      expiry_date: parseExpiryDate(row.expiry_date),
+      address_id: inserted_address?.id,
+      expiry_date: row.expiry_date,
       pharmacist_type: row.pharmacist_type,
       country: 'ZW',
     }).execute()
@@ -94,7 +104,7 @@ async function importFromCsv(trx: TrxOrDb) {
     if (!organization) continue
 
     const licence_row = await trx
-      .selectFrom('pharmacist_licences')
+      .selectFrom('health_worker_licences')
       .select(['pharmacist_id', 'given_name', 'family_name'])
       .where('given_name', '=', given_name)
       .where('family_name', '=', family_name)
@@ -105,8 +115,12 @@ async function importFromCsv(trx: TrxOrDb) {
       continue
     }
 
-    await (trx as { insertInto: (table: string) => { values: (v: unknown) => { execute: () => Promise<unknown> } } })
-      .insertInto('pharmacy_employment')
+    await employees.add(trx, {
+
+    })
+    
+    trx
+      .insertInto('employment')
       .values({
         organization_id: organization.id,
         pharmacist_id: licence_row.pharmacist_id,

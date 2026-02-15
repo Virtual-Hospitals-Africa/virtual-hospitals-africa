@@ -30,7 +30,7 @@ export const medication_availabilities = base({
         jsonBuildObject({
           recall: eb.case()
             .when('recalled_at', 'is', null)
-            .then(concat('/regulator/medicines/', eb.ref('medications.id'), '/recall'))
+            .then(concat('/regulator/medications/', eb.ref('medications.id'), '/recall'))
             .end(),
         }).as('actions'),
       ])

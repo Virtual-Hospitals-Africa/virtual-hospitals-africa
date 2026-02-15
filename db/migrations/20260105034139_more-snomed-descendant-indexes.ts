@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 
 export async function up(db: Kysely<DB>) {
   // Covering index for the is_descendant recursive CTE join:

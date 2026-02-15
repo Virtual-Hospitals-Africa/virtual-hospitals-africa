@@ -16,7 +16,7 @@ import { startWorkflow } from '../start-workflow.tsx'
 import generateUUID from '../../../../../../../../util/uuid.ts'
 import { organization_rooms } from '../../../../../../../../db/models/organization_rooms.ts'
 import { UpdateShape } from '../../../../../../../../types.ts'
-import { DB } from '../../../../../../../../db.d.ts'
+import type { DB } from '../../../../../../../../db.d.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 
 // TODO not hard code this

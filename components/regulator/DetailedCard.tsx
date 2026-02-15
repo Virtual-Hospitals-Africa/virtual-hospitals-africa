@@ -1,9 +1,9 @@
-import { DetailedPharmacist } from '../../types.ts'
+import { Renderedhealth_worker } from '../../types.ts'
 
-export default function PharmacistDetailedCard({
-  pharmacist,
+export default function health_workerDetailedCard({
+  health_worker,
 }: {
-  pharmacist: DetailedPharmacist
+  health_worker: RenderedEmployee
 }) {
   return (
     <>
@@ -12,35 +12,27 @@ export default function PharmacistDetailedCard({
           <dl class='grid grid-cols-1 sm:grid-cols-4'>
             <div class='py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Prefix
+                First Names
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.prefix}
+                {health_worker.first_names}
               </dd>
             </div>
             <div class='py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Given Name
+                Surname
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.given_name}
-              </dd>
-            </div>
-            <div class='py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Family Name
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.family_name ||
+                {health_worker.surname ||
                   'N/A'}
               </dd>
             </div>
             <div class=' py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Pharmacist Type
+                health_worker Type
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.pharmacist_type}
+                {health_worker.licence.health_worker_type}
               </dd>
             </div>
             <div class='py-6 sm:col-span-1 sm:px-0'>
@@ -48,26 +40,18 @@ export default function PharmacistDetailedCard({
                 Licence Number
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.licence_number}
+                {health_worker.licence.licence_number}
               </dd>
             </div>
             <div class='py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Town
+                Address
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.town}
+                {health_worker.licence.address.formatted}
               </dd>
             </div>
-            <div class='py-6 sm:col-span-2 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Town
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.address}
-              </dd>
-            </div>
-            {pharmacist.pharmacies.map((pharmacy) => (
+            {health_worker.organizations.map((pharmacy) => (
               <>
                 <div class='border-t border-gray-100 py-6 sm:col-span-2 sm:px-0'>
                   <dt class='text-sm font-bold leading-6 text-gray-900'>
@@ -76,7 +60,7 @@ export default function PharmacistDetailedCard({
                   <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                     <a
                       className='text-indigo-600 hover:text-indigo-900'
-                      href={pharmacy.href}
+                      href={pharmacy.hrefs.regulator_view}
                     >
                       {pharmacy.name}
                     </a>
@@ -84,10 +68,10 @@ export default function PharmacistDetailedCard({
                 </div>
                 <div class='sm:border-t border-gray-100 py-6 sm:col-span-2 sm:px-0'>
                   <dt class='text-sm font-bold leading-6 text-gray-900'>
-                    Is supervisor
+                    Role
                   </dt>
                   <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                    {pharmacy.is_supervisor ? 'Yes' : 'No'}
+                    {pharmacy.profession}
                   </dd>
                 </div>
               </>

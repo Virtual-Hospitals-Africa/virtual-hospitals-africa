@@ -15,6 +15,7 @@ import { StatusError } from '../util/assertOr.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
 import memoize from '../util/memoize.ts'
+import { assertUnreachable } from '../util/assertUnreachable.ts'
 
 export const DEPARTMENTS = [
   'Primary care' as const,
@@ -140,8 +141,11 @@ export function departmentsOfProfession(
     case 'admin': {
       return ['Administration']
     }
+    case 'pharmacist': {
+      return ['Pharmacy']
+    }
     default: {
-      throw new Error(`Unreachable, profession ${profession}`)
+      assertUnreachable(profession)
     }
   }
 }

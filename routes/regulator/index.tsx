@@ -1,7 +1,6 @@
-import { LoggedInRegulatorContext } from '../../types.ts'
+import { RouteHandler } from 'fresh'
 import redirect from '../../util/redirect.ts'
-import { Handlers } from 'fresh/compat'
 
-export const handler: Handlers<unknown, LoggedInRegulatorContext['state']> = {
-  GET: (ctx) => redirect(`/regulator/${ctx.state.regulator.country}/pharmacies`),
+export const handler: RouteHandler<unknown, unknown> = {
+  GET: (_ctx) => redirect(`/regulator/organizations`),
 }

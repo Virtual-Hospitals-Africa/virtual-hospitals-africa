@@ -33,7 +33,7 @@ function ensureCookiePresent(ctx: Context<unknown>) {
 }
 
 function redirectIfAtRoot(ctx: LoggedInRegulatorContext) {
-  return ctx.url.pathname === '/regulator' ? redirect(`/regulator/${ctx.state.regulator.country}/pharmacists`) : ctx.next()
+  return ctx.url.pathname === '/regulator' ? redirect(`/regulator/${ctx.state.regulator.country}/health_workers`) : ctx.next()
 }
 
 async function getLoggedInRegulator(

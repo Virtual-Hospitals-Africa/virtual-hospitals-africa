@@ -17,7 +17,7 @@ import {
   UpdateQueryBuilder,
 } from 'kysely'
 import * as formatter from 'sql-formatter'
-import { DB } from '../db.d.ts'
+import type { DB } from '../db.d.ts'
 import { Coordinates, IdSelection, InsertRows, NonEmptyArray, type TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'

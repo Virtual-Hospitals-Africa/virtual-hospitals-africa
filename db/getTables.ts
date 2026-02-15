@@ -2,7 +2,7 @@ import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { collect } from '../util/collectSorted.ts'
 import memoize from '../util/memoize.ts'
 import { assert } from 'std/assert/assert.ts'
-import { DB } from '../db.d.ts'
+import type { DB } from '../db.d.ts'
 
 function* yieldTables(): Generator<keyof DB> {
   const file = Deno.readFileSync('db.d.ts')

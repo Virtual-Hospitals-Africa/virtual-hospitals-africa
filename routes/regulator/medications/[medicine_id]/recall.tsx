@@ -44,7 +44,7 @@ export const handler = {
     )
 
     return redirect(
-      `/regulator/medicines?success=${success}`,
+      `/regulator/medications?success=${success}`,
     )
   },
 }

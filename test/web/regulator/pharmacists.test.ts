@@ -5,10 +5,11 @@ import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
 import { path } from '../../../util/path.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { addTestPharmacist, removeTestPharmacist } from '../../_helpers/pharmacists.ts'
+import { addTestPharmacist } from '../../_helpers/pharmacists.ts'
 import { addTestRegulatorWithSession } from '../../_helpers/regulators.ts'
 import { route } from '../../_route.ts'
 import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
+import { pharmacists } from '../../../db/models/pharmacists.ts'
 
 describeParallel.skip(
   '/regulator/[country]/pharmacists',
@@ -91,7 +92,7 @@ describeParallel.skip(
           `should have one <td> with the text the pharmacist expiry date`,
         )
 
-        await removeTestPharmacist(db, new_pharmacist.id)
+        await pharmacists.removeById(db, new_pharmacist.id)
       },
     )
   },

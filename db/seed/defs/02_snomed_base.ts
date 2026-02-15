@@ -1,4 +1,4 @@
-import { DB } from '../../../db.d.ts'
+import type { DB } from '../../../db.d.ts'
 import { directoryExists, rmrf, runCommandAssertExitCodeZero } from '../../../util/command.ts'
 import { chunkTsvResource } from '../../parseTsvResource.ts'
 import { define } from '../define.ts'

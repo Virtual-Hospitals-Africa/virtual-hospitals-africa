@@ -1,4 +1,4 @@
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { FAMILY_TYPES, MARITAL_STATUS, PATIENT_COHABITATIONS } from '../../shared/family.ts'
 import { createStandardTable } from '../createTable.ts'

@@ -1,4 +1,4 @@
-import { DB } from '../../../db.d.ts'
+import type { DB } from '../../../db.d.ts'
 
 import { define } from '../define.ts'
 import entries from '../../../util/entries.ts'

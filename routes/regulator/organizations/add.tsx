@@ -1,29 +1,29 @@
 import { z } from 'zod'
 import { Context } from 'fresh'
-import PharmacyForm from '../../../../islands/regulator/PharmacyForm.tsx'
+import OrganizationForm from '../../../../islands/regulator/OrganizationForm.tsx'
 import redirect from '../../../../util/redirect.ts'
 import { parseRequest } from '../../../../backend/parseForm.ts'
-import { pharmacies } from '../../../../db/models/pharmacies.ts'
+import { organizations } from '../../../../db/models/organizations.ts'
 import { LoggedInRegulator } from '../../../../types.ts'
 import { RegulatorHomePageLayout } from '../../../regulator/_middleware.tsx'
 
-const UpsertPharmacySchema = z.object({
+const UpsertOrganizationSchema = z.object({
   name: z.string(),
   address: z.string(),
   licence_number: z.string(),
   licensee: z.string(),
-  pharmacies_types: z.enum([
+  organizations_types: z.enum([
     'Clinics: Class A',
     'Clinics: Class B',
     'Clinics: Class C',
     'Clinics: Class D',
     'Dispensing medical practice',
-    'Hospital pharmacies',
+    'Hospital organizations',
     'Pharmacies: Research',
     'Pharmacies: Restricted',
-    'Pharmacy in any other location',
-    'Pharmacy in rural area',
-    'Pharmacy located in the CBD',
+    'Organization in any other location',
+    'Organization in rural area',
+    'Organization located in the CBD',
     'Wholesalers',
   ]),
   expiry_date: z.string(),
@@ -37,10 +37,10 @@ export const handler = {
     const { trx } = ctx.state
     const pharmacy = await parseRequest(
       req,
-      UpsertPharmacySchema.parse,
+      UpsertOrganizationSchema.parse,
     )
 
-    const { id } = await pharmacies.insert(trx, {
+    const { id } = await organizations.insert(trx, {
       ...pharmacy,
       country,
     })
@@ -50,7 +50,7 @@ export const handler = {
     )
 
     return redirect(
-      `/regulator/${country}/pharmacies/${id}?success=${success}`,
+      `/regulator/${country}/organizations/${id}?success=${success}`,
     )
   },
 }
@@ -61,12 +61,12 @@ export default RegulatorHomePageLayout(
     ctx: Context<LoggedInRegulator>,
   ) {
     return (
-      <PharmacyForm
+      <OrganizationForm
         form_data={{
           name: ctx.url.searchParams.get('name') || '',
           licence_number: ctx.url.searchParams.get('licence_number') || '',
         }}
-        country={ctx.params.country}
+        country={SERVER_COUNTRY}
       />
     )
   },

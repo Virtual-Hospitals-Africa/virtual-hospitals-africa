@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { Coordinates, InsertRows, Maybe, RenderedOrganization, TrxOrDb } from '../../types.ts'
 import { addresses, type AddressInsert } from './addresses.ts'
-import { blankSelection, jsonBuildNullableObject, literalLocation, success_true } from '../helpers.ts'
+import { blankSelection, concat, jsonBuildNullableObject, jsonBuildObject, literalLocation, success_true } from '../helpers.ts'
 import { base, identity, SearchResult } from './_base.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Department } from '../../shared/departments.ts'
@@ -72,6 +72,10 @@ export const organizations = base({
           longitude: sql<number>`ST_X(location::geometry)`,
           latitude: sql<number>`ST_Y(location::geometry)`,
         }).as('location'),
+        jsonBuildObject({
+          regulator_view: concat('/regulator/organizations/', eb.ref('organizations.id')),
+          health_worker_view: concat('/regulator/organizations/', eb.ref('organizations.id')),
+        }).as('hrefs'),
       ])
     if (opts.search) {
       qb = qb.where('organizations.name', 'ilike', `%${opts.search}%`)
