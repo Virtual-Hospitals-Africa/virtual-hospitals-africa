@@ -36,7 +36,7 @@ cd "$WORKTREE_DIR"
 echo "Running Claude Code with prompt: $PROMPT"
 echo "This will run with all permissions and create a PR when done..."
 
-echo "$PROMPT" | claude --dangerously-skip-permissions --print
+echo "$PROMPT" | claude --dangerously-skip-permissions --print --include-partial-messages
 
 attempts=0
 max_attempts=2
@@ -70,11 +70,23 @@ while true; do
   fi
 
   echo "Found server log at: $log_file"
-  retry_prompt="The tests failed. Check the log file at $log_file for what went wrong and then continue to work on the original prompt.\n${PROMPT}"
+  retry_prompt="A recent Claude instance attempted to implement a prompt, but now tests are breaking.
+Your job is to read the original prompt, read the test output, assess what has changed, and get the tests to pass.
+
+ORIGINAL PROMPT:
+
+${PROMPT}
+
+TEST OUTPUT:
+
+${test_output}
+
+SERVER LOG FILE (relevant for failures in test/web):
+$log_file"
 
   rm "$test_output"
   echo "Asking Claude to fix the issues..."
-  echo -e "$retry_prompt" | claude --dangerously-skip-permissions --print
+  echo -e "$retry_prompt" | claude --dangerously-skip-permissions --print --include-partial-messages
 done
 
 if ! $tests_passed; then
