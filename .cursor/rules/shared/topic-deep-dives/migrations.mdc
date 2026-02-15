@@ -9,4 +9,31 @@ Migrations are defined in db/migrations
 
 All tables/types added in the up function must be dropped in reverse order in the down function.
 
-Generally speaking use createStandardTable 
+Generally speaking use createStandardTable.
+
+# It's okay to modify migrations
+
+Our project has no live users yet so it's preferred to modify migrations to have a single source of truth for table definitions.
+
+So if you are wanting to modify a table defined in db/migrations/20240108094046_some_table.ts
+you would run
+
+```bash
+$ deno task docker db:migrate past db/migrations/20240108094046_some_table.ts
+```
+
+Then do your modifications to that file (because the up/down may change)
+
+Then run 
+
+```bash
+$ deno task docker db:rebuild
+```
+
+This will generate a new db.d.ts with updated type definitions which will make continuing with your migration easier as you'll be able to run 
+
+```bash
+$ deno task check
+```
+
+To see type errors

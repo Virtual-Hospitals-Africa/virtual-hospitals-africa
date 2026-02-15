@@ -97,6 +97,12 @@ export const migrate = {
     if (!target) return targetError('to')
     return migrator.migrateTo(findTarget(target, 'to'))
   },
+  past(target: string) {
+    if (!target) return targetError('past')
+    const file = findTarget(target, 'past')
+    const index = migration_targets.indexOf(file)
+    return migrator.migrateTo(migration_targets[index - 1])
+  },
   async redo() {
     await migrate.down()
     const result = await migrate.up()
