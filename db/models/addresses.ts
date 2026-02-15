@@ -23,8 +23,8 @@ export const TO_COUNTRY_OFFICIAL_NAME = new Map<string, string>()
 COUNTRIES.forEach((country) => {
   TO_COUNTRY_OFFICIAL_NAME.set(country.iso_3166_2, country.official_name)
   TO_COUNTRY_ISO_3601_2.set(country.official_name, country.iso_3166_2)
-  for (const alternate_name of country.alternate_names || []) {
-    TO_COUNTRY_ISO_3601_2.set(alternate_name, country.iso_3166_2)
+  if (country.alternate_names) {
+    TO_COUNTRY_ISO_3601_2.set(country.alternate_names, country.iso_3166_2)
   }
 })
 

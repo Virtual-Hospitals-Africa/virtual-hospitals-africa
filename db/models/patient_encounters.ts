@@ -84,7 +84,7 @@ function baseQuery(trx: TrxOrDb) {
           ),
       ).$notNull().as('patient'),
       jsonObjectFrom(
-        organizations.baseQuery(trx)
+        organizations.baseQuery(trx, {})
           .where(
             'organizations.id',
             '=',

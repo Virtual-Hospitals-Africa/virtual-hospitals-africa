@@ -73,6 +73,10 @@ export const employment = {
         'nurse_insert',
         (qb) => (profession === 'nurse') ? qb.insertInto('nurses').values({ id }) : blankSelection(qb),
       )
+      .with(
+        'pharmacist_insert',
+        (qb) => (profession === 'pharmacist') ? qb.insertInto('pharmacists').values({ id }) : blankSelection(qb),
+      )
       .selectFrom('employment_insert')
       .selectAll('employment_insert')
       .executeTakeFirstOrThrow()

@@ -7,7 +7,7 @@ export async function up(db: Kysely<DB>) {
     db,
     'organizations',
     (qb) =>
-      qb.addColumn('name', 'varchar(255)', (col) => col.notNull().unique())
+      qb.addColumn('name', 'varchar(255)', (col) => col.notNull())
         .addColumn('category', 'varchar(255)')
         .addColumn('ownership', 'varchar(255)')
         .addColumn('inactive_reason', 'varchar(255)')

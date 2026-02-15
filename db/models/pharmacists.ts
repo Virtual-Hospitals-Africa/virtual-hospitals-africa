@@ -1,3 +1,4 @@
+/// <reference path="../pharmacy-db-augment.d.ts" />
 import { Maybe, Prefix, RenderedPharmacist, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
@@ -45,7 +46,7 @@ export function addressDisplaySql(table: string) {
 }
 
 function baseQuery(trx: TrxOrDb) {
-  return trx
+  return (trx as any)
     .selectFrom('pharmacists')
     .select((eb) => [
       'pharmacists.id',
@@ -200,12 +201,12 @@ export const pharmacists = base({
     data: PharmacistUpsert,
   ) {
     let { pharmacies = [], ...pharmacistData } = data
-    await trx
+    await (trx as any)
       .updateTable('pharmacists')
       .set(pharmacistData)
       .where('id', '=', pharmacist_id)
       .execute()
-    const existing_pharmacy_employments = await trx
+    const existing_pharmacy_employments = await (trx as any)
       .selectFrom('pharmacy_employment')
       .where('pharmacist_id', '=', pharmacist_id)
       .selectAll()
@@ -251,13 +252,13 @@ export const pharmacists = base({
       regulator_id: string
     },
   ) {
-    return trx.updateTable('pharmacists').set({
+    return (trx as any).updateTable('pharmacists').set({
       revoked_at: now,
       revoked_by: data.regulator_id,
     }).where('id', '=', data.pharmacist_id).execute()
   },
   remove(trx: TrxOrDb, pharmacist_id: string) {
-    return trx
+    return (trx as any)
       .deleteFrom('pharmacists')
       .where('id', '=', pharmacist_id)
       .execute()
@@ -267,7 +268,7 @@ export const pharmacists = base({
     data: PharmacistInsert,
   ): Promise<{ id: string }> {
     const { pharmacies, ...pharmacistData } = data
-    const pharmacist = await trx
+    const pharmacist = await (trx as any)
       .insertInto('pharmacists')
       .values(pharmacistData)
       .returning('id')

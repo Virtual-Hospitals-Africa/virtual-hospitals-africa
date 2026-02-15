@@ -7,7 +7,7 @@ import { organizations, type OrganizationSearch } from './organizations.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 
 function baseQuery(trx: TrxOrDb) {
-  return organizations.baseQuery(trx)
+  return organizations.baseQuery(trx, {})
     .select((eb) => [
       jsonArrayFrom(
         eb.selectFrom('organization_departments')

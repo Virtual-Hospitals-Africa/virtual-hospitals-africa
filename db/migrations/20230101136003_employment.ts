@@ -8,6 +8,7 @@ export async function up(db: Kysely<DB>) {
     .asEnum([
       'doctor',
       'nurse',
+      'pharmacist',
       'receptionist',
     ])
     .execute()
@@ -59,6 +60,15 @@ export async function up(db: Kysely<DB>) {
   await createPointerTable(
     db,
     'receptionists',
+    {
+      references: 'employment',
+      primary_key_type: 'uuid',
+    },
+  )
+
+  await createPointerTable(
+    db,
+    'pharmacists',
     {
       references: 'employment',
       primary_key_type: 'uuid',
@@ -152,6 +162,7 @@ export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('nurses').execute()
   await db.schema.dropTable('doctors').execute()
   await db.schema.dropTable('providers').execute()
+  await db.schema.dropTable('pharmacists').execute()
   await db.schema.dropTable('receptionists').execute()
   await db.schema.dropTable('organization_admins').execute()
   await db.schema.dropTable('employment').execute()

@@ -22,9 +22,7 @@ you would run
 $ deno task docker db:migrate past db/migrations/20240108094046_some_table.ts
 ```
 
-Then do your modifications to that file (because the up/down may change)
-
-Then run 
+Then do your modifications to that file (because the up/down may change). If any seeds need updating, update those then run
 
 ```bash
 $ deno task docker db:rebuild
@@ -36,4 +34,4 @@ This will generate a new db.d.ts with updated type definitions which will make c
 $ deno task check
 ```
 
-To see type errors
+To see type errors before proceeding further with your plan. It's expected you get type errors at this stage, but if the columns didn't get added how you'd expect in db.d.ts then abort.

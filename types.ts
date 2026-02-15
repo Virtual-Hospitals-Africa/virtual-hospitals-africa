@@ -1229,7 +1229,7 @@ export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
   number_of_containers: number
 }
 
-export type Profession = 'doctor' | 'nurse' | 'receptionist'
+export type Profession = 'doctor' | 'nurse' | 'pharmacist' | 'receptionist'
 
 export type NurseSpecialty =
   | 'Primary care'

@@ -1,9 +1,8 @@
+/// <reference path="../pharmacy-db-augment.d.ts" />
 import { sql } from 'kysely'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { addressDisplaySql, nameSql } from './pharmacists.ts'
-import { RenderedPharmacy } from '../../types.ts'
-import { TrxOrDb } from '../../types.ts'
-import { PharmaciesTypes } from '../../db.d.ts'
+import { RenderedPharmacy, TrxOrDb } from '../../types.ts'
 import { pharmacy_employment } from './pharmacy_employment.ts'
 import { base } from './_base.ts'
 
@@ -12,7 +11,7 @@ const view_sql = sql<
 >`'/regulator/' || pharmacies.country || '/pharmacies/' || pharmacies.id::text`
 
 function baseQuery(trx: TrxOrDb) {
-  return trx
+  return (trx as any)
     .selectFrom('pharmacies')
     .select((eb) => [
       'pharmacies.id',
@@ -97,7 +96,7 @@ export type PharmacyInsert = {
   licensee: string
   name: string
   country: string
-  pharmacies_types: PharmaciesTypes
+  pharmacies_types: RenderedPharmacy['pharmacies_types']
   supervisors?: PharmacySupervisorInsert[]
 }
 
@@ -135,7 +134,7 @@ export const pharmacies = base({
     data: PharmacyInsert,
   ): Promise<{ id: string }> {
     const { supervisors, ...pharmacyData } = data
-    const pharmacy = await trx
+    const pharmacy = await (trx as any)
       .insertInto('pharmacies')
       .values(pharmacyData)
       .returning('id')

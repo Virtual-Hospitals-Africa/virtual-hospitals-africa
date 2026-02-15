@@ -1,22 +1,116 @@
 import { TrxOrDb } from '../../../types.ts'
 import { define } from '../define.ts'
-import { parseTsv } from '../../../util/parseCsv.ts'
+import { parseTsvTyped } from '../../../util/parseCsv.ts'
+import { employment } from '../../models/employment.ts'
+import { health_workers } from '../../models/health_workers.ts'
+import z from 'zod'
+import { sql } from 'kysely'
+import type { NamePrefix } from '../../../db.d.ts'
 
-export default define(['pharmacists'], importFromCsv)
+const VHA_TEST_CLINIC_ZIMBABWE_ID = '00000000-0000-0000-0000-000000000003'
+
+const ZimbabwePharmacistRow = z.object({
+  licence_number: z.string(),
+  pharmacist_type: z.enum([
+    'Dispensing Medical Practitioner',
+    'Ind Clinic Nurse',
+    'Pharmacist',
+    'Pharmacy Technician',
+  ]),
+  prefix: z.string().nullable(),
+  given_name: z.string(),
+  family_name: z.string(),
+  address: z.string().nullable(),
+  town: z.string().nullable(),
+  expiry_date: z.string(),
+})
+
+export default define(
+  ['health_workers', 'employment', 'pharmacist_licences'],
+  importFromCsv,
+)
+
+function parseExpiryDate(s: string): Date {
+  const [mm, dd, yyyy] = s.split('/').map(Number)
+  return new Date(yyyy, mm - 1, dd)
+}
 
 async function importFromCsv(trx: TrxOrDb) {
   for await (
-    const pharmacist of parseTsv('./db/resources/zimbabwe_pharmacists.tsv')
+    const row of parseTsvTyped(
+      './db/resources/zimbabwe_pharmacists.tsv',
+      ZimbabwePharmacistRow,
+      { interpret_integers: false },
+    )
   ) {
-    if (pharmacist.address === 'LOCUM') {
-      pharmacist.address = null
+    const address = row.address === 'LOCUM' ? null : row.address
+    const health_worker_id = await health_workers.insertOne(trx, {
+      email: `pharmacist-${row.licence_number}@seed.zw`,
+      first_names: row.given_name,
+      surname: row.family_name,
+      name: `${row.given_name} ${row.family_name}`,
+      preferred_name: row.given_name,
+    })
+    const employment_row = await employment.addOne(trx, {
+      health_worker_id,
+      organization_id: VHA_TEST_CLINIC_ZIMBABWE_ID,
+      profession: 'pharmacist',
+      is_admin: false,
+    })
+    await trx.insertInto('pharmacist_licences').values({
+      pharmacist_id: employment_row.id,
+      licence_number: row.licence_number,
+      prefix: (row.prefix as NamePrefix | null) ?? null,
+      given_name: row.given_name,
+      family_name: row.family_name,
+      address,
+      town: row.town ?? null,
+      expiry_date: parseExpiryDate(row.expiry_date),
+      pharmacist_type: row.pharmacist_type,
+      country: 'ZW',
+    }).execute()
+  }
+
+  const representatives: { licence_number: string; given_name: string; family_name: string }[] = []
+  for await (
+    const r of parseTsvTyped(
+      './db/resources/zimbabwe_pharmacy_representatives.tsv',
+      z.object({
+        licence_number: z.string(),
+        given_name: z.string(),
+        family_name: z.string(),
+      }),
+    )
+  ) {
+    representatives.push(r)
+  }
+  for (const representative of representatives) {
+    const { licence_number, given_name, family_name } = representative
+    const organization = await trx
+      .selectFrom('organizations')
+      .select(['id'])
+      .where(sql`organizations.licence_number`, '=', licence_number)
+      .executeTakeFirst()
+    if (!organization) continue
+
+    const licence_row = await trx
+      .selectFrom('pharmacist_licences')
+      .select(['pharmacist_id', 'given_name', 'family_name'])
+      .where('given_name', '=', given_name)
+      .where('family_name', '=', family_name)
+      .executeTakeFirst()
+
+    if (!licence_row) {
+      console.warn(`Pharmacist not found: ${given_name} ${family_name}`)
+      continue
     }
-    await trx
-      .insertInto('pharmacists')
+
+    await (trx as { insertInto: (table: string) => { values: (v: unknown) => { execute: () => Promise<unknown> } } })
+      .insertInto('pharmacy_employment')
       .values({
-        // deno-lint-ignore no-explicit-any
-        ...pharmacist as any,
-        country: 'ZW',
+        organization_id: organization.id,
+        pharmacist_id: licence_row.pharmacist_id,
+        is_supervisor: true,
       })
       .execute()
   }

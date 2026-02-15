@@ -38,7 +38,7 @@ export function baseQuery(trx: TrxOrDb) {
       'health_workers.email',
       avatar_url_sql.as('avatar_url'),
       jsonArrayFrom(
-        organizations.baseQuery(trx)
+        organizations.baseQuery(trx, {})
           .where(
             'organizations.id',
             'in',

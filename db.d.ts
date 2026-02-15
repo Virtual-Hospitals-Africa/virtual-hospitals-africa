@@ -116,23 +116,9 @@ export type Numeric = ColumnType<string, number | string, number | string>
 
 export type PatientCohabitation = 'Father' | 'Foster Parent' | 'Grandparent(s)' | 'Mother' | 'Orphanage' | 'Other Relative' | 'Sibling' | 'Uncle or Aunt'
 
-export type PharmaciesTypes =
-  | 'Clinics: Class A'
-  | 'Clinics: Class B'
-  | 'Clinics: Class C'
-  | 'Clinics: Class D'
-  | 'Dispensing medical practice'
-  | 'Hospital pharmacies'
-  | 'Pharmacies: Research'
-  | 'Pharmacies: Restricted'
-  | 'Pharmacy in any other location'
-  | 'Pharmacy in rural area'
-  | 'Pharmacy located in the CBD'
-  | 'Wholesalers'
-
 export type PharmacistType = 'Dispensing Medical Practitioner' | 'Ind Clinic Nurse' | 'Pharmacist' | 'Pharmacy Technician'
 
-export type Profession = 'doctor' | 'nurse' | 'receptionist'
+export type Profession = 'doctor' | 'nurse' | 'pharmacist' | 'receptionist'
 
 export type Sex = 'female' | 'male' | 'other' | 'prefer not to say'
 
@@ -1326,10 +1312,10 @@ export interface PatientWorkflowStepsCompleted {
 }
 
 export interface PgStatStatements {
+  blk_read_time: number | null
+  blk_write_time: number | null
   calls: Int8 | null
   dbid: number | null
-  jit_deform_count: Int8 | null
-  jit_deform_time: number | null
   jit_emission_count: Int8 | null
   jit_emission_time: number | null
   jit_functions: Int8 | null
@@ -1338,8 +1324,6 @@ export interface PgStatStatements {
   jit_inlining_time: number | null
   jit_optimization_count: Int8 | null
   jit_optimization_time: number | null
-  local_blk_read_time: number | null
-  local_blk_write_time: number | null
   local_blks_dirtied: Int8 | null
   local_blks_hit: Int8 | null
   local_blks_read: Int8 | null
@@ -1350,18 +1334,14 @@ export interface PgStatStatements {
   mean_plan_time: number | null
   min_exec_time: number | null
   min_plan_time: number | null
-  minmax_stats_since: Timestamp | null
   plans: Int8 | null
   query: string | null
   queryid: Int8 | null
   rows: Int8 | null
-  shared_blk_read_time: number | null
-  shared_blk_write_time: number | null
   shared_blks_dirtied: Int8 | null
   shared_blks_hit: Int8 | null
   shared_blks_read: Int8 | null
   shared_blks_written: Int8 | null
-  stats_since: Timestamp | null
   stddev_exec_time: number | null
   stddev_plan_time: number | null
   temp_blk_read_time: number | null
@@ -1380,20 +1360,6 @@ export interface PgStatStatements {
 export interface PgStatStatementsInfo {
   dealloc: Int8 | null
   stats_reset: Timestamp | null
-}
-
-export interface Pharmacies {
-  address: string | null
-  country: string
-  created_at: Generated<Timestamp>
-  expiry_date: Timestamp
-  id: Generated<string>
-  licence_number: string
-  licensee: string
-  name: string
-  pharmacies_types: PharmaciesTypes
-  town: string | null
-  updated_at: Generated<Timestamp>
 }
 
 export interface PharmacistChatbotUsers {
@@ -1415,7 +1381,16 @@ export interface PharmacistChatbotUserWhatsappMessagesReceived {
   whatsapp_message_received_id: string
 }
 
-export interface Pharmacists {
+export interface PharmacistLicenceRevocations {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  pharmacist_license_id: string
+  revoked_at: Generated<Timestamp>
+  revoked_by: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PharmacistLicences {
   address: string | null
   country: string
   created_at: Generated<Timestamp>
@@ -1424,20 +1399,23 @@ export interface Pharmacists {
   given_name: string
   id: Generated<string>
   licence_number: string
+  pharmacist_id: string
   pharmacist_type: PharmacistType
   prefix: NamePrefix | null
-  revoked_at: Timestamp | null
-  revoked_by: string | null
   town: string | null
   updated_at: Generated<Timestamp>
 }
 
-export interface PharmacyEmployment {
+export interface Pharmacists {
+  id: string
+}
+
+export interface PharmacyLicences {
   created_at: Generated<Timestamp>
+  expiry_date: Timestamp | null
   id: Generated<string>
-  is_supervisor: boolean
-  pharmacist_id: string
-  pharmacy_id: string
+  licensee_id: string
+  organization_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1962,11 +1940,12 @@ export interface DB {
   patients: Patients
   pg_stat_statements: PgStatStatements
   pg_stat_statements_info: PgStatStatementsInfo
-  pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received: PharmacistChatbotUserWhatsappMessagesReceived
   pharmacist_chatbot_users: PharmacistChatbotUsers
+  pharmacist_licence_revocations: PharmacistLicenceRevocations
+  pharmacist_licences: PharmacistLicences
   pharmacists: Pharmacists
-  pharmacy_employment: PharmacyEmployment
+  pharmacy_licences: PharmacyLicences
   procurement: Procurement
   procurers: Procurers
   providers: Providers

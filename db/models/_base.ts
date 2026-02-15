@@ -4,6 +4,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import type { Generated, InsertObject, ReferenceExpression, SelectQueryBuilder } from 'kysely'
 import type { IdSelection, SearchResults, SelectShape, TrxOrDb, UpdateShape } from '../../types.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
+/// <reference path="../pharmacy-db-augment.d.ts" />
 import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
 import { asCompiledSql, debugLog } from '../helpers.ts'
