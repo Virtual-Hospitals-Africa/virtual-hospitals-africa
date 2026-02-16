@@ -1027,65 +1027,6 @@ export type GoogleProfile = {
   email_verified: boolean
   locale: string
 }
-
-export type HealthWorkerInvitee = {
-  email: string
-  organization_id: string
-  profession: Profession
-}
-
-export type OrganizationEmployeeOrInvitee =
-  | OrganizationEmployee
-  | OrganizationEmployeeInvitee
-export type OrganizationEmployee = {
-  name: string
-  is_invitee: false
-  health_worker_id: string
-  professions: {
-    employee_id: string
-    profession: Profession
-    specialty: string | null
-  }[]
-  avatar_url: null | string
-  email: string
-  display_name: string
-  actions: {
-    view: string
-  }
-  online: null | SqlBool
-}
-
-export type OrganizationEmployeeWithActions = Omit<
-  OrganizationEmployee,
-  'actions'
->
-
-export type DoctorsWithoutAction =
-  & Omit<OrganizationEmployee, 'actions' | 'is_invitee' | 'professions'>
-  & {
-    profession: 'doctor'
-    employee_id: string
-    specialty: string | null
-  }
-
-export type OrganizationEmployeeInvitee = {
-  name: null
-  is_invitee: true
-  health_worker_id: string | null
-  professions: {
-    employee_id?: undefined
-    profession: Profession
-    specialty?: undefined
-  }[]
-  avatar_url: null
-  email: string
-  display_name: string
-  actions: {
-    view: null
-  }
-  online: null
-}
-
 export type OrganizationDevice = {
   device_id: string
   serial_number?: string
