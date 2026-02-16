@@ -1,8 +1,8 @@
-// import type { RenderedPatientExaminationFinding, TrxOrDb } from '../../types.ts'
+// import type { RenderedPatientExaminationFinding, TrxOrDbOrQueryCreator } from '../../types.ts'
 // import { jsonArrayFrom, upsertOne } from '../helpers.ts'
 // import { promiseProps } from '../../util/promiseProps.ts'
 
-// export function baseQuery(trx: TrxOrDb) {
+// export function baseQuery(trx: TrxOrDbOrQueryCreator) {
 //   return trx.selectFrom('patient_examination_findings')
 //     .innerJoin(
 //       'patient_examinations',
@@ -90,7 +90,7 @@
 // }
 
 // export const examination_findings = {
-//   async forPatientEncounter(trx: TrxOrDb, opts: {
+//   async forPatientEncounter(trx: TrxOrDbOrQueryCreator, opts: {
 //     patient_id: string
 //     patient_encounter_id: string
 //   }): Promise<RenderedPatientExaminationFinding[]> {
@@ -106,7 +106,7 @@
 //     return render(examinations)
 //   },
 //   async upsertForPatientExamination(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     {
 //       patient_id,
 //       patient_encounter_id,

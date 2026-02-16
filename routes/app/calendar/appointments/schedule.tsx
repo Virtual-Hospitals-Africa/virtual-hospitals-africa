@@ -3,7 +3,7 @@ import { patients } from '../../../../db/models/patients.ts'
 import { parseRequest } from '../../../../backend/parseForm.ts'
 import { availableSlots } from '../../../../backend/scheduling/getProviderAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
-import { ProviderAppointmentSlot } from '../../../../types.ts'
+import { EmployeeAppointmentSlot } from '../../../../types.ts'
 import { parseDateTime } from '../../../../util/date.ts'
 import { makeAppointmentWeb } from '../../../../backend/scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
@@ -20,11 +20,11 @@ const ScheduleFormSchema = z.object({
   duration_minutes: positive_integer,
   reason: z.string(),
   patient_id: z.string().uuid(),
-  provider_ids: z.string().uuid().array(),
+  employee_ids: z.string().uuid().array(),
 })
 
 const SearchSchema = z.object({
-  provider_id: z.string().uuid().optional(),
+  employee_id: z.string().uuid().optional(),
   organization_id: z.string().uuid().optional(),
   provider_name: z.string().uuid().optional(),
   patient_id: z.string().uuid().optional(),
@@ -62,24 +62,24 @@ export default HealthWorkerHomePageLayout(
           search.patient_id,
         )
         : Promise.resolve(undefined),
-      availability: search.provider_id
+      availability: search.employee_id
         ? availableSlots(ctx.state.trx, {
           count: 10,
           dates: search.date ? [search.date] : undefined,
-          employment_ids: [search.provider_id],
+          employment_ids: [search.employee_id],
         })
         : Promise.resolve([]),
     })
 
-    const slots: ProviderAppointmentSlot[] = patient
+    const slots: EmployeeAppointmentSlot[] = patient
       ? availability.map((slot) => ({
-        type: 'provider_appointment_slot',
+        type: 'employee_appointment_slot',
         patient,
         id: `${slot.provider.employee_id}-${slot.start}`,
         duration_minutes: slot.duration_minutes,
         start: parseDateTime(new Date(slot.start)),
         end: parseDateTime(new Date(slot.end)),
-        providers: [slot.provider],
+        employees: [slot.provider],
       }))
       : []
 

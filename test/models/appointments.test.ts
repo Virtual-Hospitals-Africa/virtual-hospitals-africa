@@ -12,11 +12,11 @@ describe('db/models/appointments.ts', () => {
   afterAll(() => db.destroy())
   describe('addOfferedTime', () => {
     itUsesTrxAnd.rejects(
-      'does not add an offered time if provider_id is an admin',
+      'does not add an offered time if employee_id is an admin',
       async (trx) => {
         const patient = await patients.insert(trx, { name: generateUUID() })
         const health_worker = await addTestEmployee(trx, {
-          profession: 'admin',
+          role: 'admin',
         })
         const patient_appointment_request = await appointments.createNewRequest(
           trx,
@@ -30,7 +30,7 @@ describe('db/models/appointments.ts', () => {
 
         await appointments.addOfferedTime(trx, {
           patient_appointment_request_id: patient_appointment_request.id,
-          provider_id: health_worker.employee_id,
+          employee_id: health_worker.employee_id,
           start,
           end,
           duration_minutes,
@@ -39,11 +39,11 @@ describe('db/models/appointments.ts', () => {
     )
 
     itUsesTrxAnd(
-      'adds an offered time if provider_id is a doctor',
+      'adds an offered time if employee_id is a doctor',
       async (trx) => {
         const patient = await patients.insert(trx, randomDemographics())
         const health_worker = await addTestEmployee(trx, {
-          profession: 'doctor',
+          role: 'doctor',
         })
         const patient_appointment_request = await appointments.createNewRequest(
           trx,
@@ -57,7 +57,7 @@ describe('db/models/appointments.ts', () => {
 
         await appointments.addOfferedTime(trx, {
           patient_appointment_request_id: patient_appointment_request.id,
-          provider_id: health_worker.employee_id,
+          employee_id: health_worker.employee_id,
           start,
           end,
           duration_minutes,

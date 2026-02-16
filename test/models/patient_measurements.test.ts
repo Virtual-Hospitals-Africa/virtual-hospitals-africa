@@ -21,7 +21,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
       'can insert a measurement by equality and then find that measurement using comparator s expressions',
       async () => {
         const nurse = await addTestEmployee(db, {
-          profession: 'nurse',
+          role: 'nurse',
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -116,7 +116,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
       'only inserts a measurement once if the value did not change',
       async () => {
         const nurse = await addTestEmployee(db, {
-          profession: 'nurse',
+          role: 'nurse',
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -168,7 +168,7 @@ describeParallel('db/models/patient_measurements.ts', () => {
       'inserts a new measurement once if the value did change',
       async () => {
         const nurse = await addTestEmployee(db, {
-          profession: 'nurse',
+          role: 'nurse',
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(

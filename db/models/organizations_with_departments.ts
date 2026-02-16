@@ -1,10 +1,10 @@
-import { NonEmptyArray, RenderedOrganizationWithDepartments, TrxOrDb } from '../../types.ts'
+import { NonEmptyArray, RenderedOrganizationWithDepartments, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFrom, orderByArrayPosition } from '../helpers.ts'
 import { base } from './_base.ts'
 import { DEPARTMENTS } from '../../shared/departments.ts'
 import { organizations, type OrganizationSearch } from './organizations.ts'
 
-function baseQuery(trx: TrxOrDb, opts: OrganizationSearch) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: OrganizationSearch) {
   return organizations.baseQuery(trx, opts)
     .select((eb) => [
       jsonArrayFrom(

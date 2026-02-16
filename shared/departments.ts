@@ -2,20 +2,11 @@ import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
-import {
-  HealthWorkerOrganization,
-  Maybe,
-  NonEmptyArray,
-  Profession,
-  RenderedEmployee,
-  RenderedHealthWorker,
-  RenderedOrganizationWithDepartments,
-} from '../types.ts'
+import { HealthWorkerOrganization, Maybe, NonEmptyArray, RenderedEmployee, RenderedHealthWorker, RenderedOrganizationWithDepartments } from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
 import memoize from '../util/memoize.ts'
-import { assertUnreachable } from '../util/assertUnreachable.ts'
 
 export const DEPARTMENTS = [
   'Primary care' as const,
@@ -108,7 +99,7 @@ export function assertDepartmentResponsibleForWorkflow(
 }
 
 export function departmentsOfProfession(
-  profession: Profession | 'admin',
+  profession: string,
   specialty?: Maybe<string>,
 ): Department[] {
   switch (profession) {
@@ -145,14 +136,14 @@ export function departmentsOfProfession(
       return ['Pharmacy']
     }
     default: {
-      assertUnreachable(profession)
+      throw new Error('Unsupported profession: ' + profession)
     }
   }
 }
 
 export function organizationDepartmentIdsOfProfession(
   organization: RenderedOrganizationWithDepartments,
-  profession: Profession | 'admin',
+  profession: string,
   specialty?: Maybe<string>,
 ): string[] {
   const department_names = departmentsOfProfession(profession, specialty)

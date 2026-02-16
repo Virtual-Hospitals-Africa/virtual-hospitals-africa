@@ -1,4 +1,4 @@
-import { ExtantPatientOrCreationIntent, HealthWorkerOrganization, RenderedOrganization, TrxOrDb } from '../../types.ts'
+import { ExtantPatientOrCreationIntent, HealthWorkerOrganization, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { blankSelection, literalLocation, success_true } from '../helpers.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -9,7 +9,7 @@ import { Workflow } from '../../db.d.ts'
 
 export const patient_new_encounters = {
   async create(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient, organization, organization_employment, current_workflow, next_workflows }: {
       patient: ExtantPatientOrCreationIntent
       organization: RenderedOrganization

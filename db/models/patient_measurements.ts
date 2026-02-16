@@ -1,4 +1,4 @@
-import { IdSelection, InsertRows, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { IdSelection, InsertRows, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { arrayAggIds, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { sql } from 'kysely'
@@ -11,6 +11,7 @@ import { Comparisons, Lang } from '../../shared/s_expression_schemas.ts'
 import { isMeasurement } from '../../shared/vitals.ts'
 import { MEASUREMENT_FINDING } from '../../shared/snomed_concepts.ts'
 import { baseInsertMany } from './patient_records.ts'
+import { exists } from '../../util/exists.ts'
 
 type MeasurementInsert = {
   patient_id: string
@@ -51,7 +52,7 @@ export function baseQuery(
         buildExpression(
           trx,
           {
-            patient_id: opts.patient_id,
+            patient_id: exists(opts.patient_id),
             patient_encounter_id: opts.patient_encounter_id,
           },
           opts.s_expression!,
@@ -68,7 +69,7 @@ export const patient_measurements = base({
     return formatted
   },
   insertMany(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       procedure_id,
@@ -126,7 +127,7 @@ export const patient_measurements = base({
       .executeTakeFirstOrThrow()
   },
   insertOneNested(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       procedure_id,
@@ -176,7 +177,7 @@ export const patient_measurements = base({
       .executeTakeFirstOrThrow()
   },
   async insertOneIfNotAlreadyExistsForThisEncounter(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       patient_encounter_id,

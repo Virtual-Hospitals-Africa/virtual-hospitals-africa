@@ -1,8 +1,8 @@
-import { RenderedEmployee, TrxOrDb } from '../../types.ts'
+import { RenderedEmployee, TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export const employment_calendars = {
   add(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     calendars: {
       employment_id: string
       gcal_appointments_calendar_id: string
@@ -16,7 +16,7 @@ export const employment_calendars = {
       .execute()
   },
   markAvailabilitySet(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     employment_id: string,
   ) {
     return trx.updateTable('employment_calendars')
@@ -25,7 +25,7 @@ export const employment_calendars = {
       .execute()
   },
   findOneOptional(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     employee: RenderedEmployee,
   ) {
     return trx

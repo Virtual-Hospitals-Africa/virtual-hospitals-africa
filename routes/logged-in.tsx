@@ -4,9 +4,7 @@ import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import { sessions } from '../db/models/sessions.ts'
-
 import { health_workers } from '../db/models/health_workers.ts'
-import { regulators } from '../db/models/regulators.ts'
 import { google_tokens } from '../db/models/google_tokens.ts'
 import { events } from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
@@ -43,9 +41,6 @@ async function downloadAndSaveAvatar(
     return null
   }
 }
-
-const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
-assert(!USE_INVITE_SYSTEM, 'Not supported until further notice.')
 
 export async function initializeHealthWorkerWithoutInvites(
   trx: TrxOrDb,
@@ -172,47 +167,22 @@ export async function startRegulatorSession(
 }
 
 export const handler = {
-  GET(ctx: Context<unknown>) {
+  async GET(ctx: Context<unknown>) {
     const code = ctx.url.searchParams.get('code')
     assert(code, 'No code found in query params')
-    const getting_tokens = getInitialTokensFromAuthCode(code)
+    const tokens = await getInitialTokensFromAuthCode(code)
+    const google_client = new google.GoogleClient(tokens)
+    const has_permissions = await checkPermissions(google_client)
+    assertOrRedirect(has_permissions, insufficient_permissions)
+    const profile = await google_client.getProfile()
 
     return db.transaction().setIsolationLevel('read committed').execute(
-      async (trx) => {
-        const tokens = await getting_tokens
-        const google_client = new google.GoogleClient(tokens)
-        const has_permissions = await checkPermissions(google_client)
-
-        assertOrRedirect(has_permissions, insufficient_permissions)
-
-        const profile = await google_client.getProfile()
-
-        const regulator = await regulators.getByEmail(trx, profile.email)
-        if (regulator) {
-          const avatar_media_id = await downloadAndSaveAvatar(
-            trx,
-            profile.picture,
-          )
-
-          if (regulator.name !== profile.name) {
-            await regulators.update(trx, {
-              id: regulator.id,
-              name: profile.name,
-              avatar_media_id,
-            })
-          }
-
-          return startRegulatorSession(trx, regulator)
-        }
-
-        if (!USE_INVITE_SYSTEM) {
-          return initializeHealthWorkerWithoutInvites(
-            trx,
-            google_client,
-            profile,
-          )
-        }
-      },
+      (trx) =>
+        initializeHealthWorkerWithoutInvites(
+          trx,
+          google_client,
+          profile,
+        ),
     )
   },
 }

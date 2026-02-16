@@ -1,5 +1,12 @@
 import { assert } from 'std/assert/assert.ts'
-import { ExtendedActionData, HealthWorkerOrganization, RenderedOrganization, RenderedPatientOpenEncounter, RenderedWaitingRoom, TrxOrDb } from '../../types.ts'
+import {
+  ExtendedActionData,
+  HealthWorkerOrganization,
+  RenderedOrganization,
+  RenderedPatientOpenEncounter,
+  RenderedWaitingRoom,
+  TrxOrDbOrQueryCreator,
+} from '../../types.ts'
 import { patient_encounters } from './patient_encounters.ts'
 import sortBy from '../../util/sortBy.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
@@ -125,7 +132,7 @@ function asWaitingRoom(
 export const waiting_room = {
   asWaitingRoom,
   async get(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization_employment: HealthWorkerOrganization,
   ): Promise<RenderedWaitingRoom[]> {
     const open_encounters = await patient_encounters.getOpen(
@@ -152,7 +159,7 @@ export const waiting_room = {
     )
   },
   async moveTo(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { organization, organization_employment, encounter }: {
       organization: RenderedOrganization
       organization_employment: HealthWorkerOrganization

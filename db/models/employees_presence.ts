@@ -1,9 +1,9 @@
 import { sql } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, identity } from './_base.ts'
 import { employees, EmployeesSearch } from './employees.ts'
 
-function baseQuery(trx: TrxOrDb, opts: EmployeesSearch) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EmployeesSearch) {
   return employees.baseQuery(trx, opts)
     .leftJoin('employment_presence', 'employment_presence.id', 'employment.id')
     .select((eb) => [

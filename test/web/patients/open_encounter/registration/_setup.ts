@@ -42,13 +42,13 @@ export async function setupRegistration(
   const clinic = await createTestOrganization(db)
 
   await addTestEmployeeWithSession(db, {
-    profession: 'nurse',
+    role: 'nurse',
 
     organization_id: clinic.id,
   })
 
   const receptionist = await addTestEmployeeWithSession(db, {
-    profession: 'receptionist',
+    role: 'receptionist',
 
     organization_id: clinic.id,
   })

@@ -4,64 +4,28 @@ import {
   RenderedFindingRelativeToHealthWorker,
   RenderedMeasurementRelativeToHealthWorker,
   RenderedPatient,
-  TrxOrDb,
   TrxOrDbOrQueryCreator,
   VitalMeasurementFormInputDefition,
 } from '../../types.ts'
 import { completedPersonal } from '../../shared/patient_registration.ts'
-import { IdSelection } from '../../types.ts'
 import { jsonObjectFrom } from '../helpers.ts'
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { patient_findings } from './patient_findings.ts'
 import { patient_encounter_employees } from './patient_encounter_employees.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import { buildExpression } from './s_expression.ts'
-import { QueryableNode } from '../../shared/s_expression_schemas.ts'
 import { base } from './_base.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { isMeasurement } from '../../shared/vitals.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import partition from '../../util/partition.ts'
 
-type VitalsSearch = {
-  patient_id: string | IdSelection
-  patient_encounter_id?: string | IdSelection
-  excluding_patient_encounter_id?: string | IdSelection
-  s_expression?: string | QueryableNode
-  search?: string
-  not_measurements?: boolean
-}
-
-export function baseQuery(
-  trx: TrxOrDbOrQueryCreator,
-  opts: VitalsSearch,
-) {
-  return patient_findings.baseQuery(trx)
-    .$if(!!opts.patient_id, (qb) => qb.where('patient_records_aggregated.patient_id', '=', opts.patient_id!))
-    .$if(!!opts.patient_encounter_id, (qb) => qb.where('patient_records_aggregated.patient_encounter_id', '=', opts.patient_encounter_id!))
-    .$if(!!opts.excluding_patient_encounter_id, (qb) => qb.where('patient_records_aggregated.patient_encounter_id', '!=', opts.excluding_patient_encounter_id!))
-    .$if(!!opts.s_expression, (qb) =>
-      qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression!,
-        ),
-      ))
-}
-
 export const patient_vitals = base({
   top_level_table: 'patient_findings',
-  baseQuery,
+  baseQuery: patient_findings.baseQuery,
   formatResult: formatRecord,
   async getMostRecent(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       measurement_snomed_concept_ids,
       assessment_snomed_concept_ids,
@@ -92,7 +56,7 @@ export const patient_vitals = base({
     }
   },
   async getMostRecentMeasurements(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       health_worker_id,
       patient_id,
@@ -117,25 +81,12 @@ export const patient_vitals = base({
       return trx.with(
         'ranked_findings',
         (qb) =>
-          baseQuery(qb)
-            .where('patient_records_aggregated.patient_id', '=', patient_id)
+          patient_findings.baseQuery(qb, { patient_id, patient_encounter_id, excluding_patient_encounter_id })
             .where(
               'patient_records_aggregated.specific_snomed_concept_id',
               'in',
               snomed_concept_ids!,
             )
-            .$if(!!patient_encounter_id, (qb) =>
-              qb.where(
-                'patient_records_aggregated.patient_encounter_id',
-                '=',
-                patient_encounter_id!,
-              ))
-            .$if(!!excluding_patient_encounter_id, (qb) =>
-              qb.where(
-                'patient_records_aggregated.patient_encounter_id',
-                '!=',
-                excluding_patient_encounter_id!,
-              ))
             .select(
               sql`ROW_NUMBER() OVER (PARTITION BY patient_records_aggregated.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
                 .as('rank'),
@@ -146,7 +97,7 @@ export const patient_vitals = base({
         .selectAll('ranked_findings')
         .select((eb) => [
           jsonObjectFrom(
-            patient_encounter_employees.baseQuery(trx)
+            patient_encounter_employees.baseQuery(trx, {})
               .where(
                 'patient_encounter_employees.id',
                 '=',
@@ -162,7 +113,7 @@ export const patient_vitals = base({
   },
 
   async getMostRecentAssessments(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       health_worker_id,
       patient_id,
@@ -183,7 +134,7 @@ export const patient_vitals = base({
       return trx.with(
         'ranked_findings',
         (qb) =>
-          baseQuery(qb)
+          patient_findings.baseQuery(qb, { patient_id, patient_encounter_id, excluding_patient_encounter_id })
             .innerJoin(
               'patient_evaluations',
               'patient_evaluations.evaluates_record_id',
@@ -194,24 +145,11 @@ export const patient_vitals = base({
               'evaluation_records.id',
               'patient_evaluations.id',
             )
-            .where('patient_records_aggregated.patient_id', '=', patient_id)
             .where(
               'evaluation_records.specific_snomed_concept_id',
               'in',
               snomed_concept_ids,
             )
-            .$if(!!patient_encounter_id, (qb) =>
-              qb.where(
-                'patient_records_aggregated.patient_encounter_id',
-                '=',
-                patient_encounter_id!,
-              ))
-            .$if(!!excluding_patient_encounter_id, (qb) =>
-              qb.where(
-                'patient_records_aggregated.patient_encounter_id',
-                '!=',
-                excluding_patient_encounter_id!,
-              ))
             .select(
               sql`ROW_NUMBER() OVER (PARTITION BY evaluation_records.specific_snomed_concept_id ORDER BY patient_records_aggregated.created_at DESC)`
                 .as('rank'),
@@ -222,7 +160,7 @@ export const patient_vitals = base({
         .selectAll('ranked_findings')
         .select((eb) => [
           jsonObjectFrom(
-            patient_encounter_employees.baseQuery(trx)
+            patient_encounter_employees.baseQuery(trx, {})
               .where(
                 'patient_encounter_employees.id',
                 '=',
@@ -237,7 +175,7 @@ export const patient_vitals = base({
     }
   },
   async measurementsNeededForTriageEncounter(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_record: RenderedPatient,
     active_condition_snomed_codes: readonly string[],
   ): Promise<VitalMeasurementFormInputDefition[]> {

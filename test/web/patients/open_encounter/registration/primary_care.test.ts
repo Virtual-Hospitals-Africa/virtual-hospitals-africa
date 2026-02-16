@@ -22,7 +22,7 @@ describeParallel(
       async () => {
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
+          role: 'receptionist',
 
           organization_id: organization.id,
         })
@@ -91,7 +91,7 @@ describeParallel(
       async () => {
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
+          role: 'receptionist',
 
           organization_id: organization.id,
         })
@@ -159,75 +159,11 @@ describeParallel(
     )
 
     itParallel(
-      'sets unregistered primary doctor name correctly',
-      async () => {
-        const organization = await createTestOrganization(db)
-        const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
-
-          organization_id: organization.id,
-        })
-
-        // Start registration
-        const $personal = await fetchCheerio(
-          `/app/organizations/${organization.id}/patients/start-registration`,
-          {
-            method: 'POST',
-          },
-        )
-        const patient_id = $personal.url.match(/patients\/(.*)\/open_encounter/)![1]
-
-        // Submit personal info
-        const $this_visit = await fetchCheerio(
-          $personal.url,
-          {
-            method: 'POST',
-            body: asFormData(randomDemographics('ZA')),
-          },
-        )
-
-        // Submit this_visit with continue_with_registration
-        const $primary_care = await fetchCheerio(
-          $this_visit.url,
-          {
-            method: 'POST',
-            body: asFormData({
-              next_workflow: 'continue_with_registration',
-            }),
-          },
-        )
-
-        const doctor_name = 'Dr. Mokoena'
-
-        // Submit primary_care with doctor name and no insurance
-        await fetchCheerio(
-          $primary_care.url,
-          {
-            method: 'POST',
-            body: asFormData({
-              primary_doctor_name: doctor_name,
-              nearest_organization_id: organization.id,
-              insurance: {
-                has_no_insurance: true,
-              },
-            }),
-          },
-        )
-
-        // Verify the patient's primary doctor was set
-        const primary_care = await patient_primary_care.getById(db, {
-          patient_id,
-        })
-        assertEquals(primary_care.primary_doctor?.name, `Dr. ${doctor_name}`)
-      },
-    )
-
-    itParallel(
       'sets nearest health facility correctly',
       async () => {
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
+          role: 'receptionist',
 
           organization_id: organization.id,
         })
@@ -267,7 +203,6 @@ describeParallel(
           {
             method: 'POST',
             body: asFormData({
-              primary_doctor_name: 'Dr. Smith',
               nearest_organization_id: organization.id,
               insurance: {
                 has_no_insurance: true,

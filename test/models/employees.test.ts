@@ -16,6 +16,7 @@ import first from '../../util/first.ts'
 import last from '../../util/last.ts'
 import generateUUID from '../../util/uuid.ts'
 import { organizations_with_departments } from '../../db/models/organizations_with_departments.ts'
+import { assertMatches } from '../../util/assertMatches.ts'
 
 describeParallel('db/models/employees.ts', () => {
   afterAll(() => db.destroy())
@@ -28,7 +29,7 @@ describeParallel('db/models/employees.ts', () => {
       )
 
       const health_worker = await addTestEmployee(db, {
-        profession: 'doctor',
+        role: 'doctor',
 
         organization_id: TEST_ORGANIZATION_UUIDS.ZA.hospital,
       })
@@ -40,7 +41,7 @@ describeParallel('db/models/employees.ts', () => {
       ).id
       const receptionist_employment = await employment.addOne(db, {
         health_worker_id: health_worker.id,
-        profession: 'receptionist',
+        role: 'receptionist',
         is_admin: false,
         organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
         department_ids: [reception_department_id],
@@ -121,12 +122,12 @@ describeParallel('db/models/employees.ts', () => {
     const organization = await createTestOrganization(db)
     await Promise.all([
       addTestEmployee(db, {
-        profession: 'receptionist',
+        role: 'receptionist',
 
         organization_id: organization.id,
       }),
       addTestEmployee(db, {
-        profession: 'nurse',
+        role: 'nurse',
 
         organization_id: organization.id,
       }),
@@ -145,7 +146,7 @@ describeParallel('db/models/employees.ts', () => {
       'returns providers matching a search with their employment information',
       async () => {
         const health_worker = await addTestEmployee(db, {
-          profession: 'nurse',
+          role: 'nurse',
         })
 
         const { results } = await employees.search(db, {
@@ -154,7 +155,7 @@ describeParallel('db/models/employees.ts', () => {
         assertEquals(results.length, 1)
         const [result] = results
         assertLength(result.organizations[0].in_departments, 3)
-        assertEquals(result, {
+        assertMatches(result, {
           'id': result.id,
           'name': result.name,
           'first_names': 'Test Health Worker',
@@ -164,9 +165,8 @@ describeParallel('db/models/employees.ts', () => {
           'avatar_url': `/health_workers/${result.id}/avatar`,
           'employee_id': result.employee_id,
           'organization_id': '00000000-0000-1000-8000-000000000001',
-          'profession': 'nurse',
+          'role': 'nurse',
           'is_admin': false,
-          'specialty': 'Primary care',
           'href': `/app/organizations/00000000-0000-1000-8000-000000000001/employees/${result.id}`,
           'organizations': [
             {
@@ -175,9 +175,8 @@ describeParallel('db/models/employees.ts', () => {
                 TEST_ORGANIZATION_UUIDS.ZA.clinic,
               ),
               'employment_id': health_worker.employee_id,
-              'profession': 'nurse',
+              'role': 'nurse',
               'is_admin': false,
-              'specialty': 'Primary care',
               'in_departments': result.organizations[0].in_departments,
             },
           ],
@@ -187,19 +186,19 @@ describeParallel('db/models/employees.ts', () => {
 
     itParallel('searches by profession', async () => {
       const health_worker = await addTestEmployee(db, {
-        profession: 'nurse',
+        role: 'nurse',
       })
 
       const doctor_search = await employees.search(db, {
         search: health_worker.name,
-        professions: ['doctor'],
+        roles: ['doctor'],
       })
       assert(doctor_search.results)
       assertLength(doctor_search.results, 0)
 
       const nurse_search = await employees.search(db, {
         search: health_worker.name,
-        professions: ['nurse'],
+        roles: ['nurse'],
       })
       assert(nurse_search)
       assertLength(nurse_search.results, 1)
@@ -211,14 +210,14 @@ describeParallel('db/models/employees.ts', () => {
         const name_base = generateUUID()
         await Promise.all([
           addTestEmployee(db, {
-            profession: 'doctor',
+            role: 'doctor',
             organization_id: '00000000-0000-1000-8000-000000000001',
             health_worker_attrs: {
               name: name_base + ' ' + generateUUID(),
             },
           }),
           addTestEmployee(db, {
-            profession: 'doctor',
+            role: 'doctor',
             organization_id: '00000000-0000-1000-8000-000000000002',
             health_worker_attrs: {
               name: name_base + ' ' + generateUUID(),
@@ -247,12 +246,12 @@ describeParallel('db/models/employees.ts', () => {
 
     itParallel('can filter by organization_id', async () => {
       const health_worker = await addTestEmployee(db, {
-        profession: 'nurse',
+        role: 'nurse',
       })
 
       await employment.addOne(db, {
         health_worker_id: health_worker.id,
-        profession: 'nurse',
+        role: 'nurse',
         organization_id: '00000000-0000-1000-8000-000000000002',
         is_admin: false,
       })

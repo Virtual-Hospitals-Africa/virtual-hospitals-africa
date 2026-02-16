@@ -1,10 +1,10 @@
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base } from './_base.ts'
 
 export default base({
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery: (
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { search?: string },
   ) =>
     trx

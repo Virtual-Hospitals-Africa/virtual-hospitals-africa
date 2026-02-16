@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import type { IdSelection, RenderedHealthWorker, TrxOrDb } from '../../types.ts'
+import type { IdSelection, RenderedHealthWorker, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
@@ -11,7 +11,7 @@ export const health_workers = base({
   // caching: {
   //   number_of_items: 100,
   // },
-  baseQuery(trx: TrxOrDb, opts: HealthWorkerSearch) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: HealthWorkerSearch) {
     return health_workers_base.baseQuery(trx, opts)
       .select((eb) => [
         jsonArrayFrom(
@@ -26,7 +26,7 @@ export const health_workers = base({
   },
   formatResult: identity<RenderedHealthWorker>,
   getIdByEmail(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     email: string,
   ) {
     return trx.selectFrom('health_worker_accounts')
@@ -55,7 +55,7 @@ export const health_workers = base({
       !!health_worker.organizations.length
   },
 
-  getAvatar(trx: TrxOrDb, opts: { health_worker_id: string }) {
+  getAvatar(trx: TrxOrDbOrQueryCreator, opts: { health_worker_id: string }) {
     return trx
       .selectFrom('media')
       .innerJoin('health_worker_accounts', 'health_worker_accounts.avatar_media_id', 'media.id')
@@ -65,7 +65,7 @@ export const health_workers = base({
   },
 
   async getEmployed(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { health_worker_id }: { health_worker_id: string | IdSelection },
   ): Promise<RenderedHealthWorker> {
     const health_worker = await health_workers.getById(trx, health_worker_id)

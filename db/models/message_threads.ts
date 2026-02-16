@@ -7,7 +7,7 @@ import {
   RenderedMessageThreadParticipant,
   RenderedMessageThreadWithAllMessages,
   RenderedMessageThreadWithMostRecentMessage,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { jsonArrayFrom, success_true } from '../helpers.ts'
 import { employees } from './employees.ts'
@@ -24,7 +24,7 @@ import { pMap } from '../../util/inParallel.ts'
 import zip from '../../util/zip.ts'
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: { thread_id?: string | string[] | IdSelection; message_id?: string | string[] | IdSelection; employee_ids?: string[] },
 ) {
   return trx
@@ -142,7 +142,7 @@ export const message_threads = base({
   baseQuery,
   formatResult: (x: IntermediateMessageThread): IntermediateMessageThread => x,
   async create(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { sender, recipient, subjects, initial_message }: {
       sender: {
         table_name: string
@@ -217,7 +217,7 @@ export const message_threads = base({
     }
   },
   async getOneForHealthWorker(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     health_worker: RenderedHealthWorker,
     message_thread_id: string | IdSelection,
   ): Promise<RenderedMessageThreadWithAllMessages> {
@@ -225,7 +225,7 @@ export const message_threads = base({
 
     assert(employee_ids.length, 'Must complete onboarding first')
 
-    const { thread, raw_messages, raw_employees, raw_pharmacists } = await promiseProps({
+    const { thread, raw_messages, raw_employees } = await promiseProps({
       thread: message_threads.findOne(trx, {
         employee_ids,
         thread_id: message_thread_id,
@@ -245,18 +245,6 @@ export const message_threads = base({
           .select('message_thread_participants.row_id as id')
           .distinct(),
       ),
-      raw_pharmacists: pharmacists.getByIds(
-        trx,
-        trx.selectFrom('message_thread_participants')
-          .where(
-            'message_thread_participants.thread_id',
-            '=',
-            message_thread_id,
-          )
-          .where('message_thread_participants.table_name', '=', 'pharmacists')
-          .select('message_thread_participants.row_id as id')
-          .distinct(),
-      ),
     })
 
     assertOr404(thread, `No thread ${message_thread_id}`)
@@ -269,7 +257,6 @@ export const message_threads = base({
       thread.participants,
       my_participant,
       raw_employees,
-      raw_pharmacists,
     )
 
     const rendered_messages = raw_messages.map(
@@ -288,7 +275,7 @@ export const message_threads = base({
     }
   },
   async getForHealthWorker(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     health_worker: RenderedHealthWorker,
   ): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
     const employee_ids = health_worker.organizations.map((e) => e.employment_id)

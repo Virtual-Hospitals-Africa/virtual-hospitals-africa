@@ -158,7 +158,7 @@ export async function setupTriageNewPatient(
   const clinic = await createTestOrganization(db)
 
   const nurse = await addTestEmployeeWithSession(db, {
-    profession: 'nurse',
+    role: 'nurse',
 
     organization_id: clinic.id,
   })

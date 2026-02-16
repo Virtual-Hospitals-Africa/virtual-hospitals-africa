@@ -27,10 +27,15 @@ export async function up(db: Kysely<DB>) {
   await createStandardTable(db, 'health_worker_demographics', (qb) =>
     qb
       .addColumn('health_worker_id', 'uuid', (col) => col.notNull().references('health_workers.id').onDelete('cascade'))
-      .addColumn('address_id', 'uuid', (col) => col.references('addresses.id').onDelete('cascade'))
-      .addColumn('mobile_phone_number', 'varchar(255)')
+      .addColumn('date_of_birth', 'date')
       .addColumn('sex', sql`sex`, (col) => col.notNull())
       .addColumn('gender', 'varchar(255)', (col) => col.notNull()))
+
+  await createStandardTable(db, 'health_worker_contact_details', (qb) =>
+    qb
+      .addColumn('health_worker_id', 'uuid', (col) => col.notNull().references('health_workers.id').onDelete('cascade'))
+      .addColumn('address_id', 'uuid', (col) => col.references('addresses.id').onDelete('cascade'))
+      .addColumn('mobile_phone_number', 'varchar(255)'))
 
   await createStandardTable(db, 'health_worker_licence_revocations', (qb) =>
     qb
@@ -46,6 +51,7 @@ export async function up(db: Kysely<DB>) {
 
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('health_worker_licence_revocations').execute()
+  await db.schema.dropTable('health_worker_contact_details').execute()
   await db.schema.dropTable('health_worker_demographics').execute()
   await db.schema.dropTable('health_worker_licences').execute()
   await db.schema.dropTable('health_worker_licence_numbers').execute()

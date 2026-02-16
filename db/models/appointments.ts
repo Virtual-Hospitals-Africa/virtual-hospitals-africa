@@ -7,7 +7,7 @@ import {
   PatientAppointmentRequest,
   PatientAppointmentRequestMedia,
   SchedulingAppointmentOfferedTime,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
 import { patients } from './patients.ts'
@@ -23,12 +23,12 @@ type AppointmentQuery = {
 
 export type AppointmentProviderWithGoogleCalendar = Awaited<
   ReturnType<typeof appointments.getForPatient>
->[0]['providers'][0]
+>[0]['employees'][0]
 
 export const appointments = {
   addOfferedTime(
-    trx: TrxOrDb,
-    { provider_id, ...offered }: Omit<
+    trx: TrxOrDbOrQueryCreator,
+    { employee_id, ...offered }: Omit<
       PatientAppointmentOfferedTime,
       'declined'
     >,
@@ -38,7 +38,7 @@ export const appointments = {
       (qb) =>
         qb.insertInto('patient_appointment_offered_times')
           .values({
-            provider_id,
+            employee_id,
             ...offered,
           })
           .returningAll(),
@@ -54,7 +54,7 @@ export const appointments = {
           .innerJoin(
             'inserted_offer_time',
             'employment.id',
-            'inserted_offer_time.provider_id',
+            'inserted_offer_time.employee_id',
           )
           .selectAll('inserted_offer_time')
           .select('health_workers.name as health_worker_name')
@@ -66,7 +66,7 @@ export const appointments = {
       .executeTakeFirstOrThrow()
   },
 
-  declineOfferedTimes(trx: TrxOrDb, ids: string[]) {
+  declineOfferedTimes(trx: TrxOrDbOrQueryCreator, ids: string[]) {
     assert(ids.length, 'Must provide ids to decline')
     return trx
       .updateTable('patient_appointment_offered_times')
@@ -76,7 +76,7 @@ export const appointments = {
   },
 
   async getPatientDeclinedTimes(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { patient_appointment_request_id: string },
   ): Promise<Date[]> {
     const read_result = await trx
@@ -101,7 +101,7 @@ export const appointments = {
   },
 
   createNewRequest(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { patient_id: string },
   ): Promise<HasStringId<PatientAppointmentRequest>> {
     return trx
@@ -112,7 +112,7 @@ export const appointments = {
   },
 
   upsert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     info: Appointment & { id?: string },
   ): Promise<HasStringId<Appointment>> {
     return trx
@@ -124,7 +124,7 @@ export const appointments = {
   },
 
   upsertRequest(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     info: { id?: string; patient_id: string; reason?: string | null },
   ): Promise<HasStringId<PatientAppointmentRequest>> {
     return trx
@@ -136,25 +136,25 @@ export const appointments = {
   },
 
   addAttendees(
-    trx: TrxOrDb,
-    { appointment_id, provider_ids }: {
+    trx: TrxOrDbOrQueryCreator,
+    { appointment_id, employee_ids }: {
       appointment_id: string
-      provider_ids: string[]
+      employee_ids: string[]
     },
   ) {
     return trx
-      .insertInto('appointment_providers')
-      .values(provider_ids.map((provider_id) => ({
+      .insertInto('appointment_employees')
+      .values(employee_ids.map((employee_id) => ({
         appointment_id,
         confirmed: false,
-        provider_id,
+        employee_id,
       })))
       .returningAll()
       .execute()
   },
 
   async schedule(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { appointment_offered_time_id, gcal_event_id }: {
       appointment_offered_time_id: string
       gcal_event_id: string
@@ -179,11 +179,11 @@ export const appointments = {
         'duration_minutes',
         'reason',
         'patient_id',
-        'provider_id',
+        'employee_id',
       ])
       .executeTakeFirstOrThrow()
 
-    const { start, end, duration_minutes, patient_id, provider_id, reason } = offered
+    const { start, end, duration_minutes, patient_id, employee_id, reason } = offered
     assert(reason)
 
     const appointment_to_insert = {
@@ -204,7 +204,7 @@ export const appointments = {
 
     await appointments.addAttendees(trx, {
       appointment_id: appointment.id,
-      provider_ids: [provider_id],
+      employee_ids: [employee_id],
     })
 
     const health_worker = await trx
@@ -214,7 +214,7 @@ export const appointments = {
         'health_workers.id',
         'employment.health_worker_id',
       )
-      .where('employment.id', '=', provider_id)
+      .where('employment.id', '=', employee_id)
       .select('health_workers.name')
       .executeTakeFirstOrThrow()
 
@@ -237,7 +237,7 @@ export const appointments = {
     return {
       id: appointment.id,
       reason: appointment.reason,
-      provider_id,
+      employee_id,
       health_worker_name: health_worker.name,
       gcal_event_id: appointment.gcal_event_id,
       start,
@@ -245,20 +245,20 @@ export const appointments = {
   },
 
   async countUpcoming(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { health_worker_id: string },
   ): Promise<number> {
     const { count } = await trx
       .selectFrom('appointments')
       .innerJoin(
-        'appointment_providers',
+        'appointment_employees',
         'appointments.id',
-        'appointment_providers.appointment_id',
+        'appointment_employees.appointment_id',
       )
       .innerJoin(
         'employment',
         'employment.id',
-        'appointment_providers.provider_id',
+        'appointment_employees.employee_id',
       )
       .where(
         'employment.health_worker_id',
@@ -274,7 +274,7 @@ export const appointments = {
     return count
   },
 
-  baseQuery(trx: TrxOrDb, opts: AppointmentQuery) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: AppointmentQuery) {
     let q = trx
       .selectFrom('appointments')
       .select((eb) => [
@@ -304,14 +304,14 @@ export const appointments = {
       q = q.where(
         'appointments.id',
         'in',
-        trx.selectFrom('appointment_providers')
+        trx.selectFrom('appointment_employees')
           .innerJoin(
             'employment',
             'employment.id',
-            'appointment_providers.provider_id',
+            'appointment_employees.employee_id',
           )
           .where('employment.organization_id', '=', opts.organization_id)
-          .select('appointment_providers.appointment_id')
+          .select('appointment_employees.appointment_id')
           .distinct(),
       )
     }
@@ -335,7 +335,7 @@ export const appointments = {
   },
 
   async getWithPatientInfo(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       id?: string
       health_worker_id: string
@@ -344,29 +344,29 @@ export const appointments = {
     // TODO: check if this is indeed the time_range we want
     let query = appointments.baseQuery(trx, { time_range: 'all' })
       .innerJoin(
-        'appointment_providers',
+        'appointment_employees',
         'appointments.id',
-        'appointment_providers.appointment_id',
+        'appointment_employees.appointment_id',
       )
       .innerJoin(
         'employment',
         'employment.id',
-        'appointment_providers.provider_id',
+        'appointment_employees.employee_id',
       )
       .where('employment.health_worker_id', '=', opts.health_worker_id)
       .select('confirmed')
 
     if (opts.id) query = query.where('appointments.id', '=', opts.id)
 
-    const provider_appointments = await query.execute()
+    const employee_appointments = await query.execute()
 
-    if (!provider_appointments.length) return []
+    if (!employee_appointments.length) return []
 
-    const patient_ids = uniq(provider_appointments.map((a) => a.patient_id))
+    const patient_ids = uniq(employee_appointments.map((a) => a.patient_id))
 
-    const patients_of_appointments = await patients.getByIds(trx, patient_ids)
+    const patients_of_appointments = await patients.getByIds(trx, patient_ids, { include_incomplete_registration: true })
 
-    return provider_appointments.map((appointment) => {
+    return employee_appointments.map((appointment) => {
       const patient = patients_of_appointments.find((p) => p.id === appointment.patient_id)
       assert(patient, `Could not find patient ${appointment.patient_id}`)
       return { ...appointment, patient }
@@ -374,15 +374,15 @@ export const appointments = {
   },
 
   getForPatient(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     query: AppointmentQuery & { patient_id: string },
   ) {
     return appointments.baseQuery(trx, query).select((eb) => [
       jsonArrayFrom(
         employees.baseQuery(trx, {})
           .innerJoin(
-            'appointment_providers',
-            'appointment_providers.provider_id',
+            'appointment_employees',
+            'appointment_employees.employee_id',
             'employment.id',
           )
           .innerJoin(
@@ -391,7 +391,7 @@ export const appointments = {
             'employment_calendars.employment_id',
           )
           .where(
-            'appointment_providers.appointment_id',
+            'appointment_employees.appointment_id',
             '=',
             eb.ref('appointments.id'),
           )
@@ -407,15 +407,15 @@ export const appointments = {
                 'employment_calendars.availability_set',
               ),
             }).as('calendars'),
-            'appointment_providers.confirmed',
+            'appointment_employees.confirmed',
             'employment.health_worker_id',
           ]),
-      ).as('providers'),
+      ).as('employees'),
     ])
       .execute()
   },
 
-  countForPatient(trx: TrxOrDb, { patient_id, time_range }: {
+  countForPatient(trx: TrxOrDbOrQueryCreator, { patient_id, time_range }: {
     patient_id: string
     time_range: 'all' | 'future' | 'past'
   }) {
@@ -426,12 +426,12 @@ export const appointments = {
       .executeTakeFirstOrThrow()
   },
 
-  remove(trx: TrxOrDb, id: string) {
+  remove(trx: TrxOrDbOrQueryCreator, id: string) {
     return trx.deleteFrom('appointments').where('id', '=', id).execute()
   },
 
   insertRequestMedia(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     to_insert: {
       patient_appointment_request_id: string
       media_id: string
@@ -447,7 +447,7 @@ export const appointments = {
   },
 
   async getMediaIdByRequestId(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       request_id: string
     },
@@ -462,7 +462,7 @@ export const appointments = {
   },
 
   insertMedia(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       appointment_id: string
       media_ids: string[]

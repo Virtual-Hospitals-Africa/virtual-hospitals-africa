@@ -1,8 +1,8 @@
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export const patient_contacts = {
   get(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ) {
     return trx.selectFrom('patients')
@@ -16,7 +16,7 @@ export const patient_contacts = {
   },
 
   updatePhoneNumber(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id, phone_number }: {
       patient_id: string
       phone_number?: string

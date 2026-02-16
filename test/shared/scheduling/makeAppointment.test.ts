@@ -22,7 +22,7 @@ describe('scheduling/makeAppointment.ts', () => {
           } as GCalEvent)
         )
         const health_worker = await addTestEmployee(trx, {
-          profession: 'doctor',
+          role: 'doctor',
         })
 
         const patient = await patients.insert(trx, {
@@ -35,7 +35,7 @@ describe('scheduling/makeAppointment.ts', () => {
           reason: 'back pain',
           duration_minutes: 30,
           patient_id: patient.id,
-          provider_ids: [health_worker.employee_id],
+          employee_ids: [health_worker.employee_id],
         }, insertEvent)
 
         assertEquals(insertEvent.calls.length, 1)

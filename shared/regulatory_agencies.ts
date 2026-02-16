@@ -4,12 +4,13 @@ export const DOCTOR_LICENCES = [
 
 export const REGULATORY_AGENCIES = {
   ZA: [
-    { name: 'Allied Health Professions Council of South Africa', acronym: 'AHPCSA' },
-    { name: 'South African Nursing Council', acronym: 'SANC' },
-    { name: 'South African Pharmacy Council', acronym: 'SAPC' },
+    { name: 'Allied Health Professions Council of South Africa', acronym: 'AHPCSA', concerning_role: 'alternative' },
+    { name: 'South African Nursing Council', acronym: 'SANC', concerning_role: 'nurse' },
+    { name: 'South African Pharmacy Council', acronym: 'SAPC', concerning_role: 'pharmacist' },
     {
       name: 'Health Professions Council of South Africa',
       acronym: 'HPCSA',
+      concerning_role: 'doctor',
       registers: [
         'AMBULANCE EMERGENCY ASSISTANT',
         "ANAESTHETIST'S ASSISTANT",

@@ -8,7 +8,7 @@ import type { DB } from '../../db.d.ts'
 import type { Insertable, Selectable } from 'kysely'
 import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
-import { Measurement, TrxOrDb } from '../../types.ts'
+import { Measurement, TrxOrDbOrQueryCreator } from '../../types.ts'
 import {
   BMI_DECIMAL_PLACES,
   CM_TO_METERS,
@@ -57,7 +57,7 @@ function valueDisplay(
 }
 export const patient_computed_findings = {
   insertComputedFinding(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       patient_encounter_id,
@@ -153,7 +153,7 @@ export const patient_computed_findings = {
       .executeTakeFirstOrThrow()
   },
   async getComputedFindingsByEncounter(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_encounter_id: string,
   ) {
     const results = await trx.selectFrom('patient_computed_findings as pcf')
@@ -184,7 +184,7 @@ export const patient_computed_findings = {
     }))
   },
   async getComputedFindingInputs(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     computed_finding_id: string,
   ) {
     const results = await trx.selectFrom(
@@ -221,7 +221,7 @@ export const patient_computed_findings = {
     }))
   },
   async getComputedFindingWithInputs(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     computed_finding_id: string,
   ) {
     const result = await trx.selectFrom('patient_computed_findings as pcf')
@@ -260,7 +260,7 @@ export const patient_computed_findings = {
     return { finding, inputs }
   },
   async getComputedFindingWithProvider(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     computed_finding_id: string,
   ) {
     const result = await trx.selectFrom('patient_computed_findings as pcf')
@@ -300,7 +300,7 @@ export const patient_computed_findings = {
     }
   },
   async computeAndInsertDerivedMeasurements(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       patient_encounter_id,

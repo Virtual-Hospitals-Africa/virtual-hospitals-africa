@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { RenderedICD10DiagnosisTreeWithOptionalIncludes, TrxOrDb } from '../../types.ts'
+import { RenderedICD10DiagnosisTreeWithOptionalIncludes, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 
 function name(table_name: string) {
@@ -11,7 +11,7 @@ function name(table_name: string) {
 
 // Yield the tree of sub_diagnoses
 // We need not do this recursively, as we know the maximum depth of the tree
-function tree(trx: TrxOrDb) {
+function tree(trx: TrxOrDbOrQueryCreator) {
   return trx.with(
     'icd10_diagnoses_tree',
     (qb) =>
@@ -61,7 +61,7 @@ function tree(trx: TrxOrDb) {
 }
 
 function searchBaseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { term, code_range }: {
     term: string
     code_range?: string | string[]
@@ -168,7 +168,7 @@ const symptoms_code_ranges = [
 
 export const icd10 = {
   searchTree(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { term, code_range, limit = 20 }: {
       term: string
       code_range?: string | string[]
@@ -298,7 +298,7 @@ export const icd10 = {
       .execute()
   },
   searchFlat(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { term, code_range, limit = 20 }: {
       term: string
       code_range?: string | string[]
@@ -346,18 +346,18 @@ export const icd10 = {
       .execute()
   },
   searchSymptoms(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     term: string,
   ) {
     return icd10.searchTree(trx, { term, code_range: symptoms_code_ranges })
   },
-  byCode(trx: TrxOrDb, code: string) {
+  byCode(trx: TrxOrDbOrQueryCreator, code: string) {
     return trx.selectFrom('icd10_diagnoses')
       .where('code', '=', code)
       .selectAll()
       .executeTakeFirst()
   },
-  byCodeWithSimilarity(trx: TrxOrDb, code: string, term: string) {
+  byCodeWithSimilarity(trx: TrxOrDbOrQueryCreator, code: string, term: string) {
     const with_includes = trx.selectFrom('icd10_diagnoses')
       .where('code', '=', code)
       .selectAll()

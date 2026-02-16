@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { PreviouslyCompletedProcedures, SnomedConcept, TrxOrDb } from '../../types.ts'
+import { PreviouslyCompletedProcedures, SnomedConcept, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records, PatientRecordsSearch } from './patient_records.ts'
@@ -20,7 +20,7 @@ type ProcedureInsert = {
 }
 
 export function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: PatientRecordsSearch,
 ) {
   return patient_records.baseQuery(trx, opts)
@@ -61,7 +61,7 @@ export const patient_procedures = base({
   baseQuery,
   formatResult: formatRecord,
   async previouslyCompleted(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_encounter_id,
       workflow_snomed_concept,
@@ -98,7 +98,7 @@ export const patient_procedures = base({
   },
 
   insertOneNested(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       employment_id,
@@ -162,7 +162,7 @@ export const patient_procedures = base({
 
   // TODO: consider doing these in parallel
   async insertOneIfNotAlreadyExistsForThisEncounter(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     to_insert: ProcedureInsert,
   ) {
     const already_exists = await satisfyingSExpression(

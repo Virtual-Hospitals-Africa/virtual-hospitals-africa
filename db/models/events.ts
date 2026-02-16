@@ -1,4 +1,4 @@
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { now } from '../helpers.ts'
 import { EventInsertAny, EVENTS } from '../../events/handlers.ts'
 import { Client } from 'pg'
@@ -167,7 +167,7 @@ export const events = {
     await pub_sub.__client__.end()
   },
   insert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { type, data }: EventInsertAny,
   ): Promise<{ id: string }> {
     const event_def = EVENTS[type]
@@ -184,7 +184,7 @@ export const events = {
       .executeTakeFirstOrThrow()
   },
   getById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     event_id: string,
   ) {
     return trx
@@ -194,7 +194,7 @@ export const events = {
       .executeTakeFirstOrThrow()
   },
   async selectUnprocessedListener(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     event_listener_id: string,
   ) {
     const listener = await trx
@@ -221,7 +221,7 @@ export const events = {
     return { ...listener, ...event }
   },
   // selectUnprocessedListeners(
-  //   trx: TrxOrDb,
+  //   trx: TrxOrDbOrQueryCreator,
   //   opts: {
   //     max_error_count?: number
   //     limit?: number
@@ -249,7 +249,7 @@ export const events = {
   //     .execute()
   // },
   selectListenersOfEvent(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { event_id }: {
       event_id: string
     },
@@ -264,7 +264,7 @@ export const events = {
       .execute()
   },
   processedListener(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { event_listener_id, success_message }: { event_listener_id: string; success_message: string },
   ) {
     return trx
@@ -279,7 +279,7 @@ export const events = {
       .executeTakeFirstOrThrow()
   },
   markUnrecoverableError(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     id: string,
     error: Error,
   ) {
@@ -303,7 +303,7 @@ export const events = {
   //   return new Date(Date.now() + backoff_ms).toISOString()
   // },
   markErroredListener(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { event_listener_id, error_message /*, error_count */ }: {
       event_listener_id: string
       error_message: string
@@ -322,7 +322,7 @@ export const events = {
       .executeTakeFirstOrThrow()
   },
   // clearBackoff(
-  //   trx: TrxOrDb,
+  //   trx: TrxOrDbOrQueryCreator,
   //   { event_listener_id }: { event_listener_id: string },
   // ) {
   //   return trx.updateTable('event_listeners')
@@ -335,7 +335,7 @@ export const events = {
    * Waits until all events for a given patient encounter have been fully processed.
    */
   async allProcessedForEncounter(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_encounter_id, timeout_ms = 10000 }: {
       patient_encounter_id: string
       timeout_ms?: number

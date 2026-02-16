@@ -38,7 +38,7 @@ describeParallel(
       'is accessed immediately after the start-registration process',
       async () => {
         const { fetchCheerio, fetchOk } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
+          role: 'receptionist',
         })
 
         const $ = await fetchCheerio(

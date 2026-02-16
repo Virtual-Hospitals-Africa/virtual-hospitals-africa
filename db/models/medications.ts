@@ -1,12 +1,12 @@
 import { ExpressionBuilder, RawBuilder, sql } from 'kysely'
-import type { Maybe, RenderedMedication, TrxOrDb } from '../../types.ts'
+import type { Maybe, RenderedMedication, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, jsonArrayFrom, jsonBuildObject, success_true } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 import { DB, SnomedInferredCanonicalNameAndCategory } from '../../db.d.ts'
 
 export const medications = base({
   top_level_table: 'medications',
-  baseQuery(trx: TrxOrDb, opts: { search?: Maybe<string> }) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: { search?: Maybe<string> }) {
     const qb = trx
       .selectFrom('medications')
       .innerJoin('snomed_inferred_canonical_name_and_category as medication_snomed', 'medication_snomed.id', 'medications.snomed_concept_id')

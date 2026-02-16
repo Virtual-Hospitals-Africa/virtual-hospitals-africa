@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { Coordinates, InsertRows, Maybe, RenderedOrganization, TrxOrDb } from '../../types.ts'
+import { Coordinates, InsertRows, Maybe, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { addresses, type AddressInsert } from './addresses.ts'
 import { blankSelection, concat, jsonBuildNullableObject, jsonBuildObject, literalLocation, success_true } from '../helpers.ts'
 import { base, identity, SearchResult } from './_base.ts'
@@ -42,7 +42,7 @@ export const organizations = base({
   // caching: {
   //   number_of_items: 100,
   // },
-  baseQuery(trx: TrxOrDb, opts: OrganizationSearch) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: OrganizationSearch) {
     let qb = trx
       .selectFrom('organizations')
       .select((eb) => [
@@ -106,7 +106,7 @@ export const organizations = base({
   },
   formatResult: identity<RenderedOrganization>,
   async addDepartments(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization_id: string,
     departments: {
       name: Department
@@ -160,7 +160,7 @@ export const organizations = base({
       ]).executeTakeFirstOrThrow()
   },
   async add(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       id,
       address,

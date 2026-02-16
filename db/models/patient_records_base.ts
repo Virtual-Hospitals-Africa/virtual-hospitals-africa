@@ -1,4 +1,4 @@
-import { Maybe, Selecting, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { Maybe, Selecting, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { asText, success_true } from '../helpers.ts'
 import { ALTERED, DIAGNOSIS, ENTERED_IN_ERROR, EVALUATION_ACTION, EVIDENCE_OF_CONTEXTUAL_QUALIFIER } from '../../shared/snomed_concepts.ts'
@@ -28,7 +28,7 @@ type MarkInvalidSharedOpts =
   })
 
 function markInvalid(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   input: MarkInvalidSharedOpts & {
     snomed_concept: keyof typeof RECORD_NOW_INVALID
   },
@@ -125,7 +125,7 @@ function markInvalid(
 }
 
 export function markAltered(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: MarkInvalidSharedOpts,
 ) {
   return markInvalid(trx, {
@@ -135,7 +135,7 @@ export function markAltered(
 }
 
 export function markEnteredInError(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: MarkInvalidSharedOpts,
 ) {
   return markInvalid(trx, {

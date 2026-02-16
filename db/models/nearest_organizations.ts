@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { Coordinates, Maybe, TrxOrDb } from '../../types.ts'
+import { Coordinates, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { base, SearchResult } from './_base.ts'
 import { employees } from './employees.ts'
@@ -19,7 +19,7 @@ export type NearestOrganizationSearchResult = SearchResult<
 >
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   search: SearchOpts,
 ) {
   assert(search?.location, 'Must provide a location to measure distance from')

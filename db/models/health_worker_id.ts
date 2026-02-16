@@ -1,7 +1,7 @@
-import { IdSelection, TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export function healthWorkerIdOfEmploymentId(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   employment_id: string | IdSelection,
 ): IdSelection {
   return trx.selectFrom('employment as health_worker_employment')

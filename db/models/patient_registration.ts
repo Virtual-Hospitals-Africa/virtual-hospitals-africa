@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { HealthWorkerOrganization, PatientProfileSummary, RenderedOrganization, TrxOrDb } from '../../types.ts'
+import { HealthWorkerOrganization, PatientProfileSummary, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { concat, isoDate, jsonBuildObject } from '../helpers.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { description_sql } from './patients.ts'
@@ -7,7 +7,7 @@ import { patient_new } from './patient_new.ts'
 
 export const patient_registration = {
   start(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization: RenderedOrganization,
     organization_employment: HealthWorkerOrganization,
   ) {
@@ -17,7 +17,7 @@ export const patient_registration = {
     )
   },
   async getSummaryById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ): Promise<PatientProfileSummary> {
     const summary = await trx
@@ -89,7 +89,7 @@ export const patient_registration = {
     }
   },
   completed(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
     }: {

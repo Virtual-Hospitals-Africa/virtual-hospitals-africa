@@ -1,5 +1,5 @@
 import type { DeleteResult, UpdateResult } from 'kysely'
-import type { GoogleTokens, TrxOrDb } from '../../types.ts'
+import type { GoogleTokens, TrxOrDbOrQueryCreator } from '../../types.ts'
 import pick from '../../util/pick.ts'
 import { health_workers } from './health_workers.ts'
 import { google_tokens } from './google_tokens.ts'
@@ -11,11 +11,13 @@ export type HealthWorkerWithGoogleTokens = Awaited<
 >
 
 async function insertWithGoogleCredentials(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   {
     access_token,
     refresh_token,
     expires_at,
+    avatar_media_id,
+    email,
     expires_in: _expires_in,
     ...health_worker_details
   }:
@@ -40,8 +42,11 @@ async function insertWithGoogleCredentials(
     expires_at,
   }
 
-  await google_tokens.upsert(trx, 'health_worker', id, tokens)
-  return combine({ id, ...health_worker_details }, tokens)
+  await Promise.all([
+    trx.insertInto('health_worker_accounts').values({ id, email, avatar_media_id }).execute(),
+    google_tokens.upsert(trx, 'health_worker', id, tokens),
+  ])
+  return combine({ id, email, ...health_worker_details }, tokens)
 }
 
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
@@ -49,7 +54,7 @@ export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 export const health_worker_google_tokens = {
   insertWithGoogleCredentials,
   updateTokens(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     email: string,
     tokens: GoogleTokens,
   ): Promise<null | { id: string }> {
@@ -61,7 +66,7 @@ export const health_worker_google_tokens = {
     )
   },
   updateAccessToken(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     health_worker_id: string,
     access_token: string,
   ): Promise<UpdateResult> {
@@ -73,7 +78,7 @@ export const health_worker_google_tokens = {
     )
   },
   removeExpiredAccessToken(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { health_worker_id: string },
   ): Promise<DeleteResult> {
     return google_tokens.removeExpiredAccessToken(

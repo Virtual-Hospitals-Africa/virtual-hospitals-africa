@@ -24,7 +24,7 @@ describeParallel(
       'is accessed immediately after the personal page and can continue with registration',
       async () => {
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
+          role: 'receptionist',
         })
 
         const $personal = await fetchCheerio(
@@ -82,7 +82,7 @@ describeParallel(
         const receptionist = await addTestEmployeeWithSession(
           db,
           {
-            profession: 'receptionist',
+            role: 'receptionist',
 
             organization_id: organization.id,
           },
@@ -91,7 +91,7 @@ describeParallel(
         // const nurse = await addTestEmployeeWithSession(
         //   db,
         //   {
-        //     profession: 'nurse',
+        //     role: 'nurse',
         //
         //     organization_id: organization.id,
         //   },
@@ -173,7 +173,7 @@ describeParallel(
           ['success'],
         )
 
-        const patient = await patients.getById(db, patient_id)
+        const patient = await patients.getById(db, patient_id, { include_incomplete_registration: true })
 
         const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
         assertEquals(
@@ -223,7 +223,7 @@ describeParallel(
         const receptionist = await addTestEmployeeWithSession(
           db,
           {
-            profession: 'receptionist',
+            role: 'receptionist',
 
             organization_id: organization.id,
           },
@@ -267,7 +267,7 @@ describeParallel(
           },
         )
 
-        const patient1 = await patients.getById(db, patient_id1)
+        const patient1 = await patients.getById(db, patient_id1, { include_incomplete_registration: true })
 
         assertEquals(
           new URL($waiting_room1.url).searchParams.get('success'),
@@ -300,7 +300,7 @@ describeParallel(
           },
         )
 
-        const patient2 = await patients.getById(db, patient_id2)
+        const patient2 = await patients.getById(db, patient_id2, { include_incomplete_registration: true })
 
         assertEquals(
           new URL($waiting_room2.url).searchParams.get('success'),
@@ -333,7 +333,7 @@ describeParallel(
           },
         )
 
-        const patient3 = await patients.getById(db, patient_id3)
+        const patient3 = await patients.getById(db, patient_id3, { include_incomplete_registration: true })
 
         assertEquals(
           new URL($waiting_room3.url).searchParams.get('success'),
@@ -349,7 +349,7 @@ describeParallel(
       const { fetchCheerio, health_worker } = await addTestEmployeeWithSession(
         db,
         {
-          profession: 'nurse',
+          role: 'nurse',
 
           organization_id: organization.id,
         },

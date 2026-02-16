@@ -1,21 +1,25 @@
 import { DOCTOR_LICENCES } from '../../shared/regulatory_agencies.ts'
-import type { Maybe, RenderedLicence, TrxOrDb } from '../../types.ts'
+import type { IdSelection, Maybe, NonNullableProperty, RenderedLicence, TrxOrDbOrQueryCreator } from '../../types.ts'
+import isKeyOf from '../../util/isKeyOf.ts'
+import generateUUID from '../../util/uuid.ts'
 import { jsonBuildNullableObject, jsonBuildObject, literalString, now } from '../helpers.ts'
 import { base, identity } from './_base.ts'
+
+type LicenceSearch = {
+  country?: string
+  regulatory_agency_acronym?: string
+  licence_number?: Maybe<string>
+  status: 'all' | 'active' | 'revoked' | 'expired'
+  profession?: string
+  health_worker_id?: string
+  doctor?: boolean
+}
 
 export const health_worker_licences = base({
   top_level_table: 'health_worker_licences',
   baseQuery(
-    trx: TrxOrDb,
-    opts: {
-      country?: string
-      regulatory_agency_acronym?: string
-      licence_number?: Maybe<string>
-      status: 'all' | 'active' | 'revoked' | 'expired'
-      profession?: string
-      health_worker_id?: string
-      doctor?: boolean
-    },
+    trx: TrxOrDbOrQueryCreator,
+    opts: LicenceSearch,
   ) {
     const qb = trx
       .selectFrom('health_worker_licences')
@@ -41,7 +45,7 @@ export const health_worker_licences = base({
         eb.case()
           .when('health_worker_licence_revocations.reason', 'is not', null)
           .then('revoked' as const)
-          .when('expiry_date', '>', now)
+          .when('expiry_date', '<', now)
           .then('expired' as const)
           .else('active' as const)
           .end()
@@ -49,7 +53,7 @@ export const health_worker_licences = base({
       ])
       .$if(!!opts.country, (qb) => qb.where('country', '=', opts.country!))
       .$if(!!opts.regulatory_agency_acronym, (qb) => qb.where('acronym', '=', opts.regulatory_agency_acronym!))
-      .$if(!!opts.role, (qb) => qb.where('profession', '=', opts.role!))
+      .$if(!!opts.profession, (qb) => qb.where('profession', '=', opts.profession!))
       .$if(!!opts.health_worker_id, (qb) => qb.where('health_worker_licence_numbers.health_worker_id', '=', opts.health_worker_id!))
       .$if(!!opts.licence_number, (qb) => qb.where('licence_number', '=', opts.licence_number!.toUpperCase()))
       .$if(!!opts.doctor, (qb) =>
@@ -58,7 +62,7 @@ export const health_worker_licences = base({
             eb.and([
               eb('regulatory_agencies.country', '=', country),
               eb('regulatory_agencies.acronym', '=', agency_acronym),
-              eb('health_worker_licences.role', '=', register),
+              eb('health_worker_licences.profession', '=', register),
             ])
           ))
         ))
@@ -70,22 +74,35 @@ export const health_worker_licences = base({
         case 'all':
           return query
         case 'expired':
-          return qb.where('expiry_date', '>', now)
+          return qb.where('expiry_date', '<', now)
         case 'revoked':
           return qb.where('revoked_at', 'is not', null)
         case 'active':
           return qb.where('revoked_at', 'is', null).where((eb) =>
             eb.or([
               eb('expiry_date', 'is', null),
-              eb('expiry_date', '<=', now),
+              eb('expiry_date', '>=', now),
             ])
           )
       }
     }
   },
+  healthWorkerIdByLicenceNumber(
+    trx: TrxOrDbOrQueryCreator,
+    opts: NonNullableProperty<
+      LicenceSearch,
+      | 'country'
+      | 'regulatory_agency_acronym'
+      | 'licence_number'
+    >,
+  ): IdSelection {
+    return health_worker_licences.baseQuery(trx, opts)
+      .clearSelect()
+      .select('health_worker_licence_numbers.health_worker_id as id')
+  },
   formatResult: identity<RenderedLicence>,
   revoke(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { revoked_by, ...licence }: {
       health_worker_id: string
       profession: string
@@ -106,6 +123,48 @@ export const health_worker_licences = base({
             literalString(revoked_by).as('revoked_by'),
           ])
       )
+      .execute()
+  },
+  async insertTest(
+    trx: TrxOrDbOrQueryCreator,
+    { health_worker_id, country, role, specialty }: { health_worker_id: string; country: string; role: string; specialty: Maybe<string> },
+  ) {
+    const LICENCE_CONFIG = {
+      ZA: {
+        doctor: { acronym: 'HPCSA', profession: 'MEDICAL PRACTITIONER' },
+        nurse: { acronym: 'SANC', profession: 'PROFESSIONAL NURSE' },
+      },
+    }
+    const config = isKeyOf(country, LICENCE_CONFIG) && isKeyOf(role, LICENCE_CONFIG[country]) && LICENCE_CONFIG[country][role]
+    if (!config) {
+      return `No licence to create for ${country} ${role} }`
+    }
+
+    const start_date = new Date()
+    const expiry_date = new Date()
+    expiry_date.setFullYear(expiry_date.getFullYear() + 1)
+
+    await trx
+      .with('agency', (qb) =>
+        qb.selectFrom('regulatory_agencies')
+          .select('id')
+          .where('acronym', '=', config.acronym))
+      .with('licence_number', (qb) =>
+        qb.insertInto('health_worker_licence_numbers')
+          .values((eb) => ({
+            health_worker_id,
+            regulatory_agency_id: eb.selectFrom('agency').select('id'),
+            licence_number: generateUUID().slice(0, 10).toUpperCase(),
+          }))
+          .returning('id'))
+      .insertInto('health_worker_licences')
+      .values((eb) => ({
+        health_worker_licence_number_id: eb.selectFrom('licence_number').select('id'),
+        profession: config.profession,
+        specialty,
+        start_date: start_date.toISOString(),
+        expiry_date: expiry_date.toISOString(),
+      }))
       .execute()
   },
 })

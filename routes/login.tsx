@@ -76,11 +76,12 @@ export const handler = {
   async GET(ctx: Context<any>) {
     const req = ctx.req
     const session_id = cookie.get(req)
+    console.log({ FAKE_GOOGLE_AUTH, session_id })
     if (!session_id) {
       return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref())
     }
 
-    const session = await sessions.getByIdOptional(db, session_id)
+    const session = await sessions.getByIdOptional(db, session_id, { entity_type: 'health_worker' })
 
     if (!session) {
       const response = await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))

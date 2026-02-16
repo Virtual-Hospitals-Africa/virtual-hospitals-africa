@@ -12,7 +12,7 @@ export async function handler(
   ctx: PatientContext,
 ) {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-  const patient = await patients.getById(ctx.state.trx, patient_id)
+  const patient = await patients.getById(ctx.state.trx, patient_id, { include_incomplete_registration: true })
   ctx.state.patient = patient
   return ctx.next()
 }

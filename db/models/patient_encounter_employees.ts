@@ -1,11 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
-import { HealthWorkerOrganization, RenderedPatientEncounter, TrxOrDb } from '../../types.ts'
+import { HealthWorkerOrganization, RenderedPatientEncounter, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { employees } from './employees.ts'
 import { base, identity } from './_base.ts'
 
 export const patient_encounter_employees = base({
   top_level_table: 'patient_encounter_employees' as const,
-  baseQuery(trx: TrxOrDb) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, _terms: Record<string, never>) {
     return employees.baseQuery(trx, {})
       .innerJoin(
         'patient_encounter_employees',

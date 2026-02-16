@@ -1,4 +1,4 @@
-import { Sex, TrxOrDb, VitalMeasurementFormInputDefition } from '../../types.ts'
+import { Sex, TrxOrDbOrQueryCreator, VitalMeasurementFormInputDefition } from '../../types.ts'
 import { VITAL_MEASUREMENTS_UNITS, vitalMeasurementFromSnomedConceptId } from '../../shared/vitals.ts'
 import { asText, now } from '../helpers.ts'
 
@@ -26,7 +26,7 @@ export const clinical_measurement_requirements = {
    * Pure function that combines age-based and condition-based requirements
    */
   async determineMeasurementsForPatient(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       age_days,
       active_condition_snomed_codes,
@@ -64,7 +64,7 @@ export const clinical_measurement_requirements = {
 }
 
 async function getAgeMeasurementRequirements(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   age_days: number,
 ): Promise<readonly MeasurementRequirement[]> {
   const requirements = await trx
@@ -106,7 +106,7 @@ async function getAgeMeasurementRequirements(
 }
 
 async function getConditionMeasurementRequirements(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   condition_snomed_codes: readonly string[],
 ): Promise<readonly MeasurementRequirement[]> {
   if (condition_snomed_codes.length === 0) {

@@ -1,11 +1,11 @@
-import { IdSelection, TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { events } from './events.ts'
 import { base, QueryResult } from './_base.ts'
 import isString from '../../util/isString.ts'
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: { thread_id?: string | string[] | IdSelection },
 ) {
   return trx
@@ -37,7 +37,7 @@ export const messages = base({
   baseQuery,
   formatResult: (x: IntermediateMessage): IntermediateMessage => x,
   async send(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { thread_id, sender_participant_id, body }: {
       thread_id: string
       body: string
@@ -62,7 +62,7 @@ export const messages = base({
     return message
   },
   sendFromSystem(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     values: {
       thread_id: string
       body: string

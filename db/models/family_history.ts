@@ -1,12 +1,12 @@
 import { sql } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base } from './_base.ts'
 import { FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT } from '../../shared/snomed_concepts.ts'
 
 export default base({
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery: (
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { search?: string },
   ) =>
     trx

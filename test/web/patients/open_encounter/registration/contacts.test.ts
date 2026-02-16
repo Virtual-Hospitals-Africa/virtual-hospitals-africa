@@ -22,7 +22,7 @@ describeParallel(
       async () => {
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
+          role: 'receptionist',
 
           organization_id: organization.id,
         })
@@ -109,7 +109,7 @@ describeParallel(
       async () => {
         const organization = await createTestOrganization(db)
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
-          profession: 'receptionist',
+          role: 'receptionist',
 
           organization_id: organization.id,
         })

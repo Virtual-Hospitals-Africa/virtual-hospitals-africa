@@ -25,9 +25,9 @@ export default PatientProfilePage(
     // by Google as a production app.
     const renderable_appointments: RenderableAppointment[] = await Promise.all(
       patient_appointments.map(async (appt) => {
-        const first_provider = appt.providers[0]
+        const first_provider = appt.employees[0]
         const organizations = uniqBy(
-          appt.providers.map(organizationOf),
+          appt.employees.map(organizationOf),
           'id',
         )
 
@@ -41,7 +41,7 @@ export default PatientProfilePage(
         // TODO ensure this can't happen upstream
         assert(
           organizations_with_addresses.length <= 1,
-          'Unsure how to handle an appointment booked with providers representing distinct organizations with physical addresses',
+          'Unsure how to handle an appointment booked with employees representing distinct organizations with physical addresses',
         )
 
         assert(
@@ -71,7 +71,7 @@ export default PatientProfilePage(
           duration_minutes: appt.duration_minutes,
           start: parseDateTime(appt.start),
           end: parseDateTime(appt.end),
-          providers: appt.providers,
+          employees: appt.employees,
           physical_location: organizations_with_addresses.length
             ? {
               organization: organizations_with_addresses[0],

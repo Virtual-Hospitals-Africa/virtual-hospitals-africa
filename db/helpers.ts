@@ -18,7 +18,7 @@ import {
 } from 'kysely'
 import * as formatter from 'sql-formatter'
 import type { DB } from '../db.d.ts'
-import { Coordinates, IdSelection, InsertRows, NonEmptyArray, type TrxOrDb } from '../types.ts'
+import type { Coordinates, IdSelection, InsertRows, NonEmptyArray, TrxOrDb, TrxOrDbOrQueryCreator } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
@@ -465,7 +465,7 @@ export function upsertTrigger(
 }
 
 export function upsertOne<Table extends keyof DB>(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   table: Table,
   values: InsertObject<DB, Table>,
 ) {
@@ -611,11 +611,11 @@ export function caseWhenMatching<T>(
 }
 
 export function deduplicate<T extends Array<any>, U>(
-  func: (trx: TrxOrDb, ...parameters: T) => Promise<U>,
-): (trx: TrxOrDb, ...parameters: T) => Promise<U> {
+  func: (trx: TrxOrDbOrQueryCreator, ...parameters: T) => Promise<U>,
+): (trx: TrxOrDbOrQueryCreator, ...parameters: T) => Promise<U> {
   let pending: Map<string, Promise<U>> | null = null
 
-  return (trx: TrxOrDb, ...parameters: T): Promise<U> => {
+  return (trx: TrxOrDbOrQueryCreator, ...parameters: T): Promise<U> => {
     // Validate parameters are JSON-serializable
     let key: string
     try {

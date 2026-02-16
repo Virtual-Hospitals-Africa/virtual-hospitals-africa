@@ -1,8 +1,8 @@
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export const patient_nearest_organization = {
   get(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ) {
     return trx.selectFrom('patients')

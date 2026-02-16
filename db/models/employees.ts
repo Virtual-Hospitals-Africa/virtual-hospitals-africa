@@ -1,4 +1,4 @@
-import type { Maybe, RenderedEmployee, RenderedHealthWorker, TrxOrDb } from '../../types.ts'
+import type { IdSelection, RenderedEmployee, RenderedHealthWorker, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { health_workers } from './health_workers.ts'
 import { base, identity } from './_base.ts'
 import { Workflow } from '../../shared/workflow.ts'
@@ -6,19 +6,18 @@ import { WORKFLOW_DEPARTMENTS } from '../../shared/departments.ts'
 import { exists } from '../../util/exists.ts'
 import matching from '../../util/matching.ts'
 import { HealthWorkerWithGoogleTokens } from './health_worker_google_tokens.ts'
-import { Profession } from '../../db.d.ts'
-
 import { concat } from '../helpers.ts'
 import { HealthWorkerSearch } from './health_workers_base.ts'
+import isString from '../../util/isString.ts'
 
 export type EmployeesSearch = HealthWorkerSearch & {
+  health_worker_id?: string | IdSelection
   can_perform_workflow?: Workflow
-  licence_number?: Maybe<string>
   licence_status?: 'all' | 'active' | 'revoked' | 'expired'
 }
 
 export type AddEmployeeOpts = {
-  profession: Profession
+  role: string
   is_admin: boolean
   specialty?: string
   organization_id: string
@@ -38,24 +37,15 @@ function fromHealthWorker(
     ...health_worker,
     organization_id: organization_employment.id,
     employee_id: organization_employment.employment_id,
-    profession: organization_employment.role,
+    role: organization_employment.role,
     is_admin: organization_employment.is_admin,
-    specialty: organization_employment.specialty,
     href: `/app/organizations/${organization_employment.id}/employees/${health_worker.id}`,
-    licence: null,
   }
-}
-
-export function interpretLicenceSearchAsSuch({ search, ...opts }: EmployeesSearch): EmployeesSearch {
-  // If it's got a number, we're seaching for a licence, not a name
-  const is_licence_like = !!search && /\d/.test(search.toUpperCase())
-  return is_licence_like ? { ...opts, search: null, licence_number: search } : { ...opts, search }
 }
 
 export const employees = base({
   top_level_table: 'employment',
-  baseQuery(trx: TrxOrDb, query: EmployeesSearch) {
-    const opts = interpretLicenceSearchAsSuch(query)
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: EmployeesSearch) {
     let qb = health_workers.baseQuery(trx, opts)
       .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
       .select((eb) => [
@@ -66,6 +56,16 @@ export const employees = base({
         concat('/app/organizations/', eb.ref('employment.organization_id'), '/employees/', eb.ref('employment.health_worker_id')).as('href'),
       ])
 
+    if (opts.organization_id) {
+      qb = qb.where(
+        'employment.organization_id',
+        'in',
+        isString(opts.organization_id) ? [opts.organization_id] : opts.organization_id,
+      )
+    }
+    if (opts.health_worker_id) {
+      qb = qb.where('health_workers.id', '=', opts.health_worker_id)
+    }
     if (opts.can_perform_workflow) {
       const department = WORKFLOW_DEPARTMENTS[opts.can_perform_workflow]
 

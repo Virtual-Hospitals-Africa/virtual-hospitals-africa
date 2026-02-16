@@ -1,5 +1,5 @@
 // import { type SelectQueryBuilder, sql } from 'kysely'
-// import { DrugSearchResult, TrxOrDb } from '../../types.ts'
+// import { DrugSearchResult, TrxOrDbOrQueryCreator } from '../../types.ts'
 // import { asText, asTextArray, jsonArrayFrom } from '../helpers.ts'
 // import type { DB } from '../../db.d.ts'
 // import { collectSortedUniqDecimals, collectSortedUniqStrings } from '../../util/collectSorted.ts'
@@ -8,7 +8,7 @@
 
 // // TODO: revisit this in light of _country_ recalling certain drugs
 // function baseQuery(opts: { include_recalled: boolean }) {
-//   return function (trx: TrxOrDb) {
+//   return function (trx: TrxOrDbOrQueryCreator) {
 //     return trx.selectFrom('drugs').select((eb_drugs) => [
 //       'drugs.id',
 //       'drugs.generic_name as name',

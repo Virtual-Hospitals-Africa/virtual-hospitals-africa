@@ -71,7 +71,7 @@ export default async function PatientRegisteredIntakePage(
     appointments_today_at_this_organization,
     closed_encounters_at_this_organization,
   } = await promiseProps({
-    patient: patients.getById(trx, patient_id),
+    patient: patients.getById(trx, patient_id, { include_incomplete_registration: false }),
 
     appointments_today_at_this_organization: appointments
       .getForPatient(

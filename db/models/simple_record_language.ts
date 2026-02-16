@@ -2,7 +2,7 @@
 // import db from '../db.ts'
 // import { SnomedCategory } from '../../db.d.ts'
 // import { orderByArrayPosition } from '../helpers.ts'
-// import { TrxOrDb } from '../../types.ts'
+// import { TrxOrDbOrQueryCreator } from '../../types.ts'
 // import { getAllNgrams } from '../../util/ngrams.ts'
 // import {
 //   ParsedFindingExpression,
@@ -29,7 +29,7 @@
 
 // // Search for a term in the database
 // function searchTerm(
-//   trx: TrxOrDb,
+//   trx: TrxOrDbOrQueryCreator,
 //   term: string,
 // ) {
 //   return trx

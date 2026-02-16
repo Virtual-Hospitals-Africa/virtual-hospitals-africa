@@ -1,10 +1,10 @@
-import { type RenderedProcurer, TrxOrDb } from '../../types.ts'
+import { type RenderedProcurer, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base } from './_base.ts'
 
 export default base({
   top_level_table: 'procurers',
   baseQuery: (
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { search: string | null },
   ) =>
     trx

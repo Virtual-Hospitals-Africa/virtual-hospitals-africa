@@ -1,10 +1,10 @@
 // import { sql } from 'kysely'
-// import { MedicationSchedule, PrescriptionMedication, TrxOrDb } from '../../types.ts'
+// import { MedicationSchedule, PrescriptionMedication, TrxOrDbOrQueryCreator } from '../../types.ts'
 // import { assert } from 'std/assert/assert.ts'
 // import { PrescriptionMedicationsFilled } from '../../db.d.ts'
 
 // export const prescriptions = {
-//   baseQuery(trx: TrxOrDb) {
+//   baseQuery(trx: TrxOrDbOrQueryCreator) {
 //     return trx
 //       .selectFrom('prescriptions')
 //       .innerJoin(
@@ -59,7 +59,7 @@
 //       .orderBy('drugs.generic_name', 'asc')
 //   },
 //   getByPrescriptionId(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     prescription_id: string,
 //     options?: {
 //       unfilled?: boolean
@@ -92,7 +92,7 @@
 //     return query.execute()
 //   },
 //   getById(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     prescription_id: string,
 //   ): Promise<PrescriptionMedication> {
 //     return prescriptions.baseQuery(trx)
@@ -100,7 +100,7 @@
 //       .executeTakeFirstOrThrow()
 //   },
 //   fill(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     dispensed_medications: Omit<
 //       PrescriptionMedicationsFilled,
 //       'id' | 'created_at' | 'updated_at'
@@ -113,7 +113,7 @@
 //       .execute()
 //   },
 //   undoFill(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     { prescription_id }: { prescription_id: string },
 //   ) {
 //     return trx

@@ -8,7 +8,7 @@
 //   InsertShape,
 //   PatientFamilyHistoryUpsert,
 //   RenderedPatientFamilyHistory,
-//   TrxOrDb,
+//   TrxOrDbOrQueryCreator,
 // } from '../../types.ts'
 // import generateUUID from '../../util/uuid.ts'
 // import { blankSelection, jsonArrayFrom, success_true } from '../helpers.ts'
@@ -16,7 +16,7 @@
 
 // // TODO: get this into a single round trip with the DB
 // ,async upsertOne(
-//   trx: TrxOrDb,
+//   trx: TrxOrDbOrQueryCreator,
 //   {
 //     patient_id,
 //     patient_encounter_id,
@@ -180,7 +180,7 @@
 // }
 
 // ,async getEncounter(
-//   trx: TrxOrDb,
+//   trx: TrxOrDbOrQueryCreator,
 //   { patient_id, patient_encounter_id }: {
 //     patient_id: string
 //     patient_encounter_id: string

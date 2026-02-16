@@ -15,7 +15,7 @@ describeParallel(
     afterAll(() => db.destroy())
     itParallel('can search for organizations by name', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
-        profession: 'nurse',
+        role: 'nurse',
         specialty: 'Primary care',
       })
       const response = await fetch(

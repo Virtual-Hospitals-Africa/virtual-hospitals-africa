@@ -1,4 +1,4 @@
-import type { RenderedMedicationAvailbility, TrxOrDb } from '../../types.ts'
+import type { RenderedMedicationAvailbility, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { concat, isoDate, jsonBuildObject, now } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 import { medications } from './medications.ts'
@@ -11,7 +11,7 @@ export type MedicationAvailabilityOpts = {
 
 export const medication_availabilities = base({
   top_level_table: 'medications',
-  baseQuery(trx: TrxOrDb, opts: MedicationAvailabilityOpts) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: MedicationAvailabilityOpts) {
     return medications.baseQuery(trx, { search: opts.search })
       .innerJoin(
         'medication_availabilities',
@@ -47,7 +47,7 @@ export const medication_availabilities = base({
   formatResult: identity<RenderedMedicationAvailbility>,
 
   recall(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     data: {
       medication_availability_id: string
       regulator_id: string
@@ -62,7 +62,7 @@ export const medication_availabilities = base({
       .executeTakeFirstOrThrow()
   },
 
-  unrecall(trx: TrxOrDb, data: { id: string }) {
+  unrecall(trx: TrxOrDbOrQueryCreator, data: { id: string }) {
     return trx.deleteFrom('medication_recalls')
       .where('id', '=', data.id)
       .execute()

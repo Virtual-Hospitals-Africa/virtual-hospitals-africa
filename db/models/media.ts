@@ -1,11 +1,11 @@
-import { TrxOrDb } from './../../types.ts'
+import { TrxOrDbOrQueryCreator } from './../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
 import { base } from './_base.ts'
 
 function insertSpeech(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { media_speech_id, binary_data, mime_type, language_code }: {
     media_speech_id?: string
     binary_data: Uint8Array
@@ -34,7 +34,7 @@ function insertSpeech(
 }
 
 function insertSpeechTranscription(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { media_speech_id, transcription, model }: {
     media_speech_id: string
     transcription: string
@@ -52,7 +52,7 @@ function insertSpeechTranscription(
 }
 
 function insert(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: { binary_data: Uint8Array; mime_type: string },
 ): Promise<{
   id: string
@@ -67,7 +67,7 @@ function insert(
     .executeTakeFirstOrThrow()
 }
 
-function baseQuery(trx: TrxOrDb, opts: { media_id?: string; appointment_id?: string }) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { media_id?: string; appointment_id?: string }) {
   return trx.selectFrom('media')
     .select([
       'media.id',

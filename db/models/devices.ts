@@ -1,5 +1,5 @@
 import type { SelectQueryBuilder } from 'kysely'
-import { RenderedDevice, TrxOrDb } from '../../types.ts'
+import { Maybe, RenderedDevice, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFromColumn } from '../helpers.ts'
 import { base } from './_base.ts'
 import type { DB } from '../../db.d.ts'
@@ -7,8 +7,8 @@ import type { DB } from '../../db.d.ts'
 export default base({
   top_level_table: 'devices',
   baseQuery: (
-    trx: TrxOrDb,
-    opts: { search: string | null },
+    trx: TrxOrDbOrQueryCreator,
+    opts: { search?: Maybe<string> },
   ): SelectQueryBuilder<DB, 'devices', RenderedDevice> =>
     trx
       .selectFrom('devices')

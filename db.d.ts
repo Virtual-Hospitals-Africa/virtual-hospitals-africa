@@ -106,7 +106,7 @@ export type MessageTargetType =
   | 'locality'
   | 'organization'
   | 'organization_category'
-  | 'profession'
+  | 'role'
 
 export type Numeric = ColumnType<string, number | string, number | string>
 
@@ -447,13 +447,21 @@ export interface HealthWorkerAccounts {
   id: string
 }
 
-export interface HealthWorkerDemographics {
+export interface HealthWorkerContactDetails {
   address_id: string | null
   created_at: Generated<Timestamp>
-  gender: string
   health_worker_id: string
   id: Generated<string>
   mobile_phone_number: string | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerDemographics {
+  created_at: Generated<Timestamp>
+  date_of_birth: Timestamp | null
+  gender: string
+  health_worker_id: string
+  id: Generated<string>
   sex: Sex
   updated_at: Generated<Timestamp>
 }
@@ -1724,6 +1732,7 @@ export interface DB {
   google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
   health_worker_accounts: HealthWorkerAccounts
+  health_worker_contact_details: HealthWorkerContactDetails
   health_worker_demographics: HealthWorkerDemographics
   health_worker_licence_numbers: HealthWorkerLicenceNumbers
   health_worker_licence_revocations: HealthWorkerLicenceRevocations

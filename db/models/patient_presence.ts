@@ -1,4 +1,4 @@
-import { TrxOrDb, UpdateShape } from '../../types.ts'
+import { TrxOrDbOrQueryCreator, UpdateShape } from '../../types.ts'
 import { PatientPresence } from '../../db.d.ts'
 
 export const patient_presence = {
@@ -7,7 +7,7 @@ export const patient_presence = {
    * Otherwise, the health worker remains with the patient to perform the next workflow
    */
   // updateForOpenEncounterAfterCompletingWorkflow(
-  //   trx: TrxOrDb,
+  //   trx: TrxOrDbOrQueryCreator,
   //   encounter: RenderedPatientOpenEncounter,
   //   organization_employment: HealthWorkerOrganization,
   // ) {
@@ -76,7 +76,7 @@ export const patient_presence = {
   //     .executeTakeFirstOrThrow()
   // },
   set(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
     updates: UpdateShape<PatientPresence>,
   ) {

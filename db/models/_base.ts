@@ -2,13 +2,16 @@ import { LRU } from 'tiny-lru'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import type { Generated, InsertObject, ReferenceExpression, SelectQueryBuilder } from 'kysely'
-import type { IdSelection, SearchResults, SelectShape, TrxOrDb, UpdateShape } from '../../types.ts'
+import type { IdSelection, SearchResults, SelectShape, TrxOrDbOrQueryCreator, UpdateShape } from '../../types.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 /// <reference path="../pharmacy-db-augment.d.ts" />
 import type { DB, Int8 } from '../../db.d.ts'
 import { bindAll } from '../../util/bindAll.ts'
 import { asCompiledSql, debugLog } from '../helpers.ts'
 import isString from '../../util/isString.ts'
+
+// deno-lint-ignore ban-types
+type MaybeOptionalArgs<SearchTerms> = {} extends SearchTerms ? [terms?: SearchTerms] : [terms: SearchTerms]
 
 // deno-lint-ignore no-explicit-any
 export type QueryResult<Func extends (...args: any[]) => any> =
@@ -26,7 +29,7 @@ export type BaseModelInput<
 > = {
   top_level_table: TopLevelTable
   baseQuery: (
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     terms: SearchTerms,
   ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
   formatResult: (result: IntermediateResult) => RenderedResult
@@ -62,9 +65,9 @@ const SIMPLE_BASE_QUERY = Symbol('simpleBaseQuery')
 export function simpleBaseQuery<TableName extends StandardTables>(
   table_name: TableName,
 ): (
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
 ) => SelectQueryBuilder<DB, TableName, SelectShape<DB[TableName]>> {
-  const fn = (trx: TrxOrDb) =>
+  const fn = (trx: TrxOrDbOrQueryCreator) =>
     trx.selectFrom(table_name).selectAll() as unknown as SelectQueryBuilder<
       DB,
       TableName,
@@ -88,7 +91,7 @@ type BaseModel<
   RenderedResult,
 > = {
   search(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     search_terms: SearchTerms,
     opts?: {
       page?: number
@@ -96,48 +99,56 @@ type BaseModel<
     },
   ): Promise<SearchResults<SearchTerms, RenderedResult>>
   searchQuery(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     search_terms: SearchTerms,
   ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-  findFirst(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult>
+  findFirst(trx: TrxOrDbOrQueryCreator, terms: SearchTerms): Promise<RenderedResult>
   findFirstOptional(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     terms: SearchTerms,
   ): Promise<RenderedResult | null>
-  findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult>
+  findOne(trx: TrxOrDbOrQueryCreator, terms: SearchTerms): Promise<RenderedResult>
   findOneOptional(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     terms: SearchTerms,
   ): Promise<RenderedResult | null>
   findAll(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     search_terms: SearchTerms,
   ): Promise<RenderedResult[]>
   insertOne(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     to_insert: InsertObject<DB, TopLevelTable>,
   ): Promise<string>
-  getById(trx: TrxOrDb, id: string | IdSelection, terms?: SearchTerms): Promise<RenderedResult>
-  getByIdOptional(
-    trx: TrxOrDb,
+  getById(
+    trx: TrxOrDbOrQueryCreator,
     id: string | IdSelection,
-    terms?: SearchTerms,
+    ...args: MaybeOptionalArgs<SearchTerms>
+  ): Promise<RenderedResult>
+  getByIdOptional(
+    trx: TrxOrDbOrQueryCreator,
+    id: string | IdSelection,
+    ...args: MaybeOptionalArgs<SearchTerms>
   ): Promise<RenderedResult | null>
-  getByIds(trx: TrxOrDb, ids: string[] | IdSelection, terms?: SearchTerms): Promise<RenderedResult[]>
+  getByIds(
+    trx: TrxOrDbOrQueryCreator,
+    ids: string[] | IdSelection,
+    ...args: MaybeOptionalArgs<SearchTerms>
+  ): Promise<RenderedResult[]>
   updateById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     id: string,
     updates: UpdateShape<DB[TopLevelTable]>,
   ): Promise<unknown>
   distinctIds(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     search_terms: SearchTerms,
     ref?: Parameters<
       SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>['select']
     >[0],
   ): IdSelection
-  countAll(trx: TrxOrDb, search_terms: SearchTerms): Promise<number>
-  removeById(trx: TrxOrDb, id: string): Promise<void>
+  countAll(trx: TrxOrDbOrQueryCreator, search_terms: SearchTerms): Promise<number>
+  removeById(trx: TrxOrDbOrQueryCreator, id: string): Promise<void>
   getFromCache(id: string): RenderedResult | undefined
   setCache(id: string, result: RenderedResult): void
   invalidateCacheOne(id: string): void
@@ -241,7 +252,7 @@ export function base<
   return bindAll({
     ...input,
     buildQuery(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       search_terms: SearchTerms & {
         id?: string | string[] | IdSelection
       },
@@ -257,7 +268,7 @@ export function base<
       return query
     },
     searchQuery(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       search_terms: SearchTerms,
       callback: (
         qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
@@ -272,7 +283,7 @@ export function base<
       )
     },
     async findAll(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       search_terms: SearchTerms,
     ): Promise<RenderedResult[]> {
       const { results } = await this.search(trx, search_terms, {
@@ -281,7 +292,7 @@ export function base<
       return results
     },
     async search(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       search_terms: SearchTerms,
       opts?: {
         page?: number
@@ -322,20 +333,20 @@ export function base<
         has_next_page,
       }
     },
-    async findFirst(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {
+    async findFirst(trx: TrxOrDbOrQueryCreator, terms: SearchTerms): Promise<RenderedResult> {
       const result = await this.searchQuery(trx, terms).limit(1)
         .executeTakeFirstOrThrow()
       return formatResult(result)
     },
     async findFirstOptional(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       terms: SearchTerms,
     ): Promise<null | RenderedResult> {
       const result = await this.searchQuery(trx, terms, (qb) => qb.limit(1))
         .executeTakeFirst()
       return result ? formatResult(result) : null
     },
-    async findOne(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult> {
+    async findOne(trx: TrxOrDbOrQueryCreator, terms: SearchTerms): Promise<RenderedResult> {
       const query = this.searchQuery(trx, terms, (qb) => qb.limit(2))
       const results = await query.execute()
       if (results.length > 1) {
@@ -351,7 +362,7 @@ export function base<
       return formatResult(results[0])
     },
     async findOneOptional(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       terms: SearchTerms,
     ): Promise<RenderedResult | null> {
       const query = this.searchQuery(trx, terms, (qb) => qb.limit(2))
@@ -366,7 +377,7 @@ export function base<
       return formatResult(results[0])
     },
     async getById(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       id: string | IdSelection,
       search?: SearchTerms,
     ): Promise<RenderedResult> {
@@ -375,7 +386,7 @@ export function base<
       return result
     },
     async getByIdOptional(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       id: string | IdSelection,
       search?: SearchTerms,
     ): Promise<RenderedResult | null> {
@@ -400,7 +411,7 @@ export function base<
       return db_result
     },
     async updateById(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       id: string,
       updates: UpdateShape<DB[TopLevelTable]>,
     ) {
@@ -421,7 +432,7 @@ export function base<
       lru.set(id, result as unknown as RenderedResult)
     },
     async getByIds(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       ids: string[] | IdSelection,
       terms?: SearchTerms,
     ): Promise<RenderedResult[]> {
@@ -445,7 +456,7 @@ export function base<
       return intermediate_results.map(formatResult)
     },
     async insertOne(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       to_insert: InsertObject<DB, TopLevelTable>,
     ) {
       const insert_query = trx.insertInto(top_level_table).values(
@@ -469,7 +480,7 @@ export function base<
       return result.id
     },
     distinctIds(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       search_terms: SearchTerms,
       ref?: Parameters<
         SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>['select']
@@ -490,7 +501,7 @@ export function base<
       ) as unknown as IdSelection
     },
     async countAll(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       search_terms: SearchTerms,
     ): Promise<number> {
       // Hack, but passing the callback through to .searchQuery enables verbose to work
@@ -510,7 +521,7 @@ export function base<
       return isString(count) ? parseInt(count) : count
     },
     async removeById(
-      trx: TrxOrDb,
+      trx: TrxOrDbOrQueryCreator,
       id: string,
     ) {
       lru?.delete(id)

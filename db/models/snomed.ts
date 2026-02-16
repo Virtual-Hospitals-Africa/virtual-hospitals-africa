@@ -1,5 +1,5 @@
 import { ExpressionBuilder, sql } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, SearchResult } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DB, SnomedCategory } from '../../db.d.ts'
@@ -24,7 +24,7 @@ function getPriorityOfSnomedConcept<
   eb: EB,
   column_ref: Parameters<EB['ref']>[0],
   patient_id: string,
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   const [first_sign, ...rest] = WARNING_SIGNS
 
@@ -84,7 +84,7 @@ function getPriorityOfSnomedConcept<
   return case_builder.end().as('priority')
 }
 
-function baseQuery(trx: TrxOrDb, terms: SearchTerms) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
   assertOr400(terms.search, 'Must be searching for a term')
 
   const best_similarity = sql<number>`max(similarity(term, ${terms.search}))`

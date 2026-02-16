@@ -1,10 +1,10 @@
 import type { SelectQueryBuilder } from 'kysely'
-import { Condition, TrxOrDb } from '../../types.ts'
+import { Condition, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base } from './_base.ts'
 import type { DB } from '../../db.d.ts'
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: { search: string | null; is_procedure: boolean },
 ): SelectQueryBuilder<DB, 'conditions', Condition> {
   return trx

@@ -4,11 +4,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { organizationOf } from '../shared/employees.ts'
 
-/*
-  TODO multiple specialties
-  TODO in the data model have a concept of your employment at an organization
-    Independent of your profession
-*/
 export function employeeDisplay(
   employee: RenderedEmployee,
 ): HealthWorkerDisplay {
@@ -24,6 +19,7 @@ export function healthWorkerDisplay(
   const { role, is_admin } = organization_employment
   const { specialty, subspecialty } = organization_employment.active_licences[0] || { specialty: null, subspecialty: null }
 
+  console.log('mmw', organization_employment.active_licences)
   if (role === 'nurse') {
     assert(specialty, 'nurse has specialty')
   }
@@ -130,12 +126,6 @@ export function appUserDisplay(
   },
 ) {
   switch (app_user) {
-    case 'regulator': {
-      return {
-        display_name: health_worker_name,
-        description: 'Regulator',
-      }
-    }
     case 'admin':
       return healthWorkerDisplayInner({
         health_worker_name,
@@ -176,5 +166,8 @@ export function appUserDisplay(
         subspecialty,
         avatar_url,
       })
+    default: {
+      throw new Error(`Unknown app user ${app_user}`)
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { IdSelection, RenderedPatientEncounter, RenderedRecordProvider, TrxOrDb } from '../../types.ts'
+import { IdSelection, RenderedPatientEncounter, RenderedRecordProvider, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { groupByUniq } from '../../util/groupBy.ts'
 import uniq from '../../util/uniq.ts'
 import { patient_encounters } from './patient_encounters.ts'
@@ -11,7 +11,7 @@ import { SearchResult } from './_base.ts'
 async function hydrateIntermediateRecords<
   IntermediateRecord extends SearchResult<typeof patient_findings>,
 >(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { records, encounter, health_worker_id }: {
     records: IntermediateRecord[]
     health_worker_id: string | IdSelection
@@ -27,7 +27,7 @@ async function hydrateIntermediateRecords<
 async function hydrateIntermediateRecords<
   IntermediateRecord extends SearchResult<typeof patient_evaluations | typeof patient_procedures>,
 >(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { records, encounter, health_worker_id }: {
     records: IntermediateRecord[]
     health_worker_id: string | IdSelection
@@ -50,7 +50,7 @@ async function hydrateIntermediateRecords<
 async function hydrateIntermediateRecords<
   IntermediateRecord extends SearchResult<typeof patient_findings | typeof patient_evaluations | typeof patient_procedures>,
 >(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { records, encounter, health_worker_id }: {
     records: IntermediateRecord[]
     health_worker_id: string | IdSelection

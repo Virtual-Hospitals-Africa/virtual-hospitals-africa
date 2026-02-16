@@ -1,9 +1,9 @@
-import { IdSelection, TrxOrDb } from '../../types.ts'
+import { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, QueryResult } from './_base.ts'
 import isString from '../../util/isString.ts'
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: { thread_id?: string | string[] | IdSelection; employee_ids?: string[] },
 ) {
   return trx

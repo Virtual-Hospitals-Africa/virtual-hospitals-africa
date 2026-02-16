@@ -20,7 +20,7 @@ const MESSAGE_TYPE_TO_CATEGORY = {
   administrative_area_level_2: 'regions',
   organization: 'organizations',
   organization_category: 'organizations',
-  profession: 'health_workers',
+  role: 'health_workers',
   employee: 'health_workers',
 } satisfies Record<MessageTargetType, MessageTargetCategory>
 

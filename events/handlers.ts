@@ -3,18 +3,13 @@ import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
 import { health_workers } from '../db/models/health_workers.ts'
 import { employees } from '../db/models/employees.ts'
 import { patient_encounters } from '../db/models/patient_encounters.ts'
-
 import { notifications } from '../db/models/notifications.ts'
-import { doctor_reviews } from '../db/models/doctor_reviews.ts'
 import { messages } from '../db/models/messages.ts'
 import { message_threads } from '../db/models/message_threads.ts'
-
 import { conversations } from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import { z } from 'zod'
-// import { debug } from '../util/debug.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
-import { organizationOf } from '../shared/employees.ts'
 import { promiseProps } from '../util/promiseProps.ts'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { WORKFLOWS } from '../shared/workflow.ts'
@@ -188,71 +183,71 @@ export const EVENTS = {
     }),
     {},
   ),
-  ReviewRequested: defineEvent(
-    z.object({
-      review_request_id: z.string().uuid(),
-    }),
-    {
-      async notifyRequestedDoctor(trx, payload) {
-        const doctor_review_request = await doctor_reviews.requestById(
-          trx,
-          payload.data.review_request_id,
-        )
-        if (!doctor_review_request.requesting.doctor_id) return 'Skipped: no doctor_id on review request'
+  // ReviewRequested: defineEvent(
+  //   z.object({
+  //     review_request_id: z.string().uuid(),
+  //   }),
+  //   {
+  //     async notifyRequestedDoctor(trx, payload) {
+  //       const doctor_review_request = await doctor_reviews.requestById(
+  //         trx,
+  //         payload.data.review_request_id,
+  //       )
+  //       if (!doctor_review_request.requesting.doctor_id) return 'Skipped: no doctor_id on review request'
 
-        await notifications.insert(trx, {
-          action_title: 'Review',
-          avatar_url: doctor_review_request.requested_by.avatar_url ||
-            '/images/heroicons/24/solid/slipboard-document-list.svg',
-          description: `${doctor_review_request.requested_by.name} at ${
-            organizationOf(doctor_review_request.requested_by).name
-          } has requested that you review a recent encounter with ${doctor_review_request.patient.name}`,
-          employment_id: doctor_review_request.requesting.doctor_id,
-          table_name: 'doctor_review_requests',
-          row_id: payload.data.review_request_id,
-          notification_type: 'doctor_review_request',
-          title: 'Review Requested',
-          action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
-        })
-        return 'Notified requested doctor of review'
-      },
-      async notifyDoctorsOrOrganization(trx, payload) {
-        const doctor_review_request = await doctor_reviews.requestById(
-          trx,
-          payload.data.review_request_id,
-        )
+  //       await notifications.insert(trx, {
+  //         action_title: 'Review',
+  //         avatar_url: doctor_review_request.requested_by.avatar_url ||
+  //           '/images/heroicons/24/solid/slipboard-document-list.svg',
+  //         description: `${doctor_review_request.requested_by.name} at ${
+  //           organizationOf(doctor_review_request.requested_by).name
+  //         } has requested that you review a recent encounter with ${doctor_review_request.patient.name}`,
+  //         employment_id: doctor_review_request.requesting.doctor_id,
+  //         table_name: 'doctor_review_requests',
+  //         row_id: payload.data.review_request_id,
+  //         notification_type: 'doctor_review_request',
+  //         title: 'Review Requested',
+  //         action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
+  //       })
+  //       return 'Notified requested doctor of review'
+  //     },
+  //     async notifyDoctorsOrOrganization(trx, payload) {
+  //       const doctor_review_request = await doctor_reviews.requestById(
+  //         trx,
+  //         payload.data.review_request_id,
+  //       )
 
-        const { organization_id } = doctor_review_request.requesting
-        if (!organization_id) return 'Skipped: no organization_id on review request'
+  //       const { organization_id } = doctor_review_request.requesting
+  //       if (!organization_id) return 'Skipped: no organization_id on review request'
 
-        const doctors_at_organization = await employees.findAll(
-          trx,
-          {
-            organization_id,
-            professions: ['doctor'],
-          },
-        )
+  //       const doctors_at_organization = await employees.findAll(
+  //         trx,
+  //         {
+  //           organization_id,
+  //           roles: ['doctor'],
+  //         },
+  //       )
 
-        for (const doctor of doctors_at_organization) {
-          await notifications.insert(trx, {
-            action_title: 'Review',
-            avatar_url: doctor_review_request.requested_by.avatar_url ||
-              '/images/heroicons/24/solid/slipboard-document-list.svg',
-            description: `${doctor_review_request.requested_by.name} at ${
-              organizationOf(doctor_review_request.requested_by).name
-            } has requested that your organization review a recent encounter with ${doctor_review_request.patient.name}`,
-            employment_id: doctor.employee_id,
-            table_name: 'doctor_review_requests',
-            row_id: payload.data.review_request_id,
-            notification_type: 'doctor_review_request',
-            title: 'Review Requested',
-            action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
-          })
-        }
-        return `Notified ${doctors_at_organization.length} doctor(s) at organization of review request`
-      },
-    },
-  ),
+  //       for (const doctor of doctors_at_organization) {
+  //         await notifications.insert(trx, {
+  //           action_title: 'Review',
+  //           avatar_url: doctor_review_request.requested_by.avatar_url ||
+  //             '/images/heroicons/24/solid/slipboard-document-list.svg',
+  //           description: `${doctor_review_request.requested_by.name} at ${
+  //             organizationOf(doctor_review_request.requested_by).name
+  //           } has requested that your organization review a recent encounter with ${doctor_review_request.patient.name}`,
+  //           employment_id: doctor.employee_id,
+  //           table_name: 'doctor_review_requests',
+  //           row_id: payload.data.review_request_id,
+  //           notification_type: 'doctor_review_request',
+  //           title: 'Review Requested',
+  //           action_href: `/app/patients/${doctor_review_request.patient.id}/review/clinical_notes`,
+  //         })
+  //       }
+  //       return `Notified ${doctors_at_organization.length} doctor(s) at organization of review request`
+  //     },
+  //   },
+  // ),
   MessageSend: defineEvent(
     z.object({
       message_id: z.string().uuid(),
@@ -366,31 +361,31 @@ export const EVENTS = {
       },
     },
   ),
-  DoctorReviewCompleted: defineEvent(
-    z.object({
-      review_id: z.string().uuid(),
-    }),
-    {
-      async notifyOriginalRequester(trx, payload) {
-        const review = await doctor_reviews.getById(trx, payload.data.review_id)
-        const doctor = await employees.getById(trx, review.employment_id)
+  // DoctorReviewCompleted: defineEvent(
+  //   z.object({
+  //     review_id: z.string().uuid(),
+  //   }),
+  //   {
+  //     async notifyOriginalRequester(trx, payload) {
+  //       const review = await doctor_reviews.getById(trx, payload.data.review_id)
+  //       const doctor = await employees.getById(trx, review.employment_id)
 
-        await notifications.insert(trx, {
-          action_title: 'View completed review',
-          avatar_url: doctor.avatar_url ||
-            '/images/heroicons/24/solid/slipboard-document-list.svg',
-          description: `Doctor ${doctor.name} at ${organizationOf(review.requested_by).name} has reviewed ${review.patient.name}`,
-          health_worker_id: review.requested_by.id,
-          table_name: 'doctor_review_requests',
-          row_id: review.review_id,
-          notification_type: 'doctor_review_request',
-          title: 'Review Requested',
-          action_href: `/app/patients/${review.patient.id}/review/clinical_notes`,
-        })
-        return `Notified original requester of completed review by ${doctor.name}`
-      },
-    },
-  ),
+  //       await notifications.insert(trx, {
+  //         action_title: 'View completed review',
+  //         avatar_url: doctor.avatar_url ||
+  //           '/images/heroicons/24/solid/slipboard-document-list.svg',
+  //         description: `Doctor ${doctor.name} at ${organizationOf(review.requested_by).name} has reviewed ${review.patient.name}`,
+  //         health_worker_id: review.requested_by.id,
+  //         table_name: 'doctor_review_requests',
+  //         row_id: review.review_id,
+  //         notification_type: 'doctor_review_request',
+  //         title: 'Review Requested',
+  //         action_href: `/app/patients/${review.patient.id}/review/clinical_notes`,
+  //       })
+  //       return `Notified original requester of completed review by ${doctor.name}`
+  //     },
+  //   },
+  // ),
   HealthWorkerMessageSent: defineEvent(
     z.object({
       message_id: z.string().uuid(),

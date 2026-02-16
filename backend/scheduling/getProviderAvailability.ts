@@ -4,7 +4,7 @@ import * as google from '../../external-clients/google.ts'
 import { employees } from '../../db/models/employees.ts'
 import { google_tokens } from '../../db/models/google_tokens.ts'
 import { employment_calendars } from '../../db/models/employment_calendars.ts'
-import { Availability, GCalFreeBusy, RenderedAppointmentProvider, RenderedEmployee, TimeRange, TrxOrDb } from '../../types.ts'
+import { Availability, GCalFreeBusy, RenderedAppointmentEmployee, RenderedEmployee, TimeRange, TrxOrDb } from '../../types.ts'
 import { assertAllJohannesburg, formatJohannesburg } from '../../util/date.ts'
 import flatten from '../../util/flatten.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
@@ -153,7 +153,7 @@ export async function availableSlots(
     duration_minutes?: number
   },
 ): Promise<{
-  provider: RenderedAppointmentProvider
+  provider: RenderedAppointmentEmployee
   start: Date
   end: Date
   duration_minutes: number
@@ -165,7 +165,7 @@ export async function availableSlots(
   const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const slots: {
-    provider: RenderedAppointmentProvider
+    provider: RenderedAppointmentEmployee
     start: string
     end: string
     duration_minutes: number

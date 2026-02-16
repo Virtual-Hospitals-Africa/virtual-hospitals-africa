@@ -1,4 +1,4 @@
-import { RenderedPatientHistory, TrxOrDb } from '../../types.ts'
+import { RenderedPatientHistory, TrxOrDbOrQueryCreator } from '../../types.ts'
 // import { patient_findings } from './patient_findings.ts'
 
 // Diagnoses
@@ -10,7 +10,7 @@ import { RenderedPatientHistory, TrxOrDb } from '../../types.ts'
 
 export const patient_history = {
   get(
-    _trx: TrxOrDb,
+    _trx: TrxOrDbOrQueryCreator,
     {/* patient_encounter_id, patient_encounter_employee_id */}: {
       patient_encounter_id: string
       patient_encounter_employee_id: string

@@ -80,13 +80,13 @@ export async function makeAppointmentChatbot(
 
   const { acceptedTime, gcal } = details
   assert(
-    acceptedTime.provider_id,
-    'No provider_id found',
+    acceptedTime.employee_id,
+    'No employee_id found',
   )
 
   const matching_provider = await employees.getById(
     trx,
-    acceptedTime.provider_id,
+    acceptedTime.employee_id,
   )
   const tokens = await google_tokens.getByEntityId(
     trx,
@@ -125,7 +125,7 @@ export type ScheduleFormValues = {
   reason: string
   duration_minutes: number
   patient_id: string
-  provider_ids: string[]
+  employee_ids: string[]
 }
 
 export function assertIsScheduleFormValues(
@@ -139,8 +139,8 @@ export function assertIsScheduleFormValues(
   assertOr400(typeof values.duration_minutes === 'number')
   assertOr400(typeof values.reason === 'string')
   assertOr400(typeof values.patient_id === 'string')
-  assertOr400(Array.isArray(values.provider_ids))
-  assertOr400(values.provider_ids.every((id) => typeof id === 'string'))
+  assertOr400(Array.isArray(values.employee_ids))
+  assertOr400(values.employee_ids.every((id) => typeof id === 'string'))
 }
 
 export async function makeAppointmentWeb(
@@ -149,7 +149,7 @@ export async function makeAppointmentWeb(
   insertEvent: InsertEvent,
 ): Promise<void> {
   assertEquals(
-    values.provider_ids.length,
+    values.employee_ids.length,
     1,
     'TODO support multiple health workers',
   )
@@ -164,7 +164,7 @@ export async function makeAppointmentWeb(
 
   const matching_provider = await employees.getById(
     trx,
-    values.provider_ids[0],
+    values.employee_ids[0],
   )
   const tokens = await google_tokens.getByEntityId(
     trx,
@@ -202,6 +202,6 @@ export async function makeAppointmentWeb(
 
   await appointments.addAttendees(trx, {
     appointment_id: appointment.id,
-    provider_ids: values.provider_ids,
+    employee_ids: values.employee_ids,
   })
 }

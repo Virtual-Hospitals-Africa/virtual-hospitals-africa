@@ -1,14 +1,14 @@
 import { InsertObject } from 'kysely'
 import { DB, MessagePriority } from '../../db.d.ts'
 import { BY_TARGET_UUID } from '../../shared/message_targets.ts'
-import { RenderedMessageDraft, RenderedMessageTarget, TrxOrDb } from '../../types.ts'
+import { RenderedMessageDraft, RenderedMessageTarget, TrxOrDbOrQueryCreator } from '../../types.ts'
 import entries from '../../util/entries.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { blankSelection, jsonArrayFrom, success_true } from '../helpers.ts'
 import { QueryResult } from './_base.ts'
 import { message_targets } from './message_targets.ts'
 
-function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDbOrQueryCreator) {
   return trx
     .selectFrom('message_drafts')
     .select((eb) => [
@@ -40,7 +40,7 @@ type IntermediateTargetResult = IntermediateDraftResult['targets'][number]
 
 export const message_drafts = {
   async findById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { draft_id }: { draft_id: string },
   ): Promise<undefined | RenderedMessageDraft> {
     const draft = await baseQuery(trx)
@@ -60,7 +60,7 @@ export const message_drafts = {
     }
   },
   removeById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     draft_id: string,
   ) {
     return trx
@@ -69,7 +69,7 @@ export const message_drafts = {
       .execute()
   },
   save(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       message_draft_id,
       targets = {},
@@ -81,7 +81,7 @@ export const message_drafts = {
       targets?: {
         organization?: string[]
         employee?: string[]
-        profession?: string[]
+        role?: string[]
         organization_category?: string[]
         locality?: string[]
         administrative_area_level_1?: string[]

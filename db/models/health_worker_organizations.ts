@@ -1,4 +1,4 @@
-import type { HealthWorkerOrganization, NonEmptyArray, TrxOrDb } from '../../types.ts'
+import type { HealthWorkerOrganization, NonEmptyArray, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { organizations } from './organizations.ts'
 import { jsonArrayFrom, orderByArrayPosition } from '../helpers.ts'
 import { base, identity } from './_base.ts'
@@ -7,7 +7,7 @@ import { health_worker_licences } from './health_worker_licences.ts'
 
 export const health_worker_organizations = base({
   top_level_table: 'organizations',
-  baseQuery(trx: TrxOrDb, opts: { country?: string }) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: { country?: string }) {
     return organizations.baseQuery(trx, opts)
       .innerJoin(
         'employment',
@@ -16,6 +16,7 @@ export const health_worker_organizations = base({
       )
       .select((eb_employment) => [
         'employment.id as employment_id',
+        'role',
         'is_admin',
         jsonArrayFrom(
           eb_employment.selectFrom('department_employment')

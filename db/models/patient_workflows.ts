@@ -1,6 +1,6 @@
 import { DB, Workflow } from '../../db.d.ts'
 import { workflowStepKey } from '../../shared/workflow.ts'
-import { HealthWorkerOrganization, RenderedPatientEncounter, RenderedPatientOpenEncounter, TrxOrDb } from '../../types.ts'
+import { HealthWorkerOrganization, RenderedPatientEncounter, RenderedPatientOpenEncounter, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'
 import { AlertWithActionsError } from '../../util/assertOr.ts'
@@ -70,7 +70,7 @@ export function assertNoPresentEncounter(
 
 export const patient_workflows = {
   completedStep(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_workflow_id, workflow, step }: {
       patient_workflow_id: string
       workflow: Workflow
@@ -86,7 +86,7 @@ export const patient_workflows = {
       .execute()
   },
   async completedWorkflow(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_workflow_id }: {
       patient_workflow_id: string
     },
@@ -99,7 +99,7 @@ export const patient_workflows = {
     return { success: true }
   },
   start(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       encounter,
       employment_id,
@@ -150,7 +150,7 @@ export const patient_workflows = {
       .execute()
   },
   insertMany(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     to_insert: InsertObject<
       DB,
       'patient_workflows'
@@ -160,7 +160,7 @@ export const patient_workflows = {
       .values(to_insert).execute()
   },
   insertOne(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     to_insert: InsertObject<DB, 'patient_workflows'>,
   ) {
     return trx

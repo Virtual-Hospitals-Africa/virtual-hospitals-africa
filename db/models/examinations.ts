@@ -1,10 +1,10 @@
 // import { sql } from 'kysely'
 // import { upsertOne } from '../helpers.ts'
-// import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
+// import { RenderedPatientExamination, TrxOrDbOrQueryCreator } from '../../types.ts'
 
 // export const examinations = {
 //   forPatientEncounter(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     opts: {
 //       patient_id: string
 //       organization_id: string
@@ -120,7 +120,7 @@
 //       .execute()
 //   },
 //   allForStep(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     opts: {
 //       consultation_step: string
 //     },
@@ -132,7 +132,7 @@
 //       .orderBy('examinations.order', 'asc')
 //       .execute()
 //   },
-//   upsert(trx: TrxOrDb, upsert: {
+//   upsert(trx: TrxOrDbOrQueryCreator, upsert: {
 //     id?: string
 //     patient_id: string
 //     patient_encounter_id: string
@@ -142,7 +142,7 @@
 //   }) {
 //     return upsertOne(trx, 'patient_examinations', upsert)
 //   },
-//   async createCompletedIfNoneExists(trx: TrxOrDb, exam_details: {
+//   async createCompletedIfNoneExists(trx: TrxOrDbOrQueryCreator, exam_details: {
 //     patient_id: string
 //     patient_encounter_id: string
 //     patient_encounter_employee_id: string
@@ -165,7 +165,7 @@
 //       examinations.upsert(trx, { ...exam_details, completed: true })
 //   },
 //   async createIncompleteIfNoneExists(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     { examination_identifiers, ...rest }: {
 //       patient_id: string
 //       patient_encounter_id: string

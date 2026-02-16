@@ -1,9 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
-import { Maybe, RenderedPatientAge, TrxOrDb } from '../../types.ts'
+import { Maybe, RenderedPatientAge, TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export const patient_age = {
   async get(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { patient_id: string },
   ): Promise<Maybe<RenderedPatientAge>> {
     const result = await trx
@@ -31,7 +31,7 @@ export const patient_age = {
     }
   },
   async getYears(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { patient_id: string },
   ): Promise<Maybe<number>> {
     const age = await patient_age.get(trx, opts)

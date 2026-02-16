@@ -1,13 +1,14 @@
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'
 import { health_workers } from './health_workers.ts'
 
 export const employment = {
   addOne(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { department_ids, ...employee }: {
       health_worker_id: string
+      role: string
       organization_id: string
       is_admin: boolean
       department_ids?: string[]

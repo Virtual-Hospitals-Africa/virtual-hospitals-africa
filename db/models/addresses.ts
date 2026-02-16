@@ -1,5 +1,5 @@
 import { InsertObject } from 'kysely'
-import { Address, InsertShapeLiteral, Maybe, TrxOrDb } from '../../types.ts'
+import { Address, InsertShapeLiteral, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
 import { StatusError } from '../../util/assertOr.ts'
@@ -106,7 +106,7 @@ export const addresses = base({
   },
 
   insert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     address: AddressInsert,
   ) {
     return trx.insertInto('addresses')
@@ -116,7 +116,7 @@ export const addresses = base({
   },
 
   distinctLocalities(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { country, search, limit }: {
       country: string
       search?: Maybe<string>
@@ -137,7 +137,7 @@ export const addresses = base({
   },
 
   distinctAdministrativeAreaLevels1(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { country, search, limit }: {
       country: string
       search?: Maybe<string>
@@ -162,7 +162,7 @@ export const addresses = base({
   },
 
   distinctAdministrativeAreaLevels2(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { country, search, limit }: {
       country: string
       search?: Maybe<string>

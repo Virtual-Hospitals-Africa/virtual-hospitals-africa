@@ -1,8 +1,8 @@
-import { HealthWorkerOrganization, Profession } from '../types.ts'
+import { HealthWorkerOrganization } from '../types.ts'
 
 export default function roleByProfession(
   organization_employment: HealthWorkerOrganization,
-  profession: Profession | 'admin',
+  profession: string,
 ): undefined | HealthWorkerOrganization {
   if (profession === 'admin' && organization_employment.is_admin) {
     return organization_employment

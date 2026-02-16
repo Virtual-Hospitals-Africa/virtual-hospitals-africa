@@ -1,9 +1,9 @@
-import { NonEmptyArray, RenderedRoom, TrxOrDb } from '../../types.ts'
+import { NonEmptyArray, RenderedRoom, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFromColumn, jsonObjectFrom, orderByArrayPosition } from '../helpers.ts'
 import { base } from './_base.ts'
 import { Department, DEPARTMENTS } from '../../shared/departments.ts'
 
-function baseQuery(trx: TrxOrDb, opts: { organization_id: string; name?: string; department_name?: Department; is_available?: boolean }) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { organization_id: string; name?: string; department_name?: Department; is_available?: boolean }) {
   return trx
     .selectFrom('organization_rooms')
     .select((eb) => [

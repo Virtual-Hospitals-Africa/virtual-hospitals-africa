@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
-import type { LoggedInHealthWorkerContext, ProviderAppointment } from '../../types.ts'
+import type { EmployeeAppointment, LoggedInHealthWorkerContext } from '../../types.ts'
 import { appointments } from '../../db/models/appointments.ts'
 import { parseDateTime, todayISOInJohannesburg } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
@@ -89,7 +89,7 @@ export default HealthWorkerHomePageLayout(
         ),
       )
 
-    const provider_appointments: ProviderAppointment[] = appointments_of_provider_with_gcal_event_ids.map(
+    const employee_appointments: EmployeeAppointment[] = appointments_of_provider_with_gcal_event_ids.map(
       (appt) => {
         const gcal_item = events.find((event) => event.id === appt.gcal_event_id)
         if (!gcal_item) {
@@ -101,7 +101,7 @@ export default HealthWorkerHomePageLayout(
         const duration = end_time.getTime() - start_time.getTime()
 
         return {
-          type: 'provider_appointment' as const,
+          type: 'employee_appointment' as const,
           id: appt.id,
           patient: appt.patient,
           duration_minutes: Math.round(duration / (1000 * 60)),
@@ -120,7 +120,7 @@ export default HealthWorkerHomePageLayout(
         url={ctx.url}
         day={day}
         today={today}
-        appointments={provider_appointments}
+        appointments={employee_appointments}
       />
     )
   },

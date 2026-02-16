@@ -111,7 +111,7 @@
 //   const num_rural_clinic_medical_staff = 5
 //   const admin_demo = randomNamesAndSex()
 //   const admin = await addTestEmployee(db, {
-//     profession: 'admin',
+//     role: 'admin',
 //     health_worker_attrs: {
 //       name: admin_demo.name,
 //       avatar_media_id: randomAvatarMediaIdNotYetUsed(admin_demo.sex),
@@ -120,7 +120,7 @@
 
 //   const receptionist_demo = randomNamesAndSex()
 //   const _receptionist = await addTestEmployee(db, {
-//     profession: 'receptionist',
+//     role: 'receptionist',
 //     health_worker_attrs: {
 //       name: receptionist_demo.name,
 //       avatar_media_id: randomAvatarMediaIdNotYetUsed(receptionist_demo.sex),
@@ -131,7 +131,7 @@
 //     range(num_rural_clinic_medical_staff).map(() => {
 //       const demo = randomNamesAndSex()
 //       return addTestEmployee(db, {
-//         profession: 'nurse',
+//         role: 'nurse',
 //         specialty: 'Primary care',
 //
 //         health_worker_attrs: {
@@ -149,7 +149,7 @@
 //     range(num_regional_medical_center_staff).map(() => {
 //       const demo = randomNamesAndSex()
 //       return addTestEmployee(db, {
-//         profession: 'doctor',
+//         role: 'doctor',
 //         organization_id: _requesting_review_of_organization_id,
 //         health_worker_attrs: {
 //           name: demo.name,

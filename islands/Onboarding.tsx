@@ -7,7 +7,6 @@ import FormRow from '../components/library/FormRow.tsx'
 import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
 import OrganizationsSelect from './OrganizationsSelect.tsx'
-import CountrySelect from './CountrySelect.tsx'
 import { SelectWithOptions } from './form/inputs/select_with_options.tsx'
 import { TextInput } from './form/inputs/text.tsx'
 import { appUserDisplay } from '../util/healthWorkerDisplay.ts'
@@ -79,7 +78,6 @@ function EnterProfession(
             { value: 'nurse' as const, label: 'Nurse' },
             { value: 'doctor' as const, label: 'Doctor' },
             { value: 'receptionist' as const, label: 'Receptionist' },
-            { value: 'regulator' as const, label: 'Regulator' },
           ]}
           onChange={(event) => {
             profession.value = event.currentTarget.value as AppUser
@@ -90,34 +88,26 @@ function EnterProfession(
       </FormRow>
       <SpecialtySelect profession={profession.value} specialty={specialty} />
 
-      {profession.value === 'regulator' && (
-        <FormRow>
-          <CountrySelect name='country' value='ZW' />
-        </FormRow>
-      )}
-
       <p className='mt-4'>
         <i>How you'll appear in the platform</i>
       </p>
       <div className='p-3 mt-2 border-2 border-gray-200 rounded-lg'>
         <Person
-          person={{
+          person={appUserDisplay({
+            health_worker_name: name.value,
+            app_user: profession.value,
+            specialty: specialty.value,
+            subspecialty: null,
             avatar_url: health_worker.avatar_url,
-            ...appUserDisplay({
-              health_worker_name: name.value,
-              app_user: profession.value,
-              specialty: specialty.value,
-              avatar_url: health_worker.avatar_url,
-            }),
-          }}
+          })}
           size='lg'
         />
       </div>
 
       <div className='flex mt-10'>
         <Button
-          type={profession.value === 'regulator' ? 'submit' : 'button'}
-          onClick={profession.value === 'regulator' ? undefined : () =>
+          type='button'
+          onClick={() =>
             onProfession({
               profession: profession.value,
               specialty: specialty.value,

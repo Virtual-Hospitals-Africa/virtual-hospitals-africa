@@ -1,10 +1,10 @@
-import type { TrxOrDb } from '../../types.ts'
+import type { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { concat } from '../helpers.ts'
 
 export const patient_primary_care = {
   getPrimaryDoctor(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ) {
     return trx
@@ -29,7 +29,7 @@ export const patient_primary_care = {
   },
 
   getNearestHealthFacility(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ) {
     return trx
@@ -49,7 +49,7 @@ export const patient_primary_care = {
   },
 
   getById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ) {
     return promiseProps({
@@ -66,7 +66,7 @@ export const patient_primary_care = {
   },
 
   setPrimaryDoctor(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id, primary_doctor_id }: {
       patient_id: string
       primary_doctor_id: string
@@ -79,7 +79,7 @@ export const patient_primary_care = {
   },
 
   setNearestHealthFacility(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id, nearest_organization_id }: {
       patient_id: string
       nearest_organization_id: string

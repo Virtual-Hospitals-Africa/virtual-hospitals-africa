@@ -1,9 +1,7 @@
 import { OrganizationContext } from '../../../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
 import { patient_encounters } from '../../../../../../../db/models/patient_encounters.ts'
-import { patients } from '../../../../../../../db/models/patients.ts'
 import { assertOr404 } from '../../../../../../../util/assertOr.ts'
-import { RenderedPatientOpenEncounter } from '../../../../../../../types.ts'
 import { presentWithPatient } from '../../../../../../../shared/patient_encounters.ts'
 import { Person } from '../../../../../../../components/library/Person.tsx'
 import { employeeDisplay } from '../../../../../../../util/healthWorkerDisplay.ts'
@@ -29,11 +27,9 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
       'No open encounter for this patient at this organization',
     )
 
-    const encounter = patient_encounter as RenderedPatientOpenEncounter
+    const { patient } = patient_encounter
 
-    const patient = await patients.getById(trx, patient_id)
-
-    const present_with_patient = presentWithPatient(encounter)
+    const present_with_patient = presentWithPatient(patient_encounter)
 
     return {
       drawer: (
@@ -84,20 +80,20 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
                 </p>
               </div>
             )}
-            {encounter.reason && (
+            {patient_encounter.reason && (
               <div>
                 <span className='text-sm font-medium text-gray-700'>
                   Reason for Visit
                 </span>
                 <p className='text-sm text-gray-900 mt-1'>
-                  {capitalize(encounter.reason)}
+                  {capitalize(patient_encounter.reason)}
                 </p>
               </div>
             )}
-            {encounter.notes && (
+            {patient_encounter.notes && (
               <div>
                 <span className='text-sm font-medium text-gray-700'>Notes</span>
-                <p className='text-sm text-gray-900 mt-1'>{encounter.notes}</p>
+                <p className='text-sm text-gray-900 mt-1'>{patient_encounter.notes}</p>
               </div>
             )}
           </div>
