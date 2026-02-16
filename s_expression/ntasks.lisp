@@ -84,13 +84,13 @@
     (clinical_finding (snomed_concept "Burn" "disorder") (finding_site (snomed_concept "Genital structure" "body structure")))
     (clinical_finding (snomed_concept "Burn" "disorder") (finding_site (snomed_concept "Joint structure" "body structure")))
     (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
-  )
-)
+(>measurement (snomed_concept "Body temperature"(observable entity Degrees Celsius (qualifier value)38)
+(clinical_finding (snomed_concept " Fever greater than 100.4 Fahrenheit" (finding))
 (task
   "Measure SpO₂ if burn present"
   adult
   (clinical_finding (snomed_concept "Burn" "disorder"))
-  (measure (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %))
+  (measure (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)94)
 )
 ;; Page 22 - Bites and Stings
 (task
