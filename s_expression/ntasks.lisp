@@ -140,12 +140,19 @@
   adult
   (clinical_finding (snomed_concept "Groin mass" "finding"))
   (check_for
+		description (snomed_concept “Standing up (observable entity) Greater (qualifier value)
+		description (snomed_concept “Coughing” (observable entity) Greater (qualifier value)
+	description (snomed_concept “Defecation” (observable entity)Greater 			(qualifier value)
+ANY
     (clinical_finding (snomed_concept "Severe pain" "finding"))
     (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-    (clinical_finding (snomed_concept "Unable to break wind" "finding"))
-    (clinical_finding (snomed_concept "Acute constipation" "finding"))
-  )
-)
+    (clinical_finding (snomed_concept "Unable to break wind" "finding"))hour (qualifier value)24)
+ > (clinical_finding (snomed_concept "Acute constipation" "finding"))hour (qualifier value)24)
+ 	 )clinical_finding (snomed_concept “Irreducible hernia” (morphologic 
+abnormality)
+clinical_finding (snomed_concept “Mass” (morphologic abnormality) Pulsatile (qualifier value)
+
+
 ;; Page 26 - Weakness or Tiredness
 (task
   "Check for urgent weakness/tiredness conditions"
