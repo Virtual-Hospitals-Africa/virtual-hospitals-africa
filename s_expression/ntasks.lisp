@@ -106,6 +106,7 @@
     (clinical_finding (snomed_concept "Difficulty talking" "finding"))
     (clinical_finding (snomed_concept "Diplopia" "disorder"))
     (clinical_finding (snomed_concept "Deep bite wound" "morphologic abnormality"))
+(clinical_finding (snomed_concept "Avulsion - injury" (disorder)
     (clinical_finding (snomed_concept "Bite - wound" "disorder") (finding_site (snomed_concept "Joint structure" "body structure")))
     (clinical_finding (snomed_concept "Bite - wound" "disorder") (finding_site (snomed_concept "Bone structure" "body structure")))
     (clinical_finding (snomed_concept "Infection of bite wound" "disorder"))
