@@ -2,9 +2,9 @@ import AsyncSearch, { AsyncSearchPropsSingular } from './AsyncSearch.tsx'
 import { PharmacistInPharmacy } from '../types.ts'
 import cls from '../util/cls.ts'
 
-// export type PharmacyOption = Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>
+// export type PharmacyOption = Omit<PharmacistInPharmacy, 'actions' | 'admins'>
 export type PharmacyOption =
-  & Pick<PharmacistInPharmacy, 'id' | 'name' | 'is_supervisor'>
+  & Pick<PharmacistInPharmacy, 'id' | 'name' | 'is_admin'>
   & { removed?: boolean }
 
 function PharmacyOption({

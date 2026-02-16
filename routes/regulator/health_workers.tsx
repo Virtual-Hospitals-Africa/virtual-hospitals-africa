@@ -21,9 +21,10 @@ export default RegulatorHomePageLayout(
     const page = searchPage(ctx)
     const search = ctx.url.searchParams.get('search')
     const search_results = await country_health_workers.search(
-      ctx.state.trx,{
+      ctx.state.trx,
+      {
         ...interpretLicenceSearchAsSuch({ search, licence_status: 'all' }),
-        country: SERVER_COUNTRY
+        country: SERVER_COUNTRY,
       },
       { page },
     )

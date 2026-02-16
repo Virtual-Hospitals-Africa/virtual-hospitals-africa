@@ -29,7 +29,7 @@ export default function HealthWorkerForm(
     selected_organizations.value = [
       ...selected_organizations.value,
       {
-        is_supervisor: false,
+        is_admin: false,
         id: '',
         name: '',
         removed: false,
@@ -52,14 +52,17 @@ export default function HealthWorkerForm(
       <FormRow>
         <FormGrid columns={3}>
           <NamesInputs names={health_worker || {}} />
-          <SexAndGenderInputs
+          {
+            /* <SexAndGenderInputs
             sex={health_worker.licences?.[0]?.sex ?? null}
             gender={health_worker.licences?.[0]?.gender ?? null}
-          />
+          /> */
+          }
         </FormGrid>
       </FormRow>
       <FormRow>
-        <TextInput
+        {
+          /* <TextInput
           name='licence_number'
           required
           type='text'
@@ -67,7 +70,8 @@ export default function HealthWorkerForm(
           value={health_worker.licence_number}
           // placeholder='P01-0805-2024'
           // pattern='^[A-Z]{1}[0-9]{2}-[0-9]{4}-[0-9]{4}$'
-        />
+        /> */
+        }
         <DateInput
           name='expiry_date'
           required
@@ -114,8 +118,8 @@ export default function HealthWorkerForm(
               />
               <SelectWithOptions
                 required={selected_organization.name !== undefined}
-                name={`organizations.${index}.is_supervisor`}
-                label='Is Supervisor'
+                name={`organizations.${index}.is_admin`}
+                label='Is Admin'
                 blank_option
                 options={[{
                   id: 'true',

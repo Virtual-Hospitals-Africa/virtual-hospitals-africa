@@ -55,11 +55,11 @@ export default function HealthWorkerDetailedCard(
             </div>
             <div class='border-t border-gray-100 py-6 sm:col-span-4 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Supervisors
+                Admins
               </dt>
-              {pharmacy.supervisors.map((supervisor) => (
+              {pharmacy.admins.map((admin) => (
                 <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                  <Person person={supervisor} />
+                  <Person person={admin} />
                 </dd>
               ))}
             </div>

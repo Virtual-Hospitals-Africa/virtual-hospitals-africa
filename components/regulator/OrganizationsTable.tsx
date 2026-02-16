@@ -33,12 +33,12 @@ const columns: TableColumn<RenderedOrganization>[] = [
     data: 'pharmacies_types',
   },
   {
-    label: 'Supervisor',
+    label: 'Admin',
     data(row) {
-      if (!row.supervisors || row.supervisors.length === 0) return null
+      if (!row.admins || row.admins.length === 0) return null
       return (
         <div className='flex flex-wrap gap-2'>
-          {row.supervisors.map((s) => <Person key={s.id} person={s} />)}
+          {row.admins.map((s) => <Person key={s.id} person={s} />)}
         </div>
       )
     },

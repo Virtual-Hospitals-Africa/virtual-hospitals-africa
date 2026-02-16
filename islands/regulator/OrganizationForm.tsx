@@ -2,7 +2,7 @@ import { useSignal } from '@preact/signals'
 
 import FormRow from '../../components/library/FormRow.tsx'
 import Buttons from '../form/buttons.tsx'
-import { RenderedPharmacy } from '../../types.ts'
+import { RenderedCountryOrganization } from '../../types.ts'
 import Form from '../../components/library/Form.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import AddPharmacistSearch, { PharmacistOption } from '../AddPharmacistSearch.tsx'
@@ -11,19 +11,19 @@ import { PharmacyTypeSelect } from '../form/inputs/pharmacy_type.tsx'
 import { TextInput } from '../form/inputs/text.tsx'
 
 type PharmacyForm = {
-  form_data: Partial<RenderedPharmacy>
+  organization: Partial<RenderedCountryOrganization>
   country: string
 }
 
 export default function PharmacyForm(
-  { form_data, country }: PharmacyForm,
+  { organization, country }: PharmacyForm,
 ) {
-  const selected_supervisors = useSignal<PharmacistOption[]>(
-    form_data.supervisors ?? [],
+  const selected_admins = useSignal<PharmacistOption[]>(
+    organization.admins ?? [],
   )
-  const addSupervisor = () => {
-    selected_supervisors.value = [
-      ...selected_supervisors.value,
+  const addAdmin = () => {
+    selected_admins.value = [
+      ...selected_admins.value,
       {
         id: '',
         name: '',
@@ -31,17 +31,18 @@ export default function PharmacyForm(
       },
     ]
   }
-  const removeSupervisor = (selectedIndex: number) => {
-    selected_supervisors.value = selected_supervisors.value.map(
-      (supervisor, index) => {
-        if (index !== selectedIndex) return supervisor
+  const removeAdmin = (selectedIndex: number) => {
+    selected_admins.value = selected_admins.value.map(
+      (admin, index) => {
+        if (index !== selectedIndex) return admin
         return {
-          ...supervisor,
+          ...admin,
           removed: true,
         }
       },
     )
   }
+
   return (
     <Form method='POST'>
       <FormRow>
@@ -50,14 +51,14 @@ export default function PharmacyForm(
           required
           type='text'
           label='Name'
-          value={form_data.name}
+          value={organization.name}
         />
         <TextInput
           name='licensee'
           required
           type='text'
           label='licensee'
-          value={form_data.licensee}
+          value={organization.licensee}
         />
       </FormRow>
       <FormRow>
@@ -66,7 +67,7 @@ export default function PharmacyForm(
           required
           type='text'
           label='Licence Number'
-          value={form_data.licence_number}
+          value={organization.licence_number}
           placeholder='P01-0805-2024'
           pattern='^[A-Z]{1}[0-9]{2}-[0-9]{4}-[0-9]{4}$'
         />
@@ -74,12 +75,12 @@ export default function PharmacyForm(
           name='expiry_date'
           required
           label='Expiry Date'
-          value={form_data.expiry_date}
+          value={organization.expiry_date}
         />
       </FormRow>
 
       <FormRow>
-        <PharmacyTypeSelect value={form_data.pharmacies_types} />
+        <PharmacyTypeSelect value={organization.pharmacies_types} />
       </FormRow>
 
       <FormRow>
@@ -88,35 +89,35 @@ export default function PharmacyForm(
           required
           type='text'
           label='Town'
-          value={form_data.town}
+          value={organization.town}
         />
         <TextInput
           name='address'
           required
           type='text'
           label='Address'
-          value={form_data.address}
+          value={organization.address}
         />
       </FormRow>
       <hr className='my-2' />
-      {selected_supervisors.value.map((selectedSupervisor, index) =>
-        !selectedSupervisor.removed && (
+      {selected_admins.value.map((selectedAdmin, index) =>
+        !selectedAdmin.removed && (
           <RemoveRow
-            onClick={() => removeSupervisor(index)}
+            onClick={() => removeAdmin(index)}
             key={index}
             labelled
           >
             <FormRow>
               <AddPharmacistSearch
                 country={country}
-                name={`supervisors.${index}`}
-                label='Supervisor'
-                value={selectedSupervisor}
+                name={`admins.${index}`}
+                label='Admin'
+                value={selectedAdmin}
                 required
-                onSelect={(supervisor) => {
-                  selected_supervisors.value[index] = {
-                    ...selected_supervisors.value[index],
-                    ...supervisor,
+                onSelect={(admin) => {
+                  selected_admins.value[index] = {
+                    ...selected_admins.value[index],
+                    ...admin,
                   }
                 }}
               />
@@ -125,8 +126,8 @@ export default function PharmacyForm(
         )
       )}
       <AddRow
-        text='Add Supervisor'
-        onClick={addSupervisor}
+        text='Add Admin'
+        onClick={addAdmin}
       />
       <hr className='my-2' />
       <Buttons submitText='Submit' />

@@ -48,7 +48,7 @@ export default RegulatorHomePageLayout(
     }
     if (licence_number) {
       form_data.licences = [{
-        licence_number
+        licence_number,
       }]
     }
 

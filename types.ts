@@ -53,8 +53,7 @@ export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
   : T extends Array<infer U> ? Array<DeepPartial<U>>
-  :
-  T
+  : T
 
 export type DeepMaybe<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepMaybe<T[P]>
@@ -2568,7 +2567,7 @@ export type SelectedPatient = {
   }
 }
 
-export type RenderedPharmacy = {
+export type RenderedCountryOrganization = {
   id: string
   country: string
   address: string | null
@@ -2592,14 +2591,14 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   href: string
-  supervisors: Supervisor[]
+  admins: Admin[]
   actions: {
     view: string
   }
 }
 
-export type PharmacistInPharmacy = RenderedPharmacy & {
-  is_supervisor: boolean
+export type PharmacistInPharmacy = RenderedCountryOrganization & {
+  is_admin: boolean
 }
 
 export type RenderedRegulatorPharmacist = RenderedEmployee & {
@@ -2610,7 +2609,7 @@ export type RenderedRegulatorPharmacist = RenderedEmployee & {
   }
 }
 
-export type Supervisor = {
+export type Admin = {
   id: string
   href: string
   name: string

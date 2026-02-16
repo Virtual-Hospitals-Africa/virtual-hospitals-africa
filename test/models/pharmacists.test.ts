@@ -41,7 +41,7 @@
 //             name: 'B A T ZIMBABWE CLINIC',
 //             pharmacies_types: 'Clinics: Class C',
 //             href: `/regulator/ZW/organizations/${result.pharmacies[0].id}`,
-//             is_supervisor: true,
+//             is_admin: true,
 //             country: 'ZW',
 //           }],
 //           actions: {

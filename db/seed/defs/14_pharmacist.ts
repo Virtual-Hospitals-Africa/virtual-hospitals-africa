@@ -122,7 +122,7 @@
 //       .values({
 //         organization_id: organization.id,
 //         pharmacist_id: licence_row.pharmacist_id,
-//         is_supervisor: true,
+//         is_admin: true,
 //       })
 //       .execute()
 //   }

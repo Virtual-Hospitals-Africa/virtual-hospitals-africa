@@ -24,7 +24,7 @@ export const HealthWorkerUpsertSchema = z.object({
     'Organization Technician',
   ]),
   organizations: z.optional(z.array(z.object({
-    is_supervisor: z.boolean(),
+    is_admin: z.boolean(),
     id: z.string(),
   }))),
 })

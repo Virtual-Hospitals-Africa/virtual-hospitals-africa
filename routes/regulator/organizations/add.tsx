@@ -35,7 +35,6 @@ export const handler = postHandler(
   UpsertOrganizationSchema,
   async (ctx: Context<LoggedInRegulator>, form_values) => {
     const { trx } = ctx.state
-    
 
     const id = await organizations.insertOne(trx, {
       ...form_values,
@@ -49,9 +48,8 @@ export const handler = postHandler(
     return redirect(
       `/regulator/organizations/${id}?success=${success}`,
     )
-  }
+  },
 )
-
 
 export default RegulatorHomePageLayout(
   'Pharmacies',
@@ -60,7 +58,7 @@ export default RegulatorHomePageLayout(
   ) {
     return (
       <OrganizationForm
-        form_data={{
+        organization={{
           name: ctx.url.searchParams.get('name') || '',
           licence_number: ctx.url.searchParams.get('licence_number') || '',
         }}
