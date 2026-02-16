@@ -69,7 +69,22 @@
     (clinical_finding (snomed_concept "Electrical burn" "disorder"))
     (clinical_finding (snomed_concept "Chemical burn" "disorder"))
     (clinical_finding (snomed_concept "Full thickness burn" "disorder"))
+"Structure of body surface region "(body structure)
+AND
+description (snomed_concept “White discoloration of skin” (finding)
+description (snomed_concept “Gray skin” (finding)
+description (snomed_concept “Painless” (qualifier value)
+description (snomed_concept “Burn injury with charring” (morphologic abnormality)
     (clinical_finding (snomed_concept "Partial thickness burn" "disorder") (qualifier (snomed_concept "Extensive" "qualifier value")))
+>measurement (snomed_concept "Structure of body surface region (body structure)%) 10)
+AND
+description (snomed_concept “Pink skin” (finding)
+description (snomed_concept “Redness of skin over lesion” (finding)
+description (snomed_concept “Pain”(finding)
+description (snomed_concept “Skin-ache syndrome” (finding)
+description (snomed_concept “Blister” (morphologic abnormality)
+description (snomed_concept “Moist skin”(finding)
+
     (clinical_finding (snomed_concept "Smoke inhalation injury" "disorder"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
     (clinical_finding (snomed_concept "Hoarse" "finding"))
