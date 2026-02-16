@@ -14,16 +14,17 @@ import { NamesInputs } from '../patient-registration/NamesInputs.tsx'
 import { SexAndGenderInputs } from '../patient-registration/SexAndGenderInputs.tsx'
 
 type HealthWorkerForm = {
-  form_data: DeepPartial<RenderedCountryHealthWorker>
+  health_worker: DeepPartial<RenderedCountryHealthWorker>
   country: string
 }
 
 export default function HealthWorkerForm(
-  { form_data, country }: HealthWorkerForm,
+  { health_worker, country }: HealthWorkerForm,
 ) {
   const selected_organizations = useSignal<OrganizationOption[]>(
-    form_data.organizations ?? [],
+    health_worker.organizations ?? [],
   )
+
   const addOrganization = () => {
     selected_organizations.value = [
       ...selected_organizations.value,
@@ -50,15 +51,10 @@ export default function HealthWorkerForm(
     <Form method='POST'>
       <FormRow>
         <FormGrid columns={3}>
-          <NamesInputs names={form_data || {}} />
-          <DateInput
-            name='date_of_birth'
-            value={form_data.licence?.date_of_birth}
-            required
-          />
+          <NamesInputs names={health_worker || {}} />
           <SexAndGenderInputs
-            sex={form_data.licence?.sex ?? null}
-            gender={form_data.licence?.gender ?? null}
+            sex={health_worker.licences?.[0]?.sex ?? null}
+            gender={health_worker.licences?.[0]?.gender ?? null}
           />
         </FormGrid>
       </FormRow>
@@ -68,7 +64,7 @@ export default function HealthWorkerForm(
           required
           type='text'
           label='Licence Number'
-          value={form_data.licence_number}
+          value={health_worker.licence_number}
           // placeholder='P01-0805-2024'
           // pattern='^[A-Z]{1}[0-9]{2}-[0-9]{4}-[0-9]{4}$'
         />
@@ -76,11 +72,11 @@ export default function HealthWorkerForm(
           name='expiry_date'
           required
           label='Expiry Date'
-          value={form_data.expiry_date}
+          value={health_worker.expiry_date}
         />
       </FormRow>
       <FormRow>
-        <PrefixSelect value={form_data.prefix} />
+        <PrefixSelect value={health_worker.prefix} />
       </FormRow>
       <FormRow>
         <TextInput
@@ -88,14 +84,14 @@ export default function HealthWorkerForm(
           required
           type='text'
           label='Town'
-          value={form_data.town}
+          value={health_worker.town}
         />
         <TextInput
           name='address'
           required
           type='text'
           label='Address'
-          value={form_data.address}
+          value={health_worker.address}
         />
       </FormRow>
       <hr className='my-2' />
