@@ -57,13 +57,13 @@ describeParallel('db/models/employees.ts', () => {
         TEST_ORGANIZATION_UUIDS.ZA.hospital,
       )
 
-      assertEquals(doctor_result.organizations[0].profession, 'doctor')
+      assertEquals(doctor_result.organizations[0].role, 'doctor')
       assertEquals(
         doctor_result.organizations[1].id,
         TEST_ORGANIZATION_UUIDS.ZA.clinic,
       )
       assertEquals(
-        doctor_result.organizations[1].profession,
+        doctor_result.organizations[1].role,
         'receptionist',
       )
       assertEquals(
@@ -75,7 +75,7 @@ describeParallel('db/models/employees.ts', () => {
         TEST_ORGANIZATION_UUIDS.ZA.hospital,
       )
       assertEquals(
-        doctor_result.profession,
+        doctor_result.role,
         'doctor',
       )
 
@@ -91,7 +91,7 @@ describeParallel('db/models/employees.ts', () => {
       )
 
       assertEquals(
-        receptionist_result.organizations[0].profession,
+        receptionist_result.organizations[0].role,
         'doctor',
       )
       assertEquals(
@@ -99,7 +99,7 @@ describeParallel('db/models/employees.ts', () => {
         TEST_ORGANIZATION_UUIDS.ZA.clinic,
       )
       assertEquals(
-        receptionist_result.organizations[1].profession,
+        receptionist_result.organizations[1].role,
         'receptionist',
       )
       assertEquals(
@@ -111,7 +111,7 @@ describeParallel('db/models/employees.ts', () => {
         TEST_ORGANIZATION_UUIDS.ZA.clinic,
       )
       assertEquals(
-        receptionist_result.profession,
+        receptionist_result.role,
         'receptionist',
       )
     },
@@ -137,7 +137,7 @@ describeParallel('db/models/employees.ts', () => {
       can_perform_workflow: 'triage',
     })
     assertLength(can_perform_triage, 1)
-    assertEquals(can_perform_triage[0].profession, 'nurse')
+    assertEquals(can_perform_triage[0].role, 'nurse')
   })
 
   describeParallel('search', () => {

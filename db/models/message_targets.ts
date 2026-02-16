@@ -189,12 +189,12 @@ const TARGET_GETTERS = {
     trx: TrxOrDb,
     target: HasStringId<IntermediateTargetResult<'profession'>>,
   ): Promise<RenderedMessageTargets['profession']> {
-    const profession = await TARGET_ENTITY_FETCHERS.profession(trx, target)
+    const profession = await TARGET_ENTITY_FETCHERS.role(trx, target)
     return {
       id: target.id,
       target_type: 'profession',
       target_category: 'health_workers',
-      ...TARGET_DISPLAYS.profession(profession),
+      ...TARGET_DISPLAYS.role(profession),
       profession,
     }
   },

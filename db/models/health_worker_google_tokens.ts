@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import type { DeleteResult, UpdateResult } from 'kysely'
 import type { GoogleTokens, TrxOrDb } from '../../types.ts'
 import pick from '../../util/pick.ts'

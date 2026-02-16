@@ -6,7 +6,7 @@ export default function roleByProfession(
 ): undefined | HealthWorkerOrganization {
   if (profession === 'admin' && organization_employment.is_admin) {
     return organization_employment
-  } else if (organization_employment.profession === profession) {
+  } else if (organization_employment.role === profession) {
     return organization_employment
   }
 }

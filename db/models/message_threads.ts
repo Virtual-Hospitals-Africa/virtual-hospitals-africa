@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  EmployedHealthWorker,
   IdSelection,
   RenderedEmployee,
+  RenderedHealthWorker,
   RenderedMessage,
   RenderedMessageThreadParticipant,
   RenderedMessageThreadWithAllMessages,
@@ -218,7 +218,7 @@ export const message_threads = base({
   },
   async getOneForHealthWorker(
     trx: TrxOrDb,
-    health_worker: EmployedHealthWorker,
+    health_worker: RenderedHealthWorker,
     message_thread_id: string | IdSelection,
   ): Promise<RenderedMessageThreadWithAllMessages> {
     const employee_ids = health_worker.organizations.map((e) => e.employment_id)
@@ -289,7 +289,7 @@ export const message_threads = base({
   },
   async getForHealthWorker(
     trx: TrxOrDb,
-    health_worker: EmployedHealthWorker,
+    health_worker: RenderedHealthWorker,
   ): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
     const employee_ids = health_worker.organizations.map((e) => e.employment_id)
 

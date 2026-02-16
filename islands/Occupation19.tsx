@@ -167,8 +167,8 @@
 //         <FormRow>
 //           <SelectWithOther
 //             label='Profession'
-//             name='occupation.job.profession'
-//             value={job.profession}
+//             name='occupation.job.role'
+//             value={job.role}
 //             options={professions}
 //           />
 //           <SelectWithOther

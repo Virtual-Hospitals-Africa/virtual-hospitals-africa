@@ -79,7 +79,7 @@ describe('db/models/health_workers.ts', () => {
         const result = await health_workers.getById(db, health_worker.id)
 
         assertLength(result.organizations, 1)
-        assertEquals(result.organizations[0].profession, 'nurse')
+        assertEquals(result.organizations[0].role, 'nurse')
         assertEquals(result.organizations[0].is_admin, true)
 
         const department_names = healthWorkerOrganizationDepartmentNames(
@@ -129,13 +129,13 @@ describe('db/models/health_workers.ts', () => {
           result.organizations[0].id,
           TEST_ORGANIZATION_UUIDS.ZA.hospital,
         )
-        assertEquals(result.organizations[0].profession, 'doctor')
+        assertEquals(result.organizations[0].role, 'doctor')
         assertEquals(
           result.organizations[1].id,
           TEST_ORGANIZATION_UUIDS.ZA.clinic,
         )
         assertEquals(
-          result.organizations[1].profession,
+          result.organizations[1].role,
           'receptionist',
         )
       },

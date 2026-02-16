@@ -1,3 +1,7 @@
+export const DOCTOR_LICENCES = [
+  { country: 'ZA', agency_acronym: 'HPCSA', register: 'MEDICAL PRACTITIONER' },
+]
+
 export const REGULATORY_AGENCIES = {
   ZA: [
     { name: 'Allied Health Professions Council of South Africa', acronym: 'AHPCSA' },

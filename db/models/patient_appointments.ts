@@ -11,7 +11,7 @@ export const patient_appointments = {
       WITH aot_pre as (
           SELECT patient_appointment_offered_times.*,
                  health_workers.name as health_worker_name,
-                 employment.profession
+                 employment.role
             FROM patient_appointment_offered_times
             JOIN employment ON patient_appointment_offered_times.provider_id = employment.id
             JOIN health_workers ON employment.health_worker_id = health_workers.id

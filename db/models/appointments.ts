@@ -58,7 +58,7 @@ export const appointments = {
           )
           .selectAll('inserted_offer_time')
           .select('health_workers.name as health_worker_name')
-          .select('employment.profession')
+          .select('employment.role')
           .select('employment.is_admin'),
     )
       .selectFrom('inserted_with_health_worker_name')

@@ -1,8 +1,7 @@
-import type { Profession } from '../../db.d.ts'
+import { DOCTOR_LICENCES } from '../../shared/regulatory_agencies.ts'
 import type { Maybe, RenderedLicence, TrxOrDb } from '../../types.ts'
-import { jsonObjectFrom, literalString, now } from '../helpers.ts'
+import { jsonBuildNullableObject, jsonBuildObject, literalString, now } from '../helpers.ts'
 import { base, identity } from './_base.ts'
-import { addresses } from './addresses.ts'
 
 export const health_worker_licences = base({
   top_level_table: 'health_worker_licences',
@@ -10,25 +9,37 @@ export const health_worker_licences = base({
     trx: TrxOrDb,
     opts: {
       country?: string
+      regulatory_agency_acronym?: string
       licence_number?: Maybe<string>
       status: 'all' | 'active' | 'revoked' | 'expired'
-      profession?: Profession
+      profession?: string
       health_worker_id?: string
+      doctor?: boolean
     },
   ) {
     const qb = trx
       .selectFrom('health_worker_licences')
+      .innerJoin('health_worker_licence_numbers', 'health_worker_licence_number_id', 'health_worker_licence_numbers.id')
+      .innerJoin('regulatory_agencies', 'regulatory_agency_id', 'regulatory_agencies.id')
       .leftJoin('health_worker_licence_revocations', 'health_worker_licences.id', 'health_worker_licence_revocations.health_worker_licence_id')
       .selectAll('health_worker_licences')
       .select((eb) => [
-        'revoked_at',
-        'revoked_by',
-        jsonObjectFrom(
-          addresses.baseQuery(trx)
-            .where('addresses.id', '=', eb.ref('address_id')),
-        ).$notNull().as('address'),
+        'licence_number',
+        jsonBuildNullableObject(
+          eb.ref('health_worker_licence_revocations.reason'),
+          {
+            at: eb.ref('revoked_at').$notNull(),
+            by: eb.ref('revoked_by').$notNull(),
+            reason: eb.ref('health_worker_licence_revocations.reason').$notNull(),
+          },
+        ).as('revoked'),
+        jsonBuildObject({
+          name: eb.ref('regulatory_agencies.name'),
+          acronym: eb.ref('regulatory_agencies.acronym'),
+          country: eb.ref('regulatory_agencies.country'),
+        }).as('regulatory_agency'),
         eb.case()
-          .when('revoked_at', 'is not', null)
+          .when('health_worker_licence_revocations.reason', 'is not', null)
           .then('revoked' as const)
           .when('expiry_date', '>', now)
           .then('expired' as const)
@@ -37,9 +48,20 @@ export const health_worker_licences = base({
           .as('status'),
       ])
       .$if(!!opts.country, (qb) => qb.where('country', '=', opts.country!))
-      .$if(!!opts.profession, (qb) => qb.where('profession', '=', opts.profession!))
-      .$if(!!opts.health_worker_id, (qb) => qb.where('health_worker_id', '=', opts.health_worker_id!))
+      .$if(!!opts.regulatory_agency_acronym, (qb) => qb.where('acronym', '=', opts.regulatory_agency_acronym!))
+      .$if(!!opts.role, (qb) => qb.where('profession', '=', opts.role!))
+      .$if(!!opts.health_worker_id, (qb) => qb.where('health_worker_licence_numbers.health_worker_id', '=', opts.health_worker_id!))
       .$if(!!opts.licence_number, (qb) => qb.where('licence_number', '=', opts.licence_number!.toUpperCase()))
+      .$if(!!opts.doctor, (qb) =>
+        qb.where((eb) =>
+          eb.or(DOCTOR_LICENCES.map(({ country, agency_acronym, register }) =>
+            eb.and([
+              eb('regulatory_agencies.country', '=', country),
+              eb('regulatory_agencies.acronym', '=', agency_acronym),
+              eb('health_worker_licences.role', '=', register),
+            ])
+          ))
+        ))
 
     return applyStatusFilter(qb)
 
@@ -66,7 +88,7 @@ export const health_worker_licences = base({
     trx: TrxOrDb,
     { revoked_by, ...licence }: {
       health_worker_id: string
-      profession: Profession
+      profession: string
       country: string
       revoked_by: string
     },

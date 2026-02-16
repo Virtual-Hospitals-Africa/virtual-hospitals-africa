@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-irregular-whitespace
 import { DescriptionList, DescriptionListCell, DescriptionListCellAction, type DescriptionListRows } from '../../library/DescriptionList.tsx'
 import type { Maybe, PatientProfileSummary } from '../../../types.ts'
 // import { registrationFrequencyText } from '../../../shared/medication.ts'

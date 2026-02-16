@@ -3,12 +3,12 @@ import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
 import {
-  EmployedHealthWorker,
   HealthWorkerOrganization,
   Maybe,
   NonEmptyArray,
   Profession,
   RenderedEmployee,
+  RenderedHealthWorker,
   RenderedOrganizationWithDepartments,
 } from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
@@ -175,7 +175,7 @@ export function employeeOrganizationDepartmentNames(
 }
 
 export function healthWorkerOrganizationDepartmentNames(
-  health_worker: EmployedHealthWorker,
+  health_worker: RenderedHealthWorker,
   organization_id: string,
 ): Department[] {
   const organization_employment = exists(

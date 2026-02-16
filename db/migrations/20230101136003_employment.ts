@@ -15,6 +15,7 @@ export async function up(db: Kysely<DB>) {
           col.notNull()
             .references('organizations.id')
             .onDelete('cascade'))
+        .addColumn('role', 'varchar(255)', (col) => col.notNull())
         .addColumn('is_admin', 'boolean', (col) => col.notNull())
         .addUniqueConstraint('only_employed_once_per_organization', [
           'health_worker_id',
@@ -91,10 +92,5 @@ export async function up(db: Kysely<DB>) {
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('employment_calendars').execute()
   await db.schema.dropTable('department_employment').execute()
-  await db.schema.dropTable('nurses').execute()
-  await db.schema.dropTable('doctors').execute()
-  await db.schema.dropTable('providers').execute()
-  await db.schema.dropTable('pharmacists').execute()
-  await db.schema.dropTable('organization_admins').execute()
   await db.schema.dropTable('employment').execute()
 }

@@ -346,6 +346,7 @@ export interface Employment {
   id: Generated<string>
   is_admin: boolean
   organization_id: string
+  role: string
   updated_at: Generated<Timestamp>
 }
 

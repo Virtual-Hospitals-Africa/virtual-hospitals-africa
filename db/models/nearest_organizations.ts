@@ -52,7 +52,7 @@ function baseQuery(
       ).as('admins'),
       jsonArrayFrom(
         employees.baseQuery(trx, {})
-          .where('employment.profession', '=', 'doctor')
+          .where('employment.role', '=', 'doctor')
           .where('employment.organization_id', '=', eb.ref('organizations.id')),
       ).as('doctors'),
       jsonArrayFrom(
@@ -97,7 +97,7 @@ function baseQuery(
                 '=',
                 'organizations.id',
               )
-              .where('doctor_employment.profession', '=', 'doctor')
+              .where('doctor_employment.role', '=', 'doctor')
               .select((eb2) => eb2.fn.count('doctor_employment.id').as('doctor_count')),
           '>',
           0,

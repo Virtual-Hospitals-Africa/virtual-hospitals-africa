@@ -47,13 +47,13 @@ function ProviderSelectOption(
           >
             {provider.name}
           </span>
-          {provider.profession && (
+          {provider.role && (
             <span
               id={`provider-${provider.employee_id}-description-0`}
               className='text-gray-500 text-sm'
             >
               <span className='block sm:inline capitalize'>
-                {provider.profession}
+                {provider.role}
               </span>
               {provider.specialty && (
                 <>

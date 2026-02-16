@@ -51,10 +51,10 @@ function ParticipantOption({
             {employee.name}
             {employee.at_work && <span className='text-xs text-green-600 font-normal'>Online</span>}
           </span>
-          {employee.profession && (
+          {employee.role && (
             <span className='text-gray-500 text-sm'>
               <span className='block sm:inline capitalize'>
-                {employee.profession}
+                {employee.role}
               </span>
               {employee.specialty && (
                 <>

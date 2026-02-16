@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import type { EmployedHealthWorker, IdSelection, PossiblyEmployedHealthWorker, TrxOrDb } from '../../types.ts'
+import type { IdSelection, RenderedHealthWorker, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
@@ -24,7 +24,7 @@ export const health_workers = base({
         ).as('organizations'),
       ])
   },
-  formatResult: identity<PossiblyEmployedHealthWorker>,
+  formatResult: identity<RenderedHealthWorker>,
   getIdByEmail(
     trx: TrxOrDb,
     email: string,
@@ -37,7 +37,7 @@ export const health_workers = base({
 
   isHealthWorker(
     health_worker: unknown,
-  ): health_worker is PossiblyEmployedHealthWorker {
+  ): health_worker is RenderedHealthWorker {
     return (
       isObjectLike(health_worker) &&
       ('id' in health_worker && typeof health_worker.id === 'string') &&
@@ -48,7 +48,7 @@ export const health_workers = base({
 
   isEmployed(
     health_worker: unknown,
-  ): health_worker is EmployedHealthWorker {
+  ): health_worker is RenderedHealthWorker {
     return health_workers.isHealthWorker(health_worker) &&
       'organizations' in health_worker &&
       Array.isArray(health_worker.organizations) &&
@@ -67,7 +67,7 @@ export const health_workers = base({
   async getEmployed(
     trx: TrxOrDb,
     { health_worker_id }: { health_worker_id: string | IdSelection },
-  ): Promise<EmployedHealthWorker> {
+  ): Promise<RenderedHealthWorker> {
     const health_worker = await health_workers.getById(trx, health_worker_id)
     assert(health_workers.isEmployed(health_worker))
     return health_worker

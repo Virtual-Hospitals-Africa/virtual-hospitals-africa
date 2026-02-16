@@ -2,7 +2,7 @@ import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import Form from '../components/library/Form.tsx'
 import { useSignal } from '@preact/signals'
-import { AppUser, OrganizationLike, PossiblyEmployedHealthWorker } from '../types.ts'
+import { AppUser, OrganizationLike, RenderedHealthWorker } from '../types.ts'
 import FormRow from '../components/library/FormRow.tsx'
 import { Person } from '../components/library/Person.tsx'
 import { cls } from '../util/cls.ts'
@@ -45,7 +45,7 @@ function EnterProfession(
   { show, health_worker, onProfession }: {
     show: boolean
 
-    health_worker: PossiblyEmployedHealthWorker
+    health_worker: RenderedHealthWorker
     onProfession(opts: {
       profession: string
       specialty: string | null
@@ -166,7 +166,7 @@ function SelectOrganization(
 
 export function Onboarding(
   { health_worker, organizations }: {
-    health_worker: PossiblyEmployedHealthWorker
+    health_worker: RenderedHealthWorker
     organizations: OrganizationLike[]
   },
 ) {

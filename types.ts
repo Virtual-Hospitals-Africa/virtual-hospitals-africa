@@ -1,30 +1,19 @@
 // deno-lint-ignore-file no-explicit-any
-import { Context } from 'fresh'
-import { ColumnType, Generated, InsertObject, QueryCreator, RawBuilder, SelectQueryBuilder, SqlBool, Transaction, ValueExpression } from 'kysely'
-import { JSX } from 'preact'
-import {
-  AgeUnit,
-  DB,
-  DoctorReviewStep,
-  EncounterReason,
-  FamilyType,
-  MaritalStatus,
-  MessagePriority,
-  PatientCohabitation,
-  SnomedCategory,
-  Workflow,
-} from './db.d.ts'
 import db from './db/db.ts'
+import type { Context } from 'fresh'
+import type { ColumnType, Generated, InsertObject, QueryCreator, RawBuilder, SelectQueryBuilder, SqlBool, Transaction, ValueExpression } from 'kysely'
+import type { JSX } from 'preact'
+import type { AgeUnit, DB, EncounterReason, FamilyType, MaritalStatus, MessagePriority, PatientCohabitation, SnomedCategory, Workflow } from './db.d.ts'
+import type { Department } from './shared/departments.ts'
+import type { Priority } from './shared/priorities.ts'
+import type { MessageTargetCategory } from './shared/message_targets.ts'
+import type { CommonConditionKey } from './shared/brief_history.ts'
+import type { VitalAssessment, VitalMeasurement } from './shared/vitals.ts'
+import type { WarningSignKey } from './shared/warning_signs.ts'
+import type { Decimal } from './util/decimal.ts'
+import type { Lang } from './shared/s_expression_schemas.ts'
+import type { PrescriptionFrequency } from './shared/prescription.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
-import { type Department } from './shared/departments.ts'
-import { type Priority } from './shared/priorities.ts'
-import { type MessageTargetCategory } from './shared/message_targets.ts'
-import { type CommonConditionKey } from './shared/brief_history.ts'
-import { type VitalAssessment, type VitalMeasurement } from './shared/vitals.ts'
-import { type WarningSignKey } from './shared/warning_signs.ts'
-import { type Decimal } from './util/decimal.ts'
-import { Lang } from './shared/s_expression_schemas.ts'
-import { PrescriptionFrequency } from './shared/prescription.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -421,7 +410,7 @@ export type PatientAppointmentOfferedTime = {
 export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
   id: string
   health_worker_name: string
-  profession: Profession | null
+  profession: string | null
   is_admin: boolean
 }
 
@@ -1165,8 +1154,6 @@ export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
   number_of_containers: number
 }
 
-export type Profession = 'doctor' | 'nurse' | 'pharmacist' | 'receptionist'
-
 export type NurseSpecialty =
   | 'Primary care'
   | 'triage'
@@ -1239,23 +1226,6 @@ export const DOCTOR_SPECIALTIES = [
 
 export type DoctorSpecialty = (typeof DOCTOR_SPECIALTIES)[number]
 
-export type NurseRegistrationDetails = {
-  health_worker_id: string
-  sex: Sex
-  gender: string
-  date_of_birth: string
-  national_id_number: string
-  date_of_first_practice: string
-  ncz_registration_number: string
-  mobile_number?: Maybe<string>
-  national_id_media_id: Maybe<string>
-  ncz_registration_card_media_id: Maybe<string>
-  face_picture_media_id: Maybe<string>
-  nurse_practicing_cert_media_id: Maybe<string>
-  approved_by: Maybe<string>
-  address_id: Maybe<string>
-}
-
 export type Specialties = {
   employee_id: string
   specialty: NurseSpecialty
@@ -1267,98 +1237,24 @@ export type HealthWorker = Names & {
   phone_number?: Maybe<string>
 }
 
-export type EmployeeInfo = {
-  name: string
-  email: string
-  sex: Maybe<Sex>
-  gender: Maybe<string>
-  date_of_birth: Maybe<string>
-  national_id_number: Maybe<string>
-  ncz_registration_number: Maybe<string>
-  mobile_number: Maybe<string>
-  health_worker_id: Maybe<string>
-  date_of_first_practice: Maybe<string>
-  specialty: Maybe<string>
-  avatar_url: Maybe<string>
-  registration_completed: SqlBool
-  registration_needed: SqlBool
-  registration_pending_approval: SqlBool
-  address: Maybe<string>
-  organization_address: string | null
-  organization_id: string
-  organization_name: string
-  professions: Profession[]
-  documents: {
-    name: string
-    href: string
-  }[]
-}
-
-export type RenderedDoctorReviewBase = {
-  encounter: {
-    id: string
-    reason: EncounterReason
-  }
-  patient: {
-    id: string
-    name: string
-    avatar_url: string | null
-    description: string | null
-    primary_doctor_id: string | null
-    actions: {
-      view: string
-    }
-  }
-  requested_by: RenderedPatientEncounterEmployee
-}
-
-export type RenderedDoctorReview = RenderedDoctorReviewBase & {
-  review_id: string
-  employment_id: string
-  steps_completed: DoctorReviewStep[]
-  completed: SqlBool
-}
-export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
-  review_request_id: string
-  requesting: {
-    doctor_id: string | null
-    organization_id: string | null
-  }
-}
-
-export type RenderedDoctorReviewRequestOfSpecificDoctor =
-  & RenderedDoctorReviewRequest
-  & {
-    employment_id: string
-  }
-
-export type HealthWorkerRegistrationStatus = {
-  organization_id: string
-  profession: Profession
-  registration_needed: boolean
-  registration_completed: boolean
-  registration_pending_approval: boolean
-}
-
 export type HealthWorkerOrganization = RenderedOrganization & {
   employment_id: string
-  specialty: string | null
-  profession: Profession | null
   is_admin: boolean
+  role: string
   in_departments: {
     id: string
     name: string
   }[]
+  active_licences: RenderedLicence[]
 }
 
-export type PossiblyEmployedHealthWorker = HealthWorker & {
+export type RenderedHealthWorker = HealthWorker & {
   id: string
   organizations: HealthWorkerOrganization[]
+  ever_licensed_as_doctor: SqlBool
 }
 
-export type EmployedHealthWorker = PossiblyEmployedHealthWorker
-
-export type RenderedCountryHealthWorker = PossiblyEmployedHealthWorker & {
+export type RenderedCountryHealthWorker = RenderedHealthWorker & {
   licences: RenderedLicence[]
 }
 
@@ -1593,14 +1489,9 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   session_id: string
-  health_worker: EmployedHealthWorker
+  health_worker: RenderedHealthWorker
   health_worker_id: string
   present_encounter: RenderedPatientOpenEncounter | null
-}
-
-export type LoggedInRegulator = {
-  trx: TrxOrDb
-  regulator: HasStringId<Regulator>
 }
 
 export type LoggedInHealthWorkerContext<T = Record<string, never>> = Context<
@@ -1611,10 +1502,6 @@ export class Foo<Ctx extends LoggedInHealthWorkerContext<any>> {
   constructor(public x: Ctx) {
   }
 }
-
-export type LoggedInRegulatorContext<T = Record<never, never>> = Context<
-  LoggedInRegulator & T
->
 
 export type Organization = {
   name: string
@@ -2449,112 +2336,6 @@ export type Image = {
   className?: string
 }
 
-export type SendableToEntity = {
-  type: 'entity'
-  entity_type: 'health_worker' | 'facility'
-  entity_id: string
-  online?: Maybe<boolean>
-  reopens?: string
-}
-
-export type SendableToAction = {
-  type: 'action'
-  action: 'search' | 'waiting_room' | 'device'
-}
-
-export type SendableTo = SendableToEntity | SendableToAction
-
-export type SendToFormSubmission = {
-  action?: SendableToAction['action']
-  entity?: {
-    type: SendableToEntity['entity_type']
-    id: SendableToEntity['entity_id']
-  }
-  request_type?:
-    | 'request_visit'
-    | 'request_review'
-    | 'make_appointment'
-    | 'declare_emergency'
-  additional_notes?: string
-}
-export type Sendable = {
-  key: string
-  image: Image
-  name: string
-  description?: {
-    text: string
-    href?: string
-    parenthetical?: string
-  }
-  additional_description?: string
-  additional_info?: string
-  status: string
-  menu_options?: {
-    name: string
-    href: string
-  }[]
-  to: SendableTo
-  request_type_options?: string[]
-  textarea?: string
-}
-
-export type SelectedPatient = {
-  name: string
-  avatar_url?: Maybe<string>
-  description?: Maybe<string>
-  actions: {
-    view: string
-  }
-}
-
-export type RenderedCountryOrganization = {
-  id: string
-  country: string
-  address: string | null
-  town: string | null
-  address_display: string | null
-  expiry_date: string
-  licence_number: string
-  licensee: string
-  name: string
-  pharmacies_types:
-    | 'Clinics: Class A'
-    | 'Clinics: Class B'
-    | 'Clinics: Class C'
-    | 'Clinics: Class D'
-    | 'Dispensing medical practice'
-    | 'Hospital pharmacies'
-    | 'Pharmacies: Research'
-    | 'Pharmacies: Restricted'
-    | 'Pharmacy in any other location'
-    | 'Pharmacy in rural area'
-    | 'Pharmacy located in the CBD'
-    | 'Wholesalers'
-  href: string
-  admins: Admin[]
-  actions: {
-    view: string
-  }
-}
-
-export type PharmacistInPharmacy = RenderedCountryOrganization & {
-  is_admin: boolean
-}
-
-export type RenderedRegulatorPharmacist = RenderedEmployee & {
-  actions: {
-    view: string
-    revoke: string
-    edit: string
-  }
-}
-
-export type Admin = {
-  id: string
-  href: string
-  name: string
-  prefix: Prefix | null
-}
 export type RenderedMedication = {
   id: string
   snomed_concept: RenderedSnomedConcept
@@ -2703,30 +2484,36 @@ export type HealthWorkerDisplay = {
 
 export type RenderedLicence = {
   licence_number: string
-  name: string
-  profession: Profession
+  regulatory_agency: {
+    name: string
+    acronym: string
+    country: string
+  }
+  profession: string
+  specialty: string | null
+  subspecialty: string | null
+  start_date: string | Date
   expiry_date: string | Date
-  address: Address
-  revoked_at: null | string | Date
-  revoked_by: null | string
-  country: string
+  revoked: null | {
+    at: string | Date
+    by: string
+    reason: string
+  }
 }
 
-export type RenderedEmployee = EmployedHealthWorker & {
+export type RenderedEmployee = RenderedHealthWorker & {
   organization_id: string
   employee_id: string
-  profession: Profession | null
   is_admin: boolean
-  specialty: string | null
+  role: string
   href: string
-  licence: null | RenderedLicence
 }
 
 export type MessageTargetEntities = {
   organization: RenderedOrganization
   organization_category: string
   employee: RenderedEmployee
-  profession: Profession | 'admin'
+  profession: string | 'admin'
   locality: string
   administrative_area_level_1: string
   administrative_area_level_2: string
@@ -3115,7 +2902,7 @@ export type RenderedBriefHistoryRelativeToHealthWorker =
     pertaining_to_key: CommonConditionKey
   }
 
-export type AppUser = Profession | 'admin' | 'regulator'
+export type AppUser = string | 'admin' | 'regulator'
 
 export type Alert = {
   message: string

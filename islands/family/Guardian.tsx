@@ -85,7 +85,7 @@ export default function Guardian({
         </FormRow>
         {
           /* <FormRow>
-          <TextInput name={`${name}.profession`} label='Profession' />
+          <TextInput name={`${name}.role`} label='Profession' />
           <TextInput name={`${name}.work_location`} label='Work Location' />
           <ReligionSelect />
         </FormRow> */

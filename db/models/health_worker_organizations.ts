@@ -3,6 +3,7 @@ import { organizations } from './organizations.ts'
 import { jsonArrayFrom, orderByArrayPosition } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 import { DEPARTMENTS } from '../../shared/departments.ts'
+import { health_worker_licences } from './health_worker_licences.ts'
 
 export const health_worker_organizations = base({
   top_level_table: 'organizations',
@@ -15,8 +16,6 @@ export const health_worker_organizations = base({
       )
       .select((eb_employment) => [
         'employment.id as employment_id',
-        'profession',
-        'specialty',
         'is_admin',
         jsonArrayFrom(
           eb_employment.selectFrom('department_employment')
@@ -44,6 +43,12 @@ export const health_worker_organizations = base({
               'desc',
             ),
         ).as('in_departments'),
+
+        jsonArrayFrom(
+          health_worker_licences.baseQuery(trx, { status: 'active' })
+            .where('health_worker_licence_numbers.health_worker_id', '=', eb_employment.ref('employment.health_worker_id'))
+            .where('regulatory_agencies.country', '=', eb_employment.ref('organizations.country')),
+        ).as('active_licences'),
       ]).orderBy(
         // TODO order by most recently interacted with?
         (eb_organization_order) =>

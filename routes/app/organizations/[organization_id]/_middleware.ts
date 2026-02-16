@@ -35,7 +35,7 @@ export async function handler(
     ...health_worker,
     organization_id: organization.id,
     employee_id: organization_employment.employment_id,
-    profession: organization_employment.profession,
+    profession: organization_employment.role,
     is_admin: organization_employment.is_admin,
     specialty: organization_employment.specialty,
     href: `/app/organizations/${organization.id}/employees/${health_worker.id}`,

@@ -43,7 +43,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
                 {employee.name}
               </dt>
               <dt className='text-sm font-sm leading-6 text-gray-400'>
-                {employee.professions.join(', ')}
+                {employee.roles.join(', ')}
               </dt>
             </div>
             <HealthWorkerDetailedCard

@@ -1,4 +1,4 @@
-import type { EmployedHealthWorker, Maybe, RenderedEmployee, TrxOrDb } from '../../types.ts'
+import type { Maybe, RenderedEmployee, RenderedHealthWorker, TrxOrDb } from '../../types.ts'
 import { health_workers } from './health_workers.ts'
 import { base, identity } from './_base.ts'
 import { Workflow } from '../../shared/workflow.ts'
@@ -7,8 +7,8 @@ import { exists } from '../../util/exists.ts'
 import matching from '../../util/matching.ts'
 import { HealthWorkerWithGoogleTokens } from './health_worker_google_tokens.ts'
 import { Profession } from '../../db.d.ts'
-import { health_worker_licences } from './health_worker_licences.ts'
-import { concat, jsonObjectFrom } from '../helpers.ts'
+
+import { concat } from '../helpers.ts'
 import { HealthWorkerSearch } from './health_workers_base.ts'
 
 export type EmployeesSearch = HealthWorkerSearch & {
@@ -26,7 +26,7 @@ export type AddEmployeeOpts = {
 }
 
 function fromHealthWorker(
-  health_worker: EmployedHealthWorker,
+  health_worker: RenderedHealthWorker,
   organization_id: string | undefined,
 ): RenderedEmployee {
   const organization_employment = organization_id
@@ -38,7 +38,7 @@ function fromHealthWorker(
     ...health_worker,
     organization_id: organization_employment.id,
     employee_id: organization_employment.employment_id,
-    profession: organization_employment.profession,
+    profession: organization_employment.role,
     is_admin: organization_employment.is_admin,
     specialty: organization_employment.specialty,
     href: `/app/organizations/${organization_employment.id}/employees/${health_worker.id}`,
@@ -61,18 +61,9 @@ export const employees = base({
       .select((eb) => [
         'employment.id as employee_id',
         'employment.organization_id',
-        'employment.profession',
-        'employment.specialty',
+        'employment.role',
         'employment.is_admin',
         concat('/app/organizations/', eb.ref('employment.organization_id'), '/employees/', eb.ref('employment.health_worker_id')).as('href'),
-        jsonObjectFrom(
-          health_worker_licences.baseQuery(trx, {
-            status: opts.licence_status || 'all',
-          })
-            .where('health_worker_id', '=', eb.ref('health_workers.id'))
-            .where('profession', '=', eb.ref('employment.profession'))
-            .where('country', '=', eb.selectFrom('organizations').select('country').where('organizations.id', '=', eb.ref('employment.organization_id'))),
-        ).as('licence'),
       ])
 
     if (opts.can_perform_workflow) {
