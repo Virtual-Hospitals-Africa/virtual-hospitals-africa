@@ -1,5 +1,5 @@
+import type { Kysely } from 'kysely'
 import type { DB } from '../../db.d.ts'
-import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
@@ -14,18 +14,10 @@ export async function up(db: Kysely<DB>) {
           (col) => col.notNull().references('countries.iso_3166_2'),
         )
         .addColumn('name', 'varchar(255)', (col) => col.notNull())
-        .addColumn('acronym', 'varchar(255)', (col) => col.notNull())
-    // .addCheckConstraint(
-    //   'organization_with_address_has_location',
-    //   sql`
-    //   (address_id IS NULL) = (location IS NULL)
-    // `,
-    // ),
+        .addColumn('acronym', 'varchar(255)', (col) => col.notNull()),
   )
 }
 
-// deno-lint-ignore no-explicit-any
-export async function down(db: Kysely<any>) {
-  await db.schema.dropTable('organization_departments').execute()
-  await db.schema.dropTable('organizations').execute()
+export async function down(db: Kysely<DB>) {
+  await db.schema.dropTable('regulatory_agencies').execute()
 }

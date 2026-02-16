@@ -12,8 +12,6 @@ export type ChatbotName = 'patient' | 'pharmacist'
 
 export type Comparator = '<' | '<=' | '=' | '>' | '>='
 
-export type DoctorReviewStep = 'clinical_notes' | 'diagnosis' | 'orders' | 'prescriptions' | 'referral' | 'revert'
-
 export type DurationUnits = 'days' | 'indefinitely' | 'months' | 'weeks' | 'years'
 
 export type EmergencyContactRelationship = 'Child' | 'Friend' | 'Guardian' | 'Other' | 'Parent' | 'Sibling' | 'Spouse'
@@ -113,8 +111,6 @@ export type MessageTargetType =
 export type Numeric = ColumnType<string, number | string, number | string>
 
 export type PatientCohabitation = 'Father' | 'Foster Parent' | 'Grandparent(s)' | 'Mother' | 'Orphanage' | 'Other Relative' | 'Sibling' | 'Uncle or Aunt'
-
-export type Profession = 'doctor' | 'nurse' | 'pharmacist' | 'receptionist'
 
 export type Sex = 'female' | 'male' | 'other' | 'prefer not to say'
 
@@ -225,20 +221,20 @@ export interface AgeMeasurementRequirements {
   updated_at: Generated<Timestamp>
 }
 
+export interface AppointmentEmployees {
+  appointment_id: string
+  confirmed: Generated<boolean>
+  created_at: Generated<Timestamp>
+  employee_id: string
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
 export interface AppointmentMedia {
   appointment_id: string
   created_at: Generated<Timestamp>
   id: Generated<string>
   media_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface AppointmentProviders {
-  appointment_id: string
-  confirmed: Generated<boolean>
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  provider_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -344,56 +340,12 @@ export interface Devices {
   updated_at: Generated<Timestamp>
 }
 
-export interface DoctorReview {
-  order: Int8
-  step: DoctorReviewStep
-}
-
-export interface DoctorReviewRequests {
-  created_at: Generated<Timestamp>
-  doctor_id: string | null
-  id: Generated<string>
-  organization_id: string | null
-  patient_encounter_id: string
-  patient_id: string
-  requested_by: string
-  requester_notes: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface DoctorReviews {
-  completed_at: Timestamp | null
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_encounter_id: string
-  patient_id: string
-  requested_by: string
-  requester_notes: string | null
-  reviewer_id: string
-  reviewer_notes: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface DoctorReviewSteps {
-  created_at: Generated<Timestamp>
-  doctor_review_id: string
-  id: Generated<string>
-  step: DoctorReviewStep
-  updated_at: Generated<Timestamp>
-}
-
-export interface Doctors {
-  id: string
-}
-
 export interface Employment {
   created_at: Generated<Timestamp>
   health_worker_id: string
   id: Generated<string>
   is_admin: boolean
   organization_id: string
-  profession: Profession | null
-  specialty: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -494,13 +446,23 @@ export interface HealthWorkerAccounts {
   id: string
 }
 
-export interface HealthWorkerInvitees {
+export interface HealthWorkerDemographics {
+  address_id: string | null
   created_at: Generated<Timestamp>
-  email: string
+  gender: string
+  health_worker_id: string
   id: Generated<string>
-  is_admin: boolean
-  organization_id: string
-  profession: Profession | null
+  mobile_phone_number: string | null
+  sex: Sex
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerLicenceNumbers {
+  created_at: Generated<Timestamp>
+  health_worker_id: string
+  id: Generated<string>
+  licence_number: string
+  regulatory_agency_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -508,26 +470,22 @@ export interface HealthWorkerLicenceRevocations {
   created_at: Generated<Timestamp>
   health_worker_licence_id: string
   id: Generated<string>
+  reason: string
   revoked_at: Generated<Timestamp>
   revoked_by: string
   updated_at: Generated<Timestamp>
 }
 
 export interface HealthWorkerLicences {
-  additional_data: Json | null
-  address_id: string | null
-  country: string
   created_at: Generated<Timestamp>
   expiry_date: Timestamp
-  gender: string
-  health_worker_id: string
+  health_worker_licence_number_id: string
   id: Generated<string>
-  licence_number: string
   media_id: string | null
-  mobile_phone_number: string | null
-  name: string
-  profession: Profession
-  sex: Sex
+  profession: string
+  specialty: string | null
+  start_date: Timestamp
+  subspecialty: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -819,14 +777,6 @@ export interface MessageThreadSubjects {
   updated_at: Generated<Timestamp>
 }
 
-export interface Nurses {
-  id: string
-}
-
-export interface OrganizationAdmins {
-  id: string
-}
-
 export interface OrganizationConsumables {
   consumable_id: string
   created_at: Generated<Timestamp>
@@ -903,10 +853,10 @@ export interface PatientAppointmentOfferedTimes {
   created_at: Generated<Timestamp>
   declined: Generated<boolean>
   duration_minutes: number
+  employee_id: string
   end: Timestamp
   id: Generated<string>
   patient_appointment_request_id: string
-  provider_id: string
   start: Timestamp
   updated_at: Generated<Timestamp>
 }
@@ -1234,7 +1184,6 @@ export interface Patients {
   primary_doctor_id: string | null
   sex: Sex | null
   surname: string | null
-  unregistered_primary_doctor_name: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1351,10 +1300,6 @@ export interface PharmacistChatbotUserWhatsappMessagesReceived {
   whatsapp_message_received_id: string
 }
 
-export interface Pharmacists {
-  id: string
-}
-
 export interface Procurement {
   batch_number: string | null
   consumable_id: string
@@ -1378,19 +1323,20 @@ export interface Procurers {
   updated_at: Generated<Timestamp>
 }
 
-export interface Providers {
-  id: string
-}
-
-export interface Receptionists {
-  id: string
-}
-
 export interface Regulators {
   avatar_media_id: string | null
-  country: string
   created_at: Generated<Timestamp>
   email: string
+  id: Generated<string>
+  name: string
+  regulatory_agency_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface RegulatoryAgencies {
+  acronym: string
+  country: string
+  created_at: Generated<Timestamp>
   id: Generated<string>
   name: string
   updated_at: Generated<Timestamp>
@@ -1753,8 +1699,8 @@ export interface WorkflowSteps {
 export interface DB {
   addresses: Addresses
   age_measurement_requirements: AgeMeasurementRequirements
+  appointment_employees: AppointmentEmployees
   appointment_media: AppointmentMedia
-  appointment_providers: AppointmentProviders
   appointments: Appointments
   condition_icd10_codes: ConditionIcd10Codes
   condition_measurement_requirements: ConditionMeasurementRequirements
@@ -1766,11 +1712,6 @@ export interface DB {
   departments: Departments
   device_capabilities: DeviceCapabilities
   devices: Devices
-  doctor_review: DoctorReview
-  doctor_review_requests: DoctorReviewRequests
-  doctor_review_steps: DoctorReviewSteps
-  doctor_reviews: DoctorReviews
-  doctors: Doctors
   employment: Employment
   employment_calendars: EmploymentCalendars
   employment_presence: EmploymentPresence
@@ -1782,7 +1723,8 @@ export interface DB {
   google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
   health_worker_accounts: HealthWorkerAccounts
-  health_worker_invitees: HealthWorkerInvitees
+  health_worker_demographics: HealthWorkerDemographics
+  health_worker_licence_numbers: HealthWorkerLicenceNumbers
   health_worker_licence_revocations: HealthWorkerLicenceRevocations
   health_worker_licences: HealthWorkerLicences
   health_worker_web_notifications: HealthWorkerWebNotifications
@@ -1819,8 +1761,6 @@ export interface DB {
   message_thread_subjects: MessageThreadSubjects
   message_threads: MessageThreads
   messages: Messages
-  nurses: Nurses
-  organization_admins: OrganizationAdmins
   organization_consumables: OrganizationConsumables
   organization_department_rooms: OrganizationDepartmentRooms
   organization_departments: OrganizationDepartments
@@ -1877,12 +1817,10 @@ export interface DB {
   pg_stat_statements_info: PgStatStatementsInfo
   pharmacist_chatbot_user_whatsapp_messages_received: PharmacistChatbotUserWhatsappMessagesReceived
   pharmacist_chatbot_users: PharmacistChatbotUsers
-  pharmacists: Pharmacists
   procurement: Procurement
   procurers: Procurers
-  providers: Providers
-  receptionists: Receptionists
   regulators: Regulators
+  regulatory_agencies: RegulatoryAgencies
   sats_priority_levels: SatsPriorityLevels
   sats_triage_assessment_options: SatsTriageAssessmentOptions
   sats_triage_assessments: SatsTriageAssessments

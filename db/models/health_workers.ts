@@ -1,19 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import type { EmployedHealthWorker, IdSelection, PossiblyEmployedHealthWorker, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import { NameInputs } from '../../util/asNames.ts'
 import { base, identity } from './_base.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { health_workers_base, HealthWorkerSearch } from './health_workers_base.ts'
 import { health_worker_organizations } from './health_worker_organizations.ts'
-
-export type HealthWorkerUpsert =
-  & {
-    id?: string
-    avatar_media_id?: string | null
-    email: string
-  }
-  & NameInputs
 
 export const health_workers = base({
   top_level_table: 'health_workers',

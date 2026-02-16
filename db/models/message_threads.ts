@@ -25,6 +25,7 @@ import zip from '../../util/zip.ts'
 
 function baseQuery(
   trx: TrxOrDb,
+  opts: { thread_id?: string | string[] | IdSelection; message_id?: string | string[] | IdSelection; employee_ids?: string[] },
 ) {
   return trx
     .selectFrom('message_threads')
@@ -49,6 +50,48 @@ function baseQuery(
           ),
       ).as('subjects'),
     ])
+    .$if(!!opts.thread_id, (qb) =>
+      qb.where(
+        'message_threads.id',
+        'in',
+        isString(opts.thread_id) ? [opts.thread_id!] : opts.thread_id!,
+      ))
+    .$if(!!opts.message_id, (qb) =>
+      qb.where(
+        'message_threads.id',
+        'in',
+        trx.selectFrom('messages')
+          .where(
+            'messages.id',
+            'in',
+            isString(opts.message_id) ? [opts.message_id!] : opts.message_id!,
+          )
+          .select('thread_id')
+          .distinct(),
+      ))
+    .$if(!!opts.employee_ids, (qb) => {
+      const distinct_thread_ids_of_health_worker = trx.selectFrom(
+        'message_thread_participants',
+      ).where(
+        (eb) =>
+          eb.or(
+            opts.employee_ids!.map((employee_id) =>
+              eb.and([
+                eb('message_thread_participants.table_name', '=', 'employment'),
+                eb('message_thread_participants.row_id', '=', employee_id),
+              ])
+            ),
+          ),
+      )
+        .select('message_thread_participants.thread_id')
+        .distinct()
+
+      return qb.where(
+        'message_threads.id',
+        'in',
+        distinct_thread_ids_of_health_worker,
+      )
+    })
 }
 
 type IntermediateMessageThread = QueryResult<typeof baseQuery>
@@ -98,61 +141,6 @@ export const message_threads = base({
   top_level_table: 'message_threads' as const,
   baseQuery,
   formatResult: (x: IntermediateMessageThread): IntermediateMessageThread => x,
-  handleSearch(
-    qb,
-    opts: {
-      thread_id?: string | string[] | IdSelection
-      message_id?: string | string[] | IdSelection
-      employee_ids?: string[]
-    },
-    trx,
-  ) {
-    if (opts.thread_id) {
-      qb = qb.where(
-        'message_threads.id',
-        'in',
-        isString(opts.thread_id) ? [opts.thread_id] : opts.thread_id,
-      )
-    }
-    if (opts.message_id) {
-      qb = qb.where(
-        'message_threads.id',
-        'in',
-        trx.selectFrom('messages')
-          .where(
-            'messages.id',
-            'in',
-            isString(opts.message_id) ? [opts.message_id] : opts.message_id,
-          )
-          .select('thread_id')
-          .distinct(),
-      )
-    }
-    if (opts.employee_ids) {
-      const distinct_thread_ids_of_health_worker = trx.selectFrom(
-        'message_thread_participants',
-      ).where(
-        (eb) =>
-          eb.or(
-            opts.employee_ids!.map((employee_id) =>
-              eb.and([
-                eb('message_thread_participants.table_name', '=', 'employment'),
-                eb('message_thread_participants.row_id', '=', employee_id),
-              ])
-            ),
-          ),
-      )
-        .select('message_thread_participants.thread_id')
-        .distinct()
-
-      qb = qb.where(
-        'message_threads.id',
-        'in',
-        distinct_thread_ids_of_health_worker,
-      )
-    }
-    return qb
-  },
   async create(
     trx: TrxOrDb,
     { sender, recipient, subjects, initial_message }: {

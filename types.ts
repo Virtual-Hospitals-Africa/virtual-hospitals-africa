@@ -286,7 +286,6 @@ export type Patient = {
   nearest_organization_id: Maybe<string>
   completed_registration: boolean
   address_id: Maybe<string>
-  unregistered_primary_doctor_name: Maybe<string>
 }
 
 export type RenderedPatient = {

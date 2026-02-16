@@ -5,6 +5,7 @@ export default base({
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery: (
     trx: TrxOrDb,
+    opts: { search?: string },
   ) =>
     trx
       .selectFrom('snomed_inferred_canonical_name_and_category')
@@ -15,20 +16,7 @@ export default base({
         'snomed_inferred_canonical_name_and_category.category',
         '=',
         'finding',
-      ),
-  formatResult: (x) => x,
-  handleSearch(
-    qb,
-    opts: { search?: string },
-  ) {
-    if (opts.search) {
-      qb = qb.where(
-        'snomed_inferred_canonical_name_and_category.name',
-        'ilike',
-        `%${opts.search}%`,
       )
-    }
-
-    return qb
-  },
+      .$if(!!opts.search, (qb) => qb.where('snomed_inferred_canonical_name_and_category.name', 'ilike', `%${opts.search}%`)),
+  formatResult: (x) => x,
 })

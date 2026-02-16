@@ -53,9 +53,8 @@ export async function up(db: Kysely<DB>) {
         .addColumn(
           'primary_doctor_id',
           'uuid',
-          (col) => col.references('doctors.id'),
+          (col) => col.references('health_workers.id').onDelete('cascade'),
         )
-        .addColumn('unregistered_primary_doctor_name', 'varchar(255)')
         .addUniqueConstraint('patient_national_id_number', [
           'national_id_number',
         ])
@@ -69,14 +68,6 @@ export async function up(db: Kysely<DB>) {
            date_of_birth IS NOT NULL AND 
            sex IS NOT NULL AND 
            gender IS NOT NULL)
-        )`,
-        )
-        .addCheckConstraint(
-          'one_primary_doctor',
-          sql`(
-          (primary_doctor_id IS NOT NULL AND unregistered_primary_doctor_name IS NULL) OR
-          (primary_doctor_id IS NULL AND unregistered_primary_doctor_name IS NOT NULL) OR
-          (primary_doctor_id IS NULL AND unregistered_primary_doctor_name IS NULL)
         )`,
         )
         .addCheckConstraint(
@@ -101,27 +92,9 @@ export async function up(db: Kysely<DB>) {
     .execute()
 
   await db.schema
-    .createIndex('idx_patients_avatar_media_id')
-    .on('patients')
-    .column('avatar_media_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_patients_address_id')
-    .on('patients')
-    .column('address_id')
-    .execute()
-
-  await db.schema
     .createIndex('idx_patients_nearest_organization_id')
     .on('patients')
     .column('nearest_organization_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_patients_preferred_language_code_iso_639_2_b')
-    .on('patients')
-    .column('preferred_language_code_iso_639_2_b')
     .execute()
 
   await db.schema

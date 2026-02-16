@@ -40,19 +40,19 @@ export const country_health_workers = base({
   async insert(
     trx: TrxOrDb,
     { licences, sex, gender, country, ...health_worker }: {
-      first_names: string;
-      surname: string;
-      preferred_name: string;
-      date_of_birth: string;
-      sex: "male" | "female" | "other" | "prefer not to say";
-      gender: string;
-      country: string;
+      first_names: string
+      surname: string
+      preferred_name: string
+      date_of_birth: string
+      sex: 'male' | 'female' | 'other' | 'prefer not to say'
+      gender: string
+      country: string
       licences: {
-        profession: "doctor" | "nurse" | "pharmacist" | "receptionist";
-        licence_number: string;
-        expiry_date: string;
-      }[];
-    }
+        profession: 'doctor' | 'nurse' | 'pharmacist' | 'receptionist'
+        licence_number: string
+        expiry_date: string
+      }[]
+    },
   ) {
     const names = asNames(health_worker)
     const health_worker_id = await health_workers.insertOne(trx, {
@@ -61,13 +61,15 @@ export const country_health_workers = base({
     })
     await trx.insertInto('health_worker_licences')
       .values(
-        licences.map(licence => ({
+        licences.map((licence) => ({
           ...licence,
-          sex, gender, country,
+          sex,
+          gender,
+          country,
           health_worker_id,
-          name: names.name
-        }))
+          name: names.name,
+        })),
       )
       .execute()
-  }
+  },
 })

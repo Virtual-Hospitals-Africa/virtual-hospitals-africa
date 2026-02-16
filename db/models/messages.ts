@@ -6,6 +6,7 @@ import isString from '../../util/isString.ts'
 
 function baseQuery(
   trx: TrxOrDb,
+  opts: { thread_id?: string | string[] | IdSelection },
 ) {
   return trx
     .selectFrom('messages')
@@ -21,6 +22,12 @@ function baseQuery(
           ]),
       ).as('reads')
     )
+    .$if(!!opts.thread_id, (qb) =>
+      qb.where(
+        'messages.thread_id',
+        isString(opts.thread_id) ? '=' : 'in',
+        opts.thread_id!,
+      ))
 }
 
 export type IntermediateMessage = QueryResult<typeof baseQuery>
@@ -29,19 +36,6 @@ export const messages = base({
   top_level_table: 'messages' as const,
   baseQuery,
   formatResult: (x: IntermediateMessage): IntermediateMessage => x,
-  handleSearch(
-    qb,
-    opts: { thread_id?: string | string[] | IdSelection },
-  ) {
-    if (opts.thread_id) {
-      qb = qb.where(
-        'messages.thread_id',
-        isString(opts.thread_id) ? '=' : 'in',
-        opts.thread_id,
-      )
-    }
-    return qb
-  },
   async send(
     trx: TrxOrDb,
     { thread_id, sender_participant_id, body }: {

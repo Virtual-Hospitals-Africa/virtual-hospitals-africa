@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import type { DeleteResult, UpdateResult } from 'kysely'
 import type { GoogleTokens, TrxOrDb } from '../../types.ts'
-import type { HealthWorkerUpsert } from './health_workers.ts'
 import pick from '../../util/pick.ts'
 import { health_workers } from './health_workers.ts'
 import { google_tokens } from './google_tokens.ts'
@@ -21,14 +20,14 @@ async function insertWithGoogleCredentials(
     expires_in: _expires_in,
     ...health_worker_details
   }:
-    & HealthWorkerUpsert
     & NameInputs
     & GoogleTokens
     & {
+      avatar_media_id?: string | null
+      email: string
       expires_in?: string | number | Date
     },
 ) {
-  assert(!health_worker_details.id)
   const id = await health_workers.insertOne(
     trx,
     {

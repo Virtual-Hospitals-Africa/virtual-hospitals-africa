@@ -17,9 +17,6 @@ export const patient_encounter_employees = base({
         'patient_encounter_employees.seen_at',
       ])
   },
-  handleSearch(qb, _search_terms: { foo?: string }) {
-    return qb
-  },
   formatResult: identity,
   seenPatientEncounterEmployeeId(
     encounter: RenderedPatientEncounter,

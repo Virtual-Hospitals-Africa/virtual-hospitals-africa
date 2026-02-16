@@ -1,5 +1,5 @@
 import { InsertObject, sql, UpdateObject } from 'kysely'
-import { Coordinates, IdSelection, InsertShapeLiteral, Maybe, RenderedPatient, RenderedPatientCompletedRegistration, TrxOrDb } from '../../types.ts'
+import { Coordinates, IdSelection, InsertShapeLiteral, RenderedPatient, RenderedPatientCompletedRegistration, TrxOrDb } from '../../types.ts'
 import { isoDate, jsonBuildNullableObject, literalLocation, longFormattedDate } from '../helpers.ts'
 import type { DB } from '../../db.d.ts'
 import { base } from './_base.ts'
@@ -33,7 +33,7 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDb, opts: { search?: string | null; has_name?: boolean; include_incomplete_registration?: boolean }) {
   return trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
@@ -84,6 +84,9 @@ function baseQuery(trx: TrxOrDb) {
       'name',
       'asc',
     )
+    .$if(!!opts.has_name, (qb) => qb.where('patients.name', 'is not', null))
+    .$if(!!opts.search, (qb) => qb.where('patients.name', 'ilike', `%${opts.search}%`))
+    .$if(!opts.include_incomplete_registration, (qb) => qb.where('patients.completed_registration', '=', true))
 }
 
 type PatientUpsert =
@@ -97,29 +100,6 @@ export const patients = base({
   top_level_table: 'patients',
   baseQuery,
   formatResult: (x: RenderedPatient): RenderedPatient => x,
-  handleSearch(
-    qb,
-    { search, has_name, include_incomplete_registration }: {
-      search?: Maybe<string>
-      has_name?: boolean
-      include_incomplete_registration?: boolean
-    },
-  ) {
-    if (has_name) {
-      qb = qb.where('patients.name', 'is not', null)
-    }
-    if (search) {
-      qb = qb.where('patients.name', 'ilike', `%${search}%`)
-    }
-    if (!include_incomplete_registration) {
-      qb = qb.where(
-        'patients.completed_registration',
-        '=',
-        true,
-      )
-    }
-    return qb
-  },
   async insert(
     trx: TrxOrDb,
     { conversation_state, country, location, ...to_insert }:

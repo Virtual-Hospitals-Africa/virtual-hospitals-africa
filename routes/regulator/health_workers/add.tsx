@@ -24,7 +24,7 @@ export const handler = postHandler(
       profession,
       licence_number: z.string(),
       expiry_date: z.string().date(),
-    }).array()
+    }).array(),
   }),
   async (ctx, form_values) => {
     const country = SERVER_COUNTRY

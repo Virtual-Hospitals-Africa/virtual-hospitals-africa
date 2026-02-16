@@ -66,7 +66,16 @@ type EncounterExistingOrToCreate = {
   }
 }
 
-function baseQuery(trx: TrxOrDb) {
+type EncounterSearch = {
+  is_open?: boolean
+  is_closed?: boolean
+  organization_id?: string
+  patient_id?: string
+  // ever_seen_health_worker_id?: string
+  presence_health_worker_id?: string | IdSelection
+}
+
+function baseQuery(trx: TrxOrDb, opts: EncounterSearch) {
   return trx
     .selectFrom('patient_encounters')
     .select((eb_encounters) => [
@@ -292,6 +301,24 @@ function baseQuery(trx: TrxOrDb) {
           ),
       ).as('all_employees_seen'),
     ])
+    .$if(!!opts.is_open, (qb) => qb.where('patient_encounters.closed_at', 'is', null))
+    .$if(!!opts.is_closed, (qb) => qb.where('patient_encounters.closed_at', 'is not', null))
+    .$if(!!opts.organization_id, (qb) => qb.where('patient_encounters.organization_id', '=', opts.organization_id!))
+    .$if(!!opts.patient_id, (qb) => qb.where('patient_encounters.patient_id', '=', opts.patient_id!))
+    .$if(!!opts.presence_health_worker_id, (qb) =>
+      qb.innerJoin(
+        'employment_presence',
+        'employment_presence.with_patient_id',
+        'patient_encounters.patient_id',
+      ).innerJoin(
+        'employment',
+        'employment.id',
+        'employment_presence.id',
+      ).where(
+        'employment.health_worker_id',
+        '=',
+        opts.presence_health_worker_id!,
+      ))
 }
 
 type IntermediatePatientEncounterResult = QueryResult<typeof baseQuery>
@@ -454,15 +481,6 @@ function asStatus(
   return { open: true, patient_presence: asPatientPresence(patient_presence) }
 }
 
-type EncounterSearch = {
-  is_open?: boolean
-  is_closed?: boolean
-  organization_id?: string
-  patient_id?: string
-  // ever_seen_health_worker_id?: string
-  presence_health_worker_id?: string | IdSelection
-}
-
 export const patient_encounters = base({
   top_level_table: 'patient_encounters',
   baseQuery,
@@ -500,51 +518,6 @@ export const patient_encounters = base({
       reason,
       ...patient_encounter,
     }
-  },
-  handleSearch(
-    qb,
-    opts: EncounterSearch,
-  ) {
-    if (opts.is_open) {
-      assert(!opts.is_closed)
-      qb = qb.where('patient_encounters.closed_at', 'is', null)
-    }
-    if (opts.is_closed) {
-      assert(!opts.is_open)
-      qb = qb.where('patient_encounters.closed_at', 'is not', null)
-    }
-    if (opts.organization_id) {
-      qb = qb.where(
-        'patient_encounters.organization_id',
-        '=',
-        opts.organization_id,
-      )
-    }
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_encounters.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.presence_health_worker_id) {
-      assert(opts.is_open)
-      qb = qb.innerJoin(
-        'employment_presence',
-        'employment_presence.with_patient_id',
-        'patient_encounters.patient_id',
-      ).innerJoin(
-        'employment',
-        'employment.id',
-        'employment_presence.id',
-      ).where(
-        'employment.health_worker_id',
-        '=',
-        opts.presence_health_worker_id,
-      )
-    }
-
-    return qb
   },
   async insertSeekingTreatmentForRegisteredPatient(
     trx: TrxOrDb,

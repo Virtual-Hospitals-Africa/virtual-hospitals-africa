@@ -34,6 +34,7 @@ type MeasurementsInsert = {
 
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
+  opts: { search?: string; patient_id?: string | IdSelection; patient_encounter_id?: string | IdSelection; s_expression?: string },
 ) {
   return findingsBaseQuery(trx)
     .innerJoin(
@@ -41,6 +42,21 @@ export function baseQuery(
       'patient_findings.id',
       'patient_measurements.id',
     )
+    .$if(!!opts.patient_id, (qb) => qb.where('patient_records_aggregated.patient_id', '=', opts.patient_id!))
+    .$if(!!opts.patient_encounter_id, (qb) => qb.where('patient_records_aggregated.patient_encounter_id', '=', opts.patient_encounter_id!))
+    .$if(!!opts.s_expression, (qb) =>
+      qb.where(
+        'patient_records_aggregated.id',
+        'in',
+        buildExpression(
+          trx,
+          {
+            patient_id: opts.patient_id,
+            patient_encounter_id: opts.patient_encounter_id,
+          },
+          opts.s_expression!,
+        ),
+      ))
 }
 
 export const patient_measurements = base({
@@ -50,49 +66,6 @@ export const patient_measurements = base({
     const formatted = formatRecord(measurement)
     assert(isMeasurement(formatted))
     return formatted
-  },
-  handleSearch(
-    qb,
-    opts: {
-      search?: string
-      patient_id?: string | IdSelection
-      patient_encounter_id?: string | IdSelection
-      s_expression?: string
-    },
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.s_expression) {
-      assert(opts.patient_id)
-      qb = qb.where(
-        'patient_records_aggregated.id',
-        'in',
-        buildExpression(
-          trx,
-          {
-            patient_id: opts.patient_id,
-            patient_encounter_id: opts.patient_encounter_id,
-          },
-          opts.s_expression,
-        ),
-      )
-    }
-
-    return qb
   },
   insertMany(
     trx: TrxOrDb,

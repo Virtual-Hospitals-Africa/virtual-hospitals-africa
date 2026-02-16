@@ -72,17 +72,18 @@ export const health_worker_licences = base({
     },
   ) {
     return trx.insertInto('health_worker_licence_revocations')
-          .columns([
-            'health_worker_licence_id',
-            'revoked_by',
+      .columns([
+        'health_worker_licence_id',
+        'revoked_by',
+      ])
+      .expression(() =>
+        health_worker_licences.baseQuery(trx, { ...licence, status: 'active' })
+          .clearSelect()
+          .select([
+            'id as health_worker_licence_id',
+            literalString(revoked_by).as('revoked_by'),
           ])
-          .expression(() => 
-            health_worker_licences.clearSelect(trx, { ...licence, status: 'active' })
-              .select([
-                'id as health_worker_licence_id',
-                literalString(revoked_by).as('revoked_by')
-              ])
-            )
-          .execute()
-  }
+      )
+      .execute()
+  },
 })

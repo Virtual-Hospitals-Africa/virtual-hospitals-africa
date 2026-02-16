@@ -5,6 +5,7 @@ import type { DB } from '../../db.d.ts'
 
 function baseQuery(
   trx: TrxOrDb,
+  opts: { search: string | null; is_procedure: boolean },
 ): SelectQueryBuilder<DB, 'conditions', Condition> {
   return trx
     .selectFrom('conditions')
@@ -18,20 +19,12 @@ function baseQuery(
       'conditions.info_link_href',
       'conditions.info_link_text',
     ])
+    .$if(!!opts.search, (qb) => qb.where('name', 'ilike', `%${opts.search}%`))
+    .where('is_procedure', '=', opts.is_procedure)
 }
 
 export const conditions = base({
   top_level_table: 'conditions',
   baseQuery,
   formatResult: (x: Condition): Condition => x,
-  handleSearch(
-    qb,
-    opts: { search: string | null; is_procedure: boolean },
-  ) {
-    if (opts.search) {
-      qb = qb.where('name', 'ilike', `%${opts.search}%`)
-    }
-
-    return qb.where('is_procedure', '=', opts.is_procedure)
-  },
 })

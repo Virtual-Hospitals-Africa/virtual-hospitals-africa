@@ -24,12 +24,6 @@ import { isMeasurement } from '../../shared/vitals.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import partition from '../../util/partition.ts'
 
-export function baseQuery(
-  trx: TrxOrDbOrQueryCreator,
-) {
-  return patient_findings.baseQuery(trx)
-}
-
 type VitalsSearch = {
   patient_id: string | IdSelection
   patient_encounter_id?: string | IdSelection
@@ -39,39 +33,16 @@ type VitalsSearch = {
   not_measurements?: boolean
 }
 
-export const patient_vitals = base({
-  top_level_table: 'patient_findings',
-  baseQuery,
-  formatResult: formatRecord,
-  handleSearch(
-    qb,
-    opts: VitalsSearch,
-    trx,
-  ) {
-    assert(!opts.search, 'TODO support')
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '=',
-        opts.patient_encounter_id,
-      )
-    }
-    if (opts.excluding_patient_encounter_id) {
-      qb = qb.where(
-        'patient_records_aggregated.patient_encounter_id',
-        '!=',
-        opts.excluding_patient_encounter_id,
-      )
-    }
-    if (opts.s_expression) {
-      qb = qb.where(
+export function baseQuery(
+  trx: TrxOrDbOrQueryCreator,
+  opts: VitalsSearch,
+) {
+  return patient_findings.baseQuery(trx)
+    .$if(!!opts.patient_id, (qb) => qb.where('patient_records_aggregated.patient_id', '=', opts.patient_id!))
+    .$if(!!opts.patient_encounter_id, (qb) => qb.where('patient_records_aggregated.patient_encounter_id', '=', opts.patient_encounter_id!))
+    .$if(!!opts.excluding_patient_encounter_id, (qb) => qb.where('patient_records_aggregated.patient_encounter_id', '!=', opts.excluding_patient_encounter_id!))
+    .$if(!!opts.s_expression, (qb) =>
+      qb.where(
         'patient_records_aggregated.id',
         'in',
         buildExpression(
@@ -80,13 +51,15 @@ export const patient_vitals = base({
             patient_id: opts.patient_id,
             patient_encounter_id: opts.patient_encounter_id,
           },
-          opts.s_expression,
+          opts.s_expression!,
         ),
-      )
-    }
+      ))
+}
 
-    return qb
-  },
+export const patient_vitals = base({
+  top_level_table: 'patient_findings',
+  baseQuery,
+  formatResult: formatRecord,
   async getMostRecent(
     trx: TrxOrDb,
     {

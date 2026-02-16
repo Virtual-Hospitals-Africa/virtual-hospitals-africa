@@ -1,6 +1,6 @@
-import { sql } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
+import type { TrxOrDb } from '../../types.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
+import { concat } from '../helpers.ts'
 
 export const patient_primary_care = {
   getPrimaryDoctor(
@@ -21,18 +21,10 @@ export const patient_primary_care = {
       )
       .select((eb) => [
         eb.ref('patients.primary_doctor_id').as('id'),
-        sql<
-          string
-        >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
-          .as('name'),
+        concat('Dr. ', eb.ref('health_workers.name')).as('name'),
       ])
       .where('patients.id', '=', patient_id)
-      .where((eb) =>
-        eb.or([
-          eb('primary_doctor_id', 'is not', null),
-          eb('unregistered_primary_doctor_name', 'is not', null),
-        ])
-      )
+      .where((eb) => eb('primary_doctor_id', 'is not', null))
       .executeTakeFirst()
   },
 
@@ -84,18 +76,6 @@ export const patient_primary_care = {
       'primary_doctor_id',
       primary_doctor_id,
     ).executeTakeFirstOrThrow()
-  },
-
-  setUnregisteredPrimaryDoctor(
-    trx: TrxOrDb,
-    { patient_id, primary_doctor_name }: {
-      patient_id: string
-      primary_doctor_name: string
-    },
-  ) {
-    return trx.updateTable('patients').where('id', '=', patient_id)
-      .set('unregistered_primary_doctor_name', primary_doctor_name)
-      .executeTakeFirstOrThrow()
   },
 
   setNearestHealthFacility(

@@ -4,6 +4,7 @@ import isString from '../../util/isString.ts'
 
 function baseQuery(
   trx: TrxOrDb,
+  opts: { thread_id?: string | string[] | IdSelection; employee_ids?: string[] },
 ) {
   return trx
     .selectFrom('message_thread_participants')
@@ -12,6 +13,22 @@ function baseQuery(
       'message_thread_participants.table_name',
       'message_thread_participants.row_id',
     ])
+    .$if(!!opts.thread_id, (qb) =>
+      qb.where(
+        'message_thread_participants.thread_id',
+        'in',
+        isString(opts.thread_id) ? [opts.thread_id!] : opts.thread_id!,
+      ))
+    .$if(!!opts.employee_ids, (qb) =>
+      qb.where(
+        'message_thread_participants.table_name',
+        '=',
+        'employment',
+      ).where(
+        'row_id',
+        'in',
+        opts.employee_ids!,
+      ))
 }
 
 type IntermediateMessageThreadParticipant = QueryResult<typeof baseQuery>
@@ -22,31 +39,4 @@ export const message_thread_participants = base({
   formatResult: (
     x: IntermediateMessageThreadParticipant,
   ): IntermediateMessageThreadParticipant => x,
-  handleSearch(
-    qb,
-    opts: {
-      thread_id?: string | string[] | IdSelection
-      employee_ids?: string[]
-    },
-  ) {
-    if (opts.thread_id) {
-      qb = qb.where(
-        'message_thread_participants.thread_id',
-        'in',
-        isString(opts.thread_id) ? [opts.thread_id] : opts.thread_id,
-      )
-    }
-    if (opts.employee_ids) {
-      qb = qb.where(
-        'message_thread_participants.table_name',
-        '=',
-        'employment',
-      ).where(
-        'row_id',
-        'in',
-        opts.employee_ids,
-      )
-    }
-    return qb
-  },
 })

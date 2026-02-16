@@ -152,12 +152,6 @@ export const doctor_reviews = base({
   top_level_table: 'doctor_reviews' as const,
   baseQuery,
   formatResult: (x: RenderedDoctorReview): RenderedDoctorReview => x,
-  handleSearch(
-    _qb,
-    _opts: { search: string | null },
-  ) {
-    throw new Error('not implemented')
-  },
   getCardQuery,
   requests,
   ofHealthWorker(

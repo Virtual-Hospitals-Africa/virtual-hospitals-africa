@@ -16,35 +16,6 @@ export type QueryResult<Func extends (...args: any[]) => any> =
   ReturnType<Func> extends SelectQueryBuilder<any, any, infer Result> ? Result
     : never
 
-export type BaseModelInputBaseQueryConsumesSearch<
-  SearchTerms extends Partial<Record<string, unknown>>,
-  Tables,
-  SelectingFrom extends keyof Tables,
-  IntermediateResult,
-> = {
-  baseQuery: (
-    trx: TrxOrDb,
-    terms: SearchTerms,
-  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-  handleSearch?: never
-}
-
-export type BaseModelInputBaseQueryDoesNotConsumeSearch<
-  SearchTerms extends Partial<Record<string, unknown>>,
-  Tables,
-  SelectingFrom extends keyof Tables,
-  IntermediateResult,
-> = {
-  baseQuery: (
-    trx: TrxOrDb,
-  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-  handleSearch: (
-    qb: SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>,
-    terms: SearchTerms,
-    trx: TrxOrDb,
-  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-}
-
 export type BaseModelInput<
   SearchTerms extends Partial<Record<string, unknown>>,
   Tables,
@@ -52,30 +23,19 @@ export type BaseModelInput<
   TopLevelTable extends StandardTables,
   IntermediateResult,
   RenderedResult,
-> =
-  & {
-    top_level_table: TopLevelTable
-    formatResult: (result: IntermediateResult) => RenderedResult
-    verbose?: boolean
-    caching?: {
-      number_of_items: number
-      cache_writes?: boolean
-    }
+> = {
+  top_level_table: TopLevelTable
+  baseQuery: (
+    trx: TrxOrDb,
+    terms: SearchTerms,
+  ) => SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  formatResult: (result: IntermediateResult) => RenderedResult
+  verbose?: boolean
+  caching?: {
+    number_of_items: number
+    cache_writes?: boolean
   }
-  & (
-    | BaseModelInputBaseQueryConsumesSearch<
-      SearchTerms,
-      Tables,
-      SelectingFrom,
-      IntermediateResult
-    >
-    | BaseModelInputBaseQueryDoesNotConsumeSearch<
-      SearchTerms,
-      Tables,
-      SelectingFrom,
-      IntermediateResult
-    >
-  )
+}
 
 export function identity<T>(obj: T) {
   return obj
@@ -139,10 +99,6 @@ type BaseModel<
     trx: TrxOrDb,
     search_terms: SearchTerms,
   ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
-  clearSelect(
-    trx: TrxOrDb,
-    search_terms: SearchTerms,
-  ): SelectQueryBuilder<Tables, SelectingFrom, {}>
   findFirst(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult>
   findFirstOptional(
     trx: TrxOrDb,
@@ -253,23 +209,6 @@ export function base<
     caching,
   } = input
 
-  const base_query_consumes_search = baseQuery.length === 2
-  let handleSearch: NonNullable<typeof input.handleSearch>
-
-  if (base_query_consumes_search) {
-    assert(
-      !input.handleSearch,
-      'handleSearch must not be provided if baseQuery consumes search terms',
-    )
-    handleSearch = (qb) => qb
-  } else {
-    assert(
-      input.handleSearch,
-      'handleSearch must be provided if baseQuery does not consumes search terms',
-    )
-    handleSearch = input.handleSearch
-  }
-
   const cache_writes = !!caching?.cache_writes
   if (cache_writes) {
     assert(
@@ -329,7 +268,7 @@ export function base<
       return this.buildQuery(
         trx,
         search_terms,
-        (qb) => callback(handleSearch(qb, search_terms, trx)),
+        callback,
       )
     },
     async findAll(
@@ -528,12 +467,6 @@ export function base<
       lru.set(result.id, result as unknown as RenderedResult)
 
       return result.id
-    },
-    clearSelect(
-      trx: TrxOrDb,
-      terms: SearchTerms,
-    ) {
-      return this.searchQuery(trx, terms, (qb) => qb).clearSelect()
     },
     distinctIds(
       trx: TrxOrDb,

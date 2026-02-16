@@ -3,7 +3,7 @@ import { Button } from '../../../../../../components/library/Button.tsx'
 import Form from '../../../../../../components/library/Form.tsx'
 import { LoggedInRegulator } from '../../../../../../types.ts'
 import { assertOrRedirect } from '../../../../../../util/assertOr.ts'
-import { getRequiredUUIDParam, getRequiredParam } from '../../../../../../util/getParam.ts'
+import { getRequiredParam, getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { RegulatorHomePageLayout } from '../../../../_middleware.tsx'
 import { health_worker_licences } from '../../../../../../db/models/health_worker_licences.ts'
@@ -26,9 +26,8 @@ export const handler = postHandler(
     })
 
     return redirect(`/regulator/health_workers?success=Licence+revoked`)
-  }
+  },
 )
-
 
 export default RegulatorHomePageLayout(
   'Revoke Licence',
@@ -42,14 +41,14 @@ export default RegulatorHomePageLayout(
 
     const matching_licence = health_worker.licences.find(matching({ profession }))
 
-    assertOrRedirect(matching_licence, 
-      warning(`${health_worker.name} is not licensed as a ${profession}`, `/regulator/health_workers?warning=${health_worker.name}`)
+    assertOrRedirect(
+      matching_licence,
+      warning(`${health_worker.name} is not licensed as a ${profession}`, `/regulator/health_workers?warning=${health_worker.name}`),
     )
 
     return (
       <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-        Revoke {health_worker.first_names} {health_worker.surname} as a {profession}?
-        Licence number: {matching_licence.licence_number}
+        Revoke {health_worker.first_names} {health_worker.surname} as a {profession}? Licence number: {matching_licence.licence_number}
         <Form method='POST'>
           <Button type='submit'>Revoke</Button>
         </Form>

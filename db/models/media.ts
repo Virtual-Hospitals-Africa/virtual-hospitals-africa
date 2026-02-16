@@ -67,7 +67,7 @@ function insert(
     .executeTakeFirstOrThrow()
 }
 
-function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDb, opts: { media_id?: string; appointment_id?: string }) {
   return trx.selectFrom('media')
     .select([
       'media.id',
@@ -76,32 +76,16 @@ function baseQuery(trx: TrxOrDb) {
       'media.created_at',
       'media.updated_at',
     ])
+    .$if(!!opts.media_id, (qb) => qb.where('media.id', '=', opts.media_id!))
+    .$if(!!opts.appointment_id, (qb) =>
+      qb.innerJoin('appointment_media', 'appointment_media.media_id', 'media.id')
+        .where('appointment_media.appointment_id', '=', opts.appointment_id!))
 }
 
 export const media = base({
   top_level_table: 'media' as const,
   baseQuery,
   formatResult: (x) => x,
-  handleSearch(
-    qb,
-    opts: {
-      media_id?: string
-      appointment_id?: string
-    },
-  ) {
-    if (opts.media_id) {
-      qb = qb.where('media.id', '=', opts.media_id)
-    }
-    if (opts.appointment_id) {
-      qb = qb.innerJoin(
-        'appointment_media',
-        'appointment_media.media_id',
-        'media.id',
-      )
-        .where('appointment_media.appointment_id', '=', opts.appointment_id)
-    }
-    return qb
-  },
   insertSpeech,
   insertSpeechTranscription,
   insert,

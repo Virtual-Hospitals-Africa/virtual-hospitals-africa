@@ -5,6 +5,7 @@ export default base({
   top_level_table: 'consumables',
   baseQuery: (
     trx: TrxOrDb,
+    opts: { search: string | null },
   ) =>
     trx
       .selectFrom('consumables')
@@ -18,16 +19,7 @@ export default base({
       .select([
         'consumables.id',
         'consumables.name',
-      ]),
+      ])
+      .$if(!!opts.search, (qb) => qb.where('consumables.name', 'ilike', `%${opts.search}%`)),
   formatResult: (x): RenderedConsumable => x,
-  handleSearch(
-    qb,
-    opts: { search: string | null },
-  ) {
-    if (opts.search) {
-      qb = qb.where('consumables.name', 'ilike', `%${opts.search}%`)
-    }
-
-    return qb
-  },
 })

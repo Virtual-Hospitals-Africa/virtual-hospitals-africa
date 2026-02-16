@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { GoogleTokens, IdSelection, TrxOrDb } from '../../types.ts'
-import { base, simpleBaseQuery } from './_base.ts'
+import { base } from './_base.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expires_in_an_hour_sql = sql<
@@ -9,7 +9,10 @@ const expires_in_an_hour_sql = sql<
 
 export type EntityType = 'health_worker' | 'regulator'
 
-const baseQuery = simpleBaseQuery('google_tokens' as const)
+function baseQuery(trx: TrxOrDb, opts: { entity_type?: EntityType }) {
+  return trx.selectFrom('google_tokens').selectAll()
+    .$if(!!opts.entity_type, (qb) => qb.where('entity_type', '=', opts.entity_type!))
+}
 
 export const google_tokens = base({
   top_level_table: 'google_tokens' as const,
@@ -21,12 +24,6 @@ export const google_tokens = base({
     entity_id: string
     entity_type: EntityType
   } => x,
-  handleSearch(qb, search_terms: { entity_type?: EntityType }) {
-    if (search_terms.entity_type) {
-      return qb.where('entity_type', '=', search_terms.entity_type)
-    }
-    return qb
-  },
 
   async upsert(
     trx: TrxOrDb,
