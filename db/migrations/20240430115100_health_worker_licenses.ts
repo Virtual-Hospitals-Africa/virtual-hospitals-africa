@@ -11,18 +11,17 @@ export async function up(db: Kysely<DB>) {
       .addColumn('profession', sql`profession`, (col) => col.notNull())
       .addColumn('licence_number', 'varchar(255)', (col) => col.notNull())
       .addColumn('name', 'varchar(255)', (col) => col.notNull())
-      .addColumn('expiry_date', 'date', (col) => col.notNull())
       .addColumn('address_id', 'uuid', (col) => col.references('addresses.id').onDelete('cascade'))
       .addColumn('mobile_phone_number', 'varchar(255)')
       .addColumn('sex', sql`sex`, (col) => col.notNull())
       .addColumn('gender', 'varchar(255)', (col) => col.notNull())
+      .addColumn('expiry_date', 'date', (col) => col.notNull())
       .addColumn('media_id', 'uuid', (col) => col.references('media.id').onDelete('cascade'))
-      .addColumn('additional_data', 'jsonb')
       .addUniqueConstraint('unique_licence_number_per_country_profession', ['country', 'profession', 'licence_number']))
 
   await createStandardTable(db, 'health_worker_licence_revocations', (qb) =>
     qb
-      .addColumn('health_worker_license_id', 'uuid', (col) => col.notNull().references('health_worker_licences.id').onDelete('cascade'))
+      .addColumn('health_worker_licence_id', 'uuid', (col) => col.notNull().references('health_worker_licences.id').onDelete('cascade'))
       .addColumn('revoked_at', 'timestamp', (col) => col.notNull().defaultTo(now))
       .addColumn(
         'revoked_by',

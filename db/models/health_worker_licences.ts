@@ -1,6 +1,6 @@
 import type { Profession } from '../../db.d.ts'
 import type { Maybe, RenderedLicence, TrxOrDb } from '../../types.ts'
-import { jsonObjectFrom, now } from '../helpers.ts'
+import { jsonObjectFrom, literalString, now } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 import { addresses } from './addresses.ts'
 
@@ -13,11 +13,12 @@ export const health_worker_licences = base({
       licence_number?: Maybe<string>
       status: 'all' | 'active' | 'revoked' | 'expired'
       profession?: Profession
+      health_worker_id?: string
     },
   ) {
     const qb = trx
       .selectFrom('health_worker_licences')
-      .leftJoin('health_worker_licence_revocations', 'health_worker_licences.id', 'health_worker_licence_revocations.health_worker_license_id')
+      .leftJoin('health_worker_licence_revocations', 'health_worker_licences.id', 'health_worker_licence_revocations.health_worker_licence_id')
       .selectAll('health_worker_licences')
       .select((eb) => [
         'revoked_at',
@@ -36,6 +37,8 @@ export const health_worker_licences = base({
           .as('status'),
       ])
       .$if(!!opts.country, (qb) => qb.where('country', '=', opts.country!))
+      .$if(!!opts.profession, (qb) => qb.where('profession', '=', opts.profession!))
+      .$if(!!opts.health_worker_id, (qb) => qb.where('health_worker_id', '=', opts.health_worker_id!))
       .$if(!!opts.licence_number, (qb) => qb.where('licence_number', '=', opts.licence_number!.toUpperCase()))
 
     return applyStatusFilter(qb)
@@ -59,4 +62,27 @@ export const health_worker_licences = base({
     }
   },
   formatResult: identity<RenderedLicence>,
+  revoke(
+    trx: TrxOrDb,
+    { revoked_by, ...licence }: {
+      health_worker_id: string
+      profession: Profession
+      country: string
+      revoked_by: string
+    },
+  ) {
+    return trx.insertInto('health_worker_licence_revocations')
+          .columns([
+            'health_worker_licence_id',
+            'revoked_by',
+          ])
+          .expression(() => 
+            health_worker_licences.clearSelect(trx, { ...licence, status: 'active' })
+              .select([
+                'id as health_worker_licence_id',
+                literalString(revoked_by).as('revoked_by')
+              ])
+            )
+          .execute()
+  }
 })

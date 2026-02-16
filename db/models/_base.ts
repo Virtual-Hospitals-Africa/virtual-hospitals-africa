@@ -139,6 +139,10 @@ type BaseModel<
     trx: TrxOrDb,
     search_terms: SearchTerms,
   ): SelectQueryBuilder<Tables, SelectingFrom, IntermediateResult>
+  clearSelect(
+    trx: TrxOrDb,
+    search_terms: SearchTerms,
+  ): SelectQueryBuilder<Tables, SelectingFrom, {}>
   findFirst(trx: TrxOrDb, terms: SearchTerms): Promise<RenderedResult>
   findFirstOptional(
     trx: TrxOrDb,
@@ -524,6 +528,12 @@ export function base<
       lru.set(result.id, result as unknown as RenderedResult)
 
       return result.id
+    },
+    clearSelect(
+      trx: TrxOrDb,
+      terms: SearchTerms,
+    ) {
+      return this.searchQuery(trx, terms, (qb) => qb).clearSelect()
     },
     distinctIds(
       trx: TrxOrDb,

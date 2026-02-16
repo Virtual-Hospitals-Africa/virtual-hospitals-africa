@@ -7,19 +7,28 @@ import { postHandler } from '../../../backend/postHandler.ts'
 import { RegulatorHomePageLayout } from '../_middleware.tsx'
 import { SERVER_COUNTRY } from '../../../db/models/countries.ts'
 import z from 'zod'
-import { profession } from '../../../util/validators.ts'
+import { profession, sex, varchar255 } from '../../../util/validators.ts'
 import { asNames } from '../../../util/asNames.ts'
+import { country_health_workers } from '../../../db/models/country_health_workers.ts'
+import { LIVING_LANGUAGES } from '../../../shared/languages.ts'
 
 export const handler = postHandler(
   z.object({
-    name: z.string(),
-    profession,
-    licence_number: z.string(),
-    expiry_date: z.string().date(),
+    first_names: varchar255,
+    surname: varchar255,
+    preferred_name: varchar255,
+    date_of_birth: z.string().date(),
+    sex,
+    gender: varchar255,
+    licences: z.object({
+      profession,
+      licence_number: z.string(),
+      expiry_date: z.string().date(),
+    }).array()
   }),
   async (ctx, form_values) => {
     const country = SERVER_COUNTRY
-    await health_workers.insert(ctx.state.trx, {
+    await country_health_workers.insert(ctx.state.trx, {
       ...form_values,
       country,
     })
@@ -41,17 +50,17 @@ export default RegulatorHomePageLayout(
   ) {
     const name = ctx.url.searchParams.get('name')
     const licence_number = ctx.url.searchParams.get('licence_number')
-    const form_data: DeepPartial<RenderedCountryHealthWorker> = {}
+    const health_worker: DeepPartial<RenderedCountryHealthWorker> = {}
     if (name) {
       const names = asNames({ name })
-      Object.assign(form_data, names)
+      Object.assign(health_worker, names)
     }
     if (licence_number) {
-      form_data.licences = [{
+      health_worker.licences = [{
         licence_number,
       }]
     }
 
-    return <HealthWorkerForm form_data={form_data} country={SERVER_COUNTRY} />
+    return <HealthWorkerForm health_worker={health_worker} country={SERVER_COUNTRY} />
   },
 )

@@ -4,6 +4,8 @@ import { base, identity } from './_base.ts'
 import { health_worker_licences } from './health_worker_licences.ts'
 import { health_workers_base, HealthWorkerSearch } from './health_workers_base.ts'
 import { health_worker_organizations } from './health_worker_organizations.ts'
+import { health_workers } from './health_workers.ts'
+import { asNames } from '../../util/asNames.ts'
 
 export const country_health_workers = base({
   top_level_table: 'health_workers',
@@ -35,4 +37,37 @@ export const country_health_workers = base({
       ])
   },
   formatResult: identity<RenderedCountryHealthWorker>,
+  async insert(
+    trx: TrxOrDb,
+    { licences, sex, gender, country, ...health_worker }: {
+      first_names: string;
+      surname: string;
+      preferred_name: string;
+      date_of_birth: string;
+      sex: "male" | "female" | "other" | "prefer not to say";
+      gender: string;
+      country: string;
+      licences: {
+        profession: "doctor" | "nurse" | "pharmacist" | "receptionist";
+        licence_number: string;
+        expiry_date: string;
+      }[];
+    }
+  ) {
+    const names = asNames(health_worker)
+    const health_worker_id = await health_workers.insertOne(trx, {
+      ...health_worker,
+      ...names,
+    })
+    await trx.insertInto('health_worker_licences')
+      .values(
+        licences.map(licence => ({
+          ...licence,
+          sex, gender, country,
+          health_worker_id,
+          name: names.name
+        }))
+      )
+      .execute()
+  }
 })

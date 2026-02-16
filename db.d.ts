@@ -506,7 +506,7 @@ export interface HealthWorkerInvitees {
 
 export interface HealthWorkerLicenceRevocations {
   created_at: Generated<Timestamp>
-  health_worker_license_id: string
+  health_worker_licence_id: string
   id: Generated<string>
   revoked_at: Generated<Timestamp>
   revoked_by: string
