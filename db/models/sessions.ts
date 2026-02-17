@@ -20,7 +20,6 @@ export const sessions = base({
   // },
   getHealthWorkerId(trx: TrxOrDbOrQueryCreator, session_id: string): string | IdSelection {
     const session = sessions.getFromCache(session_id)
-    console.log('welkeklwwkl', session)
     if (session) {
       assert(session.entity_type === 'health_worker')
       return session.entity_id

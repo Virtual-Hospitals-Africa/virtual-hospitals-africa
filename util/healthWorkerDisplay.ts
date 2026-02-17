@@ -19,7 +19,6 @@ export function healthWorkerDisplay(
   const { role, is_admin } = organization_employment
   const { specialty, subspecialty } = organization_employment.active_licences[0] || { specialty: null, subspecialty: null }
 
-  console.log('mmw', organization_employment.active_licences)
   if (role === 'nurse') {
     assert(specialty, 'nurse has specialty')
   }

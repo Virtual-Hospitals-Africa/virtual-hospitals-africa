@@ -5,6 +5,7 @@ import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import { sessions } from '../db/models/sessions.ts'
 import { health_workers } from '../db/models/health_workers.ts'
+import { health_worker_accounts } from '../db/models/health_worker_accounts.ts'
 import { google_tokens } from '../db/models/google_tokens.ts'
 import { events } from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
@@ -58,14 +59,15 @@ export async function initializeHealthWorkerWithoutInvites(
     ),
   })
 
-  const health_worker_attributes = {
+  const health_worker_attributes = asNames({
+    first_names: profile.first_names,
+    surname: profile.surname,
+    name: profile.name,
+  })
+
+  const health_worker_account_attributes = {
     email: profile.email,
     avatar_media_id,
-    ...asNames({
-      first_names: profile.first_names,
-      surname: profile.surname,
-      name: profile.name,
-    }),
   }
 
   async function insertNewHealthWorker() {
@@ -73,17 +75,24 @@ export async function initializeHealthWorkerWithoutInvites(
       trx,
       health_worker_attributes,
     )
-    await google_tokens.insertOne(
-      trx,
-      {
-        entity_type: 'health_worker',
-        entity_id: health_worker_id,
-        // Don't ...spread - expires_in is not a column of google_tokens
-        expires_at: google_client.tokens.expires_at,
-        access_token: google_client.tokens.access_token,
-        refresh_token: google_client.tokens.refresh_token,
-      },
-    )
+    await Promise.all([
+      health_worker_accounts.insertOne(trx, {
+        id: health_worker_id,
+        ...health_worker_account_attributes,
+      }),
+      google_tokens.insertOne(
+        trx,
+        {
+          entity_type: 'health_worker',
+          entity_id: health_worker_id,
+          // Don't ...spread - expires_in is not a column of google_tokens
+          expires_at: google_client.tokens.expires_at,
+          access_token: google_client.tokens.access_token,
+          refresh_token: google_client.tokens.refresh_token,
+        },
+      ),
+    ])
+
     return { health_worker_id, existing_employment: null }
   }
 
