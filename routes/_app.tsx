@@ -81,6 +81,10 @@ export default function App({ Component, ...props }: PageProps) {
         )}
         {(props.route?.startsWith('/app') ||
           props.route?.startsWith('/regulator')) && <script src='/scripts/general.js' async />}
+        {
+          // Tutorial font loading, not sure if it's the "Fresh" way of conditionally importing a font
+          props.route === '/tutorial' && <link rel='stylesheet' href='/tutorial.css' />
+        }
       </head>
       <body className='relative flex flex-col justify-between min-h-screen'>
         <Component />

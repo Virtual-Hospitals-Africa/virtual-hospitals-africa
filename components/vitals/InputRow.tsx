@@ -26,7 +26,7 @@ export default function VitalsInputRow(
   },
 ) {
   return (
-    <div className='@container'>
+    <div className={cls('@container', `vital-input-row-${name}`)}>
       <div className='grid grid-cols-1 @md:grid-cols-[1fr_auto] @md:row-gap-2 @md:grid-rows-[min-content_min-content] w-full'>
         <Label htmlFor={name} className='@md:col-start-1 @md:row-start-1'>
           <LabelSpan

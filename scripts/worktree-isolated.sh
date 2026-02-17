@@ -1,21 +1,33 @@
 #!/usr/bin/env bash
 set -e
 
-# Usage: ./scripts/worktree-isolated.sh <branch-name> [prompt]
+# Usage: ./scripts/worktree-isolated.sh [--skipdb] <branch-name> [prompt]
 # Example: ./scripts/worktree-isolated.sh fix-bug "Fix the authentication bug in the login flow"
+# Example: ./scripts/worktree-isolated.sh --skipdb fix-bug "Fix the authentication bug in the login flow"
+#
+# Options:
+#   --skipdb    Skip creating a separate database. The worktree will use the same
+#               DATABASE_URL as the main .env.docker file.
+
+SKIP_DB=false
+if [ "$1" = "--skipdb" ]; then
+  SKIP_DB=true
+  shift
+fi
 
 if [ -z "$1" ]; then
   echo "Error: Branch name is required" >&2
-  echo "Usage: $0 <branch-name> [prompt]" >&2
+  echo "Usage: $0 [--skipdb] <branch-name> [prompt]" >&2
   exit 1
 fi
 
 BRANCH_NAME="$1"
 
-# Assert branch name is in camelCase format
-if ! [[ "$BRANCH_NAME" =~ ^[a-z][a-z_0-9]*$ ]]; then
+# Assert branch name is in snake_case format (required for database naming unless --skipdb)
+if [ "$SKIP_DB" = false ] && ! [[ "$BRANCH_NAME" =~ ^[a-z][a-z_0-9]*$ ]]; then
   echo "Error: Branch name must be in snake_case format in order to be used as part of a database name" >&2
   echo "Provided: $BRANCH_NAME" >&2
+  echo "Hint: Use --skipdb to skip database creation and allow any branch name" >&2
   exit 1
 fi
 
@@ -34,7 +46,7 @@ fi
 start_dir=$(pwd)
 latest_dump="${start_dir}/db/dumps/latest"
 
-if [ ! -f "$latest_dump" ]; then
+if [ "$SKIP_DB" = false ] && [ ! -f "$latest_dump" ]; then
   echo "Need a latest dump to make a worktree. Please run" >&2
   echo "deno task db:rebuild && deno task db:dump > ./db/dumps/latest" >&2
   exit 1
@@ -84,15 +96,24 @@ else
     git worktree add -b "$BRANCH_NAME" "$WORKTREE_DIR" main >&2
   fi
 
-  sed "s/vha_dev/vha_dev_${BRANCH_NAME}/g" .env.docker > "$WORKTREE_DIR/.env.local"
-  increment_port_counter_file_and_write_its_contents_to_env
+  if $SKIP_DB; then
+    # Use the same DATABASE_URL as the main project
+    cp .env.docker "$WORKTREE_DIR/.env.local"
+  else
+    # Create a separate database with a modified DATABASE_URL
+    sed "s/vha_dev/vha_dev_${BRANCH_NAME}/g" .env.docker > "$WORKTREE_DIR/.env.local"
+  fi
 
-  ln -s  "$latest_dump" "$WORKTREE_DIR/db/dumps/latest"
+  increment_port_counter_file_and_write_its_contents_to_env
 
   cd "$WORKTREE_DIR"
   deno install --allow-scripts >&2
-  deno task local db:create >&2
-  deno task local db:restore latest >&2
+
+  if ! $SKIP_DB; then
+    ln -s "$latest_dump" "$WORKTREE_DIR/db/dumps/latest"
+    deno task local db:create >&2
+    deno task local db:restore latest >&2
+  fi
 fi
 
 echo "$WORKTREE_DIR"
