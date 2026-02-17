@@ -6,6 +6,7 @@
 
 import type { Speaker } from '../../shared/tutorial/types.ts'
 import { SPEAKERS } from '../../shared/tutorial/types.ts'
+import cls from '../../util/cls.ts'
 
 type Position = 'bottom-left' | 'top-left' | 'top-right'
 
@@ -26,9 +27,9 @@ function getSpeakerColor(speaker: Speaker): string {
 type Props = {
   speaker: Speaker
   text: string
-  onNext?: () => void // Optional - hide Next button if not provided
-  buttonText?: string // Custom button text (default: "Next")
+  button_text?: string // Custom button text (default: "Next")
   position?: Position // Override speaker-based position
+  onNext?: () => void // Optional - hide Next button if not provided
 }
 
 /**
@@ -39,26 +40,24 @@ export function TutorialDialogue({
   speaker,
   text,
   onNext,
-  buttonText = 'Next',
+  button_text = 'Next',
   position,
 }: Props) {
-  const speakerInfo = SPEAKERS[speaker]
+  const speaker_info = SPEAKERS[speaker]
 
   // Determine position: use override if provided, otherwise derive from speaker
-  const effectivePosition: Position = position ?? (speaker === 'guide' ? 'bottom-left' : 'top-right')
-  const isLeftAligned = effectivePosition === 'bottom-left' || effectivePosition === 'top-left'
-
-  const positionClasses = {
-    'bottom-left': 'bottom-8 left-8',
-    'top-left': 'top-8 left-8',
-    'top-right': 'top-8 right-8',
-  }[effectivePosition]
+  const effective_position: Position = position ?? (speaker === 'guide' ? 'bottom-left' : 'top-right')
+  const is_left_aligned = effective_position === 'bottom-left' || effective_position === 'top-left'
 
   return (
     <div
-      className={`fixed z-[60] flex items-end gap-3 md:gap-6 max-w-[92vw] md:max-w-2xl lg:max-w-3xl ${positionClasses} ${
-        isLeftAligned ? 'flex-row' : 'flex-row-reverse'
-      }`}
+      className={cls('fixed z-[60] flex items-end gap-3 md:gap-6 max-w-[92vw] md:max-w-2xl lg:max-w-3xl', {
+        'bottom-8 left-8': effective_position === 'bottom-left',
+        'top-8 left-8': effective_position === 'top-left',
+        'top-8 right-8': effective_position === 'top-right',
+        'flex-row': is_left_aligned,
+        'flex-row-reverse': !is_left_aligned,
+      })}
     >
       <div className='flex-shrink-0'>
         <div
@@ -70,8 +69,8 @@ export function TutorialDialogue({
           }}
         >
           <img
-            src={speakerInfo.avatar}
-            alt={speakerInfo.name}
+            src={speaker_info.avatar}
+            alt={speaker_info.name}
             className='w-full h-full object-cover'
             style={{ imageRendering: 'pixelated' }}
           />
@@ -88,18 +87,18 @@ export function TutorialDialogue({
         <div
           className='absolute -top-4 md:-top-5 px-3 md:px-5 py-1 md:py-1.5 text-base md:text-2xl font-bold text-white'
           style={{
-            left: isLeftAligned ? '12px' : 'auto',
-            right: isLeftAligned ? 'auto' : '12px',
+            left: is_left_aligned ? '12px' : 'auto',
+            right: is_left_aligned ? 'auto' : '12px',
             backgroundColor: getSpeakerColor(speaker),
             border: '3px solid #1a1a2e',
             fontFamily: "'GeistPixel', monospace",
             fontWeight: 700,
           }}
         >
-          {speakerInfo.name}
+          {speaker_info.name}
         </div>
 
-        {isLeftAligned
+        {is_left_aligned
           ? (
             <>
               <div
@@ -179,7 +178,7 @@ export function TutorialDialogue({
                   fontWeight: 700,
                 }}
               >
-                {buttonText}
+                {button_text}
               </button>
             </div>
           )

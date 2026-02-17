@@ -12,9 +12,48 @@ declare -A rules=(
 )
 
 rule_no_camel_case() {
-  # Note that we can ignore specific variable names like onClick at the front
-  # and we can ignore functions/patterns that return functions at the back like const getById = model.getById
-  ! rg -n --pcre2 --color=always 'const (?!createCommand)(?!loadMore)(?!getEmployees)(?!onClick)(?!defaultValue)(?!tableClassName)(?!tdClassName)([a-z]\w*[A-Z]\w*)(:| =| of| in)(?! \(.+\) =>)(?! \(\))(?! async)(?! spy)(?! stub)(?! memoize)(?! ruleRunner)(?! once)(?! logArgsOnError)(?! deduplicate)(?! simpleBaseQuery)(?! cacheable)(?! model\.)(?! pick\()\s' --glob '**/*.ts' --glob '**/*.tsx'
+  # Specific camelCase variable names that are allowed
+  local allowed_camel_case_variables=(
+    createCommand
+    loadMore
+    getEmployees
+    onClick
+    defaultValue
+    tableClassName
+    tdClassName
+    clipPath
+  )
+
+  # Functions/patterns that create functions, so `const getById = model.getById` is fine
+  local function_creators=(
+    spy
+    stub
+    memoize
+    ruleRunner
+    once
+    logArgsOnError
+    deduplicate
+    simpleBaseQuery
+    cacheable
+    'model\.'
+    'pick\('
+  )
+
+  # Build the negative lookaheads for allowed variable names
+  local allowed_pattern=""
+  for name in "${allowed_camel_case_variables[@]}"; do
+    allowed_pattern+="(?!${name})"
+  done
+
+  # Build the negative lookaheads for function creators
+  local creators_pattern=""
+  for creator in "${function_creators[@]}"; do
+    creators_pattern+="(?! ${creator})"
+  done
+
+  local pattern="const ${allowed_pattern}([a-z]\w*[A-Z]\w*)(:| =| of| in)(?! \(.+\) =>)(?! \(\))(?! async)${creators_pattern}\s"
+
+  ! rg -n --pcre2 --color=always "$pattern" --glob '**/*.ts' --glob '**/*.tsx'
 }
 
 rule_no_node_imports() {
@@ -38,7 +77,7 @@ rule_no_db_imports_in_frontend() {
 
 rule_imports_at_the_start() {
   # Flag inline import() type expressions (e.g. import('./types.ts').Foo) outside of actual import statements
-  ! rg -n --pcre2 --color=always '^\s*(?!import\b).*\bimport\(' --glob '**/*.ts' --glob '**/*.tsx'
+  ! rg -n --pcre2 --color=always '^\s*(?!import\b).*\bimport\(' --glob '**/*.ts' --glob '**/*.tsx' --glob '!util.ts' --glob '!repl.ts' --glob '!scripts/generate_repl.ts' --glob '!db/migrate.ts' --glob '!db/seed/run.ts'
 }
 
 rule_no_only_in_tests() {

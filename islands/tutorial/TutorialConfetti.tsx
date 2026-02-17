@@ -47,7 +47,7 @@ function createParticle(canvasWidth: number, fromTop: boolean): Particle {
     const speed = Math.random() * 8 + 4
     return {
       x: canvasWidth / 2 + (Math.random() - 0.5) * 200,
-      y: window.innerHeight / 2 + (Math.random() - 0.5) * 100,
+      y: globalThis.innerHeight / 2 + (Math.random() - 0.5) * 100,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed - 5,
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
@@ -64,24 +64,24 @@ function createParticle(canvasWidth: number, fromTop: boolean): Particle {
  * - Continues with rain from top
  */
 export function TutorialConfetti() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const canvas_ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current
+    const canvas = canvas_ref.current
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
     // Set canvas size
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    canvas.width = globalThis.innerWidth
+    canvas.height = globalThis.innerHeight
 
     // Create initial explosion particles
     const particles: Particle[] = []
-    const explosionCount = 250
+    const explosion_count = 250
 
-    for (let i = 0; i < explosionCount; i++) {
+    for (let i = 0; i < explosion_count; i++) {
       particles.push(createParticle(canvas.width, false))
     }
 
@@ -139,20 +139,20 @@ export function TutorialConfetti() {
 
     // Handle resize
     const handleResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      canvas.width = globalThis.innerWidth
+      canvas.height = globalThis.innerHeight
     }
-    window.addEventListener('resize', handleResize)
+    globalThis.addEventListener('resize', handleResize)
 
     return () => {
       cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', handleResize)
+      globalThis.removeEventListener('resize', handleResize)
     }
   }, [])
 
   return (
     <canvas
-      ref={canvasRef}
+      ref={canvas_ref}
       className='fixed inset-0 z-[70] pointer-events-none'
       style={{ width: '100vw', height: '100vh' }}
     />

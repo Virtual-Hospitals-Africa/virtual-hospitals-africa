@@ -7,7 +7,7 @@ import { SPEAKERS } from '../../../shared/tutorial/types.ts'
 
 /**
  * Completion step - shows a celebration message.
- * The confetti animation is handled by TutorialOverlay when isFinal is set.
+ * The confetti animation is handled by TutorialOverlay when is_final is set.
  */
 export function CompletionStep() {
   return (

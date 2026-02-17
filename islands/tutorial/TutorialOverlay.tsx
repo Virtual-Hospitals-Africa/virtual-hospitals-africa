@@ -22,8 +22,8 @@ type Props = {
  * Handles all script item types:
  * - dialogue: Speech bubble with optional highlight
  * - highlight: Spotlight element, auto-advance
- * - waitClick: Wait for user to click target
- * - stepTransition: Handled by state.advance()
+ * - wait_click: Wait for user to click target
+ * - step_transition: Handled by state.advance()
  */
 export function TutorialOverlay({ script, hashState, setHashState }: Props) {
   // No hash = tutorial not started
@@ -36,8 +36,8 @@ export function TutorialOverlay({ script, hashState, setHashState }: Props) {
   // Past end = tutorial complete
   if (!item) return null
 
-  // Skip stepTransition items (handled by advance function)
-  if (item.type === 'stepTransition') {
+  // Skip step_transition items (handled by advance function)
+  if (item.type === 'step_transition') {
     // This shouldn't render, advance() should skip these
     return null
   }
@@ -57,15 +57,15 @@ export function TutorialOverlay({ script, hashState, setHashState }: Props) {
   }
 
   // Check if this is the final step
-  const isFinal = item.type === 'dialogue' && item.isFinal
+  const is_final = item.type === 'dialogue' && item.is_final
 
   return (
     <>
-      {isFinal && <TutorialConfetti />}
+      {is_final && <TutorialConfetti />}
       <RenderItem
         item={item}
-        onNext={isFinal ? handleRestart : handleAdvance}
-        buttonText={isFinal ? 'Restart Tutorial' : 'Next'}
+        onNext={is_final ? handleRestart : handleAdvance}
+        button_text={is_final ? 'Restart Tutorial' : 'Next'}
       />
     </>
   )
@@ -77,11 +77,11 @@ export function TutorialOverlay({ script, hashState, setHashState }: Props) {
 function RenderItem({
   item,
   onNext,
-  buttonText,
+  button_text,
 }: {
-  item: Exclude<ScriptItem, { type: 'stepTransition' }>
+  item: Exclude<ScriptItem, { type: 'step_transition' }>
   onNext: () => void
-  buttonText: string
+  button_text: string
 }) {
   switch (item.type) {
     case 'dialogue':
@@ -89,7 +89,7 @@ function RenderItem({
         <DialogueRenderer
           item={item}
           onNext={onNext}
-          buttonText={buttonText}
+          button_text={button_text}
         />
       )
 
@@ -101,7 +101,7 @@ function RenderItem({
         />
       )
 
-    case 'waitClick':
+    case 'wait_click':
       return (
         <WaitClickRenderer
           item={item}
@@ -125,11 +125,11 @@ function RenderItem({
 function DialogueRenderer({
   item,
   onNext,
-  buttonText,
+  button_text,
 }: {
   item: Extract<ScriptItem, { type: 'dialogue' }>
   onNext: () => void
-  buttonText: string
+  button_text: string
 }) {
   return (
     <>
@@ -138,7 +138,7 @@ function DialogueRenderer({
         speaker={item.speaker}
         text={item.text}
         onNext={onNext}
-        buttonText={buttonText}
+        button_text={button_text}
         position={item.guidePosition}
       />
     </>
@@ -166,13 +166,13 @@ function HighlightRenderer({
 }
 
 /**
- * Render waitClick item - waits for user to click target element.
+ * Render wait_click item - waits for user to click target element.
  */
 function WaitClickRenderer({
   item,
   onNext,
 }: {
-  item: Extract<ScriptItem, { type: 'waitClick' }>
+  item: Extract<ScriptItem, { type: 'wait_click' }>
   onNext: () => void
 }) {
   useEffect(() => {
@@ -213,7 +213,7 @@ function ModalRenderer({
   return (
     <TutorialModal
       message={item.message}
-      buttonText={item.buttonText}
+      button_text={item.buttonText}
       onAction={onNext}
     />
   )

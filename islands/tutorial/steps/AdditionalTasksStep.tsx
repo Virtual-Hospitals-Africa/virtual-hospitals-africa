@@ -19,6 +19,7 @@ export function AdditionalTasksStep() {
       <AdditionalTasks
         task_groups={task_groups}
         organization_id='tutorial-org'
+        evaluation_ids={[]}
       />
     </div>
   )

@@ -61,22 +61,22 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
     }
   })
 
-  const currentStep: TutorialStep = useMemo(() => {
+  const current_step: TutorialStep = useMemo(() => {
     if (hash.value.action === 'none') return 'warning_signs'
     return hash.value.step
   }, [hash.value])
 
-  const coughSelected = useMemo(() => {
+  const cough_selected = useMemo(() => {
     return hasCoughBeenSelected(hash.value, TUTORIAL_SCRIPT, TUTORIAL_TARGETS.COUGH_CHECKBOX)
   }, [hash.value])
 
-  const sidebarFindings = useMemo<RenderedSidebarWorkflow[]>(() => {
-    return buildSidebarFindings(currentStep, coughSelected)
-  }, [currentStep, coughSelected])
+  const sidebar_findings = useMemo<RenderedSidebarWorkflow[]>(() => {
+    return buildSidebarFindings(current_step, cough_selected)
+  }, [current_step, cough_selected])
 
-  const stepsCompleted = useMemo(() => {
-    return getCompletedSteps(currentStep)
-  }, [currentStep])
+  const steps_completed = useMemo(() => {
+    return getCompletedSteps(current_step)
+  }, [current_step])
 
   const handleSetHashState = (state: TutorialHashState | { action: 'none' }) => {
     hash.value = state
@@ -94,8 +94,8 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         patient={patient}
         priority={null}
         organization_id='tutorial-org'
-        this_visit_findings={sidebarFindings}
-        steps_completed={stepsCompleted}
+        this_visit_findings={sidebar_findings}
+        steps_completed={steps_completed}
         patient_history={EMPTY_PATIENT_HISTORY}
         ContainerTag='div'
         workflow='triage'
@@ -110,7 +110,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         onSubmit={(e) => e.preventDefault()}
       >
         <StepRenderer
-          step={currentStep}
+          step={current_step}
           patient={patient}
         />
       </OpenEncounterWorkflowLayout>

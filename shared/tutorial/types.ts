@@ -70,7 +70,7 @@ type DialogueItem = {
   text: string
   highlight?: string // CSS selector to spotlight
   guidePosition?: 'bottom-left' | 'top-left' // Override default position
-  isFinal?: boolean // Shows confetti + restart button
+  is_final?: boolean // Shows confetti + restart button
 }
 
 /**
@@ -86,7 +86,7 @@ type HighlightItem = {
  * WaitClick: Pause until user clicks target element.
  */
 type WaitClickItem = {
-  type: 'waitClick'
+  type: 'wait_click'
   target: string // CSS selector
 }
 
@@ -95,8 +95,8 @@ type WaitClickItem = {
  * Immediately transitions step, then advances to next script item.
  */
 type StepTransitionItem = {
-  type: 'stepTransition'
-  toStep: TutorialStep
+  type: 'step_transition'
+  to_step: TutorialStep
 }
 
 /**
@@ -123,22 +123,23 @@ export type ScriptItem =
 // -----------------------------------------------------------------------------
 // Hash State - encodes step + script index
 // Uses 'action' field for useLocationHash compatibility
-// Format: #action=step&step=warning_signs&idx=5
+// Format: #action=step&step=warning_signs&index=5
 // -----------------------------------------------------------------------------
 
 export type TutorialHashState = {
   action: 'tutorial'
   step: TutorialStep
-  idx: string // numeric index as string
+  index: string // numeric index as string
 }
 
 /**
  * Type guard for TutorialHashState
  */
-export const isTutorialState = (v: Record<string, string>): v is TutorialHashState =>
-  v.action === 'tutorial' &&
-  'step' in v &&
-  TUTORIAL_STEPS.includes(v.step as TutorialStep) &&
-  'idx' in v &&
-  !isNaN(Number(v.idx)) &&
-  Number(v.idx) >= 0
+export function isTutorialState(v: Record<string, string>): v is TutorialHashState {
+  return v.action === 'tutorial' &&
+    'step' in v &&
+    TUTORIAL_STEPS.includes(v.step as TutorialStep) &&
+    'index' in v &&
+    !isNaN(Number(v.index)) &&
+    Number(v.index) >= 0
+}

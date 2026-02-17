@@ -13,13 +13,12 @@ import { getTutorialAssignPriorityData } from '../../../shared/tutorial/mock-dat
  * - Temperature 38.8°C (score 2)
  */
 export function AssignPriorityStep() {
-  const { vitals, with_triage_level_findings, total_score, priority } = getTutorialAssignPriorityData()
+  const { vitals, total_score, priority } = getTutorialAssignPriorityData()
 
   return (
     <div data-tutorial='assign-priority-table'>
       <TriageAssignPriorityTable
-        vitals={vitals}
-        with_triage_level_findings={with_triage_level_findings}
+        rows={vitals}
         total_score={total_score}
         priority={priority}
       />

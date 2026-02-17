@@ -4,7 +4,7 @@
 // =============================================================================
 
 import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
-import { MostRecentFinding } from '../library/MostRecentFinding.tsx'
+import { MostRecentRecord } from '../../islands/MostRecentRecord.tsx'
 import { COMMON_CONDITIONS, CommonCondition } from '../../shared/brief_history.ts'
 import type { Existence, Maybe, MostRecentBriefHistoryFindings, RenderedBriefHistoryRelativeToHealthWorker, Sex } from '../../types.ts'
 
@@ -25,8 +25,8 @@ export function CommonConditionRow(
       value={value}
       label={condition.label}
       most_recent_finding={
-        <MostRecentFinding
-          finding={most_recent_finding}
+        <MostRecentRecord
+          record={most_recent_finding}
           organization_id={organization_id}
         />
       }

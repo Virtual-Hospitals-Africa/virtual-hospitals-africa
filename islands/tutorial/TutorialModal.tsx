@@ -5,7 +5,7 @@
 
 type Props = {
   message: string
-  buttonText: string
+  button_text: string
   onAction: () => void
 }
 
@@ -13,7 +13,7 @@ type Props = {
  * Pixel-game style centered modal for tutorial.
  * Used for notifications like "Please bring the patient to room 102".
  */
-export function TutorialModal({ message, buttonText, onAction }: Props) {
+export function TutorialModal({ message, button_text, onAction }: Props) {
   return (
     <>
       <div
@@ -92,7 +92,7 @@ export function TutorialModal({ message, buttonText, onAction }: Props) {
                 fontWeight: 700,
               }}
             >
-              {buttonText}
+              {button_text}
             </button>
           </div>
         </div>

@@ -8,8 +8,8 @@ const video_id = 'nrEloCfycjk'
 const video_quality = 'hd1440'
 
 // deno-lint-ignore no-explicit-any
-function getYT(window: any) {
-  if ('YT' in window) return window.YT
+function getYT(win: any) {
+  if ('YT' in win) return win.YT
 }
 
 export default function DemoVideo() {

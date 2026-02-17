@@ -38,17 +38,17 @@ function fillFormWithMockData(container: HTMLElement) {
  */
 export function VitalsStep() {
   const { measurements, assessments } = getTutorialVitalsDefinitions()
-  const containerRef = useRef<HTMLDivElement>(null)
+  const container_ref = useRef<HTMLDivElement>(null)
 
   // Auto-fill form with mock vitals on mount
   useEffect(() => {
-    if (containerRef.current) {
-      fillFormWithMockData(containerRef.current)
+    if (container_ref.current) {
+      fillFormWithMockData(container_ref.current)
     }
   }, [])
 
   return (
-    <div data-tutorial='vitals-form' ref={containerRef}>
+    <div data-tutorial='vitals-form' ref={container_ref}>
       <VitalsMeasurementsForm
         vital_measurements_for_this_encounter={measurements}
         triage_assessments={assessments}

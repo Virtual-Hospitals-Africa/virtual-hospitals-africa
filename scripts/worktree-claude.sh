@@ -3,7 +3,7 @@ set -xeuo pipefail
 
 usage() {
   cat <<EOF
-Usage: $0 <branch-name> <prompt>
+Usage: $0 [--skipdb] <branch-name> <prompt>
 
 Create a git worktree, run Claude Code with the given prompt, retry failing
 tests up to twice, then commit and open a pull request.
@@ -13,11 +13,22 @@ Arguments:
   prompt        Instructions to pass to Claude Code. The first line is also
                 used as the git commit message.
 
+Options:
+  --skipdb      Skip creating a separate database. The worktree will use the
+                same DATABASE_URL as the main .env.docker file.
+
 Examples:
   $0 fix-auth-bug "Fix the authentication bug in the login flow"
   $0 add-search  "Add full-text search to the products table"
+  $0 --skipdb fix-typo "Fix typo in the README"
 EOF
 }
+
+SKIPDB_FLAG=""
+if [ "${1:-}" = "--skipdb" ]; then
+  SKIPDB_FLAG="--skipdb"
+  shift
+fi
 
 if [ $# -lt 2 ]; then
   usage
@@ -29,7 +40,7 @@ PROMPT="$2"
 
 COMMIT_MESSAGE=$(echo "${PROMPT}" | head -n 1)
 
-WORKTREE_DIR=$(./scripts/worktree-isolated.sh "$BRANCH_NAME")
+WORKTREE_DIR=$(./scripts/worktree-isolated.sh $SKIPDB_FLAG "$BRANCH_NAME")
 
 cd "$WORKTREE_DIR"
 

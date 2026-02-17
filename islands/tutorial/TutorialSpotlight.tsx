@@ -20,25 +20,40 @@ const BORDER_RADIUS = 12
  * - With target: dark overlay with cutout around target element
  */
 export function TutorialSpotlight({ target, clickable = false }: Props) {
-  const targetBounds = useSignal<DOMRect | null>(null)
-  const svgRef = useRef<SVGSVGElement>(null)
+  const target_bounds = useSignal<DOMRect | null>(null)
+  const svg_ref = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
     if (!target) {
-      targetBounds.value = null
+      target_bounds.value = null
       return
     }
 
     const updateBounds = () => {
       const element = document.querySelector(target)
-      if (element) {
-        targetBounds.value = element.getBoundingClientRect()
-      } else {
-        targetBounds.value = null
-      }
+      target_bounds.value = element?.getBoundingClientRect() ?? null
+    }
+
+    const elementNeedingScrollingIntoView = (): Element | undefined => {
+      const element = document.querySelector(target)
+      if (!element) return
+      const el_rect = element.getBoundingClientRect()
+      const fills_page = el_rect.height >= globalThis.innerHeight
+      if (fills_page) return
+      const parent = element.parentElement
+      if (!parent) return
+      const parent_rect = parent.getBoundingClientRect()
+      const is_in_view = el_rect.top >= parent_rect.top && el_rect.bottom <= parent_rect.bottom
+      if (!is_in_view) return element
+    }
+
+    const scrollIntoViewIfNecessary = () => {
+      const element = elementNeedingScrollingIntoView()
+      element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
 
     updateBounds()
+    scrollIntoViewIfNecessary()
 
     const handleUpdate = () => requestAnimationFrame(updateBounds)
     self.addEventListener('scroll', handleUpdate, true)
@@ -58,7 +73,7 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
   }, [target])
 
   const cutout = useComputed(() => {
-    const bounds = targetBounds.value
+    const bounds = target_bounds.value
     if (!bounds) return null
 
     return {
@@ -89,7 +104,7 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
         style={{ clipPath }}
       />
       <svg
-        ref={svgRef}
+        ref={svg_ref}
         className='fixed inset-0 z-50 pointer-events-none'
         style={{ width: '100vw', height: '100vh' }}
       >

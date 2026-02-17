@@ -3,7 +3,7 @@
 // Complete tutorial script - single source of truth for all dialogue and actions
 // =============================================================================
 
-import type { ScriptItem } from './types.ts'
+import type { ScriptItem, TutorialStep } from './types.ts'
 import { TUTORIAL_TARGETS } from './targets.ts'
 
 /**
@@ -11,7 +11,7 @@ import { TUTORIAL_TARGETS } from './targets.ts'
  *
  * Flow:
  * 1. Welcome (5 items) - intro, mission, triage nurse role
- * 2. Warning Signs (16 items) - patient intro, category-by-category walkthrough, waitClick for Cough
+ * 2. Warning Signs (16 items) - patient intro, category-by-category walkthrough, wait_click for Cough
  * 3. Brief History (6 items) - pre-filled, explains asthma connection
  * 4. Height/Weight mention (2 items) - "already measured"
  * 5. Vitals (13 items) - SpO2 prompt, step-by-step vital values with TEWS explanations
@@ -125,7 +125,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     text: "Click 'Cough' in Common Symptoms to record it.",
   },
   {
-    type: 'waitClick',
+    type: 'wait_click',
     target: TUTORIAL_TARGETS.COUGH_CHECKBOX,
   },
   {
@@ -145,8 +145,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // SECTION 3: BRIEF HISTORY (STEP TRANSITION)
   // =========================================================================
   {
-    type: 'stepTransition',
-    toStep: 'brief_history',
+    type: 'step_transition',
+    to_step: 'brief_history',
   },
   {
     type: 'dialogue',
@@ -187,8 +187,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // SECTION 4: HEIGHT & WEIGHT MENTION (STEP TRANSITION)
   // =========================================================================
   {
-    type: 'stepTransition',
-    toStep: 'vitals',
+    type: 'step_transition',
+    to_step: 'vitals',
   },
   {
     type: 'dialogue',
@@ -283,8 +283,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // SECTION 6: ADDITIONAL TASKS
   // =========================================================================
   {
-    type: 'stepTransition',
-    toStep: 'additional_tasks',
+    type: 'step_transition',
+    to_step: 'additional_tasks',
   },
   {
     type: 'dialogue',
@@ -309,8 +309,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // SECTION 7: ASSIGN PRIORITY
   // =========================================================================
   {
-    type: 'stepTransition',
-    toStep: 'assign_priority',
+    type: 'step_transition',
+    to_step: 'assign_priority',
   },
   {
     type: 'dialogue',
@@ -329,8 +329,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // SECTION 8: ROUTE PATIENT
   // =========================================================================
   {
-    type: 'stepTransition',
-    toStep: 'route_patient',
+    type: 'step_transition',
+    to_step: 'route_patient',
   },
   {
     type: 'dialogue',
@@ -353,8 +353,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // SECTION 9: COMPLETION
   // =========================================================================
   {
-    type: 'stepTransition',
-    toStep: 'complete',
+    type: 'step_transition',
+    to_step: 'complete',
   },
   {
     type: 'dialogue',
@@ -371,7 +371,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text: "You're ready to help real patients. Every assessment you do makes a difference in someone's life.",
-    isFinal: true,
+    is_final: true,
   },
 ]
 
@@ -379,15 +379,15 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
  * Get the step that should be active at a given script index.
  * Used for validating state and debugging.
  */
-export function getStepAtIndex(idx: number): import('./types.ts').TutorialStep {
-  let currentStep: import('./types.ts').TutorialStep = 'warning_signs'
+export function getStepAtIndex(idx: number): TutorialStep {
+  let current_step: TutorialStep = 'warning_signs'
 
   for (let i = 0; i <= idx && i < TUTORIAL_SCRIPT.length; i++) {
     const item = TUTORIAL_SCRIPT[i]
-    if (item.type === 'stepTransition') {
-      currentStep = item.toStep
+    if (item.type === 'step_transition') {
+      current_step = item.to_step
     }
   }
 
-  return currentStep
+  return current_step
 }

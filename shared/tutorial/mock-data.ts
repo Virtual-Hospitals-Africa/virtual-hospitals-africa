@@ -4,15 +4,15 @@
 // =============================================================================
 
 import type {
-  CheckForTask,
   Existence,
   MostRecentBriefHistoryFindings,
   Priority,
   RenderedBriefHistoryRelativeToHealthWorker,
   RenderedEmployee,
   RenderedFindingRelativeToHealthWorker,
-  RenderedPatient,
+  RenderedPatientCompletedRegistration,
   RenderedSidebarWorkflow,
+  RenderedTask,
   TaskGroup,
   TriageAssignPriorityTableRow,
   VitalAssessmentFormInputDefition,
@@ -23,6 +23,8 @@ import type { TutorialStep } from './types.ts'
 import { isStepCompleted } from './state.ts'
 import { COMMON_CONDITIONS, CommonConditionKey } from '../brief_history.ts'
 import { assessmentOptionSExpression, measureVitalsInputDefinitions, VITAL_MEASUREMENTS_SNOMED_CONCEPTS, VITAL_MEASUREMENTS_UNITS } from '../vitals.ts'
+import { WARNING_SIGNS } from '../warning_signs.ts'
+import { COMMON_SYMPTOMS } from '../common_symptoms.ts'
 
 // =============================================================================
 // PATIENT & EMPLOYEE
@@ -31,7 +33,7 @@ import { assessmentOptionSExpression, measureVitalsInputDefinitions, VITAL_MEASU
 /**
  * Mock patient for tutorial - Duduzile Langa
  */
-export const TUTORIAL_PATIENT: RenderedPatient = {
+export const TUTORIAL_PATIENT: RenderedPatientCompletedRegistration = {
   id: 'tutorial-patient-001',
   sex: 'female',
   gender: null,
@@ -67,6 +69,16 @@ export const TUTORIAL_EMPLOYEE: RenderedEmployee = {
   avatar_url: null,
   phone_number: null,
   id: 'tutorial-hw-001',
+  demographics: {
+    sex: null,
+    gender: null,
+    date_of_birth: null,
+  },
+  contact_details: {
+    mobile_phone_number: null,
+    address: null,
+  },
+  ever_licensed_as_doctor: 0,
   organizations: [
     {
       id: 'tutorial-org-001',
@@ -82,17 +94,34 @@ export const TUTORIAL_EMPLOYEE: RenderedEmployee = {
       waiting_room_id: null,
       reception_id: null,
       employment_id: 'tutorial-emp-001',
-      specialty: 'Primary care',
-      profession: 'nurse',
+      role: 'nurse',
       is_admin: false,
       in_departments: [],
+      active_licences: [{
+        licence_number: 'NMC-2024-001',
+        regulatory_agency: {
+          name: 'South African Nursing Council',
+          acronym: 'SANC',
+          country: 'ZA',
+        },
+        profession: 'Nurse',
+        specialty: 'Primary Care',
+        subspecialty: null,
+        start_date: '2024-01-01',
+        expiry_date: '2027-01-01',
+        status: 'active',
+        revoked: null,
+      }],
+      hrefs: {
+        regulator_view: '/tutorial',
+        health_worker_view: '/tutorial',
+      },
     },
   ],
   organization_id: 'tutorial-org-001',
   employee_id: 'tutorial-emp-001',
-  profession: 'nurse',
+  role: 'nurse',
   is_admin: false,
-  specialty: 'Primary care',
   href: '/tutorial',
 }
 
@@ -109,123 +138,8 @@ const MOCK_PROVIDER = {
  * Warning signs for tutorial - includes "Cough" which triggers SpO2 requirement
  */
 export const TUTORIAL_WARNING_SIGNS: WarningSignWithMaybeRecord[] = [
-  // Emergency signs
-  {
-    key: 'Obstructed airway',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Respiratory obstruction" "disorder"))',
-    primary_name: 'Obstructed airway',
-    secondary_text: 'Not breathing',
-    sats_priority: 'Emergency',
-    category: 'Emergency',
-  },
-  {
-    key: 'Cardiac arrest',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Cardiac arrest" "disorder"))',
-    primary_name: 'Cardiac arrest',
-    secondary_text: 'Heart attack',
-    sats_priority: 'Emergency',
-    category: 'Emergency',
-  },
-  {
-    key: 'Seizure',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
-    primary_name: 'Seizure',
-    secondary_text: 'Current',
-    sats_priority: 'Emergency',
-    category: 'Emergency',
-  },
-
-  // Very Urgent signs
-  {
-    key: 'Acute shortness of breath',
-    clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dyspnea" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
-    primary_name: 'Shortness of breath',
-    secondary_text: 'acute',
-    sats_priority: 'Very urgent',
-    category: 'Very urgent',
-  },
-  {
-    key: 'Chest pain',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-    primary_name: 'Chest pain',
-    secondary_text: null,
-    sats_priority: 'Very urgent',
-    category: 'Very urgent',
-  },
-  {
-    key: 'Severe pain',
-    clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
-    primary_name: 'Severe pain',
-    secondary_text: null,
-    sats_priority: 'Very urgent',
-    category: 'Very urgent',
-  },
-
-  // Urgent signs
-  {
-    key: 'Moderate pain',
-    clinical_finding_s_expression:
-      '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain" "finding") (qualifier (snomed_concept "Moderate (severity modifier)" "qualifier value")))',
-    primary_name: 'Moderate pain',
-    secondary_text: null,
-    sats_priority: 'Urgent',
-    category: 'Urgent',
-  },
-  {
-    key: 'Persistent vomiting',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Persistent vomiting" "disorder"))',
-    primary_name: 'Persistent vomiting',
-    secondary_text: null,
-    sats_priority: 'Urgent',
-    category: 'Urgent',
-  },
-  {
-    key: 'Abdominal pain',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Abdominal pain" "finding"))',
-    primary_name: 'Abdominal pain',
-    secondary_text: null,
-    sats_priority: 'Urgent',
-    category: 'Urgent',
-  },
-
-  // Common Symptoms - including Cough (tutorial target)
-  {
-    key: 'Cough',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Cough" "finding"))',
-    primary_name: 'Cough',
-    secondary_text: null,
-    category: 'Common Symptoms',
-  },
-  {
-    key: 'Headache',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Headache" "finding"))',
-    primary_name: 'Headache',
-    secondary_text: null,
-    category: 'Common Symptoms',
-  },
-  {
-    key: 'Fatigue',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Fatigue" "finding"))',
-    primary_name: 'Fatigue',
-    secondary_text: null,
-    category: 'Common Symptoms',
-  },
-  {
-    key: 'Fever',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Fever" "finding"))',
-    primary_name: 'Fever',
-    secondary_text: 'feeling hot',
-    category: 'Common Symptoms',
-  },
-  {
-    key: 'Sore throat',
-    clinical_finding_s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Sore throat" "finding"))',
-    primary_name: 'Sore throat',
-    secondary_text: null,
-    category: 'Common Symptoms',
-  },
+  ...WARNING_SIGNS.filter((sign) => !sign.primary_name.includes('Pregnancy')),
+  ...COMMON_SYMPTOMS,
 ]
 
 // =============================================================================
@@ -261,6 +175,7 @@ function makeBriefHistoryFinding(
       full: `${condition.label}: ${existence}`,
     },
     evaluations: [],
+    destination_relations: [],
     priority: null,
     score: null,
     existence,
@@ -327,6 +242,7 @@ const TUTORIAL_HEIGHT: RenderedFindingRelativeToHealthWorker = {
     full: 'Height: 165 cm',
   },
   evaluations: [],
+  destination_relations: [],
   priority: null,
   score: null,
   existence: 'Yes',
@@ -366,6 +282,7 @@ const TUTORIAL_WEIGHT: RenderedFindingRelativeToHealthWorker = {
     full: 'Weight: 62 kg',
   },
   evaluations: [],
+  destination_relations: [],
   priority: null,
   score: null,
   existence: 'Yes',
@@ -416,6 +333,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
       full: 'Respiratory rate: 32 bpm',
     },
     evaluations: [],
+    destination_relations: [],
     priority: null,
     score: 3,
     existence: 'Yes',
@@ -452,6 +370,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
       full: 'Heart rate: 95 bpm',
     },
     evaluations: [],
+    destination_relations: [],
     priority: null,
     score: 0,
     existence: 'Yes',
@@ -488,6 +407,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
       full: 'Blood pressure: 120/80 mmHg',
     },
     evaluations: [],
+    destination_relations: [],
     priority: null,
     score: 0,
     existence: 'Yes',
@@ -524,6 +444,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
       full: 'Temperature: 39 °C',
     },
     evaluations: [],
+    destination_relations: [],
     priority: null,
     score: 2,
     existence: 'Yes',
@@ -560,6 +481,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
       full: 'SpO2: 98%',
     },
     evaluations: [],
+    destination_relations: [],
     priority: null,
     score: null,
     existence: 'Yes',
@@ -591,8 +513,8 @@ export function getTutorialVitalsDefinitions(): {
   })
 
   // Add SpO2 as required due to respiratory symptoms (cough + asthma)
-  const hasSpO2 = measurements.some((m) => m.vital === 'blood_oxygen_saturation')
-  if (!hasSpO2) {
+  const has_sp_o2 = measurements.some((m) => m.vital === 'blood_oxygen_saturation')
+  if (!has_sp_o2) {
     measurements.push({
       vital: 'blood_oxygen_saturation',
       snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.id,
@@ -659,53 +581,69 @@ const RESPIRATORY_CHECK_FOR_CONDITIONS = [
 /**
  * Factory for creating check-for tasks (all completed with "No" answer).
  */
-function makeCheckForTask(condition: typeof RESPIRATORY_CHECK_FOR_CONDITIONS[number]): CheckForTask {
-  // S-expression for the finding with "Known absent" qualifier (410516002)
-  const s_expression = `(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "${condition.label}" "finding") (qualifier 410516002))`
+function makeCheckForTask(condition: typeof RESPIRATORY_CHECK_FOR_CONDITIONS[number]): RenderedTask {
+  const s_expression = `(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "${condition.label}" "finding"))`
 
   return {
-    procedure: {
-      type: 'procedure',
-      id: `tutorial-check-${condition.key}`,
+    atom: 'finding',
+    root_snomed_concept: {
+      atom: 'snomed_concept',
+      name: 'Clinical finding',
+      category: 'finding',
+    },
+    specific_snomed_concept: {
+      atom: 'snomed_concept',
+      name: condition.label,
+      category: 'finding',
+    },
+    value_snomed_concept: null,
+    qualifiers: [],
+    attributes: [],
+    exact: false,
+    history: false,
+    existence: 'No' as Existence,
+    displays: {
+      finding: condition.label,
+      value: 'No',
+      full: `${condition.label}: No`,
+    },
+    s_expression,
+    existing_finding: {
+      type: 'finding',
+      id: `tutorial-check-finding-${condition.key}`,
       created_at: new Date(),
       patient_encounter_id: 'tutorial-encounter-001',
-      root_snomed_concept_id: '386053000',
-      root_snomed_concept_name: 'Evaluation procedure',
-      root_snomed_concept_category: 'procedure',
-      specific_snomed_concept_id: '386053000',
-      specific_snomed_concept_name: 'Evaluation procedure',
-      specific_snomed_concept_category: 'procedure',
+      root_snomed_concept_id: '404684003',
+      root_snomed_concept_name: 'Clinical finding',
+      root_snomed_concept_category: 'finding',
+      specific_snomed_concept_id: condition.snomed_id,
+      specific_snomed_concept_name: condition.label,
+      specific_snomed_concept_category: 'finding',
+      value: null,
       modifiers: [],
       attributes: [],
-      evaluations: [],
       displays: {
         finding: condition.label,
-        value: condition.label,
-        full: `Check for: ${condition.label}`,
+        value: 'No',
+        full: `${condition.label}: No`,
       },
-      value: {
-        type: 's_expression',
-        s_expression,
-        node: {
-          atom: 'finding',
-          root_snomed_concept: {
-            atom: 'snomed_concept',
-            name: 'Clinical finding',
-            category: 'finding',
-          },
-          specific_snomed_concept: {
-            atom: 'snomed_concept',
-            name: condition.label,
-            category: 'finding',
-          },
-          value_snomed_concept: null,
-          qualifiers: [],
-          attributes: [],
-          exact: false,
-        },
+      evaluations: [],
+      destination_relations: [],
+      priority: null,
+      score: null,
+      existence: 'No' as Existence,
+      provider: MOCK_PROVIDER,
+      as_part_of_procedure: {
+        id: 'tutorial-check-procedure',
+        root_snomed_concept_id: '386053000',
+        root_snomed_concept_name: 'Evaluation procedure',
+        root_snomed_concept_category: 'procedure',
+        specific_snomed_concept_id: '386053000',
+        specific_snomed_concept_name: 'Evaluation procedure',
+        specific_snomed_concept_category: 'procedure',
+        workflow_step_name: 'Additional Tasks',
       },
     },
-    completed: true, // All answered "No"
   }
 }
 
@@ -747,6 +685,7 @@ export function getTutorialAssignPriorityData(): {
     // Assessments first
     {
       type: 'assessment',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-assessment-mobility',
@@ -779,6 +718,7 @@ export function getTutorialAssignPriorityData(): {
           value: { type: 'score', value: 0 },
           displays: { finding: 'Mobility', value: '0', full: 'Mobility: 0' },
         }],
+        destination_relations: [],
         priority: null,
         score: 0,
         existence: 'Yes',
@@ -798,6 +738,7 @@ export function getTutorialAssignPriorityData(): {
     },
     {
       type: 'assessment',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-assessment-consciousness',
@@ -830,6 +771,7 @@ export function getTutorialAssignPriorityData(): {
           value: { type: 'score', value: 0 },
           displays: { finding: 'Consciousness', value: '0', full: 'Consciousness: 0' },
         }],
+        destination_relations: [],
         priority: null,
         score: 0,
         existence: 'Yes',
@@ -849,6 +791,7 @@ export function getTutorialAssignPriorityData(): {
     },
     {
       type: 'assessment',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-assessment-trauma',
@@ -881,6 +824,7 @@ export function getTutorialAssignPriorityData(): {
           value: { type: 'score', value: 0 },
           displays: { finding: 'Trauma', value: '0', full: 'Trauma: 0' },
         }],
+        destination_relations: [],
         priority: null,
         score: 0,
         existence: 'Yes',
@@ -901,6 +845,7 @@ export function getTutorialAssignPriorityData(): {
     // TEWS measurements
     {
       type: 'measurement',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-vital-respiratory-rate',
@@ -921,6 +866,7 @@ export function getTutorialAssignPriorityData(): {
           full: 'Respiratory rate: 32 bpm',
         },
         evaluations: [],
+        destination_relations: [],
         priority: null,
         score: 3, // >30 bpm = 3 points
         existence: 'Yes',
@@ -947,6 +893,7 @@ export function getTutorialAssignPriorityData(): {
     },
     {
       type: 'measurement',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-vital-heart-rate',
@@ -967,6 +914,7 @@ export function getTutorialAssignPriorityData(): {
           full: 'Heart rate: 95 bpm',
         },
         evaluations: [],
+        destination_relations: [],
         priority: null,
         score: 0, // 51-101 = 0 points
         existence: 'Yes',
@@ -994,6 +942,7 @@ export function getTutorialAssignPriorityData(): {
     },
     {
       type: 'measurement',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-vital-bp-systolic',
@@ -1014,6 +963,7 @@ export function getTutorialAssignPriorityData(): {
           full: 'Systolic BP: 120 mmHg',
         },
         evaluations: [],
+        destination_relations: [],
         priority: null,
         score: 0, // 101-200 = 0 points
         existence: 'Yes',
@@ -1040,6 +990,7 @@ export function getTutorialAssignPriorityData(): {
     },
     {
       type: 'measurement',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-vital-temperature',
@@ -1060,6 +1011,7 @@ export function getTutorialAssignPriorityData(): {
           full: 'Temperature: 39 °C',
         },
         evaluations: [],
+        destination_relations: [],
         priority: null,
         score: 2, // >38.5 = 2 points
         existence: 'Yes',
@@ -1085,6 +1037,7 @@ export function getTutorialAssignPriorityData(): {
     // Other measurements (no TEWS score)
     {
       type: 'measurement',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-vital-bp-diastolic',
@@ -1105,6 +1058,7 @@ export function getTutorialAssignPriorityData(): {
           full: 'Diastolic BP: 80 mmHg',
         },
         evaluations: [],
+        destination_relations: [],
         priority: null,
         score: null,
         existence: 'Yes',
@@ -1129,6 +1083,7 @@ export function getTutorialAssignPriorityData(): {
     },
     {
       type: 'measurement',
+      organization_id: 'tutorial-org-001',
       finding: {
         type: 'finding',
         id: 'tutorial-vital-spo2',
@@ -1149,6 +1104,7 @@ export function getTutorialAssignPriorityData(): {
           full: 'SpO2: 98%',
         },
         evaluations: [],
+        destination_relations: [],
         priority: null,
         score: null,
         existence: 'Yes',
@@ -1214,6 +1170,7 @@ function makeCoughFinding(): RenderedFindingRelativeToHealthWorker {
       full: 'Cough',
     },
     evaluations: [],
+    destination_relations: [],
     priority: null,
     score: null,
     existence: 'Yes',
@@ -1385,7 +1342,7 @@ export function getTutorialRoutePatientData() {
       reason: 'seeking treatment' as const,
       notes: null as string | null | undefined,
     },
-    patient_names: TUTORIAL_PATIENT.names!,
+    patient_names: TUTORIAL_PATIENT.names,
     can_do_triage: true,
     senior_health_worker_name: 'Bongani Sibeko',
   }
