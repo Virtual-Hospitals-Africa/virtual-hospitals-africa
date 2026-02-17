@@ -66,7 +66,7 @@ export function healthWorkerDisplayInner({
   }
 
   if (is_admin) {
-    if (!role) {
+    if (role === 'admin') {
       return {
         avatar_url,
         display_name: health_worker_name,
