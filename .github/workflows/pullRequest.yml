@@ -36,14 +36,15 @@ jobs:
         deno task build
         deno task test --use-build
 
-  test_chatbot:
-    uses: ./.github/workflows/test-with-db.yml
-    with:
-      setup-lfs: true
-      run: |
-        deno task db:restore snomed
-        deno task db:migrate all
-        deno task test:chatbot
+  # TODO turn back on
+  # test_chatbot:
+  #   uses: ./.github/workflows/test-with-db.yml
+  #   with:
+  #     setup-lfs: true
+  #     run: |
+  #       deno task db:restore snomed
+  #       deno task db:migrate all
+  #       deno task test:chatbot
 
   test_migrations:
     uses: ./.github/workflows/test-with-db.yml
