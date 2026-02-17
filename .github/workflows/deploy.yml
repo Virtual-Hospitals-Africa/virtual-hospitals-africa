@@ -1,91 +1,91 @@
-name: Deploy Virtual Hospitals Africa App to AWS
+# name: Deploy Virtual Hospitals Africa App to AWS
 
-on:
-  push:
-    branches:
-      - main
-      - aws
+# on:
+#   push:
+#     branches:
+#       - main
+#       - aws
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v5
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check out code
+#         uses: actions/checkout@v5
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: af-south-1
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           aws-region: af-south-1
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+#       - name: Login to Amazon ECR
+#         id: login-ecr
+#         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+#       - name: Set up QEMU
+#         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
 
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker buildx build \
-            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-            -t $ECR_REGISTRY/$ECR_REPOSITORY:vha-app \
-            --platform linux/arm64 \
-            --no-cache \
-            --push .
-        # run: |
-        #   docker buildx build \
-        #     -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-        #     --platform linux/arm64 \
-        #     --cache-from type=gha \
-        #     --cache-to type=gha,mode=max \
-        #     --push .
+#       - name: Build, tag, and push image to Amazon ECR
+#         id: build-image
+#         env:
+#           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+#           IMAGE_TAG: ${{ github.sha }}
+#         run: |
+#           docker buildx build \
+#             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+#             -t $ECR_REGISTRY/$ECR_REPOSITORY:vha-app \
+#             --platform linux/arm64 \
+#             --no-cache \
+#             --push .
+#         # run: |
+#         #   docker buildx build \
+#         #     -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+#         #     --platform linux/arm64 \
+#         #     --cache-from type=gha \
+#         #     --cache-to type=gha,mode=max \
+#         #     --push .
 
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          envs: ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG
-          script: |
-            set -euo pipefail
+#       - name: Deploy to EC2
+#         uses: appleboy/ssh-action@master
+#         env:
+#           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+#           IMAGE_TAG: ${{ github.sha }}
+#         with:
+#           host: ${{ secrets.EC2_HOST }}
+#           username: ${{ secrets.EC2_USERNAME }}
+#           key: ${{ secrets.EC2_SSH_KEY }}
+#           envs: ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG
+#           script: |
+#             set -euo pipefail
 
-            # Login to ECR
-            aws ecr get-login-password --region af-south-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+#             # Login to ECR
+#             aws ecr get-login-password --region af-south-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
 
-            # Remove all but the latest 3 images
-            docker images | awk 'NR > 4 { print $3 }' | xargs docker rmi || true
+#             # Remove all but the latest 3 images
+#             docker images | awk 'NR > 4 { print $3 }' | xargs docker rmi || true
 
-            # Pull the latest image
-            docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#             # Pull the latest image
+#             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             
-            # Stop and remove existing container if it exists
-            docker stop vha-app || true
-            docker rm vha-app || true
+#             # Stop and remove existing container if it exists
+#             docker stop vha-app || true
+#             docker rm vha-app || true
 
-            # Run the new container
-            docker run -d \
-              --name vha-app \
-              --restart unless-stopped \
-              -p 80:8000 \
-              --env-file /home/ec2-user/.env \
-              --log-driver=awslogs \
-              --log-opt awslogs-region=af-south-1 \
-              --log-opt awslogs-group=/docker/virtual-hospitals-africa \
-              --log-opt awslogs-stream=vha-app \
-              $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#             # Run the new container
+#             docker run -d \
+#               --name vha-app \
+#               --restart unless-stopped \
+#               -p 80:8000 \
+#               --env-file /home/ec2-user/.env \
+#               --log-driver=awslogs \
+#               --log-opt awslogs-region=af-south-1 \
+#               --log-opt awslogs-group=/docker/virtual-hospitals-africa \
+#               --log-opt awslogs-stream=vha-app \
+#               $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
