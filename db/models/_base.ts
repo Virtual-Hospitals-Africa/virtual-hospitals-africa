@@ -65,9 +65,9 @@ const SIMPLE_BASE_QUERY = Symbol('simpleBaseQuery')
 export function simpleBaseQuery<TableName extends StandardTables>(
   table_name: TableName,
 ): (
-  trx: TrxOrDbOrQueryCreator,
+  trx: TrxOrDbOrQueryCreator, terms?: Record<string, unknown>
 ) => SelectQueryBuilder<DB, TableName, SelectShape<DB[TableName]>> {
-  const fn = (trx: TrxOrDbOrQueryCreator) =>
+  const fn = (trx: TrxOrDbOrQueryCreator, _terms?: Record<string, unknown>) =>
     trx.selectFrom(table_name).selectAll() as unknown as SelectQueryBuilder<
       DB,
       TableName,
@@ -542,5 +542,13 @@ export function base<
     invalidateCacheAll() {
       lru?.clear()
     },
+  })
+}
+
+export function crud<TopLevelTable extends StandardTables>(top_level_table: TopLevelTable) {
+  return base({
+    top_level_table,
+    baseQuery: simpleBaseQuery(top_level_table),
+    formatResult: identity<SelectShape<DB[TopLevelTable]>>,
   })
 }
