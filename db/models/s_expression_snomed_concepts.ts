@@ -5,7 +5,7 @@ import { isAtom, parseExpressionExpectingAtom, parseWithSchema } from '../../sha
 import { any_query, AnyNode, Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { STATUS_ATTRIBUTE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 
 function snomedConceptIdPredicate(

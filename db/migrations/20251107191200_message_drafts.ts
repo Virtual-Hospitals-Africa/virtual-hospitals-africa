@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { createStandardTable } from '../createTable.ts'
 import { assertOnInsert } from '../helpers.ts'
 
@@ -49,7 +49,7 @@ export async function up(db: Kysely<DB>) {
     .asEnum([
       'organization',
       'employee',
-      'profession',
+      'role',
       'organization_category',
       'locality',
       'administrative_area_level_1',
@@ -92,7 +92,7 @@ export async function up(db: Kysely<DB>) {
         .addCheckConstraint(
           'target_value_and_uuid_based_on_type',
           sql`(
-            (target_type IN ('profession', 'organization_category', 'locality', 'administrative_area_level_1', 'administrative_area_level_2') AND target_value IS NOT NULL AND target_uuid IS NULL)
+            (target_type IN ('role', 'organization_category', 'locality', 'administrative_area_level_1', 'administrative_area_level_2') AND target_value IS NOT NULL AND target_uuid IS NULL)
             OR
             (target_type IN ('organization', 'employee') AND target_uuid IS NOT NULL AND target_value IS NULL)
           )`,

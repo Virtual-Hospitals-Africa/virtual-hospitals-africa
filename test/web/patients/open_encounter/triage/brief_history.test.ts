@@ -164,8 +164,8 @@ describeParallel('triage/brief_history', () => {
         })
 
         const other_nurse = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          registration_status: 'approved',
+          role: 'nurse',
+
           organization_id: clinic.id,
         })
 
@@ -348,8 +348,7 @@ describeParallel('triage/brief_history', () => {
           'existence': 'Yes',
           'provider': {
             'is_me': true,
-            'profession': 'nurse',
-            'specialty': 'Primary care',
+            'role': 'nurse',
             'is_admin': false,
             'seen_at': z.string().datetime({ offset: true }),
           },
@@ -397,8 +396,7 @@ describeParallel('triage/brief_history', () => {
           'existence': 'No',
           'provider': {
             'is_me': true,
-            'profession': 'nurse',
-            'specialty': 'Primary care',
+            'role': 'nurse',
             'is_admin': false,
             'seen_at': z.string().datetime({ offset: true }),
           },
@@ -799,8 +797,8 @@ describeParallel('triage/brief_history', () => {
         })
 
         const other_nurse = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          registration_status: 'approved',
+          role: 'nurse',
+
           organization_id: initial.clinic.id,
         })
 

@@ -1,19 +1,18 @@
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
-import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { OrganizationContext } from '../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
-import { employee_info } from '../../../../../db/models/employee_info.ts'
+import { employees } from '../../../../../db/models/employees.ts'
 
 export default HealthWorkerHomePageLayout<OrganizationContext>(
   async function EmployeePage(
     ctx: OrganizationContext,
   ) {
-    const { trx, organization, is_admin_at_organization } = ctx.state
+    const { trx, organization } = ctx.state
     const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
-    const employee = await employee_info.getEmployeeInfo(
+    const employee = await employees.findOne(
       trx,
       {
         health_worker_id,
@@ -43,7 +42,7 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
                 {employee.name}
               </dt>
               <dt className='text-sm font-sm leading-6 text-gray-400'>
-                {employee.professions.join(', ')}
+                {employee.role}
               </dt>
             </div>
             <HealthWorkerDetailedCard
@@ -51,17 +50,6 @@ export default HealthWorkerHomePageLayout<OrganizationContext>(
             />
           </div>
           <hr style={{ margin: '20px 0' }} />
-          {is_admin_at_organization &&
-            employee.registration_pending_approval && (
-            <form
-              style={{ maxWidth: '200px' }}
-              className='mb-5 float-right'
-              method='POST'
-              action={`${ctx.url.pathname}/approve`}
-            >
-              <FormButtons submitText='Approve' />
-            </form>
-          )}
         </>
       ),
     }

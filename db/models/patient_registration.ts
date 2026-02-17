@@ -1,13 +1,13 @@
 import { sql } from 'kysely'
-import { HealthWorkerOrganization, PatientProfileSummary, RenderedOrganization, TrxOrDb } from '../../types.ts'
-import { isoDate, jsonBuildObject } from '../helpers.ts'
+import { HealthWorkerOrganization, PatientProfileSummary, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { concat, isoDate, jsonBuildObject } from '../helpers.ts'
 import { RenderedPatientAge } from '../../types.ts'
 import { description_sql } from './patients.ts'
 import { patient_new } from './patient_new.ts'
 
 export const patient_registration = {
   start(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization: RenderedOrganization,
     organization_employment: HealthWorkerOrganization,
   ) {
@@ -17,7 +17,7 @@ export const patient_registration = {
     )
   },
   async getSummaryById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ): Promise<PatientProfileSummary> {
     const summary = await trx
@@ -58,9 +58,7 @@ export const patient_registration = {
           description: description_sql,
         }).as('personal'),
         jsonBuildObject({
-          primary_doctor_name: sql<
-            string
-          >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`,
+          primary_doctor_name: concat('Dr. ', eb.ref('health_workers.name')),
           nearest_organization_id: eb.ref('patients.nearest_organization_id'),
           nearest_organization_name: eb.ref('organizations.name'),
         }).as('nearest_health_care'),
@@ -91,7 +89,7 @@ export const patient_registration = {
     }
   },
   completed(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
     }: {

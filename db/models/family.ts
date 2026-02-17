@@ -3,7 +3,7 @@ import {
   // FamilyUpsert,
   PatientFamily,
   PatientGuardian,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { allHaveStringField } from '../../util/haveNames.ts'
@@ -11,7 +11,7 @@ import { promiseProps } from '../../util/promiseProps.ts'
 
 export const family = {
   async getGuardiansOfPatient(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ) {
     const guardians = await trx
@@ -74,7 +74,7 @@ export const family = {
   },
 
   addGuardian(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     guardian: PatientGuardian,
   ): Promise<{ id: string }> {
     return trx
@@ -84,7 +84,7 @@ export const family = {
       .executeTakeFirstOrThrow()
   },
   async getDependentsOfPatient(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ) {
     const dependents = await trx
@@ -140,7 +140,7 @@ export const family = {
     return dependents
   },
   getOtherNextOfKinOfPatient(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ) {
     return trx
@@ -175,7 +175,7 @@ export const family = {
       .executeTakeFirst()
   },
   getPatientFamily(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ) {
     return trx
@@ -185,7 +185,7 @@ export const family = {
       .executeTakeFirst()
   },
   async get(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ): Promise<PatientFamily> {
     const { patient_family, guardians, dependents, next_of_kin } = await promiseProps({
@@ -267,7 +267,7 @@ export const family = {
 //   a. The patient already exists
 //   b. The patient is new
 // ,async upsert(
-//   trx: TrxOrDb,
+//   trx: TrxOrDbOrQueryCreator,
 //   patient_id: string,
 //   family_to_upsert: FamilyUpsert,
 // ): Promise<void> {
@@ -616,7 +616,7 @@ export const family = {
 // }
 
 // ,async setNextOfKin(
-//   trx: TrxOrDb,
+//   trx: TrxOrDbOrQueryCreator,
 //   patient_id: string,
 //   next_of_kin: NonNullable<FamilyUpsert['next_of_kin']>,
 // ) {

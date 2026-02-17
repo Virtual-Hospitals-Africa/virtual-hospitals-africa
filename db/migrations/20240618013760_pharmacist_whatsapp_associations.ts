@@ -1,4 +1,4 @@
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
@@ -10,7 +10,7 @@ export async function up(db: Kysely<DB>) {
       qb.addColumn(
         'entity_id',
         'uuid',
-        (col) => col.references('pharmacists.id').onDelete('cascade'),
+        (col) => col.references('employment.id').onDelete('cascade'),
       )
         .addColumn('phone_number', 'varchar(255)', (col) => col.notNull().unique())
         .addColumn('data', 'json', (col) => col.notNull())

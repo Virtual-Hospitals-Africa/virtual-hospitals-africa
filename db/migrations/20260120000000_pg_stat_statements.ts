@@ -1,4 +1,4 @@
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
 // Enable pg_stat_statements for query performance monitoring

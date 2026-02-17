@@ -1,9 +1,9 @@
-import { NonEmptyArray, RenderedRoom, TrxOrDb } from '../../types.ts'
+import { NonEmptyArray, RenderedRoom, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFromColumn, jsonObjectFrom, orderByArrayPosition } from '../helpers.ts'
 import { base } from './_base.ts'
 import { Department, DEPARTMENTS } from '../../shared/departments.ts'
 
-function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { organization_id: string; name?: string; department_name?: Department; is_available?: boolean }) {
   return trx
     .selectFrom('organization_rooms')
     .select((eb) => [
@@ -54,55 +54,33 @@ function baseQuery(trx: TrxOrDb) {
     ])
     .orderBy('organization_rooms.organization_id', 'asc')
     .orderBy('organization_rooms.name', 'asc')
+    .where('organization_rooms.organization_id', '=', opts.organization_id)
+    .$if(!!opts.name, (qb) => qb.where('organization_rooms.name', '=', opts.name!))
+    .$if(!!opts.department_name, (qb) =>
+      qb
+        .innerJoin(
+          'organization_department_rooms',
+          'organization_department_rooms.organization_room_id',
+          'organization_rooms.id',
+        )
+        .innerJoin(
+          'organization_departments',
+          'organization_departments.id',
+          'organization_department_rooms.organization_department_id',
+        )
+        .where('organization_departments.name', '=', opts.department_name!))
+    .$if(!!opts.is_available, (qb) =>
+      qb.where(
+        'organization_rooms.id',
+        'not in',
+        trx.selectFrom('patient_presence')
+          .select('patient_presence.organization_room_id')
+          .distinct(),
+      ))
 }
 
 export const organization_rooms = base({
   top_level_table: 'organization_rooms',
   baseQuery,
   formatResult: (room): RenderedRoom => room,
-  handleSearch(
-    qb,
-    opts: {
-      organization_id: string
-      name?: string
-      department_name?: Department
-      is_available?: boolean
-    },
-    trx,
-  ) {
-    return qb
-      .where('organization_rooms.organization_id', '=', opts.organization_id)
-      .$if(
-        !!opts.name,
-        (qb) => qb.where('organization_rooms.name', '=', opts.name!),
-      )
-      .$if(!!opts.department_name, (qb) =>
-        qb
-          .innerJoin(
-            'organization_department_rooms',
-            'organization_department_rooms.organization_room_id',
-            'organization_rooms.id',
-          )
-          .innerJoin(
-            'organization_departments',
-            'organization_departments.id',
-            'organization_department_rooms.organization_department_id',
-          )
-          .where('organization_departments.name', '=', opts.department_name!))
-      .$if(
-        !!opts.name,
-        (qb) => qb.where('organization_rooms.name', '=', opts.name!),
-      )
-      .$if(
-        !!opts.is_available,
-        (qb) =>
-          qb.where(
-            'organization_rooms.id',
-            'not in',
-            trx.selectFrom('patient_presence')
-              .select('patient_presence.organization_room_id')
-              .distinct(),
-          ),
-      )
-  },
 })

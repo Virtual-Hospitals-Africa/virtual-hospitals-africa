@@ -1,5 +1,5 @@
 import Calendar from './Calendar.tsx'
-import { type ProviderAppointment } from '../../types.ts'
+import { type EmployeeAppointment } from '../../types.ts'
 import Appointments from './Appointments.tsx'
 import { prettyMinimal } from '../../util/date.ts'
 import { Button } from '../library/Button.tsx'
@@ -13,7 +13,7 @@ export function formHeaderText({ day, today }: { day: string; today: string }) {
 
 export default function AppointmentsCalendar(
   { appointments, day, today, url }: {
-    appointments: ProviderAppointment[]
+    appointments: EmployeeAppointment[]
     day: string
     today: string
     url: URL

@@ -1,4 +1,4 @@
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
@@ -7,29 +7,16 @@ export async function up(db: Kysely<DB>) {
     db,
     'regulators',
     (qb) =>
-      qb.addColumn('name', 'varchar(255)', (col) => col.notNull())
+      qb.addColumn('regulatory_agency_id', 'uuid', (col) => col.notNull().references('regulatory_agencies.id').onDelete('cascade'))
+        .addColumn('name', 'varchar(255)', (col) => col.notNull())
         .addColumn('email', 'varchar(255)', (col) => col.notNull().unique())
-        .addColumn(
-          'country',
-          'varchar(2)',
-          (col) =>
-            col.notNull().references('countries.iso_3166_2').onDelete(
-              'cascade',
-            ),
-        )
         .addColumn('avatar_media_id', 'uuid', (col) => col.references('media.id').onDelete('set null')),
   )
 
   await db.schema
-    .createIndex('idx_regulators_country')
+    .createIndex('idx_regulators_regulatory_agency_id')
     .on('regulators')
-    .column('country')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_regulators_avatar_media_id')
-    .on('regulators')
-    .column('avatar_media_id')
+    .column('regulatory_agency_id')
     .execute()
 }
 

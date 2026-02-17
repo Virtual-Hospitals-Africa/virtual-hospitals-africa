@@ -13,7 +13,7 @@ import {
   RenderedPatientOpenEncounter,
   RenderedPatientPresence,
   SelectShape,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
   WorkflowStatus,
 } from '../../types.ts'
 import { patients } from './patients.ts'
@@ -66,7 +66,16 @@ type EncounterExistingOrToCreate = {
   }
 }
 
-function baseQuery(trx: TrxOrDb) {
+type EncounterSearch = {
+  is_open?: boolean
+  is_closed?: boolean
+  organization_id?: string
+  patient_id?: string
+  // ever_seen_health_worker_id?: string
+  presence_health_worker_id?: string | IdSelection
+}
+
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
   return trx
     .selectFrom('patient_encounters')
     .select((eb_encounters) => [
@@ -76,7 +85,7 @@ function baseQuery(trx: TrxOrDb) {
       'patient_encounters.reason',
       'patient_encounters.notes',
       jsonObjectFrom(
-        patients.baseQuery(trx)
+        patients.baseQuery(trx, { include_incomplete_registration: true })
           .where(
             'patients.id',
             '=',
@@ -84,7 +93,7 @@ function baseQuery(trx: TrxOrDb) {
           ),
       ).$notNull().as('patient'),
       jsonObjectFrom(
-        organizations.baseQuery(trx)
+        organizations.baseQuery(trx, {})
           .where(
             'organizations.id',
             '=',
@@ -100,16 +109,16 @@ function baseQuery(trx: TrxOrDb) {
             jsonArrayFrom(
               employees.baseQuery(trx, {})
                 .innerJoin(
-                  'appointment_providers',
-                  'appointment_providers.provider_id',
+                  'appointment_employees',
+                  'appointment_employees.employee_id',
                   'employment.id',
                 )
                 .where(
-                  'appointment_providers.appointment_id',
+                  'appointment_employees.appointment_id',
                   '=',
                   eb_appointments.ref('appointments.id'),
                 ),
-            ).as('providers'),
+            ).as('employees'),
           ]),
       ).as('appointment'),
       sql<
@@ -284,7 +293,7 @@ function baseQuery(trx: TrxOrDb) {
           ]),
       ).as('workflows'),
       jsonArrayFrom(
-        patient_encounter_employees.baseQuery(trx)
+        patient_encounter_employees.baseQuery(trx, {})
           .where(
             'patient_encounter_employees.patient_encounter_id',
             '=',
@@ -292,6 +301,24 @@ function baseQuery(trx: TrxOrDb) {
           ),
       ).as('all_employees_seen'),
     ])
+    .$if(!!opts.is_open, (qb) => qb.where('patient_encounters.closed_at', 'is', null))
+    .$if(!!opts.is_closed, (qb) => qb.where('patient_encounters.closed_at', 'is not', null))
+    .$if(!!opts.organization_id, (qb) => qb.where('patient_encounters.organization_id', '=', opts.organization_id!))
+    .$if(!!opts.patient_id, (qb) => qb.where('patient_encounters.patient_id', '=', opts.patient_id!))
+    .$if(!!opts.presence_health_worker_id, (qb) =>
+      qb.innerJoin(
+        'employment_presence',
+        'employment_presence.with_patient_id',
+        'patient_encounters.patient_id',
+      ).innerJoin(
+        'employment',
+        'employment.id',
+        'employment_presence.id',
+      ).where(
+        'employment.health_worker_id',
+        '=',
+        opts.presence_health_worker_id!,
+      ))
 }
 
 type IntermediatePatientEncounterResult = QueryResult<typeof baseQuery>
@@ -454,15 +481,6 @@ function asStatus(
   return { open: true, patient_presence: asPatientPresence(patient_presence) }
 }
 
-type EncounterSearch = {
-  is_open?: boolean
-  is_closed?: boolean
-  organization_id?: string
-  patient_id?: string
-  // ever_seen_health_worker_id?: string
-  presence_health_worker_id?: string | IdSelection
-}
-
 export const patient_encounters = base({
   top_level_table: 'patient_encounters',
   baseQuery,
@@ -501,53 +519,8 @@ export const patient_encounters = base({
       ...patient_encounter,
     }
   },
-  handleSearch(
-    qb,
-    opts: EncounterSearch,
-  ) {
-    if (opts.is_open) {
-      assert(!opts.is_closed)
-      qb = qb.where('patient_encounters.closed_at', 'is', null)
-    }
-    if (opts.is_closed) {
-      assert(!opts.is_open)
-      qb = qb.where('patient_encounters.closed_at', 'is not', null)
-    }
-    if (opts.organization_id) {
-      qb = qb.where(
-        'patient_encounters.organization_id',
-        '=',
-        opts.organization_id,
-      )
-    }
-    if (opts.patient_id) {
-      qb = qb.where(
-        'patient_encounters.patient_id',
-        '=',
-        opts.patient_id,
-      )
-    }
-    if (opts.presence_health_worker_id) {
-      assert(opts.is_open)
-      qb = qb.innerJoin(
-        'employment_presence',
-        'employment_presence.with_patient_id',
-        'patient_encounters.patient_id',
-      ).innerJoin(
-        'employment',
-        'employment.id',
-        'employment_presence.id',
-      ).where(
-        'employment.health_worker_id',
-        '=',
-        opts.presence_health_worker_id,
-      )
-    }
-
-    return qb
-  },
   async insertSeekingTreatmentForRegisteredPatient(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization: RenderedOrganization,
     organization_employment: HealthWorkerOrganization,
     {
@@ -709,7 +682,7 @@ export const patient_encounters = base({
     and the patient is no longer at the organization (patient_presence)
   */
   async close(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_encounter_id }: {
       patient_encounter_id: string
     },
@@ -772,7 +745,7 @@ export const patient_encounters = base({
     assert(encounter.status.open)
   },
   async getOpen(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
   ): Promise<RenderedPatientOpenEncounter[]> {
     const results = await patient_encounters.findAll(trx, {
@@ -783,7 +756,7 @@ export const patient_encounters = base({
     return results
   },
   async getFirstOpen(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,
   ): Promise<RenderedPatientOpenEncounter | undefined> {
     const results = await patient_encounters.getOpen(trx, search_terms)
@@ -793,7 +766,7 @@ export const patient_encounters = base({
     return first(results)
   },
   updateOne(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_encounter_id: string,
     updates: {
       reason: EncounterReason

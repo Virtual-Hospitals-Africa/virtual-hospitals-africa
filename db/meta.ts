@@ -95,7 +95,7 @@ export async function selectEnumValues(enum_name: string) {
 const top_level_tables = [
   'patients' as const,
   'health_workers' as const,
-  'health_worker_invitees' as const,
+  'events' as const,
 ]
 export async function resetInTest(trx: TrxOrDb = db) {
   assert(Deno.env.get('IS_TEST'), "Don't run this outside tests!")

@@ -1,23 +1,21 @@
 import { useSignal } from '@preact/signals'
-import { Maybe, RenderedEmployee } from '../types.ts'
+import { RenderedEmployee } from '../types.ts'
 import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
-import words from '../util/words.ts'
+import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
+import { SqlBool } from 'kysely'
 
-function ProviderSelectOption(
+export function ProviderSelectOption(
   { provider, selected, toggleSelection }: {
-    provider: {
-      employee_id: string | 'next_available'
-      name: string
-      avatar_url?: Maybe<string>
-      profession?: Maybe<string>
-      specialty?: Maybe<string>
+    provider: RenderedEmployee & {
+      at_work?: SqlBool
     }
     selected: boolean
     toggleSelection(): void
   },
 ) {
   const active = useSignal(false)
+  const display = employeeDisplay(provider)
 
   return (
     <label
@@ -37,7 +35,7 @@ function ProviderSelectOption(
       />
       <span className='flex items-center gap-3'>
         <Avatar
-          src={provider.avatar_url}
+          src={display.avatar_url}
           className='h-14 w-14'
         />
         <span className='flex flex-col'>
@@ -45,28 +43,17 @@ function ProviderSelectOption(
             id={`provider-${provider.employee_id}-label`}
             className='font-medium text-gray-900 text-md'
           >
-            {provider.name}
+            {display.display_name}
+            {provider.at_work && <span className='text-xs text-green-600 font-normal'>Online</span>}
           </span>
-          {provider.profession && (
-            <span
-              id={`provider-${provider.employee_id}-description-0`}
-              className='text-gray-500 text-sm'
-            >
-              <span className='block sm:inline capitalize'>
-                {provider.profession}
-              </span>
-              {provider.specialty && (
-                <>
-                  <span className='hidden sm:mx-1 sm:inline' aria-hidden='true'>
-                    ·
-                  </span>
-                  <span className='block sm:inline capitalize'>
-                    {words(provider.specialty).join(' ')}
-                  </span>
-                </>
-              )}
+          <span
+            id={`provider-${provider.employee_id}-description-0`}
+            className='text-gray-500 text-sm'
+          >
+            <span className='block sm:inline capitalize'>
+              {display.description}
             </span>
-          )}
+          </span>
         </span>
       </span>
       <span
@@ -111,7 +98,7 @@ export default function ProvidersSelect(
       {selected.value.size > 0 && (
         <input
           type='hidden'
-          name='provider_ids'
+          name='employee_ids'
           value={JSON.stringify([...selected.value].map((p) => p.employee_id))}
         />
       )}

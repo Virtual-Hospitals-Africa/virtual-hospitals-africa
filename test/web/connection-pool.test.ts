@@ -13,7 +13,7 @@ describeParallel.skip('Connection Pool Management', () => {
 
   itParallel('returns connections to pool after failed POST requests', async () => {
     const mock = await addTestEmployeeWithSession(db, {
-      profession: 'admin',
+      role: 'admin',
     })
 
     const failing_requests = Array.from({ length: 150 }, () =>
@@ -52,7 +52,7 @@ describeParallel.skip('Connection Pool Management', () => {
   itParallel('returns connections to pool after GET requests through middleware', async () => {
     const organization = await createTestOrganization(db)
     const mock = await addTestEmployeeWithSession(db, {
-      profession: 'admin',
+      role: 'admin',
       organization_id: organization.id,
     })
 

@@ -1,11 +1,11 @@
-import { TrxOrDb } from './../../types.ts'
+import { TrxOrDbOrQueryCreator } from './../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { assertArrayIncludes } from 'std/assert/assert_array_includes.ts'
 import { base } from './_base.ts'
 
 function insertSpeech(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { media_speech_id, binary_data, mime_type, language_code }: {
     media_speech_id?: string
     binary_data: Uint8Array
@@ -34,7 +34,7 @@ function insertSpeech(
 }
 
 function insertSpeechTranscription(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   { media_speech_id, transcription, model }: {
     media_speech_id: string
     transcription: string
@@ -52,7 +52,7 @@ function insertSpeechTranscription(
 }
 
 function insert(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   opts: { binary_data: Uint8Array; mime_type: string },
 ): Promise<{
   id: string
@@ -67,7 +67,7 @@ function insert(
     .executeTakeFirstOrThrow()
 }
 
-function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { media_id?: string; appointment_id?: string }) {
   return trx.selectFrom('media')
     .select([
       'media.id',
@@ -76,32 +76,16 @@ function baseQuery(trx: TrxOrDb) {
       'media.created_at',
       'media.updated_at',
     ])
+    .$if(!!opts.media_id, (qb) => qb.where('media.id', '=', opts.media_id!))
+    .$if(!!opts.appointment_id, (qb) =>
+      qb.innerJoin('appointment_media', 'appointment_media.media_id', 'media.id')
+        .where('appointment_media.appointment_id', '=', opts.appointment_id!))
 }
 
 export const media = base({
   top_level_table: 'media' as const,
   baseQuery,
   formatResult: (x) => x,
-  handleSearch(
-    qb,
-    opts: {
-      media_id?: string
-      appointment_id?: string
-    },
-  ) {
-    if (opts.media_id) {
-      qb = qb.where('media.id', '=', opts.media_id)
-    }
-    if (opts.appointment_id) {
-      qb = qb.innerJoin(
-        'appointment_media',
-        'appointment_media.media_id',
-        'media.id',
-      )
-        .where('appointment_media.appointment_id', '=', opts.appointment_id)
-    }
-    return qb
-  },
   insertSpeech,
   insertSpeechTranscription,
   insert,

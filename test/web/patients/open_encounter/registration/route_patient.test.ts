@@ -27,7 +27,6 @@ describeParallel(
             next_workflow: 'continue_with_registration',
           },
           primary_care: {
-            primary_doctor_name: 'Whoever',
             nearest_organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
             insurance: {
               has_no_insurance: true,

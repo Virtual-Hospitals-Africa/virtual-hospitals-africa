@@ -1,6 +1,6 @@
 import db, { uri } from '../db.ts'
 import { runCommandAssertExitCodeZero } from '../../util/command.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { TrxOrDb } from '../../types.ts'
 import { pMap } from '../../util/inParallel.ts'
 

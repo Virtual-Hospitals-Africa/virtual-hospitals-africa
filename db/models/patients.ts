@@ -1,8 +1,8 @@
 import { InsertObject, sql, UpdateObject } from 'kysely'
-import { Coordinates, IdSelection, InsertShapeLiteral, Maybe, RenderedPatient, RenderedPatientCompletedRegistration, TrxOrDb } from '../../types.ts'
+import { Coordinates, IdSelection, InsertShapeLiteral, RenderedPatient, RenderedPatientCompletedRegistration, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { isoDate, jsonBuildNullableObject, literalLocation, longFormattedDate } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
-import { base } from './_base.ts'
+import type { DB } from '../../db.d.ts'
+import { base, identity } from './_base.ts'
 import { asMaybeNames, asNames, NameInputs } from '../../util/asNames.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -33,7 +33,7 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-function baseQuery(trx: TrxOrDb) {
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { search?: string | null; has_name?: boolean; include_incomplete_registration: boolean }) {
   return trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
@@ -84,6 +84,9 @@ function baseQuery(trx: TrxOrDb) {
       'name',
       'asc',
     )
+    .$if(!!opts.has_name, (qb) => qb.where('patients.name', 'is not', null))
+    .$if(!!opts.search, (qb) => qb.where('patients.name', 'ilike', `%${opts.search}%`))
+    .$if(!opts.include_incomplete_registration, (qb) => qb.where('patients.completed_registration', '=', true))
 }
 
 type PatientUpsert =
@@ -96,32 +99,9 @@ type PatientUpsert =
 export const patients = base({
   top_level_table: 'patients',
   baseQuery,
-  formatResult: (x: RenderedPatient): RenderedPatient => x,
-  handleSearch(
-    qb,
-    { search, has_name, include_incomplete_registration }: {
-      search?: Maybe<string>
-      has_name?: boolean
-      include_incomplete_registration?: boolean
-    },
-  ) {
-    if (has_name) {
-      qb = qb.where('patients.name', 'is not', null)
-    }
-    if (search) {
-      qb = qb.where('patients.name', 'ilike', `%${search}%`)
-    }
-    if (!include_incomplete_registration) {
-      qb = qb.where(
-        'patients.completed_registration',
-        '=',
-        true,
-      )
-    }
-    return qb
-  },
+  formatResult: identity<RenderedPatient>,
   async insert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { conversation_state, country, location, ...to_insert }:
       & Omit<
         InsertShapeLiteral<InsertObject<DB, 'patients'>>,
@@ -161,7 +141,7 @@ export const patients = base({
     return patient
   },
   upsert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient: PatientUpsert,
   ) {
     const to_upsert: InsertObject<DB, 'patients'> = {
@@ -179,7 +159,7 @@ export const patients = base({
       .executeTakeFirstOrThrow()
   },
   update(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { id, name, first_names, surname, preferred_name, location, ...patient }:
       & Partial<PatientUpsert>
       & {
@@ -198,7 +178,7 @@ export const patients = base({
       .returningAll()
       .executeTakeFirstOrThrow()
   },
-  getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
+  getAvatar(trx: TrxOrDbOrQueryCreator, opts: { patient_id: string }) {
     return trx
       .selectFrom('media')
       .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
@@ -207,7 +187,7 @@ export const patients = base({
       .executeTakeFirst()
   },
   async getPreferredLanguage(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ) {
     const patient = await trx.selectFrom('patients')
@@ -220,10 +200,10 @@ export const patients = base({
     return patient?.preferred_language_code_iso_639_2_b || null
   },
   async getByIdCompletedRegistration(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string | IdSelection,
   ): Promise<undefined | RenderedPatientCompletedRegistration> {
-    const patient = await patients.getById(trx, patient_id)
+    const patient = await patients.getById(trx, patient_id, { include_incomplete_registration: false })
     assert(completedRegistration(patient))
     return patient
   },

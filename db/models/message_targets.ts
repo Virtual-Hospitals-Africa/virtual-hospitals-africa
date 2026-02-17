@@ -1,6 +1,6 @@
 // deno-lint-ignore-file require-await
 import { assert } from 'std/assert/assert.ts'
-import { JsonValue, MessageTargetType, Profession } from '../../db.d.ts'
+import { JsonValue, MessageTargetType } from '../../db.d.ts'
 import {
   HasStringId,
   Maybe,
@@ -9,12 +9,11 @@ import {
   RenderedMessageTarget,
   RenderedMessageTargets,
   RenderedOrganization,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { organizations } from './organizations.ts'
 import { employees } from './employees.ts'
 import isString from '../../util/isString.ts'
-import { ProfessionSchema } from '../../shared/profession.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { BY_TARGET_UUID, MessageTargetCategory } from '../../shared/message_targets.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
@@ -38,7 +37,7 @@ type IntermediateTargetResult<TargetType extends MessageTargetType> = {
 
 const TARGET_ENTITY_FETCHERS = {
   async employee(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<'employee'>,
   ): Promise<RenderedEmployee> {
     assert(target.target_type === 'employee')
@@ -47,7 +46,7 @@ const TARGET_ENTITY_FETCHERS = {
     return employees.getById(trx, target.target_uuid)
   },
   async organization(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<'organization'>,
   ): Promise<RenderedOrganization> {
     assert(target.target_type === 'organization')
@@ -55,17 +54,17 @@ const TARGET_ENTITY_FETCHERS = {
     assert(!target.target_value)
     return organizations.getById(trx, target.target_uuid)
   },
-  async profession(
-    _trx: TrxOrDb,
-    target: IntermediateTargetResult<'profession'>,
-  ): Promise<Profession | 'admin'> {
-    assert(target.target_type === 'profession')
+  async role(
+    _trx: TrxOrDbOrQueryCreator,
+    target: IntermediateTargetResult<'role'>,
+  ): Promise<string> {
+    assert(target.target_type === 'role')
     assert(!target.target_uuid)
-    assert(target.target_value)
-    return ProfessionSchema.parse(target.target_value)
+    assert(isString(target.target_value))
+    return target.target_value
   },
   async organization_category(
-    _trx: TrxOrDb,
+    _trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<'organization_category'>,
   ): Promise<string> {
     assert(target.target_type === 'organization_category')
@@ -75,7 +74,7 @@ const TARGET_ENTITY_FETCHERS = {
     return target.target_value
   },
   async locality(
-    _trx: TrxOrDb,
+    _trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<'locality'>,
   ): Promise<string> {
     assert(target.target_type === 'locality')
@@ -85,7 +84,7 @@ const TARGET_ENTITY_FETCHERS = {
     return target.target_value
   },
   async administrative_area_level_1(
-    _trx: TrxOrDb,
+    _trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<'administrative_area_level_1'>,
   ): Promise<string> {
     assert(target.target_type === 'administrative_area_level_1')
@@ -95,7 +94,7 @@ const TARGET_ENTITY_FETCHERS = {
     return target.target_value
   },
   async administrative_area_level_2(
-    _trx: TrxOrDb,
+    _trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<'administrative_area_level_2'>,
   ): Promise<string> {
     assert(target.target_type === 'administrative_area_level_2')
@@ -106,7 +105,7 @@ const TARGET_ENTITY_FETCHERS = {
   },
 } satisfies {
   [T in MessageTargetType]: ((
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<T>,
   ) => Promise<MessageTargetEntities[T]>)
 }
@@ -121,7 +120,7 @@ const TARGET_DISPLAYS = {
       description: entity.formatted_address!,
     }
   },
-  profession(entity: Profession | 'admin'): Display {
+  role(entity: string): Display {
     return {
       display_name: `All ${pluralize(entity, 2)}`,
       description: 'Profession',
@@ -160,7 +159,7 @@ const TARGET_DISPLAYS = {
 // Don't love the code duplication, but w.e. it's easily to make new ones via copy-pasta
 const TARGET_GETTERS = {
   async employee(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: HasStringId<IntermediateTargetResult<'employee'>>,
   ): Promise<RenderedMessageTargets['employee']> {
     const employee = await TARGET_ENTITY_FETCHERS.employee(trx, target)
@@ -173,7 +172,7 @@ const TARGET_GETTERS = {
     }
   },
   async organization(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: HasStringId<IntermediateTargetResult<'organization'>>,
   ): Promise<RenderedMessageTargets['organization']> {
     const organization = await TARGET_ENTITY_FETCHERS.organization(trx, target)
@@ -185,21 +184,21 @@ const TARGET_GETTERS = {
       organization,
     }
   },
-  async profession(
-    trx: TrxOrDb,
-    target: HasStringId<IntermediateTargetResult<'profession'>>,
-  ): Promise<RenderedMessageTargets['profession']> {
-    const profession = await TARGET_ENTITY_FETCHERS.profession(trx, target)
+  async role(
+    trx: TrxOrDbOrQueryCreator,
+    target: HasStringId<IntermediateTargetResult<'role'>>,
+  ): Promise<RenderedMessageTargets['role']> {
+    const role = await TARGET_ENTITY_FETCHERS.role(trx, target)
     return {
       id: target.id,
-      target_type: 'profession',
+      target_type: 'role',
       target_category: 'health_workers',
-      ...TARGET_DISPLAYS.profession(profession),
-      profession,
+      ...TARGET_DISPLAYS.role(role),
+      role,
     }
   },
   async organization_category(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: HasStringId<IntermediateTargetResult<'organization_category'>>,
   ): Promise<RenderedMessageTargets['organization_category']> {
     const organization_category = await TARGET_ENTITY_FETCHERS
@@ -213,7 +212,7 @@ const TARGET_GETTERS = {
     }
   },
   async locality(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: HasStringId<IntermediateTargetResult<'locality'>>,
   ): Promise<RenderedMessageTargets['locality']> {
     const locality = await TARGET_ENTITY_FETCHERS.locality(trx, target)
@@ -226,7 +225,7 @@ const TARGET_GETTERS = {
     }
   },
   async administrative_area_level_1(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: HasStringId<
       IntermediateTargetResult<'administrative_area_level_1'>
     >,
@@ -244,7 +243,7 @@ const TARGET_GETTERS = {
     }
   },
   async administrative_area_level_2(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: HasStringId<
       IntermediateTargetResult<'administrative_area_level_2'>
     >,
@@ -263,13 +262,13 @@ const TARGET_GETTERS = {
   },
 } satisfies {
   [T in MessageTargetType]: ((
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: HasStringId<IntermediateTargetResult<T>>,
   ) => Promise<RenderedMessageTargets[T]>)
 }
 
 const MESSAGE_CATEGORY_SEARCH = {
-  async regions(trx: TrxOrDb, search: string): Promise<
+  async regions(trx: TrxOrDbOrQueryCreator, search: string): Promise<
     Array<
       | RenderedMessageTargets['locality']
       | RenderedMessageTargets['administrative_area_level_1']
@@ -334,7 +333,7 @@ const MESSAGE_CATEGORY_SEARCH = {
       })),
     ]
   },
-  async organizations(trx: TrxOrDb, search: string): Promise<
+  async organizations(trx: TrxOrDbOrQueryCreator, search: string): Promise<
     Array<
       | RenderedMessageTargets['organization']
       | RenderedMessageTargets['organization_category']
@@ -356,9 +355,9 @@ const MESSAGE_CATEGORY_SEARCH = {
     // TODO, decide whether to do category results here too
     return organization_results
   },
-  async health_workers(trx: TrxOrDb, search: string): Promise<
+  async health_workers(trx: TrxOrDbOrQueryCreator, search: string): Promise<
     Array<
-      | RenderedMessageTargets['profession']
+      | RenderedMessageTargets['role']
       | RenderedMessageTargets['employee']
     >
   > {
@@ -373,14 +372,14 @@ const MESSAGE_CATEGORY_SEARCH = {
       employee,
     }))
 
-    // TODO, decide whether to do profession results here too
+    // TODO, decide whether to do role results here too
     return employee_results
   },
 }
 
 export const message_targets = {
   async getTarget<TargetType extends MessageTargetType>(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target: IntermediateTargetResult<TargetType>,
   ): Promise<RenderedMessageTargets[TargetType]> {
     // deno-lint-ignore no-explicit-any
@@ -389,11 +388,11 @@ export const message_targets = {
     >
   },
   async getMany(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     targets_record: {
       organization?: string[]
       employee?: string[]
-      profession?: string[]
+      role?: string[]
       organization_category?: string[]
       locality?: string[]
       administrative_area_level_1?: string[]
@@ -423,7 +422,7 @@ export const message_targets = {
   async searchTargetCategory<
     TargetCategory extends MessageTargetCategory,
   >(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     target_category: TargetCategory,
     { search }: { search: string },
   ): Promise<RenderedMessageTarget[]> {

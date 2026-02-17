@@ -18,7 +18,7 @@ import {
   RenderedInventoryHistoryProcurement,
   RenderedOrganizationConsumable,
   RenderedOrganizationDevice,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { jsonArrayFromColumn, jsonObjectFrom, literalNumber, literalOptionalDate, literalString, longFormattedDateTime } from '../helpers.ts'
 import { employees } from './employees.ts'
@@ -26,11 +26,11 @@ import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 
 export const inventory = {
   getDevices(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       organization_id: string
     },
@@ -55,7 +55,7 @@ export const inventory = {
       .execute()
   },
   getConsumables(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       organization_id: string
     },
@@ -95,7 +95,7 @@ export const inventory = {
   },
   // TODO: update return type to match RenderedOrganizationMedication or create dedicated type
   getMedicines(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       organization_id: string
     },
@@ -147,7 +147,7 @@ export const inventory = {
       .execute()
   },
   consumptionQuery(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       organization_id: string
     },
@@ -186,7 +186,7 @@ export const inventory = {
       .where('consumption.organization_id', '=', opts.organization_id)
   },
   procurementQuery(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       organization_id: string
     },
@@ -230,7 +230,7 @@ export const inventory = {
       .where('procurement.organization_id', '=', opts.organization_id)
   },
   getConsumablesHistoryQuery(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { organization_id, consumable_id }: {
       organization_id: string
       consumable_id: string
@@ -255,7 +255,7 @@ export const inventory = {
       .orderBy('created_at', 'desc')
   },
   getConsumablesHistory(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       organization_id: string
       consumable_id: string
@@ -275,7 +275,7 @@ export const inventory = {
       .executeTakeFirstOrThrow()
   },
   getLatestProcurement(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { organization_id, medication_id }: {
       organization_id: string
       medication_id: string
@@ -301,7 +301,7 @@ export const inventory = {
       .executeTakeFirst()
   },
   getAvailableTests(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       organization_id: string
     },
@@ -320,7 +320,7 @@ export const inventory = {
       .execute()
   },
   addOrganizationDevice(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     model: OrganizationDevice,
   ): Promise<{ id: string }> {
     return trx
@@ -330,7 +330,7 @@ export const inventory = {
       .executeTakeFirstOrThrow()
   },
   async addOrganizationMedicine(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization_id: string,
     medicine: {
       created_by: string
@@ -406,7 +406,7 @@ export const inventory = {
       .executeTakeFirstOrThrow()
   },
   async procureConsumable(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization_id: string,
     consumable: {
       created_by: string
@@ -466,7 +466,7 @@ export const inventory = {
     return procured
   },
   consumeConsumable(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     organization_id: string,
     consumable: {
       consumable_id: string
@@ -516,7 +516,7 @@ export const inventory = {
       .selectAll()
       .executeTakeFirstOrThrow()
   },
-  upsertProcurer(trx: TrxOrDb, procurer: Procurer) {
+  upsertProcurer(trx: TrxOrDbOrQueryCreator, procurer: Procurer) {
     return trx
       .insertInto('procurers')
       .values(procurer)

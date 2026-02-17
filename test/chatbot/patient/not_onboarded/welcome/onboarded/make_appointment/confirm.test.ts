@@ -56,7 +56,7 @@ describe.skip('patient chatbot', () => {
         reason: 'pain',
       })
 
-      const health_worker = await addTestEmployee(db, { profession: 'doctor' })
+      const health_worker = await addTestEmployee(db, { role: 'doctor' })
 
       // Insert google calender
       const current_time = new Date()

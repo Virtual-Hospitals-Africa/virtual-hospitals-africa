@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { IdSelection, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
@@ -8,7 +8,7 @@ import { patient_evaluations } from './patient_evaluations.ts'
 import { DUE_TO, EVALUATION_ACTION, PRIORITY, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 
 function insertLevel(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   {
     patient_id,
     patient_encounter_id,

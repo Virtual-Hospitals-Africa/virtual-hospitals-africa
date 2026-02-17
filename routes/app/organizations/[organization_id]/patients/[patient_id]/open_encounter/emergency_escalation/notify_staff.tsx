@@ -11,7 +11,7 @@ import ProvidersSelect from '../../../../../../../../islands/ProvidersSelect.tsx
 import { delay } from '../../../../../../../../util/delay.ts'
 
 export const EmergencyEscalationNotifyStaffSchema = z.object({
-  provider_ids: z.string().uuid().array(),
+  employee_ids: z.string().uuid().array(),
 }).strict()
 
 export const handler = postHandler(

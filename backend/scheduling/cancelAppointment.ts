@@ -31,7 +31,7 @@ export async function cancelAppointment(
 
   const matching_provider = await employees.getById(
     trx,
-    scheduled_appointment.provider_id,
+    scheduled_appointment.employee_id,
   )
   const tokens = await google_tokens.getByEntityId(
     trx,

@@ -12,7 +12,7 @@ import {
   RenderedPatientEncounter,
   RenderedTask,
   TaskGroup,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
 import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
@@ -38,7 +38,7 @@ import compactMap from '../../util/compactMap.ts'
 
 export const additional_tasks = {
   async insertTasksIfNotAlreadyIdentified(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records: findings }: {
       patient_id: string
       patient_encounter_id: string
@@ -156,7 +156,7 @@ export const additional_tasks = {
     return inserted.length ? `Inserted ${inserted.length} task(s): ${inserted.join(', ')}` : 'No new tasks to insert'
   },
   async getTasksGroups(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { health_worker_id, encounter }: {
       health_worker_id: string
       encounter: RenderedPatientEncounter
@@ -340,7 +340,7 @@ export const additional_tasks = {
     return { evaluation_ids, task_groups }
   },
   async procedureCompletedTasks(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { procedure_id, evaluation_ids, patient_id, patient_encounter_id }: {
       procedure_id: string
       evaluation_ids: string[]

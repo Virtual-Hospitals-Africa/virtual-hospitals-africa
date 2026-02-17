@@ -10,7 +10,6 @@ import { string_or_number_as_string } from '../../../../../../../../util/validat
 
 export const PatientRegistrationPrimaryCareSchema = z.object({
   primary_doctor_id: z.string().uuid().optional(),
-  primary_doctor_name: z.string(),
   nearest_organization_id: z.string(),
   insurance: z.object({
     has_no_insurance: z.literal(true),
@@ -29,7 +28,6 @@ export const handler = postHandler(
   PatientRegistrationPrimaryCareSchema,
   async (ctx: OpenEncounterWorkflowContext, {
     primary_doctor_id,
-    primary_doctor_name,
     nearest_organization_id,
     insurance,
   }) => {
@@ -42,10 +40,7 @@ export const handler = postHandler(
           patient_id,
           primary_doctor_id,
         })
-        : patient_primary_care.setUnregisteredPrimaryDoctor(trx, {
-          patient_id,
-          primary_doctor_name,
-        }),
+        : Promise.resolve(),
       setting_nearest_facility: patient_primary_care.setNearestHealthFacility(
         trx,
         {

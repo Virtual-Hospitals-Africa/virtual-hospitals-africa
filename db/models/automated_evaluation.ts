@@ -1,11 +1,11 @@
-import { ReferenceRange, TrxOrDb } from '../../types.ts'
+import { ReferenceRange, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { now } from '../helpers.ts'
 
 export const automated_evaluation = {
   // TODO: Add condition-based filtering once we define how pre-existing conditions will be modeled
   // For now, only matching by age and gender
   async getApplicableReferenceRanges(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       measurement_snomed_codes,
       patient_context,

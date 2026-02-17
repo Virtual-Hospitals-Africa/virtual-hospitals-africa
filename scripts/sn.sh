@@ -311,7 +311,7 @@ camel_vars=(
   selectedPharmacy
   selectedPriority
   selectedProvince
-  selectedSupervisors
+  selectedAdmins
   selectedWard
   shortToLong
   shouldOpenUpward

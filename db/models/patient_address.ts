@@ -1,8 +1,8 @@
 import { addresses } from './addresses.ts'
-import { Address, OptionalMaybeFields, TrxOrDb } from '../../types.ts'
+import { Address, OptionalMaybeFields, TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export const patient_address = {
-  getByPatientId(trx: TrxOrDb, { patient_id }: { patient_id: string }) {
+  getByPatientId(trx: TrxOrDbOrQueryCreator, { patient_id }: { patient_id: string }) {
     return trx
       .selectFrom('patients')
       .innerJoin(
@@ -15,7 +15,7 @@ export const patient_address = {
       .executeTakeFirst()
   },
   async updateByPatientId(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id, address }: {
       patient_id: string
       address: OptionalMaybeFields<Address>

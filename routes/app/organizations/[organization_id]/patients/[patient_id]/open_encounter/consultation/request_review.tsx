@@ -1,136 +1,137 @@
-import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import { TabProps, Tabs } from '../../../../../../../../components/library/Tabs.tsx'
-import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
-import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
-import { doctor_reviews } from '../../../../../../../../db/models/doctor_reviews.ts'
-import { events } from '../../../../../../../../db/models/events.ts'
-import { OrganizationView } from '../../../../../../../../islands/request-review/OrganizationView.tsx'
-import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import { parseRequest } from '../../../../../../../../backend/parseForm.ts'
-import z from 'zod'
-import redirect from '../../../../../../../../util/redirect.ts'
-import { completedRegistration } from '../../../../../../../../shared/patient_registration.ts'
-import { assert } from 'std/assert/assert.ts'
+export const handler = () => new Response('TODO')
+// import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+// import { TabProps, Tabs } from '../../../../../../../../components/library/Tabs.tsx'
+// import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
+// import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
+// import { doctor_reviews } from '../../../../../../../../db/models/doctor_reviews.ts'
+// import { events } from '../../../../../../../../db/models/events.ts'
+// import { OrganizationView } from '../../../../../../../../islands/request-review/OrganizationView.tsx'
+// import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
+// import { parseRequest } from '../../../../../../../../backend/parseForm.ts'
+// import z from 'zod'
+// import redirect from '../../../../../../../../util/redirect.ts'
+// import { completedRegistration } from '../../../../../../../../shared/patient_registration.ts'
+// import { assert } from 'std/assert/assert.ts'
 
-function searchByHref<T>(
-  ctx: OpenEncounterWorkflowContext<T>,
-  search_by: string,
-) {
-  return hrefFromCtx(ctx, (url) => {
-    url.searchParams.set('search_by', search_by)
-  })
-}
+// function searchByHref<T>(
+//   ctx: OpenEncounterWorkflowContext<T>,
+//   search_by: string,
+// ) {
+//   return hrefFromCtx(ctx, (url) => {
+//     url.searchParams.set('search_by', search_by)
+//   })
+// }
 
-function getView(ctx: OpenEncounterWorkflowContext) {
-  const search_by = ctx.url.searchParams.get('search_by')
-  const organization_href = searchByHref(ctx, 'organizations')
-  assertOrRedirect(search_by, organization_href)
+// function getView(ctx: OpenEncounterWorkflowContext) {
+//   const search_by = ctx.url.searchParams.get('search_by')
+//   const organization_href = searchByHref(ctx, 'organizations')
+//   assertOrRedirect(search_by, organization_href)
 
-  const tabs: TabProps[] = [
-    {
-      tab: 'organizations',
-      href: searchByHref(ctx, 'organizations'),
-      active: search_by === 'organizations',
-    },
-    {
-      tab: 'health professionals',
-      href: searchByHref(ctx, 'professionals'),
-      active: search_by === 'professionals',
-    },
-  ]
+//   const tabs: TabProps[] = [
+//     {
+//       tab: 'organizations',
+//       href: searchByHref(ctx, 'organizations'),
+//       active: search_by === 'organizations',
+//     },
+//     {
+//       tab: 'health professionals',
+//       href: searchByHref(ctx, 'professionals'),
+//       active: search_by === 'professionals',
+//     },
+//   ]
 
-  return { tabs }
-}
+//   return { tabs }
+// }
 
-const ReviewRequestSchema = z.object({
-  organization_id: z.string().uuid().optional(),
-  doctor_id: z.string().uuid().optional(),
-  requester_notes: z.string().optional(),
-}).refine(
-  (data) => data.organization_id || data.doctor_id,
-  {
-    message: 'Must request a review from a doctor or an organization',
-    path: ['organization_id'],
-  },
-)
-  .refine(
-    (data) => !!data.organization_id === !data.doctor_id,
-    {
-      message: 'Must request a review from a doctor or an organization, but not both',
-      path: ['organization_id'],
-    },
-  )
+// const ReviewRequestSchema = z.object({
+//   organization_id: z.string().uuid().optional(),
+//   doctor_id: z.string().uuid().optional(),
+//   requester_notes: z.string().optional(),
+// }).refine(
+//   (data) => data.organization_id || data.doctor_id,
+//   {
+//     message: 'Must request a review from a doctor or an organization',
+//     path: ['organization_id'],
+//   },
+// )
+//   .refine(
+//     (data) => !!data.organization_id === !data.doctor_id,
+//     {
+//       message: 'Must request a review from a doctor or an organization, but not both',
+//       path: ['organization_id'],
+//     },
+//   )
 
-const PostSchema = z.object({
-  review_request: ReviewRequestSchema.optional(),
-})
+// const PostSchema = z.object({
+//   review_request: ReviewRequestSchema.optional(),
+// })
 
-export const handler = {
-  async POST(ctx: OpenEncounterWorkflowContext) {
-    const req = ctx.req
-    const { trx, encounter, encounter_employee_presence, patient } = ctx.state
-    const { completing_step, made_request } = await promiseProps({
-      completing_step: completeAndProceedToNextStep(ctx),
-      made_request: parseRequest(
-        req,
-        PostSchema.parse,
-      ).then(async (body) => {
-        if (!body.review_request) return false
-        const review_request = await doctor_reviews.upsertRequest(trx, {
-          ...body.review_request,
-          requested_by: encounter_employee_presence.patient_encounter_employee_id,
-          patient_id: encounter.patient.id,
-          patient_encounter_id: encounter.patient_encounter_id,
-        })
+// export const handler = {
+//   async POST(ctx: OpenEncounterWorkflowContext) {
+//     const req = ctx.req
+//     const { trx, encounter, encounter_employee_presence, patient } = ctx.state
+//     const { completing_step, made_request } = await promiseProps({
+//       completing_step: completeAndProceedToNextStep(ctx),
+//       made_request: parseRequest(
+//         req,
+//         PostSchema.parse,
+//       ).then(async (body) => {
+//         if (!body.review_request) return false
+//         const review_request = await doctor_reviews.upsertRequest(trx, {
+//           ...body.review_request,
+//           requested_by: encounter_employee_presence.patient_encounter_employee_id,
+//           patient_id: encounter.patient.id,
+//           patient_encounter_id: encounter.patient_encounter_id,
+//         })
 
-        await events.insert(trx, {
-          type: 'ReviewRequested',
-          data: {
-            review_request_id: review_request.id,
-          },
-        })
+//         await events.insert(trx, {
+//           type: 'ReviewRequested',
+//           data: {
+//             review_request_id: review_request.id,
+//           },
+//         })
 
-        return true
-      }),
-    })
+//         return true
+//       }),
+//     })
 
-    // TODO: distinguish between Async and sync
-    if (made_request) {
-      const success = encodeURIComponent(
-        `You have submitted a case review request for ${patient.name}. Please have them wait to be seen.`,
-      )
-      return redirect(
-        `/app/organizations/${encounter_employee_presence.organization_id}/waiting_room?just_encountered_patient_id=${encounter.patient_encounter_id}&success=${success}`,
-      )
-    }
+//     // TODO: distinguish between Async and sync
+//     if (made_request) {
+//       const success = encodeURIComponent(
+//         `You have submitted a case review request for ${patient.name}. Please have them wait to be seen.`,
+//       )
+//       return redirect(
+//         `/app/organizations/${encounter_employee_presence.organization_id}/waiting_room?just_encountered_patient_id=${encounter.patient_encounter_id}&success=${success}`,
+//       )
+//     }
 
-    return completing_step
-  },
-}
+//     return completing_step
+//   },
+// }
 
-// TODO support initial search
-export function RequestReviewPage(
-  ctx: OpenEncounterWorkflowContext,
-) {
-  const { patient } = ctx.state
-  assert(completedRegistration(patient))
-  const organization_search_url = ctx.url.pathname.replace(
-    '/request_review',
-    '/nearest_organizations',
-  )
-  const show_tabs = false
+// // TODO support initial search
+// export function RequestReviewPage(
+//   ctx: OpenEncounterWorkflowContext,
+// ) {
+//   const { patient } = ctx.state
+//   assert(completedRegistration(patient))
+//   const organization_search_url = ctx.url.pathname.replace(
+//     '/request_review',
+//     '/nearest_organizations',
+//   )
+//   const show_tabs = false
 
-  return (
-    <>
-      {show_tabs && <Tabs {...getView(ctx)} />}
-      <OrganizationView
-        current_url={ctx.url.toString()}
-        search_url={organization_search_url}
-        organizations={[]}
-        concerning_patient={patient}
-      />
-    </>
-  )
-}
+//   return (
+//     <>
+//       {show_tabs && <Tabs {...getView(ctx)} />}
+//       <OrganizationView
+//         current_url={ctx.url.toString()}
+//         search_url={organization_search_url}
+//         organizations={[]}
+//         concerning_patient={patient}
+//       />
+//     </>
+//   )
+// }
 
-export default OpenEncounterWorkflowPage(RequestReviewPage)
+// export default OpenEncounterWorkflowPage(RequestReviewPage)

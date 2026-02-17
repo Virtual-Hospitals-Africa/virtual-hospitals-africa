@@ -1,4 +1,4 @@
-import { Maybe, TrxOrDb } from '../../types.ts'
+import { Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { markAltered } from './patient_records_base.ts'
@@ -13,7 +13,7 @@ import {
 export const patient_chief_complaints = {
   // // TODO: get this into a single round trip with the DB
   async upsertOne(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       patient_encounter_id,
@@ -174,7 +174,7 @@ export const patient_chief_complaints = {
       .executeTakeFirstOrThrow()
   },
   getEncounter(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id, patient_encounter_id }: {
       patient_id: string
       patient_encounter_id: string

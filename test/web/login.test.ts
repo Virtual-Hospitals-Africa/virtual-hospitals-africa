@@ -4,7 +4,6 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
-import { addTestRegulatorWithSession } from '../_helpers/regulators.ts'
 import { createTestOrganization, withTestOrganization } from '../_helpers/organizations.ts'
 import sample from '../../util/sample.ts'
 import { port, route } from '../_route.ts'
@@ -32,7 +31,7 @@ describeParallel('/login', () => {
 
   describeParallel('when logged in', () => {
     itParallel("doesn't allow unemployed access to /app", async () => {
-      const mock = await addTestEmployeeWithSession(db, { profession: 'none' })
+      const mock = await addTestEmployeeWithSession(db, { role: 'none' })
       const response = await mock.fetch(`/app`, {
         headers: {
           accept: 'text/html',
@@ -51,7 +50,7 @@ describeParallel('/login', () => {
     itParallel('allows admin access to /app', async () => {
       const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
-        profession: 'admin',
+        role: 'admin',
         organization_id: organization.id,
       })
       const $ = await mock.fetchCheerio(`${route}/app`)
@@ -61,7 +60,7 @@ describeParallel('/login', () => {
     itParallel('allows doctor access /app', async () => {
       const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
-        profession: 'doctor',
+        role: 'doctor',
         organization_id: organization.id,
       })
 
@@ -76,18 +75,9 @@ describeParallel('/login', () => {
       assert(page_contents.includes('Open Encounters'))
     })
 
-    itParallel(
-      'allows regulator to access /regulator/[country]/pharmacies',
-      async () => {
-        const { fetchCheerio } = await addTestRegulatorWithSession(db)
-        const $ = await fetchCheerio(`/regulator/ZW/pharmacies`)
-        assertEquals($('h1').text(), 'Pharmacies')
-      },
-    )
-
     itParallel('redirects from /login to /app', async () => {
       const mock = await addTestEmployeeWithSession(db, {
-        profession: sample(['admin', 'doctor', 'nurse']),
+        role: sample(['admin', 'doctor', 'nurse']),
       })
 
       const response = await mock.fetch(`/login`, {
@@ -98,45 +88,12 @@ describeParallel('/login', () => {
       return response.body?.cancel()
     })
 
-    // TODO turn off SKIP_NURSE_REGISTRATION
-    itParallel.skip(
-      'redirects unregistered nurse to registration',
-      async () => {
-        const mock = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          registration_status: 'not started',
-        })
-        const response = await mock.fetch(`/app`)
-        assertEquals(
-          response.url,
-          `${route}/app/organizations/00000000-0000-1000-8000-000000000001/register/personal`,
-        )
-        const page_contents = await response.text()
-        assert(page_contents.includes('First Name'))
-      },
-    )
-
-    // TODO turn off SKIP_NURSE_REGISTRATION
-    itParallel.skip(
-      'redirects unapproved nurse to /app/pending_approval',
-      async () => {
-        const mock = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          specialty: 'Primary care',
-          registration_status: 'awaiting approval',
-        })
-        const response = await mock.fetch(`/app`)
-        assertEquals(response.url, `${route}/app/pending_approval`)
-        await response.text()
-      },
-    )
-
     itParallel('allows approved nurse access to /app', async () => {
       const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
-        profession: 'nurse',
+        role: 'nurse',
         specialty: 'Primary care',
-        registration_status: 'approved',
+
         organization_id: organization.id,
       })
       const $ = await mock.fetchCheerio(`${route}/app`)
@@ -148,9 +105,9 @@ describeParallel('/login', () => {
       () =>
         withTestOrganization(db, async (organization_id) => {
           const mock = await addTestEmployeeWithSession(db, {
-            profession: 'nurse',
+            role: 'nurse',
             specialty: 'Primary care',
-            registration_status: 'approved',
+
             organization_id,
           })
 
@@ -190,8 +147,8 @@ describeParallel('/login', () => {
       () =>
         withTestOrganization(db, async (organization_id) => {
           const mock = await addTestEmployeeWithSession(db, {
-            profession: 'receptionist',
-            registration_status: 'approved',
+            role: 'receptionist',
+
             organization_id,
           })
 
@@ -211,7 +168,7 @@ describeParallel('/login', () => {
       "doesn't allow access to employees if you are employed at a different organization",
       async () => {
         const mock = await addTestEmployeeWithSession(db, {
-          profession: 'doctor',
+          role: 'doctor',
         })
         const response = await mock.fetch(
           `${route}/app/organizations/00000000-0000-1000-8000-000000000002/employees?expectedTestError=1`,

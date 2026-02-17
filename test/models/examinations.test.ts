@@ -86,9 +86,9 @@
 //         (trx) =>
 //           withTestOrganization(trx, async (organization_id) => {
 //             const health_worker = await addTestEmployee(trx, {
-//               profession: 'nurse',
+//               role: 'nurse',
 //               specialty: 'Primary care',
-//               registration_status: 'approved',
+//
 //             })
 //             const patient = await patients.insert(trx, {
 //               name: 'Test Woman',
@@ -101,7 +101,7 @@
 //                 organization_id,
 //                 {
 //                   patient_id: patient.id,
-//                   provider_ids: [
+//                   employee_ids: [
 //                     health_worker.employee_id,
 //                   ],
 //                 },
@@ -157,9 +157,9 @@
 //         'upserts findings when no previous findings exist',
 //         async (trx) => {
 //           const nurse = await addTestEmployee(trx, {
-//             profession: 'nurse',
+//             role: 'nurse',
 //             specialty: 'Primary care',
-//             registration_status: 'approved',
+//
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
 //           const encounter = await patient_encounters
@@ -169,7 +169,7 @@
 //               {
 //                 patient_id: patient.id,
 //                 reason: 'seeking treatment',
-//                 provider_ids: [nurse.employee_id],
+//                 employee_ids: [nurse.employee_id],
 //               },
 //             )
 
@@ -1017,9 +1017,9 @@
 //         'handles updates and removing patient findings',
 //         async (trx) => {
 //           const nurse = await addTestEmployee(trx, {
-//             profession: 'nurse',
+//             role: 'nurse',
 //             specialty: 'Primary care',
-//             registration_status: 'approved',
+//
 //           })
 //           const patient = await patients.insert(trx, { name: 'Test Patient' })
 //           const encounter = await patient_encounters
@@ -1029,7 +1029,7 @@
 //               {
 //                 patient_id: patient.id,
 //                 reason: 'seeking treatment',
-//                 provider_ids: [nurse.employee_id],
+//                 employee_ids: [nurse.employee_id],
 //               },
 //             )
 

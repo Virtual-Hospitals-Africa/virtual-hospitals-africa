@@ -1,17 +1,8 @@
-import { DB } from '../../db.d.ts'
-import { Kysely, sql } from 'kysely'
-import { createPointerTable, createStandardTable } from '../createTable.ts'
+import type { DB } from '../../db.d.ts'
+import { Kysely } from 'kysely'
+import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
-  await db.schema
-    .createType('profession')
-    .asEnum([
-      'doctor',
-      'nurse',
-      'receptionist',
-    ])
-    .execute()
-
   await createStandardTable(
     db,
     'employment',
@@ -24,21 +15,12 @@ export async function up(db: Kysely<DB>) {
           col.notNull()
             .references('organizations.id')
             .onDelete('cascade'))
-        .addColumn(
-          'profession',
-          sql`profession`,
-        ).addColumn('is_admin', 'boolean', (col) => col.notNull())
-        .addColumn('specialty', 'varchar(255)')
+        .addColumn('role', 'varchar(255)', (col) => col.notNull())
+        .addColumn('is_admin', 'boolean', (col) => col.notNull())
         .addUniqueConstraint('only_employed_once_per_organization', [
           'health_worker_id',
           'organization_id',
-        ])
-        .addCheckConstraint(
-          'only_admins_can_be_employed_in_another_profession',
-          sql`
-          (profession IS NOT NULL) OR (is_admin = TRUE)
-        `,
-        ),
+        ]),
   )
 
   await db.schema
@@ -47,50 +29,11 @@ export async function up(db: Kysely<DB>) {
     .column('organization_id')
     .execute()
 
-  await createPointerTable(
-    db,
-    'organization_admins',
-    {
-      references: 'employment',
-      primary_key_type: 'uuid',
-    },
-  )
-
-  await createPointerTable(
-    db,
-    'receptionists',
-    {
-      references: 'employment',
-      primary_key_type: 'uuid',
-    },
-  )
-
-  await createPointerTable(
-    db,
-    'providers',
-    {
-      references: 'employment',
-      primary_key_type: 'uuid',
-    },
-  )
-
-  await createPointerTable(
-    db,
-    'doctors',
-    {
-      references: 'providers',
-      primary_key_type: 'uuid',
-    },
-  )
-
-  await createPointerTable(
-    db,
-    'nurses',
-    {
-      references: 'providers',
-      primary_key_type: 'uuid',
-    },
-  )
+  await db.schema
+    .createIndex('idx_employment_health_worker_id')
+    .on('employment')
+    .column('health_worker_id')
+    .execute()
 
   await createStandardTable(
     db,
@@ -149,11 +92,5 @@ export async function up(db: Kysely<DB>) {
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('employment_calendars').execute()
   await db.schema.dropTable('department_employment').execute()
-  await db.schema.dropTable('nurses').execute()
-  await db.schema.dropTable('doctors').execute()
-  await db.schema.dropTable('providers').execute()
-  await db.schema.dropTable('receptionists').execute()
-  await db.schema.dropTable('organization_admins').execute()
   await db.schema.dropTable('employment').execute()
-  await db.schema.dropType('profession').execute()
 }

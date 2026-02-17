@@ -1,11 +1,9 @@
-import { DeleteResult, UpdateResult } from 'kysely'
-import { GoogleTokens, TrxOrDb } from '../../types.ts'
+import type { DeleteResult, UpdateResult } from 'kysely'
+import type { GoogleTokens, TrxOrDbOrQueryCreator } from '../../types.ts'
 import pick from '../../util/pick.ts'
 import { health_workers } from './health_workers.ts'
 import { google_tokens } from './google_tokens.ts'
 import { combine } from '../../util/combine.ts'
-import { type HealthWorkerUpsert } from './health_workers.ts'
-import { assert } from 'std/assert/assert.ts'
 import { asNames, NameInputs } from '../../util/asNames.ts'
 
 export type HealthWorkerWithGoogleTokens = Awaited<
@@ -13,22 +11,24 @@ export type HealthWorkerWithGoogleTokens = Awaited<
 >
 
 async function insertWithGoogleCredentials(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   {
     access_token,
     refresh_token,
     expires_at,
+    avatar_media_id,
+    email,
     expires_in: _expires_in,
     ...health_worker_details
   }:
-    & HealthWorkerUpsert
     & NameInputs
     & GoogleTokens
     & {
+      avatar_media_id?: string | null
+      email: string
       expires_in?: string | number | Date
     },
 ) {
-  assert(!health_worker_details.id)
   const id = await health_workers.insertOne(
     trx,
     {
@@ -42,8 +42,11 @@ async function insertWithGoogleCredentials(
     expires_at,
   }
 
-  await google_tokens.upsert(trx, 'health_worker', id, tokens)
-  return combine({ id, ...health_worker_details }, tokens)
+  await Promise.all([
+    trx.insertInto('health_worker_accounts').values({ id, email, avatar_media_id }).execute(),
+    google_tokens.upsert(trx, 'health_worker', id, tokens),
+  ])
+  return combine({ id, email, ...health_worker_details }, tokens)
 }
 
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
@@ -51,7 +54,7 @@ export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 export const health_worker_google_tokens = {
   insertWithGoogleCredentials,
   updateTokens(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     email: string,
     tokens: GoogleTokens,
   ): Promise<null | { id: string }> {
@@ -62,24 +65,8 @@ export const health_worker_google_tokens = {
       tokens,
     )
   },
-  getWithTokensQuery(trx: TrxOrDb) {
-    return trx
-      .selectFrom('health_workers')
-      .innerJoin('google_tokens', (join) =>
-        join
-          .onRef('health_workers.id', '=', 'google_tokens.entity_id')
-          .on('google_tokens.entity_type', '=', 'health_worker'))
-      .select([
-        'health_workers.id',
-        'email',
-        'name',
-        'access_token',
-        'refresh_token',
-        'expires_at',
-      ])
-  },
   updateAccessToken(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     health_worker_id: string,
     access_token: string,
   ): Promise<UpdateResult> {
@@ -91,7 +78,7 @@ export const health_worker_google_tokens = {
     )
   },
   removeExpiredAccessToken(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { health_worker_id: string },
   ): Promise<DeleteResult> {
     return google_tokens.removeExpiredAccessToken(

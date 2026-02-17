@@ -1,12 +1,12 @@
 // import { sql as rawSql } from 'kysely'
 // import { assert } from 'std/assert/assert.ts'
-// import { DiagnosisGroup, TrxOrDb } from '../../types.ts'
+// import { DiagnosisGroup, TrxOrDbOrQueryCreator } from '../../types.ts'
 // import partition from '../../util/partition.ts'
 // import { isoDate } from '../helpers.ts'
 
 // export const diagnoses = {
 //   async getFromReview(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     {
 //       review_id,
 //       patient_encounter_id,
@@ -29,7 +29,7 @@
 //         'conditions.id',
 //         'patient_conditions.condition_id',
 //       )
-//       .innerJoin('employment', 'diagnoses.provider_id', 'employment.id')
+//       .innerJoin('employment', 'diagnoses.employee_id', 'employment.id')
 //       .innerJoin(
 //         'health_workers',
 //         'employment.health_worker_id',
@@ -62,7 +62,7 @@
 //         'conditions.id',
 //         'conditions.name',
 //         'diagnoses.patient_condition_id',
-//         'diagnoses.provider_id',
+//         'diagnoses.employee_id',
 //         'diagnoses.id as diagnosis_id',
 //         'health_workers.name as diagnosed_by',
 //         isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
@@ -79,7 +79,7 @@
 
 //     const [self, others] = partition(
 //       diagnoses,
-//       (d) => d.provider_id === employment_id,
+//       (d) => d.employee_id === employment_id,
 //     )
 
 //     return {
@@ -93,7 +93,7 @@
 //   },
 
 //   async upsertForReview(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     {
 //       review_id,
 //       patient_encounter_id,
@@ -193,7 +193,7 @@
 //             .insertInto('diagnoses')
 //             .values({
 //               patient_condition_id,
-//               provider_id: employment_id,
+//               employee_id: employment_id,
 //               ...(is_in_doctor_review && { doctor_review_id: review_id }),
 //               ...(!is_in_doctor_review &&
 //                 { patient_encounter_id: patient_encounter_id }),

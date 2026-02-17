@@ -63,7 +63,7 @@ describe.skip('patient chatbot', () => {
         reason: 'pain',
       })
 
-      const health_worker = await addTestEmployee(trx, { profession: 'doctor' })
+      const health_worker = await addTestEmployee(trx, { role: 'doctor' })
       assert(health_worker)
 
       //  Insert google calender
@@ -132,7 +132,7 @@ describe.skip('patient chatbot', () => {
 
       await appointments.addOfferedTime(trx, {
         patient_appointment_request_id: scheduling_appointment_request.id,
-        provider_id: health_worker.employee_id,
+        employee_id: health_worker.employee_id,
         start,
         end,
         duration_minutes,

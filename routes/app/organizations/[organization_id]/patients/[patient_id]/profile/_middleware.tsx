@@ -54,7 +54,7 @@ export const PatientProfilePage = (
         primary_doctor,
         nearest_organization,
       } = await promiseProps({
-        patient: patients.getById(trx, patient_id),
+        patient: patients.getById(trx, patient_id, { include_incomplete_registration: true }),
         upcoming_appointments: appointments.getForPatient(
           trx,
           {

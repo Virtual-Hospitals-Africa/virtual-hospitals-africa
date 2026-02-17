@@ -1,4 +1,4 @@
-import { Maybe, MedicationSchedule, TrxOrDb } from '../../types.ts'
+import { Maybe, MedicationSchedule, TrxOrDbOrQueryCreator } from '../../types.ts'
 
 import { base } from './_base.ts'
 import { patient_procedures } from './patient_procedures.ts'
@@ -16,7 +16,7 @@ export type PrescriptionMedicationInsert = {
 
 export const patient_prescriptions = base({
   top_level_table: 'patient_prescription_signatures',
-  baseQuery(trx: TrxOrDb, opts: PatientRecordsSearch) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: PatientRecordsSearch) {
     return patient_procedures.baseQuery(trx, opts)
       .innerJoin('patient_prescription_signatures', 'patient_procedures.id', 'patient_prescription_signatures.id')
       .select((eb) => [
@@ -31,7 +31,7 @@ export const patient_prescriptions = base({
 
 // export const prescriptions = {
 //   getById(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     id: string,
 //   ): Promise<RenderedPrescription | undefined> {
 //     return baseQuery(trx)
@@ -39,7 +39,7 @@ export const patient_prescriptions = base({
 //       .executeTakeFirst()
 //   },
 //   async upsert(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     { prescribing, ...to_insert }:
 //       & {
 //         prescriber_id: string
@@ -113,7 +113,7 @@ export const patient_prescriptions = base({
 //     return prescription
 //   },
 //   deleteCode(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     code: string,
 //   ) {
 //     return trx
@@ -122,7 +122,7 @@ export const patient_prescriptions = base({
 //       .execute()
 //   },
 //   async getFromReview(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     { review_id }: { review_id: string },
 //   ): Promise<RenderedPrescriptionWithMedications | null> {
 //     const prescription = await baseQuery(trx)

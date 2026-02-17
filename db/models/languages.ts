@@ -1,7 +1,7 @@
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export const languages = {
-  getAll(trx: TrxOrDb) {
+  getAll(trx: TrxOrDbOrQueryCreator) {
     return trx.selectFrom('languages').selectAll().execute()
   },
 }

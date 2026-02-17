@@ -61,7 +61,7 @@ export default async function PrescriptionPage(
     // allergies,
     // unfilled_medications,
   } = await promiseProps({
-    patient: patients.getById(db, patient_id),
+    patient: patients.getById(db, patient_id, { include_incomplete_registration: false }),
     contacts: patient_contacts.get(db, { patient_id }),
     // allergies: patient_allergies.getWithName(db, patient_id),
     // unfilled_medications: prescriptions.getByPrescriptionId(

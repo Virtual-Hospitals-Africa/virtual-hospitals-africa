@@ -1,5 +1,5 @@
 import { ensureCookiePresent, getLoggedInHealthWorker } from '../app/_middleware.tsx'
-import { PossiblyEmployedHealthWorker } from '../../types.ts'
+import { RenderedHealthWorker } from '../../types.ts'
 import { attachTrx, TrxContext } from '../../backend/attachTrx.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
@@ -7,7 +7,7 @@ import redirect from '../../util/redirect.ts'
 export type OnboardingContext = TrxContext & {
   state: {
     session_id: string
-    health_worker: PossiblyEmployedHealthWorker
+    health_worker: RenderedHealthWorker
   }
 }
 

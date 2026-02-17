@@ -1,5 +1,5 @@
 import { CalendarIcon, MapPinIcon } from '../library/icons/heroicons/outline.tsx'
-import type { ProviderAppointmentSlot, RenderableAppointment } from '../../types.ts'
+import type { EmployeeAppointmentSlot, RenderableAppointment } from '../../types.ts'
 import { stringify, timeRangeInSimpleAmPm } from '../../util/date.ts'
 import { GoogleMeetIcon } from '../library/icons/GoogleMeet.tsx'
 import { WhatsAppIcon } from '../library/icons/whatsapp.tsx'
@@ -16,7 +16,7 @@ function AppointmentContents(
   // Show the health worker when showing appointment slots,
   // the patient for the actual appointment
   // TODO: revisit whether we want to show all participants
-  const featuring = appointment.type === 'provider_appointment' ? appointment.patient : appointment.providers[0]
+  const featuring = appointment.type === 'employee_appointment' ? appointment.patient : appointment.employees[0]
 
   const header = (
     <h3 className='pr-10 font-semibold text-gray-900 xl:pr-0'>
@@ -91,17 +91,17 @@ function AppointmentContents(
 
 function AppointmentSlot({ slot, url }: {
   url: URL
-  slot: ProviderAppointmentSlot
+  slot: EmployeeAppointmentSlot
 }) {
   const search = new URLSearchParams(url.search)
   search.set('start', stringify(slot.start))
   search.set('end', stringify(slot.end))
   search.set('duration_minutes', String(slot.duration_minutes))
-  if (slot.providers) {
+  if (slot.employees) {
     search.set(
-      'provider_ids',
+      'employee_ids',
       JSON.stringify(
-        slot.providers.map((provider) => provider.employee_id),
+        slot.employees.map((employee) => employee.employee_id),
       ),
     )
   }
@@ -123,12 +123,12 @@ export default function Appointment(
     appointment: RenderableAppointment
   },
 ) {
-  const href = appointment.type === 'provider_appointment' ? `${url.pathname}/appointments/${appointment.id}` : undefined
+  const href = appointment.type === 'employee_appointment' ? `${url.pathname}/appointments/${appointment.id}` : undefined
 
   return (
     <li className='relative flex space-x-6 xl:static hover:bg-gray-50 px-2 py-3'>
       <AppointmentContents appointment={appointment} href={href} />
-      {appointment.type === 'provider_appointment_slot' ? <AppointmentSlot slot={appointment} url={url} /> : (
+      {appointment.type === 'employee_appointment_slot' ? <AppointmentSlot slot={appointment} url={url} /> : (
         <Menu
           icon='DotsVerticalIcon'
           options={[

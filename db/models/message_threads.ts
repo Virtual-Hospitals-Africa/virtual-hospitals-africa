@@ -1,18 +1,16 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  EmployedHealthWorker,
   IdSelection,
   RenderedEmployee,
+  RenderedHealthWorker,
   RenderedMessage,
   RenderedMessageThreadParticipant,
   RenderedMessageThreadWithAllMessages,
   RenderedMessageThreadWithMostRecentMessage,
-  RenderedPharmacist,
-  TrxOrDb,
+  TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { jsonArrayFrom, success_true } from '../helpers.ts'
 import { employees } from './employees.ts'
-import { pharmacists } from './pharmacists.ts'
 import { type IntermediateMessage, messages } from './messages.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
@@ -22,12 +20,12 @@ import isString from '../../util/isString.ts'
 import { exists } from '../../util/exists.ts'
 import matching from '../../util/matching.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
-import { pharmacistDisplay } from '../../shared/pharmacistDisplay.ts'
 import { pMap } from '../../util/inParallel.ts'
 import zip from '../../util/zip.ts'
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
+  opts: { thread_id?: string | string[] | IdSelection; message_id?: string | string[] | IdSelection; employee_ids?: string[] },
 ) {
   return trx
     .selectFrom('message_threads')
@@ -52,6 +50,48 @@ function baseQuery(
           ),
       ).as('subjects'),
     ])
+    .$if(!!opts.thread_id, (qb) =>
+      qb.where(
+        'message_threads.id',
+        'in',
+        isString(opts.thread_id) ? [opts.thread_id!] : opts.thread_id!,
+      ))
+    .$if(!!opts.message_id, (qb) =>
+      qb.where(
+        'message_threads.id',
+        'in',
+        trx.selectFrom('messages')
+          .where(
+            'messages.id',
+            'in',
+            isString(opts.message_id) ? [opts.message_id!] : opts.message_id!,
+          )
+          .select('thread_id')
+          .distinct(),
+      ))
+    .$if(!!opts.employee_ids, (qb) => {
+      const distinct_thread_ids_of_health_worker = trx.selectFrom(
+        'message_thread_participants',
+      ).where(
+        (eb) =>
+          eb.or(
+            opts.employee_ids!.map((employee_id) =>
+              eb.and([
+                eb('message_thread_participants.table_name', '=', 'employment'),
+                eb('message_thread_participants.row_id', '=', employee_id),
+              ])
+            ),
+          ),
+      )
+        .select('message_thread_participants.thread_id')
+        .distinct()
+
+      return qb.where(
+        'message_threads.id',
+        'in',
+        distinct_thread_ids_of_health_worker,
+      )
+    })
 }
 
 type IntermediateMessageThread = QueryResult<typeof baseQuery>
@@ -60,36 +100,20 @@ function renderedParticipants(
   participants: IntermediateMessageThread['participants'],
   my_participant: IntermediateMessageThread['participants'][0],
   employees_list: RenderedEmployee[],
-  pharmacists_list: RenderedPharmacist[],
 ): RenderedMessageThreadParticipant[] {
   return participants.map((participant) => {
-    if (participant.table_name === 'employment') {
-      const employee = exists(
-        employees_list.find(matching({ id: participant.row_id })),
-      )
-      return {
-        participant_type: 'employee',
-        participant_id: participant.participant_id,
-        href: employee.href,
-        is_me: participant === my_participant,
-        is_system: false,
-        ...employeeDisplay(employee),
-      }
+    assert(participant.table_name === 'employment')
+    const employee = exists(
+      employees_list.find(matching({ id: participant.row_id })),
+    )
+    return {
+      participant_type: 'employee',
+      participant_id: participant.participant_id,
+      href: employee.href,
+      is_me: participant === my_participant,
+      is_system: false,
+      ...employeeDisplay(employee),
     }
-    if (participant.table_name === 'pharmacists') {
-      const pharmacist = exists(
-        pharmacists_list.find(matching({ id: participant.row_id })),
-      )
-      return {
-        participant_type: 'pharmacist',
-        participant_id: participant.participant_id,
-        href: '/app/pharmacists',
-        is_me: false,
-        is_system: false,
-        ...pharmacistDisplay(pharmacist),
-      }
-    }
-    throw new Error(`Unrecognized table name ${participant.table_name}`)
   })
 }
 
@@ -117,63 +141,8 @@ export const message_threads = base({
   top_level_table: 'message_threads' as const,
   baseQuery,
   formatResult: (x: IntermediateMessageThread): IntermediateMessageThread => x,
-  handleSearch(
-    qb,
-    opts: {
-      thread_id?: string | string[] | IdSelection
-      message_id?: string | string[] | IdSelection
-      employee_ids?: string[]
-    },
-    trx,
-  ) {
-    if (opts.thread_id) {
-      qb = qb.where(
-        'message_threads.id',
-        'in',
-        isString(opts.thread_id) ? [opts.thread_id] : opts.thread_id,
-      )
-    }
-    if (opts.message_id) {
-      qb = qb.where(
-        'message_threads.id',
-        'in',
-        trx.selectFrom('messages')
-          .where(
-            'messages.id',
-            'in',
-            isString(opts.message_id) ? [opts.message_id] : opts.message_id,
-          )
-          .select('thread_id')
-          .distinct(),
-      )
-    }
-    if (opts.employee_ids) {
-      const distinct_thread_ids_of_health_worker = trx.selectFrom(
-        'message_thread_participants',
-      ).where(
-        (eb) =>
-          eb.or(
-            opts.employee_ids!.map((employee_id) =>
-              eb.and([
-                eb('message_thread_participants.table_name', '=', 'employment'),
-                eb('message_thread_participants.row_id', '=', employee_id),
-              ])
-            ),
-          ),
-      )
-        .select('message_thread_participants.thread_id')
-        .distinct()
-
-      qb = qb.where(
-        'message_threads.id',
-        'in',
-        distinct_thread_ids_of_health_worker,
-      )
-    }
-    return qb
-  },
   async create(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { sender, recipient, subjects, initial_message }: {
       sender: {
         table_name: string
@@ -248,15 +217,15 @@ export const message_threads = base({
     }
   },
   async getOneForHealthWorker(
-    trx: TrxOrDb,
-    health_worker: EmployedHealthWorker,
+    trx: TrxOrDbOrQueryCreator,
+    health_worker: RenderedHealthWorker,
     message_thread_id: string | IdSelection,
   ): Promise<RenderedMessageThreadWithAllMessages> {
     const employee_ids = health_worker.organizations.map((e) => e.employment_id)
 
     assert(employee_ids.length, 'Must complete onboarding first')
 
-    const { thread, raw_messages, raw_employees, raw_pharmacists } = await promiseProps({
+    const { thread, raw_messages, raw_employees } = await promiseProps({
       thread: message_threads.findOne(trx, {
         employee_ids,
         thread_id: message_thread_id,
@@ -276,18 +245,6 @@ export const message_threads = base({
           .select('message_thread_participants.row_id as id')
           .distinct(),
       ),
-      raw_pharmacists: pharmacists.getByIds(
-        trx,
-        trx.selectFrom('message_thread_participants')
-          .where(
-            'message_thread_participants.thread_id',
-            '=',
-            message_thread_id,
-          )
-          .where('message_thread_participants.table_name', '=', 'pharmacists')
-          .select('message_thread_participants.row_id as id')
-          .distinct(),
-      ),
     })
 
     assertOr404(thread, `No thread ${message_thread_id}`)
@@ -300,7 +257,6 @@ export const message_threads = base({
       thread.participants,
       my_participant,
       raw_employees,
-      raw_pharmacists,
     )
 
     const rendered_messages = raw_messages.map(
@@ -319,8 +275,8 @@ export const message_threads = base({
     }
   },
   async getForHealthWorker(
-    trx: TrxOrDb,
-    health_worker: EmployedHealthWorker,
+    trx: TrxOrDbOrQueryCreator,
+    health_worker: RenderedHealthWorker,
   ): Promise<RenderedMessageThreadWithMostRecentMessage[]> {
     const employee_ids = health_worker.organizations.map((e) => e.employment_id)
 
@@ -329,7 +285,7 @@ export const message_threads = base({
     const threads = await message_threads.findAll(trx, { employee_ids })
     const thread_ids = threads.map((t) => t.id)
 
-    const { most_recent_messages_raw, raw_employees, raw_pharmacists } = await promiseProps({
+    const { most_recent_messages_raw, raw_employees } = await promiseProps({
       // TODO: do this via rank and get all of this down to one round trip
       most_recent_messages_raw: pMap(
         threads,
@@ -340,14 +296,6 @@ export const message_threads = base({
         trx.selectFrom('message_thread_participants')
           .where('message_thread_participants.thread_id', 'in', thread_ids)
           .where('message_thread_participants.table_name', '=', 'employment')
-          .select('message_thread_participants.row_id as id')
-          .distinct(),
-      ),
-      raw_pharmacists: pharmacists.getByIds(
-        trx,
-        trx.selectFrom('message_thread_participants')
-          .where('message_thread_participants.thread_id', 'in', thread_ids)
-          .where('message_thread_participants.table_name', '=', 'pharmacists')
           .select('message_thread_participants.row_id as id')
           .distinct(),
       ),
@@ -364,7 +312,6 @@ export const message_threads = base({
             thread.participants,
             my_participant,
             raw_employees,
-            raw_pharmacists,
           )
 
           const most_recent_message = renderedMessage(

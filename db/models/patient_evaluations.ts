@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { IdSelection, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
@@ -34,7 +34,7 @@ export type PatientEvaluationInsert =
   )
 
 export function insertOneNestedQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   {
     evaluation_id = generateUUID(),
     patient_id,
@@ -83,7 +83,7 @@ export function insertOneNestedQuery(
 }
 
 export function insertOneNested(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   to_insert: PatientEvaluationInsert,
 ) {
   return insertOneNestedQuery(trx, to_insert)

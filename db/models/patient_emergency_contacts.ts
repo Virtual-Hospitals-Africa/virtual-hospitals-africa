@@ -1,4 +1,4 @@
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { EmergencyContactRelationship } from '../../shared/family.ts'
 
@@ -23,7 +23,7 @@ export type RenderedPatientEmergencyContact = {
 
 export const patient_emergency_contacts = {
   getByPatientId(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ): Promise<RenderedPatientEmergencyContact[]> {
     return trx
@@ -41,7 +41,7 @@ export const patient_emergency_contacts = {
       .execute()
   },
   getPrimaryContact(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ): Promise<RenderedPatientEmergencyContact | undefined> {
     return trx
@@ -58,7 +58,7 @@ export const patient_emergency_contacts = {
       .executeTakeFirst()
   },
   async addContact(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       name,
@@ -105,7 +105,7 @@ export const patient_emergency_contacts = {
       .executeTakeFirstOrThrow()
   },
   async updateContact(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       id,
       patient_id,
@@ -152,7 +152,7 @@ export const patient_emergency_contacts = {
       .executeTakeFirstOrThrow()
   },
   removeContact(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       id,
       patient_id,
@@ -168,7 +168,7 @@ export const patient_emergency_contacts = {
       .executeTakeFirstOrThrow()
   },
   async setContacts(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       contacts,

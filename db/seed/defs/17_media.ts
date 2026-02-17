@@ -3,7 +3,7 @@ import range from '../../../util/range.ts'
 import { pMap } from '../../../util/inParallel.ts'
 import { predefinedAvatarMediaUUID } from '../../../backend/predefinedAvatarMediaUUID.ts'
 import { InsertObject } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import type { DB } from '../../../db.d.ts'
 
 function* avatars() {
   for (const sex of ['female' as const, 'male' as const]) {

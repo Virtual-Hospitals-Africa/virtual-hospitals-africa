@@ -1,15 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
-import { Profession } from '../db.d.ts'
-import { AppUser, EmployedHealthWorker, HealthWorkerDisplay, HealthWorkerOrganization, Maybe, RenderedEmployee } from '../types.ts'
+import { AppUser, HealthWorkerDisplay, HealthWorkerOrganization, Maybe, RenderedEmployee, RenderedHealthWorker } from '../types.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import { organizationOf } from '../shared/employees.ts'
 
-/*
-  TODO multiple specialties
-  TODO in the data model have a concept of your employment at an organization
-    Independent of your profession
-*/
 export function employeeDisplay(
   employee: RenderedEmployee,
 ): HealthWorkerDisplay {
@@ -18,26 +12,27 @@ export function employeeDisplay(
 }
 
 export function healthWorkerDisplay(
-  health_worker: EmployedHealthWorker,
+  health_worker: RenderedHealthWorker,
   organization_employment: HealthWorkerOrganization,
 ): HealthWorkerDisplay {
-  const is_doctor = organization_employment.profession === 'doctor'
-  const is_admin = organization_employment.is_admin
-  const provider_profession = organization_employment.profession
-  const specialty = organization_employment.specialty
+  const is_doctor = !!health_worker.ever_licensed_as_doctor
+  const { role, is_admin } = organization_employment
+  const { specialty, subspecialty } = organization_employment.active_licences[0] || { specialty: null, subspecialty: null }
 
-  if (provider_profession === 'nurse') {
+  console.log('mmw', organization_employment.active_licences)
+  if (role === 'nurse') {
     assert(specialty, 'nurse has specialty')
   }
-  if (provider_profession === 'doctor') {
+  if (role === 'doctor') {
     assert(specialty, 'doctor has specialty')
   }
 
   return healthWorkerDisplayInner({
     is_doctor,
     is_admin,
-    provider_profession,
+    role,
     specialty,
+    subspecialty,
     health_worker_name: health_worker.name,
     avatar_url: health_worker.avatar_url,
   })
@@ -47,21 +42,23 @@ export function healthWorkerDisplayInner({
   health_worker_name,
   is_doctor,
   is_admin,
-  provider_profession,
+  role,
   specialty,
+  // subspecialty,
   avatar_url = null,
 }: {
   health_worker_name: string
   is_doctor: boolean
   is_admin: boolean
-  provider_profession: Profession | null
+  role: string | null
   specialty: Maybe<string>
+  subspecialty: Maybe<string>
   avatar_url: Maybe<string>
 }): HealthWorkerDisplay {
   // Doctors are special. They're named Dr. and the Administrator label goes after, not before
   if (is_doctor) {
     assert(specialty, 'is_doctor has specialty')
-    assert(provider_profession === 'doctor')
+    assert(role === 'doctor')
     return {
       avatar_url,
       display_name: 'Dr. ' + health_worker_name,
@@ -70,7 +67,7 @@ export function healthWorkerDisplayInner({
   }
 
   if (is_admin) {
-    if (!provider_profession) {
+    if (!role) {
       return {
         avatar_url,
         display_name: health_worker_name,
@@ -79,14 +76,14 @@ export function healthWorkerDisplayInner({
     }
 
     // Another special case. They probably just made themselves a receptionist to enable intaking patients
-    if (provider_profession === 'receptionist') {
+    if (role === 'receptionist') {
       return {
         avatar_url,
         display_name: health_worker_name,
         description: 'Administrator',
       }
     }
-    assertEquals(provider_profession, 'nurse')
+    assertEquals(role, 'nurse')
     assert(specialty)
 
     // For nurses, administrator goes in front
@@ -97,10 +94,10 @@ export function healthWorkerDisplayInner({
     }
   }
 
-  assert(provider_profession)
-  assertNotEquals(provider_profession, 'doctor')
+  assert(role)
+  assertNotEquals(role, 'doctor')
 
-  if (provider_profession === 'receptionist') {
+  if (role === 'receptionist') {
     assert(!specialty)
     return {
       avatar_url,
@@ -109,7 +106,7 @@ export function healthWorkerDisplayInner({
     }
   }
 
-  assertEquals(provider_profession, 'nurse')
+  assertEquals(role, 'nurse')
   assert(specialty)
 
   return {
@@ -120,27 +117,23 @@ export function healthWorkerDisplayInner({
 }
 
 export function appUserDisplay(
-  { health_worker_name, app_user, specialty, avatar_url }: {
+  { health_worker_name, app_user, specialty, subspecialty, avatar_url }: {
     health_worker_name: string
     app_user: AppUser
     specialty: Maybe<string>
+    subspecialty: Maybe<string>
     avatar_url: Maybe<string>
   },
 ) {
   switch (app_user) {
-    case 'regulator': {
-      return {
-        display_name: health_worker_name,
-        description: 'Regulator',
-      }
-    }
     case 'admin':
       return healthWorkerDisplayInner({
         health_worker_name,
         is_doctor: false,
         is_admin: true,
-        provider_profession: null,
+        role: null,
         specialty,
+        subspecialty,
         avatar_url,
       })
     case 'doctor':
@@ -148,8 +141,9 @@ export function appUserDisplay(
         health_worker_name,
         is_doctor: true,
         is_admin: false,
-        provider_profession: 'doctor',
+        role: 'doctor',
         specialty,
+        subspecialty,
         avatar_url,
       })
     case 'nurse':
@@ -157,8 +151,9 @@ export function appUserDisplay(
         health_worker_name,
         is_doctor: false,
         is_admin: false,
-        provider_profession: 'nurse',
+        role: 'nurse',
         specialty,
+        subspecialty,
         avatar_url,
       })
     case 'receptionist':
@@ -166,9 +161,13 @@ export function appUserDisplay(
         health_worker_name,
         is_doctor: false,
         is_admin: false,
-        provider_profession: 'receptionist',
+        role: 'receptionist',
         specialty,
+        subspecialty,
         avatar_url,
       })
+    default: {
+      throw new Error(`Unknown app user ${app_user}`)
+    }
   }
 }

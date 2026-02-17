@@ -1,4 +1,4 @@
-import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, literalUUIDArray, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
@@ -163,7 +163,7 @@ export const patient_findings = base({
     return formatRecord(finding)
   },
   insertMany(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       patient_encounter_id,
@@ -472,7 +472,7 @@ export const patient_findings = base({
       .executeTakeFirstOrThrow()
   },
   insertOneNested(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     {
       patient_id,
       patient_encounter_id,
@@ -587,7 +587,7 @@ export const patient_findings = base({
     }
   },
   async insertOneIfNotAlreadyExistsForThisEncounter(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     insert: FindingInsert,
   ) {
     const already_exists = await satisfyingSExpression(

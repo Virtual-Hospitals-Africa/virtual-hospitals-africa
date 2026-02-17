@@ -1,11 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { assertFoundEventually } from '../../util/assertEventually.ts'
 import { conversations } from './conversations.ts'
 
 export const patient_chatbot_users = {
   async getPatientLastConversationState(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     query: { phone_number: string },
   ) {
     const user = await assertFoundEventually(conversations.getUser(

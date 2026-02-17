@@ -22,8 +22,7 @@ describeParallel('db/models/s_expression.ts', () => {
     "can insert a Burn Circumferential finding which isn't later then considered a Burn Other finding",
     async () => {
       const nurse = await addTestEmployee(db, {
-        profession: 'nurse',
-        registration_status: 'approved',
+        role: 'nurse',
       })
 
       const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -122,8 +121,7 @@ describeParallel('db/models/s_expression.ts', () => {
     'can insert a Nasal discharge finding which then matches for a query for finding site: nasal structure',
     async () => {
       const nurse = await addTestEmployee(db, {
-        profession: 'nurse',
-        registration_status: 'approved',
+        role: 'nurse',
       })
 
       const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(

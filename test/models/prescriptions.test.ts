@@ -17,11 +17,11 @@
 //       'makes a prescription for a given prescriber and patient with 1 or more medications',
 //       async (trx) => {
 //         const nurse = await addTestEmployee(trx, {
-//           profession: 'nurse',
-//           registration_status: 'not started',
+//           role: 'nurse',
+//
 //         })
 //         const doctor = await addTestEmployee(trx, {
-//           profession: 'doctor',
+//           role: 'doctor',
 //           organization_id: '00000000-0000-1000-8000-000000000002',
 //         })
 

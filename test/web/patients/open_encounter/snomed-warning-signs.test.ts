@@ -18,8 +18,8 @@ describeParallel('snomed-warning-signs', () => {
       async () => {
         const clinic = await createTestOrganization(db)
         const { health_worker: nurse, fetchJson } = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          registration_status: 'approved',
+          role: 'nurse',
+
           organization_id: clinic.id,
         })
 
@@ -95,8 +95,8 @@ describeParallel('snomed-warning-signs', () => {
       async () => {
         const clinic = await createTestOrganization(db)
         const { health_worker: nurse, fetchJson } = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          registration_status: 'approved',
+          role: 'nurse',
+
           organization_id: clinic.id,
         })
 
@@ -130,8 +130,8 @@ describeParallel('snomed-warning-signs', () => {
       async () => {
         const clinic = await createTestOrganization(db)
         const { health_worker: nurse, fetchJson, fetchOk } = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
-          registration_status: 'approved',
+          role: 'nurse',
+
           organization_id: clinic.id,
         })
 

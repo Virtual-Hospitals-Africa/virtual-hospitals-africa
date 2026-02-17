@@ -1,5 +1,5 @@
 import { VitalAssessment } from '../../shared/vitals.ts'
-import { TrxOrDb } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, jsonArrayFrom } from '../helpers.ts'
 
 export type CategoricalAssessment = {
@@ -30,7 +30,7 @@ export const patient_categorical_findings = {
    * Get all assessment options for a specific assessment type
    */
   getAssessmentOptions(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { assessment_snomed_concept_id }: { assessment_snomed_concept_id: string },
   ): Promise<AssessmentOption[]> {
     return trx
@@ -41,7 +41,7 @@ export const patient_categorical_findings = {
       .execute()
   },
   getTriageAssessmentsWithOptions(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
   ): Promise<AssessmentForForm[]> {
     return trx
       .selectFrom('sats_triage_assessments')
@@ -73,7 +73,7 @@ export const patient_categorical_findings = {
       .execute()
   },
   async getDisplayLabelBySnomedId(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { option_snomed_concept_id }: { option_snomed_concept_id: string },
   ): Promise<string | null> {
     const option = await trx

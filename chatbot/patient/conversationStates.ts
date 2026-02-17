@@ -50,15 +50,15 @@ const conversation_states: ConversationStates<
   'not_onboarded:make_appointment:enter_name': {
     type: 'string',
     prompt: 'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
-    async onExit(trx, patientState) {
+    async onExit(trx, patient_state) {
       const patient = await patients.insert(trx, {
-        name: patientState.unhandled_message.trimmed_body!,
-        phone_number: patientState.unhandled_message.sent_by_phone_number,
+        name: patient_state.unhandled_message.trimmed_body!,
+        phone_number: patient_state.unhandled_message.sent_by_phone_number,
         country: SERVER_COUNTRY,
       })
       await conversations.updateChatbotUser(
         trx,
-        patientState.chatbot_user,
+        patient_state.chatbot_user,
         {
           entity_id: patient.id,
         },
@@ -73,9 +73,9 @@ const conversation_states: ConversationStates<
       {
         id: 'male',
         title: 'Male',
-        async onExit(trx, patientState) {
+        async onExit(trx, patient_state) {
           await patients.update(trx, {
-            id: patientState.chatbot_user.entity_id!,
+            id: patient_state.chatbot_user.entity_id!,
             sex: 'male',
           })
           return 'not_onboarded:make_appointment:enter_date_of_birth' as const
@@ -84,10 +84,10 @@ const conversation_states: ConversationStates<
       {
         id: 'female',
         title: 'Female',
-        async onExit(trx, patientState) {
-          assert(patientState.chatbot_user.entity_id)
+        async onExit(trx, patient_state) {
+          assert(patient_state.chatbot_user.entity_id)
           await patients.update(trx, {
-            id: patientState.chatbot_user.entity_id,
+            id: patient_state.chatbot_user.entity_id,
             sex: 'female',
           })
           return 'not_onboarded:make_appointment:enter_date_of_birth' as const
@@ -98,16 +98,16 @@ const conversation_states: ConversationStates<
   'not_onboarded:make_appointment:enter_date_of_birth': {
     type: 'date',
     prompt: 'What is your date of birth?',
-    async onExit(trx, patientState) {
-      assert(patientState.chatbot_user.entity_id)
-      assert(patientState.unhandled_message.trimmed_body)
-      const [day, month, year] = patientState.unhandled_message.trimmed_body
+    async onExit(trx, patient_state) {
+      assert(patient_state.chatbot_user.entity_id)
+      assert(patient_state.unhandled_message.trimmed_body)
+      const [day, month, year] = patient_state.unhandled_message.trimmed_body
         .split('/')
       const month_str = month.padStart(2, '0')
       const day_str = day.padStart(2, '0')
       const date_of_birth = `${year}-${month_str}-${day_str}`
       await patients.update(trx, {
-        id: patientState.chatbot_user.entity_id,
+        id: patient_state.chatbot_user.entity_id,
         date_of_birth,
       })
       return 'not_onboarded:make_appointment:enter_national_id_number' as const
@@ -116,14 +116,14 @@ const conversation_states: ConversationStates<
   'not_onboarded:make_appointment:enter_national_id_number': {
     type: 'string',
     prompt: 'Please enter your national ID number',
-    async onExit(trx, patientState) {
-      assert(patientState.chatbot_user.entity_id)
+    async onExit(trx, patient_state) {
+      assert(patient_state.chatbot_user.entity_id)
       await patients.update(trx, {
-        id: patientState.chatbot_user.entity_id,
-        national_id_number: patientState.unhandled_message.trimmed_body,
+        id: patient_state.chatbot_user.entity_id,
+        national_id_number: patient_state.unhandled_message.trimmed_body,
       })
       await appointments.createNewRequest(trx, {
-        patient_id: patientState.chatbot_user.entity_id,
+        patient_id: patient_state.chatbot_user.entity_id,
       })
       return 'onboarded:make_appointment:enter_appointment_reason' as const
     },
@@ -131,18 +131,18 @@ const conversation_states: ConversationStates<
   'find_nearest_facilities:share_location': {
     type: 'get_location',
     prompt: 'Sure, we can find your nearest organization. Can you share your location?',
-    async onExit(trx, patientState) {
-      assert(patientState.chatbot_user.entity_id)
-      assert(patientState.unhandled_message.trimmed_body)
+    async onExit(trx, patient_state) {
+      assert(patient_state.chatbot_user.entity_id)
+      assert(patient_state.unhandled_message.trimmed_body)
       const location_message: Coordinates = JSON.parse(
-        patientState.unhandled_message.trimmed_body,
+        patient_state.unhandled_message.trimmed_body,
       )
       const current_location: Coordinates = {
         longitude: location_message.longitude,
         latitude: location_message.latitude,
       }
       await patients.update(trx, {
-        id: patientState.chatbot_user.entity_id,
+        id: patient_state.chatbot_user.entity_id,
         location: current_location,
       })
 
@@ -156,14 +156,14 @@ const conversation_states: ConversationStates<
     prompt: 'Click the button below to see the health facilities closes to you',
     async action(
       trx,
-      patientState,
+      patient_state,
     ) {
-      assert(patientState.chatbot_user.entity_id)
+      assert(patient_state.chatbot_user.entity_id)
 
       const nearest_facilities = await patient_nearest_facilities
         .nearestFacilities(
           trx,
-          patientState.chatbot_user.entity_id,
+          patient_state.chatbot_user.entity_id,
         )
       if (!nearest_facilities?.length) {
         return {
@@ -174,7 +174,7 @@ const conversation_states: ConversationStates<
               id: 'main_menu',
               title: 'Main Menu',
               onExit() {
-                return patientState.chatbot_user.entity_id ? 'onboarded:main_menu' as const : 'not_onboarded:welcome' as const
+                return patient_state.chatbot_user.entity_id ? 'onboarded:main_menu' as const : 'not_onboarded:welcome' as const
               },
             },
           ],
@@ -222,25 +222,25 @@ const conversation_states: ConversationStates<
   },
   'find_nearest_facilities:send_organization_location': {
     prompt: 'I will send you organization location',
-    async getMessages(trx, patientState): Promise<WhatsAppSendable> {
-      assert(patientState.chatbot_user.entity_id)
+    async getMessages(trx, patient_state): Promise<WhatsAppSendable> {
+      assert(patient_state.chatbot_user.entity_id)
 
       const nearest_facilities = await patient_nearest_facilities
         .nearestFacilities(
           trx,
-          patientState.chatbot_user.entity_id,
+          patient_state.chatbot_user.entity_id,
         )
 
       const selected_organization = nearest_facilities
         ?.find(
           (organization) =>
             organization.id ===
-              patientState.unhandled_message.trimmed_body,
+              patient_state.unhandled_message.trimmed_body,
         )
 
       assert(
         selected_organization,
-        'selected_organization should be available in the patientState',
+        'selected_organization should be available in the patient_state',
       )
 
       const location_message: WhatsAppSingleSendable = {
@@ -266,8 +266,8 @@ const conversation_states: ConversationStates<
       return [location_message, button_message]
     },
     type: 'send_location',
-    onExit(_trx, patientState): PatientConversationState {
-      return patientState.chatbot_user.entity_id ? 'onboarded:main_menu' : 'not_onboarded:welcome'
+    onExit(_trx, patient_state): PatientConversationState {
+      return patient_state.chatbot_user.entity_id ? 'onboarded:main_menu' : 'not_onboarded:welcome'
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {
@@ -275,19 +275,19 @@ const conversation_states: ConversationStates<
     prompt: 'What is the reason you want to schedule an appointment?',
     async onExit(
       trx,
-      patientState,
+      patient_state,
     ) {
-      assert(patientState.chatbot_user.entity_id)
+      assert(patient_state.chatbot_user.entity_id)
       const scheduling_appointment_request = await patient_appointments
         .schedulingAppointmentRequest(
           trx,
-          patientState.chatbot_user.entity_id,
+          patient_state.chatbot_user.entity_id,
         )
       assert(scheduling_appointment_request)
       await appointments.upsertRequest(trx, {
         id: scheduling_appointment_request.patient_appointment_request_id,
-        patient_id: patientState.chatbot_user.entity_id,
-        reason: patientState.unhandled_message.trimmed_body,
+        patient_id: patient_state.chatbot_user.entity_id,
+        reason: patient_state.unhandled_message.trimmed_body,
       })
       return 'onboarded:make_appointment:initial_ask_for_media' as const
     },
@@ -318,16 +318,17 @@ const conversation_states: ConversationStates<
   },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
-    async prompt(trx, patientState) {
-      assert(patientState.chatbot_user.entity_id)
+    async prompt(trx, patient_state) {
+      assert(patient_state.chatbot_user.entity_id)
       const patient = await patients.getById(
         trx,
-        patientState.chatbot_user.entity_id,
+        patient_state.chatbot_user.entity_id,
+        { include_incomplete_registration: true },
       )
       const scheduling_appointment_request = await patient_appointments
         .schedulingAppointmentRequest(
           trx,
-          patientState.chatbot_user.entity_id,
+          patient_state.chatbot_user.entity_id,
         )
       assert(scheduling_appointment_request)
       assert(scheduling_appointment_request.reason)
@@ -337,12 +338,12 @@ const conversation_states: ConversationStates<
       {
         id: 'confirm',
         title: 'Yes',
-        async onExit(trx, patientState) {
-          assert(patientState.chatbot_user.entity_id)
+        async onExit(trx, patient_state) {
+          assert(patient_state.chatbot_user.entity_id)
           const scheduling_appointment_request = await patient_appointments
             .schedulingAppointmentRequest(
               trx,
-              patientState.chatbot_user.entity_id,
+              patient_state.chatbot_user.entity_id,
             )
           assert(scheduling_appointment_request)
 
@@ -350,11 +351,11 @@ const conversation_states: ConversationStates<
           const nearest_facilities = await patient_nearest_facilities
             .nearestFacilities(
               trx,
-              patientState.chatbot_user.entity_id,
+              patient_state.chatbot_user.entity_id,
             )
 
           const doctors = await employees.distinctIds(trx, {
-            professions: ['doctor'],
+            roles: ['doctor'],
             organization_id: nearest_facilities.map((o) => o.id),
           }).execute()
           const employment_ids = doctors.map((doctor) => doctor.id)
@@ -371,7 +372,7 @@ const conversation_states: ConversationStates<
 
           await appointments.addOfferedTime(trx, {
             patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
-            provider_id: first_available[0].provider.employee_id,
+            employee_id: first_available[0].provider.employee_id,
             start: first_available[0].start,
             end: first_available[0].end,
             duration_minutes: first_available[0].duration_minutes,
@@ -388,12 +389,12 @@ const conversation_states: ConversationStates<
   },
   'onboarded:make_appointment:first_scheduling_option': {
     type: 'select',
-    async prompt(trx, patientState) {
-      assert(patientState.chatbot_user.entity_id)
+    async prompt(trx, patient_state) {
+      assert(patient_state.chatbot_user.entity_id)
       const scheduling_appointment_request = await patient_appointments
         .schedulingAppointmentRequest(
           trx,
-          patientState.chatbot_user.entity_id,
+          patient_state.chatbot_user.entity_id,
         )
       assert(scheduling_appointment_request)
       return `Great, the next available appointment is on ${
@@ -406,10 +407,10 @@ const conversation_states: ConversationStates<
       {
         id: 'confirm',
         title: 'Yes',
-        async onExit(trx, patientState) {
+        async onExit(trx, patient_state) {
           await makeAppointmentChatbot(
             trx,
-            patientState,
+            patient_state,
             function insertEvent(health_worker, calendar_id, event) {
               const health_worker_google_client = new GoogleClient(
                 health_worker,
@@ -426,12 +427,12 @@ const conversation_states: ConversationStates<
       {
         id: 'other_times',
         title: 'Other times',
-        async onExit(trx, patientState) {
-          assert(patientState.chatbot_user.entity_id)
+        async onExit(trx, patient_state) {
+          assert(patient_state.chatbot_user.entity_id)
           const scheduling_appointment_request = await patient_appointments
             .schedulingAppointmentRequest(
               trx,
-              patientState.chatbot_user.entity_id,
+              patient_state.chatbot_user.entity_id,
             )
           assert(scheduling_appointment_request)
 
@@ -456,10 +457,10 @@ const conversation_states: ConversationStates<
           const nearest_facilities = await patient_nearest_facilities
             .nearestFacilities(
               trx,
-              patientState.chatbot_user.entity_id,
+              patient_state.chatbot_user.entity_id,
             )
           const doctors = await employees.distinctIds(trx, {
-            professions: ['doctor'],
+            roles: ['doctor'],
             organization_id: nearest_facilities.map((o) => o.id),
           }).execute()
           const employment_ids = doctors.map((doctor) => doctor.id)
@@ -483,7 +484,7 @@ const conversation_states: ConversationStates<
             (timeslot) =>
               appointments.addOfferedTime(trx, {
                 patient_appointment_request_id: scheduling_appointment_request.patient_appointment_request_id,
-                provider_id: timeslot.provider.employee_id,
+                employee_id: timeslot.provider.employee_id,
                 start: timeslot.start,
                 end: timeslot.end,
                 duration_minutes: timeslot.duration_minutes,
@@ -506,13 +507,13 @@ const conversation_states: ConversationStates<
     prompt: 'OK here are the other available time, please choose from the list.',
     async action(
       trx,
-      patientState,
+      patient_state,
     ) {
-      assert(patientState.chatbot_user.entity_id)
+      assert(patient_state.chatbot_user.entity_id)
       const scheduling_appointment_request = await patient_appointments
         .schedulingAppointmentRequest(
           trx,
-          patientState.chatbot_user.entity_id,
+          patient_state.chatbot_user.entity_id,
         )
       assert(scheduling_appointment_request)
 
@@ -569,12 +570,12 @@ const conversation_states: ConversationStates<
           id: 'other_time',
           title: 'Other time slots',
           description: 'Show other time slots',
-          async onExit(trx, patientState) {
-            assert(patientState.chatbot_user.entity_id)
+          async onExit(trx, patient_state) {
+            assert(patient_state.chatbot_user.entity_id)
             const scheduling_appointment_request = await patient_appointments
               .schedulingAppointmentRequest(
                 trx,
-                patientState.chatbot_user.entity_id,
+                patient_state.chatbot_user.entity_id,
               )
             assert(scheduling_appointment_request)
             await appointments.declineOfferedTimes(
@@ -596,12 +597,12 @@ const conversation_states: ConversationStates<
   },
   'onboarded:appointment_scheduled': {
     type: 'select',
-    async prompt(trx, patientState) {
-      assert(patientState.chatbot_user.entity_id)
+    async prompt(trx, patient_state) {
+      assert(patient_state.chatbot_user.entity_id)
       const scheduled_appointments = await patient_appointments
         .scheduledAppointments(
           trx,
-          patientState.chatbot_user.entity_id,
+          patient_state.chatbot_user.entity_id,
         )
       assertEquals(scheduled_appointments.length, 1)
       const [scheduled_appointment] = scheduled_appointments
@@ -614,8 +615,8 @@ const conversation_states: ConversationStates<
       {
         id: 'cancel',
         title: 'Cancel Appointment',
-        async onExit(trx: TrxOrDb, patientState) {
-          await cancelAppointment(trx, patientState)
+        async onExit(trx: TrxOrDb, patient_state) {
+          await cancelAppointment(trx, patient_state)
           return 'onboarded:appointment_cancelled' as const
         },
       },

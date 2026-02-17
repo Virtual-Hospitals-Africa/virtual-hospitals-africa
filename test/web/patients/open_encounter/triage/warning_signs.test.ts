@@ -833,8 +833,8 @@ describeParallel('triage/warning_signs', () => {
           })
 
           const receptionist = await addTestEmployeeWithSession(db, {
-            profession: 'receptionist',
-            registration_status: 'approved',
+            role: 'receptionist',
+
             organization_id: clinic.id,
           })
 

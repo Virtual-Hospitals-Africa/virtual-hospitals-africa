@@ -1,4 +1,4 @@
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createTable.ts'
 
@@ -16,16 +16,16 @@ export async function up(db: Kysely<DB>) {
       .addColumn('gcal_event_id', 'varchar(255)', (col) => col.notNull())
       .addColumn('gcal_hangout_link', 'varchar(255)'))
 
-  await createStandardTable(db, 'appointment_providers', (qb) =>
+  await createStandardTable(db, 'appointment_employees', (qb) =>
     qb.addColumn(
       'appointment_id',
       'uuid',
       (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
       .addColumn(
-        'provider_id',
+        'employee_id',
         'uuid',
-        (col) => col.notNull().references('providers.id').onDelete('cascade'),
+        (col) => col.notNull().references('employment.id').onDelete('cascade'),
       )
       .addColumn(
         'confirmed',
@@ -58,9 +58,9 @@ export async function up(db: Kysely<DB>) {
           ),
       )
         .addColumn(
-          'provider_id',
+          'employee_id',
           'uuid',
-          (col) => col.notNull().references('providers.id').onDelete('cascade'),
+          (col) => col.notNull().references('employment.id').onDelete('cascade'),
         )
         .addColumn('start', 'timestamptz', (col) => col.notNull())
         .addColumn('end', 'timestamptz', (col) => col.notNull())
@@ -79,15 +79,15 @@ export async function up(db: Kysely<DB>) {
     .execute()
 
   await db.schema
-    .createIndex('idx_appointment_providers_appointment_id')
-    .on('appointment_providers')
+    .createIndex('idx_appointment_employees_appointment_id')
+    .on('appointment_employees')
     .column('appointment_id')
     .execute()
 
   await db.schema
-    .createIndex('idx_appointment_providers_provider_id')
-    .on('appointment_providers')
-    .column('provider_id')
+    .createIndex('idx_appointment_employees_employee_id')
+    .on('appointment_employees')
+    .column('employee_id')
     .execute()
 
   await db.schema
@@ -103,15 +103,15 @@ export async function up(db: Kysely<DB>) {
     .execute()
 
   await db.schema
-    .createIndex('idx_patient_appointment_offered_times_provider_id')
+    .createIndex('idx_patient_appointment_offered_times_employee_id')
     .on('patient_appointment_offered_times')
-    .column('provider_id')
+    .column('employee_id')
     .execute()
 }
 
 export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('patient_appointment_offered_times').execute()
   await db.schema.dropTable('patient_appointment_requests').execute()
-  await db.schema.dropTable('appointment_providers').execute()
+  await db.schema.dropTable('appointment_employees').execute()
   await db.schema.dropTable('appointments').execute()
 }

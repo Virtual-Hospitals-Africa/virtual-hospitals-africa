@@ -15,7 +15,7 @@ export default async function createMigration(migration_name: string) {
   const migration_file_name = `${year}${month}${day}${hour}${minute}${second}_${migration_name}.ts`
 
   const initial_contents = `import { Kysely } from "kysely"
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 
 export function up(db: Kysely<DB>) {
 

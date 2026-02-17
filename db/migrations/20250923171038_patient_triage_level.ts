@@ -1,4 +1,4 @@
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { Kysely } from 'kysely'
 import { createPointerTable } from '../createTable.ts'
 import { assertOnInsert } from '../helpers.ts'

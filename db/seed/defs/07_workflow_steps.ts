@@ -1,5 +1,5 @@
 import { InsertObject } from 'kysely'
-import { DB } from '../../../db.d.ts'
+import type { DB } from '../../../db.d.ts'
 import { WORKFLOW_STEPS, workflowStepKey, workflowStepSnomedConcept } from '../../../shared/workflow.ts'
 import { collect } from '../../../util/collectSorted.ts'
 import entries from '../../../util/entries.ts'

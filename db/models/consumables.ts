@@ -1,10 +1,11 @@
-import { type RenderedConsumable, TrxOrDb } from '../../types.ts'
-import { base } from './_base.ts'
+import { Maybe, type RenderedConsumable, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { base, identity } from './_base.ts'
 
 export default base({
   top_level_table: 'consumables',
   baseQuery: (
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
+    opts: { search?: Maybe<string> },
   ) =>
     trx
       .selectFrom('consumables')
@@ -18,16 +19,7 @@ export default base({
       .select([
         'consumables.id',
         'consumables.name',
-      ]),
-  formatResult: (x): RenderedConsumable => x,
-  handleSearch(
-    qb,
-    opts: { search: string | null },
-  ) {
-    if (opts.search) {
-      qb = qb.where('consumables.name', 'ilike', `%${opts.search}%`)
-    }
-
-    return qb
-  },
+      ])
+      .$if(!!opts.search, (qb) => qb.where('consumables.name', 'ilike', `%${opts.search}%`)),
+  formatResult: identity<RenderedConsumable>,
 })

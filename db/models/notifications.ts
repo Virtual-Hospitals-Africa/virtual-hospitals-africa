@@ -1,10 +1,10 @@
 import { sql } from 'kysely'
-import { PostgresInterval, RenderedNotification, TrxOrDb } from '../../types.ts'
+import { PostgresInterval, RenderedNotification, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 
 export const notifications = {
   insert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { health_worker_id, employment_id, ...notification }:
       & {
         action_title: string
@@ -36,7 +36,7 @@ export const notifications = {
       .executeTakeFirstOrThrow()
   },
   async ofHealthWorker(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     health_worker_id: string,
     opts?: {
       past_ts: number | Date

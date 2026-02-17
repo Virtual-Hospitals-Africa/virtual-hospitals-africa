@@ -1,8 +1,8 @@
-import { MailingListRecipient, TrxOrDb } from '../../types.ts'
+import { MailingListRecipient, TrxOrDbOrQueryCreator } from '../../types.ts'
 
 export const mailing_list = {
   add(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     recipient: MailingListRecipient,
   ) {
     return trx

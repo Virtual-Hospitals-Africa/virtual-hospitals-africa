@@ -1,5 +1,5 @@
 import { InsertObject } from 'kysely'
-import { DB } from '../db.d.ts'
+import type { DB } from '../db.d.ts'
 
 export const WIKIPEDIA_ISO_LANGUAGES = [
   {

@@ -19,9 +19,8 @@ describeParallel(
       'creates a patient, starting the registration process at the personal page',
       async () => {
         const { fetchOk } = await addTestEmployeeWithSession(db, {
-          profession: 'nurse',
+          role: 'nurse',
           specialty: 'Primary care',
-          registration_status: 'approved',
         })
 
         const response = await fetchOk(
@@ -48,7 +47,7 @@ describeParallel(
           'personal',
         ])
 
-        const patient = await patients.getById(db, patient_id)
+        const patient = await patients.getById(db, patient_id, { include_incomplete_registration: true })
         assertEquals(patient, {
           id: patient.id,
           name: null,

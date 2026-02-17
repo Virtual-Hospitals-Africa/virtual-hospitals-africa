@@ -1,47 +1,14 @@
-import { EmployeeInfo } from '../../types.ts'
-import { ArrowDownTrayIcon } from '../library/icons/heroicons/outline.tsx'
+import type { RenderedEmployee } from '../../types.ts'
 
 type HealthWorkerDetailedCardProps = {
-  employee: EmployeeInfo
-}
-
-function ImageDownload(props: { name: string; href: string }) {
-  return (
-    <li className='py-4 pl-4 pr-5 text-sm leading-6'>
-      <div className='flex items-center justify-between'>
-        <div className='flex flex-1 min-w-0 gap-2 ml-4'>
-          <span className='font-bold truncate'>
-            {props.name}
-          </span>
-        </div>
-
-        <div className='flex-shrink-0 ml-4'>
-          <a
-            href={props.href}
-            className='flex font-bold text-indigo-600 hover:text-indigo-500'
-            target='_blank'
-          >
-            <ArrowDownTrayIcon
-              className='flex-shrink-0 w-5 h-5 mr-1 text-gray-400'
-              aria-hidden='true'
-            />Download
-          </a>
-        </div>
-      </div>
-      <div className='flex justify-center w-full p-2 mt-2 bg-gray-300'>
-        <img
-          src={props.href}
-          alt='Download Preview'
-          className='w-full max-w-xs mx-auto mt-2'
-        />
-      </div>
-    </li>
-  )
+  employee: RenderedEmployee
 }
 
 export default function HealthWorkerDetailedCard(
   { employee }: HealthWorkerDetailedCardProps,
 ) {
+  const all_licences = employee.organizations.flatMap((org) => org.active_licences)
+
   return (
     <>
       <div>
@@ -49,26 +16,18 @@ export default function HealthWorkerDetailedCard(
           <dl class='grid grid-cols-1 sm:grid-cols-4'>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                First Name
+                First Name(s)
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.name.split(' ')[0]}
+                {employee.first_names}
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Middle Name
+                Surname
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.name.split(' ').length > 2 ? employee.name.split(' ').slice(1, -1).join(' ') : 'N/A'}
-              </dd>
-            </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Last Name
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.name.split(' ').at(-1)}
+                {employee.surname}
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -76,23 +35,15 @@ export default function HealthWorkerDetailedCard(
                 Gender
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.gender}
+                {employee.demographics.gender || 'N/A'}
               </dd>
             </div>
-            <div class='py-6 sm:col-span-1 sm:px-0'>
+            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
                 Date of Birth
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.date_of_birth ? employee.date_of_birth : 'TBD'}
-              </dd>
-            </div>
-            <div class='py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                National ID Number
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.national_id_number}
+                {employee.demographics.date_of_birth ? String(employee.demographics.date_of_birth) : 'N/A'}
               </dd>
             </div>
             <div class='py-6 sm:col-span-1 sm:px-0'>
@@ -100,7 +51,7 @@ export default function HealthWorkerDetailedCard(
                 Email
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.email}
+                {employee.email || 'N/A'}
               </dd>
             </div>
             <div class='py-6 sm:col-span-1 sm:px-0'>
@@ -108,82 +59,78 @@ export default function HealthWorkerDetailedCard(
                 Phone Number
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.mobile_number || 'N/A'}
+                {employee.contact_details.mobile_phone_number || 'N/A'}
               </dd>
             </div>
-            <div class='py-6 sm:col-span-4 sm:px-0'>
+            <div class='py-6 sm:col-span-2 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
                 Address
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.address || 'N/A'}
-              </dd>
-            </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Specialty
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.specialty ? employee.specialty.replaceAll('_', ' ') : 'N/A'}
-              </dd>
-            </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Date of First Practice
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.date_of_first_practice || 'TBD'}
-              </dd>
-            </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Nurse's Council Number
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {employee.ncz_registration_number}
-              </dd>
-            </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Organization
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                <div>
-                  {employee.organization_name}
-                </div>
-                <div className='pl-4 text-xs'>
-                  {employee.organization_address || 'N/A'}
-                </div>
-              </dd>
-            </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-3 sm:px-0'>
-              <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Virtual Hospitals
-              </dt>
-              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {'TBD'}
+                {employee.contact_details.address?.formatted || 'N/A'}
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-4 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Documents
+                Licences
               </dt>
-              {employee.documents.length > 0
+              {all_licences.length > 0
                 ? (
-                  <dd className='mt-2 text-sm text-gray-900'>
-                    <ul
-                      role='list'
-                      className='mx-auto border border-gray-200 divide-y divide-gray-100 rounded-md'
-                      style={{ width: '50%' }}
-                    >
-                      {employee.documents.map((document) => <ImageDownload key={document.name} {...document} />)}
-                    </ul>
+                  <dd class='mt-2 text-sm text-gray-900'>
+                    <table class='min-w-full divide-y divide-gray-300'>
+                      <thead>
+                        <tr>
+                          <th class='py-2 pr-3 text-left text-sm font-semibold text-gray-900'>Agency</th>
+                          <th class='py-2 pr-3 text-left text-sm font-semibold text-gray-900'>Licence Number</th>
+                          <th class='py-2 pr-3 text-left text-sm font-semibold text-gray-900'>Profession</th>
+                          <th class='py-2 pr-3 text-left text-sm font-semibold text-gray-900'>Specialty</th>
+                          <th class='py-2 pr-3 text-left text-sm font-semibold text-gray-900'>Expiry</th>
+                        </tr>
+                      </thead>
+                      <tbody class='divide-y divide-gray-200'>
+                        {all_licences.map((licence) => (
+                          <tr key={licence.licence_number}>
+                            <td class='py-2 pr-3 text-sm text-gray-700'>{licence.regulatory_agency.acronym} ({licence.regulatory_agency.country})</td>
+                            <td class='py-2 pr-3 text-sm text-gray-700'>{licence.licence_number}</td>
+                            <td class='py-2 pr-3 text-sm text-gray-700'>{licence.profession}</td>
+                            <td class='py-2 pr-3 text-sm text-gray-700'>{licence.specialty?.replaceAll('_', ' ') || 'N/A'}</td>
+                            <td class='py-2 pr-3 text-sm text-gray-700'>{String(licence.expiry_date)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </dd>
                 )
                 : (
-                  <dt class='mt-2 text-sm leading-6 text-gray-900'>
-                    No Documents
-                  </dt>
+                  <dd class='mt-2 text-sm leading-6 text-gray-700'>
+                    No active licences
+                  </dd>
+                )}
+            </div>
+            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-4 sm:px-0'>
+              <dt class='text-sm font-bold leading-6 text-gray-900'>
+                Organizations
+              </dt>
+              {employee.organizations.length > 0
+                ? (
+                  <dd class='mt-2 text-sm text-gray-900'>
+                    {employee.organizations.map((org) => (
+                      <div key={org.id} class='mb-2'>
+                        <div class='font-medium'>{org.name}</div>
+                        <div class='pl-4 text-xs text-gray-500'>
+                          {org.formatted_address || 'N/A'}
+                        </div>
+                        <div class='pl-4 text-xs text-gray-500'>
+                          Role: {org.role}
+                        </div>
+                      </div>
+                    ))}
+                  </dd>
+                )
+                : (
+                  <dd class='mt-2 text-sm leading-6 text-gray-700'>
+                    No organizations
+                  </dd>
                 )}
             </div>
           </dl>

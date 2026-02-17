@@ -4,9 +4,7 @@ import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import { sessions } from '../db/models/sessions.ts'
-
 import { health_workers } from '../db/models/health_workers.ts'
-import { regulators } from '../db/models/regulators.ts'
 import { google_tokens } from '../db/models/google_tokens.ts'
 import { events } from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
@@ -44,9 +42,6 @@ async function downloadAndSaveAvatar(
   }
 }
 
-const USE_INVITE_SYSTEM = Deno.env.has('USE_INVITE_SYSTEM')
-assert(!USE_INVITE_SYSTEM, 'Not supported until further notice.')
-
 export async function initializeHealthWorkerWithoutInvites(
   trx: TrxOrDb,
   google_client: google.GoogleClient,
@@ -67,8 +62,8 @@ export async function initializeHealthWorkerWithoutInvites(
     email: profile.email,
     avatar_media_id,
     ...asNames({
-      first_names: profile.given_name,
-      surname: profile.family_name,
+      first_names: profile.first_names,
+      surname: profile.surname,
       name: profile.name,
     }),
   }
@@ -172,149 +167,22 @@ export async function startRegulatorSession(
 }
 
 export const handler = {
-  GET(ctx: Context<unknown>) {
+  async GET(ctx: Context<unknown>) {
     const code = ctx.url.searchParams.get('code')
     assert(code, 'No code found in query params')
-    const getting_tokens = getInitialTokensFromAuthCode(code)
+    const tokens = await getInitialTokensFromAuthCode(code)
+    const google_client = new google.GoogleClient(tokens)
+    const has_permissions = await checkPermissions(google_client)
+    assertOrRedirect(has_permissions, insufficient_permissions)
+    const profile = await google_client.getProfile()
 
     return db.transaction().setIsolationLevel('read committed').execute(
-      async (trx) => {
-        const tokens = await getting_tokens
-        const google_client = new google.GoogleClient(tokens)
-        const has_permissions = await checkPermissions(google_client)
-
-        assertOrRedirect(has_permissions, insufficient_permissions)
-
-        const profile = await google_client.getProfile()
-
-        const regulator = await regulators.getByEmail(trx, profile.email)
-        if (regulator) {
-          const avatar_media_id = await downloadAndSaveAvatar(
-            trx,
-            profile.picture,
-          )
-
-          if (regulator.name !== profile.name) {
-            await regulators.update(trx, {
-              id: regulator.id,
-              name: profile.name,
-              avatar_media_id,
-            })
-          }
-
-          return startRegulatorSession(trx, regulator)
-        }
-
-        if (!USE_INVITE_SYSTEM) {
-          return initializeHealthWorkerWithoutInvites(
-            trx,
-            google_client,
-            profile,
-          )
-        }
-
-        // TODO revive invite system
-        // const health_worker_invitees = await employment.getInvitees(trx, {
-        //   email: profile.email,
-        // })
-
-        // const health_worker = await (
-        //   health_worker_invitees.length
-        //     ? initializeHealthWorkerWithInvites(
-        //       trx,
-        //       google_client,
-        //       profile,
-        //       health_worker_invitees,
-        //     )
-        //     : updateTokens(
-        //       trx,
-        //       profile.email,
-        //       pickTokens(tokens),
-        //     )
-        // )
-
-        // assertOrRedirect(health_worker, could_not_locate_account_href)
-
-        // const session = await sessions.create(trx, 'health_worker', {
-        //   entity_id: health_worker.id,
-        // })
-
-        // const response = redirect('/app')
-
-        // setCookie(response.headers, {
-        //   name: cookie.session_key,
-        //   value: session.id,
-        // })
-
-        // return response
-      },
+      (trx) =>
+        initializeHealthWorkerWithoutInvites(
+          trx,
+          google_client,
+          profile,
+        ),
     )
   },
 }
-
-// export async function initializeHealthWorkerWithInvites(
-//   trx: TrxOrDb,
-//   google_client: google.GoogleClient,
-//   profile: GoogleProfile,
-//   invitees: { id: string; organization_id: string; profession: Profession | null, is_admin: boolean }[],
-// ): Promise<{ id: string }> {
-// assert(invitees.length, 'No invitees found')
-
-// await employment.removeInvitees(
-//   trx,
-//   invitees.map((invitee) => invitee.id),
-// )
-
-// const organization_ids = uniq(
-//   invitees.map((invitee) => invitee.organization_id),
-// )
-
-// const calendars =
-//   await ensureHasAppointmentsAndAvailabilityCalendarsForAllOrgs(
-//     trx,
-//     google_client,
-//     organization_ids,
-//   )
-
-// const avatar_media_id = await downloadAndSaveAvatar(trx, profile.picture)
-
-// const health_worker = await upsertWithGoogleCredentials(
-//   trx,
-//   {
-//     email: profile.email,
-//     avatar_media_id,
-//     ...asNames({
-//       first_names: profile.given_name,
-//       surname: profile.family_name,
-//       name: profile.name,
-//     }),
-//   },
-//   google_client.tokens
-// )
-
-// const calendars_to_insert = calendars.map(({ organization_id, ...calendar }) => ({
-//   ...calendar,
-//   employment_id: health_worker
-// }))
-
-// await employment_calendars.add(
-//   trx,
-//   calendars,
-// )
-
-// await Promise.all(
-//   invitees.map(({ organization_id, profession }) =>
-//     employment.addIgnoreDuplicate(
-//       trx,
-//       { health_worker_id, organization_id, profession },
-//     )
-//   ),
-// )
-
-// await events.insert(trx, {
-//   type: 'HealthWorkerLogin',
-//   data: { health_worker_id },
-// })
-
-// return { id: health_worker_id }
-// }

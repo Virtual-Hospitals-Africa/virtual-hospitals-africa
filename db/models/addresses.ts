@@ -1,10 +1,11 @@
 import { InsertObject } from 'kysely'
-import { InsertShapeLiteral, Maybe, TrxOrDb } from '../../types.ts'
+import { Address, InsertShapeLiteral, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
 import { StatusError } from '../../util/assertOr.ts'
 import { COUNTRIES } from '../../shared/countries.ts'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
+import { base, identity, simpleBaseQuery } from './_base.ts'
 
 export type AddressInsert = InsertShapeLiteral<InsertObject<DB, 'addresses'>>
 
@@ -23,13 +24,17 @@ export const TO_COUNTRY_OFFICIAL_NAME = new Map<string, string>()
 COUNTRIES.forEach((country) => {
   TO_COUNTRY_OFFICIAL_NAME.set(country.iso_3166_2, country.official_name)
   TO_COUNTRY_ISO_3601_2.set(country.official_name, country.iso_3166_2)
-  for (const alternate_name of country.alternate_names || []) {
-    TO_COUNTRY_ISO_3601_2.set(alternate_name, country.iso_3166_2)
+  if (country.alternate_names) {
+    TO_COUNTRY_ISO_3601_2.set(country.alternate_names, country.iso_3166_2)
   }
 })
 
-export const addresses = {
-  insertValues(address: AddressInsert) {
+export const addresses = base({
+  top_level_table: 'addresses',
+  baseQuery: simpleBaseQuery('addresses'),
+  formatResult: identity<Address>,
+
+  insertValues(address: Omit<AddressInsert, 'formatted'>) {
     let {
       id,
       street_number,
@@ -101,7 +106,7 @@ export const addresses = {
   },
 
   insert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     address: AddressInsert,
   ) {
     return trx.insertInto('addresses')
@@ -111,7 +116,7 @@ export const addresses = {
   },
 
   distinctLocalities(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { country, search, limit }: {
       country: string
       search?: Maybe<string>
@@ -132,7 +137,7 @@ export const addresses = {
   },
 
   distinctAdministrativeAreaLevels1(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { country, search, limit }: {
       country: string
       search?: Maybe<string>
@@ -157,7 +162,7 @@ export const addresses = {
   },
 
   distinctAdministrativeAreaLevels2(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { country, search, limit }: {
       country: string
       search?: Maybe<string>
@@ -180,4 +185,4 @@ export const addresses = {
     }
     return qb.execute()
   },
-}
+})

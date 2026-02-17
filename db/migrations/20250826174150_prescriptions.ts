@@ -1,4 +1,4 @@
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 import { createPointerTable, createStandardTable } from '../createTable.ts'
 import { PrescriptionFrequencies } from '../../shared/prescription.ts'

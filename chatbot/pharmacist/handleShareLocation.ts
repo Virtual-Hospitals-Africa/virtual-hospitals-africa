@@ -27,7 +27,7 @@ export async function handleShareLocation(
     return 'not_onboarded:reshare_location' as const
   }
 
-  const pharmacist = await pharmacists.getByLicenceNumber(trx, licence_number)
+  const pharmacist = await pharmacists.getByLicence(trx, licence_number)
   assert(pharmacist, 'Pharmacist not found')
 
   await conversations.updateChatbotUser(

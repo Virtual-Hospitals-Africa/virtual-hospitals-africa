@@ -1,10 +1,10 @@
-import { Maybe, RenderedPatientInsurance, TrxOrDb } from '../../types.ts'
+import { Maybe, RenderedPatientInsurance, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { todayISOInJohannesburg } from '../../util/date.ts'
 import { isoDate, today_in_johannesburg } from '../helpers.ts'
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
 ) {
   return trx
     .selectFrom('patient_insurance')
@@ -21,7 +21,7 @@ function baseQuery(
 
 export const patient_insurance = {
   getById(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ): Promise<RenderedPatientInsurance[]> {
     return baseQuery(trx)
@@ -30,7 +30,7 @@ export const patient_insurance = {
       .execute()
   },
   getCurrent(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: { patient_id: string },
   ): Promise<RenderedPatientInsurance | undefined> {
     return baseQuery(trx)
@@ -40,7 +40,7 @@ export const patient_insurance = {
       .executeTakeFirst()
   },
   async setCurrent(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     insert: {
       patient_id: string
       insurance_provider: string
@@ -80,7 +80,7 @@ export const patient_insurance = {
       .executeTakeFirstOrThrow()
   },
   clearCurrent(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { patient_id }: {
       patient_id: string
     },

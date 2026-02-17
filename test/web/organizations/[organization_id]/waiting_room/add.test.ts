@@ -17,9 +17,9 @@
 //   () => {
 //     itParallel('renders a page on GET', async () => {
 //       const { fetch } = await addTestEmployeeWithSession(db, {
-//         profession: 'nurse',
+//         role: 'nurse',
 //         specialty: 'Primary care',
-//         registration_status: 'approved',
+//
 //       })
 
 //       const test_patient =await patients.insert(db, {
@@ -50,9 +50,9 @@
 //         name: 'Test Patient',
 //       })
 //       const { fetch } = await addTestEmployeeWithSession(db, {
-//         profession: 'nurse',
+//         role: 'nurse',
 //         specialty: 'Primary care',
-//         registration_status: 'approved',
+//
 //       })
 
 //       const body = new FormData()
@@ -60,7 +60,7 @@
 //       body.set('reason', 'seeking treatment')
 //       body.set('notes', 'Test notes')
 //       body.set('patient_name', 'Test Patient')
-//       body.set('provider_id', 'next_available')
+//       body.set('employee_id', 'next_available')
 //       body.set('provider_name', 'Next Available')
 //       body.set('waiting_room', 'true')
 
@@ -104,16 +104,16 @@
 
 //     it.skip('can create a patient encounter for a new patient on POST', async () => {
 //       const { fetch } = await addTestEmployeeWithSession(db, {
-//         profession: 'nurse',
+//         role: 'nurse',
 //         specialty: 'Primary care',
-//         registration_status: 'approved',
+//
 //       })
 
 //       const patient_name = generateUUID()
 //       const body = new FormData()
 //       body.set('notes', 'Test notes')
 //       body.set('patient_name', patient_name)
-//       body.set('provider_id', 'next_available')
+//       body.set('employee_id', 'next_available')
 //       body.set('provider_name', 'Next Available')
 //       body.set('reason', 'seeking treatment')
 

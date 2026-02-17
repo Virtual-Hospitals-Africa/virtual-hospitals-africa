@@ -17,7 +17,7 @@
 //       (trx) =>
 //         withTestOrganization(trx, async (organization_id) => {
 //           const admin = await addTestEmployee(trx, {
-//             profession: 'admin',
+//             role: 'admin',
 //           })
 
 //           const contec_bc401 = await trx
@@ -77,7 +77,7 @@
 //       (trx) =>
 //         withTestOrganization(trx, async (organization_id) => {
 //           const admin = await addTestEmployee(trx, {
-//             profession: 'admin',
+//             role: 'admin',
 //             organization_id,
 //           })
 
@@ -152,7 +152,7 @@
 //       async () => {
 //         await withTestOrganization(db, async (organization_id) => {
 //           const admin = await addTestEmployee(db, {
-//             profession: 'admin',
+//             role: 'admin',
 //             organization_id,
 //           })
 

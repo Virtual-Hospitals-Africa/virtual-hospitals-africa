@@ -26,7 +26,7 @@ import { assert } from 'std/assert/assert.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { UpdateShape } from '../../../../../../../../types.ts'
 // import generateUUID from '../../../../../../../../util/uuid.ts'
-import { DB } from '../../../../../../../../db.d.ts'
+import type { DB } from '../../../../../../../../db.d.ts'
 import { pronoun } from '../../../../../../../../shared/sex_and_gender.ts'
 
 // TODO not hard code this

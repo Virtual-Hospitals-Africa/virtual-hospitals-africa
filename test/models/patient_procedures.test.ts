@@ -16,8 +16,7 @@ describeParallel('db/models/patient_procedures.ts', () => {
       'can insert an action representing excessive garment removal',
       async () => {
         const nurse = await addTestEmployee(db, {
-          profession: 'nurse',
-          registration_status: 'approved',
+          role: 'nurse',
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(

@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
-import { GoogleTokens, IdSelection, TrxOrDb } from '../../types.ts'
-import { base, simpleBaseQuery } from './_base.ts'
+import { GoogleTokens, IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { base } from './_base.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expires_in_an_hour_sql = sql<
@@ -9,7 +9,10 @@ const expires_in_an_hour_sql = sql<
 
 export type EntityType = 'health_worker' | 'regulator'
 
-const baseQuery = simpleBaseQuery('google_tokens' as const)
+function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { entity_type?: EntityType }) {
+  return trx.selectFrom('google_tokens').selectAll()
+    .$if(!!opts.entity_type, (qb) => qb.where('entity_type', '=', opts.entity_type!))
+}
 
 export const google_tokens = base({
   top_level_table: 'google_tokens' as const,
@@ -21,15 +24,9 @@ export const google_tokens = base({
     entity_id: string
     entity_type: EntityType
   } => x,
-  handleSearch(qb, search_terms: { entity_type?: EntityType }) {
-    if (search_terms.entity_type) {
-      return qb.where('entity_type', '=', search_terms.entity_type)
-    }
-    return qb
-  },
 
   async upsert(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     entity_type: EntityType,
     entity_id: string | IdSelection,
     tokens: GoogleTokens,
@@ -56,12 +53,12 @@ export const google_tokens = base({
   },
 
   async updateTokensByEmail(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     entity_type: EntityType,
     email: string,
     tokens: GoogleTokens,
   ): Promise<null | { id: string }> {
-    const table_name = entity_type === 'health_worker' ? 'health_workers' : 'regulators'
+    const table_name = entity_type === 'health_worker' ? 'health_worker_accounts' : 'regulators'
     const entity = await trx.selectFrom(table_name).where(
       'email',
       '=',
@@ -73,7 +70,7 @@ export const google_tokens = base({
   },
 
   getByEntityId(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     entity_type: EntityType,
     entity_id: string,
   ): Promise<
@@ -93,7 +90,7 @@ export const google_tokens = base({
       .executeTakeFirst()
   },
 
-  getAllAboutToExpire(trx: TrxOrDb): Promise<
+  getAllAboutToExpire(trx: TrxOrDbOrQueryCreator): Promise<
     Array<{ entity_id: string; entity_type: EntityType } & GoogleTokens>
   > {
     return trx
@@ -114,7 +111,7 @@ export const google_tokens = base({
   },
 
   updateAccessToken(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     entity_type: EntityType,
     entity_id: string,
     access_token: string,
@@ -128,7 +125,7 @@ export const google_tokens = base({
   },
 
   removeExpiredAccessToken(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     entity_type: EntityType,
     entity_id: string,
   ) {

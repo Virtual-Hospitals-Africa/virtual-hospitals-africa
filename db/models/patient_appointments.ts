@@ -1,56 +1,59 @@
-import { sql } from 'kysely'
-import { PatientSchedulingAppointmentRequest, TrxOrDb } from '../../types.ts'
+import { PatientSchedulingAppointmentRequest, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 
 export const patient_appointments = {
-  async schedulingAppointmentRequest(
+  schedulingAppointmentRequest(
     trx: TrxOrDb,
     patient_id: string,
-  ): Promise<null | PatientSchedulingAppointmentRequest> {
-    // deno-lint-ignore no-explicit-any
-    const result = await sql<any>`
-      WITH aot_pre as (
-          SELECT patient_appointment_offered_times.*,
-                 health_workers.name as health_worker_name,
-                 employment.profession
-            FROM patient_appointment_offered_times
-            JOIN employment ON patient_appointment_offered_times.provider_id = employment.id
-            JOIN health_workers ON employment.health_worker_id = health_workers.id
-        ORDER BY patient_appointment_offered_times.start ASC
-      )
-
-      SELECT patient_appointment_requests.id as patient_appointment_request_id,
-             patient_appointment_requests.reason,
-             json_agg(aot_pre.*) as offered_times
-        FROM patient_appointment_requests
-   LEFT JOIN aot_pre ON patient_appointment_requests.id = aot_pre.patient_appointment_request_id
-       WHERE patient_appointment_requests.id is not null
-         AND patient_id = ${patient_id}
-    GROUP BY patient_appointment_requests.id, patient_appointment_requests.patient_id, patient_appointment_requests.reason
-  `.execute(trx)
-
-    return result.rows[0] || null
+  ): Promise<undefined | PatientSchedulingAppointmentRequest> {
+    return trx.selectFrom('patient_appointment_requests')
+      .select((eb) => [
+        'patient_appointment_requests.id as patient_appointment_request_id',
+        eb.ref('patient_appointment_requests.reason').$notNull().as('reason'),
+        jsonArrayFrom(
+          eb.selectFrom('patient_appointment_offered_times')
+            .innerJoin('employment', 'employment.id', 'patient_appointment_offered_times.employee_id')
+            .innerJoin('health_workers', 'health_workers.id', 'employment.health_worker_id')
+            .select([
+              'patient_appointment_offered_times.id',
+              'patient_appointment_offered_times.patient_appointment_request_id',
+              'patient_appointment_offered_times.employee_id',
+              'patient_appointment_offered_times.start',
+              'patient_appointment_offered_times.end',
+              'patient_appointment_offered_times.duration_minutes',
+              'patient_appointment_offered_times.declined',
+              'health_workers.name as health_worker_name',
+              'employment.role',
+              'employment.is_admin',
+            ])
+            .whereRef('patient_appointment_offered_times.patient_appointment_request_id', '=', 'patient_appointment_requests.id')
+            .orderBy('patient_appointment_offered_times.start', 'asc'),
+        ).as('offered_times'),
+      ])
+      .where('patient_appointment_requests.patient_id', '=', patient_id)
+      .executeTakeFirst()
   },
   scheduledAppointments(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     patient_id: string,
   ): Promise<{
     id: string
     reason: string
-    provider_id: string
+    employee_id: string
     gcal_event_id: string
     start: Date
     health_worker_name: string
   }[]> {
     return trx.selectFrom('appointments')
       .innerJoin(
-        'appointment_providers',
-        'appointment_providers.appointment_id',
+        'appointment_employees',
+        'appointment_employees.appointment_id',
         'appointments.id',
       )
       .innerJoin(
         'employment',
         'employment.id',
-        'appointment_providers.provider_id',
+        'appointment_employees.employee_id',
       )
       .innerJoin(
         'health_workers',
@@ -60,7 +63,7 @@ export const patient_appointments = {
       .select([
         'appointments.id',
         'appointments.reason',
-        'appointment_providers.provider_id',
+        'appointment_employees.employee_id',
         'appointments.gcal_event_id',
         'appointments.start',
         'health_workers.name as health_worker_name',

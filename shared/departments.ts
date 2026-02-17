@@ -2,15 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
-import {
-  EmployedHealthWorker,
-  HealthWorkerOrganization,
-  Maybe,
-  NonEmptyArray,
-  Profession,
-  RenderedEmployee,
-  RenderedOrganizationWithDepartments,
-} from '../types.ts'
+import { HealthWorkerOrganization, Maybe, NonEmptyArray, RenderedEmployee, RenderedHealthWorker, RenderedOrganizationWithDepartments } from '../types.ts'
 import { StatusError } from '../util/assertOr.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
@@ -107,7 +99,7 @@ export function assertDepartmentResponsibleForWorkflow(
 }
 
 export function departmentsOfProfession(
-  profession: Profession | 'admin',
+  profession: string,
   specialty?: Maybe<string>,
 ): Department[] {
   switch (profession) {
@@ -140,15 +132,18 @@ export function departmentsOfProfession(
     case 'admin': {
       return ['Administration']
     }
+    case 'pharmacist': {
+      return ['Pharmacy']
+    }
     default: {
-      throw new Error(`Unreachable, profession ${profession}`)
+      throw new Error('Unsupported profession: ' + profession)
     }
   }
 }
 
 export function organizationDepartmentIdsOfProfession(
   organization: RenderedOrganizationWithDepartments,
-  profession: Profession | 'admin',
+  profession: string,
   specialty?: Maybe<string>,
 ): string[] {
   const department_names = departmentsOfProfession(profession, specialty)
@@ -171,7 +166,7 @@ export function employeeOrganizationDepartmentNames(
 }
 
 export function healthWorkerOrganizationDepartmentNames(
-  health_worker: EmployedHealthWorker,
+  health_worker: RenderedHealthWorker,
   organization_id: string,
 ): Department[] {
   const organization_employment = exists(

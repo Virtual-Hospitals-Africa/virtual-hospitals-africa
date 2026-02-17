@@ -1,6 +1,12 @@
 import { assert } from 'std/assert/assert.ts'
 import { prettyStepName, WORKFLOW_STEPS, WORKFLOWS, workflowStepSnomedConcept } from '../../shared/workflow.ts'
-import { CurrentWorkflowState, RenderedFindingRelativeToHealthWorker, RenderedPatientEncounter, RenderedSidebarWorkflow, TrxOrDb } from '../../types.ts'
+import {
+  CurrentWorkflowState,
+  RenderedFindingRelativeToHealthWorker,
+  RenderedPatientEncounter,
+  RenderedSidebarWorkflow,
+  TrxOrDbOrQueryCreator,
+} from '../../types.ts'
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
@@ -129,7 +135,7 @@ function groupRecordsByWorkflows(
 
 export const this_visit_findings = {
   async get(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { health_worker_id, encounter, current_workflow_state }: {
       health_worker_id: string
       encounter: RenderedPatientEncounter

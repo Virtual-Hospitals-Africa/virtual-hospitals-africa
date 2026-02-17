@@ -118,7 +118,7 @@
 //             />
 //             <YesNoQuestion
 //               name='lifestyle.alcohol.criticized'
-//               label='Has the patient ever been criticized by their supervisor or work colleagues about their drinking?'
+//               label='Has the patient ever been criticized by their admin or work colleagues about their drinking?'
 //               value={alcohol.value.criticized}
 //               onChange={(value) =>
 //                 alcohol.value = {

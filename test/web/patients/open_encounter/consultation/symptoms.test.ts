@@ -15,7 +15,7 @@
 //     itParallel('renders a page on GET for an open encounter', async () => {
 //       const { health_worker, fetchCheerio } =
 //         await addTestEmployeeWithSession(db, {
-//           profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//           role: 'nurse', specialty: 'Primary care',
 //         })
 //       const { patient_id } = await patient_encounters
 //         .insertSeekingTreatmentWithEmployeeForTest(

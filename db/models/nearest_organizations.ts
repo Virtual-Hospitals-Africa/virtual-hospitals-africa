@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { Coordinates, Maybe, TrxOrDb } from '../../types.ts'
+import { Coordinates, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { base, SearchResult } from './_base.ts'
 import { employees } from './employees.ts'
@@ -19,7 +19,7 @@ export type NearestOrganizationSearchResult = SearchResult<
 >
 
 function baseQuery(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   search: SearchOpts,
 ) {
   assert(search?.location, 'Must provide a location to measure distance from')
@@ -52,7 +52,7 @@ function baseQuery(
       ).as('admins'),
       jsonArrayFrom(
         employees.baseQuery(trx, {})
-          .where('employment.profession', '=', 'doctor')
+          .where('employment.role', '=', 'doctor')
           .where('employment.organization_id', '=', eb.ref('organizations.id')),
       ).as('doctors'),
       jsonArrayFrom(
@@ -97,7 +97,7 @@ function baseQuery(
                 '=',
                 'organizations.id',
               )
-              .where('doctor_employment.profession', '=', 'doctor')
+              .where('doctor_employment.role', '=', 'doctor')
               .select((eb2) => eb2.fn.count('doctor_employment.id').as('doctor_count')),
           '>',
           0,

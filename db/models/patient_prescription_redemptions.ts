@@ -1,5 +1,5 @@
 // import { sql } from 'kysely'
-// import { Maybe, MedicationSchedule, RenderedPrescription, RenderedPrescriptionWithMedications, TrxOrDb } from '../../types.ts'
+// import { Maybe, MedicationSchedule, RenderedPrescription, RenderedPrescriptionWithMedications, TrxOrDbOrQueryCreator } from '../../types.ts'
 // import { drugs } from './drugs.ts'
 // import { assert } from 'std/assert/assert.ts'
 
@@ -12,7 +12,7 @@
 //   schedules: MedicationSchedule[]
 // }
 
-// function baseQuery(trx: TrxOrDb) {
+// function baseQuery(trx: TrxOrDbOrQueryCreator) {
 //   return trx
 //     .selectFrom('patient_prescriptions')
 //     .leftJoin(
@@ -47,7 +47,7 @@
 
 // export const prescriptions = {
 //   getById(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     id: string,
 //   ): Promise<RenderedPrescription | undefined> {
 //     return baseQuery(trx)
@@ -55,7 +55,7 @@
 //       .executeTakeFirst()
 //   },
 //   getByCode(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     code: string,
 //   ) {
 //     return trx
@@ -75,7 +75,7 @@
 //       .executeTakeFirst()
 //   },
 //   async upsert(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     { prescribing, ...to_insert }:
 //       & {
 //         prescriber_id: string
@@ -149,7 +149,7 @@
 //     return prescription
 //   },
 //   deleteCode(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     code: string,
 //   ) {
 //     return trx
@@ -158,7 +158,7 @@
 //       .execute()
 //   },
 //   async getFromReview(
-//     trx: TrxOrDb,
+//     trx: TrxOrDbOrQueryCreator,
 //     { review_id }: { review_id: string },
 //   ): Promise<RenderedPrescriptionWithMedications | null> {
 //     const prescription = await baseQuery(trx)

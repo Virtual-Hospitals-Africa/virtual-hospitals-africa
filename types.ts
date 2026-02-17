@@ -1,30 +1,19 @@
 // deno-lint-ignore-file no-explicit-any
-import { Context } from 'fresh'
-import { ColumnType, Generated, InsertObject, QueryCreator, RawBuilder, SelectQueryBuilder, SqlBool, Transaction, ValueExpression } from 'kysely'
-import { JSX } from 'preact'
-import {
-  AgeUnit,
-  DB,
-  DoctorReviewStep,
-  EncounterReason,
-  FamilyType,
-  MaritalStatus,
-  MessagePriority,
-  PatientCohabitation,
-  SnomedCategory,
-  Workflow,
-} from './db.d.ts'
 import db from './db/db.ts'
+import type { Context } from 'fresh'
+import type { ColumnType, Generated, InsertObject, QueryCreator, RawBuilder, SelectQueryBuilder, SqlBool, Transaction, ValueExpression } from 'kysely'
+import type { JSX } from 'preact'
+import type { AgeUnit, DB, EncounterReason, FamilyType, MaritalStatus, MessagePriority, PatientCohabitation, SnomedCategory, Workflow } from './db.d.ts'
+import type { Department } from './shared/departments.ts'
+import type { Priority } from './shared/priorities.ts'
+import type { MessageTargetCategory } from './shared/message_targets.ts'
+import type { CommonConditionKey } from './shared/brief_history.ts'
+import type { VitalAssessment, VitalMeasurement } from './shared/vitals.ts'
+import type { WarningSignKey } from './shared/warning_signs.ts'
+import type { Decimal } from './util/decimal.ts'
+import type { Lang } from './shared/s_expression_schemas.ts'
+import type { PrescriptionFrequency } from './shared/prescription.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
-import { type Department } from './shared/departments.ts'
-import { type Priority } from './shared/priorities.ts'
-import { type MessageTargetCategory } from './shared/message_targets.ts'
-import { type CommonConditionKey } from './shared/brief_history.ts'
-import { type VitalAssessment, type VitalMeasurement } from './shared/vitals.ts'
-import { type WarningSignKey } from './shared/warning_signs.ts'
-import { type Decimal } from './util/decimal.ts'
-import { Lang } from './shared/s_expression_schemas.ts'
-import { PrescriptionFrequency } from './shared/prescription.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -52,6 +41,7 @@ export type NonNullableProperty<R, K extends keyof R> =
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
+  : T extends Array<infer U> ? Array<DeepPartial<U>>
   : T
 
 export type DeepMaybe<T> = T extends Record<string, unknown> ? {
@@ -285,7 +275,6 @@ export type Patient = {
   nearest_organization_id: Maybe<string>
   completed_registration: boolean
   address_id: Maybe<string>
-  unregistered_primary_doctor_name: Maybe<string>
 }
 
 export type RenderedPatient = {
@@ -411,7 +400,7 @@ export type FamilyUpsert = {
 
 export type PatientAppointmentOfferedTime = {
   patient_appointment_request_id: string
-  provider_id: string
+  employee_id: string
   start: Date
   end: Date
   duration_minutes: number
@@ -421,7 +410,7 @@ export type PatientAppointmentOfferedTime = {
 export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
   id: string
   health_worker_name: string
-  profession: Profession | null
+  role: string
   is_admin: boolean
 }
 
@@ -431,14 +420,14 @@ export type PharmacistConversationState =
   | 'not_onboarded:reenter_licence_number'
   | 'not_onboarded:incorrect_licence_number'
   | 'not_onboarded:confirm_name'
-  | 'not_onboarded:enter_pharmacy_licence'
-  | 'not_onboarded:reenter_pharmacy_licence'
-  | 'not_onboarded:incorrect_pharmacy_licence'
+  // | 'not_onboarded:enter_pharmacy_licence'
+  // | 'not_onboarded:reenter_pharmacy_licence'
+  // | 'not_onboarded:incorrect_pharmacy_licence'
   | 'not_onboarded:confirm_pharmacy'
   | 'not_onboarded:share_location'
   | 'not_onboarded:reshare_location'
   | 'not_onboarded:licence_expired'
-  | 'not_onboarded:pharmacy_licence_expired'
+  // | 'not_onboarded:pharmacy_licence_expired'
   // TODO: rewrite prescription-related states against new patient_prescriptions model
   // | 'onboarded:fill_prescription:enter_code'
   // | 'onboarded:fill_prescription:reenter_code'
@@ -1020,77 +1009,13 @@ export type GCalFreeBusy = {
 export type GoogleProfile = {
   sub: string
   name: string
-  given_name: string
-  family_name: string
+  first_names: string
+  surname: string
   picture: string
   email: string
   email_verified: boolean
   locale: string
 }
-
-export type HealthWorkerInvitee = {
-  email: string
-  organization_id: string
-  profession: Profession
-}
-
-export type OrganizationEmployeeOrInvitee =
-  | OrganizationEmployee
-  | OrganizationEmployeeInvitee
-
-export type RegistrationStatus = 'pending_approval' | 'approved' | 'incomplete'
-export type OrganizationEmployee = {
-  name: string
-  is_invitee: false
-  health_worker_id: string
-  professions: {
-    employee_id: string
-    profession: Profession
-    specialty: string | null
-    registration_status: RegistrationStatus
-  }[]
-  avatar_url: null | string
-  email: string
-  display_name: string
-  registration_status: RegistrationStatus
-  actions: {
-    view: string
-  }
-  online: null | SqlBool
-}
-
-export type OrganizationEmployeeWithActions = Omit<
-  OrganizationEmployee,
-  'actions'
->
-
-export type DoctorsWithoutAction =
-  & Omit<OrganizationEmployee, 'actions' | 'is_invitee' | 'professions'>
-  & {
-    profession: 'doctor'
-    employee_id: string
-    specialty: string | null
-  }
-
-export type OrganizationEmployeeInvitee = {
-  name: null
-  is_invitee: true
-  health_worker_id: string | null
-  professions: {
-    employee_id?: undefined
-    profession: Profession
-    specialty?: undefined
-  }[]
-  avatar_url: null
-  email: string
-  display_name: string
-  registration_status: 'pending_approval' | 'approved' | 'incomplete'
-  actions: {
-    view: null
-  }
-  online: null
-}
-
 export type OrganizationDevice = {
   device_id: string
   serial_number?: string
@@ -1229,8 +1154,6 @@ export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
   number_of_containers: number
 }
 
-export type Profession = 'doctor' | 'nurse' | 'receptionist'
-
 export type NurseSpecialty =
   | 'Primary care'
   | 'triage'
@@ -1303,124 +1226,46 @@ export const DOCTOR_SPECIALTIES = [
 
 export type DoctorSpecialty = (typeof DOCTOR_SPECIALTIES)[number]
 
-export type NurseRegistrationDetails = {
-  health_worker_id: string
-  sex: Sex
-  gender: string
-  date_of_birth: string
-  national_id_number: string
-  date_of_first_practice: string
-  ncz_registration_number: string
-  mobile_number?: Maybe<string>
-  national_id_media_id: Maybe<string>
-  ncz_registration_card_media_id: Maybe<string>
-  face_picture_media_id: Maybe<string>
-  nurse_practicing_cert_media_id: Maybe<string>
-  approved_by: Maybe<string>
-  address_id: Maybe<string>
-}
-
 export type Specialties = {
   employee_id: string
   specialty: NurseSpecialty
 }
 
 export type HealthWorker = Names & {
-  email: string
+  email: string | null
   avatar_url: string | null
   phone_number?: Maybe<string>
 }
 
-export type EmployeeInfo = {
-  name: string
-  email: string
-  sex: Maybe<Sex>
-  gender: Maybe<string>
-  date_of_birth: Maybe<string>
-  national_id_number: Maybe<string>
-  ncz_registration_number: Maybe<string>
-  mobile_number: Maybe<string>
-  health_worker_id: Maybe<string>
-  date_of_first_practice: Maybe<string>
-  specialty: Maybe<string>
-  avatar_url: Maybe<string>
-  registration_completed: SqlBool
-  registration_needed: SqlBool
-  registration_pending_approval: SqlBool
-  address: Maybe<string>
-  organization_address: string | null
-  organization_id: string
-  organization_name: string
-  professions: Profession[]
-  documents: {
-    name: string
-    href: string
-  }[]
-}
-
-export type RenderedDoctorReviewBase = {
-  encounter: {
-    id: string
-    reason: EncounterReason
-  }
-  patient: {
-    id: string
-    name: string
-    avatar_url: string | null
-    description: string | null
-    primary_doctor_id: string | null
-    actions: {
-      view: string
-    }
-  }
-  requested_by: RenderedPatientEncounterEmployee
-}
-
-export type RenderedDoctorReview = RenderedDoctorReviewBase & {
-  review_id: string
-  employment_id: string
-  steps_completed: DoctorReviewStep[]
-  completed: SqlBool
-}
-export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
-  review_request_id: string
-  requesting: {
-    doctor_id: string | null
-    organization_id: string | null
-  }
-}
-
-export type RenderedDoctorReviewRequestOfSpecificDoctor =
-  & RenderedDoctorReviewRequest
-  & {
-    employment_id: string
-  }
-
-export type HealthWorkerRegistrationStatus = {
-  organization_id: string
-  profession: Profession
-  registration_needed: boolean
-  registration_completed: boolean
-  registration_pending_approval: boolean
-}
-
 export type HealthWorkerOrganization = RenderedOrganization & {
   employment_id: string
-  specialty: string | null
-  profession: Profession | null
   is_admin: boolean
+  role: string
   in_departments: {
     id: string
     name: string
   }[]
+  active_licences: RenderedLicence[]
 }
 
-export type PossiblyEmployedHealthWorker = HealthWorker & {
+export type RenderedHealthWorker = HealthWorker & {
   id: string
+  demographics: {
+    sex: Sex | null
+    gender: string | null
+    date_of_birth: string | Date | null
+  }
+  contact_details: {
+    mobile_phone_number: string | null
+    address: Address | null
+  }
   organizations: HealthWorkerOrganization[]
+  ever_licensed_as_doctor: SqlBool
 }
 
-export type EmployedHealthWorker = PossiblyEmployedHealthWorker
+export type RenderedCountryHealthWorker = RenderedHealthWorker & {
+  licences: RenderedLicence[]
+}
 
 export type Availability = {
   start: string
@@ -1531,26 +1376,26 @@ export type WhatsAppSingleSendable =
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
-export type ProviderAppointmentSlot = {
-  type: 'provider_appointment_slot'
+export type EmployeeAppointmentSlot = {
+  type: 'employee_appointment_slot'
   id: string
   patient?: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: RenderedAppointmentProvider[]
+  employees: RenderedAppointmentEmployee[]
   physical_location?: undefined
   virtual_location?: undefined
 }
 
-export type ProviderAppointment = {
-  type: 'provider_appointment'
+export type EmployeeAppointment = {
+  type: 'employee_appointment'
   id: string
   patient: RenderedPatient
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers?: RenderedAppointmentProvider[]
+  employees?: RenderedAppointmentEmployee[]
   physical_location?: {
     organization: HasStringId<Organization>
   }
@@ -1566,7 +1411,7 @@ export type PatientAppointment = {
   duration_minutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  providers: RenderedAppointmentProvider[]
+  employees: RenderedAppointmentEmployee[]
   physical_location?: {
     organization: HasStringId<Organization>
   }
@@ -1576,8 +1421,8 @@ export type PatientAppointment = {
 }
 
 export type RenderableAppointment =
-  | ProviderAppointment
-  | ProviderAppointmentSlot
+  | EmployeeAppointment
+  | EmployeeAppointmentSlot
   | PatientAppointment
 
 export type ParsedDate = {
@@ -1653,14 +1498,9 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   session_id: string
-  health_worker: EmployedHealthWorker
+  health_worker: RenderedHealthWorker
   health_worker_id: string
   present_encounter: RenderedPatientOpenEncounter | null
-}
-
-export type LoggedInRegulator = {
-  trx: TrxOrDb
-  regulator: HasStringId<Regulator>
 }
 
 export type LoggedInHealthWorkerContext<T = Record<string, never>> = Context<
@@ -1671,10 +1511,6 @@ export class Foo<Ctx extends LoggedInHealthWorkerContext<any>> {
   constructor(public x: Ctx) {
   }
 }
-
-export type LoggedInRegulatorContext<T = Record<never, never>> = Context<
-  LoggedInRegulator & T
->
 
 export type Organization = {
   name: string
@@ -1863,6 +1699,10 @@ export type PatientAllergies = {
 export type RenderedOrganization = HasStringId<Organization> & {
   waiting_room_id: string | null
   reception_id: string | null
+  hrefs: {
+    regulator_view: string
+    health_worker_view: string
+  }
 }
 
 export type RenderedOrganizationWithDepartments = RenderedOrganization & {
@@ -1928,7 +1768,7 @@ export type RenderedPatientEncounter = {
   appointment: {
     id: string
     start: Date
-    providers: RenderedEmployee[]
+    employees: RenderedEmployee[]
   } | null
   workflows: Partial<
     {
@@ -2024,9 +1864,9 @@ export type RenderedWaitingRoom = {
   // appointment: null | {
   //   id: string
   //   start: Date
-  //   providers: {
+  //   employees: {
   //     health_worker_id: string
-  //     provider_id: string
+  //     employee_id: string
   //     name: string
   //   }[]
   // }
@@ -2128,7 +1968,7 @@ export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
   >
   & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
-export type RenderedAppointmentProvider = RenderedEmployee & {
+export type RenderedAppointmentEmployee = RenderedEmployee & {
   calendars: {
     availability_set: boolean
     gcal_appointments_calendar_id: string
@@ -2200,454 +2040,6 @@ export type PatientSchedulingAppointmentRequest = {
 }
 
 export type Actions = Record<string, string | null>
-
-export type HeroIconName =
-  | 'AcademicCapIcon'
-  | 'AdjustmentsHorizontalIcon'
-  | 'AdjustmentsVerticalIcon'
-  | 'ArchiveBoxArrowDownIcon'
-  | 'ArchiveBoxXMarkIcon'
-  | 'ArchiveBoxIcon'
-  | 'ArrowDownCircleIcon'
-  | 'ArrowDownLeftIcon'
-  | 'ArrowDownOnSquareStackIcon'
-  | 'ArrowDownOnSquareIcon'
-  | 'ArrowDownRightIcon'
-  | 'ArrowDownTrayIcon'
-  | 'ArrowDownIcon'
-  | 'ArrowLeftCircleIcon'
-  | 'ArrowLeftOnRectangleIcon'
-  | 'ArrowLeftIcon'
-  | 'ArrowLongDownIcon'
-  | 'ArrowLongLeftIcon'
-  | 'ArrowLongRightIcon'
-  | 'ArrowLongUpIcon'
-  | 'ArrowPathRoundedSquareIcon'
-  | 'ArrowPathIcon'
-  | 'ArrowRightCircleIcon'
-  | 'ArrowRightOnRectangleIcon'
-  | 'ArrowRightIcon'
-  | 'ArrowSmallDownIcon'
-  | 'ArrowSmallLeftIcon'
-  | 'ArrowSmallRightIcon'
-  | 'ArrowSmallUpIcon'
-  | 'ArrowTopRightOnSquareIcon'
-  | 'ArrowTrendingDownIcon'
-  | 'ArrowTrendingUpIcon'
-  | 'ArrowUpCircleIcon'
-  | 'ArrowUpLeftIcon'
-  | 'ArrowUpOnSquareStackIcon'
-  | 'ArrowUpOnSquareIcon'
-  | 'ArrowUpRightIcon'
-  | 'ArrowUpTrayIcon'
-  | 'ArrowUpIcon'
-  | 'ArrowUturnDownIcon'
-  | 'ArrowUturnLeftIcon'
-  | 'ArrowUturnRightIcon'
-  | 'ArrowUturnUpIcon'
-  | 'ArrowsPointingInIcon'
-  | 'ArrowsPointingOutIcon'
-  | 'ArrowsRightLeftIcon'
-  | 'ArrowsUpDownIcon'
-  | 'AtSymbolIcon'
-  | 'BackspaceIcon'
-  | 'BackwardIcon'
-  | 'BanknotesIcon'
-  | 'Bars2Icon'
-  | 'Bars3BottomLeftIcon'
-  | 'Bars3BottomRightIcon'
-  | 'Bars3CenterLeftIcon'
-  | 'Bars3Icon'
-  | 'Bars4Icon'
-  | 'BarsArrowDownIcon'
-  | 'BarsArrowUpIcon'
-  | 'Battery0Icon'
-  | 'Battery100Icon'
-  | 'Battery50Icon'
-  | 'BeakerIcon'
-  | 'BellAlertIcon'
-  | 'BellSlashIcon'
-  | 'BellSnoozeIcon'
-  | 'BellIcon'
-  | 'BoltSlashIcon'
-  | 'BoltIcon'
-  | 'BookOpenIcon'
-  | 'BookmarkSlashIcon'
-  | 'BookmarkSquareIcon'
-  | 'BookmarkIcon'
-  | 'BriefcaseIcon'
-  | 'BugAntIcon'
-  | 'BuildingLibraryIcon'
-  | 'BuildingOffice2Icon'
-  | 'BuildingOfficeIcon'
-  | 'BuildingStorefrontIcon'
-  | 'CakeIcon'
-  | 'CalculatorIcon'
-  | 'CalendarDaysIcon'
-  | 'CalendarIcon'
-  | 'CameraIcon'
-  | 'ChartBarSquareIcon'
-  | 'ChartBarIcon'
-  | 'ChartPieIcon'
-  | 'ChatBubbleBottomCenterTextIcon'
-  | 'ChatBubbleBottomCenterIcon'
-  | 'ChatBubbleLeftEllipsisIcon'
-  | 'ChatBubbleLeftRightIcon'
-  | 'ChatBubbleLeftIcon'
-  | 'ChatBubbleOvalLeftEllipsisIcon'
-  | 'ChatBubbleOvalLeftIcon'
-  | 'CheckBadgeIcon'
-  | 'CheckCircleIcon'
-  | 'CheckIcon'
-  | 'ChevronDoubleDownIcon'
-  | 'ChevronDoubleLeftIcon'
-  | 'ChevronDoubleRightIcon'
-  | 'ChevronDoubleUpIcon'
-  | 'ChevronDownIcon'
-  | 'ChevronLeftIcon'
-  | 'ChevronRightIcon'
-  | 'ChevronUpDownIcon'
-  | 'ChevronUpIcon'
-  | 'CircleStackIcon'
-  | 'ClipboardDocumentCheckIcon'
-  | 'ClipboardDocumentListIcon'
-  | 'ClipboardDocumentIcon'
-  | 'ClipboardIcon'
-  | 'ClockIcon'
-  | 'CloudArrowDownIcon'
-  | 'CloudArrowUpIcon'
-  | 'CloudIcon'
-  | 'CodeBracketSquareIcon'
-  | 'CodeBracketIcon'
-  | 'Cog6ToothIcon'
-  | 'Cog8ToothIcon'
-  | 'CogIcon'
-  | 'CommandLineIcon'
-  | 'ComputerDesktopIcon'
-  | 'CpuChipIcon'
-  | 'CreditCardIcon'
-  | 'CubeTransparentIcon'
-  | 'CubeIcon'
-  | 'CurrencyBangladeshiIcon'
-  | 'CurrencyDollarIcon'
-  | 'CurrencyEuroIcon'
-  | 'CurrencyPoundIcon'
-  | 'CurrencyRupeeIcon'
-  | 'CurrencyYenIcon'
-  | 'CursorArrowRaysIcon'
-  | 'CursorArrowRippleIcon'
-  | 'DevicePhoneMobileIcon'
-  | 'DeviceTabletIcon'
-  | 'DocumentArrowDownIcon'
-  | 'DocumentArrowUpIcon'
-  | 'DocumentChartBarIcon'
-  | 'DocumentCheckIcon'
-  | 'DocumentDuplicateIcon'
-  | 'DocumentMagnifyingGlassIcon'
-  | 'DocumentMinusIcon'
-  | 'DocumentPlusIcon'
-  | 'DocumentTextIcon'
-  | 'DocumentIcon'
-  | 'EllipsisHorizontalCircleIcon'
-  | 'EllipsisHorizontalIcon'
-  | 'EllipsisVerticalIcon'
-  | 'EnvelopeOpenIcon'
-  | 'EnvelopeIcon'
-  | 'ExclamationCircleIcon'
-  | 'ExclamationTriangleIcon'
-  | 'EyeDropperIcon'
-  | 'EyeSlashIcon'
-  | 'EyeIcon'
-  | 'FaceFrownIcon'
-  | 'FaceSmileIcon'
-  | 'FilmIcon'
-  | 'FingerPrintIcon'
-  | 'FireIcon'
-  | 'FlagIcon'
-  | 'FolderArrowDownIcon'
-  | 'FolderMinusIcon'
-  | 'FolderOpenIcon'
-  | 'FolderPlusIcon'
-  | 'FolderIcon'
-  | 'ForwardIcon'
-  | 'FunnelIcon'
-  | 'GifIcon'
-  | 'GiftTopIcon'
-  | 'GiftIcon'
-  | 'GlobeAltIcon'
-  | 'GlobeAmericasIcon'
-  | 'GlobeAsiaAustraliaIcon'
-  | 'GlobeEuropeAfricaIcon'
-  | 'HandRaisedIcon'
-  | 'HandThumbDownIcon'
-  | 'HandThumbUpIcon'
-  | 'HashtagIcon'
-  | 'HeartIcon'
-  | 'HomeModernIcon'
-  | 'HomeIcon'
-  | 'IdentificationIcon'
-  | 'InboxArrowDownIcon'
-  | 'InboxStackIcon'
-  | 'InboxIcon'
-  | 'InformationCircleIcon'
-  | 'KeyIcon'
-  | 'LanguageIcon'
-  | 'LifebuoyIcon'
-  | 'LightBulbIcon'
-  | 'LinkIcon'
-  | 'ListBulletIcon'
-  | 'LockClosedIcon'
-  | 'LockOpenIcon'
-  | 'MagnifyingGlassCircleIcon'
-  | 'MagnifyingGlassMinusIcon'
-  | 'MagnifyingGlassPlusIcon'
-  | 'MagnifyingGlassIcon'
-  | 'MapPinIcon'
-  | 'MapIcon'
-  | 'MegaphoneIcon'
-  | 'MicrophoneIcon'
-  | 'MinusCircleIcon'
-  | 'MinusSmallIcon'
-  | 'MinusIcon'
-  | 'MoonIcon'
-  | 'MusicalNoteIcon'
-  | 'NewspaperIcon'
-  | 'NoSymbolIcon'
-  | 'PaintBrushIcon'
-  | 'PaperAirplaneIcon'
-  | 'PaperClipIcon'
-  | 'PauseCircleIcon'
-  | 'PauseIcon'
-  | 'PencilSquareIcon'
-  | 'PencilIcon'
-  | 'PhoneArrowDownLeftIcon'
-  | 'PhoneArrowUpRightIcon'
-  | 'PhoneXMarkIcon'
-  | 'PhoneIcon'
-  | 'PhotoIcon'
-  | 'PlayCircleIcon'
-  | 'PlayPauseIcon'
-  | 'PlayIcon'
-  | 'PlusCircleIcon'
-  | 'PlusSmallIcon'
-  | 'PlusIcon'
-  | 'PowerIcon'
-  | 'PresentationChartBarIcon'
-  | 'PresentationChartLineIcon'
-  | 'PrinterIcon'
-  | 'PuzzlePieceIcon'
-  | 'QrCodeIcon'
-  | 'QuestionMarkCircleIcon'
-  | 'QueueListIcon'
-  | 'RadioIcon'
-  | 'ReceiptPercentIcon'
-  | 'ReceiptRefundIcon'
-  | 'RectangleGroupIcon'
-  | 'RectangleStackIcon'
-  | 'RocketLaunchIcon'
-  | 'RssIcon'
-  | 'ScaleIcon'
-  | 'ScissorsIcon'
-  | 'ServerStackIcon'
-  | 'ServerIcon'
-  | 'ShareIcon'
-  | 'ShieldCheckIcon'
-  | 'ShieldExclamationIcon'
-  | 'ShoppingBagIcon'
-  | 'ShoppingCartIcon'
-  | 'SignalSlashIcon'
-  | 'SignalIcon'
-  | 'SparklesIcon'
-  | 'SpeakerWaveIcon'
-  | 'SpeakerXMarkIcon'
-  | 'Square2StackIcon'
-  | 'Square3Stack3dIcon'
-  | 'Squares2x2Icon'
-  | 'SquaresPlusIcon'
-  | 'StarIcon'
-  | 'StopCircleIcon'
-  | 'StopIcon'
-  | 'SunIcon'
-  | 'SwatchIcon'
-  | 'TableCellsIcon'
-  | 'TagIcon'
-  | 'TicketIcon'
-  | 'TrashIcon'
-  | 'TrophyIcon'
-  | 'TruckIcon'
-  | 'TvIcon'
-  | 'UserCircleIcon'
-  | 'UserGroupIcon'
-  | 'UserMinusIcon'
-  | 'UserPlusIcon'
-  | 'UserIcon'
-  | 'UsersIcon'
-  | 'VariableIcon'
-  | 'VideoCameraSlashIcon'
-  | 'VideoCameraIcon'
-  | 'ViewColumnsIcon'
-  | 'ViewfinderCircleIcon'
-  | 'WalletIcon'
-  | 'WifiIcon'
-  | 'WindowIcon'
-  | 'WrenchScrewdriverIcon'
-  | 'WrenchIcon'
-  | 'XCircleIcon'
-  | 'XMarkIcon'
-
-export type Image = {
-  type: 'avatar'
-  url: string | null
-  className?: string
-} | {
-  type: 'icon'
-  icon: HeroIconName | 'BluetoothIcon'
-  className?: string
-}
-
-export type SendableToEntity = {
-  type: 'entity'
-  entity_type: 'health_worker' | 'facility'
-  entity_id: string
-  online?: Maybe<boolean>
-  reopens?: string
-}
-
-export type SendableToAction = {
-  type: 'action'
-  action: 'search' | 'waiting_room' | 'device'
-}
-
-export type SendableTo = SendableToEntity | SendableToAction
-
-export type SendToFormSubmission = {
-  action?: SendableToAction['action']
-  entity?: {
-    type: SendableToEntity['entity_type']
-    id: SendableToEntity['entity_id']
-  }
-  request_type?:
-    | 'request_visit'
-    | 'request_review'
-    | 'make_appointment'
-    | 'declare_emergency'
-  additional_notes?: string
-}
-export type Sendable = {
-  key: string
-  image: Image
-  name: string
-  description?: {
-    text: string
-    href?: string
-    parenthetical?: string
-  }
-  additional_description?: string
-  additional_info?: string
-  status: string
-  menu_options?: {
-    name: string
-    href: string
-  }[]
-  to: SendableTo
-  request_type_options?: string[]
-  textarea?: string
-}
-
-export type SelectedPatient = {
-  name: string
-  avatar_url?: Maybe<string>
-  description?: Maybe<string>
-  actions: {
-    view: string
-  }
-}
-
-export type RenderedPharmacy = {
-  id: string
-  country: string
-  address: string | null
-  town: string | null
-  address_display: string | null
-  expiry_date: string
-  licence_number: string
-  licensee: string
-  name: string
-  pharmacies_types:
-    | 'Clinics: Class A'
-    | 'Clinics: Class B'
-    | 'Clinics: Class C'
-    | 'Clinics: Class D'
-    | 'Dispensing medical practice'
-    | 'Hospital pharmacies'
-    | 'Pharmacies: Research'
-    | 'Pharmacies: Restricted'
-    | 'Pharmacy in any other location'
-    | 'Pharmacy in rural area'
-    | 'Pharmacy located in the CBD'
-    | 'Wholesalers'
-  href: string
-  supervisors: Supervisor[]
-  actions: {
-    view: string
-  }
-}
-
-export type PharmacistInPharmacy = RenderedPharmacy & {
-  is_supervisor: boolean
-}
-
-export type RenderedPharmacist = {
-  id: string
-  licence_number: string
-  prefix: Prefix | null
-  name: string
-  given_name: string
-  family_name: string
-  address: string | null
-  full_address?: string | null
-  country: string
-  town: string | null
-  address_display: string | null
-  expiry_date: string
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Pharmacy Technician'
-  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
-  href: string
-  actions: {
-    view: string
-    revoke: string
-    edit: string
-  }
-}
-
-export type Supervisor = {
-  id: string
-  href: string
-  name: string
-  prefix: Prefix | null
-}
-
-export type DetailedPharmacist = {
-  id?: string
-  licence_number: string
-  prefix: Prefix | null
-  name?: string
-  given_name: string
-  family_name: string
-  address: string | null
-  town: string | null
-  expiry_date: string
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Pharmacy Technician'
-  pharmacies: Omit<PharmacistInPharmacy, 'actions' | 'supervisors'>[]
-}
 
 export type RenderedMedication = {
   id: string
@@ -2795,12 +2187,31 @@ export type HealthWorkerDisplay = {
   avatar_url: string | null
 }
 
-export type RenderedEmployee = EmployedHealthWorker & {
+export type RenderedLicence = {
+  licence_number: string
+  regulatory_agency: {
+    name: string
+    acronym: string
+    country: string
+  }
+  profession: string
+  specialty: string | null
+  subspecialty: string | null
+  start_date: string | Date
+  expiry_date: string | Date
+  status: 'active' | 'revoked' | 'expired'
+  revoked: null | {
+    at: string | Date
+    by: string
+    reason: string
+  }
+}
+
+export type RenderedEmployee = RenderedHealthWorker & {
   organization_id: string
   employee_id: string
-  profession: Profession | null
   is_admin: boolean
-  specialty: string | null
+  role: string
   href: string
 }
 
@@ -2808,7 +2219,7 @@ export type MessageTargetEntities = {
   organization: RenderedOrganization
   organization_category: string
   employee: RenderedEmployee
-  profession: Profession | 'admin'
+  role: string
   locality: string
   administrative_area_level_1: string
   administrative_area_level_2: string
@@ -2992,7 +2403,7 @@ export type RenderedCareTeamHealthWorker = {
   employment_id: string
   health_worker_id: string
   name: string
-  profession: 'doctor' | 'nurse'
+  role: 'doctor' | 'nurse'
   specialty: string | null
   avatar_url: string | null
   last_visit_relative_to_now: string | null
@@ -3197,7 +2608,7 @@ export type RenderedBriefHistoryRelativeToHealthWorker =
     pertaining_to_key: CommonConditionKey
   }
 
-export type AppUser = Profession | 'admin' | 'regulator'
+export type AppUser = string | 'admin'
 
 export type Alert = {
   message: string
@@ -3330,7 +2741,7 @@ type OrganizationWait = {
 type NearestOrganizationEmployee = {
   id: string
   name: string
-  profession: string | null
+  role: string
 }
 
 type OrganizationDepartment = {

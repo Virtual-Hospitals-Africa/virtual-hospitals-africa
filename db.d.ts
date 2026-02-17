@@ -12,8 +12,6 @@ export type ChatbotName = 'patient' | 'pharmacist'
 
 export type Comparator = '<' | '<=' | '=' | '>' | '>='
 
-export type DoctorReviewStep = 'clinical_notes' | 'diagnosis' | 'orders' | 'prescriptions' | 'referral' | 'revert'
-
 export type DurationUnits = 'days' | 'indefinitely' | 'months' | 'weeks' | 'years'
 
 export type EmergencyContactRelationship = 'Child' | 'Friend' | 'Guardian' | 'Other' | 'Parent' | 'Sibling' | 'Spouse'
@@ -108,31 +106,11 @@ export type MessageTargetType =
   | 'locality'
   | 'organization'
   | 'organization_category'
-  | 'profession'
-
-export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
+  | 'role'
 
 export type Numeric = ColumnType<string, number | string, number | string>
 
 export type PatientCohabitation = 'Father' | 'Foster Parent' | 'Grandparent(s)' | 'Mother' | 'Orphanage' | 'Other Relative' | 'Sibling' | 'Uncle or Aunt'
-
-export type PharmaciesTypes =
-  | 'Clinics: Class A'
-  | 'Clinics: Class B'
-  | 'Clinics: Class C'
-  | 'Clinics: Class D'
-  | 'Dispensing medical practice'
-  | 'Hospital pharmacies'
-  | 'Pharmacies: Research'
-  | 'Pharmacies: Restricted'
-  | 'Pharmacy in any other location'
-  | 'Pharmacy in rural area'
-  | 'Pharmacy located in the CBD'
-  | 'Wholesalers'
-
-export type PharmacistType = 'Dispensing Medical Practitioner' | 'Ind Clinic Nurse' | 'Pharmacist' | 'Pharmacy Technician'
-
-export type Profession = 'doctor' | 'nurse' | 'receptionist'
 
 export type Sex = 'female' | 'male' | 'other' | 'prefer not to say'
 
@@ -243,20 +221,20 @@ export interface AgeMeasurementRequirements {
   updated_at: Generated<Timestamp>
 }
 
+export interface AppointmentEmployees {
+  appointment_id: string
+  confirmed: Generated<boolean>
+  created_at: Generated<Timestamp>
+  employee_id: string
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
 export interface AppointmentMedia {
   appointment_id: string
   created_at: Generated<Timestamp>
   id: Generated<string>
   media_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface AppointmentProviders {
-  appointment_id: string
-  confirmed: Generated<boolean>
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  provider_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -362,84 +340,13 @@ export interface Devices {
   updated_at: Generated<Timestamp>
 }
 
-export interface DoctorRegistrationDetails {
-  address_id: string | null
-  approved_by: string | null
-  created_at: Generated<Timestamp>
-  date_of_birth: Timestamp
-  date_of_first_practice: Timestamp
-  doctor_practicing_cert_media_id: string | null
-  face_picture_media_id: string | null
-  gender: string
-  health_worker_id: string
-  id: Generated<string>
-  mobile_number: string | null
-  national_id_media_id: string | null
-  national_id_number: string
-  ncz_registration_card_media_id: string | null
-  ncz_registration_number: string
-  sex: Sex
-  updated_at: Generated<Timestamp>
-}
-
-export interface DoctorRegistrationDetailsInProgress {
-  created_at: Generated<Timestamp>
-  data: Generated<Json>
-  health_worker_id: string
-  id: Generated<string>
-  updated_at: Generated<Timestamp>
-}
-
-export interface DoctorReview {
-  order: Int8
-  step: DoctorReviewStep
-}
-
-export interface DoctorReviewRequests {
-  created_at: Generated<Timestamp>
-  doctor_id: string | null
-  id: Generated<string>
-  organization_id: string | null
-  patient_encounter_id: string
-  patient_id: string
-  requested_by: string
-  requester_notes: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface DoctorReviews {
-  completed_at: Timestamp | null
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  patient_encounter_id: string
-  patient_id: string
-  requested_by: string
-  requester_notes: string | null
-  reviewer_id: string
-  reviewer_notes: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface DoctorReviewSteps {
-  created_at: Generated<Timestamp>
-  doctor_review_id: string
-  id: Generated<string>
-  step: DoctorReviewStep
-  updated_at: Generated<Timestamp>
-}
-
-export interface Doctors {
-  id: string
-}
-
 export interface Employment {
   created_at: Generated<Timestamp>
   health_worker_id: string
   id: Generated<string>
   is_admin: boolean
   organization_id: string
-  profession: Profession | null
-  specialty: string | null
+  role: string
   updated_at: Generated<Timestamp>
 }
 
@@ -534,20 +441,65 @@ export interface GuardianRelations {
   male_guardian: string | null
 }
 
-export interface HealthWorkerInvitees {
-  created_at: Generated<Timestamp>
+export interface HealthWorkerAccounts {
+  avatar_media_id: string | null
   email: string
+  id: string
+}
+
+export interface HealthWorkerContactDetails {
+  address_id: string | null
+  created_at: Generated<Timestamp>
+  health_worker_id: string
   id: Generated<string>
-  is_admin: boolean
-  organization_id: string
-  profession: Profession | null
+  mobile_phone_number: string | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerDemographics {
+  created_at: Generated<Timestamp>
+  date_of_birth: Timestamp | null
+  gender: string
+  health_worker_id: string
+  id: Generated<string>
+  sex: Sex
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerLicenceNumbers {
+  created_at: Generated<Timestamp>
+  health_worker_id: string
+  id: Generated<string>
+  licence_number: string
+  regulatory_agency_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerLicenceRevocations {
+  created_at: Generated<Timestamp>
+  health_worker_licence_id: string
+  id: Generated<string>
+  reason: string
+  revoked_at: Generated<Timestamp>
+  revoked_by: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface HealthWorkerLicences {
+  created_at: Generated<Timestamp>
+  expiry_date: Timestamp
+  health_worker_licence_number_id: string
+  id: Generated<string>
+  media_id: string | null
+  profession: string
+  specialty: string | null
+  start_date: Timestamp
+  subspecialty: string | null
   updated_at: Generated<Timestamp>
 }
 
 export interface HealthWorkers {
-  avatar_media_id: string | null
   created_at: Generated<Timestamp>
-  email: string
   first_names: string
   id: Generated<string>
   name: string
@@ -834,43 +786,6 @@ export interface MessageThreadSubjects {
   updated_at: Generated<Timestamp>
 }
 
-export interface NurseRegistrationDetails {
-  address_id: string | null
-  approved_by: string | null
-  country: string | null
-  created_at: Generated<Timestamp>
-  date_of_birth: Timestamp
-  date_of_first_practice: Timestamp
-  face_picture_media_id: string | null
-  gender: string
-  health_worker_id: string
-  id: Generated<string>
-  mobile_number: string | null
-  national_id_media_id: string | null
-  national_id_number: string
-  ncz_registration_card_media_id: string | null
-  ncz_registration_number: string
-  nurse_practicing_cert_media_id: string | null
-  sex: Sex
-  updated_at: Generated<Timestamp>
-}
-
-export interface NurseRegistrationDetailsInProgress {
-  created_at: Generated<Timestamp>
-  data: Generated<Json>
-  health_worker_id: string
-  id: Generated<string>
-  updated_at: Generated<Timestamp>
-}
-
-export interface Nurses {
-  id: string
-}
-
-export interface OrganizationAdmins {
-  id: string
-}
-
 export interface OrganizationConsumables {
   consumable_id: string
   created_at: Generated<Timestamp>
@@ -947,10 +862,10 @@ export interface PatientAppointmentOfferedTimes {
   created_at: Generated<Timestamp>
   declined: Generated<boolean>
   duration_minutes: number
+  employee_id: string
   end: Timestamp
   id: Generated<string>
   patient_appointment_request_id: string
-  provider_id: string
   start: Timestamp
   updated_at: Generated<Timestamp>
 }
@@ -1278,7 +1193,6 @@ export interface Patients {
   primary_doctor_id: string | null
   sex: Sex | null
   surname: string | null
-  unregistered_primary_doctor_name: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1326,10 +1240,10 @@ export interface PatientWorkflowStepsCompleted {
 }
 
 export interface PgStatStatements {
+  blk_read_time: number | null
+  blk_write_time: number | null
   calls: Int8 | null
   dbid: number | null
-  jit_deform_count: Int8 | null
-  jit_deform_time: number | null
   jit_emission_count: Int8 | null
   jit_emission_time: number | null
   jit_functions: Int8 | null
@@ -1338,8 +1252,6 @@ export interface PgStatStatements {
   jit_inlining_time: number | null
   jit_optimization_count: Int8 | null
   jit_optimization_time: number | null
-  local_blk_read_time: number | null
-  local_blk_write_time: number | null
   local_blks_dirtied: Int8 | null
   local_blks_hit: Int8 | null
   local_blks_read: Int8 | null
@@ -1350,18 +1262,14 @@ export interface PgStatStatements {
   mean_plan_time: number | null
   min_exec_time: number | null
   min_plan_time: number | null
-  minmax_stats_since: Timestamp | null
   plans: Int8 | null
   query: string | null
   queryid: Int8 | null
   rows: Int8 | null
-  shared_blk_read_time: number | null
-  shared_blk_write_time: number | null
   shared_blks_dirtied: Int8 | null
   shared_blks_hit: Int8 | null
   shared_blks_read: Int8 | null
   shared_blks_written: Int8 | null
-  stats_since: Timestamp | null
   stddev_exec_time: number | null
   stddev_plan_time: number | null
   temp_blk_read_time: number | null
@@ -1382,20 +1290,6 @@ export interface PgStatStatementsInfo {
   stats_reset: Timestamp | null
 }
 
-export interface Pharmacies {
-  address: string | null
-  country: string
-  created_at: Generated<Timestamp>
-  expiry_date: Timestamp
-  id: Generated<string>
-  licence_number: string
-  licensee: string
-  name: string
-  pharmacies_types: PharmaciesTypes
-  town: string | null
-  updated_at: Generated<Timestamp>
-}
-
 export interface PharmacistChatbotUsers {
   conversation_state: string
   created_at: Generated<Timestamp>
@@ -1413,32 +1307,6 @@ export interface PharmacistChatbotUserWhatsappMessagesReceived {
   id: Generated<string>
   updated_at: Generated<Timestamp>
   whatsapp_message_received_id: string
-}
-
-export interface Pharmacists {
-  address: string | null
-  country: string
-  created_at: Generated<Timestamp>
-  expiry_date: Timestamp
-  family_name: string
-  given_name: string
-  id: Generated<string>
-  licence_number: string
-  pharmacist_type: PharmacistType
-  prefix: NamePrefix | null
-  revoked_at: Timestamp | null
-  revoked_by: string | null
-  town: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface PharmacyEmployment {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  is_supervisor: boolean
-  pharmacist_id: string
-  pharmacy_id: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface Procurement {
@@ -1464,19 +1332,20 @@ export interface Procurers {
   updated_at: Generated<Timestamp>
 }
 
-export interface Providers {
-  id: string
-}
-
-export interface Receptionists {
-  id: string
-}
-
 export interface Regulators {
   avatar_media_id: string | null
-  country: string
   created_at: Generated<Timestamp>
   email: string
+  id: Generated<string>
+  name: string
+  regulatory_agency_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface RegulatoryAgencies {
+  acronym: string
+  country: string
+  created_at: Generated<Timestamp>
   id: Generated<string>
   name: string
   updated_at: Generated<Timestamp>
@@ -1839,8 +1708,8 @@ export interface WorkflowSteps {
 export interface DB {
   addresses: Addresses
   age_measurement_requirements: AgeMeasurementRequirements
+  appointment_employees: AppointmentEmployees
   appointment_media: AppointmentMedia
-  appointment_providers: AppointmentProviders
   appointments: Appointments
   condition_icd10_codes: ConditionIcd10Codes
   condition_measurement_requirements: ConditionMeasurementRequirements
@@ -1852,13 +1721,6 @@ export interface DB {
   departments: Departments
   device_capabilities: DeviceCapabilities
   devices: Devices
-  doctor_registration_details: DoctorRegistrationDetails
-  doctor_registration_details_in_progress: DoctorRegistrationDetailsInProgress
-  doctor_review: DoctorReview
-  doctor_review_requests: DoctorReviewRequests
-  doctor_review_steps: DoctorReviewSteps
-  doctor_reviews: DoctorReviews
-  doctors: Doctors
   employment: Employment
   employment_calendars: EmploymentCalendars
   employment_presence: EmploymentPresence
@@ -1869,7 +1731,12 @@ export interface DB {
   geometry_columns: GeometryColumns
   google_tokens: GoogleTokens
   guardian_relations: GuardianRelations
-  health_worker_invitees: HealthWorkerInvitees
+  health_worker_accounts: HealthWorkerAccounts
+  health_worker_contact_details: HealthWorkerContactDetails
+  health_worker_demographics: HealthWorkerDemographics
+  health_worker_licence_numbers: HealthWorkerLicenceNumbers
+  health_worker_licence_revocations: HealthWorkerLicenceRevocations
+  health_worker_licences: HealthWorkerLicences
   health_worker_web_notifications: HealthWorkerWebNotifications
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories
@@ -1904,10 +1771,6 @@ export interface DB {
   message_thread_subjects: MessageThreadSubjects
   message_threads: MessageThreads
   messages: Messages
-  nurse_registration_details: NurseRegistrationDetails
-  nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
-  nurses: Nurses
-  organization_admins: OrganizationAdmins
   organization_consumables: OrganizationConsumables
   organization_department_rooms: OrganizationDepartmentRooms
   organization_departments: OrganizationDepartments
@@ -1962,16 +1825,12 @@ export interface DB {
   patients: Patients
   pg_stat_statements: PgStatStatements
   pg_stat_statements_info: PgStatStatementsInfo
-  pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received: PharmacistChatbotUserWhatsappMessagesReceived
   pharmacist_chatbot_users: PharmacistChatbotUsers
-  pharmacists: Pharmacists
-  pharmacy_employment: PharmacyEmployment
   procurement: Procurement
   procurers: Procurers
-  providers: Providers
-  receptionists: Receptionists
   regulators: Regulators
+  regulatory_agencies: RegulatoryAgencies
   sats_priority_levels: SatsPriorityLevels
   sats_triage_assessment_options: SatsTriageAssessmentOptions
   sats_triage_assessments: SatsTriageAssessments

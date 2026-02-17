@@ -1,4 +1,4 @@
-import { IdSelection, InsertRows, Priority, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { IdSelection, InsertRows, Priority, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
@@ -19,6 +19,7 @@ export type PatientRecordsSearch = {
   root_snomed_concept_id?: string | string[]
   specific_snomed_concept_id?: string | string[]
   s_expression?: string | QueryableNode
+  excluding_patient_encounter_id?: string | IdSelection
   search?: string
   include_invalid?: boolean
   before?: RawBuilder<Date> | Date
@@ -228,6 +229,9 @@ export function baseQuery(
       ),
     )
   }
+  if (opts?.excluding_patient_encounter_id) {
+    qb = qb.where('patient_records_aggregated.patient_encounter_id', '!=', opts.excluding_patient_encounter_id)
+  }
   if (opts?.before) {
     qb = qb.where(
       'patient_records_aggregated.created_at',
@@ -251,7 +255,7 @@ type RecordInsert = {
 }
 
 export function baseInsert(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   insert: RecordInsert,
 ) {
   const {
@@ -346,7 +350,7 @@ type RecordInsertMany = {
 }
 
 export function baseInsertMany(
-  trx: TrxOrDb,
+  trx: TrxOrDbOrQueryCreator,
   records: RecordInsertMany[],
 ) {
   if (records.length === 0) {

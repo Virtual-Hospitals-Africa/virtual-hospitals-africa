@@ -1,12 +1,20 @@
 import { InsertResult, UpdateResult } from 'kysely'
-import { ChatbotName, ChatbotUser, HasStringId, TrxOrDb, UnhandledMessage, WhatsAppMessageContents, WhatsAppMessageReceived } from '../../types.ts'
+import {
+  ChatbotName,
+  ChatbotUser,
+  HasStringId,
+  TrxOrDbOrQueryCreator,
+  UnhandledMessage,
+  WhatsAppMessageContents,
+  WhatsAppMessageReceived,
+} from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { literalString, now } from '../helpers.ts'
 
 export const conversations = {
   updateReadStatus(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: { whatsapp_id: string; read_status: string },
   ): Promise<UpdateResult[]> {
     return trx
@@ -35,7 +43,7 @@ export const conversations = {
       typeof contents.body === 'string'
   },
   insertMessageReceived(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     data:
       & {
         received_by_phone_number: string
@@ -56,7 +64,7 @@ export const conversations = {
       .executeTakeFirstOrThrow()
   },
   insertMessageSent(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       sent_by_phone_number: string
       sent_to_phone_number: string
@@ -73,7 +81,7 @@ export const conversations = {
       .executeTakeFirstOrThrow()
   },
   async getUnhandledMessages(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { chatbot_name, commitHash, sent_by_phone_number }: {
       chatbot_name: ChatbotName
       commitHash: string
@@ -125,7 +133,7 @@ export const conversations = {
     }))
   },
   markChatbotError(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     opts: {
       chatbot_name: ChatbotName
       whatsapp_message_received_id: string
@@ -143,7 +151,7 @@ export const conversations = {
       .executeTakeFirstOrThrow()
   },
   getUser(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     chatbot_name: ChatbotName,
     opts: {
       chatbot_user_id: string
@@ -165,7 +173,7 @@ export const conversations = {
     return query.executeTakeFirst()
   },
   async updateChatbotUser(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     chatbot_user: ChatbotUser,
     updates: {
       conversation_state?: string
@@ -182,7 +190,7 @@ export const conversations = {
     return Object.assign(chatbot_user, updates)
   },
   async insertChatbotUser(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     chatbot_name: ChatbotName,
     phone_number: string,
   ): Promise<ChatbotUser> {
@@ -204,7 +212,7 @@ export const conversations = {
     } as ChatbotUser
   },
   async findChatbotUser(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     chatbot_name: ChatbotName,
     phone_number: string,
   ): Promise<ChatbotUser | undefined> {
@@ -220,7 +228,7 @@ export const conversations = {
     return user as ChatbotUser
   },
   getLastConversationState(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     chatbot_name: ChatbotName,
     where: { phone_number?: string; entity_id?: string },
   ) {

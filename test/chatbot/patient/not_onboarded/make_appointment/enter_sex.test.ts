@@ -59,7 +59,7 @@ describe('patient chatbot', () => {
       'not_onboarded:make_appointment:enter_date_of_birth',
     )
 
-    const patient = await patients.getById(db, patient_id)
+    const patient = await patients.getById(db, patient_id, { include_incomplete_registration: true })
     assertEquals(patient.sex, 'female')
   })
 })

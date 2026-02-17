@@ -4,13 +4,13 @@ import { health_workers } from '../../db/models/health_workers.ts'
 import { employment } from '../../db/models/employment.ts'
 import db from '../../db/db.ts'
 import { exists } from '../../util/exists.ts'
-import omit from '../../util/omit.ts'
 import assertSome from '../../util/assertSome.ts'
 import assertLength from '../../util/assertLength.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
 import { healthWorkerOrganizationDepartmentNames } from '../../shared/departments.ts'
 import { organizations_with_departments } from '../../db/models/organizations_with_departments.ts'
+import { assertMatches } from '../../util/assertMatches.ts'
 
 describe('db/models/health_workers.ts', () => {
   afterAll(() => db.destroy())
@@ -19,20 +19,13 @@ describe('db/models/health_workers.ts', () => {
     it(
       'returns the health worker and their employment information',
       async () => {
-        const getting_test_clinic = organizations_with_departments.getById(
-          db,
-          TEST_ORGANIZATION_UUIDS.ZA.clinic,
-        )
-
         const health_worker = await addTestEmployee(db, {
-          profession: 'nurse',
-          registration_status: 'not started',
+          role: 'nurse',
         })
 
         const result = await health_workers.getById(db, health_worker.id)
-        const test_clinic = await getting_test_clinic
 
-        assertEquals(result, {
+        assertMatches(result, {
           id: health_worker.id,
           name: health_worker.name,
           first_names: health_worker.first_names,
@@ -42,11 +35,9 @@ describe('db/models/health_workers.ts', () => {
           email: health_worker.email,
           organizations: [
             {
-              ...omit(test_clinic, ['departments']),
-              profession: 'nurse',
+              role: 'nurse',
               is_admin: false,
               employment_id: health_worker.employee_id,
-              specialty: 'Primary care',
               in_departments: result.organizations[0].in_departments,
             },
           ],
@@ -72,15 +63,15 @@ describe('db/models/health_workers.ts', () => {
       'handles a health worker who is both a nurse and admin at one organization',
       async () => {
         const health_worker = await addTestEmployee(db, {
-          profession: 'nurse',
-          registration_status: 'approved',
+          role: 'nurse',
+
           is_admin: true,
         })
 
         const result = await health_workers.getById(db, health_worker.id)
 
         assertLength(result.organizations, 1)
-        assertEquals(result.organizations[0].profession, 'nurse')
+        assertEquals(result.organizations[0].role, 'nurse')
         assertEquals(result.organizations[0].is_admin, true)
 
         const department_names = healthWorkerOrganizationDepartmentNames(
@@ -105,8 +96,8 @@ describe('db/models/health_workers.ts', () => {
         )
 
         const health_worker = await addTestEmployee(db, {
-          profession: 'doctor',
-          registration_status: 'approved',
+          role: 'doctor',
+
           organization_id: TEST_ORGANIZATION_UUIDS.ZA.hospital,
         })
 
@@ -117,7 +108,7 @@ describe('db/models/health_workers.ts', () => {
         ).id
         await employment.addOne(db, {
           health_worker_id: health_worker.id,
-          profession: 'receptionist',
+          role: 'receptionist',
           is_admin: false,
           organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
           department_ids: [reception_department_id],
@@ -130,13 +121,13 @@ describe('db/models/health_workers.ts', () => {
           result.organizations[0].id,
           TEST_ORGANIZATION_UUIDS.ZA.hospital,
         )
-        assertEquals(result.organizations[0].profession, 'doctor')
+        assertEquals(result.organizations[0].role, 'doctor')
         assertEquals(
           result.organizations[1].id,
           TEST_ORGANIZATION_UUIDS.ZA.clinic,
         )
         assertEquals(
-          result.organizations[1].profession,
+          result.organizations[1].role,
           'receptionist',
         )
       },

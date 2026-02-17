@@ -16,7 +16,7 @@
 //       withTestOrganization(db, async (organization_id) => {
 //         const { fetch, employed_health_worker, organization_employment } =
 //           await addTestEmployeeWithSession(db, {
-//             profession: 'nurse', specialty: 'Primary care', registration_status: 'approved',
+//             role: 'nurse', specialty: 'Primary care',
 //             organization_id,
 //           })
 

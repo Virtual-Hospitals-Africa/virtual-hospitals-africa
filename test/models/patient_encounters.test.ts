@@ -22,7 +22,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
     const organization_id = (await createTestOrganization(db)).id
     const receptionist = await addTestEmployee(db, {
       organization_id,
-      profession: 'receptionist',
+      role: 'receptionist',
     })
 
     const {
@@ -118,8 +118,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
           id: receptionist.id,
           employee_id: exists(organization_employment).employment_id,
           name: receptionist.name,
-          profession: 'receptionist',
-          specialty: null,
+          role: 'receptionist',
           avatar_url: `/health_workers/${open_encounter.all_employees_seen[0].id}/avatar`,
           organization_id: organization.id,
         },
@@ -167,7 +166,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       })
       const receptionist = await addTestEmployee(db, {
         organization_id: clinic.id,
-        profession: 'receptionist',
+        role: 'receptionist',
       })
 
       const {
@@ -260,10 +259,9 @@ describeParallel('db/models/patient_encounters.ts', () => {
             patient_encounter_employee_id: employee.patient_encounter_employee_id,
             employee_id: exists(organization_employment).employment_id,
             organization_id: organization_employment.id,
-            profession: 'receptionist',
+            role: 'receptionist',
             id: receptionist.id,
             name: receptionist.name,
-            specialty: null,
           },
         ],
       })

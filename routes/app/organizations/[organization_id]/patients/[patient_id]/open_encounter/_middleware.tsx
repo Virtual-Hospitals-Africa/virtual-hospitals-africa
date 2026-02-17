@@ -402,7 +402,7 @@ export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, c
       sidebar_bottom={<HealthWorkerSidebarBottom employee={ctx.state.employee} />}
       {
         // care_team={ctx.state.patient.primary_doctor
-        //   ? [{ ...ctx.state.patient.primary_doctor, profession: 'doctor' }]
+        //   ? [{ ...ctx.state.patient.primary_doctor, role: 'doctor' }]
         //   : []}
         ...ctx
       }

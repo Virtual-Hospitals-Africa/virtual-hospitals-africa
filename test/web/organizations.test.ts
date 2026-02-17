@@ -15,9 +15,8 @@ describeParallel(
     afterAll(() => db.destroy())
     itParallel('can search for organizations by name', async () => {
       const { fetch } = await addTestEmployeeWithSession(db, {
-        profession: 'nurse',
+        role: 'nurse',
         specialty: 'Primary care',
-        registration_status: 'approved',
       })
       const response = await fetch(
         `${route}/app/organizations?search=VHA Test`,

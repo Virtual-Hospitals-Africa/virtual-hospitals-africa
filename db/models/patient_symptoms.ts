@@ -2,7 +2,7 @@
 // import {
 //   PatientSymptomUpsert,
 //   RenderedPatientSymptom,
-//   TrxOrDb,
+//   TrxOrDbOrQueryCreator,
 // } from '../../types.ts'
 // import {
 //   blankSelection,
@@ -22,7 +22,7 @@
 
 // // TODO: get this into a single round trip with the DB
 // ,async upsertOne(
-//   trx: TrxOrDb,
+//   trx: TrxOrDbOrQueryCreator,
 //   {
 //     patient_id,
 //     patient_encounter_id,
@@ -142,7 +142,7 @@
 // }
 
 // ,getEncounter(
-//   trx: TrxOrDb,
+//   trx: TrxOrDbOrQueryCreator,
 //   { patient_id, patient_encounter_id }: {
 //     patient_id: string
 //     patient_encounter_id: string

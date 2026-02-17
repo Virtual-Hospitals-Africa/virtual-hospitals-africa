@@ -59,12 +59,12 @@ export default HealthWorkerHomePageLayout(
     assertOr404(patient_id, 'Must add a specific patient')
 
     const { patient, providers, open_encounter } = await promiseProps({
-      patient: patients.getById(trx, patient_id),
+      patient: patients.getById(trx, patient_id, { include_incomplete_registration: true }),
       providers: employees.findAll(
         trx,
         {
           organization_id: organization.id,
-          professions: ['nurse', 'doctor'],
+          roles: ['nurse', 'doctor'],
         },
       ),
       open_encounter: patient_encounters.getFirstOpen(trx, {

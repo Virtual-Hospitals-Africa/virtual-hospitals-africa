@@ -1,4 +1,4 @@
-import type { RenderedOrganizationMedication, TrxOrDb } from '../../types.ts'
+import type { RenderedOrganizationMedication, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { concat, jsonArrayFrom, jsonBuildObject, literalNumber, literalString } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 import { medication_availabilities, type MedicationAvailabilityOpts } from './medication_availabilities.ts'
@@ -6,7 +6,7 @@ import { medication_availabilities, type MedicationAvailabilityOpts } from './me
 export const medication_organizations = base({
   top_level_table: 'medications',
   baseQuery(
-    trx: TrxOrDb,
+    trx: TrxOrDbOrQueryCreator,
     { organization_id, ...opts }: Omit<MedicationAvailabilityOpts, 'country'> & {
       organization_id: string
     },

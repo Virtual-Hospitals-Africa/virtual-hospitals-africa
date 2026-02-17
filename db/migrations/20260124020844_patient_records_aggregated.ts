@@ -1,5 +1,5 @@
 import { Kysely, RawBuilder, sql } from 'kysely'
-import { DB } from '../../db.d.ts'
+import type { DB } from '../../db.d.ts'
 import { createPointerTable } from '../createTable.ts'
 import { asCompiledSql, asText, jsonBuildObject, literalString } from '../helpers.ts'
 import { NO_QUALIFIER, UNKNOWN_QUALIFIER } from '../../shared/snomed_concepts.ts'
