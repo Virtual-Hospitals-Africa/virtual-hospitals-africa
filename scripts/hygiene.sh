@@ -8,6 +8,7 @@ declare -A rules=(
   [rule_test_files_naming]="Files in /test that aren't tests nor helpers:"
   [rule_no_db_imports_in_frontend]="components/ and islands/ should never import from db/:"
   [rule_no_only_in_tests]="Found .only( in test files (remove before committing):"
+  [rule_imports_at_the_start]="Found import statement later in the file"
 )
 
 rule_no_camel_case() {
@@ -33,6 +34,11 @@ rule_test_files_naming() {
 
 rule_no_db_imports_in_frontend() {
   ! rg -n --pcre2 --color=always "from ['\"].*db/" components islands util shared
+}
+
+rule_imports_at_the_start() {
+  # Flag inline import() type expressions (e.g. import('./types.ts').Foo) outside of actual import statements
+  ! rg -n --pcre2 --color=always '^\s*(?!import\b).*\bimport\(' --glob '**/*.ts' --glob '**/*.tsx'
 }
 
 rule_no_only_in_tests() {
