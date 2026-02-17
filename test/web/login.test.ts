@@ -4,7 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
-import { createTestOrganization, withTestOrganization } from '../_helpers/organizations.ts'
+import { createTestOrganization } from '../_helpers/organizations.ts'
 import sample from '../../util/sample.ts'
 import { port, route } from '../_route.ts'
 import selfUrl from '../../util/selfUrl.ts'
@@ -102,66 +102,64 @@ describeParallel('/login', () => {
 
     itParallel(
       'starts in an empty waiting room with sidebar links for a nurse',
-      () =>
-        withTestOrganization(db, async (organization_id) => {
-          const mock = await addTestEmployeeWithSession(db, {
-            role: 'nurse',
-            specialty: 'Primary care',
+      async () => {
+        const organization = await createTestOrganization(db)
+        const mock = await addTestEmployeeWithSession(db, {
+          role: 'nurse',
+          specialty: 'Primary care',
+          organization_id: organization.id,
+        })
 
-            organization_id,
-          })
+        const $ = await mock.fetchCheerio(`${route}/app`)
 
-          const $ = await mock.fetchCheerio(`${route}/app`)
+        const waiting_room_add_link = $(
+          `form[action="/app/organizations/${organization.id}/patients/start-registration"] > button`,
+        )
+        assertIncludes(
+          waiting_room_add_link.first().text(),
+          'Register patient',
+        )
 
-          const waiting_room_add_link = $(
-            `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
-          )
-          assertIncludes(
-            waiting_room_add_link.first().text(),
-            'Register patient',
-          )
+        const patients_link = $(
+          `a[href="/app/organizations/${organization.id}/waiting_room"]`,
+        )
+        assert(patients_link.first().text().includes('Open Encounters'))
 
-          const patients_link = $(
-            `a[href="/app/organizations/${organization_id}/waiting_room"]`,
-          )
-          assert(patients_link.first().text().includes('Open Encounters'))
+        const employees_link = $('a[href="/app/employees"]')
+        assert(employees_link.first().text().includes('Employees'))
 
-          const employees_link = $('a[href="/app/employees"]')
-          assert(employees_link.first().text().includes('Employees'))
+        const calendar_link = $('a[href="/app/calendar"]')
+        assert(calendar_link.first().text().includes('Calendar'))
 
-          const calendar_link = $('a[href="/app/calendar"]')
-          assert(calendar_link.first().text().includes('Calendar'))
+        const inventory_link = $(
+          `a[href="/app/organizations/${organization.id}/inventory"]`,
+        )
+        assert(inventory_link.first().text().includes('Inventory'))
 
-          const inventory_link = $(
-            `a[href="/app/organizations/${organization_id}/inventory"]`,
-          )
-          assert(inventory_link.first().text().includes('Inventory'))
-
-          const logout_link = $('a[href="/app/logout"]')
-          assert(logout_link.first().text().includes('Log Out'))
-        }),
+        const logout_link = $('a[href="/app/logout"]')
+        assert(logout_link.first().text().includes('Log Out'))
+      },
     )
 
     itParallel(
       'starts in an empty waiting room with a start-registration link for a receptionist',
-      () =>
-        withTestOrganization(db, async (organization_id) => {
-          const mock = await addTestEmployeeWithSession(db, {
-            role: 'receptionist',
+      async () => {
+        const organization = await createTestOrganization(db)
+        const mock = await addTestEmployeeWithSession(db, {
+          role: 'receptionist',
+          organization_id: organization.id,
+        })
 
-            organization_id,
-          })
+        const $ = await mock.fetchCheerio(`${route}/app`)
 
-          const $ = await mock.fetchCheerio(`${route}/app`)
-
-          const waiting_room_add_link = $(
-            `form[action="/app/organizations/${organization_id}/patients/start-registration"] > button`,
-          )
-          assertIncludes(
-            waiting_room_add_link.first().text(),
-            'Register patient',
-          )
-        }),
+        const waiting_room_add_link = $(
+          `form[action="/app/organizations/${organization.id}/patients/start-registration"] > button`,
+        )
+        assertIncludes(
+          waiting_room_add_link.first().text(),
+          'Register patient',
+        )
+      },
     )
 
     itParallel(
