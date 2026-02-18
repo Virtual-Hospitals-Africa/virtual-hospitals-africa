@@ -229,7 +229,7 @@ export async function getWarningSignsForPatient(
   const warning_signs_for_patient = [...no_prompt_when, ...satisfying_prompt_when]
   return sortBy(
     warning_signs_for_patient,
-    (sign) => ORDERED_PRIORITIES.indexOf(sign.sats_priority),
+    (sign) => ORDERED_PRIORITIES.indexOf(sign.priority),
     (sign) => WARNING_SIGNS.indexOf(sign),
   )
 
@@ -293,10 +293,10 @@ function* signsMatchedWithPriorRecords(
 
   for (const finding of findings_set) {
     yield {
-      sats_priority: finding.priority,
+      priority: finding.priority,
       clinical_finding_s_expression: finding.normal_form_s_expression,
-      primary_name: finding.specific_snomed_concept_name,
-      secondary_text: finding.specific_snomed_concept_category,
+      name: finding.specific_snomed_concept_name,
+      description: finding.specific_snomed_concept_category,
       existing_record: finding.existing_record,
       category: 'Prior record' as const,
     }

@@ -5,7 +5,7 @@
 
 import { effect } from '@preact/signals'
 import { useMemo } from 'preact/hooks'
-import type { RenderedEmployee, RenderedPatient, RenderedSidebarWorkflow } from '../types.ts'
+import type { RenderedEmployee, RenderedPatientCompletedRegistration, RenderedSidebarWorkflow } from '../types.ts'
 import { OpenEncounterWorkflowLayout } from '../components/OpenEncounterWorkflowLayout.tsx'
 import { useLocationHash } from '../util/useLocationHash.ts'
 import { HealthWorker } from '../components/library/HealthWorker.tsx'
@@ -41,8 +41,8 @@ const TUTORIAL_NAV_LINKS = WORKFLOW_NAV_LINKS.triage.map((link) => ({
 type Props = {
   url: URL
   route: string
-  patient: RenderedPatient
   employee: RenderedEmployee
+  patient: RenderedPatientCompletedRegistration
 }
 
 /**
@@ -132,14 +132,14 @@ function StepRenderer({
   patient,
 }: {
   step: TutorialStep
-  patient: RenderedPatient
+  patient: RenderedPatientCompletedRegistration
 }) {
   switch (step) {
     case 'warning_signs':
       return <WarningSignsStep />
 
     case 'brief_history':
-      return <BriefHistoryStep sex={patient.sex!} />
+      return <BriefHistoryStep sex={patient.sex} />
 
     case 'vitals':
       return <VitalsStep />

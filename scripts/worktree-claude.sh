@@ -47,7 +47,7 @@ cd "$WORKTREE_DIR"
 echo "Running Claude Code with prompt: $PROMPT"
 echo "This will run with all permissions and create a PR when done..."
 
-echo "$PROMPT" | claude --dangerously-skip-permissions --print --verbose --output-format=stream-json --include-partial-messages
+echo "$PROMPT" | claude --dangerously-skip-permissions
 
 attempts=0
 max_attempts=2
@@ -97,7 +97,7 @@ $log_file"
 
   rm "$test_output"
   echo "Asking Claude to fix the issues..."
-  echo -e "$retry_prompt" | claude --dangerously-skip-permissions --print --verbose --output-format=stream-json --include-partial-messages
+  echo -e "$retry_prompt" | claude --dangerously-skip-permissions
 done
 
 if ! $tests_passed; then

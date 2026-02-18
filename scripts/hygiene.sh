@@ -33,6 +33,7 @@ rule_no_camel_case() {
     once
     logArgsOnError
     deduplicate
+    collapse
     simpleBaseQuery
     cacheable
     'model\.'

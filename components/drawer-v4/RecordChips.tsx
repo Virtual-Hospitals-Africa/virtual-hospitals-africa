@@ -1,9 +1,9 @@
-import { RenderedFindingRelativeToHealthWorker } from '../../types.ts'
+import { RenderedRecordRelativeToHealthWorker } from '../../types.ts'
 import { RecordChipWithPopover } from '../../islands/RecordChipWithPopover.tsx'
 
 export function RecordChips(
   { records, organization_id }: {
-    records: RenderedFindingRelativeToHealthWorker[]
+    records: RenderedRecordRelativeToHealthWorker[]
     organization_id: string
   },
 ) {

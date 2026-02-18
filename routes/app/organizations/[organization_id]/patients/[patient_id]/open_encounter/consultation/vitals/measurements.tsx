@@ -1,13 +1,7 @@
 import { OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../../_middleware.tsx'
 import { z } from 'zod'
-// import { vitals } from '../../../../../../../../../db/models/patient_vitals.ts'
-// import { patient_measurements } from '../../../../../../../../../db/models/patient_measurements.ts'
-// import { getRequiredUUIDParam } from '../../../../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../../../../backend/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
-// import filterOfType from '../../../../../../../../../util/filterOfType.ts'
-// import { VitalsMeasurementsForm } from '../../../../../../../../../components/vitals/MeasurementsForm.tsx'
-// import redirect from '../../../../../../../../../util/redirect.ts'
 
 const VitalsMeasurementSchema = z.object({
   findings: z.record(

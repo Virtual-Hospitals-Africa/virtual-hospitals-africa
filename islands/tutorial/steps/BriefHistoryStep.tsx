@@ -4,7 +4,7 @@
 // =============================================================================
 
 import { BriefHistorySection } from '../../../components/triage/BriefHistorySection.tsx'
-import { TUTORIAL_BRIEF_HISTORY } from '../../../shared/tutorial/mock-data.ts'
+import { TUTORIAL_BRIEF_HISTORY_ALLERGIES, TUTORIAL_BRIEF_HISTORY_COMMON_CONDITIONS } from '../../../shared/tutorial/mock-data.ts'
 import type { Sex } from '../../../types.ts'
 
 type Props = {
@@ -19,7 +19,8 @@ export function BriefHistoryStep({ sex }: Props) {
   return (
     <div data-tutorial='brief-history-section'>
       <BriefHistorySection
-        most_recent_findings={TUTORIAL_BRIEF_HISTORY}
+        most_recent_findings={TUTORIAL_BRIEF_HISTORY_COMMON_CONDITIONS}
+        existing_allergies={TUTORIAL_BRIEF_HISTORY_ALLERGIES}
         sex={sex}
         organization_id='tutorial-org'
       />

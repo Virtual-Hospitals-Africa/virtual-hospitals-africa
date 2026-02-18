@@ -22,7 +22,7 @@ async function importFromJSON(trx: TrxOrDb) {
     await trx.insertInto('conditions')
       .values({
         id: row.key_id,
-        name: row.primary_name,
+        name: row.name,
         term_icd9_code: row.term_icd9_code,
         term_icd9_text: row.term_icd9_text,
         consumer_name: row.consumer_name,

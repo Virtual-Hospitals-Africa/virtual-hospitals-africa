@@ -34,16 +34,20 @@ export function groupByUniq<
 >(
   array: T[],
   keyBy: KeyBy,
+  opts?: { allow_multiple: boolean },
 ): KeyBy extends keyof T ? Map<T[KeyBy], T>
   : KeyBy extends (value: T, i: number) => infer K ? Map<K, T>
   : never {
   const result = new Map()
   for (const [i, item] of array.entries()) {
     const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
-    if (result.has(key)) {
+    if (!result.has(key)) {
+      result.set(key, item)
+      continue
+    }
+    if (!opts?.allow_multiple) {
       throw new Error('Duplicate key: ' + key)
     }
-    result.set(key, item)
   }
   return result as any
 }

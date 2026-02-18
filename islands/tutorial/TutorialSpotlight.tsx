@@ -40,11 +40,7 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
       const el_rect = element.getBoundingClientRect()
       const fills_page = el_rect.height >= globalThis.innerHeight
       if (fills_page) return
-      const parent = element.parentElement
-      if (!parent) return
-      const parent_rect = parent.getBoundingClientRect()
-      const is_in_view = el_rect.top >= parent_rect.top && el_rect.bottom <= parent_rect.bottom
-      if (!is_in_view) return element
+      return element
     }
 
     const scrollIntoViewIfNecessary = () => {

@@ -1,22 +1,22 @@
 import {
   assertAllPriorStepsCompleted,
   completeAndProceedToNextStep,
-  createProcedureIfNotAlreadyCompleted,
+  completedProcedure,
   OpenEncounterWorkflowContext,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
 import { z } from 'zod'
-import { patient_measurements } from '../../../../../../../../db/models/patient_measurements.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../../../../../../../../shared/vitals.ts'
-import { parseExpressionExpectingAtom } from '../../../../../../../../shared/s_expression.ts'
-import { pMap } from '../../../../../../../../util/inParallel.ts'
-import entries from '../../../../../../../../util/entries.ts'
-import { assert } from 'std/assert/assert.ts'
-import fromEntries from '../../../../../../../../util/fromEntries.ts'
+import { parseWithSchema } from '../../../../../../../../shared/s_expression.ts'
+import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
+import entries from '../../../../../../../../util/entries.ts'
+import compact from '../../../../../../../../util/compact.ts'
+import { comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
+import { exists } from '../../../../../../../../util/exists.ts'
 
 export const TriageHeightAndWeightSchema = z.object({
   measurements: z.record(
@@ -25,40 +25,45 @@ export const TriageHeightAndWeightSchema = z.object({
       value: positive_decimal,
       units: z.string().min(1),
     }).strict(),
-  ).transform((measurements) =>
-    fromEntries(
-      entries(measurements || {}).map((
-        [vital, measurement],
-      ) => {
-        assert(measurement)
-        const { value, units } = measurement
-        const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
-        const measurement_equality_expression = parseExpressionExpectingAtom(
-          `(= (measurement ${snomed_concept.s_expression} ${units}) ${value})`,
-          '=',
-        )
-        return [vital, measurement_equality_expression]
-      }),
-    )
   ),
 }).strict()
 
 export const handler = postHandler(
   TriageHeightAndWeightSchema,
   async (ctx: OpenEncounterWorkflowContext, form_values) => {
-    const { procedure_id } = await createProcedureIfNotAlreadyCompleted(ctx)
+    const {
+      trx,
+      employment_id,
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      workflow_step_snomed_concept,
+    } = ctx.state
 
-    await pMap(
-      entries(form_values.measurements),
-      ([/* vital */, measurement_comparison]) =>
-        patient_measurements.insertOneNested(ctx.state.trx, {
-          procedure_id,
-          patient_id: ctx.state.patient.id,
-          patient_encounter_id: ctx.state.encounter.patient_encounter_id,
-          patient_encounter_employee_id: ctx.state.encounter_employee_presence.patient_encounter_employee_id,
-          measurement_comparison,
-        }),
+    const completed_procedure = completedProcedure(ctx)
+
+    const measurements_to_insert = compact(
+      entries(form_values.measurements).map(([vital, measurement]) => {
+        if (!measurement) return undefined
+        const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
+        return parseWithSchema(
+          `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
+          comparator,
+        )
+      }),
     )
+
+    await patient_findings.insertMany(trx, {
+      patient_id,
+      patient_encounter_id,
+      patient_encounter_employee_id,
+      employment_id,
+      procedure: completed_procedure || {
+        create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
+      },
+      findings: [],
+      measurements: measurements_to_insert,
+    })
 
     return completeAndProceedToNextStep(ctx)
   },

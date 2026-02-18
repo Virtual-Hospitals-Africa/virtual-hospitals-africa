@@ -60,10 +60,15 @@ export function YesNoGrid(
   const ref = useRef<HTMLInputElement>(null)
 
   function Header({ existence }: { existence: Existence }) {
-    function checkAll() {
-      const inputs = ref.current!.querySelectorAll<HTMLInputElement>(`input[value="${existence}"]`)
+    function checkAllWithoutValues() {
+      const container = ref.current!
+      const inputs = container.querySelectorAll<HTMLInputElement>(`input[type="radio"][value="${existence}"]`)
       for (const input of inputs) {
-        input.click()
+        const group = container.querySelectorAll<HTMLInputElement>(`input[type="radio"][name="${input.name}"][checked]`)
+        const has_different_value_checked = Array.from(group).some((sibling) => sibling.checked && sibling.value !== existence)
+        if (!has_different_value_checked) {
+          input.click()
+        }
       }
     }
 
@@ -71,7 +76,7 @@ export function YesNoGrid(
       <button
         type='button'
         className='cursor-pointer text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'
-        onClick={checkAll}
+        onClick={checkAllWithoutValues}
       >
         {existence}
       </button>
@@ -80,7 +85,7 @@ export function YesNoGrid(
 
   return (
     <div
-      className='overflow-hidden border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-3 xl:gap-y-5 items-start pb-4'
+      className='overflow-scroll border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-2 xl:gap-y-4 items-start pb-4'
       ref={ref}
     >
       <div className='text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-b border-gray-300 pl-4 py-4'>

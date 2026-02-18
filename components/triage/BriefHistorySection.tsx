@@ -5,8 +5,16 @@
 
 import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
 import { MostRecentRecord } from '../../islands/MostRecentRecord.tsx'
+import { AllergiesMultiSelect } from '../../islands/triage/AllergiesMultiSelect.tsx'
 import { COMMON_CONDITIONS, CommonCondition } from '../../shared/brief_history.ts'
-import type { Existence, Maybe, MostRecentBriefHistoryFindings, RenderedBriefHistoryRelativeToHealthWorker, Sex } from '../../types.ts'
+import type {
+  Existence,
+  Maybe,
+  MostRecentBriefHistoryFindings,
+  RenderedBriefHistoryRelativeToHealthWorker,
+  RenderedFindingRelativeToHealthWorker,
+  Sex,
+} from '../../types.ts'
 
 export function CommonConditionRow(
   { condition, most_recent_finding, sex, organization_id }: {
@@ -20,7 +28,7 @@ export function CommonConditionRow(
 
   return (
     <YesNoQuestion
-      name={`${condition.key}.existence`}
+      name={`common_conditions.${condition.key}.existence`}
       required={condition.required}
       value={value}
       label={condition.label}
@@ -35,23 +43,30 @@ export function CommonConditionRow(
 }
 
 export function BriefHistorySection(
-  { most_recent_findings, sex, organization_id }: {
+  { most_recent_findings, existing_allergies, sex, organization_id }: {
     most_recent_findings: MostRecentBriefHistoryFindings
+    existing_allergies: RenderedFindingRelativeToHealthWorker[]
     sex: Sex
     organization_id: string
   },
 ) {
   return (
-    <YesNoGrid title='Condition'>
-      {COMMON_CONDITIONS.map((condition) => (
-        <CommonConditionRow
-          key={condition.key}
-          condition={condition}
-          sex={sex}
-          organization_id={organization_id}
-          most_recent_finding={most_recent_findings[condition.key]}
-        />
-      ))}
-    </YesNoGrid>
+    <>
+      <YesNoGrid title='Condition'>
+        {COMMON_CONDITIONS.map((condition) => (
+          <CommonConditionRow
+            key={condition.key}
+            condition={condition}
+            sex={sex}
+            organization_id={organization_id}
+            most_recent_finding={most_recent_findings[condition.key]}
+          />
+        ))}
+      </YesNoGrid>
+      <AllergiesMultiSelect
+        existing_allergies={existing_allergies}
+        organization_id={organization_id}
+      />
+    </>
   )
 }

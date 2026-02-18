@@ -539,3 +539,13 @@ export const IS_MODIFICATION_OF = asConcept({
   name: 'Is modification of',
   category: 'attribute' as const,
 })
+export const ALLERGIC_DISPOSITION = asConcept({
+  id: '609328004',
+  name: 'Allergic disposition',
+  category: 'finding' as const,
+})
+export const FULLY_SPECIFIED_NAME = asConcept({
+  id: '900000000000003001',
+  name: 'Fully specified name',
+  category: 'core metadata concept' as const,
+})

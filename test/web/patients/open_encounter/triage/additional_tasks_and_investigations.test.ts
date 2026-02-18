@@ -39,8 +39,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
       patient_demographics: { date_of_birth: '2001-01-01' },
       brief_history: {
-        diabetes: { existence: 'No' },
-        pregnancy: { existence: 'No' },
+        common_conditions: {
+          diabetes: { existence: 'No' },
+          pregnancy: { existence: 'No' },
+        },
       },
       warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
       height_and_weight: {
@@ -307,11 +309,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
       })
@@ -341,11 +341,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr, allergy_to_fish_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
       })
@@ -377,11 +375,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -495,11 +491,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -621,9 +615,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table = getTableDisplay($assign_priority)
       assertMatches(table[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Priority: UrgentSudden onset Itching → Evidence ofDifficulty breathing → Evidence of$/,
-        ),
+        Finding: 'Probable diagnosis',
         'Reference Range': '',
         'Priority / Score': 'Urgent',
       }, { strict: true })
@@ -638,11 +630,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -764,9 +754,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table = getTableDisplay($assign_priority)
       assertMatches(table[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Improbable diagnosisAnaphylaxis Diagnosis: Improbable diagnosisEvaluated by:System/,
-        ),
+        Finding: 'Improbable diagnosis',
         'Reference Range': '',
         'Priority / Score': '',
       }, { strict: true })
@@ -781,11 +769,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -848,9 +834,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table_1 = getTableDisplay($after_first_post)
       assertMatches(table_1[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Improbable diagnosisAnaphylaxis Diagnosis: Improbable diagnosisEvaluated by:System/,
-        ),
+        Finding: 'Improbable diagnosis',
         'Reference Range': '',
         'Priority / Score': '',
       }, { strict: true })
@@ -884,9 +868,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table_2 = getTableDisplay($after_second_post)
       assertMatches(table_2[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Priority: UrgentSudden onset Itching → Evidence ofDifficulty breathing → Evidence of$/,
-        ),
+        Finding: 'Probable diagnosis',
         'Reference Range': '',
         'Priority / Score': 'Urgent',
       }, { strict: true })
@@ -901,8 +883,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       },
       warning_signs: asWarningSigns([], { pregnant: false }),
       brief_history: {
-        diabetes: { existence: 'No' },
-        pregnancy: { existence: 'No' },
+        common_conditions: {
+          diabetes: { existence: 'No' },
+          pregnancy: { existence: 'No' },
+        },
       },
       height_and_weight: {
         measurements: {

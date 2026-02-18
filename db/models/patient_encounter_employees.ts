@@ -1,11 +1,14 @@
 import { assert } from 'std/assert/assert.ts'
-import { HealthWorkerOrganization, RenderedPatientEncounter, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { HealthWorkerOrganization, IdSelectable, RenderedPatientEncounter, RenderedPatientEncounterEmployee, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { employees } from './employees.ts'
 import { base, identity } from './_base.ts'
+import { idSelection } from '../helpers.ts'
 
 export const patient_encounter_employees = base({
   top_level_table: 'patient_encounter_employees' as const,
-  baseQuery(trx: TrxOrDbOrQueryCreator, _terms: Record<string, never>) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, terms: {
+    patient_encounter_id?: IdSelectable
+  }) {
     return employees.baseQuery(trx, {})
       .innerJoin(
         'patient_encounter_employees',
@@ -16,8 +19,13 @@ export const patient_encounter_employees = base({
         'patient_encounter_employees.id as patient_encounter_employee_id',
         'patient_encounter_employees.seen_at',
       ])
+      .$if(!!terms.patient_encounter_id, (qb) =>
+        qb.where(
+          'patient_encounter_employees.patient_encounter_id',
+          ...idSelection(terms.patient_encounter_id!),
+        ))
   },
-  formatResult: identity,
+  formatResult: identity<RenderedPatientEncounterEmployee>,
   seenPatientEncounterEmployeeId(
     encounter: RenderedPatientEncounter,
     organization_employment: HealthWorkerOrganization,

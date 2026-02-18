@@ -4,7 +4,6 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { getFormLabels, getFormOptions, getFormValues } from '../../../../_helpers/form.ts'
-import { patient_measurements } from '../../../../../db/models/patient_measurements.ts'
 import { assertMatches } from '../../../../../util/assertMatches.ts'
 import {
   asVitalAssessmentFormValues,
@@ -35,6 +34,7 @@ import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
+import { MEASUREMENT_FINDING } from '../../../../../shared/snomed_concepts.ts'
 
 describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -52,8 +52,10 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: { date_of_birth: '1990-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'No' },
+            common_conditions: {
+              diabetes: { existence: 'No' },
+              pregnancy: { existence: 'No' },
+            },
           },
           height_and_weight: {
             measurements: {
@@ -196,8 +198,10 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: { date_of_birth: '1990-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: { existence: 'Yes' },
-            pregnancy: { existence: 'No' },
+            common_conditions: {
+              diabetes: { existence: 'Yes' },
+              pregnancy: { existence: 'No' },
+            },
           },
           height_and_weight: {
             measurements: {
@@ -240,8 +244,10 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: { date_of_birth: '2020-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'No' },
+            common_conditions: {
+              diabetes: { existence: 'No' },
+              pregnancy: { existence: 'No' },
+            },
           },
           height_and_weight: {
             measurements: {
@@ -281,8 +287,10 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: { date_of_birth: '2020-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: { existence: 'Yes' },
-            pregnancy: { existence: 'No' },
+            common_conditions: {
+              diabetes: { existence: 'Yes' },
+              pregnancy: { existence: 'No' },
+            },
           },
           height_and_weight: {
             measurements: {
@@ -326,8 +334,10 @@ describeParallel('triage/measure_vitals', () => {
             patient_demographics: { date_of_birth: '2023-01-01' },
             warning_signs: asWarningSigns([], { pregnant: false }),
             brief_history: {
-              diabetes: { existence: 'Yes' },
-              pregnancy: { existence: 'No' },
+              common_conditions: {
+                diabetes: { existence: 'Yes' },
+                pregnancy: { existence: 'No' },
+              },
             },
             height_and_weight: {
               measurements: {
@@ -403,8 +413,10 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: { date_of_birth: '1990-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: { existence: 'Yes' },
-            pregnancy: { existence: 'No' },
+            common_conditions: {
+              diabetes: { existence: 'Yes' },
+              pregnancy: { existence: 'No' },
+            },
           },
           height_and_weight: {
             measurements: {
@@ -489,8 +501,10 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: { date_of_birth: '2023-01-01' },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'No' },
+            common_conditions: {
+              diabetes: { existence: 'No' },
+              pregnancy: { existence: 'No' },
+            },
           },
           height_and_weight: {
             measurements: {
@@ -550,14 +564,15 @@ describeParallel('triage/measure_vitals', () => {
           },
         })
 
-        const measurements = await patient_measurements.findAll(
+        const measurements = await patient_findings.findAll(
           db,
           {
             patient_id: encounter.patient.id,
             s_expression: `
-            (and (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.s_expression} ${VITAL_MEASUREMENTS_UNITS.height}))
-                 (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.s_expression} ${VITAL_MEASUREMENTS_UNITS.weight})))
-          `,
+              (and (finding ${MEASUREMENT_FINDING.s_expression})
+                   (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.s_expression} ${VITAL_MEASUREMENTS_UNITS.height}))
+                   (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.s_expression} ${VITAL_MEASUREMENTS_UNITS.weight})))
+            `,
           },
         )
 
@@ -699,8 +714,10 @@ describeParallel('triage/measure_vitals', () => {
           },
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'No' },
+            common_conditions: {
+              diabetes: { existence: 'No' },
+              pregnancy: { existence: 'No' },
+            },
           },
           height_and_weight: {
             measurements: {

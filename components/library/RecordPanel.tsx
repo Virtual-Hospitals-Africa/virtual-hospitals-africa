@@ -1,6 +1,6 @@
 import { LocalTime } from '../../islands/LocalTime.tsx'
 import { organizationOf } from '../../shared/employees.ts'
-import { RecordValueLink, RenderedEvaluationRelativeToHealthWorker, RenderedFindingRelativeToHealthWorker } from '../../types.ts'
+import { RecordValueLink, RenderedRecordRelativeToHealthWorker } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import generateUUID from '../../util/uuid.ts'
 import { Button } from './Button.tsx'
@@ -56,9 +56,7 @@ function AdditionalContext({ context }: { context: AdditionalContextLineProps[] 
 
 export function RecordPanel(
   { record, organization_id }: {
-    record:
-      | RenderedFindingRelativeToHealthWorker
-      | RenderedEvaluationRelativeToHealthWorker
+    record: RenderedRecordRelativeToHealthWorker
     organization_id: string
   },
 ) {

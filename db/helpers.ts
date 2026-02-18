@@ -18,7 +18,7 @@ import {
 } from 'kysely'
 import * as formatter from 'sql-formatter'
 import type { DB } from '../db.d.ts'
-import type { Coordinates, IdSelection, InsertRows, NonEmptyArray, TrxOrDb, TrxOrDbOrQueryCreator } from '../types.ts'
+import type { Coordinates, IdSelectable, IdSelection, InsertRows, NonEmptyArray, TrxOrDb, TrxOrDbOrQueryCreator } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import type { InsertObject, QueryCreator } from 'kysely'
 import { isUUID } from '../util/uuid.ts'
@@ -26,6 +26,7 @@ import entries from '../util/entries.ts'
 
 import { chunk } from '../util/chunk.ts'
 import isString from '../util/isString.ts'
+import isObjectLike from '../util/isObjectLike.ts'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -100,6 +101,12 @@ export function jsonAgg<O>(
   return sql`json_agg(${expr})`
 }
 
+export function arrayAgg<O>(
+  expr: Expression<O>,
+): RawBuilder<Simplify<O>[]> {
+  return sql`array_agg(${expr})`
+}
+
 export function arrayAggIds(
   expr: Expression<string | IdSelection>,
 ): RawBuilder<string[]>
@@ -117,12 +124,6 @@ export function arrayAggIds(
   }
   // Otherwise treat it as a simple expression
   return sql<string[]>`array_agg(${expr})`
-}
-
-export function arrayFromSubquery<O>(
-  expr: SelectQueryBuilder<any, any, { id: O }>,
-): RawBuilder<O[]> {
-  return sql<O[]>`ARRAY(${expr})`
 }
 
 export function literalUUIDArray(ids: string[]): RawBuilder<string[]> {
@@ -610,6 +611,39 @@ export function caseWhenMatching<T>(
   ).end()
 }
 
+export function collapse<
+  Params extends Array<any>,
+  Result,
+>(
+  func: (trx: TrxOrDbOrQueryCreator, bulk_query: Params[]) => Promise<Result[]>,
+  matches: (result: Result, params: Params) => boolean,
+): (trx: TrxOrDbOrQueryCreator, ...params: Params) => Promise<Result[]> {
+  let enqueued: null | {
+    all_params: Params[]
+    deferred: PromiseWithResolvers<Result[]>
+  } = null
+
+  return (trx: TrxOrDbOrQueryCreator, ...params: Params): Promise<Result[]> => {
+    if (!enqueued) {
+      enqueued = {
+        all_params: [params],
+        deferred: Promise.withResolvers(),
+      }
+      queueMicrotask(() => {
+        const accumulated = enqueued!
+        enqueued = null
+        func(trx, accumulated.all_params)
+          .then(accumulated.deferred.resolve)
+          .catch(accumulated.deferred.reject)
+      })
+    } else {
+      enqueued.all_params.push(params)
+    }
+
+    return enqueued.deferred.promise.then((all_results) => all_results.filter((result) => matches(result, params)))
+  }
+}
+
 export function deduplicate<T extends Array<any>, U>(
   func: (trx: TrxOrDbOrQueryCreator, ...parameters: T) => Promise<U>,
 ): (trx: TrxOrDbOrQueryCreator, ...parameters: T) => Promise<U> {
@@ -654,4 +688,14 @@ export async function insertChunks<Table extends keyof DB>(trx: TrxOrDb, table: 
   for (const batch of chunk(rows, 1000)) {
     await trx.insertInto(table).values(batch).execute()
   }
+}
+
+function isExpression(obj: any): obj is Expression<any> {
+  return isObjectLike(obj) && typeof obj.toOperationNode === 'function'
+}
+
+export function idSelection(
+  id_selectable: IdSelectable,
+): ['=' | 'in', IdSelectable] {
+  return isString(id_selectable) || isExpression(id_selectable) ? ['=', id_selectable] : ['in', id_selectable]
 }

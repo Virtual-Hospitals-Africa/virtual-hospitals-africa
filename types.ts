@@ -1,7 +1,18 @@
 // deno-lint-ignore-file no-explicit-any
 import db from './db/db.ts'
 import type { Context } from 'fresh'
-import type { ColumnType, Generated, InsertObject, QueryCreator, RawBuilder, SelectQueryBuilder, SqlBool, Transaction, ValueExpression } from 'kysely'
+import type {
+  ColumnType,
+  ExpressionWrapper,
+  Generated,
+  InsertObject,
+  QueryCreator,
+  RawBuilder,
+  SelectQueryBuilder,
+  SqlBool,
+  Transaction,
+  ValueExpression,
+} from 'kysely'
 import type { JSX } from 'preact'
 import type { AgeUnit, DB, EncounterReason, FamilyType, MaritalStatus, MessagePriority, PatientCohabitation, SnomedCategory, Workflow } from './db.d.ts'
 import type { Department } from './shared/departments.ts'
@@ -144,6 +155,8 @@ export type UpdateShape<T> = OptionalMaybeFields<
 >
 
 export type IdSelection = SelectQueryBuilder<DB, any, { id: string }>
+
+export type IdSelectable = string | string[] | ExpressionWrapper<DB, any, string> | IdSelection
 
 export type Selecting<QB> = QB extends SelectQueryBuilder<any, any, infer S> ? S
   : never
@@ -2586,6 +2599,10 @@ export type RenderedFindingRelativeToHealthWorker = RenderedRecordRelativeToHeal
   as_part_of_procedure: AsPartOfProcedure
 }>
 
+export type RenderedFindingRelativeToHealthWorkerWithSemanticCategory = RenderedFindingRelativeToHealthWorker & {
+  semantic_category: keyof RenderedPatientHistory
+}
+
 export type RenderedProcedureRelativeToHealthWorker = RenderedRecordRelativeToHealthWorkerDef<'procedure', {
   provider: RenderedRecordProvider
   as_part_of_procedure: null | AsPartOfProcedure
@@ -2629,16 +2646,16 @@ export type MostRecentBriefHistoryFindings = {
 
 type SignShared<Category> = {
   clinical_finding_s_expression: string
-  primary_name: string
-  secondary_text: string | null
+  name: string
+  description: string | null
   category: Category
   key?: string
-  sats_priority?: Maybe<Priority>
+  priority?: Maybe<Priority>
 }
 
 export type WarningSignDef<Priority extends 'Urgent' | 'Very urgent' | 'Emergency'> = SignShared<Priority> & {
   key: WarningSignKey
-  sats_priority: Priority
+  priority: Priority
   excluding_s_expression?: string
   prompt_when_s_expression?: string
 }
