@@ -152,7 +152,10 @@
   adult
   (clinical_finding (snomed_concept "Fatigue" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+		(clinical_finding ( snomed_concept “Weakness of face muscles” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+		(clinical_finding ( snomed_concept “Muscle weakness of upper limb” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+		(clinical_finding ( snomed_concept “Weakness of muscle of lower 	limb” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+   (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
     (clinical_finding (snomed_concept "Difficulty talking" "finding"))
     (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
     (clinical_finding (snomed_concept "Chest pain" "finding"))
