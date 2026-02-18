@@ -220,9 +220,12 @@
     (clinical_finding (snomed_concept "Leg swelling symptom" "finding"))
     (clinical_finding (snomed_concept "Injury of head" "disorder"))
     (clinical_finding (snomed_concept "Unable to stand" "finding"))
-    (clinical_finding (snomed_concept "Nausea and vomiting" "disorder"))
-    (clinical_finding (snomed_concept "Abnormal ocular motility" "finding"))
-  )
+(clinical_finding (snomed_concept “Dizziness (finding) New (qualifier value) Sudden (qualifier value)Severe (severity modifier) (qualifier value)
+(clinical_finding (snomed_concept “Nausea (finding)
+(clinical_finding (snomed_concept “Vomiting (disorder)
+(clinical_finding (snomed_concept “Disorder of eye movements (disorder)
+(clinical_finding (snomed_concept “Abnormal gait (finding)
+
 )
 ;; Page 30 - Headache
 (task
