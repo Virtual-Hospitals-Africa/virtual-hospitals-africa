@@ -232,6 +232,11 @@
   (check_for
     (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
     (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+		(clinical_finding (snomed_concept “Headache” (finding) Sudden (qualifier value)Severe (severity modifier)
+		(clinical_finding (snomed_concept “Dizziness” (finding) Sudden (qualifier value)Severe (severity modifier)
+		(clinical_finding (snomed_concept “Frequent headache” (finding) Worse (qualifier value) 
+		(clinical_finding (snomed_concept “Headache” (finding) Wakes up during night (finding)
+		(clinical_finding (snomed_concept “Headache” (finding) Worse (qualifier value) Morning (qualifier value)
     (clinical_finding (snomed_concept "Difficulty talking" "finding"))
     (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
     (clinical_finding (snomed_concept "Pain in eye" "finding"))
