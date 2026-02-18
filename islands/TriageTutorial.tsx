@@ -32,6 +32,7 @@ import {
   VitalsStep,
   WarningSignsStep,
 } from './tutorial/steps/index.ts'
+import { RotateWarning } from '../components/RotateWarning.tsx'
 
 const TUTORIAL_NAV_LINKS = WORKFLOW_NAV_LINKS.triage.map((link) => ({
   ...link,
@@ -84,6 +85,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
 
   return (
     <>
+      <RotateWarning />
       <OpenEncounterWorkflowLayout
         id='triage'
         url={url}
