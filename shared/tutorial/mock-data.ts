@@ -1463,7 +1463,7 @@ export function getTutorialRoutePatientData() {
 
 export const EMPTY_PATIENT_HISTORY = {
   pre_existing_conditions: [],
-  allergies: [],
+  allergies: TUTORIAL_BRIEF_HISTORY_ALLERGIES,
   family_history: [],
   major_surgeries: [],
   medications: [],
