@@ -214,7 +214,7 @@ export function getWorkflowStatus(
 export async function workflowHandler(
   ctx: OpenEncounterContext,
 ) {
-  const { trx, encounter, encounter_employee_presence } = ctx.state
+  const { trx, encounter, encounter_employee_presence, health_worker_id } = ctx.state
   const { workflow, step } = workflowStepFromUrl(ctx)
 
   const workflow_status = getWorkflowStatus(ctx, workflow)
@@ -247,8 +247,9 @@ export async function workflowHandler(
       },
     }),
     patient_history: patient_history.get(trx, {
-      patient_encounter_id,
-      patient_encounter_employee_id: encounter_employee_presence.patient_encounter_employee_id,
+      encounter,
+      health_worker_id,
+      patient_id: encounter.patient.id,
     }),
     previously_completed_procedures: patient_procedures.previouslyCompleted(
       trx,

@@ -227,7 +227,7 @@ export default function WarningSigns({
           do_not_render_built_in_options
         />
         <SelectedChips
-          id='warning-findings-selected-chips'
+          id='warning-signs-selected-chips'
           items={selected_signs.value}
           onUncheck={onUncheck}
         />

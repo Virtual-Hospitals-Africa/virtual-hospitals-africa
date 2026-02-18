@@ -37,7 +37,7 @@ export function jsonSearchHandler<
       const search_terms: any = typeof default_search_terms === 'function'
         // deno-lint-ignore no-explicit-any
         ? default_search_terms(ctx as any)
-        : default_search_terms
+        : default_search_terms || {}
 
       ctx.url.searchParams.forEach((value, key) => {
         if (key in search_terms && typeof default_search_terms === 'function') {

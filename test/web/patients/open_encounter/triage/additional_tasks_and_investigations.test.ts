@@ -615,9 +615,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table = getTableDisplay($assign_priority)
       assertMatches(table[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Priority: UrgentSudden onset Itching → Evidence ofDifficulty breathing → Evidence of$/,
-        ),
+        Finding: 'Probable diagnosis',
         'Reference Range': '',
         'Priority / Score': 'Urgent',
       }, { strict: true })
@@ -756,9 +754,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table = getTableDisplay($assign_priority)
       assertMatches(table[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Improbable diagnosisAnaphylaxis Diagnosis: Improbable diagnosisEvaluated by:System/,
-        ),
+        Finding: 'Improbable diagnosis',
         'Reference Range': '',
         'Priority / Score': '',
       }, { strict: true })
@@ -838,9 +834,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table_1 = getTableDisplay($after_first_post)
       assertMatches(table_1[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Improbable diagnosisAnaphylaxis Diagnosis: Improbable diagnosisEvaluated by:System/,
-        ),
+        Finding: 'Improbable diagnosis',
         'Reference Range': '',
         'Priority / Score': '',
       }, { strict: true })
@@ -874,9 +868,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const table_2 = getTableDisplay($after_second_post)
       assertMatches(table_2[0], {
         Assessment: 'Anaphylaxis Diagnosis',
-        Finding: z.string().regex(
-          /^Probable diagnosisAnaphylaxis Diagnosis: Probable diagnosisEvaluated by:Systemat \d+:\d+ (AM|PM)Priority: UrgentSudden onset Itching → Evidence ofDifficulty breathing → Evidence of$/,
-        ),
+        Finding: 'Probable diagnosis',
         'Reference Range': '',
         'Priority / Score': 'Urgent',
       }, { strict: true })

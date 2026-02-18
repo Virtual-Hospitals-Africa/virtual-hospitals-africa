@@ -148,11 +148,13 @@ describeParallel('snomed-warning-signs', () => {
           {
             method: 'POST',
             body: asFormData({
-              diabetes: {
-                existence: 'No',
-              },
-              pregnancy: {
-                existence: 'Yes',
+              common_conditions: {
+                diabetes: {
+                  existence: 'No',
+                },
+                pregnancy: {
+                  existence: 'Yes',
+                },
               },
             }),
           },

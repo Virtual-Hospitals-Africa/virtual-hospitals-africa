@@ -166,7 +166,7 @@ export default function Search<
   // while if the provided name is something like patient, we form the id field to be patient_id
   const is_array_or_record_item = isArrayOrUUIDRecordItem(name)
 
-  const search_field = multi ? `${name}.search` : just_name ? name : name && (is_array_or_record_item ? `${name}.name` : `${name}_name`)
+  const search_field = multi ? undefined : just_name ? name : name && (is_array_or_record_item ? `${name}.name` : `${name}_name`)
 
   const id_field = just_name ? undefined : name &&
     (is_array_or_record_item ? `${name}.id` : `${name}_id`)

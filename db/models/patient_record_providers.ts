@@ -1,12 +1,13 @@
 import { assert } from 'std/assert/assert.ts'
 import { IdSelection, RenderedPatientEncounter, RenderedRecordProvider, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { groupByUniq } from '../../util/groupBy.ts'
-import uniq from '../../util/uniq.ts'
-import { patient_encounters } from './patient_encounters.ts'
 import { patient_findings } from './patient_findings.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { patient_procedures } from './patient_procedures.ts'
 import { SearchResult } from './_base.ts'
+import { patient_encounter_employees } from './patient_encounter_employees.ts'
+import compact from '../../util/compact.ts'
+import { collapse } from '../helpers.ts'
+import { groupByUniq } from '../../util/groupBy.ts'
 
 async function hydrateIntermediateRecords<
   IntermediateRecord extends SearchResult<typeof patient_findings>,
@@ -42,7 +43,7 @@ async function hydrateIntermediateRecords<
 >
 
 /**
- * Adds provider and value display, which aren't populated on initial selection from the DB.
+ * Adds provider, which aren't populated on initial selection from the DB.
  * Fetches the corresponding encounters to do so, which can be skipped if the caller provides
  * an encounter and all the findings are from that encounter.
  */
@@ -63,37 +64,11 @@ async function hydrateIntermediateRecords<
     }
   >
 > {
-  const encounter_id_to_encounter = await getReferencedEncounters()
+  const all_employees = await getAllReferencedEmployees(trx, { encounter, records })
   return records.map(hydrate)
 
-  async function getReferencedEncounters(): Promise<
-    Map<string, RenderedPatientEncounter>
-  > {
-    const encounter_ids = uniq(
-      records.map((record) => record.patient_encounter_id),
-    )
-
-    const other_encounter_ids = encounter_ids.filter((encounter_id) => encounter ? encounter_id !== encounter.patient_encounter_id : true)
-
-    const encounters: RenderedPatientEncounter[] = other_encounter_ids.length ? await patient_encounters.getByIds(trx, other_encounter_ids) : []
-
-    if (encounter) {
-      encounters.push(encounter)
-    }
-
-    return groupByUniq(encounters, 'patient_encounter_id')
-  }
-
   function hydrate(record: IntermediateRecord) {
-    const matching_encounter = encounter_id_to_encounter.get(
-      record.patient_encounter_id,
-    )
-    assert(
-      matching_encounter,
-      `Matching encounter not found ${record.patient_encounter_id} ${record.id}`,
-    )
-
-    const matching_employee = matching_encounter.all_employees_seen.find((
+    const matching_employee = all_employees.find((
       employee,
     ) =>
       record.type === 'finding'
@@ -116,6 +91,71 @@ async function hydrateIntermediateRecords<
     }
   }
 }
+
+type AnyIntermediateRecord = SearchResult<typeof patient_findings> | SearchResult<typeof patient_evaluations> | SearchResult<typeof patient_procedures>
+
+type ReferencedEmployeeQuery = [{
+  records: AnyIntermediateRecord[]
+  encounter?: RenderedPatientEncounter
+}]
+
+const getAllReferencedEmployees = collapse(
+  async function getAllReferencedEmployees(
+    trx: TrxOrDbOrQueryCreator,
+    queries: ReferencedEmployeeQuery[],
+  ) {
+    const to_look_for = {
+      employee_ids: [] as string[],
+      employees: [] as { patient_encounter_id: string; employment_id: string }[],
+    }
+
+    const encounters_we_already_have = groupByUniq(compact(queries.map(([q]) => q.encounter)), 'patient_encounter_id', { allow_multiple: true })
+
+    for (const [{ records }] of queries) {
+      for (const record of records) {
+        if (encounters_we_already_have.has(record.patient_encounter_id)) continue
+
+        if (record.type === 'finding') {
+          to_look_for.employee_ids.push(record.patient_encounter_employee_id)
+          continue
+        }
+        if (record.employment_id) {
+          to_look_for.employees.push({
+            patient_encounter_id: record.patient_encounter_id,
+            employment_id: record.employment_id,
+          })
+        }
+      }
+    }
+
+    const employees_from_other_encounters = to_look_for.employee_ids.length || to_look_for.employees.length
+      ? await patient_encounter_employees.baseQuery(trx, {})
+        .where((eb) =>
+          eb.or(compact([
+            to_look_for.employee_ids.length && eb('patient_encounter_employees.id', 'in', to_look_for.employee_ids),
+            ...to_look_for.employees.map(({ patient_encounter_id, employment_id }) =>
+              eb.and([
+                eb('patient_encounter_id', '=', patient_encounter_id),
+                eb('employment_id', '=', employment_id),
+              ])
+            ),
+          ]))
+        )
+        .execute()
+      : []
+
+    return [
+      ...queries.flatMap(([{ encounter }]) => encounter?.all_employees_seen || []),
+      ...employees_from_other_encounters,
+    ]
+  },
+  (employee, params) =>
+    params[0].records.some((record) =>
+      record.type === 'finding'
+        ? employee.patient_encounter_employee_id === record.patient_encounter_employee_id
+        : employee.employee_id === record.employment_id
+    ),
+)
 
 export const patient_record_providers = {
   hydrateIntermediateRecords,

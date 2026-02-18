@@ -26,7 +26,7 @@ export default function PatientDrawerV4({
         this_visit_findings={this_visit_findings}
         organization_id={organization_id}
       />
-      <DrawerHistory history={patient_history} />
+      <DrawerHistory organization_id={organization_id} history={patient_history} />
       <DrawerCareTeam care_team={care_team} organization_id={organization_id} patient_id={patient.id} />
     </div>
   )

@@ -507,14 +507,16 @@ describeParallel('triage/brief_history', () => {
           $brief_history_after_returning_encounter_start,
         )
         assertEquals(form_values, {
-          'cancer': {
-            'existence': 'Yes',
-          },
-          'diabetes': {
-            'existence': 'No',
-          },
-          'pregnancy': {
-            'existence': 'No',
+          common_conditions: {
+            'cancer': {
+              'existence': 'Yes',
+            },
+            'diabetes': {
+              'existence': 'No',
+            },
+            'pregnancy': {
+              'existence': 'No',
+            },
           },
         })
 
@@ -546,167 +548,17 @@ describeParallel('triage/brief_history', () => {
         )
 
         assertMatches(most_recent_finding, {
-          'tag': 'span',
+          'tag': 'div',
           'children': [
             {
               'tag': 'span',
               'children': [
-                {
-                  'tag': 'a',
-                  'text': 'Self reported Malignant neoplastic disease Status: Yes',
-                },
-                {
-                  'tag': 'span',
-                  'text': z.string().regex(/^recorded at \d{1,2}:\d{2}/),
-                },
-              ],
-            },
-            {
-              'tag': 'div',
-              'children': [
-                {
-                  'tag': 'div',
-                  'children': [
-                    {
-                      'tag': 'div',
-                      'children': [
-                        {
-                          'tag': 'div',
-                          'children': [
-                            {
-                              'tag': 'div',
-                              'children': [
-                                {
-                                  'tag': 'h3',
-                                  'text': 'Self reported Malignant neoplastic disease Status: Yes',
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          'tag': 'div',
-                          'children': [
-                            {
-                              'tag': 'div',
-                              'children': [
-                                {
-                                  'tag': 'p',
-                                  'text': 'Recorded by:',
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'text': encounter.employee.name,
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'div',
-                                      'children': [
-                                        {
-                                          'tag': 'svg',
-                                          'children': [
-                                            {
-                                              'tag': 'path',
-                                            },
-                                            {
-                                              'tag': 'path',
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'text': 'during History taking, limited',
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'text': `at ${returning.encounter.organization.name}`,
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'div',
-                                  'children': [
-                                    {
-                                      'tag': 'svg',
-                                      'children': [
-                                        {
-                                          'tag': 'path',
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      'tag': 'p',
-                                      'children': [
-                                        {
-                                          'tag': 'span',
-                                          'text': z.string().regex(
-                                            /^at \d{1,2}:\d{2}/,
-                                          ),
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                                {
-                                  'tag': 'a',
-                                  'children': [
-                                    {
-                                      'tag': 'span',
-                                      'children': [
-                                        {
-                                          'tag': 'svg',
-                                          'children': [
-                                            {
-                                              'tag': 'path',
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
+                { 'tag': 'button', 'text': 'Self reported Malignant neoplastic disease Status: Yes' },
+                { 'tag': 'span', 'text': z.string().regex(/^recorded at \d{1,2}:\d{2}/) },
               ],
             },
           ],
-        })
+        }, { strict: true })
       },
     )
   })

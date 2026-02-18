@@ -34,6 +34,7 @@ import z from 'zod'
 import sumBy from '../../../../../util/sumBy.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
+import { MEASUREMENT_FINDING } from '../../../../../shared/snomed_concepts.ts'
 
 describeParallel('triage/measure_vitals', () => {
   before(waitUntilTestServerUp)
@@ -568,7 +569,7 @@ describeParallel('triage/measure_vitals', () => {
           {
             patient_id: encounter.patient.id,
             s_expression: `
-              (and (measurement)
+              (and (finding ${MEASUREMENT_FINDING.s_expression})
                    (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.s_expression} ${VITAL_MEASUREMENTS_UNITS.height}))
                    (not (measurement ${VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.s_expression} ${VITAL_MEASUREMENTS_UNITS.weight})))
             `,

@@ -29,7 +29,6 @@ import {
 import isString from '../../util/isString.ts'
 
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
-
 export type PatientFindingsSearch = PatientRecordsSearch & {
   procedure_id?: string | IdSelection
   s_expression?: string | Lang['finding']

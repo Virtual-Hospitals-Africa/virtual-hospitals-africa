@@ -210,29 +210,6 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
                   'patient_encounter_employees.id as patient_encounter_employee_id',
                 ),
             ).as('present_with_patient_encounter_employee_ids'),
-            jsonArrayFrom(
-              eb_patient_presence.selectFrom('employment_presence')
-                .innerJoin(
-                  'patient_encounter_employees',
-                  'employment_presence.id',
-                  'patient_encounter_employees.employment_id',
-                )
-                .whereRef(
-                  'employment_presence.with_patient_id',
-                  '=',
-                  'patient_presence.id',
-                )
-                .whereRef(
-                  'patient_encounter_employees.patient_encounter_id',
-                  '=',
-                  'patient_encounters.id',
-                )
-                .where('employment_presence.with_patient_id', 'is not', null)
-                .select([
-                  'patient_encounter_employees.id as patient_encounter_employee_id',
-                  'patient_encounter_employees.employment_id',
-                ]),
-            ).as('xyz'),
             jsonObjectFrom(
               eb_patient_presence.selectFrom('organization_rooms as room')
                 .whereRef(
@@ -293,12 +270,9 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
           ]),
       ).as('workflows'),
       jsonArrayFrom(
-        patient_encounter_employees.baseQuery(trx, {})
-          .where(
-            'patient_encounter_employees.patient_encounter_id',
-            '=',
-            eb_encounters.ref('patient_encounters.id'),
-          ),
+        patient_encounter_employees.baseQuery(trx, {
+          patient_encounter_id: eb_encounters.ref('patient_encounters.id'),
+        }),
       ).as('all_employees_seen'),
     ])
     .$if(!!opts.is_open, (qb) => qb.where('patient_encounters.closed_at', 'is', null))

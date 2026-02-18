@@ -1,13 +1,13 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { recordChipClassName } from '../components/drawer-v4/recordChipClassName.ts'
 import { RecordPanel } from '../components/library/RecordPanel.tsx'
-import { RenderedFindingRelativeToHealthWorker } from '../types.ts'
+import { RenderedRecordRelativeToHealthWorker } from '../types.ts'
 
 export function RecordChipWithPopover({
   record,
   organization_id,
 }: {
-  record: RenderedFindingRelativeToHealthWorker
+  record: RenderedRecordRelativeToHealthWorker
   organization_id: string
 }) {
   return (
