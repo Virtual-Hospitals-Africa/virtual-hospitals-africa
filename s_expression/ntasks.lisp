@@ -240,13 +240,13 @@
     (clinical_finding (snomed_concept "Drowsy" "finding"))
     (clinical_finding (snomed_concept "Confusional state" "disorder"))
     (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
-    (clinical_finding (snomed_concept "Nausea and vomiting" "disorder"))
-    (clinical_finding (snomed_concept "Injury of head" "disorder"))
+    (clinical_finding (snomed_concept “Persistent vomiting” (disorder)
+		(clinical_finding (snomed_concept “Chronic headache disorder” (disorder) Medication commenced (situation) Highly active antiretroviral therapy (procedure)
+    (clinical_finding (snomed_concept "Injury of head" "disorder"))Recent (qualifier value)
     (clinical_finding (snomed_concept "Anisocoria" "disorder"))
     (clinical_finding (snomed_concept "Morning headache" "finding"))
     (clinical_finding (snomed_concept "Frequent headache" "finding"))
-  )
-)
+		
 ;; Page 31 - Eye/Vision Symptoms
 (task
   "Check for urgent eye conditions"
