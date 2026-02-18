@@ -1,5 +1,5 @@
 import { SnomedCategory } from '../../../db.d.ts'
-import { FULLY_SPECIFIED_NAME_TYPE_ID } from '../../../shared/snomed.ts'
+import { FULLY_SPECIFIED_NAME } from '../../../shared/snomed_concepts.ts'
 
 import { define } from '../define.ts'
 import { sql } from 'kysely'
@@ -27,7 +27,7 @@ export default define(
           .where(
             'snomed_description.type_id',
             '=',
-            FULLY_SPECIFIED_NAME_TYPE_ID,
+            FULLY_SPECIFIED_NAME.id,
           )
           .where('snomed_description.active', '=', true)
           .where('snomed_concept.active', '=', true)

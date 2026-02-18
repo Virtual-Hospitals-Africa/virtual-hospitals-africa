@@ -66,7 +66,7 @@ function getPriorityOfSnomedConcept<
     buildSignPredicate(first_sign),
   )
     .then(jsonBuildObject({
-      name: literalString(first_sign.sats_priority),
+      name: literalString(first_sign.priority),
       warning_sign: literalString(first_sign.key),
     }))
 
@@ -76,7 +76,7 @@ function getPriorityOfSnomedConcept<
         buildSignPredicate(sign),
       )
       .then(jsonBuildObject({
-        name: literalString(sign.sats_priority),
+        name: literalString(sign.priority),
         warning_sign: literalString(sign.key),
       }))
   }
@@ -148,10 +148,10 @@ export const snomed_model = base({
     return {
       clinical_finding_s_expression,
       snomed_concept_id: result.id,
-      primary_name: result.name,
-      secondary_text: result.category,
-      sats_priority: result.priority?.name,
-      sats_priority_by_virtue_of_matching_warning_sign: result.priority
+      name: result.name,
+      description: result.category,
+      priority: result.priority?.name,
+      priority_by_virtue_of_matching_warning_sign: result.priority
         ?.warning_sign,
       similarity: result.best_similarity,
       category: 'Search Results' as const,

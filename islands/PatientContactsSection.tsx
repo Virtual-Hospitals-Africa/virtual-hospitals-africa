@@ -9,7 +9,7 @@ import { OptionLike } from './Search.tsx'
 
 type AddressSuggestion = OptionLike & {
   main_text: string
-  secondary_text: string
+  description: string
 }
 
 export default function PatientContactInformationSection(
@@ -48,7 +48,7 @@ export default function PatientContactInformationSection(
               id: address?.google_maps_place_id,
               name: address?.formatted,
               main_text: address?.formatted,
-              secondary_text: address?.formatted,
+              description: address?.formatted,
             }
             : undefined}
           Option={({ option, active }) => (
@@ -57,7 +57,7 @@ export default function PatientContactInformationSection(
                 {option.main_text}
               </div>
               <div class='text-sm text-gray-500'>
-                {option.secondary_text}
+                {option.description}
               </div>
             </div>
           )}

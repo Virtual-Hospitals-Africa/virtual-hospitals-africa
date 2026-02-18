@@ -1,8 +1,8 @@
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label } from '@headlessui/react'
+import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label } from '@headlessui/react'
 import { JSX } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
-import { CheckIcon, ChevronUpDownIcon } from '../components/library/icons/heroicons/outline.tsx'
+import { CheckIcon, ChevronUpDownIcon, MagnifyingGlassIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { JsonSerializable, Maybe } from '../types.ts'
 import cls from '../util/cls.ts'
 import isObjectLike from '../util/isObjectLike.ts'
@@ -10,11 +10,11 @@ import last from '../util/last.ts'
 import { isUUID } from '../util/uuid.ts'
 import { BaseOption } from './BaseOption.tsx'
 import { Signal, useSignal } from '@preact/signals'
-import RemovableChip from '../components/RemovableChip.tsx'
 import remove from '../util/remove.ts'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
 import isString from '../util/isString.ts'
 import { LabelSpan } from './form/inputs/labelled.tsx'
+import { SelectedChip } from './SelectedRecordChip.tsx'
 
 function hasId(value: unknown): value is { id: string } {
   return isObjectLike(value) && !!value.id && isString(value.id)
@@ -34,6 +34,7 @@ export type SearchPropsCommon<
   required?: boolean
   label?: Maybe<string>
   just_name?: boolean
+  is_async?: boolean
   addable?:
     | boolean
     | {
@@ -110,6 +111,7 @@ export default function Search<
   signal,
   multi,
   just_name,
+  is_async,
   addable,
   disabled,
   readonly,
@@ -212,6 +214,8 @@ export default function Search<
             (value === selected_option) ||
             (!!value.id && value.id === selected_option.id),
         )
+        setQuery('')
+        onQuery('')
         if (already_selected) return
         selected_multi.value = [...selected_multi.value, value]
       }}
@@ -233,10 +237,10 @@ export default function Search<
                 )}
               >
                 {selected_multi?.value.map((selected) => (
-                  <RemovableChip
+                  <SelectedChip
                     key={selected.id}
-                    display={(selected.display_name || selected.name)!}
-                    remove={() => {
+                    item={selected}
+                    onUncheck={() => {
                       selected_multi.value = remove(
                         selected_multi.value,
                         selected,
@@ -306,15 +310,24 @@ export default function Search<
                 placeholder={placeholder}
               />
             )}
-          <Combobox.Button
+          <ComboboxButton
             ref={button_ref}
             className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'
           >
-            <ChevronUpDownIcon
-              className='w-5 h-5 text-gray-400'
-              aria-hidden='true'
-            />
-          </Combobox.Button>
+            {is_async
+              ? (
+                <MagnifyingGlassIcon
+                  className='w-5 h-5 text-gray-400'
+                  aria-hidden='true'
+                />
+              )
+              : (
+                <ChevronUpDownIcon
+                  className='w-5 h-5 text-gray-400'
+                  aria-hidden='true'
+                />
+              )}
+          </ComboboxButton>
 
           {!do_not_render_built_in_options && !(skip_blank_search && !query) &&
             (

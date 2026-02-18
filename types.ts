@@ -2629,16 +2629,16 @@ export type MostRecentBriefHistoryFindings = {
 
 type SignShared<Category> = {
   clinical_finding_s_expression: string
-  primary_name: string
-  secondary_text: string | null
+  name: string
+  description: string | null
   category: Category
   key?: string
-  sats_priority?: Maybe<Priority>
+  priority?: Maybe<Priority>
 }
 
 export type WarningSignDef<Priority extends 'Urgent' | 'Very urgent' | 'Emergency'> = SignShared<Priority> & {
   key: WarningSignKey
-  sats_priority: Priority
+  priority: Priority
   excluding_s_expression?: string
   prompt_when_s_expression?: string
 }

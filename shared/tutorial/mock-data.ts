@@ -61,12 +61,12 @@ export const TUTORIAL_PATIENT: RenderedPatientCompletedRegistration = {
  * Mock employee (health worker) for tutorial
  */
 export const TUTORIAL_EMPLOYEE: RenderedEmployee = {
-  name: 'Tutorial Nurse',
-  first_names: 'Tutorial',
-  surname: 'Nurse',
-  preferred_name: 'Tutorial',
+  name: 'Thandiwe Gumede',
+  first_names: 'Thandiwe',
+  surname: 'Gumede',
+  preferred_name: 'Thandiwe',
   email: 'tutorial@virtualhospitals.africa',
-  avatar_url: null,
+  avatar_url: '/images/avatars/random/female/6.png',
   phone_number: null,
   id: 'tutorial-hw-001',
   demographics: {
@@ -83,7 +83,7 @@ export const TUTORIAL_EMPLOYEE: RenderedEmployee = {
     {
       id: 'tutorial-org-001',
       name: 'Tutorial Clinic',
-      country: 'ZM',
+      country: 'ZA',
       category: 'clinic',
       ownership: null,
       location: null,
@@ -125,9 +125,79 @@ export const TUTORIAL_EMPLOYEE: RenderedEmployee = {
   href: '/tutorial',
 }
 
-const MOCK_PROVIDER = {
+export const TUTORIAL_OTHER_EMPLOYEE: RenderedEmployee = {
+  name: 'Sipho Makhanya',
+  first_names: 'Sipho',
+  surname: 'Makhanya',
+  preferred_name: 'Sipho',
+  email: 'tutorial@virtualhospitals.africa',
+  avatar_url: '/images/avatars/random/male/6.png',
+  phone_number: null,
+  id: 'tutorial-hw-001',
+  demographics: {
+    sex: null,
+    gender: null,
+    date_of_birth: null,
+  },
+  contact_details: {
+    mobile_phone_number: null,
+    address: null,
+  },
+  ever_licensed_as_doctor: 0,
+  organizations: [
+    {
+      id: 'tutorial-org-001',
+      name: 'Tutorial Clinic',
+      country: 'ZA',
+      category: 'clinic',
+      ownership: null,
+      location: null,
+      is_test: true,
+      inactive_reason: null,
+      formatted_address: null,
+      most_common_language_code: 'eng',
+      waiting_room_id: null,
+      reception_id: null,
+      employment_id: 'tutorial-emp-001',
+      role: 'nurse',
+      is_admin: false,
+      in_departments: [],
+      active_licences: [{
+        licence_number: 'NMC-2024-001',
+        regulatory_agency: {
+          name: 'South African Nursing Council',
+          acronym: 'SANC',
+          country: 'ZA',
+        },
+        profession: 'Nurse',
+        specialty: 'Primary Care',
+        subspecialty: null,
+        start_date: '2024-01-01',
+        expiry_date: '2027-01-01',
+        status: 'active',
+        revoked: null,
+      }],
+      hrefs: {
+        regulator_view: '/tutorial',
+        health_worker_view: '/tutorial',
+      },
+    },
+  ],
+  organization_id: 'tutorial-org-001',
+  employee_id: 'tutorial-emp-001',
+  role: 'nurse',
+  is_admin: false,
+  href: '/tutorial',
+}
+
+const MOCK_PROVIDER_IS_ME = {
   ...TUTORIAL_EMPLOYEE,
   is_me: 1 as const,
+}
+
+const MOCK_PROVIDER_OTHER = {
+  ...TUTORIAL_OTHER_EMPLOYEE,
+  is_me: 0 as const,
 }
 
 // =============================================================================
@@ -138,7 +208,7 @@ const MOCK_PROVIDER = {
  * Warning signs for tutorial - includes "Cough" which triggers SpO2 requirement
  */
 export const TUTORIAL_WARNING_SIGNS: WarningSignWithMaybeRecord[] = [
-  ...WARNING_SIGNS.filter((sign) => !sign.primary_name.includes('Pregnancy')),
+  ...WARNING_SIGNS.filter((sign) => !sign.name.includes('Pregnancy')),
   ...COMMON_SYMPTOMS,
 ]
 
@@ -179,7 +249,7 @@ function makeBriefHistoryFinding(
     priority: null,
     score: null,
     existence,
-    provider: MOCK_PROVIDER,
+    provider: MOCK_PROVIDER_OTHER,
     as_part_of_procedure: {
       id: 'tutorial-brief-history-procedure',
       root_snomed_concept_id: '225390008',
@@ -200,10 +270,10 @@ function makeBriefHistoryFinding(
  * - No diabetes
  * - Not pregnant
  */
-export const TUTORIAL_BRIEF_HISTORY: MostRecentBriefHistoryFindings = {
+export const TUTORIAL_BRIEF_HISTORY_COMMON_CONDITIONS: MostRecentBriefHistoryFindings = {
   pregnancy: makeBriefHistoryFinding('pregnancy', 'No'),
   diabetes: makeBriefHistoryFinding('diabetes', 'No'),
-  asthma: makeBriefHistoryFinding('asthma', 'Yes'), // Relevant to cough
+  asthma: makeBriefHistoryFinding('asthma', 'No'),
   tuberculosis: undefined,
   hiv: undefined,
   copd: undefined,
@@ -214,6 +284,45 @@ export const TUTORIAL_BRIEF_HISTORY: MostRecentBriefHistoryFindings = {
   arthritis: undefined,
   cancer: undefined,
 }
+
+export const TUTORIAL_BRIEF_HISTORY_ALLERGIES: RenderedFindingRelativeToHealthWorker[] = [
+  {
+    id: '991a6ffe-7827-4ba0-9a43-626a9c5e902e',
+    created_at: '2026-02-18T01:04:56.114Z',
+    patient_encounter_id: '6331adcd-44f9-453f-b718-f80c738ef1d0',
+    root_snomed_concept_id: '404684003',
+    root_snomed_concept_name: 'Clinical finding',
+    root_snomed_concept_category: 'finding',
+    specific_snomed_concept_id: '91935009',
+    specific_snomed_concept_name: 'Allergy to peanut',
+    specific_snomed_concept_category: 'finding',
+    existence: 'Yes',
+    value: null,
+    evaluations: [],
+    priority: null,
+    destination_relations: [],
+    type: 'finding',
+    as_part_of_procedure: {
+      id: '5188e75d-a10e-48cb-8c9e-f51b23ba4f13',
+      root_snomed_concept_id: '71388002',
+      root_snomed_concept_name: 'Procedure',
+      root_snomed_concept_category: 'procedure',
+      specific_snomed_concept_id: '203421005',
+      specific_snomed_concept_name: 'History taking, limited',
+      specific_snomed_concept_category: 'procedure',
+      workflow_step_name: 'brief_history',
+    },
+    score: null,
+    attributes: [],
+    displays: {
+      value: null,
+      finding: 'Allergy to peanut',
+      full: 'Allergy to peanut',
+    },
+    modifiers: [],
+    provider: MOCK_PROVIDER_OTHER,
+  },
+]
 
 // =============================================================================
 // VITALS - Height, Weight, and Measurements
@@ -246,7 +355,7 @@ const TUTORIAL_HEIGHT: RenderedFindingRelativeToHealthWorker = {
   priority: null,
   score: null,
   existence: 'Yes',
-  provider: MOCK_PROVIDER,
+  provider: MOCK_PROVIDER_IS_ME,
   as_part_of_procedure: {
     id: 'tutorial-height-weight-procedure',
     root_snomed_concept_id: '225390008',
@@ -286,7 +395,7 @@ const TUTORIAL_WEIGHT: RenderedFindingRelativeToHealthWorker = {
   priority: null,
   score: null,
   existence: 'Yes',
-  provider: MOCK_PROVIDER,
+  provider: MOCK_PROVIDER_IS_ME,
   as_part_of_procedure: {
     id: 'tutorial-height-weight-procedure',
     root_snomed_concept_id: '225390008',
@@ -337,7 +446,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     priority: null,
     score: 3,
     existence: 'Yes',
-    provider: MOCK_PROVIDER,
+    provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
       id: 'tutorial-vitals-procedure',
       root_snomed_concept_id: '225390008',
@@ -374,7 +483,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     priority: null,
     score: 0,
     existence: 'Yes',
-    provider: MOCK_PROVIDER,
+    provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
       id: 'tutorial-vitals-procedure',
       root_snomed_concept_id: '225390008',
@@ -411,7 +520,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     priority: null,
     score: 0,
     existence: 'Yes',
-    provider: MOCK_PROVIDER,
+    provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
       id: 'tutorial-vitals-procedure',
       root_snomed_concept_id: '225390008',
@@ -448,7 +557,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     priority: null,
     score: 2,
     existence: 'Yes',
-    provider: MOCK_PROVIDER,
+    provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
       id: 'tutorial-vitals-procedure',
       root_snomed_concept_id: '225390008',
@@ -485,7 +594,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     priority: null,
     score: null,
     existence: 'Yes',
-    provider: MOCK_PROVIDER,
+    provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
       id: 'tutorial-vitals-procedure',
       root_snomed_concept_id: '225390008',
@@ -632,7 +741,7 @@ function makeCheckForTask(condition: typeof RESPIRATORY_CHECK_FOR_CONDITIONS[num
       priority: null,
       score: null,
       existence: 'No' as Existence,
-      provider: MOCK_PROVIDER,
+      provider: MOCK_PROVIDER_IS_ME,
       as_part_of_procedure: {
         id: 'tutorial-check-procedure',
         root_snomed_concept_id: '386053000',
@@ -722,7 +831,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: 0,
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -775,7 +884,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: 0,
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -828,7 +937,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: 0,
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -870,7 +979,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: 3, // >30 bpm = 3 points
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -918,7 +1027,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: 0, // 51-101 = 0 points
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -967,7 +1076,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: 0, // 101-200 = 0 points
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -1015,7 +1124,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: 2, // >38.5 = 2 points
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -1062,7 +1171,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: null,
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -1108,7 +1217,7 @@ export function getTutorialAssignPriorityData(): {
         priority: null,
         score: null,
         existence: 'Yes',
-        provider: MOCK_PROVIDER,
+        provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
           id: 'tutorial-vitals-procedure',
           root_snomed_concept_id: '225390008',
@@ -1174,7 +1283,7 @@ function makeCoughFinding(): RenderedFindingRelativeToHealthWorker {
     priority: null,
     score: null,
     existence: 'Yes',
-    provider: MOCK_PROVIDER,
+    provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
       id: 'tutorial-triage-001',
       root_snomed_concept_id: '225390008',
@@ -1192,7 +1301,7 @@ function makeCoughFinding(): RenderedFindingRelativeToHealthWorker {
  * Convert brief history findings to sidebar records.
  */
 function makeBriefHistoryRecords(): RenderedFindingRelativeToHealthWorker[] {
-  return Object.values(TUTORIAL_BRIEF_HISTORY).filter(
+  return Object.values(TUTORIAL_BRIEF_HISTORY_COMMON_CONDITIONS).filter(
     (f): f is RenderedBriefHistoryRelativeToHealthWorker => f !== undefined,
   )
 }

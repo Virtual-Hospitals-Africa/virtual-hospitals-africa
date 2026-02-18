@@ -7,7 +7,7 @@ export function BaseOption<
     id?: string
     name?: Maybe<string>
     display_name?: Maybe<string>
-    description?: Maybe<string>
+    description?: Maybe<string> | Maybe<Array<string>>
     avatar_url?: Maybe<string>
   },
 >({
@@ -51,8 +51,8 @@ export function BaseOption<
           {name}
         </div>
         {option.description && (
-          <div className={cls('text-xs capitalize', selected && 'font-bold')}>
-            {description}
+          <div className={cls('text-xs', selected && 'font-bold')}>
+            {Array.isArray(description) ? description.join(', ') : description}
           </div>
         )}
       </div>

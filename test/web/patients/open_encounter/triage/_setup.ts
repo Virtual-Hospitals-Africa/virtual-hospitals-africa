@@ -69,7 +69,7 @@ export function asWarningSigns(
 
       const field: z.input<typeof TriageWarningSignSchema> = {
         warning_sign_key: sign.key,
-        priority_level: sign.sats_priority,
+        priority_level: sign.priority,
         s_expression: sign.clinical_finding_s_expression,
       }
       if (sign_keys.includes(sign.key)) {

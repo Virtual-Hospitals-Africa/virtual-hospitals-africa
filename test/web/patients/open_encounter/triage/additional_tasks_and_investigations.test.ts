@@ -39,8 +39,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
       patient_demographics: { date_of_birth: '2001-01-01' },
       brief_history: {
-        diabetes: { existence: 'No' },
-        pregnancy: { existence: 'No' },
+        common_conditions: {
+          diabetes: { existence: 'No' },
+          pregnancy: { existence: 'No' },
+        },
       },
       warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
       height_and_weight: {
@@ -307,11 +309,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
       })
@@ -341,11 +341,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr, allergy_to_fish_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
       })
@@ -377,11 +375,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -495,11 +491,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -638,11 +632,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -781,11 +773,9 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
-          diabetes: {
-            existence: 'No',
-          },
-          pregnancy: {
-            existence: 'No',
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
           },
         },
         height_and_weight: {
@@ -901,8 +891,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       },
       warning_signs: asWarningSigns([], { pregnant: false }),
       brief_history: {
-        diabetes: { existence: 'No' },
-        pregnancy: { existence: 'No' },
+        common_conditions: {
+          diabetes: { existence: 'No' },
+          pregnancy: { existence: 'No' },
+        },
       },
       height_and_weight: {
         measurements: {

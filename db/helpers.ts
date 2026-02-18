@@ -100,6 +100,12 @@ export function jsonAgg<O>(
   return sql`json_agg(${expr})`
 }
 
+export function arrayAgg<O>(
+  expr: Expression<O>,
+): RawBuilder<Simplify<O>[]> {
+  return sql`array_agg(${expr})`
+}
+
 export function arrayAggIds(
   expr: Expression<string | IdSelection>,
 ): RawBuilder<string[]>
@@ -117,12 +123,6 @@ export function arrayAggIds(
   }
   // Otherwise treat it as a simple expression
   return sql<string[]>`array_agg(${expr})`
-}
-
-export function arrayFromSubquery<O>(
-  expr: SelectQueryBuilder<any, any, { id: O }>,
-): RawBuilder<O[]> {
-  return sql<O[]>`ARRAY(${expr})`
 }
 
 export function literalUUIDArray(ids: string[]): RawBuilder<string[]> {

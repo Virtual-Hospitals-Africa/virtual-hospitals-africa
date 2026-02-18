@@ -18,14 +18,14 @@ describeParallel('db/models/snomed.ts', () => {
     })
 
     assert(preferring_finding.results.some((result) =>
-      result.primary_name === 'Collapse' &&
-      result.secondary_text === 'finding'
+      result.name === 'Collapse' &&
+      result.description === 'finding'
     ))
 
     assert(
       !preferring_finding.results.some((result) =>
-        result.primary_name === 'Collapse' &&
-        result.secondary_text === 'morphologic abnormality'
+        result.name === 'Collapse' &&
+        result.description === 'morphologic abnormality'
       ),
     )
 
@@ -39,14 +39,14 @@ describeParallel('db/models/snomed.ts', () => {
     })
 
     assert(preferring_morphologic_abnormality.results.some((result) =>
-      result.primary_name === 'Collapse' &&
-      result.secondary_text === 'morphologic abnormality'
+      result.name === 'Collapse' &&
+      result.description === 'morphologic abnormality'
     ))
 
     assert(
       !preferring_morphologic_abnormality.results.some((result) =>
-        result.primary_name === 'Collapse' &&
-        result.secondary_text === 'finding'
+        result.name === 'Collapse' &&
+        result.description === 'finding'
       ),
     )
   })

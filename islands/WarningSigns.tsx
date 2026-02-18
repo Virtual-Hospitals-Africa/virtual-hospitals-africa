@@ -9,14 +9,12 @@ import { hyphenate } from '../util/hyphenate.ts'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
 import compact from '../util/compact.ts'
 import { assert } from 'std/assert/assert.ts'
-import { recordChipClassName } from '../components/drawer-v4/recordChipClassName.ts'
 import memoize from '../util/memoize.ts'
-import { XMarkIcon } from '../components/library/icons/heroicons/mini.tsx'
 import { priorityColors } from '../shared/priorities.ts'
 import cls from '../util/cls.ts'
 import compactMap from '../util/compactMap.ts'
 import { uniqBy } from '../util/uniqBy.ts'
-import { NoFindings } from '../components/drawer-v4/NoFindings.tsx'
+import { SelectedChips } from './SelectedRecordChip.tsx'
 
 const CATEGORIES = [
   {
@@ -52,8 +50,8 @@ type SelectedWarningSign = CheckedWarningSign & { checked: true }
 type OnToggle = (sign: CheckedWarningSign) => void
 
 const uniqueIdentifier = memoize(
-  function uniqueIdentifier({ key, category, primary_name, secondary_text }: WarningSignWithMaybeRecord) {
-    const latter = key ? [key] : compact([primary_name, secondary_text])
+  function uniqueIdentifier({ key, category, name, description }: WarningSignWithMaybeRecord) {
+    const latter = key ? [key] : compact([name, description])
     return hyphenate([category, ...latter].join('-').toLowerCase())
   },
 )
@@ -83,48 +81,15 @@ function KeyedWarningSignCheckbox(
       </div>
       <div className='flex flex-col gap-0.75 2xl:gap-1 pt-0.5'>
         <span className='text-xs 2xl:text-sm font-medium text-gray-600 leading-4 2xl:leading-5'>
-          {sign.primary_name}
+          {sign.name}
         </span>
-        {sign.secondary_text && (
+        {sign.description && (
           <span className='text-[8pt] 2xl:text-xs text-gray-500 leading-3 2xl:leading-4'>
-            {sign.secondary_text}
+            {sign.description}
           </span>
         )}
       </div>
     </label>
-  )
-}
-
-function SelectedChip({ sign, onUncheck }: {
-  sign: CheckedWarningSign
-  onUncheck: OnToggle
-}) {
-  return (
-    <button
-      type='button'
-      className={recordChipClassName({
-        priority: sign.sats_priority,
-      })}
-      onClick={() => onUncheck(sign)}
-    >
-      {sign.primary_name}
-      <XMarkIcon className='-ml-1.5 -mr-2.5 p-0.5' />
-    </button>
-  )
-}
-
-function SelectedChips({
-  signs,
-  onUncheck,
-}: {
-  signs: CheckedWarningSign[]
-  onUncheck: OnToggle
-}) {
-  return (
-    <div id='warning-signs-selected-chips' className='box-border content-center flex flex-wrap gap-1 items-center justify-start px-px py-0 shrink-0 w-full'>
-      {!signs.length && <NoFindings explanation='No findings selected' with_padding_x={false} />}
-      {signs.map((sign) => <SelectedChip key={uniqueIdentifier(sign)} sign={sign} onUncheck={onUncheck} />)}
-    </div>
   )
 }
 
@@ -178,7 +143,7 @@ function WarningSignsHiddenInputs({ signs_to_send_to_server }: { signs_to_send_t
           existence,
           s_expression: sign.clinical_finding_s_expression,
           warning_sign_key: sign.key,
-          priority_level: sign.sats_priority,
+          priority_level: sign.priority,
           existing_record: sign.existing_record && {
             id: sign.existing_record.id,
             altered: sign.existing_record.existence !== existence,
@@ -262,7 +227,8 @@ export default function WarningSigns({
           do_not_render_built_in_options
         />
         <SelectedChips
-          signs={selected_signs.value}
+          id='warning-findings-selected-chips'
+          items={selected_signs.value}
           onUncheck={onUncheck}
         />
       </div>

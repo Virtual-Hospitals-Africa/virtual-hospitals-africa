@@ -47,41 +47,43 @@ describeParallel('triage/brief_history', () => {
 
         assertEquals(form_values, {})
         assertEquals(form_labels, {
-          'pregnancy': {
-            'existence': 'Pregnancy*',
-          },
-          'diabetes': {
-            'existence': 'Diabetes*',
-          },
-          'tuberculosis': {
-            'existence': 'Tuberculosis',
-          },
-          'hiv': {
-            'existence': 'Human Immunodeficiency Virus',
-          },
-          'asthma': {
-            'existence': 'Asthma',
-          },
-          'copd': {
-            'existence': 'Chronic Obstructive Pulmonary Disease',
-          },
-          'covid19': {
-            'existence': 'COVID-19',
-          },
-          'heart_disease': {
-            'existence': 'Heart Disease',
-          },
-          'mental_disorder': {
-            'existence': 'Mental Disorder',
-          },
-          'epilepsy': {
-            'existence': 'Epilepsy',
-          },
-          'arthritis': {
-            'existence': 'Arthritis',
-          },
-          'cancer': {
-            'existence': 'Cancer',
+          common_conditions: {
+            'pregnancy': {
+              'existence': 'Pregnancy*',
+            },
+            'diabetes': {
+              'existence': 'Diabetes*',
+            },
+            'tuberculosis': {
+              'existence': 'Tuberculosis',
+            },
+            'hiv': {
+              'existence': 'Human Immunodeficiency Virus',
+            },
+            'asthma': {
+              'existence': 'Asthma',
+            },
+            'copd': {
+              'existence': 'Chronic Obstructive Pulmonary Disease',
+            },
+            'covid19': {
+              'existence': 'COVID-19',
+            },
+            'heart_disease': {
+              'existence': 'Heart Disease',
+            },
+            'mental_disorder': {
+              'existence': 'Mental Disorder',
+            },
+            'epilepsy': {
+              'existence': 'Epilepsy',
+            },
+            'arthritis': {
+              'existence': 'Arthritis',
+            },
+            'cancer': {
+              'existence': 'Cancer',
+            },
           },
         })
       },
@@ -99,46 +101,50 @@ describeParallel('triage/brief_history', () => {
         const form_labels = getFormLabels($)
 
         assertEquals(form_values, {
-          'pregnancy': {
-            'existence': 'No',
+          common_conditions: {
+            'pregnancy': {
+              'existence': 'No',
+            },
           },
         })
         assertEquals(form_labels, {
-          'pregnancy': {
-            'existence': 'Pregnancy*',
-          },
-          'diabetes': {
-            'existence': 'Diabetes*',
-          },
-          'tuberculosis': {
-            'existence': 'Tuberculosis',
-          },
-          'hiv': {
-            'existence': 'Human Immunodeficiency Virus',
-          },
-          'asthma': {
-            'existence': 'Asthma',
-          },
-          'copd': {
-            'existence': 'Chronic Obstructive Pulmonary Disease',
-          },
-          'covid19': {
-            'existence': 'COVID-19',
-          },
-          'heart_disease': {
-            'existence': 'Heart Disease',
-          },
-          'mental_disorder': {
-            'existence': 'Mental Disorder',
-          },
-          'epilepsy': {
-            'existence': 'Epilepsy',
-          },
-          'arthritis': {
-            'existence': 'Arthritis',
-          },
-          'cancer': {
-            'existence': 'Cancer',
+          common_conditions: {
+            'pregnancy': {
+              'existence': 'Pregnancy*',
+            },
+            'diabetes': {
+              'existence': 'Diabetes*',
+            },
+            'tuberculosis': {
+              'existence': 'Tuberculosis',
+            },
+            'hiv': {
+              'existence': 'Human Immunodeficiency Virus',
+            },
+            'asthma': {
+              'existence': 'Asthma',
+            },
+            'copd': {
+              'existence': 'Chronic Obstructive Pulmonary Disease',
+            },
+            'covid19': {
+              'existence': 'COVID-19',
+            },
+            'heart_disease': {
+              'existence': 'Heart Disease',
+            },
+            'mental_disorder': {
+              'existence': 'Mental Disorder',
+            },
+            'epilepsy': {
+              'existence': 'Epilepsy',
+            },
+            'arthritis': {
+              'existence': 'Arthritis',
+            },
+            'cancer': {
+              'existence': 'Cancer',
+            },
           },
         })
       },
@@ -151,14 +157,16 @@ describeParallel('triage/brief_history', () => {
           patient_demographics: {},
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            cancer: {
-              existence: 'Yes',
-            },
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
+            common_conditions: {
+              cancer: {
+                existence: 'Yes',
+              },
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
             },
           },
         })
@@ -711,11 +719,13 @@ describeParallel('triage/brief_history', () => {
           patient_demographics: randomDemographics('ZA', 'female'),
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: {
-              existence: 'Yes',
-            },
-            pregnancy: {
-              existence: 'No',
+            common_conditions: {
+              diabetes: {
+                existence: 'Yes',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
             },
           },
         })
@@ -784,14 +794,16 @@ describeParallel('triage/brief_history', () => {
           patient_demographics: randomDemographics('ZA', 'female'),
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            cancer: {
-              existence: 'Yes',
-            },
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
+            common_conditions: {
+              cancer: {
+                existence: 'Yes',
+              },
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
             },
           },
         })
@@ -812,14 +824,16 @@ describeParallel('triage/brief_history', () => {
           nurse: other_nurse,
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            cancer: {
-              existence: 'Yes',
-            },
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
+            common_conditions: {
+              cancer: {
+                existence: 'Yes',
+              },
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
             },
           },
         })
@@ -924,11 +938,13 @@ describeParallel('triage/brief_history', () => {
           patient_demographics: randomDemographics('ZA', 'female'),
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'Unknown',
+            common_conditions: {
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Unknown',
+              },
             },
           },
         })
@@ -994,11 +1010,13 @@ describeParallel('triage/brief_history', () => {
           patient_demographics: randomDemographics('ZA', 'female'),
           warning_signs: asWarningSigns([], { pregnant: false }),
           brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'Yes',
+            common_conditions: {
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
             },
           },
         })
@@ -1022,11 +1040,13 @@ describeParallel('triage/brief_history', () => {
 
         await initial.postStep({
           brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'No',
+            common_conditions: {
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'No',
+              },
             },
           },
         })
@@ -1069,11 +1089,13 @@ describeParallel('triage/brief_history', () => {
 
         await returning.postStep({
           brief_history: {
-            diabetes: {
-              existence: 'No',
-            },
-            pregnancy: {
-              existence: 'Yes',
+            common_conditions: {
+              diabetes: {
+                existence: 'No',
+              },
+              pregnancy: {
+                existence: 'Yes',
+              },
             },
           },
         })

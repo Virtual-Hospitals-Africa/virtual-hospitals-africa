@@ -544,7 +544,7 @@ export const allergy: z.ZodType<InsertableFindingBase & { history: true }> = z.l
   () =>
     z.object({
       atom: z.literal('allergy'),
-      args: z.tuple([snomed_concept]),
+      args: z.tuple([snomed_concept.optional()]),
     }).transform(({ args: [snomed_concept] }) => ({
       atom: 'finding' as const,
       root_snomed_concept: {
@@ -559,15 +559,17 @@ export const allergy: z.ZodType<InsertableFindingBase & { history: true }> = z.l
       },
       value_snomed_concept: null,
       qualifiers: [],
-      attributes: [{
-        atom: 'attribute' as const,
-        specific_snomed_concept: {
-          atom: 'snomed_concept' as const,
-          name: CAUSATIVE_AGENT.name,
-          category: CAUSATIVE_AGENT.category,
-        },
-        value: snomed_concept,
-      }],
+      attributes: snomed_concept
+        ? [{
+          atom: 'attribute' as const,
+          specific_snomed_concept: {
+            atom: 'snomed_concept' as const,
+            name: CAUSATIVE_AGENT.name,
+            category: CAUSATIVE_AGENT.category,
+          },
+          value: snomed_concept,
+        }]
+        : [],
       exact: false,
       history: true as const,
       existence: 'Yes' as const,

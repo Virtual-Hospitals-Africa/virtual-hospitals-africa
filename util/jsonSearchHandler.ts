@@ -37,12 +37,12 @@ export function jsonSearchHandler<
       const search_terms: any = typeof default_search_terms === 'function'
         // deno-lint-ignore no-explicit-any
         ? default_search_terms(ctx as any)
-        : {
-          search: '',
-          ...default_search_terms,
-        }
+        : default_search_terms
 
       ctx.url.searchParams.forEach((value, key) => {
+        if (key in search_terms && typeof default_search_terms === 'function') {
+          return
+        }
         if (key === 'page') {
           page = parseInt(value) || 1
         } else if (value === 'true' || value === 'false') {
@@ -50,10 +50,10 @@ export function jsonSearchHandler<
         } else if (value.startsWith('[')) {
           search_terms[key] = value.slice(1, -1).split(',')
         } else {
+          search_terms[key] = value
           // TODO use zod to parse all this?
           // const as_int = parseInt(value)
           // search_terms[key] = isNaN(as_int) ? value : as_int
-          search_terms[key] = value
         }
       })
 

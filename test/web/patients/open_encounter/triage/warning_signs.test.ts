@@ -120,8 +120,10 @@ describeParallel('triage/warning_signs', () => {
         const { nurse, encounter, patient_id, patient_encounter_id, getStep } = await setupTriageNewPatient({
           patient_demographics: {},
           early_brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'Yes' },
+            common_conditions: {
+              diabetes: { existence: 'No' },
+              pregnancy: { existence: 'Yes' },
+            },
           },
         })
 
@@ -714,8 +716,10 @@ describeParallel('triage/warning_signs', () => {
         const { $, clinic, nurse, patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           early_brief_history: {
-            diabetes: { existence: 'No' },
-            pregnancy: { existence: 'Yes' },
+            common_conditions: {
+              diabetes: { existence: 'No' },
+              pregnancy: { existence: 'Yes' },
+            },
           },
         })
 
@@ -735,10 +739,10 @@ describeParallel('triage/warning_signs', () => {
           category: 'Search Results',
           clinical_finding_s_expression: '(clinical_finding (snomed_concept "Appendicular pain" "finding"))',
           snomed_concept_id: '275406005',
-          primary_name: 'Appendicular pain',
-          secondary_text: 'finding',
-          sats_priority: 'Very urgent',
-          sats_priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
+          name: 'Appendicular pain',
+          description: 'finding',
+          priority: 'Very urgent',
+          priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
           similarity: 1,
         })
 
@@ -747,7 +751,7 @@ describeParallel('triage/warning_signs', () => {
 
         form_values.warning_signs['s275406005'] = {
           existence: 'Yes',
-          priority_level: results[0].sats_priority,
+          priority_level: results[0].priority,
           s_expression: results[0].clinical_finding_s_expression,
         }
 
@@ -825,8 +829,10 @@ describeParallel('triage/warning_signs', () => {
             patient_demographics: {},
             early_brief_history: pregnant
               ? {
-                diabetes: { existence: 'No' },
-                pregnancy: { existence: 'Yes' },
+                common_conditions: {
+                  diabetes: { existence: 'No' },
+                  pregnancy: { existence: 'Yes' },
+                },
               }
               : undefined,
             warning_signs: asWarningSigns([sign.key], { pregnant }),
@@ -840,19 +846,19 @@ describeParallel('triage/warning_signs', () => {
 
           assertEquals(
             $('#patient-drawer-priority').text(),
-            sign.sats_priority,
+            sign.priority,
             `mismatch for ${humanReadableJson(sign)}`,
           )
 
           const $warning_signs = await getStep('warning_signs')
 
           const form_values = getFormValues($warning_signs)
-          const hyphenated_key = hyphenate(sign.sats_priority + '-' + sign.key.toLowerCase())
+          const hyphenated_key = hyphenate(sign.priority + '-' + sign.key.toLowerCase())
           assertMatches(form_values, {
             warning_signs: {
               [hyphenated_key]: {
                 warning_sign_key: sign.key,
-                priority_level: sign.sats_priority,
+                priority_level: sign.priority,
                 s_expression: sign.clinical_finding_s_expression,
               },
             },
@@ -893,7 +899,7 @@ describeParallel('triage/warning_signs', () => {
 
           const waiting_room_table = getTableDisplay($waiting_room)
           assertMatches(waiting_room_table, [{
-            Priority: nobreak(sign.sats_priority),
+            Priority: nobreak(sign.priority),
           }])
         },
         opts,

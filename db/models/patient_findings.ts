@@ -37,85 +37,7 @@ export type PatientFindingsSearch = PatientRecordsSearch & {
   include_negative?: boolean
 }
 
-export function baseQuery(
-  trx: TrxOrDbOrQueryCreator,
-  opts?: PatientFindingsSearch,
-) {
-  let qb = patient_records.baseQuery(trx, opts)
-    .innerJoin(
-      'patient_findings',
-      'patient_findings.id',
-      'patient_records_aggregated.id',
-    )
-    .innerJoin(
-      'patient_records_aggregated as procedures_aggregated',
-      'patient_findings.procedure_id',
-      'procedures_aggregated.id',
-    )
-    .select((eb) => [
-      literalString('finding').$castTo<'finding'>().as('type'),
-      'patient_findings.patient_encounter_employee_id',
-
-      jsonBuildObject({
-        id: eb.ref('procedures_aggregated.id'),
-        root_snomed_concept_id: asText(eb, 'procedures_aggregated.root_snomed_concept_id'),
-        root_snomed_concept_name: eb.ref('procedures_aggregated.root_snomed_concept_name'),
-        root_snomed_concept_category: eb.ref('procedures_aggregated.root_snomed_concept_category'),
-        specific_snomed_concept_id: asText(
-          eb,
-          'procedures_aggregated.specific_snomed_concept_id',
-        ),
-        specific_snomed_concept_name: eb.ref('procedures_aggregated.specific_snomed_concept_name'),
-        specific_snomed_concept_category: eb.ref('procedures_aggregated.specific_snomed_concept_category'),
-        workflow_step_name: caseWhenMatching(eb, eb.ref('procedures_aggregated.specific_snomed_concept_id'), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
-      }).as('as_part_of_procedure'),
-
-      eb.selectFrom('patient_evaluation_scores')
-        .innerJoin(
-          'patient_records as score_patient_records',
-          'patient_evaluation_scores.id',
-          'score_patient_records.id',
-        )
-        .innerJoin('patient_records_still_valid as score_valid', 'score_valid.id', 'score_patient_records.id')
-        .innerJoin(
-          'patient_evaluations as score_evaluations',
-          'patient_evaluation_scores.id',
-          'score_evaluations.id',
-        )
-        .whereRef(
-          'score_evaluations.evaluates_record_id',
-          '=',
-          'patient_records_aggregated.id',
-        )
-        .select('patient_evaluation_scores.score')
-        .as('score'),
-    ])
-
-  if (opts?.procedure_id) {
-    qb = qb.where(
-      'patient_findings.procedure_id',
-      isString(opts.procedure_id) ? '=' : 'in',
-      opts.procedure_id,
-    )
-  }
-  if (!opts?.include_negative) {
-    qb = qb.where(
-      'patient_records_aggregated.existence',
-      '=',
-      'Yes',
-    )
-  }
-  if (opts?.not_measurements) {
-    qb = qb.leftJoin(
-      'patient_measurements',
-      'patient_findings.id',
-      'patient_measurements.id',
-    ).where('patient_measurements.id', 'is', null)
-  }
-  return qb
-}
-
-export type IntermediateFinding = QueryResult<typeof baseQuery>
+export type IntermediateFinding = QueryResult<typeof patient_findings.baseQuery>
 type InsertCommon = {
   patient_id: string
   patient_encounter_id: string
@@ -154,7 +76,83 @@ type FindingsInsert = InsertCommon & {
 
 export const patient_findings = base({
   top_level_table: 'patient_findings',
-  baseQuery,
+  baseQuery(
+    trx: TrxOrDbOrQueryCreator,
+    opts: PatientFindingsSearch,
+  ) {
+    let qb = patient_records.baseQuery(trx, opts)
+      .innerJoin(
+        'patient_findings',
+        'patient_findings.id',
+        'patient_records_aggregated.id',
+      )
+      .innerJoin(
+        'patient_records_aggregated as procedures_aggregated',
+        'patient_findings.procedure_id',
+        'procedures_aggregated.id',
+      )
+      .select((eb) => [
+        literalString('finding').$castTo<'finding'>().as('type'),
+        'patient_findings.patient_encounter_employee_id',
+
+        jsonBuildObject({
+          id: eb.ref('procedures_aggregated.id'),
+          root_snomed_concept_id: asText(eb, 'procedures_aggregated.root_snomed_concept_id'),
+          root_snomed_concept_name: eb.ref('procedures_aggregated.root_snomed_concept_name'),
+          root_snomed_concept_category: eb.ref('procedures_aggregated.root_snomed_concept_category'),
+          specific_snomed_concept_id: asText(
+            eb,
+            'procedures_aggregated.specific_snomed_concept_id',
+          ),
+          specific_snomed_concept_name: eb.ref('procedures_aggregated.specific_snomed_concept_name'),
+          specific_snomed_concept_category: eb.ref('procedures_aggregated.specific_snomed_concept_category'),
+          workflow_step_name: caseWhenMatching(eb, eb.ref('procedures_aggregated.specific_snomed_concept_id'), SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES),
+        }).as('as_part_of_procedure'),
+
+        eb.selectFrom('patient_evaluation_scores')
+          .innerJoin(
+            'patient_records as score_patient_records',
+            'patient_evaluation_scores.id',
+            'score_patient_records.id',
+          )
+          .innerJoin('patient_records_still_valid as score_valid', 'score_valid.id', 'score_patient_records.id')
+          .innerJoin(
+            'patient_evaluations as score_evaluations',
+            'patient_evaluation_scores.id',
+            'score_evaluations.id',
+          )
+          .whereRef(
+            'score_evaluations.evaluates_record_id',
+            '=',
+            'patient_records_aggregated.id',
+          )
+          .select('patient_evaluation_scores.score')
+          .as('score'),
+      ])
+
+    if (opts?.procedure_id) {
+      qb = qb.where(
+        'patient_findings.procedure_id',
+        isString(opts.procedure_id) ? '=' : 'in',
+        opts.procedure_id,
+      )
+    }
+    if (!opts?.include_negative) {
+      qb = qb.where(
+        'patient_records_aggregated.existence',
+        '=',
+        'Yes',
+      )
+    }
+    if (opts?.not_measurements) {
+      qb = qb.leftJoin(
+        'patient_measurements',
+        'patient_findings.id',
+        'patient_measurements.id',
+      ).where('patient_measurements.id', 'is', null)
+    }
+    return qb
+  },
   formatResult: (finding) => {
     if (finding.score != null) {
       tews_component.parse(finding.score)
