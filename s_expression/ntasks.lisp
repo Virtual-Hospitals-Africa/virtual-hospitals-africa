@@ -190,6 +190,11 @@
   (check_for
     (clinical_finding (snomed_concept "Seizure" "finding"))
     (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+clinical_finding ( snomed_concept “Collapse” (finding) Postprocedural period (qualifier value) Administration of vaccine to produce active immunity (procedure)
+(clinical_finding ( snomed_concept “Weakness of face muscles” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+(clinical_finding ( snomed_concept “Muscle weakness of upper limb” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+(clinical_finding ( snomed_concept “Weakness of muscle of lower limb” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+(clinical_finding ( snomed_concept “Numbness of face” (finding)
     (clinical_finding (snomed_concept "Chest pain" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
     (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
