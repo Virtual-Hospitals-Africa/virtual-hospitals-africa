@@ -12,6 +12,7 @@
  * Ordered by triage workflow progression.
  */
 export type TutorialStep =
+  | 'waiting_room'
   | 'warning_signs'
   | 'brief_history'
   | 'vitals'
@@ -21,6 +22,7 @@ export type TutorialStep =
   | 'complete'
 
 export const TUTORIAL_STEPS: TutorialStep[] = [
+  'waiting_room',
   'warning_signs',
   'brief_history',
   'vitals',

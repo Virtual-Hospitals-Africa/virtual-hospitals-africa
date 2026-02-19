@@ -4,6 +4,12 @@
 // =============================================================================
 
 export const TUTORIAL_TARGETS = {
+  // Waiting room targets - use CSS selectors based on DOM structure
+  // since we're reusing the existing WaitingRoomView component
+  WAITING_ROOM_TABLE: "[data-tutorial='waiting-room-table']",
+  WAITING_ROOM_ROW_DUDUZILE: "[data-tutorial='waiting-room-table'] tbody tr:first-child",
+  WAITING_ROOM_START_TRIAGE_BUTTON: "[data-tutorial='waiting-room-table'] tbody tr:first-child a",
+
   // From original components (DO NOT MODIFY original components)
   WARNING_SIGNS_PANEL: '#warning-signs',
   WARNING_SIGNS_EMERGENCY: '#priority-table-emergency',

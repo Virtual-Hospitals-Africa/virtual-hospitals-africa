@@ -30,9 +30,13 @@ import {
   CompletionStep,
   RoutePatientStep,
   VitalsStep,
+  WaitingRoomStep,
   WarningSignsStep,
 } from './tutorial/steps/index.ts'
 import { RotateWarning } from '../components/RotateWarning.tsx'
+import { HealthWorkerHomePageLayout } from '../components/library/layout/HealthWorkerHomePage.tsx'
+import { TUTORIAL_WAITING_ROOM } from '../shared/tutorial/mock-data.ts'
+import WaitingRoomView from '../components/waiting_room/View.tsx'
 
 const TUTORIAL_NAV_LINKS = WORKFLOW_NAV_LINKS.triage.map((link) => ({
   ...link,
@@ -63,7 +67,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
   })
 
   const current_step: TutorialStep = useMemo(() => {
-    if (hash.value.action === 'none') return 'warning_signs'
+    if (hash.value.action === 'none') return 'waiting_room'
     return hash.value.step
   }, [hash.value])
 
@@ -83,6 +87,22 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
     hash.value = state
   }
 
+  // Render waiting room view when on that step
+  if (current_step === 'waiting_room') {
+    return (
+      <>
+        <RotateWarning />
+        <WaitingRoomLayout url={url} route={route} employee={employee} />
+        <TutorialOverlay
+          script={TUTORIAL_SCRIPT}
+          hashState={hash.value}
+          setHashState={handleSetHashState}
+        />
+      </>
+    )
+  }
+
+  // Render triage workflow for all other steps
   return (
     <>
       <RotateWarning />
@@ -128,6 +148,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
 
 /**
  * Renders the appropriate step component based on current step.
+ * Note: waiting_room step is handled separately with its own layout.
  */
 function StepRenderer({
   step,
@@ -137,6 +158,10 @@ function StepRenderer({
   patient: RenderedPatientCompletedRegistration
 }) {
   switch (step) {
+    case 'waiting_room':
+      // This case is handled by conditional rendering in the main component
+      return <WaitingRoomStep />
+
     case 'warning_signs':
       return <WarningSignsStep />
 
@@ -158,6 +183,30 @@ function StepRenderer({
     case 'complete':
       return <CompletionStep />
   }
+}
+
+/**
+ * Layout for the waiting room step - shows the Open Encounters view.
+ */
+function WaitingRoomLayout({ url, route, employee }: { url: URL; route: string; employee: RenderedEmployee }) {
+  return (
+    <HealthWorkerHomePageLayout
+      title='Open Encounters'
+      url={url}
+      route={route}
+      params={{}}
+      employee={employee}
+      tutorial
+    >
+      <div data-tutorial='waiting-room-table'>
+        <WaitingRoomView
+          waiting_room={TUTORIAL_WAITING_ROOM}
+          organization_id='tutorial-org'
+          can_register_patients={false}
+        />
+      </div>
+    </HealthWorkerHomePageLayout>
+  )
 }
 
 /**

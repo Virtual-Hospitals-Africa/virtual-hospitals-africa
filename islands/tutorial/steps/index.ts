@@ -3,6 +3,7 @@
 // Export all step components
 // =============================================================================
 
+export { WaitingRoomStep } from './WaitingRoomStep.tsx'
 export { WarningSignsStep } from './WarningSignsStep.tsx'
 export { BriefHistoryStep } from './BriefHistoryStep.tsx'
 export { VitalsStep } from './VitalsStep.tsx'

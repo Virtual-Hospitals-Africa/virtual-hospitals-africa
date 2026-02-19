@@ -13,6 +13,7 @@ import type {
   RenderedPatientCompletedRegistration,
   RenderedSidebarWorkflow,
   RenderedTask,
+  RenderedWaitingRoom,
   TaskGroup,
   TriageAssignPriorityTableRow,
   VitalAssessmentFormInputDefition,
@@ -199,6 +200,230 @@ const MOCK_PROVIDER_OTHER = {
   ...TUTORIAL_OTHER_EMPLOYEE,
   is_me: 0 as const,
 }
+
+// =============================================================================
+// WAITING ROOM - Mock patients at the clinic
+// =============================================================================
+
+/**
+ * Helper to create mock employee for waiting room display.
+ * Includes full organization data required by employeeDisplay().
+ */
+function makeMockWaitingRoomEmployee(data: {
+  id: string
+  employee_id: string
+  name: string
+  first_names: string
+  surname: string
+  avatar_url: string
+  role: 'nurse' | 'doctor'
+  specialty: string
+}) {
+  const is_doctor = data.role === 'doctor'
+  return {
+    ...data,
+    preferred_name: data.first_names,
+    email: null,
+    phone_number: null,
+    demographics: { sex: null, gender: null, date_of_birth: null },
+    contact_details: { mobile_phone_number: null, address: null },
+    ever_licensed_as_doctor: is_doctor ? (1 as const) : (0 as const),
+    organizations: [
+      {
+        id: 'tutorial-org-001',
+        name: 'Tutorial Clinic',
+        country: 'ZA',
+        category: 'clinic' as const,
+        ownership: null,
+        location: null,
+        is_test: true,
+        inactive_reason: null,
+        formatted_address: null,
+        most_common_language_code: 'eng',
+        waiting_room_id: null,
+        reception_id: null,
+        employment_id: data.employee_id,
+        role: data.role,
+        is_admin: false,
+        in_departments: [],
+        active_licences: [{
+          licence_number: `LIC-${data.employee_id}`,
+          regulatory_agency: {
+            name: is_doctor ? 'Health Professions Council of South Africa' : 'South African Nursing Council',
+            acronym: is_doctor ? 'HPCSA' : 'SANC',
+            country: 'ZA',
+          },
+          profession: is_doctor ? 'Doctor' : 'Nurse',
+          specialty: data.specialty,
+          subspecialty: null,
+          start_date: '2024-01-01',
+          expiry_date: '2027-01-01',
+          status: 'active' as const,
+          revoked: null,
+        }],
+        hrefs: {
+          regulator_view: '/tutorial',
+          health_worker_view: '/tutorial',
+        },
+      },
+    ],
+    organization_id: 'tutorial-org-001',
+    is_admin: false,
+    href: '/tutorial',
+    patient_encounter_employee_id: `${data.employee_id}-encounter`,
+    seen_at: new Date(),
+  }
+}
+
+/**
+ * Mock waiting room data for tutorial.
+ * Shows 4 patients at different stages:
+ * - Duduzile: Awaiting Triage (top of list - our tutorial patient)
+ * - Themba: In Triage (another nurse is triaging)
+ * - Nomvula: In Consultation (with a doctor)
+ * - Sibusiso: In Consultation (with a nurse)
+ */
+export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
+  // Duduzile - Awaiting Triage (top priority for tutorial)
+  {
+    patient_encounter_id: 'tutorial-encounter-duduzile',
+    patient: {
+      id: 'tutorial-patient-001',
+      name: 'Duduzile Langa',
+      avatar_url: '/duduzile.png',
+      description: '34 years old, Female',
+    },
+    room: {
+      id: 'tutorial-room-waiting',
+      name: 'Waiting Room',
+    },
+    actions: [{
+      text: 'Start Triage',
+      href: '#step=warning_signs&index=0&action=tutorial',
+    }],
+    reason: null,
+    workflow_status_display: 'Awaiting Triage',
+    arrived_timestamp: new Date(Date.now() - 5 * 60 * 1000), // 5 minutes ago
+    arrived_ago_display: '5 minutes ago',
+    target_treatment_time: null,
+    department_name: 'Primary care',
+    priority: null,
+    present_employees: [],
+  },
+  // Themba - In Triage (another nurse handling)
+  {
+    patient_encounter_id: 'tutorial-encounter-themba',
+    patient: {
+      id: 'tutorial-patient-002',
+      name: 'Themba Ndlovu',
+      avatar_url: '/images/avatars/random/male/3.png',
+      description: '45 years old, Male',
+    },
+    room: {
+      id: 'tutorial-room-triage-1',
+      name: 'Triage Room 1',
+    },
+    actions: [{
+      text: 'View',
+      href: '#',
+    }],
+    reason: 'seeking treatment',
+    workflow_status_display: 'In Triage',
+    arrived_timestamp: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes ago
+    arrived_ago_display: '15 minutes ago',
+    target_treatment_time: null,
+    department_name: 'Primary care',
+    priority: null,
+    present_employees: [makeMockWaitingRoomEmployee({
+      id: 'tutorial-hw-003',
+      employee_id: 'tutorial-emp-003',
+      name: 'Zanele Dlamini',
+      first_names: 'Zanele',
+      surname: 'Dlamini',
+      avatar_url: '/images/avatars/random/female/4.png',
+      role: 'nurse',
+      specialty: 'Primary Care',
+    })],
+  },
+  // Nomvula - In Consultation (with doctor)
+  {
+    patient_encounter_id: 'tutorial-encounter-nomvula',
+    patient: {
+      id: 'tutorial-patient-003',
+      name: 'Nomvula Zulu',
+      avatar_url: '/images/avatars/random/female/2.png',
+      description: '28 years old, Female',
+    },
+    room: {
+      id: 'tutorial-room-consult-1',
+      name: 'Consultation Room 1',
+    },
+    actions: [{
+      text: 'View',
+      href: '#',
+    }],
+    reason: 'seeking treatment',
+    workflow_status_display: 'In Consultation',
+    arrived_timestamp: new Date(Date.now() - 45 * 60 * 1000), // 45 minutes ago
+    arrived_ago_display: '45 minutes ago',
+    target_treatment_time: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes from now
+    department_name: 'Primary care',
+    priority: {
+      name: 'Non-urgent',
+      value_snomed_concept_id: '394848005',
+      target_treatment_time: new Date(Date.now() + 15 * 60 * 1000),
+    },
+    present_employees: [makeMockWaitingRoomEmployee({
+      id: 'tutorial-hw-004',
+      employee_id: 'tutorial-emp-004',
+      name: 'Dr. Mandisa Khumalo',
+      first_names: 'Mandisa',
+      surname: 'Khumalo',
+      avatar_url: '/images/avatars/random/female/5.png',
+      role: 'doctor',
+      specialty: 'Family Medicine',
+    })],
+  },
+  // Sibusiso - In Consultation (with senior nurse - Very Urgent)
+  {
+    patient_encounter_id: 'tutorial-encounter-sibusiso',
+    patient: {
+      id: 'tutorial-patient-004',
+      name: 'Sibusiso Mthembu',
+      avatar_url: '/images/avatars/random/male/7.png',
+      description: '62 years old, Male',
+    },
+    room: {
+      id: 'tutorial-room-consult-2',
+      name: 'Consultation Room 2',
+    },
+    actions: [{
+      text: 'View',
+      href: '#',
+    }],
+    reason: 'seeking treatment',
+    workflow_status_display: 'In Consultation',
+    arrived_timestamp: new Date(Date.now() - 25 * 60 * 1000), // 25 minutes ago
+    arrived_ago_display: '25 minutes ago',
+    target_treatment_time: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes overdue
+    department_name: 'Primary care',
+    priority: {
+      name: 'Very urgent',
+      value_snomed_concept_id: '24484000',
+      target_treatment_time: new Date(Date.now() - 15 * 60 * 1000),
+    },
+    present_employees: [makeMockWaitingRoomEmployee({
+      id: 'tutorial-hw-005',
+      employee_id: 'tutorial-emp-005',
+      name: 'Bongani Sibeko',
+      first_names: 'Bongani',
+      surname: 'Sibeko',
+      avatar_url: '/bongani.png',
+      role: 'nurse',
+      specialty: 'Primary Care',
+    })],
+  },
+]
 
 // =============================================================================
 // WARNING SIGNS

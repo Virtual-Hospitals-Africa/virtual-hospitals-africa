@@ -10,7 +10,7 @@ import { TUTORIAL_TARGETS } from './targets.ts'
  * The complete tutorial script as a flat array.
  *
  * Flow:
- * 1. Welcome (5 items) - intro, mission, triage nurse role
+ * 1. Welcome & Waiting Room (8 items) - intro, mission, waiting room overview
  * 2. Warning Signs (16 items) - patient intro, category-by-category walkthrough, wait_click for Cough
  * 3. Brief History (6 items) - pre-filled, explains asthma connection
  * 4. Height/Weight mention (2 items) - "already measured"
@@ -20,11 +20,11 @@ import { TUTORIAL_TARGETS } from './targets.ts'
  * 8. Route Patient (4 items) - Bongani consultation, modal notification
  * 9. Completion (3 items)
  *
- * Total: ~56 items
+ * Total: ~60 items
  */
 export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // =========================================================================
-  // SECTION 1: WELCOME
+  // SECTION 1: WELCOME & WAITING ROOM
   // =========================================================================
   {
     type: 'dialogue',
@@ -49,7 +49,32 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Here comes a patient now!',
+    text: 'This is the Open Encounters view - your command centre for overseeing the whole clinic.',
+    highlight: TUTORIAL_TARGETS.WAITING_ROOM_TABLE,
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: 'Here you can see all patients currently at the facility, where they are, and what stage of care they are in.',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: 'We have two patients in consultation with providers, one in triage with a colleague, and Duduzile here who just arrived and is awaiting triage.',
+    highlight: TUTORIAL_TARGETS.WAITING_ROOM_ROW_DUDUZILE,
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: "Let's start her triage now. Click the 'Start Triage' button.",
+  },
+  {
+    type: 'wait_click',
+    target: TUTORIAL_TARGETS.WAITING_ROOM_START_TRIAGE_BUTTON,
+  },
+  {
+    type: 'step_transition',
+    to_step: 'warning_signs',
   },
 
   // =========================================================================
@@ -380,7 +405,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
  * Used for validating state and debugging.
  */
 export function getStepAtIndex(idx: number): TutorialStep {
-  let current_step: TutorialStep = 'warning_signs'
+  let current_step: TutorialStep = 'waiting_room'
 
   for (let i = 0; i <= idx && i < TUTORIAL_SCRIPT.length; i++) {
     const item = TUTORIAL_SCRIPT[i]

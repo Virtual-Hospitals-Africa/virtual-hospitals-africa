@@ -25,7 +25,7 @@ export function makeState(step: TutorialStep, index: number): TutorialHashState 
  * Initial state: first step, index 0.
  */
 export function initialState(): TutorialHashState {
-  return makeState('warning_signs', 0)
+  return makeState('waiting_room', 0)
 }
 
 /**

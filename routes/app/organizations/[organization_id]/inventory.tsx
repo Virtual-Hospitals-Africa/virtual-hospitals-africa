@@ -1,10 +1,10 @@
 import { inventory } from '../../../../db/models/inventory.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import InventoryView from '../../../../components/inventory/View.tsx'
-import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { OrganizationContext } from './_middleware.ts'
 
-export default HealthWorkerHomePageLayout<OrganizationContext>(
+export default HealthWorkerHomePage<OrganizationContext>(
   'Inventory',
   async function InventoryPage(
     ctx,

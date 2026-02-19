@@ -5,7 +5,7 @@ import { message_targets } from '../../../../../../db/models/message_targets.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { postHandler } from '../../../../../../backend/postHandler.ts'
 import MessageDraft from '../../../../../../components/messaging/Draft.tsx'
-import { HealthWorkerHomePageLayout } from '../../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../../_middleware.tsx'
 import { MessageTargetType } from '../../../../../../db.d.ts'
 import { parseRequest } from '../../../../../../backend/parseForm.ts'
 import { OrganizationContext } from '../../_middleware.ts'
@@ -88,7 +88,7 @@ async function draftFromFormValues(
   }
 }
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Draft Message',
   async function DraftPage(
     ctx: OrganizationContext,

@@ -8,7 +8,7 @@ import { parseDateTime } from '../../../../util/date.ts'
 import { makeAppointmentWeb } from '../../../../backend/scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
 import { insertEvent } from '../../../../external-clients/google.ts'
-import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { promiseProps } from '../../../../util/promiseProps.ts'
 import { postHandler } from '../../../../backend/postHandler.ts'
 import z from 'zod'
@@ -45,7 +45,7 @@ export const handler = postHandler(
   },
 )
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Schedule Appointment',
   async function SchedulePage(
     ctx,

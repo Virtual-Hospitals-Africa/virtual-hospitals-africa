@@ -2,9 +2,9 @@ import { assert } from 'std/assert/assert.ts'
 import { appointments } from '../../../../db/models/appointments.ts'
 import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
-import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   async function AppointmentPage(
     ctx,
   ) {

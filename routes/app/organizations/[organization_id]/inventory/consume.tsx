@@ -4,7 +4,7 @@ import { inventory } from '../../../../../db/models/inventory.ts'
 import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import ConsumeForm from '../../../../../islands/inventory/ConsumeForm.tsx'
-import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../_middleware.tsx'
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
 import { postHandler } from '../../../../../backend/postHandler.ts'
 
@@ -48,7 +48,7 @@ export const handler = postHandler(
   },
 )
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Consumption Test',
   ConsumeForm,
 )

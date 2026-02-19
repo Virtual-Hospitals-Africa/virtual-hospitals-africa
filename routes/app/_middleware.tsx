@@ -16,10 +16,8 @@ import db from '../../db/db.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 import { attachTrx } from '../../backend/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
-import HealthWorkerContentsWithSidebarAndDrawer from '../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { HealthWorkerHomePageSidebar } from '../../components/library/Sidebar.tsx'
 import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
-import { HealthWorkerSidebarBottom } from '../../components/library/HealthWorkerSidebarBottom.tsx'
+import { HealthWorkerHomePageLayout } from '../../components/library/layout/HealthWorkerHomePage.tsx'
 
 export default [
   ensureCookiePresent,
@@ -106,7 +104,7 @@ type RenderedSeparatelyWithTitle = RenderedSeparately & {
   title: string
 }
 
-export function HealthWorkerHomePageLayout<
+export function HealthWorkerHomePage<
   // deno-lint-ignore no-explicit-any
   Context extends LoggedInHealthWorkerContext<any>,
 >(
@@ -164,31 +162,22 @@ export function HealthWorkerHomePageLayout<
     }
 
     return (
-      <HealthWorkerContentsWithSidebarAndDrawer
+      <HealthWorkerHomePageLayout
         title={title as string}
         url={ctx.url}
-        sidebar={
-          <HealthWorkerHomePageSidebar
-            route={ctx.route!}
-            params={ctx.params && 'organization_id' in ctx.params ? ctx.params : {
-              ...ctx.params,
-              organization_id: defaultOrganizationId(ctx.state.health_worker),
-            }}
-            urlSearchParams={ctx.url.searchParams}
-            bottom={
-              <HealthWorkerSidebarBottom
-                employee={employees.fromHealthWorker(
-                  ctx.state.health_worker,
-                  ctx.params.organization_id,
-                )}
-              />
-            }
-          />
-        }
+        route={ctx.route!}
+        employee={employees.fromHealthWorker(
+          ctx.state.health_worker,
+          ctx.params.organization_id,
+        )}
+        params={ctx.params && 'organization_id' in ctx.params ? ctx.params : {
+          ...ctx.params,
+          organization_id: defaultOrganizationId(ctx.state.health_worker),
+        }}
         drawer={drawer}
       >
-        <div className='px-4'>{rendered}</div>
-      </HealthWorkerContentsWithSidebarAndDrawer>
+        {rendered}
+      </HealthWorkerHomePageLayout>
     )
   }
 }
