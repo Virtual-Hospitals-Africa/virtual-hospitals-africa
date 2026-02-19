@@ -30,6 +30,7 @@ jobs:
     uses: ./.github/workflows/test-with-db.yml
     with:
       setup-lfs: true
+      artifact-name: test-web-logs
       run: |
         deno task db:restore snomed
         deno task db:migrate all
@@ -41,6 +42,7 @@ jobs:
   #   uses: ./.github/workflows/test-with-db.yml
   #   with:
   #     setup-lfs: true
+  #     artifact-name: test-chatbot-logs
   #     run: |
   #       deno task db:restore snomed
   #       deno task db:migrate all
@@ -49,6 +51,7 @@ jobs:
   test_migrations:
     uses: ./.github/workflows/test-with-db.yml
     with:
+      artifact-name: test-migrations-logs
       run: |
         deno task db:migrate latest
         deno task db:migrate to snomed_inferred
