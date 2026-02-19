@@ -549,3 +549,73 @@ export const FULLY_SPECIFIED_NAME = asConcept({
   name: 'Fully specified name',
   category: 'core metadata concept' as const,
 })
+export const PRODUCT_CONTAINING_PRECISELY_NALBUPHINE_HYDROCHLORIDE_10_MILLIGRAM_1_MILLILITER_CONVENTIONAL_RELEASE_SOLUTION_FOR_INJECTION = asConcept({
+  id: '782009002',
+  name: 'Product containing precisely nalbuphine hydrochloride 10 milligram/1 milliliter conventional release solution for injection',
+  category: 'clinical drug' as const,
+})
+export const HAS_PRECISE_ACTIVE_INGREDIENT = asConcept({
+  id: '762949000',
+  name: 'Has precise active ingredient',
+  category: 'attribute' as const,
+})
+export const HAS_CONCENTRATION_STRENGTH_NUMERATOR_VALUE = asConcept({
+  id: '1142138002',
+  name: 'Has concentration strength numerator value',
+  category: 'attribute' as const,
+})
+export const HAS_CONCENTRATION_STRENGTH_NUMERATOR_UNIT = asConcept({
+  id: '733725009',
+  name: 'Has concentration strength numerator unit',
+  category: 'attribute' as const,
+})
+export const HAS_CONCENTRATION_STRENGTH_DENOMINATOR_VALUE = asConcept({
+  id: '1142137007',
+  name: 'Has concentration strength denominator value',
+  category: 'attribute' as const,
+})
+export const HAS_CONCENTRATION_STRENGTH_DENOMINATOR_UNIT = asConcept({
+  id: '733722007',
+  name: 'Has concentration strength denominator unit',
+  category: 'attribute' as const,
+})
+export const MILLILITER = asConcept({
+  id: '258773002',
+  name: 'Milliliter',
+  category: 'qualifier value' as const,
+})
+export const MILLIGRAM = asConcept({
+  id: '258684004',
+  name: 'milligram',
+  category: 'qualifier value' as const,
+})
+export const GRAM = asConcept({
+  id: '258682000',
+  name: 'gram',
+  category: 'qualifier value' as const,
+})
+export const LITER = asConcept({
+  id: '258770004',
+  name: 'Liter',
+  category: 'qualifier value' as const,
+})
+export const MICROGRAM = asConcept({
+  id: '258685003',
+  name: 'microgram',
+  category: 'qualifier value' as const,
+})
+export const INTERNATIONAL_UNIT = asConcept({
+  id: '258997004',
+  name: 'international unit',
+  category: 'qualifier value' as const,
+})
+export const COUNT_OF_BASE_OF_ACTIVE_INGREDIENT = asConcept({
+  id: '1142139005',
+  name: 'Count of base of active ingredient',
+  category: 'attribute' as const,
+})
+export const HAS_MANUFACTURED_DOSE_FORM = asConcept({
+  id: '411116001',
+  name: 'Has manufactured dose form',
+  category: 'attribute' as const,
+})

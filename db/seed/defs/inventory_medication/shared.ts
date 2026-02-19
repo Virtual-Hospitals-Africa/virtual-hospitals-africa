@@ -236,3 +236,51 @@ export const forms_with_singular_doses = [
   'INHALATION',
   'PELLET',
 ]
+
+export const unique_snomed_administration_methods = [
+  'Administer' as const,
+  'Instill' as const,
+  'Spray' as const,
+  'Inhale' as const,
+  'Inject' as const,
+  'Gargle' as const,
+  'Orodisperse' as const,
+  'Chew' as const,
+  'Suck' as const,
+  'Insufflate' as const,
+  'Implantation' as const,
+  'Dose form administration method' as const,
+  'Apply' as const,
+  'Insert' as const,
+  'Rinse' as const,
+  'Dialysis system' as const,
+  'Swallow' as const,
+  'Infuse' as const,
+  'Rinse or wash' as const,
+  'Bathe' as const,
+]
+
+export type AdministrationMethod = typeof unique_snomed_administration_methods[number]
+
+export const administration_methods_to_routes: Record<AdministrationMethod, string[]> = {
+  'Administer': ['ORAL', 'INJECTION', 'TOPICAL', 'INHALATION', 'NASAL', 'OPHTHALMIC', 'RECTAL', 'VAGINAL'],
+  'Instill': ['OPHTHALMIC', 'NASAL', 'ORAL'],
+  'Spray': ['NASAL', 'ORAL', 'TOPICAL', 'INHALATION'],
+  'Inhale': ['INHALATION'],
+  'Inject': ['INJECTION'],
+  'Gargle': ['ORAL'],
+  'Orodisperse': ['ORAL'],
+  'Chew': ['ORAL'],
+  'Suck': ['ORAL'],
+  'Insufflate': ['INHALATION', 'NASAL'],
+  'Implantation': ['INJECTION'],
+  'Dose form administration method': ['ORAL', 'INJECTION', 'TOPICAL', 'INHALATION', 'NASAL', 'OPHTHALMIC', 'RECTAL', 'VAGINAL'],
+  'Apply': ['TOPICAL', 'VAGINAL', 'RECTAL'],
+  'Insert': ['VAGINAL', 'RECTAL'],
+  'Rinse': ['ORAL', 'TOPICAL'],
+  'Dialysis system': ['INJECTION'],
+  'Swallow': ['ORAL'],
+  'Infuse': ['INJECTION'],
+  'Rinse or wash': ['ORAL', 'TOPICAL'],
+  'Bathe': ['TOPICAL'],
+}

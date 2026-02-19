@@ -5,6 +5,9 @@ import { ParsedMedication } from '../../db/seed/defs/inventory_medication/shared
 import { performLookups } from '../../db/seed/defs/inventory_medication/lookup.ts'
 import db from '../../db/db.ts'
 
+import { PRODUCT_CONTAINING_PRECISELY_NALBUPHINE_HYDROCHLORIDE_10_MILLIGRAM_1_MILLILITER_CONVENTIONAL_RELEASE_SOLUTION_FOR_INJECTION } from '../../shared/snomed_concepts.ts'
+import pick from '../../util/pick.ts'
+
 describe('seed', () => {
   afterAll(() => db.destroy())
 
@@ -93,41 +96,39 @@ describe('seed', () => {
   })
 
   it('determines that xylotox is a |Product containing only epinephrine and lidocaine (medicinal product)|', async () => {
-    const medication = await performLookups(db, [xylotox_parsed], { write_failure_files: false })
-    const medicinal_product = await db.selectFrom('snomed_inferred_canonical_name_and_category').selectAll().where('id', '=', medication[0].snomed_concept_id)
+    const [medication] = await performLookups(db, [xylotox_parsed], { write_failure_files: false })
+    const medicinal_product = await db.selectFrom('snomed_inferred_canonical_name_and_category').selectAll().where('id', '=', medication.snomed_concept_id)
       .executeTakeFirst()
-    assertEquals(medication, [
-      {
-        'form': 'SOLUTION',
-        'routes': ['INJECTION', 'ORAL', 'INHALATION', 'TOPICAL'],
-        'doses': [
-          {
-            'value': '1',
-            'description': 'ML',
-            'ingredients': [
-              {
-                'name': 'ADRENALINE',
-                'equivalent_to': null,
-                'strength': { 'value': '12.5', 'units': 'UG' },
-                'snomed_concept_id': '387362001',
-              },
-              {
-                'name': 'LIDOCAINE HYDROCHLORIDE',
-                'equivalent_to': null,
-                'strength': { 'value': '20', 'units': 'MG' },
-                'snomed_concept_id': '61773008',
-              },
-            ],
-          },
-        ],
-        'country': 'ZA',
-        'trade_name': 'XYLOTOX E80-A',
-        'registration_no': 'P/4/170',
-        'applicant_name': 'Adcock Ingram Limited',
-        'manufacturers': 'Adcock Ingram Limited',
-        'snomed_concept_id': '775788003',
-      },
-    ])
+    assertEquals(medication, {
+      'form': 'SOLUTION',
+      'routes': ['INJECTION', 'ORAL', 'INHALATION', 'TOPICAL'],
+      'doses': [
+        {
+          'value': '1',
+          'description': 'ML',
+          'ingredients': [
+            {
+              'name': 'ADRENALINE',
+              'equivalent_to': null,
+              'strength': { 'value': '12.5', 'units': 'UG' },
+              'snomed_concept_id': '387362001',
+            },
+            {
+              'name': 'LIDOCAINE HYDROCHLORIDE',
+              'equivalent_to': null,
+              'strength': { 'value': '20', 'units': 'MG' },
+              'snomed_concept_id': '61773008',
+            },
+          ],
+        },
+      ],
+      'country': 'ZA',
+      'trade_name': 'XYLOTOX E80-A',
+      'registration_no': 'P/4/170',
+      'applicant_name': 'Adcock Ingram Limited',
+      'manufacturers': 'Adcock Ingram Limited',
+      'snomed_concept_id': '775788003',
+    })
     assertEquals(medicinal_product, {
       'id': '775788003',
       'description_id': '3731735019',
@@ -135,5 +136,69 @@ describe('seed', () => {
       'name': 'Product containing only epinephrine and lidocaine',
       'category': 'medicinal product',
     })
+  })
+
+  it('can find medicinal products with exact dosages', async () => {
+    const parsed = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hS-uDRI2akXX3Cr19cgn5lhvqAaut7G6NjuxEHSbe9k4LGO3nTxq41iCZvSF1WFaar_7iBIS7kQkmV4zRxTzpSCJzrPZsChTsWOPFq3rNcvg',
+      'applicantName': 'Ascendis Pharma (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1ji-IRjSHqcWN4wVgDCqLG3haydM-7NkRQc1s4_BJqomVqU6IaR1bn2NHwTBRkK-SnuwNMFRk7RK7pZtnFw_GOdOmELPmdqdT734foim0YGwQ',
+      'application_no': '510361.36',
+      'licence_no': '51/2.9/0361.360',
+      'productName': 'NALBUPHINE HYDROCHLORIDE DIHYDRATE EQUIVALENT TO NALBUPHINE HYDROCHLORIDE ANHYDROUS 10,0 mg',
+      'status': 'Registered',
+      'expiryDate': '1900/01/01',
+      'reg_date': '2022/09/20',
+      'ingredient': 'Each 1,0 ml contains NALBUPHINE HYDROCHLORIDE DIHYDRATE EQUIVALENT TO NALBUPHINE HYDROCHLORIDE ANHYDROUS 10.0 mg',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+
+    const [medication] = await performLookups(db, [parsed], { write_failure_files: false })
+
+    assertEquals(medication.routes, ['INJECTION'], 'Routes is inferred to be INJECTION based on the precise medciation we found')
+
+    const medicinal_product = await db.selectFrom('snomed_inferred_canonical_name_and_category')
+      .where('id', '=', medication.snomed_concept_id)
+      .selectAll()
+      .executeTakeFirst()
+
+    assertEquals(medicinal_product, {
+      ...pick(['id', 'name', 'category'])(
+        PRODUCT_CONTAINING_PRECISELY_NALBUPHINE_HYDROCHLORIDE_10_MILLIGRAM_1_MILLILITER_CONVENTIONAL_RELEASE_SOLUTION_FOR_INJECTION,
+      ),
+      language_code: 'en',
+      description_id: '3752306018',
+    })
+  })
+
+  it('can find medicinal products with exact dosages', async () => {
+    const parsed = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1gu9yg3CcnADvzOvfD0-cV47sVPHnSfj4iXAjcV8HyhBljC6h0-lj-3cf3uHxqmMFvXJiZvv9mW8vb_yJXn68wAlfMdP6kV51YKoqVPz7OTlg',
+      'applicantName': 'Viatris Healthcare (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1gfQxIekkmmVlFTqLVKQD1MVjZiZaE9dDm0gVlfl5OKJtY3_-r169Tc7N2HqvpVYbks8RGe-rUJsDmhmYc1KGmMZxj-Mm4b4WIhXM9vcOGV6Q',
+      'application_no': '380278',
+      'licence_no': '38/5.1/0278',
+      'productName': 'EPIPEN JUNIOR AUTO-INJECTOR',
+      'status': 'Registered',
+      'expiryDate': '1900/01/01',
+      'reg_date': '2006/07/07',
+      'ingredient': 'EACH 0,3 ml SOLUTION CONTAINS \nADRENALINE 0,15 mg',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+
+    console.log(parsed.doses[0])
+
+    const [medication] = await performLookups(db, [parsed], { write_failure_files: false })
+
+    console.log(medication)
+
+    const medicinal_product = await db.selectFrom('snomed_inferred_canonical_name_and_category')
+      .where('id', '=', medication.snomed_concept_id)
+      .selectAll()
+      .executeTakeFirst()
+
+    assertEquals(medicinal_product?.name, 'Product containing only epinephrine')
   })
 })
