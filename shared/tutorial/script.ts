@@ -39,7 +39,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "My name is Lindiwe Nkosi and I'll be guiding you through this tutorial.",
+    text: "My name is Lindiwe Nkosi and I'll be guiding you through this tutorial of our digital health platform.",
   },
   {
     type: 'dialogue',
@@ -57,6 +57,18 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     text: 'Here you can see all patients present at the clinic...',
     highlight: '[data-column="patient"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: "why they're here...",
+    highlight: '[data-column="reason-for-visit"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: "why they're here...",
+    highlight: '[data-column="reason-for-visit"]',
   },
   {
     type: 'dialogue',
