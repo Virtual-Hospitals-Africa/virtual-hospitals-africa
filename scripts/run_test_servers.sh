@@ -35,8 +35,18 @@ mktemp_with_suffix() {
   echo "$temp"
 }
 
-test_http_server_output=$(mktemp_with_suffix log)
-test_https_proxy_server_output=$(mktemp_with_suffix log)
+# On CI, write logs to a known directory for artifact upload
+# Otherwise, use temp files
+if [[ "${CI:-}" == "true" ]]; then
+  mkdir -p ./logs
+  test_http_server_output="./logs/server.log"
+  test_https_proxy_server_output="./logs/proxy.log"
+  : >"$test_http_server_output"
+  : >"$test_https_proxy_server_output"
+else
+  test_http_server_output=$(mktemp_with_suffix log)
+  test_https_proxy_server_output=$(mktemp_with_suffix log)
+fi
 
 task=vite
 
@@ -74,10 +84,8 @@ cleanup() {
     kill $https_proxy_server_pid || true
   fi
   if [[ "${CI:-}" == "true" ]]; then
-    echo "Server output:"
-    cat "$test_http_server_output"
-    echo "Proxy output:"
-    cat "$test_https_proxy_server_output"
+    # Logs are saved to ./logs/ and uploaded as artifacts
+    echo "Server and proxy logs saved to ./logs/ (will be uploaded as artifacts)"
   else
     print_server_log_info
   fi

@@ -9,6 +9,10 @@ on:
       run:
         type: string
         required: true
+      artifact-name:
+        type: string
+        default: 'server-logs'
+        description: 'Name for the uploaded log artifacts'
 
 jobs:
   test:
@@ -47,3 +51,12 @@ jobs:
 
       - name: Run
         run: ${{ inputs.run }}
+
+      - name: Upload server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: logs/
+          retention-days: 3
+          if-no-files-found: ignore
