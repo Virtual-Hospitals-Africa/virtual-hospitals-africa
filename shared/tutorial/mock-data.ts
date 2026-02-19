@@ -376,11 +376,11 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
     present_employees: [makeMockWaitingRoomEmployee({
       id: 'tutorial-hw-004',
       employee_id: 'tutorial-emp-004',
-      name: 'Dr. Mandisa Khumalo',
+      name: 'Mandisa Khumalo',
       first_names: 'Mandisa',
       surname: 'Khumalo',
       avatar_url: '/images/avatars/random/female/5.png',
-      role: 'doctor',
+      role: 'nurse',
       specialty: 'Family Medicine',
     })],
   },

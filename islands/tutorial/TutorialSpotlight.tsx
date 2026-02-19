@@ -29,18 +29,29 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
       return
     }
 
+    const getElements = () => Array.from(document.querySelectorAll(target))
+
+    const combined_bounds = (elements: Element[]): DOMRect | null => {
+      if (elements.length === 0) return null
+      const rects = elements.map((el) => el.getBoundingClientRect())
+      const left = Math.min(...rects.map((r) => r.left))
+      const top = Math.min(...rects.map((r) => r.top))
+      const right = Math.max(...rects.map((r) => r.right))
+      const bottom = Math.max(...rects.map((r) => r.bottom))
+      return new DOMRect(left, top, right - left, bottom - top)
+    }
+
     const updateBounds = () => {
-      const element = document.querySelector(target)
-      target_bounds.value = element?.getBoundingClientRect() ?? null
+      target_bounds.value = combined_bounds(getElements())
     }
 
     const elementNeedingScrollingIntoView = (): Element | undefined => {
-      const element = document.querySelector(target)
-      if (!element) return
-      const el_rect = element.getBoundingClientRect()
-      const fills_page = el_rect.height >= globalThis.innerHeight
+      const elements = getElements()
+      if (elements.length === 0) return
+      const bounds = combined_bounds(elements)!
+      const fills_page = bounds.height >= globalThis.innerHeight
       if (fills_page) return
-      return element
+      return elements[0]
     }
 
     const scrollIntoViewIfNecessary = () => {
@@ -56,8 +67,7 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
     self.addEventListener('resize', handleUpdate)
 
     const observer = new ResizeObserver(handleUpdate)
-    const element = document.querySelector(target)
-    if (element) {
+    for (const element of getElements()) {
       observer.observe(element)
     }
 
