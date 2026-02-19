@@ -5,12 +5,12 @@ import { assertOr404 } from '../../../../../../../util/assertOr.ts'
 import { presentWithPatient } from '../../../../../../../shared/patient_encounters.ts'
 import { Person } from '../../../../../../../components/library/Person.tsx'
 import { employeeDisplay } from '../../../../../../../util/healthWorkerDisplay.ts'
-import { HealthWorkerHomePageLayout } from '../../../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../../../_middleware.tsx'
 import capitalize from '../../../../../../../util/capitalize.ts'
 import Form from '../../../../../../../components/library/Form.tsx'
 import { Button } from '../../../../../../../components/library/Button.tsx'
 
-export default HealthWorkerHomePageLayout<OrganizationContext>(
+export default HealthWorkerHomePage<OrganizationContext>(
   'Immediate Triage Request',
   async function RespondToImmediateTriageRequestPage(
     ctx: OrganizationContext,

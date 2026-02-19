@@ -5,11 +5,11 @@ import { appointments } from '../../db/models/appointments.ts'
 import { parseDateTime, todayISOInJohannesburg } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { promiseProps } from '../../util/promiseProps.ts'
-import { HealthWorkerHomePageLayout } from './_middleware.tsx'
+import { HealthWorkerHomePage } from './_middleware.tsx'
 import { assertOrRedirect } from '../../util/assertOr.ts'
 import { warning } from '../../util/alerts.ts'
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'My Calendar',
   async function Calendar(
     ctx: LoggedInHealthWorkerContext,

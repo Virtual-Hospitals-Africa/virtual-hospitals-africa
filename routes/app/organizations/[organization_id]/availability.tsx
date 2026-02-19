@@ -8,7 +8,7 @@ import { padTime } from '../../../../util/pad.ts'
 import redirect from '../../../../util/redirect.ts'
 import { parseDateTime } from '../../../../util/date.ts'
 import {} from '../../../logged-in.tsx'
-import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { forEach } from '../../../../util/inParallel.ts'
 import { postHandler } from '../../../../backend/postHandler.ts'
 import z from 'zod'
@@ -187,7 +187,7 @@ export const handler = postHandler(
   },
 )
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Set Availability',
   async function SetAvailability(
     // deno-lint-ignore no-explicit-any

@@ -7,7 +7,7 @@ import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { todayISOInJohannesburg } from '../../../../../util/date.ts'
 import consumables from '../../../../../db/models/consumables.ts'
-import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../_middleware.tsx'
 import roleByProfession from '../../../../../shared/roleByProfession.ts'
 import { postHandler } from '../../../../../backend/postHandler.ts'
 
@@ -55,7 +55,7 @@ export const handler = postHandler(
   },
 )
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Add Consumable',
   async function ConsumableAdd(
     { url, state }: LoggedInHealthWorkerContext,

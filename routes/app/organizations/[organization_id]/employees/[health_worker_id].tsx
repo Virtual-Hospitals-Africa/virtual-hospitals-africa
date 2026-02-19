@@ -2,10 +2,10 @@ import HealthWorkerDetailedCard from '../../../../../components/health_worker/De
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
-import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../_middleware.tsx'
 import { employees } from '../../../../../db/models/employees.ts'
 
-export default HealthWorkerHomePageLayout<OrganizationContext>(
+export default HealthWorkerHomePage<OrganizationContext>(
   async function EmployeePage(
     ctx: OrganizationContext,
   ) {

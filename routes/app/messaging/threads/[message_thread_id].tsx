@@ -3,7 +3,7 @@ import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import { messages } from '../../../../db/models/messages.ts'
 import { message_threads } from '../../../../db/models/message_threads.ts'
 import { message_thread_participants } from '../../../../db/models/message_thread_participants.ts'
-import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { ChatThread } from '../../../../islands/messages/ChatThread.tsx'
 import { postHandler } from '../../../../backend/postHandler.ts'
@@ -37,7 +37,7 @@ export const handler = postHandler(
   },
 )
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Messaging',
   async function MessagingPage(
     ctx: LoggedInHealthWorkerContext,

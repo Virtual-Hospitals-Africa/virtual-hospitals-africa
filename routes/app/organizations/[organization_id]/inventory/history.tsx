@@ -2,9 +2,9 @@ import { assertOr404 } from '../../../../../util/assertOr.ts'
 import InventoryHistoryTable from '../../../../../components/inventory/InventoryHistory.tsx'
 import { inventory } from '../../../../../db/models/inventory.ts'
 import { OrganizationContext } from '../_middleware.ts'
-import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../_middleware.tsx'
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   async function InventoryHistoryPage(
     { url, state }: OrganizationContext,
   ) {

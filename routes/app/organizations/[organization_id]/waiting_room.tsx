@@ -1,9 +1,9 @@
 import { waiting_room } from '../../../../db/models/waiting_room.ts'
 import WaitingRoomView from '../../../../components/waiting_room/View.tsx'
-import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { OrganizationContext } from './_middleware.ts'
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Waiting Room',
   async function WaitingRoomPage(
     ctx: OrganizationContext,

@@ -1,9 +1,9 @@
 import { employees } from '../../../../db/models/employees.ts'
 import EmployeesTable from '../../../../components/health_worker/EmployeesTable.tsx'
-import { HealthWorkerHomePageLayout } from '../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { OrganizationContext } from './_middleware.ts'
 
-export default HealthWorkerHomePageLayout<OrganizationContext>(
+export default HealthWorkerHomePage<OrganizationContext>(
   async function EmployeeTable(
     ctx,
   ) {

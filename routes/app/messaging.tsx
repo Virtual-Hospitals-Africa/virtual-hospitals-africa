@@ -1,9 +1,9 @@
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import { message_threads } from '../../db/models/message_threads.ts'
 import ThreadList from '../../islands/messages/ThreadList.tsx'
-import { HealthWorkerHomePageLayout } from './_middleware.tsx'
+import { HealthWorkerHomePage } from './_middleware.tsx'
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Messaging',
   async function MessagingPage(
     ctx: LoggedInHealthWorkerContext,

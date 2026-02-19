@@ -6,7 +6,7 @@ import { OrganizationContext } from '../_middleware.ts'
 import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInJohannesburg } from '../../../../../util/date.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
-import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../_middleware.tsx'
 import { postHandler } from '../../../../../backend/postHandler.ts'
 import z from 'zod'
 import { positive_integer, string_or_number_as_string } from '../../../../../util/validators.ts'
@@ -52,7 +52,7 @@ export const handler = postHandler(
   },
 )
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Add Medicine',
   async function MedicineAdd(
     { url: { searchParams }, state: { trx, organization } }: OrganizationContext,

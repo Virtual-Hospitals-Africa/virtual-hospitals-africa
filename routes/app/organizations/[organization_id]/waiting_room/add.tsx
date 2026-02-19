@@ -5,7 +5,7 @@ import { employees } from '../../../../../db/models/employees.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
-import { HealthWorkerHomePageLayout } from '../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../_middleware.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { postHandler } from '../../../../../backend/postHandler.ts'
@@ -49,7 +49,7 @@ export const handler = postHandler(
   },
 )
 
-export default HealthWorkerHomePageLayout(
+export default HealthWorkerHomePage(
   'Add patient to waiting room',
   async function WaitingRoomAdd(
     { url, state: { organization, trx } }: OrganizationContext,

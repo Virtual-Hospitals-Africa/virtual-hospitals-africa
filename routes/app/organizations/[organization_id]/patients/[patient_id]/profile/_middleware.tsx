@@ -8,7 +8,7 @@ import { Person } from '../../../../../../../components/library/Person.tsx'
 import { Tabs } from '../../../../../../../components/library/Tabs.tsx'
 import { replaceParams } from '../../../../../../../util/replaceParams.ts'
 import { assertOr405 } from '../../../../../../../util/assertOr.ts'
-import { HealthWorkerHomePageLayout } from '../../../../../_middleware.tsx'
+import { HealthWorkerHomePage } from '../../../../../_middleware.tsx'
 import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../../../_middleware.ts'
 import { getRequiredUUIDParam } from '../../../../../../../util/getParam.ts'
@@ -41,7 +41,7 @@ export const PatientProfilePage = (
     ctx: PatientProfileContext,
   ) => JSX.Element | Promise<JSX.Element>,
 ) =>
-  HealthWorkerHomePageLayout<PatientProfileContext>(
+  HealthWorkerHomePage<PatientProfileContext>(
     title,
     async function PatientContents(ctx) {
       const patient_id = getRequiredUUIDParam(ctx, 'patient_id')

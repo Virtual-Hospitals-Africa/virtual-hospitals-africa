@@ -28,6 +28,7 @@ export type SidebarProps = {
   params: Record<string, string>
   urlSearchParams: URLSearchParams
   nav_links: LinkDef[]
+  tutorial?: boolean
 }
 
 function NavItem({
@@ -107,7 +108,7 @@ const regulator_home_page_nav_links: LinkDef[] = [
 ]
 
 export function GenericSidebar(
-  { nav_links, route, params, urlSearchParams, top, bottom }: SidebarProps,
+  { nav_links, route, params, urlSearchParams, top, bottom, tutorial }: SidebarProps,
 ) {
   const all_params = { ...params }
   urlSearchParams.forEach((value, key) => all_params[key] = value)
@@ -134,7 +135,7 @@ export function GenericSidebar(
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
               <NavItem
-                href={replaceParams(link.route, all_params)}
+                href={tutorial ? '#' : replaceParams(link.route, all_params)}
                 active={link === active_link}
                 title={link.title ||
                   capitalize(link.route.split('/').pop()!).replace(
@@ -166,13 +167,16 @@ export const RegulatorDefaultTop = {
   child: <LogoWithFullText variant='indigo' className='w-full' />,
 }
 
+export type HealthWorkerHomePageSidebarProps = {
+  route: string
+  params: Record<string, string>
+  urlSearchParams: URLSearchParams
+  bottom?: ComponentChild
+  tutorial?: boolean
+}
+
 export function HealthWorkerHomePageSidebar(
-  { route, params, urlSearchParams, bottom }: {
-    route: string
-    params: Record<string, string>
-    urlSearchParams: URLSearchParams
-    bottom?: ComponentChild
-  },
+  { route, params, urlSearchParams, bottom, tutorial }: HealthWorkerHomePageSidebarProps,
 ) {
   return (
     <GenericSidebar
@@ -182,6 +186,7 @@ export function HealthWorkerHomePageSidebar(
       nav_links={practitioner_home_page_nav_links}
       top={HealthWorkerDefaultTop}
       bottom={bottom}
+      tutorial={tutorial}
     />
   )
 }
