@@ -34,23 +34,29 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "My name is Lindiwe Nkosi and I'll be guiding you through this tutorial.",
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
     text: 'Our mission is to make sure that patients who need it can get the care they need that day.',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "You'll play the role of a triage nurse: the front line assessing patients to ensure those with urgent cases are escalated quickly.",
+    text: "My name is Lindiwe Nkosi and I'll be guiding you through this tutorial.",
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'This is the Open Encounters view - your command centre for overseeing the whole clinic.',
+    text: "You'll play the role of a triage nurse: the front line assessing patients to ensure those with urgent cases are seen quickly.",
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: "We'll start at the Open Encounters view.",
     highlight: TUTORIAL_TARGETS.WAITING_ROOM_TABLE,
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: 'Here you can see all patients present at the clinic...',
+    highlight: '[data-column="patient"]',
   },
   {
     type: 'dialogue',

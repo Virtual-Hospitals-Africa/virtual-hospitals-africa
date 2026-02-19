@@ -12,6 +12,7 @@ import { LocalTime } from '../../islands/LocalTime.tsx'
 import { isDateLike } from '../../util/date.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { assertUnreachable } from '../../util/assertUnreachable.ts'
+import { hyphenate } from '../../util/hyphenate.ts'
 
 type Showable =
   | string[]
@@ -41,7 +42,7 @@ type RowCallback<T extends Row, V> = (row: T, index: number, rows: T[]) => V
 
 export type TableColumn<T extends Row> =
   & {
-    label?: Maybe<string>
+    label: string
     cellClassName?: string
     tdClassName?: string | ((row: T) => string)
     headerClassName?: string
@@ -217,6 +218,7 @@ function TableCell<T extends Row>(
     <td
       className={cls(tdClassName, column.label ? 'p-3' : 'p-2')}
       key={column.label}
+      data-column={hyphenate(column.label)}
     >
       <TableCellInnerContents
         row={row}
@@ -257,9 +259,10 @@ function TableHeader<T extends Row>(
         {columns.map((column) => (
           <th
             scope='col'
+            data-column={hyphenate(column.label)}
             className={cls(
-              column.headerClassName,
               'text-left text-sm font-semibold text-indigo-900',
+              column.headerClassName,
               {
                 'p-3': !!column.label,
               },
