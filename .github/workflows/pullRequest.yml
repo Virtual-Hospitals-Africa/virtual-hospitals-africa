@@ -32,9 +32,11 @@ jobs:
       setup-lfs: true
       artifact-name: test-web-logs
       run: |
+      build: |
         deno task db:restore snomed
         deno task db:migrate all
         deno task build
+      run: |
         deno task test --use-build
 
   # TODO turn back on
@@ -52,8 +54,8 @@ jobs:
     uses: ./.github/workflows/test-with-db.yml
     with:
       artifact-name: test-migrations-logs
+      build: deno task db:migrate latest
       run: |
-        deno task db:migrate latest
         deno task db:migrate to snomed_inferred
         deno task db:migrate latest
 

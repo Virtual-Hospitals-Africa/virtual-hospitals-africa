@@ -6,6 +6,9 @@ on:
       setup-lfs:
         type: boolean
         default: false
+      build:
+        type: string
+        default: ':'
       run:
         type: string
         required: true
@@ -13,6 +16,9 @@ on:
         type: string
         default: 'server-logs'
         description: 'Name for the uploaded log artifacts'
+      run-step-name:
+        type: string
+        default: Test
 
 jobs:
   test:
@@ -49,11 +55,14 @@ jobs:
 
       - uses: ./.github/actions/write-test-env
 
-      - name: Run
+      - name: Build
+        run: ${{ inputs.build }}
+
+      - name: ${{ inputs.run-step-name }}
         run: ${{ inputs.run }}
 
-      - name: Upload server logs
-        if: always()
+      - name: Upload server logs on fail
+        if: fail()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact-name }}
