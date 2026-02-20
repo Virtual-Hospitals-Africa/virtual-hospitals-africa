@@ -1,12 +1,36 @@
 import { sql } from 'kysely'
-import { TrxOrDb } from '../../../../types.ts'
+import { SnomedConcept, TrxOrDb } from '../../../../types.ts'
 import { pMap } from '../../../../util/inParallel.ts'
 import { asText } from '../../../helpers.ts'
-import { ParsedMedication, ParsedMedicationWhoseIngredientsAreSnomedConcepts, ParsedMedicationWithSnomedConceptMedicinalProduct } from './shared.ts'
+import {
+  administration_methods_to_routes,
+  AdministrationMethod,
+  ParsedMedication,
+  ParsedMedicationWhoseIngredientsAreSnomedConcepts,
+  ParsedMedicationWithSnomedConceptMedicinalProduct,
+} from './shared.ts'
 import { assert } from 'std/assert/assert.ts'
 import { humanReadableJson } from '../../../../util/humanReadableJson.ts'
-import { HAS_ACTIVE_INGREDIENT, IS_MODIFICATION_OF } from '../../../../shared/snomed_concepts.ts'
-import zip from '../../../../util/zip.ts'
+import {
+  GRAM,
+  HAS_ACTIVE_INGREDIENT,
+  HAS_CONCENTRATION_STRENGTH_DENOMINATOR_UNIT,
+  HAS_CONCENTRATION_STRENGTH_DENOMINATOR_VALUE,
+  HAS_CONCENTRATION_STRENGTH_NUMERATOR_UNIT,
+  HAS_CONCENTRATION_STRENGTH_NUMERATOR_VALUE,
+  HAS_MANUFACTURED_DOSE_FORM,
+  HAS_PRECISE_ACTIVE_INGREDIENT,
+  INTERNATIONAL_UNIT,
+  IS_MODIFICATION_OF,
+  LITER,
+  MICROGRAM,
+  MILLIGRAM,
+  MILLILITER,
+} from '../../../../shared/snomed_concepts.ts'
+import { jsonObjectFrom } from '../../../helpers.ts'
+import { rendered_snomed_concepts } from '../../../models/rendered_snomed_concepts.ts'
+import matching from '../../../../util/matching.ts'
+import { SnomedCategory } from '../../../../db.d.ts'
 
 export async function lookupDrugIngredientSnomedConceptIds(
   trx: TrxOrDb,
@@ -65,87 +89,220 @@ export async function lookupDrugIngredientSnomedConceptIds(
   return result
 }
 
+// Maps medication unit abbreviations to SNOMED concept IDs for units of measure
+const TO_SNOMED_UNIT_CONCEPT_IDS: Record<string, SnomedConcept> = {
+  'MG': MILLIGRAM,
+  'G': GRAM,
+  'ML': MILLILITER,
+  'L': LITER,
+  'MCG': MICROGRAM,
+  'UG': MICROGRAM,
+  'IU': INTERNATIONAL_UNIT,
+}
+
+// deno-lint-ignore require-await
+async function attemptToFindPreciseMedication(
+  trx: TrxOrDb,
+  medication: ParsedMedicationWhoseIngredientsAreSnomedConcepts,
+) {
+  if (medication.doses.length !== 1) return
+  const [dose] = medication.doses
+  if (dose.ingredients.length !== 1) return
+  const [ingredient] = dose.ingredients
+  if (!ingredient.strength) return
+  const description_is_units = new Set(['MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU']).has(dose.description)
+  if (!description_is_units) return
+
+  const denominator_unit_concept = TO_SNOMED_UNIT_CONCEPT_IDS[dose.description]
+  const numerator_unit_concept = TO_SNOMED_UNIT_CONCEPT_IDS[ingredient.strength.units]
+  if (!denominator_unit_concept || !numerator_unit_concept) return
+
+  const numerator_value = parseFloat(ingredient.strength.value)
+  const denominator_value = parseFloat(dose.value)
+  if (isNaN(numerator_value) || isNaN(denominator_value)) return
+
+  const ingredient_snomed_concept_id = ingredient.snomed_concept_id
+
+  const qb = trx
+    .selectFrom('snomed_inferred_canonical_name_and_category as precise_medication')
+    // HAS_PRECISE_ACTIVE_INGREDIENT → ingredient concept (or its modification)
+    .innerJoin('snomed_relationship as pai', (join) =>
+      join
+        .onRef('pai.source_id', '=', 'precise_medication.id')
+        .on('pai.type_id', '=', HAS_PRECISE_ACTIVE_INGREDIENT.id)
+        .on((eb) =>
+          eb.or([
+            eb('pai.destination_id', '=', ingredient_snomed_concept_id),
+            eb(
+              'pai.destination_id',
+              'in',
+              eb.selectFrom('snomed_relationship as modification')
+                .where('modification.type_id', '=', IS_MODIFICATION_OF.id)
+                .select('modification.destination_id')
+                .where('modification.source_id', '=', ingredient_snomed_concept_id),
+            ),
+          ])
+        ))
+    // Has concentration strength numerator value
+    .innerJoin('snomed_relationship_concrete_values as nv', (join) =>
+      join
+        .onRef('nv.source_id', '=', 'precise_medication.id')
+        .on('nv.type_id', '=', HAS_CONCENTRATION_STRENGTH_NUMERATOR_VALUE.id)
+        .on('nv.value', '=', `#${numerator_value}`)
+        .on('nv.active', '=', true))
+    // Has concentration strength numerator unit
+    .innerJoin('snomed_relationship as nu', (join) =>
+      join
+        .onRef('nu.source_id', '=', 'precise_medication.id')
+        .on('nu.type_id', '=', HAS_CONCENTRATION_STRENGTH_NUMERATOR_UNIT.id)
+        .on('nu.destination_id', '=', numerator_unit_concept.id)
+        .on('nu.active', '=', true))
+    // Has concentration strength denominator value
+    .innerJoin('snomed_relationship_concrete_values as dv', (join) =>
+      join
+        .onRef('dv.source_id', '=', 'precise_medication.id')
+        .on('dv.type_id', '=', HAS_CONCENTRATION_STRENGTH_DENOMINATOR_VALUE.id)
+        .on('dv.value', '=', `#${denominator_value}`)
+        .on('dv.active', '=', true))
+    // Has concentration strength denominator unit
+    .innerJoin('snomed_relationship as du', (join) =>
+      join
+        .onRef('du.source_id', '=', 'precise_medication.id')
+        .on('du.type_id', '=', HAS_CONCENTRATION_STRENGTH_DENOMINATOR_UNIT.id)
+        .on('du.destination_id', '=', denominator_unit_concept.id)
+        .on('du.active', '=', true))
+    .select((eb) => [
+      asText(eb, 'precise_medication.id').as('id'),
+      'precise_medication.name',
+      jsonObjectFrom(
+        rendered_snomed_concepts.baseQuery(trx, {})
+          .innerJoin('snomed_relationship as manufactured_dose_form', (join) =>
+            join
+              .onRef('manufactured_dose_form.source_id', '=', eb.ref('precise_medication.id'))
+              .on('manufactured_dose_form.type_id', '=', HAS_MANUFACTURED_DOSE_FORM.id)
+              .on('manufactured_dose_form.active', '=', true)
+              .onRef('manufactured_dose_form.destination_id', '=', 'snomed_concept.id')),
+      ).as('manufactured_dose_form'),
+    ])
+    .where('precise_medication.category', '=', 'clinical drug')
+
+  return qb.executeTakeFirst()
+}
+
 export async function lookupMedicationSnomedConceptIds(
   trx: TrxOrDb,
   medications: ParsedMedicationWhoseIngredientsAreSnomedConcepts[],
 ) {
   console.log(`  Looking up SNOMED products for ${medications.length} medications via HAS_ACTIVE_INGREDIENT relationships...`)
 
-  const medications_to_drug_ingredient_joined_snomed_concept_strings = new Map<ParsedMedicationWhoseIngredientsAreSnomedConcepts, string>()
-  const unique_drug_ingredient_joined_snomed_concept_strings = new Set<string>()
-  for (const medication of medications) {
+  // Cache promises by ingredient combination string so identical queries are only fired once
+  const ingredient_combination_queries = new Map<string, ReturnType<typeof Promise.resolve<{ id: string } | undefined>>>()
+
+  const total = medications.length
+  let i = 0
+  const results = await pMap(medications, async (medication) => {
+    i++
+    if (i % 100 === 0 || i === 1 || i === total) {
+      console.log(`  SNOMED lookup ${i}/${total}`)
+    }
+
+    const precise_medication = await attemptToFindPreciseMedication(trx, medication)
+    if (precise_medication) {
+      return { type: 'precise', medication, precise_medication } as const
+    }
+
     const ingredient_concept_ids = new Set<string>()
     for (const dose of medication.doses) {
       for (const ingredient of dose.ingredients) {
         ingredient_concept_ids.add(ingredient.snomed_concept_id)
       }
     }
+    const ingredient_combination = [...ingredient_concept_ids].sort().join('/')
 
-    const drug_ingredient_joined_snomed_concept_string = [...ingredient_concept_ids].sort().join('/')
-    unique_drug_ingredient_joined_snomed_concept_strings.add(drug_ingredient_joined_snomed_concept_string)
-    medications_to_drug_ingredient_joined_snomed_concept_strings.set(medication, drug_ingredient_joined_snomed_concept_string)
-  }
+    if (!ingredient_combination_queries.has(ingredient_combination)) {
+      // Find medicinal products that have a HAS_ACTIVE_INGREDIENT relationship
+      // to a descendant-of-or-equal-to each of our ingredient SNOMED concepts
+      let qb = trx
+        .selectFrom('snomed_inferred_canonical_name_and_category')
+        .select((eb) => [
+          asText(eb, 'snomed_inferred_canonical_name_and_category.id').as('id'),
+        ])
+        .where('snomed_inferred_canonical_name_and_category.category', '=', 'medicinal product')
+        .orderBy((eb) => eb('snomed_inferred_canonical_name_and_category.name', 'ilike', '%Product containing only%'), 'desc')
 
-  const total = unique_drug_ingredient_joined_snomed_concept_strings.size
-  let i = 0
-  const medicinal_products = await pMap(unique_drug_ingredient_joined_snomed_concept_strings, (ingredient_combination) => {
-    i++
-    if (i % 100 === 0 || i === 1 || i === total) {
-      console.log(`  SNOMED lookup ${i}/${total}: "${ingredient_combination}"`)
-    }
-    const ingredient_concept_ids = ingredient_combination.split('/')
-
-    // Find medicinal products that have a HAS_ACTIVE_INGREDIENT relationship
-    // to a descendant-of-or-equal-to each of our ingredient SNOMED concepts
-    let qb = trx
-      .selectFrom('snomed_inferred_canonical_name_and_category')
-      .select((eb) => [
-        asText(eb, 'snomed_inferred_canonical_name_and_category.id').as('id'),
-      ])
-      .where('snomed_inferred_canonical_name_and_category.category', '=', 'medicinal product')
-      .orderBy((eb) => eb('snomed_inferred_canonical_name_and_category.name', 'ilike', '%Product containing only%'), 'desc')
-
-    for (const ingredient_snomed_concept_id of ingredient_concept_ids) {
+      for (const ingredient_snomed_concept_id of ingredient_concept_ids) {
+        qb = qb.where(
+          'snomed_inferred_canonical_name_and_category.id',
+          'in',
+          trx.selectFrom('snomed_relationship')
+            .where('type_id', '=', HAS_ACTIVE_INGREDIENT.id)
+            .select('source_id')
+            .where((eb) =>
+              eb.or([
+                eb('destination_id', '=', ingredient_snomed_concept_id),
+                eb(
+                  'destination_id',
+                  'in',
+                  eb.selectFrom('snomed_relationship as modification')
+                    .where('modification.type_id', '=', IS_MODIFICATION_OF.id)
+                    .select('modification.destination_id')
+                    .where('modification.source_id', '=', ingredient_snomed_concept_id),
+                ),
+              ])
+            ),
+        )
+      }
+      // Exclude products that have more active ingredients than we specified
       qb = qb.where(
-        'snomed_inferred_canonical_name_and_category.id',
-        'in',
-        trx.selectFrom('snomed_relationship')
-          .where('type_id', '=', HAS_ACTIVE_INGREDIENT.id)
-          .select('source_id')
-          .where((eb) =>
-            eb.or([
-              eb('destination_id', '=', ingredient_snomed_concept_id),
-              eb(
-                'destination_id',
-                'in',
-                eb.selectFrom('snomed_relationship as modification')
-                  .where('modification.type_id', '=', IS_MODIFICATION_OF.id)
-                  .select('modification.destination_id')
-                  .where('modification.source_id', '=', ingredient_snomed_concept_id),
-              ),
-            ])
-          ),
+        sql<boolean>`(
+          SELECT COUNT(*) FROM snomed_relationship
+          WHERE source_id = snomed_inferred_canonical_name_and_category.id
+            AND type_id = ${HAS_ACTIVE_INGREDIENT.id}
+        ) = ${ingredient_concept_ids.size}`,
       )
+      // Store the promise before awaiting so parallel tasks with the same combination reuse it
+      ingredient_combination_queries.set(ingredient_combination, qb.executeTakeFirst())
     }
-    return qb.executeTakeFirst()
-  })
 
-  const ingredients_to_medicinal_products = new Map(
-    zip(unique_drug_ingredient_joined_snomed_concept_strings, medicinal_products),
-  )
+    const medicinal_product = await ingredient_combination_queries.get(ingredient_combination)!
+    return { type: 'ingredient', medication, medicinal_product } as const
+  })
 
   const medications_with_medicinal_products: ParsedMedicationWithSnomedConceptMedicinalProduct[] = []
   const failures: ParsedMedicationWhoseIngredientsAreSnomedConcepts[] = []
 
-  for (const [medication, drug_ingredient_joined_snomed_concept_string] of medications_to_drug_ingredient_joined_snomed_concept_strings) {
-    const medicinal_product = ingredients_to_medicinal_products.get(drug_ingredient_joined_snomed_concept_string)
-    if (medicinal_product) {
+  for (const result of results) {
+    if (result.type === 'precise') {
+      const { medication, precise_medication } = result
+      let { form, routes } = medication
+      if (precise_medication.manufactured_dose_form) {
+        const basic_dose_form = precise_medication.manufactured_dose_form.relationships.find(matching({ type_name: 'Has basic dose form' }))
+        if (basic_dose_form) {
+          form = basic_dose_form.destination_name.toUpperCase()
+        }
+        const administration_method = precise_medication.manufactured_dose_form.relationships.find(matching({
+          destination_category: 'administration method' as SnomedCategory,
+        }))
+        if (administration_method) {
+          routes = administration_methods_to_routes[administration_method.destination_name as unknown as AdministrationMethod]
+        }
+      }
       medications_with_medicinal_products.push({
         ...medication,
-        snomed_concept_id: medicinal_product.id,
+        form,
+        routes,
+        snomed_concept_id: precise_medication.id,
       })
     } else {
-      failures.push(medication)
+      const { medication, medicinal_product } = result
+      if (medicinal_product) {
+        medications_with_medicinal_products.push({
+          ...medication,
+          snomed_concept_id: medicinal_product.id,
+        })
+      } else {
+        failures.push(medication)
+      }
     }
   }
 

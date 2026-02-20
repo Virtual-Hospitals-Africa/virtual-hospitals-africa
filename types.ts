@@ -2498,6 +2498,50 @@ export type RenderedSnomedConcept = {
   name: string
   category: SnomedCategory
 }
+
+export type RenderedFullSnomedConcept = {
+  id: string
+  name: string
+  category: SnomedCategory
+  active: boolean
+  descriptions: {
+    id: string
+    term: string
+    language_code: string
+    type_id: string
+  }[]
+  text_definitions: {
+    id: string
+    term: string
+    language_code: string
+  }[]
+  relationships: {
+    id: string
+    relationship_group: string
+    type_id: string
+    type_name: string
+    destination_id: string
+    destination_name: string
+    destination_category: SnomedCategory
+  }[]
+  stated_relationships: {
+    id: string
+    relationship_group: string
+    type_id: string
+    type_name: string
+    destination_id: string
+    destination_name: string
+    destination_category: SnomedCategory
+  }[]
+  concrete_values: {
+    id: string
+    relationship_group: string
+    type_id: string
+    type_name: string
+    value: string
+  }[]
+}
+
 export type RenderedAttribute = IntermediateBaseRecord & {
   displays: RecordDisplays
   value: RecordValueSnomedConcept | RecordValueEvent
