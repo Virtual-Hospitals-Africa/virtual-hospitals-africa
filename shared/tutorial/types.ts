@@ -15,6 +15,7 @@ export type TutorialStep =
   | 'waiting_room'
   | 'warning_signs'
   | 'brief_history'
+  | 'height_and_weight'
   | 'vitals'
   | 'additional_tasks'
   | 'assign_priority'
@@ -25,6 +26,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   'waiting_room',
   'warning_signs',
   'brief_history',
+  'height_and_weight',
   'vitals',
   'additional_tasks',
   'assign_priority',
@@ -70,7 +72,7 @@ type DialogueItem = {
   type: 'dialogue'
   speaker: Speaker
   text: string
-  highlight?: string // CSS selector to spotlight
+  highlight?: string | string[] // CSS selector to spotlight
   is_final?: boolean // Shows confetti + restart button
   link?: { title: string; href: string } // Optional small link in bottom-left
 }
@@ -117,7 +119,12 @@ type ModalItem = {
  * Discriminated union on 'type' field.
  */
 export type ScriptItem =
-  & { position?: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'; dangerousHTML?: boolean }
+  & {
+    position?: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'
+    dangerousHTML?: boolean
+    click_target_on_advance?: string
+    input?: { field: string; value: string } | { field: string; value: string }[] // CSS selector(s) + value(s) to set when advancing TO this step
+  }
   & (
     | DialogueItem
     | HighlightItem

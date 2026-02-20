@@ -20,6 +20,7 @@ export const TUTORIAL_TARGETS = {
   COUGH_CHECKBOX: 'label:has(#common-symptoms-cough)', // from uniqueIdentifier() in WarningSigns
   PATIENT_DRAWER: '#patient-drawer',
   PATIENT_DRAWER_THIS_VISIT: '#patient-drawer-this-visit',
+  PATIENT_DRAWER_HISTORY: '#patient-drawer-history',
   PATIENT_DRAWER_MEASURE_VITALS: '#patient-drawer-workflow-step-triage-measure-vitals',
   SPO2_INPUT: "[name='measurements.blood_oxygen_saturation.value']",
 
@@ -38,7 +39,8 @@ export const TUTORIAL_TARGETS = {
   VITAL_TEMPERATURE: 'div:has(> div > label[for="measurements.temperature"])',
   VITAL_RESPIRATORY_RATE: 'div:has(> div > label[for="measurements.respiratory_rate"])',
   VITAL_HEART_RATE: 'div:has(> div > label[for="measurements.heart_rate"])',
-  VITAL_BLOOD_PRESSURE: 'div:has(> div > label[for="measurements.blood_pressure_systolic"])',
+  VITAL_BLOOD_PRESSURE:
+    'div:has(> div > label[for="measurements.blood_pressure_systolic"]), div:has(> div > label[for="measurements.blood_pressure_diastolic"])',
   VITAL_SPO2: 'div:has(> div > label[for="measurements.blood_oxygen_saturation"])',
 
   // Additional Tasks step

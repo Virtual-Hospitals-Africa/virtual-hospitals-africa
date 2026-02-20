@@ -31,7 +31,6 @@ jobs:
     with:
       setup-lfs: true
       artifact-name: test-web-logs
-      run: |
       build: |
         deno task db:restore snomed
         deno task db:migrate all

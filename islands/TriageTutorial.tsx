@@ -84,6 +84,8 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
     return getCompletedSteps(current_step)
   }, [current_step])
 
+  console.log({ steps_completed, current_step })
+
   const handleSetHashState = (state: TutorialHashState | { action: 'none' }) => {
     hash.value = state
   }
@@ -112,7 +114,6 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         url={url}
         route={route}
         params={{}}
-        next_step_text='Tutorial Mode'
         nav_links={TUTORIAL_NAV_LINKS}
         patient={patient}
         priority={null}
@@ -129,7 +130,8 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
             <HealthWorker {...employeeDisplay(employee)} />
           </div>
         }
-        buttons={<TutorialModeButton />}
+        // next_step_text='Next'
+        // buttons={<TutorialModeButton />}
         onSubmit={(e) => e.preventDefault()}
       >
         <StepRenderer
@@ -207,22 +209,5 @@ function WaitingRoomLayout({ url, route, employee }: { url: URL; route: string; 
         />
       </div>
     </HealthWorkerHomePageLayout>
-  )
-}
-
-/**
- * Button shown in the footer during tutorial mode.
- */
-function TutorialModeButton() {
-  return (
-    <div className='flex items-center gap-3 text-sm text-gray-500'>
-      <span
-        className='px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-full font-medium'
-        style={{ fontFamily: "'GeistPixel', monospace" }}
-      >
-        Tutorial Mode
-      </span>
-      <span>Follow the prompts to continue</span>
-    </div>
   )
 }

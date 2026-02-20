@@ -68,12 +68,12 @@ export const VITAL_MEASUREMENTS_SNOMED_CONCEPTS = {
   height: BODY_HEIGHT,
   weight: BODY_WEIGHT,
   temperature: BODY_TEMPERATURE,
+  respiratory_rate: RESPIRATORY_RATE,
+  heart_rate: PULSE_FUNCTION,
   blood_pressure_systolic: SYSTOLIC_BLOOD_PRESSURE,
   blood_pressure_diastolic: DIASTOLIC_BLOOD_PRESSURE,
   blood_oxygen_saturation: HEMOGLOBIN_SATURATION_WITH_OXYGEN,
   blood_glucose: BLOOD_GLUCOSE_STATUS,
-  heart_rate: PULSE_FUNCTION,
-  respiratory_rate: RESPIRATORY_RATE,
   midarm_circumference: MID_UPPER_ARM_CIRCUMFERENCE,
   triceps_skinfold: TRICEPS_SKIN_FOLD_THICKNESS,
   head_circumference: HEAD_CIRCUMFERENCE,
@@ -86,8 +86,8 @@ export const VITALS_COMPUTED_SNOMED_CONCEPTS = {
 }
 
 export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS = {
-  mobility_assessment: ASSESSMENT_OF_MOBILITY,
   consciousness: ALERT_CONFUSION_VOICE_PAIN_UNRESPONSIVE_SCALE_SCORE,
+  mobility_assessment: ASSESSMENT_OF_MOBILITY,
   trauma_presence: TRAUMA_SCORE,
 }
 
@@ -130,12 +130,12 @@ export type VitalAssessment = keyof typeof VITAL_ASSESSMENTS_EVALUATION_SNOMED_C
 export type Vital = VitalMeasurement | VitalAssessment
 
 export const ADULT_TEWS_COMPONENTS = [
+  'consciousness' as const,
   'mobility_assessment' as const,
   'respiratory_rate' as const,
   'heart_rate' as const,
   'blood_pressure_systolic' as const,
   'temperature' as const,
-  'consciousness' as const,
   'trauma_presence' as const,
 ] satisfies Vital[]
 
@@ -145,12 +145,12 @@ export const VITAL_MEASUREMENTS_UNITS = {
   height: 'cm',
   weight: 'kg',
   temperature: '°C',
+  respiratory_rate: 'bpm',
   blood_pressure_systolic: 'mmHg',
   blood_pressure_diastolic: 'mmHg',
   blood_oxygen_saturation: '%',
   blood_glucose: 'mmol/L',
   heart_rate: 'bpm',
-  respiratory_rate: 'bpm',
   midarm_circumference: 'cm',
   head_circumference: 'cm',
   triceps_skinfold: 'cm',
@@ -235,6 +235,13 @@ const ASESSMENT_OPTIONS: {
     available_to_ages: NonEmptyArray<AgeDetermination>
   }[]
 } = {
+  consciousness: [
+    { label: 'Alert' as const, score: 0, s_expression: asClinicalFindingSExpression(MENTALLY_ALERT), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Reacts to voice' as const, score: 1, s_expression: asClinicalFindingSExpression(IMPAIRMENT_OF_MENTAL_ALERTNESS), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Confused' as const, score: 2, s_expression: asClinicalFindingSExpression(CLOUDED_CONSCIOUSNESS), available_to_ages: ['adult', 'older child'] },
+    { label: 'Reacts to pain' as const, score: 2, s_expression: asClinicalFindingSExpression(RESPONDS_TO_PAIN), available_to_ages: ['adult', 'older child', 'younger child'] },
+    { label: 'Unresponsive' as const, score: 3, s_expression: asClinicalFindingSExpression(UNRESPONSIVE), available_to_ages: ['adult', 'older child', 'younger child'] },
+  ],
   mobility_assessment: [
     { label: 'Walking' as const, score: 0, s_expression: asClinicalFindingSExpression(ABLE_TO_WALK), available_to_ages: ['adult'] },
     { label: 'Difficulty walking' as const, score: 1, s_expression: asClinicalFindingSExpression(DIFFICULTY_WALKING), available_to_ages: ['adult'] },
@@ -243,13 +250,6 @@ const ASESSMENT_OPTIONS: {
     { label: 'Normal for age' as const, score: 0, s_expression: normal_for_age, available_to_ages: ['older child', 'younger child'] },
     { label: 'Unable to move as normal' as const, score: 2, s_expression: abnormal_for_age, available_to_ages: ['younger child'] },
     { label: 'Unable to walk as normal' as const, score: 2, s_expression: abnormal_for_age, available_to_ages: ['older child'] },
-  ],
-  consciousness: [
-    { label: 'Alert' as const, score: 0, s_expression: asClinicalFindingSExpression(MENTALLY_ALERT), available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Reacts to voice' as const, score: 1, s_expression: asClinicalFindingSExpression(IMPAIRMENT_OF_MENTAL_ALERTNESS), available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Confused' as const, score: 2, s_expression: asClinicalFindingSExpression(CLOUDED_CONSCIOUSNESS), available_to_ages: ['adult', 'older child'] },
-    { label: 'Reacts to pain' as const, score: 2, s_expression: asClinicalFindingSExpression(RESPONDS_TO_PAIN), available_to_ages: ['adult', 'older child', 'younger child'] },
-    { label: 'Unresponsive' as const, score: 3, s_expression: asClinicalFindingSExpression(UNRESPONSIVE), available_to_ages: ['adult', 'older child', 'younger child'] },
   ],
   trauma_presence: [
     { label: 'No' as const, score: 0, s_expression: asClinicalFindingSExpression(NO_TRAUMATIC_INJURY), available_to_ages: ['adult', 'older child', 'younger child'] },

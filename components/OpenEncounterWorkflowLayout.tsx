@@ -10,6 +10,7 @@ import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWor
 import { StepsSidebar } from './library/Sidebar.tsx'
 import { PatientDrawerV4Props } from '../types.ts'
 import { Workflow } from '../db.d.ts'
+import { hyphenate } from '../util/hyphenate.ts'
 
 export function OpenEncounterWorkflowLayout({
   id,
@@ -83,6 +84,7 @@ export function OpenEncounterWorkflowLayout({
         <ButtonsContainer className='h-16 mt-auto flex flex-row items-center'>
           {buttons || (
             <Button
+              id={`${hyphenate(workflow)}-submit`}
               type='submit'
               size='xl'
               onSubmit={onSubmit}

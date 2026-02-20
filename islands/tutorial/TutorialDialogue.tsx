@@ -74,7 +74,7 @@ export function TutorialDialogue({
         </div>
       </div>
 
-      <div className='relative bg-[#f0f0f0] flex-1 p-4 md:p-8 min-w-[280px] md:min-w-[400px] border-4 border-[#1a1a2e] shadow-[4px_4px_0px_#1a1a2e]'>
+      <div className='relative bg-[#f0f0f0] flex-1 p-4 md:p-8 w-80 md:w-120 border-4 border-[#1a1a2e] shadow-[4px_4px_0px_#1a1a2e]'>
         <div
           className={cls(
             'absolute -top-4 md:-top-5 px-3 md:px-5 py-1 md:py-1.5 text-base md:text-2xl font-bold text-white border-[3px] border-[#1a1a2e] [font-family:GeistPixel,monospace]',

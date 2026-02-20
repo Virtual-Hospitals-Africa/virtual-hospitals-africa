@@ -1554,11 +1554,11 @@ function makeCoughFinding(): RenderedFindingRelativeToHealthWorker {
 /**
  * Convert brief history findings to sidebar records.
  */
-function makeBriefHistoryRecords(): RenderedFindingRelativeToHealthWorker[] {
-  return Object.values(TUTORIAL_BRIEF_HISTORY_COMMON_CONDITIONS).filter(
-    (f): f is RenderedBriefHistoryRelativeToHealthWorker => f !== undefined,
-  )
-}
+// function makeBriefHistoryRecords(): RenderedFindingRelativeToHealthWorker[] {
+//   return Object.values(TUTORIAL_BRIEF_HISTORY_COMMON_CONDITIONS).filter(
+//     (f): f is RenderedBriefHistoryRelativeToHealthWorker => f !== undefined,
+//   )
+// }
 
 /**
  * Build sidebar findings based on current tutorial step.
@@ -1587,32 +1587,32 @@ export function buildSidebarFindings(
     })
   }
 
-  // Brief history step
-  if (currentStep === 'brief_history') {
-    steps.push({
-      workflow_step: 'brief_history',
-      title: 'Brief History',
-      status: 'in progress',
-      records: makeBriefHistoryRecords(),
-    })
-  } else if (isStepCompleted(currentStep, 'brief_history')) {
-    steps.push({
-      workflow_step: 'brief_history',
-      title: 'Brief History',
-      status: 'completed',
-      records: makeBriefHistoryRecords(),
-    })
-  }
+  // // Brief history step
+  // if (currentStep === 'brief_history') {
+  //   steps.push({
+  //     workflow_step: 'brief_history',
+  //     title: 'Brief History',
+  //     status: 'in progress',
+  //     records: makeBriefHistoryRecords(),
+  //   })
+  // } else if (isStepCompleted(currentStep, 'brief_history')) {
+  //   steps.push({
+  //     workflow_step: 'brief_history',
+  //     title: 'Brief History',
+  //     status: 'completed',
+  //     records: makeBriefHistoryRecords(),
+  //   })
+  // }
 
-  // Height and weight (shown from vitals step onward)
-  if (isStepCompleted(currentStep, 'brief_history') || currentStep === 'vitals') {
-    steps.push({
-      workflow_step: 'height_and_weight',
-      title: 'Height and Weight',
-      status: 'completed',
-      records: TUTORIAL_HEIGHT_WEIGHT,
-    })
-  }
+  // // Height and weight (shown from vitals step onward)
+  // if (isStepCompleted(currentStep, 'brief_history') || currentStep === 'vitals') {
+  //   steps.push({
+  //     workflow_step: 'height_and_weight',
+  //     title: 'Height and Weight',
+  //     status: 'completed',
+  //     records: TUTORIAL_HEIGHT_WEIGHT,
+  //   })
+  // }
 
   // Vitals step
   if (currentStep === 'vitals') {
