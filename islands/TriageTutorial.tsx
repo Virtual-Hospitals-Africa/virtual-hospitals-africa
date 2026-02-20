@@ -59,9 +59,10 @@ type Props = {
  */
 export function TriageTutorial({ url, route, patient, employee }: Props) {
   const hash = useLocationHash<TutorialHashState>(isTutorialState)
+  console.log({ hash: hash.value })
 
   effect(() => {
-    if (hash.value.action === 'none') {
+    if (hash.value.action === 'none' && hash.value.loaded) {
       hash.value = initialState()
     }
   })

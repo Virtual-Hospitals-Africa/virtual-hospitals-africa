@@ -8,32 +8,35 @@ import { assert } from 'std/assert/assert.ts'
 import { useEffect } from 'preact/hooks'
 import isString from './isString.ts'
 
+type FullState<
+  State extends Record<string, string> & {
+    action: string
+  },
+> = { loaded: boolean } & ({ action: 'none' } | State)
+
 export function useLocationHash<
   State extends Record<string, string> & {
     action: string
   },
 >(
   callback: (params: Record<string, string>) => params is State,
-): {
-  value: State | { action: 'none' }
-  asHref(state: State | { action: 'none' }): string
-} {
-  const signal = useSignal<State | { action: 'none' }>({ action: 'none' })
+) {
+  const signal = useSignal<FullState<State>>({ loaded: false, action: 'none' })
 
   function checkHash() {
     const hash = self.location.hash.slice(1)
     if (!hash) {
-      return signal.value = { action: 'none' }
+      return signal.value = { loaded: true, action: 'none' }
     }
     const params = Object.fromEntries(new URLSearchParams(hash))
     assert(isString(params.action), 'Action is required')
     assert(callback(params), "Search params don't match the expected type")
-    signal.value = params
+    signal.value = { loaded: true, ...params }
   }
 
   useEffect(() => {
-    self.addEventListener('hashchange', checkHash)
     checkHash()
+    self.addEventListener('hashchange', checkHash)
     return () => {
       self.removeEventListener('hashchange', checkHash)
     }
@@ -47,7 +50,7 @@ export function useLocationHash<
   }
 
   return {
-    get value() {
+    get value(): FullState<State> {
       return signal.value
     },
     set value(state: State | { action: 'none' }) {

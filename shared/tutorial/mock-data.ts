@@ -49,7 +49,7 @@ export const TUTORIAL_PATIENT: RenderedPatientCompletedRegistration = {
     surname: 'Langa',
     preferred_name: 'Duduzile',
   },
-  description: '34 years old, Female',
+  description: 'female • 20 June 1990',
   age_display: '34 years',
   age_years: 34,
   age_days: 12410,
@@ -291,7 +291,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       id: 'tutorial-patient-001',
       name: 'Duduzile Langa',
       avatar_url: '/duduzile.png',
-      description: '34 years old, Female',
+      description: 'female • 20 June 1990',
     },
     room: {
       id: 'tutorial-room-waiting',
@@ -317,7 +317,37 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       id: 'tutorial-patient-002',
       name: 'Themba Ndlovu',
       avatar_url: '/images/avatars/random/male/3.png',
-      description: '45 years old, Male',
+      description: 'male • 15 March 1980',
+    },
+    room: {
+      id: 'tutorial-room-triage-1',
+      name: 'Triage Room 1',
+    },
+    actions: [{
+      text: 'View',
+      href: '#',
+    }],
+    reason: 'seeking treatment',
+    workflow_status_display: 'Awaiting Consultation',
+    arrived_timestamp: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes ago
+    arrived_ago_display: '22 minutes ago',
+    target_treatment_time: null,
+    department_name: 'Primary care',
+    priority: {
+      name: 'Non-urgent',
+      value_snomed_concept_id: '394848005',
+      target_treatment_time: new Date(Date.now() + 15 * 60 * 1000),
+    },
+    present_employees: [],
+  },
+  // Themba - In Triage (another nurse handling)
+  {
+    patient_encounter_id: 'tutorial-encounter-themba',
+    patient: {
+      id: 'tutorial-patient-002',
+      name: 'Themba Ndlovu',
+      avatar_url: '/images/avatars/random/male/3.png',
+      description: 'male • 15 March 1980',
     },
     room: {
       id: 'tutorial-room-triage-1',
@@ -345,14 +375,13 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       specialty: 'Primary Care',
     })],
   },
-  // Nomvula - In Consultation (with doctor)
   {
     patient_encounter_id: 'tutorial-encounter-nomvula',
     patient: {
       id: 'tutorial-patient-003',
       name: 'Nomvula Zulu',
       avatar_url: '/images/avatars/random/female/2.png',
-      description: '28 years old, Female',
+      description: 'female • 8 November 1997',
     },
     room: {
       id: 'tutorial-room-consult-1',
@@ -362,7 +391,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       text: 'View',
       href: '#',
     }],
-    reason: 'seeking treatment',
+    reason: 'maternity',
     workflow_status_display: 'In Consultation',
     arrived_timestamp: new Date(Date.now() - 45 * 60 * 1000), // 45 minutes ago
     arrived_ago_display: '45 minutes ago',
@@ -391,7 +420,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       id: 'tutorial-patient-004',
       name: 'Sibusiso Mthembu',
       avatar_url: '/images/avatars/random/male/7.png',
-      description: '62 years old, Male',
+      description: 'male • 3 July 1963',
     },
     room: {
       id: 'tutorial-room-consult-2',
@@ -408,7 +437,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
     target_treatment_time: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes overdue
     department_name: 'Primary care',
     priority: {
-      name: 'Very urgent',
+      name: 'Non-urgent',
       value_snomed_concept_id: '24484000',
       target_treatment_time: new Date(Date.now() - 15 * 60 * 1000),
     },
