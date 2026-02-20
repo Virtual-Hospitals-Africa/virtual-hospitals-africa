@@ -17,6 +17,7 @@ import { PharmaciesIcon } from './icons/Pharmacies.tsx'
 import { UsersIcon } from './icons/heroicons/outline.tsx'
 import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
 import { prettyStepName } from '../../shared/workflow.ts'
+import { hyphenate } from '../../util/hyphenate.ts'
 
 export type SidebarProps = {
   top: {
@@ -38,7 +39,7 @@ function NavItem({
   Icon,
 }: LinkProps) {
   return (
-    <li>
+    <li id={`sidebar-list-item-${hyphenate(title)}`}>
       <a
         href={href}
         className={cls(

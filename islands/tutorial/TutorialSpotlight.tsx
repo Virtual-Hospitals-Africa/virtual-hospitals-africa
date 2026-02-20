@@ -5,9 +5,10 @@
 
 import { useComputed, useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
+import compact from '../../util/compact.ts'
 
 type Props = {
-  target?: string // Optional - if not provided, just shows dark overlay
+  target?: string | string[] // Optional - if not provided, just shows dark overlay
   clickable?: boolean // Show pulsing amber border when true
 }
 
@@ -20,38 +21,42 @@ const BORDER_RADIUS = 12
  * - With target: dark overlay with cutout around target element
  */
 export function TutorialSpotlight({ target, clickable = false }: Props) {
-  const target_bounds = useSignal<DOMRect | null>(null)
+  const target_bounds = useSignal<DOMRect[]>([])
   const svg_ref = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
     if (!target) {
-      target_bounds.value = null
+      target_bounds.value = []
       return
     }
 
-    const getElements = () => Array.from(document.querySelectorAll(target))
+    const targets = Array.isArray(target) ? target : [target]
 
-    const combined_bounds = (elements: Element[]): DOMRect | null => {
-      if (elements.length === 0) return null
-      const rects = elements.map((el) => el.getBoundingClientRect())
-      const left = Math.min(...rects.map((r) => r.left))
-      const top = Math.min(...rects.map((r) => r.top))
-      const right = Math.max(...rects.map((r) => r.right))
-      const bottom = Math.max(...rects.map((r) => r.bottom))
-      return new DOMRect(left, top, right - left, bottom - top)
+    const getElements = () => targets.map((t) => Array.from(document.querySelectorAll(t)))
+
+    function combinedBounds(elements: Element[][]): DOMRect[] {
+      return compact(elements.map((els) => {
+        if (els.length === 0) return null
+        const rects = els.map((el) => el.getBoundingClientRect())
+        const left = Math.min(...rects.map((r) => r.left))
+        const top = Math.min(...rects.map((r) => r.top))
+        const right = Math.max(...rects.map((r) => r.right))
+        const bottom = Math.max(...rects.map((r) => r.bottom))
+        return new DOMRect(left, top, right - left, bottom - top)
+      }))
     }
 
     const updateBounds = () => {
-      target_bounds.value = combined_bounds(getElements())
+      target_bounds.value = combinedBounds(getElements())
     }
 
     const elementNeedingScrollingIntoView = (): Element | undefined => {
-      const elements = getElements()
-      if (elements.length === 0) return
-      const bounds = combined_bounds(elements)!
-      const fills_page = bounds.height >= globalThis.innerHeight
-      if (fills_page) return
-      return elements[0]
+      for (const elements of getElements()) {
+        const [bounds] = combinedBounds([elements])
+        const fills_page = bounds.height >= globalThis.innerHeight
+        if (fills_page) return
+        return elements[0]
+      }
     }
 
     const scrollIntoViewIfNecessary = () => {
@@ -67,7 +72,7 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
     self.addEventListener('resize', handleUpdate)
 
     const observer = new ResizeObserver(handleUpdate)
-    for (const element of getElements()) {
+    for (const element of getElements().flat()) {
       observer.observe(element)
     }
 
@@ -78,27 +83,24 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
     }
   }, [target])
 
-  const cutout = useComputed(() => {
-    const bounds = target_bounds.value
-    if (!bounds) return null
-
-    return {
+  const cutout = useComputed(() =>
+    target_bounds.value.map((bounds) => ({
       x: bounds.x - PADDING,
       y: bounds.y - PADDING,
       width: bounds.width + PADDING * 2,
       height: bounds.height + PADDING * 2,
-    }
-  })
+    }))
+  )
 
-  const clipPath = clickable && cutout.value
+  const clipPath = clickable && cutout.value[0]
     ? `polygon(
         0% 0%, 0% 100%,
-        ${cutout.value.x}px 100%,
-        ${cutout.value.x}px ${cutout.value.y}px,
-        ${cutout.value.x + cutout.value.width}px ${cutout.value.y}px,
-        ${cutout.value.x + cutout.value.width}px ${cutout.value.y + cutout.value.height}px,
-        ${cutout.value.x}px ${cutout.value.y + cutout.value.height}px,
-        ${cutout.value.x}px 100%,
+        ${cutout.value[0].x}px 100%,
+        ${cutout.value[0].x}px ${cutout.value[0].y}px,
+        ${cutout.value[0].x + cutout.value[0].width}px ${cutout.value[0].y}px,
+        ${cutout.value[0].x + cutout.value[0].width}px ${cutout.value[0].y + cutout.value[0].height}px,
+        ${cutout.value[0].x}px ${cutout.value[0].y + cutout.value[0].height}px,
+        ${cutout.value[0].x}px 100%,
         100% 100%, 100% 0%
       )`
     : undefined
@@ -117,17 +119,17 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
         <defs>
           <mask id='tutorial-spotlight-mask'>
             <rect x='0' y='0' width='100%' height='100%' fill='white' />
-            {cutout.value && (
+            {cutout.value.map((bounds) => (
               <rect
-                x={cutout.value.x}
-                y={cutout.value.y}
-                width={cutout.value.width}
-                height={cutout.value.height}
+                x={bounds.x}
+                y={bounds.y}
+                width={bounds.width}
+                height={bounds.height}
                 rx={BORDER_RADIUS}
                 ry={BORDER_RADIUS}
                 fill='black'
               />
-            )}
+            ))}
           </mask>
         </defs>
 
@@ -140,12 +142,12 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
           mask='url(#tutorial-spotlight-mask)'
         />
 
-        {cutout.value && (
+        {cutout.value.map((bounds) => (
           <rect
-            x={cutout.value.x}
-            y={cutout.value.y}
-            width={cutout.value.width}
-            height={cutout.value.height}
+            x={bounds.x}
+            y={bounds.y}
+            width={bounds.width}
+            height={bounds.height}
             rx={BORDER_RADIUS}
             ry={BORDER_RADIUS}
             fill='none'
@@ -153,7 +155,7 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
             strokeWidth={clickable ? 4 : 3}
             className={clickable ? 'animate-pulse' : ''}
           />
-        )}
+        ))}
       </svg>
     </>
   )

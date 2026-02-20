@@ -2,6 +2,7 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { recordChipClassName } from '../components/drawer-v4/recordChipClassName.ts'
 import { RecordPanel } from '../components/library/RecordPanel.tsx'
 import { RenderedRecordRelativeToHealthWorker } from '../types.ts'
+import { hyphenate } from '../util/hyphenate.ts'
 
 export function RecordChipWithPopover({
   record,
@@ -11,7 +12,7 @@ export function RecordChipWithPopover({
   organization_id: string
 }) {
   return (
-    <Popover className='relative record-chip'>
+    <Popover className='relative record-chip' id={'record-chip-' + hyphenate(record.displays.full)}>
       <PopoverButton className={recordChipClassName(record)}>
         {record.displays.full}
       </PopoverButton>

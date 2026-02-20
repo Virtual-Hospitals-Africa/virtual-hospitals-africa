@@ -5,6 +5,7 @@
 
 import type { ScriptItem, TutorialStep } from './types.ts'
 import { TUTORIAL_TARGETS } from './targets.ts'
+import { TUTORIAL_ASSESSMENT_VALUES, TUTORIAL_VITAL_VALUES } from './mock-data.ts'
 
 /**
  * The complete tutorial script as a flat array.
@@ -34,12 +35,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "My name is Lindiwe Nkosi and I'll guide you on this tour of our digital health platform.",
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Over the next seven minutes, we'll follow the patient journey to make sure  the care they need.",
+    text: "My name is Lindiwe Nkosi and I'll guide you through a brief tour of our digital health platform.",
   },
   {
     type: 'dialogue',
@@ -88,7 +84,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   },
   {
     type: 'wait_click',
-    text: 'Click the "Start Triage" button to continue',
+    text: 'Click the "Start Triage" button',
     target: TUTORIAL_TARGETS.WAITING_ROOM_START_TRIAGE_BUTTON,
   },
   {
@@ -103,7 +99,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'patient',
     text: "Hello - I'm not feeling well today so I appreciate your seeing me.",
-    position: 'top-right',
+    position: 'bottom-right',
   },
   {
     type: 'dialogue',
@@ -121,21 +117,21 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: '<span class="text-orange-700">Very urgent</span> signs should be treated within ten minutes...',
+    text: '<span class="text-orange-700">Very urgent</span> signs should be treated within ten minutes.',
     dangerousHTML: true,
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_VERY_URGENT,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'and <span class="text-yellow-600">Urgent</span> signs should be treated within one hour.',
+    text: '<span class="text-yellow-600">Urgent</span> signs should be treated within one hour.',
     dangerousHTML: true,
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_URGENT,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Common symptoms are listed here...',
+    text: 'Common symptoms are listed here',
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_COMMON_SYMPTOMS,
     position: 'top-left',
   },
@@ -160,85 +156,109 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     text: "I've had a bad cough that seems to be getting worse.",
     position: 'bottom-right',
   },
-
   {
     type: 'wait_click',
     target: TUTORIAL_TARGETS.COUGH_CHECKBOX,
-    text: 'Click "Cough" in Common Symptoms to record it.',
+    text: 'Click "Cough" under Common Symptoms to record it.',
     position: 'top-left',
   },
   {
+    type: 'wait_click',
+    target: 'button#triage-submit',
+    text: 'And "Next" to continue to measure vitals',
+    position: 'top-left',
+  },
+  {
+    type: 'step_transition',
+    to_step: 'vitals',
+  },
+  // =========================================================================
+  // SECTION 3: BRIEF HISTORY (STEP TRANSITION)
+  // =========================================================================
+  // {
+  //   type: 'dialogue',
+  //   speaker: 'guide',
+  //   text: 'Next is the Brief History. Here we quickly check for conditions that affect treatment.',
+  // },
+  // {
+  //   type: 'dialogue',
+  //   speaker: 'guide',
+  //   text: "I've already filled this in for Duduzile. Let me show you the key points.",
+  // },
+  // {
+  //   type: 'dialogue',
+  //   speaker: 'guide',
+  //   text: 'Pregnancy is always asked - it affects vital sign interpretation and medication choices.',
+  //   highlight: TUTORIAL_TARGETS.BRIEF_HISTORY_PREGNANCY,
+  // },
+  // {
+  //   type: 'dialogue',
+  //   speaker: 'guide',
+  //   text: 'Same with Diabetes - it can affect treatment decisions.',
+  //   highlight: TUTORIAL_TARGETS.BRIEF_HISTORY_DIABETES,
+  // },
+  // {
+  //   type: 'dialogue',
+  //   speaker: 'guide',
+  //   text: 'Notice Duduzile has asthma. This is very relevant given her cough - respiratory conditions need extra attention.',
+  //   highlight: TUTORIAL_TARGETS.BRIEF_HISTORY_ASTHMA,
+  // },
+  // {
+  //   type: 'dialogue',
+  //   speaker: 'guide',
+  //   text: "The history is now visible in the Patient Drawer, building a complete picture of Duduzile's health.",
+  //   highlight: TUTORIAL_TARGETS.PATIENT_DRAWER_THIS_VISIT,
+  // },
+
+  // =========================================================================
+  // SECTION 4: HEIGHT & WEIGHT MENTION (STEP TRANSITION)
+  // =========================================================================
+  // {
+  //   type: 'step_transition',
+  //   to_step: 'vitals',
+  // },
+  // {
+  //   type: 'dialogue',
+  //   speaker: 'guide',
+  //   text: "Height and weight were measured when Duduzile arrived. You can see them in the Patient Drawer - she's 165cm and 62kg.",
+  //   highlight: TUTORIAL_TARGETS.PATIENT_DRAWER_THIS_VISIT,
+  // },
+
+  // =========================================================================
+  // SECTION 5: MEASURE VITALS
+  // =========================================================================
+  {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Well done! Look at the Patient Drawer on the right.',
+    text: `Well done! Now it's time to measure vitals. But first, let's have a look at the patient drawer on the right.`,
+    dangerousHTML: true,
     highlight: TUTORIAL_TARGETS.PATIENT_DRAWER,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "The 'This Visit' section shows all findings recorded during this encounter. The cough you selected now appears here.",
+    text: "'This Visit' shows all findings from this encounter including the cough you just recorded.",
     highlight: TUTORIAL_TARGETS.PATIENT_DRAWER_THIS_VISIT,
   },
-
-  // =========================================================================
-  // SECTION 3: BRIEF HISTORY (STEP TRANSITION)
-  // =========================================================================
   {
-    type: 'step_transition',
-    to_step: 'brief_history',
+    type: 'dialogue',
+    speaker: 'guide',
+    text: "'History' shows records from past visits. Duduzile is a returning patient we are able to skip taking her history, height, and weight.",
+    highlight: [TUTORIAL_TARGETS.PATIENT_DRAWER_HISTORY, '#sidebar-list-item-brief-history, #sidebar-list-item-height-weight'],
+  },
+  {
+    type: 'wait_click',
+    text: "We can click findings to learn more and speak with the health workers who originally recorded them. Click 'Allergy to peanut' as an example",
+    target: '#record-chip-allergy-to-peanut > button',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Next is the Brief History. Here we quickly check for conditions that affect treatment.',
+    text:
+      "The health worker who originally recorded the finding is shown and we can message or video call them. In this case there's no need, but doctors may want to message us about cases we escalate to them.",
+    highlight: '[data-floating-ui-focusable]',
+    click_target_on_advance: '.record-chip button[aria-expanded="true"]',
   },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "I've already filled this in for Duduzile. Let me show you the key points.",
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'Pregnancy is always asked - it affects vital sign interpretation and medication choices.',
-    highlight: TUTORIAL_TARGETS.BRIEF_HISTORY_PREGNANCY,
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'Same with Diabetes - it can affect treatment decisions.',
-    highlight: TUTORIAL_TARGETS.BRIEF_HISTORY_DIABETES,
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'Notice Duduzile has asthma. This is very relevant given her cough - respiratory conditions need extra attention.',
-    highlight: TUTORIAL_TARGETS.BRIEF_HISTORY_ASTHMA,
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "The history is now visible in the Patient Drawer, building a complete picture of Duduzile's health.",
-    highlight: TUTORIAL_TARGETS.PATIENT_DRAWER_THIS_VISIT,
-  },
-
-  // =========================================================================
-  // SECTION 4: HEIGHT & WEIGHT MENTION (STEP TRANSITION)
-  // =========================================================================
-  {
-    type: 'step_transition',
-    to_step: 'vitals',
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Height and weight were measured when Duduzile arrived. You can see them in the Patient Drawer - she's 165cm and 62kg.",
-    highlight: TUTORIAL_TARGETS.PATIENT_DRAWER_THIS_VISIT,
-  },
-
-  // =========================================================================
-  // SECTION 5: MEASURE VITALS
-  // =========================================================================
   {
     type: 'dialogue',
     speaker: 'guide',
@@ -251,6 +271,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     text:
       'When vitals deviate from the normal reference range they get a positive score. If multiple vitals are out of range that can result in a prioritization of urgent, very urgent, or an emergency just as with the warning signs.',
+    highlight: TUTORIAL_TARGETS.VITALS_FORM,
   },
   {
     type: 'dialogue',
@@ -269,48 +290,62 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     text: 'She is Alert.',
     highlight: TUTORIAL_TARGETS.VITAL_CONSCIOUSNESS,
+    input: { field: "[name='assessments.consciousness.s_expression']", value: TUTORIAL_ASSESSMENT_VALUES['assessments.consciousness.s_expression'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: 'Walking normally.',
     highlight: TUTORIAL_TARGETS.VITAL_MOBILITY,
+    input: {
+      field: "[name='assessments.mobility_assessment.s_expression']",
+      value: TUTORIAL_ASSESSMENT_VALUES['assessments.mobility_assessment.s_expression'],
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: 'No trauma.',
     highlight: TUTORIAL_TARGETS.VITAL_TRAUMA,
+    input: { field: "[name='assessments.trauma_presence.s_expression']", value: TUTORIAL_ASSESSMENT_VALUES['assessments.trauma_presence.s_expression'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: "Temperature is 39 degrees. That's a fever and 2 points on the Triage Early Warning Scale.",
     highlight: TUTORIAL_TARGETS.VITAL_TEMPERATURE,
+    input: { field: "[name='measurements.temperature.value']", value: TUTORIAL_VITAL_VALUES['measurements.temperature.value'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: "She's breathing quickly too: respiratory rate is 32 bpm which is 3 points on the Triage Early Warning Scale.",
     highlight: TUTORIAL_TARGETS.VITAL_RESPIRATORY_RATE,
+    input: { field: "[name='measurements.respiratory_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.respiratory_rate.value'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: 'Heart rate: 95 - within the normal range.',
     highlight: TUTORIAL_TARGETS.VITAL_HEART_RATE,
+    input: { field: "[name='measurements.heart_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.heart_rate.value'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: 'Blood pressure is 120/80 - within the normal range.',
     highlight: TUTORIAL_TARGETS.VITAL_BLOOD_PRESSURE,
+    input: [
+      { field: "[name='measurements.blood_pressure_systolic.value']", value: TUTORIAL_VITAL_VALUES['measurements.blood_pressure_systolic.value'] },
+      { field: "[name='measurements.blood_pressure_diastolic.value']", value: TUTORIAL_VITAL_VALUES['measurements.blood_pressure_diastolic.value'] },
+    ],
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: 'Blood oxygen saturation is at 98%. Lower than 95% would have prompted for oxygen therapy, but this is normal.',
     highlight: TUTORIAL_TARGETS.VITAL_SPO2,
+    input: { field: "[name='measurements.blood_oxygen_saturation.value']", value: TUTORIAL_VITAL_VALUES['measurements.blood_oxygen_saturation.value'] },
   },
   {
     type: 'dialogue',

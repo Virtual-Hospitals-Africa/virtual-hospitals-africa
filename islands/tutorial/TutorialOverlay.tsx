@@ -10,6 +10,7 @@ import { TutorialDialogue } from './TutorialDialogue.tsx'
 import { TutorialSpotlight } from './TutorialSpotlight.tsx'
 import { TutorialConfetti } from './TutorialConfetti.tsx'
 import { TutorialModal } from './TutorialModal.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type Props = {
   script: ScriptItem[]
@@ -43,13 +44,19 @@ export function TutorialOverlay({ script, hashState, setHashState }: Props) {
   }
 
   const handleAdvance = () => {
+    // Close any open HeadlessUI popovers before advancing.
+    // Synthetic events have isTrusted=false which HeadlessUI ignores, so instead we
+    // find open PopoverButtons by their aria-expanded state and call .click() to toggle them closed.
+    const click_target_on_advance = item.click_target_on_advance && document.querySelector<HTMLElement>(item.click_target_on_advance)
+    if (click_target_on_advance) click_target_on_advance.click()
+
     const next = advance(state, script)
-    if (next !== null) {
-      setHashState(next)
-    } else {
+    if (!next) {
       // Tutorial complete - clear hash
-      setHashState({ action: 'none' })
+      return setHashState({ action: 'none' })
     }
+
+    setHashState(next)
   }
 
   const handleRestart = () => {
@@ -71,6 +78,22 @@ export function TutorialOverlay({ script, hashState, setHashState }: Props) {
   )
 }
 
+function handleInput({ field, value }: {
+  field: string
+  value: string
+}) {
+  const el = document.querySelector<HTMLInputElement | HTMLSelectElement>(field)
+  assert(el, `No element found matching selector ${field}`)
+  if (el instanceof HTMLSelectElement) {
+    el.value = value
+    return el.dispatchEvent(new Event('change', { bubbles: true }))
+  }
+
+  const native_setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
+  native_setter?.call(el, value)
+  el.dispatchEvent(new Event('input', { bubbles: true }))
+}
+
 /**
  * Render a single script item based on its type.
  */
@@ -83,6 +106,12 @@ function RenderItem({
   onNext: () => void
   button_text: string
 }) {
+  useEffect(() => {
+    if (!item.input) return
+    const inputs = [item.input].flat()
+    inputs.forEach(handleInput)
+  })
+
   switch (item.type) {
     case 'dialogue':
       return (
@@ -135,6 +164,7 @@ function DialogueRenderer({
     <>
       <TutorialSpotlight target={item.highlight} />
       <TutorialDialogue
+        key={item.speaker}
         speaker={item.speaker}
         text={item.text}
         dangerousHTML={!!item.dangerousHTML}
@@ -179,9 +209,10 @@ function WaitClickRenderer({
 }) {
   useEffect(() => {
     const el = document.querySelector(item.target)
-    if (!el) return
+    assert(el, `No element found ${item.target}`)
 
     const handler = () => {
+      console.log('weklalkwlkawlek')
       // Small delay to let the UI update
       setTimeout(onNext, 150)
     }
