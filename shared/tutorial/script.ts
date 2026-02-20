@@ -40,7 +40,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "You'll play the role of a triage nurse at a rural clinic: the front line in assessing patients to make sure urgent cases are escalated.",
+    text: "You'll play the role of a triage nurse at a rural clinic: the front line in making sure patients get the care they need.",
   },
   {
     type: 'dialogue',
@@ -243,7 +243,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "'History' shows records from past visits. Duduzile is a returning patient we are able to skip taking her history, height, and weight.",
+    text: "'History' shows records from past visits. Duduzile is a returning patient so we can skip taking her history, height, and weight.",
     highlight: [TUTORIAL_TARGETS.PATIENT_DRAWER_HISTORY, '#sidebar-list-item-brief-history, #sidebar-list-item-height-weight'],
   },
   {
