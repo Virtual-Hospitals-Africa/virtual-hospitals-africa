@@ -71,8 +71,8 @@ type DialogueItem = {
   speaker: Speaker
   text: string
   highlight?: string // CSS selector to spotlight
-  guidePosition?: 'bottom-left' | 'top-left' // Override default position
   is_final?: boolean // Shows confetti + restart button
+  link?: { title: string; href: string } // Optional small link in bottom-left
 }
 
 /**
@@ -90,6 +90,7 @@ type HighlightItem = {
 type WaitClickItem = {
   type: 'wait_click'
   target: string // CSS selector
+  text?: string // Optional HTML instruction shown in dialogue box
 }
 
 /**
@@ -116,11 +117,14 @@ type ModalItem = {
  * Discriminated union on 'type' field.
  */
 export type ScriptItem =
-  | DialogueItem
-  | HighlightItem
-  | WaitClickItem
-  | StepTransitionItem
-  | ModalItem
+  & { position?: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'; dangerousHTML?: boolean }
+  & (
+    | DialogueItem
+    | HighlightItem
+    | WaitClickItem
+    | StepTransitionItem
+    | ModalItem
+  )
 
 // -----------------------------------------------------------------------------
 // Hash State - encodes step + script index

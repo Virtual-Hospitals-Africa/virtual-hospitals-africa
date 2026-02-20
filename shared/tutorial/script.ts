@@ -34,23 +34,23 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Our mission is to make sure that patients who need it can get the care they need that day.',
+    text: "My name is Lindiwe Nkosi and I'll guide you on this tour of our digital health platform.",
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "My name is Lindiwe Nkosi and I'll be guiding you through this tutorial of our digital health platform.",
+    text: "Over the next seven minutes, we'll follow the patient journey to make sure  the care they need.",
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "You'll play the role of a triage nurse: the front line assessing patients to ensure those with urgent cases are seen quickly.",
+    text: "You'll play the role of a triage nurse at a rural clinic: the front line in assessing patients to make sure urgent cases are escalated.",
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: "We'll start at the Open Encounters view.",
-    highlight: TUTORIAL_TARGETS.WAITING_ROOM_TABLE,
+    highlight: 'h1, ' + TUTORIAL_TARGETS.WAITING_ROOM_TABLE,
   },
   {
     type: 'dialogue',
@@ -67,27 +67,28 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "why they're here...",
-    highlight: '[data-column="reason-for-visit"]',
+    text: 'and their status including who is with them at present.',
+    highlight: '[data-column="location"], [data-column="status"], [data-column="employees"]',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Here you can see all patients currently at the facility, where they are, and what stage of care they are in.',
+    text: 'Patients are prioritized based on the urgency of their case using the South African Triage Scale.',
+    link: {
+      title: 'Learn more',
+      href: '/blog/sats',
+    },
+    highlight: '[data-column="priority"], [data-column="target-time"], [data-column="arrived"]',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'We have two patients in consultation with providers, one in triage with a colleague, and Duduzile here who just arrived and is awaiting triage.',
+    text: "Duduzile just arrived and is awaiting triage. Let's see her now.",
     highlight: TUTORIAL_TARGETS.WAITING_ROOM_ROW_DUDUZILE,
   },
   {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Let's start her triage now. Click the 'Start Triage' button.",
-  },
-  {
     type: 'wait_click',
+    text: 'Click the "Start Triage" button to continue',
     target: TUTORIAL_TARGETS.WAITING_ROOM_START_TRIAGE_BUTTON,
   },
   {
@@ -102,74 +103,69 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'patient',
     text: "Hello - I'm not feeling well today so I appreciate your seeing me.",
+    position: 'top-right',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "The first step of triage is to ask for the patient's chief complaint and check for warning signs based on the South African Triage Scale.",
+    text: "The first step of triage is to ask for the patient's chief complaint and check for warning signs.",
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_PANEL,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'The most serious signs are emergencies in red, requiring immediate treatment.',
+    text: '<span class="text-red-700">Emergency</span> signs require immediate treatment.',
+    dangerousHTML: true,
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_EMERGENCY,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Very urgent signs in orange have a target time for treatment of ten minutes.',
+    text: '<span class="text-orange-700">Very urgent</span> signs should be treated within ten minutes...',
+    dangerousHTML: true,
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_VERY_URGENT,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Urgent signs have a target time for treatment of one hour.',
+    text: 'and <span class="text-yellow-600">Urgent</span> signs should be treated within one hour.',
+    dangerousHTML: true,
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_URGENT,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text:
-      "Other common symptoms are listed below. These aren't urgent by themselves but are helpful context and can prompt for other findings and measurements we may want to check for.",
+    text: 'Common symptoms are listed here...',
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_COMMON_SYMPTOMS,
-    guidePosition: 'top-left',
+    position: 'top-left',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'For other symptoms we can search. We use the SNOMED coding system so general findings can be further refined later in the visit.',
+    text: 'and we can search for any other finding.',
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_SEARCH,
+    link: {
+      title: 'Learn about our precise medical note-taking technology backed by SNOMED',
+      href: '/blog/snomed',
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text:
-      'If at the end of triage the patient shows no warning signs and has normal vitals, we will prioritize their case as routine with a target treatment time within four hours.',
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'We still want to see these patients, but others needing more urgent care will be prioritized ahead of them.',
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Let's check what's wrong with Duduzile today.",
+    text: `Let's ask, "Duduzile what brings you in today?"`,
   },
   {
     type: 'dialogue',
     speaker: 'patient',
     text: "I've had a bad cough that seems to be getting worse.",
+    position: 'bottom-right',
   },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Click 'Cough' in Common Symptoms to record it.",
-  },
+
   {
     type: 'wait_click',
     target: TUTORIAL_TARGETS.COUGH_CHECKBOX,
+    text: 'Click "Cough" in Common Symptoms to record it.',
+    position: 'top-left',
   },
   {
     type: 'dialogue',

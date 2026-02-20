@@ -137,9 +137,11 @@ function DialogueRenderer({
       <TutorialDialogue
         speaker={item.speaker}
         text={item.text}
+        dangerousHTML={!!item.dangerousHTML}
         onNext={onNext}
         button_text={button_text}
-        position={item.guidePosition}
+        position={item.position || 'bottom-left'}
+        link={item.link}
       />
     </>
   )
@@ -193,8 +195,9 @@ function WaitClickRenderer({
       <TutorialSpotlight target={item.target} clickable />
       <TutorialDialogue
         speaker='guide'
-        text='Complete the action highlighted above to continue.'
-        position='top-left'
+        text={item.text ?? 'Complete the action highlighted above to continue.'}
+        dangerousHTML={!!item.dangerousHTML}
+        position={item.position || 'bottom-left'}
       />
     </>
   )

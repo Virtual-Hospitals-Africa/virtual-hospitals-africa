@@ -25,6 +25,10 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     },
   },
   {
+    label: 'Status',
+    data: 'workflow_status_display',
+  },
+  {
     label: 'Location',
     data(row) {
       return row.room.name
@@ -35,8 +39,17 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   //   data: 'department_name',
   // },
   {
-    label: 'Status',
-    data: 'workflow_status_display',
+    label: 'Employees',
+    type: 'person',
+    fallback: 'Next Available',
+    data(row) {
+      return row.present_employees.map((employee) => (
+        {
+          ...employee,
+          ...employeeDisplay(employee),
+        }
+      ))
+    },
   },
   {
     label: 'Priority',
@@ -49,19 +62,6 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
           classNames={cls(colors.bg, colors.text)}
         />
       )
-    },
-  },
-  {
-    label: 'Employees',
-    type: 'person',
-    fallback: 'Next Available',
-    data(row) {
-      return row.present_employees.map((employee) => (
-        {
-          ...employee,
-          ...employeeDisplay(employee),
-        }
-      ))
     },
   },
   // {
@@ -78,15 +78,15 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   //   },
   // },
   {
-    label: 'Arrived',
-    data: 'arrived_ago_display',
-  },
-  {
     label: 'Target time',
     type: 'date',
     data: ({ priority }) => {
       return priority?.target_treatment_time
     },
+  },
+  {
+    label: 'Arrived',
+    data: 'arrived_ago_display',
   },
   {
     label: 'Actions',

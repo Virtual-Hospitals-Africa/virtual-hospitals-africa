@@ -4,7 +4,7 @@ import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { OrganizationContext } from './_middleware.ts'
 
 export default HealthWorkerHomePage(
-  'Waiting Room',
+  'Open Encounters',
   async function WaitingRoomPage(
     ctx: OrganizationContext,
   ) {

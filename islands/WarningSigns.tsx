@@ -225,6 +225,7 @@ export default function WarningSigns({
           options={snomed_warning_signs_async_search.results}
           onQuery={snomed_warning_signs_async_search.setQuery}
           do_not_render_built_in_options
+          is_async
         />
         <SelectedChips
           id='warning-signs-selected-chips'
