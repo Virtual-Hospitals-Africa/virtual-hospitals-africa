@@ -112,6 +112,34 @@ const history_items = [
       </svg>
     ),
   },
+  {
+    key: 'documents' as const,
+    label: 'Documents',
+    Icon: () => (
+      <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <path
+          fill-rule='evenodd'
+          clip-rule='evenodd'
+          d='M3 2C3 1.44772 3.44772 1 4 1H9.58579C9.851 1 10.1054 1.10536 10.2929 1.29289L12.7071 3.70711C12.8946 3.89464 13 4.149 13 4.41421V14C13 14.5523 12.5523 15 12 15H4C3.44772 15 3 14.5523 3 14V2ZM4.5 2.5V13.5H11.5V5H9.5C9.22386 5 9 4.77614 9 4.5V2.5H4.5ZM10 3.20711L10.7929 4H10V3.20711ZM5.5 7C5.5 6.72386 5.72386 6.5 6 6.5H10C10.2761 6.5 10.5 6.72386 10.5 7C10.5 7.27614 10.2761 7.5 10 7.5H6C5.72386 7.5 5.5 7.27614 5.5 7ZM6 9C5.72386 9 5.5 9.22386 5.5 9.5C5.5 9.77614 5.72386 10 6 10H10C10.2761 10 10.5 9.77614 10.5 9.5C10.5 9.22386 10.2761 9 10 9H6ZM5.5 12C5.5 11.7239 5.72386 11.5 6 11.5H8C8.27614 11.5 8.5 11.7239 8.5 12C8.5 12.2761 8.27614 12.5 8 12.5H6C5.72386 12.5 5.5 12.2761 5.5 12Z'
+          fill='#6A7282'
+        />
+      </svg>
+    ),
+  },
+  {
+    key: 'lab_results' as const,
+    label: 'Lab Results',
+    Icon: () => (
+      <svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <path
+          fill-rule='evenodd'
+          clip-rule='evenodd'
+          d='M6 1C5.72386 1 5.5 1.22386 5.5 1.5V5.69098L2.55279 11.5854C2.03837 12.6142 2.78878 13.8333 3.94164 13.8333H12.0584C13.2112 13.8333 13.9616 12.6142 13.4472 11.5854L10.5 5.69098V1.5C10.5 1.22386 10.2761 1 10 1H6ZM6.5 2H9.5V6C9.5 6.09849 9.52551 6.19527 9.57402 6.28092L12.5528 12.2364C12.7285 12.5878 12.4756 13 12.0584 13H3.94164C3.52437 13 3.27152 12.5878 3.44721 12.2364L6.42598 6.28092C6.47449 6.19527 6.5 6.09849 6.5 6V2ZM7.5 8C7.22386 8 7 8.22386 7 8.5C7 8.77614 7.22386 9 7.5 9H8.5C8.77614 9 9 8.77614 9 8.5C9 8.22386 8.77614 8 8.5 8H7.5ZM6 10.5C6 10.2239 6.22386 10 6.5 10H9.5C9.77614 10 10 10.2239 10 10.5C10 10.7761 9.77614 11 9.5 11H6.5C6.22386 11 6 10.7761 6 10.5Z'
+          fill='#6A7282'
+        />
+      </svg>
+    ),
+  },
 ]
 
 // History component with medical history sections
@@ -126,7 +154,7 @@ export function DrawerHistory(
         workflow_step: history_item.key,
         title: capitalize(history_item.key),
         status: 'completed',
-        records: history[history_item.key],
+        records: history[history_item.key] ?? [],
       }}
       organization_id={organization_id}
       Icon={history_item.Icon}

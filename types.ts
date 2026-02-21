@@ -2380,6 +2380,8 @@ export type RenderedPatientHistory = {
   major_surgeries: RenderedFindingRelativeToHealthWorker[]
   medications: RenderedFindingRelativeToHealthWorker[]
   lifestyle: RenderedFindingRelativeToHealthWorker[]
+  documents?: RenderedFindingRelativeToHealthWorker[]
+  lab_results?: RenderedFindingRelativeToHealthWorker[]
 }
 
 export type CurrentWorkflowState = {
