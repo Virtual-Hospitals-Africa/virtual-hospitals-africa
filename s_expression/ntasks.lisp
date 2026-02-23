@@ -268,6 +268,17 @@
   adult
   (clinical_finding (snomed_concept "Facial swelling" "finding"))
   (check_for
+		(clinical_finding ( snomed_concept “Difficulty talking” (finding)
+		(clinical_finding ( snomed_concept “Visual disturbance” (disorder)
+		(clinical_finding ( snomed_concept “Facial swelling” (finding) Sudden 		(qualifier value)
+		(clinical_finding ( snomed_concept “Tongue swelling” (finding) Sudden 		(qualifier value)
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding)
+		(clinical_finding (snomed_concept “Dizziness” (finding) Sudden 					(qualifier value)Severe (severity modifier)
+		(clinical_finding ( snomed_concept “Collapse” (finding)
+		(clinical_finding ( snomed_concept “Abdominal pain” (finding)
+		(clinical_finding (snomed_concept “Vomiting (disorder)
+		(clinical_finding ( snomed_concept “Exposure to” (contextual qualifier) 		“Substance” (substance) (qualifier value) Possible (qualifier value) 		Allergen (attribute)
+
     (clinical_finding (snomed_concept "Blood in urine" "finding"))
     (clinical_finding (snomed_concept "Proteinuria" "finding"))
   )
