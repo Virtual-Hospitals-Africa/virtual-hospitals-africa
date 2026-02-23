@@ -268,6 +268,8 @@
   adult
   (clinical_finding (snomed_concept "Facial swelling" "finding"))
   (check_for
+		(clinical_finding (snomed_concept “Facial swelling” (finding) Red color (qualifier value) Pain (finding)
+		(clinical_finding (snomed_concept “Facial swelling” (finding) New (qualifier value)
     (clinical_finding (snomed_concept "Blood in urine" "finding"))
     (clinical_finding (snomed_concept "Proteinuria" "finding"))
   )
