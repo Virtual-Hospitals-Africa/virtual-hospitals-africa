@@ -227,7 +227,7 @@ type StepsSidebarProps = {
 }
 
 function defaultTop(url: URL) {
-  if (url.pathname.startsWith('/app') || url.pathname.startsWith('/tutorial')) {
+  if (url.pathname.startsWith('/app') || url.pathname.startsWith('/tutorial') || url.pathname.startsWith('/example')) {
     return HealthWorkerDefaultTop
   }
   if (url.pathname.startsWith('/regulator')) {
