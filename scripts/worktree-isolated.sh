@@ -98,10 +98,10 @@ else
 
   if $SKIP_DB; then
     # Use the same DATABASE_URL as the main project
-    cp .env.docker "$WORKTREE_DIR/.env.local"
+    cp .env.docker "$WORKTREE_DIR/.env"
   else
     # Create a separate database with a modified DATABASE_URL
-    sed "s/vha_dev/vha_dev_${BRANCH_NAME}/g" .env.docker > "$WORKTREE_DIR/.env.local"
+    sed "s/vha_dev/vha_dev_${BRANCH_NAME}/g" .env.docker > "$WORKTREE_DIR/.env"
   fi
 
   increment_port_counter_file_and_write_its_contents_to_env
