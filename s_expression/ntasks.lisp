@@ -271,6 +271,16 @@
     (clinical_finding (snomed_concept "Blood in urine" "finding"))
     (clinical_finding (snomed_concept "Proteinuria" "finding"))
   )
+;; Page 34 – Nose symptoms
+(task
+  "Check for urgent nose conditions"
+  adult
+  (or
+(clinical_finding (snomed_concept “Nose finding” (finding)
+(check for
+		(clinical_finding (snomed_concept “Injury of head” (disorder) 
+		(clinical_finding (snomed_concept “Nasal discharge” (finding) Clear (qualifier value) Watery (finding)
+)
 )
 ;; Page 36 - Gum/Teeth Symptoms
 (task
