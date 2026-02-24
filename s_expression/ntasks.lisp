@@ -278,9 +278,12 @@
   adult
   (clinical_finding (snomed_concept "Toothache" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Facial swelling" "finding"))
+    (clinical_finding (snomed_concept "Facial swelling" "finding"))Tooth 		structure (body structure) Juxta-posed (qualifier value)
+		clinical_finding ( snomed_concept “Swelling of lower jaw 							region” (finding)Tooth structure (body structure) Juxta-posed (qualifier 		value)
     (clinical_finding (snomed_concept "Unable to eat" "finding"))
-    (clinical_finding (snomed_concept "Unable to drink" "finding"))
+    (clinical_finding (snomed_concept "Unable to drink" "finding"))(
+		(clinical_finding ( snomed_concept “Toothache” (finding) Sensitive to 		touch (finding) Without (attribute)
+		(clinical_finding ( snomed_concept “Toothache” (finding) Wakes up 		during 		night (finding)
   )
 )
 ;; Page 38 - Cough or Difficulty Breathing
