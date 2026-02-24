@@ -7,6 +7,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 import { existingDurationEndDate, todayISOInJohannesburg } from '../../util/date.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
+import { createPatientUUID } from '../../util/uuid.ts'
 
 describeParallel('patient_insurance', () => {
   afterAll(() => db.destroy())
@@ -26,9 +27,11 @@ describeParallel('patient_insurance', () => {
   )
 
   async function setup() {
+    const demographics = randomDemographics()
     const patient = await db.insertInto('patients')
       .values({
-        ...randomDemographics(),
+        id: createPatientUUID(demographics.country),
+        ...demographics,
         phone_number: `+1555${Math.random().toString().slice(2, 11)}`,
         completed_registration: false,
       })

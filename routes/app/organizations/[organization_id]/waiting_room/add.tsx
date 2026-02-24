@@ -9,7 +9,7 @@ import { HealthWorkerHomePage } from '../../../_middleware.tsx'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { postHandler } from '../../../../../backend/postHandler.ts'
-import generateUUID from '../../../../../util/uuid.ts'
+import { createPatientEncounterUUID } from '../../../../../util/uuid.ts'
 
 const AddPatientFormSchema = z.object({
   patient_id: z.string().uuid(),
@@ -39,7 +39,7 @@ export const handler = postHandler(
           encounter: {
             create: true,
             to_create,
-            patient_encounter_id: generateUUID(),
+            patient_encounter_id: createPatientEncounterUUID(patient_id),
           },
         },
       )

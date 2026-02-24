@@ -3,7 +3,7 @@ import { pMap } from '../../util/inParallel.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 
 import { buildExpression } from './s_expression.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import {
   AgeDetermination,
   RecordValueMeasurement,
@@ -112,9 +112,9 @@ export const additional_tasks = {
         return null
       }
 
-      const evaluation_id = generateUUID()
+      const evaluation_id = createPatientRecordUUID(patient_id)
       const relations = task_result.matching_finding_ids.map((finding_id) => ({
-        id: generateUUID(),
+        id: createPatientRecordUUID(patient_id),
         source_id: evaluation_id,
         destination_id: finding_id,
       }))
@@ -351,7 +351,7 @@ export const additional_tasks = {
     if (!evaluation_ids.length) return
 
     const relations = evaluation_ids.map((evaluation_id) => ({
-      id: generateUUID(),
+      id: createPatientRecordUUID(patient_id),
       source_id: procedure_id,
       destination_id: evaluation_id,
     }))

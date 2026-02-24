@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
 import { base } from './_base.ts'
@@ -27,12 +27,12 @@ function insertLevel(
     triage_level: TriageLevel
   },
 ) {
-  const triage_level_evaluation_id = generateUUID()
+  const triage_level_evaluation_id = createPatientRecordUUID(patient_id)
   const value_snomed_concept_id = PRIORITY_SNOMED_CODES[triage_level]
   const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[triage_level]
 
   const relations = evaluates_record_ids.map((record_id) => ({
-    id: generateUUID(),
+    id: createPatientRecordUUID(patient_id),
     source_id: triage_level_evaluation_id,
     destination_id: record_id,
   }))

@@ -1,5 +1,5 @@
 import { Maybe, Selecting, TrxOrDbOrQueryCreator } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { asText, success_true } from '../helpers.ts'
 import { ALTERED, DIAGNOSIS, ENTERED_IN_ERROR, EVALUATION_ACTION, EVIDENCE_OF_CONTEXTUAL_QUALIFIER } from '../../shared/snomed_concepts.ts'
 
@@ -51,7 +51,7 @@ function markInvalid(
   }
 
   const records = altered_record_ids.map(() => ({
-    id: generateUUID(),
+    id: createPatientRecordUUID(patient_id),
     patient_id,
     patient_encounter_id,
     root_snomed_concept_id: EVALUATION_ACTION.id,

@@ -7,7 +7,7 @@ import { sql } from 'kysely'
 import type { DB } from '../../db.d.ts'
 import type { Insertable, Selectable } from 'kysely'
 import { blankSelection, success_true } from '../helpers.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { Measurement, TrxOrDbOrQueryCreator } from '../../types.ts'
 import {
   BMI_DECIMAL_PLACES,
@@ -100,7 +100,7 @@ export const patient_computed_findings = {
       throw new Error(`Invalid computed value: ${value}`)
     }
 
-    const computed_finding_id = generateUUID()
+    const computed_finding_id = createPatientRecordUUID(patient_id)
 
     return trx.with(
       'inserting_computed_finding_record',

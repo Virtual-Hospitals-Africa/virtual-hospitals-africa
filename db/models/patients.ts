@@ -8,6 +8,7 @@ import { SERVER_COUNTRY } from './countries.ts'
 import { assert } from 'std/assert/assert.ts'
 import { completedRegistration } from '../../shared/patient_registration.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
+import { createPatientUUID } from '../../util/uuid.ts'
 
 export const avatar_url_sql = sql<string | null>`
   CASE WHEN patients.avatar_media_id IS NOT NULL
@@ -114,12 +115,14 @@ export const patients = base({
         location?: Coordinates
       },
   ) {
+    const patient_country = country || SERVER_COUNTRY
     const patient = await trx
       .insertInto('patients')
       .values({
+        id: createPatientUUID(patient_country),
         ...to_insert,
         ...asMaybeNames(to_insert),
-        country: country || SERVER_COUNTRY,
+        country: patient_country,
         location: location && literalLocation(location),
       })
       .returningAll()
@@ -144,10 +147,12 @@ export const patients = base({
     trx: TrxOrDbOrQueryCreator,
     patient: PatientUpsert,
   ) {
+    const patient_country = patient.country || SERVER_COUNTRY
     const to_upsert: InsertObject<DB, 'patients'> = {
+      id: patient.id || createPatientUUID(patient_country),
       ...patient,
       ...asNames(patient),
-      country: patient.country || SERVER_COUNTRY,
+      country: patient_country,
       location: patient.location && literalLocation(patient.location),
     }
     return trx

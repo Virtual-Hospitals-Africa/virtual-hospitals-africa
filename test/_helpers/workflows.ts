@@ -1,6 +1,6 @@
 import { TrxOrDb } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientEncounterUUID } from '../../util/uuid.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { organizations } from '../../db/models/organizations.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
@@ -178,7 +178,7 @@ export async function insertReturningSeekingTreatmentWithEmployeeForTest(
           to_create: {
             reason: 'seeking treatment',
           },
-          patient_encounter_id: generateUUID(),
+          patient_encounter_id: createPatientEncounterUUID(patient_id),
         },
       },
     )

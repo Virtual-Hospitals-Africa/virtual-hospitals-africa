@@ -9,7 +9,7 @@ import { patient_encounters } from '../../../../../../db/models/patient_encounte
 import { patients } from '../../../../../../db/models/patients.ts'
 import { appointments } from '../../../../../../db/models/appointments.ts'
 import z from 'zod'
-import generateUUID from '../../../../../../util/uuid.ts'
+import { createPatientEncounterUUID } from '../../../../../../util/uuid.ts'
 import { promiseProps } from '../../../../../../util/promiseProps.ts'
 
 export const InsertForRegisteredPatientSchema = z.object({
@@ -38,7 +38,7 @@ export const handler = postHandler(
           encounter: {
             create: true,
             to_create: form_values,
-            patient_encounter_id: generateUUID(),
+            patient_encounter_id: createPatientEncounterUUID(patient_id),
           },
         },
       )

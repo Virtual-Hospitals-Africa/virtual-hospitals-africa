@@ -1,6 +1,6 @@
 import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, literalUUIDArray, success_true } from '../helpers.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
 import { sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
@@ -175,7 +175,7 @@ export const patient_findings = base({
       throw new Error('insertMany requires at least one finding or measurement')
     }
 
-    const procedure_id = procedure.procedure_id || generateUUID()
+    const procedure_id = procedure.procedure_id || createPatientRecordUUID(patient_id)
 
     // Parse findings and generate IDs
     const findings_to_insert = findings.map((finding) => {
@@ -187,7 +187,7 @@ export const patient_findings = base({
       return {
         patient_id,
         patient_encounter_id,
-        record_id: generateUUID(),
+        record_id: createPatientRecordUUID(patient_id),
         ...finding_node,
         priority,
         score,
@@ -201,7 +201,7 @@ export const patient_findings = base({
       return {
         patient_id,
         patient_encounter_id,
-        record_id: generateUUID(),
+        record_id: createPatientRecordUUID(patient_id),
         root_snomed_concept: { atom: 'snomed_concept' as const, ...MEASUREMENT_FINDING } as Lang['snomed_concept'],
         specific_snomed_concept: snomed_concept,
         value_snomed_concept: null,
@@ -231,7 +231,7 @@ export const patient_findings = base({
       const { record_id, attributes, priority, score } = record
       // Collect attributes
       for (const attribute of attributes) {
-        const attribute_id = generateUUID()
+        const attribute_id = createPatientRecordUUID(patient_id)
         const { value } = attribute
 
         if (value?.atom === 'event') {
@@ -278,8 +278,8 @@ export const patient_findings = base({
 
       // Collect priority/triage level
       if (priority) {
-        const triage_level_evaluation_id = generateUUID()
-        const relation_id = generateUUID()
+        const triage_level_evaluation_id = createPatientRecordUUID(patient_id)
+        const relation_id = createPatientRecordUUID(patient_id)
         const value_snomed_concept_id = PRIORITY_SNOMED_CODES[priority.level]
         const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[priority.level]
 
@@ -325,7 +325,7 @@ export const patient_findings = base({
         const evaluation_snomed_concept_id = typeof score === 'object' ? score.evaluation_snomed_concept_id : SEVERITY_SCORE.id
 
         if (score_value != null) {
-          const score_evaluation_id = generateUUID()
+          const score_evaluation_id = createPatientRecordUUID(patient_id)
 
           score_records.push({
             id: score_evaluation_id,
@@ -482,7 +482,7 @@ export const patient_findings = base({
     assertHasProperty(finding_node, 'root_snomed_concept')
     assertHasProperty(finding_node, 'specific_snomed_concept')
 
-    const finding_id = generateUUID()
+    const finding_id = createPatientRecordUUID(patient_id)
 
     let query = patient_records.baseInsert(
       trx,
@@ -517,7 +517,7 @@ export const patient_findings = base({
       qb: typeof query,
       attribute: Lang['attribute'],
     ) {
-      const attribute_id = generateUUID()
+      const attribute_id = createPatientRecordUUID(patient_id)
       const id_token = attribute_id.replaceAll('-', '_')
       const { value } = attribute
 

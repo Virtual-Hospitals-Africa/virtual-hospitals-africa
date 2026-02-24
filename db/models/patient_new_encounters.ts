@@ -1,7 +1,7 @@
 import { ExtantPatientOrCreationIntent, HealthWorkerOrganization, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { blankSelection, literalLocation, success_true } from '../helpers.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
-import generateUUID from '../../util/uuid.ts'
+import generateUUID, { createPatientEncounterUUID, createPatientUUID } from '../../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
 import { SERVER_COUNTRY } from './countries.ts'
 import isEmployedInDepartment from '../../shared/isEmployedInDepartment.ts'
@@ -26,8 +26,8 @@ export const patient_new_encounters = {
       'Must work in the reception department to create patients',
     )
 
-    const patient_id = patient.patient_id || generateUUID()
-    const patient_encounter_id = generateUUID()
+    const patient_id = patient.patient_id || createPatientUUID(SERVER_COUNTRY)
+    const patient_encounter_id = createPatientEncounterUUID(patient_id)
     const patient_encounter_employee_id = generateUUID()
     // const patient_workflow_id = generateUUID()
     const workflows = [current_workflow, ...next_workflows].map((workflow) => ({

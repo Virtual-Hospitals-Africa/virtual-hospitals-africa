@@ -1,6 +1,6 @@
 import { Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { markAltered } from './patient_records_base.ts'
 import {
   AUDIO_RECORDING_OF_SUBJECT_INTERVIEW,
@@ -64,10 +64,10 @@ export const patient_chief_complaints = {
       .select(['patient_procedures.id'])
       .executeTakeFirst()
 
-    const procedure_id = existing_procedure?.id || generateUUID()
-    const speech_record_id = media_speech_id && generateUUID()
+    const procedure_id = existing_procedure?.id || createPatientRecordUUID(patient_id)
+    const speech_record_id = media_speech_id && createPatientRecordUUID(patient_id)
 
-    const chief_complaint_id = generateUUID()
+    const chief_complaint_id = createPatientRecordUUID(patient_id)
 
     if (altered_patient_chief_complaint_id) {
       await markAltered(trx, {

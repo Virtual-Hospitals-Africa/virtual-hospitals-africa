@@ -67,7 +67,7 @@ HTTP_SERVER_PORT=$HTTP_SERVER_PORT
 HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT
 EOF
 
-  cat <<EOF >> "$WORKTREE_DIR/.env.local"
+  cat <<EOF >> "$WORKTREE_DIR/.env"
 
 HTTP_SERVER_PORT=$HTTP_SERVER_PORT
 HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT
@@ -78,8 +78,8 @@ EOF
 if [ -d "$WORKTREE_DIR" ]; then
   echo "Worktree already exists at $WORKTREE_DIR"  >&2
 
-  [ -f "$WORKTREE_DIR/.env.local" ] || { 
-    echo "no .env.local file found in ${WORKTREE_DIR}" >&2
+  [ -f "$WORKTREE_DIR/.env" ] || { 
+    echo "no .env file found in ${WORKTREE_DIR}" >&2
     exit 1
   }
   cd "$WORKTREE_DIR"

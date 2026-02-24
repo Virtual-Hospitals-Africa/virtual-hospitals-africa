@@ -3,7 +3,7 @@ import { PreviouslyCompletedProcedures, SnomedConcept, TrxOrDbOrQueryCreator } f
 import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records, PatientRecordsSearch } from './patient_records.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { satisfyingSExpression } from './s_expression.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
@@ -108,7 +108,7 @@ export const patient_procedures = base({
   ) {
     assertHasProperty(procedure, 'root_snomed_concept')
     assertHasProperty(procedure, 'specific_snomed_concept')
-    const procedure_id = generateUUID()
+    const procedure_id = createPatientRecordUUID(patient_id)
 
     return patient_records.baseInsert(
       trx,

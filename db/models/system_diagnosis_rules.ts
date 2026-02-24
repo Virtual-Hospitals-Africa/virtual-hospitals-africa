@@ -18,7 +18,7 @@ import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { Lang, system_diagnosis_rule } from '../../shared/s_expression_schemas.ts'
 import { SYSTEM_DIAGNOSIS_RULES } from '../../s_expression/system_diagnosis_rules.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import matching from '../../util/matching.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
@@ -196,9 +196,9 @@ export const system_diagnosis_rules = {
 
     const inserted_diagnoses: string[] = []
     for (const { rule, contributing_records } of to_insert) {
-      const evaluation_id = generateUUID()
+      const evaluation_id = createPatientRecordUUID(patient_id)
       const relations = contributing_records.map((record) => ({
-        id: generateUUID(),
+        id: createPatientRecordUUID(patient_id),
         source_id: evaluation_id,
         destination_id: record.record_id,
       }))

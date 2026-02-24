@@ -1,5 +1,5 @@
 import { IdSelection, InsertRows, Priority, TrxOrDbOrQueryCreator } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
@@ -43,7 +43,7 @@ export function baseInsert(
   const {
     patient_id,
     patient_encounter_id,
-    record_id = generateUUID(),
+    record_id = createPatientRecordUUID(patient_id),
     root_snomed_concept,
     specific_snomed_concept,
     value_snomed_concept,
@@ -76,7 +76,7 @@ export function baseInsert(
     qualifies_record_id: string,
   ) {
     assertHasProperty(qualifier, 'specific_snomed_concept')
-    const qualifier_id = generateUUID()
+    const qualifier_id = createPatientRecordUUID(patient_id)
     const id_token = qualifier_id.replaceAll('-', '_')
 
     let next_query = qb.with(
@@ -151,7 +151,7 @@ export function baseInsertMany(
     patient_encounter_id: string,
   ) {
     assertHasProperty(qualifier, 'specific_snomed_concept')
-    const qualifier_id = generateUUID()
+    const qualifier_id = createPatientRecordUUID(patient_id)
 
     qualifier_record_rows.push({
       id: qualifier_id,

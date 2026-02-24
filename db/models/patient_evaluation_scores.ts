@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { literalString, success_true } from '../helpers.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { base } from './_base.ts'
 import { patient_evaluations, PatientEvaluationInsert } from './patient_evaluations.ts'
 
@@ -43,10 +43,11 @@ export const patient_evaluation_scores = base({
     trx: TrxOrDbOrQueryCreator,
     {
       score,
-      evaluation_id = generateUUID(),
+      evaluation_id: provided_evaluation_id,
       ...to_insert
     }: PatientEvaluationScoreInsert,
   ) {
+    const evaluation_id = provided_evaluation_id ?? createPatientRecordUUID(to_insert.patient_id)
     return patient_evaluations.insertOneNestedQuery(trx, {
       evaluation_id,
       ...to_insert,

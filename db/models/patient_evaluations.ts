@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
-import generateUUID from '../../util/uuid.ts'
+import { createPatientRecordUUID } from '../../util/uuid.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { patient_records, PatientRecordsSearch } from './patient_records.ts'
 import { base } from './_base.ts'
@@ -36,7 +36,7 @@ export type PatientEvaluationInsert =
 export function insertOneNestedQuery(
   trx: TrxOrDbOrQueryCreator,
   {
-    evaluation_id = generateUUID(),
+    evaluation_id: provided_evaluation_id,
     patient_id,
     patient_encounter_id,
     evaluates_record_id,
@@ -46,6 +46,7 @@ export function insertOneNestedQuery(
     value,
   }: PatientEvaluationInsert,
 ) {
+  const evaluation_id = provided_evaluation_id ?? createPatientRecordUUID(patient_id)
   const evaluation_node = isString(evaluation) ? parseExpressionExpectingAtom(evaluation, 'evaluation') : evaluation
   assertHasProperty(evaluation_node, 'root_snomed_concept')
   assertHasProperty(evaluation_node, 'specific_snomed_concept')
