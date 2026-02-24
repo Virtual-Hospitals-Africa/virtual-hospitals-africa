@@ -101,6 +101,31 @@ export async function up(db: Kysely<DB>) {
         ),
   )
 
+  await createPointerTable(
+    db,
+    'medication_dose_ingredient_strength_equivalences',
+    {
+      references: 'medication_dose_ingredient_strengths',
+      primary_key_type: 'uuid',
+    },
+    (qb) =>
+      qb
+        .addColumn('snomed_concept_id', 'bigint', (col) =>
+          col.notNull().references('snomed_inferred_canonical_name_and_category.id').onDelete(
+            'cascade',
+          ))
+        .addColumn(
+          'value',
+          'decimal',
+          (col) => col.notNull(),
+        )
+        .addColumn(
+          'units',
+          'varchar(16)',
+          (col) => col.notNull(),
+        ),
+  )
+
   await createStandardTable(
     db,
     'medication_availabilities',
@@ -150,6 +175,7 @@ export async function down(db: Kysely<DB>) {
   await db.schema.dropIndex('idx_medications_trade_name_gin').execute()
 
   await db.schema.dropTable('medication_availabilities').execute()
+  // await db.schema.dropTable('medication_dose_ingredient_strength_equivalences').execute()
   await db.schema.dropTable('medication_dose_ingredient_strengths').execute()
   await db.schema.dropTable('medication_dose_ingredients').execute()
   await db.schema.dropTable('medication_doses').execute()

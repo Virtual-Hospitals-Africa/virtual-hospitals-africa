@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -eo pipefail
+set -xeo pipefail
 
 # shellcheck source=.env disable=SC1091
 source .env

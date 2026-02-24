@@ -12,6 +12,8 @@ export async function up(db: Kysely<DB>) {
   await db.schema
     .createType('duration_units')
     .asEnum([
+      'minutes',
+      'hours',
       'days',
       'weeks',
       'months',

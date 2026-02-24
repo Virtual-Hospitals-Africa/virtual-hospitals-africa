@@ -5,14 +5,15 @@ import { medications } from './medications.ts'
 
 export type MedicationAvailabilityOpts = {
   country?: string
+  form?: string
   search?: string | null
   include_recalled?: boolean
 }
 
 export const medication_availabilities = base({
   top_level_table: 'medications',
-  baseQuery(trx: TrxOrDbOrQueryCreator, opts: MedicationAvailabilityOpts) {
-    return medications.baseQuery(trx, { search: opts.search })
+  baseQuery(trx: TrxOrDbOrQueryCreator, { country, include_recalled, ...opts }: MedicationAvailabilityOpts) {
+    return medications.baseQuery(trx, opts)
       .innerJoin(
         'medication_availabilities',
         'medication_availabilities.medication_id',
@@ -35,12 +36,12 @@ export const medication_availabilities = base({
         }).as('actions'),
       ])
       .$if(
-        !opts.include_recalled,
+        !include_recalled,
         (eb) => eb.where('medication_recalls.recalled_at', 'is', null),
       )
       .$if(
-        !!opts.country,
-        (eb) => eb.where('medication_availabilities.country', '=', opts.country!),
+        !!country,
+        (eb) => eb.where('medication_availabilities.country', '=', country!),
       )
   },
 

@@ -21,6 +21,7 @@ import {
   HAS_MANUFACTURED_DOSE_FORM,
   HAS_PRECISE_ACTIVE_INGREDIENT,
   INTERNATIONAL_UNIT,
+  IS_A,
   IS_MODIFICATION_OF,
   LITER,
   MICROGRAM,
@@ -82,6 +83,32 @@ export async function lookupDrugIngredientSnomedConceptIds(
         best_score = score
       }
     }
+
+    // If the best match is a substance, also try "<name> human" to find an immediate IS-A child
+    // that is a more specific human variant (e.g. "ALBUMIN" → "Albumin human").
+    // We require the child's canonical name to start with "<name> human" to avoid false positives.
+    if (best.category === 'substance') {
+      const human_name_prefix = `${name.toLowerCase()} human`
+      const human_child = await trx
+        .selectFrom('snomed_inferred_canonical_name_and_category')
+        .innerJoin('snomed_relationship as is_a', (join) =>
+          join
+            .onRef('is_a.source_id', '=', 'snomed_inferred_canonical_name_and_category.id')
+            .on('is_a.type_id', '=', IS_A.id)
+            .on('is_a.active', '=', true)
+            .on('is_a.destination_id', '=', best.id))
+        .select((eb) => [
+          asText(eb, 'snomed_inferred_canonical_name_and_category.id').as('id'),
+          'snomed_inferred_canonical_name_and_category.name',
+          'snomed_inferred_canonical_name_and_category.category',
+        ])
+        .where('snomed_inferred_canonical_name_and_category.category', '=', 'substance')
+        .where(sql<boolean>`lower(snomed_inferred_canonical_name_and_category.name) like ${human_name_prefix + '%'}`)
+        .limit(1)
+        .executeTakeFirst()
+      if (human_child) best = { ...human_child, sim: 1 }
+    }
+
     result.set(name, best.id)
   })
 
@@ -313,6 +340,7 @@ export async function lookupMedicationSnomedConceptIds(
 export async function performLookups(trx: TrxOrDb, medications: ParsedMedication[], opts: { write_failure_files: boolean }) {
   // Collect unique ingredient names and the forms they appear with
   const forms_by_ingredient = new Map<string, Set<string>>()
+  const example_medications = new Map<string, ParsedMedication>()
   for (const medication of medications) {
     for (const dose of medication.doses) {
       for (const { name } of dose.ingredients) {
@@ -320,6 +348,7 @@ export async function performLookups(trx: TrxOrDb, medications: ParsedMedication
         if (!forms) {
           forms = new Set()
           forms_by_ingredient.set(name, forms)
+          example_medications.set(name, medication)
         }
         forms.add(medication.form)
       }
@@ -330,14 +359,15 @@ export async function performLookups(trx: TrxOrDb, medications: ParsedMedication
 
   // Look up SNOMED concepts for each ingredient name (with form context for ranking)
   const snomed_by_name = await lookupDrugIngredientSnomedConceptIds(trx, ingredient_lookups)
+  console.log({ snomed_by_name })
 
   // Identify failed lookups
   const failed_names = new Set<string>()
-  const failed_snomed: { name: string }[] = []
+  const failed_snomed: { name: string; medication: ParsedMedication }[] = []
   for (const name of forms_by_ingredient.keys()) {
     if (!snomed_by_name.has(name)) {
       failed_names.add(name)
-      failed_snomed.push({ name })
+      failed_snomed.push({ name, medication: example_medications.get(name)! })
     }
   }
 

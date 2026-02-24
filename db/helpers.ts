@@ -685,7 +685,7 @@ export function looksLikeSExpression(column_name: string) {
 }
 
 export async function insertChunks<Table extends keyof DB>(trx: TrxOrDb, table: Table, rows: InsertRows<Table>) {
-  for (const batch of chunk(rows, 1000)) {
+  for (const batch of chunk(rows, 1)) {
     await trx.insertInto(table).values(batch).execute()
   }
 }

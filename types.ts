@@ -14,7 +14,20 @@ import type {
   ValueExpression,
 } from 'kysely'
 import type { JSX } from 'preact'
-import type { AgeUnit, DB, EncounterReason, FamilyType, MaritalStatus, MessagePriority, PatientCohabitation, SnomedCategory, Workflow } from './db.d.ts'
+import type {
+  AgeUnit,
+  DB,
+  DurationUnits,
+  EncounterReason,
+  FamilyType,
+  MaritalStatus,
+  MedicationFrequency,
+  MessagePriority,
+  PatientCohabitation,
+  Prescriber,
+  SnomedCategory,
+  Workflow,
+} from './db.d.ts'
 import type { Department } from './shared/departments.ts'
 import type { Priority } from './shared/priorities.ts'
 import type { MessageTargetCategory } from './shared/message_targets.ts'
@@ -45,9 +58,13 @@ export type AnyRecord = Record<string, unknown>
 
 export type Values<R> = R extends Record<any, infer V> ? V : never
 
-export type NonNullableProperty<R, K extends keyof R> =
-  & R
-  & { [P in K]: NonNullable<R[P]> }
+export type NonNullableProperty<T, K extends keyof T> =
+  & {
+    [P in keyof T]: T[P]
+  }
+  & {
+    [P in K]-?: NonNullable<T[P]>
+  } extends infer O ? { [P in keyof O]: O[P] } : never
 
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
@@ -2067,6 +2084,33 @@ export type RenderedMedication = {
     description: string
     description_is_units: boolean
     ingredients: RenderedMedicationIngredient[]
+  }[]
+}
+
+export type RenderedRecommendedDose = {
+  id: string
+  medicine: RenderedSnomedConcept
+  form: RenderedSnomedConcept
+  route: RenderedSnomedConcept
+  age_years_low: string
+  age_years_high: string | null
+  special_instructions: string | null
+  prescriber: Prescriber
+  schedules: {
+    frequency: MedicationFrequency
+    other_frequency_options: MedicationFrequency[]
+    dosage: null | string
+    duration: null | string
+    duration_unit: null | DurationUnits
+    ingredients: {
+      snomed_concept: RenderedSnomedConcept
+      strength: null | {
+        value: string | null
+        value_low: string | null
+        value_high: string | null
+        units: RenderedSnomedConcept | null
+      }
+    }[]
   }[]
 }
 

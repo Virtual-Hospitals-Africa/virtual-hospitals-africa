@@ -539,6 +539,11 @@ export const IS_MODIFICATION_OF = asConcept({
   name: 'Is modification of',
   category: 'attribute' as const,
 })
+export const IS_A = asConcept({
+  id: '116680003',
+  name: 'Is a',
+  category: 'attribute' as const,
+})
 export const ALLERGIC_DISPOSITION = asConcept({
   id: '609328004',
   name: 'Allergic disposition',
