@@ -4,7 +4,6 @@
   which you may set to update the location.hash
 */
 import { useSignal } from '@preact/signals'
-import { assert } from 'std/assert/assert.ts'
 import { useEffect } from 'preact/hooks'
 import isString from './isString.ts'
 
@@ -23,15 +22,23 @@ export function useLocationHash<
 ) {
   const signal = useSignal<FullState<State>>({ loaded: false, action: 'none' })
 
-  function checkHash() {
+  function currentState(): FullState<State> {
     const hash = self.location.hash.slice(1)
     if (!hash) {
-      return signal.value = { loaded: true, action: 'none' }
+      return { loaded: true, action: 'none' }
     }
     const params = Object.fromEntries(new URLSearchParams(hash))
-    assert(isString(params.action), 'Action is required')
-    assert(callback(params), "Search params don't match the expected type")
-    signal.value = { loaded: true, ...params }
+    if (!isString(params.action)) {
+      return { loaded: true, action: 'none' }
+    }
+    if (!callback(params)) {
+      return { loaded: true, action: 'none' }
+    }
+    return { loaded: true, ...params }
+  }
+
+  function checkHash() {
+    signal.value = currentState()
   }
 
   useEffect(() => {

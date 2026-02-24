@@ -63,8 +63,8 @@ export default function Menu(
     options,
     className,
     button_contents,
-    buttonClassName,
     icon,
+    buttonClassName,
     optionsClassName,
   }: MenuProps,
 ) {
@@ -108,8 +108,8 @@ export default function Menu(
           onClick={() => show_menu.value = !show_menu.value}
         >
           {button_contents}
-          <span className='sr-only'>Open options</span>
           {icon === 'ChevronDownIcon' ? <ChevronDownIcon /> : icon}
+          <span className='sr-only'>Open options</span>
         </button>
       </div>
       {show_menu.value && <MenuOptions options={options} className={optionsClassName || ''} />}

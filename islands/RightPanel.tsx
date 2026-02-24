@@ -1,4 +1,4 @@
-import { Dialog, Transition } from '@headlessui/react'
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
 import { ComponentChildren, Fragment } from 'preact'
 import { XMarkIcon } from '../components/library/icons/heroicons/solid.tsx'
 import cls from '../util/cls.ts'
@@ -34,18 +34,18 @@ export function RightPanel({
   children,
 }: RightPanelProps) {
   return (
-    <Transition.Root show={!!show} as={Fragment}>
+    <Transition show={!!show} as={Fragment}>
       <Dialog onClose={() => null} className='relative z-10'>
         <div className='fixed inset-0 overflow-hidden'>
           <div className='absolute inset-0 overflow-hidden'>
             <div className='fixed inset-y-0 right-0 flex max-w-full pl-10 pointer-events-none sm:pl-16'>
-              <Dialog.Panel // transition -- This messes things up
+              <DialogPanel // transition -- This messes things up
                 className={cls(
                   'pointer-events-auto relative w-screen transform transition duration-500 ease-in-out data-closed:translate-x-full sm:duration-700',
                   maxWidth,
                 )}
               >
-                <Transition.Child as={Fragment}>
+                <TransitionChild as={Fragment}>
                   <div className='absolute top-0 left-0 flex pt-4 pr-2 -ml-8 duration-500 ease-in-out data-closed:opacity-0 sm:-ml-10 sm:pr-4'>
                     <button
                       type='button'
@@ -57,22 +57,22 @@ export function RightPanel({
                       <XMarkIcon aria-hidden='true' className='size-6' />
                     </button>
                   </div>
-                </Transition.Child>
+                </TransitionChild>
                 <div className='relative flex flex-col h-full py-6 overflow-y-auto bg-white shadow-xl after:absolute after:inset-y-0 after:left-0 after:w-px after:bg-white/10'>
                   <div className='px-4 sm:px-6'>
-                    <Dialog.Title className='text-base font-semibold text-white'>
+                    <DialogTitle className='text-base font-semibold text-white'>
                       {title}
-                    </Dialog.Title>
+                    </DialogTitle>
                   </div>
                   <div className='relative flex-1 px-4 mt-6 sm:px-6'>
                     {children}
                   </div>
                 </div>
-              </Dialog.Panel>
+              </DialogPanel>
             </div>
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   )
 }
