@@ -297,6 +297,23 @@
     (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
   )
 )
+;;Page 39 – Wheeze or tight chest
+(task
+“Check for urgent chest conditions”
+(adult 
+	(clinical_finding ( snomed_concept “Wheezing” (finding)
+	(clinical_finding (snomed_concept “Tight chest” (finding)
+(check_for
+		(clinical_finding (snomed_concept “Unable to complete a sentence in one 			breath” (finding)
+		(clinical_finding (snomed_concept “Accessory respiratory muscles” used 		(finding)
+		(clinical_finding (snomed_concept “Thoracic structure” (body structure) 		Silent (qualifier value)
+		(clinical_finding (snomed_concept “Tight chest” (finding) 							Wheezing” (finding) No (qualifier value)
+		(clinical_finding (snomed_concept “Clouded consciousness” (finding)
+		(clinical_finding (snomed_concept “Feeling agitated” (finding)
+		(clinical_finding (snomed_concept “Drowsy” (finding)
+		(clinical_finding (snomed_concept “Asthma” (disorder) Known (qualifier 		value)
+		(clinical_finding (snomed_concept “Chronic obstructive pulmonary 				disease” (disorder) Known (qualifier value)
+
 ;; Page 44 - Abdominal Pain
 (task
   "Check for urgent abdominal pain conditions"
