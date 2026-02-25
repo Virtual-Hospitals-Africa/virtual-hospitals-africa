@@ -296,6 +296,24 @@
     (clinical_finding (snomed_concept "Wheezing" "finding"))
     (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
   )
+;; Page 40- Covid 19 Diagnosis
+(task
+	“Check for presence of Covid-19”
+	adult
+	(clinical_finding (snomed_concept “Disease caused by severe acute respiratory coronavirus 2 suspected” (situation)
+	(check_for
+		(clinical_finding (snomed_concept “Dyspnea at rest” (finding)
+		(clinical_finding (snomed_concept “Dyspnea” (finding) Speaking 		(observable entity) Associated with (attribute)
+		(clinical_finding (snomed_concept “Clouded consciousness” (finding)
+		(clinical_finding (snomed_concept “Feeling agitated” (finding)
+		(clinical_finding (snomed_concept “Decreased level of 									consciousness” (finding)
+		(clinical_finding (snomed_concept “Dyspnea” (finding) Sudden (qualifier 		value)
+		(clinical_finding (snomed_concept “Increased vocal resonance” (finding)
+		(clinical_finding (snomed_concept “Decreased breath sounds” (finding)
+		(clinical_finding (snomed_concept “Chest pain” (finding) Unilateral 		(qualifier value)
+		(clinical_finding (snomed_concept “Trachea displaced” (disorder)
+		(clinical_finding (snomed_concept “Hemoptysis” (finding) Fresh 					(qualifier value)
+
 )
 ;; Page 44 - Abdominal Pain
 (task
