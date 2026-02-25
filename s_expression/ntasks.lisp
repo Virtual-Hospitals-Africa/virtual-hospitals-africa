@@ -297,6 +297,20 @@
     (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
   )
 )
+;; Page 41 –Acute Covid 19
+(task
+	“Check for urgent acute Covid 29 condition”
+	(check
+	(clinical_finding (snomed_concept “Acute disease caused by severe acute respiratory syndrome coronavirus 2”(disorder)
+	(check_for
+		(clinical_finding (snomed_concept “Dyspnea” (finding)
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding)
+		(clinical_finding (snomed_concept “Chest pain” (finding) Chronic 				persistent (qualifier value)
+		(clinical_finding (snomed_concept “Tight chest” (finding) Chronic 			persistent (qualifier value)
+		(clinical_finding (snomed_concept “Clouded consciousness” (finding) New 		(qualifier value)
+		(clinical_finding (snomed_concept “Drowsy” (finding) Worsening 					(qualifier value)
+		)
+)
 ;; Page 44 - Abdominal Pain
 (task
   "Check for urgent abdominal pain conditions"
