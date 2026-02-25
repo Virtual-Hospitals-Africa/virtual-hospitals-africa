@@ -297,6 +297,29 @@
     (clinical_finding (snomed_concept "Dyspnea at rest" "finding"))
   )
 )
+;;Page 42 –Ongoing Covid 19 Symptoms 
+(task
+	"Check for urgent Ongoing Covid 19 symptoms"
+	adult
+	(clinical_finding (snomed_concept “Disease caused by severe acute 			respiratory syndrome coronavirus 2” (disorder) Active disease following 		therapy (finding)
+	(check_for
+		(clinical_finding (snomed_concept “Headache” (finding) Vomiting 				(disorder) With (attribute)
+		(clinical_finding (snomed_concept “Chest pain” (finding) Severe 				(severity modifier) (qualifier value) New (qualifier value)
+		(clinical_finding ( snomed_concept “Weakness of face muscles” (finding) 		New	(qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+		(clinical_finding ( snomed_concept “Muscle weakness of upper 		limb” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+		(clinical_finding ( snomed_concept “Weakness of muscle of lower 	limb” (finding) New (qualifier value) Sudden (qualifier value)Asymmetry (qualifier value)
+		(clinical_finding ( snomed_concept “Numbness of face” (finding)
+		(clinical_finding ( snomed_concept “Numbness of limbs” (finding)
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding) Supine body position (finding) Worse (qualifier value)
+		(clinical_finding (snomed_concept “Orthopnea” (finding)
+		(clinical_finding (snomed_concept “Swelling of lower limb” (finding)
+		(clinical_finding (snomed_concept “Clouded consciousness” (finding) Onset of (contextual qualifier) (qualifier value) New (qualifier value)
+		(clinical_finding (snomed_concept “Feeling agitated” (finding) Onset of (contextual qualifier) (qualifier value) New (qualifier value)
+		(clinical_finding (snomed_concept “Decreased level of 		consciousness” (finding)
+		(clinical_finding (snomed_concept “Hemoptysis” (finding) Fresh 					(qualifier value)
+		(clinical_finding (snomed_concept “Swollen calf” (finding) 							(clinical_finding (snomed_concept “Pain in calf” (finding) 
+	)
+)
 ;; Page 44 - Abdominal Pain
 (task
   "Check for urgent abdominal pain conditions"
