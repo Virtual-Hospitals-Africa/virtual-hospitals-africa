@@ -365,6 +365,24 @@
     (clinical_finding (snomed_concept "Unable to break wind" "finding"))
     (clinical_finding (snomed_concept "Perianal lump" "finding"))
     (clinical_finding (snomed_concept "Difficulty in ability to defecate" "finding"))
+;;Page 50 - Genital symptoms in man
+(task
+	“Check for urgent genital symptoms in a man”
+	(adult
+	(clinical_finding ( snomed_concept “Male genitalia’ finding (finding))
+	(check_for
+		(clinical_finding ( snomed_concept “Pain in scrotum” (finding))
+		(clinical_finding ( snomed_concept “Swelling of scrotum” (finding))
+		(clinical_finding ( snomed_concept “Severe pain” (finding) Sudden (qualifier value))
+		(clinical_finding ( snomed_concept “Retractile testis” (disorder))
+		(clinical_finding ( snomed_concept “Torsion of testis” (disorder))
+		(clinical_finding ( snomed_concept “Traumatic injury” (disorder) Before (attribute))
+		(clinical_finding ( snomed_concept “Increased physical activity” (finding) Before (attribute))
+		(clinical_finding ( snomed_concept “Tightly retracted foreskin” (finding) With (attribute) Swelling (finding) Glans penis structure (body structure))
+		(clinical_finding ( snomed_concept “Tightly retracted foreskin” (finding) With (attribute) Excruciating pain (finding) Glans penis structure (body structure))
+		(clinical_finding ( snomed_concept “Prolonged erection of penis” (finding) hour (qualifier value) 4))
+		)
+
   )
 )
 ;; Page 57 - Abnormal Vaginal Bleeding
