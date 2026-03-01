@@ -383,18 +383,26 @@
 (task
   "Check for urgent urinary symptom conditions"
   adult
-  (or
-    (clinical_finding (snomed_concept "Unable to void urine" "finding"))
-    (clinical_finding (snomed_concept "Blood in urine" "finding"))
-    (clinical_finding (snomed_concept "Flank pain" "finding"))
-  )
+  (clinical_finding (snomed_concept "Urinary system finding" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
-    (clinical_finding (snomed_concept "Flank pain" "finding"))
-    (clinical_finding (snomed_concept "Blood in urine" "finding"))
-    (clinical_finding (snomed_concept "Oliguria" "finding"))
-    (clinical_finding (snomed_concept "Facial swelling" "finding"))
-    (clinical_finding (snomed_concept "Proteinuria" "finding"))
+		(clinical_finding ( snomed_concept “Unable to void urine” (finding))
+		(clinical_finding ( snomed_concept “Abdominal discomfort” (finding) Lower abdomen structure (body structure))
+    (clinical_finding (snomed_concept "Distension of abdomen" (finding)) Lower abdomen structure (body structure))
+    (clinical_finding ( snomed_concept “Left flank pain” (finding) Sudden (qualifier value) Severe (severity modifier) (qualifier value))
+		(clinical_finding ( snomed_concept “Right flank pain” (finding) Sudden (qualifier value) Severe (severity modifier) (qualifier value))
+    (clinical_finding (snomed_concept "Blood in urine" (finding))
+    (clinical_finding (snomed_concept "Oliguria" (finding))
+    (clinical_finding (snomed_concept "Facial swelling" (finding) New (qualifier value))
+		(clinical_finding ( snomed_concept “Swelling of bilateral feet” (finding) New (qualifier value))
+    (clinical_finding (snomed_concept "Proteinuria" (finding))
+		(clinical_finding ( snomed_concept “Left inguinal pain” (finding) 		Sudden (qualifier value) Severe (severity modifier) (qualifier value))
+		(clinical_finding ( snomed_concept “Right inguinal pain” (finding) Sudden (qualifier value) Severe (severity modifier) (qualifier value))
+		measurement (clinical_finding ( snomed_concept “Urine dipstick 	test” (procedure) “Leukocytes in urine” (finding)
+		measurement (clinical_finding ( snomed_concept “Urine dipstick test” (procedure) “Nitrite detected in urine” (finding)
+		(clinical_finding ( snomed_concept “Vomiting” (disorder)
+		(clinical_finding ( snomed_concept “Diabetes mellitus” (disorder)
+		(clinical_finding ( snomed_concept “Pregnancy” (finding)
+		(clinical_finding ( snomed_concept “Postmenopausal state” (finding)
   )
 )
 ;; Page 62 - Joint Symptoms
