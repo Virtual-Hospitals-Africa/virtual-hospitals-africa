@@ -509,3 +509,27 @@
     (clinical_finding (snomed_concept "Finding of tendency to bleed" "finding"))
   )
 )
+;; Page 84 – Aggressive or disruptive patient
+(task
+	"Check urgent mental health conditions"
+	adult
+	(clinical_finding ( snomed_concept “Aggressive behavior” (finding))
+	(clinical_finding ( snomed_concept “Disruptive behavior” (finding))
+	(check_for
+		(clinical_finding ( snomed_concept “Feeling angry” (finding))
+		(clinical_finding ( snomed_concept “Challenging behavior” (finding))
+		(clinical_finding ( snomed_concept “Hostile behavior” (finding))
+		(clinical_finding ( snomed_concept “Lashing out at other” person (finding))
+		(clinical_finding ( snomed_concept “Provocative behavior” (finding))
+		(clinical_finding ( snomed_concept “Loudness” (finding))
+		(clinical_finding ( snomed_concept “Aggressive outburst” (finding))
+		(clinical_finding ( snomed_concept “Restlessness” (finding))
+		(clinical_finding ( snomed_concept “Pacing up and down” (finding))
+		(clinical_finding ( snomed_concept “Posturing behavior” (finding))
+		(clinical_finding ( snomed_concept “Feeling tense” (finding))
+		(clinical_finding ( snomed_concept “Does grip” (finding) “Rail” (physical object) “Upper limb structure” (body structure)”Tightness sensation quality” (qualifier value))
+		(clinical_finding ( snomed_concept “Does make a fist” (finding) Tightness sensation quality (qualifier value))
+		(clinical_finding ( snomed_concept “Physical aggression” (finding))
+		(clinical_finding ( snomed_concept “Violent acts towards others (finding)
+		(clinical_finding ( snomed_concept “Does throw objects” (finding))
+		(clinical_finding ( snomed_concept “Hitting other person” (finding))
