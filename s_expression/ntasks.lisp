@@ -495,17 +495,27 @@
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
   )
 )
+;; Page 79 – Changes in skin colour
 ;; Page 79 - Jaundice
 (task
+“Check for urgent skin conditions with color changes”
   "Check for urgent jaundice conditions"
   adult
+(clinical_finding ( snomed_concept “Discoloration of skin” (finding))
   (clinical_finding (snomed_concept "Jaundice" "finding"))
   (check_for
     (clinical_finding (snomed_concept "Pale conjunctiva" "finding"))
-    (clinical_finding (snomed_concept "Acute abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Acute abdominal pain" "finding")“Severe” (severity modifier) (qualifier value)) 
     (clinical_finding (snomed_concept "Drowsy" "finding"))
-    (clinical_finding (snomed_concept "Confusional state" "disorder"))
+    (clinical_finding (snomed_concept "Clouded consciousness” (finding))
     (clinical_finding (snomed_concept "Easy bruising" "finding"))
     (clinical_finding (snomed_concept "Finding of tendency to bleed" "finding"))
+		(clinical_finding ( snomed_concept “Bleeds easily” (finding))
+		(clinical_finding ( snomed_concept “Pregnancy” (finding))
+		(clinical_finding ( snomed_concept “Alcohol dependence” (disorder))
+		(>= measurement (clinical_finding ( snomed_concept “Drinking binge” (finding) “Drinking session” (finding) “bottles/day” (qualifier value)4))
+		(>= measurement (clinical_finding ( snomed_concept “Drinking binge (finding) “Drinking session” (finding) “glasses/day” (qualifier value) 4))
+		(clinical_finding ( snomed_concept “Does take medication” (finding))
+		(clinical_finding ( snomed_concept “Illicit drug use” (finding)) 
   )
 )
