@@ -441,11 +441,16 @@
 (task
   "Check for urgent arm symptom conditions"
   adult
-  (clinical_finding (snomed_concept "Pain in upper limb" "finding"))
+  (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
   (check_for
-    (clinical_finding (snomed_concept "Chest pain" "finding"))
-    (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
-    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+    (clinical_finding ( snomed_concept “Pain in left arm” (finding) “Chest pain” (finding) “With” (attribute))
+		(clinical_finding ( snomed_concept “Pain in right arm” (finding) “Chest pain” (finding) “With” (attribute))
+    (clinical_finding ( snomed_concept “Hand pain” (finding))
+		(clinical_finding ( snomed_concept “Injury of musculoskeletal system” (disorder) “Recent” (qualifier value))
+    (clinical_finding ( snomed_concept “Severe pain” (finding))
+		(clinical_finding ( snomed_concept “Joint swelling” (finding) “Severe” (severity modifier) (qualifier value))
+		(clinical_finding ( snomed_concept “Deformity” (finding) “Severe” (severity modifier) (qualifier value))
+		(clinical_finding ( snomed_concept “Muscle weakness of upper limb” (finding) “Sudden onset” (attribute) “New” (qualifier value))
     (clinical_finding (snomed_concept "Difficulty talking" "finding"))
     (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
   )
