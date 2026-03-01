@@ -495,6 +495,25 @@
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
   )
 )
+;; Page 79 – Changes in skin colour
+(task 
+	“Check for urgent skin conditions with color changes”
+	adult
+	(clinical_finding ( snomed_concept “Discoloration of skin” (finding))
+	(check_for
+		(clinical_finding ( snomed_concept “Abdominal pain” (finding) “Severe” (severity modifier) (qualifier value))
+		(clinical_finding ( snomed_concept “Drowsy” (finding))
+		(clinical_finding ( snomed_concept “Clouded consciousness” (finding))
+		(clinical_finding ( snomed_concept “Easy bruising” (finding))
+		(clinical_finding ( snomed_concept “Bleeds easily” (finding))
+		(clinical_finding ( snomed_concept “Pregnancy” (finding))
+		(clinical_finding ( snomed_concept “Alcohol dependence” (disorder))
+		(>= measurement (clinical_finding ( snomed_concept “Drinking binge” (finding) “Drinking session” (finding) “bottles/day” (qualifier value)4))
+		(>= measurement (clinical_finding ( snomed_concept “Drinking binge (finding) “Drinking session” (finding) “glasses/day” (qualifier value) 4))
+		(clinical_finding ( snomed_concept “Does take medication” (finding))
+		(clinical_finding ( snomed_concept “Illicit drug use” (finding))
+	)
+)
 ;; Page 79 - Jaundice
 (task
   "Check for urgent jaundice conditions"
