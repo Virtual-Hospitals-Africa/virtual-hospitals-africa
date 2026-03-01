@@ -367,6 +367,24 @@
     (clinical_finding (snomed_concept "Difficulty in ability to defecate" "finding"))
   )
 )
+;;Page 51 – Abnormal vaginal discharge
+(task
+	“Check for urgent female genitalia conditions”
+	(adult 
+	(clinical_finding ( snomed_concept “Female genitalia finding” (finding))
+	(check_for
+		(clinical_finding ( snomed_concept “Delivery finding” (finding) Recent (qualifier value))
+		(clinical_finding ( snomed_concept “Miscarriage” (disorder) Recent (qualifier value))
+		(clinical_finding ( snomed_concept “Induced termination of pregnancy” (disorder) Recent (qualifier value))
+		(clinical_finding ( snomed_concept “Pregnancy” (finding))
+		(clinical_finding ( snomed_concept “Missed period” (finding))
+		(clinical_finding ( snomed_concept “Abnormal vaginal bleeding” (finding))
+		(clinical_finding ( snomed_concept “Abdominal mass” (finding))
+		(clinical_finding ( snomed_concept “Abdominal guarding” (finding))
+		(clinical_finding ( snomed_concept “Abdominal rigidity” (finding))
+		(clinical_finding ( snomed_concept “Rebound tenderness” (finding))
+
+)
 ;; Page 57 - Abnormal Vaginal Bleeding
 (task
   "Check for urgent vaginal bleeding conditions"
