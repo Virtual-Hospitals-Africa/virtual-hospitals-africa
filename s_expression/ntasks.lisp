@@ -346,9 +346,15 @@
   adult
   (clinical_finding (snomed_concept "Diarrhea" "finding"))
   (check_for
+		(clinical_finding ( snomed_concept “Thirst due to water deprivation” (finding))
+		(clinical_finding ( snomed_concept “Xerostomia” (finding))
+		(clinical_finding ( snomed_concept “Decreased skin turgor” (finding))
+		(clinical_finding ( snomed_concept “Sunken eyes’ (finding))
     (clinical_finding (snomed_concept "Signs of dehydration" "finding"))
     (clinical_finding (snomed_concept "Drowsy" "finding"))
-    (clinical_finding (snomed_concept "Confusional state" "disorder"))
+    (clinical_finding (snomed_concept "Clouded consciousness” (finding))
+		(clinical_finding ( snomed_concept “Diarrhea” (finding) Watery (finding) Vomiting (disorder) With (attribute)  History of travel with high risk of exposure to communicable disease (situation) Cholera (disorder) In the past (qualifier value) day (qualifier value) 5))
+		(clinical_finding ( snomed_concept “Diarrhea” (finding) Watery (finding) Vomiting (disorder) Without (attribute) History of travel with high risk of exposure to communicable disease (situation) Cholera (disorder) In the past (qualifier value) day (qualifier value) 5))
   )
 )
 ;; Page 48 - Constipation and Anal Symptoms
