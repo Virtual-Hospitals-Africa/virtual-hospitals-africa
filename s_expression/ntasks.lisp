@@ -432,6 +432,7 @@
   (clinical_finding (snomed_concept "Neck pain" "finding"))
   (check_for
     (clinical_finding (snomed_concept "Stiff neck" "finding"))
+		(clinical_finding (snomed_concept "Headache" (finding))
     (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
     (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
     (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
