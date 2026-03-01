@@ -495,6 +495,28 @@
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
   )
 )
+;;Page 74 – Skin lump/s
+(task
+	“Check for urgent skin conditions with lumps”
+	adult
+	(clinical_finding ( snomed_concept “Mass of skin” (finding))
+	(check_for 
+		(clinical_finding ( snomed_concept “Mass of skin” (finding) “Abnormal shape” (qualifier value) “Poorly defined” (qualifier value))
+		(clinical_finding ( snomed_concept “Pigmented skin lesion” (disorder))
+		(clinical_finding ( snomed_concept “Irregular outline of pigmented skin lesion” (disorder))
+		(clinical_finding ( snomed_concept “Change in skin lesion” (finding) “Lesion size” (observable entity))
+		(clinical_finding ( snomed_concept “Change in skin lesion” (finding) “Dimensions” (qualifier value))
+		(clinical_finding ( snomed_concept “Change in skin lesion” (finding) “Color” (observable entity))
+		(clinical_finding ( snomed_concept “Pigmented nevus” (morphologic abnormality))
+		(> measurement  (clinical_finding ( snomed_concept “Lesion size” (observable entity) “Wide” (qualifier value) “Millimeter” (qualifier value) 6))
+		(clinical_finding ( snomed_concept “Bleeds easily” (finding) “Mass” (morphologic abnormality))
+		(clinical_finding ( snomed_concept “Itching” (finding) “Mass” (morphologic abnormality))
+		(clinical_finding ( snomed_concept “Pain” (finding) “Mass” (morphologic abnormality))
+		(clinical_finding ( snomed_concept “Firm mass” (morphologic 		abnormality) “Redness of skin over lesion” (finding))
+		(clinical_finding ( snomed_concept “Temperature of skin over lesion” warm” (finding))
+		(clinical_finding ( snomed_concept “Fluctuant mass” (morphologic abnormality) “Purulent” (morphologic abnormality))
+	)
+)
 ;; Page 79 - Jaundice
 (task
   "Check for urgent jaundice conditions"
