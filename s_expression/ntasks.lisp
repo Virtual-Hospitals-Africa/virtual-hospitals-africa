@@ -401,12 +401,17 @@
 (task
   "Check for urgent joint conditions"
   adult
-  (clinical_finding (snomed_concept "Pain of joint" "finding"))
+  (clinical_finding (snomed_concept "Joint finding "finding"))
   (check_for
+		(clinical_finding ( snomed_concept “Pain of joint” (finding) “Acute pain” (finding) Singular (qualifier value))
     (clinical_finding (snomed_concept "Joint swelling" "finding"))
     (clinical_finding (snomed_concept "Joint warm" "finding"))
+		(clinical_finding ( snomed_concept “Injury of musculoskeletal system” (disorder) In the past (qualifier value) hour (qualifier value) 48))
+		(clinical_finding ( snomed_concept “Limitation of joint movement” (finding))
+		(clinical_finding ( snomed_concept “Severe pain” (finding))
+		(clinical_finding ( snomed_concept “Joint swelling” (finding) Severe (severity modifier) (qualifier value))
+		(clinical_finding ( snomed_concept “Deformity” (finding) Severe (severity modifier) (qualifier value))
     (clinical_finding (snomed_concept "Unable to weight-bear" "finding"))
-    (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
   )
 )
 ;; Page 63 - Back Pain
