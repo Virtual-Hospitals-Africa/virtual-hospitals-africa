@@ -495,6 +495,31 @@
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
   )
 )
+;; Page 75 – Skin ulcer or non-healing wound -Diagnosis
+(task
+	“Check for urgent skin ulcer conditions”
+	adult
+	(clinical_finding ( snomed_concept “Skin ulcer” (disorder))
+	(clinical_finding ( snomed_concept “Wound, non-healed” (morphologic 	abnormality))
+	(check_for
+		(clinical_finding ( snomed_concept “Erythema” (finding) “Skin ulcer” (disorder) “Surrounding” (qualifier value))
+		(clinical_finding ( snomed_concept “Erythema” (finding) “Wound, non-healed” (morphologic abnormality) “Surrounding” (qualifier value))
+		(clinical_finding ( snomed_concept “Warm skin” (finding) “Skin ulcer” (disorder) “Surrounding” (qualifier value))
+		(clinical_finding ( snomed_concept “Warm skin” (finding) “Wound, non-healed” (morphologic abnormality) “Surrounding” (qualifier value))
+		(clinical_finding ( snomed_concept “Swelling of skin” (finding) “Skin 	ulcer” (disorder) “Surrounding” (qualifier value))
+		(clinical_finding ( snomed_concept “Swelling of skin” (finding)) “Wound, non-healed” (morphologic abnormality) “Surrounding” (qualifier value))
+		(clinical_finding ( snomed_concept “Clouded consciousness” (finding))
+		(clinical_finding ( snomed_concept “Blister” (morphologic abnormality))
+		(clinical_finding ( snomed_concept “Soft tissue crepitus” (finding))
+		(clinical_finding ( snomed_concept “Severe pain” (finding) “Skin ulcer” (disorder))
+		(clinical_finding ( snomed_concept “Severe pain” (finding) “Wound, non-healed” (morphologic abnormality))
+		(clinical_finding ( snomed_concept “Pain in lower limb” (finding) “Pain provoked by rest” (finding) “Sudden” (qualifier value) “Severe” (severity modifier) (qualifier value))
+		(clinical_finding ( snomed_concept “Numbness of lower limb” (finding))
+		(clinical_finding ( snomed_concept “Muscle weakness of limb” (finding))
+		(clinical_finding ( snomed_concept “Pale discoloration of entire skin” of body” (finding))
+		(clinical_finding ( snomed_concept “Peripheral pulse absent” (finding))
+	)
+)
 ;; Page 79 - Jaundice
 (task
   "Check for urgent jaundice conditions"
