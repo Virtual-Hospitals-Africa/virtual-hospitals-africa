@@ -351,20 +351,29 @@
     (clinical_finding (snomed_concept "Confusional state" "disorder"))
   )
 )
-;; Page 48 - Constipation and Anal Symptoms
+;; Page 48 - Constipation Symptoms
 (task
-  "Check for urgent constipation/anal conditions"
+  "Check for urgent constipation conditions"
   adult
   (or
     (clinical_finding (snomed_concept "Acute constipation" "finding"))
-    (clinical_finding (snomed_concept "Anal pain" "finding"))
-  )
   (check_for
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
     (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
-    (clinical_finding (snomed_concept "Unable to break wind" "finding"))
-    (clinical_finding (snomed_concept "Perianal lump" "finding"))
-    (clinical_finding (snomed_concept "Difficulty in ability to defecate" "finding"))
+		(clinical_finding ( snomed_concept “Constipation” (finding) In the past (qualifier value) hour (qualifier value) 24))
+		(clinical_finding ( snomed_concept “Unable to break wind” (finding) In the past (qualifier value) hour (qualifier value) 24)) 
+		)
+)
+;; Page 48 - Anal Symptoms
+(task
+  "Check for urgent anal conditions"
+  adult
+  (or
+    (clinical_finding (snomed_concept "Anal pain" "finding"))
+(check_for
+		(clinical_finding ( snomed_concept “Anal pain” (finding) Extreme (qualifier value))
+		(clinical_finding ( snomed_concept “Anal polyp”(disorder))
+		(clinical_finding ( snomed_concept “Does not defecate” (finding) Disorder of anus (disorder) Due to (attribute))
   )
 )
 ;; Page 57 - Abnormal Vaginal Bleeding
