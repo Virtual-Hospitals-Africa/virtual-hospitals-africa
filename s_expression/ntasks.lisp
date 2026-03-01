@@ -507,5 +507,30 @@
     (clinical_finding (snomed_concept "Confusional state" "disorder"))
     (clinical_finding (snomed_concept "Easy bruising" "finding"))
     (clinical_finding (snomed_concept "Finding of tendency to bleed" "finding"))
+;;Page 83 – Self harm or suicide 
+;; Page 86 – Low mood, stress and anxiety
+(task
+	"Check urgent mental health conditions"
+	adult
+	(clinical_finding ( snomed_concept “Self-injurious behavior” (finding))
+	(clinical_finding ( snomed_concept “Suicide” (event))
+	(clinical_finding ( snomed_concept “Feeling unhappy” (finding))
+	(clinical_finding ( snomed_concept “Stress” (finding))
+	(clinical_finding ( snomed_concept “Anxiety” (finding))
+	(check_for
+		(clinical_finding ( snomed_concept “Intentionally harming self” (event))
+		(clinical_finding ( snomed_concept “Suicide attempt” (event))
+		(clinical_finding ( snomed_concept “Suicidal thoughts” (finding))
+		(clinical_finding ( snomed_concept “Planning suicide” (finding))
+		(clinical_finding ( snomed_concept “Feeling agitated” (finding))
+		(clinical_finding ( snomed_concept “Physical aggression” (finding))
+		(clinical_finding ( snomed_concept “Feeling upset” (finding))
+		(clinical_finding ( snomed_concept “Does not communicate” (finding))
+		(clinical_finding ( snomed_concept “Suicidal thoughts” (finding) “In the past” (qualifier value) “month” (qualifier value)1))
+		(clinical_finding ( snomed_concept “Planning suicide” (finding) “In the past” (qualifier value) “month” (qualifier value)1))
+		(clinical_finding ( snomed_concept “Intentionally harming self” (event) “In the past” (qualifier value) “year” (qualifier value)1))
+		(clinical_finding ( snomed_concept “Suicide attempt” (event) “In the past” (qualifier value) “year” (qualifier value)1))
+		(clinical_finding ( snomed_concept “At increased risk of self-injurious behavior” (finding))
+		(clinical_finding ( snomed_concept “High suicide risk” (finding))
   )
 )
