@@ -482,10 +482,12 @@
   )
 )
 ;; Page 67 - Skin Symptoms
+;;Page 78– Crusts or flaky skin
 (task
   "Check for urgent skin symptom conditions"
   adult
   (clinical_finding (snomed_concept "Eruption" "morphologic abnormality"))
+	(clinical_finding ( snomed_concept “Crust” (morphologic abnormality)
   (check_for
     (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
     (clinical_finding (snomed_concept "Stiff neck" "finding"))
