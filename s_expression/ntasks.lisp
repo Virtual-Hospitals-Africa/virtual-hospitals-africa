@@ -373,8 +373,13 @@
   adult
   (clinical_finding (snomed_concept "Abnormal vaginal bleeding" "finding"))
   (check_for
+		(clinical_finding ( snomed_concept “Pregnancy” (finding))
+		(clinical_finding ( snomed_concept “Delivery finding” (finding) Recent (qualifier value))
+		(clinical_finding ( snomed_concept “Miscarriage” (disorder) Recent (qualifier value))
+		(clinical_finding ( snomed_concept “Induced termination of pregnancy” (disorder) Recent (qualifier value))
     (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
     (clinical_finding (snomed_concept "Dizziness" "finding"))
+		(clinical_finding ( snomed_concept “Feeling faint” (finding))
     (clinical_finding (snomed_concept "Chest pain" "finding"))
     (clinical_finding (snomed_concept "Pale conjunctiva" "finding"))
   )
