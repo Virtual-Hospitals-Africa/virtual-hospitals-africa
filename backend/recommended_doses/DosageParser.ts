@@ -81,10 +81,10 @@ export class DosageParser {
       return updates
     })
 
-    this.lookFor(/^(\d+)\s*(suppository|suppositories|tablets|tablet)$/, (value, units) => ({ value: parseInt(value), units }))
+    this.lookFor(/^(\d+)\s*(suppository|suppositories|tablets|tablet)$/, (value) => ({ quantity: parseInt(value) }))
     this.lookFor(
       /^(\d+)\s*-(\d+)\s*(suppository|suppositories|tablets|tablet)$/,
-      (low, high, units) => ({ low: [{ value: parseInt(low) }], high: [{ value: parseInt(high) }], units }),
+      (low, high) => ({ low: [{ quantity: parseInt(low) }], high: [{ quantity: parseInt(high) }] }),
     )
 
     this.lookFor(/(ethinylestradiol)/, (ingredient_name) => ({ ingredient_name }))
