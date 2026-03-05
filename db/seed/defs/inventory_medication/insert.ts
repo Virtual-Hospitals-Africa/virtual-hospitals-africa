@@ -29,12 +29,13 @@ export async function insertMedications(
 
     for (const dose of medication.doses) {
       const medication_dose_id = generateUUID()
-      insert_consumables.push({ id: medication_dose_id, name: `${medication.trade_name} ${dose.value} ${dose.description}` })
+      insert_consumables.push({ id: medication_dose_id, name: `${medication.trade_name} ${dose.value} ${dose.form}` })
       insert_medication_doses.push({
         id: medication_dose_id,
         medication_id,
         value: dose.value,
-        description: dose.description,
+        units: dose.units,
+        description: dose.form,
       })
 
       for (const ingredient of dose.ingredients) {

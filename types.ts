@@ -14,20 +14,7 @@ import type {
   ValueExpression,
 } from 'kysely'
 import type { JSX } from 'preact'
-import type {
-  AgeUnit,
-  DB,
-  DurationUnits,
-  EncounterReason,
-  FamilyType,
-  MaritalStatus,
-  MedicationFrequency,
-  MessagePriority,
-  PatientCohabitation,
-  Prescriber,
-  SnomedCategory,
-  Workflow,
-} from './db.d.ts'
+import type { AgeUnit, DB, EncounterReason, FamilyType, MaritalStatus, MessagePriority, PatientCohabitation, SnomedCategory, Workflow } from './db.d.ts'
 import type { Department } from './shared/departments.ts'
 import type { Priority } from './shared/priorities.ts'
 import type { MessageTargetCategory } from './shared/message_targets.ts'
@@ -2081,36 +2068,9 @@ export type RenderedMedication = {
   doses: {
     medication_dose_id: string
     value: string
+    units: string | null
     description: string
-    description_is_units: boolean
     ingredients: RenderedMedicationIngredient[]
-  }[]
-}
-
-export type RenderedRecommendedDose = {
-  id: string
-  medicine: RenderedSnomedConcept
-  form: RenderedSnomedConcept
-  route: RenderedSnomedConcept
-  age_years_low: string
-  age_years_high: string | null
-  special_instructions: string | null
-  prescriber: Prescriber
-  schedules: {
-    frequency: MedicationFrequency
-    other_frequency_options: MedicationFrequency[]
-    dosage: null | string
-    duration: null | string
-    duration_unit: null | DurationUnits
-    ingredients: {
-      snomed_concept: RenderedSnomedConcept
-      strength: null | {
-        value: string | null
-        value_low: string | null
-        value_high: string | null
-        units: RenderedSnomedConcept | null
-      }
-    }[]
   }[]
 }
 

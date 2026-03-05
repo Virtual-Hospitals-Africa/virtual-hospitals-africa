@@ -33,7 +33,8 @@ describe('seed', () => {
     'doses': [
       {
         'value': '1',
-        'description': 'ML',
+        'units': 'ML',
+        'form': 'SOLUTION',
         'ingredients': [
           { 'name': 'ADRENALINE', 'strength': { 'value': '12.5', 'units': 'UG' } },
           { 'name': 'LIDOCAINE HYDROCHLORIDE', 'strength': { 'value': '20', 'units': 'MG' } },
@@ -56,7 +57,7 @@ describe('seed', () => {
     ])
   })
 
-  it('ignores parentheticals', () => {
+  it('retains parentheticals', () => {
     const parsed = parseMedicationSouthAfrica({
       'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1iLzzntxvJcZ4IXYKUVajx8gN_bLAQs8A404TGjnxKZJAOTer5k1h1SBgO3l0PZNF02V8fRf0IzII-ihawfCMoTbCRihVZfL_QEsHxVFfkBcw',
       'applicantName': 'THE DENTAL WAREHOUSE (PTY) LTD',
@@ -77,9 +78,10 @@ describe('seed', () => {
       'doses': [
         {
           'value': '100',
-          'description': 'G',
+          'units': 'G',
+          'form': 'GEL',
           'ingredients': [
-            { 'name': 'LIDOCAINE', 'strength': { 'value': '5', 'units': 'G' } },
+            { 'name': 'LIDOCAINE (LIGNOCAINE)', 'strength': { 'value': '5', 'units': 'G' } },
             { 'name': 'CETRIMIDE', 'strength': { 'value': '0.15', 'units': 'G' } },
           ],
         },
@@ -106,7 +108,8 @@ describe('seed', () => {
       'doses': [
         {
           'value': '1',
-          'description': 'ML',
+          'units': 'ML',
+          'form': 'SOLUTION',
           'ingredients': [
             {
               'name': 'ADRENALINE',
@@ -227,8 +230,8 @@ describe('seed', () => {
     assertEquals(medicinal_product?.name, 'Product containing only albumin human')
   })
 
-  it('can parse an ingredient field with odd comma placement', () => {
-    const parsed = parseMedicationSouthAfrica({
+  it('can parse an ingredient field with multiple ingredients', () => {
+    const { doses } = parseMedicationSouthAfrica({
       'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hBYLhRL_D0XBZ4vL8VFCEVMVr8fnBmoLF414vRPTs4r9EjzKi6zOrDYM-NUxO9J3ctu35uOb6J9LCMvGP_pZdsHXkD7o8jY2hbb1Mn1WPq0g',
       'applicantName': 'Pharma Dynamics (Pty) Ltd',
       'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jEpRubI2Q2ta-4iLzmXIMosLyMzNcKQW0t9yvWjxDQCGRo4LSXApw-rXz_T7jdEJql8yiWKjGQn67ft6Y6l9kv6hCohl_BjCOzSmLAoz_8-Q',
@@ -238,19 +241,19 @@ describe('seed', () => {
       'status': 'Registered',
       'expiryDate': '2030/10/21',
       'reg_date': '2025/10/21',
-      'ingredient': 'EACH TABLET CONTAINS: DROSPIRENONE 3,0 mg ,ETHINYLESTRADIOL 0,03 mg, LEVOMEFOLATE CALCIUM 0,451 mg',
+      'ingredient': 'EACH TABLET CONTAINS: DROSPIRENONE 3,0 mg, ETHINYLESTRADIOL 0,03 mg, LEVOMEFOLATE CALCIUM 0,451 mg',
       'therapeutic_area': null,
       'api': 'DROSPIRENONE , ETHINYLESTRADIOL , LEVOMEFOLATE CALCIUM',
     })
 
-    assertEquals(parsed.doses, [
+    assertEquals(doses, [
       {
         'value': '1',
-        'description': 'TABLET',
+        'form': 'TABLET',
         'ingredients': [
           {
             'name': 'DROSPIRENONE',
-            'strength': { 'value': '3.0', 'units': 'MG' },
+            'strength': { 'value': '3', 'units': 'MG' },
           },
           {
             'name': 'ETHINYLESTRADIOL',
@@ -273,15 +276,27 @@ describe('seed', () => {
       'status': 'Registered',
       'expiryDate': '1900/01/01',
       'reg_date': '2022/09/20',
-      'ingredient': 'Each 1 ml of suspension contains 50,0 MG SODIUM FLUORIDE EQUIVALENT TO FLUORIDE 22,6 m',
+      'ingredient': 'Each 1 ml of suspension contains 50,0 MG SODIUM FLUORIDE EQUIVALENT TO FLUORIDE 22,6 MG',
       'therapeutic_area': null,
       'api': 'None',
     })
+    console.log({ doses })
     assertEquals(doses, [{
       'value': '1',
-      'description': 'ML',
+      'units': 'ML',
+      'form': 'SUSPENSION',
       'ingredients': [
-        { 'name': 'SODIUM FLUORIDE', 'equivalent_to': 'FLUORIDE', 'strength': { 'value': '50.0', 'units': 'MG' } },
+        {
+          'name': 'SODIUM FLUORIDE',
+          'equivalent_to': {
+            'name': 'FLUORIDE',
+            'strength': {
+              'value': '22.6',
+              'units': 'MG',
+            },
+          },
+          'strength': { 'value': '50', 'units': 'MG' },
+        },
       ],
     }])
   })
@@ -303,15 +318,15 @@ describe('seed', () => {
     })
     assertEquals(doses, [{
       'value': '1',
-      'description': 'CAPSULE',
+      'form': 'CAPSULE',
       'ingredients': [
-        { 'name': 'APREPITANT', 'strength': { 'value': '80.0', 'units': 'MG' } },
+        { 'name': 'APREPITANT', 'strength': { 'value': '80', 'units': 'MG' } },
       ],
     }, {
       'value': '1',
-      'description': 'CAPSULE',
+      'form': 'CAPSULE',
       'ingredients': [
-        { 'name': 'APREPITANT', 'strength': { 'value': '125.0', 'units': 'MG' } },
+        { 'name': 'APREPITANT', 'strength': { 'value': '125', 'units': 'MG' } },
       ],
     }])
   })
@@ -335,7 +350,7 @@ describe('seed', () => {
     assertMatches(parsed.doses, [
       {
         'value': '1',
-        'description': 'TABLET',
+        'form': 'TABLET',
         'ingredients': [
           {
             'name': 'CAFFEINE',
@@ -377,8 +392,8 @@ describe('seed', () => {
 
     assertMatches(doses, [
       {
-        'value': '2.0',
-        'description': 'ML',
+        'value': '2',
+        'units': 'ML',
         'ingredients': [
           {
             'name': 'LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1',
@@ -424,7 +439,8 @@ describe('seed', () => {
     assertEquals(doses, [
       {
         'value': '5',
-        'description': 'ML',
+        'units': 'ML',
+        'form': 'VIAL',
         'ingredients': [
           {
             'name': 'ZOLEDRONIC ACID (ANHYDROUS)',
@@ -451,13 +467,40 @@ describe('seed', () => {
       'therapeutic_area': null,
       'api': 'None',
     })
-    console.log({ doses })
     assertEquals(doses, [
       {
         'value': '10',
-        'description': 'ML',
+        'form': 'DOSE',
+        'units': 'ML',
         'ingredients': [
-          { 'name': 'TIGECYCLINE', 'strength': { 'value': '50.0', 'units': 'MG' } },
+          { 'name': 'TIGECYCLINE', 'strength': { 'value': '50', 'units': 'MG' } },
+        ],
+      },
+    ])
+  })
+
+  it('parses a medication with no EACH', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jOiDaMkMW722rhJ3040Iu9LLFkAhlEO6y2Fk7YqEFwLalQzH5Z0VXTwDKe4radslDqIUVjBU1046KcdazDCyAFANszbwElrh4FcF-9VPQ3Vg',
+      'applicantName': 'GENPHARM PHARMACEUTICALS (1993) (PTY) LTD',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hCqKdhRmdQTSiZyVM_N-maXh8a_8s5MYW8rcFPJtRLk7rt1EYiPFYVXlfoj4R3wXfaT7s4slBUvUaIpfyapV9eUfPuhT737UZ3c6_gKWS1Qg',
+      'application_no': 'B0879',
+      'licence_no': 'Old Medicine',
+      'productName': 'CHLORPROMAJECT 25 MG',
+      'status': 'Old Medicine',
+      'expiryDate': '1900/01/01',
+      'reg_date': '1969/11/29',
+      'ingredient': '1 ML\nCHLORPROMAZINE HYDROCHLORIDE A 25 MG',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+    assertEquals(doses, [
+      {
+        'value': '1',
+        'units': 'ML',
+        'form': 'DOSE',
+        'ingredients': [
+          { 'name': 'CHLORPROMAZINE HYDROCHLORIDE A', 'strength': { 'value': '25', 'units': 'MG' } },
         ],
       },
     ])

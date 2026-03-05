@@ -28,8 +28,8 @@ export const medications = base({
             .select((eb_doses) => [
               'medication_doses.id as medication_dose_id',
               asText(eb_doses, 'medication_doses.value').as('value'),
+              'medication_doses.units',
               'medication_doses.description',
-              'medication_doses.description_is_units',
               jsonArrayFrom(
                 eb_doses.selectFrom('medication_dose_ingredients')
                   .innerJoin(

@@ -16,13 +16,10 @@
             "doses": [
                 {
                     "value"      : "0.5",
-                    "description": "ML",
+                    "units"      : "ML",
+                    "form"       : "VACCINE",
                     "ingredients": [
-                        {
-                            "name"         : "PURIFIED VERO CELL RABIES",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "2.5", "units": "IU"}
-                        }
+                        { "name": "PURIFIED VERO CELL RABIES", "strength": {"value": "2.5", "units": "IU"} }
                     ]
                 }
             ],
@@ -46,13 +43,10 @@
             "doses"          : [
                 {
                     "value"      : "100",
-                    "description": "ML",
+                    "units"      : "ML",
+                    "form"       : "INJECTABLE",
                     "ingredients": [
-                        {
-                            "name"         : "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "10", "units": "G"}
-                        }
+                        { "name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)", "strength": {"value": "10", "units": "G"} }
                     ]
                 }
             ],
@@ -76,27 +70,16 @@
             "doses": [
                 {
                     "value"      : "1",
-                    "description": "DOSE",
+                    "units"      : "DOSE",
+                    "form"       : "SYRUP",
                     "ingredients": [
-                        {
-                            "name"         : "AMMONIUM CHLORIDE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "1.15", "units": "G"}
-                        },
-                        {
-                            "name"         : "EUCALYPTUS OIL",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "115", "units": "MG"}
-                        },
-                        { "name": "HONEY", "equivalent_to": null, "strength": {"value": "6.2", "units": "G"} },
-                        { "name": "HOREHOUND", "equivalent_to": null, "strength": {"value": "0.5", "units": "G"} },
-                        { "name": "MENTHOL", "equivalent_to": null, "strength": {"value": "68", "units": "MG"} },
-                        {
-                            "name"         : "PINE WHITE COMPOUND EXTRACT",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "1", "units": "G"}
-                        },
-                        { "name": "TAR", "equivalent_to": null, "strength": {"value": "33", "units": "MG"} }
+                        { "name": "AMMONIUM CHLORIDE",           "strength": {"value": "1.15", "units": "G" } },
+                        { "name": "EUCALYPTUS OIL",              "strength": {"value": "115",  "units": "MG"} },
+                        { "name": "HONEY",                       "strength": {"value": "6.2",  "units": "G" } },
+                        { "name": "HOREHOUND",                   "strength": {"value": "0.5",  "units": "G" } },
+                        { "name": "MENTHOL",                     "strength": {"value": "68",   "units": "MG"} },
+                        { "name": "PINE WHITE COMPOUND EXTRACT", "strength": {"value": "1",    "units": "G" } },
+                        { "name": "TAR",                         "strength": {"value": "33",   "units": "MG"} }
                     ]
                 }
             ],
@@ -111,9 +94,9 @@
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "CAPSULE",
+                    "form"       : "CAPSULE",
                     "ingredients": [
-                        { "name": "DHA AND EPA", "equivalent_to": null, "strength": {"value": "840.0", "units": "MG"} }
+                        { "name": "DHA AND EPA", "strength": {"value": "840", "units": "MG"} }
                     ]
                 }
             ],
@@ -125,80 +108,22 @@
         }
     },
     {
-        "name"      : "CONTAINBS",
+        "name"      : "WATER FOR INJECTIONS",
         "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
+            "form"           : "VIAL",
+            "routes"         : ["INJECTION"],
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "TABLET",
+                    "form"       : "VIAL",
                     "ingredients": [
-                        {"name": "CONTAINBS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "ALENDRONATE SODIUM",
-                            "equivalent_to": "ALENDRONIC ACID",
-                            "strength"     : {"value": "70.0", "units": "MG"}
-                        }
+                        { "name": "WATER FOR INJECTIONS", "strength": {"value": "1", "units": "ML"} }
                     ]
                 }
             ],
             "country"        : "ZA",
-            "trade_name"     : "ACCORD-ALENDRONATE 70",
-            "registration_no": "42/3.2/1014",
-            "applicant_name" : "Accord Healthcare (Pty) Ltd",
-            "manufacturers"  : "Accord Healthcare (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "TABLET CONTAINS",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        {"name": "TABLET CONTAINS", "equivalent_to": null, "strength": null},
-                        { "name": "PIROXICAM", "equivalent_to": null, "strength": {"value": "20.0", "units": "MG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "BREXECAM EFFERVESCENT TABLETS",
-            "registration_no": "33/3.1/0186",
-            "applicant_name" : "Adcock Ingram Limited",
-            "manufacturers"  : "Adcock Ingram Limited"
-        }
-    },
-    {
-        "name"      : "CONRTAINS",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        {"name": "CONRTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "AMOXYCILLIN TRIHYDRATE",
-                            "equivalent_to": "AMOXYCILLIN",
-                            "strength"     : {"value": "875.0", "units": "MG"}
-                        },
-                        {
-                            "name"         : "POTASSIUM CLAVULANATE",
-                            "equivalent_to": "CLAVULANIC ACID",
-                            "strength"     : {"value": "125.0", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ADCO AMOXYCLAV BD",
-            "registration_no": "42/20.1.2/0771",
+            "trade_name"     : "Herzuma Diluent",
+            "registration_no": "53/32.4/0600",
             "applicant_name" : "Adcock Ingram Limited",
             "manufacturers"  : "Adcock Ingram Limited"
         }
@@ -211,12 +136,11 @@
             "doses"          : [
                 {
                     "value"      : "100",
-                    "description": "G",
+                    "form"       : "CONTAINER",
                     "ingredients": [
-                        {"name": "OXYGEN LIQUID", "equivalent_to": null, "strength": null},
+                        {"name": "OXYGEN LIQUID", "strength": null},
                         {
                             "name"              : "MINIMUM OF",
-                            "equivalent_to"     : null,
                             "strength"          : {"value": "99.5", "units": "G"},
                             "dosage_value"      : "100",
                             "dosage_description": "G"
@@ -232,67 +156,6 @@
         }
     },
     {
-        "name"      : "IS IMPREGNATED WITHSOLUTION CONTAINING",
-        "medication": {
-            "form"           : "SWAB",
-            "routes"         : ["TOPICAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        {"name": "IS IMPREGNATED WITHSOLUTION CONTAINING", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "CHLORHEXIDINE GLUCONATE SOLUTION 0.5 G",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "70", "units": "G"}
-                        },
-                        {
-                            "name"         : "ISOPROPYL ALCOHOL PER",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "100", "units": "G"}
-                        },
-                        {"name": "SOLUTION", "equivalent_to": null, "strength": null}
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "DERMOSWAB",
-            "registration_no": "R/13.1/313",
-            "applicant_name" : "Alliance Pharma (Pty) Ltd",
-            "manufacturers"  : "Alliance Pharma (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "C ONTAINS",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        {"name": "C ONTAINS", "equivalent_to": null, "strength": null},
-                        { "name": "CAFFEINE", "equivalent_to": null, "strength": {"value": "32", "units": "MG"} },
-                        {
-                            "name"         : "CODEINE PHOSPHATE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "8", "units": "MG"}
-                        },
-                        { "name": "MEPROBAMATE", "equivalent_to": null, "strength": {"value": "150", "units": "MG"} },
-                        { "name": "PARACETAMOL", "equivalent_to": null, "strength": {"value": "320", "units": "MG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ASTRAPAIN FORTE TABLETS",
-            "registration_no": "27/2.8/0137",
-            "applicant_name" : "ASTRAL PHARMA (PTY) LTD",
-            "manufacturers"  : "ASTRAL PHARMA (PTY) LTD"
-        }
-    },
-    {
         "name"      : "FACTOR XIII 5 - 25 UPLASMINOGEN 0.02 - 0.06 MGPROTEIN HYDROLYSATE",
         "medication": {
             "form"           : "SOLUTION",
@@ -300,18 +163,15 @@
             "doses"          : [
                 {
                     "value"      : "0.5",
-                    "description": "ML",
+                    "form"       : "SOLUTION",
+                    "units"      : "ML",
                     "ingredients": [
                         {
                             "name"         : "FACTOR XIII 5 - 25 UPLASMINOGEN 0.02 - 0.06 MGPROTEIN HYDROLYSATE",
-                            "equivalent_to": "FIBRINOGEN 35.0 -",
-                            "strength"     : {"value": "55.0", "units": "MG"}
+                            "equivalent_to": "FIBRINOGEN 35 -",
+                            "strength"     : {"value": "55", "units": "MG"}
                         },
-                        {
-                            "name"         : "PLASMAFIBRONECTIN 1.0 -",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "4.5", "units": "MG"}
-                        }
+                        { "name": "PLASMAFIBRONECTIN 1 -", "strength": {"value": "4.5", "units": "MG"} }
                     ]
                 }
             ],
@@ -330,14 +190,11 @@
             "doses"          : [
                 {
                     "value"      : "47",
-                    "description": "ML",
+                    "form"       : "SUSPENSION",
+                    "units"      : "ML",
                     "ingredients": [
-                        { "name": "LECITHIN", "equivalent_to": null, "strength": {"value": "0.50", "units": "G"} },
-                        {
-                            "name"         : "MIGLYOL 812 - NEUTRALOEL",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "35.09", "units": "G"}
-                        }
+                        { "name": "LECITHIN",                 "strength": {"value": "0.50",  "units": "G"} },
+                        { "name": "MIGLYOL 812 - NEUTRALOEL", "strength": {"value": "35.09", "units": "G"} }
                     ]
                 }
             ],
@@ -356,9 +213,9 @@
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "TABLET",
+                    "form"       : "TABLET",
                     "ingredients": [
-                        { "name": "IMEPITOIN", "equivalent_to": null, "strength": {"value": "100.0", "units": "MG"} }
+                        { "name": "IMEPITOIN", "strength": {"value": "100", "units": "MG"} }
                     ]
                 }
             ],
@@ -377,9 +234,9 @@
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "TABLET",
+                    "form"       : "TABLET",
                     "ingredients": [
-                        { "name": "PIMOBENDAN", "equivalent_to": null, "strength": {"value": "2.5", "units": "MG"} }
+                        { "name": "PIMOBENDAN", "strength": {"value": "2.5", "units": "MG"} }
                     ]
                 }
             ],
@@ -391,60 +248,17 @@
         }
     },
     {
-        "name"      : "ELIXIR CONTAINS",
-        "medication": {
-            "form"           : "ML",
-            "routes"         : ["INJECTION", "TOPICAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        {"name": "ELIXIR CONTAINS", "equivalent_to": null, "strength": null},
-                        { "name": "PARACETAMOL", "equivalent_to": null, "strength": {"value": "120", "units": "MG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "BRUNOMOL",
-            "registration_no": "Q/2.7/215",
-            "applicant_name" : "Brunel Laboratoria (Pty) Ltd",
-            "manufacturers"  : "Brunel Laboratoria (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "DELIVERS",
-        "medication": {
-            "form"           : "ACTUATION",
-            "routes"         : ["INHALATION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        { "name": "DELIVERS",   "equivalent_to": null, "strength": null                             },
-                        { "name": "BUDESONIDE", "equivalent_to": null, "strength": {"value": "100", "units": "MCG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "BUDEFLAM",
-            "registration_no": "30/21.5.1/0255",
-            "applicant_name" : "Cipla Medpro (Pty) Ltd",
-            "manufacturers"  : "Cipla Medpro (Pty) Ltd"
-        }
-    },
-    {
         "name"      : "VALNEMULIN",
         "medication": {
             "form"           : "POWDER",
             "routes"         : ["ORAL", "TOPICAL"],
             "doses"          : [
                 {
-                    "value"      : "1.0",
-                    "description": "G",
+                    "value"      : "1",
+                    "form"       : "POWDER",
+                    "units"      : "G",
                     "ingredients": [
-                        { "name": "VALNEMULIN", "equivalent_to": null, "strength": {"value": "10.0", "units": "MG"} }
+                        { "name": "VALNEMULIN", "strength": {"value": "10", "units": "MG"} }
                     ]
                 }
             ],
@@ -456,331 +270,16 @@
         }
     },
     {
-        "name"      : "COTAINS",
-        "medication": {
-            "form"           : "SOLUTION",
-            "routes"         : ["INJECTION", "ORAL", "INHALATION", "TOPICAL"],
-            "doses"          : [
-                {
-                    "value"      : "1000",
-                    "description": "ML",
-                    "ingredients": [
-                        {"name": "COTAINS", "equivalent_to": null, "strength": null},
-                        { "name": "SODIUM CHLORIDE", "equivalent_to": null, "strength": {"value": "9.0", "units": "G"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "INTRA-POUR 0,9% m/v SODIUM CHLORIDE FOR IRRIGATION FRESENIUS",
-            "registration_no": "28/24/0553",
-            "applicant_name" : "Fresenius Kabi Manufacturing SA (Pty) Ltd",
-            "manufacturers"  : "Fresenius Kabi Manufacturing SA (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "5 ML",
-        "medication": {
-            "form"           : "INJECTABLE",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        { "name": "5 ML", "equivalent_to": null, "strength": {"value": "10", "units": "ML"} },
-                        { "name": "OR", "equivalent_to": null, "strength": {"value": "20", "units": "ML"} },
-                        {"name": "AMPOULE CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "WATER FOR INJECTION 5.10 OR",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "20", "units": "ML"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "WATER FOR INJECTIONS (FLEXIVIAL) FRESENIUS ",
-            "registration_no": "L/34/155",
-            "applicant_name" : "Fresenius Kabi South Africa (Pty) Ltd",
-            "manufacturers"  : "Fresenius Kabi South Africa (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "OR",
-        "medication": {
-            "form"           : "INJECTABLE",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        { "name": "5 ML", "equivalent_to": null, "strength": {"value": "10", "units": "ML"} },
-                        { "name": "OR", "equivalent_to": null, "strength": {"value": "20", "units": "ML"} },
-                        {"name": "AMPOULE CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "WATER FOR INJECTION 5.10 OR",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "20", "units": "ML"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "WATER FOR INJECTIONS (FLEXIVIAL) FRESENIUS ",
-            "registration_no": "L/34/155",
-            "applicant_name" : "Fresenius Kabi South Africa (Pty) Ltd",
-            "manufacturers"  : "Fresenius Kabi South Africa (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "AMPOULE CONTAINS",
-        "medication": {
-            "form"           : "INJECTABLE",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        { "name": "5 ML", "equivalent_to": null, "strength": {"value": "10", "units": "ML"} },
-                        { "name": "OR", "equivalent_to": null, "strength": {"value": "20", "units": "ML"} },
-                        {"name": "AMPOULE CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "WATER FOR INJECTION 5.10 OR",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "20", "units": "ML"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "WATER FOR INJECTIONS (FLEXIVIAL) FRESENIUS ",
-            "registration_no": "L/34/155",
-            "applicant_name" : "Fresenius Kabi South Africa (Pty) Ltd",
-            "manufacturers"  : "Fresenius Kabi South Africa (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "WATER FOR INJECTION 5.10 OR",
-        "medication": {
-            "form"           : "INJECTABLE",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        { "name": "5 ML", "equivalent_to": null, "strength": {"value": "10", "units": "ML"} },
-                        { "name": "OR", "equivalent_to": null, "strength": {"value": "20", "units": "ML"} },
-                        {"name": "AMPOULE CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "WATER FOR INJECTION 5.10 OR",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "20", "units": "ML"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "WATER FOR INJECTIONS (FLEXIVIAL) FRESENIUS ",
-            "registration_no": "L/34/155",
-            "applicant_name" : "Fresenius Kabi South Africa (Pty) Ltd",
-            "manufacturers"  : "Fresenius Kabi South Africa (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "CHEW TABLET CONTAINS",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        {"name": "CHEW TABLET CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "CALCIUM CARBONATE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "500", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ENO TABLETS ASSORTED FRUIT FLAVOURS",
-            "registration_no": "29/11.4/0035",
-            "applicant_name" : "GlaxoSmithKline Consumer Healthcare SA (Pty) Ltd",
-            "manufacturers"  : "GlaxoSmithKline Consumer Healthcare SA (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "COPNTAINS",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        {"name": "COPNTAINS", "equivalent_to": null, "strength": null},
-                        { "name": "PARACETAMOL", "equivalent_to": null, "strength": {"value": "500.0", "units": "MG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "CALPOL TABLETS",
-            "registration_no": "44/2.7/0321",
-            "applicant_name" : "GlaxoSmithKline Consumer Healthcare SA (Pty) Ltd",
-            "manufacturers"  : "GlaxoSmithKline Consumer Healthcare SA (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "INHALATION CONTAINS",
-        "medication": {
-            "form"           : "INHALATION",
-            "routes"         : ["INHALATION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "INHALATION",
-                    "ingredients": [
-                        {"name": "INHALATION CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "FLUTICASONE FUROATE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "92.0", "units": "UG"}
-                        },
-                        { "name": "VILANTEROL", "equivalent_to": null, "strength": {"value": "22.0", "units": "UG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "REVINTY ELIPTA 92/22 ug",
-            "registration_no": "48/21.5.1/0247",
-            "applicant_name" : "GlaxoSmithKline South Africa (Pty) Limited",
-            "manufacturers"  : "GlaxoSmithKline South Africa (Pty) Limited"
-        }
-    },
-    {
-        "name"      : "ML CONTAINS",
-        "medication": {
-            "form"           : "INJECTABLE",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        {"name": "ML CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "SALBUTAMOL SULPHATE",
-                            "equivalent_to": "SALBUTAMOL",
-                            "strength"     : {"value": "0.5", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "VENTOLIN INJECTION",
-            "registration_no": "H/10.2.2/118",
-            "applicant_name" : "GlaxoSmithKline South Africa (Pty) Limited",
-            "manufacturers"  : "GlaxoSmithKline South Africa (Pty) Limited"
-        }
-    },
-    {
-        "name"      : "METERED DOSE",
-        "medication": {
-            "form"           : "INHALATION",
-            "routes"         : ["INHALATION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "INHALATION",
-                    "ingredients": [
-                        {"name": "METERED DOSE", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "SALBUTAMOL SULPHATE EQUVALENT TO",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "200", "units": "UG"}
-                        },
-                        {"name": "SALBUTAMOL", "equivalent_to": null, "strength": null}
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "VENTOLIN ACCUHALER",
-            "registration_no": "31/10.2.1/0120",
-            "applicant_name" : "GlaxoSmithKline South Africa (Pty) Limited",
-            "manufacturers"  : "GlaxoSmithKline South Africa (Pty) Limited"
-        }
-    },
-    {
-        "name"      : "DOSE DELIVERS",
-        "medication": {
-            "form"           : "INHALATION",
-            "routes"         : ["INHALATION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "INHALATION",
-                    "ingredients": [
-                        {"name": "DOSE DELIVERS", "equivalent_to": null, "strength": null},
-                        { "name": "SALMETEROL", "equivalent_to": null, "strength": {"value": "25.0", "units": "UG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "SEREVENT INHALER CFC-FREE",
-            "registration_no": "A40/10.2.1/0064",
-            "applicant_name" : "GlaxoSmithKline South Africa (Pty) Limited",
-            "manufacturers"  : "GlaxoSmithKline South Africa (Pty) Limited"
-        }
-    },
-    {
-        "name"      : "PROVIDES",
-        "medication": {
-            "form"           : "INHALATION",
-            "routes"         : ["INHALATION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "INHALATION",
-                    "ingredients": [
-                        {"name": "PROVIDES", "equivalent_to": null, "strength": null},
-                        { "name": "FLUTICASONE", "equivalent_to": null, "strength": {"value": "50.0", "units": "UG"} },
-                        {
-                            "name"         : "SALMETEROL XINAFOATE",
-                            "equivalent_to": "SALMETEROL",
-                            "strength"     : {"value": "25.0", "units": "UG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "FOXAIR 25/50 INHALER",
-            "registration_no": "42/21.5.4/0244",
-            "applicant_name" : "GlaxoSmithKline South Africa (Pty) Limited",
-            "manufacturers"  : "GlaxoSmithKline South Africa (Pty) Limited"
-        }
-    },
-    {
-        "name"      : "WATER FOR INJECTION 20 ML",
+        "name"      : "WATER FOR INJECTIONS 20 ML",
         "medication": {
             "form"           : "VIAL",
             "routes"         : ["INJECTION"],
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "DOSE",
+                    "form"       : "VIAL",
                     "ingredients": [
-                        {
-                            "name"         : "WATER FOR INJECTION 20 ML",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "50", "units": "ML"}
-                        }
+                        { "name": "WATER FOR INJECTIONS 20 ML", "strength": {"value": "50", "units": "ML"} }
                     ]
                 }
             ],
@@ -792,18 +291,19 @@
         }
     },
     {
-        "name"      : "WATER FOR INJECTION QS",
+        "name"      : "WATER FOR INJECTIONS QS",
         "medication": {
             "form"           : "VIAL",
             "routes"         : ["INJECTION"],
             "doses"          : [
                 {
-                    "value"      : "30.0",
-                    "description": "ML",
+                    "value"      : "30",
+                    "form"       : "VIAL",
+                    "units"      : "ML",
                     "ingredients": [
-                        {"name": "DISODIUM HYDROGEN PHOSPHATE", "equivalent_to": null, "strength": null},
-                        { "name": "DIHYDRATE", "equivalent_to": null, "strength": {"value": "1.491", "units": "G"} },
-                        {"name": "WATER FOR INJECTION QS", "equivalent_to": null, "strength": null}
+                        { "name": "DISODIUM HYDROGEN PHOSPHATE", "strength": null                             },
+                        { "name": "DIHYDRATE",                   "strength": {"value": "1.491", "units": "G"} },
+                        { "name": "WATER FOR INJECTIONS QS",     "strength": null                             }
                     ]
                 }
             ],
@@ -822,10 +322,8 @@
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        {"name": "HUMAN NEONATAL DERMAL FIBROBLASTS A", "equivalent_to": null, "strength": null}
-                    ]
+                    "form"       : "DRESSING",
+                    "ingredients": [ {"name": "HUMAN NEONATAL DERMAL FIBROBLASTS A", "strength": null} ]
                 }
             ],
             "country"        : "ZA",
@@ -836,103 +334,23 @@
         }
     },
     {
-        "name"      : "OINTMENT CONTAINS",
-        "medication": {
-            "form"           : "OINTMENT",
-            "routes"         : ["TOPICAL"],
-            "doses"          : [
-                {
-                    "value"      : "1.0",
-                    "description": "G",
-                    "ingredients": [
-                        {"name": "OINTMENT CONTAINS", "equivalent_to": null, "strength": null},
-                        { "name": "TOBRAMYCIN", "equivalent_to": null, "strength": {"value": "3.0", "units": "MG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "TOBREX EYE OINTMENT",
-            "registration_no": "P/15.1/205",
-            "applicant_name" : "Novartis South Africa (Pty) Ltd",
-            "manufacturers"  : "Novartis South Africa (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "CAPSULE CONTAINS",
-        "medication": {
-            "form"           : "INHALATION",
-            "routes"         : ["INHALATION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "INHALATION",
-                    "ingredients": [
-                        {"name": "CAPSULE CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "GLYCOPYRRONIUM BROMIDE",
-                            "equivalent_to": "GLYCOPYRRONIUM",
-                            "strength"     : {"value": "50.0", "units": "UG"}
-                        },
-                        {
-                            "name"         : "INDACATEROL MALEATE",
-                            "equivalent_to": "INDACATEROL",
-                            "strength"     : {"value": "110.0", "units": "UG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ULTIBRO BREEZHALER",
-            "registration_no": "47/10.2.1/1183",
-            "applicant_name" : "Novartis South Africa (Pty) Ltd",
-            "manufacturers"  : "Novartis South Africa (Pty) Ltd"
-        }
-    },
-    {
         "name"      : "TOTAL PROTIEN 31 –",
         "medication": {
             "form"           : "SOLUTION",
             "routes"         : ["INJECTION", "ORAL", "INHALATION", "TOPICAL"],
             "doses"          : [
                 {
-                    "value"      : "1.0",
-                    "description": "ML",
+                    "value"      : "1",
+                    "form"       : "SOLUTION",
+                    "units"      : "ML",
                     "ingredients": [
-                        {
-                            "name"         : "HUMAN COAGULATION FACTOR II 14 –",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "38", "units": "IU"}
-                        },
-                        {
-                            "name"         : "HUMAN COAGULATION FACTOR VII 9 –",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "24", "units": "IU"}
-                        },
-                        {
-                            "name"         : "HUMAN COAGULATION FACTOR IX 20 –",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "31", "units": "IU"}
-                        },
-                        {
-                            "name"         : "HUMAN COAGULATION FACTOR X 18 –",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "30", "units": "IU"}
-                        },
-                        {
-                            "name"         : "PROTIEN C 13 –",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "31", "units": "IU"}
-                        },
-                        {
-                            "name"         : "PROTIEN S 12 –",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "32", "units": "IU"}
-                        },
-                        {
-                            "name"         : "TOTAL PROTIEN 31 –",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "41", "units": "MG"}
-                        }
+                        { "name": "HUMAN COAGULATION FACTOR II 14 –", "strength": {"value": "38", "units": "IU"} },
+                        { "name": "HUMAN COAGULATION FACTOR VII 9 –", "strength": {"value": "24", "units": "IU"} },
+                        { "name": "HUMAN COAGULATION FACTOR IX 20 –", "strength": {"value": "31", "units": "IU"} },
+                        { "name": "HUMAN COAGULATION FACTOR X 18 –",  "strength": {"value": "30", "units": "IU"} },
+                        { "name": "PROTIEN C 13 –",                   "strength": {"value": "31", "units": "IU"} },
+                        { "name": "PROTIEN S 12 –",                   "strength": {"value": "32", "units": "IU"} },
+                        { "name": "TOTAL PROTIEN 31 –",               "strength": {"value": "41", "units": "MG"} }
                     ]
                 }
             ],
@@ -944,98 +362,16 @@
         }
     },
     {
-        "name"      : "SUPPOSITORY CONTAINS",
-        "medication": {
-            "form"           : "SUPPOSITORY",
-            "routes"         : ["VAGINAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "SUPPOSITORY",
-                    "ingredients": [
-                        {"name": "SUPPOSITORY CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "CLINDAMYCIN PHOSPHATE",
-                            "equivalent_to": "CLINDAMYCIN",
-                            "strength"     : {"value": "100.0", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "DALACIN VAGINAL OVULE",
-            "registration_no": "36/20.1.1/0007",
-            "applicant_name" : "Pfizer Laboratories (Pty) Ltd",
-            "manufacturers"  : "Pfizer Laboratories (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "SYRINGE CONTAINS",
-        "medication": {
-            "form"           : "SOLUTION",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        {"name": "SYRINGE CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "INTERFERON BETA 1A",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "30.0", "units": "UG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "AVONEX SOLUTION FOR INJECTION",
-            "registration_no": "A40/34/0502",
-            "applicant_name" : "Pharmaplan (Pty) Ltd",
-            "manufacturers"  : "Pharmaplan (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "OR METERED SPRAY CONTAINS",
-        "medication": {
-            "form"           : "DROPS",
-            "routes"         : ["TOPICAL", "ORAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "ML",
-                    "ingredients": [
-                        {"name": "OR METERED SPRAY CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "OXYMETAZOLINE HYDROCHLORIDE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "0.025", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ILIADIN KIDS- NOSE DROPS",
-            "registration_no": "V/16.1/296",
-            "applicant_name" : "Procter & Gamble South Africa Trading (Pty) Ltd",
-            "manufacturers"  : "Procter & Gamble South Africa Trading (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "WATER FOR INJECTION E",
+        "name"      : "WATER FOR INJECTIONS E",
         "medication": {
             "form"           : "INJECTABLE",
             "routes"         : ["INJECTION"],
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "DOSE",
+                    "form"       : "AMPOULE",
                     "ingredients": [
-                        {
-                            "name"         : "WATER FOR INJECTION E",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "2.0", "units": "ML"}
-                        }
+                        { "name": "WATER FOR INJECTIONS E", "strength": {"value": "2", "units": "ML"} }
                     ]
                 }
             ],
@@ -1047,27 +383,6 @@
         }
     },
     {
-        "name"      : "FOR INJECTION",
-        "medication": {
-            "form"           : "INJECTABLE",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "ML",
-                    "ingredients": [
-                        { "name": "FOR INJECTION", "equivalent_to": null, "strength": {"value": "1.1", "units": "ML"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "WATER FOR INJECTION",
-            "registration_no": "H/34/128",
-            "applicant_name" : "Roche Products (Pty) Ltd",
-            "manufacturers"  : "Roche Products (Pty) Ltd"
-        }
-    },
-    {
         "name"      : "A(H3N2)",
         "medication": {
             "form"           : "SUSPENSION",
@@ -1075,17 +390,14 @@
             "doses"          : [
                 {
                     "value"      : "0.5",
-                    "description": "ML",
+                    "form"       : "SUSPENSION",
+                    "units"      : "ML",
                     "ingredients": [
-                        {"name": "INFLUENZA VIRUS VACCINE", "equivalent_to": null, "strength": null},
-                        { "name": "A(H3N2)", "equivalent_to": null, "strength": {"value": "15.0", "units": "UG"} },
-                        { "name": "A(H1N1)", "equivalent_to": null, "strength": {"value": "15.0", "units": "UG"} },
-                        {
-                            "name"         : "B(FROM VICTORIA/2/87/LINEAGE )",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "15.0", "units": "UG"}
-                        },
-                        { "name": "B", "equivalent_to": null, "strength": {"value": "15.0", "units": "UG"} }
+                        { "name": "INFLUENZA VIRUS VACCINE",        "strength": null                             },
+                        { "name": "A(H3N2)",                        "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "A(H1N1)",                        "strength": {"value": "15.0", "units": "UG"} },
+                        { "name": "B(FROM VICTORIA/2/87/LINEAGE )", "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "B (FROM YAMAGATA/16/88 LINE)",   "strength": {"value": "15",   "units": "UG"} }
                     ]
                 }
             ],
@@ -1104,17 +416,14 @@
             "doses"          : [
                 {
                     "value"      : "0.5",
-                    "description": "ML",
+                    "form"       : "SUSPENSION",
+                    "units"      : "ML",
                     "ingredients": [
-                        {"name": "INFLUENZA VIRUS VACCINE", "equivalent_to": null, "strength": null},
-                        { "name": "A(H3N2)", "equivalent_to": null, "strength": {"value": "15.0", "units": "UG"} },
-                        { "name": "A(H1N1)", "equivalent_to": null, "strength": {"value": "15.0", "units": "UG"} },
-                        {
-                            "name"         : "B(FROM VICTORIA/2/87/LINEAGE )",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "15.0", "units": "UG"}
-                        },
-                        { "name": "B", "equivalent_to": null, "strength": {"value": "15.0", "units": "UG"} }
+                        { "name": "INFLUENZA VIRUS VACCINE",        "strength": null                             },
+                        { "name": "A(H3N2)",                        "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "A(H1N1)",                        "strength": {"value": "15.0", "units": "UG"} },
+                        { "name": "B(FROM VICTORIA/2/87/LINEAGE )", "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "B (FROM YAMAGATA/16/88 LINE)",   "strength": {"value": "15",   "units": "UG"} }
                     ]
                 }
             ],
@@ -1126,80 +435,6 @@
         }
     },
     {
-        "name"      : "CONTIANS",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        { "name": "CONTIANS",     "equivalent_to": null, "strength": null                           },
-                        { "name": "AZATHIOPRINE", "equivalent_to": null, "strength": {"value": "50", "units": "MG"} }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "TAGOGRIN",
-            "registration_no": "T/26/35",
-            "applicant_name" : "Trinity Pharma (Pty) Ltd",
-            "manufacturers"  : "Trinity Pharma (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "5ML",
-        "medication": {
-            "form"           : "SYRUP",
-            "routes"         : ["ORAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        {"name": "5ML", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "SYRUP CONTAINS:  PARACETAMOL",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "120", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ZYPOL SYRUP",
-            "registration_no": "B/2.7/1216",
-            "applicant_name" : "Unimed Healthcare (Pty) Ltd",
-            "manufacturers"  : "Unimed Healthcare (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "ML INJECTION CONTAINS",
-        "medication": {
-            "form"           : "SOLUTION",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        {"name": "ML INJECTION CONTAINS", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "MAROPITANT CITRATE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "10.0", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "CERENIA SOLUTION FOR INJECTION FOR DOGS",
-            "registration_no": "09/8.3/07",
-            "applicant_name" : "Zoetis South Africa (Pty) Ltd",
-            "manufacturers"  : "Zoetis South Africa (Pty) Ltd"
-        }
-    },
-    {
         "name"      : "LOKIVETMAB",
         "medication": {
             "form"           : "VIAL",
@@ -1207,9 +442,9 @@
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "DOSE",
+                    "form"       : "VIAL",
                     "ingredients": [
-                        { "name": "LOKIVETMAB", "equivalent_to": null, "strength": {"value": "40.0", "units": "MG"} }
+                        { "name": "LOKIVETMAB", "strength": {"value": "40", "units": "MG"} }
                     ]
                 }
             ],
@@ -1221,137 +456,6 @@
         }
     },
     {
-        "name"      : "0.",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        { "name": "0.", "equivalent_to": null, "strength": {"value": "125", "units": "MG"} },
-                        {
-                            "name"         : "PRAMIPEXOLE DIHYDROCHLORIDE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "0.088", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "PRAMIPEXOLE 0,125 MG GLENMARK",
-            "registration_no": "48/5.4.1/0521",
-            "applicant_name" : "Glenmark Pharmaceuticals South Africa (Pty) Ltd",
-            "manufacturers"  : "Glenmark Pharmaceuticals South Africa (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "60.0 MG",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        {"name": "60.0 MG", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "RALOXIFENE HYDROCHLORIDE",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "56.0", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "RALTIVIS",
-            "registration_no": "48/21.13/0258",
-            "applicant_name" : "Activo Health (Pty) Ltd",
-            "manufacturers"  : "Activo Health (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "10.0 MG",
-        "medication": {
-            "form"           : "TABLET",
-            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "TABLET",
-                    "ingredients": [
-                        {"name": "10.0 MG", "equivalent_to": null, "strength": null},
-                        {
-                            "name"         : "RABEPRAZOLE SODIUM",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "9.40", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ACIFIX 10",
-            "registration_no": "47/11.4.3/1283",
-            "applicant_name" : "Abex Pharmaceutica (Pty) Ltd",
-            "manufacturers"  : "Abex Pharmaceutica (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "CONCENTRATE CONTAINS",
-        "medication": {
-            "form"           : "VIAL",
-            "routes"         : ["INJECTION"],
-            "doses"          : [
-                {
-                    "value"      : "1",
-                    "description": "DOSE",
-                    "ingredients": [
-                        { "name": "WITH", "equivalent_to": null, "strength": {"value": "5", "units": "ML"} },
-                        {
-                            "name"         : "CONCENTRATE CONTAINS",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "4", "units": "MG"}
-                        },
-                        {
-                            "name"         : "ZOLEDRONIC ACID",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "4.264", "units": "MG"}
-                        }
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "ZOLTERO",
-            "registration_no": "51/34/0202",
-            "applicant_name" : "Hetero Drugs South Africa (Pty) Ltd",
-            "manufacturers"  : "Hetero Drugs South Africa (Pty) Ltd"
-        }
-    },
-    {
-        "name"      : "50.0 MG",
-        "medication": {
-            "form"           : "LIQUID",
-            "routes"         : ["INHALATION", "INJECTION", "ORAL", "TOPICAL"],
-            "doses"          : [
-                {
-                    "value"      : "10",
-                    "description": "ML",
-                    "ingredients": [
-                        {"name": "50.0 MG",        "equivalent_to": null, "strength": null},
-                        {"name": "OF TIGECYCLINE", "equivalent_to": null, "strength": null}
-                    ]
-                }
-            ],
-            "country"        : "ZA",
-            "trade_name"     : "TIZEG",
-            "registration_no": "56/20.1.1/0531",
-            "applicant_name" : "Ranbaxy Pharmaceuticals (Pty) Ltd",
-            "manufacturers"  : "Ranbaxy Pharmaceuticals (Pty) Ltd"
-        }
-    },
-    {
         "name"      : "VIMCOSA",
         "medication": {
             "form"           : "TABLET",
@@ -1359,9 +463,9 @@
             "doses"          : [
                 {
                     "value"      : "1",
-                    "description": "TABLET",
+                    "form"       : "TABLET",
                     "ingredients": [
-                        { "name": "VIMCOSA", "equivalent_to": null, "strength": {"value": "100", "units": "MG"} }
+                        { "name": "VIMCOSA", "strength": {"value": "100", "units": "MG"} }
                     ]
                 }
             ],
@@ -1379,34 +483,18 @@
             "routes"         : ["INJECTION"],
             "doses"          : [
                 {
-                    "value"      : "2.0",
-                    "description": "ML",
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
                     "ingredients": [
                         {
-                            "name"         : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
                         },
-                        {
-                            "name"         : "REASSORTANT G2",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G3",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G4",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G9",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        }
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
                     ]
                 }
             ],
@@ -1424,34 +512,18 @@
             "routes"         : ["INJECTION"],
             "doses"          : [
                 {
-                    "value"      : "2.0",
-                    "description": "ML",
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
                     "ingredients": [
                         {
-                            "name"         : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
                         },
-                        {
-                            "name"         : "REASSORTANT G2",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G3",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G4",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G9",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        }
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
                     ]
                 }
             ],
@@ -1469,34 +541,18 @@
             "routes"         : ["INJECTION"],
             "doses"          : [
                 {
-                    "value"      : "2.0",
-                    "description": "ML",
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
                     "ingredients": [
                         {
-                            "name"         : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
                         },
-                        {
-                            "name"         : "REASSORTANT G2",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G3",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G4",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G9",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        }
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
                     ]
                 }
             ],
@@ -1514,34 +570,18 @@
             "routes"         : ["INJECTION"],
             "doses"          : [
                 {
-                    "value"      : "2.0",
-                    "description": "ML",
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
                     "ingredients": [
                         {
-                            "name"         : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
                         },
-                        {
-                            "name"         : "REASSORTANT G2",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G3",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G4",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        },
-                        {
-                            "name"         : "REASSORTANT G9",
-                            "equivalent_to": null,
-                            "strength"     : {"value": "105.6", "units": "FFU"}
-                        }
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
                     ]
                 }
             ],

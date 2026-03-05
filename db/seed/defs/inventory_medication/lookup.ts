@@ -137,10 +137,10 @@ async function attemptToFindPreciseMedication(
   if (dose.ingredients.length !== 1) return
   const [ingredient] = dose.ingredients
   if (!ingredient.strength) return
-  const description_is_units = new Set(['MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU']).has(dose.description)
+  const description_is_units = !!dose.units && new Set(['MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU']).has(dose.units)
   if (!description_is_units) return
 
-  const denominator_unit_concept = TO_SNOMED_UNIT_CONCEPT_IDS[dose.description]
+  const denominator_unit_concept = TO_SNOMED_UNIT_CONCEPT_IDS[dose.units!]
   const numerator_unit_concept = TO_SNOMED_UNIT_CONCEPT_IDS[ingredient.strength.units]
   if (!denominator_unit_concept || !numerator_unit_concept) return
 

@@ -15,7 +15,8 @@ export type ParsedIngredient = {
 
 export type ParsedDoseBase<Ingredient> = {
   value: string
-  description: string
+  units?: string
+  form: string
   ingredients: Ingredient[]
 }
 

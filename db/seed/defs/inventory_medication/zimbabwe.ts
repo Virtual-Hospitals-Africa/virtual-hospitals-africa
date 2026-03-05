@@ -41,11 +41,10 @@ function parseMedicationZimbabwe(
   const strength_units = compactMap(strengths_raw, ({ strength }) => strength.units)
   const ingredients: ParsedIngredient[] = strengths_raw.map(({ strength: { value, units } }, i) => {
     const name = drug_ingredients[i]
-    if (units) return { name, equivalent_to: null, strength: { value, units } }
+    if (units) return { name, strength: { value, units } }
     assertLength(strength_units, 1)
     return {
       name,
-      equivalent_to: null,
       strength: {
         value,
         units: strength_units[0],
@@ -71,7 +70,8 @@ function parseMedicationZimbabwe(
     routes,
     doses: [{
       value: dosage_value,
-      description: dosage_description,
+      units: dosage_description,
+      form,
       ingredients,
     }],
     country: 'ZW',

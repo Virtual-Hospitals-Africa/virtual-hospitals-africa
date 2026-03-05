@@ -12,6 +12,7 @@ import { humanReadableJson } from '../../../../util/humanReadableJson.ts'
 import parseJSON from '../../../../util/parseJSON.ts'
 import sortBy from '../../../../util/sortBy.ts'
 import { forms_with_singular_doses, ParsedDose, ParsedMedication, unaffiliated_form_to_route } from './shared.ts'
+import { omitUndefinedProperties } from '../../../../util/omitUndefinedProperties.ts'
 
 const date = z.string().regex(/^\d{4}\/\d{2}\/\d{2}$/).transform((d) => d.split('/').join('-'))
 const za_schema = z.object({
@@ -145,22 +146,38 @@ export async function seedDataFromJSONSouthAfrica() {
 export function parseMedicationSouthAfrica(
   medication: z.infer<typeof za_schema>,
 ): ParsedMedication {
-  const { text: ingredient, equivalent_to_map } = initialSouthAfricaIngredientMassage(medication.ingredient)
+  const { text: ingredient_raw, equivalent_to_map } = initialSouthAfricaIngredientMassage(medication.ingredient)
+
+  // Rewrite blister pack format: "EACH BLISTER PACK CONTAINS TWO FORM, EACH CONTAINING X AND ONE FORM CONTAINING Y"
+  // → "EACH FORM CONTAINS X\nEACH FORM CONTAINS Y"
+  const blister_pack_match = ingredient_raw.match(
+    /^EACH BLISTER PACK CONTAINS (?:ONE|TWO|THREE|FOUR|FIVE|SIX|SEVEN|EIGHT|NINE|TEN) ([A-Z]+),? EACH CONTAINING (.+?) AND (?:ONE|TWO|THREE|FOUR|FIVE|SIX|SEVEN|EIGHT|NINE|TEN) ([A-Z]+) CONTAINING (.+)$/i,
+  )
+  const ingredient = blister_pack_match
+    ? `EACH ${blister_pack_match[1].replace(/S$/i, '')} CONTAINS ${blister_pack_match[2]}\nEACH ${blister_pack_match[3].replace(/S$/i, '')} CONTAINS ${
+      blister_pack_match[4]
+    }`
+    : ingredient_raw
 
   // Split into multiple dose sections on "EACH" boundaries
   // e.g. "EACH BROWN TABLET CONTAINS: ... EACH WHITE TABLET CONTAINS: ..."
-  const dose_sections = ingredient.split(/(?=EACH\s)/).map((s: string) => s.replace(/^[,;\s]+/, '').trim()).filter(Boolean)
+  const dose_sections = ingredient
+    .split(/(?=EACH\s)/)
+    .map((s: string) => s.replace(/^[,;\s]+/, '').trim())
+    .filter(Boolean)
+    .map(matchHeader)
 
   if (dose_sections.length === 0) {
     throw new Error(`No dose sections found: "${ingredient}"`)
   }
 
-  // Determine form/routes from the first section's header or product name
-  const first_header_match = dose_sections[0].match(header_regex)
-  if (!first_header_match) {
-    throw new Error(`Could not parse ingredient header: "${dose_sections[0]}"`)
-  }
-  const [, , dosage_description_raw, form_raw] = first_header_match
+  // console.log({dose_sections})
+  // // Determine form/routes from the first section's header or product name
+  // const first_header_match = dose_sections[0].match(header_regex)
+  // if (!first_header_match) {
+  //   throw new Error(`Could not parse ingredient header: "${dose_sections[0]}"`)
+  // }
+  // const [, , dosage_description_raw, form_raw] = first_header_match
 
   function getRoutes(form: string): FormRoutes {
     const routes = unaffiliated_form_to_route[form]
@@ -171,21 +188,20 @@ export function parseMedicationSouthAfrica(
   function getFormRoutes(): FormRoutes {
     const inferred = inferFormRoutesFromProductName(medication.productName)
     if (inferred) return inferred
-    if (form_raw) {
-      const form = form_raw?.trim()
+    if (dose_sections[0].form_raw) {
+      const form = dose_sections[0].form_raw.trim()
       return getRoutes(form)
     }
-    if (dosage_description_raw) {
-      return getRoutes('LIQUID')
-    }
-
     const lookup = CLAUDE_GENERATED_PROBABLE_SOUTH_AFRICAN_PRODUCT_FORM_ROUTES[medication.productName]
     if (lookup) return { form: lookup[0], routes: lookup[1] }
+    if (dose_sections[0].dosage_units === 'ML') {
+      return getRoutes('LIQUID')
+    }
     throw new Error('Could not determine form')
   }
   const { form, routes } = getFormRoutes()
 
-  const doses = dose_sections.map((section: string) => parseSouthAfricaDoseSection(section, form))
+  const doses = dose_sections.map((section) => parseSouthAfricaDoseSection(section, form))
 
   // Populate equivalent_to from the extraction map (covers cases where the massage stripped EQUIVALENT TO)
   for (const dose of doses) {
@@ -213,7 +229,7 @@ export function parseMedicationSouthAfrica(
 
 type ParsedSouthAfricaIngredient = {
   name: string
-  equivalent_to?: string
+  equivalent_to?: string | { name: string; strength: { value: string; units: string } }
   strength: null | { value: string; units: string }
   dosage_value?: string
   dosage_description?: string
@@ -252,7 +268,6 @@ export function parseSouthAfricaIngredient(ingredient_string: string): ParsedSou
   // Split into multiple ingredients if string contains several: "NAME1 10,0 MG NAME2 320,0 MG" → ["NAME1 10,0 MG", "NAME2 320,0 MG"]
   const split_regex = new RegExp(`(\\d+(?:[.,]\\d+)?\\s*${unit_pattern})\\s+(?=[A-Z])`, 'g')
   const parts = ingredient_string.replace(split_regex, '$1\n').split('\n').map((s) => s.trim()).filter(Boolean)
-  console.log({ parts })
   if (parts.length > 1) {
     return parts.flatMap(parseSouthAfricaIngredient)
   }
@@ -288,7 +303,6 @@ export function parseSouthAfricaIngredient(ingredient_string: string): ParsedSou
     // Fall back to name-only
     return [{ name: before_eq || after_eq, strength: null }]
   }
-
   const percent_match = parseSouthAfricaPercentIngredient(ingredient_string)
   if (percent_match) return [percent_match]
 
@@ -297,7 +311,6 @@ export function parseSouthAfricaIngredient(ingredient_string: string): ParsedSou
   if (match) {
     return [{
       name: match[1].trim(),
-
       strength: { value: match[2], units: ingredient_string.match(new RegExp(`${unit_pattern}\\s*$`))![0].trim() },
     }]
   }
@@ -343,8 +356,10 @@ export function parseSouthAfricaIngredient(ingredient_string: string): ParsedSou
 }
 
 /** Extract salt→base form mappings from normalized ingredient text before EQUIVALENT TO is stripped */
-function extractEquivalentToNames(normalizedText: string): Map<string, string> {
-  const result = new Map<string, string>()
+type EquivalentToEntry = { name: string; strength: { value: string; units: string } }
+
+function extractEquivalentToNames(normalizedText: string): Map<string, string | EquivalentToEntry> {
+  const result = new Map<string, string | EquivalentToEntry>()
 
   for (const line of normalizedText.split('\n')) {
     const trimmed = line.trim()
@@ -359,15 +374,19 @@ function extractEquivalentToNames(normalizedText: string): Map<string, string> {
       const eq_idx = segment.indexOf('EQUIVALENT TO')
       if (eq_idx === -1) continue
 
-      const salt_name = segment.slice(0, eq_idx).trim().replace(/[,;]\s*$/, '')
+      const raw_salt_name = segment.slice(0, eq_idx).trim().replace(/[,;]\s*$/, '')
       const after_eq = segment.slice(eq_idx + 'EQUIVALENT TO'.length).trim()
 
-      if (!salt_name) continue
+      if (!raw_salt_name) continue
 
-      // Format 1: "BASE_NAME VALUE UNIT" (e.g. "CILASTATIN 500 MG")
-      const base_match = after_eq.match(/^([A-Z][A-Z\s\-]+?)\s+\d/)
+      // Strip leading VALUE UNIT from salt name if present (e.g. "50.0 MG SODIUM FLUORIDE" → "SODIUM FLUORIDE")
+      const leading_val = raw_salt_name.match(new RegExp(`^\\d+(?:\\.\\d+)*\\s*${unit_pattern}\\s+(.+)$`))
+      const salt_name = leading_val ? leading_val[1].trim() : raw_salt_name
+
+      // Format 1: "BASE_NAME VALUE UNIT" (e.g. "FLUORIDE 22.6 MG")
+      const base_match = after_eq.match(new RegExp(`^([A-Z][A-Z\\s\\-]+?)\\s+(\\d+(?:\\.\\d+)*)\\s*(${unit_pattern})\\s*$`))
       if (base_match) {
-        result.set(salt_name, base_match[1].trim())
+        result.set(salt_name, { name: base_match[1].trim(), strength: { value: base_match[2], units: base_match[3] } })
         continue
       }
 
@@ -382,13 +401,14 @@ function extractEquivalentToNames(normalizedText: string): Map<string, string> {
   return result
 }
 
-function initialSouthAfricaIngredientMassage(ingredient: string): { text: string; equivalent_to_map: Map<string, string> } {
+function initialSouthAfricaIngredientMassage(ingredient: string): { text: string; equivalent_to_map: Map<string, string | EquivalentToEntry> } {
   if (ingredient === 'None') {
     throw new Error('No ingredients')
   }
 
   const upper = ingredient
     .toUpperCase()
+    .replace('TABLET\n', 'EACH TABLET CONTAINS')
     .replaceAll(/[\u00B5\u03BC]/g, 'u') // μ → u (micro sign and Greek small mu)
     .replaceAll(/\?G\b/g, 'ug') // corrupted µG → ug
     // Fix letter O used as digit 0 in number-like contexts
@@ -406,10 +426,13 @@ function initialSouthAfricaIngredientMassage(ingredient: string): { text: string
     .replaceAll(/\bEQUIVALENT T0/g, 'EQUIVALENT TO')
     .replaceAll(/, (\d)/g, ',$1')
     .replaceAll(/(\d+),(\d+)/g, '$1.$2')
+    // Strip unnecessary .0
+    .replaceAll(/(\d)\.0\b/g, '$1')
     // Strip trailing parenthetical text: "(SUCCINYLATED)", "(5 MEGAUNITS)", etc.
     .replace(/\s*\([^)]*\)\s*$/, '')
     // Strip trailing period/whitespace
     .replace(/[\s.]+$/, '')
+    .replaceAll('≥ ', '')
     // Handle PEG molecular weight concatenated with value
     .replace(/^(POLY ETHYLENE GLYCOL 3,350)(\d)/, '$1 $2')
     // Fix VITAMIN name+value concatenation: "VITAMIN B650 MG" → "VITAMIN B6 50 MG"
@@ -446,54 +469,91 @@ function initialSouthAfricaIngredientMassage(ingredient: string): { text: string
 }
 
 // Parse header: EACH [<value> <unit> [OF]] [<FORM>] CONTAIN(S) [:]
-const header_regex = /^EACH\s+(?:(\d+(?:[.,]\d+)?)\s*(ML|G|KG|L)\s+(?:OF\s+)?)?(?:([A-Z][A-Z\s,\-]*?)\s+)?CONTAINS?\s*:?\s*/
+// EACH 2,0 ml AMPOULE CONTAINS \nVECURONIUM BROMIDE 4,0 mg
+const header_regex = /^EACH\s+(?:(\d+(?:[.,]\d+)?)\s*(ML|G|KG|L)\s+(?:OF\s+)?)?(?:([A-Z][A-Z\s,\-]*?)\s+)?CONTAINS?\s*:?\s*/i
 
-function parseSouthAfricaDoseSection(section: string, form: string): ParsedDose {
+// EACH VIAL WITH 5 ML CONCENTRATE CONTAINS 4 MG ZOLEDRONIC ACID (ANHYDROUS) 4.264 MG
+const header_regex2 = /^EACH\s+([A-Z]+)\s+WITH\s+(\d+(?:[.,]\d+)?)?\s*((?:ML|G|KG|L))\s+(?:[A-Z]+\s+)?CONTAINS\s*:?\s*/i
+
+// EACH 1,0 ml SOLUTION CONTAINS \nBETAXOLOL HYDROCHLORIDE EQUIVALENT TO BETAXOLOL 5,0 mg
+const header_regex3 = /^EACH\s+(\d+(?:[.,]\d+)?)?\s*((?:ML|G|KG|L))\s+([A-Z]+)\s+CONTAINS\s*:?\s+/i
+
+// EACH ml CONTAINS \nBRIMONIDINE TARTRATE 2,0 mg
+const header_regex4 = /^EACH\s+(?:(\d+(?:[.,]\d+)?)\s*)?(ML|G|KG|L)\s+CONTAINS\s*:?\s+([\s\S]*)/i
+
+function matchHeader(section: string) {
   const header_match = section.match(header_regex)
-  if (!header_match) {
-    throw new Error(`Could not parse ingredient header: "${section}"`)
+  if (header_match) {
+    const [full_header, dosage_value, dosage_units, form_raw] = header_match
+    return { section, full_header, dosage_value, dosage_units, form_raw, ingredients: section.slice(full_header.length).trim() }
   }
 
-  const [full_header, dosage_value_raw, dosage_description_raw] = header_match
+  const header_match2 = section.match(header_regex2)
+  if (header_match2) {
+    const [full_header, form_raw, dosage_value, dosage_units] = header_match2
+    return { section, full_header, form_raw, dosage_value, dosage_units, ingredients: section.slice(full_header.length).trim() }
+  }
 
-  let dosage_value = dosage_value_raw ? String(positive_decimal.parse(dosage_value_raw.replace(',', '.'))) : '1'
-  let dosage_description = dosage_description_raw?.toUpperCase() ||
+  const header_match3 = section.match(header_regex3)
+  if (header_match3) {
+    const [full_header, dosage_value, dosage_units, form_raw] = header_match3
+    return { section, full_header, form_raw, dosage_value, dosage_units, ingredients: section.slice(full_header.length).trim() }
+  }
+
+  const header_match4 = section.match(header_regex4)
+  if (header_match4) {
+    const [full_header, value, units, form_raw] = header_match4
+    const dosage_value = value ? `${value} ${units}` : `1 ${units}`
+    return { section, full_header, form_raw, dosage_value, ingredients: section.slice(full_header.length).trim() }
+  }
+
+  // "1 ML\nCHLORPROMAZINE HYDROCHLORIDE A 25 MG" — no EACH, VALUE UNIT on first line
+  const header_regex5 = /^(\d+(?:[.,]\d+)?)\s*(ML|G|KG|L)\s*\n/i
+  const header_match5 = section.match(header_regex5)
+  if (header_match5) {
+    const [full_header, dosage_value, dosage_units] = header_match5
+    return { section, full_header, dosage_value, dosage_units, ingredients: section.slice(full_header.length).trim() }
+  }
+
+  throw new Error(`Could not match section as header ${section}`)
+}
+
+function parseSouthAfricaDoseSection(
+  { section, dosage_value, dosage_units, form_raw, ingredients: ingredients_str }: {
+    section: string
+    dosage_value?: string
+    dosage_units?: string
+    form_raw?: string
+    ingredients: string
+  },
+  form: string,
+): ParsedDose {
+  let value = dosage_value ? String(positive_decimal.parse(dosage_value)) : '1'
+  const dose_form: string = form_raw?.toUpperCase() ||
     forms_with_singular_doses.find((f) => form.includes(f)) || 'DOSE'
-
-  // Parse individual ingredients from text after header
-  const ingredients_part = section.slice(full_header.length).trim()
-
-  if (!ingredients_part) {
-    throw new Error(`No ingredients after header: "${section}"`)
-  }
 
   // Split by newline, comma+space+uppercase, semicolon, or concatenated (unit directly followed by uppercase)
   const raw_parts: string[] = []
 
-  for (const line of ingredients_part.split('\n')) {
+  for (const line of ingredients_str.split('\n')) {
     const trimmed = line.trim()
     if (!trimmed) continue
-    console.log({ trimmed })
     for (const part of trimmed.split(/(?:,\s+(?=[A-Z]))|(?:;\s*)/).map((s) => s.trim()).filter(Boolean)) {
-      console.log({ part })
-      const separated = part.includes('EQUIVALENT TO') ? part : part
+      // Rearrange "VALUE UNIT NAME VALUE UNIT" → "NAME VALUE UNIT"
+      // This fixes leftover base strength from Format 1 stripping of "EQUIVALENT TO BASE": e.g.
+      // "50.0 MG SODIUM FLUORIDE  22.6 MG" → "SODIUM FLUORIDE 50.0 MG" (salt keeps its own strength)
+      const rearranged_part = part.includes('EQUIVALENT TO') ? part : part.replace(
+        new RegExp(`^(\\d+(?:\\.\\d+)*)\\s*(${unit_pattern})\\s+([A-Z][A-Z ()\\-]+?)\\s+(\\d+(?:\\.\\d+)*)\\s*(${unit_pattern})\\s*$`),
+        '$3 $1 $2',
+      )
+      const separated = rearranged_part.includes('EQUIVALENT TO') ? rearranged_part : rearranged_part
         .replace(/(\d+(?:[.,]\d+)?\s*(?:UNITS|MCG|MBQ|CCID|MIU|MG|ML|UG|IU|KU|MU|FFU|NG|U(?!G)|G))\s* OF (.+)/g, '$2 $1\n')
         .replace(/(\d+(?:[.,]\d+)?\s*(?:UNITS|MCG|MBQ|CCID|MIU|MG|ML|UG|IU|KU|MU|FFU|NG|U(?!G)|G))\s*(?=[A-Z])/g, '$1\n')
-      console.log({ separated })
       raw_parts.push(...separated.split('\n').map((s) => s.trim()).filter(Boolean))
     }
   }
 
-  console.log({ raw_parts })
-
-  const ingredients = raw_parts.flatMap(parseSouthAfricaIngredient).map(function ignoreParentheticals(ingredient) {
-    const before_parenthetical_match = ingredient.name.match(/^(.*) \(.*\)$/)
-    if (!before_parenthetical_match) return ingredient
-    return {
-      ...ingredient,
-      name: before_parenthetical_match[1],
-    }
-  })
+  const ingredients = raw_parts.flatMap(parseSouthAfricaIngredient)
 
   for (const ingredient of ingredients) {
     if (ingredient.strength?.value.includes(',')) {
@@ -507,21 +567,22 @@ function parseSouthAfricaDoseSection(section: string, form: string): ParsedDose 
   assertArrayNonEmpty(ingredients, `No ingredients parsed: "${section}"`)
 
   for (const ing of ingredients) {
-    if (ing.dosage_description) {
-      dosage_description = ing.dosage_description
-    }
+    // if (ing.dosage_description) {
+    //   dosage_description = ing.dosage_description
+    // }
     if (ing.dosage_value) {
-      dosage_value = ing.dosage_value
+      value = ing.dosage_value
     }
   }
 
-  if (dosage_value.includes('/')) {
+  if (value.includes('/')) {
     throw new Error('dosage value has /')
   }
 
-  return {
-    value: dosage_value,
-    description: dosage_description,
+  return omitUndefinedProperties({
+    value,
+    form: dose_form,
+    units: dosage_units,
     ingredients,
-  }
+  })
 }

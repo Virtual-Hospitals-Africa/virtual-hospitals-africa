@@ -51,20 +51,14 @@ export async function up(db: Kysely<DB>) {
           ))
         .addColumn('value', 'decimal', (col) => col.notNull())
         .addColumn(
+          'units',
+          'varchar(255)',
+        ).addColumn(
           'description',
           'varchar(255)',
           (col) => col.notNull(),
         ),
   )
-
-  await sql`
-    ALTER TABLE medication_doses
-    ADD description_is_units BOOLEAN NOT NULL
-    GENERATED ALWAYS AS (
-      "description" IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
-    )
-    STORED
-  `.execute(db)
 
   await createStandardTable(
     db,

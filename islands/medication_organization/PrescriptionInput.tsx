@@ -136,8 +136,8 @@ function doseLabel(dose: Dose): string {
 }
 
 function dosageLabel(dosage_text: string, dosage_value: number, dose: Dose): string {
-  if (dose.description_is_units) {
-    return `${dosage_text} (${dosage_value * parseFloat(dose.value)}${dose.description})`
+  if (dose.units) {
+    return `${dosage_text} (${dosage_value * parseFloat(dose.value)}${dose.units})`
   }
   const unit = dosage_value === 1 ? dose.description : pluralizeUnit(dose.description)
   return `${dosage_text} ${unit}`

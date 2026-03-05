@@ -61,6 +61,7 @@ export type MaritalStatus = 'Co-habiting' | 'Divorced' | 'Married' | 'Never Marr
 export type MedicationFrequency =
   | 'ac'
   | 'am'
+  | 'at'
   | 'bd'
   | 'bm'
   | 'bw'
@@ -70,6 +71,7 @@ export type MedicationFrequency =
   | 'od'
   | 'pm'
   | 'prn'
+  | 'q12h'
   | 'q15'
   | 'q1h'
   | 'q24h'
@@ -111,24 +113,6 @@ export type MessageTargetType =
 export type Numeric = ColumnType<string, number | string, number | string>
 
 export type PatientCohabitation = 'Father' | 'Foster Parent' | 'Grandparent(s)' | 'Mother' | 'Orphanage' | 'Other Relative' | 'Sibling' | 'Uncle or Aunt'
-
-export type Prescriber =
-  | 'Dentist'
-  | 'Dentist, Dental therapist'
-  | 'Doctor'
-  | 'Doctor prescribed'
-  | 'Doctor/Nurse'
-  | 'N/A'
-  | 'Nurse'
-  | 'Specialist'
-  | 'Specialist advice'
-  | 'Specialist consultation'
-  | 'Specialist initiated'
-  | 'Specialist prescribed'
-  | 'Specialist supervision'
-  | 'Specialist/subspecialist supervision'
-  | 'Subspecialist initiated'
-  | 'Subspecialist supervision'
 
 export type Sex = 'female' | 'male' | 'other' | 'prefer not to say'
 
@@ -698,6 +682,13 @@ export interface MedicationDoseIngredients {
   updated_at: Generated<Timestamp>
 }
 
+export interface MedicationDoseIngredientStrengthEquivalences {
+  id: string
+  snomed_concept_id: Int8
+  units: string
+  value: Numeric
+}
+
 export interface MedicationDoseIngredientStrengths {
   id: string
   units: string
@@ -706,9 +697,9 @@ export interface MedicationDoseIngredientStrengths {
 
 export interface MedicationDoses {
   description: string
-  description_is_units: Generated<boolean>
   id: string
   medication_id: string
+  units: string | null
   value: Numeric
 }
 
@@ -1350,58 +1341,6 @@ export interface Procurers {
   updated_at: Generated<Timestamp>
 }
 
-export interface RecommendedDoseIndications {
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  indication_snomed_concept_id: Int8
-  recommended_dose_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface RecommendedDoseIngredients {
-  active_ingredient_snomed_concept_id: Int8
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  recommended_dose_schedule_id: string
-  updated_at: Generated<Timestamp>
-}
-
-export interface RecommendedDoseIngredientStrengths {
-  id: string
-  units_snomed_concept_id: Int8 | null
-  value: Numeric | null
-  value_high: Numeric | null
-  value_low: Numeric | null
-}
-
-export interface RecommendedDoses {
-  age_years_high: Int8 | null
-  age_years_low: Int8
-  atc: string
-  created_at: Generated<Timestamp>
-  form_snomed_concept_id: Int8
-  id: Generated<string>
-  medicine_snomed_concept_id: Int8
-  prescriber: Prescriber
-  regulatory_agency_id: string
-  route_snomed_concept_id: Int8
-  special_instructions: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface RecommendedDoseSchedules {
-  created_at: Generated<Timestamp>
-  dosage: Numeric | null
-  duration: number | null
-  duration_unit: DurationUnits | null
-  frequency: MedicationFrequency
-  id: Generated<string>
-  order: number
-  other_frequency_options: ArrayType<MedicationFrequency>
-  recommended_dose_id: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface Regulators {
   avatar_media_id: string | null
   created_at: Generated<Timestamp>
@@ -1828,6 +1767,7 @@ export interface DB {
   media_speeches: MediaSpeeches
   media_videos: MediaVideos
   medication_availabilities: MedicationAvailabilities
+  medication_dose_ingredient_strength_equivalences: MedicationDoseIngredientStrengthEquivalences
   medication_dose_ingredient_strengths: MedicationDoseIngredientStrengths
   medication_dose_ingredients: MedicationDoseIngredients
   medication_doses: MedicationDoses
@@ -1899,11 +1839,6 @@ export interface DB {
   pharmacist_chatbot_users: PharmacistChatbotUsers
   procurement: Procurement
   procurers: Procurers
-  recommended_dose_indications: RecommendedDoseIndications
-  recommended_dose_ingredient_strengths: RecommendedDoseIngredientStrengths
-  recommended_dose_ingredients: RecommendedDoseIngredients
-  recommended_dose_schedules: RecommendedDoseSchedules
-  recommended_doses: RecommendedDoses
   regulators: Regulators
   regulatory_agencies: RegulatoryAgencies
   sats_priority_levels: SatsPriorityLevels
