@@ -35,8 +35,8 @@ describe('seed', () => {
         'value': '1',
         'description': 'ML',
         'ingredients': [
-          { 'name': 'ADRENALINE', 'equivalent_to': null, 'strength': { 'value': '12.5', 'units': 'UG' } },
-          { 'name': 'LIDOCAINE HYDROCHLORIDE', 'equivalent_to': null, 'strength': { 'value': '20', 'units': 'MG' } },
+          { 'name': 'ADRENALINE', 'strength': { 'value': '12.5', 'units': 'UG' } },
+          { 'name': 'LIDOCAINE HYDROCHLORIDE', 'strength': { 'value': '20', 'units': 'MG' } },
         ],
       },
     ],
@@ -51,8 +51,8 @@ describe('seed', () => {
     const parsed = parseSouthAfricaIngredient('AMLODIPINE BESILATE EQUIVALENT TO AMLODIPINE 10,0 MG VALSARTAN 320,0 MG HYDROCHLOROTHIAZIDE 25,0 MG')
     assertEquals(parsed, [
       { name: 'AMLODIPINE BESILATE', equivalent_to: 'AMLODIPINE', strength: { value: '10,0', units: 'MG' } },
-      { name: 'VALSARTAN', equivalent_to: null, strength: { value: '320,0', units: 'MG' } },
-      { name: 'HYDROCHLOROTHIAZIDE', equivalent_to: null, strength: { value: '25,0', units: 'MG' } },
+      { name: 'VALSARTAN', strength: { value: '320,0', units: 'MG' } },
+      { name: 'HYDROCHLOROTHIAZIDE', strength: { value: '25,0', units: 'MG' } },
     ])
   })
 
@@ -79,8 +79,8 @@ describe('seed', () => {
           'value': '100',
           'description': 'G',
           'ingredients': [
-            { 'name': 'LIDOCAINE', 'equivalent_to': null, 'strength': { 'value': '5', 'units': 'G' } },
-            { 'name': 'CETRIMIDE', 'equivalent_to': null, 'strength': { 'value': '0.15', 'units': 'G' } },
+            { 'name': 'LIDOCAINE', 'strength': { 'value': '5', 'units': 'G' } },
+            { 'name': 'CETRIMIDE', 'strength': { 'value': '0.15', 'units': 'G' } },
           ],
         },
       ],
@@ -110,13 +110,11 @@ describe('seed', () => {
           'ingredients': [
             {
               'name': 'ADRENALINE',
-              'equivalent_to': null,
               'strength': { 'value': '12.5', 'units': 'UG' },
               'snomed_concept_id': '387362001',
             },
             {
               'name': 'LIDOCAINE HYDROCHLORIDE',
-              'equivalent_to': null,
               'strength': { 'value': '20', 'units': 'MG' },
               'snomed_concept_id': '61773008',
             },
@@ -252,15 +250,13 @@ describe('seed', () => {
         'ingredients': [
           {
             'name': 'DROSPIRENONE',
-            'equivalent_to': null,
             'strength': { 'value': '3.0', 'units': 'MG' },
           },
           {
             'name': 'ETHINYLESTRADIOL',
-            'equivalent_to': null,
             'strength': { 'value': '0.03', 'units': 'MG' },
           },
-          { 'name': 'LEVOMEFOLATE CALCIUM', 'equivalent_to': null, 'strength': { 'value': '0.451', 'units': 'MG' } },
+          { 'name': 'LEVOMEFOLATE CALCIUM', 'strength': { 'value': '0.451', 'units': 'MG' } },
         ],
       },
     ])
@@ -309,13 +305,13 @@ describe('seed', () => {
       'value': '1',
       'description': 'CAPSULE',
       'ingredients': [
-        { 'name': 'APREPITANT', 'equivalent_to': null, 'strength': { 'value': '80.0', 'units': 'MG' } },
+        { 'name': 'APREPITANT', 'strength': { 'value': '80.0', 'units': 'MG' } },
       ],
     }, {
       'value': '1',
       'description': 'CAPSULE',
       'ingredients': [
-        { 'name': 'APREPITANT', 'equivalent_to': null, 'strength': { 'value': '125.0', 'units': 'MG' } },
+        { 'name': 'APREPITANT', 'strength': { 'value': '125.0', 'units': 'MG' } },
       ],
     }])
   })
@@ -455,12 +451,13 @@ describe('seed', () => {
       'therapeutic_area': null,
       'api': 'None',
     })
+    console.log({ doses })
     assertEquals(doses, [
       {
         'value': '10',
         'description': 'ML',
         'ingredients': [
-          { 'name': 'TIGECYCLINE', 'equivalent_to': null, 'strength': { 'value': '50.0', 'units': 'MG' } },
+          { 'name': 'TIGECYCLINE', 'strength': { 'value': '50.0', 'units': 'MG' } },
         ],
       },
     ])

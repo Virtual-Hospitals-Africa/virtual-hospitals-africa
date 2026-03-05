@@ -43,6 +43,7 @@ export type ParsedDose = {
   maximum?: number
   units?: string
   value?: number
+  quantity?: number
   ingredient_name?: string
   per_size?: PerSize
   per_time?: PerTime

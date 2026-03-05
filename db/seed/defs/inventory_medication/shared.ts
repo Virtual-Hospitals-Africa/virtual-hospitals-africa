@@ -1,6 +1,6 @@
 export type ParsedIngredient = {
   name: string
-  equivalent_to: null | string | {
+  equivalent_to?: string | {
     name: string
     strength: {
       value: string
