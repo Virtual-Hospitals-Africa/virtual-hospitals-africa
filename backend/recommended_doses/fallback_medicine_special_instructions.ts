@@ -16,4 +16,16 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)',
   '380mm2',
   'dilute rabbies immunoglobulin',
+  // Rifampicin/Isoniazid fixed-ratio doses without units
+  '150/75',
+  '300/75',
+  // Glycerine suppository volume/weight doses
+  '0.891 mL/1.26 g suppository',
+  '1.698 mL/2.4 g suppository',
+  // ICU maintenance doses with rate
+  '20-100 mcg; 50-100 mcg/h maintenance',
+  '0.25-0.5 mg/kg; 0.05-0.4 mg/kg/h maintenance',
+  '1-5 mg/h',
+  '2-10 mg bolus; 2-5 mg/h maintenance',
+  '5-50mcg/kg/min or 50-200mg/h',
 ])

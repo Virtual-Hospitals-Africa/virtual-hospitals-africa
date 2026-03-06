@@ -147,7 +147,7 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^preoperatively$/i,
   /^surgery and .*/i,
   /^Add DTG\b.*/i,
-  /^mixed with .*/i,
+  /\bmixed with\b.*/i,
   /^impregnate .*/i,
   /^before administering .*/i,
   /^as per EPI schedule$/i,

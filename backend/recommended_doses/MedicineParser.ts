@@ -84,6 +84,7 @@ export class MedicineParser {
       .replace(/\bdaiy\b/gi, 'daily')
       .replace(/\banually\b/gi, 'annually')
       .replace(/\bcontinuosly\b/gi, 'continuously')
+      .replace(/\bcfor\b/gi, 'for')
       .replaceAll('  ', ' ')
       .trim()
 
