@@ -1,6 +1,7 @@
 import { TimeUnit } from './shared.ts'
 
 export function normalizeTimeUnit(unit: string): TimeUnit {
+  unit = unit.toLowerCase()
   if (unit.endsWith('s')) unit = unit.slice(0, -1)
   switch (unit) {
     case 'm':

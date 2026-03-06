@@ -231,18 +231,22 @@ export class DosageParser {
       frequency: 'qd' as const,
       divided_dose_count: [parseInt(low), parseInt(high)],
     }))
+    this.lookFor(/(\d+)\s*-\s*(\d+) doses/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
     this.lookFor('2 doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('3 doses', () => ({ divided_dose_count: 3 }))
     this.lookFor('in divided doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('two divided doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('three divided doses', () => ({ divided_dose_count: 3 }))
+    this.lookFor(/(\d+)\s*-\s*(\d+) divided doses/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
+    this.lookFor(/in (\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
     this.lookFor(/(\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
     this.lookFor(/(\d+) doses total/i, (n) => ({ series: { dose_count: parseInt(n) } }))
-    this.lookFor(/(\d+)-(\d+) times daily/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
+    this.lookFor(/(\d+)\s*-\s*(\d+) times (?:daily|a day|per day)/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
     this.lookFor('2 times daily', () => ({ frequency: 'bd' }))
     this.lookFor('3 times daily', () => ({ frequency: 'tds' }))
     this.lookFor('4 times daily', () => ({ frequency: 'qid' }))
-    this.lookFor(/(\d+) times daily/i, (n) => ({ divided_dose_count: parseInt(n) }))
+    this.lookFor('twice a day', () => ({ frequency: 'bd' }))
+    this.lookFor(/(\d+) times (?:daily|a day|per day)/i, (n) => ({ divided_dose_count: parseInt(n) }))
     this.lookFor(/once daily/i, () => ({ frequency: 'od' }))
     this.lookFor(/daily/i, () => ({ frequency: 'qd' }))
     this.lookFor(/as a single dose/i, () => ({ frequency: 'stat' }))
@@ -275,7 +279,7 @@ export class DosageParser {
     this.lookFor(/over (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (value, units) => ({
       duration: { value: parseInt(value), units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/over (\d+)-(\d+)\s*(minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (min, max, units) => ({
+    this.lookFor(/over (\d+)\s*-\s*(\d+)\s*(minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (min, max, units) => ({
       duration: { value: [parseInt(min), parseInt(max)], units: normalizeTimeUnit(units) },
     }))
     this.lookFor(/(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? for (.+)/i, (value, units, for_condition) => ({
