@@ -119,5 +119,7 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   'immediately after birth routinely',
   /routinely to each eye after birth/i,
   /^if high risk,? .+$/i,
+  /after expulsion is complete/i,
+  /with or after a meal/i,
   // /after .*/i,
 ]

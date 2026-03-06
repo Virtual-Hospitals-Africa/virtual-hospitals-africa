@@ -92368,9 +92368,9 @@
                 {
                     "units"               : "mg",
                     "value"               : 400,
-                    "frequency"           : "q8h",
                     "special_instructions": "with or after a meal",
-                    "as_required"         : true
+                    "as_required"         : true,
+                    "frequency"           : "q8h"
                 }
             ],
             "raw_dose"         : "400 mg",
@@ -92392,9 +92392,9 @@
                 {
                     "units"               : "mg",
                     "value"               : 400,
-                    "frequency"           : "q8h",
                     "special_instructions": "with or after a meal",
-                    "as_required"         : true
+                    "as_required"         : true,
+                    "frequency"           : "q8h"
                 }
             ],
             "raw_dose"         : "400 mg",
@@ -92442,9 +92442,9 @@
                 {
                     "units"               : "mg",
                     "value"               : 400,
-                    "frequency"           : "q8h",
                     "special_instructions": "with or after a meal",
-                    "duration"            : { "value": [2, 3], "units": "day" }
+                    "duration"            : { "value": [2, 3], "units": "day" },
+                    "frequency"           : "q8h"
                 }
             ],
             "raw_dose"         : "400 mg",
@@ -92466,9 +92466,9 @@
                 {
                     "units"               : "mg",
                     "value"               : 400,
-                    "frequency"           : "q8h",
                     "special_instructions": "with or after a meal",
-                    "duration"            : { "value": [2, 3], "units": "day" }
+                    "duration"            : { "value": [2, 3], "units": "day" },
+                    "frequency"           : "q8h"
                 }
             ],
             "raw_dose"         : "400 mg",
@@ -327038,7 +327038,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327062,8 +327062,56 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"for 2-\"",
-        "error_stack": "Error: Dosage text remaining \"for 2-\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1186:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1206:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "M01AE01",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O04.9"] },
+            "medicine"         : {
+                "name"       : "Ibuprofen",
+                "ingredients": [ {"name": "Ibuprofen"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "mg",
+                    "value"               : 400,
+                    "special_instructions": "after expulsion is complete; with or after a meal",
+                    "as_required"         : true,
+                    "duration"            : { "value": [2, 3], "units": "day" },
+                    "frequency"           : "q8h"
+                }
+            ],
+            "raw_dose"         : "400 mg",
+            "raw_dose_interval": "8 hourly with or after a meal, as needed for 2–3 days after expulsion is complete"
+        },
+        "expected_parsed": {
+            "atc"              : "M01AE01",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O04.9"] },
+            "medicine"         : {
+                "name"       : "Ibuprofen",
+                "ingredients": [ {"name": "Ibuprofen"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "mg",
+                    "value"               : 400,
+                    "special_instructions": "after expulsion is complete; with or after a meal",
+                    "as_required"         : true,
+                    "duration"            : { "value": [2, 3], "units": "day" },
+                    "frequency"           : "q8h"
+                }
+            ],
+            "raw_dose"         : "400 mg",
+            "raw_dose_interval": "8 hourly with or after a meal, as needed for 2–3 days after expulsion is complete"
+        }
     },
     {
         "row": {
