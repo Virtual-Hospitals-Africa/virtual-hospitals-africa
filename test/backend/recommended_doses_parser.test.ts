@@ -12,6 +12,7 @@ const test_cases = parseJSONSync(test_cases_file_path)
 // deno-lint-ignore no-explicit-any
 const results: any[] = []
 afterAll(async () => {
+  console.log('wEKLLKE')
   await Deno.writeTextFile(test_cases_file_path, humanReadableJson(results), { create: true })
 })
 
@@ -48,6 +49,8 @@ function test(test_case: { row: MedicineRow; expected_parsed?: ParsedMedicineRec
       row: test_case.row,
       actual_parsed: medicine_parser_result.value.parsed,
       expected_parsed: test_case.expected_parsed,
+      error_message: assertion_result.error.message,
+      error_stack: assertion_result.error.stack,
     })
     throw assertion_result.error
   })

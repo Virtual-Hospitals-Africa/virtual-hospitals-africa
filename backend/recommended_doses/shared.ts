@@ -55,6 +55,7 @@ export type ParsedDose = {
     units: string
   }
   concentration?: number | [number, number]
+  concentration_ratio?: [number, number]
   min?: ParsedDose[]
   max?: ParsedDose[]
   low?: ParsedDose[]

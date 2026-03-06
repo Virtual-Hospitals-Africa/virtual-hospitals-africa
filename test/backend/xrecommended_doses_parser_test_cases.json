@@ -252752,7 +252752,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "19",
@@ -252776,7 +252776,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "A12AA03",
             "form"             : "Injection",
             "route"            : "Intravenous injection (IV)",
@@ -252811,9 +252811,7 @@
             ],
             "raw_dose"         : "Dilute 1:1",
             "raw_dose_interval": "over 10 minutes"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -257938,7 +257936,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "19",
@@ -257962,7 +257960,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "A12AA03",
             "form"             : "Injection",
             "route"            : "Intravenous injection (IV)",
@@ -257997,9 +257995,7 @@
             ],
             "raw_dose"         : "Dilute 1:1",
             "raw_dose_interval": "over 10 minutes"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -302902,7 +302898,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -302926,7 +302922,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "A12AA07",
             "form"             : "Injection",
             "route"            : "Intravenous injection (IV)",
@@ -302977,9 +302973,7 @@
             ],
             "raw_dose"         : "0.2 mL/kg (maximum = 10mL)(diluted 1:4)",
             "raw_dose_interval": "slowly over 10 minutes"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -303170,7 +303164,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -303194,7 +303188,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "A12AA03",
             "form"             : "Injection",
             "route"            : "Intravenous injection (IV)",
@@ -303227,9 +303221,7 @@
             ],
             "raw_dose"         : "0.6 mL/kg (diluted 1:4)",
             "raw_dose_interval": "n/a"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -308604,7 +308596,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -308628,7 +308620,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "B05XA02",
             "form"             : "Solution",
             "route"            : "Intravenous injection (IV)",
@@ -308675,12 +308667,10 @@
             ],
             "raw_dose"         : "1 mL/kg (diluted 1:1 with sterile water)",
             "raw_dose_interval": "refer to STGs"
-        },
-        "error_message": "[\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"refer to STGs\"],\n        \"path\"        : [\"schedules\", 0, \"special_instructions\"],\n        \"message\"     : \"Invalid input: expected \\\"refer to STGs\\\"\",\n        \"actual_value\": \"with sterile water; 1:1 refer to STGs\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"diluents\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"refer to STGs\"],\n        \"path\"        : [\"schedules\", 0, \"special_instructions\"],\n        \"message\"     : \"Invalid input: expected \\\"refer to STGs\\\"\",\n        \"actual_value\": \"with sterile water; 1:1 refer to STGs\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"diluents\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -308704,7 +308694,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "B05XA02",
             "form"             : "Solution",
             "route"            : "Intravenous injection (IV)",
@@ -308737,9 +308727,7 @@
             ],
             "raw_dose"         : "dilute 1:1",
             "raw_dose_interval": "refer to STGs"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -308870,7 +308858,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -308894,7 +308882,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "B05XA06",
             "form"             : "Solution",
             "route"            : "Intravenous injection (IV)",
@@ -308929,9 +308917,7 @@
             ],
             "raw_dose"         : "dilute 1:4",
             "raw_dose_interval": "over 6 hours"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -309276,7 +309262,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -309300,7 +309286,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "n/a",
             "form"             : "Injection",
             "route"            : "Intravenous injection (IV)",
@@ -309333,12 +309319,10 @@
             ],
             "raw_dose"         : "1 mL/kg",
             "raw_dose_interval": "refer to STGs"
-        },
-        "error_message": "[\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [1],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 1\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"kg\"],\n        \"path\"        : [\"schedules\", 0, \"per_size\"],\n        \"message\"     : \"Invalid input: expected \\\"kg\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"refer to STGs\"],\n        \"path\"        : [\"schedules\", 0, \"special_instructions\"],\n        \"message\"     : \"Invalid input: expected \\\"refer to STGs\\\"\",\n        \"actual_value\": \"1 mL/kg refer to STGs\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [1],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 1\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"kg\"],\n        \"path\"        : [\"schedules\", 0, \"per_size\"],\n        \"message\"     : \"Invalid input: expected \\\"kg\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"refer to STGs\"],\n        \"path\"        : [\"schedules\", 0, \"special_instructions\"],\n        \"message\"     : \"Invalid input: expected \\\"refer to STGs\\\"\",\n        \"actual_value\": \"1 mL/kg refer to STGs\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -309362,7 +309346,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "n/a",
             "form"             : "Injection",
             "route"            : "Intravenous injection (IV)",
@@ -309397,9 +309381,7 @@
             ],
             "raw_dose"         : "dilute 1:4",
             "raw_dose_interval": "slowly over 10 minutes"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -341060,7 +341042,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Adult Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "17",
@@ -341084,7 +341066,7 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "R03AA01",
             "form"             : "Solution",
             "route"            : "Inhalation",
@@ -341121,9 +341103,7 @@
             ],
             "raw_dose"         : "1:1000 (1ml)",
             "raw_dose_interval": "single dose"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -341186,7 +341166,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "17",
@@ -341210,7 +341190,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor/Nurse"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "R03AA01",
             "form"             : "Solution",
             "route"            : "Inhalation",
@@ -341255,12 +341235,10 @@
             ],
             "raw_dose"         : "2ml of 1:1000",
             "raw_dose_interval": "every 15 minutes"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [2],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 2\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [2],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 2\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "17",
@@ -341284,7 +341262,7 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor/Nurse"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "R03AA01",
             "form"             : "Solution",
             "route"            : "Inhalation",
@@ -341333,9 +341311,7 @@
             ],
             "raw_dose"         : "1ml of 1:1000",
             "raw_dose_interval": "every 15-30 minutes"
-        },
-        "error_message": "[\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [1],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 1\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [1],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 1\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -342650,7 +342626,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Adult Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "19",
@@ -342674,7 +342650,7 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "C01CA24",
             "form"             : "Injection",
             "route"            : "Subcutaneous (SC)",
@@ -342723,9 +342699,7 @@
             ],
             "raw_dose"         : "0.25ml (1:1000)",
             "raw_dose_interval": "single dose"
-        },
-        "error_message": "[\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
@@ -344586,7 +344560,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "21",
@@ -344610,7 +344584,7 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "C01CA24",
             "form"             : "Injection",
             "route"            : "Oral",
@@ -344650,9 +344624,7 @@
             ],
             "raw_dose"         : "1:1000 mL soak gauze or apply directly",
             "raw_dose_interval": "n/a"
-        },
-        "error_message": "[\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [1],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 1\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"soak gauze or apply directly\"],\n        \"path\"        : [\"schedules\", 0, \"special_instructions\"],\n        \"message\"     : \"Invalid input: expected \\\"soak gauze or apply directly\\\"\",\n        \"actual_value\": \"1:1000 mL soak gauze or apply directly\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [1],\n        \"path\"        : [\"schedules\", 0, \"value\"],\n        \"message\"     : \"Invalid input: expected 1\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"ml\"],\n        \"path\"        : [\"schedules\", 0, \"units\"],\n        \"message\"     : \"Invalid input: expected \\\"ml\\\"\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"expected\"    : \"tuple\",\n        \"code\"        : \"invalid_type\",\n        \"path\"        : [\"schedules\", 0, \"concentration_ratio\"],\n        \"message\"     : \"Invalid input: expected tuple, received undefined\",\n        \"actual_value\": \"<undefined>\"\n    },\n    {\n        \"code\"        : \"invalid_value\",\n        \"values\"      : [\"soak gauze or apply directly\"],\n        \"path\"        : [\"schedules\", 0, \"special_instructions\"],\n        \"message\"     : \"Invalid input: expected \\\"soak gauze or apply directly\\\"\",\n        \"actual_value\": \"1:1000 mL soak gauze or apply directly\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
         "row"            : {
