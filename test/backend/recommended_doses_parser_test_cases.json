@@ -107571,7 +107571,12 @@
                 "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
             },
             "schedules"        : [
-                {"special_instructions": "in 100ml dextrose", "units": "ml", "value": 20, "frequency": "stat"}
+                {
+                    "value"    : 20,
+                    "units"    : "ml",
+                    "diluents" : [ {"value": 100, "units": "ml", "ingredient_name": "dextrose"} ],
+                    "frequency": "stat"
+                }
             ],
             "raw_dose"         : "20ml in 100ml dextrose",
             "raw_dose_interval": "single dose"
@@ -328812,7 +328817,7 @@
         }
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION"                                      : "Adult Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "8",
@@ -328836,69 +328841,11 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "actual_parsed"  : {
-            "atc"              : "B05XA19",
-            "form"             : "Injection",
-            "route"            : "Intravenous injection (IV)",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor",
-            "icd10_indications": {
-                "type"       : "and",
-                "indications": [
-                    { "type": "codes", "codes": ["E83.5"                           ] },
-                    { "type": "codes", "codes": ["E20.0", "E20.1", "E20.8", "E20.9"] }
-                ]
-            },
-            "medicine"         : {
-                "name"       : "Calcium Gluconate 10%",
-                "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 1000ml sodium chloride",
-                    "per_size"            : "kg",
-                    "units"               : "mg",
-                    "value"               : 15,
-                    "frequency"           : "stat"
-                }
-            ],
-            "raw_dose"         : "15mg/kg in 1000ml sodium chloride",
-            "raw_dose_interval": "single dose"
-        },
-        "expected_parsed": {
-            "atc"              : "B05XA19",
-            "form"             : "Injection",
-            "route"            : "Intravenous injection (IV)",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor",
-            "icd10_indications": {
-                "type"       : "and",
-                "indications": [
-                    { "type": "codes", "codes": ["E83.5"                           ] },
-                    { "type": "codes", "codes": ["E20.0", "E20.1", "E20.8", "E20.9"] }
-                ]
-            },
-            "medicine"         : {
-                "name"       : "Calcium Gluconate 10%",
-                "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 1000ml sodium chloride",
-                    "per_size"            : "kg",
-                    "units"               : "mg",
-                    "value"               : 15,
-                    "frequency"           : "stat"
-                }
-            ],
-            "raw_dose"         : "15mg/kg in 1000ml sodium chloride",
-            "raw_dose_interval": "single dose"
-        }
+        "error_message": "Did not parse anything 15mg/kg in 1000ml sodium chloride",
+        "error_stack": "Error: Did not parse anything 15mg/kg in 1000ml sodium chloride\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Adult Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -328922,48 +328869,8 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "actual_parsed"  : {
-            "atc"              : "A10AB",
-            "form"             : "Solution",
-            "route"            : "Intravenous injection (IV)",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor",
-            "icd10_indications": {
-                "type" : "codes",
-                "codes": ["E10.0", "E10.1", "E11.0", "E11.1", "E12.0", "E12.1", "E13.0", "E13.1", "E14.0", "E14.1"]
-            },
-            "medicine"         : {
-                "name"       : "Insulin/short acting",
-                "ingredients": [ {"name": "Insulin"}, {"name": "short acting"} ]
-            },
-            "schedules"        : [
-                {"special_instructions": "in 200ml NaCl", "units": "units", "value": 50, "frequency": "stat"}
-            ],
-            "raw_dose"         : "50 units in 200ml NaCl",
-            "raw_dose_interval": "single dose"
-        },
-        "expected_parsed": {
-            "atc"              : "A10AB",
-            "form"             : "Solution",
-            "route"            : "Intravenous injection (IV)",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor",
-            "icd10_indications": {
-                "type" : "codes",
-                "codes": ["E10.0", "E10.1", "E11.0", "E11.1", "E12.0", "E12.1", "E13.0", "E13.1", "E14.0", "E14.1"]
-            },
-            "medicine"         : {
-                "name"       : "Insulin/short acting",
-                "ingredients": [ {"name": "Insulin"}, {"name": "short acting"} ]
-            },
-            "schedules"        : [
-                {"special_instructions": "in 200ml NaCl", "units": "units", "value": 50, "frequency": "stat"}
-            ],
-            "raw_dose"         : "50 units in 200ml NaCl",
-            "raw_dose_interval": "single dose"
-        }
+        "error_message": "Did not parse anything 50 units in 200ml NaCl",
+        "error_stack": "Error: Did not parse anything 50 units in 200ml NaCl\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
         "row": {
@@ -332762,7 +332669,7 @@
         "error_stack": "AssertionError: Values are not equal.\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   \"mcg\"\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   undefined\u001b[22m\u001b[39m\n\n    at assertEquals (https://deno.land/std@0.224.0/assert/assert_equals.ts:52:9)\n    at DosageParser.handleSlash (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1175:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:86:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1215:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -332786,55 +332693,11 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : "q6h"
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "6 hourly"
-        },
-        "expected_parsed": {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : "q6h"
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "6 hourly"
-        }
+        "error_message": "Did not parse anything 0.25mg in 2ml sodium chloride 0.9%",
+        "error_stack": "Error: Did not parse anything 0.25mg in 2ml sodium chloride 0.9%\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -332858,55 +332721,11 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : "q6h"
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "6 hourly"
-        },
-        "expected_parsed": {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : "q6h"
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "6 hourly"
-        }
+        "error_message": "Did not parse anything 0.25mg in 2ml sodium chloride 0.9%",
+        "error_stack": "Error: Did not parse anything 0.25mg in 2ml sodium chloride 0.9%\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -332930,59 +332749,11 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : {
-                        "every": { "value": [20, 30], "units": "minute" }
-                    }
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "every 20-30 minutes"
-        },
-        "expected_parsed": {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : {
-                        "every": { "value": [20, 30], "units": "minute" }
-                    }
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "every 20-30 minutes"
-        }
+        "error_message": "Did not parse anything 0.25mg in 2ml sodium chloride 0.9%",
+        "error_stack": "Error: Did not parse anything 0.25mg in 2ml sodium chloride 0.9%\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -333006,59 +332777,11 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : {
-                        "every": { "value": [20, 30], "units": "minute" }
-                    }
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "every 20-30 minutes"
-        },
-        "expected_parsed": {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : {
-                        "every": { "value": [20, 30], "units": "minute" }
-                    }
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "every 20-30 minutes"
-        }
+        "error_message": "Did not parse anything 0.25mg in 2ml sodium chloride 0.9%",
+        "error_stack": "Error: Did not parse anything 0.25mg in 2ml sodium chloride 0.9%\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "15",
@@ -333082,55 +332805,11 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : "stat"
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "stat"
-        },
-        "expected_parsed": {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {
-                    "special_instructions": "in 2ml sodium chloride 0.9%",
-                    "units"               : "mg",
-                    "value"               : 0.25,
-                    "frequency"           : "stat"
-                }
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "stat"
-        }
+        "error_message": "Did not parse anything 0.25mg in 2ml sodium chloride 0.9%",
+        "error_stack": "Error: Did not parse anything 0.25mg in 2ml sodium chloride 0.9%\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -333154,42 +332833,8 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {"special_instructions": "in 2ml sodium chloride 0.9%", "units": "mg", "value": 0.25}
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "n/a"
-        },
-        "expected_parsed": {
-            "atc"              : "R03BB01",
-            "form"             : "Solution",
-            "route"            : "Inhalation",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["J46"] },
-            "medicine"         : {
-                "name"       : "Ipratropium bromide",
-                "ingredients": [ {"name": "Ipratropium bromide"} ]
-            },
-            "schedules"        : [
-                {"special_instructions": "in 2ml sodium chloride 0.9%", "units": "mg", "value": 0.25}
-            ],
-            "raw_dose"         : "0.25mg in 2ml sodium chloride 0.9%",
-            "raw_dose_interval": "n/a"
-        }
+        "error_message": "Did not parse anything 0.25mg in 2ml sodium chloride 0.9%",
+        "error_stack": "Error: Did not parse anything 0.25mg in 2ml sodium chloride 0.9%\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
         "row"            : {
@@ -335262,8 +334907,8 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "error_message": "Dosage text remaining \"50g diluted\"",
-        "error_stack": "Error: Dosage text remaining \"50g diluted\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1202:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "error_message": "Did not parse anything 50g diluted in 100ml water",
+        "error_stack": "Error: Did not parse anything 50g diluted in 100ml water\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
         "row": {
