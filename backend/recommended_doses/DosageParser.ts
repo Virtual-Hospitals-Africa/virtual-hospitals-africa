@@ -231,6 +231,7 @@ export class DosageParser {
       frequency: 'qd' as const,
       divided_dose_count: [parseInt(low), parseInt(high)],
     }))
+    this.lookFor(/\bin (\d+)\s*-\s*(\d+) doses\b/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
     this.lookFor(/(\d+)\s*-\s*(\d+) doses/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
     this.lookFor('2 doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('3 doses', () => ({ divided_dose_count: 3 }))
@@ -663,6 +664,7 @@ export class DosageParser {
   set dosage_text(value: string) {
     this._dosage_text = value
       .trim()
+      .replaceAll('–', '-')
       .replace('kg body mass', 'kg')
       .replace('kg body weight', 'kg')
       .replace(/mgkg/g, 'mg/kg')
