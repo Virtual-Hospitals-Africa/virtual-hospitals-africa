@@ -121,5 +121,6 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^if high risk,? .+$/i,
   /after expulsion is complete/i,
   /with or after a meal/i,
+  /^followed .+/i,
   // /after .*/i,
 ]
