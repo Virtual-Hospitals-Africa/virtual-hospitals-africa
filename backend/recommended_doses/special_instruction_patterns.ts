@@ -164,4 +164,5 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^\d+(?:[,\s]+(?:and\s+)?\d+)+ weeks.*$/i,
   /^see regimen$/i,
   /^1g weekly$/i,
+  /^[≥≤]\d+\s*years?$/i,
 ]
