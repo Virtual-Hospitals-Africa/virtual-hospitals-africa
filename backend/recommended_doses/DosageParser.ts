@@ -235,6 +235,7 @@ export class DosageParser {
     this.lookFor('in divided doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('two divided doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('three divided doses', () => ({ divided_dose_count: 3 }))
+    this.lookFor(/(\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
     this.lookFor('2 times daily', () => ({ frequency: 'bd' }))
     this.lookFor('3 times daily', () => ({ frequency: 'tds' }))
     this.lookFor('4 times daily', () => ({ frequency: 'qid' }))
