@@ -50,6 +50,8 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '1g/kg in 50-100ml water',
   // Bolus dose with duration
   'bolus dose over 1 hour',
+  // Midazolam: malformed unclosed parenthetical
+  '1-3 mg/kg/24 hours (up to 7 mg/kg/24 hours (maximum = 60mg/24 hours)',
   // Fluticasone spray dose
   '50mcg/spray. 1 spray',
   // Salbutamol nebulization doses
