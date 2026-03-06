@@ -237,6 +237,7 @@ export class DosageParser {
     this.lookFor('two divided doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('three divided doses', () => ({ divided_dose_count: 3 }))
     this.lookFor(/(\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
+    this.lookFor(/(\d+) doses total/i, (n) => ({ series: { dose_count: parseInt(n) } }))
     this.lookFor('2 times daily', () => ({ frequency: 'bd' }))
     this.lookFor('3 times daily', () => ({ frequency: 'tds' }))
     this.lookFor('4 times daily', () => ({ frequency: 'qid' }))
@@ -762,7 +763,7 @@ export class DosageParser {
 
     this.lookFor(/\/(\d+)\s?(?:hours?|h)\b/i, (hours) => ({ per_time: { value: parseInt(hours), units: 'hour' as const } }))
     this.lookFor(
-      /^(\d+\.?\d*)\s*(?:-|to)\s*(\d+\.?\d*)\s*(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator)s?/i,
+      /^(\d+\.?\d*)\s*(?:-|to)\s*(\d+\.?\d*)\s*(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator|amp|ampoule)s?/i,
       (minimum, maximum, units) => ({
         minimum: parseFloat(minimum),
         maximum: parseFloat(maximum),
@@ -770,7 +771,7 @@ export class DosageParser {
       }),
     )
     this.lookFor(
-      /^(?:dose )?(?:range)?(?: = )?(\d+\.?\d*)\s*(?:-|to)\s*(\d+\.?\d*)\s*(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator)s?/i,
+      /^(?:dose )?(?:range)?(?: = )?(\d+\.?\d*)\s*(?:-|to)\s*(\d+\.?\d*)\s*(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator|amp|ampoule)s?/i,
       (minimum_value, maximum_value, units) => ({
         low: [{
           value: parseFloat(minimum_value),
@@ -783,7 +784,7 @@ export class DosageParser {
       }),
     )
     this.lookFor(
-      /^(\d+\.?\d*)(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator)s?\s*(?:-| to )/i,
+      /^(\d+\.?\d*)(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator|amp|ampoule)s?\s*(?:-| to )/i,
       (minimum_value, minimum_units) => ({
         low: [{
           value: parseFloat(minimum_value),
@@ -792,7 +793,7 @@ export class DosageParser {
       }),
     )
     this.lookFor(
-      /^(?:dose )?(?:range)?(?: = )?(\d+\.?\d*)(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator)s?\s*(?:-| to )/i,
+      /^(?:dose )?(?:range)?(?: = )?(\d+\.?\d*)(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator|amp|ampoule)s?\s*(?:-| to )/i,
       (value, units) => ({
         low: [{
           value: parseFloat(value),
@@ -814,7 +815,7 @@ export class DosageParser {
       },
     }))
     this.lookFor(
-      /^(\d+\.?\d*)\s?(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator)s?\.?$/i,
+      /^(\d+\.?\d*)\s?(mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter|drop|millunit|inhalation|puff|applicator|amp|ampoule)s?\.?$/i,
       (value, units) => {
         if (this.parsed.minimum) {
           return {
