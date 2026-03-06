@@ -118,5 +118,6 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   'infused as fast as possible in one IV line',
   'immediately after birth routinely',
   /routinely to each eye after birth/i,
+  /^if high risk,? .+$/i,
   // /after .*/i,
 ]

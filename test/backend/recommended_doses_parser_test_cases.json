@@ -326962,7 +326962,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -326986,8 +326986,56 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Did not parse anything If high risk, throughout pregnancy",
-        "error_stack": "Error: Did not parse anything If high risk, throughout pregnancy\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1183:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1206:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type"       : "and",
+                "indications": [
+                    { "type": "codes", "codes": ["Z36.9"] },
+                    { "type": "codes", "codes": ["Z29.9"] }
+                ]
+            },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {"units": "mg", "value": 5, "frequency": "qd"},
+                {"units": "mg", "value": 5, "special_instructions": "If high risk, throughout pregnancy"}
+            ],
+            "raw_dose"         : "5 mg",
+            "raw_dose_interval": "Daily; If high risk, throughout pregnancy"
+        },
+        "expected_parsed": {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type"       : "and",
+                "indications": [
+                    { "type": "codes", "codes": ["Z36.9"] },
+                    { "type": "codes", "codes": ["Z29.9"] }
+                ]
+            },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {"units": "mg", "value": 5, "frequency": "qd"},
+                {"units": "mg", "value": 5, "special_instructions": "If high risk, throughout pregnancy"}
+            ],
+            "raw_dose"         : "5 mg",
+            "raw_dose_interval": "Daily; If high risk, throughout pregnancy"
+        }
     },
     {
         "row": {
