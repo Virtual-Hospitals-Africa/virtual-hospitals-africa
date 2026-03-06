@@ -712,6 +712,14 @@ export class DosageParser {
       }],
     }))
 
+    this.lookFor(/\bin (\d+\.?\d*)\s*m[lL] (.+)/i, (diluent_value, diluent_ingredient) => ({
+      diluents: [{
+        value: parseFloat(diluent_value),
+        units: 'ml',
+        ingredient_name: diluent_ingredient.trim(),
+      }],
+    }))
+
     this.lookFor(/^(\d+\.?\d*)\s*%\s+(\d+)\s*mL$/i, (concentration, dosage) => ({
       concentration: parseFloat(concentration),
       value: parseInt(dosage),
