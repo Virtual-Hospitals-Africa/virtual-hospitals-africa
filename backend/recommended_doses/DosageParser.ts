@@ -1012,6 +1012,7 @@ export class DosageParser {
     this.lookFor('once or twice weekly', () => ({ frequency: ['qw', 'bw'] }))
     this.lookFor('once or twice daily', () => ({ frequency: ['od', 'bd'] }))
     this.lookFor('single or divided doses', () => ({ divided_dose_count: [1, 2] }))
+    this.lookFor(/single dose or (\d+) divided doses(?: on the same day)?/i, (n) => ({ divided_dose_count: [1, parseInt(n)] }))
     this.lookFor('12 hourly or per week', () => ({ frequency: ['bd', 'qw'] }))
     this.lookFor(/once daily or weekly/i, () => ({ frequency: ['od', 'qw'] }))
 
