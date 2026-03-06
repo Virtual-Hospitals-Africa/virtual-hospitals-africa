@@ -26,6 +26,23 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   'maximum rate of administration = 1g/7 minutes',
   // Diazepam interval with slash
   'daily/12 hourly',
+  // Rotavirus vaccine: ambiguous mL dose
+  '1 or 2 mL',
+  // Paracetamol: complex dose with embedded frequency
+  '500mg-1g 4-6 hourly to a maximum of 4g in 24 hours',
+  // Valproate: complex dose with titration parenthetical
+  '20-30mg/kg/day (titrated by 5mg/kg weekly. maximum daily dose = 40mg/kg/day)',
+  // Trimethoprim: multi-strength dose
+  '100/20 mg/ 200/40 mg/ 400/80 mg/ 800/160 mg',
+  // Bupivacaine: text-only dose
+  'maximum dose allowed for patient weight',
+  'to desired volume to dilute bupivacaine',
+  // IVIG
+  'total of 2g/kg',
+  // Magnesium Sulphate 50%
+  '2g in 1ml',
+  // Adrenaline
+  '1:1000 mL soak gauze or apply directly',
   // Rifampicin/Isoniazid fixed-ratio doses without units
   '150/75',
   '300/75',
