@@ -1,46 +1,18 @@
 import { z } from 'zod'
 import { HealthWorkerGoogleClient } from '../../../../../../../../external-clients/google.ts'
-import { GCalEvent, RenderedEmployee } from '../../../../../../../../types.ts'
+import { GCalEvent } from '../../../../../../../../types.ts'
 import { alert } from '../../../../../../../../util/alerts.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import InviteParticipantsList from '../../../../../../../../islands/InviteParticipantsList.tsx'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { completeLastStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import { TEST_ORGANIZATION_UUIDS } from 'test/_helpers/organizations.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
-import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { pluralize } from '../../../../../../../../util/pluralize.ts'
-
-type EmployeeWithPresence = RenderedEmployee & {
-  at_work: boolean
-}
 
 const InviteParticipantsSchema = z.object({
   participant_emails: z.string().array(),
 })
-
-function getEmployeesWithPresence(
-  ctx: OpenEncounterWorkflowContext,
-): Promise<{
-  facility_employees: EmployeeWithPresence[]
-  hospital_employees: EmployeeWithPresence[]
-}> {
-  const { trx, organization_id, health_worker_id } = ctx.state
-  // TODO get this for real
-  const nearest_hospital_id = TEST_ORGANIZATION_UUIDS.ZA.hospital
-
-  return promiseProps({
-    facility_employees: employees_presence.findAll(trx, {
-      organization_id,
-      excluding_health_worker_id: health_worker_id,
-    }),
-    hospital_employees: employees_presence.findAll(trx, {
-      organization_id: nearest_hospital_id,
-      excluding_health_worker_id: health_worker_id,
-    }),
-  })
-}
 
 export const handler = postHandler(
   InviteParticipantsSchema,
@@ -106,13 +78,15 @@ async function CreateGoogleMeetInviteParticipantsPage(
   assertOr400(html_link, 'html_link is required')
   assertOr400(event_id, 'event_id is required')
 
-  const { facility_employees, hospital_employees } = await getEmployeesWithPresence(ctx)
+  const { facility_employees, hospital_employees } = await employees_presence.getForClinicAssumingTestHospital(
+    ctx.state.trx,
+    ctx.state,
+  )
 
   return (
     <InviteParticipantsList
       facility_employees={facility_employees}
       hospital_employees={hospital_employees}
-      hangout_link={hangout_link}
     />
   )
 }

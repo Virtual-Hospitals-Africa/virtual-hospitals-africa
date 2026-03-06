@@ -158,9 +158,9 @@ describeParallel('db/models/employees.ts', () => {
         assertMatches(result, {
           'id': result.id,
           'name': result.name,
-          'first_names': 'Test Health Worker',
+          'first_names': result.first_names,
           'surname': result.surname,
-          'preferred_name': 'Test',
+          'preferred_name': result.preferred_name,
           'email': result.email,
           'avatar_url': `/health_workers/${result.id}/avatar`,
           'employee_id': result.employee_id,

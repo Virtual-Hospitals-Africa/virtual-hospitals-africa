@@ -19,7 +19,7 @@ export default function RegistrationRoutePatientSection(
 ) {
   return (
     <>
-      <FormSection header='Patient Information'>
+      <FormSection header='Next Step'>
         <FormRow>
           <RadioButtonGroup
             name='next_workflow'

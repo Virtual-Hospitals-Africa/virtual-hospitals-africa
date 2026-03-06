@@ -1,12 +1,13 @@
 import { Formatter } from 'fracturedjsonjs'
-import { MostlyJsonSerializable, Result } from '../types.ts'
+import { Result } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { parse } from 'std/path/parse.ts'
 import { wrapError } from './wrapError.ts'
 
 const formatter = new Formatter()
 
-export function humanReadableJson(object: MostlyJsonSerializable): string {
+// deno-lint-ignore no-explicit-any
+export function humanReadableJson(object: any): string {
   return formatter.Serialize(object)!
 }
 
@@ -32,7 +33,8 @@ function isValidFile(filename: string): Result<string> {
   }
 }
 
-export function logReadableJson(object: MostlyJsonSerializable, filename?: string) {
+// deno-lint-ignore no-explicit-any
+export function logReadableJson(object: any, filename?: string) {
   const json = humanReadableJson(object)
 
   if (!filename) {

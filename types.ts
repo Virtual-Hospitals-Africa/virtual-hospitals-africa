@@ -2232,6 +2232,10 @@ export type RenderedEmployee = RenderedHealthWorker & {
   href: string
 }
 
+export type RenderedEmployeeWithPresence = RenderedEmployee & {
+  at_work: boolean
+}
+
 export type MessageTargetEntities = {
   organization: RenderedOrganization
   organization_category: string

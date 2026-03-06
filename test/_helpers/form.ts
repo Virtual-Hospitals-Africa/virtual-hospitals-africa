@@ -103,5 +103,34 @@ export function getFormOptions($: cheerio.CheerioAPI): unknown {
     })
     set(form_options, el.attribs.name, options)
   })
+
+  // 2. Handle Radio Buttons
+  $('input[type="radio"]').each((_i, el) => {
+    const name = el.attribs.name
+    if (!name) return
+
+    // Initialize the array for this name if it doesn't exist
+    if (!form_options[name]) {
+      form_options[name] = []
+    }
+
+    // Attempt to find a label. Often associated via 'id' or wrapping the input.
+    const id = el.attribs.id
+    let labelText = ''
+
+    if (id) {
+      labelText = $(`label[for="${id}"]`).text().trim()
+    }
+    if (!labelText) {
+      labelText = $(el).closest('label').text().trim()
+    }
+
+    form_options[name].push({
+      label: labelText || el.attribs.value || '', // Fallback to value if no label found
+      value: el.attribs.value ?? '',
+      selected: 'checked' in el.attribs,
+    })
+  })
+
   return form_options
 }
