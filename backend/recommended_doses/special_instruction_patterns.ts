@@ -161,7 +161,7 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^4 doses, see regimen$/i,
   /^at birth\b.*/i,
   /^\d+,\s*\d+\s*months$/i,
-  /^\d+(?:,\s*\d+)+ weeks.*$/i,
+  /^\d+(?:[,\s]+(?:and\s+)?\d+)+ weeks.*$/i,
   /^see regimen$/i,
   /^1g weekly$/i,
 ]
