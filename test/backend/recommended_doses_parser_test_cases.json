@@ -328281,7 +328281,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "7",
@@ -328305,8 +328305,54 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything confirm dose with Jane",
-        "error_stack": "Error: Did not parse anything confirm dose with Jane\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1196:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1219:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:93:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "A11CC03",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Chronic",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["E83.5"] },
+            "medicine"         : {
+                "name"       : "Alfacalcidol",
+                "ingredients": [ {"name": "Alfacalcidol"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size"            : "kg",
+                    "per_time"            : {"value": 1, "units": "day"},
+                    "units"               : "mcg",
+                    "value"               : 1,
+                    "special_instructions": "confirm dose with Jane"
+                }
+            ],
+            "raw_dose"         : "1 mcg/kg/day",
+            "raw_dose_interval": "confirm dose with Jane"
+        },
+        "expected_parsed": {
+            "atc"              : "A11CC03",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Chronic",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["E83.5"] },
+            "medicine"         : {
+                "name"       : "Alfacalcidol",
+                "ingredients": [ {"name": "Alfacalcidol"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size"            : "kg",
+                    "per_time"            : {"value": 1, "units": "day"},
+                    "units"               : "mcg",
+                    "value"               : 1,
+                    "special_instructions": "confirm dose with Jane"
+                }
+            ],
+            "raw_dose"         : "1 mcg/kg/day",
+            "raw_dose_interval": "confirm dose with Jane"
+        }
     },
     {
         "row": {

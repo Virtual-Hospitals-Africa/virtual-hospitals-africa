@@ -12,4 +12,5 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '1-2 mL/hour',
   '2-5 mL/hour',
   '5 mL/hour over 4 hours',
+  'confirm dose with Jane',
 ])
