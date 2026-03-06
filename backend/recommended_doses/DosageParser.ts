@@ -72,6 +72,7 @@ export class DosageParser {
     this.lookForFrequencyAndDuration()
     this.lookForWeightLimits()
     this.lookForAlternateSpecification()
+    this.lookForSpecialInstructions()
 
     // Tablet/suppository patterns must run before lookForDosage() to avoid partial matches
     this.lookFor(/^(\d+)\s*(suppository|suppositories|tablets|tablet)$/, (value) => ({ quantity: parseInt(value) }))

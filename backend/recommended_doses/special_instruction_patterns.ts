@@ -126,7 +126,7 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^at hours?[-\s].+/i,
   /\bin patients\b.*/i,
   // /after .*/i,
-  /\bcontinuous\b/i,
+  /\bcontinuous(?:ly)?\b/i,
   /\binfused\b/i,
   /\bIV\b/,
   /\bslow\s*(?:IV\s*)?injection\b/i,
