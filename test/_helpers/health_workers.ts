@@ -3,16 +3,14 @@ import { health_worker_google_tokens, type HealthWorkerWithGoogleTokens } from '
 import randomAvatarMediaId from '../../mocks/randomAvatar.ts'
 import { TrxOrDb } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
+import randomNamesAndSex from '../../mocks/randomNamesAndSex.ts'
 
 export function testHealthWorker() {
   const expires_at = new Date()
   expires_at.setHours(expires_at.getHours() + 1)
-  const surname = generateUUID()
+  const { sex: _sex, ...names } = randomNamesAndSex('ZA')
   return {
-    name: `Test Health Worker ${surname}`,
-    surname,
-    first_names: 'Test Health Worker',
-    preferred_name: 'Test',
+    ...names,
     email: generateUUID() + '@example.com',
     avatar_media_id: randomAvatarMediaId(),
     access_token: 'access.' + generateUUID(),

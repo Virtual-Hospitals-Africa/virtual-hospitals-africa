@@ -1,130 +1,112 @@
-import {
-  // completeLastStep,
-  // nextRouteAfterCompletingWorkflow,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowPage,
-} from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-// import redirect from '../../../../../../../../util/redirect.ts'
-// import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-// import { updateForOpenEncounterAfterCompletingWorkflow } from '../../../../../../../../db/models/patient_presence.ts'
-// import { patient_encounters } from '../../../../../../../../db/models/patient_encounters.ts'
-// import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
-import { canPerform } from '../../../../../../../../shared/workflow.ts'
 
-import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
-import RegistrationRoutePatientSection from '../../../../../../../../components/patient-registration/RoutePatientSection.tsx'
-import { /*success, */ warning } from '../../../../../../../../util/alerts.ts'
+import TriageRoutePatientSection from '../../../../../../../../islands/triage/RoutePatientSection.tsx'
+import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
+import { assert } from 'std/assert/assert.ts'
+
+import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
+
+import redirect from '../../../../../../../../util/redirect.ts'
+
+import { pronoun } from '../../../../../../../../shared/sex_and_gender.ts'
+import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
+import { UpdateShape } from '../../../../../../../../types.ts'
+import { DB } from '../../../../../../../../db.d.ts'
+import { success } from '../../../../../../../../util/alerts.ts'
+import { completeLastStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 // import { startWorkflow } from '../start-workflow.tsx'
-// import { assertEquals } from 'std/assert/assert_equals.ts'
+//
 
 // TODO not hard code this
-const senior_health_worker_name = 'Nomsa Moyo'
 
 const next_workflow_steps = [
   'await_consultation' as const,
-  'stabilization' as const,
-  'call_for_help' as const,
-  'recommend_emergency_transfer' as const,
-  'start_video_call' as const,
+  'refer_case' as const,
+  'transfer_to_stabilization_area' as const,
 ]
 
 type NextWorkflowStep = typeof next_workflow_steps[number]
 
-const PatientRegistrationRoutePatientSchema = z.object({
+export const TriageRoutePatientSchema = z.object({
   next_workflow: z.enum(next_workflow_steps),
   notes: z.string().optional(),
 })
 
 export const handler = postHandler(
-  PatientRegistrationRoutePatientSchema,
-  // deno-lint-ignore require-await
-  async (_ctx: OpenEncounterWorkflowContext /*{ next_workflow, notes } */) => {
-    throw new Error('TODO support')
+  TriageRoutePatientSchema,
+  async (ctx: OpenEncounterWorkflowContext, { next_workflow /*, notes */ }) => {
+    const { trx, patient, organization, organization_employment } = ctx.state
 
-    // const { trx, patient, encounter, organization, organization_employment } =
-    //   ctx.state
-    // const can_do_triage = canPerform(organization_employment, 'triage')
+    assert(completedPersonal(patient))
+    const completing_last_step = completeLastStep(ctx)
 
-    // const { next_patient_presence } = await promiseProps({
-    //   completed_last_step: completeLastStep(ctx),
-    //   next_patient_presence: updateForOpenEncounterAfterCompletingWorkflow(
-    //     trx,
-    //     encounter,
-    //     organization_employment,
-    //   ),
-    //   updating_encounter: patient_encounters.updateOne(
-    //     trx,
-    //     encounter.patient_encounter_id,
-    //     { reason: 'seeking treatment', notes },
-    //   ),
-    // })
+    switch (next_workflow) {
+      case 'await_consultation': {
+        const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
+          current_workflow: null,
+          department_name: 'Waiting room' as const,
+          next_workflow: 'consultation' as const,
+        }
+        await Promise.all([
+          completing_last_step,
+          patient_presence.set(trx, patient.id, patient_presence_updates),
+          trx.updateTable('employment_presence')
+            .set({ with_patient_id: null })
+            .where(
+              'employment_presence.id',
+              '=',
+              organization_employment.employment_id,
+            )
+            .execute(),
+        ])
 
-    // switch (next_workflow) {
-    //   case 'await_consultation': {
-    //     return redirect(
-    //       nextRouteAfterCompletingWorkflow(ctx, next_patient_presence),
-    //     )
-    //   }
-    //   case 'immediate_triage': {
-    //     assertEquals(encounter.workflows.triage?.status, 'not started')
+        const redirect_success_message = `Please move ${patient.names.preferred_name} to the waiting room. The next available triage nurse will see ${
+          pronoun(patient)
+        }.`
 
-    //     const patient_presence_updates = {
-    //       current_workflow: 'triage' as const,
-    //       department_name: 'Triage' as const,
-    //       next_workflow: 'registration' as const,
-    //     }
+        // TODO notify senior_health_worker_name
+        return redirect(success(
+          redirect_success_message,
+          `/app/organizations/${organization.id}/waiting_room`,
+        ))
+      }
+      // case 'refer_case': {
 
-    //     await patient_presence.set(trx, patient.id, patient_presence_updates)
+      // }
+      // case 'transfer_to_stabilization_area': {
 
-    //     // Update the encounter in line rather than refetching
-    //     Object.assign(
-    //       encounter.status.patient_presence,
-    //       patient_presence_updates,
-    //     )
-
-    //     if (can_do_triage) {
-    //       return startWorkflow(ctx, 'triage')
-    //     }
-    //     // TODO notify senior_health_worker_name
-    //     return redirect(success(
-    //       `${
-    //         patient.names!.preferred_name
-    //       } has been moved to triage and ${senior_health_worker_name} has been notified.`,
-    //       `/app/organizations/${organization.id}/waiting_room`,
-    //     ))
-    //   }
-    //   default: {
-    //     throw new Error('Not yet supported')
-    //   }
-    // }
+      // }
+      default: {
+        throw new Error('Not yet supported')
+      }
+    }
   },
 )
 
-// deno-lint-ignore require-await
 export async function PatientRegistrationRoutePatientPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const {
     patient,
-    organization_employment,
-    encounter: { reason, notes },
+    encounter: { reason, notes, priority },
   } = ctx.state
-  const can_do_triage = !!canPerform(organization_employment, 'triage')
-  assertOrRedirect(
+  assert(
     patient.names,
-    warning(
-      'The personal section must be completed first',
-      ctx.url.pathname.replace('/this_visit', '/personal'),
-    ),
   )
+  const { facility_employees, hospital_employees } = await employees_presence.getForClinicAssumingTestHospital(
+    ctx.state.trx,
+    ctx.state,
+  )
+  assert(priority)
+
   return (
-    <RegistrationRoutePatientSection
+    <TriageRoutePatientSection
       this_visit={{ reason, notes }}
       patient_names={patient.names}
-      senior_health_worker_name={senior_health_worker_name}
-      can_do_triage={can_do_triage}
+      priority={priority}
+      facility_employees={facility_employees}
+      hospital_employees={hospital_employees}
     />
   )
 }

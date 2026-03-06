@@ -18,6 +18,8 @@ import { TriageBriefHistorySchema } from '../../../../../routes/app/organization
 import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
 import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
 import { TriageAdditionalTasksAndInvestigationsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_tasks_and_investigations.tsx'
+import { TriageAssignPrioritySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/assign_priority.tsx'
+import { TriageRoutePatientSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/route_patient.tsx'
 import fromEntries from '../../../../../util/fromEntries.ts'
 import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
 import { CheerioAPI } from 'cheerio'
@@ -38,6 +40,8 @@ export type TriageSteps = {
   >
   measure_vitals?: z.input<typeof TriageMeasureVitalsSchema>
   additional_tasks_and_investigations?: z.input<typeof TriageAdditionalTasksAndInvestigationsSchema>
+  assign_priority?: z.input<typeof TriageAssignPrioritySchema>
+  route_patient?: z.input<typeof TriageRoutePatientSchema>
 }
 
 export type TriageScenarioNewPatient = TriageSteps & {

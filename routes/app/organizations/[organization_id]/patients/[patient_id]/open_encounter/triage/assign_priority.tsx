@@ -37,7 +37,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 import sumBy from '../../../../../../../../util/sumBy.ts'
 
-const TriageAssignPrioritySchema = z.object({})
+export const TriageAssignPrioritySchema = z.object({})
 
 export const handler = postHandler(
   TriageAssignPrioritySchema,
