@@ -4,13 +4,25 @@ import { indexOf } from '../../util/indexOf.ts'
 
 const semi_pattern = /(?:;| then )/
 
+function findMatchingClose(str: string, open: number): number {
+  let depth = 0
+  for (let i = open; i < str.length; i++) {
+    if (str[i] === '(') depth++
+    else if (str[i] === ')') {
+      depth--
+      if (depth === 0) return i
+    }
+  }
+  return -1
+}
+
 function splitSemicolon(dose: string) {
   const dose_parts = dose.split(semi_pattern).map((s) => s.trim().replace('  ', ' ')) || []
   return dose_parts.map(splitParentheticals)
 
   function splitParentheticals(dose_part: string): { parenthetical: false | string | string[]; rest: string } {
     const open_paren = indexOf(dose_part, '(')
-    const close_paren = indexOf(dose_part, ')')
+    const close_paren = open_paren !== -1 ? findMatchingClose(dose_part, open_paren) : indexOf(dose_part, ')')
     assertEquals(open_paren === -1, close_paren === -1, `unclosed parenthetical ${dose}`)
     let parenthetical: false | string | string[] = open_paren !== -1 && close_paren !== -1 &&
       dose_part.slice(open_paren + 1, close_paren).trim().replace('  ', ' ')
