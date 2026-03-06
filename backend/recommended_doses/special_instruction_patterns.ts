@@ -177,4 +177,5 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /\bin \d+-\d+ml water\b/i,
   /^can repeat\b.*/i,
   /^\d+% water\b/i,
+  /^\d+% dextrose\b/i,
 ]

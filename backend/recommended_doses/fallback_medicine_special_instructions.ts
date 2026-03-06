@@ -59,6 +59,20 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '1-3 mg/kg/24 hours (up to 7 mg/kg/24 hours (maximum = 60mg/24 hours)',
   // Fluticasone spray dose
   '50mcg/spray. 1 spray',
+  // Dextrose 50%: parenthetical concentration label
+  '1 mL/kg',
+  // Magnesium: complex dose with per_size collision
+  '0.5-2.0 mmol/kg/day = 0.02-0.08 mmol/kg/hour',
+  // Lidocaine: dose with two max parentheticals
+  '1mg/kg (maximum = 100 mg/dose)(maximum = 3 mg/kg or 300 mg)',
+  // Atropine: dose with bad encoding (kg2)
+  '0.01 mg/kg2 mg (0.02 mg/mL)',
+  // Phenobarbital: complex dose with nested min/max
+  '0.02mg/kg (minimum = 0.1 mg. maximum = 0.5 mg (1 mg adolescents))',
+  // Calcium/Potassium chloride: complex dose with per_size collision
+  '1-2mmol/kg (recommended dose = 1.2 mmol/kg = 0.3 mmol/kg/hour)',
+  // Quinine: loading to maintenance dose with maint tag
+  '1g over 10mins (loading) to 1g over 8 hours (maint)',
   // Salbutamol nebulization doses
   '5mg/ml in 2-4ml sodium chloride 0.9%',
   '0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3%',
