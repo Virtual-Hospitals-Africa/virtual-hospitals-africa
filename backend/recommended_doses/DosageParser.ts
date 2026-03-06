@@ -245,6 +245,7 @@ export class DosageParser {
     this.lookFor(/in (\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
     this.lookFor(/(\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
     this.lookFor(/(\d+) doses total/i, (n) => ({ series: { dose_count: parseInt(n) } }))
+    this.lookFor(/for (\d+) doses?/i, (n) => ({ series: { dose_count: parseInt(n) } }))
     this.lookFor(/(\d+)\s*-\s*(\d+) times (?:daily|a day|per day)/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
     this.lookFor('2 times daily', () => ({ frequency: 'bd' }))
     this.lookFor('3 times daily', () => ({ frequency: 'tds' }))
