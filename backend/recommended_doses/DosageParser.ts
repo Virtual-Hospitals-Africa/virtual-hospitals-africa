@@ -208,6 +208,10 @@ export class DosageParser {
       frequency: 'qd' as const,
       divided_dose_count: parseInt(divided_dose_count),
     }))
+    this.lookFor(/(\d+)\s*-\s*(\d+) doses per day/i, (low, high) => ({
+      frequency: 'qd' as const,
+      divided_dose_count: [parseInt(low), parseInt(high)],
+    }))
     this.lookFor('2 doses', () => ({ divided_dose_count: 2 }))
     this.lookFor('3 doses', () => ({ divided_dose_count: 3 }))
     this.lookFor('in divided doses', () => ({ divided_dose_count: 2 }))
