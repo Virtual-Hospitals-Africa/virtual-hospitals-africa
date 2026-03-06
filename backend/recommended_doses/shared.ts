@@ -103,6 +103,7 @@ export type ParsedDose = {
   equation?: string
   alternate_specification?: ParsedDose
   for_condition?: string
+  within?: { time?: PerTime; event?: string }
   slowly?: boolean
   series?: {
     dose_count: number

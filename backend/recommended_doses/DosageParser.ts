@@ -256,6 +256,12 @@ export class DosageParser {
     this.lookFor(/(?:at )?(\d+)\s*(minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)? intervals/i, (value, units) => ({
       frequency: { every: { value: parseInt(value), units: normalizeTimeUnit(units) } },
     }))
+    this.lookFor(/within (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)s? of (.+)/i, (value, units, event) => ({
+      within: { time: { value: parseInt(value), units: normalizeTimeUnit(units) }, event: event.trim() },
+    }))
+    this.lookFor(/within (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)s?/i, (value, units) => ({
+      within: { time: { value: parseInt(value), units: normalizeTimeUnit(units) } },
+    }))
     this.lookFor(/day 1/i, () => ({ duration: { value: 1, units: 'day' } }))
     this.lookFor(/over an? (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (units) => ({
       duration: { value: 1, units: normalizeTimeUnit(units) },
