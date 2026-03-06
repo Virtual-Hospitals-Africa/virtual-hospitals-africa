@@ -45,6 +45,9 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '1:1000 mL soak gauze or apply directly',
   // Fluticasone spray dose
   '50mcg/spray. 1 spray',
+  // Salbutamol nebulization doses
+  '5mg/ml in 2-4ml sodium chloride 0.9%',
+  '0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3%',
   // Rifampicin/Isoniazid fixed-ratio doses without units
   '150/75',
   '300/75',

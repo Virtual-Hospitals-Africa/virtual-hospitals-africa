@@ -85,7 +85,7 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^applied\b/i,
   /^(Use .+)$/i,
   /^in water\b/i,
-  /^(\d+-\d+\s*puffs of .+)$/i,
+  /^(\d+(?:-\d+)?\s*puffs? of .+)$/i,
   /\binfusion\b/i,
   /(maintenance dose)(?:: )?/i,
   /\bmaintenance\b/i,
@@ -167,4 +167,5 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^[≥≤]\d+\s*years?$/i,
   'every 3-3.5 hours (at breakfast, lunch and no later than 14h30)',
   /^1:\d+$/,
+  /^\d+mcg\/puff\b.*/i,
 ]
