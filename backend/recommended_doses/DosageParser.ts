@@ -14,7 +14,7 @@ import isShallowEqual from '../../util/isShallowEqual.ts'
 import isString from '../../util/isString.ts'
 import sortBy from '../../util/sortBy.ts'
 import withProperty from '../../util/withProperty.ts'
-import { ParsedDose, ParsedMedicine, PerTime } from './shared.ts'
+import { ParsedDose, ParsedMedicine, TimeSpecification } from './shared.ts'
 import { normalizeTimeUnit } from './normalizeTimeUnit.ts'
 import { SPECIAL_INSTRUCTIONS_PATTERNS } from './special_instruction_patterns.ts'
 
@@ -1051,7 +1051,7 @@ export class DosageParser {
     this.lookFor(/single dose or (\d+) divided doses(?: on the same day)?/i, (n) => ({ divided_dose_count: [1, parseInt(n)] }))
     this.lookFor('12 hourly or per week', () => ({ frequency: ['bd', 'qw'] }))
     this.lookFor(/once daily or weekly/i, () => ({ frequency: ['od', 'qw'] }))
-
+TimeSpecification
     if (!this.dosage_text.includes(' or ')) return
 
     const [first, second, ...others] = sortBy(

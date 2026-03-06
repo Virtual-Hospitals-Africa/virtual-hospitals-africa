@@ -33,7 +33,7 @@ export type PerSize = 'kg' | 'm2' | { kg: number }
 
 export type TimeUnit = 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
 
-export type PerTime = {
+export type TimeSpecification = {
   value: number | number[]
   units: TimeUnit
 }
@@ -46,10 +46,10 @@ export type ParsedDose = {
   quantity?: number
   ingredient_name?: string
   per_size?: PerSize
-  per_time?: PerTime
+  per_time?: TimeSpecification
   per_dose?: boolean
   per_percent_burn?: boolean
-  duration?: PerTime
+  duration?: TimeSpecification
   denominator?: {
     value: number
     units: string
@@ -77,11 +77,11 @@ export type ParsedDose = {
         value: number
         units: string
       }
-      per_time?: PerTime
+      per_time?: TimeSpecification
       per_size?: PerSize
       per_dose?: boolean
     }
-    duration?: PerTime
+    duration?: TimeSpecification
     min?: ParsedDose
     max?: ParsedDose
     low?: ParsedDose
@@ -89,9 +89,10 @@ export type ParsedDose = {
     if_necessary?: boolean
     to_effect?: boolean
   }
+  total_dose_count?: number
   divided_dose_count?: number | [number, number]
   recommended_average_dose?: ParsedDose
-  frequency?: PrescriptionFrequency | PrescriptionFrequency[] | { every: PerTime }
+  frequency?: PrescriptionFrequency | PrescriptionFrequency[] | { every: TimeSpecification }
   special_instructions?: string
   active_ingredients?: Array<
     ParsedDose & {
@@ -104,22 +105,26 @@ export type ParsedDose = {
   equation?: string
   alternate_specification?: ParsedDose
   for_condition?: string
-  within?: { time?: PerTime; event?: string }
+  within?: { time?: TimeSpecification; event?: string }
   slowly?: boolean
   series?: {
     dose_count: number
-    time_apart?: PerTime
+    starting_at?: TimeSpecification 
+    time_apart?: TimeSpecification
+  } | {
+    doses: TimeSpecification[]
   }
-  time_apart?: PerTime
+  time_apart?: TimeSpecification
   after?: {
-    time?: PerTime
+    time?: TimeSpecification
     event?: string
   }
   before?: {
-    time?: PerTime
+    time?: TimeSpecification
     event?: string
   }
   as_required?: boolean
+  equivalency?: ParsedDose
 }
 
 export type ParsedMedicine = {
