@@ -123,5 +123,6 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /with or after a meal/i,
   /^followed .+/i,
   /^at hours?[-\s].+/i,
+  /^within \d+ days? of .+/i,
   // /after .*/i,
 ]
