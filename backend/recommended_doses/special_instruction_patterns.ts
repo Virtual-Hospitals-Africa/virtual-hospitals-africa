@@ -166,4 +166,5 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^1g weekly$/i,
   /^[≥≤]\d+\s*years?$/i,
   'every 3-3.5 hours (at breakfast, lunch and no later than 14h30)',
+  /^1:\d+$/,
 ]
