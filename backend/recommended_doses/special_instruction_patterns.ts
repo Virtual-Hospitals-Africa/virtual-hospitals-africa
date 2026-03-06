@@ -114,6 +114,7 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   'with insulin',
   /until .*/i,
   'with Oxytocin',
+  /preferably not on an empty stomach/i,
   'infused as fast as possible in one IV line',
   'immediately after birth routinely',
   // /after .*/i,

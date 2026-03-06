@@ -127,7 +127,18 @@ export class DosageParser {
   }
 
   specialInstructions(pattern: string | RegExp) {
-    this.lookFor(pattern, (special_instructions) => ({ special_instructions }), { use_whole_match: true })
+    const regex = isString(pattern) ? new RegExp(escapeRegexp(pattern), 'i') : pattern
+    const match = this.dosage_text.match(regex)
+    if (!match) return
+    const new_instruction = match[0]
+    // Concatenate if special_instructions already exists
+    if (this.parsed.special_instructions) {
+      this.parsed.special_instructions = `${this.parsed.special_instructions}; ${new_instruction}`
+    } else {
+      this.parsed.special_instructions = new_instruction
+    }
+    this.dosage_text = this.dosage_text.slice(0, match.index!) +
+      this.dosage_text.slice(match.index! + match[0].length)
   }
 
   lookForSpecialInstructions() {
@@ -203,6 +214,8 @@ export class DosageParser {
       frequency: 'stat',
     }))
     this.lookFor(/prn/i, () => ({ as_required: true }))
+    // Combined pattern for "daily at bedtime" variations - must come before individual patterns
+    this.lookFor(/daily,?\s+(?:taken\s+)?at\s+(night|bedtime)/i, () => ({ frequency: 'nocte' as const }))
     this.lookFor(/at (night|bedtime)/i, () => ({ frequency: 'nocte' as const }))
     this.lookFor(/per day in (\d+) divided doses/i, (divided_dose_count) => ({
       frequency: 'qd' as const,
