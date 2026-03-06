@@ -78,6 +78,11 @@ export class MedicineParser {
       .replaceAll('–', '-')
       .replaceAll(/ - (\d)/g, '-$1')
       .replace(/\/daily\b/g, '/day')
+      .replace(/\bhoury\b/gi, 'hourly')
+      .replace(/\bhouly\b/gi, 'hourly')
+      .replace(/\bdaiy\b/gi, 'daily')
+      .replace(/\banually\b/gi, 'annually')
+      .replace(/\bcontinuosly\b/gi, 'continuously')
       .replaceAll('  ', ' ')
       .trim()
 
