@@ -329529,7 +329529,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -329553,11 +329553,47 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything at hours-0, 12 and 24,",
-        "error_stack": "Error: Did not parse anything at hours-0, 12 and 24,\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1245:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.9"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 2.4, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 2.4, "frequency": "qd"}
+            ],
+            "raw_dose"         : "2.4mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        },
+        "expected_parsed": {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.9"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 2.4, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 2.4, "frequency": "qd"}
+            ],
+            "raw_dose"         : "2.4mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -329581,11 +329617,47 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything at hours-0, 12 and 24,",
-        "error_stack": "Error: Did not parse anything at hours-0, 12 and 24,\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1245:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.9"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 3, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 3, "frequency": "qd"}
+            ],
+            "raw_dose"         : "3mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        },
+        "expected_parsed": {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.9"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 3, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 3, "frequency": "qd"}
+            ],
+            "raw_dose"         : "3mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -329609,11 +329681,47 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything at hours-0, 12 and 24,",
-        "error_stack": "Error: Did not parse anything at hours-0, 12 and 24,\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1245:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.0", "B50.8"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 2.4, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 2.4, "frequency": "qd"}
+            ],
+            "raw_dose"         : "2.4mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        },
+        "expected_parsed": {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.0", "B50.8"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 2.4, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 2.4, "frequency": "qd"}
+            ],
+            "raw_dose"         : "2.4mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -329637,8 +329745,44 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything at hours-0, 12 and 24,",
-        "error_stack": "Error: Did not parse anything at hours-0, 12 and 24,\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1245:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.0", "B50.8"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 3, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 3, "frequency": "qd"}
+            ],
+            "raw_dose"         : "3mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        },
+        "expected_parsed": {
+            "atc"              : "P01BE03",
+            "form"             : "Injection",
+            "route"            : "Intravenous/Intramuscular (IV/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B50.0", "B50.8"] },
+            "medicine"         : {
+                "name"       : "Artesunate",
+                "ingredients": [ {"name": "Artesunate"} ]
+            },
+            "schedules"        : [
+                {"per_size": "kg", "units": "mg", "value": 3, "special_instructions": "at hours-0, 12 and 24"},
+                {"per_size": "kg", "units": "mg", "value": 3, "frequency": "qd"}
+            ],
+            "raw_dose"         : "3mg/kg",
+            "raw_dose_interval": "at hours - 0, 12 and 24, then daily"
+        }
     },
     {
         "row": {
