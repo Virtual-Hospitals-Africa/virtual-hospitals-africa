@@ -330045,7 +330045,7 @@
         }
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -330069,47 +330069,11 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "J06BB05",
-            "form"             : "Injection",
-            "route"            : "Infiltration",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["A82.9"] },
-            "medicine"         : {
-                "name"          : "Equine-derived Rabies Immunoglobulin",
-                "alternate_name": "ERIG",
-                "ingredients"   : [ {"name": "Equine-derived Rabies Immunoglobulin", "alternate_name": "ERIG"} ]
-            },
-            "schedules"        : [
-                {"per_size": "kg", "units": "iu", "value": 40, "special_instructions": "within 7 days of bite"}
-            ],
-            "raw_dose"         : "40 IU/kg",
-            "raw_dose_interval": "within 7 days of bite"
-        },
-        "expected_parsed": {
-            "atc"              : "J06BB05",
-            "form"             : "Injection",
-            "route"            : "Infiltration",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["A82.9"] },
-            "medicine"         : {
-                "name"          : "Equine-derived Rabies Immunoglobulin",
-                "alternate_name": "ERIG",
-                "ingredients"   : [ {"name": "Equine-derived Rabies Immunoglobulin", "alternate_name": "ERIG"} ]
-            },
-            "schedules"        : [
-                {"per_size": "kg", "units": "iu", "value": 40, "special_instructions": "within 7 days of bite"}
-            ],
-            "raw_dose"         : "40 IU/kg",
-            "raw_dose_interval": "within 7 days of bite"
-        }
+        "error_message": "Did not parse anything within 7 days of bite",
+        "error_stack": "Error: Did not parse anything within 7 days of bite\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1223:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1246:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row"            : {
+        "row": {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -330133,44 +330097,8 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "actual_parsed"  : {
-            "atc"              : "J06BB05",
-            "form"             : "Injection",
-            "route"            : "Infiltration",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["A82.9"] },
-            "medicine"         : {
-                "name"          : "Human-derived Rabies Immunoglobulin",
-                "alternate_name": "HRIG",
-                "ingredients"   : [ {"name": "Human-derived Rabies Immunoglobulin", "alternate_name": "HRIG"} ]
-            },
-            "schedules"        : [
-                {"per_size": "kg", "units": "iu", "value": 20, "special_instructions": "within 7 days of bite"}
-            ],
-            "raw_dose"         : "20 IU/kg",
-            "raw_dose_interval": "within 7 days of bite"
-        },
-        "expected_parsed": {
-            "atc"              : "J06BB05",
-            "form"             : "Injection",
-            "route"            : "Infiltration",
-            "aware"            : null,
-            "acute_chronic"    : "Acute",
-            "prescriber"       : "Doctor prescribed",
-            "icd10_indications": { "type": "codes", "codes": ["A82.9"] },
-            "medicine"         : {
-                "name"          : "Human-derived Rabies Immunoglobulin",
-                "alternate_name": "HRIG",
-                "ingredients"   : [ {"name": "Human-derived Rabies Immunoglobulin", "alternate_name": "HRIG"} ]
-            },
-            "schedules"        : [
-                {"per_size": "kg", "units": "iu", "value": 20, "special_instructions": "within 7 days of bite"}
-            ],
-            "raw_dose"         : "20 IU/kg",
-            "raw_dose_interval": "within 7 days of bite"
-        }
+        "error_message": "Did not parse anything within 7 days of bite",
+        "error_stack": "Error: Did not parse anything within 7 days of bite\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1223:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1246:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
         "row": {
