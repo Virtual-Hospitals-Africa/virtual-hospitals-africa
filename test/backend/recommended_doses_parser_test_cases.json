@@ -328431,7 +328431,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "7",
@@ -328455,11 +328455,47 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Specialist advice"
         },
-        "error_message": "Did not parse anything 1000ml + 50ml/kg/24 hours for each kg",
-        "error_stack": "Error: Did not parse anything 1000ml + 50ml/kg/24 hours for each kg\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1196:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1219:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous infusion (IVI)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist advice",
+            "icd10_indications": { "type": "codes", "codes": ["E10.1"] },
+            "medicine"         : {
+                "name"       : "Dextrose 5%/Sodium chloride (0.9% or 0.45%)",
+                "ingredients": [
+                    {"name": "Dextrose 5%"                                       },
+                    {"name": "Sodium chloride", "alternate_name": "0.9% or 0.45%"}
+                ]
+            },
+            "schedules"        : [{}],
+            "raw_dose"         : "1000ml + 50ml/kg/24hours for each kg",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous infusion (IVI)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist advice",
+            "icd10_indications": { "type": "codes", "codes": ["E10.1"] },
+            "medicine"         : {
+                "name"       : "Dextrose 5%/Sodium chloride (0.9% or 0.45%)",
+                "ingredients": [
+                    {"name": "Dextrose 5%"                                       },
+                    {"name": "Sodium chloride", "alternate_name": "0.9% or 0.45%"}
+                ]
+            },
+            "schedules"        : [{}],
+            "raw_dose"         : "1000ml + 50ml/kg/24hours for each kg",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "7",
@@ -328483,8 +328519,44 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Specialist advice"
         },
-        "error_message": "Dosage text remaining \"1500ml + 20ml for each kg\"",
-        "error_stack": "Error: Dosage text remaining \"1500ml + 20ml for each kg\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1219:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous infusion (IVI)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist advice",
+            "icd10_indications": { "type": "codes", "codes": ["E10.1"] },
+            "medicine"         : {
+                "name"       : "Dextrose 5%/Sodium chloride (0.9% or 0.45%)",
+                "ingredients": [
+                    {"name": "Dextrose 5%"                                       },
+                    {"name": "Sodium chloride", "alternate_name": "0.9% or 0.45%"}
+                ]
+            },
+            "schedules"        : [{}],
+            "raw_dose"         : "1500ml + 20ml/kg/24hours for each kg >20kg",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous infusion (IVI)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist advice",
+            "icd10_indications": { "type": "codes", "codes": ["E10.1"] },
+            "medicine"         : {
+                "name"       : "Dextrose 5%/Sodium chloride (0.9% or 0.45%)",
+                "ingredients": [
+                    {"name": "Dextrose 5%"                                       },
+                    {"name": "Sodium chloride", "alternate_name": "0.9% or 0.45%"}
+                ]
+            },
+            "schedules"        : [{}],
+            "raw_dose"         : "1500ml + 20ml/kg/24hours for each kg >20kg",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
         "row": {
