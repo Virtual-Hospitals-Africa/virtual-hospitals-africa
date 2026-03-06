@@ -1161,7 +1161,7 @@ export class DosageParser {
     if (!this.dosage_text.includes('/')) return
 
     if (this.dosage_form === 'Inhaler') {
-      this.lookFor(/^(\d+)\/(\d+)$/, (value1, value2) => {
+      this.lookFor(/^(\d+)\/(\d+)\s*(?:mcg)?$/, (value1, value2) => {
         assert(this.medicine.ingredients.length === 2)
         return {
           active_ingredients: [

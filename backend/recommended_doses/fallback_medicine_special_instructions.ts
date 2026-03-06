@@ -16,6 +16,16 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)',
   '380mm2',
   'dilute rabbies immunoglobulin',
+  // Artemether/lumefantrine complex interval
+  'First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)',
+  // Olanzapine complex dose with nested parentheticals
+  '(5-10 mg (adults/pregnant) 2.5-5 mg (elderly/frail)',
+  // Hepatitis B vaccine series
+  '1dose/month x 3 months',
+  // Magnesium sulfate rate limit
+  'maximum rate of administration = 1g/7 minutes',
+  // Diazepam interval with slash
+  'daily/12 hourly',
   // Rifampicin/Isoniazid fixed-ratio doses without units
   '150/75',
   '300/75',
