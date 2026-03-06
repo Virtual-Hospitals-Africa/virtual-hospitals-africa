@@ -328701,7 +328701,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "7",
@@ -328725,11 +328725,41 @@
             "ADULT/ CHILDREN"                                  : "Adult - Female",
             "PRESCRIBER"                                       : "Nurse"
         },
-        "error_message": "Did not parse anything 380mm2",
-        "error_stack": "Error: Did not parse anything 380mm2\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "G02BA02",
+            "form"             : "IUCD",
+            "route"            : "Vaginal",
+            "aware"            : null,
+            "acute_chronic"    : "Chronic",
+            "prescriber"       : "Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["Z30.0", "Z30.1", "Z30.5"] },
+            "medicine"         : {
+                "name"       : "Cu T380A",
+                "ingredients": [ {"name": "Cu T380A"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "G02BA02",
+            "form"             : "IUCD",
+            "route"            : "Vaginal",
+            "aware"            : null,
+            "acute_chronic"    : "Chronic",
+            "prescriber"       : "Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["Z30.0", "Z30.1", "Z30.5"] },
+            "medicine"         : {
+                "name"       : "Cu T380A",
+                "ingredients": [ {"name": "Cu T380A"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "7",
@@ -328753,8 +328783,38 @@
             "ADULT/ CHILDREN"                                  : "Adult - Female",
             "PRESCRIBER"                                       : "Nurse"
         },
-        "error_message": "Did not parse anything 380mm2",
-        "error_stack": "Error: Did not parse anything 380mm2\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "G02BA02",
+            "form"             : "IUCD",
+            "route"            : "Vaginal",
+            "aware"            : null,
+            "acute_chronic"    : "Chronic",
+            "prescriber"       : "Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["Z30.0", "Z30.4"] },
+            "medicine"         : {
+                "name"       : "Cu T380A",
+                "ingredients": [ {"name": "Cu T380A"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2", "frequency": "stat"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "stat"
+        },
+        "expected_parsed": {
+            "atc"              : "G02BA02",
+            "form"             : "IUCD",
+            "route"            : "Vaginal",
+            "aware"            : null,
+            "acute_chronic"    : "Chronic",
+            "prescriber"       : "Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["Z30.0", "Z30.4"] },
+            "medicine"         : {
+                "name"       : "Cu T380A",
+                "ingredients": [ {"name": "Cu T380A"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2", "frequency": "stat"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "stat"
+        }
     },
     {
         "row": {
@@ -329967,7 +330027,7 @@
         "error_stack": "Error: Dosage text remaining \"5 times\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1202:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "9",
@@ -329991,8 +330051,38 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Did not parse anything 380mm2",
-        "error_stack": "Error: Did not parse anything 380mm2\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "n/a",
+            "form"             : "Intra-uterine device",
+            "route"            : "Intrauterine",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B20-24"] },
+            "medicine"         : {
+                "name"       : "Copper IUCD",
+                "ingredients": [ {"name": "Copper IUCD"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "n/a",
+            "form"             : "Intra-uterine device",
+            "route"            : "Intrauterine",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["B20-24"] },
+            "medicine"         : {
+                "name"       : "Copper IUCD",
+                "ingredients": [ {"name": "Copper IUCD"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
         "row": {
@@ -336021,7 +336111,7 @@
         "error_stack": "Error: Did not parse anything once\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "21",
@@ -336045,8 +336135,54 @@
             "ADULT/ CHILDREN": "Adults/Adolescents",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Did not parse anything 380mm2",
-        "error_stack": "Error: Did not parse anything 380mm2\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1199:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1222:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "G02BA02",
+            "form"             : "IUCD",
+            "route"            : "Vaginal",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type"       : "and",
+                "indications": [
+                    { "type": "codes", "codes": ["Z29.8"] },
+                    { "type": "codes", "codes": ["Z20.5"] },
+                    { "type": "codes", "codes": ["Z20.2"] },
+                    { "type": "codes", "codes": ["Z20.6"] }
+                ]
+            },
+            "medicine"         : {
+                "name"       : "Cu T380A",
+                "ingredients": [ {"name": "Cu T380A"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "G02BA02",
+            "form"             : "IUCD",
+            "route"            : "Vaginal",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type"       : "and",
+                "indications": [
+                    { "type": "codes", "codes": ["Z29.8"] },
+                    { "type": "codes", "codes": ["Z20.5"] },
+                    { "type": "codes", "codes": ["Z20.2"] },
+                    { "type": "codes", "codes": ["Z20.6"] }
+                ]
+            },
+            "medicine"         : {
+                "name"       : "Cu T380A",
+                "ingredients": [ {"name": "Cu T380A"} ]
+            },
+            "schedules"        : [ {"special_instructions": "380mm2"} ],
+            "raw_dose"         : "380mm2",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
         "row": {
