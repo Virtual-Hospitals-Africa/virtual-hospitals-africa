@@ -122,5 +122,6 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /after expulsion is complete/i,
   /with or after a meal/i,
   /^followed .+/i,
+  /\bin \d+m[lL] .+/i,
   // /after .*/i,
 ]
