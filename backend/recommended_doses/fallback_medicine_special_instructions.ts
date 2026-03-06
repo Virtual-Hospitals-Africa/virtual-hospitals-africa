@@ -43,6 +43,8 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '2g in 1ml',
   // Adrenaline
   '1:1000 mL soak gauze or apply directly',
+  // Fluticasone spray dose
+  '50mcg/spray. 1 spray',
   // Rifampicin/Isoniazid fixed-ratio doses without units
   '150/75',
   '300/75',
