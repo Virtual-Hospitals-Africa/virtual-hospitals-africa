@@ -330651,7 +330651,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -330675,8 +330675,56 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Expected value to be a property of {}",
-        "error_stack": "AssertionError: Expected value to be a property of {}\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at withProperty (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/withProperty.ts:12:5)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:455:22\n    at DosageParser.lookFor (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:647:74)\n    at DosageParser.lookForMaxDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:453:10)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:71:10)\n    at DosageParser.sub (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:627:12)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:841:24)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:120:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1247:12)"
+        "actual_parsed"  : {
+            "atc"              : "J04AB02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : "Watch",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["G00"] },
+            "medicine"         : {
+                "name"       : "Rifampicin",
+                "ingredients": [ {"name": "Rifampicin"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units": "mg",
+                    "value": 10,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 600} ],
+                    "special_instructions": "in patients where TB has been excluded",
+                    "frequency": "q12h"
+                }
+            ],
+            "raw_dose"         : "10mg/kg (maximum = 600mg/dose in patients where TB has been excluded)",
+            "raw_dose_interval": "12 hourly"
+        },
+        "expected_parsed": {
+            "atc"              : "J04AB02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : "Watch",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["G00"] },
+            "medicine"         : {
+                "name"       : "Rifampicin",
+                "ingredients": [ {"name": "Rifampicin"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units": "mg",
+                    "value": 10,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 600} ],
+                    "special_instructions": "in patients where TB has been excluded",
+                    "frequency": "q12h"
+                }
+            ],
+            "raw_dose"         : "10mg/kg (maximum = 600mg/dose in patients where TB has been excluded)",
+            "raw_dose_interval": "12 hourly"
+        }
     },
     {
         "row": {
