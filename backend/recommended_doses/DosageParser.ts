@@ -436,7 +436,13 @@ export class DosageParser {
       const max_parser = this.sub(max_text.trim())
       return { max: [withProperty(max_parser.parsed!, 'value')] }
     })
-    this.lookFor(/(?:up to )?(?:to a )?(?:maximum|up to|max)(?: dose)?\s*(?:of)?\s*(?:=)?\s*(\d.*)$/i, (max_text) => {
+    this.lookFor(/(?:maximum )?cumulative dose\s*=\s*(\d.*)$/i, (max_text) => {
+      const max_parser = this.sub(max_text.trim())
+      const p = max_parser.parsed!
+      if (p.value != null || p.low != null || p.high != null) return { max: [p] }
+      return {}
+    })
+    this.lookFor(/(?:up to )?(?:to a )?(?:maximum|up to|max)(?: cumulative)?(?: dose)?\s*(?:of)?\s*(?:=)?\s*(\d.*)$/i, (max_text) => {
       const max_parser = this.sub(max_text)
       return { max: [withProperty(max_parser.parsed!, 'value')] }
     })
