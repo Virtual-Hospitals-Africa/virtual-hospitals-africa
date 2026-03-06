@@ -246,7 +246,7 @@ export class DosageParser {
     this.lookFor(/\/(24 hours)/i, () => ({
       per_time: { value: 24, units: 'hour' as const },
     }))
-    this.lookFor(/(?:at )?(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)? intervals/i, (value, units) => ({
+    this.lookFor(/(?:at )?(\d+)\s*(minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)? intervals/i, (value, units) => ({
       frequency: { every: { value: parseInt(value), units: normalizeTimeUnit(units) } },
     }))
     this.lookFor(/day 1/i, () => ({ duration: { value: 1, units: 'day' } }))
