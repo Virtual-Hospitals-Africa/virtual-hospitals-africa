@@ -326432,7 +326432,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "6",
@@ -326456,11 +326456,53 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"apart\"",
-        "error_stack": "Error: Dosage text remaining \"apart\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1168:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1188:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "C09AA02",
+            "form"             : "Injection",
+            "route"            : "Subcutaneous/Intramuscular (SC/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["N04"] },
+            "medicine"         : {
+                "name"       : "Hepatitis B vaccine",
+                "ingredients": [ {"name": "Hepatitis B vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 1,
+                    "series": { "dose_count": 3, "time_apart": {"value": 1, "units": "month"} }
+                }
+            ],
+            "raw_dose"         : "1mL",
+            "raw_dose_interval": "3 doses, one month apart"
+        },
+        "expected_parsed": {
+            "atc"              : "C09AA02",
+            "form"             : "Injection",
+            "route"            : "Subcutaneous/Intramuscular (SC/IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["N04"] },
+            "medicine"         : {
+                "name"       : "Hepatitis B vaccine",
+                "ingredients": [ {"name": "Hepatitis B vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 1,
+                    "series": { "dose_count": 3, "time_apart": {"value": 1, "units": "month"} }
+                }
+            ],
+            "raw_dose"         : "1mL",
+            "raw_dose_interval": "3 doses, one month apart"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "6",
@@ -326484,8 +326526,50 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"apart\"",
-        "error_stack": "Error: Dosage text remaining \"apart\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1168:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1188:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "J07CA",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["N18.9"] },
+            "medicine"         : {
+                "name"       : "Hepatitis B vaccine",
+                "ingredients": [ {"name": "Hepatitis B vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 1,
+                    "series": { "dose_count": 3, "time_apart": {"value": 1, "units": "month"} }
+                }
+            ],
+            "raw_dose"         : "1 mL",
+            "raw_dose_interval": "3 doses, one month apart"
+        },
+        "expected_parsed": {
+            "atc"              : "J07CA",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["N18.9"] },
+            "medicine"         : {
+                "name"       : "Hepatitis B vaccine",
+                "ingredients": [ {"name": "Hepatitis B vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 1,
+                    "series": { "dose_count": 3, "time_apart": {"value": 1, "units": "month"} }
+                }
+            ],
+            "raw_dose"         : "1 mL",
+            "raw_dose_interval": "3 doses, one month apart"
+        }
     },
     {
         "row": {

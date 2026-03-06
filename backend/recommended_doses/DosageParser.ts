@@ -161,9 +161,9 @@ export class DosageParser {
       },
     }))
 
-    this.lookFor(/(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? apart/i, (value, units) => ({
+    this.lookFor(/(\d+|an?|one) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? apart/i, (value, units) => ({
       time_apart: {
-        value: parseInt(value),
+        value: value === 'a' || value === 'an' || value === 'one' ? 1 : parseInt(value),
         units: normalizeTimeUnit(units),
       },
     }))
