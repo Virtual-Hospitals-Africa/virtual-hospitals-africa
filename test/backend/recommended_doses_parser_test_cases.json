@@ -327666,7 +327666,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "6",
@@ -327690,8 +327690,46 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "error_message": "Name collision units with nonidentical values",
-        "error_stack": "Error: Name collision units with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:161:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
+        "actual_parsed"  : {
+            "atc"              : "H01BB02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O02.1", "O03.4", "O03.9"] },
+            "medicine"         : {
+                "name"       : "Oxytocin",
+                "ingredients": [ {"name": "Oxytocin"} ]
+            },
+            "schedules"        : [
+                {
+                    "units": "units",
+                    "value": 20,
+                    "max"  : [
+                        { "value": 125, "units": "ml", "per_time": {"value": 1, "units": "hour"} }
+                    ]
+                }
+            ],
+            "raw_dose"         : "20 units",
+            "raw_dose_interval": "125ml/hour"
+        },
+        "expected_parsed": {
+            "atc"              : "H01BB02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O02.1", "O03.4", "O03.9"] },
+            "medicine"         : {
+                "name"       : "Oxytocin",
+                "ingredients": [ {"name": "Oxytocin"} ]
+            },
+            "schedules"        : [ {"units": "units", "value": 20, "special_instructions": "125ml/hour"} ],
+            "raw_dose"         : "20 units",
+            "raw_dose_interval": "125ml/hour"
+        }
     },
     {
         "row": {
@@ -330385,7 +330423,7 @@
             "PRESCRIBER": "Doctor prescribed"
         },
         "error_message": "Name collision max with nonidentical values",
-        "error_stack": "Error: Name collision max with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:161:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
+        "error_stack": "Error: Name collision max with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:174:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
     },
     {
         "row": {
@@ -331729,7 +331767,7 @@
             "PRESCRIBER": "Doctor"
         },
         "error_message": "",
-        "error_stack": "AssertionError\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:154:11\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
+        "error_stack": "AssertionError\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:167:11\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
     },
     {
         "row": {
@@ -335144,8 +335182,34 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
+        "expected_parsed": {
+            "atc"              : "N01AX03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Ketamine",
+                "ingredients": [ {"name": "Ketamine"} ]
+            },
+            "schedules"        : [
+                {
+                    "low": [
+                        { "per_size": "kg", "per_time": {"value": 1, "units": "hour"}, "units": "mg", "value": 0.2 }
+                    ],
+                    "high": [
+                        { "per_size": "kg", "per_time": {"value": 1, "units": "hour"}, "units": "mg", "value": 0.5 }
+                    ],
+                    "special_instructions": "2-5 mL/hour"
+                }
+            ],
+            "raw_dose"         : "0.2-0.5mg/kg/hour",
+            "raw_dose_interval": "2–5 mL/hour"
+        },
         "error_message": "Name collision low with nonidentical values",
-        "error_stack": "Error: Name collision low with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:161:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
+        "error_stack": "Error: Name collision low with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:174:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
     },
     {
         "row": {
@@ -335228,8 +335292,34 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
+        "expected_parsed": {
+            "atc"              : "N02AA01",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Morphine",
+                "ingredients": [ {"name": "Morphine"} ]
+            },
+            "schedules"        : [
+                {
+                    "low": [
+                        { "per_size": "kg", "per_time": {"value": 1, "units": "hour"}, "units": "mcg", "value": 20 }
+                    ],
+                    "high": [
+                        { "per_size": "kg", "per_time": {"value": 1, "units": "hour"}, "units": "mcg", "value": 40 }
+                    ],
+                    "special_instructions": "1-2 mL/hour"
+                }
+            ],
+            "raw_dose"         : "20-40mcg/kg/hour",
+            "raw_dose_interval": "1–2 mL/hour"
+        },
         "error_message": "Name collision low with nonidentical values",
-        "error_stack": "Error: Name collision low with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:161:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
+        "error_stack": "Error: Name collision low with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:174:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
     },
     {
         "row": {
@@ -335873,7 +335963,7 @@
             "PRESCRIBER": "Specialist consultation"
         },
         "error_message": "Name collision value with nonidentical values",
-        "error_stack": "Error: Name collision value with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:161:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
+        "error_stack": "Error: Name collision value with nonidentical values\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:18:15)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:174:16\n    at Array.map (<anonymous>)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:147:26\n    at Array.flatMap (<anonymous>)\n    at MedicineParser.combineSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:146:27)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:56:23)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
     },
     {
         "row": {

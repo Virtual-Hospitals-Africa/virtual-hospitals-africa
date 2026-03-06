@@ -149,6 +149,19 @@ export class MedicineParser {
           dose_schedule.special_instructions = [dose_schedule.special_instructions, interval_schedule.special_instructions].join(' ')
           delete interval_schedule.special_instructions
         }
+        // When interval is a volume rate (e.g. 125ml/hour) and dose has different units, store rate as max
+        if (
+          dose_schedule.units && interval_schedule.units &&
+          dose_schedule.units !== interval_schedule.units &&
+          interval_schedule.per_time
+        ) {
+          const { value, units, per_time, ...rest } = interval_schedule
+          Object.assign(interval_schedule, rest)
+          interval_schedule.max = [{ value, units, per_time }]
+          delete interval_schedule.value
+          delete interval_schedule.units
+          delete interval_schedule.per_time
+        }
         if (dose_schedule.frequency && interval_schedule.frequency) {
           console.log({ dose_schedule, interval_schedule })
           assert(typeof dose_schedule.frequency === 'string')
