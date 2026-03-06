@@ -20,6 +20,8 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   'dilute rabbies immunoglobulin',
   // Prednisone: time-based dosing schedule
   '13. 7 and 1 hour before procedure',
+  // Atropine: can-repeat interval
+  'stat, can repeat after 5 minutes',
   // Artemether/lumefantrine complex interval
   'First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)',
   // Olanzapine complex dose with nested parentheticals
