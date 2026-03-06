@@ -208,6 +208,7 @@ export class DosageParser {
     this.lookFor('qn', () => ({ frequency: 'qn' }))
     this.lookFor('bd', () => ({ frequency: 'bd' }))
     this.lookFor('stat', () => ({ frequency: 'stat' }))
+    this.lookFor(/immediately as a single dose/i, () => ({ frequency: 'stat' }))
     this.lookFor('immediately', () => ({ frequency: 'stat' }))
     this.lookFor('rapidly', () => ({ frequency: 'stat' }))
     this.lookFor(/(?:as a )?single dose/i, () => ({
