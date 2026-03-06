@@ -417,6 +417,11 @@ export class DosageParser {
       const max_parser = this.sub(max_text)
       return { max: [withProperty(max_parser.parsed!, 'value')] }
     })
+    this.lookFor(/max(?:imum)? single dose\s*=\s*(\d.*)$/i, (max_text) => {
+      const max_parser = this.sub(max_text.trim())
+      max_parser.parsed.frequency = 'stat'
+      return { max: [withProperty(max_parser.parsed!, 'value')] }
+    })
     this.lookFor(/maximum bolus dose\s*=\s*(.+)$/i, (max_text) => {
       const max_parser = this.sub(max_text.trim())
       return { max: [withProperty(max_parser.parsed!, 'value')] }
