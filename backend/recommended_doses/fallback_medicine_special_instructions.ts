@@ -70,7 +70,8 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   // Phenobarbital: complex dose with nested min/max
   '0.02mg/kg (minimum = 0.1 mg. maximum = 0.5 mg (1 mg adolescents))',
   // Calcium/Potassium chloride: complex dose with per_size collision
-  '1-2mmol/kg (recommended dose = 1.2 mmol/kg = 0.3 mmol/kg/hour)',
+  '1-2mmol/kg (recommended dose = 1.2 mmol/kg = 0.3 mmol/kg/hour for 4 hours)',
+  'slow IV, over 4 hours (maximum rate of replacement = 0.5 mmol/kg/hour)',
   // Quinine: loading to maintenance dose with maint tag
   '1g over 10mins (loading) to 1g over 8 hours (maint)',
   // Salbutamol nebulization doses
