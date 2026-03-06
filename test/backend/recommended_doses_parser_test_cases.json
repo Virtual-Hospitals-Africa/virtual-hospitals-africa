@@ -330727,7 +330727,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "8",
@@ -330751,8 +330751,38 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything dilute rabbies immunoglobulin",
-        "error_stack": "Error: Did not parse anything dilute rabbies immunoglobulin\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1231:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1254:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:94:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Infiltration",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["A82.9"] },
+            "medicine"         : {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules"        : [ {"special_instructions": "dilute rabbies immunoglobulin"} ],
+            "raw_dose"         : "dilute rabbies immunoglobulin",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Infiltration",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["A82.9"] },
+            "medicine"         : {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules"        : [ {"special_instructions": "dilute rabbies immunoglobulin"} ],
+            "raw_dose"         : "dilute rabbies immunoglobulin",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
         "row"            : {

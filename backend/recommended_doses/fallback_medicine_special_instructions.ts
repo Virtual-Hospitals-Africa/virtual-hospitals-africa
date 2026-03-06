@@ -15,4 +15,5 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   'confirm dose with Jane',
   '<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)',
   '380mm2',
+  'dilute rabbies immunoglobulin',
 ])
