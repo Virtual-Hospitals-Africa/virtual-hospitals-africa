@@ -327114,7 +327114,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327138,11 +327138,53 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"2g, diluted with 100 mL sodium chloride 0.9%\"",
-        "error_stack": "Error: Dosage text remaining \"2g, diluted with 100 mL sodium chloride 0.9%\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1186:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1206:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "A12CC02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine"         : {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "g",
+                    "value"               : 2,
+                    "special_instructions": "2g, diluted with 100 mL sodium chloride 0.9%, over 10 minutes"
+                }
+            ],
+            "raw_dose"         : "2 g",
+            "raw_dose_interval": "2g, diluted with 100 mL sodium chloride  0.9%, over 10 minutes"
+        },
+        "expected_parsed": {
+            "atc"              : "A12CC02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine"         : {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "g",
+                    "value"               : 2,
+                    "special_instructions": "2g, diluted with 100 mL sodium chloride 0.9%, over 10 minutes"
+                }
+            ],
+            "raw_dose"         : "2 g",
+            "raw_dose_interval": "2g, diluted with 100 mL sodium chloride  0.9%, over 10 minutes"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327166,11 +327208,53 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"",
-        "error_stack": "Error: Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1186:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1206:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intravenous injection (IV)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O11", "O14.0", "O14.1", "O14.2", "O14.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 4,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "4g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        },
+        "expected_parsed": {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intravenous injection (IV)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O11", "O14.0", "O14.1", "O14.2", "O14.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 4,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "4g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327194,11 +327278,53 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"",
-        "error_stack": "Error: Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1186:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1206:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intramuscular (IM)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O11", "O14.0", "O14.1", "O14.2", "O14.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 10,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "10g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        },
+        "expected_parsed": {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intramuscular (IM)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O11", "O14.0", "O14.1", "O14.2", "O14.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 10,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "10g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327222,11 +327348,53 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"",
-        "error_stack": "Error: Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1186:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1206:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intravenous injection (IV)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 4,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "4g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        },
+        "expected_parsed": {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intravenous injection (IV)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 4,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "4g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327250,8 +327418,50 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"",
-        "error_stack": "Error: Dosage text remaining \"4g as a diluted with 200 mL sodium chloride 0.9% and infused\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1186:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1206:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intramuscular (IM)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 10,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "10g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        },
+        "expected_parsed": {
+            "atc": "A12CC02",
+            "form": "Injection",
+            "route": "Intramuscular (IM)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine": {
+                "name"       : "Magnesium sulfate",
+                "ingredients": [ {"name": "Magnesium sulfate"} ]
+            },
+            "schedules": [
+                {
+                    "units": "g",
+                    "value": 10,
+                    "special_instructions": "4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes"
+                }
+            ],
+            "raw_dose": "10g",
+            "raw_dose_interval": "4g as a loading dose diluted with 200 mL sodium chloride  0.9% and infused over 20 minutes"
+        }
     },
     {
         "row": {
