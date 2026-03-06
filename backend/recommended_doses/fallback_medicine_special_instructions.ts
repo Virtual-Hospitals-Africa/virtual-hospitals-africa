@@ -3,4 +3,9 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '(130 - Na) x body weight in kg x 4',
   '2g, diluted with 100 mL sodium chloride 0.9%, over 10 minutes',
   '4g as a loading dose diluted with 200 mL sodium chloride 0.9% and infused over 20 minutes',
+  'in 1000 mL sodium chloride 0.9% infused at 250 mL/hour in 2nd IV line',
+  '200 mL sodium chloride 0.9% infused over 20 minutes or 100ml infused over 10 minutes with with magnesium sulfate',
+  '200 mL sodium chloride 0.9% infused over 20 minutes with with magnesium sulfate',
+  'in 200 mL sodium chloride 0.9% over 10 minutes, or 1g by slow IV injection',
+  'premixed with sodium chloride and infused over 2-4 hours before amphotericin B infusion',
 ])

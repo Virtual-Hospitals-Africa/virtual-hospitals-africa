@@ -327732,7 +327732,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327756,8 +327756,50 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Did not parse anything in 1000 mL sodium chloride 0.9% infused at 250 mL/hour in 2nd IV line",
-        "error_stack": "Error: Did not parse anything in 1000 mL sodium chloride 0.9% infused at 250 mL/hour in 2nd IV line\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1184:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1207:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "H01BB02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O72.0", "O72.1", "O72.2", "O72.3"] },
+            "medicine"         : {
+                "name"       : "Oxytocin",
+                "ingredients": [ {"name": "Oxytocin"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "units",
+                    "value"               : 20,
+                    "special_instructions": "in 1000 mL sodium chloride 0.9% infused at 250 mL/hour in 2nd IV line"
+                }
+            ],
+            "raw_dose"         : "20 units",
+            "raw_dose_interval": "in 1 000 mL sodium chloride 0.9% infused at 250 mL/hour in 2nd IV line"
+        },
+        "expected_parsed": {
+            "atc"              : "H01BB02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O72.0", "O72.1", "O72.2", "O72.3"] },
+            "medicine"         : {
+                "name"       : "Oxytocin",
+                "ingredients": [ {"name": "Oxytocin"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "units",
+                    "value"               : 20,
+                    "special_instructions": "in 1000 mL sodium chloride 0.9% infused at 250 mL/hour in 2nd IV line"
+                }
+            ],
+            "raw_dose"         : "20 units",
+            "raw_dose_interval": "in 1 000 mL sodium chloride 0.9% infused at 250 mL/hour in 2nd IV line"
+        }
     },
     {
         "row": {
@@ -327788,7 +327830,7 @@
         "error_stack": "Error: Dosage text remaining \"250 mcg administered\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1187:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1207:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327812,11 +327854,51 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "",
-        "error_stack": "AssertionError\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleOr (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1045:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:55:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1200:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66"
+        "actual_parsed"  : {
+            "atc": "B05XA03",
+            "form": "Solution",
+            "route": "Intravenous injection (IV)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine": {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules": [
+                {
+                    "concentration": 0.9,
+                    "special_instructions": "200 mL sodium chloride 0.9% infused over 20 minutes or 100ml infused over 10 minutes with with magnesium sulfate"
+                }
+            ],
+            "raw_dose": "0.9%",
+            "raw_dose_interval": "200 mL sodium chloride  0.9% infused over 20 minutes or 100ml infused over 10 minutes with with magnesium sulfate"
+        },
+        "expected_parsed": {
+            "atc": "B05XA03",
+            "form": "Solution",
+            "route": "Intravenous injection (IV)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O15.0", "O15.1", "O15.2", "O15.9"] },
+            "medicine": {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules": [
+                {
+                    "concentration": 0.9,
+                    "special_instructions": "200 mL sodium chloride 0.9% infused over 20 minutes or 100ml infused over 10 minutes with with magnesium sulfate"
+                }
+            ],
+            "raw_dose": "0.9%",
+            "raw_dose_interval": "200 mL sodium chloride  0.9% infused over 20 minutes or 100ml infused over 10 minutes with with magnesium sulfate"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327840,11 +327922,51 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"200 mL infused with with magnesium sulfate\"",
-        "error_stack": "Error: Dosage text remaining \"200 mL infused with with magnesium sulfate\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1187:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1207:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O11", "O14.0", "O14.1", "O14.2", "O14.9"] },
+            "medicine"         : {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules"        : [
+                {
+                    "concentration": 0.9,
+                    "special_instructions": "200 mL sodium chloride 0.9% infused over 20 minutes with with magnesium sulfate"
+                }
+            ],
+            "raw_dose"         : "0.9%",
+            "raw_dose_interval": "200 mL sodium chloride  0.9% infused over 20 minutes with with magnesium sulfate"
+        },
+        "expected_parsed": {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O11", "O14.0", "O14.1", "O14.2", "O14.9"] },
+            "medicine"         : {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules"        : [
+                {
+                    "concentration": 0.9,
+                    "special_instructions": "200 mL sodium chloride 0.9% infused over 20 minutes with with magnesium sulfate"
+                }
+            ],
+            "raw_dose"         : "0.9%",
+            "raw_dose_interval": "200 mL sodium chloride  0.9% infused over 20 minutes with with magnesium sulfate"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -327868,8 +327990,50 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "",
-        "error_stack": "AssertionError\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleOr (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1045:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:55:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1200:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66"
+        "actual_parsed"  : {
+            "atc"              : "B02AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O72.0", "O72.1", "O72.2", "O72.3"] },
+            "medicine"         : {
+                "name"       : "Tranexamic acid",
+                "ingredients": [ {"name": "Tranexamic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units": "g",
+                    "value": 1,
+                    "special_instructions": "in 200 mL sodium chloride 0.9% over 10 minutes, or 1g by slow IV injection"
+                }
+            ],
+            "raw_dose"         : "1g",
+            "raw_dose_interval": "in 200 mL sodium chloride 0.9% over 10 minutes, or 1g by slow IV injection"
+        },
+        "expected_parsed": {
+            "atc"              : "B02AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["O72.0", "O72.1", "O72.2", "O72.3"] },
+            "medicine"         : {
+                "name"       : "Tranexamic acid",
+                "ingredients": [ {"name": "Tranexamic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units": "g",
+                    "value": 1,
+                    "special_instructions": "in 200 mL sodium chloride 0.9% over 10 minutes, or 1g by slow IV injection"
+                }
+            ],
+            "raw_dose"         : "1g",
+            "raw_dose_interval": "in 200 mL sodium chloride 0.9% over 10 minutes, or 1g by slow IV injection"
+        }
     },
     {
         "row"            : {
@@ -332078,7 +332242,7 @@
         "error_stack": "Error: Did not parse anything 0.25mg in 2ml sodium chloride 0.9%\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1184:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1207:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -332102,8 +332266,52 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"premixed with sodium chloride and infused over 2-\"",
-        "error_stack": "Error: Dosage text remaining \"premixed with sodium chloride and infused over 2-\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1187:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1207:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc": "A12BA01",
+            "form": "Injection",
+            "route": "Intravenous infusion (IVI)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine": {
+                "name"       : "Potassium Chloride",
+                "ingredients": [ {"name": "Potassium Chloride"} ]
+            },
+            "schedules": [
+                {
+                    "denominator": {"value": 1, "units": "l"},
+                    "units": "mmol",
+                    "value": 20,
+                    "special_instructions": "premixed with sodium chloride and infused over 2-4 hours before amphotericin B infusion"
+                }
+            ],
+            "raw_dose": "20mmol/L",
+            "raw_dose_interval": "premixed with sodium chloride and infused over 2-4 hours before amphotericin B infusion"
+        },
+        "expected_parsed": {
+            "atc": "A12BA01",
+            "form": "Injection",
+            "route": "Intravenous infusion (IVI)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine": {
+                "name"       : "Potassium Chloride",
+                "ingredients": [ {"name": "Potassium Chloride"} ]
+            },
+            "schedules": [
+                {
+                    "denominator": {"value": 1, "units": "l"},
+                    "units": "mmol",
+                    "value": 20,
+                    "special_instructions": "premixed with sodium chloride and infused over 2-4 hours before amphotericin B infusion"
+                }
+            ],
+            "raw_dose": "20mmol/L",
+            "raw_dose_interval": "premixed with sodium chloride and infused over 2-4 hours before amphotericin B infusion"
+        }
     },
     {
         "row": {
