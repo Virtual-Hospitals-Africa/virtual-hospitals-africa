@@ -18,6 +18,8 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)',
   '380mm2',
   'dilute rabbies immunoglobulin',
+  // Prednisone: time-based dosing schedule
+  '13. 7 and 1 hour before procedure',
   // Artemether/lumefantrine complex interval
   'First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)',
   // Olanzapine complex dose with nested parentheticals
