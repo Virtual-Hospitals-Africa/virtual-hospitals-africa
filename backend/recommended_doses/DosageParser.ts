@@ -42,6 +42,7 @@ export class DosageParser {
     this.lookFor('PCV-13', redundant)
 
     this.lookFor(/orally/i, redundant)
+    this.lookFor(/\badministered\b/i, redundant)
 
     this.lookFor(/(130 - Na)/i, (equation) => ({ equation }))
     this.lookFor('1000ml + 50ml/kg/24hours for each kg', (equation) => ({ equation }))
@@ -78,6 +79,9 @@ export class DosageParser {
       (low, high) => ({ low: [{ quantity: parseInt(low) }], high: [{ quantity: parseInt(high) }] }),
     )
 
+    this.lookFor('slowly', () => ({ slowly: true }))
+    this.lookFor('slow IV', () => ({ slowly: true }))
+
     this.lookForDosage()
     this.handleSlash()
 
@@ -110,9 +114,6 @@ export class DosageParser {
         }
       })
     }
-
-    this.lookFor('slowly', () => ({ slowly: true }))
-    this.lookFor('slow IV', () => ({ slowly: true }))
 
     this.mergeRelatedFields()
     this.handleParenthetical()
