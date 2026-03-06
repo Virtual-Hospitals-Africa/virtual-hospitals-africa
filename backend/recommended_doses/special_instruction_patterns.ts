@@ -174,4 +174,5 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /^in sodium chloride 0\.9%$/i,
   /\bin \d+-\d+ml water\b/i,
   /^can repeat\b.*/i,
+  /^\d+% water\b/i,
 ]

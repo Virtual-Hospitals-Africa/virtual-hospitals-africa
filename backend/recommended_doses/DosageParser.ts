@@ -105,6 +105,7 @@ export class DosageParser {
       })
     }
 
+    this.lookForSpecialInstructions()
     this.lookForDosage()
 
     if (this.is_parenthetical) {
