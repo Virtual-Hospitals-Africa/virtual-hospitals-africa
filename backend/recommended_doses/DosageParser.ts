@@ -49,6 +49,7 @@ export class DosageParser {
     this.lookFor(/1500ml \+ 20ml\/kg\/24\s*hours for each kg >20kg/i, (equation) => ({ equation }))
     this.lookForSpecialInstructions()
     this.lookFor(/\binjections?\b/i, redundant)
+    this.lookFor(/\bdiluted\b/i, redundant)
 
     this.lookFor(/(placebo)/i, (ingredient_name) => ({ ingredient_name }))
     this.lookFor(/^dose titrated$/i, () => ({ titrate: { to_effect: true } }))

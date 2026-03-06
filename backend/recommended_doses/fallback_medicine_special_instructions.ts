@@ -43,6 +43,12 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '2g in 1ml',
   // Adrenaline
   '1:1000 mL soak gauze or apply directly',
+  '2ml of 1:1000',
+  '1ml of 1:1000',
+  // Activated charcoal
+  '1g/kg in 50-100ml water',
+  // Bolus dose with duration
+  'bolus dose over 1 hour',
   // Fluticasone spray dose
   '50mcg/spray. 1 spray',
   // Salbutamol nebulization doses

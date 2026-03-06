@@ -169,4 +169,9 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   'every 3-3.5 hours (at breakfast, lunch and no later than 14h30)',
   /^1:\d+$/,
   /^to dilute\b.*/i,
+  /^before amphotericin B\b.*/i,
+  /^over a \d+(?:\.\d+)?-\d+(?:\.\d+)? hour period$/i,
+  /^in sodium chloride 0\.9%$/i,
+  /\bin \d+-\d+ml water\b/i,
+  /^can repeat\b.*/i,
 ]
