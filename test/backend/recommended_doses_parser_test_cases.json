@@ -326732,7 +326732,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -326756,8 +326756,54 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"routinely to each eye after birth\"",
-        "error_stack": "Error: Dosage text remaining \"routinely to each eye after birth\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1185:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1205:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:89:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:88:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:36)"
+        "actual_parsed"  : {
+            "atc"              : "S02AA01",
+            "form"             : "Ointment",
+            "route"            : "Topical",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type"       : "and",
+                "indications": [
+                    { "type": "codes", "codes": ["Z76.2"] },
+                    { "type": "codes", "codes": ["Z29.2"] }
+                ]
+            },
+            "medicine"         : {
+                "name"       : "Chloramphenicol 1%",
+                "ingredients": [ {"name": "Chloramphenicol 1%"} ]
+            },
+            "schedules"        : [
+                {"concentration": 1, "special_instructions": "applied; routinely to each eye after birth"}
+            ],
+            "raw_dose"         : "1%",
+            "raw_dose_interval": "applied routinely to each eye after birth"
+        },
+        "expected_parsed": {
+            "atc"              : "S02AA01",
+            "form"             : "Ointment",
+            "route"            : "Topical",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type"       : "and",
+                "indications": [
+                    { "type": "codes", "codes": ["Z76.2"] },
+                    { "type": "codes", "codes": ["Z29.2"] }
+                ]
+            },
+            "medicine"         : {
+                "name"       : "Chloramphenicol 1%",
+                "ingredients": [ {"name": "Chloramphenicol 1%"} ]
+            },
+            "schedules"        : [
+                {"concentration": 1, "special_instructions": "applied; routinely to each eye after birth"}
+            ],
+            "raw_dose"         : "1%",
+            "raw_dose_interval": "applied routinely to each eye after birth"
+        }
     },
     {
         "row": {

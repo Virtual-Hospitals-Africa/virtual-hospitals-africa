@@ -117,5 +117,6 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /preferably not on an empty stomach/i,
   'infused as fast as possible in one IV line',
   'immediately after birth routinely',
+  /routinely to each eye after birth/i,
   // /after .*/i,
 ]
