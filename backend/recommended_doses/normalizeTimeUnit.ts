@@ -4,6 +4,10 @@ export function normalizeTimeUnit(unit: string): TimeUnit {
   unit = unit.toLowerCase()
   if (unit.endsWith('s')) unit = unit.slice(0, -1)
   switch (unit) {
+    case 's':
+    case 'sec':
+    case 'second':
+      return 'second'
     case 'm':
     case 'min':
     case 'minute':

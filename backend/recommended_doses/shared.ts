@@ -31,7 +31,7 @@ export type MedicineRow = z.infer<typeof MedicineRowSchema>
 
 export type PerSize = 'kg' | 'm2' | { kg: number }
 
-export type TimeUnit = 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
+export type TimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year'
 
 export type TimeSpecification = {
   value: number | number[]
@@ -109,7 +109,7 @@ export type ParsedDose = {
   slowly?: boolean
   series?: {
     dose_count: number
-    starting_at?: TimeSpecification 
+    starting_at?: TimeSpecification
     time_apart?: TimeSpecification
   } | {
     doses: TimeSpecification[]

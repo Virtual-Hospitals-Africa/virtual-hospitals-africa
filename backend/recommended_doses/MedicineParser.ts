@@ -178,7 +178,12 @@ export class MedicineParser {
           assert(typeof dose_schedule.frequency === 'string')
           assert(typeof interval_schedule.frequency === 'string')
           if (dose_schedule.frequency !== interval_schedule.frequency) {
-            dose_schedule.frequency = [dose_schedule.frequency, interval_schedule.frequency]
+            const pair = [dose_schedule.frequency, interval_schedule.frequency]
+            if (pair.includes('nocte') && pair.includes('qd')) {
+              dose_schedule.frequency = 'nocte'
+            } else {
+              dose_schedule.frequency = pair as [typeof dose_schedule.frequency, typeof dose_schedule.frequency]
+            }
           }
           delete interval_schedule.frequency
         }

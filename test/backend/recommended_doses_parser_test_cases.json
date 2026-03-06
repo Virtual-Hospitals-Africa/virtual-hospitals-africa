@@ -3784,7 +3784,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": ["nocte", "qd"],
+                    "frequency": "nocte",
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -3809,7 +3809,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": ["nocte", "qd"],
+                    "frequency": "nocte",
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -3860,7 +3860,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": ["nocte", "qd"],
+                    "frequency": "nocte",
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -3885,7 +3885,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": ["nocte", "qd"],
+                    "frequency": "nocte",
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -91118,26 +91118,16 @@
             },
             "schedules"        : [
                 {
-                    "low" : [
+                    "diluents": [
                         {
-                            "per_size"       : "kg",
-                            "units"          : "mL",
-                            "ingredient_name": "Dextrose",
+                            "ingredient_name": "dextrose",
                             "concentration"  : 10,
-                            "value"          : 2.5
-                        },
-                        {"per_size": "kg", "units": "mg", "value": 250}
+                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
+                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
+                        }
                     ],
-                    "high": [
-                        {
-                            "per_size"       : "kg",
-                            "units"          : "mL",
-                            "ingredient_name": "Dextrose",
-                            "concentration"  : 10,
-                            "value"          : 5
-                        },
-                        {"per_size": "kg", "units": "mg", "value": 500}
-                    ]
+                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
+                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ]
                 }
             ],
             "raw_dose"         : "2.5–5 mL/kg of 10% dextrose  (250–500 mg/kg)",
@@ -91157,26 +91147,16 @@
             },
             "schedules"        : [
                 {
-                    "low" : [
+                    "diluents": [
                         {
-                            "per_size"       : "kg",
-                            "units"          : "mL",
-                            "ingredient_name": "Dextrose",
+                            "ingredient_name": "dextrose",
                             "concentration"  : 10,
-                            "value"          : 2.5
-                        },
-                        {"per_size": "kg", "units": "mg", "value": 250}
+                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
+                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
+                        }
                     ],
-                    "high": [
-                        {
-                            "per_size"       : "kg",
-                            "units"          : "mL",
-                            "ingredient_name": "Dextrose",
-                            "concentration"  : 10,
-                            "value"          : 5
-                        },
-                        {"per_size": "kg", "units": "mg", "value": 500}
-                    ]
+                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
+                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ]
                 }
             ],
             "raw_dose"         : "2.5–5 mL/kg of 10% dextrose  (250–500 mg/kg)",
@@ -94176,7 +94156,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "6",
@@ -94200,8 +94180,60 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"slow\"",
-        "error_stack": "Error: Dosage text remaining \"slow\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["P29.8"] },
+            "medicine"         : {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules"        : [
+                {
+                    "value"   : 0.009,
+                    "low"     : [
+                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 10}
+                    ],
+                    "high"    : [
+                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 20}
+                    ],
+                    "duration": { "value": [5, 10], "units": "minute" }
+                }
+            ],
+            "raw_dose"         : "0.009",
+            "raw_dose_interval": "10–20 mL/kg, slow IV (5–10 minutes)"
+        },
+        "expected_parsed": {
+            "atc"              : "B05XA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["P29.8"] },
+            "medicine"         : {
+                "name"       : "Sodium chloride 0.9%",
+                "ingredients": [ {"name": "Sodium chloride 0.9%"} ]
+            },
+            "schedules"        : [
+                {
+                    "value"   : 0.009,
+                    "low"     : [
+                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 10}
+                    ],
+                    "high"    : [
+                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 20}
+                    ],
+                    "duration": { "value": [5, 10], "units": "minute" }
+                }
+            ],
+            "raw_dose"         : "0.009",
+            "raw_dose_interval": "10–20 mL/kg, slow IV (5–10 minutes)"
+        }
     },
     {
         "row"            : {
@@ -205686,9 +205718,13 @@
             },
             "schedules"        : [
                 {
-                    "low"      : [ {"units": "mcg", "value": 200}, {"units": "puff", "value": 2} ],
-                    "high"     : [ {"units": "mcg", "value": 400}, {"units": "puff", "value": 4} ],
-                    "frequency": {
+                    "low"        : [ {"units": "mcg", "value": 200} ],
+                    "high"       : [ {"units": "mcg", "value": 400} ],
+                    "equivalency": {
+                        "low" : [ {"units": "puff", "value": 2} ],
+                        "high": [ {"units": "puff", "value": 4} ]
+                    },
+                    "frequency"  : {
                         "every": { "value": [20, 30], "units": "minute" }
                     }
                 }
@@ -205710,9 +205746,13 @@
             },
             "schedules"        : [
                 {
-                    "low"      : [ {"units": "mcg", "value": 200}, {"units": "puff", "value": 2} ],
-                    "high"     : [ {"units": "mcg", "value": 400}, {"units": "puff", "value": 4} ],
-                    "frequency": {
+                    "low"        : [ {"units": "mcg", "value": 200} ],
+                    "high"       : [ {"units": "mcg", "value": 400} ],
+                    "equivalency": {
+                        "low" : [ {"units": "puff", "value": 2} ],
+                        "high": [ {"units": "puff", "value": 4} ]
+                    },
+                    "frequency"  : {
                         "every": { "value": [20, 30], "units": "minute" }
                     }
                 }
@@ -205722,7 +205762,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -205746,27 +205786,63 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Name collision units",
-        "error_stack": "Error: Name collision units\n    at combine (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/combine.ts:14:15)\n    at DosageParser.lookFor (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:676:19)\n    at DosageParser.lookForDosage (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:852:10)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:99:10)\n    at DosageParser.sub (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:655:12)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:876:24)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)",
-        "expected_parsed": {
-            "schedules": [
+        "actual_parsed"  : {
+            "atc"              : "R03AC02",
+            "form"             : "Inhaler",
+            "route"            : "Inhalation",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["J46"] },
+            "medicine"         : {
+                "name"       : "Salbutamol",
+                "ingredients": [ {"name": "Salbutamol"} ]
+            },
+            "schedules"        : [
                 {
-                    "low"      : [ {"units": "mcg", "value": 400} ],
-                    "high"     : [ {"units": "mcg", "value": 600} ],
-                    "frequency": {
-                        "every": { "value": [20, 30], "units": "minute" }
-                    },
+                    "low"        : [ {"units": "mcg", "value": 400} ],
+                    "high"       : [ {"units": "mcg", "value": 600} ],
                     "equivalency": {
-                        "low"      : [ {"units": "puff", "value": 4} ],
-                        "high"     : [ {"units": "puff", "value": 6} ],
-                        "multipliers": [{
-                            "value": 100,
-                            "units": "mcg",
-                            "per_dose": true
-                        }]
+                        "low"        : [ {"value":   4, "units": "puff"                  } ],
+                        "high"       : [ {"value":   6, "units": "puff"                  } ],
+                        "multipliers": [ {"value": 100, "units": "mcg",  "per_dose": true} ]
+                    },
+                    "frequency"  : {
+                        "every": { "value": [20, 30], "units": "minute" }
                     }
                 }
-            ]
+            ],
+            "raw_dose"         : "400-600mcg (4-6 puffs of 100mcg/puff)",
+            "raw_dose_interval": "every 20-30 minutes"
+        },
+        "expected_parsed": {
+            "atc"              : "R03AC02",
+            "form"             : "Inhaler",
+            "route"            : "Inhalation",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["J46"] },
+            "medicine"         : {
+                "name"       : "Salbutamol",
+                "ingredients": [ {"name": "Salbutamol"} ]
+            },
+            "schedules"        : [
+                {
+                    "low"        : [ {"units": "mcg", "value": 400} ],
+                    "high"       : [ {"units": "mcg", "value": 600} ],
+                    "equivalency": {
+                        "low"        : [ {"value":   4, "units": "puff"                  } ],
+                        "high"       : [ {"value":   6, "units": "puff"                  } ],
+                        "multipliers": [ {"value": 100, "units": "mcg",  "per_dose": true} ]
+                    },
+                    "frequency"  : {
+                        "every": { "value": [20, 30], "units": "minute" }
+                    }
+                }
+            ],
+            "raw_dose"         : "400-600mcg (4-6 puffs of 100mcg/puff)",
+            "raw_dose_interval": "every 20-30 minutes"
         }
     },
     {
@@ -236036,7 +236112,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "18",
@@ -236060,8 +236136,54 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"slow\"",
-        "error_stack": "Error: Dosage text remaining \"slow\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J06AA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T63.0"] },
+            "medicine"         : {
+                "name"       : "Boomslang monovalent antivenom",
+                "ingredients": [ {"name": "Boomslang monovalent antivenom"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "ml",
+                    "value"               : 10,
+                    "special_instructions": "IV",
+                    "duration"            : { "value": [3, 5], "units": "minute" },
+                    "slowly"              : true
+                }
+            ],
+            "raw_dose"         : "10 ml",
+            "raw_dose_interval": "slow IV, over 3–5 minutes"
+        },
+        "expected_parsed": {
+            "atc"              : "J06AA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T63.0"] },
+            "medicine"         : {
+                "name"       : "Boomslang monovalent antivenom",
+                "ingredients": [ {"name": "Boomslang monovalent antivenom"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "ml",
+                    "value"               : 10,
+                    "special_instructions": "IV",
+                    "duration"            : { "value": [3, 5], "units": "minute" },
+                    "slowly"              : true
+                }
+            ],
+            "raw_dose"         : "10 ml",
+            "raw_dose_interval": "slow IV, over 3–5 minutes"
+        }
     },
     {
         "row"            : {
@@ -239762,7 +239884,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "18",
@@ -239786,11 +239908,55 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"slow\"",
-        "error_stack": "Error: Dosage text remaining \"slow\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "B02BA",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T45.5"] },
+            "medicine"         : {
+                "name"       : "Vitamin K1",
+                "ingredients": [ {"name": "Vitamin K1"} ]
+            },
+            "schedules"        : [
+                {
+                    "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
+                    "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
+                    "special_instructions": "IV",
+                    "slowly": true
+                }
+            ],
+            "raw_dose"         : "1-5mg/dose",
+            "raw_dose_interval": "slow IV"
+        },
+        "expected_parsed": {
+            "atc"              : "B02BA",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T45.5"] },
+            "medicine"         : {
+                "name"       : "Vitamin K1",
+                "ingredients": [ {"name": "Vitamin K1"} ]
+            },
+            "schedules"        : [
+                {
+                    "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
+                    "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
+                    "special_instructions": "IV",
+                    "slowly": true
+                }
+            ],
+            "raw_dose"         : "1-5mg/dose",
+            "raw_dose_interval": "slow IV"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "18",
@@ -239814,8 +239980,54 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"slow\"",
-        "error_stack": "Error: Dosage text remaining \"slow\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "B02BA",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T39.0"] },
+            "medicine"         : {
+                "name"       : "Vitamin K1",
+                "ingredients": [ {"name": "Vitamin K1"} ]
+            },
+            "schedules"        : [
+                {
+                    "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
+                    "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
+                    "special_instructions": "IV",
+                    "frequency": "q6h",
+                    "slowly": true
+                }
+            ],
+            "raw_dose"         : "1-5mg/dose",
+            "raw_dose_interval": "slow IV, 6 hourly"
+        },
+        "expected_parsed": {
+            "atc"              : "B02BA",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T39.0"] },
+            "medicine"         : {
+                "name"       : "Vitamin K1",
+                "ingredients": [ {"name": "Vitamin K1"} ]
+            },
+            "schedules"        : [
+                {
+                    "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
+                    "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
+                    "special_instructions": "IV",
+                    "frequency": "q6h",
+                    "slowly": true
+                }
+            ],
+            "raw_dose"         : "1-5mg/dose",
+            "raw_dose_interval": "slow IV, 6 hourly"
+        }
     },
     {
         "row"            : {
@@ -309530,7 +309742,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "23",
@@ -309554,8 +309766,54 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Expected value to be a property of {\"duration\":{\"value\":1,\"units\":\"day\"}}",
-        "error_stack": "AssertionError: Expected value to be a property of {\"duration\":{\"value\":1,\"units\":\"day\"}}\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at withProperty (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/withProperty.ts:12:5)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:483:22\n    at DosageParser.lookFor (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:675:74)\n    at DosageParser.lookForMaxDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:479:10)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:83:10)\n    at DosageParser.sub (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:655:12)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:876:24)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)"
+        "actual_parsed"  : {
+            "atc"              : "B01AA03",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Warfarin",
+                "ingredients": [ {"name": "Warfarin"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units": "mg",
+                    "value": 0.1,
+                    "max": [ {"units": "mg", "value": 10} ],
+                    "special_instructions": "on day 1"
+                }
+            ],
+            "raw_dose"         : "0.1 mg/kg (maximum = 10 mg on day 1)",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "B01AA03",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Warfarin",
+                "ingredients": [ {"name": "Warfarin"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units": "mg",
+                    "value": 0.1,
+                    "max": [ {"units": "mg", "value": 10} ],
+                    "special_instructions": "on day 1"
+                }
+            ],
+            "raw_dose"         : "0.1 mg/kg (maximum = 10 mg on day 1)",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
         "row"            : {
@@ -331578,7 +331836,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "10",
@@ -331602,11 +331860,57 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"from 2 days prior to entering endemic area to\"",
-        "error_stack": "Error: Dosage text remaining \"from 2 days prior to entering endemic area to\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J01AA02",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : "Access",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z29.1"] },
+            "medicine"         : {
+                "name"       : "Doxycycline",
+                "ingredients": [ {"name": "Doxycycline"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 100,
+                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
+                    "frequency": "qd"
+                }
+            ],
+            "raw_dose"         : "100 mg",
+            "raw_dose_interval": "daily. from 2 days prior to entering endemic area to 4 weeks after exiting."
+        },
+        "expected_parsed": {
+            "atc"              : "J01AA02",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : "Access",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z29.1"] },
+            "medicine"         : {
+                "name"       : "Doxycycline",
+                "ingredients": [ {"name": "Doxycycline"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 100,
+                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
+                    "frequency": "qd"
+                }
+            ],
+            "raw_dose"         : "100 mg",
+            "raw_dose_interval": "daily. from 2 days prior to entering endemic area to 4 weeks after exiting."
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "10",
@@ -331630,11 +331934,61 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"from 2 days prior to entering endemic area to\"",
-        "error_stack": "Error: Dosage text remaining \"from 2 days prior to entering endemic area to\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J01AA02",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : "Access",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z29.1"] },
+            "medicine"         : {
+                "name"       : "Doxycycline",
+                "ingredients": [ {"name": "Doxycycline"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_dose" : true,
+                    "per_size" : "kg",
+                    "units"    : "mg",
+                    "value"    : 2,
+                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
+                    "frequency": "qd"
+                }
+            ],
+            "raw_dose"         : "2 mg/kg/dose",
+            "raw_dose_interval": "daily. from 2 days prior to entering endemic area to 4 weeks after exiting."
+        },
+        "expected_parsed": {
+            "atc"              : "J01AA02",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : "Access",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z29.1"] },
+            "medicine"         : {
+                "name"       : "Doxycycline",
+                "ingredients": [ {"name": "Doxycycline"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_dose" : true,
+                    "per_size" : "kg",
+                    "units"    : "mg",
+                    "value"    : 2,
+                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
+                    "frequency": "qd"
+                }
+            ],
+            "raw_dose"         : "2 mg/kg/dose",
+            "raw_dose_interval": "daily. from 2 days prior to entering endemic area to 4 weeks after exiting."
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "11",
@@ -331658,11 +332012,59 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Remaining parenthetical text total doses = 5 doses {\n    \"medicine\"            : {\n        \"name\"       : \"Chloramphenicol 0.5%\",\n        \"ingredients\": [ {\"name\": \"Chloramphenicol 0.5%\"} ]\n    },\n    \"dosage_form\"         : \"Solution\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"total doses = 5 doses\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"total doses = 5 doses\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text total doses = 5 doses {\n    \"medicine\"            : {\n        \"name\"       : \"Chloramphenicol 0.5%\",\n        \"ingredients\": [ {\"name\": \"Chloramphenicol 0.5%\"} ]\n    },\n    \"dosage_form\"         : \"Solution\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"total doses = 5 doses\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"total doses = 5 doses\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66"
+        "actual_parsed"  : {
+            "atc"              : "S01AA01",
+            "form"             : "Solution",
+            "route"            : "Ocular",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Chloramphenicol 0.5%",
+                "ingredients": [ {"name": "Chloramphenicol 0.5%"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"           : "drop",
+                    "value"           : 1,
+                    "total_dose_count": 5,
+                    "frequency"       : {
+                        "every": { "value": [5, 15], "units": "minute" }
+                    }
+                }
+            ],
+            "raw_dose"         : "1 drop (total doses = 5 doses)",
+            "raw_dose_interval": "every 5 -15 minutes"
+        },
+        "expected_parsed": {
+            "atc"              : "S01AA01",
+            "form"             : "Solution",
+            "route"            : "Ocular",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Chloramphenicol 0.5%",
+                "ingredients": [ {"name": "Chloramphenicol 0.5%"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"           : "drop",
+                    "value"           : 1,
+                    "total_dose_count": 5,
+                    "frequency"       : {
+                        "every": { "value": [5, 15], "units": "minute" }
+                    }
+                }
+            ],
+            "raw_dose"         : "1 drop (total doses = 5 doses)",
+            "raw_dose_interval": "every 5 -15 minutes"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "11",
@@ -331686,8 +332088,42 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything after the procedure",
-        "error_stack": "Error: Did not parse anything after the procedure\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "n/a",
+            "form"             : "Solution",
+            "route"            : "Otic",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Ofloxacin",
+                "ingredients": [ {"name": "Ofloxacin"} ]
+            },
+            "schedules"        : [
+                { "units": "drop", "value": 1, "after": {"event": "the procedure"} }
+            ],
+            "raw_dose"         : "1 drop",
+            "raw_dose_interval": "after the procedure"
+        },
+        "expected_parsed": {
+            "atc"              : "n/a",
+            "form"             : "Solution",
+            "route"            : "Otic",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Ofloxacin",
+                "ingredients": [ {"name": "Ofloxacin"} ]
+            },
+            "schedules"        : [
+                { "units": "drop", "value": 1, "after": {"event": "the procedure"} }
+            ],
+            "raw_dose"         : "1 drop",
+            "raw_dose_interval": "after the procedure"
+        }
     },
     {
         "row"            : {
@@ -331822,7 +332258,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "11",
@@ -331846,8 +332282,52 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Nurse"
         },
-        "error_message": "Did not parse anything after each feed",
-        "error_stack": "Error: Did not parse anything after each feed\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "A07AA02",
+            "form"             : "Suspension",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["B20.4"] },
+            "medicine"         : {
+                "name"       : "Nystatin",
+                "ingredients": [ {"name": "Nystatin"} ]
+            },
+            "schedules"        : [
+                {
+                    "denominator": {"value": 1, "units": "ml"},
+                    "units"      : "iu",
+                    "value"      : 100000,
+                    "after"      : {"event": "each feed"}
+                }
+            ],
+            "raw_dose"         : "100 000 IU/ml",
+            "raw_dose_interval": "after each feed"
+        },
+        "expected_parsed": {
+            "atc"              : "A07AA02",
+            "form"             : "Suspension",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["B20.4"] },
+            "medicine"         : {
+                "name"       : "Nystatin",
+                "ingredients": [ {"name": "Nystatin"} ]
+            },
+            "schedules"        : [
+                {
+                    "denominator": {"value": 1, "units": "ml"},
+                    "units"      : "iu",
+                    "value"      : 100000,
+                    "after"      : {"event": "each feed"}
+                }
+            ],
+            "raw_dose"         : "100 000 IU/ml",
+            "raw_dose_interval": "after each feed"
+        }
     },
     {
         "row"            : {
@@ -331992,7 +332472,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "12",
@@ -332016,11 +332496,55 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor/Nurse"
         },
-        "error_message": "Did not parse anything 1g weekly",
-        "error_stack": "Error: Did not parse anything 1g weekly\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J01FA10",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : "Watch",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor/Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["A58"] },
+            "medicine"         : {
+                "name"       : "Azithromycin",
+                "ingredients": [ {"name": "Azithromycin"} ]
+            },
+            "schedules"        : [
+                {"units": "g", "value": 1, "frequency": "stat"},
+                {
+                    "units"    : "g",
+                    "value"    : 1,
+                    "frequency": { "every": {"value": 1, "units": "week"} }
+                }
+            ],
+            "raw_dose"         : "1g",
+            "raw_dose_interval": "stat; 1g weekly"
+        },
+        "expected_parsed": {
+            "atc"              : "J01FA10",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : "Watch",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor/Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["A58"] },
+            "medicine"         : {
+                "name"       : "Azithromycin",
+                "ingredients": [ {"name": "Azithromycin"} ]
+            },
+            "schedules"        : [
+                {"units": "g", "value": 1, "frequency": "stat"},
+                {
+                    "units"    : "g",
+                    "value"    : 1,
+                    "frequency": { "every": {"value": 1, "units": "week"} }
+                }
+            ],
+            "raw_dose"         : "1g",
+            "raw_dose_interval": "stat; 1g weekly"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "12",
@@ -332044,11 +332568,45 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor/Nurse"
         },
-        "error_message": "Dosage text remaining \"for three weeks\"",
-        "error_stack": "Error: Dosage text remaining \"for three weeks\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J01CE08",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : "Access",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor/Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["A53.9"] },
+            "medicine"         : {
+                "name"       : "Benzathine benzylpenicillin",
+                "ingredients": [ {"name": "Benzathine benzylpenicillin"} ]
+            },
+            "schedules"        : [
+                { "units": "mu", "value": 2.4, "frequency": "qw", "duration": {"value": 3, "units": "week"} }
+            ],
+            "raw_dose"         : "2.4 MU",
+            "raw_dose_interval": "once weekly for three weeks"
+        },
+        "expected_parsed": {
+            "atc"              : "J01CE08",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : "Access",
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor/Nurse",
+            "icd10_indications": { "type": "codes", "codes": ["A53.9"] },
+            "medicine"         : {
+                "name"       : "Benzathine benzylpenicillin",
+                "ingredients": [ {"name": "Benzathine benzylpenicillin"} ]
+            },
+            "schedules"        : [
+                { "units": "mu", "value": 2.4, "frequency": "qw", "duration": {"value": 3, "units": "week"} }
+            ],
+            "raw_dose"         : "2.4 MU",
+            "raw_dose_interval": "once weekly for three weeks"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Adult Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "12",
@@ -332072,8 +332630,50 @@
             "ADULT/ CHILDREN": "Adult",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Did not parse anything every minute",
-        "error_stack": "Error: Did not parse anything every minute\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "n/a",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["T41.3"] },
+            "medicine"         : {
+                "name"       : "Lipid emulsion 20%",
+                "ingredients": [ {"name": "Lipid emulsion 20%"} ]
+            },
+            "schedules"        : [
+                {
+                    "low"      : [ {"per_size": "kg", "units": "ml", "value": 0.25} ],
+                    "high"     : [ {"per_size": "kg", "units": "ml", "value": 1.5} ],
+                    "frequency": { "every": {"value": 1, "units": "minute"} }
+                }
+            ],
+            "raw_dose"         : "0.25-1.5ml/kg",
+            "raw_dose_interval": "every minute"
+        },
+        "expected_parsed": {
+            "atc"              : "n/a",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["T41.3"] },
+            "medicine"         : {
+                "name"       : "Lipid emulsion 20%",
+                "ingredients": [ {"name": "Lipid emulsion 20%"} ]
+            },
+            "schedules"        : [
+                {
+                    "low"      : [ {"per_size": "kg", "units": "ml", "value": 0.25} ],
+                    "high"     : [ {"per_size": "kg", "units": "ml", "value": 1.5} ],
+                    "frequency": { "every": {"value": 1, "units": "minute"} }
+                }
+            ],
+            "raw_dose"         : "0.25-1.5ml/kg",
+            "raw_dose_interval": "every minute"
+        }
     },
     {
         "row"            : {
@@ -332438,7 +333038,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "12",
@@ -332462,11 +333062,55 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66"
+        "actual_parsed"  : {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["M08.0"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        },
+        "expected_parsed": {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["M08.0"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "12",
@@ -332490,11 +333134,55 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66"
+        "actual_parsed"  : {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["M08.0"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        },
+        "expected_parsed": {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["M08.0"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "12",
@@ -332518,11 +333206,55 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Specialist initiated"
         },
-        "error_message": "Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66"
+        "actual_parsed"  : {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist initiated",
+            "icd10_indications": { "type": "codes", "codes": ["M32.9"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        },
+        "expected_parsed": {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist initiated",
+            "icd10_indications": { "type": "codes", "codes": ["M32.9"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "12",
@@ -332546,8 +333278,52 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Specialist initiated"
         },
-        "error_message": "Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text day after methotrexate dose {\n    \"medicine\"            : {\n        \"name\"       : \"Folic acid\",\n        \"ingredients\": [ {\"name\": \"Folic acid\"} ]\n    },\n    \"dosage_form\"         : \"Tablet/capsule/granules\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"day after methotrexate dose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"day after methotrexate dose\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66"
+        "actual_parsed"  : {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist initiated",
+            "icd10_indications": { "type": "codes", "codes": ["M31.4"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        },
+        "expected_parsed": {
+            "atc"              : "B03BB01",
+            "form"             : "Tablet/capsule/granules",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Specialist initiated",
+            "icd10_indications": { "type": "codes", "codes": ["M31.4"] },
+            "medicine"         : {
+                "name"       : "Folic acid",
+                "ingredients": [ {"name": "Folic acid"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"    : "mg",
+                    "value"    : 5,
+                    "frequency": { "every": {"value": 1, "units": "week"} },
+                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                }
+            ],
+            "raw_dose"         : "5mg",
+            "raw_dose_interval": "weekly (day after methotrexate dose)"
+        }
     },
     {
         "row"            : {
@@ -332763,10 +333539,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.25,
-                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "special_instructions": "over 60 seconds"
+                    "units"   : "mg",
+                    "value"   : 0.25,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "duration": {"value": 60, "units": "second"}
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -332787,10 +333563,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.25,
-                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "special_instructions": "over 60 seconds"
+                    "units"   : "mg",
+                    "value"   : 0.25,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "duration": {"value": 60, "units": "second"}
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -333077,10 +333853,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.1,
-                    "max": [ {"per_dose": true, "units": "mg", "value": 4} ],
-                    "special_instructions": "over 60 seconds"
+                    "units"   : "mg",
+                    "value"   : 0.1,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 4} ],
+                    "duration": {"value": 60, "units": "second"}
                 }
             ],
             "raw_dose"         : "0.1mg/kg (maximum = 4 mg/dose)",
@@ -333101,10 +333877,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.1,
-                    "max": [ {"per_dose": true, "units": "mg", "value": 4} ],
-                    "special_instructions": "over 60 seconds"
+                    "units"   : "mg",
+                    "value"   : 0.1,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 4} ],
+                    "duration": {"value": 60, "units": "second"}
                 }
             ],
             "raw_dose"         : "0.1mg/kg (maximum = 4 mg/dose)",
@@ -333151,10 +333927,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.25,
-                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "special_instructions": "over 60 seconds"
+                    "units"   : "mg",
+                    "value"   : 0.25,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "duration": {"value": 60, "units": "second"}
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -333175,10 +333951,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.25,
-                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "special_instructions": "over 60 seconds"
+                    "units"   : "mg",
+                    "value"   : 0.25,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "duration": {"value": 60, "units": "second"}
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -333186,7 +333962,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "13",
@@ -333210,11 +333986,41 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything slow",
-        "error_stack": "Error: Did not parse anything slow\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "N03AA02",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["G41.9"] },
+            "medicine"         : {
+                "name"       : "Phenobarbital",
+                "ingredients": [ {"name": "Phenobarbital"} ]
+            },
+            "schedules"        : [ {"per_size": "kg", "units": "mg", "value": 20, "slowly": true} ],
+            "raw_dose"         : "20mg/kg",
+            "raw_dose_interval": "slow"
+        },
+        "expected_parsed": {
+            "atc"              : "N03AA02",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["G41.9"] },
+            "medicine"         : {
+                "name"       : "Phenobarbital",
+                "ingredients": [ {"name": "Phenobarbital"} ]
+            },
+            "schedules"        : [ {"per_size": "kg", "units": "mg", "value": 20, "slowly": true} ],
+            "raw_dose"         : "20mg/kg",
+            "raw_dose_interval": "slow"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "13",
@@ -333238,8 +334044,54 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything slow",
-        "error_stack": "Error: Did not parse anything slow\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "N03AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["G41.9"] },
+            "medicine"         : {
+                "name"       : "Phenobarbital",
+                "ingredients": [ {"name": "Phenobarbital"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units"   : "mg",
+                    "value"   : 20,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 600} ],
+                    "slowly"  : true
+                }
+            ],
+            "raw_dose"         : "20mg/kg (maximum 600mg/dose)",
+            "raw_dose_interval": "slow"
+        },
+        "expected_parsed": {
+            "atc"              : "N03AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["G41.9"] },
+            "medicine"         : {
+                "name"       : "Phenobarbital",
+                "ingredients": [ {"name": "Phenobarbital"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units"   : "mg",
+                    "value"   : 20,
+                    "max"     : [ {"per_dose": true, "units": "mg", "value": 600} ],
+                    "slowly"  : true
+                }
+            ],
+            "raw_dose"         : "20mg/kg (maximum 600mg/dose)",
+            "raw_dose_interval": "slow"
+        }
     },
     {
         "row"            : {
@@ -334158,7 +335010,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "13",
@@ -334182,11 +335034,67 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "error_message": "Did not parse anything 6,10,14 weeks, 18 months",
-        "error_stack": "Error: Did not parse anything 6,10,14 weeks, 18 months\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J07CA02",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z27.8"] },
+            "medicine"         : {
+                "name"          : "Hexavalent vaccine",
+                "alternate_name": "DTaP-IPV-HB-Hib",
+                "ingredients"   : [ {"name": "Hexavalent vaccine", "alternate_name": "DTaP-IPV-HB-Hib"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 0.5,
+                    "series": {
+                        "doses": [
+                            {"value": 10, "units": "week" },
+                            {"value": 14, "units": "week" },
+                            {"value": 18, "units": "month"}
+                        ]
+                    }
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "6,10,14 weeks,  18 months"
+        },
+        "expected_parsed": {
+            "atc"              : "J07CA02",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z27.8"] },
+            "medicine"         : {
+                "name"          : "Hexavalent vaccine",
+                "alternate_name": "DTaP-IPV-HB-Hib",
+                "ingredients"   : [ {"name": "Hexavalent vaccine", "alternate_name": "DTaP-IPV-HB-Hib"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 0.5,
+                    "series": {
+                        "doses": [
+                            {"value": 10, "units": "week" },
+                            {"value": 14, "units": "week" },
+                            {"value": 18, "units": "month"}
+                        ]
+                    }
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "6,10,14 weeks,  18 months"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "13",
@@ -334210,11 +335118,57 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "error_message": "Did not parse anything 6, 12 months",
-        "error_stack": "Error: Did not parse anything 6, 12 months\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J07BD53",
+            "form"             : "Injection",
+            "route"            : "Subcutaneous (SC)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z24.4"] },
+            "medicine"         : {
+                "name"       : "Measles/Rubella vaccine",
+                "ingredients": [ {"name": "Measles"}, {"name": "Rubella vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 0.5,
+                    "series": {
+                        "doses": [ {"value": 6, "units": "month"}, {"value": 12, "units": "month"} ]
+                    }
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "6, 12 months"
+        },
+        "expected_parsed": {
+            "atc"              : "J07BD53",
+            "form"             : "Injection",
+            "route"            : "Subcutaneous (SC)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z24.4"] },
+            "medicine"         : {
+                "name"       : "Measles/Rubella vaccine",
+                "ingredients": [ {"name": "Measles"}, {"name": "Rubella vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 0.5,
+                    "series": {
+                        "doses": [ {"value": 6, "units": "month"}, {"value": 12, "units": "month"} ]
+                    }
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "6, 12 months"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "13",
@@ -334238,11 +335192,67 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "error_message": "Did not parse anything 6, 14 weeks, 9 months",
-        "error_stack": "Error: Did not parse anything 6, 14 weeks, 9 months\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J07AL02",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z23.8"] },
+            "medicine"         : {
+                "name"          : "Pneumococcal conjugated vaccine",
+                "alternate_name": "PCV",
+                "ingredients"   : [ {"name": "Pneumococcal conjugated vaccine", "alternate_name": "PCV"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 0.5,
+                    "series": {
+                        "doses": [
+                            {"value":  6, "units": "week" },
+                            {"value": 14, "units": "week" },
+                            {"value":  9, "units": "month"}
+                        ]
+                    }
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "6, 14 weeks,  9 months"
+        },
+        "expected_parsed": {
+            "atc"              : "J07AL02",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z23.8"] },
+            "medicine"         : {
+                "name"          : "Pneumococcal conjugated vaccine",
+                "alternate_name": "PCV",
+                "ingredients"   : [ {"name": "Pneumococcal conjugated vaccine", "alternate_name": "PCV"} ]
+            },
+            "schedules"        : [
+                {
+                    "units" : "ml",
+                    "value" : 0.5,
+                    "series": {
+                        "doses": [
+                            {"value":  6, "units": "week" },
+                            {"value": 14, "units": "week" },
+                            {"value":  9, "units": "month"}
+                        ]
+                    }
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "6, 14 weeks,  9 months"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "13",
@@ -334266,11 +335276,55 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "error_message": "Did not parse anything 6 and 14 weeks",
-        "error_stack": "Error: Did not parse anything 6 and 14 weeks\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J07BH01",
+            "form"             : "Solution",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z25.8"] },
+            "medicine"         : {
+                "name"       : "Rotavirus vaccine",
+                "ingredients": [ {"name": "Rotavirus vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "special_instructions": "1 or 2 mL",
+                    "series"              : {
+                        "doses": [ {"value": 6, "units": "week"}, {"value": 14, "units": "week"} ]
+                    }
+                }
+            ],
+            "raw_dose"         : "1 or 2 mL",
+            "raw_dose_interval": "6 and 14 weeks"
+        },
+        "expected_parsed": {
+            "atc"              : "J07BH01",
+            "form"             : "Solution",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z25.8"] },
+            "medicine"         : {
+                "name"       : "Rotavirus vaccine",
+                "ingredients": [ {"name": "Rotavirus vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "special_instructions": "1 or 2 mL",
+                    "series"              : {
+                        "doses": [ {"value": 6, "units": "week"}, {"value": 14, "units": "week"} ]
+                    }
+                }
+            ],
+            "raw_dose"         : "1 or 2 mL",
+            "raw_dose_interval": "6 and 14 weeks"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Primary Healthcare",
             "LEVEL OF CARE": "PHC",
             "CHAPTER NUMBER": "13",
@@ -334294,8 +335348,56 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor"
         },
-        "error_message": "Dosage text remaining \"≥12 years\"",
-        "error_stack": "Error: Dosage text remaining \"≥12 years\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "J07AM51",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z27.8"] },
+            "medicine"         : {
+                "name"       : "Tdap (Tetanus/reduced diphtheria and acellular pertussis vaccine)",
+                "ingredients": [ {"name": "Tetanus"}, {"name": "reduced diphtheria and acellular pertussis vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "ml",
+                    "value"               : 0.5,
+                    "series"              : {
+                        "doses": [ {"value": 5, "units": "year"}, {"value": 12, "units": "year"} ]
+                    },
+                    "special_instructions": "5-7 years, ≥12 years"
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "5-7 years, ≥12 years"
+        },
+        "expected_parsed": {
+            "atc"              : "J07AM51",
+            "form"             : "Injection",
+            "route"            : "Intramuscular (IM)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": { "type": "codes", "codes": ["Z27.8"] },
+            "medicine"         : {
+                "name"       : "Tdap (Tetanus/reduced diphtheria and acellular pertussis vaccine)",
+                "ingredients": [ {"name": "Tetanus"}, {"name": "reduced diphtheria and acellular pertussis vaccine"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"               : "ml",
+                    "value"               : 0.5,
+                    "series"              : {
+                        "doses": [ {"value": 5, "units": "year"}, {"value": 12, "units": "year"} ]
+                    },
+                    "special_instructions": "5-7 years, ≥12 years"
+                }
+            ],
+            "raw_dose"         : "0.5 mL",
+            "raw_dose_interval": "5-7 years, ≥12 years"
+        }
     },
     {
         "row"            : {
@@ -337722,7 +338824,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "15",
@@ -337746,7 +338848,7 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "actual_parsed": {
+        "actual_parsed"  : {
             "atc"              : "n/a",
             "form"             : "Solution",
             "route"            : "Inhalation",
@@ -337784,18 +338886,19 @@
             },
             "schedules"        : [
                 {
-                    "special_instructions": "0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen; 5l/minute",
-                    "duration": {"value": 20, "units": "minute"}
+                    "special_instructions": "0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen",
+                    "duration"            : {"value": 20, "units": "minute"},
+                    "per_time"            : {"value": 1, "units": "minute"},
+                    "units"               : "l",
+                    "value"               : 5
                 }
             ],
             "raw_dose"         : "0.15–0.3 mg/kg/dose in 2-4ml of sodium chloride 3%",
             "raw_dose_interval": "5l/minute with oxygen for 20 minutes"
-        },
-        "error_message": "[\n    {\n        \"code\": \"invalid_value\",\n        \"values\": [\"0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen; 5l/minute\"],\n        \"path\": [\"schedules\", 0, \"special_instructions\"],\n        \"message\": \"Invalid input: expected \\\"0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen; 5l/minute\\\"\",\n        \"actual_value\": \"0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen\"\n    }\n]\n",
-        "error_stack": "Error: [\n    {\n        \"code\": \"invalid_value\",\n        \"values\": [\"0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen; 5l/minute\"],\n        \"path\": [\"schedules\", 0, \"special_instructions\"],\n        \"message\": \"Invalid input: expected \\\"0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen; 5l/minute\\\"\",\n        \"actual_value\": \"0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen\"\n    }\n]\n\n    at parseWithValues (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:98:9)\n    at assertMatches (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/assertMatches.ts:119:3)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:45\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:39:30)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:358:16)\n    at TestSuiteInternal.runTest (https://deno.land/std@0.224.0/testing/_test_suite.ts:346:33)\n    at fn (https://deno.land/std@0.224.0/testing/_test_suite.ts:316:37)\n    at innerWrapped (ext:cli/40_test.js:181:11)\n    at exitSanitizer (ext:cli/40_test.js:97:33)"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "15",
@@ -337819,8 +338922,60 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Remaining parenthetical text 2 puffs of 100mcg {\n    \"medicine\"            : {\n        \"name\"       : \"Salbutamol\",\n        \"ingredients\": [ {\"name\": \"Salbutamol\"} ]\n    },\n    \"dosage_form\"         : \"Inhaler\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"2 puffs of 100mcg/puff\",\n    \"parsed\"              : {\"special_instructions\": \"/puff\"},\n    \"_dosage_text\"        : \"2 puffs of 100mcg\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text 2 puffs of 100mcg {\n    \"medicine\"            : {\n        \"name\"       : \"Salbutamol\",\n        \"ingredients\": [ {\"name\": \"Salbutamol\"} ]\n    },\n    \"dosage_form\"         : \"Inhaler\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"2 puffs of 100mcg/puff\",\n    \"parsed\"              : {\"special_instructions\": \"/puff\"},\n    \"_dosage_text\"        : \"2 puffs of 100mcg\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66"
+        "actual_parsed"  : {
+            "atc"              : "R03AC02",
+            "form"             : "Inhaler",
+            "route"            : "Inhalation",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["J46"] },
+            "medicine"         : {
+                "name"       : "Salbutamol",
+                "ingredients": [ {"name": "Salbutamol"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"      : "mcg",
+                    "value"      : 200,
+                    "equivalency": {
+                        "value"      : 2,
+                        "units"      : "puff",
+                        "multipliers": [ {"value": 100, "units": "mcg", "per_dose": true} ]
+                    },
+                    "frequency"  : "prn"
+                }
+            ],
+            "raw_dose"         : "200mcg (2 puffs of 100mcg/puff)",
+            "raw_dose_interval": "as required"
+        },
+        "expected_parsed": {
+            "atc"              : "R03AC02",
+            "form"             : "Inhaler",
+            "route"            : "Inhalation",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["J46"] },
+            "medicine"         : {
+                "name"       : "Salbutamol",
+                "ingredients": [ {"name": "Salbutamol"} ]
+            },
+            "schedules"        : [
+                {
+                    "units"      : "mcg",
+                    "value"      : 200,
+                    "equivalency": {
+                        "value"      : 2,
+                        "units"      : "puff",
+                        "multipliers": [ {"value": 100, "units": "mcg", "per_dose": true} ]
+                    },
+                    "frequency"  : "prn"
+                }
+            ],
+            "raw_dose"         : "200mcg (2 puffs of 100mcg/puff)",
+            "raw_dose_interval": "as required"
+        }
     },
     {
         "row"            : {
@@ -340777,6 +341932,36 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
+        "actual_parsed"  : {
+            "atc"              : "A07BA01",
+            "form"             : "Oral Powder",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Activated Charcoal",
+                "ingredients": [ {"name": "Activated Charcoal"} ]
+            },
+            "schedules"        : [
+                {
+                    "diluents" : [
+                        {
+                            "ingredient_name": "water",
+                            "low"            : [ {"value": 50, "units": "ml"} ],
+                            "high"           : [ {"value": 100, "units": "ml"} ]
+                        }
+                    ],
+                    "per_size" : "kg",
+                    "units"    : "g",
+                    "value"    : 1,
+                    "frequency": { "every": {"value": 4, "units": "hour"} }
+                }
+            ],
+            "raw_dose"         : "1g/kg in 50-100ml water",
+            "raw_dose_interval": "every 4 hours"
+        },
         "expected_parsed": {
             "atc"              : "A07BA01",
             "form"             : "Oral Powder",
@@ -340791,15 +341976,17 @@
             },
             "schedules"        : [
                 {
-                    "frequency"           : { "every": {"value": 4, "units": "hour"} },
-                    "value": 1,
-                    "units": "g",
-                    "per_size": "kg",
-                    "diluents": [{
-                        "ingredient_name": "water",
-                        "low": [{ "value": 50, "units": "ml" }],
-                        "high": [{ "value": 50, "units": "ml" }]
-                    }]
+                    "diluents" : [
+                        {
+                            "ingredient_name": "water",
+                            "low"            : [ {"value": 50, "units": "ml"} ],
+                            "high"           : [ {"value": 100, "units": "ml"} ]
+                        }
+                    ],
+                    "per_size" : "kg",
+                    "units"    : "g",
+                    "value"    : 1,
+                    "frequency": { "every": {"value": 4, "units": "hour"} }
                 }
             ],
             "raw_dose"         : "1g/kg in 50-100ml water",
@@ -340807,7 +341994,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "18",
@@ -340831,11 +342018,101 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"in 100-300ml water\"",
-        "error_stack": "Error: Dosage text remaining \"in 100-300ml water\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "A07BA01",
+            "form"             : "Oral Powder",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Activated Charcoal",
+                "ingredients": [ {"name": "Activated Charcoal"} ]
+            },
+            "schedules"        : [
+                {
+                    "low"      : [
+                        {
+                            "diluents": [
+                                {
+                                    "ingredient_name": "water",
+                                    "low"            : [ {"value": 100, "units": "ml"} ],
+                                    "high"           : [ {"value": 300, "units": "ml"} ]
+                                }
+                            ],
+                            "units"   : "g",
+                            "value"   : 20
+                        }
+                    ],
+                    "high"     : [
+                        {
+                            "diluents": [
+                                {
+                                    "ingredient_name": "water",
+                                    "low"            : [ {"value": 100, "units": "ml"} ],
+                                    "high"           : [ {"value": 300, "units": "ml"} ]
+                                }
+                            ],
+                            "units"   : "g",
+                            "value"   : 50
+                        }
+                    ],
+                    "frequency": { "every": {"value": 4, "units": "hour"} }
+                }
+            ],
+            "raw_dose"         : "20-50g in 100-300ml water",
+            "raw_dose_interval": "every 4 hours"
+        },
+        "expected_parsed": {
+            "atc"              : "A07BA01",
+            "form"             : "Oral Powder",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Activated Charcoal",
+                "ingredients": [ {"name": "Activated Charcoal"} ]
+            },
+            "schedules"        : [
+                {
+                    "low"      : [
+                        {
+                            "diluents": [
+                                {
+                                    "ingredient_name": "water",
+                                    "low"            : [ {"value": 100, "units": "ml"} ],
+                                    "high"           : [ {"value": 300, "units": "ml"} ]
+                                }
+                            ],
+                            "units"   : "g",
+                            "value"   : 20
+                        }
+                    ],
+                    "high"     : [
+                        {
+                            "diluents": [
+                                {
+                                    "ingredient_name": "water",
+                                    "low"            : [ {"value": 100, "units": "ml"} ],
+                                    "high"           : [ {"value": 300, "units": "ml"} ]
+                                }
+                            ],
+                            "units"   : "g",
+                            "value"   : 50
+                        }
+                    ],
+                    "frequency": { "every": {"value": 4, "units": "hour"} }
+                }
+            ],
+            "raw_dose"         : "20-50g in 100-300ml water",
+            "raw_dose_interval": "every 4 hours"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "18",
@@ -340859,11 +342136,41 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything slow injection",
-        "error_stack": "Error: Did not parse anything slow injection\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "N04AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T43.5"] },
+            "medicine"         : {
+                "name"       : "Biperiden",
+                "ingredients": [ {"name": "Biperiden"} ]
+            },
+            "schedules"        : [ {"units": "mg", "value": 1, "slowly": true} ],
+            "raw_dose"         : "1mg",
+            "raw_dose_interval": "slow injection"
+        },
+        "expected_parsed": {
+            "atc"              : "N04AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T43.5"] },
+            "medicine"         : {
+                "name"       : "Biperiden",
+                "ingredients": [ {"name": "Biperiden"} ]
+            },
+            "schedules"        : [ {"units": "mg", "value": 1, "slowly": true} ],
+            "raw_dose"         : "1mg",
+            "raw_dose_interval": "slow injection"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "18",
@@ -340887,11 +342194,41 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything slow injection",
-        "error_stack": "Error: Did not parse anything slow injection\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "N04AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T43.5"] },
+            "medicine"         : {
+                "name"       : "Biperiden",
+                "ingredients": [ {"name": "Biperiden"} ]
+            },
+            "schedules"        : [ {"units": "mg", "value": 2, "slowly": true} ],
+            "raw_dose"         : "2mg",
+            "raw_dose_interval": "slow injection"
+        },
+        "expected_parsed": {
+            "atc"              : "N04AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T43.5"] },
+            "medicine"         : {
+                "name"       : "Biperiden",
+                "ingredients": [ {"name": "Biperiden"} ]
+            },
+            "schedules"        : [ {"units": "mg", "value": 2, "slowly": true} ],
+            "raw_dose"         : "2mg",
+            "raw_dose_interval": "slow injection"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "18",
@@ -340915,11 +342252,41 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Did not parse anything slow injection",
-        "error_stack": "Error: Did not parse anything slow injection\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "N04AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T43.5"] },
+            "medicine"         : {
+                "name"       : "Biperiden",
+                "ingredients": [ {"name": "Biperiden"} ]
+            },
+            "schedules"        : [ {"units": "mg", "value": 3, "slowly": true} ],
+            "raw_dose"         : "3mg",
+            "raw_dose_interval": "slow injection"
+        },
+        "expected_parsed": {
+            "atc"              : "N04AA02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T43.5"] },
+            "medicine"         : {
+                "name"       : "Biperiden",
+                "ingredients": [ {"name": "Biperiden"} ]
+            },
+            "schedules"        : [ {"units": "mg", "value": 3, "slowly": true} ],
+            "raw_dose"         : "3mg",
+            "raw_dose_interval": "slow injection"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "18",
@@ -340943,11 +342310,89 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"slow , 0.5-1 mL\"",
-        "error_stack": "Error: Dosage text remaining \"slow , 0.5-1 mL\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "A12AA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T63.2"] },
+            "medicine"         : {
+                "name"       : "Calcium Gluconate 10%",
+                "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units"   : "ml",
+                    "value"   : 0.5,
+                    "low"     : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 0.5
+                        }
+                    ],
+                    "high"    : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 1
+                        }
+                    ]
+                }
+            ],
+            "raw_dose"         : "0.5ml/kg",
+            "raw_dose_interval": "slow IV, 0.5–1 mL/minute"
+        },
+        "expected_parsed": {
+            "atc"              : "A12AA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T63.2"] },
+            "medicine"         : {
+                "name"       : "Calcium Gluconate 10%",
+                "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units"   : "ml",
+                    "value"   : 0.5,
+                    "low"     : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 0.5
+                        }
+                    ],
+                    "high"    : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 1
+                        }
+                    ]
+                }
+            ],
+            "raw_dose"         : "0.5ml/kg",
+            "raw_dose_interval": "slow IV, 0.5–1 mL/minute"
+        }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "18",
@@ -340971,8 +342416,86 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Dosage text remaining \"slow , 0.5-1 mL\"",
-        "error_stack": "Error: Dosage text remaining \"slow , 0.5-1 mL\"\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1269:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)"
+        "actual_parsed"  : {
+            "atc"              : "A12AA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T63.3"] },
+            "medicine"         : {
+                "name"       : "Calcium Gluconate 10%",
+                "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units"   : "ml",
+                    "value"   : 0.5,
+                    "low"     : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 0.5
+                        }
+                    ],
+                    "high"    : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 1
+                        }
+                    ]
+                }
+            ],
+            "raw_dose"         : "0.5ml/kg",
+            "raw_dose_interval": "slow IV, 0.5–1 mL/minute"
+        },
+        "expected_parsed": {
+            "atc"              : "A12AA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["T63.3"] },
+            "medicine"         : {
+                "name"       : "Calcium Gluconate 10%",
+                "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units"   : "ml",
+                    "value"   : 0.5,
+                    "low"     : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 0.5
+                        }
+                    ],
+                    "high"    : [
+                        {
+                            "special_instructions": "IV",
+                            "slowly"              : true,
+                            "per_time"            : {"value": 1, "units": "minute"},
+                            "units"               : "mL",
+                            "value"               : 1
+                        }
+                    ]
+                }
+            ],
+            "raw_dose"         : "0.5ml/kg",
+            "raw_dose_interval": "slow IV, 0.5–1 mL/minute"
+        }
     },
     {
         "row"            : {
@@ -341573,7 +343096,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "19",
@@ -341597,29 +343120,63 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Remaining parenthetical text 10% water {\n    \"medicine\"            : {\n        \"name\"       : \"Dextrose\",\n        \"ingredients\": [ {\"name\": \"Dextrose\"} ]\n    },\n    \"dosage_form\"         : \"Solution\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"2.5-5 mL/kg of 10% dextrose water\",\n    \"parsed\"              : {\n        \"low\" : [ {\"per_size\": \"kg\", \"units\": \"mL\", \"ingredient_name\": \"Dextrose\", \"value\": 2.5} ],\n        \"high\": [ {\"per_size\": \"kg\", \"units\": \"mL\", \"ingredient_name\": \"Dextrose\", \"value\": 5  } ]\n    },\n    \"_dosage_text\"        : \"10% water\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text 10% water {\n    \"medicine\"            : {\n        \"name\"       : \"Dextrose\",\n        \"ingredients\": [ {\"name\": \"Dextrose\"} ]\n    },\n    \"dosage_form\"         : \"Solution\",\n    \"singular_form\"       : false,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"2.5-5 mL/kg of 10% dextrose water\",\n    \"parsed\"              : {\n        \"low\" : [ {\"per_size\": \"kg\", \"units\": \"mL\", \"ingredient_name\": \"Dextrose\", \"value\": 2.5} ],\n        \"high\": [ {\"per_size\": \"kg\", \"units\": \"mL\", \"ingredient_name\": \"Dextrose\", \"value\": 5  } ]\n    },\n    \"_dosage_text\"        : \"10% water\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66",
-        "expected_parsed": {
-            "schedules": [
+        "actual_parsed"  : {
+            "atc"              : "B05BA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Dextrose",
+                "ingredients": [ {"name": "Dextrose"} ]
+            },
+            "schedules"        : [
                 {
-                    "low": [
-                        { "per_size": "kg", "units": "mg", "value": 250 }
-                    ],
-                    "high": [
-                        { "per_size": "kg", "units": "mg", "value": 500 }
-                    ],
-                    "diluents": [{
-                        "ingredient_name": "dextrose water",
-                        "concentration": 10,
-                        "low": [
-                            { "per_size": "kg", "units": "mL", "value": 2.5 }
-                        ],
-                        "high": [
-                            { "per_size": "kg", "units": "mL", "value": 5 }
-                        ]
-                    }]
+                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ],
+                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
+                    "diluents": [
+                        {
+                            "ingredient_name": "dextrose water",
+                            "concentration"  : 10,
+                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
+                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
+                        }
+                    ]
                 }
-            ]
+            ],
+            "raw_dose"         : "250-500mg/kg (2.5–5 mL/kg of 10% dextrose water)",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc"              : "B05BA03",
+            "form"             : "Solution",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Dextrose",
+                "ingredients": [ {"name": "Dextrose"} ]
+            },
+            "schedules"        : [
+                {
+                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ],
+                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
+                    "diluents": [
+                        {
+                            "ingredient_name": "dextrose water",
+                            "concentration"  : 10,
+                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
+                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
+                        }
+                    ]
+                }
+            ],
+            "raw_dose"         : "250-500mg/kg (2.5–5 mL/kg of 10% dextrose water)",
+            "raw_dose_interval": "n/a"
         }
     },
     {
@@ -342069,7 +343626,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Paediatric Hospital Level",
             "LEVEL OF CARE"                                    : "Hospital",
             "CHAPTER NUMBER"                                   : "19",
@@ -342093,16 +343650,51 @@
             "ADULT/ CHILDREN"                                  : "Children",
             "PRESCRIBER"                                       : "Doctor prescribed"
         },
-        "error_message": "Did not parse anything before administering Calcium gluconate",
-        "error_stack": "Error: Did not parse anything before administering Calcium gluconate\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1266:13)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1289:7)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)\n    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:36)",
-        "expected_parsed": {
-            "schedules": [
+        "actual_parsed"  : {
+            "atc"              : "A12CC02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["P71.1"] },
+            "medicine"         : {
+                "name"       : "Magnesium Sulphate 50%",
+                "ingredients": [ {"name": "Magnesium Sulphate 50%"} ]
+            },
+            "schedules"        : [
                 {
-                    "before": {
-                        "event": "administering Calcium gluconate"
-                    }
+                    "per_size": "kg",
+                    "units"   : "ml",
+                    "value"   : 0.25,
+                    "before"  : {"event": "administering Calcium gluconate"}
                 }
-            ]
+            ],
+            "raw_dose"         : "0.25ml/kg",
+            "raw_dose_interval": "before administering Calcium gluconate"
+        },
+        "expected_parsed": {
+            "atc"              : "A12CC02",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["P71.1"] },
+            "medicine"         : {
+                "name"       : "Magnesium Sulphate 50%",
+                "ingredients": [ {"name": "Magnesium Sulphate 50%"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size": "kg",
+                    "units"   : "ml",
+                    "value"   : 0.25,
+                    "before"  : {"event": "administering Calcium gluconate"}
+                }
+            ],
+            "raw_dose"         : "0.25ml/kg",
+            "raw_dose_interval": "before administering Calcium gluconate"
         }
     },
     {
@@ -346284,7 +347876,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "23",
@@ -346308,20 +347900,53 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Remaining parenthetical text 50% dextrose {\n    \"medicine\"            : {\n        \"name\"       : \"Dextrose 50%\",\n        \"ingredients\": [ {\"name\": \"Dextrose 50%\"} ]\n    },\n    \"dosage_form\"         : \"Injection\",\n    \"singular_form\"       : true,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"50% dextrose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"50% dextrose\"\n}\n",
-        "error_stack": "AssertionError: Remaining parenthetical text 50% dextrose {\n    \"medicine\"            : {\n        \"name\"       : \"Dextrose 50%\",\n        \"ingredients\": [ {\"name\": \"Dextrose 50%\"} ]\n    },\n    \"dosage_form\"         : \"Injection\",\n    \"singular_form\"       : true,\n    \"is_parenthetical\"    : true,\n    \"parenthetical\"       : false,\n    \"original_dosage_text\": \"50% dextrose\",\n    \"parsed\"              : {},\n    \"_dosage_text\"        : \"50% dextrose\"\n}\n\n    at assert (https://deno.land/std@0.224.0/assert/assert.ts:18:11)\n    at DosageParser.handleParenthetical (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:884:7)\n    at new DosageParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:134:10)\n    at DosageParser.asParsedDose (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/DosageParser.ts:1282:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:96:20\n    at Array.map (<anonymous>)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:95:23)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:21:66",
+        "actual_parsed"  : {
+            "atc"              : "B05BA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Dextrose 50%",
+                "ingredients": [ {"name": "Dextrose 50%"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size"            : "kg",
+                    "units"               : "ml",
+                    "value"               : 1,
+                    "diluents"            : [ {"ingredient_name": "dextrose", "concentration": 50} ],
+                    "special_instructions": "refer to STGs"
+                }
+            ],
+            "raw_dose"         : "1 mL/kg (50% dextrose)",
+            "raw_dose_interval": "refer to STGs"
+        },
         "expected_parsed": {
-            "schedules": [{
-                "value": 1,
-                "units": "mL",
-                "per_size": "kg",
-                "diluents": [
-                    {
-                        "ingredient_name": "dextrose",
-                        "concentration": 50
-                    }
-                ]
-            }]
+            "atc"              : "B05BA03",
+            "form"             : "Injection",
+            "route"            : "Intravenous injection (IV)",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor prescribed",
+            "icd10_indications": {"type": "codes", "codes": []},
+            "medicine"         : {
+                "name"       : "Dextrose 50%",
+                "ingredients": [ {"name": "Dextrose 50%"} ]
+            },
+            "schedules"        : [
+                {
+                    "per_size"            : "kg",
+                    "units"               : "ml",
+                    "value"               : 1,
+                    "diluents"            : [ {"ingredient_name": "dextrose", "concentration": 50} ],
+                    "special_instructions": "refer to STGs"
+                }
+            ],
+            "raw_dose"         : "1 mL/kg (50% dextrose)",
+            "raw_dose_interval": "refer to STGs"
         }
     },
     {

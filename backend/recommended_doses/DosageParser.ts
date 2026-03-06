@@ -14,7 +14,7 @@ import isShallowEqual from '../../util/isShallowEqual.ts'
 import isString from '../../util/isString.ts'
 import sortBy from '../../util/sortBy.ts'
 import withProperty from '../../util/withProperty.ts'
-import { ParsedDose, ParsedMedicine, TimeSpecification } from './shared.ts'
+import { ParsedDose, ParsedMedicine, TimeSpecification as PerTime } from './shared.ts'
 import { normalizeTimeUnit } from './normalizeTimeUnit.ts'
 import { SPECIAL_INSTRUCTIONS_PATTERNS } from './special_instruction_patterns.ts'
 
@@ -58,6 +58,14 @@ export class DosageParser {
       concentration_ratio: [parseFloat(num_str), parseFloat(den_str)] as [number, number],
       special_instructions: rest.trim(),
     }))
+    // Puffs-of must run before lookForSpecialInstructions which consumes /puff
+    this.lookFor(/^(\d+)(?:\s*-\s*(\d+))?\s*puffs?\s+of\s+(\d+\.?\d*)\s*(mcg|mg)(?:\/puff)?$/i, (low, high, mult_val, mult_unit) => {
+      const multipliers = [{ value: parseFloat(mult_val), units: mult_unit, per_dose: true }]
+      if (high) {
+        return { low: [{ value: parseInt(low), units: 'puff' }], high: [{ value: parseInt(high), units: 'puff' }], multipliers }
+      }
+      return { value: parseInt(low), units: 'puff', multipliers }
+    })
     this.lookForSpecialInstructions()
     this.lookFor(/\binjections?\b/i, redundant)
     this.lookFor(/\bdiluted?\b/i, redundant)
@@ -81,6 +89,7 @@ export class DosageParser {
     this.lookForEvery()
     this.lookForAgeRange()
     this.lookForMaxDose()
+    this.lookForVaccineSeries()
     this.lookForFrequencyAndDuration()
     this.lookForWeightLimits()
     this.lookForAlternateSpecification()
@@ -93,8 +102,8 @@ export class DosageParser {
       (low, high) => ({ low: [{ quantity: parseInt(low) }], high: [{ quantity: parseInt(high) }] }),
     )
 
-    this.lookFor('slowly', () => ({ slowly: true }))
-    this.lookFor('slow IV', () => ({ slowly: true }))
+    this.lookFor(/\bslow\s*(?:IV\s*)?injection\b/i, () => ({ slowly: true }))
+    this.lookFor(/\bslow(?:ly)?\s*(?:IV)?\b/i, () => ({ slowly: true }))
 
     this.lookForDosage()
     this.handleSlash()
@@ -162,7 +171,7 @@ export class DosageParser {
   }
 
   lookForSeriesBeforeAfter() {
-    this.lookFor(/(\d+|an?) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? after (.+)/i, (value, units, event) => ({
+    this.lookFor(/(\d+|an?) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? after (.+)/i, (value, units, event) => ({
       after: {
         event,
         time: {
@@ -172,7 +181,14 @@ export class DosageParser {
       },
     }))
 
-    this.lookFor(/(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? before (.+)/i, (value, units, event) => ({
+    this.lookFor(/\bday after (.+)/i, (event) => ({
+      after: { time: { value: 1, units: 'day' as const }, event: event.trim() },
+    }))
+
+    this.lookFor('after each feed', () => ({ after: { event: 'each feed' } }))
+    this.lookFor('after the procedure', () => ({ after: { event: 'the procedure' } }))
+
+    this.lookFor(/(\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? before (.+)/i, (value, units, event) => ({
       before: {
         event,
         time: {
@@ -182,13 +198,21 @@ export class DosageParser {
       },
     }))
 
+    this.lookFor(/\bbefore administering (.+)/i, (event) => ({
+      before: { event: `administering ${event.trim()}` },
+    }))
+
+    this.lookFor(/\bfrom (\d+) days? prior to (.+)/i, (n, event) => ({
+      before: { time: { value: parseInt(n), units: 'day' as const }, event: event.trim() },
+    }))
+
     this.lookFor(/(\d)(?: |-)dose series/i, (dose_count) => ({
       series: {
         dose_count: parseInt(dose_count),
       },
     }))
 
-    this.lookFor(/(\d+|an?|one) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? apart/i, (value, units) => ({
+    this.lookFor(/(\d+|an?|one) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? apart/i, (value, units) => ({
       time_apart: {
         value: value === 'a' || value === 'an' || value === 'one' ? 1 : parseInt(value),
         units: normalizeTimeUnit(units),
@@ -255,6 +279,11 @@ export class DosageParser {
     this.lookFor(/(\d+)\s*-\s*(\d+) divided doses/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
     this.lookFor(/in (\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
     this.lookFor(/(\d+) divided doses/i, (n) => ({ divided_dose_count: parseInt(n) }))
+    this.lookFor(/total doses\s*=\s*(\d+) doses?/i, (n) => ({ total_dose_count: parseInt(n) }))
+    this.lookFor(/total (\d+) doses? in (\d+) (day|week|month)s?/i, (n, dur_val, dur_unit) => ({
+      total_dose_count: parseInt(n),
+      duration: { value: parseInt(dur_val), units: normalizeTimeUnit(dur_unit) },
+    }))
     this.lookFor(/(\d+) doses total/i, (n) => ({ series: { dose_count: parseInt(n) } }))
     this.lookFor(/for (\d+) doses?/i, (n) => ({ series: { dose_count: parseInt(n) } }))
     this.lookFor(/(\d+)\s*-\s*(\d+) times (?:daily|a day|per day)/i, (low, high) => ({ divided_dose_count: [parseInt(low), parseInt(high)] }))
@@ -276,39 +305,41 @@ export class DosageParser {
     this.lookFor(/\/(24 hours)/i, () => ({
       per_time: { value: 24, units: 'hour' as const },
     }))
-    this.lookFor(/(?:at )?(\d+)\s*(minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)? intervals/i, (value, units) => ({
+    this.lookFor(/(?:at )?(\d+)\s*(second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)? intervals/i, (value, units) => ({
       frequency: { every: { value: parseInt(value), units: normalizeTimeUnit(units) } },
     }))
-    this.lookFor(/within (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)s? of (.+)/i, (value, units, event) => ({
+    this.lookFor(/within (\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)s? of (.+)/i, (value, units, event) => ({
       within: { time: { value: parseInt(value), units: normalizeTimeUnit(units) }, event: event.trim() },
     }))
-    this.lookFor(/within (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)s?/i, (value, units) => ({
+    this.lookFor(/within (\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)s?/i, (value, units) => ({
       within: { time: { value: parseInt(value), units: normalizeTimeUnit(units) } },
     }))
     this.lookFor(/day 1/i, () => ({ duration: { value: 1, units: 'day' } }))
-    this.lookFor(/over an? (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (units) => ({
+    this.lookFor(/over an? (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (units) => ({
       duration: { value: 1, units: normalizeTimeUnit(units) },
     }))
     this.lookFor(/over a few minutes/i, () => ({
       duration: { value: [3, 7], units: 'minute' },
     }))
-    this.lookFor(/over (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (value, units) => ({
+    this.lookFor(/over (\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (value, units) => ({
       duration: { value: parseInt(value), units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/over (\d+)\s*-\s*(\d+)\s*(minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (min, max, units) => ({
+    this.lookFor(/over (\d+)\s*-\s*(\d+)\s*(second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (min, max, units) => ({
       duration: { value: [parseInt(min), parseInt(max)], units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? for (.+)/i, (value, units, for_condition) => ({
+    this.lookFor(/(\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? for (.+)/i, (value, units, for_condition) => ({
       for_condition,
       duration: { value: parseInt(value), units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/for (\d+)-(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (min, max, units) => ({
+    this.lookFor(/for (\d+)-(\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (min, max, units) => ({
       duration: { value: [parseInt(min), parseInt(max)], units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/for (?:a further )?(?:first )?(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (value, units) => ({
+    this.lookFor(/for (?:a further )?(?:first )?(\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)?/i, (value, units) => ({
       duration: { value: parseInt(value), units: normalizeTimeUnit(units) },
     }))
-    // this.lookFor(/(minute|min|hour|hr|day|wk|week|month|yr|year)ly/i, (min, max, units) => ({
+    this.lookFor(/\bfor three weeks\b/i, () => ({ duration: { value: 3, units: 'week' as const } }))
+    this.lookFor(/\bfor two weeks\b/i, () => ({ duration: { value: 2, units: 'week' as const } }))
+    // this.lookFor(/(second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)ly/i, (min, max, units) => ({
     //   frequency: { value: [parseInt(min), parseInt(max)], units: normalizeTimeUnit(units) },
     // }))
     this.lookFor(/(\d+)\s?-\s?(\d+) hourly/i, (hours1, hours2) => ({
@@ -320,27 +351,38 @@ export class DosageParser {
     this.lookFor(/in (\d+) hours/i, (hours) => ({
       per_time: { value: parseInt(hours), units: 'hour' as const },
     }))
-    this.lookFor(/^(\d+)(?: |-)(minute|min|hour|hr|day|wk|week|month|yr|year)ly$/i, (value, units) => ({
+    this.lookFor(/^(\d+)(?: |-)(second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)ly$/i, (value, units) => ({
       frequency: { every: { value: parseInt(value), units: normalizeTimeUnit(units) } },
     }))
-    this.lookFor(/^(minute|min|hour|hr|day|wk|week|month|yr|year)ly$/i, (units) => ({
+    this.lookFor(/^(second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)ly$/i, (units) => ({
       frequency: { every: { value: 1, units: normalizeTimeUnit(units) } },
     }))
-    this.lookFor(/\bper (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?\b/i, (units) => ({ per_time: { value: 1, units: normalizeTimeUnit(units) } }))
+    // "1g weekly", "100mg monthly" etc. — dose value + frequency in one token
     this.lookFor(
-      /\bper (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?\b/i,
+      /^(\d+\.?\d*\s*(?:mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U|litre|liter)s?)\s+(second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)ly$/i,
+      (dose_text, freq_unit) => ({
+        ...this.sub(dose_text.trim()).parsed,
+        frequency: { every: { value: 1, units: normalizeTimeUnit(freq_unit) } },
+      }),
+    )
+    this.lookFor(
+      /\bper (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?\b/i,
+      (units) => ({ per_time: { value: 1, units: normalizeTimeUnit(units) } }),
+    )
+    this.lookFor(
+      /\bper (\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?\b/i,
       (value, units) => ({ per_time: { value: parseInt(value), units: normalizeTimeUnit(units) } }),
     )
-    this.lookFor(/^(\d+)\s?-\s?(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)s/i, (min, max, units) => ({
+    this.lookFor(/^(\d+)\s?-\s?(\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)s/i, (min, max, units) => ({
       duration: { value: [parseInt(min), parseInt(max)], units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/^(\d+)\s? (minute|min|hour|hr|day|wk|week|month|yr|year)s/i, (value, units) => ({
+    this.lookFor(/^(\d+)\s? (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)s/i, (value, units) => ({
       duration: { value: parseInt(value), units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/^(?:1|one) (minute|min|hour|hr|day|wk|week|month|yr|year)/i, (units) => ({
+    this.lookFor(/^(?:1|one) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)/i, (units) => ({
       duration: { value: 1, units: normalizeTimeUnit(units) },
     }))
-    this.lookFor(/^(?:second) (minute|min|hour|hr|day|wk|week|month|yr|year)/i, (units) => ({
+    this.lookFor(/^(?:second) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)/i, (units) => ({
       duration: { value: 1, units: normalizeTimeUnit(units) },
     }))
   }
@@ -362,12 +404,60 @@ export class DosageParser {
   }
 
   lookForEvery() {
-    this.lookFor(/(?:single dose )?every (\d+)\s?-\s?(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?/i, (min, max, units) => ({
+    this.lookFor(/\bevery minute\b/i, () => ({ frequency: { every: { value: 1, units: 'minute' as const } } }))
+    this.lookFor(/(?:single dose )?every (\d+)\s?-\s?(\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?/i, (min, max, units) => ({
       frequency: { every: { value: [parseInt(min), parseInt(max)], units: normalizeTimeUnit(units) } },
     }))
-    this.lookFor(/(?:single dose )?every (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?/i, (value, units) => ({
+    this.lookFor(/(?:single dose )?every (\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)(?:s|ly)?/i, (value, units) => ({
       frequency: { every: { value: parseInt(value), units: normalizeTimeUnit(units) } },
     }))
+  }
+
+  lookForVaccineSeries() {
+    // Parse dose schedule timing like "6,10,14 weeks, 18 months" or "6, 12 months" or "5-7 years, ≥12 years"
+    const timeUnitPattern = /weeks?|months?|years?/i
+    const text = this.dosage_text
+    if (!timeUnitPattern.test(text)) return
+
+    // Check for "N-M years, ≥N years" range/threshold pattern → special_instructions + series
+    const complexYearsMatch = text.match(/^((?:\d+(?:-\d+)?\s*years?,?\s*)+(?:[≥≤]\d+\s*years?))$/i)
+    if (complexYearsMatch) {
+      const doses: PerTime[] = []
+      const numRegex = /(?:(\d+)(?:-\d+)?|[≥≤](\d+))\s*years?/gi
+      let m
+      while ((m = numRegex.exec(text)) !== null) {
+        doses.push({ value: parseInt(m[1] ?? m[2]), units: 'year' })
+      }
+      if (doses.length > 0) {
+        this.lookFor(new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), () => ({
+          series: { doses },
+          special_instructions: text,
+        }))
+      }
+      return
+    }
+
+    // Parse grouped timing: numbers then unit, possibly mixed units
+    // e.g., "6,10,14 weeks, 18 months" or "6 and 14 weeks"
+    const groupRegex = /((?:\d+(?:\s*[,\s]\s*(?:and\s+)?)*\d+|\d+))\s*(weeks?|months?|years?)/gi
+    const doses: PerTime[] = []
+    let lastIndex = 0
+    let m
+    while ((m = groupRegex.exec(text)) !== null) {
+      // Extract all numbers from this group
+      const nums = m[1].split(/[\s,]+(?:and\s+)?/).filter((s) => /^\d+$/.test(s.trim()))
+      const unit = normalizeTimeUnit(m[2])
+      doses.push(...nums.map((n) => ({ value: parseInt(n), units: unit })))
+      lastIndex = m.index + m[0].length
+    }
+
+    if (doses.length < 2) return
+    // Verify entire text was consumed (allow trailing spaces/commas)
+    const remaining = text.slice(lastIndex).replace(/[\s,]+$/, '')
+    if (remaining) return
+
+    this.dosage_text = ''
+    this.parsed = combine(this.parsed, { series: { doses } } as never)
   }
 
   lookForAgeRange() {
@@ -476,6 +566,10 @@ export class DosageParser {
       if (p.value != null || p.low != null || p.high != null) return { max: [p] }
       return {}
     })
+    this.lookFor(/^maximum\s*=\s*(\d[\d.]*\s*(?:mg|mcg|g|mmol|IU|MU|million units|mEq|ml|L|units|unit|U)s?)\s+(on .+)$/i, (max_text, day_text) => {
+      const max_parser = this.sub(max_text.trim())
+      return { max: [withProperty(max_parser.parsed!, 'value')], special_instructions: day_text.trim() }
+    })
     this.lookFor(/(?:up to )?(?:to a )?(?:maximum|up to|max)(?: cumulative)?(?: dose)?\s*(?:of)?\s*(?:=)?\s*(\d.*)$/i, (max_text) => {
       const max_parser = this.sub(max_text)
       const p = max_parser.parsed!
@@ -485,7 +579,7 @@ export class DosageParser {
   }
 
   lookForTitration() {
-    this.lookFor(/^titration for (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)s?$/i, (time_value, time_units) => ({
+    this.lookFor(/^titration for (\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)s?$/i, (time_value, time_units) => ({
       titrate: {
         duration: {
           value: parseInt(time_value),
@@ -523,7 +617,7 @@ export class DosageParser {
       return { titrate }
     })
     this.lookFor(
-      /increased by (.+) (?:up )to (.+) every (\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)s?/i,
+      /increased by (.+) (?:up )to (.+) every (\d+) (second|sec|minute|min|hour|hr|day|wk|week|month|yr|year)s?/i,
       (increase_text, titrate_to_text, per_time_value, per_time_units) => {
         const increase_parser = this.sub(increase_text)
         const titrate_to_parser = this.sub(titrate_to_text)
@@ -665,14 +759,14 @@ export class DosageParser {
 
   lookFor(
     pattern: RegExp | string,
-    replace: (capture1: string, capture2: string, capture3: string, capture4: string, capture5: string) => Partial<ParsedDose>,
+    replace: (capture1: string, capture2: string, capture3: string, capture4: string, capture5: string, capture6: string) => Partial<ParsedDose>,
     opts?: { use_whole_match: boolean },
   ) {
     const regex = isString(pattern) ? new RegExp(escapeRegexp(pattern), 'i') : pattern
     const match = this.dosage_text.match(regex)
     if (!match) return
     // deno-lint-ignore no-explicit-any
-    const updates = opts?.use_whole_match ? (replace as any)(match[0]) : replace(match[1], match[2], match[3], match[4], match[5])
+    const updates = opts?.use_whole_match ? (replace as any)(match[0]) : replace(match[1], match[2], match[3], match[4], match[5], match[6])
     this.parsed = combine(this.parsed, updates as never)
 
     this.dosage_text = this.dosage_text.slice(0, match.index!) +
@@ -741,6 +835,23 @@ export class DosageParser {
     this.lookFor(/^(\d+):(\d+)$/i, (num_str, den_str) => ({
       concentration_ratio: [parseFloat(num_str), parseFloat(den_str)] as [number, number],
     }))
+    // N% dextrose/water → diluent descriptor
+    // N% dextrose/water → diluent descriptor
+    this.lookFor(/^(\d+\.?\d*)\s*%\s+(dextrose(?:\s+water)?|water)$/i, (conc_str, ingredient) => ({
+      diluents: [{ ingredient_name: ingredient.trim().toLowerCase(), concentration: parseFloat(conc_str) }],
+    }))
+    // "N-M mL/kg of N% ingredient" → diluent with low/high + concentration (e.g. in parenthetical)
+    this.lookFor(
+      /^(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*m[lL]\/kg\s+of\s+(\d+\.?\d*)\s*%\s+(.+)$/i,
+      (low, high, conc, ingredient) => ({
+        diluents: [{
+          ingredient_name: ingredient.trim(),
+          concentration: parseFloat(conc),
+          low: [{ value: parseFloat(low), units: 'ml', per_size: 'kg' as const }],
+          high: [{ value: parseFloat(high), units: 'ml', per_size: 'kg' as const }],
+        }],
+      }),
+    )
     this.lookFor(/^(\d+\.?\d*)\s*%$/i, (concentration) => ({
       concentration: parseFloat(concentration),
     }))
@@ -762,6 +873,13 @@ export class DosageParser {
       }],
     }))
 
+    this.lookFor(/\bin (\d+\.?\d*)\s*-\s*(\d+\.?\d*)\s*m[lL]\s+(.+)/i, (low_val, high_val, ingredient) => ({
+      diluents: [{
+        ingredient_name: ingredient.trim(),
+        low: [{ value: parseFloat(low_val), units: 'ml' }],
+        high: [{ value: parseFloat(high_val), units: 'ml' }],
+      }],
+    }))
     this.lookFor(/\bin (\d+\.?\d*)\s*m[lL] (.+)/i, (diluent_value, diluent_ingredient) => ({
       diluents: [{
         value: parseFloat(diluent_value),
@@ -789,7 +907,7 @@ export class DosageParser {
 
     this.lookFor(/\/(kg|m2)/i, (per_size) => ({ per_size: per_size as 'kg' | 'm2' }))
     this.lookFor(/\/\d*(\.\d+)?kg/i, (kg) => ({ per_size: { kg: parseFloat(kg) || 1 } }))
-    this.lookFor(/\/(minute|min|hour|hr|day|week)/i, (units) => ({
+    this.lookFor(/\/(second|sec|minute|min|hour|hr|day|week)/i, (units) => ({
       per_time: {
         value: 1,
         units: normalizeTimeUnit(units),
@@ -900,6 +1018,15 @@ export class DosageParser {
           ...sub.parsed.min,
         ]
         delete sub.parsed.min
+      }
+      // Puffs equivalency: sub is in puffs and main already has a value/dose to compare against
+      // Must run BEFORE high/low merging to avoid consuming sub.parsed.low/high
+      if (
+        (sub.parsed.units === 'puff' || (sub.parsed.low?.[0] as ParsedDose | undefined)?.units === 'puff') &&
+        (this.parsed.value != null || this.parsed.low != null)
+      ) {
+        this.parsed.equivalency = sub.parsed
+        continue
       }
       if (sub.parsed.high) {
         this.parsed.high = [
@@ -1037,7 +1164,9 @@ export class DosageParser {
         delete this.parsed.divided_dose_count
         delete this.parsed.time_apart
       } else if (this.parsed.series) {
-        this.parsed.series.time_apart = this.parsed.time_apart
+        if ('dose_count' in this.parsed.series) {
+          this.parsed.series.time_apart = this.parsed.time_apart
+        }
         delete this.parsed.time_apart
       }
     }
@@ -1051,7 +1180,7 @@ export class DosageParser {
     this.lookFor(/single dose or (\d+) divided doses(?: on the same day)?/i, (n) => ({ divided_dose_count: [1, parseInt(n)] }))
     this.lookFor('12 hourly or per week', () => ({ frequency: ['bd', 'qw'] }))
     this.lookFor(/once daily or weekly/i, () => ({ frequency: ['od', 'qw'] }))
-TimeSpecification
+
     if (!this.dosage_text.includes(' or ')) return
 
     const [first, second, ...others] = sortBy(

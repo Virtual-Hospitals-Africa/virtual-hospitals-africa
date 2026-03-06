@@ -131,7 +131,6 @@ export const SPECIAL_INSTRUCTIONS_PATTERNS = [
   /\binfused\b/i,
   /\bIV\b/,
   'during the day',
-  /over \d+ seconds?/i,
   /\bat a flow of\b.*/i,
   /\bwith oxygen\b/i,
   /\bfor \d+ alternate days per week\b/i,

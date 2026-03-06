@@ -48,8 +48,6 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   // Magnesium Sulphate 50%
   '2g in 1ml',
   // Adrenaline
-  // Activated charcoal
-  '1g/kg in 50-100ml water',
   // Bolus dose with duration
   'bolus dose over 1 hour',
   // Midazolam: malformed unclosed parenthetical
