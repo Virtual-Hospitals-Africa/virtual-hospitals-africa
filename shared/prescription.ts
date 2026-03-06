@@ -26,8 +26,7 @@ function dosageText(dosage: string): string {
 export const PrescriptionFrequencies = {
   ac: 'before meals',
   am: 'morning',
-  bd: '2 times daily',
-  nocte: 'every night',
+  nocte: 'night',
   od: 'once a day',
   pm: 'afternoon or evening',
   q15: 'every 15 minutes',
@@ -38,12 +37,14 @@ export const PrescriptionFrequencies = {
   q6h: 'every 6 hours',
   q8h: 'every 8 hours',
   qd: 'every day',
+  bd: '2 times daily',
+  tds: '3 times a day',
   qid: '4 times a day',
   qod: 'alternate days',
   mane: 'morning',
   qmane: 'every morning',
   qn: 'every night',
-  tds: '3 times a day',
+  q12h: 'every 12 hours',
   q24h: 'every 24 hours',
   q30h: 'every 30 hours',
   q48h: 'every 48 hours',
@@ -59,6 +60,7 @@ export const PrescriptionFrequencies = {
   qs: 'sufficient enough quantity',
   stat: 'immediately, now',
   prn: 'when necessary',
+  at: 'at the time specified',
 }
 
 export function prescriptionFrequencyText(frequency: string): string {

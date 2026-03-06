@@ -121,3 +121,62 @@ export async function* parseCsvTyped<Schema extends z.ZodTypeAny>(
     yield schema.parse(row)
   }
 }
+
+/**
+ * Core synchronous parser for CSV/TSV data
+ */
+export function parseCsvSync(
+  file_path: string,
+  opts: ParseTsvOptions & {
+    separator: string
+  } = { separator: ',' },
+  // deno-lint-ignore no-explicit-any
+): Record<string, any>[] {
+  const content = Deno.readTextFileSync(file_path)
+
+  // Split by newline and filter out empty lines
+  const lines = content.split(/\r?\n/).filter((line) => line.trim() !== '')
+  if (lines.length === 0) return []
+
+  // Process Header
+  let header = lines[0].split(opts.separator).map((h) => h.trim())
+
+  if (header.some((h) => h === '')) {
+    throw new Error(`Error parsing ${file_path}. Extraneous trailing characters in header.`)
+  }
+
+  if (opts.convert_to_snake_case) {
+    header = header.map((h) => snakeCase(h))
+  }
+
+  // Process Rows
+  return lines.slice(1).map((line) => {
+    const values = line.split(opts.separator)
+    // deno-lint-ignore no-explicit-any
+    const row: Record<string, any> = {}
+
+    header.forEach((key, i) => {
+      let value: string | number | null = values[i]?.trim() || null
+
+      if (opts.interpret_integers && value !== null && /^\d+$/.test(value)) {
+        value = Number(value)
+      }
+
+      row[key] = value
+    })
+
+    return row
+  })
+}
+
+/**
+ * Synchronous TSV Parser with Zod validation
+ */
+export function parseTsvTypedSync<Schema extends z.ZodTypeAny>(
+  file_path: string,
+  schema: Schema,
+  opts: Omit<ParseTsvOptions, 'columnSeparator'> = {},
+): z.infer<Schema>[] {
+  const rows = parseCsvSync(file_path, { ...opts, separator: '\t' })
+  return rows.map((row) => schema.parse(row))
+}

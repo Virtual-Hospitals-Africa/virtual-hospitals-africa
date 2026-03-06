@@ -1,32 +1,595 @@
 [
-    {"name": "PURIFIED VERO CELL RABIES"                                                     },
-    {"name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)"                                        },
-    {"name": "HOREHOUND"                                                                     },
-    {"name": "DHA AND EPA"                                                                   },
-    {"name": "WATER FOR INJECTIONS"                                                          },
-    {"name": "MINIMUM OF"                                                                    },
-    {"name": "FACTOR XIII 5 - 25 UPLASMINOGEN 0.02 - 0.06 MGPROTEIN HYDROLYSATE"             },
-    {"name": "MIGLYOL 812 - NEUTRALOEL"                                                      },
-    {"name": "800.0 MG"                                                                      },
-    {"name": "IMEPITOIN"                                                                     },
-    {"name": "PIMOBENDAN"                                                                    },
-    {"name": "RHUBARB DRY EXTRACT 25.0 MG ,SENNA FOLIUM POWDER 105.0 MG ,VEGETABLET CHARCOAL"},
-    {"name": "VALNEMULIN"                                                                    },
-    {"name": "WATER FOR INJECTIONS 20 ML"                                                    },
-    {"name": "WATER FOR INJECTIONS QS"                                                       },
-    {"name": "HUMAN NEONATAL DERMAL FIBROBLASTS A"                                           },
-    {"name": "TOTAL PROTIEN 31 –"                                                            },
-    {"name": "WATER FOR INJECTIONS E"                                                        },
-    {"name": "A(H3N2)"                                                                       },
-    {"name": "A(H1N1)"                                                                       },
-    {"name": "LOKIVETMAB"                                                                    },
-    {"name": "0."                                                                            },
-    {"name": "60.0 MG"                                                                       },
-    {"name": "10.0 MG"                                                                       },
-    {"name": "50.0 MG"                                                                       },
-    {"name": "VIMCOSA"                                                                       },
-    {"name": "REASSORTANT G2 ≥"                                                              },
-    {"name": "REASSORTANT G3 ≥"                                                              },
-    {"name": "REASSORTANT G4 ≥"                                                              },
-    {"name": "REASSORTANT G9 ≥"                                                              }
+    {
+        "name"      : "PURIFIED VERO CELL RABIES",
+        "medication": {
+            "id": "24",
+            "trade_name": "ABHAYRAB",
+            "generic_name": "PURIFIED VERO CELL RABIES",
+            "forms": "VACCINE",
+            "strength": "2.5 IU/0.5 ML",
+            "category": "PP",
+            "registration_no": "2017/18.2/5468",
+            "applicant_name": "HUMAN BIOLOGICALS INSTITUTE",
+            "manufacturers": "HUMAN BIOLOGICALS INSTITUTE (A DIVISION OF INDIAN IMMUNOLOGICALS LIMITED) CHENNAI INDIA;",
+            "form": "VACCINE",
+            "routes": ["ORAL", "INJECTION"],
+            "doses": [
+                {
+                    "value"      : "0.5",
+                    "units"      : "ML",
+                    "form"       : "VACCINE",
+                    "ingredients": [
+                        { "name": "PURIFIED VERO CELL RABIES", "strength": {"value": "2.5", "units": "IU"} }
+                    ]
+                }
+            ],
+            "country": "ZW"
+        }
+    },
+    {
+        "name"      : "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
+        "medication": {
+            "id"             : "1,037",
+            "trade_name"     : "HALF STRENGTH DARROWS SOLN WITH DETROSE 10%",
+            "generic_name"   : "DARROW'S HALF STRENGTH (WITH DEXTROSE)",
+            "forms"          : "INJECTABLE; IV (INFUSION)",
+            "strength"       : "10% M/V",
+            "category"       : "PP",
+            "registration_no": "97/23.2.1/3207",
+            "applicant_name" : "DATLABS PRIVATE LIMITED",
+            "manufacturers"  : "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;",
+            "form"           : "INJECTABLE",
+            "routes"         : ["IV (INFUSION)"],
+            "doses"          : [
+                {
+                    "value"      : "100",
+                    "units"      : "ML",
+                    "form"       : "INJECTABLE",
+                    "ingredients": [
+                        { "name": "DARROW'S HALF STRENGTH (WITH DEXTROSE)", "strength": {"value": "10", "units": "G"} }
+                    ]
+                }
+            ],
+            "country"        : "ZW"
+        }
+    },
+    {
+        "name"      : "HOREHOUND",
+        "medication": {
+            "id": "1,981",
+            "trade_name": "STERNS",
+            "generic_name": "AMMONIUM CHLORIDE; EUCALYPTUS OIL; HONEY;  HOREHOUND; MENTHOL; PINE WHITE COMPOUND EXTRACT; TAR",
+            "forms": "SYRUP; ORAL",
+            "strength": "1.15G; 115MG; 6.2G; 0.5G; 68MG; 1G; 33MG",
+            "category": "HR",
+            "registration_no": "76/22.2.5/630",
+            "applicant_name": "ADCOCK INGRAMS SA (PTY) LTD",
+            "manufacturers": "DATLABS PRIVATE LIMITED BULAWAYO ZIMBABWE;  ADCOCK INGRAMS SA (PTY) LTD JOHANNESBURG SOUTH AFRICA;  ADCOCK INGRAM LTD JOHANNESBURG SOUTH AFRICA;  ADCOCK INGRAM LTD GERM SOUTH AFRICA;",
+            "form": "SYRUP",
+            "routes": ["ORAL"],
+            "doses": [
+                {
+                    "value"      : "1",
+                    "units"      : "DOSE",
+                    "form"       : "SYRUP",
+                    "ingredients": [
+                        { "name": "AMMONIUM CHLORIDE",           "strength": {"value": "1.15", "units": "G" } },
+                        { "name": "EUCALYPTUS OIL",              "strength": {"value": "115",  "units": "MG"} },
+                        { "name": "HONEY",                       "strength": {"value": "6.2",  "units": "G" } },
+                        { "name": "HOREHOUND",                   "strength": {"value": "0.5",  "units": "G" } },
+                        { "name": "MENTHOL",                     "strength": {"value": "68",   "units": "MG"} },
+                        { "name": "PINE WHITE COMPOUND EXTRACT", "strength": {"value": "1",    "units": "G" } },
+                        { "name": "TAR",                         "strength": {"value": "33",   "units": "MG"} }
+                    ]
+                }
+            ],
+            "country": "ZW"
+        }
+    },
+    {
+        "name"      : "DHA AND EPA",
+        "medication": {
+            "form"           : "CAPSULE",
+            "routes"         : ["ORAL", "RECTAL", "VAGINAL"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "CAPSULE",
+                    "ingredients": [
+                        { "name": "DHA AND EPA", "strength": {"value": "840", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "OMACOR",
+            "registration_no": "A38/7.5/0729",
+            "applicant_name" : "Abbott Laboratories S.A. (Pty) Ltd",
+            "manufacturers"  : "Abbott Laboratories S.A. (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "WATER FOR INJECTIONS",
+        "medication": {
+            "form"           : "VIAL",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "VIAL",
+                    "ingredients": [
+                        { "name": "WATER FOR INJECTIONS", "strength": {"value": "1", "units": "ML"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "Herzuma Diluent",
+            "registration_no": "53/32.4/0600",
+            "applicant_name" : "Adcock Ingram Limited",
+            "manufacturers"  : "Adcock Ingram Limited"
+        }
+    },
+    {
+        "name"      : "MINIMUM OF",
+        "medication": {
+            "form"           : "CONTAINER",
+            "routes"         : ["INHALATION"],
+            "doses"          : [
+                {
+                    "value"      : "100",
+                    "form"       : "CONTAINER",
+                    "ingredients": [
+                        {"name": "OXYGEN LIQUID", "strength": null},
+                        {
+                            "name"              : "MINIMUM OF",
+                            "strength"          : {"value": "99.5", "units": "G"},
+                            "dosage_value"      : "100",
+                            "dosage_description": "G"
+                        }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "AFROX LIQUID MEDICAL OXYGEN",
+            "registration_no": "29/34/0038",
+            "applicant_name" : "AFRICAN OXYGEN LTD",
+            "manufacturers"  : "AFRICAN OXYGEN LTD"
+        }
+    },
+    {
+        "name"      : "FACTOR XIII 5 - 25 UPLASMINOGEN 0.02 - 0.06 MGPROTEIN HYDROLYSATE",
+        "medication": {
+            "form"           : "SOLUTION",
+            "routes"         : ["INJECTION", "ORAL", "INHALATION", "TOPICAL"],
+            "doses"          : [
+                {
+                    "value"      : "0.5",
+                    "form"       : "SOLUTION",
+                    "units"      : "ML",
+                    "ingredients": [
+                        {
+                            "name"         : "FACTOR XIII 5 - 25 UPLASMINOGEN 0.02 - 0.06 MGPROTEIN HYDROLYSATE",
+                            "equivalent_to": "FIBRINOGEN 35 -",
+                            "strength"     : {"value": "55", "units": "MG"}
+                        },
+                        { "name": "PLASMAFIBRONECTIN 1 -", "strength": {"value": "4.5", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "TISSEEL LYO 5,0 H",
+            "registration_no": "31/30.3/0370",
+            "applicant_name" : "Baxter Healthcare South Africa (Pty) Ltd",
+            "manufacturers"  : "Baxter Healthcare South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "MIGLYOL 812 - NEUTRALOEL",
+        "medication": {
+            "form"           : "SUSPENSION",
+            "routes"         : ["ORAL"],
+            "doses"          : [
+                {
+                    "value"      : "47",
+                    "form"       : "SUSPENSION",
+                    "units"      : "ML",
+                    "ingredients": [
+                        { "name": "LECITHIN",                 "strength": {"value": "0.50",  "units": "G"} },
+                        { "name": "MIGLYOL 812 - NEUTRALOEL", "strength": {"value": "35.09", "units": "G"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "DILUENT FOR CIPROBAY SUSPENSION 5% AND 10%",
+            "registration_no": "31/34/0113",
+            "applicant_name" : "Bayer (Pty) Ltd û Isando",
+            "manufacturers"  : "Bayer (Pty) Ltd û Isando"
+        }
+    },
+    {
+        "name"      : "IMEPITOIN",
+        "medication": {
+            "form"           : "TABLET",
+            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "TABLET",
+                    "ingredients": [
+                        { "name": "IMEPITOIN", "strength": {"value": "100", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "PEXION 100 mg",
+            "registration_no": "12/1.5/09",
+            "applicant_name" : "Boehringer Ingelheim Animal Health South Africa (Pty) Ltd",
+            "manufacturers"  : "Boehringer Ingelheim Animal Health South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "PIMOBENDAN",
+        "medication": {
+            "form"           : "TABLET",
+            "routes"         : ["ORAL"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "TABLET",
+                    "ingredients": [
+                        { "name": "PIMOBENDAN", "strength": {"value": "2.5", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "VETMEDIN 2,5 mg CHEWABLE TABLETS FOR DOGS",
+            "registration_no": "13/5.1/11",
+            "applicant_name" : "Boehringer Ingelheim Animal Health South Africa (Pty) Ltd",
+            "manufacturers"  : "Boehringer Ingelheim Animal Health South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "VALNEMULIN",
+        "medication": {
+            "form"           : "POWDER",
+            "routes"         : ["ORAL", "TOPICAL"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "POWDER",
+                    "units"      : "G",
+                    "ingredients": [
+                        { "name": "VALNEMULIN", "strength": {"value": "10", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "ECONOR 1 %",
+            "registration_no": "99/21.1/10",
+            "applicant_name" : "Elanco Animal Health (Pty) Ltd",
+            "manufacturers"  : "Elanco Animal Health (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "WATER FOR INJECTIONS 20 ML",
+        "medication": {
+            "form"           : "VIAL",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "VIAL",
+                    "ingredients": [
+                        { "name": "WATER FOR INJECTIONS 20 ML", "strength": {"value": "50", "units": "ML"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "ACTILYSE SOLVENT",
+            "registration_no": "U/34/230",
+            "applicant_name" : "Ingelheim Pharmaceuticals (Pty) Ltd û Ferndale",
+            "manufacturers"  : "Ingelheim Pharmaceuticals (Pty) Ltd û Ferndale"
+        }
+    },
+    {
+        "name"      : "WATER FOR INJECTIONS QS",
+        "medication": {
+            "form"           : "VIAL",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "30",
+                    "form"       : "VIAL",
+                    "units"      : "ML",
+                    "ingredients": [
+                        { "name": "DISODIUM HYDROGEN PHOSPHATE", "strength": null                             },
+                        { "name": "DIHYDRATE",                   "strength": {"value": "1.491", "units": "G"} },
+                        { "name": "WATER FOR INJECTIONS QS",     "strength": null                             }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "COBACTAN IV 4,5 % SOLVENT",
+            "registration_no": "07/34/28",
+            "applicant_name" : "Intervet South Africa (Pty) Ltd",
+            "manufacturers"  : "Intervet South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "HUMAN NEONATAL DERMAL FIBROBLASTS A",
+        "medication": {
+            "form"           : "DRESSING",
+            "routes"         : ["TOPICAL"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "DRESSING",
+                    "ingredients": [ {"name": "HUMAN NEONATAL DERMAL FIBROBLASTS A", "strength": null} ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "DERMAGRAFT",
+            "registration_no": "32/14.2/0510",
+            "applicant_name" : "MC Pharma (Pty) Ltd",
+            "manufacturers"  : "MC Pharma (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "TOTAL PROTIEN 31 –",
+        "medication": {
+            "form"           : "SOLUTION",
+            "routes"         : ["INJECTION", "ORAL", "INHALATION", "TOPICAL"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "SOLUTION",
+                    "units"      : "ML",
+                    "ingredients": [
+                        { "name": "HUMAN COAGULATION FACTOR II 14 –", "strength": {"value": "38", "units": "IU"} },
+                        { "name": "HUMAN COAGULATION FACTOR VII 9 –", "strength": {"value": "24", "units": "IU"} },
+                        { "name": "HUMAN COAGULATION FACTOR IX 20 –", "strength": {"value": "31", "units": "IU"} },
+                        { "name": "HUMAN COAGULATION FACTOR X 18 –",  "strength": {"value": "30", "units": "IU"} },
+                        { "name": "PROTIEN C 13 –",                   "strength": {"value": "31", "units": "IU"} },
+                        { "name": "PROTIEN S 12 –",                   "strength": {"value": "32", "units": "IU"} },
+                        { "name": "TOTAL PROTIEN 31 –",               "strength": {"value": "41", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "OCTAPLEX 500 IU",
+            "registration_no": "52/30.3/0357",
+            "applicant_name" : "Octapharma South Africa (Pty) Ltd",
+            "manufacturers"  : "Octapharma South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "WATER FOR INJECTIONS E",
+        "medication": {
+            "form"           : "INJECTABLE",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "AMPOULE",
+                    "ingredients": [
+                        { "name": "WATER FOR INJECTIONS E", "strength": {"value": "2", "units": "ML"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "SUN PHARMA STERILE WATER FOR INJECTION",
+            "registration_no": "36/34/0432",
+            "applicant_name" : "Ranbaxy (SA) (Pty) Ltd",
+            "manufacturers"  : "Ranbaxy (SA) (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "A(H3N2)",
+        "medication": {
+            "form"           : "SUSPENSION",
+            "routes"         : ["ORAL", "INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "0.5",
+                    "form"       : "SUSPENSION",
+                    "units"      : "ML",
+                    "ingredients": [
+                        { "name": "INFLUENZA VIRUS VACCINE",        "strength": null                             },
+                        { "name": "A(H3N2)",                        "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "A(H1N1)",                        "strength": {"value": "15.0", "units": "UG"} },
+                        { "name": "B(FROM VICTORIA/2/87/LINEAGE )", "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "B (FROM YAMAGATA/16/88 LINE)",   "strength": {"value": "15",   "units": "UG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "VAXIGRIP TETRA",
+            "registration_no": "51/30.1/0838",
+            "applicant_name" : "Sanofi-Aventis South Africa (Pty) Ltd",
+            "manufacturers"  : "Sanofi-Aventis South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "A(H1N1)",
+        "medication": {
+            "form"           : "SUSPENSION",
+            "routes"         : ["ORAL", "INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "0.5",
+                    "form"       : "SUSPENSION",
+                    "units"      : "ML",
+                    "ingredients": [
+                        { "name": "INFLUENZA VIRUS VACCINE",        "strength": null                             },
+                        { "name": "A(H3N2)",                        "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "A(H1N1)",                        "strength": {"value": "15.0", "units": "UG"} },
+                        { "name": "B(FROM VICTORIA/2/87/LINEAGE )", "strength": {"value": "15",   "units": "UG"} },
+                        { "name": "B (FROM YAMAGATA/16/88 LINE)",   "strength": {"value": "15",   "units": "UG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "VAXIGRIP TETRA",
+            "registration_no": "51/30.1/0838",
+            "applicant_name" : "Sanofi-Aventis South Africa (Pty) Ltd",
+            "manufacturers"  : "Sanofi-Aventis South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "LOKIVETMAB",
+        "medication": {
+            "form"           : "VIAL",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "VIAL",
+                    "ingredients": [
+                        { "name": "LOKIVETMAB", "strength": {"value": "40", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "CYTOPOINT 40 mg",
+            "registration_no": "17/2.10/18",
+            "applicant_name" : "Zoetis South Africa (Pty) Ltd",
+            "manufacturers"  : "Zoetis South Africa (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "VIMCOSA",
+        "medication": {
+            "form"           : "TABLET",
+            "routes"         : ["ORAL", "RECTAL", "VAGINAL", "SUBLINGUAL", "BUCCAL"],
+            "doses"          : [
+                {
+                    "value"      : "1",
+                    "form"       : "TABLET",
+                    "ingredients": [
+                        { "name": "VIMCOSA", "strength": {"value": "100", "units": "MG"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "VIMCOSA 100",
+            "registration_no": "57/2.5/0718.714",
+            "applicant_name" : "Macleods Pharmaceuticals SA (Pty) Ltd",
+            "manufacturers"  : "Macleods Pharmaceuticals SA (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "REASSORTANT G2",
+        "medication": {
+            "form"           : "VACCINE",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
+                    "ingredients": [
+                        {
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
+                        },
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "ROTAVIRUS VACCINE ASPEN",
+            "registration_no": "59/30.2/0066",
+            "applicant_name" : "Aspen SA Operations (Pty) Ltd",
+            "manufacturers"  : "Aspen SA Operations (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "REASSORTANT G3",
+        "medication": {
+            "form"           : "VACCINE",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
+                    "ingredients": [
+                        {
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
+                        },
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "ROTAVIRUS VACCINE ASPEN",
+            "registration_no": "59/30.2/0066",
+            "applicant_name" : "Aspen SA Operations (Pty) Ltd",
+            "manufacturers"  : "Aspen SA Operations (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "REASSORTANT G4",
+        "medication": {
+            "form"           : "VACCINE",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
+                    "ingredients": [
+                        {
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
+                        },
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "ROTAVIRUS VACCINE ASPEN",
+            "registration_no": "59/30.2/0066",
+            "applicant_name" : "Aspen SA Operations (Pty) Ltd",
+            "manufacturers"  : "Aspen SA Operations (Pty) Ltd"
+        }
+    },
+    {
+        "name"      : "REASSORTANT G9",
+        "medication": {
+            "form"           : "VACCINE",
+            "routes"         : ["INJECTION"],
+            "doses"          : [
+                {
+                    "value"      : "2",
+                    "form"       : "DOSE",
+                    "units"      : "ML",
+                    "ingredients": [
+                        {
+                            "name"    : "LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1",
+                            "strength": {"value": "105.6", "units": "FFU"}
+                        },
+                        { "name": "REASSORTANT G2", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G3", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G4", "strength": {"value": "105.6", "units": "FFU"} },
+                        { "name": "REASSORTANT G9", "strength": {"value": "105.6", "units": "FFU"} }
+                    ]
+                }
+            ],
+            "country"        : "ZA",
+            "trade_name"     : "ROTAVIRUS VACCINE ASPEN",
+            "registration_no": "59/30.2/0066",
+            "applicant_name" : "Aspen SA Operations (Pty) Ltd",
+            "manufacturers"  : "Aspen SA Operations (Pty) Ltd"
+        }
+    }
 ]

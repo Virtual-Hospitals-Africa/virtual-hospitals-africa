@@ -7,6 +7,7 @@ import db from '../../db/db.ts'
 
 import { PRODUCT_CONTAINING_PRECISELY_NALBUPHINE_HYDROCHLORIDE_10_MILLIGRAM_1_MILLILITER_CONVENTIONAL_RELEASE_SOLUTION_FOR_INJECTION } from '../../shared/snomed_concepts.ts'
 import pick from '../../util/pick.ts'
+import { assertMatches } from '../../util/assertMatches.ts'
 
 describe('seed', () => {
   afterAll(() => db.destroy())
@@ -32,10 +33,11 @@ describe('seed', () => {
     'doses': [
       {
         'value': '1',
-        'description': 'ML',
+        'units': 'ML',
+        'form': 'SOLUTION',
         'ingredients': [
-          { 'name': 'ADRENALINE', 'equivalent_to': null, 'strength': { 'value': '12.5', 'units': 'UG' } },
-          { 'name': 'LIDOCAINE HYDROCHLORIDE', 'equivalent_to': null, 'strength': { 'value': '20', 'units': 'MG' } },
+          { 'name': 'ADRENALINE', 'strength': { 'value': '12.5', 'units': 'UG' } },
+          { 'name': 'LIDOCAINE HYDROCHLORIDE', 'strength': { 'value': '20', 'units': 'MG' } },
         ],
       },
     ],
@@ -50,12 +52,12 @@ describe('seed', () => {
     const parsed = parseSouthAfricaIngredient('AMLODIPINE BESILATE EQUIVALENT TO AMLODIPINE 10,0 MG VALSARTAN 320,0 MG HYDROCHLOROTHIAZIDE 25,0 MG')
     assertEquals(parsed, [
       { name: 'AMLODIPINE BESILATE', equivalent_to: 'AMLODIPINE', strength: { value: '10,0', units: 'MG' } },
-      { name: 'VALSARTAN', equivalent_to: null, strength: { value: '320,0', units: 'MG' } },
-      { name: 'HYDROCHLOROTHIAZIDE', equivalent_to: null, strength: { value: '25,0', units: 'MG' } },
+      { name: 'VALSARTAN', strength: { value: '320,0', units: 'MG' } },
+      { name: 'HYDROCHLOROTHIAZIDE', strength: { value: '25,0', units: 'MG' } },
     ])
   })
 
-  it('ignores parentheticals', () => {
+  it('retains parentheticals', () => {
     const parsed = parseMedicationSouthAfrica({
       'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1iLzzntxvJcZ4IXYKUVajx8gN_bLAQs8A404TGjnxKZJAOTer5k1h1SBgO3l0PZNF02V8fRf0IzII-ihawfCMoTbCRihVZfL_QEsHxVFfkBcw',
       'applicantName': 'THE DENTAL WAREHOUSE (PTY) LTD',
@@ -76,10 +78,11 @@ describe('seed', () => {
       'doses': [
         {
           'value': '100',
-          'description': 'G',
+          'units': 'G',
+          'form': 'GEL',
           'ingredients': [
-            { 'name': 'LIDOCAINE', 'equivalent_to': null, 'strength': { 'value': '5', 'units': 'G' } },
-            { 'name': 'CETRIMIDE', 'equivalent_to': null, 'strength': { 'value': '0.15', 'units': 'G' } },
+            { 'name': 'LIDOCAINE (LIGNOCAINE)', 'strength': { 'value': '5', 'units': 'G' } },
+            { 'name': 'CETRIMIDE', 'strength': { 'value': '0.15', 'units': 'G' } },
           ],
         },
       ],
@@ -105,17 +108,16 @@ describe('seed', () => {
       'doses': [
         {
           'value': '1',
-          'description': 'ML',
+          'units': 'ML',
+          'form': 'SOLUTION',
           'ingredients': [
             {
               'name': 'ADRENALINE',
-              'equivalent_to': null,
               'strength': { 'value': '12.5', 'units': 'UG' },
               'snomed_concept_id': '387362001',
             },
             {
               'name': 'LIDOCAINE HYDROCHLORIDE',
-              'equivalent_to': null,
               'strength': { 'value': '20', 'units': 'MG' },
               'snomed_concept_id': '61773008',
             },
@@ -200,5 +202,307 @@ describe('seed', () => {
       .executeTakeFirst()
 
     assertEquals(medicinal_product?.name, 'Product containing only epinephrine')
+  })
+
+  it('can find albumin human', async () => {
+    const parsed = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jm3KWKo6meVLZSOJjPPPUWh1rOOVH27l5pIPI7-vedQ8nDpsfYfAqerkkjyBxU9EHkT17mgMJESm4DrbUXjuHyKq2JgqpcA1Wk_klOJ9yKvw',
+      'applicantName': 'Octapharma South Africa (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1ivaAn--n-IEAOhO33r72SnTIxssKMeyp43jRgguEj_sOxY1AMXu9gUpiywtDVnvkdFZSoANuwk4c9ewWafPOdt_N4YZIZlqro2DKiKNsNXTw',
+      'application_no': '360057',
+      'licence_no': '36/30.3/0057',
+      'productName': 'ALBUMIN HUMAN 20 % OCTAPHARMA',
+      'status': 'Registered',
+      'expiryDate': '1900/01/01',
+      'reg_date': '2007/04/13',
+      'ingredient': 'EACH 1000,0 ml SOLUTION CONTAINS \nALBUMIN 200,0 g',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+
+    const [medication] = await performLookups(db, [parsed], { write_failure_files: false })
+
+    const medicinal_product = await db.selectFrom('snomed_inferred_canonical_name_and_category')
+      .where('id', '=', medication.snomed_concept_id)
+      .selectAll()
+      .executeTakeFirst()
+
+    assertEquals(medicinal_product?.name, 'Product containing only albumin human')
+  })
+
+  it('can parse an ingredient field with multiple ingredients', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hBYLhRL_D0XBZ4vL8VFCEVMVr8fnBmoLF414vRPTs4r9EjzKi6zOrDYM-NUxO9J3ctu35uOb6J9LCMvGP_pZdsHXkD7o8jY2hbb1Mn1WPq0g',
+      'applicantName': 'Pharma Dynamics (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jEpRubI2Q2ta-4iLzmXIMosLyMzNcKQW0t9yvWjxDQCGRo4LSXApw-rXz_T7jdEJql8yiWKjGQn67ft6Y6l9kv6hCohl_BjCOzSmLAoz_8-Q',
+      'application_no': '580140',
+      'licence_no': '58/18.8/0140',
+      'productName': 'RUBY PLUS',
+      'status': 'Registered',
+      'expiryDate': '2030/10/21',
+      'reg_date': '2025/10/21',
+      'ingredient': 'EACH TABLET CONTAINS: DROSPIRENONE 3,0 mg, ETHINYLESTRADIOL 0,03 mg, LEVOMEFOLATE CALCIUM 0,451 mg',
+      'therapeutic_area': null,
+      'api': 'DROSPIRENONE , ETHINYLESTRADIOL , LEVOMEFOLATE CALCIUM',
+    })
+
+    assertEquals(doses, [
+      {
+        'value': '1',
+        'form': 'TABLET',
+        'ingredients': [
+          {
+            'name': 'DROSPIRENONE',
+            'strength': { 'value': '3', 'units': 'MG' },
+          },
+          {
+            'name': 'ETHINYLESTRADIOL',
+            'strength': { 'value': '0.03', 'units': 'MG' },
+          },
+          { 'name': 'LEVOMEFOLATE CALCIUM', 'strength': { 'value': '0.451', 'units': 'MG' } },
+        ],
+      },
+    ])
+  })
+
+  it('can parse a partially incomplete equivalent to specification', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hTYPglcnwYTcgnvH4og0ySi5iR37LCuJQARazsMxUbTG3p6-9V9WdtRfIaE5DeH5ANMtQXdFql4wQdOHupx2WXHB6ZbO_ZgXW2U62KmLHfaQ',
+      'applicantName': 'MC Pharma (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1h-WdHmw2OUKEWi1IIZpQ0gvkBncuDjF_2N3OJgolt1Zpv2CYrQ261UDAA7_MlhNcfH8B32Sjjojs5XYWoMzlDVPq8_6KZDKQc7pBmnDTmr6g',
+      'application_no': '510188',
+      'licence_no': '51/32.10/0188',
+      'productName': 'DURAPHAT VARNISH 50mg/ml DENTAL SUSPENSION',
+      'status': 'Registered',
+      'expiryDate': '1900/01/01',
+      'reg_date': '2022/09/20',
+      'ingredient': 'Each 1 ml of suspension contains 50,0 MG SODIUM FLUORIDE EQUIVALENT TO FLUORIDE 22,6 MG',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+    console.log({ doses })
+    assertEquals(doses, [{
+      'value': '1',
+      'units': 'ML',
+      'form': 'SUSPENSION',
+      'ingredients': [
+        {
+          'name': 'SODIUM FLUORIDE',
+          'equivalent_to': {
+            'name': 'FLUORIDE',
+            'strength': {
+              'value': '22.6',
+              'units': 'MG',
+            },
+          },
+          'strength': { 'value': '50', 'units': 'MG' },
+        },
+      ],
+    }])
+  })
+
+  it('can parse a blister pack ingredient field which contains tablets of different dosages', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1i8J53oIHc-vB5E-mgoQsQYmBX5mzUWRLUXFJ3w_dkwxkFKMGazdMibsM85_GPRgr3Sug1VjqXrCbd1dE5gGA8Tc3gfVSPp_bkPiDaF2Zy04A',
+      'applicantName': 'Eurolab (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hP-1Go7lD8OzXed3Wcaiwu8hl2Q2o__UXnOr5hUR86ORX75Ir-5Xrq3SEpQSg01oL1gUJ-3f3b_eUuHrVXmBKoVQRrT39s40fuiZTgPC8YJA',
+      'application_no': '560064',
+      'licence_no': '56/5.7.2/0064',
+      'productName': 'APEMEZE COMBI PACK',
+      'status': 'Registered',
+      'expiryDate': '2028/11/14',
+      'reg_date': '2023/11/14',
+      'ingredient': 'EACH BLISTER PACK CONTAINS TWO CAPSULES, EACH CONTAINING APREPITANT 80,0 mg and ONE CAPSULE CONTAINING APREPITANT  125,0 mg',
+      'therapeutic_area': null,
+      'api': 'Aprepitant',
+    })
+    assertEquals(doses, [{
+      'value': '1',
+      'form': 'CAPSULE',
+      'ingredients': [
+        { 'name': 'APREPITANT', 'strength': { 'value': '80', 'units': 'MG' } },
+      ],
+    }, {
+      'value': '1',
+      'form': 'CAPSULE',
+      'ingredients': [
+        { 'name': 'APREPITANT', 'strength': { 'value': '125', 'units': 'MG' } },
+      ],
+    }])
+  })
+
+  it('can parse an ingredient field that does not start with the word "each"', () => {
+    const parsed = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hcfEuMkDMez2UcZjkYvSdvZxsGbSrm38Aox0e9X7FZ9HBp4ji01XXRvLKE2UHL6K-KIp5GsAiSLg2qQl5tC-l15BJt_KkPm6v9vA5MyKZpQg',
+      'applicantName': 'Adcock Ingram Limited',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1gtH5avFLzJPDRbLZdW3ot5oqGcRFUujEFxIWJEExag5SzwKJujWRfz682ZhlHaOy1mowFZPo-5Kd2uUXdaeUgKMX2vFIFpq_cB_4PRFxgc1w',
+      'application_no': 'F0008',
+      'licence_no': 'F/2.8/8',
+      'productName': 'PROPAIN',
+      'status': 'Registered',
+      'expiryDate': '1900-01-01',
+      'reg_date': '1974-06-05',
+      'ingredient': 'TABLET\nCAFFEINE 50 MG\nCODEINE PHOSPHATE 10 MG\nDIPHENHYDRAMINE HYDROCHLORIDE 5 MG\nPARACETAMOL 400 MG',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+
+    assertMatches(parsed.doses, [
+      {
+        'value': '1',
+        'form': 'TABLET',
+        'ingredients': [
+          {
+            'name': 'CAFFEINE',
+            'strength': { 'value': '50', 'units': 'MG' },
+          },
+          {
+            'name': 'CODEINE PHOSPHATE',
+            'strength': { 'value': '10', 'units': 'MG' },
+          },
+          {
+            'name': 'DIPHENHYDRAMINE HYDROCHLORIDE',
+            'strength': { 'value': '5', 'units': 'MG' },
+          },
+          {
+            'name': 'PARACETAMOL',
+            'strength': { 'value': '400', 'units': 'MG' },
+          },
+        ],
+      },
+    ])
+  })
+
+  it('parses an ingredient field with a greater than character, interpreting this as just an exact strength', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jxvyUOyxIqVtPnl2oIhZsp_LfksKyyAHFNYDrOLms0k5vhfBelVBuw_fcaZy4BOvl32zAgfWI7cDpAF3mzCzlQZOciZDKE1d2zjo78N3440g',
+      'applicantName': 'Aspen SA Operations (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hhtElnsbvCO4OEvDznOtx3oerFQFh4kG_oZV3isecARJloF_r7HZ1PiYtZheM2zPAu-4IDWkkLPddp_R5ad9QOuhpf48nSonjINHSewyzkqg',
+      'application_no': '59/30.2/0066',
+      'licence_no': '59/30.2/0066',
+      'productName': 'ROTAVIRUS VACCINE ASPEN',
+      'status': 'Registered',
+      'expiryDate': '2030/12/02',
+      'reg_date': '2025/12/02',
+      'ingredient':
+        'EACH 2,0 ml DOSE CONTAINS: LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1 ≥ 105.6 FFU REASSORTANT G2 ≥ 105.6 FFU REASSORTANT G3 ≥ 105.6 FFU REASSORTANT G4 ≥ 105.6 FFU REASSORTANT G9 ≥ 105.6 FFU',
+      'therapeutic_area': null,
+      'api': 'LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1 , FFU REASSORTANT G2 , FFU REASSORTANT G3 , FFU REASSORTANT G4 , FFU REASSORTANT G9',
+    })
+
+    assertMatches(doses, [
+      {
+        'value': '2',
+        'units': 'ML',
+        'ingredients': [
+          {
+            'name': 'LIVE ATTENUATED BOVINE - HUMAN ROTAVIRUS REASSORTANT G1',
+            'strength': { 'value': '105.6', 'units': 'FFU' },
+          },
+          {
+            'name': 'REASSORTANT G2',
+            'strength': { 'value': '105.6', 'units': 'FFU' },
+          },
+          {
+            'name': 'REASSORTANT G3',
+            'strength': { 'value': '105.6', 'units': 'FFU' },
+          },
+          {
+            'name': 'REASSORTANT G4',
+            'strength': { 'value': '105.6', 'units': 'FFU' },
+          },
+          {
+            'name': 'REASSORTANT G9',
+            'strength': { 'value': '105.6', 'units': 'FFU' },
+          },
+        ],
+      },
+    ])
+  })
+
+  it('can parse an ingredient field with an equivalent to with a different strength value', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1go7Y68fvXddzOvxSlKPV-YHZI_gPVnvPRAU8ime5HeQ-7a-V1EqFoRSC4xkzdlu_LQKzQ5ToRCuW0ZPnu75NJAwjOF42KAsDepSG2MzHtI8A',
+      'applicantName': 'Hetero Drugs South Africa (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jdEruIL9Yf2nhTDC1F8HNfpYszoGSRxQPt5fzQqA3c6yRseu6UuTvjehitwHqFa4DdP6w1wXgRXr7wIcgwxh8v865JYFeHD6MmPewHn6vK0g',
+      'application_no': '510202',
+      'licence_no': '51/34/0202',
+      'productName': 'ZOLTERO',
+      'status': 'Registered',
+      'expiryDate': '1900/01/01',
+      'reg_date': '2022/08/30',
+      'ingredient': 'Each vial with 5 ml concentrate contains 4 mg ZOLEDRONIC ACID (ANHYDROUS) EQUIVALENT TO ZOLEDRONIC ACID MONOHYDRATE 4,264 mg',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+
+    assertEquals(doses, [
+      {
+        'value': '5',
+        'units': 'ML',
+        'form': 'VIAL',
+        'ingredients': [
+          {
+            'name': 'ZOLEDRONIC ACID (ANHYDROUS)',
+            'strength': { 'value': '4', 'units': 'MG' },
+            'equivalent_to': { 'name': 'ZOLEDRONIC ACID MONOHYDRATE', 'strength': { 'value': '4.264', 'units': 'MG' } },
+          },
+        ],
+      },
+    ])
+  })
+
+  it('handles OF in the ingredient field', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hjGuHz1LN2OpwAF5tQmzbOvA9ZKisd0e1vrIM44cO8zJZWMMXyt8tIwFhWp7wf2YGXKnE7qxfMiJGJWjhV_mNM_c7izKufQi-2MPNoUTyv2Q',
+      'applicantName': 'Ranbaxy Pharmaceuticals (Pty) Ltd',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jf1D-4IUBMBLKoiZnQctYIoFEg13RY3hzu6zwHWP5psvIX5UN4yM0i-Be_CA5MHElI2xVnQRBmgOd1OAN-uJ8sZBmQa0Rv4Bc88-ManFLunA',
+      'application_no': '560531',
+      'licence_no': '56/20.1.1/0531',
+      'productName': 'TIZEG',
+      'status': 'Registered',
+      'expiryDate': '2028/11/14',
+      'reg_date': '2023/11/14',
+      'ingredient': 'EACH 10 ml CONTAINS 50,0 mg OF TIGECYCLINE',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+    assertEquals(doses, [
+      {
+        'value': '10',
+        'form': 'DOSE',
+        'units': 'ML',
+        'ingredients': [
+          { 'name': 'TIGECYCLINE', 'strength': { 'value': '50', 'units': 'MG' } },
+        ],
+      },
+    ])
+  })
+
+  it('parses a medication with no EACH', () => {
+    const { doses } = parseMedicationSouthAfrica({
+      'secureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1jOiDaMkMW722rhJ3040Iu9LLFkAhlEO6y2Fk7YqEFwLalQzH5Z0VXTwDKe4radslDqIUVjBU1046KcdazDCyAFANszbwElrh4FcF-9VPQ3Vg',
+      'applicantName': 'GENPHARM PHARMACEUTICALS (1993) (PTY) LTD',
+      'appSecureId': 'CfDJ8JZt5E2q6SJAoUYxRcwyi1hCqKdhRmdQTSiZyVM_N-maXh8a_8s5MYW8rcFPJtRLk7rt1EYiPFYVXlfoj4R3wXfaT7s4slBUvUaIpfyapV9eUfPuhT737UZ3c6_gKWS1Qg',
+      'application_no': 'B0879',
+      'licence_no': 'Old Medicine',
+      'productName': 'CHLORPROMAJECT 25 MG',
+      'status': 'Old Medicine',
+      'expiryDate': '1900/01/01',
+      'reg_date': '1969/11/29',
+      'ingredient': '1 ML\nCHLORPROMAZINE HYDROCHLORIDE A 25 MG',
+      'therapeutic_area': null,
+      'api': 'None',
+    })
+    assertEquals(doses, [
+      {
+        'value': '1',
+        'units': 'ML',
+        'form': 'DOSE',
+        'ingredients': [
+          { 'name': 'CHLORPROMAZINE HYDROCHLORIDE A', 'strength': { 'value': '25', 'units': 'MG' } },
+        ],
+      },
+    ])
   })
 })

@@ -12,7 +12,7 @@ export type ChatbotName = 'patient' | 'pharmacist'
 
 export type Comparator = '<' | '<=' | '=' | '>' | '>='
 
-export type DurationUnits = 'days' | 'indefinitely' | 'months' | 'weeks' | 'years'
+export type DurationUnits = 'days' | 'hours' | 'indefinitely' | 'minutes' | 'months' | 'weeks' | 'years'
 
 export type EmergencyContactRelationship = 'Child' | 'Friend' | 'Guardian' | 'Other' | 'Parent' | 'Sibling' | 'Spouse'
 
@@ -61,6 +61,7 @@ export type MaritalStatus = 'Co-habiting' | 'Divorced' | 'Married' | 'Never Marr
 export type MedicationFrequency =
   | 'ac'
   | 'am'
+  | 'at'
   | 'bd'
   | 'bm'
   | 'bw'
@@ -70,6 +71,7 @@ export type MedicationFrequency =
   | 'od'
   | 'pm'
   | 'prn'
+  | 'q12h'
   | 'q15'
   | 'q1h'
   | 'q24h'
@@ -680,6 +682,13 @@ export interface MedicationDoseIngredients {
   updated_at: Generated<Timestamp>
 }
 
+export interface MedicationDoseIngredientStrengthEquivalences {
+  id: string
+  snomed_concept_id: Int8
+  units: string
+  value: Numeric
+}
+
 export interface MedicationDoseIngredientStrengths {
   id: string
   units: string
@@ -688,9 +697,9 @@ export interface MedicationDoseIngredientStrengths {
 
 export interface MedicationDoses {
   description: string
-  description_is_units: Generated<boolean>
   id: string
   medication_id: string
+  units: string | null
   value: Numeric
 }
 
@@ -1758,6 +1767,7 @@ export interface DB {
   media_speeches: MediaSpeeches
   media_videos: MediaVideos
   medication_availabilities: MedicationAvailabilities
+  medication_dose_ingredient_strength_equivalences: MedicationDoseIngredientStrengthEquivalences
   medication_dose_ingredient_strengths: MedicationDoseIngredientStrengths
   medication_dose_ingredients: MedicationDoseIngredients
   medication_doses: MedicationDoses

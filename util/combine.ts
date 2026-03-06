@@ -5,12 +5,18 @@ type OverlappingKeys<X, Y> = Extract<keyof X, keyof Y>
 export function combine<
   X extends object,
   Y extends object,
->(x: X, y: OverlappingKeys<X, Y> extends never ? Y : never): X & Y {
+>(x: X, y: OverlappingKeys<X, Y> extends never ? Y : never, opts?: { allow_collision_if_identical?: boolean }): X & Y {
   // deno-lint-ignore no-explicit-any
   const clone: any = { ...x }
   for (const key in y) {
     if (key in x) {
-      throw new Error(`Name collision ${key}`)
+      if (!opts?.allow_collision_if_identical) {
+        throw new Error(`Name collision ${key}`)
+      }
+      // deno-lint-ignore no-explicit-any
+      if ((x as any)[key] !== (y as any)[key]) {
+        throw new Error(`Name collision ${key} with nonidentical values`)
+      }
     }
     clone[key] = y[key]
   }

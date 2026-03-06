@@ -51,20 +51,14 @@ export async function up(db: Kysely<DB>) {
           ))
         .addColumn('value', 'decimal', (col) => col.notNull())
         .addColumn(
+          'units',
+          'varchar(255)',
+        ).addColumn(
           'description',
           'varchar(255)',
           (col) => col.notNull(),
         ),
   )
-
-  await sql`
-    ALTER TABLE medication_doses
-    ADD description_is_units BOOLEAN NOT NULL
-    GENERATED ALWAYS AS (
-      "description" IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
-    )
-    STORED
-  `.execute(db)
 
   await createStandardTable(
     db,
@@ -89,6 +83,31 @@ export async function up(db: Kysely<DB>) {
     },
     (qb) =>
       qb
+        .addColumn(
+          'value',
+          'decimal',
+          (col) => col.notNull(),
+        )
+        .addColumn(
+          'units',
+          'varchar(16)',
+          (col) => col.notNull(),
+        ),
+  )
+
+  await createPointerTable(
+    db,
+    'medication_dose_ingredient_strength_equivalences',
+    {
+      references: 'medication_dose_ingredient_strengths',
+      primary_key_type: 'uuid',
+    },
+    (qb) =>
+      qb
+        .addColumn('snomed_concept_id', 'bigint', (col) =>
+          col.notNull().references('snomed_inferred_canonical_name_and_category.id').onDelete(
+            'cascade',
+          ))
         .addColumn(
           'value',
           'decimal',
@@ -150,6 +169,7 @@ export async function down(db: Kysely<DB>) {
   await db.schema.dropIndex('idx_medications_trade_name_gin').execute()
 
   await db.schema.dropTable('medication_availabilities').execute()
+  await db.schema.dropTable('medication_dose_ingredient_strength_equivalences').execute()
   await db.schema.dropTable('medication_dose_ingredient_strengths').execute()
   await db.schema.dropTable('medication_dose_ingredients').execute()
   await db.schema.dropTable('medication_doses').execute()

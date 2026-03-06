@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -xe
 
 # Usage: ./scripts/worktree-isolated.sh [--skipdb] <branch-name> [prompt]
 # Example: ./scripts/worktree-isolated.sh fix-bug "Fix the authentication bug in the login flow"
@@ -110,7 +110,7 @@ else
   deno install --allow-scripts >&2
 
   if ! $SKIP_DB; then
-    ln -s "$latest_dump" "$WORKTREE_DIR/db/dumps/latest"
+    ln -s "$WORKTREE_DIR/db/dumps/latest" "$latest_dump"
     deno task local db:create >&2
     deno task local db:restore latest >&2
   fi

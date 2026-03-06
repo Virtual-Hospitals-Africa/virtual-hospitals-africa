@@ -4,6 +4,7 @@ import { base, identity } from './_base.ts'
 import { medication_availabilities, type MedicationAvailabilityOpts } from './medication_availabilities.ts'
 
 export const medication_organizations = base({
+  verbose: true,
   top_level_table: 'medications',
   baseQuery(
     trx: TrxOrDbOrQueryCreator,

@@ -1,6 +1,12 @@
 export type ParsedIngredient = {
   name: string
-  equivalent_to: null | string
+  equivalent_to?: string | {
+    name: string
+    strength: {
+      value: string
+      units: string
+    }
+  }
   strength: null | {
     value: string
     units: string
@@ -9,7 +15,8 @@ export type ParsedIngredient = {
 
 export type ParsedDoseBase<Ingredient> = {
   value: string
-  description: string
+  units?: string
+  form: string
   ingredients: Ingredient[]
 }
 

@@ -13,6 +13,16 @@ export function tsvAsRows<Schema extends z.ZodTypeAny>(
   return collect(parseTsvTyped(filepath, schema))
 }
 
+export async function writeRowsAsTypescript(
+  output_file_path: string,
+  // deno-lint-ignore no-explicit-any
+  rows: any[],
+) {
+  const content = `export default ${humanReadableJson(rows as JsonSerializable)}\n`
+  await Deno.writeTextFile(output_file_path, content, { create: true })
+  console.log(`Written ${rows.length} rows to ${output_file_path}`)
+}
+
 export async function rewriteTsvAsTypescript<Schema extends z.ZodTypeAny>(
   filepath: string,
   schema?: Schema,
@@ -26,9 +36,7 @@ export async function rewriteTsvAsTypescript<Schema extends z.ZodTypeAny>(
     } as unknown as z.ZodTypeAny,
   )
   const output_file_path = filepath.replace('.tsv', '.ts')
-  const content = `export default ${humanReadableJson(rows as JsonSerializable)}\n`
-  await Deno.writeTextFile(output_file_path, content, { create: true })
-  console.log(`Written ${rows.length} rows to ${output_file_path}`)
+  await writeRowsAsTypescript(output_file_path, rows)
 }
 
 if (import.meta.main) {

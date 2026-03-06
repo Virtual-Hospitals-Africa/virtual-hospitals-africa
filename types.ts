@@ -45,9 +45,13 @@ export type AnyRecord = Record<string, unknown>
 
 export type Values<R> = R extends Record<any, infer V> ? V : never
 
-export type NonNullableProperty<R, K extends keyof R> =
-  & R
-  & { [P in K]: NonNullable<R[P]> }
+export type NonNullableProperty<T, K extends keyof T> =
+  & {
+    [P in keyof T]: T[P]
+  }
+  & {
+    [P in K]-?: NonNullable<T[P]>
+  } extends infer O ? { [P in keyof O]: O[P] } : never
 
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
@@ -2064,8 +2068,8 @@ export type RenderedMedication = {
   doses: {
     medication_dose_id: string
     value: string
+    units: string | null
     description: string
-    description_is_units: boolean
     ingredients: RenderedMedicationIngredient[]
   }[]
 }

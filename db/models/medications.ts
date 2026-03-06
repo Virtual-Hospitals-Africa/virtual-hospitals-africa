@@ -5,9 +5,10 @@ import { base, identity } from './_base.ts'
 import { DB, SnomedInferredCanonicalNameAndCategory } from '../../db.d.ts'
 
 export const medications = base({
+  verbose: true,
   top_level_table: 'medications',
-  baseQuery(trx: TrxOrDbOrQueryCreator, opts: { search?: Maybe<string> }) {
-    const qb = trx
+  baseQuery(trx: TrxOrDbOrQueryCreator, opts: { search?: Maybe<string>; form?: string }) {
+    let qb = trx
       .selectFrom('medications')
       .innerJoin('snomed_inferred_canonical_name_and_category as medication_snomed', 'medication_snomed.id', 'medications.snomed_concept_id')
       .select((eb) => [
@@ -27,8 +28,8 @@ export const medications = base({
             .select((eb_doses) => [
               'medication_doses.id as medication_dose_id',
               asText(eb_doses, 'medication_doses.value').as('value'),
+              'medication_doses.units',
               'medication_doses.description',
-              'medication_doses.description_is_units',
               jsonArrayFrom(
                 eb_doses.selectFrom('medication_dose_ingredients')
                   .innerJoin(
@@ -51,6 +52,12 @@ export const medications = base({
             ]),
         ).as('doses'),
       ])
+
+    if (
+      opts.form
+    ) {
+      qb = qb.where('medications.form', '=', opts.form.toUpperCase())
+    }
 
     if (!opts.search) return qb.orderBy('medications.trade_name', 'asc')
 

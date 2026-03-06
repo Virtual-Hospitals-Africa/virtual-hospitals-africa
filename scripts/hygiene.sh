@@ -5,7 +5,7 @@ set -uo pipefail
 declare -A rules=(
   [rule_no_camel_case]="Found camelCase variable declarations:"
   [rule_no_node_imports]="Found node imports:"
-  [rule_test_files_naming]="Files in /test that aren't tests nor helpers:"
+  [rule_test_files_naming]="Files in /test that aren't tests, json, nor helpers:"
   [rule_no_db_imports_in_frontend]="components/ and islands/ should never import from db/:"
   [rule_no_only_in_tests]="Found .only( in test files (remove before committing):"
   [rule_imports_at_the_start]="Found import statement later in the file"
@@ -65,6 +65,7 @@ rule_test_files_naming() {
   ! find test -type f \
     ! -name '*test.ts' \
     ! -name '*test.tsx' \
+    ! -name '*json' \
     ! -path 'test/_helpers/*' \
     ! -name '_setup.ts' \
     ! -name '.DS_Store' \
