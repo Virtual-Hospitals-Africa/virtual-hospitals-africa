@@ -70,6 +70,14 @@ export class DosageParser {
     this.lookForFrequencyAndDuration()
     this.lookForWeightLimits()
     this.lookForAlternateSpecification()
+
+    // Tablet/suppository patterns must run before lookForDosage() to avoid partial matches
+    this.lookFor(/^(\d+)\s*(suppository|suppositories|tablets|tablet)$/, (value) => ({ quantity: parseInt(value) }))
+    this.lookFor(
+      /^(\d+)\s*-\s*(\d+)\s*(suppository|suppositories|tablets|tablet)$/,
+      (low, high) => ({ low: [{ quantity: parseInt(low) }], high: [{ quantity: parseInt(high) }] }),
+    )
+
     this.lookForDosage()
     this.handleSlash()
 
@@ -80,12 +88,6 @@ export class DosageParser {
       }
       return updates
     })
-
-    this.lookFor(/^(\d+)\s*(suppository|suppositories|tablets|tablet)$/, (value) => ({ quantity: parseInt(value) }))
-    this.lookFor(
-      /^(\d+)\s*-(\d+)\s*(suppository|suppositories|tablets|tablet)$/,
-      (low, high) => ({ low: [{ quantity: parseInt(low) }], high: [{ quantity: parseInt(high) }] }),
-    )
 
     this.lookFor(/(ethinylestradiol)/, (ingredient_name) => ({ ingredient_name }))
     for (const ingredient of this.medicine.ingredients) {
@@ -735,7 +737,7 @@ export class DosageParser {
         }],
       }),
     )
-    this.lookFor(/^(\d+\.?\d*)\s*(?:-|to)\s*(\d+\.?\d*)/i, (minimum, maximum) => ({
+    this.lookFor(/^(\d+\.?\d*)\s*(?:-|to)\s*(\d+\.?\d*)(?!\s*(?:tablet|suppository))/i, (minimum, maximum) => ({
       minimum: parseFloat(minimum),
       maximum: parseFloat(maximum),
     }))
