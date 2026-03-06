@@ -399,6 +399,10 @@ export class DosageParser {
   }
 
   lookForMaxDose() {
+    // Handle "up to N-M times daily" before the generic max dose pattern
+    this.lookFor(/^up to (\d+)\s*-\s*(\d+) times (?:daily|a day|per day)$/i, (low, high) => ({
+      divided_dose_count: [parseInt(low), parseInt(high)],
+    }))
     // this.lookFor(/(?:up to )?(?:maximum|cumulative) (?:daily|total|cumulative) dose[:= ]+(.+)$/i, (max_text) => {
     //   const max_parser = this.sub(max_text.trim())
     //   const p = max_parser.parsed!
