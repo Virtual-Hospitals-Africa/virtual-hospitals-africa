@@ -331551,7 +331551,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION"                                      : "Primary Healthcare",
             "LEVEL OF CARE"                                    : "PHC",
             "CHAPTER NUMBER"                                   : "10",
@@ -331564,7 +331564,7 @@
             "MEDICINE NAME (International Nonproprietary Name)": "Aciclovir",
             "DOSAGE FORM"                                      : "Tablet/Capsule",
             "DOSE"                                             : "800 mg",
-            "DOSING INTERVAL"                                  : "5 times daily; for 7 days)",
+            "DOSING INTERVAL"                                  : "5 times daily; for 7 days",
             "DURATION OF TREATMENT"                            : null,
             "ROUTE OF ADMINISTRATION"                          : "Oral",
             "DDD"                                              : "4g",
@@ -331575,8 +331575,50 @@
             "ADULT/ CHILDREN"                                  : "Adult",
             "PRESCRIBER"                                       : "Doctor"
         },
-        "error_message": "Values are not equal: unclosed parenthetical 5 times daily; for 7 days)\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   true\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   false\u001b[22m\u001b[39m\n",
-        "error_stack": "AssertionError: Values are not equal: unclosed parenthetical 5 times daily; for 7 days)\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   true\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   false\u001b[22m\u001b[39m\n\n    at assertEquals (https://deno.land/std@0.224.0/assert/assert_equals.ts:52:9)\n    at splitParentheticals (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/split.ts:14:5)\n    at Array.map (<anonymous>)\n    at splitSemicolon (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/split.ts:9:21)\n    at splitPartsAndParentheticals (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/split.ts:48:10)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:93:24)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:38:37)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66\n    at asResult (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/util/asResult.ts:5:19)"
+        "actual_parsed"  : {
+            "atc"              : "J05AB01",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type" : "codes",
+                "codes": ["B02.0", "B02.1", "B02.2", "B02.3", "B02.7", "B02.8", "B02.9"]
+            },
+            "medicine"         : {
+                "name"       : "Aciclovir",
+                "ingredients": [ {"name": "Aciclovir"} ]
+            },
+            "schedules"        : [
+                { "units": "mg", "value": 800, "divided_dose_count": 5                                           },
+                { "units": "mg", "value": 800,                          "duration": {"value": 7, "units": "day"} }
+            ],
+            "raw_dose"         : "800 mg",
+            "raw_dose_interval": "5 times daily; for 7 days"
+        },
+        "expected_parsed": {
+            "atc"              : "J05AB01",
+            "form"             : "Tablet/Capsule",
+            "route"            : "Oral",
+            "aware"            : null,
+            "acute_chronic"    : "Acute",
+            "prescriber"       : "Doctor",
+            "icd10_indications": {
+                "type" : "codes",
+                "codes": ["B02.0", "B02.1", "B02.2", "B02.3", "B02.7", "B02.8", "B02.9"]
+            },
+            "medicine"         : {
+                "name"       : "Aciclovir",
+                "ingredients": [ {"name": "Aciclovir"} ]
+            },
+            "schedules"        : [
+                { "units": "mg", "value": 800, "divided_dose_count": 5                                           },
+                { "units": "mg", "value": 800,                          "duration": {"value": 7, "units": "day"} }
+            ],
+            "raw_dose"         : "800 mg",
+            "raw_dose_interval": "5 times daily; for 7 days"
+        }
     },
     {
         "row": {
