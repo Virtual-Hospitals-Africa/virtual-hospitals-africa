@@ -48,9 +48,6 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   // Magnesium Sulphate 50%
   '2g in 1ml',
   // Adrenaline
-  '1:1000 mL soak gauze or apply directly',
-  '2ml of 1:1000',
-  '1ml of 1:1000',
   // Activated charcoal
   '1g/kg in 50-100ml water',
   // Bolus dose with duration
@@ -60,7 +57,6 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   // Fluticasone spray dose
   '50mcg/spray. 1 spray',
   // Dextrose 50%: parenthetical concentration label
-  '1 mL/kg',
   // Magnesium: complex dose with per_size collision
   '0.5-2.0 mmol/kg/day = 0.02-0.08 mmol/kg/hour',
   // Lidocaine: dose with two max parentheticals

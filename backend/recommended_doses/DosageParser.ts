@@ -47,9 +47,20 @@ export class DosageParser {
     this.lookFor(/(130 - Na)/i, (equation) => ({ equation }))
     this.lookFor(/1000ml \+ 50ml\/kg\/24\s*hours for each kg/i, (equation) => ({ equation }))
     this.lookFor(/1500ml \+ 20ml\/kg\/24\s*hours for each kg >20kg/i, (equation) => ({ equation }))
+    this.lookFor(/^diluted? (\d+):(\d+)(?: with (.+))?$/i, (num_str, den_str, diluent) => {
+      const result: ParsedDose = { concentration_ratio: [parseFloat(num_str), parseFloat(den_str)] as [number, number] }
+      if (diluent) result.diluents = [{ ingredient_name: diluent.trim() }]
+      return result
+    })
+    this.lookFor(/^(\d+):(\d+)\s+m[lL]\s+(.+)$/i, (num_str, den_str, rest) => ({
+      value: parseFloat(num_str),
+      units: 'ml',
+      concentration_ratio: [parseFloat(num_str), parseFloat(den_str)] as [number, number],
+      special_instructions: rest.trim(),
+    }))
     this.lookForSpecialInstructions()
     this.lookFor(/\binjections?\b/i, redundant)
-    this.lookFor(/\bdiluted\b/i, redundant)
+    this.lookFor(/\bdiluted?\b/i, redundant)
 
     this.lookFor(/(placebo)/i, (ingredient_name) => ({ ingredient_name }))
     this.lookFor(/^dose titrated$/i, () => ({ titrate: { to_effect: true } }))
@@ -719,11 +730,17 @@ export class DosageParser {
       low: [{ concentration: parseFloat(low) }],
       high: [{ concentration: parseFloat(high) }],
     }))
-    this.lookFor(/^[Dd]ilut(?:e|ed) (\d+):(\d+)$/i, (numerator_str, denominator_str) => {
-      const num = parseFloat(numerator_str)
-      const den = parseFloat(denominator_str)
-      return { concentration: num / (num + den) * 100 }
-    })
+    this.lookFor(/^[Dd]ilut(?:e|ed) (\d+):(\d+)$/i, (num_str, den_str) => ({
+      concentration_ratio: [parseFloat(num_str), parseFloat(den_str)] as [number, number],
+    }))
+    this.lookFor(/^(\d+\.?\d*)\s*ml\s+of\s+(\d+):(\d+)$/i, (vol_str, num_str, den_str) => ({
+      value: parseFloat(vol_str),
+      units: 'ml',
+      concentration_ratio: [parseFloat(num_str), parseFloat(den_str)] as [number, number],
+    }))
+    this.lookFor(/^(\d+):(\d+)$/i, (num_str, den_str) => ({
+      concentration_ratio: [parseFloat(num_str), parseFloat(den_str)] as [number, number],
+    }))
     this.lookFor(/^(\d+\.?\d*)\s*%$/i, (concentration) => ({
       concentration: parseFloat(concentration),
     }))
