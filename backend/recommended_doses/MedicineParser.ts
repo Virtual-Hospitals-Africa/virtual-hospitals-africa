@@ -8,6 +8,7 @@ import { combine } from '../../util/combine.ts'
 import { parseIcd10Indications } from './icd10.ts'
 import { parsePrescriber } from './prescriber.ts'
 import { forms_with_singular_doses } from '../../db/seed/defs/inventory_medication/shared.ts'
+import { FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS } from './fallback_medicine_special_instructions.ts'
 
 export class MedicineParser {
   medicine: ParsedMedicine
@@ -82,10 +83,7 @@ export class MedicineParser {
 
     if (dose === 'already specified') return [{}]
     if (dose === 'n/a') return [{}]
-    if (dose === '13 x 400mg tablets per 2L normal saline (sodium chloride 0.9%) for wound irrigation 400mg per 35cm2. applied twice daily') {
-      return [{ special_instructions: dose }]
-    }
-    if (dose === '(130 - Na) x body weight in kg x 4') return [{ special_instructions: dose }]
+    if (FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS.has(dose)) return [{ special_instructions: dose }]
     const dose_parts = splitPartsAndParentheticals(dose)
     return dose_parts.map((dose_part) =>
       DosageParser.asParsedDose(

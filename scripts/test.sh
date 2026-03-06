@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -eo pipefail
+set -xeo pipefail
 
 # shellcheck source=.env disable=SC1091
 source .env
@@ -33,19 +33,25 @@ run_test_server_args=""
 test_servers_were_already_running=false
 test_servers_pid=
 
-while [[ "$#" -gt 0 && "$1" =~ "--" ]]; do
-  if [[ "$1" == "--use-build" ]]; then
-    run_test_server_args="--use-build"
-    shift
-    continue
+script_flags=(--use-build --no-parallel --verbose)
+
+handle_script_flag() {
+  case "$1" in
+    --use-build)  run_test_server_args="--use-build" ;;
+    --no-parallel) parallel_opts="" ;;
+    --verbose)    set -x ;;
+  esac
+}
+
+remaining_args=()
+for arg in "$@"; do
+  if [[ " ${script_flags[*]} " == *" $arg "* ]]; then
+    handle_script_flag "$arg"
+  else
+    remaining_args+=("$arg")
   fi
-  if [[ "$1" == "--verbose" ]]; then
-    set -x
-    shift
-    continue
-  fi
-  break
 done
+set -- "${remaining_args[@]}"
 
 # Resolve arguments: if an arg doesn't look like a file path, try to find a matching test file
 # by searching for describe/describeParallel blocks with that name

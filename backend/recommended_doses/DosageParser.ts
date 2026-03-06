@@ -133,11 +133,11 @@ export class DosageParser {
   }
 
   lookForSeriesBeforeAfter() {
-    this.lookFor(/(\d+) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? after (.+)/i, (value, units, event) => ({
+    this.lookFor(/(\d+|an?) (minute|min|hour|hr|day|wk|week|month|yr|year)(?:s)? after (.+)/i, (value, units, event) => ({
       after: {
         event,
         time: {
-          value: parseInt(value),
+          value: value === 'a' || value === 'an' ? 1 : parseInt(value),
           units: normalizeTimeUnit(units),
         },
       },
