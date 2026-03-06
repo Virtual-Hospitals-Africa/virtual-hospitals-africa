@@ -43,6 +43,7 @@ export class DosageParser {
 
     this.lookFor(/orally/i, redundant)
     this.lookFor(/\badministered\b/i, redundant)
+    this.lookFor(/\bbase\b/i, redundant)
 
     this.lookFor(/(130 - Na)/i, (equation) => ({ equation }))
     this.lookFor(/1000ml \+ 50ml\/kg\/24\s*hours for each kg/i, (equation) => ({ equation }))
