@@ -13,4 +13,5 @@ export const FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS = new Set([
   '2-5 mL/hour',
   '5 mL/hour over 4 hours',
   'confirm dose with Jane',
+  '<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)',
 ])

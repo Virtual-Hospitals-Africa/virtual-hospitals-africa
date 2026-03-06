@@ -328635,7 +328635,7 @@
         }
     },
     {
-        "row": {
+        "row"            : {
             "PUBLICATION": "Paediatric Hospital Level",
             "LEVEL OF CARE": "Hospital",
             "CHAPTER NUMBER": "7",
@@ -328659,8 +328659,46 @@
             "ADULT/ CHILDREN": "Children",
             "PRESCRIBER": "Doctor prescribed"
         },
-        "error_message": "Values are not equal: unclosed parenthetical <1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   false\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   true\u001b[22m\u001b[39m\n",
-        "error_stack": "AssertionError: Values are not equal: unclosed parenthetical <1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)\n\n\n    \u001b[90m\u001b[1m[Diff]\u001b[22m\u001b[39m \u001b[31m\u001b[1mActual\u001b[22m\u001b[39m / \u001b[32m\u001b[1mExpected\u001b[22m\u001b[39m\n\n\n\u001b[31m\u001b[1m-   false\u001b[22m\u001b[39m\n\u001b[32m\u001b[1m+   true\u001b[22m\u001b[39m\n\n    at assertEquals (https://deno.land/std@0.224.0/assert/assert_equals.ts:52:9)\n    at splitParentheticals (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/split.ts:14:5)\n    at splitParentheticals (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/split.ts:23:27)\n    at Array.map (<anonymous>)\n    at splitSemicolon (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/split.ts:9:21)\n    at splitPartsAndParentheticals (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/split.ts:39:14)\n    at MedicineParser.parseSchedules (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:93:24)\n    at new MedicineParser (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:37:33)\n    at MedicineParser.parse (file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/backend/recommended_doses/MedicineParser.ts:66:12)\n    at file:///Users/willweiss/dev/morehumaninternet/vha-worktrees/parse_remaining_recommended_doses/test/backend/recommended_doses_parser.test.ts:20:66"
+        "actual_parsed"  : {
+            "atc": "A12BA01",
+            "form": "Injection",
+            "route": "Intravenous infusion (IVI)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["E87.6"] },
+            "medicine": {
+                "name"       : "Potassium Chloride",
+                "ingredients": [ {"name": "Potassium Chloride"} ]
+            },
+            "schedules": [
+                {
+                    "special_instructions": "<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)"
+                }
+            ],
+            "raw_dose": "<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)",
+            "raw_dose_interval": "n/a"
+        },
+        "expected_parsed": {
+            "atc": "A12BA01",
+            "form": "Injection",
+            "route": "Intravenous infusion (IVI)",
+            "aware": null,
+            "acute_chronic": "Acute",
+            "prescriber": "Doctor prescribed",
+            "icd10_indications": { "type": "codes", "codes": ["E87.6"] },
+            "medicine": {
+                "name"       : "Potassium Chloride",
+                "ingredients": [ {"name": "Potassium Chloride"} ]
+            },
+            "schedules": [
+                {
+                    "special_instructions": "<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)"
+                }
+            ],
+            "raw_dose": "<1 mEq/kg/hour (not be >40mmol/L/infusion)(1g KCl = 13mEq; 1 mL 15% KCl = 2 mmol; 1 mEq = 1 mmol)",
+            "raw_dose_interval": "n/a"
+        }
     },
     {
         "row": {
