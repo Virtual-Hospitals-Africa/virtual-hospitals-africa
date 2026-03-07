@@ -274,7 +274,10 @@ describeParallel('triage/warning_signs', () => {
           ],
         }
 
-        assertEquals($('.priority-table').length, Object.keys(expected).length)
+        const expected_table_count = Object.values(expected).reduce((acc: number, v) => {
+          return acc + (isObjectLike(v) ? Object.keys(v as object).length : 1)
+        }, 0)
+        assertEquals($('.priority-table').length, expected_table_count)
 
         // deno-lint-ignore no-explicit-any
         const actual: any = {}
@@ -351,7 +354,7 @@ describeParallel('triage/warning_signs', () => {
             'root_snomed_concept_name': 'Clinical finding',
             'root_snomed_concept_category': 'finding',
             'root_snomed_concept_id': CLINICAL_FINDING.id,
-            'specific_snomed_concept_id': 'TODO FIND THE CODE FOR VERY SUNKEN EYES',
+            'specific_snomed_concept_id': '246923005',
             'patient_encounter_id': patient_encounter_id,
             'as_part_of_procedure': {
               'id': z.string().uuid(),

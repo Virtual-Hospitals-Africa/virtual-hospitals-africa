@@ -10,7 +10,7 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
 
-import { CommonSymptom, TrxOrDb, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
+import { AgeDetermination, CommonSymptom, TrxOrDb, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
 import { normalForm, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
@@ -220,9 +220,11 @@ function getAllFindingsReportedPreviouslyOnThisPage(
 export async function getWarningSignsForPatient(
   trx: TrxOrDb,
   patient_id: string,
+  patient_age_determination: AgeDetermination | null = null,
 ): Promise<WarningSign[]> {
+  const signs = WARNING_SIGNS[patient_age_determination || 'adult']
   const [having_prompt_when, no_prompt_when] = partition(
-    WARNING_SIGNS,
+    signs,
     (sign) => !!sign.prompt_when_s_expression,
   )
   const satisfying_prompt_when = await filter(having_prompt_when, promptWhen)
@@ -230,7 +232,7 @@ export async function getWarningSignsForPatient(
   return sortBy(
     warning_signs_for_patient,
     (sign) => ORDERED_PRIORITIES.indexOf(sign.priority),
-    (sign) => WARNING_SIGNS.indexOf(sign),
+    (sign) => signs.indexOf(sign),
   )
 
   async function promptWhen({ prompt_when_s_expression }: WarningSign) {
@@ -311,7 +313,7 @@ export async function TriageWarningSignsPage(
     warning_signs_for_patient,
   } = await promiseProps({
     prior_findings: getAllFindingsReportedPreviouslyOnThisPage(ctx),
-    warning_signs_for_patient: getWarningSignsForPatient(ctx.state.trx, ctx.state.patient_id),
+    warning_signs_for_patient: getWarningSignsForPatient(ctx.state.trx, ctx.state.patient_id, ctx.state.patient_age_determination),
   })
 
   const warning_signs = signsMatchedWithPriorRecords(

@@ -26,6 +26,26 @@ const CATEGORIES = [
     priority: 'Emergency' as const,
   },
   {
+    category: 'Airway & Breathing' as const,
+    priority: 'Emergency' as const,
+  },
+  {
+    category: 'Circulation' as const,
+    priority: 'Emergency' as const,
+  },
+  {
+    category: 'Convulsions/Coma' as const,
+    priority: 'Emergency' as const,
+  },
+  {
+    category: 'Dehydration' as const,
+    priority: 'Emergency' as const,
+  },
+  {
+    category: 'Other' as const,
+    priority: 'Emergency' as const,
+  },
+  {
     category: 'Very urgent' as const,
     priority: 'Very urgent' as const,
   },
