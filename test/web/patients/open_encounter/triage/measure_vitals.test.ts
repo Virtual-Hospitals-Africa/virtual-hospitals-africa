@@ -8,7 +8,7 @@ import { assertMatches } from '../../../../../util/assertMatches.ts'
 import {
   asVitalAssessmentFormValues,
   asVitalMeasurementFormValues,
-  asWarningSigns,
+  asWarningSignsAdult,
   dateOfBirth,
   DEFAULT_ASSESSMENTS,
   DEFAULT_MEASUREMENTS,
@@ -50,7 +50,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: { existence: 'No' },
@@ -196,7 +196,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: { existence: 'Yes' },
@@ -242,7 +242,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '2020-01-01' },
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: { existence: 'No' },
@@ -285,7 +285,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { $ } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '2020-01-01' },
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: { existence: 'Yes' },
@@ -332,7 +332,7 @@ describeParallel('triage/measure_vitals', () => {
         const result = await asResultAsync(() =>
           setupTriageNewPatient({
             patient_demographics: { date_of_birth: '2023-01-01' },
-            warning_signs: asWarningSigns([], { pregnant: false }),
+            warning_signs: asWarningSignsAdult([], { pregnant: false }),
             brief_history: {
               common_conditions: {
                 diabetes: { existence: 'Yes' },
@@ -411,7 +411,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '1990-01-01' },
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: { existence: 'Yes' },
@@ -499,7 +499,7 @@ describeParallel('triage/measure_vitals', () => {
       async () => {
         const { encounter } = await setupTriageNewPatient({
           patient_demographics: { date_of_birth: '2023-01-01' },
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: { existence: 'No' },
@@ -712,7 +712,7 @@ describeParallel('triage/measure_vitals', () => {
           patient_demographics: {
             date_of_birth: dateOfBirth(age_determination),
           },
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: { existence: 'No' },

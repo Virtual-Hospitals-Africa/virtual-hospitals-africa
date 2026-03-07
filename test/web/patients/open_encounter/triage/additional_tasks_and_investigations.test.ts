@@ -6,7 +6,7 @@ import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts
 import {
   asVitalAssessmentFormValues,
   asVitalMeasurementFormValues,
-  asWarningSigns,
+  asWarningSignsAdult,
   dateOfBirth,
   DEFAULT_ASSESSMENTS,
   DEFAULT_MEASUREMENTS,
@@ -44,7 +44,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
           pregnancy: { existence: 'No' },
         },
       },
-      warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+      warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
       height_and_weight: {
         measurements: {
           height: {
@@ -307,7 +307,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-        warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr),
+        warning_signs: asWarningSignsAdult([], { pregnant: false }, exposure_to_fish_s_expr),
         brief_history: {
           common_conditions: {
             diabetes: { existence: 'No' },
@@ -339,7 +339,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-        warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr, allergy_to_fish_s_expr),
+        warning_signs: asWarningSignsAdult([], { pregnant: false }, exposure_to_fish_s_expr, allergy_to_fish_s_expr),
         brief_history: {
           common_conditions: {
             diabetes: { existence: 'No' },
@@ -373,7 +373,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
       const { $, patient_id, patient_encounter_id } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
           common_conditions: {
             diabetes: { existence: 'No' },
@@ -489,7 +489,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
       const { $, nurse, encounter, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
           common_conditions: {
             diabetes: { existence: 'No' },
@@ -628,7 +628,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
       const { $, nurse, encounter, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
           common_conditions: {
             diabetes: { existence: 'No' },
@@ -767,7 +767,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
       const { $, patient_id, patient_encounter_id, postStep, getStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
           common_conditions: {
             diabetes: { existence: 'No' },
@@ -881,7 +881,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       patient_demographics: {
         date_of_birth: dateOfBirth(age_determination),
       },
-      warning_signs: asWarningSigns([], { pregnant: false }),
+      warning_signs: asWarningSignsAdult([], { pregnant: false }),
       brief_history: {
         common_conditions: {
           diabetes: { existence: 'No' },

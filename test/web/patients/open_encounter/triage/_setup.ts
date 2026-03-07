@@ -55,7 +55,7 @@ const ONLY_WHEN_PREGNANCY_STATUS = {
   'Abdominal pain': false,
 }
 
-export function asWarningSigns(
+export function asWarningSignsAdult(
   sign_keys: Array<keyof typeof KEYED_WARNING_SIGNS>,
   opts: { pregnant: boolean },
   ...other_finding_s_expressions: string[]
@@ -89,6 +89,13 @@ export function asWarningSigns(
       }]
     }
   }
+}
+
+export function asWarningSignsOlderChild(
+  _sign_keys: string[], // Actually use the correct signs
+  ..._other_finding_s_expressions: string[]
+): z.input<typeof TriageWarningSignsSchema> {
+  throw new Error('TODO implement')
 }
 
 async function setupTriage({

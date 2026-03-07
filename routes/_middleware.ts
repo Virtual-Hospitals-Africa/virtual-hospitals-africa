@@ -22,6 +22,7 @@ export const handler = async (ctx: Context<unknown>) => {
     return response
   } catch (error) {
     if (!isObjectLike(error)) {
+      console.log(typeof error)
       console.error(error)
       return new Response('Unexpected error', { status: 500 })
     }

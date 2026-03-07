@@ -415,17 +415,17 @@ export class DosageParser {
 
   lookForVaccineSeries() {
     // Parse dose schedule timing like "6,10,14 weeks, 18 months" or "6, 12 months" or "5-7 years, ≥12 years"
-    const timeUnitPattern = /weeks?|months?|years?/i
+    const time_unit_pattern = /weeks?|months?|years?/i
     const text = this.dosage_text
-    if (!timeUnitPattern.test(text)) return
+    if (!time_unit_pattern.test(text)) return
 
     // Check for "N-M years, ≥N years" range/threshold pattern → special_instructions + series
-    const complexYearsMatch = text.match(/^((?:\d+(?:-\d+)?\s*years?,?\s*)+(?:[≥≤]\d+\s*years?))$/i)
-    if (complexYearsMatch) {
+    const complex_years_match = text.match(/^((?:\d+(?:-\d+)?\s*years?,?\s*)+(?:[≥≤]\d+\s*years?))$/i)
+    if (complex_years_match) {
       const doses: PerTime[] = []
-      const numRegex = /(?:(\d+)(?:-\d+)?|[≥≤](\d+))\s*years?/gi
+      const num_regex = /(?:(\d+)(?:-\d+)?|[≥≤](\d+))\s*years?/gi
       let m
-      while ((m = numRegex.exec(text)) !== null) {
+      while ((m = num_regex.exec(text)) !== null) {
         doses.push({ value: parseInt(m[1] ?? m[2]), units: 'year' })
       }
       if (doses.length > 0) {
@@ -439,11 +439,11 @@ export class DosageParser {
 
     // Parse grouped timing: numbers then unit, possibly mixed units
     // e.g., "6,10,14 weeks, 18 months" or "6 and 14 weeks"
-    const groupRegex = /((?:\d+(?:\s*[,\s]\s*(?:and\s+)?)*\d+|\d+))\s*(weeks?|months?|years?)/gi
+    const group_regex = /((?:\d+(?:\s*[,\s]\s*(?:and\s+)?)*\d+|\d+))\s*(weeks?|months?|years?)/gi
     const doses: PerTime[] = []
     let lastIndex = 0
     let m
-    while ((m = groupRegex.exec(text)) !== null) {
+    while ((m = group_regex.exec(text)) !== null) {
       // Extract all numbers from this group
       const nums = m[1].split(/[\s,]+(?:and\s+)?/).filter((s) => /^\d+$/.test(s.trim()))
       const unit = normalizeTimeUnit(m[2])
