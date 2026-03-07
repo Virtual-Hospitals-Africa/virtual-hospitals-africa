@@ -462,7 +462,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
  * Warning signs for tutorial - includes "Cough" which triggers SpO2 requirement
  */
 export const TUTORIAL_WARNING_SIGNS: WarningSignWithMaybeRecord[] = [
-  ...WARNING_SIGNS.filter((sign) => !sign.name.includes('Pregnancy')),
+  ...WARNING_SIGNS.adult.filter((sign) => !sign.name.includes('Pregnancy')),
   ...COMMON_SYMPTOMS,
 ]
 
