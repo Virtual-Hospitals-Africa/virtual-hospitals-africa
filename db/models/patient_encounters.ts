@@ -718,6 +718,12 @@ export const patient_encounters = base({
   ): asserts encounter is RenderedPatientOpenEncounter {
     assert(encounter.status.open)
   },
+  existsOpen(
+    encounter: RenderedPatientEncounter,
+  ): RenderedPatientOpenEncounter {
+    assert(encounter.status.open)
+    return encounter as RenderedPatientOpenEncounter
+  },
   async getOpen(
     trx: TrxOrDbOrQueryCreator,
     search_terms: Omit<EncounterSearch, 'is_open' | 'is_closed'>,

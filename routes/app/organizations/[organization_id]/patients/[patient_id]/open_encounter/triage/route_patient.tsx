@@ -84,31 +84,32 @@ export const handler = postHandler(
   },
 )
 
-export async function PatientRegistrationRoutePatientPage(
+export async function PatientTriageRoutePatientPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const {
+    trx,
     patient,
+    health_worker_id,
+    organization_id,
     encounter: { reason, notes, priority },
   } = ctx.state
-  assert(
-    patient.names,
-  )
-  const { facility_employees, hospital_employees } = await employees_presence.getForClinicAssumingTestHospital(
-    ctx.state.trx,
-    ctx.state,
-  )
+  assert(patient.names)
   assert(priority)
+
+  const clinic_employees = await employees_presence.findAll(trx, {
+    organization_id,
+    excluding_health_worker_id: health_worker_id,
+  })
 
   return (
     <TriageRoutePatientSection
       this_visit={{ reason, notes }}
       patient_names={patient.names}
       priority={priority}
-      facility_employees={facility_employees}
-      hospital_employees={hospital_employees}
+      clinic_employees={clinic_employees}
     />
   )
 }
 
-export default OpenEncounterWorkflowPage(PatientRegistrationRoutePatientPage)
+export default OpenEncounterWorkflowPage(PatientTriageRoutePatientPage)
