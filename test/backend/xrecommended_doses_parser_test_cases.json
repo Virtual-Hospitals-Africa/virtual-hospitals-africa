@@ -3784,7 +3784,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": "nocte",
+                    "frequency": ["nocte", "qd"],
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -3809,7 +3809,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": "nocte",
+                    "frequency": ["nocte", "qd"],
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -3860,7 +3860,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": "nocte",
+                    "frequency": ["nocte", "qd"],
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -3885,7 +3885,7 @@
             },
             "schedules"        : [
                 {
-                    "frequency": "nocte",
+                    "frequency": ["nocte", "qd"],
                     "duration" : {"value": 1, "units": "day"},
                     "per_dose" : true,
                     "per_size" : "kg",
@@ -91118,16 +91118,26 @@
             },
             "schedules"        : [
                 {
-                    "diluents": [
+                    "low" : [
                         {
-                            "ingredient_name": "dextrose",
+                            "per_size"       : "kg",
+                            "units"          : "mL",
+                            "ingredient_name": "Dextrose",
                             "concentration"  : 10,
-                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
-                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
-                        }
+                            "value"          : 2.5
+                        },
+                        {"per_size": "kg", "units": "mg", "value": 250}
                     ],
-                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
-                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ]
+                    "high": [
+                        {
+                            "per_size"       : "kg",
+                            "units"          : "mL",
+                            "ingredient_name": "Dextrose",
+                            "concentration"  : 10,
+                            "value"          : 5
+                        },
+                        {"per_size": "kg", "units": "mg", "value": 500}
+                    ]
                 }
             ],
             "raw_dose"         : "2.5–5 mL/kg of 10% dextrose  (250–500 mg/kg)",
@@ -91147,16 +91157,26 @@
             },
             "schedules"        : [
                 {
-                    "diluents": [
+                    "low" : [
                         {
-                            "ingredient_name": "dextrose",
+                            "per_size"       : "kg",
+                            "units"          : "mL",
+                            "ingredient_name": "Dextrose",
                             "concentration"  : 10,
-                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
-                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
-                        }
+                            "value"          : 2.5
+                        },
+                        {"per_size": "kg", "units": "mg", "value": 250}
                     ],
-                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
-                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ]
+                    "high": [
+                        {
+                            "per_size"       : "kg",
+                            "units"          : "mL",
+                            "ingredient_name": "Dextrose",
+                            "concentration"  : 10,
+                            "value"          : 5
+                        },
+                        {"per_size": "kg", "units": "mg", "value": 500}
+                    ]
                 }
             ],
             "raw_dose"         : "2.5–5 mL/kg of 10% dextrose  (250–500 mg/kg)",
@@ -94195,12 +94215,8 @@
             "schedules"        : [
                 {
                     "value"   : 0.009,
-                    "low"     : [
-                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 10}
-                    ],
-                    "high"    : [
-                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 20}
-                    ],
+                    "low"     : [ {"special_instructions": "IV; slow", "per_size": "kg", "units": "mL", "value": 10} ],
+                    "high"    : [ {"special_instructions": "IV; slow", "per_size": "kg", "units": "mL", "value": 20} ],
                     "duration": { "value": [5, 10], "units": "minute" }
                 }
             ],
@@ -94222,12 +94238,8 @@
             "schedules"        : [
                 {
                     "value"   : 0.009,
-                    "low"     : [
-                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 10}
-                    ],
-                    "high"    : [
-                        {"special_instructions": "IV", "slowly": true, "per_size": "kg", "units": "mL", "value": 20}
-                    ],
+                    "low"     : [ {"special_instructions": "IV; slow", "per_size": "kg", "units": "mL", "value": 10} ],
+                    "high"    : [ {"special_instructions": "IV; slow", "per_size": "kg", "units": "mL", "value": 20} ],
                     "duration": { "value": [5, 10], "units": "minute" }
                 }
             ],
@@ -205718,13 +205730,9 @@
             },
             "schedules"        : [
                 {
-                    "low"        : [ {"units": "mcg", "value": 200} ],
-                    "high"       : [ {"units": "mcg", "value": 400} ],
-                    "equivalency": {
-                        "low" : [ {"units": "puff", "value": 2} ],
-                        "high": [ {"units": "puff", "value": 4} ]
-                    },
-                    "frequency"  : {
+                    "low"      : [ {"units": "mcg", "value": 200}, {"units": "puff", "value": 2} ],
+                    "high"     : [ {"units": "mcg", "value": 400}, {"units": "puff", "value": 4} ],
+                    "frequency": {
                         "every": { "value": [20, 30], "units": "minute" }
                     }
                 }
@@ -205746,13 +205754,9 @@
             },
             "schedules"        : [
                 {
-                    "low"        : [ {"units": "mcg", "value": 200} ],
-                    "high"       : [ {"units": "mcg", "value": 400} ],
-                    "equivalency": {
-                        "low" : [ {"units": "puff", "value": 2} ],
-                        "high": [ {"units": "puff", "value": 4} ]
-                    },
-                    "frequency"  : {
+                    "low"      : [ {"units": "mcg", "value": 200}, {"units": "puff", "value": 2} ],
+                    "high"     : [ {"units": "mcg", "value": 400}, {"units": "puff", "value": 4} ],
+                    "frequency": {
                         "every": { "value": [20, 30], "units": "minute" }
                     }
                 }
@@ -205800,14 +205804,10 @@
             },
             "schedules"        : [
                 {
-                    "low"        : [ {"units": "mcg", "value": 400} ],
-                    "high"       : [ {"units": "mcg", "value": 600} ],
-                    "equivalency": {
-                        "low"        : [ {"value":   4, "units": "puff"                  } ],
-                        "high"       : [ {"value":   6, "units": "puff"                  } ],
-                        "multipliers": [ {"value": 100, "units": "mcg",  "per_dose": true} ]
-                    },
-                    "frequency"  : {
+                    "low": [ {"units": "mcg", "value": 400} ],
+                    "high": [ {"units": "mcg", "value": 600} ],
+                    "special_instructions": "4-6 puffs of 100mcg/puff",
+                    "frequency": {
                         "every": { "value": [20, 30], "units": "minute" }
                     }
                 }
@@ -205829,14 +205829,10 @@
             },
             "schedules"        : [
                 {
-                    "low"        : [ {"units": "mcg", "value": 400} ],
-                    "high"       : [ {"units": "mcg", "value": 600} ],
-                    "equivalency": {
-                        "low"        : [ {"value":   4, "units": "puff"                  } ],
-                        "high"       : [ {"value":   6, "units": "puff"                  } ],
-                        "multipliers": [ {"value": 100, "units": "mcg",  "per_dose": true} ]
-                    },
-                    "frequency"  : {
+                    "low": [ {"units": "mcg", "value": 400} ],
+                    "high": [ {"units": "mcg", "value": 600} ],
+                    "special_instructions": "4-6 puffs of 100mcg/puff",
+                    "frequency": {
                         "every": { "value": [20, 30], "units": "minute" }
                     }
                 }
@@ -236152,9 +236148,8 @@
                 {
                     "units"               : "ml",
                     "value"               : 10,
-                    "special_instructions": "IV",
-                    "duration"            : { "value": [3, 5], "units": "minute" },
-                    "slowly"              : true
+                    "special_instructions": "IV; slow",
+                    "duration"            : { "value": [3, 5], "units": "minute" }
                 }
             ],
             "raw_dose"         : "10 ml",
@@ -236176,9 +236171,8 @@
                 {
                     "units"               : "ml",
                     "value"               : 10,
-                    "special_instructions": "IV",
-                    "duration"            : { "value": [3, 5], "units": "minute" },
-                    "slowly"              : true
+                    "special_instructions": "IV; slow",
+                    "duration"            : { "value": [3, 5], "units": "minute" }
                 }
             ],
             "raw_dose"         : "10 ml",
@@ -239924,8 +239918,7 @@
                 {
                     "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
                     "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
-                    "special_instructions": "IV",
-                    "slowly": true
+                    "special_instructions": "IV; slow"
                 }
             ],
             "raw_dose"         : "1-5mg/dose",
@@ -239947,8 +239940,7 @@
                 {
                     "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
                     "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
-                    "special_instructions": "IV",
-                    "slowly": true
+                    "special_instructions": "IV; slow"
                 }
             ],
             "raw_dose"         : "1-5mg/dose",
@@ -239996,9 +239988,8 @@
                 {
                     "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
                     "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
-                    "special_instructions": "IV",
-                    "frequency": "q6h",
-                    "slowly": true
+                    "special_instructions": "IV; slow",
+                    "frequency": "q6h"
                 }
             ],
             "raw_dose"         : "1-5mg/dose",
@@ -240020,9 +240011,8 @@
                 {
                     "low": [ {"per_dose": true, "units": "mg", "value": 1} ],
                     "high": [ {"per_dose": true, "units": "mg", "value": 5} ],
-                    "special_instructions": "IV",
-                    "frequency": "q6h",
-                    "slowly": true
+                    "special_instructions": "IV; slow",
+                    "frequency": "q6h"
                 }
             ],
             "raw_dose"         : "1-5mg/dose",
@@ -252799,7 +252789,7 @@
                 "ingredients": [ {"name": "Dextrose 5%"} ]
             },
             "schedules"        : [
-                { "concentration_ratio": [1, 1], "duration": {"value": 10, "units": "minute"} }
+                { "concentration": 50, "duration": {"value": 10, "units": "minute"} }
             ],
             "raw_dose"         : "Dilute 1:1",
             "raw_dose_interval": "over 10 minutes"
@@ -252922,9 +252912,7 @@
                 "name"       : "Dextrose 5%",
                 "ingredients": [ {"name": "Dextrose 5%"} ]
             },
-            "schedules"        : [
-                { "concentration_ratio": [1, 4] }
-            ],
+            "schedules"        : [ {"concentration": 20} ],
             "raw_dose"         : "Dilute 1:4",
             "raw_dose_interval": "n/a"
         },
@@ -252940,9 +252928,7 @@
                 "name"       : "Dextrose 5%",
                 "ingredients": [ {"name": "Dextrose 5%"} ]
             },
-            "schedules"        : [
-                { "concentration_ratio": [1, 4] }
-            ],
+            "schedules"        : [ {"concentration": 20} ],
             "raw_dose"         : "Dilute 1:4",
             "raw_dose_interval": "n/a"
         }
@@ -257987,7 +257973,7 @@
                 "ingredients": [ {"name": "Sodium Chloride 0.9%"} ]
             },
             "schedules"        : [
-                { "concentration_ratio": [1, 1], "duration": {"value": 10, "units": "minute"} }
+                { "concentration": 50, "duration": {"value": 10, "units": "minute"} }
             ],
             "raw_dose"         : "Dilute 1:1",
             "raw_dose_interval": "over 10 minutes"
@@ -302950,13 +302936,13 @@
             },
             "schedules"        : [
                 {
-                    "per_size"           : "kg",
-                    "units"              : "ml",
-                    "value"              : 0.2,
-                    "max"                : [ {"units": "ml", "value": 10} ],
-                    "concentration_ratio": [1, 4],
-                    "duration"           : {"value": 10, "units": "minute"},
-                    "slowly"             : true
+                    "per_size": "kg",
+                    "units": "ml",
+                    "value": 0.2,
+                    "max": [ {"units": "ml", "value": 10} ],
+                    "special_instructions": "1:4",
+                    "duration": {"value": 10, "units": "minute"},
+                    "slowly": true
                 }
             ],
             "raw_dose"         : "0.2 mL/kg (maximum = 10mL)(diluted 1:4)",
@@ -303214,9 +303200,7 @@
                 "name"       : "Calcium Gluconate 10%",
                 "ingredients": [ {"name": "Calcium Gluconate 10%"} ]
             },
-            "schedules"        : [
-                { "per_size": "kg", "units": "ml", "value": 0.6, "concentration_ratio": [1, 4] }
-            ],
+            "schedules"        : [ {"per_size": "kg", "units": "ml", "value": 0.6, "special_instructions": "1:4"} ],
             "raw_dose"         : "0.6 mL/kg (diluted 1:4)",
             "raw_dose_interval": "n/a"
         },
@@ -308653,9 +308637,7 @@
                     "per_size"            : "kg",
                     "units"               : "ml",
                     "value"               : 1,
-                    "concentration_ratio" : [1, 1],
-                    "diluents"            : [ {"ingredient_name": "sterile water"} ],
-                    "special_instructions": "refer to STGs"
+                    "special_instructions": "with sterile water; 1:1 refer to STGs"
                 }
             ],
             "raw_dose"         : "1 mL/kg (diluted 1:1 with sterile water)",
@@ -308678,9 +308660,9 @@
                     "per_size"            : "kg",
                     "units"               : "ml",
                     "value"               : 1,
+                    "special_instructions": "refer to STGs",
                     "concentration_ratio" : [1, 1],
-                    "diluents"            : [ {"ingredient_name": "sterile water"} ],
-                    "special_instructions": "refer to STGs"
+                    "diluents"            : [ {"ingredient_name": "sterile water"} ]
                 }
             ],
             "raw_dose"         : "1 mL/kg (diluted 1:1 with sterile water)",
@@ -308724,9 +308706,7 @@
                 "name"       : "Sodium bicarbonate 8.5%",
                 "ingredients": [ {"name": "Sodium bicarbonate 8.5%"} ]
             },
-            "schedules"        : [
-                { "concentration_ratio": [1, 1], "special_instructions": "refer to STGs" }
-            ],
+            "schedules"        : [ {"concentration": 50, "special_instructions": "refer to STGs"} ],
             "raw_dose"         : "dilute 1:1",
             "raw_dose_interval": "refer to STGs"
         },
@@ -308915,7 +308895,7 @@
                 "ingredients": [ {"name": "Sodium Chloride 0.9%"} ]
             },
             "schedules"        : [
-                { "concentration_ratio": [1, 4], "duration": {"value": 6, "units": "hour"} }
+                { "concentration": 20, "duration": {"value": 6, "units": "hour"} }
             ],
             "raw_dose"         : "dilute 1:4",
             "raw_dose_interval": "over 6 hours"
@@ -309318,9 +309298,7 @@
                 "name"       : "Sterile water",
                 "ingredients": [ {"name": "Sterile water"} ]
             },
-            "schedules"        : [
-                {"per_size": "kg", "units": "ml", "value": 1, "special_instructions": "refer to STGs"}
-            ],
+            "schedules"        : [ {"special_instructions": "1 mL/kg refer to STGs"} ],
             "raw_dose"         : "1 mL/kg",
             "raw_dose_interval": "refer to STGs"
         },
@@ -309337,7 +309315,7 @@
                 "ingredients": [ {"name": "Sterile water"} ]
             },
             "schedules"        : [
-                {"per_size": "kg", "units": "ml", "value": 1, "special_instructions": "refer to STGs"}
+                {"value": 1, "units": "ml", "per_size": "kg", "special_instructions": "refer to STGs"}
             ],
             "raw_dose"         : "1 mL/kg",
             "raw_dose_interval": "refer to STGs"
@@ -309381,7 +309359,7 @@
                 "ingredients": [ {"name": "Sterile water"} ]
             },
             "schedules"        : [
-                { "concentration_ratio": [1, 4], "duration": {"value": 10, "units": "minute"}, "slowly": true }
+                { "concentration": 20, "duration": {"value": 10, "units": "minute"}, "slowly": true }
             ],
             "raw_dose"         : "dilute 1:4",
             "raw_dose_interval": "slowly over 10 minutes"
@@ -309779,13 +309757,7 @@
                 "ingredients": [ {"name": "Warfarin"} ]
             },
             "schedules"        : [
-                {
-                    "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.1,
-                    "max": [ {"units": "mg", "value": 10} ],
-                    "special_instructions": "on day 1"
-                }
+                {"per_size": "kg", "units": "mg", "value": 0.1, "special_instructions": "maximum = 10 mg on day 1"}
             ],
             "raw_dose"         : "0.1 mg/kg (maximum = 10 mg on day 1)",
             "raw_dose_interval": "n/a"
@@ -309803,13 +309775,7 @@
                 "ingredients": [ {"name": "Warfarin"} ]
             },
             "schedules"        : [
-                {
-                    "per_size": "kg",
-                    "units": "mg",
-                    "value": 0.1,
-                    "max": [ {"units": "mg", "value": 10} ],
-                    "special_instructions": "on day 1"
-                }
+                {"per_size": "kg", "units": "mg", "value": 0.1, "special_instructions": "maximum = 10 mg on day 1"}
             ],
             "raw_dose"         : "0.1 mg/kg (maximum = 10 mg on day 1)",
             "raw_dose_interval": "n/a"
@@ -331874,11 +331840,11 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 100,
-                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
-                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
-                    "frequency": "qd"
+                    "units"               : "mg",
+                    "value"               : 100,
+                    "after"               : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "frequency"           : "qd",
+                    "special_instructions": "from 2 days prior to entering endemic area to"
                 }
             ],
             "raw_dose"         : "100 mg",
@@ -331898,11 +331864,11 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 100,
-                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
-                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
-                    "frequency": "qd"
+                    "units"               : "mg",
+                    "value"               : 100,
+                    "after"               : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "frequency"           : "qd",
+                    "special_instructions": "from 2 days prior to entering endemic area to"
                 }
             ],
             "raw_dose"         : "100 mg",
@@ -331948,13 +331914,13 @@
             },
             "schedules"        : [
                 {
-                    "per_dose" : true,
-                    "per_size" : "kg",
-                    "units"    : "mg",
-                    "value"    : 2,
-                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
-                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
-                    "frequency": "qd"
+                    "per_dose"            : true,
+                    "per_size"            : "kg",
+                    "units"               : "mg",
+                    "value"               : 2,
+                    "after"               : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "frequency"           : "qd",
+                    "special_instructions": "from 2 days prior to entering endemic area to"
                 }
             ],
             "raw_dose"         : "2 mg/kg/dose",
@@ -331974,13 +331940,13 @@
             },
             "schedules"        : [
                 {
-                    "per_dose" : true,
-                    "per_size" : "kg",
-                    "units"    : "mg",
-                    "value"    : 2,
-                    "after"    : { "event": "exiting", "time": {"value": 4, "units": "week"} },
-                    "before"   : { "time": {"value": 2, "units": "day"}, "event": "entering endemic area to" },
-                    "frequency": "qd"
+                    "per_dose"            : true,
+                    "per_size"            : "kg",
+                    "units"               : "mg",
+                    "value"               : 2,
+                    "after"               : { "event": "exiting", "time": {"value": 4, "units": "week"} },
+                    "frequency"           : "qd",
+                    "special_instructions": "from 2 days prior to entering endemic area to"
                 }
             ],
             "raw_dose"         : "2 mg/kg/dose",
@@ -332026,10 +331992,10 @@
             },
             "schedules"        : [
                 {
-                    "units"           : "drop",
-                    "value"           : 1,
-                    "total_dose_count": 5,
-                    "frequency"       : {
+                    "units"               : "drop",
+                    "value"               : 1,
+                    "special_instructions": "total doses = 5 doses",
+                    "frequency"           : {
                         "every": { "value": [5, 15], "units": "minute" }
                     }
                 }
@@ -332051,10 +332017,10 @@
             },
             "schedules"        : [
                 {
-                    "units"           : "drop",
-                    "value"           : 1,
-                    "total_dose_count": 5,
-                    "frequency"       : {
+                    "units"               : "drop",
+                    "value"               : 1,
+                    "special_instructions": "total doses = 5 doses",
+                    "frequency"           : {
                         "every": { "value": [5, 15], "units": "minute" }
                     }
                 }
@@ -332100,9 +332066,7 @@
                 "name"       : "Ofloxacin",
                 "ingredients": [ {"name": "Ofloxacin"} ]
             },
-            "schedules"        : [
-                { "units": "drop", "value": 1, "after": {"event": "the procedure"} }
-            ],
+            "schedules"        : [ {"units": "drop", "value": 1, "special_instructions": "after the procedure"} ],
             "raw_dose"         : "1 drop",
             "raw_dose_interval": "after the procedure"
         },
@@ -332118,9 +332082,7 @@
                 "name"       : "Ofloxacin",
                 "ingredients": [ {"name": "Ofloxacin"} ]
             },
-            "schedules"        : [
-                { "units": "drop", "value": 1, "after": {"event": "the procedure"} }
-            ],
+            "schedules"        : [ {"units": "drop", "value": 1, "special_instructions": "after the procedure"} ],
             "raw_dose"         : "1 drop",
             "raw_dose_interval": "after the procedure"
         }
@@ -332296,10 +332258,10 @@
             },
             "schedules"        : [
                 {
-                    "denominator": {"value": 1, "units": "ml"},
-                    "units"      : "iu",
-                    "value"      : 100000,
-                    "after"      : {"event": "each feed"}
+                    "denominator"         : {"value": 1, "units": "ml"},
+                    "units"               : "iu",
+                    "value"               : 100000,
+                    "special_instructions": "after each feed"
                 }
             ],
             "raw_dose"         : "100 000 IU/ml",
@@ -332319,10 +332281,10 @@
             },
             "schedules"        : [
                 {
-                    "denominator": {"value": 1, "units": "ml"},
-                    "units"      : "iu",
-                    "value"      : 100000,
-                    "after"      : {"event": "each feed"}
+                    "denominator"         : {"value": 1, "units": "ml"},
+                    "units"               : "iu",
+                    "value"               : 100000,
+                    "special_instructions": "after each feed"
                 }
             ],
             "raw_dose"         : "100 000 IU/ml",
@@ -332509,12 +332471,8 @@
                 "ingredients": [ {"name": "Azithromycin"} ]
             },
             "schedules"        : [
-                {"units": "g", "value": 1, "frequency": "stat"},
-                {
-                    "units"    : "g",
-                    "value"    : 1,
-                    "frequency": { "every": {"value": 1, "units": "week"} }
-                }
+                {"units": "g", "value": 1, "frequency": "stat"                                     },
+                {"units": "g", "value": 1,                      "special_instructions": "1g weekly"}
             ],
             "raw_dose"         : "1g",
             "raw_dose_interval": "stat; 1g weekly"
@@ -332532,12 +332490,8 @@
                 "ingredients": [ {"name": "Azithromycin"} ]
             },
             "schedules"        : [
-                {"units": "g", "value": 1, "frequency": "stat"},
-                {
-                    "units"    : "g",
-                    "value"    : 1,
-                    "frequency": { "every": {"value": 1, "units": "week"} }
-                }
+                {"units": "g", "value": 1, "frequency": "stat"                                     },
+                {"units": "g", "value": 1,                      "special_instructions": "1g weekly"}
             ],
             "raw_dose"         : "1g",
             "raw_dose_interval": "stat; 1g weekly"
@@ -332581,7 +332535,7 @@
                 "ingredients": [ {"name": "Benzathine benzylpenicillin"} ]
             },
             "schedules"        : [
-                { "units": "mu", "value": 2.4, "frequency": "qw", "duration": {"value": 3, "units": "week"} }
+                {"units": "mu", "value": 2.4, "special_instructions": "for three weeks", "frequency": "qw"}
             ],
             "raw_dose"         : "2.4 MU",
             "raw_dose_interval": "once weekly for three weeks"
@@ -332599,7 +332553,7 @@
                 "ingredients": [ {"name": "Benzathine benzylpenicillin"} ]
             },
             "schedules"        : [
-                { "units": "mu", "value": 2.4, "frequency": "qw", "duration": {"value": 3, "units": "week"} }
+                {"units": "mu", "value": 2.4, "special_instructions": "for three weeks", "frequency": "qw"}
             ],
             "raw_dose"         : "2.4 MU",
             "raw_dose_interval": "once weekly for three weeks"
@@ -332644,9 +332598,9 @@
             },
             "schedules"        : [
                 {
-                    "low"      : [ {"per_size": "kg", "units": "ml", "value": 0.25} ],
-                    "high"     : [ {"per_size": "kg", "units": "ml", "value": 1.5} ],
-                    "frequency": { "every": {"value": 1, "units": "minute"} }
+                    "low": [ {"per_size": "kg", "units": "ml", "value": 0.25} ],
+                    "high": [ {"per_size": "kg", "units": "ml", "value": 1.5} ],
+                    "special_instructions": "every minute"
                 }
             ],
             "raw_dose"         : "0.25-1.5ml/kg",
@@ -332666,9 +332620,9 @@
             },
             "schedules"        : [
                 {
-                    "low"      : [ {"per_size": "kg", "units": "ml", "value": 0.25} ],
-                    "high"     : [ {"per_size": "kg", "units": "ml", "value": 1.5} ],
-                    "frequency": { "every": {"value": 1, "units": "minute"} }
+                    "low": [ {"per_size": "kg", "units": "ml", "value": 0.25} ],
+                    "high": [ {"per_size": "kg", "units": "ml", "value": 1.5} ],
+                    "special_instructions": "every minute"
                 }
             ],
             "raw_dose"         : "0.25-1.5ml/kg",
@@ -333076,10 +333030,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333099,10 +333053,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333148,10 +333102,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333171,10 +333125,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333220,10 +333174,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333243,10 +333197,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333292,10 +333246,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333315,10 +333269,10 @@
             },
             "schedules"        : [
                 {
-                    "units"    : "mg",
-                    "value"    : 5,
-                    "frequency": { "every": {"value": 1, "units": "week"} },
-                    "after"    : { "time": {"value": 1, "units": "day"}, "event": "methotrexate dose" }
+                    "units"               : "mg",
+                    "value"               : 5,
+                    "frequency"           : { "every": {"value": 1, "units": "week"} },
+                    "special_instructions": "day after methotrexate dose"
                 }
             ],
             "raw_dose"         : "5mg",
@@ -333539,10 +333493,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 0.25,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "duration": {"value": 60, "units": "second"}
+                    "units": "mg",
+                    "value": 0.25,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "special_instructions": "over 60 seconds"
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -333563,10 +333517,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 0.25,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "duration": {"value": 60, "units": "second"}
+                    "units": "mg",
+                    "value": 0.25,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "special_instructions": "over 60 seconds"
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -333853,10 +333807,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 0.1,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 4} ],
-                    "duration": {"value": 60, "units": "second"}
+                    "units": "mg",
+                    "value": 0.1,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 4} ],
+                    "special_instructions": "over 60 seconds"
                 }
             ],
             "raw_dose"         : "0.1mg/kg (maximum = 4 mg/dose)",
@@ -333877,10 +333831,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 0.1,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 4} ],
-                    "duration": {"value": 60, "units": "second"}
+                    "units": "mg",
+                    "value": 0.1,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 4} ],
+                    "special_instructions": "over 60 seconds"
                 }
             ],
             "raw_dose"         : "0.1mg/kg (maximum = 4 mg/dose)",
@@ -333927,10 +333881,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 0.25,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "duration": {"value": 60, "units": "second"}
+                    "units": "mg",
+                    "value": 0.25,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "special_instructions": "over 60 seconds"
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -333951,10 +333905,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 0.25,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 10} ],
-                    "duration": {"value": 60, "units": "second"}
+                    "units": "mg",
+                    "value": 0.25,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 10} ],
+                    "special_instructions": "over 60 seconds"
                 }
             ],
             "raw_dose"         : "0.25mg/kg (maximum = 10 mg/dose)",
@@ -333998,7 +333952,7 @@
                 "name"       : "Phenobarbital",
                 "ingredients": [ {"name": "Phenobarbital"} ]
             },
-            "schedules"        : [ {"per_size": "kg", "units": "mg", "value": 20, "slowly": true} ],
+            "schedules"        : [ {"per_size": "kg", "units": "mg", "value": 20, "special_instructions": "slow"} ],
             "raw_dose"         : "20mg/kg",
             "raw_dose_interval": "slow"
         },
@@ -334014,7 +333968,7 @@
                 "name"       : "Phenobarbital",
                 "ingredients": [ {"name": "Phenobarbital"} ]
             },
-            "schedules"        : [ {"per_size": "kg", "units": "mg", "value": 20, "slowly": true} ],
+            "schedules"        : [ {"per_size": "kg", "units": "mg", "value": 20, "special_instructions": "slow"} ],
             "raw_dose"         : "20mg/kg",
             "raw_dose_interval": "slow"
         }
@@ -334059,10 +334013,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 20,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 600} ],
-                    "slowly"  : true
+                    "units": "mg",
+                    "value": 20,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 600} ],
+                    "special_instructions": "slow"
                 }
             ],
             "raw_dose"         : "20mg/kg (maximum 600mg/dose)",
@@ -334083,10 +334037,10 @@
             "schedules"        : [
                 {
                     "per_size": "kg",
-                    "units"   : "mg",
-                    "value"   : 20,
-                    "max"     : [ {"per_dose": true, "units": "mg", "value": 600} ],
-                    "slowly"  : true
+                    "units": "mg",
+                    "value": 20,
+                    "max": [ {"per_dose": true, "units": "mg", "value": 600} ],
+                    "special_instructions": "slow"
                 }
             ],
             "raw_dose"         : "20mg/kg (maximum 600mg/dose)",
@@ -335047,19 +335001,7 @@
                 "alternate_name": "DTaP-IPV-HB-Hib",
                 "ingredients"   : [ {"name": "Hexavalent vaccine", "alternate_name": "DTaP-IPV-HB-Hib"} ]
             },
-            "schedules"        : [
-                {
-                    "units" : "ml",
-                    "value" : 0.5,
-                    "series": {
-                        "doses": [
-                            {"value": 10, "units": "week" },
-                            {"value": 14, "units": "week" },
-                            {"value": 18, "units": "month"}
-                        ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"units": "ml", "value": 0.5, "special_instructions": "6,10,14 weeks, 18 months"} ],
             "raw_dose"         : "0.5 mL",
             "raw_dose_interval": "6,10,14 weeks,  18 months"
         },
@@ -335076,19 +335018,7 @@
                 "alternate_name": "DTaP-IPV-HB-Hib",
                 "ingredients"   : [ {"name": "Hexavalent vaccine", "alternate_name": "DTaP-IPV-HB-Hib"} ]
             },
-            "schedules"        : [
-                {
-                    "units" : "ml",
-                    "value" : 0.5,
-                    "series": {
-                        "doses": [
-                            {"value": 10, "units": "week" },
-                            {"value": 14, "units": "week" },
-                            {"value": 18, "units": "month"}
-                        ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"units": "ml", "value": 0.5, "special_instructions": "6,10,14 weeks, 18 months"} ],
             "raw_dose"         : "0.5 mL",
             "raw_dose_interval": "6,10,14 weeks,  18 months"
         }
@@ -335130,15 +335060,7 @@
                 "name"       : "Measles/Rubella vaccine",
                 "ingredients": [ {"name": "Measles"}, {"name": "Rubella vaccine"} ]
             },
-            "schedules"        : [
-                {
-                    "units" : "ml",
-                    "value" : 0.5,
-                    "series": {
-                        "doses": [ {"value": 6, "units": "month"}, {"value": 12, "units": "month"} ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"units": "ml", "value": 0.5, "special_instructions": "6, 12 months"} ],
             "raw_dose"         : "0.5 mL",
             "raw_dose_interval": "6, 12 months"
         },
@@ -335154,15 +335076,7 @@
                 "name"       : "Measles/Rubella vaccine",
                 "ingredients": [ {"name": "Measles"}, {"name": "Rubella vaccine"} ]
             },
-            "schedules"        : [
-                {
-                    "units" : "ml",
-                    "value" : 0.5,
-                    "series": {
-                        "doses": [ {"value": 6, "units": "month"}, {"value": 12, "units": "month"} ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"units": "ml", "value": 0.5, "special_instructions": "6, 12 months"} ],
             "raw_dose"         : "0.5 mL",
             "raw_dose_interval": "6, 12 months"
         }
@@ -335205,19 +335119,7 @@
                 "alternate_name": "PCV",
                 "ingredients"   : [ {"name": "Pneumococcal conjugated vaccine", "alternate_name": "PCV"} ]
             },
-            "schedules"        : [
-                {
-                    "units" : "ml",
-                    "value" : 0.5,
-                    "series": {
-                        "doses": [
-                            {"value":  6, "units": "week" },
-                            {"value": 14, "units": "week" },
-                            {"value":  9, "units": "month"}
-                        ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"units": "ml", "value": 0.5, "special_instructions": "6, 14 weeks, 9 months"} ],
             "raw_dose"         : "0.5 mL",
             "raw_dose_interval": "6, 14 weeks,  9 months"
         },
@@ -335234,19 +335136,7 @@
                 "alternate_name": "PCV",
                 "ingredients"   : [ {"name": "Pneumococcal conjugated vaccine", "alternate_name": "PCV"} ]
             },
-            "schedules"        : [
-                {
-                    "units" : "ml",
-                    "value" : 0.5,
-                    "series": {
-                        "doses": [
-                            {"value":  6, "units": "week" },
-                            {"value": 14, "units": "week" },
-                            {"value":  9, "units": "month"}
-                        ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"units": "ml", "value": 0.5, "special_instructions": "6, 14 weeks, 9 months"} ],
             "raw_dose"         : "0.5 mL",
             "raw_dose_interval": "6, 14 weeks,  9 months"
         }
@@ -335288,14 +335178,7 @@
                 "name"       : "Rotavirus vaccine",
                 "ingredients": [ {"name": "Rotavirus vaccine"} ]
             },
-            "schedules"        : [
-                {
-                    "special_instructions": "1 or 2 mL",
-                    "series"              : {
-                        "doses": [ {"value": 6, "units": "week"}, {"value": 14, "units": "week"} ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"special_instructions": "1 or 2 mL 6 and 14 weeks"} ],
             "raw_dose"         : "1 or 2 mL",
             "raw_dose_interval": "6 and 14 weeks"
         },
@@ -335311,14 +335194,7 @@
                 "name"       : "Rotavirus vaccine",
                 "ingredients": [ {"name": "Rotavirus vaccine"} ]
             },
-            "schedules"        : [
-                {
-                    "special_instructions": "1 or 2 mL",
-                    "series"              : {
-                        "doses": [ {"value": 6, "units": "week"}, {"value": 14, "units": "week"} ]
-                    }
-                }
-            ],
+            "schedules"        : [ {"special_instructions": "1 or 2 mL 6 and 14 weeks"} ],
             "raw_dose"         : "1 or 2 mL",
             "raw_dose_interval": "6 and 14 weeks"
         }
@@ -335364,10 +335240,8 @@
                 {
                     "units"               : "ml",
                     "value"               : 0.5,
-                    "series"              : {
-                        "doses": [ {"value": 5, "units": "year"}, {"value": 12, "units": "year"} ]
-                    },
-                    "special_instructions": "5-7 years, ≥12 years"
+                    "duration"            : { "value": [5, 7], "units": "year" },
+                    "special_instructions": "≥12 years"
                 }
             ],
             "raw_dose"         : "0.5 mL",
@@ -335389,10 +335263,8 @@
                 {
                     "units"               : "ml",
                     "value"               : 0.5,
-                    "series"              : {
-                        "doses": [ {"value": 5, "units": "year"}, {"value": 12, "units": "year"} ]
-                    },
-                    "special_instructions": "5-7 years, ≥12 years"
+                    "duration"            : { "value": [5, 7], "units": "year" },
+                    "special_instructions": "≥12 years"
                 }
             ],
             "raw_dose"         : "0.5 mL",
@@ -337791,19 +337663,18 @@
             },
             "schedules"        : [
                 {
-                    "concentration_ratio": [1, 1000],
-                    "active_ingredients" : [
+                    "special_instructions": "1:1000 ((epinephrine) 1:1000)",
+                    "active_ingredients"  : [
                         {
-                            "diluents"            : [
+                            "diluents"       : [
                                 {"value": 1, "units": "ml", "ingredient_name": "sodium chloride 0.9%"}
                             ],
-                            "ingredient_name"     : "Adrenaline",
-                            "units"               : "ml",
-                            "value"               : 1,
-                            "special_instructions": "(epinephrine) 1:1000"
+                            "ingredient_name": "Adrenaline",
+                            "units"          : "ml",
+                            "value"          : 1
                         }
                     ],
-                    "frequency"          : {
+                    "frequency"           : {
                         "every": { "value": [15, 30], "units": "minute" }
                     }
                 }
@@ -337826,19 +337697,18 @@
             },
             "schedules"        : [
                 {
-                    "concentration_ratio": [1, 1000],
-                    "active_ingredients" : [
+                    "special_instructions": "1:1000 ((epinephrine) 1:1000)",
+                    "active_ingredients"  : [
                         {
-                            "diluents"            : [
+                            "diluents"       : [
                                 {"value": 1, "units": "ml", "ingredient_name": "sodium chloride 0.9%"}
                             ],
-                            "ingredient_name"     : "Adrenaline",
-                            "units"               : "ml",
-                            "value"               : 1,
-                            "special_instructions": "(epinephrine) 1:1000"
+                            "ingredient_name": "Adrenaline",
+                            "units"          : "ml",
+                            "value"          : 1
                         }
                     ],
-                    "frequency"          : {
+                    "frequency"           : {
                         "every": { "value": [15, 30], "units": "minute" }
                     }
                 }
@@ -338862,11 +338732,8 @@
             },
             "schedules"        : [
                 {
-                    "special_instructions": "0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen",
-                    "duration"            : {"value": 20, "units": "minute"},
-                    "per_time"            : {"value": 1, "units": "minute"},
-                    "units"               : "l",
-                    "value"               : 5
+                    "special_instructions": "0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen; 5l/minute",
+                    "duration": {"value": 20, "units": "minute"}
                 }
             ],
             "raw_dose"         : "0.15–0.3 mg/kg/dose in 2-4ml of sodium chloride 3%",
@@ -338886,11 +338753,8 @@
             },
             "schedules"        : [
                 {
-                    "special_instructions": "0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen",
-                    "duration"            : {"value": 20, "units": "minute"},
-                    "per_time"            : {"value": 1, "units": "minute"},
-                    "units"               : "l",
-                    "value"               : 5
+                    "special_instructions": "0.15-0.3 mg/kg/dose in 2-4ml of sodium chloride 3% with oxygen; 5l/minute",
+                    "duration": {"value": 20, "units": "minute"}
                 }
             ],
             "raw_dose"         : "0.15–0.3 mg/kg/dose in 2-4ml of sodium chloride 3%",
@@ -338935,16 +338799,7 @@
                 "ingredients": [ {"name": "Salbutamol"} ]
             },
             "schedules"        : [
-                {
-                    "units"      : "mcg",
-                    "value"      : 200,
-                    "equivalency": {
-                        "value"      : 2,
-                        "units"      : "puff",
-                        "multipliers": [ {"value": 100, "units": "mcg", "per_dose": true} ]
-                    },
-                    "frequency"  : "prn"
-                }
+                {"units": "mcg", "value": 200, "special_instructions": "2 puffs of 100mcg/puff", "frequency": "prn"}
             ],
             "raw_dose"         : "200mcg (2 puffs of 100mcg/puff)",
             "raw_dose_interval": "as required"
@@ -338962,16 +338817,7 @@
                 "ingredients": [ {"name": "Salbutamol"} ]
             },
             "schedules"        : [
-                {
-                    "units"      : "mcg",
-                    "value"      : 200,
-                    "equivalency": {
-                        "value"      : 2,
-                        "units"      : "puff",
-                        "multipliers": [ {"value": 100, "units": "mcg", "per_dose": true} ]
-                    },
-                    "frequency"  : "prn"
-                }
+                {"units": "mcg", "value": 200, "special_instructions": "2 puffs of 100mcg/puff", "frequency": "prn"}
             ],
             "raw_dose"         : "200mcg (2 puffs of 100mcg/puff)",
             "raw_dose_interval": "as required"
@@ -341234,7 +341080,7 @@
                 "ingredients"   : [ {"name": "Adrenaline", "alternate_name": "epinephrine"} ]
             },
             "schedules"        : [
-                { "concentration_ratio": [1, 1000], "units": "ml", "value": 1, "frequency": "stat" }
+                {"special_instructions": "1:1000", "units": "ml", "value": 1, "frequency": "stat"}
             ],
             "raw_dose"         : "1:1000 (1ml)",
             "raw_dose_interval": "single dose"
@@ -341359,10 +341205,8 @@
             },
             "schedules"        : [
                 {
-                    "value"              : 2,
-                    "units"              : "ml",
-                    "concentration_ratio": [1, 1000],
-                    "frequency"          : { "every": {"value": 15, "units": "minute"} }
+                    "special_instructions": "2ml of 1:1000",
+                    "frequency"           : { "every": {"value": 15, "units": "minute"} }
                 }
             ],
             "raw_dose"         : "2ml of 1:1000",
@@ -341383,9 +341227,9 @@
             },
             "schedules"        : [
                 {
+                    "concentration_ratio": [1, 1000],
                     "value"              : 2,
                     "units"              : "ml",
-                    "concentration_ratio": [1, 1000],
                     "frequency"          : { "every": {"value": 15, "units": "minute"} }
                 }
             ],
@@ -341433,10 +341277,8 @@
             },
             "schedules"        : [
                 {
-                    "value"              : 1,
-                    "units"              : "ml",
-                    "concentration_ratio": [1, 1000],
-                    "frequency"          : {
+                    "special_instructions": "1ml of 1:1000",
+                    "frequency"           : {
                         "every": { "value": [15, 30], "units": "minute" }
                     }
                 }
@@ -341946,17 +341788,8 @@
             },
             "schedules"        : [
                 {
-                    "diluents" : [
-                        {
-                            "ingredient_name": "water",
-                            "low"            : [ {"value": 50, "units": "ml"} ],
-                            "high"           : [ {"value": 100, "units": "ml"} ]
-                        }
-                    ],
-                    "per_size" : "kg",
-                    "units"    : "g",
-                    "value"    : 1,
-                    "frequency": { "every": {"value": 4, "units": "hour"} }
+                    "special_instructions": "1g/kg in 50-100ml water",
+                    "frequency"           : { "every": {"value": 4, "units": "hour"} }
                 }
             ],
             "raw_dose"         : "1g/kg in 50-100ml water",
@@ -341976,17 +341809,8 @@
             },
             "schedules"        : [
                 {
-                    "diluents" : [
-                        {
-                            "ingredient_name": "water",
-                            "low"            : [ {"value": 50, "units": "ml"} ],
-                            "high"           : [ {"value": 100, "units": "ml"} ]
-                        }
-                    ],
-                    "per_size" : "kg",
-                    "units"    : "g",
-                    "value"    : 1,
-                    "frequency": { "every": {"value": 4, "units": "hour"} }
+                    "special_instructions": "1g/kg in 50-100ml water",
+                    "frequency"           : { "every": {"value": 4, "units": "hour"} }
                 }
             ],
             "raw_dose"         : "1g/kg in 50-100ml water",
@@ -342032,32 +341856,8 @@
             },
             "schedules"        : [
                 {
-                    "low"      : [
-                        {
-                            "diluents": [
-                                {
-                                    "ingredient_name": "water",
-                                    "low"            : [ {"value": 100, "units": "ml"} ],
-                                    "high"           : [ {"value": 300, "units": "ml"} ]
-                                }
-                            ],
-                            "units"   : "g",
-                            "value"   : 20
-                        }
-                    ],
-                    "high"     : [
-                        {
-                            "diluents": [
-                                {
-                                    "ingredient_name": "water",
-                                    "low"            : [ {"value": 100, "units": "ml"} ],
-                                    "high"           : [ {"value": 300, "units": "ml"} ]
-                                }
-                            ],
-                            "units"   : "g",
-                            "value"   : 50
-                        }
-                    ],
+                    "low"      : [ {"special_instructions": "in 100-300ml water", "units": "g", "value": 20} ],
+                    "high"     : [ {"special_instructions": "in 100-300ml water", "units": "g", "value": 50} ],
                     "frequency": { "every": {"value": 4, "units": "hour"} }
                 }
             ],
@@ -342078,32 +341878,8 @@
             },
             "schedules"        : [
                 {
-                    "low"      : [
-                        {
-                            "diluents": [
-                                {
-                                    "ingredient_name": "water",
-                                    "low"            : [ {"value": 100, "units": "ml"} ],
-                                    "high"           : [ {"value": 300, "units": "ml"} ]
-                                }
-                            ],
-                            "units"   : "g",
-                            "value"   : 20
-                        }
-                    ],
-                    "high"     : [
-                        {
-                            "diluents": [
-                                {
-                                    "ingredient_name": "water",
-                                    "low"            : [ {"value": 100, "units": "ml"} ],
-                                    "high"           : [ {"value": 300, "units": "ml"} ]
-                                }
-                            ],
-                            "units"   : "g",
-                            "value"   : 50
-                        }
-                    ],
+                    "low"      : [ {"special_instructions": "in 100-300ml water", "units": "g", "value": 20} ],
+                    "high"     : [ {"special_instructions": "in 100-300ml water", "units": "g", "value": 50} ],
                     "frequency": { "every": {"value": 4, "units": "hour"} }
                 }
             ],
@@ -342148,7 +341924,7 @@
                 "name"       : "Biperiden",
                 "ingredients": [ {"name": "Biperiden"} ]
             },
-            "schedules"        : [ {"units": "mg", "value": 1, "slowly": true} ],
+            "schedules"        : [ {"units": "mg", "value": 1, "special_instructions": "slow injection"} ],
             "raw_dose"         : "1mg",
             "raw_dose_interval": "slow injection"
         },
@@ -342164,7 +341940,7 @@
                 "name"       : "Biperiden",
                 "ingredients": [ {"name": "Biperiden"} ]
             },
-            "schedules"        : [ {"units": "mg", "value": 1, "slowly": true} ],
+            "schedules"        : [ {"units": "mg", "value": 1, "special_instructions": "slow injection"} ],
             "raw_dose"         : "1mg",
             "raw_dose_interval": "slow injection"
         }
@@ -342206,7 +341982,7 @@
                 "name"       : "Biperiden",
                 "ingredients": [ {"name": "Biperiden"} ]
             },
-            "schedules"        : [ {"units": "mg", "value": 2, "slowly": true} ],
+            "schedules"        : [ {"units": "mg", "value": 2, "special_instructions": "slow injection"} ],
             "raw_dose"         : "2mg",
             "raw_dose_interval": "slow injection"
         },
@@ -342222,7 +341998,7 @@
                 "name"       : "Biperiden",
                 "ingredients": [ {"name": "Biperiden"} ]
             },
-            "schedules"        : [ {"units": "mg", "value": 2, "slowly": true} ],
+            "schedules"        : [ {"units": "mg", "value": 2, "special_instructions": "slow injection"} ],
             "raw_dose"         : "2mg",
             "raw_dose_interval": "slow injection"
         }
@@ -342264,7 +342040,7 @@
                 "name"       : "Biperiden",
                 "ingredients": [ {"name": "Biperiden"} ]
             },
-            "schedules"        : [ {"units": "mg", "value": 3, "slowly": true} ],
+            "schedules"        : [ {"units": "mg", "value": 3, "special_instructions": "slow injection"} ],
             "raw_dose"         : "3mg",
             "raw_dose_interval": "slow injection"
         },
@@ -342280,7 +342056,7 @@
                 "name"       : "Biperiden",
                 "ingredients": [ {"name": "Biperiden"} ]
             },
-            "schedules"        : [ {"units": "mg", "value": 3, "slowly": true} ],
+            "schedules"        : [ {"units": "mg", "value": 3, "special_instructions": "slow injection"} ],
             "raw_dose"         : "3mg",
             "raw_dose_interval": "slow injection"
         }
@@ -342329,8 +342105,7 @@
                     "value"   : 0.5,
                     "low"     : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 0.5
@@ -342338,8 +342113,7 @@
                     ],
                     "high"    : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 1
@@ -342369,8 +342143,7 @@
                     "value"   : 0.5,
                     "low"     : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 0.5
@@ -342378,8 +342151,7 @@
                     ],
                     "high"    : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 1
@@ -342435,8 +342207,7 @@
                     "value"   : 0.5,
                     "low"     : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 0.5
@@ -342444,8 +342215,7 @@
                     ],
                     "high"    : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 1
@@ -342475,8 +342245,7 @@
                     "value"   : 0.5,
                     "low"     : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 0.5
@@ -342484,8 +342253,7 @@
                     ],
                     "high"    : [
                         {
-                            "special_instructions": "IV",
-                            "slowly"              : true,
+                            "special_instructions": "IV; slow",
                             "per_time"            : {"value": 1, "units": "minute"},
                             "units"               : "mL",
                             "value"               : 1
@@ -342902,7 +342670,7 @@
                 "ingredients"   : [ {"name": "Adrenaline", "alternate_name": "epinephrine"} ]
             },
             "schedules"        : [
-                { "units": "ml", "value": 0.25, "concentration_ratio": [1, 1000], "frequency": "stat" }
+                {"units": "ml", "value": 0.25, "special_instructions": "1:1000", "frequency": "stat"}
             ],
             "raw_dose"         : "0.25ml (1:1000)",
             "raw_dose_interval": "single dose"
@@ -343134,14 +342902,24 @@
             },
             "schedules"        : [
                 {
-                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ],
-                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
-                    "diluents": [
+                    "low" : [
+                        {"per_size": "kg", "units": "mg", "value": 250},
                         {
-                            "ingredient_name": "dextrose water",
-                            "concentration"  : 10,
-                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
-                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
+                            "per_size"            : "kg",
+                            "units"               : "mL",
+                            "ingredient_name"     : "Dextrose",
+                            "special_instructions": "10% water",
+                            "value"               : 2.5
+                        }
+                    ],
+                    "high": [
+                        {"per_size": "kg", "units": "mg", "value": 500},
+                        {
+                            "per_size"            : "kg",
+                            "units"               : "mL",
+                            "ingredient_name"     : "Dextrose",
+                            "special_instructions": "10% water",
+                            "value"               : 5
                         }
                     ]
                 }
@@ -343163,14 +342941,24 @@
             },
             "schedules"        : [
                 {
-                    "low"     : [ {"per_size": "kg", "units": "mg", "value": 250} ],
-                    "high"    : [ {"per_size": "kg", "units": "mg", "value": 500} ],
-                    "diluents": [
+                    "low" : [
+                        {"per_size": "kg", "units": "mg", "value": 250},
                         {
-                            "ingredient_name": "dextrose water",
-                            "concentration"  : 10,
-                            "low"            : [ {"value": 2.5, "units": "ml", "per_size": "kg"} ],
-                            "high"           : [ {"value": 5, "units": "ml", "per_size": "kg"} ]
+                            "per_size"            : "kg",
+                            "units"               : "mL",
+                            "ingredient_name"     : "Dextrose",
+                            "special_instructions": "10% water",
+                            "value"               : 2.5
+                        }
+                    ],
+                    "high": [
+                        {"per_size": "kg", "units": "mg", "value": 500},
+                        {
+                            "per_size"            : "kg",
+                            "units"               : "mL",
+                            "ingredient_name"     : "Dextrose",
+                            "special_instructions": "10% water",
+                            "value"               : 5
                         }
                     ]
                 }
@@ -343664,10 +343452,10 @@
             },
             "schedules"        : [
                 {
-                    "per_size": "kg",
-                    "units"   : "ml",
-                    "value"   : 0.25,
-                    "before"  : {"event": "administering Calcium gluconate"}
+                    "per_size"            : "kg",
+                    "units"               : "ml",
+                    "value"               : 0.25,
+                    "special_instructions": "before administering Calcium gluconate"
                 }
             ],
             "raw_dose"         : "0.25ml/kg",
@@ -343687,10 +343475,10 @@
             },
             "schedules"        : [
                 {
-                    "per_size": "kg",
-                    "units"   : "ml",
-                    "value"   : 0.25,
-                    "before"  : {"event": "administering Calcium gluconate"}
+                    "per_size"            : "kg",
+                    "units"               : "ml",
+                    "value"               : 0.25,
+                    "special_instructions": "before administering Calcium gluconate"
                 }
             ],
             "raw_dose"         : "0.25ml/kg",
@@ -344809,14 +344597,7 @@
                 "alternate_name": "epinephrine",
                 "ingredients"   : [ {"name": "Adrenaline", "alternate_name": "epinephrine"} ]
             },
-            "schedules"        : [
-                {
-                    "value"               : 1,
-                    "units"               : "ml",
-                    "concentration_ratio" : [1, 1000],
-                    "special_instructions": "soak gauze or apply directly"
-                }
-            ],
+            "schedules"        : [ {"special_instructions": "1:1000 mL soak gauze or apply directly"} ],
             "raw_dose"         : "1:1000 mL soak gauze or apply directly",
             "raw_dose_interval": "n/a"
         },
@@ -347913,13 +347694,7 @@
                 "ingredients": [ {"name": "Dextrose 50%"} ]
             },
             "schedules"        : [
-                {
-                    "per_size"            : "kg",
-                    "units"               : "ml",
-                    "value"               : 1,
-                    "diluents"            : [ {"ingredient_name": "dextrose", "concentration": 50} ],
-                    "special_instructions": "refer to STGs"
-                }
+                {"per_size": "kg", "units": "ml", "value": 1, "special_instructions": "50% dextrose refer to STGs"}
             ],
             "raw_dose"         : "1 mL/kg (50% dextrose)",
             "raw_dose_interval": "refer to STGs"
@@ -347937,13 +347712,7 @@
                 "ingredients": [ {"name": "Dextrose 50%"} ]
             },
             "schedules"        : [
-                {
-                    "per_size"            : "kg",
-                    "units"               : "ml",
-                    "value"               : 1,
-                    "diluents"            : [ {"ingredient_name": "dextrose", "concentration": 50} ],
-                    "special_instructions": "refer to STGs"
-                }
+                {"per_size": "kg", "units": "ml", "value": 1, "special_instructions": "50% dextrose refer to STGs"}
             ],
             "raw_dose"         : "1 mL/kg (50% dextrose)",
             "raw_dose_interval": "refer to STGs"

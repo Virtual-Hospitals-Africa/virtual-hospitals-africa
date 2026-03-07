@@ -8,6 +8,7 @@ import { combine } from '../../util/combine.ts'
 import { parseIcd10Indications } from './icd10.ts'
 import { parsePrescriber } from './prescriber.ts'
 import { forms_with_singular_doses } from '../../db/seed/defs/inventory_medication/shared.ts'
+import { FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS } from './fallback_medicine_special_instructions.ts'
 
 export class MedicineParser {
   medicine: ParsedMedicine
@@ -77,15 +78,19 @@ export class MedicineParser {
       .replaceAll('–', '-')
       .replaceAll(/ - (\d)/g, '-$1')
       .replace(/\/daily\b/g, '/day')
+      .replace(/\bthereafte(\d)/gi, 'thereafter $1')
+      .replace(/\bhoury\b/gi, 'hourly')
+      .replace(/\bhouly\b/gi, 'hourly')
+      .replace(/\bdaiy\b/gi, 'daily')
+      .replace(/\banually\b/gi, 'annually')
+      .replace(/\bcontinuosly\b/gi, 'continuously')
+      .replace(/\bcfor\b/gi, 'for')
       .replaceAll('  ', ' ')
       .trim()
 
     if (dose === 'already specified') return [{}]
     if (dose === 'n/a') return [{}]
-    if (dose === '13 x 400mg tablets per 2L normal saline (sodium chloride 0.9%) for wound irrigation 400mg per 35cm2. applied twice daily') {
-      return [{ special_instructions: dose }]
-    }
-    if (dose === '(130 - Na) x body weight in kg x 4') return [{ special_instructions: dose }]
+    if (FALLBACK_MEDICINE_SPECIAL_INSTRUCTIONS.has(dose)) return [{ special_instructions: dose }]
     const dose_parts = splitPartsAndParentheticals(dose)
     return dose_parts.map((dose_part) =>
       DosageParser.asParsedDose(
@@ -151,12 +156,34 @@ export class MedicineParser {
           dose_schedule.special_instructions = [dose_schedule.special_instructions, interval_schedule.special_instructions].join(' ')
           delete interval_schedule.special_instructions
         }
+        // When interval is a volume rate (e.g. 125ml/hour) and dose has different units, store rate as max
+        if (
+          dose_schedule.units && interval_schedule.units &&
+          dose_schedule.units !== interval_schedule.units &&
+          interval_schedule.per_time
+        ) {
+          const { value, units, per_time, ...rest } = interval_schedule
+          Object.assign(interval_schedule, rest)
+          interval_schedule.max = [{ value, units, per_time }]
+          delete interval_schedule.value
+          delete interval_schedule.units
+          delete interval_schedule.per_time
+        }
+        if (dose_schedule.max && interval_schedule.max) {
+          dose_schedule.max = [...dose_schedule.max, ...interval_schedule.max]
+          delete interval_schedule.max
+        }
         if (dose_schedule.frequency && interval_schedule.frequency) {
           console.log({ dose_schedule, interval_schedule })
           assert(typeof dose_schedule.frequency === 'string')
           assert(typeof interval_schedule.frequency === 'string')
           if (dose_schedule.frequency !== interval_schedule.frequency) {
-            dose_schedule.frequency = [dose_schedule.frequency, interval_schedule.frequency]
+            const pair = [dose_schedule.frequency, interval_schedule.frequency]
+            if (pair.includes('nocte') && pair.includes('qd')) {
+              dose_schedule.frequency = 'nocte'
+            } else {
+              dose_schedule.frequency = pair as [typeof dose_schedule.frequency, typeof dose_schedule.frequency]
+            }
           }
           delete interval_schedule.frequency
         }
