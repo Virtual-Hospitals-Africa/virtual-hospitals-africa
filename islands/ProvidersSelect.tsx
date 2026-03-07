@@ -4,11 +4,12 @@ import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { SqlBool } from 'kysely'
-import Badge, { BadgeColor } from '../components/library/Badge.tsx'
+import PriorityBadge from '../components/PriorityBadge.tsx'
+import { Priority } from '../shared/priorities.ts'
 
 export type AvailabilityInfo = {
   label: string
-  badge?: { content: string; color: BadgeColor }
+  priority?: Priority | null
 }
 
 export function ProviderSelectOption(
@@ -66,7 +67,7 @@ export function ProviderSelectOption(
       {availability && (
         <span className='flex flex-col items-start gap-1 mt-2 sm:mt-0 sm:items-end'>
           <span className='text-xs text-gray-600'>{availability.label}</span>
-          {availability.badge && <Badge content={availability.badge.content} color={availability.badge.color} />}
+          {availability.priority !== undefined && <PriorityBadge priority={availability.priority} />}
         </span>
       )}
       <span

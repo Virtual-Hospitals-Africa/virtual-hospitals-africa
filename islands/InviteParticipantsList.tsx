@@ -1,7 +1,6 @@
 import { Signal, useSignal } from '@preact/signals'
 import { RenderedEmployeeWithPresence, RenderedPatientOpenEncounter } from '../types.ts'
 import { AvailabilityInfo, ProviderSelectOption } from './ProvidersSelect.tsx'
-import { BadgeColor } from '../components/library/Badge.tsx'
 import { Workflow } from '../db.d.ts'
 
 const WORKFLOW_LABELS: Partial<Record<Workflow, string>> = {
@@ -14,22 +13,6 @@ const WORKFLOW_LABELS: Partial<Record<Workflow, string>> = {
   prescription_refill: 'In prescription refill',
   stabilization: 'In stabilization',
   create_google_meet: 'In Google Meet',
-}
-
-function priorityBadge(priority: string | null): { content: string; color: BadgeColor } {
-  if (!priority) return { content: 'Undetermined', color: 'gray' }
-  switch (priority) {
-    case 'Non-urgent':
-      return { content: 'Non-urgent', color: 'green' }
-    case 'Urgent':
-      return { content: 'Urgent', color: 'yellow' }
-    case 'Very urgent':
-      return { content: 'Very urgent', color: 'yellow' }
-    case 'Emergency':
-      return { content: 'Emergency', color: 'red' }
-    default:
-      return { content: priority, color: 'gray' }
-  }
 }
 
 function getEncounterLabel(encounter: RenderedPatientOpenEncounter): string {
@@ -45,7 +28,7 @@ function computeAvailability(employee: RenderedEmployeeWithPresence): Availabili
   if (employee.open_encounter) {
     return {
       label: getEncounterLabel(employee.open_encounter),
-      badge: priorityBadge(employee.open_encounter.priority?.name ?? null),
+      priority: employee.open_encounter.priority?.name ?? null,
     }
   }
   if (employee.at_work) {
