@@ -8,6 +8,7 @@ import { RadioButtonGroup } from '../../components/library/RadioButtonGroup.tsx'
 import { computed, useSignal } from '@preact/signals'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { InviteParticipantsFormFields } from '../InviteParticipantsList.tsx'
+import capitalize from '../../util/capitalize.ts'
 
 function NextStepSelect(
   { patient_names, priority, to_be_notified }: {
@@ -19,16 +20,17 @@ function NextStepSelect(
     to_be_notified: string[]
   },
 ) {
-  const staff = new Intl.ListFormat('en').format(to_be_notified) || 'Staff'
+  const staff = new Intl.ListFormat('en').format(to_be_notified) || 'staff'
+  const default_value = priority.name === 'Non-urgent' ? 'await_consultation' : priority.name === 'Urgent' ? 'refer_case' : 'transfer_to_stabilization_area'
 
   return (
     <RadioButtonGroup
       name='next_workflow'
-      defaultValue='await_consultation'
+      defaultValue={default_value}
       options={[
         {
           id: 'await_consultation',
-          name: 'Consultation with primary care department',
+          name: 'Await consultation with primary care',
           description: compact([
             `I will show ${patient_names.preferred_name} to the waiting room.`,
             `Their case will be prioritized based on their having a ${priority.name.toLowerCase()} case.`,
@@ -39,18 +41,29 @@ function NextStepSelect(
         {
           id: 'refer_case',
           name: 'Refer case',
-          description: [
+          description: compact([
             `I will stay here with ${patient_names.preferred_name}.`,
-            `${staff} will be notified immediately about their case and location.`,
-          ],
+            `${capitalize(staff)} will be notified immediately about their case and location.`,
+            default_value === 'refer_case' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`
+          ]),
         },
         {
           id: 'transfer_to_stabilization_area',
-          name: 'Transfer to stabilization area',
-          description: [
+          name: 'Stabilize patient',
+          description: compact([
             `I will transfer ${patient_names.preferred_name} to the stabilization area.`,
-            `${staff} will be notified immediately to meet us there.`,
-          ],
+            `${capitalize(staff)} will be notified immediately to meet us there.`,
+            default_value === 'transfer_to_stabilization_area' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`
+          ]),
+        },
+        {
+          id: 'come_back_later',
+          name: 'Come back later',
+          description: compact([
+            `${capitalize(staff)} will be notified with my message.`,
+            `${patient_names.preferred_name} will stay here.`,
+            `I will serve other patients and come back once ${staff} ${to_be_notified.length === 1 ? 'has' : 'have'} responded.`,
+          ]),
         },
         // {
         //   id: 'send_message',
