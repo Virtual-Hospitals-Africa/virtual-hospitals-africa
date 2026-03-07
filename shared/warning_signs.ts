@@ -810,7 +810,7 @@ export type WarningSignKey = typeof WARNING_SIGN_DEFS[number]['key']
 
 function buildNormalizedSign<T extends typeof WARNING_SIGN_DEFS[number]>(
   sign: T,
-  overrides: { priority: 'Emergency' | 'Very urgent' | 'Urgent'; category: string },
+  overrides: { priority: 'Emergency' | 'Very urgent' | 'Urgent'; category: string; subcategory?: string },
 ) {
   return omitUndefinedProperties({
     ...sign,
@@ -844,7 +844,7 @@ function buildOlderChildSigns(): WarningSign[] {
   const order = WARNING_SIGN_ORDER['older child']
 
   const emergency_signs = Object.entries(order.Emergency).flatMap(([subcategory, keys]) =>
-    keys.map((key) => buildNormalizedSign(KEYED_DEFS[key], { priority: 'Emergency', category: subcategory }))
+    keys.map((key) => buildNormalizedSign(KEYED_DEFS[key], { priority: 'Emergency', category: 'Emergency', subcategory }))
   )
 
   const vu_signs = order['Very urgent'].map((key) => buildNormalizedSign(KEYED_DEFS[key], { priority: 'Very urgent', category: 'Very urgent' }))

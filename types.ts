@@ -2715,7 +2715,10 @@ export type WarningSignDef<Priority extends 'Urgent' | 'Very urgent' | 'Emergenc
   prompt_when_s_expression?: string
 }
 
-export type WarningSign = Omit<WarningSignDef<'Urgent' | 'Very urgent' | 'Emergency'>, 'category'> & { category: string }
+export type WarningSign = Omit<WarningSignDef<'Urgent' | 'Very urgent' | 'Emergency'>, 'category'> & {
+  category: string
+  subcategory?: string
+}
 
 export type CommonSymptom = SignShared<'Common Symptoms'>
 

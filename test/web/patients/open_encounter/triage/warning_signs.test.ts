@@ -274,10 +274,7 @@ describeParallel('triage/warning_signs', () => {
           ],
         }
 
-        const expected_table_count = Object.values(expected).reduce((acc: number, v) => {
-          return acc + (isObjectLike(v) ? Object.keys(v as object).length : 1)
-        }, 0)
-        assertEquals($('.priority-table').length, expected_table_count)
+        assertEquals($('.priority-table').length, Object.keys(expected).length)
 
         // deno-lint-ignore no-explicit-any
         const actual: any = {}
@@ -285,7 +282,7 @@ describeParallel('triage/warning_signs', () => {
           if (isObjectLike(expected[category])) {
             actual[category] = {}
             for (const subcategory of keys(expected[category])) {
-              const grid_display = getGridDisplay($, `.priority-table[data-category="${subcategory}"] > .grid`)
+              const grid_display = getGridDisplay($, `[data-subcategory="${subcategory}"] > .grid`)
               actual[category][subcategory] = grid_display
             }
           } else {
