@@ -105,7 +105,8 @@ export default function TriageRoutePatientSection(
         <FormRow>
           <InviteParticipantsFormFields
             facility_employees={facility_employees}
-            hospital_employees={hospital_employees}
+            // Triage nurses do not invite hospital employees
+            hospital_employees={[]}
             selected={to_be_notified}
           />
         </FormRow>
