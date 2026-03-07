@@ -4,14 +4,21 @@ import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { SqlBool } from 'kysely'
+import Badge, { BadgeColor } from '../components/library/Badge.tsx'
+
+export type AvailabilityInfo = {
+  label: string
+  badge?: { content: string; color: BadgeColor }
+}
 
 export function ProviderSelectOption(
-  { provider, selected, toggleSelection }: {
+  { provider, selected, toggleSelection, availability }: {
     provider: RenderedEmployee & {
       at_work?: SqlBool
     }
     selected: boolean
     toggleSelection(): void
+    availability?: AvailabilityInfo
   },
 ) {
   const active = useSignal(false)
@@ -56,6 +63,12 @@ export function ProviderSelectOption(
           </span>
         </span>
       </span>
+      {availability && (
+        <span className='flex flex-col items-start gap-1 mt-2 sm:mt-0 sm:items-end'>
+          <span className='text-xs text-gray-600'>{availability.label}</span>
+          {availability.badge && <Badge content={availability.badge.content} color={availability.badge.color} />}
+        </span>
+      )}
       <span
         className={cls(
           'pointer-events-none absolute -inset-px rounded-lg border-2',

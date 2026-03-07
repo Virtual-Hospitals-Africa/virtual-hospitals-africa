@@ -2234,7 +2234,7 @@ export type RenderedEmployee = RenderedHealthWorker & {
 
 export type RenderedEmployeeWithPresence = RenderedEmployee & {
   at_work: boolean
-  open_encounter: null | RenderedPatientEncounter
+  open_encounter: null | RenderedPatientOpenEncounter
 }
 
 export type MessageTargetEntities = {

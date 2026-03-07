@@ -23,7 +23,7 @@ export default function RegistrationRoutePatientSection(
         <FormRow>
           <RadioButtonGroup
             name='next_workflow'
-            defaultValue={priority}
+            defaultValue='await_triage'
             options={[
               {
                 id: 'await_triage',

@@ -1,9 +1,11 @@
 import { sql } from 'kysely'
 import { RenderedEmployeeWithPresence, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { base, identity } from './_base.ts'
+import { base } from './_base.ts'
 import { employees, EmployeesSearch } from './employees.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import { TEST_ORGANIZATION_UUIDS } from 'test/_helpers/organizations.ts'
+import { jsonObjectFrom } from '../helpers.ts'
+import { patient_encounters } from './patient_encounters.ts'
 
 export const employees_presence = base({
   top_level_table: 'employment',
@@ -12,10 +14,21 @@ export const employees_presence = base({
       .leftJoin('employment_presence', 'employment_presence.id', 'employment.id')
       .select((eb) => [
         eb.fn.coalesce('employment_presence.at_work', sql.lit(false)).as('at_work'),
-        'employment_presence.with_patient_id',
+        jsonObjectFrom(
+          patient_encounters.baseQuery(trx, { is_open: true })
+            .where('patient_encounters.patient_id', '=', eb.ref('employment_presence.with_patient_id')),
+        ).as('open_encounter'),
       ])
   },
-  formatResult: identity,
+  formatResult({ open_encounter, ...employee }): RenderedEmployeeWithPresence {
+    if (!open_encounter) {
+      return { ...employee, open_encounter: null }
+    }
+    return {
+      ...employee,
+      open_encounter: patient_encounters.existsOpen(patient_encounters.formatResult(open_encounter)),
+    }
+  },
   getForClinicAssumingTestHospital(
     trx: TrxOrDb,
     { organization_id, health_worker_id }: { organization_id: string; health_worker_id: string },

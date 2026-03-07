@@ -79,7 +79,7 @@ function NextStepSelect(
 }
 
 export default function TriageRoutePatientSection(
-  { this_visit, patient_names, priority, facility_employees, hospital_employees }: {
+  { this_visit, patient_names, priority, clinic_employees }: {
     this_visit: {
       reason: Maybe<EncounterReason>
       notes?: Maybe<string>
@@ -89,8 +89,7 @@ export default function TriageRoutePatientSection(
       name: Priority
       target_treatment_time: Date | null
     }
-    facility_employees: RenderedEmployeeWithPresence[]
-    hospital_employees: RenderedEmployeeWithPresence[]
+    clinic_employees: RenderedEmployeeWithPresence[]
   },
 ) {
   const to_be_notified = useSignal<Set<RenderedEmployeeWithPresence>>(new Set())
@@ -104,7 +103,7 @@ export default function TriageRoutePatientSection(
         </FormRow>
         <FormRow>
           <InviteParticipantsFormFields
-            facility_employees={facility_employees}
+            facility_employees={clinic_employees}
             // Triage nurses do not invite hospital employees
             hospital_employees={[]}
             selected={to_be_notified}
