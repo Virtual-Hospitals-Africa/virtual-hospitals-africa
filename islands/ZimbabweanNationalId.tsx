@@ -12,7 +12,8 @@ export function ZimbabweanNationalIdFormGroup({ national_id_number }: {
   return (
     <>
       <ZimbabweanNationalIdInput
-        value={national_id_number}
+        key={String(no_national_id.value)}
+        value={no_national_id.value ? undefined : national_id_number}
         no_national_id_checked={no_national_id.value}
       />
       <CheckboxInput

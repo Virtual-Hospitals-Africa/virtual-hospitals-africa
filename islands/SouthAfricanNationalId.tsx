@@ -14,7 +14,8 @@ export function SouthAfricanNationalIdFormGroup(
   return (
     <div className='flex flex-col gap-2'>
       <SouthAfricanNationalIdInput
-        value={national_id_number}
+        key={String(no_national_id.value)}
+        value={no_national_id.value ? undefined : national_id_number}
         no_national_id_checked={no_national_id.value}
       />
       <label className='flex items-center gap-2'>
