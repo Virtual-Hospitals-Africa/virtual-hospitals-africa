@@ -227,7 +227,7 @@ async function getWarningSignsForPatient(
   { state: { trx, patient_id } }: OpenEncounterWorkflowContext,
 ): Promise<WarningSign[]> {
   const [having_prompt_when, no_prompt_when] = partition(
-    WARNING_SIGNS,
+    WARNING_SIGNS.adult,
     (sign) => !!sign.prompt_when_s_expression,
   )
   const satisfying_prompt_when = await filter(having_prompt_when, promptWhen)
@@ -235,7 +235,7 @@ async function getWarningSignsForPatient(
   return sortBy(
     warning_signs_for_patient,
     (sign) => ORDERED_PRIORITIES.indexOf(sign.priority),
-    (sign) => WARNING_SIGNS.indexOf(sign),
+    (sign) => WARNING_SIGNS.adult.indexOf(sign),
   )
 
   async function promptWhen({ prompt_when_s_expression }: WarningSign) {

@@ -65,7 +65,7 @@ export function asWarningSignsAdult(
   function* applicableWarningSigns(): Generator<
     [string, z.input<typeof TriageWarningSignSchema>]
   > {
-    for (const sign of WARNING_SIGNS) {
+    for (const sign of WARNING_SIGNS.adult) {
       if (
         isKeyOf(sign.key, ONLY_WHEN_PREGNANCY_STATUS) &&
         ONLY_WHEN_PREGNANCY_STATUS[sign.key] !== opts.pregnant
@@ -92,10 +92,32 @@ export function asWarningSignsAdult(
 }
 
 export function asWarningSignsOlderChild(
-  _sign_keys: string[], // Actually use the correct signs
-  ..._other_finding_s_expressions: string[]
+  sign_keys: string[],
+  ...other_finding_s_expressions: string[]
 ): z.input<typeof TriageWarningSignsSchema> {
-  throw new Error('TODO implement')
+  return { warning_signs: fromEntries(applicableWarningSigns()) }
+
+  function* applicableWarningSigns(): Generator<
+    [string, z.input<typeof TriageWarningSignSchema>]
+  > {
+    for (const sign of WARNING_SIGNS['older child']) {
+      const field: z.input<typeof TriageWarningSignSchema> = {
+        warning_sign_key: sign.key,
+        priority_level: sign.priority,
+        s_expression: sign.clinical_finding_s_expression,
+      }
+      if (sign_keys.includes(sign.key)) {
+        field.existence = 'Yes'
+      }
+      yield [sign.key, field]
+    }
+    for (const other_finding_s_expression of other_finding_s_expressions) {
+      yield [generateUUID(), {
+        s_expression: other_finding_s_expression,
+        existence: 'Yes',
+      }]
+    }
+  }
 }
 
 async function setupTriage({

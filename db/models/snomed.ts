@@ -26,7 +26,7 @@ function getPriorityOfSnomedConcept<
   patient_id: string,
   trx: TrxOrDbOrQueryCreator,
 ) {
-  const [first_sign, ...rest] = WARNING_SIGNS
+  const [first_sign, ...rest] = WARNING_SIGNS.adult
 
   // Build the predicate for a warning sign, including prompt_when check if present
   const buildSignPredicate = (sign: typeof first_sign) => {
