@@ -44,7 +44,7 @@ function NextStepSelect(
           description: compact([
             `I will stay here with ${patient_names.preferred_name}.`,
             `${capitalize(staff)} will be notified immediately about their case and location.`,
-            default_value === 'refer_case' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`
+            default_value === 'refer_case' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`,
           ]),
         },
         {
@@ -53,7 +53,7 @@ function NextStepSelect(
           description: compact([
             `I will transfer ${patient_names.preferred_name} to the stabilization area.`,
             `${capitalize(staff)} will be notified immediately to meet us there.`,
-            default_value === 'transfer_to_stabilization_area' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`
+            default_value === 'transfer_to_stabilization_area' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`,
           ]),
         },
         {

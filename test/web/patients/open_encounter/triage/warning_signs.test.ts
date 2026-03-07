@@ -20,7 +20,7 @@ import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import { CLINICAL_FINDING, STATUS_ATTRIBUTE } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
-import { asWarningSigns, setupTriageNewPatient } from './_setup.ts'
+import { asWarningSignsAdult, asWarningSignsOlderChild, setupTriageNewPatient } from './_setup.ts'
 import { hyphenate } from '../../../../../util/hyphenate.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { asResultAsync } from '../../../../../util/asResult.ts'
@@ -29,6 +29,8 @@ import { humanReadableJson } from '../../../../../util/humanReadableJson.ts'
 import keys from '../../../../../util/keys.ts'
 import { getGridDisplay } from 'test/_helpers/grid.ts'
 import { nobreak } from '../../../../../util/nobreak.ts'
+import randomDemographics from '../../../../../mocks/randomDemographics.ts'
+import isObjectLike from '../../../../../util/isObjectLike.ts'
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -182,6 +184,116 @@ describeParallel('triage/warning_signs', () => {
         assert(!form_values['warning_signs']['urgent-abdominal-pain'])
       },
     )
+
+    itParallel(
+      'renders a warning signs page for an older child',
+      async () => {
+        const { $ } = await setupTriageNewPatient({
+          patient_demographics: randomDemographics('ZA', 'female', 'older child'),
+        })
+
+        const expected = {
+          'Emergency': {
+            'Airway & Breathing': [
+              'Not breathing or Reported apnoea',
+              'Obstructed breathing',
+              'Central cyanosis (SPO2 less than 92%)',
+              'Respiratory distress (Severe)',
+            ],
+            'Circulation': [
+              'Cold Hands',
+              'Pulse weak & fast',
+              'Capillary refill time (3 sec or more)',
+              'Lethargic',
+              'Uncontrolled bleeding (not nose bleed)',
+            ],
+            'Convulsions/Coma': [
+              'Convulsing or Immediately Post-Ictal not alert',
+              'AVPU: responds only To Pain (P)',
+              'AVPU: Unresponsive (U)',
+              'Confusion',
+            ],
+            'Dehydration': [
+              'Diarrhoea or Vomiting',
+              'Lethargy/ floppy infant',
+              'Very sunken eyes',
+              'Skin pinch very slow (2 secs or more)',
+            ],
+            'Other': [
+              'Facial /Inhalation burn',
+              'Hypoglycaemia recorded at any time',
+              'Glucose less than 3mmol/L',
+              'Purpuric rash',
+            ],
+          },
+          'Very urgent': [
+            'Tiny baby (Younger than 2 months)',
+            'Inconsolable crying (Severe pain)',
+            'Presenting complaint more sleepy than normal',
+            'Poisoning or overdose',
+            'Focal neurology acute',
+            'Severe mechanism of injury',
+            'Burn 10% or more (Circumferential, electrical, chemical)',
+            'Eye Injury',
+            'Fracture (Open or threatened limb)',
+            'Dislocation of larger joint (not finger or toe)',
+          ],
+          'Urgent': [
+            'Some respiratory distress',
+            'Some Dehydration (Diarrhoea or Diarrhoea and vomiting)',
+            'Sunken eyes',
+            'Restless/ irritable',
+            'Thirsty/decreased urine output',
+            'Dry mouth',
+            'Crying without tears',
+            'Skin pinch slow (Less than 2 sec)',
+            'Unable to drink /feed or vomit everything',
+            'Malnutrition (Visible severe wasting)',
+            'Malnutrition Oedema (pitting Oedema of both feet)',
+            'Unwell child with known diabetes',
+            'Any other burn less than 10%',
+            'Closed fracture',
+            'Dislocation of finger or toe',
+          ],
+          'Common Symptoms': [
+            'Nasal discharge',
+            'Fever',
+            'Cough',
+            'Sore throat',
+            'Headache',
+            'Fatigue',
+            'Shortness of breath',
+            'Nausea',
+            'Vomiting',
+            'Diarrhea',
+            'Dizziness',
+            'Muscle pain',
+            'Pain of joint',
+            'Back pain',
+            'Constipation',
+          ],
+        }
+
+        assertEquals($('.priority-table').length, Object.keys(expected).length)
+
+        // deno-lint-ignore no-explicit-any
+        const actual: any = {}
+        for (const category of keys(expected)) {
+          if (isObjectLike(expected[category])) {
+            actual[category] = {}
+            for (const subcategory of keys(expected[category])) {
+              const grid_display = getGridDisplay($, `.priority-table[data-category="${subcategory}"] > .grid`)
+              actual[category][subcategory] = grid_display
+            }
+          } else {
+            const grid_display = getGridDisplay($, `.priority-table[data-category="${category}"] > .grid`)
+            actual[category] = grid_display
+          }
+        }
+
+        assertEquals(actual, expected)
+      },
+    )
   })
 
   describeParallel('POST', () => {
@@ -190,7 +302,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Cardiac arrest'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Cardiac arrest'], { pregnant: false }),
         })
 
         const this_patient_findings = await patient_findings.findAll(db, {
@@ -221,11 +333,46 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
+      'inserts a warning sign for an older child',
+      async () => {
+        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+          patient_demographics: {},
+          warning_signs: asWarningSignsOlderChild(['Very sunken eyes']),
+        })
+
+        const this_patient_findings = await patient_findings.findAll(db, {
+          patient_id,
+        })
+
+        assertMatches(this_patient_findings, [
+          {
+            'id': z.string().uuid(),
+            'created_at': z.date(),
+            'root_snomed_concept_name': 'Clinical finding',
+            'root_snomed_concept_category': 'finding',
+            'root_snomed_concept_id': CLINICAL_FINDING.id,
+            'specific_snomed_concept_id': 'TODO FIND THE CODE FOR VERY SUNKEN EYES',
+            'patient_encounter_id': patient_encounter_id,
+            'as_part_of_procedure': {
+              'id': z.string().uuid(),
+              'root_snomed_concept_id': '71388002',
+              'root_snomed_concept_name': 'Procedure',
+              'root_snomed_concept_category': 'procedure',
+              'specific_snomed_concept_id': '245581009',
+              'specific_snomed_concept_name': 'Emergency examination for triage',
+              'specific_snomed_concept_category': 'procedure',
+            },
+          },
+        ])
+      },
+    )
+
+    itParallel(
       'inserts a warning sign finding with nested qualifiers from the s_expression',
       async () => {
         const { encounter, nurse, patient_id, patient_encounter_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Seizure'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Seizure'], { pregnant: false }),
         })
 
         await events.allProcessedForEncounter(db, {
@@ -343,7 +490,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { patient_id } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Cardiac arrest', 'Chest pain'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Cardiac arrest', 'Chest pain'], { pregnant: false }),
         })
 
         const this_patient_findings = await patient_findings.findAll(db, {
@@ -375,7 +522,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
         assertLength(
@@ -437,7 +584,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
         assertLength(
@@ -498,7 +645,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
         assertLength(
@@ -565,7 +712,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { patient_id } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
         })
 
         const positive_findings_count = await patient_findings.countAll(db, { patient_id })
@@ -582,7 +729,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
         const findings_count_after_first_insertion = await patient_findings
@@ -631,7 +778,7 @@ describeParallel('triage/warning_signs', () => {
       async () => {
         const { nurse, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
         const findings_count_after_first_insertion = await patient_findings
@@ -653,7 +800,7 @@ describeParallel('triage/warning_signs', () => {
         )
 
         await postStep({
-          warning_signs: asWarningSigns(['Chest pain'], { pregnant: false }),
+          warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
         const findings_count_after_second_insertion = await patient_findings
@@ -670,7 +817,7 @@ describeParallel('triage/warning_signs', () => {
           patient_demographics: {},
           warning_signs: {
             warning_signs: {
-              ...asWarningSigns([], { pregnant: false }).warning_signs,
+              ...asWarningSignsAdult([], { pregnant: false }).warning_signs,
               'Pain of ear': {
                 existence: 'Yes' as const,
                 priority_level: 'Non-urgent' as const,
@@ -787,7 +934,7 @@ describeParallel('triage/warning_signs', () => {
           patient_demographics: {},
           warning_signs: {
             warning_signs: {
-              ...asWarningSigns([], { pregnant: false }).warning_signs,
+              ...asWarningSignsAdult([], { pregnant: false }).warning_signs,
               's275406005': {
                 existence: 'Yes',
                 priority_level: 'Non-urgent',
@@ -835,7 +982,7 @@ describeParallel('triage/warning_signs', () => {
                 },
               }
               : undefined,
-            warning_signs: asWarningSigns([sign.key], { pregnant }),
+            warning_signs: asWarningSignsAdult([sign.key], { pregnant }),
           })
 
           const receptionist = await addTestEmployeeWithSession(db, {

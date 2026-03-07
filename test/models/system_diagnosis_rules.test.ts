@@ -15,7 +15,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       // const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
       //   patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-      //   warning_signs: asWarningSigns([], { pregnant: false }, exposure_to_fish_s_expr),
+      //   warning_signs: asWarningSignsAdult([], { pregnant: false }, exposure_to_fish_s_expr),
       //   brief_history: {
       //     diabetes: {
       //       existence: 'No',

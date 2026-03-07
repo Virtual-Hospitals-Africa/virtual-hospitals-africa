@@ -2,7 +2,7 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import db from '../../../../../db/db.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
-import { asVitalAssessmentFormValues, asVitalMeasurementFormValues, asWarningSigns, setupTriageNewPatient } from './_setup.ts'
+import { asVitalAssessmentFormValues, asVitalMeasurementFormValues, asWarningSignsAdult, setupTriageNewPatient } from './_setup.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { getFormLabels, getFormOptions, getFormValues } from 'test/_helpers/form.ts'
@@ -22,7 +22,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
       const { $, patient_encounter_id, postStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
-        warning_signs: asWarningSigns([], { pregnant: false }, insect_bite_s_expr),
+        warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
           common_conditions: {
             diabetes: { existence: 'No' },

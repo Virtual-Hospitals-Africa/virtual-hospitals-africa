@@ -23,7 +23,7 @@ import { satisfyingSExpression } from '../../../../../db/models/s_expression.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
 import sortBy from '../../../../../util/sortBy.ts'
-import { asWarningSigns, setupTriageNewPatient, setupTriageReturningPatient } from './_setup.ts'
+import { asWarningSignsAdult, setupTriageNewPatient, setupTriageReturningPatient } from './_setup.ts'
 import { patient_procedures } from '../../../../../db/models/patient_procedures.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../../../../shared/workflow.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
@@ -39,7 +39,7 @@ describeParallel('triage/brief_history', () => {
       async () => {
         const { $ } = await setupTriageNewPatient({
           patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
         })
 
         const form_values = getFormValues($)
@@ -94,7 +94,7 @@ describeParallel('triage/brief_history', () => {
       async () => {
         const { $ } = await setupTriageNewPatient({
           patient_demographics: randomDemographics('ZA', 'male'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
         })
 
         const form_values = getFormValues($)
@@ -155,7 +155,7 @@ describeParallel('triage/brief_history', () => {
       async () => {
         const { nurse, clinic, encounter, patient_id, patient_encounter_id } = await setupTriageNewPatient({
           patient_demographics: {},
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               cancer: {
@@ -500,7 +500,7 @@ describeParallel('triage/brief_history', () => {
         ], { strict: true })
 
         const $brief_history_after_returning_encounter_start = await returning.postStep({
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
         })
 
         const form_values = getFormValues(
@@ -569,7 +569,7 @@ describeParallel('triage/brief_history', () => {
       async () => {
         const { $, nurse, encounter, patient_id, triageRoute } = await setupTriageNewPatient({
           patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: {
@@ -644,7 +644,7 @@ describeParallel('triage/brief_history', () => {
       async () => {
         const initial = await setupTriageNewPatient({
           patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               cancer: {
@@ -674,7 +674,7 @@ describeParallel('triage/brief_history', () => {
           patient_id: initial.patient_id,
           clinic: initial.clinic,
           nurse: other_nurse,
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               cancer: {
@@ -788,7 +788,7 @@ describeParallel('triage/brief_history', () => {
       async () => {
         const { nurse, patient_id, patient_encounter_id, encounter } = await setupTriageNewPatient({
           patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: {
@@ -860,7 +860,7 @@ describeParallel('triage/brief_history', () => {
       async () => {
         const initial = await setupTriageNewPatient({
           patient_demographics: randomDemographics('ZA', 'female'),
-          warning_signs: asWarningSigns([], { pregnant: false }),
+          warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
             common_conditions: {
               diabetes: {
