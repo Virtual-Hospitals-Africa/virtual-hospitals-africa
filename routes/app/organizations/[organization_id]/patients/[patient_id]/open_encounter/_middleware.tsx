@@ -65,6 +65,7 @@ type OpenEncounterState = OrganizationState & {
   patient_encounter_id: string
   encounter_employee_presence: RenderedPatientEncounterEmployee | null
   encounter_expected_to_not_exist_after_post?: true
+  /* /app/ */
   open_encounter_pathname: string
 }
 

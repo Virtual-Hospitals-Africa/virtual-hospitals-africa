@@ -4,6 +4,10 @@ import { assertOr403 } from '../../../../util/assertOr.ts'
 
 export type OrganizationState = {
   organization: RenderedOrganization
+  /**
+   * /app/organizations/${organization_id}
+   */
+  organization_pathname: string
   organization_id: string
   organization_employment: HealthWorkerOrganization
   employee: RenderedEmployee
@@ -31,17 +35,20 @@ export async function handler(
     organization_id,
   )
 
+  const organization_pathname = `/app/organizations/${organization_id}`
+
   const employee: RenderedEmployee = {
     ...health_worker,
     organization_id: organization.id,
     employee_id: organization_employment.employment_id,
     role: organization_employment.role,
     is_admin: organization_employment.is_admin,
-    href: `/app/organizations/${organization.id}/employees/${health_worker.id}`,
+    href: `${organization_pathname}/employees/${health_worker.id}`,
   }
 
   const organization_state: OrganizationState = {
     organization,
+    organization_pathname,
     organization_employment,
     employee,
     is_admin_at_organization: organization_employment.is_admin,
