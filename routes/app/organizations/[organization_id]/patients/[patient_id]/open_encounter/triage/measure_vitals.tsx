@@ -28,6 +28,7 @@ import { events } from '../../../../../../../../db/models/events.ts'
 import { insertable_finding_base, measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
+import MeasureVitalsVoiceCommands from '../../../../../../../../islands/voice/MeasureVitalsVoiceCommands.tsx'
 
 export const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -338,19 +339,22 @@ export async function TriageMeasureVitalsPage(
   }
 
   return (
-    <VitalsMeasurementsForm
-      vital_measurements_for_this_encounter={measurements.map(
-        notRequiredIfMeasurementAlreadyDoneThisEncounter,
-      )}
-      triage_assessments={assessments.map(
-        notRequiredIfAssessmentAlreadyDoneThisEncounter,
-      )}
-      most_recent_patient_vitals={[
-        ...most_recent_patient_measurements,
-        ...most_recent_patient_assessments,
-      ]}
-      organization_id={ctx.state.organization.id}
-    />
+    <>
+      <VitalsMeasurementsForm
+        vital_measurements_for_this_encounter={measurements.map(
+          notRequiredIfMeasurementAlreadyDoneThisEncounter,
+        )}
+        triage_assessments={assessments.map(
+          notRequiredIfAssessmentAlreadyDoneThisEncounter,
+        )}
+        most_recent_patient_vitals={[
+          ...most_recent_patient_measurements,
+          ...most_recent_patient_assessments,
+        ]}
+        organization_id={ctx.state.organization.id}
+      />
+      <MeasureVitalsVoiceCommands />
+    </>
   )
 }
 
