@@ -1,9 +1,9 @@
 import { sql } from 'kysely'
-import { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { IdSelection, Maybe, RenderedPatientEncounter, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { success_true } from '../helpers.ts'
 import { PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES, TriageLevel } from '../../shared/priorities.ts'
-import { base } from './_base.ts'
+import { base, identity } from './_base.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { DUE_TO, EVALUATION_ACTION, PRIORITY, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 
@@ -91,16 +91,6 @@ function insertLevel(
     .executeTakeFirstOrThrow()
 }
 
-type InsertLevelInput = {
-  patient_id: string
-  patient_encounter_id: string
-  employment_id?: string
-  by_system?: boolean
-  procedure_id: string
-  evaluates_record_ids: string[]
-  triage_level: TriageLevel
-}
-
 export function baseQuery(
   trx: TrxOrDbOrQueryCreator,
   opts: PatientEvaluationTriageSearch,
@@ -126,5 +116,29 @@ export const patient_triage = base({
   top_level_table: 'patient_triage_level',
   baseQuery,
   insertLevel,
-  formatResult: (x) => x,
+  formatResult: identity,
+  associatedFindings(trx: TrxOrDb, priority: NonNullable<RenderedPatientEncounter['priority']>) {
+    return trx.selectFrom('patient_triage_level')
+      .innerJoin(
+        'patient_records as triage_patient_records',
+        'patient_triage_level.id',
+        'triage_patient_records.id',
+      )
+      .innerJoin('patient_records_still_valid as triage_valid', 'triage_valid.id', 'triage_patient_records.id')
+      .innerJoin(
+        'patient_record_relations as triage_relations',
+        'triage_relations.source_id',
+        'patient_triage_level.id',
+      )
+      .innerJoin('patient_records_aggregated', 'triage_relations.destination_id',
+        'patient_records_aggregated.id',)
+      .innerJoin(
+        'snomed_inferred_canonical_name_and_category as triage_snomed_inferred_canonical_name_and_category',
+        'triage_patient_records.value_snomed_concept_id',
+        'triage_snomed_inferred_canonical_name_and_category.id',
+      )
+      .selectAll('patient_records_aggregated')
+      .where('patient_triage_level.id', 'in', priority.record_ids)
+      .execute()
+  }
 })

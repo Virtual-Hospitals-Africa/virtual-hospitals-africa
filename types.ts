@@ -1793,6 +1793,7 @@ export type RenderedPatientEncounter = {
     }
   >
   priority: null | {
+    record_ids: string[]
     name: Priority
     value_snomed_concept_id: string
     target_treatment_time: Date | null

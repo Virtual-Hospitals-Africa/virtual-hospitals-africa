@@ -29,7 +29,7 @@ export const handler = postHandler(
     const next_room_name = 'the resuscitation area'
 
     const next_url = success(
-      `Please move ${capitalize(preferredName(encounter.patient, 'patient'))} to ${next_room_name}`,
+      `Please escort ${capitalize(preferredName(encounter.patient, 'patient'))} to ${next_room_name}`,
       replaceParams(
         `/app/organizations/:organization_id/waiting_room`,
         ctx.params,

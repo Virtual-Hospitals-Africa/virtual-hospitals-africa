@@ -22,7 +22,7 @@ export function NearestHealthCareSection(
   }
 
   return (
-    <FormSection header='Primary Care'>
+    <FormSection header='Primary care'>
       <FormGrid columns={2}>
         {/* TODO point to organization's nearest organizations  */}
         <OrganizationSearch
@@ -38,7 +38,7 @@ export function NearestHealthCareSection(
         />
         <PersonSearch
           name='primary_doctor'
-          label='Primary Care Doctor'
+          label='Primary care Doctor'
           placeholder='Search for a doctor name'
           search_route={doctor_search_href}
           required

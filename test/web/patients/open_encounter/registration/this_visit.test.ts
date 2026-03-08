@@ -178,7 +178,7 @@ describeParallel(
         const hardcoded_senior_health_care_professional_name = 'Nomsa Moyo'
         assertEquals(
           waiting_room_url.searchParams.get('success'),
-          `Please move ${patient.names!.preferred_name} to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+          `Please escort ${patient.names!.preferred_name} to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
         )
 
         // const notification = await received_notification.promise
@@ -271,7 +271,7 @@ describeParallel(
 
         assertEquals(
           new URL($waiting_room1.url).searchParams.get('success'),
-          `Please move ${patient1.names!.preferred_name} to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+          `Please escort ${patient1.names!.preferred_name} to Triage room 1. ${hardcoded_senior_health_care_professional_name} has been notified.`,
         )
 
         const $personal2 = await receptionist.fetchCheerio(
@@ -304,7 +304,7 @@ describeParallel(
 
         assertEquals(
           new URL($waiting_room2.url).searchParams.get('success'),
-          `Please move ${patient2.names!.preferred_name} to Triage room 2. ${hardcoded_senior_health_care_professional_name} has been notified.`,
+          `Please escort ${patient2.names!.preferred_name} to Triage room 2. ${hardcoded_senior_health_care_professional_name} has been notified.`,
         )
 
         const $personal3 = await receptionist.fetchCheerio(

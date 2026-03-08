@@ -107,7 +107,7 @@ export function departmentsOfProfession(
     case 'nurse': {
       assert(specialty)
       switch (specialty) {
-        case 'triage':
+        case 'Triage':
           return ['Triage', 'Reception']
         case 'Primary care':
           return ['Primary care', 'Triage', 'Reception']

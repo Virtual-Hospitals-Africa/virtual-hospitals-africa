@@ -149,6 +149,15 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
             'patient_encounters.id',
           )
           .select((eb_patient_triage_level) => [
+            jsonArrayFromColumn(
+              'id',
+              eb_patient_triage_level
+                .selectFrom('patient_triage_level as triage_level_for_this_encounter_with_identical_triage_level')
+                .innerJoin('patient_records as patient_records_for_this_encounter_with_identical_triage_level', 'patient_records_for_this_encounter_with_identical_triage_level.id', 'triage_level_for_this_encounter_with_identical_triage_level.id')
+                .whereRef('patient_records_for_this_encounter_with_identical_triage_level.value_snomed_concept_id', '=', 'patient_records.value_snomed_concept_id')
+                .whereRef('patient_records_for_this_encounter_with_identical_triage_level.patient_encounter_id', '=', 'patient_records.patient_encounter_id')
+                .select('triage_level_for_this_encounter_with_identical_triage_level.id')
+            ).as('record_ids'),
             asText(
               eb_patient_triage_level,
               'patient_records.specific_snomed_concept_id',

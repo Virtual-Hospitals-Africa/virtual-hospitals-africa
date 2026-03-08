@@ -21,7 +21,7 @@ const EXAMPLE_NAV_LINKS = [
 // Mock employee for the sidebar
 const EXAMPLE_EMPLOYEE = {
   display_name: 'Example Health Worker',
-  description: 'Nurse - Primary Care',
+  description: 'Nurse - Primary care',
   avatar_url: '/images/avatars/random/female/6.png',
 }
 

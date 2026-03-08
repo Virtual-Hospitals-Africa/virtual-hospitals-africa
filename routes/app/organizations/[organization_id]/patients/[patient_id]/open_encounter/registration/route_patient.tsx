@@ -106,7 +106,7 @@ export const handler = postHandler(
     // })
 
     // TODO: time estimate
-    const redirect_success_message = `Please move ${patient.names.preferred_name} to the waiting room. The next available triage nurse will see ${
+    const redirect_success_message = `Please escort ${patient.names.preferred_name} to the waiting room. The next available triage nurse will see ${
       pronoun(patient)
     }.`
 

@@ -82,7 +82,7 @@ export function DrawerCareTeam(
                     </div>
                     <div className="flex flex-col font-['Inter:Medium',sans-serif] font-medium justify-center leading-0 not-italic relative shrink-0 text-[#473fce] text-[12px] text-center text-nowrap">
                       <p className='leading-4 whitespace-pre'>
-                        {provider.role === 'doctor' ? 'Primary Care RenderedCareTeamHealthWorker' : 'Nurse'}
+                        {provider.role === 'doctor' ? 'Primary care RenderedCareTeamHealthWorker' : 'Nurse'}
                       </p>
                     </div>
                   </div>

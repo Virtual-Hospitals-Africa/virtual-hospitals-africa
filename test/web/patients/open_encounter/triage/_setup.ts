@@ -1,6 +1,6 @@
 import db from '../../../../../db/db.ts'
 import asFormData from '../../../../../util/asFormData.ts'
-import { addTestEmployeeWithSession, TestEmployeeWithSession } from '../../../../_helpers/employees.ts'
+import { addTestEmployee, addTestEmployeeWithSession, TestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 import { createTestOrganization } from '../../../../_helpers/organizations.ts'
 import {
   insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest,
@@ -31,6 +31,8 @@ import { VitalAssessment } from '../../../../../db.d.ts'
 import { assessmentOptionSExpression, VITAL_MEASUREMENTS_UNITS, VitalMeasurement } from '../../../../../shared/vitals.ts'
 import { AgeDetermination } from '../../../../../types.ts'
 import mapEntries from '../../../../../util/mapEntries.ts'
+import { TestEmployee } from '../../../../../mocks/testEmployee.ts'
+import { promiseProps } from '../../../../../util/promiseProps.ts'
 
 export type TriageSteps = {
   warning_signs?: z.input<typeof TriageWarningSignsSchema>
@@ -123,11 +125,13 @@ export function asWarningSignsOlderChild(
 async function setupTriage({
   clinic,
   nurse,
+  shcp,
   encounter,
   steps,
 }: {
   clinic: { id: string }
   nurse: TestEmployeeWithSession
+  shcp: TestEmployee
   encounter: TestEncounterRelativeToHealthWorker
   steps: TriageSteps
 }) {
@@ -169,6 +173,7 @@ async function setupTriage({
     $,
     clinic,
     nurse,
+    shcp,
     encounter,
     patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
@@ -190,10 +195,17 @@ export async function setupTriageNewPatient(
 ) {
   const clinic = await createTestOrganization(db)
 
-  const nurse = await addTestEmployeeWithSession(db, {
-    role: 'nurse',
-
-    organization_id: clinic.id,
+  const { nurse, shcp } = await promiseProps({
+    nurse: addTestEmployeeWithSession(db, {
+      role: 'nurse',
+      specialty: 'Triage',
+      organization_id: clinic.id,
+    }),
+    shcp: addTestEmployee(db, {
+      role: 'nurse',
+      specialty: 'Primary care',
+      organization_id: clinic.id,
+    }),
   })
 
   const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
@@ -205,7 +217,7 @@ export async function setupTriageNewPatient(
     },
   )
 
-  return setupTriage({ clinic, nurse, encounter, steps })
+  return setupTriage({ clinic, nurse, shcp, encounter, steps })
 }
 
 /**
@@ -214,11 +226,13 @@ export async function setupTriageNewPatient(
 export async function setupTriageReturningPatient(
   {
     nurse,
+    shcp,
     clinic,
     patient_id,
     ...steps
   }: TriageSteps & {
     nurse: TestEmployeeWithSession
+    shcp: TestEmployee
     clinic: { id: string }
     patient_id: string
   },
@@ -232,7 +246,7 @@ export async function setupTriageReturningPatient(
     },
   )
 
-  return setupTriage({ clinic, nurse, encounter, steps })
+  return setupTriage({ clinic, nurse, shcp, encounter, steps })
 }
 
 export function dateOfBirth(age_determination: AgeDetermination): string {

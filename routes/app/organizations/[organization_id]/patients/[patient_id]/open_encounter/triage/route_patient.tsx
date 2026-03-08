@@ -15,33 +15,26 @@ import { UpdateShape } from '../../../../../../../../types.ts'
 import { DB } from '../../../../../../../../db.d.ts'
 import { success } from '../../../../../../../../util/alerts.ts'
 import { completeLastStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-// import { startWorkflow } from '../start-workflow.tsx'
-//
+import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS } from '../../../../../../../../shared/triage_route_patient.ts'
+import { startWorkflow } from '../start-workflow.tsx'
+import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
-// TODO not hard code this
-
-const next_workflow_steps = [
-  'await_consultation' as const,
-  'refer_case' as const,
-  'transfer_to_stabilization_area' as const,
-]
-
-type NextWorkflowStep = typeof next_workflow_steps[number]
 
 export const TriageRoutePatientSchema = z.object({
-  next_workflow: z.enum(next_workflow_steps),
-  notes: z.string().optional(),
+  next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
+  notes: z.string().nullish(),
+  health_worker_ids_to_be_notified: z.string().uuid().array()
 })
 
 export const handler = postHandler(
   TriageRoutePatientSchema,
-  async (ctx: OpenEncounterWorkflowContext, { next_workflow /*, notes */ }) => {
+  async (ctx: OpenEncounterWorkflowContext, { next_step /*, notes */ }) => {
     const { trx, patient, organization, organization_employment } = ctx.state
 
     assert(completedPersonal(patient))
     const completing_last_step = completeLastStep(ctx)
 
-    switch (next_workflow) {
+    switch (next_step) {
       case 'await_consultation': {
         const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
           current_workflow: null,
@@ -61,20 +54,31 @@ export const handler = postHandler(
             .execute(),
         ])
 
-        const redirect_success_message = `Please move ${patient.names.preferred_name} to the waiting room. The next available triage nurse will see ${
-          pronoun(patient)
-        }.`
+        const redirect_success_message = `Please escort ${patient.names.preferred_name} to the waiting room to await consultation.`
 
-        // TODO notify senior_health_worker_name
         return redirect(success(
           redirect_success_message,
           `/app/organizations/${organization.id}/waiting_room`,
         ))
       }
-      // case 'refer_case': {
+      case 'refer_case': {
+        const { redirect_to } = await promiseProps({
+          completing_last_step, 
+          redirect_to: startWorkflow(
+            ctx,
+            'referral_placed',
+            {
+              planning: 'create_anew_every_time',
+              patient_presence: 'move_into_specificed_workflow'
+            }
+          )
+        })
+        // add the referral_placed workflow and redirect you there
+        // Notify other staff member
 
-      // }
-      // case 'transfer_to_stabilization_area': {
+        return redirect(redirect_to)
+      }
+      // case 'stabilize_patient': {
 
       // }
       default: {

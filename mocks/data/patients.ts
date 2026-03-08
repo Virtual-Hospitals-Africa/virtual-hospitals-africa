@@ -64,7 +64,7 @@ function createMockOrganization(
   }
 }
 
-// Primary Care Nurse - handles triage and general assessments
+// Primary care Nurse - handles triage and general assessments
 const NURSE_PRIMARY_CARE: RenderedRecordProvider = {
   id: 'mock-hw-001',
   name: 'Thandiwe Gumede',
@@ -77,7 +77,7 @@ const NURSE_PRIMARY_CARE: RenderedRecordProvider = {
   demographics: { sex: null, gender: null, date_of_birth: null },
   contact_details: { mobile_phone_number: null, address: null },
   ever_licensed_as_doctor: 0,
-  organizations: [createMockOrganization('mock-emp-001', 'nurse', 'Primary Care', 'Nurse', 'SANC-2024-001')],
+  organizations: [createMockOrganization('mock-emp-001', 'nurse', 'Primary care', 'Nurse', 'SANC-2024-001')],
   organization_id: 'mock-org-001',
   employee_id: 'mock-emp-001',
   role: 'nurse',

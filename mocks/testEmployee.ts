@@ -25,7 +25,7 @@ export type TestHealthWorkerOpts = {
   health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
 }
 
-type TestEmployee = Names & {
+export type TestEmployee = Names & {
   organization_id: string
   employee_id: string
   calendars: {
