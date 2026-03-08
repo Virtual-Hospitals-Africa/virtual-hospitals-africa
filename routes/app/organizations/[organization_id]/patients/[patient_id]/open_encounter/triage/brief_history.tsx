@@ -23,6 +23,7 @@ import { exists } from '../../../../../../../../util/exists.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { BriefHistorySection } from '../../../../../../../../components/triage/BriefHistorySection.tsx'
 import { patient_record_providers } from '../../../../../../../../db/models/patient_record_providers.ts'
+import BriefHistoryVoiceCommands from '../../../../../../../../islands/voice/BriefHistoryVoiceCommands.tsx'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -218,12 +219,15 @@ export async function TriageBriefHistoryPage(
   console.log({ existing_allergies })
 
   return (
+    <>
     <BriefHistorySection
       most_recent_findings={most_recent_findings}
       existing_allergies={existing_allergies}
       sex={patient.sex}
       organization_id={organization_employment.id}
     />
+    <BriefHistoryVoiceCommands />
+    </>
   )
 }
 

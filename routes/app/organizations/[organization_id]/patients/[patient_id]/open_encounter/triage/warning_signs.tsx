@@ -33,6 +33,8 @@ import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.
 import sortBy from '../../../../../../../../util/sortBy.ts'
 import { insertable_finding_base } from '../../../../../../../../shared/s_expression_schemas.ts'
 
+import VoiceMicButton from '../../../../../../../../islands/voice/VoiceMicButton.tsx'
+
 export const TriageWarningSignSchema = z.object({
   s_expression: sExpressionZodValidator(insertable_finding_base),
   existence: z.enum(['Yes', 'No']).optional().transform((existence) => existence || 'No'),
@@ -321,6 +323,7 @@ export async function TriageWarningSignsPage(
   )
 
   return (
+    <>
     <WarningSigns
       search_route={hrefFromCtx(ctx, (url) => {
         url.pathname = url.pathname.replace(
@@ -330,6 +333,8 @@ export async function TriageWarningSignsPage(
       })}
       warning_signs={Array.from(warning_signs)}
     />
+    <VoiceMicButton />
+    </>
   )
 }
 
