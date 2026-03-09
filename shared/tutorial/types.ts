@@ -57,7 +57,7 @@ export const SPEAKERS = {
     name: 'Bongani Sibeko',
     avatar: '/bongani.png',
     color: 'purple',
-    role: 'Senior Primary Care Nurse',
+    role: 'Senior Primary care Nurse',
   },
 } as const
 

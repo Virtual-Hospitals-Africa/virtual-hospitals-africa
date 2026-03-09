@@ -5,6 +5,7 @@ import { humanReadableJson } from '../../util/humanReadableJson.ts'
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import uniq from '../../util/uniq.ts'
+import { get } from '../../util/get.ts'
 
 export function getFormValues($: cheerio.CheerioAPI): unknown {
   const form_values = {}
@@ -26,6 +27,20 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
         form_values,
         el.attribs.name,
         el.attribs.value ? parseParam(el.attribs.value) : null,
+      )
+    }
+    if (el.attribs.type === 'radio' && ('defaultchecked' in el.attribs) && !get(form_values, el.attribs.name)) {
+      set(
+        form_values,
+        el.attribs.name,
+        el.attribs.value ? parseParam(el.attribs.value) : null,
+      )
+    }
+    if (el.attribs.type === 'radio' && !('checked' in el.attribs) && !('defaultchecked' in el.attribs) && !get(form_values, el.attribs.name)) {
+      set(
+        form_values,
+        el.attribs.name,
+        null,
       )
     }
   })

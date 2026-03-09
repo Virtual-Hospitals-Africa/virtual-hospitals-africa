@@ -624,3 +624,13 @@ export const HAS_MANUFACTURED_DOSE_FORM = asConcept({
   name: 'Has manufactured dose form',
   category: 'attribute' as const,
 })
+export const REFERRAL_PLACED = asConcept({
+  id: '439980006',
+  name: 'Referral placed',
+  category: 'situation' as const,
+})
+export const HANDOFF_COMMUNICATION = asConcept({
+  id: '432138007',
+  name: 'Handoff communication',
+  category: 'procedure' as const,
+})

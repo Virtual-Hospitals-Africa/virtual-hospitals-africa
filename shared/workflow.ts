@@ -1,10 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
-import { Department, HealthWorkerOrganization, WorkflowStatus } from '../types.ts'
+import { Department, HealthWorkerOrganization, SnomedConcept, WorkflowStatus } from '../types.ts'
 import last from '../util/last.ts'
 import first from '../util/first.ts'
 import { departmentNames, departmentResponsibleForWorkflow } from './departments.ts'
 import capitalize from '../util/capitalize.ts'
-import isKeyOf from '../util/isKeyOf.ts'
 import mapEntries from '../util/mapEntries.ts'
 import {
   BODY_MEASUREMENT,
@@ -13,9 +12,11 @@ import {
   ENCOUNTER_FOR_PROBLEM,
   EVALUATION_OF_CARE_PLAN,
   EVALUATION_PROCEDURE,
+  HANDOFF_COMMUNICATION,
   HISTORY_TAKING_LIMITED,
   PATIENT_REGISTRATION,
   PRENATAL_EXAMINATION_AND_CARE_OF_MOTHER,
+  REFERRAL_PLACED,
   REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
   STABILIZATION,
   TAKING_PATIENT_VITAL_SIGNS_ASSESSMENT,
@@ -26,6 +27,7 @@ import {
 export const WORKFLOWS = [
   'registration' as const,
   'triage' as const,
+  'referral_placed' as const,
   'emergency_escalation' as const,
   'stabilization' as const,
   'consultation' as const,
@@ -41,6 +43,7 @@ export type Workflow = (typeof WORKFLOWS)[number]
 export const WORKFLOW_SNOMED_CONCEPTS = {
   registration: PATIENT_REGISTRATION,
   triage: TRIAGE,
+  referral_placed: REFERRAL_PLACED,
   emergency_escalation: REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
   stabilization: STABILIZATION,
   consultation: ENCOUNTER_FOR_PROBLEM,
@@ -70,6 +73,9 @@ export const WORKFLOW_STEPS = {
     'additional_tasks_and_investigations',
     'assign_priority',
     'route_patient',
+  ],
+  referral_placed: [
+    'confirm_handoff',
   ],
   emergency_escalation: [
     'identify_patient',
@@ -118,7 +124,11 @@ export const WORKFLOW_STEPS = {
   [w in Workflow]: string[]
 }
 
-export const WORKFLOW_STEP_SNOMED_CONCEPTS = {
+export const WORKFLOW_STEP_SNOMED_CONCEPTS: Partial<
+  {
+    [w in Workflow]: Record<string, SnomedConcept>
+  }
+> = {
   triage: {
     // The warning_sides code isn't quite right, but it's the closest match and having a single code per step streamlines things
     // TODO: become a member organization for SNOMED and request that all the codes we need be added
@@ -130,6 +140,9 @@ export const WORKFLOW_STEP_SNOMED_CONCEPTS = {
     'measure_vitals': TAKING_PATIENT_VITAL_SIGNS_ASSESSMENT,
     'additional_tasks_and_investigations': EVALUATION_PROCEDURE,
     // 'assign_priority': '',
+  },
+  referral_placed: {
+    'confirm_handoff': HANDOFF_COMMUNICATION,
   },
 }
 
@@ -153,10 +166,9 @@ export function workflowStepKey(workflow: Workflow, step: string) {
 export function workflowStepSnomedConcept(
   workflow: Workflow,
   step: string,
-) {
-  if (!isKeyOf(workflow, WORKFLOW_STEP_SNOMED_CONCEPTS)) return null
-  const concepts = WORKFLOW_STEP_SNOMED_CONCEPTS[workflow]
-  return isKeyOf(step, concepts) ? concepts[step] : null
+): null | SnomedConcept {
+  const concepts = WORKFLOW_STEP_SNOMED_CONCEPTS[workflow] || {}
+  return concepts[step] || null
 }
 
 export function firstIncompleteStep(

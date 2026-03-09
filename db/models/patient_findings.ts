@@ -29,6 +29,7 @@ import {
 import isString from '../../util/isString.ts'
 
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
+import { logReadableJson } from '../../util/humanReadableJson.ts'
 export type PatientFindingsSearch = PatientRecordsSearch & {
   procedure_id?: string | IdSelection
   s_expression?: string | Lang['finding']
@@ -316,6 +317,19 @@ export const patient_findings = base({
           id: relation_id,
           source_id: triage_level_evaluation_id,
           destination_id: record_id,
+        })
+        logReadableJson({
+          attribute_records,
+          attribute_qualifiers,
+          event_values,
+          triage_level_records,
+          triage_level_evaluations,
+          triage_level_values,
+          triage_relation_records,
+          triage_relations,
+          score_records,
+          score_evaluations,
+          score_values,
         })
       }
 

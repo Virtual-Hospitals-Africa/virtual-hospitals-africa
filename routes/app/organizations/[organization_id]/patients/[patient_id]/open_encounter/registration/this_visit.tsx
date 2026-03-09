@@ -120,7 +120,7 @@ export const handler = postHandler(
         })
 
         const redirect_success_message = first_available_room
-          ? `Please move ${patient.names.preferred_name} to ${first_available_room.name}. ${senior_health_worker_name} has been notified.`
+          ? `Please escort ${patient.names.preferred_name} to ${first_available_room.name}. ${senior_health_worker_name} has been notified.`
           : `No rooms yet available for triage. Please stay with ${patient.names.preferred_name}. ${senior_health_worker_name} has been notified to come as soon as possible.`
 
         // TODO notify senior_health_worker_name

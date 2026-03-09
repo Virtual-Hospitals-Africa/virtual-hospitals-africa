@@ -47,6 +47,7 @@ export const WORKFLOW_DEPARTMENTS = {
   prescription_refill: ['Pharmacy'],
   doctor_review: ['Remote care'],
   stabilization: ['Emergency'],
+  referral_placed: DEPARTMENTS as NonEmptyArray<Department>,
   create_google_meet: DEPARTMENTS as NonEmptyArray<Department>,
 } satisfies {
   [w in Workflow]: NonEmptyArray<Department>
@@ -106,7 +107,7 @@ export function departmentsOfProfession(
     case 'nurse': {
       assert(specialty)
       switch (specialty) {
-        case 'triage':
+        case 'Triage':
           return ['Triage', 'Reception']
         case 'Primary care':
           return ['Primary care', 'Triage', 'Reception']

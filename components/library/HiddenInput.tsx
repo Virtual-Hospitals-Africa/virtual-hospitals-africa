@@ -13,9 +13,9 @@ export function HiddenInput(
     return null
   }
   if (Array.isArray(value)) {
-    if (value.length === 0) {
-      return null
-    }
+    // if (value.length === 0) {
+    //   return null
+    // }
     return (
       <input
         type='hidden'

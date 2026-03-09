@@ -187,6 +187,7 @@ export type Workflow =
   | 'emergency_escalation'
   | 'maternity'
   | 'prescription_refill'
+  | 'referral_placed'
   | 'registration'
   | 'stabilization'
   | 'triage'

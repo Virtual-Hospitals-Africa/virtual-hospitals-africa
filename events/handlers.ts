@@ -53,6 +53,15 @@ export const EVENTS = {
     }),
     {},
   ),
+  ReferralPlaced: defineEvent(
+    z.object({
+      patient_id: z.string().uuid(),
+      patient_encounter_id: z.string().uuid(),
+      workflow: z.enum(WORKFLOWS),
+      workflow_step: z.string(),
+    }),
+    {},
+  ),
   OpenEncounterWorkflowStepCompleted: defineEvent(
     z.object({
       patient_id: z.string().uuid(),

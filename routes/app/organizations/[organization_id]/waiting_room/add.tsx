@@ -1,7 +1,6 @@
 import z from 'zod'
 import { patients } from '../../../../../db/models/patients.ts'
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
-import { employees } from '../../../../../db/models/employees.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
@@ -10,6 +9,7 @@ import { promiseProps } from '../../../../../util/promiseProps.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import { postHandler } from '../../../../../backend/postHandler.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import { employees_presence } from '../../../../../db/models/employees_presence.ts'
 
 const AddPatientFormSchema = z.object({
   patient_id: z.string().uuid(),
@@ -52,7 +52,7 @@ export const handler = postHandler(
 export default HealthWorkerHomePage(
   'Add patient to waiting room',
   async function WaitingRoomAdd(
-    { url, state: { organization, trx } }: OrganizationContext,
+    { url, state: { trx, organization, organization_id, health_worker_id } }: OrganizationContext,
   ) {
     const { searchParams } = url
     const patient_id = searchParams.get('patient_id')
@@ -60,13 +60,10 @@ export default HealthWorkerHomePage(
 
     const { patient, providers, open_encounter } = await promiseProps({
       patient: patients.getById(trx, patient_id, { include_incomplete_registration: true }),
-      providers: employees.findAll(
-        trx,
-        {
-          organization_id: organization.id,
-          roles: ['nurse', 'doctor'],
-        },
-      ),
+      providers: employees_presence.findAll(trx, {
+        organization_id,
+        excluding_health_worker_id: health_worker_id,
+      }),
       open_encounter: patient_encounters.getFirstOpen(trx, {
         patient_id,
       }),

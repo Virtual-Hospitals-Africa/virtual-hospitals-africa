@@ -15,7 +15,7 @@ export default function PatientDrawerV4({
   return (
     <div
       id='patient-drawer'
-      className='bg-white box-border content-stretch flex flex-col gap-2.5 items-stretch justify-start relative size-full overflow-y-scroll w-84 h-full border-l border-gray-200'
+      className='bg-white box-border content-stretch flex flex-col gap-2.5 items-stretch justify-start relative size-full overflow-y-scroll w-60 lg:w-84 h-full border-l border-gray-200'
     >
       <DrawerPatientCard
         patient={patient}
