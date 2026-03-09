@@ -23,7 +23,7 @@ describeParallel(
       assertIncludes($.url, initial_patient_id)
 
       const form_values = getFormValues($)
-      assertEquals(form_values, { 'patient_name': null, 'date_of_birth': null, 'gender': null, 'sex': null })
+      assertEquals(form_values, { 'patient_name': null, 'date_of_birth': null, 'gender': null, 'sex': null, 'mode_of_arrival': null })
 
       const form_labels = getFormLabels($)
       assertEquals(form_labels, {
