@@ -1,20 +1,17 @@
 import { Maybe, Names, Priority, RenderedEmployeeWithPresence } from '../../types.ts'
 import { EncounterReason } from '../../db.d.ts'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
-import compact from '../../util/compact.ts'
 import FormRow from '../../components/library/FormRow.tsx'
 import FormSection from '../../components/library/FormSection.tsx'
-import { RadioButtonGroup } from '../../components/library/RadioButtonGroup.tsx'
+
 import { computed, useSignal } from '@preact/signals'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
-import { InviteParticipantsFormFields } from '../InviteParticipantsList.tsx'
-import capitalize from '../../util/capitalize.ts'
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
 import { assertUnreachable } from '../../util/assertUnreachable.ts'
 import { organizationOf } from '../../shared/employees.ts'
-import assertOneOf from '../../util/assertOneOf.ts'
-import { TriageRoutePatientNextStep, TRIAGE_ROUTE_PATIENT_NEXT_STEPS } from '../../shared/triage_route_patient.ts'
+import { TriageRoutePatientNextStep } from '../../shared/triage_route_patient.ts'
 import { NextStepSelect } from '../../components/library/NextStepSelect.tsx'
+import ProvidersSelect from '../ProvidersSelect.tsx'
 
 // function NextStepSelect(
 //   { patient_names, default_next_step, priority, to_be_notified, onSelect }: {
@@ -108,14 +105,14 @@ function getSHCP(clinic_employees: RenderedEmployeeWithPresence[]) {
   return clinic_employees.find((employee) => organizationOf(employee).in_departments.some((department) => department.name === 'Primary care'))
 }
 
-function defaultToBeNotified(next_step: TriageRoutePatientNextStep, clinic_employees: RenderedEmployeeWithPresence[]): Set<RenderedEmployeeWithPresence> {
+function defaultToBeNotified(next_step: TriageRoutePatientNextStep, clinic_employees: RenderedEmployeeWithPresence[]): RenderedEmployeeWithPresence[] {
   switch (next_step) {
     case 'await_consultation':
-      return new Set()
+      return []
     case 'refer_case':
     case 'stabilize_patient': {
       const shcp = getSHCP(clinic_employees)
-      return new Set(shcp ? [shcp] : [])
+      return shcp ? [shcp] : []
     }
     case 'come_back_later': {
       throw new Error('come_back_later is never a default step')
@@ -142,7 +139,7 @@ export default function TriageRoutePatientSection(
 ) {
   const default_next_step = defaultNextStep(priority.name)
   const next_step = useSignal<string>(default_next_step)
-  const to_be_notified = useSignal<Set<RenderedEmployeeWithPresence>>(defaultToBeNotified(default_next_step, clinic_employees))
+  const to_be_notified = useSignal<RenderedEmployeeWithPresence[]>(defaultToBeNotified(default_next_step, clinic_employees))
   const to_be_notified_display = computed(() => [...to_be_notified.value].map(employeeDisplay).map((e) => e.display_name))
 
   return (
@@ -157,26 +154,28 @@ export default function TriageRoutePatientSection(
             onSelect={(step) => next_step.value = step}
           />
         </FormRow>
+      </FormSection>
+      <FormSection header='Staff'>
         <FormRow>
-          <InviteParticipantsFormFields
-            facility_employees={clinic_employees}
-            // Triage nurses do not invite hospital employees
-            hospital_employees={[]}
-            selected={to_be_notified}
+          <ProvidersSelect
+            providers={clinic_employees}
+            onChange={(employees) => to_be_notified.value = employees}
           />
         </FormRow>
+      </FormSection>
+      <FormSection header='Notes'>
         <FormRow>
           <TextArea
             name='notes'
-            label='Additional notes'
+            label={null}
             value={this_visit.notes}
           />
         </FormRow>
-        <HiddenInput
-          name='health_worker_ids_to_be_notified'
-          value={[...to_be_notified.value].map((x) => x.id)}
-        />
       </FormSection>
+      <HiddenInput
+        name='health_worker_ids_to_be_notified'
+        value={[...to_be_notified.value].map((x) => x.id)}
+      />
     </>
   )
 }

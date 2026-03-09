@@ -130,8 +130,7 @@ export const patient_triage = base({
         'triage_relations.source_id',
         'patient_triage_level.id',
       )
-      .innerJoin('patient_records_aggregated', 'triage_relations.destination_id',
-        'patient_records_aggregated.id',)
+      .innerJoin('patient_records_aggregated', 'triage_relations.destination_id', 'patient_records_aggregated.id')
       .innerJoin(
         'snomed_inferred_canonical_name_and_category as triage_snomed_inferred_canonical_name_and_category',
         'triage_patient_records.value_snomed_concept_id',
@@ -140,5 +139,5 @@ export const patient_triage = base({
       .selectAll('patient_records_aggregated')
       .where('patient_triage_level.id', 'in', priority.record_ids)
       .execute()
-  }
+  },
 })

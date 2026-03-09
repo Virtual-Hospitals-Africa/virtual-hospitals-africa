@@ -1,9 +1,9 @@
-import { TriageRoutePatientNextStep, TRIAGE_ROUTE_PATIENT_NEXT_STEPS } from '../../shared/triage_route_patient.ts'
+import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS, TriageRoutePatientNextStep } from '../../shared/triage_route_patient.ts'
 import { Names, Priority } from '../../types.ts'
 import assertOneOf from '../../util/assertOneOf.ts'
 import capitalize from '../../util/capitalize.ts'
 import compact from '../../util/compact.ts'
-import { ArrowTrendingUpIcon, AtSymbolIcon, ClockIcon, ReceiptRefundIcon } from './icons/heroicons/solid.tsx'
+import { ArrowTrendingUpIcon, AtSymbolIcon, ClockIcon, ReceiptRefundIcon } from './icons/heroicons/outline.tsx'
 import { ActionsRadioGroupSelect } from './ActionsRadioGroupSelect.tsx'
 
 export function NextStepSelect(
@@ -51,7 +51,9 @@ export function NextStepSelect(
           description: compact([
             `I will stay here with ${patient_names.preferred_name}.`,
             `${capitalize(staff)} will be notified immediately about their case and location.`,
-            default_next_step === 'refer_case' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`,
+            default_next_step === 'refer_case' && (
+              <span key='recommended' className='italic'>Recommended based on their having a {priority.name.toLowerCase()} case.</span>
+            ),
           ]),
         },
         {
@@ -63,7 +65,9 @@ export function NextStepSelect(
           description: compact([
             `I will transfer ${patient_names.preferred_name} to the stabilization area.`,
             `${capitalize(staff)} will be notified immediately to meet us there.`,
-            default_next_step === 'stabilize_patient' && `Recommended based on their having a ${priority.name.toLowerCase()} case.`,
+            default_next_step === 'stabilize_patient' && (
+              <span key='recommended' className='italic'>Recommended based on their having a {priority.name.toLowerCase()} case.</span>
+            ),
           ]),
         },
         {

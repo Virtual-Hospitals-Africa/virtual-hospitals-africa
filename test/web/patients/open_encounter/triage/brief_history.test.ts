@@ -153,7 +153,7 @@ describeParallel('triage/brief_history', () => {
     itParallel(
       'renders the brief history page for a patient with a pre-existing condition',
       async () => {
-        const { nurse, clinic, encounter, patient_id, patient_encounter_id } = await setupTriageNewPatient({
+        const { nurse, shcp, clinic, encounter, patient_id, patient_encounter_id } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
@@ -464,6 +464,7 @@ describeParallel('triage/brief_history', () => {
           {
             patient_id,
             nurse: other_nurse,
+            shcp,
             clinic,
           },
         )
@@ -673,6 +674,7 @@ describeParallel('triage/brief_history', () => {
         const returning = await setupTriageReturningPatient({
           patient_id: initial.patient_id,
           clinic: initial.clinic,
+          shcp: initial.shcp,
           nurse: other_nurse,
           warning_signs: asWarningSignsAdult([], { pregnant: false }),
           brief_history: {
@@ -935,6 +937,7 @@ describeParallel('triage/brief_history', () => {
 
         const returning = await setupTriageReturningPatient({
           nurse: initial.nurse,
+          shcp: initial.shcp,
           clinic: initial.clinic,
           patient_id: initial.patient_id,
         })

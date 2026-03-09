@@ -9,7 +9,6 @@ import { patient_presence } from '../../../../../../../../db/models/patient_pres
 
 import redirect from '../../../../../../../../util/redirect.ts'
 
-import { pronoun } from '../../../../../../../../shared/sex_and_gender.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { UpdateShape } from '../../../../../../../../types.ts'
 import { DB } from '../../../../../../../../db.d.ts'
@@ -19,11 +18,10 @@ import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS } from '../../../../../../../../shared/
 import { startWorkflow } from '../start-workflow.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
-
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
   notes: z.string().nullish(),
-  health_worker_ids_to_be_notified: z.string().uuid().array()
+  health_worker_ids_to_be_notified: z.string().uuid().array(),
 })
 
 export const handler = postHandler(
@@ -63,15 +61,15 @@ export const handler = postHandler(
       }
       case 'refer_case': {
         const { redirect_to } = await promiseProps({
-          completing_last_step, 
+          completing_last_step,
           redirect_to: startWorkflow(
             ctx,
             'referral_placed',
             {
               planning: 'create_anew_every_time',
-              patient_presence: 'move_into_specificed_workflow'
-            }
-          )
+              patient_presence: 'move_into_specificed_workflow',
+            },
+          ),
         })
         // add the referral_placed workflow and redirect you there
         // Notify other staff member

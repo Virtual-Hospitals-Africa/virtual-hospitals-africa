@@ -6,9 +6,9 @@ import redirect from '../../../../../../../../util/redirect.ts'
 import { preferredName } from '../../../../../../../../util/asNames.ts'
 import capitalize from '../../../../../../../../util/capitalize.ts'
 import { replaceParams } from '../../../../../../../../util/replaceParams.ts'
-import { employees } from '../../../../../../../../db/models/employees.ts'
 import ProvidersSelect from '../../../../../../../../islands/ProvidersSelect.tsx'
 import { delay } from '../../../../../../../../util/delay.ts'
+import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
 
 export const EmergencyEscalationNotifyStaffSchema = z.object({
   employee_ids: z.string().uuid().array(),
@@ -45,12 +45,14 @@ export async function EmergencyEscalationNotifyStaffPage(
   assertAllPriorStepsCompleted(ctx, {
     attempting_to_complete_workflow: false,
   })
+  const { trx, organization_id, health_worker_id } = ctx.state
 
-  const providers = await employees.findAll(ctx.state.trx, {
-    organization_id: ctx.state.organization_id,
+  const clinic_employees = await employees_presence.findAll(trx, {
+    organization_id,
+    excluding_health_worker_id: health_worker_id,
   })
 
-  return <ProvidersSelect providers={providers} />
+  return <ProvidersSelect providers={clinic_employees} />
 }
 
 export default OpenEncounterWorkflowPage(EmergencyEscalationNotifyStaffPage)

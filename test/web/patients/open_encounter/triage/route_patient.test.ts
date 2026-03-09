@@ -10,10 +10,7 @@ import { logReadableJson } from '../../../../../util/humanReadableJson.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { patient_encounters } from '../../../../../db/models/patient_encounters.ts'
 import { assert } from 'std/assert/assert.ts'
-import { patient_evaluation_scores } from '../../../../../db/models/patient_evaluation_scores.ts'
-import { patient_findings } from '../../../../../db/models/patient_findings.ts'
-import { pMap } from '../../../../../util/inParallel.ts'
-import sortBy from '../../../../../util/sortBy.ts'
+
 import { patient_triage } from '../../../../../db/models/patient_triage.ts'
 import findMatching from '../../../../../util/findMatching.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
@@ -31,7 +28,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     'routes to the referral placed page after referring an anaphylaxis case, ',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Itching" "finding"))'
-      const { $: $additional_tasks, patient_id, patient_encounter_id, shcp, postStep } = await setupTriageNewPatient({
+      const { $: $additional_tasks, patient_encounter_id, shcp, postStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -71,7 +68,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       await events.allProcessedForEncounter(db, { patient_encounter_id })
 
       const encounter_after_reported_itching_low_blood_pressure = await patient_encounters.getById(db, patient_encounter_id)
-      assertEquals(encounter_after_reported_itching_low_blood_pressure.priority!.name, "Non-urgent")
+      assertEquals(encounter_after_reported_itching_low_blood_pressure.priority!.name, 'Non-urgent')
 
       // deno-lint-ignore no-explicit-any
       const additional_tasks_form_values: any = getFormValues($additional_tasks)
@@ -87,14 +84,13 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         assign_priority: {},
       })
 
-      
       const encounter_after_reported_yes_to_all_anaphylaxis_findings = await patient_encounters.getById(db, patient_encounter_id)
-      assertEquals(encounter_after_reported_yes_to_all_anaphylaxis_findings.priority!.name, "Urgent")
+      assertEquals(encounter_after_reported_yes_to_all_anaphylaxis_findings.priority!.name, 'Urgent')
 
       const associated_findings = await patient_triage.associatedFindings(db, encounter_after_reported_yes_to_all_anaphylaxis_findings.priority!)
       const anaphylaxis_diagnosis = findMatching(associated_findings, {
-        "root_snomed_concept_name": "Diagnosis",
-        "specific_snomed_concept_name": "Anaphylaxis",
+        'root_snomed_concept_name': 'Diagnosis',
+        'specific_snomed_concept_name': 'Anaphylaxis',
       })
       assert(isObjectLike(anaphylaxis_diagnosis.value))
       assertEquals(anaphylaxis_diagnosis.value.name, 'Probable diagnosis (contextual qualifier)')

@@ -337,6 +337,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       name: 'Non-urgent',
       value_snomed_concept_id: '394848005',
       target_treatment_time: new Date(Date.now() + 15 * 60 * 1000),
+      record_ids: [],
     },
     present_employees: [],
   },
@@ -401,6 +402,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       name: 'Non-urgent',
       value_snomed_concept_id: '394848005',
       target_treatment_time: new Date(Date.now() + 15 * 60 * 1000),
+      record_ids: [],
     },
     present_employees: [makeMockWaitingRoomEmployee({
       id: 'tutorial-hw-004',
@@ -440,6 +442,7 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       name: 'Non-urgent',
       value_snomed_concept_id: '24484000',
       target_treatment_time: new Date(Date.now() - 15 * 60 * 1000),
+      record_ids: [],
     },
     present_employees: [makeMockWaitingRoomEmployee({
       id: 'tutorial-hw-005',

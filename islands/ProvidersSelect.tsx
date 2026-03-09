@@ -1,11 +1,11 @@
 import { useSignal } from '@preact/signals'
-import { RenderedEmployee } from '../types.ts'
+import { RenderedEmployeeWithPresence } from '../types.ts'
 import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
-import { SqlBool } from 'kysely'
-import PriorityBadge from '../components/PriorityBadge.tsx'
 import { Priority } from '../shared/priorities.ts'
+import { HiddenInput } from '../components/library/HiddenInput.tsx'
+import { HealthWorkerPresence } from '../components/HealthWorkerPresence.tsx'
 
 export type AvailabilityInfo = {
   label: string
@@ -13,13 +13,11 @@ export type AvailabilityInfo = {
 }
 
 export function ProviderSelectOption(
-  { provider, selected, toggleSelection, availability }: {
-    provider: RenderedEmployee & {
-      at_work?: SqlBool
-    }
+  { provider, selected, toggleSelection }: {
+    provider: RenderedEmployeeWithPresence
     selected: boolean
-    toggleSelection(): void
     availability?: AvailabilityInfo
+    toggleSelection(): void
   },
 ) {
   const active = useSignal(false)
@@ -28,7 +26,7 @@ export function ProviderSelectOption(
   return (
     <label
       className={cls(
-        'provider-select-option relative block cursor-pointer rounded-lg border bg-white px-6 py-4 shadow-sm focus:outline-none sm:flex sm:justify-between',
+        'provider-select-option relative block cursor-pointer rounded-lg border bg-white px-4 py-3 shadow-sm focus:outline-none sm:flex sm:justify-between',
         active.value ? 'border-indigo-600 ring-2 ring-indigo-600' : 'border-gray-300',
       )}
       onMouseOver={() => active.value = true}
@@ -64,12 +62,9 @@ export function ProviderSelectOption(
           </span>
         </span>
       </span>
-      {availability && (
-        <span className='flex flex-col items-start gap-1 mt-2 sm:mt-0 sm:items-end'>
-          <span className='text-xs text-gray-600'>{availability.label}</span>
-          {availability.priority !== undefined && <PriorityBadge priority={availability.priority} />}
-        </span>
-      )}
+      <HealthWorkerPresence
+        employee={provider}
+      />
       <span
         className={cls(
           'pointer-events-none absolute -inset-px rounded-lg border-2',
@@ -82,40 +77,55 @@ export function ProviderSelectOption(
   )
 }
 
+type TrackFormDataSomehow = {
+  name?: string
+  onChange?: never
+} | {
+  name?: never
+  onChange(providers: RenderedEmployeeWithPresence[]): void
+}
+
 export default function ProvidersSelect(
-  { providers }: { providers: RenderedEmployee[] },
+  { providers, name = 'employee_ids', className, onChange }: {
+    providers: RenderedEmployeeWithPresence[]
+    className?: string
+  } & TrackFormDataSomehow,
 ) {
-  const selected = useSignal<Set<RenderedEmployee>>(new Set())
+  const selected = useSignal<Set<RenderedEmployeeWithPresence>>(new Set())
+
+  if (!providers.length) {
+    return (
+      <p className='text-gray-500 text-center py-8'>
+        No providers available at this time.
+      </p>
+    )
+  }
 
   return (
-    <fieldset className='grid grid-cols-2 gap-2 w-full'>
-      {
-        /* <ProviderSelectOption
-        key='next_available'
-        provider={{ employee_id: 'next_available', name: 'Next Available' }}
-        selected={selected.value.size === 0}
-        toggleSelection={() => selected.value = new Set()}
-      /> */
-      }
-      {providers.map((provider) => (
-        <ProviderSelectOption
-          key={provider.employee_id}
-          provider={provider}
-          selected={selected.value.has(provider)}
-          toggleSelection={() => {
-            const new_selected = new Set(selected.value)
-            selected.value.has(provider) ? new_selected.delete(provider) : new_selected.add(provider)
-            selected.value = new_selected
-          }}
-        />
-      ))}
-      {selected.value.size > 0 && (
-        <input
-          type='hidden'
-          name='employee_ids'
-          value={JSON.stringify([...selected.value].map((p) => p.employee_id))}
+    <>
+      <fieldset className={cls('grid md:grid-cols-2 xl:grid-cols-3 gap-2 w-full', className)}>
+        {providers.map((provider) => (
+          <ProviderSelectOption
+            key={provider.employee_id}
+            provider={provider}
+            selected={selected.value.has(provider)}
+            toggleSelection={() => {
+              const new_selected = new Set(selected.value)
+              selected.value.has(provider) ? new_selected.delete(provider) : new_selected.add(provider)
+              selected.value = new_selected
+              if (onChange) {
+                onChange([...selected.value])
+              }
+            }}
+          />
+        ))}
+      </fieldset>
+      {!onChange && (
+        <HiddenInput
+          name={name}
+          value={[...selected.value].map((p) => p.employee_id)}
         />
       )}
-    </fieldset>
+    </>
   )
 }

@@ -318,7 +318,19 @@ export const patient_findings = base({
           source_id: triage_level_evaluation_id,
           destination_id: record_id,
         })
-        logReadableJson({attribute_records, attribute_qualifiers, event_values, triage_level_records, triage_level_evaluations, triage_level_values, triage_relation_records, triage_relations, score_records, score_evaluations, score_values})
+        logReadableJson({
+          attribute_records,
+          attribute_qualifiers,
+          event_values,
+          triage_level_records,
+          triage_level_evaluations,
+          triage_level_values,
+          triage_relation_records,
+          triage_relations,
+          score_records,
+          score_evaluations,
+          score_values,
+        })
       }
 
       // Collect score
