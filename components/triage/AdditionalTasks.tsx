@@ -9,6 +9,10 @@ import MeasurementInput from '../vitals/MeasurementInput.tsx'
 import { hyphenate } from '../../util/hyphenate.ts'
 import memoize from '../../util/memoize.ts'
 import VitalsInputRow from '../vitals/InputRow.tsx'
+import { Foo } from '../../islands/Foo.tsx'
+import negate from '../../util/negate.ts'
+import cls from '../../util/cls.ts'
+import SectionHeader from '../library/typography/SectionHeader.tsx'
 
 const uniqueIdentifier = memoize(
   function uniqueIdentifier(task: RenderedTask) {
@@ -147,7 +151,7 @@ function TaskGroupCard({
   group: TaskGroup
   organization_id: string
 }) {
-  const [reference_docs, solicit_findings_tasks] = partition(group.tasks, isLink)
+  const solicit_findings_tasks = group.tasks.filter(negate(isLink))
   const [check_for_tasks, other_tasks] = partition(solicit_findings_tasks, isFinding)
   const [measure_tasks, none] = partition(other_tasks, isMeasurement)
   assert(none.length === 0)
@@ -156,10 +160,11 @@ function TaskGroupCard({
     <div class='flex flex-col gap-4'>
       {/* Header */}
       <div class='flex items-start justify-between w-full'>
-        <p class='text-sm leading-5'>
+        <div class='flex flex-row gap-1 text-sm leading-5'>
           <span class='font-semibold text-gray-600'>
             {'Due to '}
           </span>
+          
           {group.due_to.map((record) => (
             <MostRecentRecord
               key={record.id}
@@ -167,12 +172,7 @@ function TaskGroupCard({
               organization_id={organization_id}
             />
           ))}
-        </p>
-        {reference_docs.length > 0 && (
-          <a href={reference_docs[0].href} className='flex text-sm font-medium text-gray-600 leading-5'>
-            {reference_docs[0].thumbnail_href ? <img width='200' src={reference_docs[0].thumbnail_href} /> : reference_docs[0].title}
-          </a>
-        )}
+        </div>
       </div>
 
       {/* Check-for Tasks (YesNoGrid) */}
@@ -259,6 +259,32 @@ function NoTasks() {
   )
 }
 
+function ReferenceDocs({ reference_docs }: { reference_docs: Array<RenderedTask & {
+    atom: "link";
+}> }) {
+  if (!reference_docs.length) return null
+  return (
+
+    <div class='flex flex-col gap-4'>
+      <SectionHeader className='w-full xl:w-60'>
+        Reference Documents
+      </SectionHeader>
+      <ul>
+        {
+          reference_docs.map(
+              reference_doc => (
+                <a href={reference_doc.href} className='flex text-sm font-medium text-gray-600 leading-5'>
+                  {reference_doc.thumbnail_href ? <img width='400' src={reference_doc.thumbnail_href.replace('/150', '/400')} /> : reference_doc.title}
+                </a>
+              )
+            )
+        }
+      </ul>
+    </div>
+
+  )
+}
+
 export default function AdditionalTasks({
   organization_id,
   evaluation_ids,
@@ -281,26 +307,37 @@ export default function AdditionalTasks({
   //   0,
   // )
 
-  return (
-    <div class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
-      {
-        /* <ProgressHeader
-        completed_count={completed_tasks}
-        total_count={total_tasks}
-      /> */
-      }
-      <HiddenInput
-        name='evaluation_ids'
-        value={evaluation_ids}
-      />
+  const reference_docs = task_groups.flatMap(task_group => task_group.tasks).filter(isLink)
+  const reference_docs_el = <ReferenceDocs reference_docs={reference_docs} />
 
-      {task_groups.map((group, index) => (
-        <TaskGroupCard
-          key={index}
-          group={group}
-          organization_id={organization_id}
+  return (
+    <div class={cls('grid', {
+      'grid-cols-2': !!reference_docs_el,
+      'grid-cols-1': !reference_docs_el
+    })}>
+      <div class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
+        {
+          /* <ProgressHeader
+          completed_count={completed_tasks}
+          total_count={total_tasks}
+        /> */
+        }
+        <HiddenInput
+          name='evaluation_ids'
+          value={evaluation_ids}
         />
-      ))}
+        <SectionHeader className='w-full xl:w-60'>
+          Additional Investigations
+        </SectionHeader>
+        {task_groups.map((group, index) => (
+          <TaskGroupCard
+            key={index}
+            group={group}
+            organization_id={organization_id}
+          />
+        ))}
+      </div>
+      {reference_docs_el}
     </div>
   )
 }

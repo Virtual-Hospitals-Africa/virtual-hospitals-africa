@@ -11,7 +11,7 @@ import { getTutorialVitalsDefinitions, TUTORIAL_HEIGHT_WEIGHT } from '../../../s
  * with tutorial-specific mock data.
  *
  * Key findings for anaphylaxis case:
- * - Blood pressure 70/40 mmHg (dangerously low - 3 TEWS points)
+ * - Blood pressure 85/55 mmHg (dangerously low - 3 TEWS points)
  * - Heart rate 120 bpm (tachycardia - 2 TEWS points)
  *
  * Form starts blank; values are filled in one at a time by the tutorial overlay

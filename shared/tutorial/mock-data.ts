@@ -768,13 +768,13 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id,
     specific_snomed_concept_name: 'Systolic blood pressure',
     specific_snomed_concept_category: 'observable entity',
-    value: { type: 'measurement', value: '70', units: 'mmHg' },
+    value: { type: 'measurement', value: '85', units: 'mmHg' },
     modifiers: [],
     attributes: [],
     displays: {
       finding: 'Blood pressure',
-      value: '70/40 mmHg',
-      full: 'Blood pressure: 70/40 mmHg',
+      value: '85/55 mmHg',
+      full: 'Blood pressure: 85/55 mmHg',
     },
     evaluations: [],
     destination_relations: [],
@@ -849,16 +849,16 @@ export function getTutorialVitalsDefinitions(): {
  * Mock vital values for form auto-fill.
  * Values produce TEWS=5 (Very Urgent) for teaching:
  * - Blood pressure systolic 70 mmHg (dangerously low = 3 points)
- * - Heart rate 120 bpm (tachycardia = 2 points)
+ * - Heart rate 62 bpm (tachycardia = 2 points)
  * - Total = 5 points = Very Urgent
  * Consistent with anaphylaxis (distributive shock from allergic reaction)
  */
 export const TUTORIAL_VITAL_VALUES: Record<string, string> = {
   'measurements.respiratory_rate.value': '12',
-  'measurements.heart_rate.value': '120',
+  'measurements.heart_rate.value': '62',
   'measurements.temperature.value': '36.8',
-  'measurements.blood_pressure_systolic.value': '70',
-  'measurements.blood_pressure_diastolic.value': '40',
+  'measurements.blood_pressure_systolic.value': '85',
+  'measurements.blood_pressure_diastolic.value': '55',
 }
 
 /**
@@ -1123,8 +1123,8 @@ export function getTutorialTaskGroups(): TaskGroup[] {
 /**
  * Mock vitals data for assign priority table.
  * TEWS = 5 (Very Urgent):
- * - Blood pressure: 70/40 (score 3 - dangerously low, anaphylaxis shock)
- * - Heart rate: 120 bpm (score 2 - tachycardia)
+ * - Blood pressure: 85/55 (score 3 - dangerously low, anaphylaxis shock)
+ * - Heart rate: 62 bpm (score 2 - tachycardia)
  * - Respiratory rate: 12 bpm (score 0 - normal)
  * - Temperature: 36.8°C (score 0 - normal)
  * - Mobility: Walking (score 0)
@@ -1361,18 +1361,18 @@ export function getTutorialAssignPriorityData(): {
         specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.heart_rate.id,
         specific_snomed_concept_name: 'Heart rate',
         specific_snomed_concept_category: 'observable entity',
-        value: { type: 'measurement', value: '120', units: 'bpm' },
+        value: { type: 'measurement', value: '62', units: 'bpm' },
         modifiers: [],
         attributes: [],
         displays: {
           finding: 'Heart rate',
-          value: '120 bpm',
-          full: 'Heart rate: 120 bpm',
+          value: '62 bpm',
+          full: 'Heart rate: 62 bpm',
         },
         evaluations: [],
         destination_relations: [],
         priority: null,
-        score: 2, // 111-130 = 2 points
+        score: 0,
         existence: 'Yes',
         provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
@@ -1415,13 +1415,13 @@ export function getTutorialAssignPriorityData(): {
         attributes: [],
         displays: {
           finding: 'Systolic BP',
-          value: '70 mmHg',
+          value: '85 mmHg',
           full: 'Systolic BP: 70 mmHg',
         },
         evaluations: [],
         destination_relations: [],
         priority: null,
-        score: 3, // ≤70 = 3 points (dangerously low)
+        score: 1, // ≤70 = 3 points (dangerously low)
         existence: 'Yes',
         provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {

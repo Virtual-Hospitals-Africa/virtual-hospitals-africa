@@ -153,7 +153,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'patient',
-    text: "I was stung by an insect about 30 minutes ago. I've been feeling dizzy and my throat feels a bit tight.",
+    text: "I was stung by an insect about 30 minutes ago and I'm not feeling well.",
     position: 'bottom-right',
   },
   {
@@ -263,7 +263,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text:
-      "Now it's time to take Duduzile's vitals. For adult patients this always consists of assessing her consciousness, mobility, trauma and measuring her blood pressure, temperature, heart rate and respiratory rate.",
+      "Now it's time to take Duduzile's vitals. For adult patients this consists of assessing her consciousness, mobility, and trauma presence as well as measuring her blood pressure, temperature, heart rate, and respiratory rate.",
     highlight: TUTORIAL_TARGETS.VITALS_FORM,
   },
   {
@@ -319,14 +319,14 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Heart rate is elevated at 120 bpm - 2 points on the Triage Early Warning Scale. This tachycardia could indicate a serious reaction.',
+    text: 'Heart rate is elevated at 62 bpm - a bit low, but in the normal range.',
     highlight: TUTORIAL_TARGETS.VITAL_HEART_RATE,
     input: { field: "[name='measurements.heart_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.heart_rate.value'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "Blood pressure is dangerously low at 70/40 mmHg - that's 3 points on the Triage Early Warning Scale. This is a serious sign of anaphylactic shock.",
+    text: "Blood pressure is low at 85/55 mmHg. That's 1 point on the Triage Early Warning Scale.",
     highlight: TUTORIAL_TARGETS.VITAL_BLOOD_PRESSURE,
     input: [
       { field: "[name='measurements.blood_pressure_systolic.value']", value: TUTORIAL_VITAL_VALUES['measurements.blood_pressure_systolic.value'] },

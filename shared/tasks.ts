@@ -19,7 +19,7 @@ export const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTEN
     `(task
     "Display medical guidance for ${table_of_contents_name === 'Lump, neck/axilla/groin' ? concept.name : table_of_contents_name}"
     adult
-      ${concept.clinical_finding_s_expression}
+      ${concept.s_expression}
       (procedure 
         ${PROCEDURE.s_expression}
         ${REFERENCE_DOCUMENTATION.s_expression}

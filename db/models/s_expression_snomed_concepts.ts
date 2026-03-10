@@ -78,13 +78,24 @@ const PREDICATE_BUILDERS = {
     const predicates = expressions.map((expr) => internalBuildExpressionPredicate(column_ref, expr))
     return sql<boolean>`(${sql.join(predicates, sql` AND `)})`
   },
-  active_condition(column_ref, { snomed_concept }) {
+  active_condition(column_ref, { snomed_concept, possible }) {
     const snomed_concept_s_expression = inverseSExpression(snomed_concept)
+    const disjuncts = [
+      `(clinical_finding ${snomed_concept_s_expression})`,
+      `(finding ${STATUS_ATTRIBUTE.s_expression} ${snomed_concept_s_expression} ${YES_QUALIFIER.s_expression})`,
+      `(diagnosis ${snomed_concept_s_expression} probable)`,
+      `(diagnosis ${snomed_concept_s_expression} definite)`,
+    ]
+    if (possible) {
+      disjuncts.push(
+        `(diagnosis ${snomed_concept_s_expression} equivocal)`,
+        `(diagnosis ${snomed_concept_s_expression} possible)`
+      )
+    }
+    const or_expression = `(or ${disjuncts.join(' ')})`
+    console.log({or_expression})
     const expanded_expression = parseExpressionExpectingAtom(
-      `
-      (or (clinical_finding ${snomed_concept_s_expression})
-          (finding ${STATUS_ATTRIBUTE.s_expression} ${snomed_concept_s_expression} ${YES_QUALIFIER.s_expression}))
-    `,
+      or_expression,
       'or',
     )
     return internalBuildExpressionPredicate(column_ref, expanded_expression)

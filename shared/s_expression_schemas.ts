@@ -108,6 +108,7 @@ type QueryableBaseLang =
     }
     active_condition: {
       snomed_concept: Lang['snomed_concept']
+      possible: boolean
     }
     not: {
       expression: QueryableNode
@@ -533,10 +534,11 @@ export const active_condition: z.ZodType<Lang['active_condition']> = z.lazy(
   () =>
     z.object({
       atom: z.literal('active_condition'),
-      args: z.tuple([snomed_concept]),
-    }).transform(({ atom, args: [snomed_concept] }) => ({
+      args: z.tuple([snomed_concept, z.literal('possible').optional()]),
+    }).transform(({ atom, args: [snomed_concept, possible] }) => ({
       atom,
       snomed_concept,
+      possible: !!possible,
     })),
 ).describe('active_condition')
 
