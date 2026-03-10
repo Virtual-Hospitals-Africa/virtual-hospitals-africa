@@ -8,8 +8,8 @@ import { getTutorialTaskGroups } from '../../../shared/tutorial/mock-data.ts'
 
 /**
  * Additional tasks step - wraps real AdditionalTasks component with mock data.
- * Shows respiratory check-for tasks due to cough + asthma.
- * All tasks answered "No" - none of the serious conditions apply to Duduzile.
+ * Shows anaphylaxis check-for tasks due to insect bite.
+ * The insect bite is pre-filled as Yes; other signs are unanswered for the user to fill in.
  */
 export function AdditionalTasksStep() {
   const task_groups = getTutorialTaskGroups()

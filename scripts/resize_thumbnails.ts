@@ -6,7 +6,7 @@
  * Usage:
  *   deno run --allow-read --allow-write --allow-run scripts/resize_thumbnails.ts [width]
  *
- * Default width: 150px
+ * Default width: 400px
  *
  * Requirements:
  *   - ImageMagick (convert command) must be installed
@@ -15,7 +15,7 @@
 import { runCommandAssertExitCodeZero } from '../util/command.ts'
 import sortBy from '../util/sortBy.ts'
 
-const DEFAULT_WIDTH = 150
+const DEFAULT_WIDTH = 400
 const SOURCE_DIR = 'static/medical-resources/za/primary-care/adult/thumbnails'
 
 async function main() {
@@ -30,17 +30,6 @@ async function main() {
   console.log(`Resizing thumbnails to ${target_width}px width...`)
   console.log(`Source: ${SOURCE_DIR}`)
   console.log(`Target: ${target_dir}\n`)
-
-  // Check if ImageMagick is available
-  const check = await new Deno.Command('convert', {
-    args: ['-version'],
-    stdout: 'null',
-    stderr: 'null',
-  }).output()
-
-  if (!check.success) {
-    throw new Error('ImageMagick not available')
-  }
 
   // Create target directory
   await Deno.mkdir(target_dir, { recursive: true })
@@ -80,7 +69,7 @@ async function main() {
         '-strip',
         target_path,
       ],
-      stdout: 'null',
+      stdout: 'piped',
       stderr: 'piped',
     })
 

@@ -23,7 +23,7 @@ import type {
 import type { TutorialStep } from './types.ts'
 import { isStepCompleted } from './state.ts'
 import { COMMON_CONDITIONS, CommonConditionKey } from '../brief_history.ts'
-import { assessmentOptionSExpression, measureVitalsInputDefinitions, VITAL_MEASUREMENTS_SNOMED_CONCEPTS, VITAL_MEASUREMENTS_UNITS } from '../vitals.ts'
+import { assessmentOptionSExpression, measureVitalsInputDefinitions, VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../vitals.ts'
 import { WARNING_SIGNS } from '../warning_signs.ts'
 import { COMMON_SYMPTOMS } from '../common_symptoms.ts'
 
@@ -462,11 +462,18 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
 // =============================================================================
 
 /**
- * Warning signs for tutorial - includes "Cough" which triggers SpO2 requirement
+ * Warning signs for tutorial - includes "Insect bite" which triggers anaphylaxis check
  */
 export const TUTORIAL_WARNING_SIGNS: WarningSignWithMaybeRecord[] = [
   ...WARNING_SIGNS.adult.filter((sign) => !sign.name.includes('Pregnancy')),
   ...COMMON_SYMPTOMS,
+  {
+    key: 'Insect bite' as const,
+    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))',
+    name: 'Insect bite',
+    description: null,
+    category: 'Common Symptoms' as const,
+  },
 ]
 
 // =============================================================================
@@ -523,7 +530,7 @@ function makeBriefHistoryFinding(
 
 /**
  * Duduzile's medical history:
- * - Has asthma (relevant for respiratory symptoms)
+ * - Has allergy to peanut (already in history - very relevant for anaphylaxis)
  * - No diabetes
  * - Not pregnant
  */
@@ -678,7 +685,7 @@ export const TUTORIAL_HEIGHT_WEIGHT: RenderedFindingRelativeToHealthWorker[] = [
  * Combines systolic/diastolic into single "Blood pressure" display like real app.
  */
 const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
-  // Respiratory rate (TEWS 3)
+  // Respiratory rate (TEWS 0 - normal)
   {
     type: 'finding',
     id: 'tutorial-sidebar-respiratory-rate',
@@ -690,18 +697,18 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.id,
     specific_snomed_concept_name: 'Respiratory rate',
     specific_snomed_concept_category: 'observable entity',
-    value: { type: 'measurement', value: '32', units: 'bpm' },
+    value: { type: 'measurement', value: '12', units: 'bpm' },
     modifiers: [],
     attributes: [],
     displays: {
       finding: 'Respiratory rate',
-      value: '32 bpm',
-      full: 'Respiratory rate: 32 bpm',
+      value: '12 bpm',
+      full: 'Respiratory rate: 12 bpm',
     },
     evaluations: [],
     destination_relations: [],
     priority: null,
-    score: 3,
+    score: 0,
     existence: 'Yes',
     provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
@@ -715,7 +722,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
       workflow_step_name: 'Measure Vitals',
     },
   },
-  // Heart rate (TEWS 0)
+  // Heart rate (TEWS 2 - tachycardia indicating anaphylaxis)
   {
     type: 'finding',
     id: 'tutorial-sidebar-heart-rate',
@@ -727,87 +734,13 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.heart_rate.id,
     specific_snomed_concept_name: 'Heart rate',
     specific_snomed_concept_category: 'observable entity',
-    value: { type: 'measurement', value: '95', units: 'bpm' },
+    value: { type: 'measurement', value: '120', units: 'bpm' },
     modifiers: [],
     attributes: [],
     displays: {
       finding: 'Heart rate',
-      value: '95 bpm',
-      full: 'Heart rate: 95 bpm',
-    },
-    evaluations: [],
-    destination_relations: [],
-    priority: null,
-    score: 0,
-    existence: 'Yes',
-    provider: MOCK_PROVIDER_IS_ME,
-    as_part_of_procedure: {
-      id: 'tutorial-vitals-procedure',
-      root_snomed_concept_id: '225390008',
-      root_snomed_concept_name: 'Triage',
-      root_snomed_concept_category: 'procedure',
-      specific_snomed_concept_id: '225390008',
-      specific_snomed_concept_name: 'Triage',
-      specific_snomed_concept_category: 'procedure',
-      workflow_step_name: 'Measure Vitals',
-    },
-  },
-  // Blood pressure (combined systolic/diastolic display)
-  {
-    type: 'finding',
-    id: 'tutorial-sidebar-blood-pressure',
-    created_at: new Date(),
-    patient_encounter_id: 'tutorial-encounter-001',
-    root_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id,
-    root_snomed_concept_name: 'Systolic blood pressure',
-    root_snomed_concept_category: 'observable entity',
-    specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id,
-    specific_snomed_concept_name: 'Systolic blood pressure',
-    specific_snomed_concept_category: 'observable entity',
-    value: { type: 'measurement', value: '120', units: 'mmHg' },
-    modifiers: [],
-    attributes: [],
-    displays: {
-      finding: 'Blood pressure',
-      value: '120/80 mmHg',
-      full: 'Blood pressure: 120/80 mmHg',
-    },
-    evaluations: [],
-    destination_relations: [],
-    priority: null,
-    score: 0,
-    existence: 'Yes',
-    provider: MOCK_PROVIDER_IS_ME,
-    as_part_of_procedure: {
-      id: 'tutorial-vitals-procedure',
-      root_snomed_concept_id: '225390008',
-      root_snomed_concept_name: 'Triage',
-      root_snomed_concept_category: 'procedure',
-      specific_snomed_concept_id: '225390008',
-      specific_snomed_concept_name: 'Triage',
-      specific_snomed_concept_category: 'procedure',
-      workflow_step_name: 'Measure Vitals',
-    },
-  },
-  // Temperature (TEWS 2)
-  {
-    type: 'finding',
-    id: 'tutorial-sidebar-temperature',
-    created_at: new Date(),
-    patient_encounter_id: 'tutorial-encounter-001',
-    root_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.temperature.id,
-    root_snomed_concept_name: 'Body temperature',
-    root_snomed_concept_category: 'observable entity',
-    specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.temperature.id,
-    specific_snomed_concept_name: 'Body temperature',
-    specific_snomed_concept_category: 'observable entity',
-    value: { type: 'measurement', value: '39', units: '°C' },
-    modifiers: [],
-    attributes: [],
-    displays: {
-      finding: 'Temperature',
-      value: '39 °C',
-      full: 'Temperature: 39 °C',
+      value: '120 bpm',
+      full: 'Heart rate: 120 bpm',
     },
     evaluations: [],
     destination_relations: [],
@@ -826,30 +759,67 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
       workflow_step_name: 'Measure Vitals',
     },
   },
-  // SpO2 (oxygen saturation)
+  // Blood pressure (TEWS 3 - dangerously low, indicating distributive shock)
   {
     type: 'finding',
-    id: 'tutorial-sidebar-spo2',
+    id: 'tutorial-sidebar-blood-pressure',
     created_at: new Date(),
     patient_encounter_id: 'tutorial-encounter-001',
-    root_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.id,
-    root_snomed_concept_name: 'Oxygen saturation',
+    root_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id,
+    root_snomed_concept_name: 'Systolic blood pressure',
     root_snomed_concept_category: 'observable entity',
-    specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.id,
-    specific_snomed_concept_name: 'Oxygen saturation',
+    specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id,
+    specific_snomed_concept_name: 'Systolic blood pressure',
     specific_snomed_concept_category: 'observable entity',
-    value: { type: 'measurement', value: '98', units: '%' },
+    value: { type: 'measurement', value: '85', units: 'mmHg' },
     modifiers: [],
     attributes: [],
     displays: {
-      finding: 'SpO2',
-      value: '98%',
-      full: 'SpO2: 98%',
+      finding: 'Blood pressure',
+      value: '85/55 mmHg',
+      full: 'Blood pressure: 85/55 mmHg',
     },
     evaluations: [],
     destination_relations: [],
     priority: null,
-    score: null,
+    score: 3,
+    existence: 'Yes',
+    provider: MOCK_PROVIDER_IS_ME,
+    as_part_of_procedure: {
+      id: 'tutorial-vitals-procedure',
+      root_snomed_concept_id: '225390008',
+      root_snomed_concept_name: 'Triage',
+      root_snomed_concept_category: 'procedure',
+      specific_snomed_concept_id: '225390008',
+      specific_snomed_concept_name: 'Triage',
+      specific_snomed_concept_category: 'procedure',
+      workflow_step_name: 'Measure Vitals',
+    },
+  },
+  // Temperature (TEWS 0 - normal)
+  {
+    type: 'finding',
+    id: 'tutorial-sidebar-temperature',
+    created_at: new Date(),
+    patient_encounter_id: 'tutorial-encounter-001',
+    root_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.temperature.id,
+    root_snomed_concept_name: 'Body temperature',
+    root_snomed_concept_category: 'observable entity',
+    specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.temperature.id,
+    specific_snomed_concept_name: 'Body temperature',
+    specific_snomed_concept_category: 'observable entity',
+    value: { type: 'measurement', value: '36.8', units: '°C' },
+    modifiers: [],
+    attributes: [],
+    displays: {
+      finding: 'Temperature',
+      value: '36.8 °C',
+      full: 'Temperature: 36.8 °C',
+    },
+    evaluations: [],
+    destination_relations: [],
+    priority: null,
+    score: 0,
     existence: 'Yes',
     provider: MOCK_PROVIDER_IS_ME,
     as_part_of_procedure: {
@@ -867,45 +837,31 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
 
 /**
  * Get vitals input definitions for adult patient.
- * Includes SpO2 since patient has respiratory symptom (cough + asthma).
  */
 export function getTutorialVitalsDefinitions(): {
   measurements: VitalMeasurementFormInputDefition[]
   assessments: VitalAssessmentFormInputDefition[]
 } {
-  const { measurements, assessments } = measureVitalsInputDefinitions({
+  return measureVitalsInputDefinitions({
     age_determination: 'adult',
     has_diabetes: false,
   })
-
-  // Add SpO2 as required due to respiratory symptoms (cough + asthma)
-  const has_sp_o2 = measurements.some((m) => m.vital === 'blood_oxygen_saturation')
-  if (!has_sp_o2) {
-    measurements.push({
-      vital: 'blood_oxygen_saturation',
-      snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.id,
-      required: true,
-      units: VITAL_MEASUREMENTS_UNITS.blood_oxygen_saturation,
-    })
-  }
-
-  return { measurements, assessments }
 }
 
 /**
  * Mock vital values for form auto-fill.
  * Values produce TEWS=5 (Very Urgent) for teaching:
- * - Respiratory rate 32 bpm (>30 = 3 points)
- * - Temperature 39°C (>38.5 = 2 points)
+ * - Blood pressure systolic 70 mmHg (dangerously low = 3 points)
+ * - Heart rate 62 bpm (tachycardia = 2 points)
  * - Total = 5 points = Very Urgent
+ * Consistent with anaphylaxis (distributive shock from allergic reaction)
  */
 export const TUTORIAL_VITAL_VALUES: Record<string, string> = {
-  'measurements.respiratory_rate.value': '32',
-  'measurements.heart_rate.value': '95',
-  'measurements.temperature.value': '39',
-  'measurements.blood_pressure_systolic.value': '120',
-  'measurements.blood_pressure_diastolic.value': '80',
-  'measurements.blood_oxygen_saturation.value': '98',
+  'measurements.respiratory_rate.value': '12',
+  'measurements.heart_rate.value': '62',
+  'measurements.temperature.value': '36.8',
+  'measurements.blood_pressure_systolic.value': '85',
+  'measurements.blood_pressure_diastolic.value': '55',
 }
 
 /**
@@ -920,108 +876,245 @@ export const TUTORIAL_ASSESSMENT_VALUES: Record<string, string> = {
 }
 
 // =============================================================================
-// ADDITIONAL TASKS - Respiratory check-for tasks (all answered "No")
+// ADDITIONAL TASKS - Anaphylaxis check-for tasks (due to insect bite)
 // =============================================================================
 
 /**
- * Respiratory symptoms to check for when patient has cough + asthma.
- * All answered "No" for Duduzile - none of the serious conditions apply.
- */
-const RESPIRATORY_CHECK_FOR_CONDITIONS = [
-  { key: 'wheezing', label: 'Wheezing', snomed_id: '56018004' },
-  { key: 'tight_chest', label: 'Tight Chest', snomed_id: '23924001' },
-  { key: 'breathing_worse_lying_flat', label: 'Breathing worse lying flat', snomed_id: '62744007' },
-  { key: 'leg_swelling', label: 'Leg swelling', snomed_id: '102572006' },
-  { key: 'confused', label: 'Confused', snomed_id: '40917007' },
-  { key: 'agitated', label: 'Agitated', snomed_id: '24199005' },
-  { key: 'breathless_at_rest', label: 'Breathless at rest', snomed_id: '161941007' },
-  { key: 'breathless_while_talking', label: 'Breathless while talking', snomed_id: '60845006' },
-  { key: 'swelling_pain_one_calf', label: 'Swelling and pain in one calf', snomed_id: '449614009' },
-  { key: 'sudden_breathlessness', label: 'Sudden breathlessness', snomed_id: '267036007' },
-  { key: 'more_resonant_breath_sounds', label: 'More resonant breath sounds', snomed_id: '65503000' },
-  { key: 'decreased_breath_sounds', label: 'Decreased breath sounds', snomed_id: '48348007' },
-  { key: 'pain_on_1_side', label: 'Pain on 1 side', snomed_id: '274667000' },
-  { key: 'deviated_trachea', label: 'Deviated trachea', snomed_id: '249987002' },
-] as const
-
-/**
- * Factory for creating check-for tasks (all completed with "No" answer).
- */
-function makeCheckForTask(condition: typeof RESPIRATORY_CHECK_FOR_CONDITIONS[number]): RenderedTask {
-  const s_expression = `(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "${condition.label}" "finding"))`
-
-  return {
-    atom: 'finding',
-    root_snomed_concept: {
-      atom: 'snomed_concept',
-      name: 'Clinical finding',
-      category: 'finding',
-    },
-    specific_snomed_concept: {
-      atom: 'snomed_concept',
-      name: condition.label,
-      category: 'finding',
-    },
-    value_snomed_concept: null,
-    qualifiers: [],
-    attributes: [],
-    exact: false,
-    history: false,
-    existence: 'No' as Existence,
-    displays: {
-      finding: condition.label,
-      value: 'No',
-      full: `${condition.label}: No`,
-    },
-    s_expression,
-    existing_finding: {
-      type: 'finding',
-      id: `tutorial-check-finding-${condition.key}`,
-      created_at: new Date(),
-      patient_encounter_id: 'tutorial-encounter-001',
-      root_snomed_concept_id: '404684003',
-      root_snomed_concept_name: 'Clinical finding',
-      root_snomed_concept_category: 'finding',
-      specific_snomed_concept_id: condition.snomed_id,
-      specific_snomed_concept_name: condition.label,
-      specific_snomed_concept_category: 'finding',
-      value: null,
-      modifiers: [],
-      attributes: [],
-      displays: {
-        finding: condition.label,
-        value: 'No',
-        full: `${condition.label}: No`,
-      },
-      evaluations: [],
-      destination_relations: [],
-      priority: null,
-      score: null,
-      existence: 'No' as Existence,
-      provider: MOCK_PROVIDER_IS_ME,
-      as_part_of_procedure: {
-        id: 'tutorial-check-procedure',
-        root_snomed_concept_id: '386053000',
-        root_snomed_concept_name: 'Evaluation procedure',
-        root_snomed_concept_category: 'procedure',
-        specific_snomed_concept_id: '386053000',
-        specific_snomed_concept_name: 'Evaluation procedure',
-        specific_snomed_concept_category: 'procedure',
-        workflow_step_name: 'Additional Tasks',
-      },
-    },
-  }
-}
-
-/**
  * Task groups for additional tasks step.
- * Due to cough + asthma, we check for respiratory conditions.
+ * Due to insect bite, we check for signs of anaphylaxis.
+ * The insect bite finding is pre-filled (existence: Yes) since it was already recorded.
  */
 export function getTutorialTaskGroups(): TaskGroup[] {
+  const insect_bite_existing: RenderedFindingRelativeToHealthWorker = {
+    type: 'finding',
+    id: 'tutorial-check-finding-insect-bite',
+    created_at: new Date(),
+    patient_encounter_id: 'tutorial-encounter-001',
+    root_snomed_concept_id: '404684003',
+    root_snomed_concept_name: 'Clinical finding',
+    root_snomed_concept_category: 'finding',
+    specific_snomed_concept_id: '399075005',
+    specific_snomed_concept_name: 'Insect bite - wound',
+    specific_snomed_concept_category: 'disorder',
+    value: null,
+    modifiers: [],
+    attributes: [],
+    displays: {
+      finding: 'Insect bite - wound',
+      value: null,
+      full: 'Insect bite - wound',
+    },
+    evaluations: [],
+    destination_relations: [],
+    priority: null,
+    score: null,
+    existence: 'Yes' as Existence,
+    provider: MOCK_PROVIDER_IS_ME,
+    as_part_of_procedure: {
+      id: 'tutorial-triage-001',
+      root_snomed_concept_id: '225390008',
+      root_snomed_concept_name: 'Triage',
+      root_snomed_concept_category: 'procedure',
+      specific_snomed_concept_id: '225390008',
+      specific_snomed_concept_name: 'Triage',
+      specific_snomed_concept_category: 'procedure',
+      workflow_step_name: 'Warning Signs',
+    },
+  }
+
+  const tasks: RenderedTask[] = [
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Itching', category: 'finding' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression:
+        '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+      displays: { finding: 'Sudden onset Itching', value: null, full: 'Sudden onset Itching' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Eruption', category: 'morphologic abnormality' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression:
+        '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+      displays: { finding: 'Sudden onset Eruption', value: null, full: 'Sudden onset Eruption' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Insect bite - wound', category: 'disorder' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Yes' as Existence,
+      s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Insect bite - wound" "disorder"))',
+      displays: { finding: 'Insect bite - wound', value: null, full: 'Insect bite - wound' },
+      existing_finding: insect_bite_existing,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Swelling', category: 'finding' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression:
+        '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+      displays: { finding: 'Sudden onset Swelling Face structure', value: null, full: 'Sudden onset Swelling Face structure' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Swelling', category: 'finding' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression:
+        '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+      displays: { finding: 'Sudden onset Swelling Tongue structure', value: null, full: 'Sudden onset Swelling Tongue structure' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Dizziness', category: 'finding' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dizziness" "finding"))',
+      displays: { finding: 'Dizziness', value: null, full: 'Dizziness' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Collapse', category: 'finding' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Collapse" "finding"))',
+      displays: { finding: 'Collapse', value: null, full: 'Collapse' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Difficulty breathing', category: 'finding' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
+      displays: { finding: 'Difficulty breathing', value: null, full: 'Difficulty breathing' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Exposure to (contextual qualifier)', category: 'qualifier value' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Peanut', category: 'substance' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))',
+      displays: { finding: 'Exposure to Peanut', value: null, full: 'Exposure to Peanut' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Exposure to (contextual qualifier)', category: 'qualifier value' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Tree nut', category: 'substance' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))',
+      displays: { finding: 'Exposure to Tree nut', value: null, full: 'Exposure to Tree nut' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Exposure to (contextual qualifier)', category: 'qualifier value' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Eggs (edible)', category: 'substance' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Eggs (edible)" "substance"))',
+      displays: { finding: 'Exposure to Eggs (edible)', value: null, full: 'Exposure to Eggs (edible)' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Exposure to (contextual qualifier)', category: 'qualifier value' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Milk', category: 'substance' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))',
+      displays: { finding: 'Exposure to Milk', value: null, full: 'Exposure to Milk' },
+      existing_finding: null,
+    },
+    {
+      atom: 'finding',
+      root_snomed_concept: { atom: 'snomed_concept', name: 'Exposure to (contextual qualifier)', category: 'qualifier value' },
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Fish', category: 'substance' },
+      value_snomed_concept: null,
+      qualifiers: [],
+      attributes: [],
+      exact: false,
+      history: false,
+      existence: 'Any' as Existence,
+      s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))',
+      displays: { finding: 'Exposure to Fish', value: null, full: 'Exposure to Fish' },
+      existing_finding: null,
+    },
+  ]
+
   return [
     {
-      due_to: [makeCoughFinding()], // Due to cough
-      tasks: RESPIRATORY_CHECK_FOR_CONDITIONS.map(makeCheckForTask),
+      due_to: [makeInsectBiteFinding()], // Due to insect bite
+      tasks,
     },
   ]
 }
@@ -1033,10 +1126,10 @@ export function getTutorialTaskGroups(): TaskGroup[] {
 /**
  * Mock vitals data for assign priority table.
  * TEWS = 5 (Very Urgent):
- * - Respiratory rate: 32 bpm (score 3)
- * - Temperature: 39°C (score 2)
- * - Heart rate: 95 bpm (score 0)
- * - Blood pressure: 120/80 (score 0)
+ * - Blood pressure: 85/55 (score 3 - dangerously low, anaphylaxis shock)
+ * - Heart rate: 62 bpm (score 2 - tachycardia)
+ * - Respiratory rate: 12 bpm (score 0 - normal)
+ * - Temperature: 36.8°C (score 0 - normal)
  * - Mobility: Walking (score 0)
  * - Consciousness: Alert (score 0)
  * - Trauma: No (score 0)
@@ -1223,18 +1316,18 @@ export function getTutorialAssignPriorityData(): {
         specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.respiratory_rate.id,
         specific_snomed_concept_name: 'Respiratory rate',
         specific_snomed_concept_category: 'observable entity',
-        value: { type: 'measurement', value: '32', units: 'bpm' },
+        value: { type: 'measurement', value: '12', units: 'bpm' },
         modifiers: [],
         attributes: [],
         displays: {
           finding: 'Respiratory rate',
-          value: '32 bpm',
-          full: 'Respiratory rate: 32 bpm',
+          value: '12 bpm',
+          full: 'Respiratory rate: 12 bpm',
         },
         evaluations: [],
         destination_relations: [],
         priority: null,
-        score: 3, // >30 bpm = 3 points
+        score: 0, // 9-15 bpm = 0 points
         existence: 'Yes',
         provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
@@ -1271,18 +1364,18 @@ export function getTutorialAssignPriorityData(): {
         specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.heart_rate.id,
         specific_snomed_concept_name: 'Heart rate',
         specific_snomed_concept_category: 'observable entity',
-        value: { type: 'measurement', value: '95', units: 'bpm' },
+        value: { type: 'measurement', value: '62', units: 'bpm' },
         modifiers: [],
         attributes: [],
         displays: {
           finding: 'Heart rate',
-          value: '95 bpm',
-          full: 'Heart rate: 95 bpm',
+          value: '62 bpm',
+          full: 'Heart rate: 62 bpm',
         },
         evaluations: [],
         destination_relations: [],
         priority: null,
-        score: 0, // 51-101 = 0 points
+        score: 0,
         existence: 'Yes',
         provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
@@ -1320,18 +1413,18 @@ export function getTutorialAssignPriorityData(): {
         specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_systolic.id,
         specific_snomed_concept_name: 'Systolic blood pressure',
         specific_snomed_concept_category: 'observable entity',
-        value: { type: 'measurement', value: '120', units: 'mmHg' },
+        value: { type: 'measurement', value: '70', units: 'mmHg' },
         modifiers: [],
         attributes: [],
         displays: {
           finding: 'Systolic BP',
-          value: '120 mmHg',
-          full: 'Systolic BP: 120 mmHg',
+          value: '85 mmHg',
+          full: 'Systolic BP: 70 mmHg',
         },
         evaluations: [],
         destination_relations: [],
         priority: null,
-        score: 0, // 101-200 = 0 points
+        score: 1, // ≤70 = 3 points (dangerously low)
         existence: 'Yes',
         provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
@@ -1368,18 +1461,18 @@ export function getTutorialAssignPriorityData(): {
         specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.temperature.id,
         specific_snomed_concept_name: 'Body temperature',
         specific_snomed_concept_category: 'observable entity',
-        value: { type: 'measurement', value: '39', units: '°C' },
+        value: { type: 'measurement', value: '36.8', units: '°C' },
         modifiers: [],
         attributes: [],
         displays: {
           finding: 'Temperature',
-          value: '39 °C',
-          full: 'Temperature: 39 °C',
+          value: '36.8 °C',
+          full: 'Temperature: 36.8 °C',
         },
         evaluations: [],
         destination_relations: [],
         priority: null,
-        score: 2, // >38.5 = 2 points
+        score: 0, // 35-38.5 = 0 points (normal)
         existence: 'Yes',
         provider: MOCK_PROVIDER_IS_ME,
         as_part_of_procedure: {
@@ -1415,13 +1508,13 @@ export function getTutorialAssignPriorityData(): {
         specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_pressure_diastolic.id,
         specific_snomed_concept_name: 'Diastolic blood pressure',
         specific_snomed_concept_category: 'observable entity',
-        value: { type: 'measurement', value: '80', units: 'mmHg' },
+        value: { type: 'measurement', value: '40', units: 'mmHg' },
         modifiers: [],
         attributes: [],
         displays: {
           finding: 'Diastolic BP',
-          value: '80 mmHg',
-          full: 'Diastolic BP: 80 mmHg',
+          value: '40 mmHg',
+          full: 'Diastolic BP: 40 mmHg',
         },
         evaluations: [],
         destination_relations: [],
@@ -1447,63 +1540,17 @@ export function getTutorialAssignPriorityData(): {
         { low: 90, high: 120, color: 'yellow' },
       ],
     },
-    {
-      type: 'measurement',
-      organization_id: 'tutorial-org-001',
-      finding: {
-        type: 'finding',
-        id: 'tutorial-vital-spo2',
-        created_at: new Date(),
-        patient_encounter_id: 'tutorial-encounter-001',
-        root_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.id,
-        root_snomed_concept_name: 'Oxygen saturation',
-        root_snomed_concept_category: 'observable entity',
-        specific_snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.blood_oxygen_saturation.id,
-        specific_snomed_concept_name: 'Oxygen saturation',
-        specific_snomed_concept_category: 'observable entity',
-        value: { type: 'measurement', value: '98', units: '%' },
-        modifiers: [],
-        attributes: [],
-        displays: {
-          finding: 'SpO2',
-          value: '98%',
-          full: 'SpO2: 98%',
-        },
-        evaluations: [],
-        destination_relations: [],
-        priority: null,
-        score: null,
-        existence: 'Yes',
-        provider: MOCK_PROVIDER_IS_ME,
-        as_part_of_procedure: {
-          id: 'tutorial-vitals-procedure',
-          root_snomed_concept_id: '225390008',
-          root_snomed_concept_name: 'Triage',
-          root_snomed_concept_category: 'procedure',
-          specific_snomed_concept_id: '225390008',
-          specific_snomed_concept_name: 'Triage',
-          specific_snomed_concept_category: 'procedure',
-          workflow_step_name: 'Measure Vitals',
-        },
-      },
-      previous: null,
-      reference_ranges: [
-        { low: 80, high: 92, color: 'red' },
-        { low: 92, high: 95, color: 'yellow' },
-        { low: 95, high: 100, color: 'green' },
-      ],
-    },
   ]
 
-  // Warning sign finding (cough) for the "with_triage_level_findings"
+  // Warning sign finding (insect bite) for the "with_triage_level_findings"
   const with_triage_level_findings: RenderedFindingRelativeToHealthWorker[] = [
-    makeCoughFinding(),
+    makeInsectBiteFinding(),
   ]
 
   return {
     vitals,
     with_triage_level_findings,
-    total_score: 5, // 3 (respiratory) + 2 (temperature)
+    total_score: 5, // 3 (low BP) + 2 (tachycardia)
     priority: 'Very urgent',
   }
 }
@@ -1515,25 +1562,25 @@ export function getTutorialAssignPriorityData(): {
 /**
  * Convert selected warning signs to sidebar finding records.
  */
-function makeCoughFinding(): RenderedFindingRelativeToHealthWorker {
+function makeInsectBiteFinding(): RenderedFindingRelativeToHealthWorker {
   return {
     type: 'finding',
-    id: 'tutorial-finding-cough',
+    id: 'tutorial-finding-insect-bite',
     created_at: new Date(),
     patient_encounter_id: 'tutorial-encounter-001',
     root_snomed_concept_id: '404684003',
     root_snomed_concept_name: 'Clinical finding',
     root_snomed_concept_category: 'finding',
-    specific_snomed_concept_id: 'tutorial-snomed-cough',
-    specific_snomed_concept_name: 'Cough',
-    specific_snomed_concept_category: 'finding',
+    specific_snomed_concept_id: '399075005',
+    specific_snomed_concept_name: 'Insect bite - wound',
+    specific_snomed_concept_category: 'disorder',
     value: null,
     modifiers: [],
     attributes: [],
     displays: {
-      finding: 'Cough',
+      finding: 'Insect bite - wound',
       value: null,
-      full: 'Cough',
+      full: 'Insect bite - wound',
     },
     evaluations: [],
     destination_relations: [],
@@ -1569,7 +1616,7 @@ function makeCoughFinding(): RenderedFindingRelativeToHealthWorker {
  */
 export function buildSidebarFindings(
   currentStep: TutorialStep,
-  hasSelectedCough: boolean,
+  hasSelectedInsectBite: boolean,
 ): RenderedSidebarWorkflow[] {
   const steps: RenderedSidebarWorkflow['steps'] = []
 
@@ -1579,14 +1626,14 @@ export function buildSidebarFindings(
       workflow_step: 'warning_signs',
       title: 'Warning Signs',
       status: 'in progress',
-      records: hasSelectedCough ? [makeCoughFinding()] : [],
+      records: hasSelectedInsectBite ? [makeInsectBiteFinding()] : [],
     })
   } else if (isStepCompleted(currentStep, 'warning_signs')) {
     steps.push({
       workflow_step: 'warning_signs',
       title: 'Warning Signs',
       status: 'completed',
-      records: [makeCoughFinding()],
+      records: [makeInsectBiteFinding()],
     })
   }
 

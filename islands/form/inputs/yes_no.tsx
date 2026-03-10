@@ -64,7 +64,7 @@ export function YesNoGrid(
       const container = ref.current!
       const inputs = container.querySelectorAll<HTMLInputElement>(`input[type="radio"][value="${existence}"]`)
       for (const input of inputs) {
-        const group = container.querySelectorAll<HTMLInputElement>(`input[type="radio"][name="${input.name}"][checked]`)
+        const group = container.querySelectorAll<HTMLInputElement>(`input[type="radio"][name="${input.name}"]:checked`)
         const has_different_value_checked = Array.from(group).some((sibling) => sibling.checked && sibling.value !== existence)
         if (!has_different_value_checked) {
           input.click()

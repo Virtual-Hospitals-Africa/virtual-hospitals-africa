@@ -15,6 +15,8 @@ import { patient_workflows } from '../../db/models/patient_workflows.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 import assertLength from '../../util/assertLength.ts'
 import { InsertObject } from 'kysely'
+import { createTestOrganization } from './organizations.ts'
+import { addTestEmployee } from '../../mocks/testEmployee.ts'
 
 export async function insertRegistrationWithEmployeeForTest(
   trx: TrxOrDb,
@@ -78,13 +80,22 @@ export type TestEncounterRelativeToHealthWorker = Awaited<ReturnType<typeof inse
 
 export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
   trx: TrxOrDb,
-  organization_id: string,
+  organization_id?: string,
   { employment_id, patient_demographics, is_tutorial }: {
-    employment_id: string
+    employment_id?: string
     patient_demographics?: PartialPatientDemographics
     is_tutorial?: boolean
-  },
+  } = {},
 ) {
+  if (!organization_id) {
+    const created_organization = await createTestOrganization(trx)
+    organization_id = created_organization.id
+  }
+  if (!employment_id) {
+    const created_employee = await addTestEmployee(trx, { organization_id })
+    employment_id = created_employee.employee_id
+  }
+
   const {
     patient_id,
     patient_workflow_id,
@@ -141,6 +152,7 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
 
   return {
     ...encounter,
+    patient_id: encounter.patient.id,
     employee: encounter.all_employees_seen[0],
     organization_employment,
     organization,

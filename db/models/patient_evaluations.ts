@@ -10,6 +10,8 @@ import assertHasProperty from '../../util/assertHasProperty.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
+import { asResult } from '../../util/asResult.ts'
+import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -33,6 +35,16 @@ export type PatientEvaluationInsert =
     }
   )
 
+function sExpressionAsEvaluationNode(
+  s_expression: string,
+) {
+  const evaluation_result = asResult(() => parseExpressionExpectingAtom(s_expression, 'evaluation'))
+  if (evaluation_result.success) return evaluation_result.value
+  const diagnosis_result = asResult(() => parseExpressionExpectingAtom(s_expression, 'diagnosis'))
+  if (!diagnosis_result.success) throw evaluation_result.error
+  return diagnosisToEvaluation(diagnosis_result.value)
+}
+
 export function insertOneNestedQuery(
   trx: TrxOrDbOrQueryCreator,
   {
@@ -46,7 +58,7 @@ export function insertOneNestedQuery(
     value,
   }: PatientEvaluationInsert,
 ) {
-  const evaluation_node = isString(evaluation) ? parseExpressionExpectingAtom(evaluation, 'evaluation') : evaluation
+  const evaluation_node = isString(evaluation) ? sExpressionAsEvaluationNode(evaluation) : evaluation
   assertHasProperty(evaluation_node, 'root_snomed_concept')
   assertHasProperty(evaluation_node, 'specific_snomed_concept')
 
