@@ -12,11 +12,11 @@ import { TUTORIAL_ASSESSMENT_VALUES, TUTORIAL_VITAL_VALUES } from './mock-data.t
  *
  * Flow:
  * 1. Welcome & Waiting Room (8 items) - intro, mission, waiting room overview
- * 2. Warning Signs (16 items) - patient intro, category-by-category walkthrough, wait_click for Cough
- * 3. Brief History (6 items) - pre-filled, explains asthma connection
+ * 2. Warning Signs (16 items) - patient intro, category-by-category walkthrough, wait_click for Insect bite
+ * 3. Brief History (6 items) - pre-filled, allergy context
  * 4. Height/Weight mention (2 items) - "already measured"
- * 5. Vitals (13 items) - SpO2 prompt, step-by-step vital values with TEWS explanations
- * 6. Additional Tasks (4 items) - drawer vitals preview, respiratory check-for
+ * 5. Vitals (12 items) - step-by-step vital values with TEWS explanations (low BP + tachycardia)
+ * 6. Additional Tasks (4 items) - drawer vitals preview, anaphylaxis check-for
  * 7. Assign Priority (3 items) - TEWS score and priority
  * 8. Route Patient (4 items) - Bongani consultation, modal notification
  * 9. Completion (3 items)
@@ -153,13 +153,13 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'patient',
-    text: "I've had a bad cough that seems to be getting worse.",
+    text: "I was stung by an insect about 30 minutes ago. I've been feeling dizzy and my throat feels a bit tight.",
     position: 'bottom-right',
   },
   {
     type: 'wait_click',
-    target: TUTORIAL_TARGETS.COUGH_CHECKBOX,
-    text: 'Click "Cough" under Common Symptoms to record it.',
+    target: TUTORIAL_TARGETS.INSECT_BITE_CHECKBOX,
+    text: 'Click "Insect bite" under Common Symptoms to record it.',
     position: 'top-left',
   },
   {
@@ -237,7 +237,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "'This Visit' shows all findings from this encounter including the cough you just recorded.",
+    text: "'This Visit' shows all findings from this encounter including the insect bite you just recorded.",
     highlight: TUTORIAL_TARGETS.PATIENT_DRAWER_THIS_VISIT,
   },
   {
@@ -276,13 +276,6 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text:
-      "We also see that due to the cough we're prompted to measure blood oxygen saturation. Throughout triage the system will prompt to check for other findings or make additional measurements based on standard treatment protocols.",
-    highlight: TUTORIAL_TARGETS.VITAL_SPO2,
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
     text: "Let's fill this in.",
   },
   {
@@ -312,40 +305,33 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "Temperature is 39 degrees. That's a fever and 2 points on the Triage Early Warning Scale.",
+    text: 'Temperature is 36.8 degrees - within the normal range.',
     highlight: TUTORIAL_TARGETS.VITAL_TEMPERATURE,
     input: { field: "[name='measurements.temperature.value']", value: TUTORIAL_VITAL_VALUES['measurements.temperature.value'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "She's breathing quickly too: respiratory rate is 32 bpm which is 3 points on the Triage Early Warning Scale.",
+    text: 'Respiratory rate is 12 - also normal.',
     highlight: TUTORIAL_TARGETS.VITAL_RESPIRATORY_RATE,
     input: { field: "[name='measurements.respiratory_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.respiratory_rate.value'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Heart rate: 95 - within the normal range.',
+    text: 'Heart rate is elevated at 120 bpm - 2 points on the Triage Early Warning Scale. This tachycardia could indicate a serious reaction.',
     highlight: TUTORIAL_TARGETS.VITAL_HEART_RATE,
     input: { field: "[name='measurements.heart_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.heart_rate.value'] },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Blood pressure is 120/80 - within the normal range.',
+    text: "Blood pressure is dangerously low at 70/40 mmHg - that's 3 points on the Triage Early Warning Scale. This is a serious sign of anaphylactic shock.",
     highlight: TUTORIAL_TARGETS.VITAL_BLOOD_PRESSURE,
     input: [
       { field: "[name='measurements.blood_pressure_systolic.value']", value: TUTORIAL_VITAL_VALUES['measurements.blood_pressure_systolic.value'] },
       { field: "[name='measurements.blood_pressure_diastolic.value']", value: TUTORIAL_VITAL_VALUES['measurements.blood_pressure_diastolic.value'] },
     ],
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'Blood oxygen saturation is at 98%. Lower than 95% would have prompted for oxygen therapy, but this is normal.',
-    highlight: TUTORIAL_TARGETS.VITAL_SPO2,
-    input: { field: "[name='measurements.blood_oxygen_saturation.value']", value: TUTORIAL_VITAL_VALUES['measurements.blood_oxygen_saturation.value'] },
   },
   {
     type: 'dialogue',
@@ -370,13 +356,13 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text:
-      "Now let's check for other findings related to coughing. The presence of any of these and we would want to refer the case urgently because they would point to something more serious.",
+      "Now let's check for other signs of anaphylaxis. The system prompts us to assess the severity of this allergic reaction - things like sudden swelling, rashes, dizziness, and whether she was exposed to known allergens.",
     highlight: TUTORIAL_TARGETS.ADDITIONAL_TASKS_PANEL,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "Since none apply here, let's continue.",
+    text: "The insect bite is already pre-filled from when we recorded it earlier. Fill in the remaining findings and let's continue.",
   },
 
   // =========================================================================
@@ -396,7 +382,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text:
-      "Because of her fever and very high respiratory rate, she got a Triage Early Warning Score of 5 meaning her case is Very Urgent. Let's route her accordingly so she can be seen as soon as possible.",
+      "Because of her dangerously low blood pressure and elevated heart rate, she got a Triage Early Warning Score of 5 meaning her case is Very Urgent. Let's route her accordingly so she can be seen as soon as possible.",
   },
 
   // =========================================================================
@@ -415,7 +401,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'nurse',
-    text: "Hm, fever and breathing very heavy. Everything else looks normal. Let's start her on ceftriaxone in case this is severe bacterial pneumonia.",
+    text:
+      "Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. I'll administer adrenaline immediately.",
   },
   {
     type: 'modal',

@@ -105,23 +105,23 @@ export function getCompletedSteps(currentStep: TutorialStep): TutorialStep[] {
 // -----------------------------------------------------------------------------
 
 /**
- * Check if cough has been selected by examining if we've passed the cough wait_click.
+ * Check if insect bite has been selected by examining if we've passed the insect bite wait_click.
  * Derives this from the hash state instead of storing separately.
  */
-export function hasCoughBeenSelected(
+export function hasInsectBiteBeenSelected(
   state: TutorialHashState | { action: 'none' },
   script: ScriptItem[],
-  coughSelector: string,
+  insectBiteSelector: string,
 ): boolean {
   if (state.action === 'none') return false
 
   const current_index = parseIndex(state as TutorialHashState)
 
-  // Find the cough wait_click index in the script
-  const cough_wait_click_index = script.findIndex(
-    (item) => item.type === 'wait_click' && item.target === coughSelector,
+  // Find the insect bite wait_click index in the script
+  const insect_bite_wait_click_index = script.findIndex(
+    (item) => item.type === 'wait_click' && item.target === insectBiteSelector,
   )
 
-  // If we're past the cough wait_click, it was selected
-  return cough_wait_click_index !== -1 && current_index > cough_wait_click_index
+  // If we're past the insect bite wait_click, it was selected
+  return insect_bite_wait_click_index !== -1 && current_index > insect_bite_wait_click_index
 }

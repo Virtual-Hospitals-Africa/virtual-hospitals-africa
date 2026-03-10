@@ -10,9 +10,9 @@ import { getTutorialVitalsDefinitions, TUTORIAL_HEIGHT_WEIGHT } from '../../../s
  * Vitals step - wraps the real VitalsMeasurementsForm component
  * with tutorial-specific mock data.
  *
- * Includes SpO2 measurement because Duduzile has:
- * - Cough (respiratory symptom)
- * - Asthma (pre-existing respiratory condition)
+ * Key findings for anaphylaxis case:
+ * - Blood pressure 70/40 mmHg (dangerously low - 3 TEWS points)
+ * - Heart rate 120 bpm (tachycardia - 2 TEWS points)
  *
  * Form starts blank; values are filled in one at a time by the tutorial overlay
  * as each vital dialogue step is advanced to.

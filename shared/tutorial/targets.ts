@@ -17,7 +17,7 @@ export const TUTORIAL_TARGETS = {
   WARNING_SIGNS_URGENT: '#priority-table-urgent',
   WARNING_SIGNS_COMMON_SYMPTOMS: '#priority-table-common-symptoms',
   WARNING_SIGNS_SEARCH: '#warning-signs-search',
-  COUGH_CHECKBOX: 'label:has(#common-symptoms-cough)', // from uniqueIdentifier() in WarningSigns
+  INSECT_BITE_CHECKBOX: 'label:has(#common-symptoms-insect-bite)', // from uniqueIdentifier() in WarningSigns
   PATIENT_DRAWER: '#patient-drawer',
   PATIENT_DRAWER_THIS_VISIT: '#patient-drawer-this-visit',
   PATIENT_DRAWER_HISTORY: '#patient-drawer-history',

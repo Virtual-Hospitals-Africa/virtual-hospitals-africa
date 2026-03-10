@@ -18,7 +18,7 @@ import { TutorialOverlay } from './tutorial/TutorialOverlay.tsx'
 import { TUTORIAL_SCRIPT } from '../shared/tutorial/script.ts'
 import type { TutorialHashState, TutorialStep } from '../shared/tutorial/types.ts'
 import { isTutorialState } from '../shared/tutorial/types.ts'
-import { getCompletedSteps, hasCoughBeenSelected, initialState } from '../shared/tutorial/state.ts'
+import { getCompletedSteps, hasInsectBiteBeenSelected, initialState } from '../shared/tutorial/state.ts'
 import { buildSidebarFindings, EMPTY_PATIENT_HISTORY } from '../shared/tutorial/mock-data.ts'
 import { TUTORIAL_TARGETS } from '../shared/tutorial/targets.ts'
 
@@ -72,13 +72,13 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
     return hash.value.step
   }, [hash.value])
 
-  const cough_selected = useMemo(() => {
-    return hasCoughBeenSelected(hash.value, TUTORIAL_SCRIPT, TUTORIAL_TARGETS.COUGH_CHECKBOX)
+  const insect_bite_selected = useMemo(() => {
+    return hasInsectBiteBeenSelected(hash.value, TUTORIAL_SCRIPT, TUTORIAL_TARGETS.INSECT_BITE_CHECKBOX)
   }, [hash.value])
 
   const sidebar_findings = useMemo<RenderedSidebarWorkflow[]>(() => {
-    return buildSidebarFindings(current_step, cough_selected)
-  }, [current_step, cough_selected])
+    return buildSidebarFindings(current_step, insect_bite_selected)
+  }, [current_step, insect_bite_selected])
 
   const steps_completed = useMemo(() => {
     return getCompletedSteps(current_step)
