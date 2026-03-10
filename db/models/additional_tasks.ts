@@ -15,7 +15,7 @@ import {
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -35,20 +35,23 @@ import { parseWithSchema } from '../../shared/s_expression.ts'
 import { investigation, Lang } from '../../shared/s_expression_schemas.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import compactMap from '../../util/compactMap.ts'
+import isString from '../../util/isString.ts'
+
+type NewRecordsToConsider = {
+  patient_id: string
+  patient_encounter_id: string
+  // procedure_id: string
+  patient_age_determination: AgeDetermination | null
+  records: {
+    id: string
+    existence: 'Yes' | 'No' | 'Unknown'
+  }[]
+}
 
 export const additional_tasks = {
-  async insertTasksIfNotAlreadyIdentified(
+  async getTasksToInsert(
     trx: TrxOrDbOrQueryCreator,
-    { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records: findings }: {
-      patient_id: string
-      patient_encounter_id: string
-      // procedure_id: string
-      patient_age_determination: AgeDetermination | null
-      records: {
-        id: string
-        existence: 'Yes' | 'No' | 'Unknown'
-      }[]
-    },
+    { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records: findings }: NewRecordsToConsider,
   ) {
     if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
 
@@ -93,27 +96,40 @@ export const additional_tasks = {
       first_task,
     )
 
+    // debugLog(all_tasks_query)
+
     const all_t = await all_tasks_query.execute()
 
-    const task_results = zip(
-      all_t,
-      to_consider,
+    return compactMap(
+      zip(
+        all_t,
+        to_consider,
+      ),
+      ([task_result, task]) => {
+        assertEquals(task_result.description, task.description)
+
+        if (arrayIsEmpty(task_result.matching_finding_ids)) {
+          return null
+        }
+        // TODO: the procedure was already identified, so probably nothing to do here
+        // Technically we could add the finding as Due to
+        if (task_result.procedure_id) {
+          return null
+        }
+        return { ...task, ...task_result }
+      },
     )
+  },
+  async insertTasksIfNotAlreadyIdentified(
+    trx: TrxOrDbOrQueryCreator,
+    { patient_id, patient_encounter_id, patient_age_determination, records }: NewRecordsToConsider,
+  ) {
+    const tasks_to_insert = await additional_tasks.getTasksToInsert(trx, { patient_id, patient_encounter_id, patient_age_determination, records })
+    if (isString(tasks_to_insert)) return tasks_to_insert
 
-    const results = await pMap(task_results, async ([task_result, task]) => {
-      assertEquals(task_result.description, task.description)
-
-      if (arrayIsEmpty(task_result.matching_finding_ids)) {
-        return null
-      }
-      // TODO: the procedure was already identified, so probably nothing to do here
-      // Technically we could add the finding as Due to
-      if (task_result.procedure_id) {
-        return null
-      }
-
+    const results = await pMap(tasks_to_insert, async (task) => {
       const evaluation_id = generateUUID()
-      const relations = task_result.matching_finding_ids.map((finding_id) => ({
+      const relations = task.matching_finding_ids.map((finding_id) => ({
         id: generateUUID(),
         source_id: evaluation_id,
         destination_id: finding_id,
@@ -149,7 +165,7 @@ export const additional_tasks = {
         success_true,
       ]).executeTakeFirstOrThrow()
 
-      return task_result.description
+      return task.description
     })
 
     const inserted = results.filter((r) => r != null)

@@ -197,7 +197,7 @@ export const organizations = base({
       await organizations.addDepartments(trx, organization_id, departments)
     }
 
-    return { id: organization_id, address_id }
+    return { id: organization_id, address_id, location }
   },
 })
 

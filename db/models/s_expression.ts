@@ -536,11 +536,7 @@ export const EXPRESSION_BUILDERS = {
       patient_id,
       existence: 'Yes',
       specific_snomed_concept: snomed_concept,
-    }).innerJoin(
-      'patient_findings',
-      'patient_records_aggregated.id',
-      'patient_findings.id',
-    )
+    })
   },
   '>'(trx, patient, { left, right }) {
     return measurement(trx, patient, left)

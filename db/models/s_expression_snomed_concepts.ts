@@ -89,11 +89,11 @@ const PREDICATE_BUILDERS = {
     if (possible) {
       disjuncts.push(
         `(diagnosis ${snomed_concept_s_expression} equivocal)`,
-        `(diagnosis ${snomed_concept_s_expression} possible)`
+        `(diagnosis ${snomed_concept_s_expression} possible)`,
       )
     }
     const or_expression = `(or ${disjuncts.join(' ')})`
-    console.log({or_expression})
+    console.log({ or_expression })
     const expanded_expression = parseExpressionExpectingAtom(
       or_expression,
       'or',

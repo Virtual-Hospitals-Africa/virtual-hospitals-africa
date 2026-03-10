@@ -9,7 +9,6 @@ import MeasurementInput from '../vitals/MeasurementInput.tsx'
 import { hyphenate } from '../../util/hyphenate.ts'
 import memoize from '../../util/memoize.ts'
 import VitalsInputRow from '../vitals/InputRow.tsx'
-import { Foo } from '../../islands/Foo.tsx'
 import negate from '../../util/negate.ts'
 import cls from '../../util/cls.ts'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
@@ -164,7 +163,7 @@ function TaskGroupCard({
           <span class='font-semibold text-gray-600'>
             {'Due to '}
           </span>
-          
+
           {group.due_to.map((record) => (
             <MostRecentRecord
               key={record.id}
@@ -259,29 +258,41 @@ function NoTasks() {
   )
 }
 
-function ReferenceDocs({ reference_docs }: { reference_docs: Array<RenderedTask & {
-    atom: "link";
-}> }) {
+function ReferenceDoc({ reference_doc }: {
+  reference_doc: RenderedTask & {
+    atom: 'link'
+  }
+}) {
+  assert(reference_doc.thumbnail_href)
+  return (
+    <a href={reference_doc.href} className='flex text-sm font-medium text-gray-600 leading-5'>
+      <figure>
+        <img width='400' src={reference_doc.thumbnail_href} />
+        <figcaption>{reference_doc.title}</figcaption>
+      </figure>
+    </a>
+  )
+}
+
+function ReferenceDocs({ reference_docs }: {
+  reference_docs: Array<
+    RenderedTask & {
+      atom: 'link'
+    }
+  >
+}) {
   if (!reference_docs.length) return null
   return (
-
     <div class='flex flex-col gap-4'>
       <SectionHeader className='w-full xl:w-60'>
         Reference Documents
       </SectionHeader>
-      <ul>
-        {
-          reference_docs.map(
-              reference_doc => (
-                <a href={reference_doc.href} className='flex text-sm font-medium text-gray-600 leading-5'>
-                  {reference_doc.thumbnail_href ? <img width='400' src={reference_doc.thumbnail_href.replace('/150', '/400')} /> : reference_doc.title}
-                </a>
-              )
-            )
-        }
+      <ul class='flex flex-col gap-2'>
+        {reference_docs.map(
+          (reference_doc) => <ReferenceDoc key={reference_doc.href} reference_doc={reference_doc} />,
+        )}
       </ul>
     </div>
-
   )
 }
 
@@ -307,14 +318,16 @@ export default function AdditionalTasks({
   //   0,
   // )
 
-  const reference_docs = task_groups.flatMap(task_group => task_group.tasks).filter(isLink)
+  const reference_docs = task_groups.flatMap((task_group) => task_group.tasks).filter(isLink)
   const reference_docs_el = <ReferenceDocs reference_docs={reference_docs} />
 
   return (
-    <div class={cls('grid', {
-      'grid-cols-2': !!reference_docs_el,
-      'grid-cols-1': !reference_docs_el
-    })}>
+    <div
+      class={cls('grid', {
+        'grid-cols-2': !!reference_docs_el,
+        'grid-cols-1': !reference_docs_el,
+      })}
+    >
       <div class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
         {
           /* <ProgressHeader
