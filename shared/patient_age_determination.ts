@@ -1,8 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
-import { AgeDetermination, RenderedPatientCompletedPersonal } from '../types.ts'
+import { AgeDetermination, Maybe } from '../types.ts'
 
 export function patientAgeDetermination(
-  patient: RenderedPatientCompletedPersonal,
+  patient: {
+    age_years?: Maybe<number>
+    most_recent_height_cm_measurement?: Maybe<string>
+  },
 ): AgeDetermination {
   assert(typeof patient.age_years === 'number')
   assert(patient.age_years >= 0)

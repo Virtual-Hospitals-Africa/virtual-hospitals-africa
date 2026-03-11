@@ -15,7 +15,7 @@ import {
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'

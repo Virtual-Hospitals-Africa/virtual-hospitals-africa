@@ -114,4 +114,11 @@ export const COMMON_SYMPTOMS: CommonSymptom[] = [
     'description': null,
     'category': 'Common Symptoms' as const,
   },
+  {
+    'key': 'Insect bite' as const,
+    'clinical_finding_s_expression': normalForm(`(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))`),
+    'name': 'Insect bite',
+    'description': null,
+    'category': 'Common Symptoms' as const,
+  },
 ]

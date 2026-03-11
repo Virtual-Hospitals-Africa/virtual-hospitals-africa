@@ -205,6 +205,7 @@ export async function insertReturningSeekingTreatmentWithEmployeeForTest(
   return {
     ...encounter,
     employee: encounter.all_employees_seen[0],
+    patient_id: encounter.patient.id,
     organization_employment,
     organization,
     health_worker,

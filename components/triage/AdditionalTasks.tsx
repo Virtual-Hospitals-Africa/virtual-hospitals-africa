@@ -3,133 +3,15 @@ import { MostRecentRecord } from '../../islands/MostRecentRecord.tsx'
 import type { RenderedTask, TaskGroup } from '../../types.ts'
 import partition from '../../util/partition.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
-import { YesNoGrid, YesNoQuestion } from '../../islands/form/inputs/yes_no.tsx'
-// import isString from '../../util/isString.ts'
-import MeasurementInput from '../vitals/MeasurementInput.tsx'
-import { hyphenate } from '../../util/hyphenate.ts'
-import memoize from '../../util/memoize.ts'
-import VitalsInputRow from '../vitals/InputRow.tsx'
+import { YesNoGrid } from '../../islands/form/inputs/yes_no.tsx'
 import negate from '../../util/negate.ts'
 import cls from '../../util/cls.ts'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
-
-const uniqueIdentifier = memoize(
-  function uniqueIdentifier(task: RenderedTask) {
-    if (task.atom === 'link') {
-      return `${task.atom}-${hyphenate(task.title).toLowerCase()}`
-    }
-    return `${task.atom}-${hyphenate(task.displays.full).toLowerCase()}`
-  },
-)
-
-// function JustDoItTask({
-//   task,
-// }: {
-//   task: RenderedTask & { atom: 'link' }
-// }) {
-//   const name = `just_do_it_tasks.${uniqueIdentifier(task)}`
-
-//   return (
-//     <label class='flex gap-4 items-center cursor-pointer p-4 rounded-lg border border-gray-300 bg-white hover:border-gray-400 transition-colors'>
-//       <div class='flex items-center justify-center px-0 py-0.5 w-5'>
-//         <div class='flex items-center justify-center rounded'>
-//           <input
-//             id={name}
-//             type='checkbox'
-//             name={name}
-//             value='true'
-//             // checked={task.completed}
-//             class='w-5 h-5 rounded-md border-gray-400 text-indigo-700 focus:ring-indigo-700'
-//           />
-//         </div>
-//       </div>
-//       <div class='flex gap-1'>
-//         <span class='text-sm font-medium text-gray-600 leading-5'>
-//           <a href={task.href} className='flex'>
-//             {task.title}
-//             {task.thumbnail_href && <img width='200' src={task.thumbnail_href} />}
-//           </a>
-//         </span>
-//       </div>
-//     </label>
-//   )
-// }
-
-function CheckForTask({
-  organization_id,
-  task,
-}: {
-  organization_id: string
-  task: RenderedTask & { atom: 'finding' }
-}) {
-  const name = `check_for.${uniqueIdentifier(task)}`
-
-  return (
-    <>
-      <HiddenInput
-        name={`${name}.s_expression`}
-        value={task.s_expression}
-      />
-      <HiddenInput
-        name={`${name}.existing_finding.id`}
-        value={task.existing_finding?.id}
-      />
-      <HiddenInput
-        name={`${name}.existing_finding.existence`}
-        value={task.existing_finding?.existence}
-      />
-      <YesNoQuestion
-        name={`${name}.existence`}
-        value={task.existing_finding?.existence}
-        label={task.displays.full}
-        required
-        most_recent_finding={
-          <MostRecentRecord
-            record={task.existing_finding}
-            organization_id={organization_id}
-          />
-        }
-      />
-    </>
-  )
-}
-
-function MeasurementTask({ organization_id, task }: { organization_id: string; task: RenderedTask & { atom: 'measurement' } }) {
-  const name = `measurements.${uniqueIdentifier(task)}`
-  return (
-    <>
-      <VitalsInputRow
-        required
-        name={name}
-        most_recent_patient_finding={task.existing_measurement}
-        label={task.snomed_concept.name}
-        organization_id={organization_id}
-        input_width='w-32'
-        input={
-          <MeasurementInput
-            required
-            units={task.units}
-            name={name}
-            value={task.existing_measurement?.value.value}
-            label=''
-          />
-        }
-      />
-      <HiddenInput
-        name={`${name}.s_expression`}
-        value={task.s_expression}
-      />
-      <HiddenInput
-        name={`${name}.existing_measurement.id`}
-        value={task.existing_measurement?.id}
-      />
-      <HiddenInput
-        name={`${name}.existing_measurement.value`}
-        value={task.existing_measurement?.value.value}
-      />
-    </>
-  )
-}
+import { ReferenceDocs } from '../ReferenceDocs.tsx'
+import { CheckForTask } from './tasks/CheckFor.tsx'
+import { MeasurementTask } from './tasks/Measurement.tsx'
+import { NoTasks } from './tasks/NoTasks.tsx'
+import { uniqueIdentifier } from './tasks/uniqueIdentifier.ts'
 
 function isLink(task: RenderedTask): task is RenderedTask & { atom: 'link' } {
   return task.atom === 'link'
@@ -198,104 +80,6 @@ function TaskGroupCard({
   )
 }
 
-// function ProgressHeader({
-//   completed_count,
-//   total_count,
-// }: {
-//   completed_count: number
-//   total_count: number
-// }) {
-//   const percentage = total_count > 0 ? Math.round((completed_count / total_count) * 100) : 0
-//   const progress_color = percentage === 100 ? 'bg-green-500' : 'bg-indigo-700'
-//   const badge_color = percentage === 100 ? 'bg-success-bg text-success-text' : 'bg-error-bg text-error-text'
-
-//   return (
-//     <div class='flex flex-col gap-3.5'>
-//       <div class='flex items-start justify-between'>
-//         <p class='text-lg font-normal text-gray-600 leading-7'>
-//           {completed_count}/{total_count} tasks done
-//         </p>
-//         <div class={`px-4 py-0.5 rounded-full ${badge_color}`}>
-//           <span class='text-xs font-medium'>
-//             {percentage}%
-//           </span>
-//         </div>
-//       </div>
-//       {/* Progress bar */}
-//       <div class='flex gap-3 items-center w-full'>
-//         <div class='flex-1 h-1 bg-gray-200 rounded-full min-h-px min-w-px relative'>
-//           <div
-//             class={`absolute h-1 rounded-full ${progress_color}`}
-//             style={{ width: `${percentage}%` }}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-function NoTasks() {
-  return (
-    <div class='flex flex-col gap-4 items-center justify-center py-12 text-gray-500'>
-      <svg
-        class='w-16 h-16 text-gray-300'
-        fill='none'
-        viewBox='0 0 24 24'
-        stroke='currentColor'
-      >
-        <path
-          stroke-linecap='round'
-          stroke-linejoin='round'
-          stroke-width='1.5'
-          d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-        />
-      </svg>
-      <p class='text-lg font-medium'>No additional tasks required</p>
-      <p class='text-sm'>
-        Based on the patient's current clinical findings, no additional tasks are needed.
-      </p>
-    </div>
-  )
-}
-
-function ReferenceDoc({ reference_doc }: {
-  reference_doc: RenderedTask & {
-    atom: 'link'
-  }
-}) {
-  assert(reference_doc.thumbnail_href)
-  return (
-    <a href={reference_doc.href} className='flex text-sm font-medium text-gray-600 leading-5'>
-      <figure>
-        <img width='400' src={reference_doc.thumbnail_href} />
-        <figcaption>{reference_doc.title}</figcaption>
-      </figure>
-    </a>
-  )
-}
-
-function ReferenceDocs({ reference_docs }: {
-  reference_docs: Array<
-    RenderedTask & {
-      atom: 'link'
-    }
-  >
-}) {
-  if (!reference_docs.length) return null
-  return (
-    <div class='flex flex-col gap-4'>
-      <SectionHeader className='w-full xl:w-60'>
-        Reference Documents
-      </SectionHeader>
-      <ul class='flex flex-col gap-2'>
-        {reference_docs.map(
-          (reference_doc) => <ReferenceDoc key={reference_doc.href} reference_doc={reference_doc} />,
-        )}
-      </ul>
-    </div>
-  )
-}
-
 export default function AdditionalTasks({
   organization_id,
   evaluation_ids,
@@ -308,15 +92,6 @@ export default function AdditionalTasks({
   if (!task_groups.length) {
     return <NoTasks />
   }
-  // // Calculate totals
-  // const total_tasks = task_groups.reduce(
-  //   (sum, g) => sum + g.tasks.length,
-  //   0,
-  // )
-  // const completed_tasks = task_groups.reduce(
-  //   (sum, g) => sum + g.tasks.filter((t) => t.completed).length,
-  //   0,
-  // )
 
   const reference_docs = task_groups.flatMap((task_group) => task_group.tasks).filter(isLink)
   const reference_docs_el = <ReferenceDocs reference_docs={reference_docs} />
@@ -329,12 +104,6 @@ export default function AdditionalTasks({
       })}
     >
       <div class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
-        {
-          /* <ProgressHeader
-          completed_count={completed_tasks}
-          total_count={total_tasks}
-        /> */
-        }
         <HiddenInput
           name='evaluation_ids'
           value={evaluation_ids}

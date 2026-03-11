@@ -19,6 +19,7 @@ export function combine<
       }
     }
     clone[key] = y[key]
+    console
   }
   return clone
 }
