@@ -10,7 +10,7 @@ export default async function ICD10SearchPage(
       <ICD10SearchSpecific
         name=''
         label='ICD10'
-        href='/app/icd10'
+        href='/clinical_decision_support_tools/icd10'
         className='w-full'
       />
     </div>

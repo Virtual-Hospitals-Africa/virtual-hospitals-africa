@@ -76,7 +76,7 @@ export async function addTestEmployeeWithSession(
     return lines.split('\n').map((line) => '  ' + line).join('\n')
   }
 
-  const fetchJson = async (
+  const fetchJSON = async (
     url: string | URL,
     init?: RequestInit,
   ) => {
@@ -111,7 +111,7 @@ export async function addTestEmployeeWithSession(
     health_worker,
     fetch: fetchWithSession,
     fetchOk,
-    fetchJson,
+    fetchJSON,
     fetchCheerio,
   }
 }

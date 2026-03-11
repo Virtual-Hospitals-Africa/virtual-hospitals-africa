@@ -11,7 +11,7 @@ export const handler = {
     assertEquals(req.headers.get('accept'), 'application/json')
     const search = ctx.url.searchParams.get('search')
     if (!search) return json([])
-    const results = await icd10.searchTree(ctx.state.trx, { term: search })
+    const results = await icd10.searchTree(ctx.state.trx, { search, limit: 10 })
     return json(results)
   },
 }
