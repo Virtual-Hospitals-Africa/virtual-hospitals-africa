@@ -269,6 +269,7 @@ export default function Search<
                   readonly={readonly}
                   autoComplete='off'
                   placeholder={selected_multi!.value.length ? '' : placeholder}
+                  data-search="data-search"
                 />
               </div>
             )
