@@ -3,7 +3,7 @@
 Scans the Adult Hospital Level EML PDF and adds named destinations:
 
   #1.2.3                     → top of the disorder section header
-  #1.2.3?medicine=Clopidogrel → first occurrence of that medicine within the section
+  #1.2.3-Clopidogrel → first occurrence of that medicine within the section
 
 Section headers are identified by grey-background filled rectangles containing
 bold text that starts with the disorder number.
@@ -196,9 +196,20 @@ def sort_key(num: str) -> list:
     return parts
 
 with pikepdf.open(PDF_INPUT) as pdf:
-    dests_array = pikepdf.Array()
+    # Collect all destinations then sort by name in lexicographic (byte) order,
+    # which is what PDF name trees require for binary search to work.
+    all_dests: list[tuple[str, int, float, float]] = []
 
-    def add_dest(name: str, page_num: int, fitz_y: float, page_height: float) -> None:
+    for num, (page_num, fitz_y, page_height) in found_disorders.items():
+        all_dests.append((num, page_num, fitz_y, page_height))
+
+    for (disorder_num, medicine_name), (page_num, fitz_y, page_height) in found_medicines.items():
+        all_dests.append((f"{disorder_num}-{medicine_name}", page_num, fitz_y, page_height))
+
+    all_dests.sort(key=lambda t: t[0])
+
+    dests_array = pikepdf.Array()
+    for name, page_num, fitz_y, page_height in all_dests:
         pdf_y = float(page_height - fitz_y)
         dest = pikepdf.Array([
             pdf.pages[page_num].obj,
@@ -209,17 +220,6 @@ with pikepdf.open(PDF_INPUT) as pdf:
         ])
         dests_array.append(pikepdf.String(name))
         dests_array.append(dest)
-
-    # Disorder destinations: #1.2.3
-    for num in sorted(found_disorders, key=sort_key):
-        page_num, fitz_y, page_height = found_disorders[num]
-        add_dest(num, page_num, fitz_y, page_height)
-
-    # Medicine destinations: #1.2.3?medicine=Clopidogrel
-    for (disorder_num, medicine_name), (page_num, fitz_y, page_height) in sorted(
-        found_medicines.items(), key=lambda kv: (sort_key(kv[0][0]), kv[0][1])
-    ):
-        add_dest(f"{disorder_num}?medicine={medicine_name}", page_num, fitz_y, page_height)
 
     if "/Names" not in pdf.Root:
         pdf.Root["/Names"] = pikepdf.Dictionary()
@@ -241,7 +241,12 @@ else:
 if not_found_medicines:
     print(f"\nMedicines NOT found in their section ({len(not_found_medicines)}):")
     for disorder_num, medicine_name in not_found_medicines:
-        print(f"  {disorder_num}?medicine={medicine_name}  [{unique_disorders.get(disorder_num, '?')}]")
+        print(f"  {disorder_num}-{medicine_name}  [{unique_disorders.get(disorder_num, '?')}]")
+
+if found_medicines:
+    print(f"\nMedicines found in their section ({len(found_medicines)}):")
+    for disorder_num, medicine_name in found_medicines:
+        print(f"  {disorder_num}-{medicine_name}  [{unique_disorders.get(disorder_num, '?')}]")
 
 if len(not_found_disorders) == len(unique_disorders):
     print("\nERROR: ALL disorders not found — script is likely broken.", file=sys.stderr)
