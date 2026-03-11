@@ -17,7 +17,7 @@ describeParallel('snomed-warning-signs', () => {
       'responds to a search for earache',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchJson } = await addTestEmployeeWithSession(db, {
+        const { health_worker: nurse, fetchJSON } = await addTestEmployeeWithSession(db, {
           role: 'nurse',
 
           organization_id: clinic.id,
@@ -31,7 +31,7 @@ describeParallel('snomed-warning-signs', () => {
           },
         )
 
-        const first_page = await fetchJson(
+        const first_page = await fetchJSON(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs?search=earache`,
         )
 
@@ -94,7 +94,7 @@ describeParallel('snomed-warning-signs', () => {
       'responds to a search for appendicular pain, which has priority Urgent by virtue of it being a descendant of Abdominal pain',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchJson } = await addTestEmployeeWithSession(db, {
+        const { health_worker: nurse, fetchJSON } = await addTestEmployeeWithSession(db, {
           role: 'nurse',
 
           organization_id: clinic.id,
@@ -108,7 +108,7 @@ describeParallel('snomed-warning-signs', () => {
           },
         )
 
-        const { results } = await fetchJson(
+        const { results } = await fetchJSON(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs?search=appendicular+pain`,
         )
 
@@ -129,7 +129,7 @@ describeParallel('snomed-warning-signs', () => {
       'responds to a search for appendicular pain for a pregnant person, which has priority Very urgent by virtue of it being a descendant of Abdominal pain',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchJson, fetchOk } = await addTestEmployeeWithSession(db, {
+        const { health_worker: nurse, fetchJSON, fetchOk } = await addTestEmployeeWithSession(db, {
           role: 'nurse',
 
           organization_id: clinic.id,
@@ -161,7 +161,7 @@ describeParallel('snomed-warning-signs', () => {
           { cancel_response_body: true },
         )
 
-        const { results } = await fetchJson(
+        const { results } = await fetchJSON(
           `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs?search=appendicular+pain`,
         )
 

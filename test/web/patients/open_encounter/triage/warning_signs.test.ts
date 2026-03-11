@@ -879,7 +879,7 @@ describeParallel('triage/warning_signs', () => {
           `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/snomed-warning-signs`,
         )
 
-        const { results } = await nurse.fetchJson(
+        const { results } = await nurse.fetchJSON(
           `${search_route}?search=appendicular+pain`,
         )
         assertEquals(results[0], {

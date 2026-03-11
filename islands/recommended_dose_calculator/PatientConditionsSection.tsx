@@ -29,7 +29,7 @@ export default function PatientConditionsSection() {
               <ICD10SearchSpecific
                 name={`conditions.${index}`}
                 label='Condition (ICD-10)'
-                href='/app/icd10'
+                href='/clinical_decision_support_tools/icd10'
                 className='w-full'
               />
             </RemoveRow>
@@ -39,7 +39,7 @@ export default function PatientConditionsSection() {
               key={id}
               name={`conditions.${index}`}
               label='Condition (ICD-10)'
-              href='/app/icd10'
+              href='/clinical_decision_support_tools/icd10'
               className='w-full'
             />
           )

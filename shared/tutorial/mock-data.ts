@@ -467,13 +467,6 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
 export const TUTORIAL_WARNING_SIGNS: WarningSignWithMaybeRecord[] = [
   ...WARNING_SIGNS.adult.filter((sign) => !sign.name.includes('Pregnancy')),
   ...COMMON_SYMPTOMS,
-  {
-    key: 'Insect bite' as const,
-    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))',
-    name: 'Insect bite',
-    description: null,
-    category: 'Common Symptoms' as const,
-  },
 ]
 
 // =============================================================================
