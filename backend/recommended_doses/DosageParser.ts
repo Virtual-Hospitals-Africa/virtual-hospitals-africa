@@ -392,10 +392,10 @@ export class DosageParser {
       kg_limit_min: parseInt(kg_limit_min),
       kg_limit_max: parseInt(kg_limit_max),
     }))
-    this.lookFor(/(?:if |for )?(?:>|≥)(\d+)\s?kg/i, (kg_limit_min) => ({
+    this.lookFor(/(?:if |for |weight )?(?:>|≥)\s*(\d+)\s?kg/i, (kg_limit_min) => ({
       kg_limit_min: parseInt(kg_limit_min),
     }))
-    this.lookFor(/(?:if |for )?<(\d+)\s?kg/i, (kg_limit_max) => ({
+    this.lookFor(/(?:if |for |weight )?<\s*(\d+)\s?kg/i, (kg_limit_max) => ({
       kg_limit_max: parseInt(kg_limit_max),
     }))
     this.lookFor(/(?:recommended average dose = |Usual range: )(.+)$/i, (recommended_average_dose_text) => ({
@@ -461,9 +461,14 @@ export class DosageParser {
   }
 
   lookForAgeRange() {
-    this.lookFor(/^premature babies$/i, () => ({ age_range: 'premature babies' as const }))
-    this.lookFor(/^breastfed infants$/i, () => ({ age_range: 'breastfed infants' as const }))
-    this.lookFor(/^(?:>|over)\s?(\d+)\s?(month|year)s?(?: and adults)?$/i, (age_min_value, age_min_units) => ({
+    this.lookFor(/^premature babies$/i, () => ({ age_classifier: 'premature baby' as const }))
+    this.lookFor(/^breastfed infants$/i, () => ({ age_classifier: 'breastfed infant' as const }))
+    // Combined age + weight constraint: "<N years and <Mkg"
+    this.lookFor(/^<(\d+)\s?(year|month)s?\s+and\s+<(\d+)\s?kg$/i, (age_val, age_units, kg_val) => ({
+      age_range: { max: { value: parseInt(age_val), units: (age_units + 's') as 'months' | 'years' } },
+      kg_limit_max: parseInt(kg_val),
+    }))
+    this.lookFor(/^(?:>|≥|over)\s*(\d+)\s?(month|year)s?(?: and adults)?$/i, (age_min_value, age_min_units) => ({
       age_range: {
         min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years' },
       },
@@ -488,11 +493,15 @@ export class DosageParser {
         },
       }),
     )
-    this.lookFor(/^(\d+)\s?(month|year)s?$/i, (age_min_value, age_min_units) => ({
-      age_range: {
-        min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years' },
-      },
-    }))
+    // Only treat bare "N months/years" as age range when NOT inside a parenthetical
+    // (in parenthetical context, "3 months" is a duration, not an age minimum)
+    if (!this.is_parenthetical) {
+      this.lookFor(/^(\d+)\s?(month|year)s?$/i, (age_min_value, age_min_units) => ({
+        age_range: {
+          min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years' },
+        },
+      }))
+    }
   }
 
   lookForAlternateSpecification() {
@@ -710,7 +719,7 @@ export class DosageParser {
           without_by = without_by.slice(0, -(' weekly'.length))
           weekly = true
         }
-        const sub = this.sub(without_by)
+        const sub = this.sub(without_by, { no_parenthetical: true })
         titrate.rate = { increment: withProperty(sub.parsed!, 'value', 'units') }
         if (weekly) titrate.rate!.per_time = { value: 1, units: 'week' }
       }
@@ -745,13 +754,13 @@ export class DosageParser {
     })
   }
 
-  sub(part: string, opts?: { is_parenthetical?: boolean }) {
+  sub(part: string, opts?: { is_parenthetical?: boolean; no_parenthetical?: boolean }) {
     return new DosageParser(
       this.medicine,
       this.dosage_form,
       this.singular_form,
       opts?.is_parenthetical || false,
-      this.parenthetical,
+      opts?.no_parenthetical ? false : this.parenthetical,
       part,
       // this.parsed.ingredient_name,
     )
@@ -1063,8 +1072,9 @@ export class DosageParser {
       assert(!this.parsed.value)
       assert(!this.parsed.low)
       assert(!this.parsed.high)
-      const { minimum, maximum, ...rest } = this.parsed
+      const { minimum, maximum, diluents, ...rest } = this.parsed
       this.parsed = {
+        ...(diluents ? { diluents } : {}),
         low: [{
           ...rest,
           value: minimum,

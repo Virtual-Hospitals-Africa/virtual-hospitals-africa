@@ -61,10 +61,12 @@ export type ParsedDose = {
   low?: ParsedDose[]
   high?: ParsedDose[]
   total?: true | ParsedDose
-  age_range?: 'premature babies' | 'breastfed infants' | {
+  age_classifier?: 'premature baby' | 'breastfed infant' | 'child' | 'adolescent' | 'infant' | 'newborn' | 'adult' | 'elderly'
+  age_range?: {
     min?: Maybe<{ value: number; units: 'months' | 'years' }>
     max?: Maybe<{ value: number; units: 'months' | 'years' }>
   }
+  sex?: 'all' | 'female' | 'male'
   plus_minus?: {
     value: number
     units: string
@@ -170,4 +172,5 @@ export type ParsedMedicineRecommendedDose = {
   icd10_indications: ICD10Indications
   medicine: ParsedMedicine
   schedules: ParsedDose[]
+  max?: ParsedDose
 }
