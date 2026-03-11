@@ -3,10 +3,10 @@ import SectionHeader from './library/typography/SectionHeader.tsx'
 import { Maybe } from '../types.ts'
 
 type ReferenceDoc = {
-    thumbnail_href?: Maybe<string>
-    href: string
-    title: string
-  }
+  thumbnail_href?: Maybe<string>
+  href: string
+  title: string
+}
 
 function ReferenceDoc({ reference_doc }: {
   reference_doc: ReferenceDoc

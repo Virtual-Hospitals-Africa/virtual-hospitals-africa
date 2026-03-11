@@ -84,9 +84,7 @@ function DoseValue({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number }
 
 function TitrateRate({ rate }: { rate: NonNullable<NonNullable<ParsedDose['titrate']>['rate']> }): JSX.Element {
   const { increment, per_time, per_size } = rate
-  const inc_text = increment === 'slow'
-    ? 'slowly'
-    : `${increment.value}${increment.units}`
+  const inc_text = increment === 'slow' ? 'slowly' : `${increment.value}${increment.units}`
   const per_text = per_time ? ` per ${formatTimeSpec(per_time)}` : ''
   const size_text = per_size === 'kg' ? '/kg' : per_size === 'm2' ? '/m²' : ''
   return <span>by {inc_text}{size_text}{per_text}</span>
@@ -102,31 +100,31 @@ function Titrate({
   return (
     <span class='italic text-indigo-700'>
       titrate
-      {titrate.rate && <> <TitrateRate rate={titrate.rate} /></>}
+      {titrate.rate && (
+        <>
+          <TitrateRate rate={titrate.rate} />
+        </>
+      )}
       {titrate.to_effect && ' to effect'}
       {titrate.if_necessary && ' if necessary'}
       {titrate.min && (
         <>
-          {' '}min{' '}
-          <Schedule dose={titrate.min} weight_kg={weight_kg} />
+          {' '}min <Schedule dose={titrate.min} weight_kg={weight_kg} />
         </>
       )}
       {titrate.max && (
         <>
-          {' '}max{' '}
-          <Schedule dose={titrate.max} weight_kg={weight_kg} />
+          {' '}max <Schedule dose={titrate.max} weight_kg={weight_kg} />
         </>
       )}
       {titrate.low && (
         <>
-          {' '}low{' '}
-          <Schedule dose={titrate.low} weight_kg={weight_kg} />
+          {' '}low <Schedule dose={titrate.low} weight_kg={weight_kg} />
         </>
       )}
       {titrate.high && (
         <>
-          {' '}high{' '}
-          <Schedule dose={titrate.high} weight_kg={weight_kg} />
+          {' '}high <Schedule dose={titrate.high} weight_kg={weight_kg} />
         </>
       )}
     </span>
@@ -136,18 +134,18 @@ function Titrate({
 function Schedule({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number }): JSX.Element {
   const { frequency, slowly, special_instructions, duration, titrate } = dose
 
-  const freq_el = frequency ? (
-    <>
-      {' '}
-      <FrequencyText frequency={frequency} />
-    </>
-  ) : null
-
-  const duration_el = duration ? <span class='text-gray-600'> over {formatTimeSpec(duration)}</span> : null
-  const slowly_el = slowly ? <span class='text-amber-700 font-medium'> slowly</span> : null
-  const instructions_el = special_instructions
-    ? <span class='text-gray-600 italic'> — {special_instructions}</span>
+  const freq_el = frequency
+    ? (
+      <>
+        {' '}
+        <FrequencyText frequency={frequency} />
+      </>
+    )
     : null
+
+  const duration_el = duration ? <span class='text-gray-600'>over {formatTimeSpec(duration)}</span> : null
+  const slowly_el = slowly ? <span class='text-amber-700 font-medium'>slowly</span> : null
+  const instructions_el = special_instructions ? <span class='text-gray-600 italic'>— {special_instructions}</span> : null
 
   // Low / high range
   if (dose.low?.length || dose.high?.length) {
@@ -170,7 +168,12 @@ function Schedule({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number })
   if (titrate) {
     return (
       <span>
-        {dose.value !== undefined && <><DoseValue dose={dose} weight_kg={weight_kg} />{' '}</>}
+        {dose.value !== undefined && (
+          <>
+            <DoseValue dose={dose} weight_kg={weight_kg} />
+            {' '}
+          </>
+        )}
         <Titrate titrate={titrate} weight_kg={weight_kg} />
         {freq_el}
         {duration_el}
@@ -219,9 +222,7 @@ export function RecommendedMedication({
       <div class='flex flex-col gap-1'>
         <div class='flex items-center gap-2 flex-wrap'>
           <h3 class='text-base font-semibold text-gray-900'>{med.medicine.name}</h3>
-          {med.medicine.alternate_name && (
-            <span class='text-sm text-gray-500'>({med.medicine.alternate_name})</span>
-          )}
+          {med.medicine.alternate_name && <span class='text-sm text-gray-500'>({med.medicine.alternate_name})</span>}
           <AwareBadge aware={med.aware} />
           {med.acute_chronic && (
             <span class='inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800'>
@@ -231,12 +232,11 @@ export function RecommendedMedication({
         </div>
         <p class='text-sm text-gray-500'>
           {med.form} · {med.route}
-          {med.prescriber && <> · {med.prescriber}</>}
+          {med.prescriber && <>· {med.prescriber}</>}
         </p>
         <p class='text-xs text-gray-400'>
           {med.chapter_number}. {med.chapter_name}
-          {med.disorder_number && ` › ${med.disorder_number}`}
-          {' '}— {med.disorder}
+          {med.disorder_number && ` › ${med.disorder_number}`} — {med.disorder}
         </p>
       </div>
 
@@ -244,9 +244,7 @@ export function RecommendedMedication({
       <div class='flex flex-col gap-2'>
         {med.schedules.map((schedule, i) => (
           <div key={i} class='text-sm text-gray-800 bg-gray-50 rounded px-3 py-2'>
-            {schedule.age_classifier && (
-              <span class='text-xs uppercase tracking-wide text-gray-400 mr-2'>[{schedule.age_classifier}]</span>
-            )}
+            {schedule.age_classifier && <span class='text-xs uppercase tracking-wide text-gray-400 mr-2'>[{schedule.age_classifier}]</span>}
             <Schedule dose={schedule} weight_kg={weight_kg} />
           </div>
         ))}

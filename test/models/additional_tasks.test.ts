@@ -54,7 +54,7 @@ describeParallel('db/models/additional_tasks.ts', () => {
         patient_encounter_employee_id: employee.patient_encounter_employee_id,
         employment_id: employee.employee_id,
         procedure: {
-          create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage.warning_signs.snomed_concept_id,
+          create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
         },
         findings: [
           `(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))`,
@@ -98,7 +98,7 @@ describeParallel('db/models/additional_tasks.ts', () => {
         patient_encounter_employee_id: employee.patient_encounter_employee_id,
         employment_id: employee.employee_id,
         procedure: {
-          create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage.warning_signs.snomed_concept_id,
+          create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
         },
         findings: [
           `(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))`,

@@ -1,4 +1,3 @@
-
 // function ProgressHeader({
 //   completed_count,
 //   total_count,

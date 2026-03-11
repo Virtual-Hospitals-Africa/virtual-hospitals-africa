@@ -74,7 +74,7 @@ export class MedicineParser {
       route: this.row['ROUTE OF ADMINISTRATION'],
       section_number: this.row['SECTION NUMBER'],
       disorder_number: this.row['DISORDER NUMBER'],
-      disorder: this.row['DISORDER']
+      disorder: this.row['DISORDER'],
     })
 
     this.parseAdultChildren()
@@ -84,19 +84,19 @@ export class MedicineParser {
   parseAdultChildren(): ParsedDose[] {
     const adult_children = this.row['ADULT/ CHILDREN']
     if (adult_children === 'n/a') return [{}]
-    const parts = adult_children!.split('/').map(part => part.trim().toLowerCase()).sort()
+    const parts = adult_children!.split('/').map((part) => part.trim().toLowerCase()).sort()
 
-    return parts.map(part => {
+    return parts.map((part) => {
       const [, age_classifier, other_portion] = part.match(/^(adult|infant|newborn|child|adolescent)(?:s|ren)?(.+)?$/)!
       const age_schedule = {
-        age_classifier: age_classifier as ParsedDose['age_classifier']
+        age_classifier: age_classifier as ParsedDose['age_classifier'],
       }
       if (!other_portion) return age_schedule
 
       // Strip qualifiers that should not be passed to the dosage parser
       const cleaned = other_portion
-        .replace(/\s*-\s*(female|male)\s*$/i, '')  // "Adult - Female" → drop gender
-        .replace(/\s*\(elderly\)\s*$/i, '')          // "Adults (elderly)" → drop elderly
+        .replace(/\s*-\s*(female|male)\s*$/i, '') // "Adult - Female" → drop gender
+        .replace(/\s*\(elderly\)\s*$/i, '') // "Adults (elderly)" → drop elderly
         .trim()
       if (!cleaned) return age_schedule
 
@@ -114,7 +114,7 @@ export class MedicineParser {
 
   extractMax(obj: unknown) {
     if (Array.isArray(obj)) {
-      return obj.forEach(item => this.extractMax(item))
+      return obj.forEach((item) => this.extractMax(item))
     }
     if (isObjectLike(obj)) {
       for (const [key, value] of entries(obj)) {
@@ -260,11 +260,11 @@ export class MedicineParser {
         }
         return combine(dose_schedule, interval_schedule as never, { allow_collision_if_identical: true })
       })
-    ).flatMap(schedule =>
-      age_schedules.map(age_schedule => {
+    ).flatMap((schedule) =>
+      age_schedules.map((age_schedule) => {
         // Skip age_schedule properties already present in schedule (dose-level values take precedence)
         const effective = Object.fromEntries(
-          Object.entries(age_schedule).filter(([k]) => !(k in (schedule as Record<string, unknown>)))
+          Object.entries(age_schedule).filter(([k]) => !(k in (schedule as Record<string, unknown>))),
         )
         return combine(schedule, effective as never, { allow_collision_if_identical: true })
       })

@@ -1,12 +1,13 @@
 import { Context } from 'fresh'
-import { HealthWorkerHomePageLayout } from '../../components/library/layout/HealthWorkerHomePage.tsx'
-import { TUTORIAL_EMPLOYEE } from '../../shared/tutorial/mock-data.ts'
-import { requestAsRecord } from '../../backend/parseForm.ts'
-
-import { z } from 'zod';
-import memoize from '../../util/memoize.ts'
-import parseJSON from '../../util/parseJSON.ts'
-import { RecommendedMedication, type MedicineRecommendation } from '../../components/RecommendedMedication.tsx'
+import z from 'zod'
+import { requestAsRecord } from '../../../backend/parseForm.ts'
+import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
+import { StepsSidebar } from '../../../components/library/Sidebar.tsx'
+import { MedicineRecommendation, RecommendedMedication } from '../../../components/RecommendedMedication.tsx'
+import memoize from '../../../util/memoize.ts'
+import parseJSON from '../../../util/parseJSON.ts'
+import { LogoWithFullText } from '../../../components/library/Logo.tsx'
+import { patientAgeDetermination } from '../../../shared/patient_age_determination.ts'
 
 type Condition = string | { id: string; name?: string }
 
@@ -19,11 +20,10 @@ type ParsedPatientCase = {
 }
 
 // --- Placeholder Schemas (Adjust based on your actual types) ---
-const TimeSpecificationSchema = z.any();
-const PerSizeSchema = z.any();
-const PrescriptionFrequencySchema = z.any();
-const MaybeSchema = <T extends z.ZodTypeAny>(schema: T) => z.union([schema, z.null(), z.undefined()]);
-
+const TimeSpecificationSchema = z.any()
+const PerSizeSchema = z.any()
+const PrescriptionFrequencySchema = z.any()
+const MaybeSchema = <T extends z.ZodTypeAny>(schema: T) => z.union([schema, z.null(), z.undefined()])
 
 const SimpleParsedDoseSchema = z.object({
   units: z.string().optional(),
@@ -36,7 +36,7 @@ const SimpleParsedDoseSchema = z.object({
   frequency: z.union([
     PrescriptionFrequencySchema,
     z.array(PrescriptionFrequencySchema),
-    z.object({ every: TimeSpecificationSchema })
+    z.object({ every: TimeSpecificationSchema }),
   ]).optional(),
   special_instructions: z.string().optional(),
   kg_limit_min: z.number().optional(),
@@ -88,8 +88,14 @@ export const BuildingDoseSchema = z.object({
   total: z.union([z.literal(true), SimpleParsedDoseSchema]).optional(),
 
   age_classifier: z.enum([
-    'premature baby', 'breastfed infant', 'child',
-    'adolescent', 'infant', 'newborn', 'adult', 'elderly'
+    'premature baby',
+    'breastfed infant',
+    'child',
+    'adolescent',
+    'infant',
+    'newborn',
+    'adult',
+    'elderly',
   ]).optional(),
 
   age_range: z.object({
@@ -111,7 +117,7 @@ export const BuildingDoseSchema = z.object({
     rate: z.object({
       increment: z.union([
         z.literal('slow'),
-        z.object({ value: z.number(), units: z.string() })
+        z.object({ value: z.number(), units: z.string() }),
       ]),
       per_time: TimeSpecificationSchema.optional(),
       per_size: PerSizeSchema.optional(),
@@ -132,7 +138,7 @@ export const BuildingDoseSchema = z.object({
   frequency: z.union([
     PrescriptionFrequencySchema,
     z.array(PrescriptionFrequencySchema),
-    z.object({ every: TimeSpecificationSchema })
+    z.object({ every: TimeSpecificationSchema }),
   ]).optional(),
 
   special_instructions: z.string().optional(),
@@ -145,7 +151,7 @@ export const BuildingDoseSchema = z.object({
 
   within: z.object({
     time: TimeSpecificationSchema.optional(),
-    event: z.string().optional()
+    event: z.string().optional(),
   }).optional(),
 
   slowly: z.boolean().optional(),
@@ -157,20 +163,20 @@ export const BuildingDoseSchema = z.object({
       time_apart: TimeSpecificationSchema.optional(),
     }),
     z.object({
-      doses: z.array(TimeSpecificationSchema)
-    })
+      doses: z.array(TimeSpecificationSchema),
+    }),
   ]).optional(),
 
   time_apart: TimeSpecificationSchema.optional(),
 
   after: z.object({
     time: TimeSpecificationSchema.optional(),
-    event: z.string().optional()
+    event: z.string().optional(),
   }).optional(),
 
   before: z.object({
     time: TimeSpecificationSchema.optional(),
-    event: z.string().optional()
+    event: z.string().optional(),
   }).optional(),
 
   as_required: z.boolean().optional(),
@@ -180,7 +186,7 @@ export const ParsedDoseSchema = BuildingDoseSchema.extend({
   diluents: z.array(BuildingDoseSchema).optional(),
   // Intersections/Extends within Arrays
   active_ingredients: z.array(
-    BuildingDoseSchema.and(z.object({ ingredient_name: z.string() }))
+    BuildingDoseSchema.and(z.object({ ingredient_name: z.string() })),
   ).optional(),
   min: z.array(BuildingDoseSchema).optional(),
   max: z.array(BuildingDoseSchema).optional(),
@@ -190,7 +196,7 @@ export const ParsedDoseSchema = BuildingDoseSchema.extend({
 
 const Icd10Codes = z.object({
   type: z.literal('codes'),
-  codes: z.string().array()
+  codes: z.string().array(),
 })
 
 const IngredientSchema = z.object({
@@ -200,35 +206,34 @@ const IngredientSchema = z.object({
     value: z.number(),
     units: z.string(),
   }).optional(),
-});
-
+})
 
 export const MedicineSchema = z.object({
-  "atc"              : z.string(),
-  "form"             : z.string(),
-  "route"            : z.string(),
-  "aware"            : z.enum(['Watch', 'Access', 'Reserve']).nullable(),
-  "acute_chronic"    : z.enum(['Acute', 'Chronic']).nullable(),
-  "prescriber"       : z.string().nullable().nullable(),
-  "icd10_indications": Icd10Codes.or(z.object({
+  'atc': z.string(),
+  'form': z.string(),
+  'route': z.string(),
+  'aware': z.enum(['Watch', 'Access', 'Reserve']).nullable(),
+  'acute_chronic': z.enum(['Acute', 'Chronic']).nullable(),
+  'prescriber': z.string().nullable().nullable(),
+  'icd10_indications': Icd10Codes.or(z.object({
     type: z.literal('and'),
-    indications: Icd10Codes.array()
+    indications: Icd10Codes.array(),
   })),
-  "medicine"         :z.object({
+  'medicine': z.object({
     name: z.string(),
     alternate_name: z.string().optional(),
     ingredients: z.array(IngredientSchema),
   }),
-  "raw_dose"         : z.string(),
-  "raw_dose_interval": z.string(),
-  "raw_duration"     : z.string().nullable(),
-  "publication"      : z.string(), // "Adult Hospital Level",
-  "chapter_name"     : z.string(), // "Alimentary Tract",
-  "chapter_number"   : z.string(), // "1",
-  "adult_children"   : z.string(), // "Adult",
-  "section_number"   : z.string(), // "1.2",
-  "disorder_number"  : z.string().nullable(), // "1.2.3",
-  "disorder"         : z.string(), // "Portal Hypertension and Cirrhosis - Refactory Ascites"
+  'raw_dose': z.string(),
+  'raw_dose_interval': z.string(),
+  'raw_duration': z.string().nullable(),
+  'publication': z.string(), // "Adult Hospital Level",
+  'chapter_name': z.string(), // "Alimentary Tract",
+  'chapter_number': z.string(), // "1",
+  'adult_children': z.string(), // "Adult",
+  'section_number': z.string(), // "1.2",
+  'disorder_number': z.string().nullable(), // "1.2.3",
+  'disorder': z.string(), // "Portal Hypertension and Cirrhosis - Refactory Ascites"
   schedules: ParsedDoseSchema.array(),
   max: ParsedDoseSchema.nullish(),
 })
@@ -243,9 +248,7 @@ const getAllParsedMedications = memoize(async (): Promise<Medicine[]> => {
 
 function extractConditionCodes(conditions: ParsedPatientCase['conditions']): string[] {
   if (!conditions) return []
-  const items = Array.isArray(conditions)
-    ? conditions
-    : Object.values(conditions)
+  const items = Array.isArray(conditions) ? conditions : Object.values(conditions)
   return items.flatMap((item) => {
     if (typeof item === 'string') return [item]
     if (item && typeof item === 'object' && 'id' in item && typeof (item as Record<string, unknown>).id === 'string') {
@@ -259,7 +262,7 @@ function codeMatches(indicator_code: string, patient_code: string): boolean {
   if (indicator_code.endsWith('*')) {
     return patient_code.startsWith(indicator_code.slice(0, -1))
   }
-  return indicator_code === patient_code
+  return patient_code.startsWith(indicator_code)
 }
 
 function indicationsMatch(indications: ICD10Indications, patient_codes: string[]): boolean {
@@ -268,20 +271,21 @@ function indicationsMatch(indications: ICD10Indications, patient_codes: string[]
     return indications.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc)))
   }
   // 'and': every group must have at least one matching code
-  return indications.indications.every((group) =>
-    group.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc)))
-  )
+  return indications.indications.every((group) => group.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc))))
 }
 
-function ageInMonths(dob: string): number {
+function getAgeInYears(dob: string): number {
+  const birth_date = new Date(dob)
   const today = new Date()
-  const birth = new Date(dob)
-  return (today.getFullYear() - birth.getFullYear()) * 12 +
-    (today.getMonth() - birth.getMonth())
-}
 
-function isAdult(age_months: number): boolean {
-  return age_months >= 216 // 18 years
+  // Difference in milliseconds
+  const diff_in_ms = today.getTime() - birth_date.getTime()
+
+  // Convert ms to years: ms -> sec -> min -> hour -> day -> year
+  // Using 365.25 to account for leap year averages
+  const age_in_years = diff_in_ms / (1000 * 60 * 60 * 24 * 365.25)
+
+  return Math.max(0, age_in_years)
 }
 
 function scheduleMatchesAge(schedule: z.infer<typeof ParsedDoseSchema>, patient_is_adult: boolean | undefined): boolean {
@@ -297,7 +301,12 @@ function findMatchingMedicines(medicines: Medicine[], query: ParsedPatientCase):
   const codes = extractConditionCodes(query.conditions)
   if (!codes.length) return []
 
-  const patient_is_adult = query.dob ? isAdult(ageInMonths(query.dob)) : undefined
+  const age_determination = patientAgeDetermination({
+    age_years: getAgeInYears(query.dob!),
+    most_recent_height_cm_measurement: query.height_cm as string,
+  })
+
+  const patient_is_adult = age_determination === 'adult'
 
   return medicines
     .filter((m) => indicationsMatch(m.icd10_indications, codes))
@@ -321,24 +330,42 @@ export default async function RecommendedMedications(
   const medicines = await getAllParsedMedications()
   const query = await requestAsRecord(ctx.req) as ParsedPatientCase
 
+  // TODO route back to create patient case if query params not present
+
   const matching_medicines = findMatchingMedicines(medicines, query)
   const weight_kg = parseWeight(query.weight_kg)
 
   const condition_codes = extractConditionCodes(query.conditions)
-  const conditions_items = Array.isArray(query.conditions)
-    ? query.conditions
-    : query.conditions ? Object.values(query.conditions) : []
+  const conditions_items = Array.isArray(query.conditions) ? query.conditions : query.conditions ? Object.values(query.conditions) : []
 
   return (
-    <HealthWorkerHomePageLayout
-      title='Recommended Medications'
+    <HealthWorkerContentsWithSidebarAndDrawer
+      title='Recommended Dose Calculator'
       url={ctx.url}
-      route={ctx.route!}
-      params={{}}
-      employee={TUTORIAL_EMPLOYEE}
-      tutorial
+      sidebar={
+        <StepsSidebar
+          top={{
+            href: '/clinical_decision_support_tools',
+            child: <LogoWithFullText variant='indigo' className='w-full' />,
+          }}
+          url={ctx.url}
+          route={ctx.route}
+          params={ctx.params}
+          nav_links={[
+            {
+              step: 'Create patient case',
+              route: '/clinical_decision_support_tools/recommended_dose_calculator/create_patient_case',
+            },
+            {
+              step: 'Recommended medications',
+              route: '/clinical_decision_support_tools/recommended_dose_calculator/recommended_medications',
+            },
+          ]}
+          steps_completed={['Create patient case']}
+        />
+      }
     >
-      <div class='flex flex-col gap-6 py-6'>
+      <div class='flex flex-col gap-6 py-6  px-4'>
         <section class='flex flex-col gap-2'>
           <h2 class='text-lg font-semibold text-gray-900'>Patient Details</h2>
           <dl class='flex flex-col gap-1'>
@@ -382,9 +409,7 @@ export default async function RecommendedMedications(
         <section class='flex flex-col gap-2'>
           <h2 class='text-lg font-semibold text-gray-900'>
             Recommended Medications
-            {matching_medicines.length > 0 && (
-              <span class='ml-2 text-sm font-normal text-gray-500'>({matching_medicines.length})</span>
-            )}
+            {matching_medicines.length > 0 && <span class='ml-2 text-sm font-normal text-gray-500'>({matching_medicines.length})</span>}
           </h2>
           {matching_medicines.length > 0
             ? (
@@ -400,13 +425,11 @@ export default async function RecommendedMedications(
             )
             : (
               <p class='text-sm text-gray-500'>
-                {condition_codes.length === 0
-                  ? 'No conditions specified.'
-                  : 'No recommended medications found for the specified conditions.'}
+                {condition_codes.length === 0 ? 'No conditions specified.' : 'No recommended medications found for the specified conditions.'}
               </p>
             )}
         </section>
       </div>
-    </HealthWorkerHomePageLayout>
+    </HealthWorkerContentsWithSidebarAndDrawer>
   )
 }

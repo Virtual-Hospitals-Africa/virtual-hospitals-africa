@@ -1,4 +1,3 @@
-
 export function NoTasks() {
   return (
     <div class='flex flex-col gap-4 items-center justify-center py-12 text-gray-500'>
