@@ -314,14 +314,14 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
   {
     patient_encounter_id: 'tutorial-encounter-themba',
     patient: {
-      id: 'tutorial-patient-002',
-      name: 'Themba Ndlovu',
-      avatar_url: '/images/avatars/random/male/3.png',
-      description: 'male • 15 March 1980',
+      id: 'tutorial-patient-005',
+      name: 'Mokgadi Sebola',
+      avatar_url: '/images/avatars/random/female/5.png',
+      description: 'male • 11 November 1991',
     },
     room: {
-      id: 'tutorial-room-triage-1',
-      name: 'Triage Room 1',
+      id: 'waiting room',
+      name: 'Waiting Room',
     },
     actions: [{
       text: 'View',

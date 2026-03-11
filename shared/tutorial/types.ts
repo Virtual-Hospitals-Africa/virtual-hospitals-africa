@@ -38,7 +38,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
 // Speakers
 // -----------------------------------------------------------------------------
 
-export type Speaker = 'guide' | 'patient' | 'nurse'
+export type Speaker = 'guide' | 'patient' | 'nurse' | 'doctor' | 'pharmacist'
 
 export const SPEAKERS = {
   guide: {
@@ -58,6 +58,18 @@ export const SPEAKERS = {
     avatar: '/bongani.png',
     color: 'purple',
     role: 'Senior Primary care Nurse',
+  },
+  doctor: {
+    name: 'Dr. Nokwanda Mokoena',
+    avatar: '/bongani.png',
+    color: 'blue',
+    role: 'Doctor',
+  },
+  pharmacist: {
+    name: 'Lazarus Dhlamini',
+    avatar: '/bongani.png',
+    color: 'teal',
+    role: 'Pharmacist',
   },
 } as const
 

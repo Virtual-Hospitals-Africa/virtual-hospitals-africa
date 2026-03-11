@@ -18,7 +18,7 @@ import { TUTORIAL_ASSESSMENT_VALUES, TUTORIAL_VITAL_VALUES } from './mock-data.t
  * 5. Vitals (12 items) - step-by-step vital values with TEWS explanations (low BP + tachycardia)
  * 6. Additional Tasks (4 items) - drawer vitals preview, anaphylaxis check-for
  * 7. Assign Priority (3 items) - TEWS score and priority
- * 8. Route Patient (4 items) - Bongani consultation, modal notification
+ * 8. Route Patient (7 items) - Bongani consultation, Dr. Mokoena confirms, pharmacist fills, modal notification
  * 9. Completion (3 items)
  *
  * Total: ~60 items
@@ -140,6 +140,10 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     text: 'and we can search for any other finding.',
     highlight: TUTORIAL_TARGETS.WARNING_SIGNS_SEARCH,
+    input: {
+      field: 'input[data-search]',
+      value: 'foo',
+    },
     link: {
       title: 'Learn about our precise medical note-taking technology backed by SNOMED',
       href: '/blog/snomed',
@@ -402,11 +406,27 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'nurse',
     text:
-      "Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. I'll administer adrenaline immediately.",
+      "Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. Let me get Dr. Mokoena to confirm the diagnosis.",
+  },
+  {
+    type: 'dialogue',
+    speaker: 'doctor',
+    text:
+      "Confirmed - this is anaphylaxis. I'm prescribing adrenaline immediately, plus sodium chloride 0.9% IV until blood pressure stabilises.",
+  },
+  {
+    type: 'dialogue',
+    speaker: 'nurse',
+    text: "Thank you, Dr. Mokoena. I'll send the prescription through to Lazarus in the pharmacy now.",
+  },
+  {
+    type: 'dialogue',
+    speaker: 'pharmacist',
+    text: 'Got it, Bongani. Adrenaline and sodium chloride 0.9% - filling it now.',
   },
   {
     type: 'modal',
-    message: 'Please bring the patient to primary care room 102 for treatment.',
+    message: 'Please bring the patient to the stabilization room for treatment.',
     buttonText: "I'm on my way",
   },
 
