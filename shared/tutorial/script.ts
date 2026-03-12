@@ -406,13 +406,12 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'nurse',
     text:
-      "Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. Let me get Dr. Mokoena to confirm the diagnosis.",
+      'Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. Let me get Dr. Mokoena to confirm the diagnosis.',
   },
   {
     type: 'dialogue',
     speaker: 'doctor',
-    text:
-      "Confirmed - this is anaphylaxis. I'm prescribing adrenaline immediately, plus sodium chloride 0.9% IV until blood pressure stabilises.",
+    text: "Confirmed - this is anaphylaxis. I'm prescribing adrenaline immediately, plus sodium chloride 0.9% IV until blood pressure stabilises.",
   },
   {
     type: 'dialogue',
