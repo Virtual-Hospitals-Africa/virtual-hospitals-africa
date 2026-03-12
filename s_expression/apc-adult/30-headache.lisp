@@ -1,0 +1,31 @@
+;; Page 30 - Headache
+(task
+  "Check for urgent headache conditions"
+  adult
+  (clinical_finding (snomed_concept "Headache" "finding"))
+  (check_for
+    (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+    (clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+    (clinical_finding (snomed_concept "Frequent headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))
+    (clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))
+    (clinical_finding (snomed_concept "Morning headache" "finding"))
+    (clinical_finding (snomed_concept "Difficulty talking" "finding"))
+    (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
+    (clinical_finding (snomed_concept "Pain in eye" "finding"))
+    (clinical_finding (snomed_concept "Seizure" "finding"))
+    (clinical_finding (snomed_concept "Stiff neck" "finding"))
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+    (clinical_finding (snomed_concept "Confusional state" "disorder"))
+    (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
+    (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
+    (and
+      (clinical_finding (snomed_concept "Chronic headache disorder" "disorder"))
+      (<= (timestamp (clinical_finding (snomed_concept "Highly active antiretroviral therapy" "procedure")))
+          (time_ago 3 months)))
+    (clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
+    (clinical_finding (snomed_concept "Anisocoria" "disorder"))
+    (clinical_finding (snomed_concept "Frequent headache" "finding"))
+  )
+)

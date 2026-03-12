@@ -1,0 +1,34 @@
+;; Page 63 - Back Pain
+(task
+  "Check for urgent back pain conditions"
+  adult
+  (clinical_finding (snomed_concept "Backache" "finding"))
+  (check_for
+    (clinical_finding (snomed_concept "Incomplete emptying of urinary bladder" "finding"))
+    (clinical_finding (snomed_concept "Fecal impaction" "disorder"))
+    (clinical_finding (snomed_concept "Urinary incontinence" "finding"))
+    (clinical_finding (snomed_concept "Incontinence of feces" "finding"))
+    (clinical_finding (snomed_concept "Unable to void urine" "finding"))
+    (clinical_finding (snomed_concept "Numbness of saddle area" "finding"))
+    (clinical_finding (snomed_concept "Numbness of limbs" "finding"))
+    (clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))
+    (clinical_finding (snomed_concept "Difficulty walking" "finding"))
+    (clinical_finding (snomed_concept "Traumatic or non-traumatic injury of back" "disorder"))
+    (and
+      (clinical_finding (snomed_concept "Upper abdominal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+      (clinical_finding (snomed_concept "Pain radiating to lumbar region of back" "finding")))
+    (clinical_finding (snomed_concept "Pulsatile mass of abdomen" "finding"))
+    (clinical_finding (snomed_concept "Left flank pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+    (clinical_finding (snomed_concept "Right flank pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+    (clinical_finding (snomed_concept "Leukocytes in urine" "finding"))
+    (clinical_finding (snomed_concept "Nitrite detected in urine" "finding"))
+    (clinical_finding (snomed_concept "Vomiting" "disorder"))
+    (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+    (clinical_finding (snomed_concept "Pregnancy" "finding"))
+    (clinical_finding (snomed_concept "Postmenopausal state" "finding"))
+    (clinical_finding (snomed_concept "Left inguinal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+    (clinical_finding (snomed_concept "Right inguinal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+    (clinical_finding (snomed_concept "Blood in urine" "finding"))
+    (clinical_finding (snomed_concept "Malignant neoplastic disease" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
+  )
+)
