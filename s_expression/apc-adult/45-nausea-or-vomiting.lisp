@@ -1,0 +1,45 @@
+;; Page 45 - Nausea or Vomiting
+(task
+  "Check for urgent nausea or vomiting conditions"
+  adult
+  (or
+    (clinical_finding (snomed_concept "Nausea" "finding"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding")))
+  (check_for
+    (clinical_finding (snomed_concept "Headache" "finding"))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (and
+      (clinical_finding (snomed_concept "Diarrhea" "finding") (qualifier (snomed_concept "Watery" "qualifier value")))
+      (clinical_finding (snomed_concept "Vomiting" "disorder"))
+      (<= (timestamp (clinical_finding (snomed_concept "History of travel with high risk of exposure to communicable disease" "situation")))
+          (time_ago 5 days)))
+    (clinical_finding (snomed_concept "Rebound tenderness" "finding"))
+    (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
+    (clinical_finding (snomed_concept "Abdominal rigidity" "finding"))
+    (clinical_finding (snomed_concept "Hematemesis" "disorder"))
+    (clinical_finding (snomed_concept "Jaundice" "finding"))
+    (clinical_finding (snomed_concept "Drowsy" "finding"))
+    (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
+    (clinical_finding (snomed_concept "Stiff neck" "finding"))
+    (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
+    (clinical_finding (snomed_concept "Deep breathing" "finding") (qualifier (snomed_concept "Rapid" "qualifier value")))
+    (clinical_finding (snomed_concept "Right lower quadrant pain" "finding"))
+    (and
+      (clinical_finding (snomed_concept "Upper abdominal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+      (clinical_finding (snomed_concept "Pain radiating to lumbar region of back" "finding")))
+    (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
+    (clinical_finding (snomed_concept "Constipation" "finding"))
+    (clinical_finding (snomed_concept "Vomiting" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Nausea" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (<= (timestamp (clinical_finding (snomed_concept "Unable to break wind" "finding")))
+        (time_ago 24 hours))
+    (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
+    (clinical_finding (snomed_concept "Generalized rash" "disorder"))
+    (clinical_finding (snomed_concept "Facial swelling" "finding"))
+    (clinical_finding (snomed_concept "Tongue swelling" "finding"))
+    (clinical_finding (snomed_concept "Wheezing" "finding"))
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+    (clinical_finding (snomed_concept "Collapse" "finding"))
+    (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Substance" "substance"))
+  )
+)
