@@ -269,7 +269,7 @@ export default function Search<
                   readonly={readonly}
                   autoComplete='off'
                   placeholder={selected_multi!.value.length ? '' : placeholder}
-                  aria-label='findings search'
+                  aria-label='findings search'=
                 />
               </div>
             )
