@@ -1,14 +1,10 @@
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-
 import TriageRoutePatientSection from '../../../../../../../../islands/triage/RoutePatientSection.tsx'
 import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
 import { assert } from 'std/assert/assert.ts'
-
 import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
-
 import redirect from '../../../../../../../../util/redirect.ts'
-
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
 import { UpdateShape } from '../../../../../../../../types.ts'
 import { DB } from '../../../../../../../../db.d.ts'
@@ -96,7 +92,7 @@ export async function PatientTriageRoutePatientPage(
     organization_id,
     encounter: { reason, notes, priority },
   } = ctx.state
-  assert(patient.names)
+  assert(completedPersonal(patient))
   assert(priority)
 
   const clinic_employees = await employees_presence.findAll(trx, {
@@ -107,7 +103,7 @@ export async function PatientTriageRoutePatientPage(
   return (
     <TriageRoutePatientSection
       this_visit={{ reason, notes }}
-      patient_names={patient.names}
+      patient={patient}
       priority={priority}
       clinic_employees={clinic_employees}
     />

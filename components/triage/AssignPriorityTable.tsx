@@ -108,7 +108,12 @@ const columns: TableColumn<TriageAssignPriorityTableRow>[] = [
       return cls(colors.bg, colors.text)
     },
     cellClassName: 'text-center font-semibold',
-    data: ({ finding: { priority, score } }) => priority || score,
+    data: ({ finding: { priority, score } }) => {
+      if (priority && score != null) {
+        return `${priority} / ${score}`
+      }
+      return priority || score
+    },
   },
 ]
 
@@ -121,7 +126,7 @@ function ConclusionRow(
   const colors = PRIORITY_COLORS[priority]
   return (
     <div
-      className={`${colors.bg} py-4 px-3 flex justify-between items-center border border-t-0 border-gray-200 rounded-b-lg`}
+      className={`conclusion-row ${colors.bg} py-4 px-3 flex justify-between items-center border border-t-0 border-gray-200 rounded-b-lg`}
     >
       <div className='flex-1 text-center'>
         <span

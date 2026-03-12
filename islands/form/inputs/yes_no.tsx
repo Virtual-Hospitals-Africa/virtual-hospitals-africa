@@ -19,7 +19,7 @@ export function YesNoQuestion({
 }) {
   function Input({ existence }: { existence: Existence }) {
     return (
-      <div className='flex justify-center align-top'>
+      <div className='yes-no-question-input flex justify-center align-top' data-question={name} data-existence={existence}>
         <input
           id={`${name}-${existence.toLowerCase()}`}
           name={name}
@@ -37,7 +37,7 @@ export function YesNoQuestion({
 
   return (
     <>
-      <div className='flex flex-col gap-0.5 pl-4'>
+      <div className='yes-no-question-label flex flex-col gap-0.5 pl-4' data-question={name}>
         <label
           id={`${name}-label`}
           className='text-sm font-medium text-gray-600'
@@ -75,8 +75,9 @@ export function YesNoGrid(
     return (
       <button
         type='button'
-        className='cursor-pointer text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'
+        className='yes-no-header cursor-pointer text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'
         onClick={checkAllWithoutValues}
+        data-existence={existence}
       >
         {existence}
       </button>

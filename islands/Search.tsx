@@ -269,7 +269,7 @@ export default function Search<
                   readonly={readonly}
                   autoComplete='off'
                   placeholder={selected_multi!.value.length ? '' : placeholder}
-                  data-search="data-search"
+                  aria-label='findings search'
                 />
               </div>
             )
@@ -309,6 +309,7 @@ export default function Search<
                   }
                 }}
                 placeholder={placeholder}
+                aria-label='findings search'
               />
             )}
           <ComboboxButton

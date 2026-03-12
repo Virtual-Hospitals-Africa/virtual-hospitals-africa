@@ -999,7 +999,11 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
   'Wound, acute': [
     {
       'type': 'specific_concept',
-      's_expression': '(active_condition (snomed_concept "Wound" "disorder") possible)',
+      's_expression': `
+        (and (active_condition (snomed_concept "Wound" "disorder") possible)
+             (not (active_condition (snomed_concept "Bite - wound" "disorder") possible))
+        )
+      `,
       'snomed_concept_id': '416462003',
       'name': 'Wound',
       'category': 'disorder',

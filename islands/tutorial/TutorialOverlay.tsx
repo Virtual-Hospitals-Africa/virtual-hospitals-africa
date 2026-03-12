@@ -5,16 +5,18 @@
 
 import { useEffect } from 'preact/hooks'
 import type { ScriptItem, TutorialHashState } from '../../shared/tutorial/types.ts'
-import { advance, getItem, initialState, parseIndex } from '../../shared/tutorial/state.ts'
+import { advance, initialState } from '../../shared/tutorial/state.ts'
 import { TutorialDialogue } from './TutorialDialogue.tsx'
 import { TutorialSpotlight } from './TutorialSpotlight.tsx'
 import { TutorialConfetti } from './TutorialConfetti.tsx'
 import { TutorialModal } from './TutorialModal.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { Maybe } from '../../types.ts'
 
 type Props = {
   script: ScriptItem[]
-  hashState: TutorialHashState | { action: 'none' }
+  item: Maybe<ScriptItem>
+  hash_state: TutorialHashState | { action: 'none' }
   setHashState: (state: TutorialHashState | { action: 'none' }) => void
 }
 
@@ -26,16 +28,10 @@ type Props = {
  * - wait_click: Wait for user to click target
  * - step_transition: Handled by state.advance()
  */
-export function TutorialOverlay({ script, hashState, setHashState }: Props) {
-  // No hash = tutorial not started
-  if (hashState.action === 'none') return null
-
-  const state = hashState as TutorialHashState
-  const index = parseIndex(state)
-  const item = getItem(index, script)
-
-  // Past end = tutorial complete
+export function TutorialOverlay({ script, item, hash_state, setHashState }: Props) {
+  // No item = tutorial not started
   if (!item) return null
+  assert(hash_state.action !== 'none')
 
   // Skip step_transition items (handled by advance function)
   if (item.type === 'step_transition') {
@@ -50,7 +46,9 @@ export function TutorialOverlay({ script, hashState, setHashState }: Props) {
     const click_target_on_advance = item.click_target_on_advance && document.querySelector<HTMLElement>(item.click_target_on_advance)
     if (click_target_on_advance) click_target_on_advance.click()
 
-    const next = advance(state, script)
+    item.onLeave?.()
+
+    const next = advance(hash_state, script)
     if (!next) {
       // Tutorial complete - clear hash
       return setHashState({ action: 'none' })
@@ -107,6 +105,10 @@ function RenderItem({
   button_text: string
 }) {
   useEffect(() => {
+    item.onArrive?.()
+  }, [item])
+
+  useEffect(() => {
     if (!item.input) return
     const inputs = [item.input].flat()
     inputs.forEach(handleInput)
@@ -160,9 +162,19 @@ function DialogueRenderer({
   onNext: () => void
   button_text: string
 }) {
+  // When portal=true, clicking the highlighted target also advances the tutorial
+  useEffect(() => {
+    if (!item.portal || !item.highlight) return
+    const selectors = Array.isArray(item.highlight) ? item.highlight : [item.highlight]
+    const elements = selectors.flatMap((s) => Array.from(document.querySelectorAll<HTMLElement>(s)))
+    const handler = () => setTimeout(onNext, 150)
+    elements.forEach((el) => el.addEventListener('click', handler))
+    return () => elements.forEach((el) => el.removeEventListener('click', handler))
+  }, [item.portal, item.highlight, onNext])
+
   return (
     <>
-      <TutorialSpotlight target={item.highlight} />
+      <TutorialSpotlight target={item.highlight} portal={item.portal} />
       <TutorialDialogue
         key={item.speaker}
         speaker={item.speaker}

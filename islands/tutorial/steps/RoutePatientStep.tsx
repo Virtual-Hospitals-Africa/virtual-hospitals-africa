@@ -3,23 +3,29 @@
 // Route patient step - wraps RegistrationRoutePatientSection with mock data
 // =============================================================================
 
-import RegistrationRoutePatientSection from '../../../components/patient-registration/RoutePatientSection.tsx'
-import { getTutorialRoutePatientData } from '../../../shared/tutorial/mock-data.ts'
+import { getTutorialRoutePatientData, TUTORIAL_CLINIC_EMPLOYEES } from '../../../shared/tutorial/mock-data.ts'
+import TriageRoutePatientSection from '../../triage/RoutePatientSection.tsx'
 
 /**
  * Route patient step for tutorial.
  * Shows routing options after triage is complete.
  */
 export function RoutePatientStep() {
-  const { this_visit, patient_names, can_do_triage, senior_health_worker_name } = getTutorialRoutePatientData()
+  const { this_visit, patient_names } = getTutorialRoutePatientData()
 
   return (
     <div data-tutorial='route-patient'>
-      <RegistrationRoutePatientSection
+      <TriageRoutePatientSection
         this_visit={this_visit}
-        patient_names={patient_names}
-        can_do_triage={can_do_triage}
-        senior_health_worker_name={senior_health_worker_name}
+        patient={{
+          names: patient_names,
+          gender: 'woman',
+        }}
+        priority={{
+          name: 'Urgent' as const,
+          target_treatment_time: new Date(),
+        }}
+        clinic_employees={TUTORIAL_CLINIC_EMPLOYEES}
       />
     </div>
   )

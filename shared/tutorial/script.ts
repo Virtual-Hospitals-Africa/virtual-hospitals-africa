@@ -138,21 +138,35 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'and we can search for any other finding.',
-    highlight: TUTORIAL_TARGETS.WARNING_SIGNS_SEARCH,
+    text: "and we can search for any other finding that isn't a warning sign",
+    highlight: [TUTORIAL_TARGETS.WARNING_SIGNS_SEARCH, '#priority-table-search-results'],
     input: {
-      field: 'input[data-search]',
-      value: 'foo',
+      field: 'input[aria-label="findings search"]',
+      value: 'migraine',
     },
     link: {
       title: 'Learn about our precise medical note-taking technology backed by SNOMED',
       href: '/blog/snomed',
+    },
+    onArrive() {
+      dispatchEvent(
+        new CustomEvent('@@triage-tutorial-search-migraine'),
+      )
+    },
+    onLeave() {
+      dispatchEvent(
+        new CustomEvent('@@triage-tutorial-clear-search'),
+      )
     },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: `Let's ask, "Duduzile what brings you in today?"`,
+    input: {
+      field: 'input[aria-label="findings search"]',
+      value: '',
+    },
   },
   {
     type: 'dialogue',
@@ -174,7 +188,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   },
   {
     type: 'step_transition',
-    to_step: 'vitals',
+    to_step: 'measure_vitals',
   },
   // =========================================================================
   // SECTION 3: BRIEF HISTORY (STEP TRANSITION)
@@ -274,7 +288,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text:
-      'When vitals deviate from the normal reference range they get a positive score. If multiple vitals are out of range that can result in a prioritization of urgent, very urgent, or an emergency just as with the warning signs.',
+      `Vitals that deviate from the reference range get a positive score. If several are out of range the patient's case will be marked <span class="text-yellow-600">Urgent</span>, <span class="text-orange-700">Very urgent</span>, or an <span class="text-red-700">Emergency</span> based on the total score.`,
+    dangerousHTML: true,
     highlight: TUTORIAL_TARGETS.VITALS_FORM,
   },
   {
@@ -348,7 +363,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   // =========================================================================
   {
     type: 'step_transition',
-    to_step: 'additional_tasks',
+    to_step: 'additional_tasks_and_investigations',
   },
   {
     type: 'dialogue',
@@ -359,14 +374,101 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'bottom-right',
+    dangerousHTML: true,
     text:
-      "Now let's check for other signs of anaphylaxis. The system prompts us to assess the severity of this allergic reaction - things like sudden swelling, rashes, dizziness, and whether she was exposed to known allergens.",
-    highlight: TUTORIAL_TARGETS.ADDITIONAL_TASKS_PANEL,
+      `Additional tasks and investigations may be required. In this case we are prompted to check for signs related to the reported insect bite that would be <span class="text-yellow-600">urgent</span> if present`,
+    highlight: '.task-group-card[data-due-to="insect-bite-wound"]',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "The insect bite is already pre-filled from when we recorded it earlier. Fill in the remaining findings and let's continue.",
+    position: 'bottom-right',
+    // dangerousHTML: true,
+    text: 'The low blood pressure also could indicate anaphylaxis, which the system flagged as a possible diagnosis.',
+    highlight: '.task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'bottom-right',
+    // dangerousHTML: true,
+    text: 'The low blood pressure also could indicate anaphylaxis, which the system flagged as a possible diagnosis.',
+    highlight: '.task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'bottom-left',
+    // dangerousHTML: true,
+    text: 'Relevant pages of reference documents are immediately available',
+    highlight: '#reference-docs > *',
+    portal: true,
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'bottom-right',
+    // dangerousHTML: true,
+    text: 'The system records negative findings, which can help narrow the investigation and save time instead of asking the same questions multiple times.',
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-dizziness.existence"], .yes-no-question-input[data-question="check_for.finding-dizziness.existence"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'bottom-right',
+    // dangerousHTML: true,
+    text: "Duduzile didn't report being dizzy when we were taking her chief complaint, but let's ask her now specifically.",
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-dizziness.existence"], .yes-no-question-input[data-question="check_for.finding-dizziness.existence"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'bottom-left',
+    // dangerousHTML: true,
+    text: `"Duduzile are you feeling dizzy, short of breath? Any rash at the bite?"`,
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-dizziness.existence"], .yes-no-question-input[data-question="check_for.finding-dizziness.existence"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'patient',
+    position: 'bottom-right',
+    // dangerousHTML: true,
+    text: `Yes I'm quite light headed and it is getting hard to breathe. And yes the bite is getting very itchy.`,
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-dizziness.existence"], .yes-no-question-input[data-question="check_for.finding-dizziness.existence"]',
+  },
+  {
+    type: 'wait_click',
+    position: 'bottom-right',
+    text: 'Click the "Yes" checkbox to indicate dizziness',
+    target: '.yes-no-question-input[data-question="check_for.finding-dizziness.existence"][data-existence="Yes"]',
+  },
+  {
+    type: 'wait_click',
+    position: 'bottom-right',
+    text: 'Click the "Yes" checkbox to indicate difficulty breathing',
+    target: '.yes-no-question-input[data-question="check_for.finding-difficulty-breathing.existence"][data-existence="Yes"]',
+  },
+  {
+    type: 'wait_click',
+    position: 'bottom-right',
+    text: 'Click the "Yes" checkbox to indicate sudden onset itching',
+    target: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-itching.existence"][data-existence="Yes"]',
+  },
+  {
+    type: 'wait_click',
+    position: 'bottom-right',
+    text: 'Click the "Yes" checkbox to indicate sudden onset eruption (rash)',
+    target: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-eruption.existence"][data-existence="Yes"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: "Let's continue.",
   },
 
   // =========================================================================
@@ -381,12 +483,37 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     text: "Here we can see a summary of everything we've learned from this visit and a final prioritization for Duduzile's case.",
     highlight: TUTORIAL_TARGETS.ASSIGN_PRIORITY_TABLE,
+    onLeave() {
+      const button = document.querySelector('tr:nth-child(1) > td:nth-child(2) button') as HTMLButtonElement
+      button.click()
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
+    text: 'Based on the evidence collected, an anaphylaxis diagnosis is now probable',
+    highlight: 'tr:nth-child(1) > td:nth-child(1), tr:nth-child(1) > td:nth-child(2)',
+    click_target_on_advance: '.record-chip button[aria-expanded="true"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: 'Numeric measurements are plotted against their reference ranges',
+    highlight: `
+      tr:nth-child(6) > td:nth-child(3), 
+      tr:nth-child(7) > td:nth-child(3), 
+      tr:nth-child(8) > td:nth-child(3), 
+      tr:nth-child(9) > td:nth-child(3)
+    `,
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'top-left',
+    highlight: ['th:nth-child(4), td:nth-child(4)', '.conclusion-row'],
+    dangerousHTML: true,
     text:
-      "Because of her dangerously low blood pressure and elevated heart rate, she got a Triage Early Warning Score of 5 meaning her case is Very Urgent. Let's route her accordingly so she can be seen as soon as possible.",
+      `She got a Triage Early Warning Score of 1 as her other vitals were fine despite her blood pressure being low, but the probable anaphylaxis makes her case <span class="text-yellow-600">Urgent</span>`,
   },
 
   // =========================================================================
@@ -406,13 +533,12 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'nurse',
     text:
-      "Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. Let me get Dr. Mokoena to confirm the diagnosis.",
+      'Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. Let me get Dr. Mokoena to confirm the diagnosis.',
   },
   {
     type: 'dialogue',
     speaker: 'doctor',
-    text:
-      "Confirmed - this is anaphylaxis. I'm prescribing adrenaline immediately, plus sodium chloride 0.9% IV until blood pressure stabilises.",
+    text: "Confirmed - this is anaphylaxis. I'm prescribing adrenaline immediately, plus sodium chloride 0.9% IV until blood pressure stabilises.",
   },
   {
     type: 'dialogue',

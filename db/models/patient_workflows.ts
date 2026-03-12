@@ -5,7 +5,7 @@ import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'
 import { AlertWithActionsError } from '../../util/assertOr.ts'
 import { InsertObject } from 'kysely'
-import { pronoun } from '../../shared/sex_and_gender.ts'
+import { objectPronoun } from '../../shared/sex_and_gender.ts'
 import { preferredName } from '../../util/asNames.ts'
 import findMatching from '../../util/findMatching.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
@@ -44,12 +44,12 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
       },
       other_employee
         ? {
-          text: `Leave ${pronoun(patient)} with ${employeeDisplay(other_employee).display_name}`,
+          text: `Leave ${objectPronoun(patient)} with ${employeeDisplay(other_employee).display_name}`,
           href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/leave-with-another`,
           method: 'POST',
         }
         : {
-          text: `Move ${pronoun(patient)} to the waiting room`,
+          text: `Move ${objectPronoun(patient)} to the waiting room`,
           href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/move-to-waiting-room`,
           method: 'POST',
         },

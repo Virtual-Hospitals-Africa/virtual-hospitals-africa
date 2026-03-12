@@ -271,11 +271,6 @@ export function ruleRunner<
     const matching_rules_set = new Set(matching_rules.map((r) => r.rule))
     const other_rules_evaluated = rules_for_which_new_records_applicable.filter((rule) => !matching_rules_set.has(rule))
 
-    console.log({
-      message: 'success',
-      matching_rules,
-      other_rules_evaluated,
-    })
     return {
       message: 'success',
       matching_rules,

@@ -62,11 +62,23 @@
     possible
   )
   adult
-  (or (clinical_finding (snomed_concept "Itching" "finding"))
-      (clinical_finding (snomed_concept "Eruption" "morphologic abnormality"))
-      (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
-      (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
-      (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
+  (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+      (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+      (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+      (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+      (any2
+        (or (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
+            (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
+        )
+        (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+        (clinical_finding (snomed_concept "Itching" "finding"))
+        (clinical_finding (snomed_concept "Eruption" "morphologic abnormality"))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))
+        (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))
+        (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+        (clinical_finding (snomed_concept "Dizziness" "finding"))
+        (clinical_finding (snomed_concept "Collapse" "finding"))
+      )
   )
 )
 ;; Page 22 - Bites and Stings: snake bite poisoning

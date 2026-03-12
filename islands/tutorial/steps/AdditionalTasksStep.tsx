@@ -3,6 +3,7 @@
 // Additional tasks step wrapper for tutorial - uses real AdditionalTasks component
 // =============================================================================
 
+import { useMemo } from 'preact/hooks'
 import AdditionalTasks from '../../../components/triage/AdditionalTasks.tsx'
 import { getTutorialTaskGroups } from '../../../shared/tutorial/mock-data.ts'
 
@@ -12,7 +13,7 @@ import { getTutorialTaskGroups } from '../../../shared/tutorial/mock-data.ts'
  * The insect bite is pre-filled as Yes; other signs are unanswered for the user to fill in.
  */
 export function AdditionalTasksStep() {
-  const task_groups = getTutorialTaskGroups()
+  const task_groups = useMemo(() => getTutorialTaskGroups(), [])
 
   return (
     <div data-tutorial='additional-tasks'>

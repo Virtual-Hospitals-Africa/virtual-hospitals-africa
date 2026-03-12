@@ -2,6 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { useEffect, useState } from 'preact/hooks'
 import { AsyncSearchProps } from './AsyncSearch.tsx'
 import { OptionLike } from './Search.tsx'
+import { AsyncSearchHookResult } from '../types.ts'
 
 export default function useAsyncSearch<
   T extends OptionLike,
@@ -9,8 +10,9 @@ export default function useAsyncSearch<
   search_route,
   value,
   skip_blank_search,
+  debounce_milliseconds = 220,
   onSearchResults,
-}: AsyncSearchProps<T>) {
+}: AsyncSearchProps<T>): AsyncSearchHookResult<T> {
   const [search, setSearch] = useState({
     query: value?.name ?? '',
     page: 1,
@@ -51,6 +53,7 @@ export default function useAsyncSearch<
     request.open('GET', url.toString())
     request.setRequestHeader('accept', 'application/json')
     request.onload = () => {
+      console.log('zzz', request)
       if (request.status !== 200) {
         const event = new CustomEvent('show-alert', {
           detail: request.responseText,
@@ -108,7 +111,7 @@ export default function useAsyncSearch<
         delay: null,
         active_request: request,
       }))
-    }, 220)
+    }, debounce_milliseconds)
 
     setSearch((search) => ({
       ...search,
@@ -132,6 +135,7 @@ export default function useAsyncSearch<
     loading,
     loadMore,
     search,
+    search_route,
     results: search.pages.flatMap((page) => page.results),
     setQuery: (query: string) =>
       setSearch((search) => ({

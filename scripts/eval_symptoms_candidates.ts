@@ -62,7 +62,7 @@ for await (const { code_range } of symptoms_candidates) {
 }
 
 const pains = await icd10.searchTree(db, {
-  term: 'pain',
+  search: 'pain',
   limit: 99999999999,
 })
 

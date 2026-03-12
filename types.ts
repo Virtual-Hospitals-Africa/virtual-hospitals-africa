@@ -30,7 +30,6 @@ export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
 export { type MessageTargetCategory } from './shared/message_targets.ts'
 export { type CommonConditionKey } from './shared/brief_history.ts'
-export { type SnomedConceptSearchResult } from './db/models/snomed.ts'
 export { type WarningSignKey } from './shared/warning_signs.ts'
 
 export type Maybe<T> = T | null | undefined
@@ -2206,6 +2205,9 @@ export type HealthWorkerDisplay = {
 }
 
 export type RenderedLicence = {
+  id: string
+  created_at: string | Date
+  updated_at: string | Date
   licence_number: string
   regulatory_agency: {
     name: string
@@ -2636,6 +2638,11 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
       IntermediateBaseRecord & {
         relation_name: string
         displays: RecordDisplays
+        // patient_id: string
+        // relation_snomed_concept_id: string
+        // existence: Existence
+        // attributes: RenderedAttribute[]
+        // modifiers: IntermediateBaseRecord[]
       }
     >
     value: null | RecordValue
@@ -2902,3 +2909,33 @@ export type NavLinks = {
   step: string
   route: string
 }[]
+
+export type SnomedConceptSearchResult = {
+  clinical_finding_s_expression: string
+  snomed_concept_id: string
+  name: string
+  description: SnomedCategory
+  priority: 'Urgent' | 'Very urgent' | 'Emergency' | undefined
+  priority_by_virtue_of_matching_warning_sign: string | undefined
+  similarity: number
+  category: 'Search Results'
+}
+
+export type AsyncSearchHookResult<T> = {
+  loading: boolean
+  search: {
+    query: string
+    page: number
+    delay: null | number
+    active_request: null | XMLHttpRequest
+    pages: {
+      results: OptionalUndefinedFields<T>[]
+      page: number
+    }[]
+    has_next_page: boolean
+  }
+  search_route: string
+  results: OptionalUndefinedFields<T>[]
+  loadMore?(): void
+  setQuery: (query: string) => void
+}

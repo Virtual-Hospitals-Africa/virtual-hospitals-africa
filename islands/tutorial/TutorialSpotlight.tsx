@@ -9,7 +9,8 @@ import compact from '../../util/compact.ts'
 
 type Props = {
   target?: string | string[] // Optional - if not provided, just shows dark overlay
-  clickable?: boolean // Show pulsing amber border when true
+  clickable?: boolean // Show pulsing amber border + allow click-through when true
+  portal?: boolean // Allow click-through without changing visual style
 }
 
 const PADDING = 8
@@ -20,7 +21,7 @@ const BORDER_RADIUS = 12
  * - No target: full dark overlay
  * - With target: dark overlay with cutout around target element
  */
-export function TutorialSpotlight({ target, clickable = false }: Props) {
+export function TutorialSpotlight({ target, clickable = false, portal = false }: Props) {
   const target_bounds = useSignal<DOMRect[]>([])
   const svg_ref = useRef<SVGSVGElement>(null)
 
@@ -92,7 +93,7 @@ export function TutorialSpotlight({ target, clickable = false }: Props) {
     }))
   )
 
-  const clipPath = clickable && cutout.value[0]
+  const clipPath = (clickable || portal) && cutout.value[0]
     ? `polygon(
         0% 0%, 0% 100%,
         ${cutout.value[0].x}px 100%,

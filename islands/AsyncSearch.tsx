@@ -7,6 +7,7 @@ export type AsyncSearchProps<
   & SearchPropsCommon<T>
   & {
     search_route: string
+    debounce_milliseconds?: number
     onQuery?(query: string): void
     onSearchResults?(values: {
       query: string

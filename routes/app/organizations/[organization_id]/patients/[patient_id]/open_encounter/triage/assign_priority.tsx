@@ -36,6 +36,7 @@ import { events } from '../../../../../../../../db/models/events.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
 import sumBy from '../../../../../../../../util/sumBy.ts'
+import { logJSONToFileIfOnServer } from '../../../../../../../../util/logJSONToFileIfOnServer.ts'
 
 export const TriageAssignPrioritySchema = z.object({})
 
@@ -314,6 +315,8 @@ export async function TriageAssignPriorityPage(
     ...vitals,
     ...additional_tasks,
   ]
+
+  logJSONToFileIfOnServer({ rows, priority, total_score })
 
   return (
     <TriageAssignPriorityTable

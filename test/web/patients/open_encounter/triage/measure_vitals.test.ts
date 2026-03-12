@@ -691,6 +691,101 @@ describeParallel('triage/measure_vitals', () => {
       },
     )
 
+    async function runTestCase(
+      age_determination: AgeDetermination,
+      measurement_values: {
+        [v in VitalMeasurement]?: number
+      },
+      assessment_values: {
+        [v in VitalAssessment]: string
+      },
+      expected_scores: {
+        finding_name: string
+        score: number
+      }[],
+      expected_task_groups?: unknown[],
+    ) {
+      const triage = await setupTriageNewPatient({
+        patient_demographics: {
+          date_of_birth: dateOfBirth(age_determination),
+        },
+        warning_signs: asWarningSignsAdult([], { pregnant: false }),
+        brief_history: {
+          common_conditions: {
+            diabetes: { existence: 'No' },
+            pregnancy: { existence: 'No' },
+          },
+        },
+        height_and_weight: {
+          measurements: {
+            height: {
+              value: heightOf(age_determination),
+              units: 'cm',
+            },
+            weight: {
+              value: weightOf(age_determination),
+              units: 'kg',
+            },
+          },
+        },
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues(measurement_values),
+          assessments: asVitalAssessmentFormValues(assessment_values),
+        },
+      })
+      const { nurse, encounter, patient_encounter_id } = triage
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id, timeout_ms: 33101 })
+
+      const component_scores = await patient_evaluation_scores.findAll(
+        db,
+        {
+          patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (finding)))',
+        },
+      )
+
+      const total_score = await patient_evaluation_scores.findOne(
+        db,
+        {
+          patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (procedure)))',
+        },
+      )
+
+      const finding_scores = await pMap(
+        component_scores,
+        async ({ score, evaluates_record_id, specific_snomed_concept_name }) => {
+          assert(evaluates_record_id)
+          if (specific_snomed_concept_name !== 'Severity score') {
+            return {
+              finding_name: specific_snomed_concept_name,
+              score,
+            }
+          }
+          const finding = await patient_findings.getById(
+            db,
+            evaluates_record_id,
+          )
+          return {
+            finding_name: finding.specific_snomed_concept_name,
+            score,
+          }
+        },
+      )
+
+      const sorted_finding_scores = sortBy(finding_scores, 'finding_name')
+
+      assertEquals(sorted_finding_scores, expected_scores)
+      assertEquals(total_score.score, sumBy(expected_scores, 'score'))
+
+      if (expected_task_groups) {
+        const { task_groups } = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
+        assertMatches(task_groups, expected_task_groups)
+      }
+      return triage
+    }
+
     function testCase(
       description: string,
       age_determination: AgeDetermination,
@@ -708,83 +803,13 @@ describeParallel('triage/measure_vitals', () => {
       opts: { only?: boolean; skip?: boolean } = {},
     ) {
       itParallel(description, async () => {
-        const { nurse, encounter, patient_encounter_id } = await setupTriageNewPatient({
-          patient_demographics: {
-            date_of_birth: dateOfBirth(age_determination),
-          },
-          warning_signs: asWarningSignsAdult([], { pregnant: false }),
-          brief_history: {
-            common_conditions: {
-              diabetes: { existence: 'No' },
-              pregnancy: { existence: 'No' },
-            },
-          },
-          height_and_weight: {
-            measurements: {
-              height: {
-                value: heightOf(age_determination),
-                units: 'cm',
-              },
-              weight: {
-                value: weightOf(age_determination),
-                units: 'kg',
-              },
-            },
-          },
-          measure_vitals: {
-            measurements: asVitalMeasurementFormValues(measurement_values),
-            assessments: asVitalAssessmentFormValues(assessment_values),
-          },
-        })
-
-        await events.allProcessedForEncounter(db, { patient_encounter_id, timeout_ms: 33101 })
-
-        const component_scores = await patient_evaluation_scores.findAll(
-          db,
-          {
-            patient_id: encounter.patient.id,
-            s_expression: '(evaluation (evaluates (finding)))',
-          },
+        await runTestCase(
+          age_determination,
+          measurement_values,
+          assessment_values,
+          expected_scores,
+          expected_task_groups,
         )
-
-        const total_score = await patient_evaluation_scores.findOne(
-          db,
-          {
-            patient_id: encounter.patient.id,
-            s_expression: '(evaluation (evaluates (procedure)))',
-          },
-        )
-
-        const finding_scores = await pMap(
-          component_scores,
-          async ({ score, evaluates_record_id, specific_snomed_concept_name }) => {
-            assert(evaluates_record_id)
-            if (specific_snomed_concept_name !== 'Severity score') {
-              return {
-                finding_name: specific_snomed_concept_name,
-                score,
-              }
-            }
-            const finding = await patient_findings.getById(
-              db,
-              evaluates_record_id,
-            )
-            return {
-              finding_name: finding.specific_snomed_concept_name,
-              score,
-            }
-          },
-        )
-
-        const sorted_finding_scores = sortBy(finding_scores, 'finding_name')
-
-        assertEquals(sorted_finding_scores, expected_scores)
-        assertEquals(total_score.score, sumBy(expected_scores, 'score'))
-
-        if (expected_task_groups) {
-          const { task_groups } = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
-          assertMatches(task_groups, expected_task_groups)
-        }
       }, opts)
     }
 
@@ -1886,5 +1911,77 @@ describeParallel('triage/measure_vitals', () => {
       { ...DEFAULT_ASSESSMENTS['younger child'], trauma_presence: 'Yes' },
       baseScoresYoungerChild({ 'Trauma score': 1 }),
     )
+
+    itParallel('recomputes scores correctly', async () => {
+      const { encounter, patient_encounter_id, postStep } = await runTestCase(
+        'adult',
+        { ...DEFAULT_MEASUREMENTS['adult'], blood_pressure_systolic: 85 },
+        DEFAULT_ASSESSMENTS['adult'],
+        baseScores({ 'Systolic blood pressure': 1 }),
+      )
+
+      await postStep({
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues({
+            blood_pressure_systolic: 75,
+            blood_pressure_diastolic: 55,
+          }),
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id, timeout_ms: 33101 })
+
+      const total_score_out_of_range_2 = await patient_evaluation_scores.findFirst(
+        db,
+        {
+          patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (procedure)))',
+        },
+      )
+
+      assertEquals(total_score_out_of_range_2.score, 2)
+
+      await postStep({
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues({
+            blood_pressure_systolic: 102,
+            blood_pressure_diastolic: 55,
+          }),
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id, timeout_ms: 33101 })
+
+      const total_score_in_range = await patient_evaluation_scores.findFirst(
+        db,
+        {
+          patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (procedure)))',
+        },
+      )
+
+      assertEquals(total_score_in_range.score, 0)
+
+      await postStep({
+        measure_vitals: {
+          measurements: asVitalMeasurementFormValues({
+            blood_pressure_systolic: 85,
+            blood_pressure_diastolic: 55,
+          }),
+        },
+      })
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id, timeout_ms: 33101 })
+
+      const total_score_out_of_range_1 = await patient_evaluation_scores.findFirst(
+        db,
+        {
+          patient_id: encounter.patient.id,
+          s_expression: '(evaluation (evaluates (procedure)))',
+        },
+      )
+
+      assertEquals(total_score_out_of_range_1.score, 1)
+    })
   })
 })

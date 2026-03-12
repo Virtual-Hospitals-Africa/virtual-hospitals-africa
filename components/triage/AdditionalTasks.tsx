@@ -12,6 +12,7 @@ import { CheckForTask } from './tasks/CheckFor.tsx'
 import { MeasurementTask } from './tasks/Measurement.tsx'
 import { NoTasks } from './tasks/NoTasks.tsx'
 import { uniqueIdentifier } from './tasks/uniqueIdentifier.ts'
+import { hyphenate } from '../../util/hyphenate.ts'
 
 function isLink(task: RenderedTask): task is RenderedTask & { atom: 'link' } {
   return task.atom === 'link'
@@ -38,7 +39,7 @@ function TaskGroupCard({
   assert(none.length === 0)
 
   return (
-    <div class='flex flex-col gap-4'>
+    <div class='task-group-card flex flex-col gap-4' data-due-to={group.due_to.map((x) => hyphenate(x.displays.full)).join('-')}>
       {/* Header */}
       <div class='flex items-start justify-between w-full'>
         <div class='flex flex-row gap-1 text-sm leading-5'>
@@ -103,7 +104,7 @@ export default function AdditionalTasks({
         'grid-cols-1': !reference_docs_el,
       })}
     >
-      <div class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
+      <div id='additional-investigations-column' class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
         <HiddenInput
           name='evaluation_ids'
           value={evaluation_ids}
