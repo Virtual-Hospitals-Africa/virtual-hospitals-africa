@@ -4,6 +4,7 @@ import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import waitUntilTestServerUp from 'test/_helpers/waitUntilTestServerUp.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import { route } from '../_route.ts'
+import { assert } from 'std/assert/assert.ts'
 
 describeParallel('/clinical_decision_support_tools/icd10', () => {
   before(waitUntilTestServerUp)
@@ -27,5 +28,17 @@ describeParallel('/clinical_decision_support_tools/icd10', () => {
       category: 'A18',
       description: 'Tuberculosis of other organs',
     })
+  })
+
+  itParallel.only('can find meningitis', async () => {
+    const response = await fetch(route + '/clinical_decision_support_tools/icd10?page=1&search=meningitis')
+    const { results } = await response.json()
+    console.log({results})
+    assert(results[0].description.includes('eningitis'))
+    // assertMatches(results[0], {
+    //   code: 'A18',
+    //   category: 'A18',
+    //   description: 'Tuberculosis of other organs',
+    // })
   })
 })

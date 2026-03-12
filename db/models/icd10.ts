@@ -272,6 +272,7 @@ const symptoms_code_ranges = [
 ]
 
 export const icd10 = base({
+  verbose: true,
   // deno-lint-ignore no-explicit-any
   top_level_table: 'icd10_diagnoses' as any,
   baseQuery,
