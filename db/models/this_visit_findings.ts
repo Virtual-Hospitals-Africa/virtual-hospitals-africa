@@ -17,7 +17,6 @@ import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
 import isString from '../../util/isString.ts'
 import { priorityOrder } from '../../shared/sats.ts'
 import sortBy from '../../util/sortBy.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 
 function* findAndCombineBloodPressure(
   records: RenderedFindingRelativeToHealthWorker[],
@@ -56,6 +55,8 @@ function* findAndCombineBloodPressure(
     const record = structuredClone(blood_pressure_systolic)
     record.displays = { finding, value, full }
     yield record
+    blood_pressure_systolic = undefined
+    blood_pressure_diastolic = undefined
   }
 }
 
@@ -118,14 +119,10 @@ function groupRecordsByWorkflows(
       }
     }
   }
-
-  if (remaining_records.size === 2) {
-    const [diastolic, systolic] = sortBy(Array.from(remaining_records), (r) => r.displays.finding)
-    assertEquals(diastolic.displays.finding, 'Diastolic blood pressure')
-    assertEquals(systolic.displays.finding, 'Systolic blood pressure')
-  } else {
-    assert(
-      !remaining_records.size,
+  for (const remaining_record of remaining_records) {
+    if (remaining_record.displays.finding === 'Diastolic blood pressure') continue
+    if (remaining_record.displays.finding === 'Systolic blood pressure') continue
+    throw new Error(
       `Expected all records to be accounted for\n${humanReadableJson(Array.from(remaining_records))}`,
     )
   }

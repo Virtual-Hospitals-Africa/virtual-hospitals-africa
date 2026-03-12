@@ -27,7 +27,7 @@ import { completedPersonal } from '../../../../../../../../shared/patient_regist
 import { UpdateShape } from '../../../../../../../../types.ts'
 // import generateUUID from '../../../../../../../../util/uuid.ts'
 import type { DB } from '../../../../../../../../db.d.ts'
-import { pronoun } from '../../../../../../../../shared/sex_and_gender.ts'
+import { objectPronoun } from '../../../../../../../../shared/sex_and_gender.ts'
 
 // TODO not hard code this
 const senior_health_worker_name = 'Nomsa Moyo'
@@ -107,7 +107,7 @@ export const handler = postHandler(
 
     // TODO: time estimate
     const redirect_success_message = `Please escort ${patient.names.preferred_name} to the waiting room. The next available triage nurse will see ${
-      pronoun(patient)
+      objectPronoun(patient)
     }.`
 
     // TODO notify senior_health_worker_name

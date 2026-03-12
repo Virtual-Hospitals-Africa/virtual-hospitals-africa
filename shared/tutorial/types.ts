@@ -16,8 +16,8 @@ export type TutorialStep =
   | 'warning_signs'
   | 'brief_history'
   | 'height_and_weight'
-  | 'vitals'
-  | 'additional_tasks'
+  | 'measure_vitals'
+  | 'additional_tasks_and_investigations'
   | 'assign_priority'
   | 'route_patient'
   | 'complete'
@@ -27,8 +27,8 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   'warning_signs',
   'brief_history',
   'height_and_weight',
-  'vitals',
-  'additional_tasks',
+  'measure_vitals',
+  'additional_tasks_and_investigations',
   'assign_priority',
   'route_patient',
   'complete',
@@ -85,6 +85,7 @@ type DialogueItem = {
   speaker: Speaker
   text: string
   highlight?: string | string[] // CSS selector to spotlight
+  portal?: boolean // Open spotlight cutout so user can click through (click also advances)
   is_final?: boolean // Shows confetti + restart button
   link?: { title: string; href: string } // Optional small link in bottom-left
 }
@@ -136,6 +137,8 @@ export type ScriptItem =
     dangerousHTML?: boolean
     click_target_on_advance?: string
     input?: { field: string; value: string } | { field: string; value: string }[] // CSS selector(s) + value(s) to set when advancing TO this step
+    onArrive?: () => void
+    onLeave?: () => void
   }
   & (
     | DialogueItem

@@ -21,6 +21,10 @@ function getSpeakerBgClass(speaker: Speaker): string {
       return 'bg-emerald-500'
     case 'nurse':
       return 'bg-violet-500'
+    case 'doctor':
+      return 'bg-blue-500'
+    case 'pharmacist':
+      return 'bg-teal-500'
   }
 }
 

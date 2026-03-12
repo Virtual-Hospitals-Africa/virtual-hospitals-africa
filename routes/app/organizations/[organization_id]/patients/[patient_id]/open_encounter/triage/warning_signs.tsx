@@ -1,7 +1,7 @@
 import { completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-import WarningSigns from '../../../../../../../../islands/WarningSigns.tsx'
+import WarningSignsPage from '../../../../../../../../islands/WarningSigns/Page.tsx'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { filter } from '../../../../../../../../util/inParallel.ts'
 import { WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
@@ -323,7 +323,7 @@ export async function TriageWarningSignsPage(
   )
 
   return (
-    <WarningSigns
+    <WarningSignsPage
       search_route={hrefFromCtx(ctx, (url) => {
         url.pathname = url.pathname.replace(
           '/triage/warning_signs',

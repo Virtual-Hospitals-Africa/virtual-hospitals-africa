@@ -43,6 +43,9 @@ function createMockOrganization(
     is_admin: false,
     in_departments: [],
     active_licences: [{
+      id: 'mock-licence-001',
+      created_at: '2024-01-01',
+      updated_at: '2024-01-01',
       licence_number,
       regulatory_agency: {
         name: role === 'doctor' ? 'Health Professions Council of South Africa' : 'South African Nursing Council',

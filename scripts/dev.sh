@@ -42,6 +42,8 @@ elif [ -d "s_expression" ]; then
   echo "S-expressions will compile on startup only."
 fi
 
+mkdir -p logs
+
 HTTP_SERVER_PORT=$HTTP_SERVER_PORT HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT deno task proxy &
 PROXY_PID="$!"
 

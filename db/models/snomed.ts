@@ -1,6 +1,6 @@
 import { ExpressionBuilder, sql } from 'kysely'
-import { TrxOrDbOrQueryCreator } from '../../types.ts'
-import { base, SearchResult } from './_base.ts'
+import { SnomedConceptSearchResult, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { DB, SnomedCategory } from '../../db.d.ts'
 import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_signs.ts'
@@ -142,7 +142,7 @@ export const snomed_model = base({
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery,
   getPriorityOfSnomedConcept,
-  formatResult(result) {
+  formatResult(result): SnomedConceptSearchResult {
     const concept_s_expression = asConceptSExpression(result)
     const clinical_finding_s_expression = `(clinical_finding ${concept_s_expression})`
     return {
@@ -158,8 +158,6 @@ export const snomed_model = base({
     }
   },
 })
-
-export type SnomedConceptSearchResult = SearchResult<typeof snomed_model>
 
 // Unused, but stashing because it's an interesting idea.
 // The idea is to get the triage level of a finding already in the database based on

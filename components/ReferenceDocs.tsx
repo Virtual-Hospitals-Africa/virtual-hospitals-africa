@@ -13,7 +13,7 @@ function ReferenceDoc({ reference_doc }: {
 }) {
   assert(reference_doc.thumbnail_href)
   return (
-    <a href={reference_doc.href} className='flex text-sm font-medium text-gray-600 leading-5'>
+    <a href={reference_doc.href} className='flex text-sm font-medium text-gray-600 leading-5 w-fit'>
       <figure>
         <img width='400' src={reference_doc.thumbnail_href} />
         <figcaption>{reference_doc.title}</figcaption>
@@ -27,15 +27,13 @@ export function ReferenceDocs({ reference_docs }: {
 }) {
   if (!reference_docs.length) return null
   return (
-    <div class='flex flex-col gap-4'>
-      <SectionHeader className='w-full xl:w-60'>
+    <div id='reference-docs' class='flex flex-col gap-2'>
+      <SectionHeader className='w-full xl:w-60 mb-2'>
         Reference Documents
       </SectionHeader>
-      <ul class='flex flex-col gap-2'>
-        {reference_docs.map(
-          (reference_doc) => <ReferenceDoc key={reference_doc.href} reference_doc={reference_doc} />,
-        )}
-      </ul>
+      {reference_docs.map(
+        (reference_doc) => <ReferenceDoc key={reference_doc.href} reference_doc={reference_doc} />,
+      )}
     </div>
   )
 }

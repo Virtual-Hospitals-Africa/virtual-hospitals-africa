@@ -639,7 +639,7 @@ async function loadIndexData(trx: TrxOrDb) {
     if (parsed.type === 'see') {
       if (parsed.see.toLowerCase() === 'condition') return
       const [candidate] = await icd10.searchFlat(trx, {
-        term: parsed.see,
+        search: parsed.see,
         limit: 1,
       })
       if (!candidate) {

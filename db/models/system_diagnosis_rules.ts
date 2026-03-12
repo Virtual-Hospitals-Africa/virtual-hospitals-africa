@@ -191,7 +191,7 @@ export const system_diagnosis_rules = {
     ]
 
     if (!to_insert.length) {
-      return `${make_new_diagnosis.message}`
+      return `${make_new_diagnosis.message} — no diagnoses to insert`
     }
 
     const inserted_diagnoses: string[] = []

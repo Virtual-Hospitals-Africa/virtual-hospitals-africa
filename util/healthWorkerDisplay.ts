@@ -54,6 +54,15 @@ export function healthWorkerDisplayInner({
   subspecialty: Maybe<string>
   avatar_url: Maybe<string>
 }): HealthWorkerDisplay {
+  console.log({
+    health_worker_name,
+    is_doctor,
+    is_admin,
+    role,
+    specialty,
+    // subspecialty,
+    avatar_url,
+  })
   // Doctors are special. They're named Dr. and the Administrator label goes after, not before
   if (is_doctor) {
     assert(specialty, 'is_doctor has specialty')
@@ -102,6 +111,14 @@ export function healthWorkerDisplayInner({
       avatar_url,
       display_name: health_worker_name,
       description: 'Receptionist',
+    }
+  }
+
+  if (role === 'pharmacist') {
+    return {
+      avatar_url,
+      display_name: health_worker_name,
+      description: 'Pharmacist',
     }
   }
 

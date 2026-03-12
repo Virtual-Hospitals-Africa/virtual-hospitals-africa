@@ -4,6 +4,7 @@
 // =============================================================================
 
 import { effect } from '@preact/signals'
+import { memo } from 'preact/compat'
 import { useMemo } from 'preact/hooks'
 import type { RenderedEmployee, RenderedPatientCompletedRegistration, RenderedSidebarWorkflow } from '../types.ts'
 import { OpenEncounterWorkflowLayout } from '../components/OpenEncounterWorkflowLayout.tsx'
@@ -18,7 +19,7 @@ import { TutorialOverlay } from './tutorial/TutorialOverlay.tsx'
 import { TUTORIAL_SCRIPT } from '../shared/tutorial/script.ts'
 import type { TutorialHashState, TutorialStep } from '../shared/tutorial/types.ts'
 import { isTutorialState } from '../shared/tutorial/types.ts'
-import { getCompletedSteps, hasInsectBiteBeenSelected, initialState } from '../shared/tutorial/state.ts'
+import { getCompletedSteps, getItem, hasInsectBiteBeenSelected, initialState, parseIndex } from '../shared/tutorial/state.ts'
 import { buildSidebarFindings, EMPTY_PATIENT_HISTORY } from '../shared/tutorial/mock-data.ts'
 import { TUTORIAL_TARGETS } from '../shared/tutorial/targets.ts'
 
@@ -59,7 +60,6 @@ type Props = {
  */
 export function TriageTutorial({ url, route, patient, employee }: Props) {
   const hash = useLocationHash<TutorialHashState>(isTutorialState)
-  console.log({ hash: hash.value })
 
   effect(() => {
     if (hash.value.action === 'none' && hash.value.loaded) {
@@ -77,14 +77,20 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
   }, [hash.value])
 
   const sidebar_findings = useMemo<RenderedSidebarWorkflow[]>(() => {
-    return buildSidebarFindings(current_step, insect_bite_selected)
+    return buildSidebarFindings(current_step)
   }, [current_step, insect_bite_selected])
 
   const steps_completed = useMemo(() => {
     return getCompletedSteps(current_step)
   }, [current_step])
 
-  console.log({ steps_completed, current_step })
+  const script_item = useMemo(() => {
+    // No hash = tutorial not started
+    if (hash.value.action === 'none') return null
+
+    const index = parseIndex(hash.value)
+    return getItem(index, TUTORIAL_SCRIPT)
+  }, [hash.value])
 
   const handleSetHashState = (state: TutorialHashState | { action: 'none' }) => {
     hash.value = state
@@ -98,7 +104,8 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         <WaitingRoomLayout url={url} route={route} employee={employee} />
         <TutorialOverlay
           script={TUTORIAL_SCRIPT}
-          hashState={hash.value}
+          hash_state={hash.value}
+          item={script_item}
           setHashState={handleSetHashState}
         />
       </>
@@ -142,7 +149,8 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
 
       <TutorialOverlay
         script={TUTORIAL_SCRIPT}
-        hashState={hash.value}
+        hash_state={hash.value}
+        item={script_item}
         setHashState={handleSetHashState}
       />
     </>
@@ -152,8 +160,9 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
 /**
  * Renders the appropriate step component based on current step.
  * Note: waiting_room step is handled separately with its own layout.
+ * Memoized so step components aren't re-rendered when only hash index changes.
  */
-function StepRenderer({
+const StepRenderer = memo(function StepRenderer({
   step,
   patient,
 }: {
@@ -171,10 +180,10 @@ function StepRenderer({
     case 'brief_history':
       return <BriefHistoryStep sex={patient.sex} />
 
-    case 'vitals':
+    case 'measure_vitals':
       return <VitalsStep />
 
-    case 'additional_tasks':
+    case 'additional_tasks_and_investigations':
       return <AdditionalTasksStep />
 
     case 'assign_priority':
@@ -186,7 +195,7 @@ function StepRenderer({
     case 'complete':
       return <CompletionStep />
   }
-}
+})
 
 /**
  * Layout for the waiting room step - shows the Open Encounters view.
