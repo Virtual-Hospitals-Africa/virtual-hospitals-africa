@@ -73,7 +73,7 @@ function searchBaseQuery(
       .select('code')
       .where(
         sql<boolean>`(
-          description_vector @@ plainto_tsquery(${search})
+          description @@ plainto_tsquery(${search})
         )`,
       )
       .unionAll(
@@ -81,7 +81,7 @@ function searchBaseQuery(
           .select('code')
           .where(
             sql<boolean>`(
-              note_vector @@ plainto_tsquery(${search})
+              note @@ plainto_tsquery(${search})
             )`,
           ),
       )).with('matches', (qb) => {
@@ -194,7 +194,7 @@ function baseQuery(
     .selectAll('icd10_diagnoses_tree')
     .select(
       sql<number>`
-      ts_rank(description_vector, plainto_tsquery(${search}))
+      similarity(description, ${search})
     `.as('similarity'),
     ).select((eb) => [
       jsonArrayFrom(
@@ -206,7 +206,7 @@ function baseQuery(
           )
           .select('icd10_diagnoses_includes.note')
           .select(sql<number>`
-          ts_rank(note_vector, plainto_tsquery(${search}))
+          similarity(note, ${search})
         `.as('similarity')),
       ).as('includes'),
     ])
@@ -324,7 +324,7 @@ export const icd10 = base({
       .selectAll('icd10_diagnoses')
       .select(
         sql<number>`
-        ts_rank(icd10_diagnoses.description_vector, plainto_tsquery(${search}))
+        similarity(icd10_diagnoses.description, ${search})
       `.as('similarity'),
       )
       .select((eb) => [
@@ -333,7 +333,7 @@ export const icd10 = base({
             .whereRef('icd10_diagnoses_includes.code', '=', 'matches.code')
             .select('icd10_diagnoses_includes.note')
             .select(sql<number>`
-            ts_rank(note_vector, plainto_tsquery(${search}))
+            similarity(note, ${search})
           `.as('similarity')),
         ).as('includes'),
       ]).as('with_includes')
@@ -372,7 +372,7 @@ export const icd10 = base({
       .selectAll()
       .select(
         sql<number>`
-        ts_rank(description_vector, plainto_tsquery(${search}))
+        similarity(description, ${search})
       `.as('similarity'),
       ).select((eb) => [
         jsonArrayFrom(
@@ -384,7 +384,7 @@ export const icd10 = base({
             )
             .select('icd10_diagnoses_includes.note')
             .select(sql<number>`
-            ts_rank(note_vector, plainto_tsquery(${search}))
+            similarity(note, ${search})
           `.as('similarity')),
         ).as('includes'),
       ]).as('with_includes')
