@@ -66,7 +66,11 @@ function DoseValue({ dose }: { dose: AppliedDose }): JSX.Element | null {
 
   const base = value ?? (minimum !== undefined && maximum !== undefined ? `${minimum}–${maximum}` : minimum ?? maximum)
   if (base === undefined) return null
-  return <span><strong>{base}{units}</strong></span>
+  return (
+    <span>
+      <strong>{base}{units}</strong>
+    </span>
+  )
 }
 
 function TitrateRate({ rate }: { rate: NonNullable<NonNullable<AppliedDose['titrate']>['rate']> }): JSX.Element {

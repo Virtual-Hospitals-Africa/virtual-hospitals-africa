@@ -30,7 +30,7 @@ describeParallel('/clinical_decision_support_tools/icd10', () => {
     })
   })
 
-  itParallel.only('can find meningitis', async () => {
+  itParallel('can find meningitis', async () => {
     const response = await fetch(route + '/clinical_decision_support_tools/icd10?page=1&search=meningitis')
     const { results } = await response.json()
     console.log({ results })

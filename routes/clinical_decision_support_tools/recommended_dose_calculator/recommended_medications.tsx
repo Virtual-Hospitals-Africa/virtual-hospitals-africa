@@ -6,8 +6,6 @@ import { MedicineRecommendation, RecommendedMedication } from '../../../componen
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
 import { PatientCaseSchema, recommended_doses } from '../../../db/models/recommended_doses.ts'
 
-
-
 export default async function RecommendedMedications(
   ctx: Context<unknown>,
 ) {
@@ -68,9 +66,7 @@ export default async function RecommendedMedications(
           {(patient_case.conditions?.length || 0) > 0
             ? (
               <ul class='flex flex-col gap-1 list-disc list-inside'>
-                {patient_case.conditions!.map((item, i) => (
-                  <li key={i} class='text-sm text-gray-900'>{item.name}</li>
-                ))}
+                {patient_case.conditions!.map((item, i) => <li key={i} class='text-sm text-gray-900'>{item.name}</li>)}
               </ul>
             )
             : <p class='text-sm text-gray-500'>No conditions specified.</p>}

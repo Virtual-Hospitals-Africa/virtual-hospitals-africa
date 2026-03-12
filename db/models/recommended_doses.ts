@@ -5,7 +5,6 @@ import parseJSON from '../../util/parseJSON.ts'
 import { patientAgeDetermination } from '../../shared/patient_age_determination.ts'
 import type { ParsedDose } from '../../backend/recommended_doses/shared.ts'
 
-
 export const PatientCaseSchema = z.object({
   sex: z.enum(['male', 'female']),
   dob: z.string().date(),
@@ -14,23 +13,29 @@ export const PatientCaseSchema = z.object({
   conditions: z.object({
     id: z.string(),
     name: z.string(),
-  }).array().optional().default([])
+  }).array().optional().default([]),
 })
 
 export type ParsedPatientCase = z.infer<typeof PatientCaseSchema>
 
 const TimeUnitSchema = z.enum([
-  'second', 'minute', 'hour', 'day', 'week', 'month', 'year'
+  'second',
+  'minute',
+  'hour',
+  'day',
+  'week',
+  'month',
+  'year',
 ])
 
 // --- Placeholder Schemas (Adjust based on your actual types) ---
 const TimeSpecificationSchema = z.object({
   value: positive_integer.or(z.tuple([positive_integer, positive_integer])),
-  units: TimeUnitSchema
+  units: TimeUnitSchema,
 })
 
 const PerSizeSchema = z.literal('kg').or(z.literal('m2')).or(z.object({
-  kg: positive_decimal
+  kg: positive_decimal,
 }))
 
 const PrescriptionFrequencyKeySchema = z.enum([
@@ -74,9 +79,9 @@ const PrescriptionFrequencyKeySchema = z.enum([
 ])
 
 const PrescriptionFrequencySchema = PrescriptionFrequencyKeySchema.or(
-  PrescriptionFrequencyKeySchema.array()
+  PrescriptionFrequencyKeySchema.array(),
 ).or(z.object({
-  every: TimeSpecificationSchema
+  every: TimeSpecificationSchema,
 }))
 
 const MaybeSchema = <T extends z.ZodTypeAny>(schema: T) => z.union([schema, z.null(), z.undefined()])
@@ -314,9 +319,7 @@ function applyWeight(dose: any, weight_kg: number): any {
       result.per_kg_display = value
       result.value = +(value * weight_kg * kg_factor).toFixed(2)
     } else if (minimum !== undefined || maximum !== undefined) {
-      result.per_kg_display = (minimum !== undefined && maximum !== undefined)
-        ? `${minimum}–${maximum}`
-        : String(minimum ?? maximum)
+      result.per_kg_display = (minimum !== undefined && maximum !== undefined) ? `${minimum}–${maximum}` : String(minimum ?? maximum)
       if (minimum !== undefined) result.minimum = +(minimum * weight_kg * kg_factor).toFixed(2)
       if (maximum !== undefined) result.maximum = +(maximum * weight_kg * kg_factor).toFixed(2)
     }
@@ -433,14 +436,12 @@ function applyPatientCase(medicine: Medicine, patient_case: ParsedPatientCase) {
 export const recommended_doses = {
   async getRecommendedDosesWithPatientCaseApplied(patient_case: ParsedPatientCase) {
     const medicines = await getAllParsedMedications()
-      
-    
-      // TODO route back to create patient case if query params not present
-      const matching_medicines = findMatchingMedicines(medicines, patient_case)
 
-      return matching_medicines.map(medicine => applyPatientCase(medicine, patient_case))
-      // const condition_codes = extractConditionCodes(patient_case.conditions)
-      // const conditions_items = 
-    
-  }
+    // TODO route back to create patient case if query params not present
+    const matching_medicines = findMatchingMedicines(medicines, patient_case)
+
+    return matching_medicines.map((medicine) => applyPatientCase(medicine, patient_case))
+    // const condition_codes = extractConditionCodes(patient_case.conditions)
+    // const conditions_items =
+  },
 }
