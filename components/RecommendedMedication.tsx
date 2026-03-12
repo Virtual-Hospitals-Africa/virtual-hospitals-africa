@@ -1,6 +1,7 @@
 import { JSX } from 'preact'
 import { PrescriptionFrequencies } from '../shared/prescription.ts'
-import type { ParsedDose, TimeSpecification } from '../backend/recommended_doses/shared.ts'
+import type { TimeSpecification } from '../backend/recommended_doses/shared.ts'
+import type { AppliedDose } from '../db/models/recommended_doses.ts'
 
 export type MedicineRecommendation = {
   atc: string
@@ -14,7 +15,7 @@ export type MedicineRecommendation = {
     alternate_name?: string
     ingredients: { name: string; alternate_name?: string; dosage?: { value: number; units: string } }[]
   }
-  schedules: ParsedDose[]
+  schedules: AppliedDose[]
   raw_dose: string
   raw_dose_interval: string
   raw_duration: string | null
@@ -33,7 +34,7 @@ function formatTimeSpec(spec: TimeSpecification): string {
   return `${value} ${spec.units}${plural}`
 }
 
-function FrequencyText({ frequency }: { frequency: ParsedDose['frequency'] }): JSX.Element | null {
+function FrequencyText({ frequency }: { frequency: AppliedDose['frequency'] }): JSX.Element | null {
   if (!frequency) return null
   if (typeof frequency === 'string') {
     const text = PrescriptionFrequencies[frequency as keyof typeof PrescriptionFrequencies]
@@ -49,40 +50,26 @@ function FrequencyText({ frequency }: { frequency: ParsedDose['frequency'] }): J
   return null
 }
 
-function resolvePerKg(per_size: ParsedDose['per_size']): number | null {
-  if (per_size === 'kg') return 1
-  if (per_size === 'm2') return null
-  if (per_size && typeof per_size === 'object' && 'kg' in per_size) return per_size.kg
-  return null
-}
-
-function DoseValue({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number }): JSX.Element | null {
-  const { value, units, per_size, minimum, maximum } = dose
+function DoseValue({ dose }: { dose: AppliedDose }): JSX.Element | null {
+  const { value, units, per_kg_display, minimum, maximum } = dose
   if (value === undefined && minimum === undefined && maximum === undefined) return null
 
-  const kg_factor = resolvePerKg(per_size)
-  const is_per_kg = kg_factor !== null
+  if (per_kg_display !== undefined) {
+    const total = value ?? (minimum !== undefined && maximum !== undefined ? `${minimum}–${maximum}` : minimum ?? maximum)
+    return (
+      <span>
+        <strong>{total}{units}</strong>
+        <span class='text-gray-500 text-sm ml-1'>({per_kg_display}{units}/kg)</span>
+      </span>
+    )
+  }
 
-  const display_val = (() => {
-    const base = value ?? ((minimum !== undefined && maximum !== undefined) ? `${minimum}–${maximum}` : minimum ?? maximum)
-    if (base === undefined) return null
-    if (is_per_kg && weight_kg) {
-      const total = typeof base === 'number' ? +(base * weight_kg * kg_factor).toFixed(2) : base
-      return (
-        <>
-          <strong>{total}{units}</strong>
-          <span class='text-gray-500 text-sm ml-1'>({base}{units}/kg)</span>
-        </>
-      )
-    }
-    return <strong>{base}{units}</strong>
-  })()
-
-  if (display_val === null) return null
-  return <span>{display_val}</span>
+  const base = value ?? (minimum !== undefined && maximum !== undefined ? `${minimum}–${maximum}` : minimum ?? maximum)
+  if (base === undefined) return null
+  return <span><strong>{base}{units}</strong></span>
 }
 
-function TitrateRate({ rate }: { rate: NonNullable<NonNullable<ParsedDose['titrate']>['rate']> }): JSX.Element {
+function TitrateRate({ rate }: { rate: NonNullable<NonNullable<AppliedDose['titrate']>['rate']> }): JSX.Element {
   const { increment, per_time, per_size } = rate
   const inc_text = increment === 'slow' ? 'slowly' : `${increment.value}${increment.units}`
   const per_text = per_time ? ` per ${formatTimeSpec(per_time)}` : ''
@@ -90,13 +77,7 @@ function TitrateRate({ rate }: { rate: NonNullable<NonNullable<ParsedDose['titra
   return <span>by {inc_text}{size_text}{per_text}</span>
 }
 
-function Titrate({
-  titrate,
-  weight_kg,
-}: {
-  titrate: NonNullable<ParsedDose['titrate']>
-  weight_kg?: number
-}): JSX.Element {
+function Titrate({ titrate }: { titrate: NonNullable<AppliedDose['titrate']> }): JSX.Element {
   return (
     <span class='italic text-indigo-700'>
       titrate
@@ -109,29 +90,29 @@ function Titrate({
       {titrate.if_necessary && ' if necessary'}
       {titrate.min && (
         <>
-          {' '}min <Schedule dose={titrate.min} weight_kg={weight_kg} />
+          {' '}min <Schedule dose={titrate.min as AppliedDose} />
         </>
       )}
       {titrate.max && (
         <>
-          {' '}max <Schedule dose={titrate.max} weight_kg={weight_kg} />
+          {' '}max <Schedule dose={titrate.max as AppliedDose} />
         </>
       )}
       {titrate.low && (
         <>
-          {' '}low <Schedule dose={titrate.low} weight_kg={weight_kg} />
+          {' '}low <Schedule dose={titrate.low as AppliedDose} />
         </>
       )}
       {titrate.high && (
         <>
-          {' '}high <Schedule dose={titrate.high} weight_kg={weight_kg} />
+          {' '}high <Schedule dose={titrate.high as AppliedDose} />
         </>
       )}
     </span>
   )
 }
 
-function Schedule({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number }): JSX.Element {
+function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
   const { frequency, slowly, special_instructions, duration, titrate } = dose
 
   const freq_el = frequency
@@ -153,9 +134,9 @@ function Schedule({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number })
     const high_dose = dose.high?.[0]
     return (
       <span>
-        {low_dose && <Schedule dose={{ ...low_dose, frequency: undefined }} weight_kg={weight_kg} />}
+        {low_dose && <Schedule dose={{ ...low_dose, frequency: undefined } as AppliedDose} />}
         {low_dose && high_dose && <span class='mx-1'>–</span>}
-        {high_dose && <Schedule dose={{ ...high_dose, frequency: undefined }} weight_kg={weight_kg} />}
+        {high_dose && <Schedule dose={{ ...high_dose, frequency: undefined } as AppliedDose} />}
         {freq_el}
         {duration_el}
         {slowly_el}
@@ -170,11 +151,11 @@ function Schedule({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number })
       <span>
         {dose.value !== undefined && (
           <>
-            <DoseValue dose={dose} weight_kg={weight_kg} />
+            <DoseValue dose={dose} />
             {' '}
           </>
         )}
-        <Titrate titrate={titrate} weight_kg={weight_kg} />
+        <Titrate titrate={titrate} />
         {freq_el}
         {duration_el}
         {slowly_el}
@@ -186,7 +167,7 @@ function Schedule({ dose, weight_kg }: { dose: ParsedDose; weight_kg?: number })
   // Simple
   return (
     <span>
-      <DoseValue dose={dose} weight_kg={weight_kg} />
+      <DoseValue dose={dose} />
       {slowly_el}
       {freq_el}
       {duration_el}
@@ -209,13 +190,7 @@ function AwareBadge({ aware }: { aware: MedicineRecommendation['aware'] }): JSX.
   )
 }
 
-export function RecommendedMedication({
-  medicine: med,
-  weight_kg,
-}: {
-  medicine: MedicineRecommendation
-  weight_kg?: number
-}): JSX.Element {
+export function RecommendedMedication({ medicine: med }: { medicine: MedicineRecommendation }): JSX.Element {
   return (
     <div class='border border-gray-200 rounded-lg p-4 flex flex-col gap-3'>
       {/* Header */}
@@ -245,7 +220,7 @@ export function RecommendedMedication({
         {med.schedules.map((schedule, i) => (
           <div key={i} class='text-sm text-gray-800 bg-gray-50 rounded px-3 py-2'>
             {schedule.age_classifier && <span class='text-xs uppercase tracking-wide text-gray-400 mr-2'>[{schedule.age_classifier}]</span>}
-            <Schedule dose={schedule} weight_kg={weight_kg} />
+            <Schedule dose={schedule} />
           </div>
         ))}
       </div>
