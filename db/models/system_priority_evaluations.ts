@@ -1,14 +1,14 @@
 import { TrxOrDb } from '../../types.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { system_priority_evaluation } from '../../shared/s_expression_schemas.ts'
-import { SYSTEM_PRIORITY_EVALUATIONS } from '../../s_expression/system_priority_evaluations.ts'
+import { SYSTEM_PRIORITY_EVALUATIONS_LISP } from '../../s_expression/system_priority_evaluations.ts'
 import { patient_triage } from './patient_triage.ts'
 import { ruleRunner, type RuleRunnerInput } from './system_rules.ts'
 import { ORDERED_PRIORITIES } from '../../shared/priorities.ts'
 import { pMap } from '../../util/inParallel.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 
-export const SYSTEM_PRIORITY_EVALUATIONS_PARSED = SYSTEM_PRIORITY_EVALUATIONS.map((d) => parseWithSchema(d, system_priority_evaluation))
+export const SYSTEM_PRIORITY_EVALUATIONS_PARSED = SYSTEM_PRIORITY_EVALUATIONS_LISP.map((d) => parseWithSchema(d, system_priority_evaluation))
 
 const findMatchingRecords = ruleRunner(SYSTEM_PRIORITY_EVALUATIONS_PARSED)
 

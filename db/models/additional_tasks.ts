@@ -198,7 +198,9 @@ export const additional_tasks = {
       assert(evaluation.value)
       assert(evaluation.value.type === 's_expression')
       const procedure = parseWithSchema(evaluation.value.s_expression, investigation)
-      const tasks: Lang['link' | 'finding' | 'measurement'][] = isObjectLike(procedure.value) ? [procedure.value] : procedure.value
+      const tasks: Array<Lang['link' | 'finding' | 'measurement'] /* | FindingRecencyComparison*/> = isObjectLike(procedure.value)
+        ? [procedure.value]
+        : procedure.value
       return { ...evaluation, tasks }
     })
 

@@ -48,7 +48,7 @@
   (clinical_finding (snomed_concept "Chest pain" "finding"))
   (check_for
     (clinical_finding (snomed_concept "Nausea" "finding"))
-    (clinical_finding (snomed_concept "Vomiting" "disorder"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
     (clinical_finding (snomed_concept "Pallor of skin of face" "finding"))
     (clinical_finding (snomed_concept "Sweating" "finding"))
     (clinical_finding (snomed_concept "Radiating chest pain" "finding"))

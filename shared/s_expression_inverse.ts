@@ -129,12 +129,23 @@ export function inverseSExpression(node: AnyNode): string {
       return `(active_condition ${snomedConceptToString(node.snomed_concept)})`
     }
 
+    case 'timestamp': {
+      return `(timestamp ${inverseSExpression(node.finding)})`
+    }
+
+    case 'time_ago': {
+      return `(time_ago ${node.value} ${node.units})`
+    }
+
     case '>':
     case '<':
     case '>=':
     case '<=':
     case '=': {
-      return `(${node.atom} ${inverseSExpression(node.left)} ${node.right})`
+      if (node.type === 'measurement') {
+        return `(${node.atom} ${inverseSExpression(node.measurement)} ${node.value})`
+      }
+      return `(${node.atom} (timestamp ${inverseSExpression(node.finding)}) (time_ago ${node.duration.value} ${node.duration.units}))`
     }
 
     case 'not': {

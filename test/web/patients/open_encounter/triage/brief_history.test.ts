@@ -45,7 +45,23 @@ describeParallel('triage/brief_history', () => {
         const form_values = getFormValues($)
         const form_labels = getFormLabels($)
 
-        assertEquals(form_values, {})
+        assertEquals(form_values, {
+          allergies: [],
+          common_conditions: {
+            arthritis: { existence: null },
+            asthma: { existence: null },
+            cancer: { existence: null },
+            copd: { existence: null },
+            covid19: { existence: null },
+            diabetes: { existence: null },
+            epilepsy: { existence: null },
+            heart_disease: { existence: null },
+            hiv: { existence: null },
+            mental_disorder: { existence: null },
+            pregnancy: { existence: null },
+            tuberculosis: { existence: null },
+          },
+        })
         assertEquals(form_labels, {
           common_conditions: {
             'pregnancy': {
@@ -101,10 +117,20 @@ describeParallel('triage/brief_history', () => {
         const form_labels = getFormLabels($)
 
         assertEquals(form_values, {
+          allergies: [],
           common_conditions: {
-            'pregnancy': {
-              'existence': 'No',
-            },
+            arthritis: { existence: null },
+            asthma: { existence: null },
+            cancer: { existence: null },
+            copd: { existence: null },
+            covid19: { existence: null },
+            diabetes: { existence: null },
+            epilepsy: { existence: null },
+            heart_disease: { existence: null },
+            hiv: { existence: null },
+            mental_disorder: { existence: null },
+            pregnancy: { existence: 'No' },
+            tuberculosis: { existence: null },
           },
         })
         assertEquals(form_labels, {
@@ -508,16 +534,20 @@ describeParallel('triage/brief_history', () => {
           $brief_history_after_returning_encounter_start,
         )
         assertEquals(form_values, {
+          allergies: [],
           common_conditions: {
-            'cancer': {
-              'existence': 'Yes',
-            },
-            'diabetes': {
-              'existence': 'No',
-            },
-            'pregnancy': {
-              'existence': 'No',
-            },
+            arthritis: { existence: null },
+            asthma: { existence: null },
+            cancer: { existence: 'Yes' },
+            copd: { existence: null },
+            covid19: { existence: null },
+            diabetes: { existence: 'No' },
+            epilepsy: { existence: null },
+            heart_disease: { existence: null },
+            hiv: { existence: null },
+            mental_disorder: { existence: null },
+            pregnancy: { existence: 'No' },
+            tuberculosis: { existence: null },
           },
         })
 

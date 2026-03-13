@@ -1,12 +1,12 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-import { NTASKS } from '../../s_expression/ntasks.ts'
+import { TASKS_LISP } from '../../s_expression/tasks.ts'
 import { QueryableNode, SnomedConcept, system_diagnosis_rule, system_priority_evaluation, task } from '../../shared/s_expression_schemas.ts'
 import db from '../../db/db.ts'
 import { filter } from '../../util/inParallel.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
-import { SYSTEM_PRIORITY_EVALUATIONS } from '../../s_expression/system_priority_evaluations.ts'
-import { SYSTEM_DIAGNOSIS_RULES } from '../../s_expression/system_diagnosis_rules.ts'
+import { SYSTEM_PRIORITY_EVALUATIONS_LISP } from '../../s_expression/system_priority_evaluations.ts'
+import { SYSTEM_DIAGNOSIS_RULES_LISP } from '../../s_expression/system_diagnosis_rules.ts'
 
 export function* allConceptsToLookFor(node: QueryableNode): Generator<SnomedConcept> {
   switch (node.atom) {
@@ -47,7 +47,7 @@ export function* allConceptsToLookFor(node: QueryableNode): Generator<SnomedConc
     case '=':
     case '>':
     case '>=':
-      yield* allConceptsToLookFor(node.left)
+      if (node.type === 'measurement') yield* allConceptsToLookFor(node.measurement)
       break
     case 'or':
     case 'and':
@@ -72,7 +72,7 @@ async function conceptDoesNotExist({ concept }: { concept: SnomedConcept }): Pro
 }
 
 function* nodesAndConceptsTasks() {
-  for (const s_expression of NTASKS) {
+  for (const s_expression of TASKS_LISP) {
     const node = parseWithSchema(s_expression, task)
     for (const concept of allConceptsToLookFor(node.due_to)) {
       yield { concept, node }
@@ -81,7 +81,7 @@ function* nodesAndConceptsTasks() {
 }
 
 function* nodesAndConceptsSystemPriorityEvaluations() {
-  for (const s_expression of SYSTEM_PRIORITY_EVALUATIONS) {
+  for (const s_expression of SYSTEM_PRIORITY_EVALUATIONS_LISP) {
     const node = parseWithSchema(s_expression, system_priority_evaluation)
     for (const concept of allConceptsToLookFor(node.due_to)) {
       yield { concept, node }
@@ -90,7 +90,7 @@ function* nodesAndConceptsSystemPriorityEvaluations() {
 }
 
 function* nodesAndConceptsSystemDiagnosisRules() {
-  for (const s_expression of SYSTEM_DIAGNOSIS_RULES) {
+  for (const s_expression of SYSTEM_DIAGNOSIS_RULES_LISP) {
     const node = parseWithSchema(s_expression, system_diagnosis_rule)
     for (const concept of allConceptsToLookFor(node.due_to)) {
       yield { concept, node }
@@ -106,13 +106,13 @@ describe('s_expression/', () => {
       assertArrayEmpty(not_found)
     })
   })
-  describe('SYSTEM_PRIORITY_EVALUATIONS', () => {
+  describe('SYSTEM_PRIORITY_EVALUATIONS_LISP', () => {
     it('has valid snomed concepts', async () => {
       const not_found = await filter(nodesAndConceptsSystemPriorityEvaluations(), conceptDoesNotExist)
       assertArrayEmpty(not_found)
     })
   })
-  describe('SYSTEM_DIAGNOSIS_RULES', () => {
+  describe('SYSTEM_DIAGNOSIS_RULES_LISP', () => {
     it('has valid snomed concepts', async () => {
       const not_found = await filter(nodesAndConceptsSystemDiagnosisRules(), conceptDoesNotExist)
       assertArrayEmpty(not_found)

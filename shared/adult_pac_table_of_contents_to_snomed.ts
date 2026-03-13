@@ -954,7 +954,7 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
   'Vomiting': [
     {
       'type': 'specific_concept',
-      's_expression': '(active_condition (snomed_concept "Vomiting" "disorder") possible)',
+      's_expression': '(active_condition (snomed_concept "Finding of vomiting" "finding") possible)',
       'snomed_concept_id': '422400008',
       'name': 'Vomiting',
       'category': 'disorder',

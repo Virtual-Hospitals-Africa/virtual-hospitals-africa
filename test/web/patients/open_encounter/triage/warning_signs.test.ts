@@ -98,7 +98,7 @@ describeParallel('triage/warning_signs', () => {
             'Diarrhea',
             'Dizziness',
             'Muscle pain',
-            'Pain of joint',
+            'Insect bite',
             'Back pain',
             'Constipation',
           ],
@@ -268,7 +268,7 @@ describeParallel('triage/warning_signs', () => {
             'Diarrhea',
             'Dizziness',
             'Muscle pain',
-            'Pain of joint',
+            'Insect bite',
             'Back pain',
             'Constipation',
           ],
@@ -442,7 +442,7 @@ describeParallel('triage/warning_signs', () => {
             'tasks': [
               {
                 atom: 'link',
-                title: 'Seizures page',
+                title: 'APC 2023 — Seizures',
                 href: '/medical-resources/primary-care/adult.pdf#page=19',
                 thumbnail_href: '/medical-resources/za/primary-care/adult/thumbnails/400/19.png',
               },

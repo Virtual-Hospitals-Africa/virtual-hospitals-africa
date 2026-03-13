@@ -15,9 +15,7 @@
     (clinical_finding (snomed_concept "Corneal ulcer" "disorder"))
     (clinical_finding (snomed_concept "Corneal opacity" "disorder"))
     (clinical_finding (snomed_concept "Jaundice" "finding"))
-    (or
-      (clinical_finding (snomed_concept "Pregnancy" "finding"))
-      (<= (timestamp (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 7 days)))
+    (<= (timestamp (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 7 days))
     (clinical_finding (snomed_concept "Edema of eyelid" "disorder") (qualifier (snomed_concept "New" "qualifier value")))
     (clinical_finding (snomed_concept "Red eye" "finding"))
     (clinical_finding (snomed_concept "Pain in eye" "finding"))

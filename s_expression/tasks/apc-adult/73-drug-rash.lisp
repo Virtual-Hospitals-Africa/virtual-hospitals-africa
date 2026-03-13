@@ -8,7 +8,7 @@
     (clinical_finding (snomed_concept "Tongue swelling" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-    (clinical_finding (snomed_concept "Vomiting" "disorder"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
     (clinical_finding (snomed_concept "Diarrhea" "finding"))
     (clinical_finding (snomed_concept "Perioral dermatitis" "disorder"))
     (clinical_finding (snomed_concept "Periocular dermatitis" "disorder"))

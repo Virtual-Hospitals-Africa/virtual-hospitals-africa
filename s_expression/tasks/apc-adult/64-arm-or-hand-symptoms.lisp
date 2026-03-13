@@ -4,12 +4,9 @@
   adult
   (clinical_finding (snomed_concept "Finding of upper limb" "finding"))
   (check_for
-    (and
-      (clinical_finding (snomed_concept "Pain in left arm" "finding"))
-      (clinical_finding (snomed_concept "Chest pain" "finding")))
-    (and
-      (clinical_finding (snomed_concept "Pain in right arm" "finding"))
-      (clinical_finding (snomed_concept "Chest pain" "finding")))
+    (clinical_finding (snomed_concept "Pain in left arm" "finding"))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Pain in right arm" "finding"))
     (clinical_finding (snomed_concept "Hand pain" "finding"))
     (clinical_finding (snomed_concept "Injury of musculoskeletal system" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
     (clinical_finding (snomed_concept "Severe pain" "finding"))

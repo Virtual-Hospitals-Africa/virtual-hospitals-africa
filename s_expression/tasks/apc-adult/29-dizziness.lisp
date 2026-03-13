@@ -14,7 +14,7 @@
     (clinical_finding (snomed_concept "Unable to stand" "finding"))
     (clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
     (clinical_finding (snomed_concept "Nausea" "finding"))
-    (clinical_finding (snomed_concept "Vomiting" "disorder"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
     (clinical_finding (snomed_concept "Disorder of eye movements" "disorder"))
     (clinical_finding (snomed_concept "Abnormal gait" "finding"))
   )

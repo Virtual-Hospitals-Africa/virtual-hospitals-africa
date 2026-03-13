@@ -5,7 +5,7 @@ import entries from '../util/entries.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED } from './adult_pac_table_of_contents_to_snomed.ts'
 import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from './pack-adult.ts'
 import { task } from './s_expression_schemas.ts'
-import { NTASKS } from '../s_expression/ntasks.ts'
+import { TASKS_LISP } from '../s_expression/tasks.ts'
 
 function asTask(task_s_expression: string) {
   return parseWithSchema(task_s_expression, task)
@@ -34,7 +34,7 @@ export const MEDICAL_GUIDANCE_TASKS = entries(ADULT_PAC_SYMPTOMS_TABLE_OF_CONTEN
 
 export const TASK_DEFS = [
   ...MEDICAL_GUIDANCE_TASKS,
-  ...NTASKS,
+  ...TASKS_LISP,
 ]
 
 export const TASKS = TASK_DEFS.map(asTask)

@@ -3,12 +3,12 @@ import { buildExpression } from './s_expression.ts'
 import { AgeDetermination, Priority, TrxOrDb } from '../../types.ts'
 import { literalString, temporaryTable } from '../helpers.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { Comparisons, Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
+import { Lang, MeasurementComparison, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import compactMap from '../../util/compactMap.ts'
 import uniq from '../../util/uniq.ts'
 import { isPriority } from '../../shared/priorities.ts'
 
-type Evidence = Lang['finding' | 'evaluation' | 'diagnosis' | Comparisons]
+type Evidence = Lang['finding' | 'evaluation' | 'diagnosis'] | MeasurementComparison
 type Record = { id: string; existence: 'Yes' | 'No' | 'Unknown' }
 
 export function* allEvidenceToLookFor(node: QueryableNode): Generator<Evidence> {
@@ -16,12 +16,16 @@ export function* allEvidenceToLookFor(node: QueryableNode): Generator<Evidence> 
     case 'finding':
     case 'evaluation':
     case 'diagnosis':
+      yield node
+      break
     case '<':
     case '<=':
     case '=':
     case '>':
     case '>=':
-      yield node
+      if (node.type === 'measurement') {
+        yield node
+      }
       break
     case 'or':
     case 'and':
@@ -277,9 +281,11 @@ export function ruleRunner<
       other_rules_evaluated,
     }
 
-    function evaluateEvidence(evidence: QueryableNode):
+    type Result =
       | { satisfies: true; contributing_records: { record_id: string; priority: Priority | null }[] }
-      | { satisfies: false } {
+      | { satisfies: false }
+
+    function evaluateEvidence(evidence: QueryableNode): Result {
       const contributing_records: { record_id: string; priority: Priority | null }[] = []
       switch (evidence.atom) {
         case 'or': {
@@ -337,23 +343,32 @@ export function ruleRunner<
         case 'finding':
         case 'evaluation':
         case 'diagnosis':
+          return evaluateSingle(evidence)
         case '<':
         case '<=':
         case '=':
         case '>':
         case '>=': {
-          const finding_s_expr = record_nodes_to_s_expressions.get(evidence)
-          assert(finding_s_expr)
-          const matching_records = findings_map.get(finding_s_expr)
-
-          if (matching_records && matching_records.length > 0) {
-            return { satisfies: true, contributing_records: matching_records }
+          if (evidence.type === 'measurement') {
+            return evaluateSingle(evidence)
           }
+          console.log('TODO handle time_ago')
           return { satisfies: false }
         }
         default:
           throw new Error(`Not supported ${evidence.atom}`)
       }
+    }
+
+    function evaluateSingle(evidence: Evidence): Result {
+      const finding_s_expr = record_nodes_to_s_expressions.get(evidence)
+      assert(finding_s_expr)
+      const matching_records = findings_map.get(finding_s_expr)
+
+      if (matching_records && matching_records.length > 0) {
+        return { satisfies: true, contributing_records: matching_records }
+      }
+      return { satisfies: false }
     }
   }
 }

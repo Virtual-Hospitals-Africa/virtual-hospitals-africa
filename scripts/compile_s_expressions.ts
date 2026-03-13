@@ -1,6 +1,5 @@
 import parse from 's-expression'
 import { walk } from 'std/fs/mod.ts'
-import { basename } from 'std/path/mod.ts'
 import * as schemas from '../shared/s_expression_schemas.ts'
 import { parseWithSchema } from '../shared/s_expression.ts'
 import isKeyOf from '../util/isKeyOf.ts'
@@ -46,32 +45,37 @@ function extractSExpressions(text: string): string[] {
  * e.g., "tasks.lisp" -> "TASKS"
  */
 function filenameToConstName(filename: string): string {
-  return basename(filename, '.lisp').toUpperCase().replace(/[^A-Z0-9]/g, '_')
+  return filename
+    .replace(/^s_expression\//, '')
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, '_')
+    .replace(/_TS$/, '_LISP')
 }
 
 /**
- * Process a single .lisp file and generate corresponding .ts file
+ * Process multiple .lisp files and concatenate all expressions into a single .ts file
  */
-async function processLispFile(lisp_path: string) {
-  console.log(`Processing ${lisp_path}...`)
+async function processLispDirectory(lisp_paths: string[], out_ts_path: string) {
+  console.log(`Processing ${lisp_paths.length} file(s) → ${out_ts_path}...`)
 
-  const content = await Deno.readTextFile(lisp_path)
-  const expressions = extractSExpressions(content)
+  const all_expressions: string[] = []
+  for (const lisp_path of lisp_paths.toSorted()) {
+    console.log(`  Reading ${lisp_path}`)
+    const content = await Deno.readTextFile(lisp_path)
+    all_expressions.push(...extractSExpressions(content))
+  }
 
-  const const_name = filenameToConstName(lisp_path)
-  const ts_path = lisp_path.replace(/\.lisp$/, '.ts')
-
-  // Generate TypeScript file content
-  const ts_content = `// Auto-generated from ${basename(lisp_path)}
+  const const_name = filenameToConstName(out_ts_path)
+  const ts_content = `// Auto-generated from ${out_ts_path.replace(/\.ts$/, '/')}
 // Do not edit manually
 
 export const ${const_name} = [
-${expressions.map((expr) => `  \`${expr}\`,`).join('\n')}
+${all_expressions.map((expr) => `  \`${expr}\`,`).join('\n')}
 ]
 `
 
-  await Deno.writeTextFile(ts_path, ts_content)
-  console.log(`  ✓ Generated ${ts_path} with ${expressions.length} expression(s)`)
+  await Deno.writeTextFile(out_ts_path, ts_content)
+  console.log(`  ✓ Generated ${out_ts_path} with ${all_expressions.length} expression(s)`)
 }
 
 /**
@@ -80,16 +84,30 @@ ${expressions.map((expr) => `  \`${expr}\`,`).join('\n')}
 async function main() {
   const s_expression_dir = 's_expression'
 
-  let processed = 0
-  await forEach(walk(s_expression_dir, { exts: ['.lisp'] }), async (entry) => {
-    assert(entry.isFile)
-    await processLispFile(entry.path)
-    processed++
-  })
+  // Separate root-level files from subdirectory files
+  const root_files: string[] = []
+  const subdir_files = new Map<string, string[]>()
 
-  if (!processed) {
+  for await (const entry of walk(s_expression_dir, { exts: ['.lisp'] })) {
+    assert(entry.isFile)
+    const rel = entry.path.slice(s_expression_dir.length + 1) // e.g. "foo.lisp" or "tasks/apc-adult/20.lisp"
+    const first_sep = rel.indexOf('/')
+    if (first_sep === -1) {
+      root_files.push(entry.path)
+    } else {
+      const subdir = rel.slice(0, first_sep) // e.g. "tasks"
+      const existing = subdir_files.get(subdir) ?? []
+      existing.push(entry.path)
+      subdir_files.set(subdir, existing)
+    }
+  }
+
+  if (!root_files.length && !subdir_files.size) {
     throw new Error(`No files found in s_expression_dir ${s_expression_dir}`)
   }
+
+  await forEach(root_files, (lisp_path) => processLispDirectory([lisp_path], lisp_path.replace(/\.lisp$/, '.ts')))
+  await forEach(subdir_files.entries(), ([subdir, paths]) => processLispDirectory(paths, `${s_expression_dir}/${subdir}.ts`))
 
   console.log('\n✓ All files processed successfully')
 }

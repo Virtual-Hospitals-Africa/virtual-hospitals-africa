@@ -7,7 +7,7 @@ import { patient_findings } from '../../db/models/patient_findings.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-import { comparator } from '../../shared/s_expression_schemas.ts'
+import { measurement_comparator } from '../../shared/s_expression_schemas.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { patient_evaluations } from '../../db/models/patient_evaluations.ts'
 
@@ -32,7 +32,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
             `(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))`,
           ],
           measurements: [
-            parseWithSchema(`(= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 85)`, comparator),
+            parseWithSchema(`(= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 85)`, measurement_comparator),
           ],
         },
       )
@@ -72,8 +72,8 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           },
           findings: [],
           measurements: [
-            parseWithSchema(`(= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 85)`, comparator),
-            parseWithSchema(`(= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 55)`, comparator),
+            parseWithSchema(`(= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 85)`, measurement_comparator),
+            parseWithSchema(`(= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 55)`, measurement_comparator),
           ],
         },
       )
