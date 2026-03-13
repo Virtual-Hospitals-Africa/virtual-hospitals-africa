@@ -2757,16 +2757,21 @@ export type RenderedRoom = {
 }
 
 export type RenderedTask =
-  | Lang['link']
-  | Lang['finding'] & {
-    displays: RecordDisplays
-    s_expression: string
-    existing_finding: null | RenderedFindingRelativeToHealthWorker
-  }
-  | Lang['measurement'] & {
-    displays: RecordDisplays
-    s_expression: string
-    existing_measurement: null | (RenderedFindingRelativeToHealthWorker & { value: RecordValueMeasurement })
+  & (
+    | Lang['link']
+    | Lang['finding'] & {
+      displays: RecordDisplays
+      s_expression: string
+      existing_finding: null | RenderedFindingRelativeToHealthWorker
+    }
+    | Lang['measurement'] & {
+      displays: RecordDisplays
+      s_expression: string
+      existing_measurement: null | (RenderedFindingRelativeToHealthWorker & { value: RecordValueMeasurement })
+    }
+  )
+  & {
+    atom: 'link' | 'finding' | 'measurement'
   }
 export type TaskGroup = {
   due_to: Array<RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker>

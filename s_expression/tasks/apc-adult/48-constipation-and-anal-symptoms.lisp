@@ -2,7 +2,7 @@
 (task
   "Check for urgent constipation conditions"
   adult
-  (clinical_finding (snomed_concept "Acute constipation" "finding"))
+  (clinical_finding (snomed_concept "Constipation" "finding"))
   (check_for
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
     (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
