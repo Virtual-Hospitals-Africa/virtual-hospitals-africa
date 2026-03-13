@@ -8,7 +8,7 @@
     (clinical_finding (snomed_concept "Irregular outline of pigmented skin lesion" "disorder"))
     (clinical_finding (snomed_concept "Change in skin lesion" "finding"))
     (clinical_finding (snomed_concept "Pigmented nevus" "morphologic abnormality"))
-    (> (measurement (snomed_concept "Lesion size" "observable entity") mm) 6)
+    (measurement (snomed_concept "Lesion size" "observable entity") mm)
     (clinical_finding (snomed_concept "Bleeds easily" "finding"))
     (clinical_finding (snomed_concept "Pruritus" "finding"))
     (clinical_finding (snomed_concept "Pain in skin" "finding"))

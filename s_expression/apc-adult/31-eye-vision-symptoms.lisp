@@ -15,16 +15,9 @@
     (clinical_finding (snomed_concept "Corneal ulcer" "disorder"))
     (clinical_finding (snomed_concept "Corneal opacity" "disorder"))
     (clinical_finding (snomed_concept "Jaundice" "finding"))
-    (and
-      (not (clinical_finding (snomed_concept "Pregnancy" "finding")))
-      (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmhg) 180)
-      (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmhg) 110))
-    (and
-      (or
-        (clinical_finding (snomed_concept "Pregnancy" "finding"))
-        (<= (timestamp (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 7 days)))
-      (>= (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmhg) 140)
-      (>= (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmhg) 90))
+    (or
+      (clinical_finding (snomed_concept "Pregnancy" "finding"))
+      (<= (timestamp (clinical_finding (snomed_concept "Postpartum state" "finding"))) (time_ago 7 days)))
     (clinical_finding (snomed_concept "Edema of eyelid" "disorder") (qualifier (snomed_concept "New" "qualifier value")))
     (clinical_finding (snomed_concept "Red eye" "finding"))
     (clinical_finding (snomed_concept "Pain in eye" "finding"))
