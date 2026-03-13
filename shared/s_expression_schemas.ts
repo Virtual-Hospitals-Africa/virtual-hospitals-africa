@@ -25,6 +25,11 @@ export type SnomedConcept = {
   category: SnomedCategory
 }
 
+type Duration = {
+  value: number
+  units: 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'months' | 'years'
+}
+
 export type EventValue = {
   atom: 'event'
   datetime: string
@@ -57,6 +62,10 @@ type NonQueryableBaseLang = {
     due_to: QueryableNode
     diagnosis: Lang['diagnosis']
   }
+  time_ago: Duration
+  timestamp: {
+    finding: InsertableFindingBase
+  }
 }
 
 type QueryableBaseLang =
@@ -78,7 +87,10 @@ type QueryableBaseLang =
         | null
         | Lang['link']
         | Lang['measurement'][]
-        | Array<Omit<InsertableFindingBase, 'existence'> & { existence: 'Any' }>
+        | Array<
+          | Omit<InsertableFindingBase, 'existence'> & { existence: 'Any' }
+          | FindingRecencyComparison & { existence: 'Any' }
+        >
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
     }
@@ -125,10 +137,17 @@ type QueryableBaseLang =
   }
   & {
     [Comp in Comparisons]: {
-      left: Lang['measurement']
-      right: Decimal
+      type: 'measurement'
+      measurement: Lang['measurement']
+      value: Decimal
+    } | {
+      type: 'finding_recency'
+      finding: InsertableFindingBase
+      duration: Duration
     }
   }
+
+export type FindingRecencyComparison = Lang[Comparisons] & { type: 'finding_recency' }
 
 type BaseLang = NonQueryableBaseLang & QueryableBaseLang
 
@@ -149,6 +168,8 @@ export type InsertableFindingBase = NonNullableProperty<Lang['finding'], 'root_s
 export type InsertableFinding = InsertableFindingBase | Lang[Comparisons]
 
 export type Investigation = NonNullableProperty<Lang['procedure'], 'root_snomed_concept' | 'specific_snomed_concept' | 'value'>
+
+export type MeasurementComparison = Lang[Comparisons] & { type: 'measurement' }
 
 const snomed_concept: z.ZodType<Lang['snomed_concept']> = z
   .object({
@@ -349,6 +370,30 @@ export const clinical_finding: z.ZodType<NonNullableProperty<Lang['finding'], 'r
 ).describe('clinical_finding')
 
 export const finding: z.ZodType<Lang['finding']> = z.lazy(() => finding_base.or(clinical_finding).or(allergy)).describe('finding')
+
+export const timestamp: z.ZodType<Lang['timestamp']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('timestamp'),
+    args: z.tuple([insertable_finding_base]),
+  }).transform(({ atom, args: [finding] }) => ({ atom, finding }))
+).describe('timestamp')
+
+const time_unit = z.enum([
+  'seconds',
+  'minutes',
+  'hours',
+  'days',
+  'weeks',
+  'months',
+  'years',
+])
+
+export const time_ago: z.ZodType<Lang['time_ago']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('time_ago'),
+    args: z.tuple([validators.positive_integer, time_unit]),
+  }).transform(({ atom, args: [value, units] }) => ({ atom, value, units }))
+).describe('time_ago')
 
 export const insertable_finding_base: z.ZodType<InsertableFindingBase> = finding
   .refine(
@@ -639,11 +684,13 @@ export const procedure_base: z.ZodType<Lang['procedure']> = z.lazy(() =>
   }))
 ).describe('procedure_base')
 
+const can_check_for = z.lazy(() => insertable_finding_base.or(finding_recency_comparator))
+
 export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
   () =>
     z.object({
       atom: z.literal('check_for'),
-      args: insertable_finding_base.array(),
+      args: can_check_for.array(),
     }).transform(({ args: check_for }) => ({
       atom: 'procedure' as const,
       root_snomed_concept: {
@@ -711,22 +758,39 @@ export const investigation: z.ZodType<Investigation> = procedure
   )
   .describe('investigation')
 
-export const comparator: z.ZodType<Lang[Comparisons]> = z.lazy(() =>
+const comparator_operator = z.enum([
+  '>',
+  '<',
+  '>=',
+  '<=',
+  '=',
+])
+
+export const measurement_comparator: z.ZodType<MeasurementComparison> = z.lazy(() =>
   z.object({
-    atom: z.enum([
-      '>',
-      '<',
-      '>=',
-      '<=',
-      '=',
-    ]),
+    atom: comparator_operator,
     args: z.tuple([measurement, validators.positive_decimal]),
-  }).transform(({ atom, args: [left, right] }) => ({
+  }).transform(({ atom, args: [measurement, value] }) => ({
     atom,
-    left,
-    right,
+    type: 'measurement' as const,
+    measurement,
+    value,
   }))
-).describe('comparator')
+).describe('measurement_comparator')
+
+export const finding_recency_comparator: z.ZodType<Lang[Comparisons] & { type: 'finding_recency' }> = z.lazy(() =>
+  z.object({
+    atom: comparator_operator,
+    args: z.tuple([timestamp, time_ago]),
+  }).transform(({ atom, args: [{ finding }, duration] }) => ({
+    atom,
+    type: 'finding_recency' as const,
+    finding,
+    duration,
+  }))
+).describe('time_comparator')
+
+export const comparator = measurement_comparator.or(finding_recency_comparator)
 
 export const history: z.ZodType<Lang['finding'] & { history: true }> = z.lazy(() =>
   z.object({
@@ -808,7 +872,7 @@ export const system_priority_evaluation: z.ZodType<Lang['system_priority_evaluat
   }))
 ).describe('system_priority_evaluation')
 
-export const insertable_finding: z.ZodType<InsertableFinding> = z.lazy(() => comparator.or(insertable_finding_base)).describe(
+export const insertable_finding: z.ZodType<InsertableFinding> = z.lazy(() => measurement_comparator.or(insertable_finding_base)).describe(
   'insertable_finding',
 )
 
@@ -886,7 +950,7 @@ export const any_query: z.ZodType<QueryableNode> = z.lazy(() =>
     procedure,
     measurement,
     active_condition,
-    comparator,
+    measurement_comparator,
     qualifier,
     exact,
     or,

@@ -9,7 +9,7 @@ import { maybeSnomedConceptBase, satisfyingSExpression, snomedConceptBase } from
 import { Priority, PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
-import { Comparisons, InsertableFindingBase, Lang } from '../../shared/s_expression_schemas.ts'
+import { Comparisons, InsertableFindingBase, Lang, MeasurementComparison } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
@@ -198,7 +198,7 @@ export const patient_findings = base({
     const measurements_to_insert = measurements.map((measurement) => {
       const priority = 'priority' in measurement ? measurement.priority : undefined
       const score = 'score' in measurement ? measurement.score : undefined
-      const { left: { snomed_concept, units }, right: value } = measurement
+      const { measurement: { snomed_concept, units }, value } = measurement as MeasurementComparison
       return {
         patient_id,
         patient_encounter_id,
@@ -206,8 +206,8 @@ export const patient_findings = base({
         root_snomed_concept: { atom: 'snomed_concept' as const, ...MEASUREMENT_FINDING } as Lang['snomed_concept'],
         specific_snomed_concept: snomed_concept,
         value_snomed_concept: null,
-        left: { snomed_concept, units },
-        right: value,
+        measurement_node: { snomed_concept, units },
+        measurement_value: value,
         attributes: [],
         priority,
         score,
@@ -417,8 +417,8 @@ export const patient_findings = base({
             ? qb.insertInto('patient_measurements').values(
               measurements_to_insert.map((m) => ({
                 id: m.record_id,
-                units: m.left.units,
-                value: m.right.toFixed(),
+                units: m.measurement_node.units,
+                value: m.measurement_value.toFixed(),
               })),
             )
             : blankSelection(qb),

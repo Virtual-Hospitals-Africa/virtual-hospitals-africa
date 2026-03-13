@@ -30,7 +30,7 @@ import { VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } f
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
-import { comparator, insertable_finding_base } from '../../../../../../../../shared/s_expression_schemas.ts'
+import { insertable_finding_base, measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 
 export const TriageMeasureVitalsSchema = z.object({
@@ -102,12 +102,12 @@ export const handler = postHandler(
         const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
         const measurement_comparison = parseWithSchema(
           `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
-          comparator,
+          measurement_comparator,
         )
         const score = getScoreForMeasurement(
           patient_age_determination,
           vital,
-          measurement_comparison.right,
+          measurement_comparison.value,
         )
         return {
           ...measurement_comparison,

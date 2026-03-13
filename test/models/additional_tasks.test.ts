@@ -79,10 +79,6 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
       {
         atom: 'task',
-        description: 'Display medical guidance for Wound, acute',
-      },
-      {
-        atom: 'task',
         description: 'Check for urgent bite/sting conditions',
       },
     ])

@@ -5,7 +5,7 @@ import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
 import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
 import { deduplicate } from '../helpers.ts'
-import { any_query, Lang, QueryableNode } from '../../shared/s_expression_schemas.ts'
+import { any_query, Lang, MeasurementComparison, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
 import { ATTRIBUTE, DUE_TO, EVENT, MEASUREMENT_FINDING, QUALIFIER_VALUE, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
@@ -538,58 +538,63 @@ export const EXPRESSION_BUILDERS = {
       specific_snomed_concept: snomed_concept,
     })
   },
-  '>'(trx, patient, { left, right }) {
-    return measurement(trx, patient, left)
+  '>'(trx, patient, node) {
+    const { measurement: m, value } = node as MeasurementComparison
+    return measurement(trx, patient, m)
       .where((eb) =>
         eb.or([
           eb.and([
             eb('patient_measurements.comparator', '=', '='),
-            eb('patient_measurements.value', '>', String(right)),
+            eb('patient_measurements.value', '>', String(value)),
           ]),
           eb.and([
             eb('patient_measurements.comparator', '=', '>'),
-            eb('patient_measurements.value', '>=', String(right)),
+            eb('patient_measurements.value', '>=', String(value)),
           ]),
           eb.and([
             eb('patient_measurements.comparator', '=', '>='),
-            eb('patient_measurements.value', '>', String(right)),
+            eb('patient_measurements.value', '>', String(value)),
           ]),
         ])
       )
   },
-  '<'(trx, patient, { left, right }) {
-    return measurement(trx, patient, left)
+  '<'(trx, patient, node) {
+    const { measurement: m, value } = node as MeasurementComparison
+    return measurement(trx, patient, m)
       .where((eb) =>
         eb.or([
           eb.and([
             eb('patient_measurements.comparator', '=', '='),
-            eb('patient_measurements.value', '<', String(right)),
+            eb('patient_measurements.value', '<', String(value)),
           ]),
           eb.and([
             eb('patient_measurements.comparator', '=', '<'),
-            eb('patient_measurements.value', '<=', String(right)),
+            eb('patient_measurements.value', '<=', String(value)),
           ]),
           eb.and([
             eb('patient_measurements.comparator', '=', '<='),
-            eb('patient_measurements.value', '<', String(right)),
+            eb('patient_measurements.value', '<', String(value)),
           ]),
         ])
       )
   },
-  '>='(trx, patient, { left, right }) {
-    return measurement(trx, patient, left)
+  '>='(trx, patient, node) {
+    const { measurement: m, value } = node as MeasurementComparison
+    return measurement(trx, patient, m)
       .where('patient_measurements.comparator', 'in', ['=', '>', '>='])
-      .where('patient_measurements.value', '>=', String(right))
+      .where('patient_measurements.value', '>=', String(value))
   },
-  '<='(trx, patient, { left, right }) {
-    return measurement(trx, patient, left)
+  '<='(trx, patient, node) {
+    const { measurement: m, value } = node as MeasurementComparison
+    return measurement(trx, patient, m)
       .where('patient_measurements.comparator', 'in', ['=', '<', '<='])
-      .where('patient_measurements.value', '<=', String(right))
+      .where('patient_measurements.value', '<=', String(value))
   },
-  '='(trx, patient, { left, right }) {
-    return measurement(trx, patient, left)
+  '='(trx, patient, node) {
+    const { measurement: m, value } = node as MeasurementComparison
+    return measurement(trx, patient, m)
       .where('patient_measurements.comparator', '=', '=')
-      .where('patient_measurements.value', '=', String(right))
+      .where('patient_measurements.value', '=', String(value))
   },
   any2(trx, patient, { expressions }) {
     return baseQuery(trx, patient)

@@ -32,7 +32,7 @@ import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { formatRecord, toDisplayableRecord } from '../../shared/patient_records.ts'
 import { patient_findings } from './patient_findings.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-import { investigation, Lang } from '../../shared/s_expression_schemas.ts'
+import { FindingRecencyComparison, investigation, Lang } from '../../shared/s_expression_schemas.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import compactMap from '../../util/compactMap.ts'
 import isString from '../../util/isString.ts'
@@ -198,7 +198,9 @@ export const additional_tasks = {
       assert(evaluation.value)
       assert(evaluation.value.type === 's_expression')
       const procedure = parseWithSchema(evaluation.value.s_expression, investigation)
-      const tasks: Lang['link' | 'finding' | 'measurement'][] = isObjectLike(procedure.value) ? [procedure.value] : procedure.value
+      const tasks: Array<Lang['link' | 'finding' | 'measurement'] | FindingRecencyComparison> = isObjectLike(procedure.value)
+        ? [procedure.value]
+        : procedure.value
       return { ...evaluation, tasks }
     })
 

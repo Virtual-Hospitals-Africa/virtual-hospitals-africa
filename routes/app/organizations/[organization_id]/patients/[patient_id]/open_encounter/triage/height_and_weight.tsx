@@ -15,7 +15,7 @@ import { patient_findings } from '../../../../../../../../db/models/patient_find
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
 import entries from '../../../../../../../../util/entries.ts'
 import compact from '../../../../../../../../util/compact.ts'
-import { comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
+import { measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 
 export const TriageHeightAndWeightSchema = z.object({
@@ -48,7 +48,7 @@ export const handler = postHandler(
         const snomed_concept = VITAL_MEASUREMENTS_SNOMED_CONCEPTS[vital]
         return parseWithSchema(
           `(= (measurement ${snomed_concept.s_expression} ${measurement.units}) ${measurement.value})`,
-          comparator,
+          measurement_comparator,
         )
       }),
     )

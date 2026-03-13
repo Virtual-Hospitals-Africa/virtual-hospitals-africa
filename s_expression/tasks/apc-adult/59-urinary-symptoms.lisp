@@ -18,7 +18,7 @@
     (clinical_finding (snomed_concept "Right inguinal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
     (clinical_finding (snomed_concept "Leukocytes in urine" "finding"))
     (clinical_finding (snomed_concept "Nitrite detected in urine" "finding"))
-    (clinical_finding (snomed_concept "Vomiting" "disorder"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
     (clinical_finding (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))
     (clinical_finding (snomed_concept "Pregnancy" "finding"))
     (clinical_finding (snomed_concept "Postmenopausal state" "finding"))

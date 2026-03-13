@@ -27,3 +27,11 @@
     (clinical_finding (snomed_concept "Traumatic injury" "disorder"))
   )
 )
+(task
+  "Measure Bloody Oxygen Saturation due to burns"
+  adult
+  (clinical_finding (snomed_concept "Burn" "disorder"))
+  (measure
+    (measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)
+  )
+)

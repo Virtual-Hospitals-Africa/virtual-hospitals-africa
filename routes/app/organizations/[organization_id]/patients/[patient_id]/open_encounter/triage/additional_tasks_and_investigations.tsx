@@ -121,8 +121,9 @@ export const handler = postHandler(
         if (measurement.existing_measurement && measurement.existing_measurement.value.equals(measurement.value)) return
         return {
           atom: '=' as const,
-          left: measurement.s_expression,
-          right: measurement.value,
+          type: 'measurement' as const,
+          measurement: measurement.s_expression,
+          value: measurement.value,
         }
       })
 

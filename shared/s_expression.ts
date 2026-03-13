@@ -2,6 +2,7 @@
 import s_expression from 's-expression'
 import isString from '../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
+import { AnyNode } from './s_expression_schemas.ts'
 import * as schemas from './s_expression_schemas.ts'
 
 import isObjectLike from '../util/isObjectLike.ts'
@@ -60,10 +61,10 @@ export function parseWithSchema<Schema extends Values<typeof schemas>>(
   }
 
   // This will slow things down temporarily, but I want to ensure that these functions work when exercised by real s_expressions
-  const normal_form_by_inverse = inverseSExpression(second_pass.data)
+  const normal_form_by_inverse = inverseSExpression(second_pass.data as AnyNode)
   const normalized = fastNormalForm(normal_form_by_inverse)
   assertEquals(normal_form_by_inverse, normalized, `${normal_form_by_inverse} ; ${normalized}`)
-  return second_pass.data
+  return second_pass.data as z.infer<Schema>
 }
 
 export function parseArrayWithSchema<Schema extends Values<typeof schemas>>(
@@ -92,7 +93,7 @@ function schemaByAtom(atom: string) {
     case '>=':
     case '<=':
     case '=':
-      return schemas.comparator
+      return schemas.measurement_comparator
     default: {
       if (!isKeyOf(atom, schemas)) {
         console.log(schemas)
@@ -159,6 +160,7 @@ const UNITS = new Set([
   'kg' as const,
   'mmol/L' as const,
   'mmHg' as const,
+  'mm' as const,
 ])
 
 export const UNITS_ARRAY = Array.from(UNITS)
@@ -176,6 +178,9 @@ export function fastNormalize([atom, ...rest]: Exclude<SExpressionSimpleNode, st
       return item
     }
     if (atom === 'diagnosis' && index === 1) {
+      return item
+    }
+    if (atom === 'time_ago' && index === 1) {
       return item
     }
     if (isString(item)) return `"${item}"`

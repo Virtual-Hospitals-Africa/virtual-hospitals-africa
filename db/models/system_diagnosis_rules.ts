@@ -17,7 +17,7 @@ import {
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { Lang, system_diagnosis_rule } from '../../shared/s_expression_schemas.ts'
-import { SYSTEM_DIAGNOSIS_RULES } from '../../s_expression/system_diagnosis_rules.ts'
+import { SYSTEM_DIAGNOSIS_RULES_LISP } from '../../s_expression/system_diagnosis_rules.ts'
 import generateUUID from '../../util/uuid.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import matching from '../../util/matching.ts'
@@ -29,7 +29,7 @@ import compactMap from '../../util/compactMap.ts'
 import findMatching from '../../util/findMatching.ts'
 import { deepMerge } from '../../util/deepMerge.ts'
 
-export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES.map((d) => parseWithSchema(d, system_diagnosis_rule))
+export const SYSTEM_DIAGNOSIS_RULES_PARSED = SYSTEM_DIAGNOSIS_RULES_LISP.map((d) => parseWithSchema(d, system_diagnosis_rule))
 
 type ExistingDiagnosis = {
   diagnosis_concept_s_expression: string

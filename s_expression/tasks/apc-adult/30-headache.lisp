@@ -20,10 +20,9 @@
     (clinical_finding (snomed_concept "Confusional state" "disorder"))
     (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
     (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
-    (and
-      (clinical_finding (snomed_concept "Chronic headache disorder" "disorder"))
-      (<= (timestamp (clinical_finding (snomed_concept "Highly active antiretroviral therapy" "procedure")))
-          (time_ago 3 months)))
+    (clinical_finding (snomed_concept "Chronic headache disorder" "disorder"))
+    (<= (timestamp (clinical_finding (snomed_concept "Highly active antiretroviral therapy" "procedure")))
+        (time_ago 3 months))
     (clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))
     (clinical_finding (snomed_concept "Anisocoria" "disorder"))
     (clinical_finding (snomed_concept "Frequent headache" "finding"))
