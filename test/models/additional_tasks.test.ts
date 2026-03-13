@@ -124,7 +124,6 @@ describeParallel('db/models/additional_tasks.ts', () => {
         existence: 'Yes',
       }],
     })
-    console.log({ tasks_to_insert })
     assertMatches(tasks_to_insert, [
       {
         atom: 'task',
@@ -197,6 +196,55 @@ describeParallel('db/models/additional_tasks.ts', () => {
           attributes: [],
         },
         procedure_id: null,
+      },
+    ])
+  })
+
+  itParallel('displays the reference doc for joint conditions when Abnormal prominence of acromion is found', async () => {
+    const { employee, patient_id, patient_encounter_id } = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+    const inserted_findings = await patient_findings.insertMany(
+      db,
+      {
+        patient_id,
+        patient_encounter_id,
+        patient_encounter_employee_id: employee.patient_encounter_employee_id,
+        employment_id: employee.employee_id,
+        procedure: {
+          create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
+        },
+        findings: [
+          `(clinical_finding (snomed_concept "Abnormal prominence of acromion" "finding"))`,
+        ],
+      },
+    )
+
+    assert(inserted_findings.finding_ids[0])
+    const tasks_to_insert = await additional_tasks.getTasksToInsert(db, {
+      patient_id,
+      patient_encounter_id,
+      patient_age_determination: 'adult',
+      records: [{
+        id: inserted_findings.finding_ids[0],
+        existence: 'Yes',
+      }],
+    })
+
+    assertMatches(tasks_to_insert, [
+      {
+        atom: 'task',
+        description: 'Display medical guidance for Arm symptoms',
+      },
+      {
+        atom: 'task',
+        description: 'Display medical guidance for Joint symptoms',
+      },
+      {
+        atom: 'task',
+        description: 'Check for urgent joint conditions',
+      },
+      {
+        atom: 'task',
+        description: 'Check for urgent arm or hand symptom conditions',
       },
     ])
   })

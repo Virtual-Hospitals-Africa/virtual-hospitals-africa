@@ -2,7 +2,7 @@
 (task
   "Check for urgent leg symptom conditions"
   adult
-  (clinical_finding (snomed_concept "Pain in lower limb" "finding"))
+  (clinical_finding (finding_site (snomed_concept "Lower limb structure" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Pain in calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
     (clinical_finding (snomed_concept "Swollen calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))

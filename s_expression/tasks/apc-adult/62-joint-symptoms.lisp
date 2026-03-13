@@ -2,7 +2,7 @@
 (task
   "Check for urgent joint conditions"
   adult
-  (clinical_finding (snomed_concept "Joint finding" "finding"))
+  (clinical_finding (finding_site (snomed_concept "Joint structure" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Pain of joint" "finding") (qualifier (snomed_concept "Acute (qualifier value)" "qualifier value")))
     (clinical_finding (snomed_concept "Joint swelling" "finding"))
