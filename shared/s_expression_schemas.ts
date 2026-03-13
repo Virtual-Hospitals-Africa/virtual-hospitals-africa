@@ -88,8 +88,7 @@ type QueryableBaseLang =
         | Lang['link']
         | Lang['measurement'][]
         | Array<
-          | Omit<InsertableFindingBase, 'existence'> & { existence: 'Any' }
-          | FindingRecencyComparison & { existence: 'Any' }
+          Omit<InsertableFindingBase, 'existence'> & { existence: 'Any' }
         >
       qualifiers: Lang['qualifier'][]
       attributes: Lang['attribute'][]
@@ -136,16 +135,20 @@ type QueryableBaseLang =
     }
   }
   & {
-    [Comp in Comparisons]: {
-      type: 'measurement'
-      measurement: Lang['measurement']
-      value: Decimal
-    } | {
-      type: 'finding_recency'
-      finding: InsertableFindingBase
-      duration: Duration
-    }
+    [Comp in Comparisons]:
+      | {
+        type: 'measurement'
+        measurement: Lang['measurement']
+        value: Decimal
+      }
+      | {
+        type: 'finding_recency'
+        finding: InsertableFindingBase
+        duration: Duration
+      }
   }
+
+export type MeasurementComparison = Lang[Comparisons] & { type: 'measurement' }
 
 export type FindingRecencyComparison = Lang[Comparisons] & { type: 'finding_recency' }
 
@@ -165,11 +168,9 @@ export type InsertableFindingBase = NonNullableProperty<Lang['finding'], 'root_s
   existence: Existence
 }
 
-export type InsertableFinding = InsertableFindingBase | Lang[Comparisons]
+export type InsertableFinding = InsertableFindingBase | MeasurementComparison
 
 export type Investigation = NonNullableProperty<Lang['procedure'], 'root_snomed_concept' | 'specific_snomed_concept' | 'value'>
-
-export type MeasurementComparison = Lang[Comparisons] & { type: 'measurement' }
 
 const snomed_concept: z.ZodType<Lang['snomed_concept']> = z
   .object({
@@ -703,10 +704,13 @@ export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
       },
       qualifiers: [],
       attributes: [],
-      value: check_for.map((node) => ({
-        ...node,
-        existence: 'Any' as const,
-      })),
+      value: check_for.map((node) => {
+        const inner_finding: InsertableFindingBase = node.atom === 'finding' ? node : node.finding
+        return {
+          ...inner_finding,
+          existence: 'Any' as const,
+        }
+      }),
     })),
 ).describe('check_for')
 
@@ -790,7 +794,7 @@ export const finding_recency_comparator: z.ZodType<Lang[Comparisons] & { type: '
   }))
 ).describe('time_comparator')
 
-export const comparator = measurement_comparator.or(finding_recency_comparator)
+// export const comparator = measurement_comparator.or(finding_recency_comparator)
 
 export const history: z.ZodType<Lang['finding'] & { history: true }> = z.lazy(() =>
   z.object({

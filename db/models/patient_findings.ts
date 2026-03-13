@@ -9,7 +9,7 @@ import { maybeSnomedConceptBase, satisfyingSExpression, snomedConceptBase } from
 import { Priority, PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
-import { Comparisons, InsertableFindingBase, Lang, MeasurementComparison } from '../../shared/s_expression_schemas.ts'
+import { InsertableFindingBase, Lang, MeasurementComparison } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
@@ -55,7 +55,7 @@ export type FindingNodeToInsert = InsertableFindingBase & {
   }
 }
 
-export type MeasurementToInsert = Lang[Comparisons] & {
+export type MeasurementToInsert = MeasurementComparison & {
   priority?: Maybe<{
     level: Priority
     by_system: boolean
