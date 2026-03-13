@@ -1,9 +1,9 @@
-import { parseTsvTyped } from '../util/parseCsv.ts'
-import { collect } from '../util/inParallel.ts'
+import { parseTsvTyped } from '../../util/parseCsv.ts'
+import { collect } from '../../util/inParallel.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
-import { humanReadableJson } from '../util/humanReadableJson.ts'
-import { JsonSerializable } from '../types.ts'
+import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import { JsonSerializable } from '../../types.ts'
 
 export function tsvAsRows<Schema extends z.ZodTypeAny>(
   filepath: string,

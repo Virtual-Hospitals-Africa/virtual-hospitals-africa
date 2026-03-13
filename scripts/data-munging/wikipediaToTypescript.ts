@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
-import { rewriteTsvAsTypescript } from './tsvAsTypescript.ts'
+import { rewriteTsvAsTypescript } from '../file-manipulation/tsvAsTypescript.ts'
 
 const split_semi = (s: string) => s.split('; ').map((s) => s.startsWith('*') && s.endsWith('*') ? s.slice(1, -1) : s)
 

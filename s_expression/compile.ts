@@ -1,10 +1,10 @@
+import { assert } from 'std/assert/assert.ts'
 import parse from 's-expression'
 import { walk } from 'std/fs/mod.ts'
 import * as schemas from '../shared/s_expression_schemas.ts'
 import { parseWithSchema } from '../shared/s_expression.ts'
 import isKeyOf from '../util/isKeyOf.ts'
 import { inverseSExpression } from '../shared/s_expression_inverse.ts'
-import { assert } from 'std/assert/assert.ts'
 import { forEach } from '../util/inParallel.ts'
 
 /**
