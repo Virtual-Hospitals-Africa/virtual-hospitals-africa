@@ -1,5 +1,5 @@
-import db from '../db/db.ts'
-import { addTestEmployee } from '../mocks/testEmployee.ts'
+import db from '../../db/db.ts'
+import { addTestEmployee } from '../../mocks/testEmployee.ts'
 
 if (import.meta.main) {
   await addTestEmployee(db)

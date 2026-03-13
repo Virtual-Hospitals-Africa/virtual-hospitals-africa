@@ -1,6 +1,6 @@
 import z from 'zod'
-import { collectTsvResource } from '../db/parseTsvResource.ts'
-import { groupByUniq } from '../util/groupBy.ts'
+import { collectTsvResource } from '../../db/parseTsvResource.ts'
+import { groupByUniq } from '../../util/groupBy.ts'
 
 export const countries_official_names = await collectTsvResource(
   'countries_official_names',

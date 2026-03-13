@@ -40,7 +40,7 @@ PROMPT="$2"
 
 COMMIT_MESSAGE=$(echo "${PROMPT}" | head -n 1)
 
-WORKTREE_DIR=$(./scripts/worktree-isolated.sh $SKIPDB_FLAG "$BRANCH_NAME")
+WORKTREE_DIR=$(./scripts/worktree/isolated.sh $SKIPDB_FLAG "$BRANCH_NAME")
 
 cd "$WORKTREE_DIR"
 

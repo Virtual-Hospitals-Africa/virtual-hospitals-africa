@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
-import db from '../db/db.ts'
-import parseCsv from '../util/parseCsv.ts'
+import db from '../../db/db.ts'
+import parseCsv from '../../util/parseCsv.ts'
 
 const original_symptoms_candidates = parseCsv(
   './db/resources/icd10/symptoms_candidates.tsv',

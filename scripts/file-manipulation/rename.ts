@@ -1,6 +1,6 @@
 import { walk } from 'std/fs/mod.ts'
-import { forEach } from '../util/inParallel.ts'
-import { combineAsyncIterables } from '../util/combineAsyncIterables.ts'
+import { forEach } from '../../util/inParallel.ts'
+import { combineAsyncIterables } from '../../util/combineAsyncIterables.ts'
 import * as path from 'std/path/mod.ts'
 
 const ignore_paths = [

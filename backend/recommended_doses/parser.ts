@@ -1,4 +1,4 @@
-import { writeRowsAsTypescript } from '../../scripts/tsvAsTypescript.ts'
+import { writeRowsAsTypescript } from '../../scripts/file-manipulation/tsvAsTypescript.ts'
 import { asResult } from '../../util/asResult.ts'
 import { MedicineRow, ParsedMedicineRecommendedDose } from './shared.ts'
 import { MedicineParser } from './MedicineParser.ts'

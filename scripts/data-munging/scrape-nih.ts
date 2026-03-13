@@ -1,4 +1,4 @@
-import db from '../db/db.ts'
+import db from '../../db/db.ts'
 import * as cheerio from 'cheerio'
 
 const results = await db.selectFrom('conditions')

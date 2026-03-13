@@ -12,8 +12,8 @@
  *   - ImageMagick (convert command) must be installed
  */
 
-import { runCommandAssertExitCodeZero } from '../util/command.ts'
-import sortBy from '../util/sortBy.ts'
+import { runCommandAssertExitCodeZero } from '../../util/command.ts'
+import sortBy from '../../util/sortBy.ts'
 
 const DEFAULT_WIDTH = 400
 const SOURCE_DIR = 'static/medical-resources/za/primary-care/adult/thumbnails'
