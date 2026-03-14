@@ -4,9 +4,9 @@
 // =============================================================================
 
 import { OpenEncounterWorkflowLayout } from '../components/OpenEncounterWorkflowLayout.tsx'
-import { HealthWorker } from '../components/library/HealthWorker.tsx'
-import { EmergencyCallButton } from '../components/library/EmergencyCallButton.tsx'
 import type { MockPatientCase } from '../mocks/data/patients.ts'
+import { EmergencyCallButton } from './EmergencyCallButton.tsx'
+import { SidebarHealthWorkerMenu } from './SidebarHealthWorkerMenu.tsx'
 
 // Nav links for the example triage workflow
 const EXAMPLE_NAV_LINKS = [
@@ -51,7 +51,7 @@ export function ExamplePatientView({ url, route, mock_patient }: Props) {
       sidebar_bottom={
         <div className='space-y-3'>
           <EmergencyCallButton href='#emergency' />
-          <HealthWorker {...EXAMPLE_EMPLOYEE} />
+          <SidebarHealthWorkerMenu {...EXAMPLE_EMPLOYEE} />
         </div>
       }
       buttons={

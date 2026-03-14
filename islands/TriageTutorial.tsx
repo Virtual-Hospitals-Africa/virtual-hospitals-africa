@@ -9,9 +9,7 @@ import { useMemo } from 'preact/hooks'
 import type { RenderedEmployee, RenderedPatientCompletedRegistration, RenderedSidebarWorkflow } from '../types.ts'
 import { OpenEncounterWorkflowLayout } from '../components/OpenEncounterWorkflowLayout.tsx'
 import { useLocationHash } from '../util/useLocationHash.ts'
-import { HealthWorker } from '../components/library/HealthWorker.tsx'
 import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
-import { EmergencyCallButton } from '../components/library/EmergencyCallButton.tsx'
 import { WORKFLOW_NAV_LINKS } from '../shared/workflow.ts'
 
 // Tutorial imports
@@ -37,6 +35,8 @@ import { RotateWarning } from '../components/RotateWarning.tsx'
 import { HealthWorkerHomePageLayout } from '../components/library/layout/HealthWorkerHomePage.tsx'
 import { TUTORIAL_WAITING_ROOM } from '../shared/tutorial/mock-data.ts'
 import WaitingRoomView from '../components/waiting_room/View.tsx'
+import { EmergencyCallButton } from './EmergencyCallButton.tsx'
+import { SidebarHealthWorkerMenu } from './SidebarHealthWorkerMenu.tsx'
 
 const TUTORIAL_NAV_LINKS = WORKFLOW_NAV_LINKS.triage.map((link) => ({
   ...link,
@@ -129,7 +129,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         sidebar_bottom={
           <div className='space-y-3'>
             <EmergencyCallButton href='#emergency' />
-            <HealthWorker {...employeeDisplay(employee)} />
+            <SidebarHealthWorkerMenu {...employeeDisplay(employee)} />
           </div>
         }
         // next_step_text='Next'

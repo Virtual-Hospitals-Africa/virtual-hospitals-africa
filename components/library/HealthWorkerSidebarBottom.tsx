@@ -1,7 +1,7 @@
+import { EmergencyCallButton } from '../../islands/EmergencyCallButton.tsx'
+import { SidebarHealthWorkerMenu } from '../../islands/SidebarHealthWorkerMenu.tsx'
 import { RenderedEmployee } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
-import { EmergencyCallButton } from './EmergencyCallButton.tsx'
-import { HealthWorker } from './HealthWorker.tsx'
 
 export function HealthWorkerSidebarBottom({ employee }: {
   employee: RenderedEmployee
@@ -14,7 +14,7 @@ export function HealthWorkerSidebarBottom({ employee }: {
         action={`/app/organizations/${employee.organization_id}/patients/start-emergency-escalation`}
       />
 
-      <HealthWorker
+      <SidebarHealthWorkerMenu
         {...employeeDisplay(employee)}
         menu_items={[
           {
