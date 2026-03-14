@@ -96,8 +96,8 @@ fi
 
 cleanup() {
   if ! [ -z $test_servers_pid ]; then
-    ./scripts/kill_process_on_port.sh "$HTTP_SERVER_PORT" || true
-    ./scripts/kill_process_on_port.sh "$HTTPS_PROXY_SERVER_PORT" || true
+    ./scripts/general-bash/kill_process_on_port.sh "$HTTP_SERVER_PORT" || true
+    ./scripts/general-bash/kill_process_on_port.sh "$HTTPS_PROXY_SERVER_PORT" || true
     kill $test_servers_pid > /dev/null || true
   fi
 }
