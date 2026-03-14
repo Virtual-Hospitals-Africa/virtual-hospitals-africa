@@ -5,7 +5,7 @@ import { asResult } from '../../util/asResult.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
 import { getZARecommendedDoses } from '../../backend/recommended_doses/south_africa_recommended_doses.ts'
 
-describe('generate test cases', () => {
+describe.skip('generate test cases', () => {
   const test_cases_file_path = './test/backend/recommended_doses_parser_test_cases.json'
 
   // deno-lint-ignore no-explicit-any

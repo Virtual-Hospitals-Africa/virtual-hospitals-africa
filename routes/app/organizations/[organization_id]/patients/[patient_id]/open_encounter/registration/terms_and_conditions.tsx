@@ -6,8 +6,7 @@ export const PatientRegistrationTermsAndConditionsSchema = z.object({})
 
 export const handler = postHandler(
   PatientRegistrationTermsAndConditionsSchema,
-  (ctx: OpenEncounterWorkflowContext, form_values) => {
-    console.log({ form_values })
+  (ctx: OpenEncounterWorkflowContext, _form_values) => {
     return completeAndProceedToNextStep(ctx)
   },
 )

@@ -26,7 +26,7 @@ ensure_no_process_on_port "$HTTPS_PROXY_SERVER_PORT"
 # Compile s-expressions on startup
 if [ -d "s_expression" ]; then
   echo "Compiling s-expressions..."
-  deno task script ./scripts/compile_s_expressions.ts
+  deno task script ./s_expression/compile.ts
 fi
 
 # Watch for changes to .lisp files and recompile
@@ -34,7 +34,7 @@ if [ -d "s_expression" ] && command -v fswatch >/dev/null 2>&1; then
   echo "Starting s-expression file watcher..."
   fswatch -o s_expression/*.lisp | while read -r; do
     echo "Detected .lisp file change, recompiling..."
-    deno task script ./scripts/compile_s_expressions.ts
+    deno task script ./s_expression/compile.ts
   done &
   LISP_WATCHER_PID="$!"
 elif [ -d "s_expression" ]; then

@@ -215,8 +215,6 @@ export async function TriageBriefHistoryPage(
     existing_allergies: existingAllergies(ctx),
   })
 
-  console.log({ existing_allergies })
-
   return (
     <BriefHistorySection
       most_recent_findings={most_recent_findings}

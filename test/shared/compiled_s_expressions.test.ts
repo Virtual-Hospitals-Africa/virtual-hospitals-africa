@@ -56,6 +56,9 @@ export function* allConceptsToLookFor(node: QueryableNode): Generator<SnomedConc
         yield* allConceptsToLookFor(expression)
       }
       break
+    case 'not':
+      yield* allConceptsToLookFor(node.expression)
+      break
     default:
       throw new Error(`Not supported ${node.atom}`)
   }
@@ -100,7 +103,7 @@ function* nodesAndConceptsSystemDiagnosisRules() {
 
 describe('s_expression/', () => {
   afterAll(() => db.destroy())
-  describe('NTASKS', () => {
+  describe('tasks', () => {
     it('has valid snomed concepts', async () => {
       const not_found = await filter(nodesAndConceptsTasks(), conceptDoesNotExist)
       assertArrayEmpty(not_found)

@@ -26,7 +26,7 @@
     (clinical_finding (snomed_concept "Pain radiating to lumbar region of back" "finding"))
     (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
     (clinical_finding (snomed_concept "Constipation" "finding"))
-    (clinical_finding (snomed_concept "Finding of vomiting" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
     (clinical_finding (snomed_concept "Nausea" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
     (<= (timestamp (clinical_finding (snomed_concept "Unable to break wind" "finding")))
         (time_ago 24 hours))

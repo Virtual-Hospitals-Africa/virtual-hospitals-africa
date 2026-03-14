@@ -78,6 +78,7 @@ export type MedicationFrequency =
   | 'q2h'
   | 'q30'
   | 'q30h'
+  | 'q3h'
   | 'q48h'
   | 'q4h'
   | 'q6h'

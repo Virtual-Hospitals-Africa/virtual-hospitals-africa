@@ -76,7 +76,6 @@ export const handler = {
   async GET(ctx: Context<any>) {
     const req = ctx.req
     const session_id = cookie.get(req)
-    console.log({ FAKE_GOOGLE_AUTH, session_id })
     if (!session_id) {
       return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref())
     }

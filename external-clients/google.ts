@@ -474,7 +474,6 @@ export class HealthWorkerGoogleClient extends GoogleClient {
       'health_worker',
       id,
     )
-    console.log({ tokens })
     assertOr401(tokens, `No google tokens found for health worker ${id}`)
     return new HealthWorkerGoogleClient(
       ctx.state.trx,

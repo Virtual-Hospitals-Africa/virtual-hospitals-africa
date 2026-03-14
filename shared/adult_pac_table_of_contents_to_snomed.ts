@@ -332,13 +332,13 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED = {
       'category': 'finding',
     },
   ],
-  'Mouth symptoms': [
+  'Mouth/Throat symptoms': [
     {
-      'type': 'specific_concept',
-      's_expression': '(active_condition (snomed_concept "Mouth symptoms" "finding") possible)',
+      'type': 'by_finding_site',
+      's_expression': '(clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure")))',
       'snomed_concept_id': '162009001',
-      'name': 'Mouth symptoms',
-      'category': 'finding',
+      'name': 'Mouth/Throat symptoms',
+      'category': 'body structure',
     },
   ],
   'Face symptoms': [

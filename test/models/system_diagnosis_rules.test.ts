@@ -10,6 +10,7 @@ import { parseWithSchema } from '../../shared/s_expression.ts'
 import { measurement_comparator } from '../../shared/s_expression_schemas.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { patient_evaluations } from '../../db/models/patient_evaluations.ts'
+import { assertMatches } from '../../util/assertMatches.ts'
 
 describeParallel('db/models/system_diagnosis_rules.ts', () => {
   afterAll(() => db.destroy())
@@ -52,7 +53,48 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       })
       assertEquals(diagnoses_result, 'Inserted 1 diagnosis(es): possible Anaphylaxis')
       const evaluation = await patient_evaluations.findOne(db, { patient_id })
-      console.log({ evaluation })
+      assertMatches(evaluation, {
+        'root_snomed_concept_name': 'Diagnosis',
+        'root_snomed_concept_category': 'observable entity',
+        'specific_snomed_concept_name': 'Anaphylaxis',
+        'specific_snomed_concept_category': 'disorder',
+        'existence': 'Yes',
+        'value': {
+          'name': 'Possible diagnosis (contextual qualifier)',
+        },
+        'destination_relations': [
+          {
+            'root_snomed_concept_name': 'Measurement finding',
+            'root_snomed_concept_category': 'finding',
+            'specific_snomed_concept_name': 'Systolic blood pressure',
+            'specific_snomed_concept_category': 'observable entity',
+            'existence': 'Yes',
+            'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
+            'relation_name': 'Evidence of',
+          },
+          {
+            'root_snomed_concept_name': 'Clinical finding',
+            'root_snomed_concept_category': 'finding',
+            'specific_snomed_concept_name': 'Insect bite - wound',
+            'specific_snomed_concept_category': 'disorder',
+            'existence': 'Yes',
+            'value': null,
+            'relation_name': 'Evidence of',
+          },
+        ],
+        'type': 'evaluation',
+        'employment_id': null,
+        'by_system': true,
+        'evaluates_record_id': null,
+        'as_part_of_procedure': null,
+        'attributes': [],
+        'displays': {
+          'finding': 'Anaphylaxis Diagnosis',
+          'value': 'Possible diagnosis',
+          'full': 'Anaphylaxis Diagnosis: Possible diagnosis',
+        },
+        'modifiers': [],
+      })
     },
   )
 

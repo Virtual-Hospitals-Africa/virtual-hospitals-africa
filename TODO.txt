@@ -1,4 +1,5 @@
 TODO
+- Split up the system_diagnosis_rules & system_priority_evaluations by page number in the same way
 - recommended dose parser
   - Fix search for 
     - Add test ensuring we can find tuberculosis
@@ -22,3 +23,12 @@ TODO
 - Add all additional tasks from SATS
   - Add test to ensure that cases that are supposed to be escalated to SHCP jump straight to that screen
 - Publish tests in human readable format
+- Create a script that sets up a mock patient for each of the conditions
+  - This way Dr. Skhu can log in and the patients are already set up and you can go manually check that the "check for" and "measure" tasks make sense
+- Ask Claude to take another pass at documenting likely = probable
+- Create a script that sets up a mock patient exercises each test case
+  - This way Dr. Skhu can log in and the patients are already set up and you can go manually review
+- check for additional tasks on small screen width
+- collapsible drawer + sideber
+- word wrapping on drawer
+- pdf not opening to page on android app

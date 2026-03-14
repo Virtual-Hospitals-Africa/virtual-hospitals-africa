@@ -1,6 +1,8 @@
 import z from 'zod'
 import { ParsedDose } from '../backend/recommended_doses/shared.ts'
 import { positive_decimal, positive_integer } from '../util/validators.ts'
+import { PrescriptionFrequencies } from './prescription.ts'
+import keys from '../util/keys.ts'
 
 export const PatientCaseSchema = z.object({
   sex: z.enum(['male', 'female']),
@@ -35,45 +37,7 @@ const PerSizeSchema = z.literal('kg').or(z.literal('m2')).or(z.object({
   kg: positive_decimal,
 }))
 
-const PrescriptionFrequencyKeySchema = z.enum([
-  'ac',
-  'am',
-  'nocte',
-  'od',
-  'pm',
-  'q15',
-  'q30',
-  'q1h',
-  'q2h',
-  'q4h',
-  'q6h',
-  'q8h',
-  'qd',
-  'bd',
-  'tds',
-  'qid',
-  'qod',
-  'mane',
-  'qmane',
-  'qn',
-  'q12h',
-  'q24h',
-  'q30h',
-  'q48h',
-  'q72h',
-  'hs',
-  'qhs',
-  'qw',
-  'bw',
-  'tw',
-  'qm',
-  'bm',
-  'tm',
-  'qs',
-  'stat',
-  'prn',
-  'at',
-])
+const PrescriptionFrequencyKeySchema = z.enum(keys(PrescriptionFrequencies))
 
 const PrescriptionFrequencySchema = PrescriptionFrequencyKeySchema.or(
   PrescriptionFrequencyKeySchema.array(),

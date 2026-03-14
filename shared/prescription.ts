@@ -33,6 +33,7 @@ export const PrescriptionFrequencies = {
   q30: 'every 30 minutes',
   q1h: 'every hour',
   q2h: 'every 2 hours',
+  q3h: 'every 3 hours',
   q4h: 'every 4 hours',
   q6h: 'every 6 hours',
   q8h: 'every 8 hours',
