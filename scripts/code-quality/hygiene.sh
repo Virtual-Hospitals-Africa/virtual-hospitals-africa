@@ -58,7 +58,7 @@ rule_no_camel_case() {
 }
 
 rule_no_node_imports() {
-  ! rg -n --pcre2 --color=always "from 'node:" --glob '!scripts/hygiene.sh'
+  ! rg -n --pcre2 --color=always "from 'node:" --glob '!scripts/code-quality/hygiene.sh'
 }
 
 rule_test_files_naming() {
@@ -79,7 +79,14 @@ rule_no_db_imports_in_frontend() {
 
 rule_imports_at_the_start() {
   # Flag inline import() type expressions (e.g. import('./types.ts').Foo) outside of actual import statements
-  ! rg -n --pcre2 --color=always '^\s*(?!import\b).*\bimport\(' --glob '**/*.ts' --glob '**/*.tsx' --glob '!util.ts' --glob '!repl.ts' --glob '!scripts/generate_repl.ts' --glob '!db/migrate.ts' --glob '!db/seed/run.ts'
+  ! rg -n --pcre2 --color=always '^\s*(?!import\b).*\bimport\(' \
+    --glob '**/*.ts' \
+    --glob '**/*.tsx' \
+    --glob '!util.ts' \
+    --glob '!repl.ts' \
+    --glob '!scripts/dev-environment/generate_repl.ts' \
+    --glob '!db/migrate.ts' \
+    --glob '!db/seed/run.ts'
 }
 
 rule_no_only_in_tests() {

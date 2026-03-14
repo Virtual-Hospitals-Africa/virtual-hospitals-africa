@@ -394,7 +394,7 @@
     possible
   )
   adult
-  (and
+  (or
     (clinical_finding (snomed_concept "Pain in calf" "finding"))
     (clinical_finding (snomed_concept "Swollen calf" "finding"))
   )

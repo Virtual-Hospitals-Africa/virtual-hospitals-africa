@@ -2,11 +2,7 @@
 (task
   "Check for urgent dental conditions"
   adult
-  (or
-    (clinical_finding (snomed_concept "Tooth symptoms" "finding")) ;; use finding site instead?
-    (clinical_finding (finding_site (snomed_concept "Gingival structure" "body structure")))
-  )
-  (clinical_finding (finding_site (snomed_concept "Dental arch structure" "body structure")))
+  (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Facial swelling" "finding"))
     (clinical_finding (snomed_concept "Swelling of lower jaw region" "finding"))

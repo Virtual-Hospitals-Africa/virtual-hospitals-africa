@@ -6,7 +6,6 @@
     (clinical_finding (finding_site (snomed_concept "Upper limb structure" "body structure")))
     (clinical_finding (finding_site (snomed_concept "Hand structure" "body structure")))
   )
-  (clinical_finding (finding_site (snomed_concept "Upper limb structure" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Pain in left arm" "finding"))
     (clinical_finding (snomed_concept "Chest pain" "finding"))

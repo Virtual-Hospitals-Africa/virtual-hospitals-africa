@@ -1,6 +1,5 @@
 import { afterAll, it } from 'std/testing/bdd.ts'
 import { MedicineParser } from '../../backend/recommended_doses/MedicineParser.ts'
-import { MedicineRow, ParsedMedicineRecommendedDose } from '../../backend/recommended_doses/shared.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
 import { asResult } from '../../util/asResult.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
@@ -16,8 +15,10 @@ afterAll(async () => {
   await Deno.writeTextFile(test_cases_file_path, humanReadableJson(results), { create: true })
 })
 
-function test(test_case: { row: MedicineRow; expected_parsed?: ParsedMedicineRecommendedDose }) {
-  it(`works for ${test_case.row['MEDICINE NAME (International Nonproprietary Name)']} / ${test_case.row['ADULT/ CHILDREN']}`, () => {
+it('parses all test cases', () => {
+  const failures: Error[] = []
+
+  for (const test_case of test_cases) {
     const medicine_parser_result = asResult(() => MedicineParser.parse(test_case.row))
     if (!medicine_parser_result.success) {
       results.push({
@@ -26,7 +27,8 @@ function test(test_case: { row: MedicineRow; expected_parsed?: ParsedMedicineRec
         error_message: medicine_parser_result.error.message,
         error_stack: medicine_parser_result.error.stack,
       })
-      throw medicine_parser_result.error
+      failures.push(medicine_parser_result.error)
+      continue
     }
     if (!test_case.expected_parsed) {
       results.push({
@@ -34,7 +36,7 @@ function test(test_case: { row: MedicineRow; expected_parsed?: ParsedMedicineRec
         actual_parsed: medicine_parser_result.value.parsed,
         expected_parsed: medicine_parser_result.value.parsed,
       })
-      return
+      continue
     }
     const assertion_result = asResult(() => assertMatches(medicine_parser_result.value.parsed, test_case.expected_parsed))
     if (assertion_result.success) {
@@ -43,7 +45,7 @@ function test(test_case: { row: MedicineRow; expected_parsed?: ParsedMedicineRec
         actual_parsed: medicine_parser_result.value.parsed,
         expected_parsed: medicine_parser_result.value.parsed,
       })
-      return
+      continue
     }
     results.push({
       row: test_case.row,
@@ -52,8 +54,10 @@ function test(test_case: { row: MedicineRow; expected_parsed?: ParsedMedicineRec
       error_message: assertion_result.error.message,
       error_stack: assertion_result.error.stack,
     })
-    throw assertion_result.error
-  })
-}
+    failures.push(assertion_result.error)
+  }
 
-test_cases.forEach(test)
+  if (failures.length > 0) {
+    throw new AggregateError(failures, `${failures.length} test case(s) failed`)
+  }
+})

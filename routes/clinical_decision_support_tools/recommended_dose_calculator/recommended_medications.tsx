@@ -4,7 +4,8 @@ import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/librar
 import { StepsSidebar } from '../../../components/library/Sidebar.tsx'
 import { MedicineRecommendation, RecommendedMedication } from '../../../components/RecommendedMedication.tsx'
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
-import { PatientCaseSchema, recommended_doses } from '../../../db/models/recommended_doses.ts'
+import { recommended_doses } from '../../../db/models/recommended_doses.ts'
+import { PatientCaseSchema } from '../../../shared/recommended_doses.ts'
 
 export default async function RecommendedMedications(
   ctx: Context<unknown>,
