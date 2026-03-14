@@ -63,7 +63,13 @@ export const additional_tasks = {
 
     const to_consider = TASKS.filter(
       (task) => task.ages.includes(patient_age_determination),
-    )
+    ).filter((task) => {
+      if (task.procedure.atom === 'refer' || task.procedure.atom === 'move_to') {
+        console.log(`Not yet handling ${task.procedure.atom} procedures, skipping task: "${task.description}"`)
+        return false
+      }
+      return true
+    }) as Array<(typeof TASKS)[number] & { procedure: Lang['procedure'] }>
 
     if (!to_consider.length) return 'Skipped: no tasks apply to this age group'
 

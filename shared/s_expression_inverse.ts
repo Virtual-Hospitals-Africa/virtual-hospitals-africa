@@ -183,6 +183,14 @@ export function inverseSExpression(node: AnyNode): string {
       return `(system_diagnosis_rule ${inverseSExpression(node.diagnosis)} ${ages(node)} ${inverseSExpression(node.due_to)})`
     }
 
+    case 'refer': {
+      return `(refer (role ${quoted(node.role)}))`
+    }
+
+    case 'move_to': {
+      return `(move_to (room ${quoted(node.room)}))`
+    }
+
     default: {
       const _exhaustive: never = node
       throw new Error(`Unknown node type: ${(_exhaustive as AnyNode).atom}`)

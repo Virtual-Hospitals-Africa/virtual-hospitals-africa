@@ -21,7 +21,7 @@ describeParallel('db/models/additional_tasks.ts', () => {
     'all of the findings referenced to check_for actually exist',
     async () => {
       await pMap(TASKS, async (task) => {
-        if (!Array.isArray(task.procedure.value)) return
+        if (task.procedure.atom !== 'procedure' || !Array.isArray(task.procedure.value)) return
 
         for (const finding of task.procedure.value) {
           const snomed_concept = finding.atom === 'measurement' ? finding.snomed_concept : finding.specific_snomed_concept

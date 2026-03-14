@@ -50,7 +50,7 @@ type NonQueryableBaseLang = {
     description: string
     ages: AgeDetermination[]
     due_to: QueryableNode
-    procedure: Lang['procedure']
+    procedure: Lang['procedure'] | Lang['refer'] | Lang['move_to']
   }
   system_priority_evaluation: {
     ages: AgeDetermination[]
@@ -65,6 +65,12 @@ type NonQueryableBaseLang = {
   time_ago: Duration
   timestamp: {
     finding: InsertableFindingBase
+  }
+  refer: {
+    role: string
+  }
+  move_to: {
+    room: string
   }
 }
 
@@ -838,6 +844,34 @@ const ages = z.lazy(() =>
     .or(z.literal('all_ages').transform(() => ['adult' as const, 'older child' as const, 'younger child' as const]))
 ).describe('ages')
 
+export const refer: z.ZodType<Lang['refer']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('refer'),
+    args: z.tuple([
+      z.object({
+        atom: z.literal('role'),
+        args: z.tuple([z.string()]),
+      }).transform(({ args: [name] }) => name),
+    ]),
+  }).transform(({ atom, args: [role] }) => ({ atom, role }))
+).describe('refer')
+
+export const move_to: z.ZodType<Lang['move_to']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('move_to'),
+    args: z.tuple([
+      z.object({
+        atom: z.literal('room'),
+        args: z.tuple([z.string()]),
+      }).transform(({ args: [name] }) => name),
+    ]),
+  }).transform(({ atom, args: [room] }) => ({ atom, room }))
+).describe('move_to')
+
+const task_procedure: z.ZodType<Lang['procedure'] | Lang['refer'] | Lang['move_to']> = z.lazy(() =>
+  z.union([procedure, refer, move_to])
+).describe('task_procedure')
+
 export const task: z.ZodType<Lang['task']> = z.lazy(() =>
   z.object({
     atom: z.literal('task'),
@@ -845,7 +879,7 @@ export const task: z.ZodType<Lang['task']> = z.lazy(() =>
       z.string(),
       ages,
       any_query,
-      procedure,
+      task_procedure,
     ]),
   }).transform(({ atom, args: [description, ages, due_to, procedure] }) => ({
     atom,
@@ -954,9 +988,11 @@ export const any_query: z.ZodType<QueryableNode> = z.lazy(() =>
     procedure,
     measurement,
     active_condition,
+    finding_recency_comparator,
     measurement_comparator,
     qualifier,
     exact,
+    history,
     or,
     and,
     not,
