@@ -1,5 +1,14 @@
 TODO
-- Split up the system_diagnosis_rules & system_priority_evaluations by page number in the same way
+- Finish Port Tutorial to anaphylaxis
+  - Just 
+  - add more dialogue for doctor, pharmacist
+  - new images for doctor + pharmacist
+  - fix duduzile's image
+  - dialogue has min/max width
+- check for additional tasks on small screen width
+- collapsible drawer + sidebar
+- word wrapping on drawer
+
 - recommended dose parser
   - Fix search for 
     - Add test ensuring we can find tuberculosis
@@ -9,15 +18,6 @@ TODO
 - Launch Blog
   - styles
   - one more post
-- Finish Port Tutorial to anaphylaxis
-  - Capture outputs from running app
-  - colors for urgent, very urgent, emergency,
-  - Lindiwe moves to bottom right when showing large page
-  - Input 
-  - add more dialogue for doctor, pharmacist
-  - new images for doctor + pharmacist
-  - fix duduzile's image
-  - dialogue has min/max width
 - Maybe make triage freeplay its own standalone tool?
   - When you first arrive a new patient is generated for you
 - Add all additional tasks from SATS
@@ -28,7 +28,4 @@ TODO
 - Ask Claude to take another pass at documenting likely = probable
 - Create a script that sets up a mock patient exercises each test case
   - This way Dr. Skhu can log in and the patients are already set up and you can go manually review
-- check for additional tasks on small screen width
-- collapsible drawer + sideber
-- word wrapping on drawer
 - pdf not opening to page on android app
