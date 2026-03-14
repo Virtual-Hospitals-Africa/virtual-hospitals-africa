@@ -196,6 +196,7 @@ function snomedConceptDisplay(name: string): string {
   return name
     .replace(' (severity modifier)', '') // Oddly SNOMED puts (severity modifier) in _on top of_ (qualifier value)
     .replace(' (contextual qualifier)', '')
+    .replace(/^Finding of (.+)/, '$1')
 }
 
 function valueDisplay(

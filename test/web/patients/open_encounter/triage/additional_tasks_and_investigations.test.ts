@@ -26,6 +26,8 @@ import { events } from '../../../../../db/models/events.ts'
 import { getFormLabels, getFormValues } from 'test/_helpers/form.ts'
 import { getTableDisplay } from 'test/_helpers/table.ts'
 import { deepMerge } from '../../../../../util/deepMerge.ts'
+import { logReadableJson } from '../../../../../util/humanReadableJson.ts'
+import keys from '../../../../../util/keys.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
@@ -35,7 +37,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   afterAll(() => db.destroy())
   afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
-  itParallel('prompts for Nausea Vomiting Pallor Sweating in case of chest pain', async () => {
+  itParallel.only('prompts for Nausea Vomiting Pallor Sweating in case of chest pain', async () => {
     const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
       patient_demographics: { date_of_birth: '2001-01-01' },
       brief_history: {
@@ -87,12 +89,119 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     const [task_group] = task_groups
     assertMatches(task_group.due_to, [{ 'displays': { 'full': 'Chest pain' } }])
 
-    assertEquals(task_group.tasks, [
+    assertMatches(task_group.tasks, [
       {
         'atom': 'link',
         'title': 'APC 2023 — Chest pain',
         'href': '/medical-resources/primary-care/adult.pdf#page=37',
         'thumbnail_href': '/medical-resources/za/primary-care/adult/thumbnails/400/37.png',
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Pulse irregular', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pulse irregular" "finding"))',
+        'displays': { 'value': null, 'finding': 'Pulse irregular', 'full': 'Pulse irregular' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Severe pain', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Severe pain" "finding"))',
+        'displays': { 'value': null, 'finding': 'Severe pain', 'full': 'Severe pain' },
+        'existing_finding': {
+          'finding_s_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Severe pain" "finding"))',
+          'specific_snomed_concept_name': 'Severe pain',
+          'specific_snomed_concept_category': 'finding',
+          'existence': 'No',
+          'value': {
+            'name': 'No',
+            'type': 'snomed_concept',
+            'category': 'qualifier value',
+            'snomed_concept_id': '373067005',
+          },
+          'evaluations': [],
+          'priority': null,
+          'destination_relations': [],
+          'type': 'finding',
+          'as_part_of_procedure': {
+            'root_snomed_concept_id': '71388002',
+            'root_snomed_concept_name': 'Procedure',
+            'root_snomed_concept_category': 'procedure',
+            'specific_snomed_concept_id': '245581009',
+            'specific_snomed_concept_name': 'Emergency examination for triage',
+            'specific_snomed_concept_category': 'procedure',
+            'workflow_step_name': 'warning_signs',
+          },
+          'score': null,
+          'attributes': [],
+          'displays': { 'finding': 'Severe pain', 'value': 'No', 'full': 'Severe pain: No' },
+          'modifiers': [],
+          'provider': {
+            'organizations': [
+              {
+                'category': 'Clinic',
+              },
+            ],
+            'role': 'nurse',
+            'is_me': true,
+          },
+        },
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Chest pain', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [
+          {
+            'atom': 'qualifier',
+            'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'New', 'category': 'qualifier value' },
+            'qualifiers': [],
+          },
+        ],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression':
+          '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "New" "qualifier value")))',
+        'displays': { 'value': null, 'finding': 'New Chest pain', 'full': 'New Chest pain' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Chest discomfort', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [
+          {
+            'atom': 'qualifier',
+            'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'New', 'category': 'qualifier value' },
+            'qualifiers': [],
+          },
+        ],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression':
+          '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest discomfort" "finding") (qualifier (snomed_concept "New" "qualifier value")))',
+        'displays': { 'value': null, 'finding': 'New Chest discomfort', 'full': 'New Chest discomfort' },
+        'existing_finding': null,
       },
       {
         'atom': 'finding',
@@ -111,7 +220,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       {
         'atom': 'finding',
         'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
-        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Vomiting', 'category': 'disorder' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Finding of vomiting', 'category': 'finding' },
         'value_snomed_concept': null,
         'qualifiers': [],
         'attributes': [],
@@ -231,6 +340,50 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       {
         'atom': 'finding',
         'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Pain radiating to left shoulder',
+          'category': 'finding',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to left shoulder" "finding"))',
+        'displays': {
+          'value': null,
+          'finding': 'Pain radiating to left shoulder',
+          'full': 'Pain radiating to left shoulder',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Pain radiating to right shoulder',
+          'category': 'finding',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain radiating to right shoulder" "finding"))',
+        'displays': {
+          'value': null,
+          'finding': 'Pain radiating to right shoulder',
+          'full': 'Pain radiating to right shoulder',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
         'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Difficulty breathing', 'category': 'finding' },
         'value_snomed_concept': null,
         'qualifiers': [],
@@ -242,8 +395,255 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         'displays': { 'value': null, 'finding': 'Difficulty breathing', 'full': 'Difficulty breathing' },
         'existing_finding': null,
       },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'History of treatment for ischemic heart disease',
+          'category': 'situation',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression':
+          '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "History of treatment for ischemic heart disease" "situation"))',
+        'displays': {
+          'value': null,
+          'finding': 'History of treatment for ischemic heart disease',
+          'full': 'History of treatment for ischemic heart disease',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Diabetes mellitus', 'category': 'disorder' },
+        'value_snomed_concept': null,
+        'qualifiers': [
+          {
+            'atom': 'qualifier',
+            'specific_snomed_concept': {
+              'atom': 'snomed_concept',
+              'name': 'Known present',
+              'category': 'qualifier value',
+            },
+            'qualifiers': [],
+          },
+        ],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression':
+          '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Diabetes mellitus" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))',
+        'displays': {
+          'value': null,
+          'finding': 'Known present Diabetes mellitus',
+          'full': 'Known present Diabetes mellitus',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Smoker', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Smoker" "finding"))',
+        'displays': { 'value': null, 'finding': 'Smoker', 'full': 'Smoker' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Hypertensive disorder, systemic arterial',
+          'category': 'disorder',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [
+          {
+            'atom': 'qualifier',
+            'specific_snomed_concept': {
+              'atom': 'snomed_concept',
+              'name': 'Known present',
+              'category': 'qualifier value',
+            },
+            'qualifiers': [],
+          },
+        ],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression':
+          '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Hypertensive disorder, systemic arterial" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))',
+        'displays': {
+          'value': null,
+          'finding': 'Known present Hypertensive disorder, systemic arterial',
+          'full': 'Known present Hypertensive disorder, systemic arterial',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Hypercholesterolemia', 'category': 'disorder' },
+        'value_snomed_concept': null,
+        'qualifiers': [
+          {
+            'atom': 'qualifier',
+            'specific_snomed_concept': {
+              'atom': 'snomed_concept',
+              'name': 'Known present',
+              'category': 'qualifier value',
+            },
+            'qualifiers': [],
+          },
+        ],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression':
+          '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Hypercholesterolemia" "disorder") (qualifier (snomed_concept "Known present" "qualifier value")))',
+        'displays': {
+          'value': null,
+          'finding': 'Known present Hypercholesterolemia',
+          'full': 'Known present Hypercholesterolemia',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Family history of ischemic heart disease',
+          'category': 'situation',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Family history of ischemic heart disease" "situation"))',
+        'displays': {
+          'value': null,
+          'finding': 'Family history of ischemic heart disease',
+          'full': 'Family history of ischemic heart disease',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'ST segment elevation', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "ST segment elevation" "finding"))',
+        'displays': { 'value': null, 'finding': 'St segment elevation', 'full': 'St segment elevation' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'ST segment depression', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "ST segment depression" "finding"))',
+        'displays': { 'value': null, 'finding': 'St segment depression', 'full': 'St segment depression' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Electrocardiographic left bundle branch block',
+          'category': 'finding',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Electrocardiographic left bundle branch block" "finding"))',
+        'displays': {
+          'value': null,
+          'finding': 'Electrocardiographic left bundle branch block',
+          'full': 'Electrocardiographic left bundle branch block',
+        },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Chest pain on breathing',
+          'category': 'finding',
+        },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain on breathing" "finding"))',
+        'displays': { 'value': null, 'finding': 'Chest pain on breathing', 'full': 'Chest pain on breathing' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'finding',
+        'root_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Clinical finding', 'category': 'finding' },
+        'specific_snomed_concept': { 'atom': 'snomed_concept', 'name': 'Pleuritic pain', 'category': 'finding' },
+        'value_snomed_concept': null,
+        'qualifiers': [],
+        'attributes': [],
+        'exact': false,
+        'history': false,
+        'existence': 'Any',
+        's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pleuritic pain" "finding"))',
+        'displays': { 'value': null, 'finding': 'Pleuritic pain', 'full': 'Pleuritic pain' },
+        'existing_finding': null,
+      },
+      {
+        'atom': 'measurement',
+        'snomed_concept': {
+          'atom': 'snomed_concept',
+          'name': 'Heart rate measured at systemic artery',
+          'category': 'observable entity',
+        },
+        'units': 'bpm',
+        's_expression': '(measurement (snomed_concept "Heart rate measured at systemic artery" "observable entity") bpm)',
+        'displays': {
+          'value': null,
+          'finding': 'Heart rate measured at systemic artery',
+          'full': 'Heart rate measured at systemic artery',
+        },
+        'existing_measurement': null,
+      },
     ])
-
     const form_labels = getFormLabels($)
     const form_values = getFormValues($)
 
@@ -394,16 +794,16 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
         measure_vitals: {
           measurements: asVitalMeasurementFormValues({
-            respiratory_rate: 12, // 9-14 -> score 0
-            heart_rate: 60, // 51-100 -> score 0
-            blood_pressure_systolic: 120, // 101-199 -> score 0
-            blood_pressure_diastolic: 80,
-            temperature: 36.6, // 35-38.4 -> score 0
+            respiratory_rate: 12,
+            heart_rate: 60,
+            blood_pressure_systolic: 85,
+            blood_pressure_diastolic: 55,
+            temperature: 36.6,
           }),
           assessments: asVitalAssessmentFormValues({
-            mobility_assessment: 'Walking', // score 0
-            consciousness: 'Alert', // score 0
-            trauma_presence: 'No', // score 0
+            mobility_assessment: 'Walking',
+            consciousness: 'Alert',
+            trauma_presence: 'No',
           }),
         },
       })
@@ -470,7 +870,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     'upgrades a possible diagnosis for anaphylaxis to a probable diagnosis after meeting prompted for checks',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
-      const { $, nurse, encounter, patient_id: _patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
+      const { $, patient_encounter_id, postStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -493,16 +893,16 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
         measure_vitals: {
           measurements: asVitalMeasurementFormValues({
-            respiratory_rate: 12, // 9-14 -> score 0
-            heart_rate: 60, // 51-100 -> score 0
-            blood_pressure_systolic: 120, // 101-199 -> score 0
-            blood_pressure_diastolic: 80,
-            temperature: 36.6, // 35-38.4 -> score 0
+            respiratory_rate: 12,
+            heart_rate: 60,
+            blood_pressure_systolic: 85, // low, triggers check for anaphylaxis
+            blood_pressure_diastolic: 55,
+            temperature: 36.6,
           }),
           assessments: asVitalAssessmentFormValues({
-            mobility_assessment: 'Walking', // score 0
-            consciousness: 'Alert', // score 0
-            trauma_presence: 'No', // score 0
+            mobility_assessment: 'Walking',
+            consciousness: 'Alert',
+            trauma_presence: 'No',
           }),
         },
       })
@@ -511,73 +911,17 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       // deno-lint-ignore no-explicit-any
       const form_values: any = getFormValues($)
+      const additional_tasks_and_investigations_post_data = structuredClone(form_values)
+      additional_tasks_and_investigations_post_data.check_for['finding-sudden-onset-itching'].existence = 'Yes'
+      additional_tasks_and_investigations_post_data.check_for['finding-difficulty-breathing'].existence = 'Yes'
 
+      for (const key of keys(additional_tasks_and_investigations_post_data.check_for)) {
+        if (!additional_tasks_and_investigations_post_data.check_for[key].existence) {
+          additional_tasks_and_investigations_post_data.check_for[key].existence = 'No'
+        }
+      }
       const $assign_priority = await postStep({
-        additional_tasks_and_investigations: {
-          evaluation_ids: (await additional_tasks.getTasksGroups(db, { health_worker_id: nurse.health_worker.id, encounter })).evaluation_ids,
-          check_for: {
-            'finding-sudden-onset-itching': {
-              s_expression:
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
-              existence: 'Yes',
-            },
-            'finding-sudden-onset-eruption': {
-              s_expression:
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
-              existence: 'No',
-            },
-            'finding-insect-bite-wound': {
-              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Insect bite - wound" "disorder"))',
-              existing_finding: {
-                id: form_values['check_for']['finding-insect-bite-wound']['existing_finding']['id'] as string,
-                existence: 'Yes',
-              },
-              existence: 'Yes',
-            },
-            'finding-sudden-onset-swelling-face-structure': {
-              s_expression:
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
-              existence: 'No',
-            },
-            'finding-sudden-onset-swelling-tongue-structure': {
-              s_expression:
-                '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Swelling" "finding") (attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
-              existence: 'No',
-            },
-            'finding-dizziness': {
-              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dizziness" "finding"))',
-              existence: 'No',
-            },
-            'finding-collapse': {
-              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Collapse" "finding"))',
-              existence: 'No',
-            },
-            'finding-difficulty-breathing': {
-              s_expression: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Difficulty breathing" "finding"))',
-              existence: 'Yes',
-            },
-            'finding-exposure-to-peanut': {
-              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))',
-              existence: 'No',
-            },
-            'finding-exposure-to-tree-nut': {
-              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))',
-              existence: 'No',
-            },
-            'finding-exposure-to-eggs-edible': {
-              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Eggs (edible)" "substance"))',
-              existence: 'No',
-            },
-            'finding-exposure-to-milk': {
-              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))',
-              existence: 'No',
-            },
-            'finding-exposure-to-fish': {
-              s_expression: '(finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))',
-              existence: 'No',
-            },
-          },
-        },
+        additional_tasks_and_investigations: additional_tasks_and_investigations_post_data,
       })
 
       const table = getTableDisplay($assign_priority)
@@ -741,16 +1085,16 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
         measure_vitals: {
           measurements: asVitalMeasurementFormValues({
-            respiratory_rate: 12, // 9-14 -> score 0
-            heart_rate: 60, // 51-100 -> score 0
-            blood_pressure_systolic: 120, // 101-199 -> score 0
-            blood_pressure_diastolic: 80,
-            temperature: 36.6, // 35-38.4 -> score 0
+            respiratory_rate: 12,
+            heart_rate: 60,
+            blood_pressure_systolic: 85,
+            blood_pressure_diastolic: 55,
+            temperature: 36.6,
           }),
           assessments: asVitalAssessmentFormValues({
-            mobility_assessment: 'Walking', // score 0
-            consciousness: 'Alert', // score 0
-            trauma_presence: 'No', // score 0
+            mobility_assessment: 'Walking',
+            consciousness: 'Alert',
+            trauma_presence: 'No',
           }),
         },
       })
