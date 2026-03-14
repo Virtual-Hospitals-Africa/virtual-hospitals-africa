@@ -18,8 +18,8 @@ Options:
                 same DATABASE_URL as the main .env.docker file.
 
 Examples:
-  $0 fix-auth-bug "Fix the authentication bug in the login flow"
-  $0 add-search  "Add full-text search to the products table"
+  $0 fix_auth_bug "Fix the authentication bug in the login flow"
+  $0 add_search  "Add full-text search to the products table"
   $0 --skipdb fix-typo "Fix typo in the README"
 EOF
 }

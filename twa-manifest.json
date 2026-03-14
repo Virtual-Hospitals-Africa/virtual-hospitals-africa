@@ -19,8 +19,8 @@
     "path": "/Users/willweiss/dev/morehumaninternet/virtual-hospitals-africa/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1",
-  "appVersionCode": 1,
+  "appVersionName": "2",
+  "appVersionCode": 2,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://za.virtualhospitalsafrica.org/manifest.json",
@@ -46,5 +46,5 @@
   "fileHandlers": [],
   "launchHandlerClientMode": "",
   "displayOverride": [],
-  "appVersion": "1"
+  "appVersion": "2"
 }
