@@ -2,7 +2,6 @@ import db from '../db/db.ts'
 import { ChatbotName, TrxOrDb, UnhandledMessage, WhatsApp } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { conversations } from '../db/models/conversations.ts'
-import { sendToEngineeringChannel } from '../external-clients/slack.ts'
 import capitalize from '../util/capitalize.ts'
 import generateUUID from '../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -70,23 +69,23 @@ async function respondToMessage(
       error_message: err.message,
     })
 
-    if (on_production) {
-      const message = `*${capitalize(chatbot_name)} Chatbot Error*`
+    // if (on_production) {
+    // const message = `*${capitalize(chatbot_name)} Chatbot Error*`
 
-      // const github_code_href =
-      //   `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
-      // const github_code_link = `<${github_code_href}|Github Commit>`
+    // const github_code_href =
+    //   `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
+    // const github_code_link = `<${github_code_href}|Github Commit>`
 
-      const logs_href = `https://dashboard.heroku.com/apps/vha-${unhandled_message.chatbot_name}-chatbot/logs`
-      const logs_link = `<${logs_href}|Heroku Logs>`
+    // const logs_href = `https://dashboard.heroku.com/apps/vha-${unhandled_message.chatbot_name}-chatbot/logs`
+    // const logs_link = `<${logs_href}|Heroku Logs>`
 
-      await sendToEngineeringChannel([
-        message,
-        err.message,
-        // github_code_link,
-        logs_link,
-      ].join('\n'))
-    }
+    // await sendToEngineeringChannel([
+    //   message,
+    //   err.message,
+    //   // github_code_link,
+    //   logs_link,
+    // ].join('\n'))
+    // }
   }
 }
 

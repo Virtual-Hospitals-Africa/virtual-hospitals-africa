@@ -44,7 +44,7 @@ function HeaderWithoutNav() {
   return (
     <HeaderBase>
       <a href='/' className='py-8'>
-        <LogoWithFullText variant='indigo' className='w-60' />
+        <LogoWithFullText variant='indigo' className='pt-6 w-60' />
       </a>
     </HeaderBase>
   )

@@ -6,6 +6,7 @@ import { TextInput } from '../../islands/form/inputs/text.tsx'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
 export const CONTACT_REASON_OPTIONS = [
+  { value: 'mailing_list_signup' as const, label: 'Sign up for mailing list' },
   { value: 'general_inquiry' as const, label: 'General Inquiry' },
   { value: 'book_a_demo' as const, label: 'Book a demo' },
   { value: 'book_an_intro_call' as const, label: 'Book an intro call' },

@@ -1,6 +1,4 @@
 import { TrxOrDb } from '../types.ts'
-import { sendToHealthWorkerLoggedInChannel } from '../external-clients/slack.ts'
-import { health_workers } from '../db/models/health_workers.ts'
 import { employees } from '../db/models/employees.ts'
 import { patient_encounters } from '../db/models/patient_encounters.ts'
 import { notifications } from '../db/models/notifications.ts'
@@ -27,17 +25,17 @@ export const EVENTS = {
       health_worker_id: z.string().uuid(),
     }),
     {
-      async notifySlack(trx, payload) {
-        const { health_worker_id } = payload.data
-        const health_worker = await health_workers.getEmployed(trx, {
-          health_worker_id,
-        }).catch((_err) => null)
-        assert(health_worker, 'Health worker not found')
+      // async notifySlack(trx, payload) {
+      //   const { health_worker_id } = payload.data
+      //   const health_worker = await health_workers.getEmployed(trx, {
+      //     health_worker_id,
+      //   }).catch((_err) => null)
+      //   assert(health_worker, 'Health worker not found')
 
-        const message = `Health worker ${health_worker.name} has logged in for the first time`
-        await sendToHealthWorkerLoggedInChannel(message)
-        return message
-      },
+      //   const message = `Health worker ${health_worker.name} has logged in for the first time`
+      //   await sendToHealthWorkerLoggedInChannel(message)
+      //   return message
+      // },
     },
   ),
   PatientRegistration: defineEvent(

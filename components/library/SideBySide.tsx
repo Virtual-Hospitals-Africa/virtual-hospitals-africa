@@ -1,10 +1,20 @@
 import { ComponentChildren } from 'preact'
 import PageHeader from './typography/PageHeader.tsx'
 
+export function SideBySideImage({ src }: { src: string }) {
+  return (
+    <img
+      src={src}
+      alt=''
+      className='aspect-[7/5] w-[37rem] max-w-none rounded-2xl bg-gray-50 object-cover'
+    />
+  )
+}
+
 export default function SideBySide(
   { h1, image, children }: {
     h1: string
-    image: string
+    image: string | ComponentChildren
     children: ComponentChildren
   },
 ) {
@@ -18,11 +28,7 @@ export default function SideBySide(
           </div>
           <div class='flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents'>
             <div class='w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-start'>
-              <img
-                src={image}
-                alt=''
-                className='aspect-[7/5] w-[37rem] max-w-none rounded-2xl bg-gray-50 object-cover'
-              />
+              {typeof image === 'string' ? <SideBySideImage src={image} /> : image}
             </div>
           </div>
         </div>
