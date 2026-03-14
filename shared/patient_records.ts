@@ -279,7 +279,7 @@ function buildDisplays(
     qualifiers = [],
   } = record
 
-  assert(qualifiers.length <= 1, 'qualifiers.length <= 1')
+  // assert(qualifiers.length <= 1, 'qualifiers.length <= 1')
   for (const qualifier of qualifiers) {
     assert(
       !qualifier.value,

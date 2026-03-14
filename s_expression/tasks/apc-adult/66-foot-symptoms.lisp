@@ -2,7 +2,7 @@
 (task
   "Check for urgent foot symptom conditions"
   adult
-  (clinical_finding (snomed_concept "Foot pain" "finding"))
+  (clinical_finding (finding_site (snomed_concept "Foot structure" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Ischemic foot with rest pain" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
     (clinical_finding (snomed_concept "Numbness of lower limb" "finding"))

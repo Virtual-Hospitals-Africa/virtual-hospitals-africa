@@ -2,7 +2,7 @@
 (task
   "Check for urgent face symptom conditions"
   adult
-  (clinical_finding (snomed_concept "Facial swelling" "finding"))
+  (clinical_finding (finding_site (snomed_concept "Face structure" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))
     (clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))

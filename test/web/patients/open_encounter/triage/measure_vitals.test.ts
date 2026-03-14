@@ -703,7 +703,7 @@ describeParallel('triage/measure_vitals', () => {
         finding_name: string
         score: number
       }[],
-      expected_task_groups?: unknown[],
+      opts?: { expected_task_groups: unknown[] },
     ) {
       const triage = await setupTriageNewPatient({
         patient_demographics: {
@@ -779,9 +779,9 @@ describeParallel('triage/measure_vitals', () => {
       assertEquals(sorted_finding_scores, expected_scores)
       assertEquals(total_score.score, sumBy(expected_scores, 'score'))
 
-      if (expected_task_groups) {
+      if (opts?.expected_task_groups) {
         const { task_groups } = await additional_tasks.getTasksGroups(db, { encounter, health_worker_id: nurse.health_worker.id })
-        assertMatches(task_groups, expected_task_groups)
+        assertMatches(task_groups, opts.expected_task_groups)
       }
       return triage
     }
@@ -799,7 +799,7 @@ describeParallel('triage/measure_vitals', () => {
         finding_name: string
         score: number
       }[],
-      expected_task_groups?: unknown[],
+      expected_tasks?: { expected_task_groups: unknown[] },
       opts: { only?: boolean; skip?: boolean } = {},
     ) {
       itParallel(description, async () => {
@@ -808,7 +808,7 @@ describeParallel('triage/measure_vitals', () => {
           measurement_values,
           assessment_values,
           expected_scores,
-          expected_task_groups,
+          expected_tasks,
         )
       }, opts)
     }
@@ -874,47 +874,49 @@ describeParallel('triage/measure_vitals', () => {
       { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 8 },
       DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 2 }),
-      [
-        {
-          'due_to': [
-            {
-              'root_snomed_concept_name': 'Measurement finding',
-              'specific_snomed_concept_name': 'Respiratory rate',
-              'value': { 'type': 'measurement', 'value': '8', 'units': 'bpm' },
-              'evaluations': [
-                {
-                  'root_snomed_concept_id': '129265001',
-                  'root_snomed_concept_name': 'Evaluation - action',
-                  'root_snomed_concept_category': 'qualifier value',
-                  'specific_snomed_concept_id': '278305009',
-                  'specific_snomed_concept_name': 'Severity score',
-                  'specific_snomed_concept_category': 'qualifier value',
-                  'value': { 'type': 'score', 'score': '2' },
-                  'displays': { 'finding': 'Severity score', 'value': '2', 'full': 'Severity score: 2' },
+      {
+        expected_task_groups: [
+          {
+            'due_to': [
+              {
+                'root_snomed_concept_name': 'Measurement finding',
+                'specific_snomed_concept_name': 'Respiratory rate',
+                'value': { 'type': 'measurement', 'value': '8', 'units': 'bpm' },
+                'evaluations': [
+                  {
+                    'root_snomed_concept_id': '129265001',
+                    'root_snomed_concept_name': 'Evaluation - action',
+                    'root_snomed_concept_category': 'qualifier value',
+                    'specific_snomed_concept_id': '278305009',
+                    'specific_snomed_concept_name': 'Severity score',
+                    'specific_snomed_concept_category': 'qualifier value',
+                    'value': { 'type': 'score', 'score': '2' },
+                    'displays': { 'finding': 'Severity score', 'value': '2', 'full': 'Severity score: 2' },
+                  },
+                ],
+              },
+            ],
+            'tasks': [
+              {
+                atom: 'measurement',
+                snomed_concept: {
+                  atom: 'snomed_concept',
+                  name: 'Hemoglobin saturation with oxygen',
+                  category: 'observable entity',
                 },
-              ],
-            },
-          ],
-          'tasks': [
-            {
-              atom: 'measurement',
-              snomed_concept: {
-                atom: 'snomed_concept',
-                name: 'Hemoglobin saturation with oxygen',
-                category: 'observable entity',
+                units: '%',
+                s_expression: '(measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)',
+                displays: {
+                  value: null,
+                  finding: 'Hemoglobin saturation with oxygen',
+                  full: 'Hemoglobin saturation with oxygen',
+                },
+                existing_measurement: null,
               },
-              units: '%',
-              s_expression: '(measurement (snomed_concept "Hemoglobin saturation with oxygen" "observable entity") %)',
-              displays: {
-                value: null,
-                finding: 'Hemoglobin saturation with oxygen',
-                full: 'Hemoglobin saturation with oxygen',
-              },
-              existing_measurement: null,
-            },
-          ],
-        },
-      ],
+            ],
+          },
+        ],
+      },
     )
 
     testCase(
@@ -923,7 +925,7 @@ describeParallel('triage/measure_vitals', () => {
       { ...DEFAULT_MEASUREMENTS['adult'], respiratory_rate: 9 },
       DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Respiratory rate': 0 }),
-      [],
+      { expected_task_groups: [] },
     )
 
     testCase(
@@ -1901,7 +1903,7 @@ describeParallel('triage/measure_vitals', () => {
       DEFAULT_MEASUREMENTS['younger child'],
       { ...DEFAULT_ASSESSMENTS['younger child'], trauma_presence: 'No' },
       baseScoresYoungerChild({ 'Trauma score': 0 }),
-      [],
+      { expected_task_groups: [] },
     )
 
     testCase(

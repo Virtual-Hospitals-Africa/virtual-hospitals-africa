@@ -1,11 +1,8 @@
 ;; Page 50 - Genital Symptoms in Man
 (task
-  "Check for urgent genital symptoms in a man"
+  "Check patient was indeed fitting"
   adult
-  (or
-    (clinical_finding (finding_site (snomed_concept "Scrotal structure" "body structure")))
-    (clinical_finding (snomed_concept "Male genitalia finding" "finding"))
-  )
+  (clinical_finding (snomed_concept "Post-ictal state" "finding"))
   (check_for
     (clinical_finding (snomed_concept "Pain in scrotum" "finding"))
     (clinical_finding (snomed_concept "Swelling of scrotum" "finding"))

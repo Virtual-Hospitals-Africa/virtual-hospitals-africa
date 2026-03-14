@@ -5,7 +5,7 @@
   "Check for urgent skin symptom conditions"
   adult
   (or
-    (clinical_finding (snomed_concept "Skin finding" "finding"))
+    (clinical_finding (finding_site (snomed_concept "Skin structure" "body structure")))
     (clinical_finding (snomed_concept "Eruption" "morphologic abnormality")))
   (check_for
     (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
