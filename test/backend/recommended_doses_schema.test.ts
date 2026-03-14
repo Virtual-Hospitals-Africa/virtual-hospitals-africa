@@ -9,10 +9,6 @@ const test_cases = parseJSONSync(test_cases_file_path)
 it('adheres to the schema', () => {
   for (const medicine of test_cases) {
     for (const schedule of medicine.schedules) {
-      if (schedule.min) {
-        console.log(schedule)
-      }
-      console.log(medicine, schedule)
       ParsedDoseSchema.strict().parse(schedule)
     }
   }

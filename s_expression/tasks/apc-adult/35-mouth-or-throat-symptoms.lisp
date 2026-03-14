@@ -2,9 +2,7 @@
 (task
   "Check for urgent mouth or throat conditions"
   adult
-  (or
-    (clinical_finding (snomed_concept "Mouth finding" "finding"))
-    (clinical_finding (snomed_concept "Redness of throat" "finding")))
+  (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Pharyngeal swelling" "finding"))
     (clinical_finding (snomed_concept "Unable to open mouth" "finding"))

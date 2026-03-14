@@ -359,7 +359,6 @@ export async function performLookups(trx: TrxOrDb, medications: ParsedMedication
 
   // Look up SNOMED concepts for each ingredient name (with form context for ranking)
   const snomed_by_name = await lookupDrugIngredientSnomedConceptIds(trx, ingredient_lookups)
-  console.log({ snomed_by_name })
 
   // Identify failed lookups
   const failed_names = new Set<string>()

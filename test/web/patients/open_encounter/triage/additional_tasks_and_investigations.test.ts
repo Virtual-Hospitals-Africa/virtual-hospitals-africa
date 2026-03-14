@@ -26,7 +26,6 @@ import { events } from '../../../../../db/models/events.ts'
 import { getFormLabels, getFormValues } from 'test/_helpers/form.ts'
 import { getTableDisplay } from 'test/_helpers/table.ts'
 import { deepMerge } from '../../../../../util/deepMerge.ts'
-import { logReadableJson } from '../../../../../util/humanReadableJson.ts'
 import keys from '../../../../../util/keys.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
@@ -37,7 +36,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
   afterAll(() => db.destroy())
   afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
-  itParallel.only('prompts for Nausea Vomiting Pallor Sweating in case of chest pain', async () => {
+  itParallel('prompts for Nausea Vomiting Pallor Sweating in case of chest pain', async () => {
     const { $, clinic, encounter, nurse } = await setupTriageNewPatient({
       patient_demographics: { date_of_birth: '2001-01-01' },
       brief_history: {
@@ -961,16 +960,16 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
         measure_vitals: {
           measurements: asVitalMeasurementFormValues({
-            respiratory_rate: 12, // 9-14 -> score 0
-            heart_rate: 60, // 51-100 -> score 0
-            blood_pressure_systolic: 120, // 101-199 -> score 0
-            blood_pressure_diastolic: 80,
-            temperature: 36.6, // 35-38.4 -> score 0
+            respiratory_rate: 12,
+            heart_rate: 60,
+            blood_pressure_systolic: 85,
+            blood_pressure_diastolic: 55,
+            temperature: 36.6,
           }),
           assessments: asVitalAssessmentFormValues({
-            mobility_assessment: 'Walking', // score 0
-            consciousness: 'Alert', // score 0
-            trauma_presence: 'No', // score 0
+            mobility_assessment: 'Walking',
+            consciousness: 'Alert',
+            trauma_presence: 'No',
           }),
         },
       })

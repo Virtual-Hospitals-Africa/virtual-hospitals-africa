@@ -33,7 +33,6 @@ describeParallel.skip('/clinical_decision_support_tools/icd10', () => {
   itParallel('can find meningitis', async () => {
     const response = await fetch(route + '/clinical_decision_support_tools/icd10?page=1&search=meningitis')
     const { results } = await response.json()
-    console.log({ results })
     assert(results[0].description.includes('eningitis'))
     // assertMatches(results[0], {
     //   code: 'A18',

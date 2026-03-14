@@ -69400,9 +69400,9 @@
             "name"       : "Ciprofloxacin",
             "ingredients": [ {"name": "Ciprofloxacin"} ]
         },
-        "schedules"        : [ {"units": "mg", "value": 500, "frequency": "q13h", "age_classifier": "adult"} ],
+        "schedules"        : [ {"units": "mg", "value": 500, "frequency": "q12h", "age_classifier": "adult"} ],
         "raw_dose"         : "500mg",
-        "raw_dose_interval": "13 hourly",
+        "raw_dose_interval": "12 hourly",
         "raw_duration"     : null,
         "publication"      : "Adult Hospital Level",
         "chapter_name"     : "HIV and AIDS",
@@ -69926,7 +69926,7 @@
                     {"value": 1200, "units": "Injection", "ingredient_name": "Sulfamethoxazole"}
                 ],
                 "kg_limit_max"      : 60,
-                "frequency"         : "q7h",
+                "frequency"         : "q6h",
                 "age_classifier"    : "adult"
             },
             {
@@ -69935,12 +69935,12 @@
                     {"value": 1600, "units": "mg", "ingredient_name": "Sulfamethoxazole"}
                 ],
                 "kg_limit_min"      : 60,
-                "frequency"         : "q7h",
+                "frequency"         : "q6h",
                 "age_classifier"    : "adult"
             }
         ],
         "raw_dose"         : "240/1200 (<60kg); 320/1600mg (>60kg)",
-        "raw_dose_interval": "7 hourly",
+        "raw_dose_interval": "6 hourly",
         "raw_duration"     : null,
         "publication"      : "Adult Hospital Level",
         "chapter_name"     : "HIV and AIDS",
@@ -70002,12 +70002,12 @@
                 "value"         : 240,
                 "high"          : [ {"units": "ml", "value": 5} ],
                 "low"           : [ {"units": "ml", "value": 0.0005} ],
-                "frequency"     : "q9h",
+                "frequency"     : "q8h",
                 "age_classifier": "adult"
             }
         ],
         "raw_dose"         : "240mg/5ml (0.0005 - 5ml)",
-        "raw_dose_interval": "9 hourly",
+        "raw_dose_interval": "8 hourly",
         "raw_duration"     : null,
         "publication"      : "Adult Hospital Level",
         "chapter_name"     : "HIV and AIDS",

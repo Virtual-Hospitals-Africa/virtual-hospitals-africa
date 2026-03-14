@@ -121,7 +121,7 @@ trap cleanup EXIT
 
 if $use_test_servers; then
   if ! $test_servers_were_already_running; then
-    ./scripts/run_test_servers.sh "$run_test_server_args" &
+    ./scripts/test/run_servers.sh "$run_test_server_args" &
     test_servers_pid="$!"
   fi
 fi

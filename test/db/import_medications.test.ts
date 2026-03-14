@@ -280,7 +280,6 @@ describe('seed', () => {
       'therapeutic_area': null,
       'api': 'None',
     })
-    console.log({ doses })
     assertEquals(doses, [{
       'value': '1',
       'units': 'ML',

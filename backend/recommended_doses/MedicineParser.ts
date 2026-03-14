@@ -245,7 +245,6 @@ export class MedicineParser {
           delete interval_schedule.max
         }
         if (dose_schedule.frequency && interval_schedule.frequency) {
-          console.log({ dose_schedule, interval_schedule })
           assert(typeof dose_schedule.frequency === 'string')
           assert(typeof interval_schedule.frequency === 'string')
           if (dose_schedule.frequency !== interval_schedule.frequency) {

@@ -79,6 +79,7 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS = {
   'Joint symptoms': 62,
   'Leg symptoms': 65,
   'Lump, neck/axilla/groin': 25,
+  'Mouth/Throat symptoms': 35,
   'Scalp symptoms': 80,
   'Scrotal symptoms': 49,
   'Seizures': 19,

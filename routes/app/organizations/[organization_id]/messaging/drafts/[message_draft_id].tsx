@@ -72,7 +72,6 @@ async function draftFromFormValues(
     ctx.req,
     PartialMessageDraftSchema.parse,
   )
-  console.log({ form_values })
   const targets = await message_targets.getMany(
     ctx.state.trx,
     form_values.targets ?? {},
@@ -101,8 +100,6 @@ export default HealthWorkerHomePage(
     })) || (
       await draftFromFormValues(ctx)
     )
-
-    console.log({ draft })
 
     return <MessageDraft draft={draft} />
   },

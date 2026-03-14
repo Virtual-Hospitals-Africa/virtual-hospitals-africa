@@ -97,14 +97,14 @@ describe('shared/s_expression.ts', () => {
     )
     assertMatches(parsed, {
       atom: '<',
-      left: {
+      measurement: {
         atom: 'measurement',
         snomed_concept: {
           atom: 'snomed_concept',
         },
         units: '%',
       },
-      right: positive_decimal.parse(92),
+      value: positive_decimal.parse(92),
     })
   })
 

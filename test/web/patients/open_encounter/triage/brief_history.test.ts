@@ -581,13 +581,8 @@ describeParallel('triage/brief_history', () => {
         assertMatches(most_recent_finding, {
           'tag': 'div',
           'children': [
-            {
-              'tag': 'span',
-              'children': [
-                { 'tag': 'button', 'text': 'Self reported Malignant neoplastic disease Status: Yes' },
-                { 'tag': 'span', 'text': z.string().regex(/^recorded at \d{1,2}:\d{2}/) },
-              ],
-            },
+            { 'tag': 'button', 'text': 'Self reported Malignant neoplastic disease Status: Yes' },
+            { 'tag': 'span', 'text': z.string().regex(/^recorded at \d{1,2}:\d{2}/) },
           ],
         }, { strict: true })
       },
