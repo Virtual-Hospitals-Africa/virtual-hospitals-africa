@@ -5,13 +5,12 @@ TODO
   - new images for doctor + pharmacist
   - fix duduzile's image
   - dialogue has min/max width
+
 - check for additional tasks on small screen width
 - collapsible drawer + sidebar
 - word wrapping on drawer
 
 - recommended dose parser
-  - Fix search for 
-    - Add test ensuring we can find tuberculosis
   - Fix age/weight matching (test cases for each)
   - Add reference document links
   - Learn more links go somewhere
