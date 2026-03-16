@@ -4,6 +4,7 @@
 // Guide (Dr. Lindiwe) always bottom-left, Patient always top-right
 // =============================================================================
 
+import { memo } from 'preact/compat'
 import type { Speaker } from '../../shared/tutorial/types.ts'
 import { SPEAKERS } from '../../shared/tutorial/types.ts'
 import cls from '../../util/cls.ts'
@@ -38,6 +39,22 @@ type Props = {
   link?: { title: string; href: string } // Optional small link shown bottom-left
 }
 
+const SpeakerImage = memo(({ speaker }: { speaker: Speaker }) => {
+  const speaker_info = SPEAKERS[speaker]
+
+  return (
+    <div className='flex-shrink-0'>
+      <div className='w-20 h-20 md:w-44 md:h-44 rounded-lg overflow-hidden border-4 border-[#1a1a2e] shadow-[4px_4px_0px_#1a1a2e] [image-rendering:pixelated]'>
+        <img
+          src={speaker_info.avatar}
+          alt={speaker_info.name}
+          className='w-full h-full object-cover [image-rendering:pixelated]'
+        />
+      </div>
+    </div>
+  )
+})
+
 /**
  * Pixel-game style dialogue box with character avatar
  * Position is determined by speaker: guide → bottom-left, patient → top-right
@@ -68,15 +85,7 @@ export function TutorialDialogue({
         'flex-row-reverse': !is_left_aligned,
       })}
     >
-      <div className='flex-shrink-0'>
-        <div className='w-20 h-20 md:w-44 md:h-44 rounded-lg overflow-hidden border-4 border-[#1a1a2e] shadow-[4px_4px_0px_#1a1a2e] [image-rendering:pixelated]'>
-          <img
-            src={speaker_info.avatar}
-            alt={speaker_info.name}
-            className='w-full h-full object-cover [image-rendering:pixelated]'
-          />
-        </div>
-      </div>
+      <SpeakerImage speaker={speaker} />
 
       <div className='relative bg-[#f0f0f0] flex-1 p-4 md:p-8 w-80 md:w-120 border-4 border-[#1a1a2e] shadow-[4px_4px_0px_#1a1a2e]'>
         <div

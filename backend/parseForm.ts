@@ -112,6 +112,9 @@ export async function requestAsRecord(
 export async function parseRequest<T extends Record<string, unknown>>(
   req: Request,
   parse: (obj: unknown) => T,
+  opts?: { verbose: true },
 ): Promise<T> {
-  return parse(await requestAsRecord(req))
+  const record = await requestAsRecord(req)
+  if (opts?.verbose) console.log({ record })
+  return parse(record)
 }

@@ -99,7 +99,7 @@ export default function AdditionalTasks({
 
   return (
     <div
-      class={cls('grid', {
+      class={cls('grid gap-6', {
         'grid-cols-2': !!reference_docs_el,
         'grid-cols-1': !reference_docs_el,
       })}

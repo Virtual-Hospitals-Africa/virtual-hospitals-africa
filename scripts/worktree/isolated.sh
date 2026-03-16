@@ -110,7 +110,7 @@ else
   deno install --allow-scripts >&2
 
   if ! $SKIP_DB; then
-    ln -s "$WORKTREE_DIR/db/dumps/latest" "$latest_dump"
+    ln -s "$latest_dump" "$WORKTREE_DIR/db/dumps/latest" 
     deno task local db:create >&2
     deno task local db:restore latest >&2
   fi

@@ -123,6 +123,7 @@ export function ICD10SearchSpecific({
         className={className}
         Option={SymptomOption}
         onQuery={(query) => search.value = query}
+        skip_blank_search
         onSelect={(symptom) => {
           const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) => sd.general)
           selected_parent.value = symptom

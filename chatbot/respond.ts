@@ -2,7 +2,6 @@ import db from '../db/db.ts'
 import { ChatbotName, TrxOrDb, UnhandledMessage, WhatsApp } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { conversations } from '../db/models/conversations.ts'
-import capitalize from '../util/capitalize.ts'
 import generateUUID from '../util/uuid.ts'
 import { assert } from 'std/assert/assert.ts'
 import { groupBy } from '../util/groupBy.ts'
@@ -10,7 +9,6 @@ import { forEach } from '../util/inParallel.ts'
 import sortBy from '../util/sortBy.ts'
 
 const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
-const on_production = Deno.env.get('ON_PRODUCTION')
 
 async function respondToMessage(
   whatsapp: WhatsApp,
