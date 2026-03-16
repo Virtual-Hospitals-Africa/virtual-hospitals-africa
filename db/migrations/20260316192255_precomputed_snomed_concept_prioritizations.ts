@@ -7,11 +7,12 @@ export async function up(db: Kysely<DB>) {
 
   await db.schema
     .createTable('snomed_concept_prioritizations')
-    .addColumn('concept_id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade'))
+    .addColumn('id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade'))
     .addColumn('age_determination', sql`age_determination`, (col) => col.notNull())
     .addColumn('pregnancy', 'boolean', (col) => col.notNull())
+    .addColumn('warning_sign', 'varchar(255)', (col) => col.notNull())
     .addColumn('priority', sql`warning_sign_priority`, (col) => col.notNull())
-    .addPrimaryKeyConstraint('snomed_concept_prioritizations_pkey', ['concept_id', 'age_determination', 'pregnancy'])
+    .addPrimaryKeyConstraint('snomed_concept_prioritizations_pkey', ['id', 'age_determination', 'pregnancy'])
     .execute()
 }
 

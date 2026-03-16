@@ -1464,9 +1464,10 @@ export interface SnomedConcept {
 
 export interface SnomedConceptPrioritizations {
   age_determination: AgeDetermination
-  concept_id: Int8
+  id: Int8
   pregnancy: boolean
   priority: WarningSignPriority
+  warning_sign: string
 }
 
 export interface SnomedCRefsetAssociation {

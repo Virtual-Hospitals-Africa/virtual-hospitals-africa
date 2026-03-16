@@ -1,8 +1,8 @@
 import type { DB } from '../../db.d.ts'
 import { Kysely, sql } from 'kysely'
 
-export function up(db: Kysely<DB>) {
-  return sql`
+export async function up(db: Kysely<DB>) {
+  await sql`
 create or replace function is_descendant(child_concept_id bigint, parent_concept_id bigint)
 returns boolean
 language plpgsql
@@ -32,8 +32,6 @@ end $$
   `.execute(db)
 }
 
-export function down(db: Kysely<DB>) {
-  return sql`
-    DROP FUNCTION is_descendant(child_concept_id bigint, parent_concept_id bigint)
-  `.execute(db)
+export async function down(db: Kysely<DB>) {
+  await sql`DROP FUNCTION is_descendant(child_concept_id bigint, parent_concept_id bigint)`.execute(db)
 }

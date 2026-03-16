@@ -1,87 +1,18 @@
-import { ExpressionBuilder, sql } from 'kysely'
+import { sql } from 'kysely'
 import { SnomedConceptSearchResult, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base } from './_base.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { DB, SnomedCategory } from '../../db.d.ts'
-import { findingQueryExpression, WARNING_SIGNS } from '../../shared/warning_signs.ts'
-import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
-import { jsonBuildObject, literalString } from '../helpers.ts'
-import { buildExpression } from './s_expression.ts'
-import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
+import { AgeDetermination, SnomedCategory } from '../../db.d.ts'
+import { jsonBuildNullableObject } from '../helpers.ts'
 import { asConceptSExpression } from '../../shared/snomed_concepts.ts'
-import { any_query } from '../../shared/s_expression_schemas.ts'
 
 type SearchTerms = {
   search: string
-  patient_id?: string
+  patient_case?: {
+    age_determination: AgeDetermination
+    pregnancy: boolean
+  }
   categories?: SnomedCategory[]
-}
-
-function getPriorityOfSnomedConcept<
-  // deno-lint-ignore no-explicit-any
-  EB extends ExpressionBuilder<DB, any>,
->(
-  eb: EB,
-  column_ref: Parameters<EB['ref']>[0],
-  patient_id: string,
-  trx: TrxOrDbOrQueryCreator,
-) {
-  const [first_sign, ...rest] = WARNING_SIGNS.adult
-
-  // Build the predicate for a warning sign, including prompt_when check if present
-  const buildSignPredicate = (sign: typeof first_sign) => {
-    const finding_predicate = buildExpressionPredicate(
-      eb,
-      column_ref,
-      findingQueryExpression(sign),
-    )
-
-    if (!sign.prompt_when_s_expression) {
-      return finding_predicate
-    }
-
-    // TODO: probably move this idea into db/models/s_expression.ts
-    // Build the prompt_when check for the patient
-    // Handle 'not' expressions specially: use NOT EXISTS instead of EXISTS on the negated query
-    const parsed = parseWithSchema(sign.prompt_when_s_expression, any_query)
-
-    const prompt_when = isAtom(parsed, 'not')
-      ? eb.not(eb.exists(buildExpression(
-        trx,
-        { patient_id },
-        parsed.expression,
-      )))
-      : eb.exists(
-        buildExpression(
-          trx,
-          { patient_id },
-          parsed,
-        ),
-      )
-
-    return eb.and([finding_predicate, prompt_when])
-  }
-
-  let case_builder = eb.case().when(
-    buildSignPredicate(first_sign),
-  )
-    .then(jsonBuildObject({
-      name: literalString(first_sign.priority),
-      warning_sign: literalString(first_sign.key),
-    }))
-
-  for (const sign of rest) {
-    case_builder = case_builder
-      .when(
-        buildSignPredicate(sign),
-      )
-      .then(jsonBuildObject({
-        name: literalString(sign.priority),
-        warning_sign: literalString(sign.key),
-      }))
-  }
-
-  return case_builder.end().as('priority')
 }
 
 function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
@@ -116,6 +47,14 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
           )
           : join.on(sql<boolean>`false`),
     )
+    .leftJoin('snomed_concept_prioritizations', (join) =>
+      terms.patient_case
+        ? join
+          .onRef('snomed_concept_prioritizations.id', '=', 'snomed_inferred_canonical_name_and_category.id')
+          .on('snomed_concept_prioritizations.age_determination', '=', terms.patient_case.age_determination)
+          .on('snomed_concept_prioritizations.pregnancy', '=', terms.patient_case.pregnancy)
+        : join.on(sql<boolean>`false`)
+    )
     .where('preferred_category_of_same_name.id', 'is', null)
     .where(sql<boolean>`term % ${terms.search}`)
     .$if(!!terms.categories, (qb) => qb.where('snomed_inferred_canonical_name_and_category.category', 'in', terms.categories!))
@@ -124,14 +63,10 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
       'snomed_inferred_canonical_name_and_category.name',
       'snomed_inferred_canonical_name_and_category.category',
       // Priority can technically only be determined relative to a patient because the same condition might be more or less concerning depending on their case
-      terms.patient_id
-        ? getPriorityOfSnomedConcept(
-          eb,
-          'snomed_inferred_canonical_name_and_category.id',
-          terms.patient_id,
-          trx,
-        )
-        : sql<null>`null`.as('priority'),
+      jsonBuildNullableObject(eb.ref('snomed_concept_prioritizations.id'), {
+        name: eb.ref('snomed_concept_prioritizations.priority'),
+        warning_sign: eb.ref('snomed_concept_prioritizations.warning_sign'),
+      }).as('priority'),
       best_similarity.as('best_similarity'),
     ])
     .groupBy('snomed_inferred_canonical_name_and_category.id')
@@ -141,7 +76,6 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
 export const snomed_model = base({
   top_level_table: 'snomed_inferred_canonical_name_and_category',
   baseQuery,
-  getPriorityOfSnomedConcept,
   formatResult(result): SnomedConceptSearchResult {
     const concept_s_expression = asConceptSExpression(result)
     const clinical_finding_s_expression = `(clinical_finding ${concept_s_expression})`
@@ -151,8 +85,7 @@ export const snomed_model = base({
       name: result.name,
       description: result.category,
       priority: result.priority?.name,
-      priority_by_virtue_of_matching_warning_sign: result.priority
-        ?.warning_sign,
+      priority_by_virtue_of_matching_warning_sign: result.priority?.warning_sign ?? undefined,
       similarity: result.best_similarity,
       category: 'Search Results' as const,
     }
@@ -177,3 +110,71 @@ export const snomed_model = base({
 
 //   return priority?.name || 'Non-urgent'
 // }
+
+// function getPriorityOfSnomedConcept<
+//   // deno-lint-ignore no-explicit-any
+//   EB extends ExpressionBuilder<DB, any>,
+// >(
+//   eb: EB,
+//   column_ref: Parameters<EB['ref']>[0],
+//   patient_id: string,
+//   trx: TrxOrDbOrQueryCreator,
+// ) {
+//   const [first_sign, ...rest] = WARNING_SIGNS.adult
+
+//   // Build the predicate for a warning sign, including prompt_when check if present
+//   const buildSignPredicate = (sign: typeof first_sign) => {
+//     const finding_predicate = buildExpressionPredicate(
+//       eb,
+//       column_ref,
+//       findingQueryExpression(sign),
+//     )
+
+//     if (!sign.prompt_when_s_expression) {
+//       return finding_predicate
+//     }
+
+//     // TODO: probably move this idea into db/models/s_expression.ts
+//     // Build the prompt_when check for the patient
+//     // Handle 'not' expressions specially: use NOT EXISTS instead of EXISTS on the negated query
+//     const parsed = parseWithSchema(sign.prompt_when_s_expression, any_query)
+
+//     const prompt_when = isAtom(parsed, 'not')
+//       ? eb.not(eb.exists(buildExpression(
+//         trx,
+//         { patient_id },
+//         parsed.expression,
+//       )))
+//       : eb.exists(
+//         buildExpression(
+//           trx,
+//           { patient_id },
+//           parsed,
+//         ),
+//       )
+
+//     return eb.and([finding_predicate, prompt_when])
+//   }
+
+//   let case_builder = eb.case().when(
+//     buildSignPredicate(first_sign),
+//   )
+//     .then(jsonBuildObject({
+//       name: literalString(first_sign.priority),
+//       warning_sign: literalString(first_sign.key),
+//     }))
+
+//   for (const sign of rest) {
+//     case_builder = case_builder
+//       .when(
+//         buildSignPredicate(sign),
+//       )
+//       .then(jsonBuildObject({
+//         name: literalString(sign.priority),
+//         warning_sign: literalString(sign.key),
+//       }))
+//   }
+
+//   return case_builder.end().as('priority')
+// }
+
