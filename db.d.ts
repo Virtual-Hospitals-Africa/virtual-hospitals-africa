@@ -1,5 +1,7 @@
 import type { ColumnType } from 'kysely'
 
+export type AgeDetermination = 'adult' | 'older child' | 'younger child'
+
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
 export type ArrayType<T> = ArrayTypeImpl<T> extends (infer U)[] ? U[]
@@ -180,6 +182,8 @@ export type SnomedCategory =
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export type VitalAssessment = 'consciousness' | 'mobility_assessment' | 'trauma_presence'
+
+export type WarningSignPriority = 'Emergency' | 'Urgent' | 'Very urgent'
 
 export type Workflow =
   | 'consultation'
@@ -1458,6 +1462,13 @@ export interface SnomedConcept {
   module_id: Int8
 }
 
+export interface SnomedConceptPrioritizations {
+  age_determination: AgeDetermination
+  concept_id: Int8
+  pregnancy: boolean
+  priority: WarningSignPriority
+}
+
 export interface SnomedCRefsetAssociation {
   active: boolean
   effective_time: Timestamp
@@ -1856,6 +1867,7 @@ export interface DB {
   snomed_ci_refset_description_type: SnomedCiRefsetDescriptionType
   snomed_cisscc_refset_mrcm_attribute_domain: SnomedCissccRefsetMrcmAttributeDomain
   snomed_concept: SnomedConcept
+  snomed_concept_prioritizations: SnomedConceptPrioritizations
   snomed_description: SnomedDescription
   snomed_iissscc_refset_extended_map: SnomedIisssccRefsetExtendedMap
   snomed_inferred_canonical_name_and_category: SnomedInferredCanonicalNameAndCategory
