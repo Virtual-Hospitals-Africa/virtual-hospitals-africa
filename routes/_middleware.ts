@@ -5,11 +5,7 @@ import { Context } from 'fresh'
 import isObjectLike from '../util/isObjectLike.ts'
 import { stripAnsiCode } from 'std/fmt/colors.ts'
 import generateUUID from '../util/uuid.ts'
-import { AsyncLocalStorage } from 'node:async_hooks';
-
-const __local_storage__ = new AsyncLocalStorage()
-
-Object.assign(Deno, { __local_storage__ })
+import { __local_storage__ } from '../backend/local_storage.ts'
 
 export function grokPostgresError(err: Record<string, unknown>) {
   // deno-lint-ignore no-explicit-any
@@ -19,7 +15,7 @@ export function grokPostgresError(err: Record<string, unknown>) {
 }
 
 function createAsyncContext(ctx: Context<unknown>) {
-  return __local_storage__.run({ foo: 'bar' }, () => ctx.next())
+  return __local_storage__.run({}, () => ctx.next())
 }
 
 async function handleError(ctx: Context<unknown>) {
@@ -63,5 +59,5 @@ async function handleError(ctx: Context<unknown>) {
 
 export const handler = [
   createAsyncContext,
-  handleError
+  handleError,
 ]

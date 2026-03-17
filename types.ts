@@ -1253,6 +1253,7 @@ export type HealthWorker = Names & {
   email: string | null
   avatar_url: string | null
   phone_number?: Maybe<string>
+  settings?: any
 }
 
 export type HealthWorkerOrganization = RenderedOrganization & {

@@ -453,6 +453,7 @@ export interface HealthWorkerAccounts {
   avatar_media_id: string | null
   email: string
   id: string
+  settings: Json | null
 }
 
 export interface HealthWorkerContactDetails {

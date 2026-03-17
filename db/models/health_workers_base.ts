@@ -31,6 +31,7 @@ export const health_workers_base = base({
         'health_workers.surname',
         'health_workers.preferred_name',
         'health_worker_accounts.email',
+        'health_worker_accounts.settings',
         jsonBuildObject({
           sex: eb.ref('health_worker_demographics.sex'),
           gender: eb.ref('health_worker_demographics.gender'),

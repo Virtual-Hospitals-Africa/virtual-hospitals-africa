@@ -58,7 +58,9 @@ rule_no_camel_case() {
 }
 
 rule_no_node_imports() {
-  ! rg -n --pcre2 --color=always "from 'node:" --glob '!scripts/code-quality/hygiene.sh'
+  ! rg -n --pcre2 --color=always "from 'node:" \
+    --glob '!scripts/code-quality/hygiene.sh' \
+    --glob '!backend/local_storage.ts'
 }
 
 rule_test_files_naming() {

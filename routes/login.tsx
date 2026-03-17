@@ -1,5 +1,5 @@
 import redirect from '../util/redirect.ts'
-import * as cookie from '../shared/cookie.ts'
+import * as cookie from '../shared/session_cookie.ts'
 import { sessions } from '../db/models/sessions.ts'
 import db from '../db/db.ts'
 import { deleteCookie, setCookie } from 'std/http/cookie.ts'
@@ -74,7 +74,7 @@ export const handler = {
   // deno-lint-ignore no-explicit-any
   async GET(ctx: Context<any>) {
     const req = ctx.req
-    const session_id = cookie.get(req)
+    const session_id = cookie.getSessionCookie(req)
     if (!session_id) {
       return FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref())
     }

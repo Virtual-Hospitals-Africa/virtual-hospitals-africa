@@ -2,7 +2,7 @@ import { getCookies } from 'std/http/cookie.ts'
 
 export const session_key = 'session_id'
 
-export function get(req: Request): string | undefined {
+export function getSessionCookie(req: Request): string | undefined {
   // Try to get from cookie first
   const from_cookie = getCookies(req.headers)[session_key]
   if (from_cookie) {

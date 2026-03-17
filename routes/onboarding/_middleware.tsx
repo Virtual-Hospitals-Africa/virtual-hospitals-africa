@@ -1,4 +1,4 @@
-import { ensureCookiePresent, getLoggedInHealthWorker } from '../app/_middleware.tsx'
+import { ensureSessionCookiePresent, getLoggedInHealthWorker } from '../app/_middleware.tsx'
 import { RenderedHealthWorker } from '../../types.ts'
 import { attachTrx, TrxContext } from '../../backend/attachTrx.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
@@ -12,7 +12,7 @@ export type OnboardingContext = TrxContext & {
 }
 
 export const handler = [
-  ensureCookiePresent,
+  ensureSessionCookiePresent,
   getLoggedInHealthWorker({ require_employment: false }),
   redirectToAppIfEmployedAlready,
   attachTrx,

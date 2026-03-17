@@ -1,9 +1,9 @@
 import { useSignal } from '@preact/signals'
 import { ChevronLeftIcon, ChevronRightIcon } from '../../components/library/icons/heroicons/outline.tsx'
-import { toggleSidebar } from './useSidebarCollapsed.tsx'
+import { getSidebarCollapsedCookie, toggleSidebar } from './useSidebarCollapsed.tsx'
 
 export default function SidebarToggleButton() {
-  const collapsed = useSignal<boolean>(false)
+  const collapsed = useSignal<boolean>(getSidebarCollapsedCookie())
 
   function toggle() {
     const next = !collapsed.value

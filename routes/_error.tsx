@@ -2,6 +2,7 @@ import { HttpError, PageProps } from 'fresh'
 
 export default function ErrorPage(props: PageProps) {
   const error = props.error // Contains the thrown Error or HTTPError
+  console.log(error)
   if (error instanceof HttpError) {
     const status = error.status // HTTP status code
 

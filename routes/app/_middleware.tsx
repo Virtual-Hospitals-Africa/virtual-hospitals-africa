@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import { deleteCookie } from 'std/http/cookie.ts'
+import { deleteCookie, getCookies } from 'std/http/cookie.ts'
 import { LoggedInHealthWorkerContext } from '../../types.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
 import { employees } from '../../db/models/employees.ts'
@@ -7,7 +7,6 @@ import { patient_encounters } from '../../db/models/patient_encounters.ts'
 import { notifications } from '../../db/models/notifications.ts'
 import { sessions } from '../../db/models/sessions.ts'
 import redirect from '../../util/redirect.ts'
-import * as cookie from '../../shared/cookie.ts'
 import { warning } from '../../util/alerts.ts'
 import { loginHref } from '../login.tsx'
 import { JSX } from 'preact/jsx-runtime'
@@ -18,9 +17,13 @@ import { attachTrx } from '../../backend/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
 import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 import { HealthWorkerHomePageLayout } from '../../components/library/layout/HealthWorkerHomePage.tsx'
+import { getSessionCookie, session_key } from '../../shared/session_cookie.ts'
+import { __local_storage__ } from '../../backend/local_storage.ts'
+import { exists } from '../../util/exists.ts'
 
 export default [
-  ensureCookiePresent,
+  ensureSessionCookiePresent,
+  setSidebarCollapsed,
   getLoggedInHealthWorker({ require_employment: true }),
   attachTrx,
 ]
@@ -34,8 +37,15 @@ export function noSession() {
 }
 
 // deno-lint-ignore no-explicit-any
-export function ensureCookiePresent(ctx: Context<any>) {
-  return cookie.get(ctx.req) ? ctx.next() : noSession()
+export function ensureSessionCookiePresent(ctx: Context<any>) {
+  return getSessionCookie(ctx.req) ? ctx.next() : noSession()
+}
+
+function setSidebarCollapsed(ctx: Context<unknown>) {
+  const sidebar_collapsed = getCookies(ctx.req.headers)['sidebar_collapsed'] === 'true'
+  const store = exists(__local_storage__.getStore())
+  store.sidebar_collapsed = sidebar_collapsed
+  return ctx.next()
 }
 
 function isGettingHtml(req: Request) {
@@ -53,7 +63,7 @@ export function getLoggedInHealthWorker(
     // deno-lint-ignore no-explicit-any
     ctx: Context<any>,
   ) {
-    const session_id = cookie.get(ctx.req)
+    const session_id = getSessionCookie(ctx.req)
     assert(session_id)
 
     const health_worker_id_selection = sessions.getHealthWorkerId(
@@ -89,7 +99,7 @@ export function getLoggedInHealthWorker(
 
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(loginHref()) : noSession()
-    deleteCookie(response.headers, cookie.session_key)
+    deleteCookie(response.headers, session_key)
     return response
   }
 }
