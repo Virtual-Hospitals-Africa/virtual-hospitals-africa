@@ -6,7 +6,7 @@
 import { OpenEncounterWorkflowLayout } from '../components/OpenEncounterWorkflowLayout.tsx'
 import type { MockPatientCase } from '../mocks/data/patients.ts'
 import { EmergencyCallButton } from './EmergencyCallButton.tsx'
-import { SidebarHealthWorkerMenu } from './SidebarHealthWorkerMenu.tsx'
+import { SidebarHealthWorkerMenu } from './sidebar/HealthWorkerMenu.tsx'
 
 // Nav links for the example triage workflow
 const EXAMPLE_NAV_LINKS = [

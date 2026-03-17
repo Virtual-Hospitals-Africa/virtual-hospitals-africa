@@ -36,7 +36,7 @@ import { HealthWorkerHomePageLayout } from '../components/library/layout/HealthW
 import { TUTORIAL_WAITING_ROOM } from '../shared/tutorial/mock-data.ts'
 import WaitingRoomView from '../components/waiting_room/View.tsx'
 import { EmergencyCallButton } from './EmergencyCallButton.tsx'
-import { SidebarHealthWorkerMenu } from './SidebarHealthWorkerMenu.tsx'
+import { SidebarHealthWorkerMenu } from './sidebar/HealthWorkerMenu.tsx'
 
 const TUTORIAL_NAV_LINKS = WORKFLOW_NAV_LINKS.triage.map((link) => ({
   ...link,

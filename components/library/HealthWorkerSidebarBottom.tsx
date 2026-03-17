@@ -1,5 +1,5 @@
 import { EmergencyCallButton } from '../../islands/EmergencyCallButton.tsx'
-import { SidebarHealthWorkerMenu } from '../../islands/SidebarHealthWorkerMenu.tsx'
+import { SidebarHealthWorkerMenu } from '../../islands/sidebar/HealthWorkerMenu.tsx'
 import { RenderedEmployee } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 

@@ -4,12 +4,12 @@ import Form from '../../../components/library/Form.tsx'
 import FormGrid from '../../../components/library/FormGrid.tsx'
 import FormSection from '../../../components/library/FormSection.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { StepsSidebar } from '../../../components/library/Sidebar.tsx'
 import { DateInput } from '../../../islands/form/inputs/date.tsx'
 import { NumberInput } from '../../../islands/form/inputs/number.tsx'
 import { SelectWithOptions } from '../../../islands/form/inputs/select_with_options.tsx'
 import PatientConditionsSection from '../../../islands/recommended_dose_calculator/PatientConditionsSection.tsx'
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
+import { StepsSidebar } from '../../../components/library/sidebar/Steps.tsx'
 
 export default function CreatePatientCase(ctx: Context<unknown>) {
   return (

@@ -1,11 +1,11 @@
 import { Context } from 'fresh'
 import { parseRequest } from '../../../backend/parseForm.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { StepsSidebar } from '../../../components/library/Sidebar.tsx'
 import { MedicineRecommendation, RecommendedMedication } from '../../../components/RecommendedMedication.tsx'
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
 import { recommended_doses } from '../../../db/models/recommended_doses.ts'
 import { PatientCaseSchema } from '../../../shared/recommended_doses.ts'
+import { StepsSidebar } from '../../../components/library/sidebar/Steps.tsx'
 
 export default async function RecommendedMedications(
   ctx: Context<unknown>,
