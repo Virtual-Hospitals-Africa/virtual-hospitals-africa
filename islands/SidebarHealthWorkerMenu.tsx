@@ -15,7 +15,12 @@ export function SidebarHealthWorkerMenu(
   const sidebar_collapsed = useSidebarCollapsed()
 
   return (
-    <div className={cls('flex items-start bg-indigo-50 rounded-2xl border border-indigo-100 relative', sidebar_collapsed.value ? 'px-0 py-1' : 'px-1 py-2')}>
+    <div
+      className={cls(
+        'flex items-start bg-indigo-50 rounded-2xl border border-indigo-100 transition-all relative',
+        sidebar_collapsed.value ? 'px-0 py-1' : 'px-1 py-2',
+      )}
+    >
       <div className={cls('transition-all grow min-w-0', sidebar_collapsed.value && 'w-0 opacity-0')}>
         <Person
           person={person}

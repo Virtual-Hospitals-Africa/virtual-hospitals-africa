@@ -16,7 +16,6 @@ export function EmergencyCallButton(props: EmergencyCallButtonProps) {
 
   const text_style = {
     width: collapsed.value ? '0' : 'auto',
-    marginLeft: collapsed.value ? '0' : '1.5rem',
     color: collapsed.value ? 'transparent' : '',
   }
   return (

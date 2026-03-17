@@ -206,11 +206,9 @@ const conversation_states: ConversationStates<
         PatientChatbotUserState
       >[] = [...section_titles].map((title) => ({
         title,
-        rows: (
-          organizations
-            .filter((organization) => organization.section === title)
-            .map((organization) => organization.row)
-        ),
+        rows: organizations
+          .filter((organization) => organization.section === title)
+          .map((organization) => organization.row),
       }))
 
       return {

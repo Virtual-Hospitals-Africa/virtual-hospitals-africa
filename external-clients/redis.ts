@@ -32,7 +32,7 @@ const connectionOpts = () => {
   return redis_url ? parseRedisConnectionString(redis_url) : {
     hostname: 'localhost',
     port: parseInt(Deno.env.get('REDIS_PORT')!) || 6379,
-    password: (Deno.env.get('REDIS_PASSWORD')),
+    password: Deno.env.get('REDIS_PASSWORD'),
   }
 }
 
