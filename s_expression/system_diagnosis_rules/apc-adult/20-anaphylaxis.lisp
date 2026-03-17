@@ -58,10 +58,16 @@
 )
 (system_diagnosis_rule
   (diagnosis
-    (snomed_concept "Anaphylaxis" "disorder")
-    possible
+    (snomed_concept "Allergic conjunctivitis" "disorder")
+    probable
   )
   adult
+			(clinical_finding (snomed_concept “Watery eye” (finding) “Structure of both eyes” (body structure)
+			(clinical_finding (snomed_concept “Itching of bilateral eyes” (finding)
+
+
+
+
   (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
