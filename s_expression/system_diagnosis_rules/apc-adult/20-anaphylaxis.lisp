@@ -58,10 +58,15 @@
 )
 (system_diagnosis_rule
   (diagnosis
-    (snomed_concept "Anaphylaxis" "disorder")
+    (snomed_concept "Asthma" "disorder")
     possible
   )
   adult
+			(clinical_finding (snomed_concept “Cough” (finding) Recurrent (qualifier value))
+			(clinical_finding (snomed_concept “Wheezing” (finding))
+			(clinical_finding (snomed_concept “Tight chest (finding))
+			(clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+
   (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
