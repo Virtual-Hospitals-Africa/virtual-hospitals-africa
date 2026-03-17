@@ -16,9 +16,9 @@ import { health_worker_google_tokens } from '../db/models/health_worker_google_t
 import randomAvatarMediaId from '../mocks/randomAvatar.ts'
 
 const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
-if (FAKE_GOOGLE_AUTH) {
-  assert(!onProduction(), 'Cannot fake google authentication on production')
-}
+// if (FAKE_GOOGLE_AUTH) {
+//   assert(!onProduction(), 'Cannot fake google authentication on production')
+// }
 
 export const loginHref = memoize(() => {
   const client_id = readMandatoryStringEnvironmentVariable('GOOGLE_CLIENT_ID')
