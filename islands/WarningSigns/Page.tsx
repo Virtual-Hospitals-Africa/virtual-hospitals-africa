@@ -1,5 +1,5 @@
 import { useSignal } from '@preact/signals'
-import { SnomedConceptSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
+import { SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
 import useAsyncSearch from '../useAsyncSearch.tsx'
 import WarningSignsInnerContent from './InnerContent.tsx'
 
@@ -12,12 +12,12 @@ export default function WarningSigns({
 }) {
   const search_results = useSignal<null | WarningSignWithMaybeRecord[]>(null)
 
-  const snomed_warning_signs_async_search = useAsyncSearch<SnomedConceptSearchResult>({
+  const snomed_warning_signs_async_search = useAsyncSearch<SnomedWarningSignSearchResult>({
     search_route,
     skip_blank_search: true,
     onSearchResults(results) {
       // TODO one day we'll type results from jsonSearchHandler
-      search_results.value = results.pages.flatMap((page) => page.results) as unknown as SnomedConceptSearchResult[]
+      search_results.value = results.pages.flatMap((page) => page.results) as unknown as SnomedWarningSignSearchResult[]
     },
   })
 

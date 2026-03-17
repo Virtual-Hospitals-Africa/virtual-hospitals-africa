@@ -20,13 +20,13 @@ function signAppliesForPregnancyValues(sign: WarningSign): boolean[] {
   if (!sign.prompt_when_s_expression) return [true, false]
   assert(
     sign.prompt_when_s_expression === '(active_condition (snomed_concept "Pregnancy" "finding"))' ||
-    sign.prompt_when_s_expression === '(not (active_condition (snomed_concept "Pregnancy" "finding")))'
+      sign.prompt_when_s_expression === '(not (active_condition (snomed_concept "Pregnancy" "finding")))',
   )
   const parsed = parseWithSchema(sign.prompt_when_s_expression, any_query)
   return isAtom(parsed, 'not') ? [false] : [true]
 }
 
-function * signs() {
+function* signs() {
   for (const age_determination of AGE_DETERMINATIONS) {
     const signs = WARNING_SIGNS[age_determination]
     if (!signs.length) continue
@@ -57,7 +57,7 @@ async function insert(trx: TrxOrDb, xs: Array<UnwrappedGenerator<ReturnType<type
     return trx
       .insertInto('snomed_concept_prioritizations')
       .columns(['id', 'age_determination', 'pregnancy', 'priority', 'warning_sign'])
-      .expression(eb =>
+      .expression((eb) =>
         eb.selectFrom('snomed_inferred_canonical_name_and_category')
           .select([
             'snomed_inferred_canonical_name_and_category.id',
@@ -67,7 +67,7 @@ async function insert(trx: TrxOrDb, xs: Array<UnwrappedGenerator<ReturnType<type
             literalString(sign.name).as('warning_sign'),
           ])
           .where(sql<boolean>`snomed_inferred_canonical_name_and_category.id IN (SELECT id FROM active_descendants(${id}))`)
-          .where(eb_inner =>
+          .where((eb_inner) =>
             buildExpressionPredicate(
               eb_inner,
               'snomed_inferred_canonical_name_and_category.id',

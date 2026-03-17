@@ -2,7 +2,7 @@ import { computed, Signal, useSignal } from '@preact/signals'
 import { assert } from 'std/assert/assert.ts'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../../components/library/icons/heroicons/mini.tsx'
-import { AsyncSearchHookResult, SnomedConceptSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
+import { AsyncSearchHookResult, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { uniqBy } from '../../util/uniqBy.ts'
@@ -18,7 +18,7 @@ export default function WarningSignsInnerContent({
   warning_signs,
 }: {
   search_results: Signal<null | WarningSignWithMaybeRecord[]>
-  snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedConceptSearchResult>
+  snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
   warning_signs: WarningSignWithMaybeRecord[]
 }) {
   const selected_signs = useSignal<SelectedWarningSign[]>(

@@ -1462,6 +1462,11 @@ export interface SnomedConcept {
   module_id: Int8
 }
 
+export interface SnomedConceptFindingLike {
+  id: Int8
+  term: string
+}
+
 export interface SnomedConceptPrioritizations {
   age_determination: AgeDetermination
   id: Int8
@@ -1868,6 +1873,7 @@ export interface DB {
   snomed_ci_refset_description_type: SnomedCiRefsetDescriptionType
   snomed_cisscc_refset_mrcm_attribute_domain: SnomedCissccRefsetMrcmAttributeDomain
   snomed_concept: SnomedConcept
+  snomed_concept_finding_like: SnomedConceptFindingLike
   snomed_concept_prioritizations: SnomedConceptPrioritizations
   snomed_description: SnomedDescription
   snomed_iissscc_refset_extended_map: SnomedIisssccRefsetExtendedMap
