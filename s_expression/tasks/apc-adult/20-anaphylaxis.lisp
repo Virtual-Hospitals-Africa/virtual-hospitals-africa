@@ -4,6 +4,12 @@
   adult
   (diagnosis (snomed_concept "Anaphylaxis" "disorder") possible)
   (check_for
+		(clinical_finding (snomed_concept “History of anaphylaxis” (situation) “Food anaphylaxis” (disorder) “Symptom started hours ago” (finding)
+		(clinical_finding (snomed_concept “History of anaphylaxis” (situation) “Anaphylaxis caused by insect bite and/or insect sting” (disorder) “Symptom started hours ago” (finding)
+		(clinical_finding (snomed_concept “History of drug-induced anaphylaxis” (situation) “Symptom started hours ago” (finding)
+		(clinical_finding (snomed_concept “Bite of insect” (event) “Exposure to” (contextual qualifier) (qualifier value) “Symptom started hours ago” (finding)
+		(clinical_finding (snomed_concept “ Food” (substance) “Exposure to” (contextual qualifier) (qualifier value) ‘Symptom started hours ago” (finding)
+		(clinical_finding (snomed_concept “Drug or medicament” (substance) “Exposure to” (contextual qualifier) (qualifier value) (substance) “Symptom started hours ago’ (finding)
     (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
     (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
     (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
