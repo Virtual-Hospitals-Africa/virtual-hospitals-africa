@@ -4,7 +4,7 @@ import { LinkDef, LinkProps } from '../../types.ts'
 import * as ProgressIcons from './icons/progress.tsx'
 import { matchActiveLink } from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
-import { LogoWithFullText } from './Logo.tsx'
+import { LogoWithCollapsibleText } from '../../islands/Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
 import { ArchiveBoxIcon, CalendarDaysIcon, ChatBubbleLeftRightIcon, LightBulbIcon, PresentationChartBarIcon } from './icons/heroicons/outline.tsx'
 import { IdentificationIcon } from './icons/heroicons/outline.tsx'
@@ -18,6 +18,7 @@ import { UsersIcon } from './icons/heroicons/outline.tsx'
 import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
 import { prettyStepName } from '../../shared/workflow.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
+import SidebarToggleButton, { SidebarNavItemText } from '../../islands/SidebarToggleButton.tsx'
 
 export type SidebarProps = {
   top: {
@@ -43,12 +44,12 @@ function NavItem({
       <a
         href={href}
         className={cls(
-          'hover:text-gray-900 hover:bg-gray-50 group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6 capitalize',
+          'hover:text-gray-900 hover:bg-gray-50 group flex items-center rounded-md p-2 text-sm leading-6 capitalize',
           active ? 'text-gray-900 bg-gray-50' : 'text-gray-700',
         )}
       >
         {Icon && <Icon className='w-5' active={active} />}
-        {title}
+        <SidebarNavItemText>{title}</SidebarNavItemText>
       </a>
     </li>
   )
@@ -120,9 +121,12 @@ export function GenericSidebar(
   urlSearchParams.forEach((value, key) => all_params[key] = value)
   const active_link = matchActiveLink(nav_links, route)
   return (
-    <div className='inset-y-0 h-full w-44'>
-      <div className='flex flex-col flex-auto bg-white border-r border-gray-200 overflow-visible h-full'>
-        <div
+    <div className='inset-y-0 h-full max-w-44'>
+      <div className='relative flex flex-col flex-auto bg-white border-r border-gray-200 overflow-visible h-full'>
+        <SidebarToggleButton />
+        <a
+          href={top.href}
+          className='flex items-center w-full h-full gap-3 shrink-0'
           style={{
             height: HEADER_HEIGHT_PX,
             display: 'grid',
@@ -130,13 +134,8 @@ export function GenericSidebar(
             width: '100%',
           }}
         >
-          <a
-            href={top.href}
-            className='flex items-center max-w-full gap-3 shrink-0 px-2'
-          >
-            {top.child}
-          </a>
-        </div>
+          {top.child}
+        </a>
         <nav className='flex flex-col flex-1 px-3'>
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
@@ -165,12 +164,12 @@ export function GenericSidebar(
 
 export const HealthWorkerDefaultTop = {
   href: '/app',
-  child: <LogoWithFullText variant='indigo' className='w-full' />,
+  child: <LogoWithCollapsibleText variant='indigo' className='w-full h-full' />,
 }
 
 export const RegulatorDefaultTop = {
   href: '/regulator',
-  child: <LogoWithFullText variant='indigo' className='w-full' />,
+  child: <LogoWithCollapsibleText variant='indigo' className='w-full h-full' />,
 }
 
 export type HealthWorkerHomePageSidebarProps = {

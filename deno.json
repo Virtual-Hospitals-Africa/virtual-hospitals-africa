@@ -34,7 +34,7 @@
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
     "compile:web": "deno task compile --output binaries/web main.ts",
     "compile:s_expressions": "deno task script ./s_expression/compile.ts",
-    "lock:reset": "./scripts/lock_reset.sh",
+    "lock:reset": "./scripts/file-manipulation/lock_reset.sh",
     "rm_unused_imports": "deno task script remove-unused-imports",
     "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors --unstable-temporal --env --eval-file=repl.ts",
     "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unstable-temporal --env --unsafely-ignore-certificate-errors",
