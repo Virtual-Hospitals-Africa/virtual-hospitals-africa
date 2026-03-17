@@ -207,11 +207,14 @@ export async function TriageAdditionalTasksAndInvestigationsPage(
 
   logJSONToFileIfOnServer(task_groups)
 
+  const use_pdf_viewer = ctx.req.headers.get('X-Requested-With') !== null
+
   return (
     <AdditionalTasks
       organization_id={organization_id}
       evaluation_ids={evaluation_ids}
       task_groups={task_groups}
+      use_pdf_viewer={use_pdf_viewer}
     />
   )
 }

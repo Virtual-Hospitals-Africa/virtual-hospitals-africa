@@ -13,10 +13,12 @@ export default function AdditionalTasks({
   organization_id,
   evaluation_ids,
   task_groups,
+  use_pdf_viewer = false,
 }: {
   organization_id: string
   evaluation_ids: string[]
   task_groups: TaskGroup[]
+  use_pdf_viewer?: boolean
 }) {
   if (!task_groups.length) {
     return <NoTasks />
@@ -28,7 +30,12 @@ export default function AdditionalTasks({
   const some_soliticing_finding_task = all_tasks.some(negate(isLink))
   const reference_docs = all_tasks.filter(isLink)
   const reference_docs_el = (
-    <ReferenceDocs reference_docs={reference_docs} due_to={some_soliticing_finding_task ? null : all_due_to} organization_id={organization_id} />
+    <ReferenceDocs
+      reference_docs={reference_docs}
+      due_to={some_soliticing_finding_task ? null : all_due_to}
+      organization_id={organization_id}
+      use_pdf_viewer={use_pdf_viewer}
+    />
   )
 
   const column_count = Number(!!reference_docs_el) + Number(some_soliticing_finding_task)
