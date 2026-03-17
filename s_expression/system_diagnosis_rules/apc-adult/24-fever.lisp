@@ -1,3 +1,4 @@
+
 ;; Page 24 - Fever: meningitis likely with neck stiffness, or drowsy/confused with purpuric rash
 (system_diagnosis_rule
   (diagnosis
@@ -31,3 +32,19 @@
     (clinical_finding (snomed_concept "Tenderness of right lower quadrant of abdomen" "finding"))
   )
 )
+;; Page 24 - Fever: Acute viral disease (disorder)
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Acute viral disease" (disorder)" "disorder")
+    probable
+  )
+		(clinical_finding (snomed_concept “Cough” (finding))
+		(clinical_finding (snomed_concept “Sore throat” (finding))
+		(clinical_finding (snomed_concept “Loss of taste” (finding))
+		(clinical_finding (snomed_concept “Loss of sense of smell” (finding))
+		(clinical_finding (snomed_concept “Headache” (finding))
+		(clinical_finding (snomed_concept “Generalized aches and pains” (finding))
+		(clinical_finding (snomed_concept “Fever with chills” (finding))
+		(>= measurement(clinical_finding (snomed_concept “Body temperature” (observable entity) “Degrees Celsius” (qualifier value)38))
+		(clinical_finding (snomed_concept “Nasal congestion” (finding))
+		(clinical_finding (snomed_concept “Nasal discharge” (finding))
