@@ -13,7 +13,6 @@ import { completeLastStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPa
 import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS } from '../../../../../../../../shared/triage_route_patient.ts'
 import { startWorkflow } from '../start-workflow.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
-import { arrayIsEmpty } from '../../../../../../../../util/arraySize.ts'
 import { redirectToFirstIncompleteStep } from '../index.tsx'
 
 export const TriageRoutePatientSchema = z.object({

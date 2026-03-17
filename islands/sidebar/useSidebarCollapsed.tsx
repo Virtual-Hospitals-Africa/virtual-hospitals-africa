@@ -3,6 +3,8 @@ import { useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import isObjectLike from '../../util/isObjectLike.ts'
 
+
+
 export function toggleSidebar(collapsed: boolean) {
   if (collapsed) {
     globalThis.localStorage.setItem('sidebar_collapsed', 'true')
@@ -13,7 +15,11 @@ export function toggleSidebar(collapsed: boolean) {
 }
 
 export function useSidebarCollapsed() {
-  const collapsed = useSignal<boolean>(globalThis.localStorage.getItem('sidebar_collapsed') !== 'true')
+  const xxxyyy = 'Deno' in globalThis && '__local_storage__' in globalThis.Deno && (globalThis.Deno as any).__local_storage__.getStore()
+  console.log({xxxyyy})
+  const collapsed = useSignal<boolean>(
+    globalThis.localStorage.getItem('sidebar_collapsed') !== 'true'
+  )
 
   useEffect(() => {
     function listener(event: Event) {
