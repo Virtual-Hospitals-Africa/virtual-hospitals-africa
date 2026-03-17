@@ -9,12 +9,15 @@
     (clinical_finding (snomed_concept "Fever" "finding"))
     (or
       (clinical_finding (snomed_concept "Stiff neck" "finding"))
-      (and
-        (or
-          (clinical_finding (snomed_concept "Drowsy" "finding"))
-          (clinical_finding (snomed_concept "Confusional state" "disorder"))
-        )
-        (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
+			(clinical_finding (snomed_concept “Nausea” (finding))
+			(clinical_finding (snomed_concept “Vomiting” (disorder))
+			(clinical_finding (snomed_concept “Neck pain” (finding))
+			(clinical_finding (snomed_concept "Drowsy" "finding")
+			(clinical_finding (snomed_concept "Clouded consciousness” (finding))
+      (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
+			(clinical_finding (snomed_concept “Fever” (finding))
+			(clinical_finding (snomed_concept “Headache” (finding))
+			(>= measurement(clinical_finding (snomed_concept “Body temperature” (observable entity) “Degrees Celsius” (qualifier value)38))
       )
     )
   )
