@@ -58,10 +58,15 @@
 )
 (system_diagnosis_rule
   (diagnosis
-    (snomed_concept "Anaphylaxis" "disorder")
-    possible
+    (snomed_concept "Urticaria" "disorder")
+    probable 
   )
   adult
+			(clinical_finding (snomed_concept "Wheal” (finding) “Itching” (finding) “Sudden” (qualifier value) “Appearance” (property) (qualifier value))
+			(clinical_finding (snomed_concept "Wheal” (finding) “Red color” (qualifier value) “Sudden” (qualifier value) “Appearance” (property) (qualifier value))
+			(clinical_finding (snomed_concept "Wheal” (finding) “Raised” (qualifier value) “Sudden” (qualifier value) “Appearance” (property) (qualifier value))
+			(clinical_finding (snomed_concept "Wheal” (finding) “Transitory” (qualifier value))
+
   (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
