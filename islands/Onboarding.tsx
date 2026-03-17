@@ -170,7 +170,7 @@ export function Onboarding(
 
   return (
     <Form method='POST'>
-      <div className='py-32 overflow-hidden bg-white'>
+      <div className='py-12 overflow-hidden bg-white'>
         <div className='px-6 mx-auto max-w-7xl lg:flex lg:px-8'>
           <div className='grid max-w-2xl grid-cols-1 mx-auto gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>
             <Welcome
