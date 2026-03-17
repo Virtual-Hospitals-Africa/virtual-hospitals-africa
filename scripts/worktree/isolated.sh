@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xe
+set -euo pipefail
 
 # Usage: ./scripts/worktree-isolated.sh [--skipdb] <branch-name> [prompt]
 # Example: ./scripts/worktree-isolated.sh fix-bug "Fix the authentication bug in the login flow"

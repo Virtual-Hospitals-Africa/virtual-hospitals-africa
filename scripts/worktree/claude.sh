@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 
 usage() {
   cat <<EOF
@@ -30,13 +30,18 @@ if [ "${1:-}" = "--skipdb" ]; then
   shift
 fi
 
-if [ $# -lt 2 ]; then
+if [ $# -lt 1 ]; then
   usage
   exit 1
 fi
 
 BRANCH_NAME="$1"
-PROMPT="$2"
+shift
+
+PROMPT=""
+if [ $# -gt 0 ]; then
+  PROMPT="$1"
+fi
 
 COMMIT_MESSAGE=$(echo "${PROMPT}" | head -n 1)
 
@@ -46,6 +51,11 @@ cd "$WORKTREE_DIR"
 
 echo "Running Claude Code with prompt: $PROMPT"
 echo "This will run with all permissions and create a PR when done..."
+
+# With no prompt, just drop into claude
+if [ -z "$PROMPT" ]; then
+  claude
+fi
 
 echo "$PROMPT" | claude --dangerously-skip-permissions
 
