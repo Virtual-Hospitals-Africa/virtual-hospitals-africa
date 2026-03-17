@@ -1,6 +1,4 @@
 TODO
-- problem with boot/reviver.ts (timebox 10 minutes)
-
 - Finish Port Tutorial to anaphylaxis
   - While you wait page
   - add more dialogue for doctor, pharmacist

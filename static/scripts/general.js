@@ -163,160 +163,160 @@ hashFocus()
 // The logic for 200s is to replace the current page with the response text. This is more complicated than I'd like,
 // but there's no way to manually get the 302 location without following the redirect and getting the whole HTML, so
 // rather than fetch the page twice, we replace the current page with the response text.
-// addEventListener('submit', function (event) {
-//   var submitButton
+addEventListener('submit', function (event) {
+  var submitButton
 
-//   function onError(error_message) {
-//     submitButton.disabled = false
-//     console.log('error_message', error_message)
+  function onError(error_message) {
+    submitButton.disabled = false
+    console.log('error_message', error_message)
 
-//     // On ZodError's focus on the first invalid input
-//     // Mark the other inputs as invalid as well, which should get cleared before submission
-//     if (error_message.startsWith('{')) {
-//       var json = JSON.parse(error_message)
-//       if (json.name === 'ZodError') {
-//         console.log('js', json)
-//         json.issues.forEach(function (issue, index) {
-//           var is_first_issue = index === 0
-//           var path = issue.path.join('.')
-//           var elements = document.querySelectorAll('[name="' + path + '"]')
-//           if (!elements.length) {
-//             elements = document.querySelectorAll('input[name^="' + path + '"]')
-//           }
+    // On ZodError's focus on the first invalid input
+    // Mark the other inputs as invalid as well, which should get cleared before submission
+    if (error_message.startsWith('{')) {
+      var json = JSON.parse(error_message)
+      if (json.name === 'ZodError') {
+        console.log('js', json)
+        json.issues.forEach(function (issue, index) {
+          var is_first_issue = index === 0
+          var path = issue.path.join('.')
+          var elements = document.querySelectorAll('[name="' + path + '"]')
+          if (!elements.length) {
+            elements = document.querySelectorAll('input[name^="' + path + '"]')
+          }
 
-//           var message = issue.message === 'Required'
-//             ? 'A value must be input'
-//             : issue.message
+          var message = issue.message === 'Required'
+            ? 'A value must be input'
+            : issue.message
           
-//           if (!elements.length) {
-//             return dispatchEvent(
-//               new CustomEvent('show-alert', { detail: message }),
-//             )
-//           }
-//           if (elements.length > 1) {
-//             var label = document.querySelector('[for="' + path + '"]') || document.querySelector('[for^="' + path + '"]')
-//             var detail = label
-//               ? label.textContent + ': ' + message
-//               : message
-//             return dispatchEvent(
-//               new CustomEvent('show-alert', { detail: detail }),
-//             )
-//           }
-//           var element = elements[0]
-//           if (
-//             getAttr(element, 'type') === 'hidden' &&
-//             path.endsWith('id')
-//           ) {
-//             element = document.querySelector(
-//               '[name="' + path.replace(/id$/, 'name') + '"]',
-//             )
-//           }
-//           element.setCustomValidity(message)
-//           if (is_first_issue) {
-//             element.focus()
-//             element.reportValidity()
-//           }
-//         })
-//         return
-//       } else if (json.name === 'alert_with_actions') {
-//         return dispatchEvent(
-//           new CustomEvent('show-alert', { detail: json }),
-//         )
-//       } else {
-//         throw new Error(`Unrecognized error: ${json.name}`)
-//       }
-//     }
+          if (!elements.length) {
+            return dispatchEvent(
+              new CustomEvent('show-alert', { detail: message }),
+            )
+          }
+          if (elements.length > 1) {
+            var label = document.querySelector('[for="' + path + '"]') || document.querySelector('[for^="' + path + '"]')
+            var detail = label
+              ? label.textContent + ': ' + message
+              : message
+            return dispatchEvent(
+              new CustomEvent('show-alert', { detail: detail }),
+            )
+          }
+          var element = elements[0]
+          if (
+            getAttr(element, 'type') === 'hidden' &&
+            path.endsWith('id')
+          ) {
+            element = document.querySelector(
+              '[name="' + path.replace(/id$/, 'name') + '"]',
+            )
+          }
+          element.setCustomValidity(message)
+          if (is_first_issue) {
+            element.focus()
+            element.reportValidity()
+          }
+        })
+        return
+      } else if (json.name === 'alert_with_actions') {
+        return dispatchEvent(
+          new CustomEvent('show-alert', { detail: json }),
+        )
+      } else {
+        throw new Error(`Unrecognized error: ${json.name}`)
+      }
+    }
 
-//     dispatchEvent(
-//       new CustomEvent('show-alert', { detail: error_message }),
-//     )
-//   }
+    dispatchEvent(
+      new CustomEvent('show-alert', { detail: error_message }),
+    )
+  }
 
-//   var form = event.target
-//   if (form.method !== 'post') return
+  var form = event.target
+  if (form.method !== 'post') return
 
-//   event.preventDefault()
-//   var form_data = new FormData(form)
+  event.preventDefault()
+  var form_data = new FormData(form)
 
-//   if (event.submitter) {
-//     form_data.append(event.submitter.name, event.submitter.value)
-//   }
+  if (event.submitter) {
+    form_data.append(event.submitter.name, event.submitter.value)
+  }
 
-//   submitButton = form.querySelector('button[type="submit"]')
-//   submitButton.disabled = true
+  submitButton = form.querySelector('button[type="submit"]')
+  submitButton.disabled = true
 
-//   // Copied from turbolinks
-//   function load(innerHTML) {
-//     var htmlElement = document.createElement('html')
-//     htmlElement.innerHTML = innerHTML
-//     var hijackScript = htmlElement.querySelector(
-//       'script[src="/scripts/general.js"]',
-//     )
-//     if (hijackScript) {
-//       hijackScript.parentNode.removeChild(hijackScript)
-//     }
-//     var newHead = htmlElement.querySelector('head')
-//     var newBody = htmlElement.querySelector('body')
-//     document.documentElement.replaceChild(newHead, document.head)
-//     document.documentElement.replaceChild(newBody, document.body)
-//     document.documentElement.querySelectorAll('script').forEach(
-//       function (element) {
-//         var parentNode = element.parentNode
-//         if (parentNode) {
-//           var createdScriptElement = document.createElement('script')
-//           createdScriptElement.textContent = element.textContent
-//           createdScriptElement.async = false
-//           Array.prototype.forEach.call(element.attributes, function (attr) {
-//             createdScriptElement.setAttribute(attr.name, attr.value)
-//           })
-//           parentNode.replaceChild(createdScriptElement, element)
-//         }
-//       },
-//     )
-//   }
+  // Copied from turbolinks
+  function load(innerHTML) {
+    var htmlElement = document.createElement('html')
+    htmlElement.innerHTML = innerHTML
+    var hijackScript = htmlElement.querySelector(
+      'script[src="/scripts/general.js"]',
+    )
+    if (hijackScript) {
+      hijackScript.parentNode.removeChild(hijackScript)
+    }
+    var newHead = htmlElement.querySelector('head')
+    var newBody = htmlElement.querySelector('body')
+    document.documentElement.replaceChild(newHead, document.head)
+    document.documentElement.replaceChild(newBody, document.body)
+    document.documentElement.querySelectorAll('script').forEach(
+      function (element) {
+        var parentNode = element.parentNode
+        if (parentNode) {
+          var createdScriptElement = document.createElement('script')
+          createdScriptElement.textContent = element.textContent
+          createdScriptElement.async = false
+          Array.prototype.forEach.call(element.attributes, function (attr) {
+            createdScriptElement.setAttribute(attr.name, attr.value)
+          })
+          parentNode.replaceChild(createdScriptElement, element)
+        }
+      },
+    )
+  }
 
-//   // TODO: Add a loading indicator
-//   fetch(form.action, {
-//     method: 'POST',
-//     body: form_data,
-//   }).then(function (response) {
-//     submitButton.disabled = false
-//     switch (response.status) {
-//       case 200:
-//         // TODO assert content type html
-//         return response.text().then(function (text) {
-//           load(text)
-//           history.pushState({}, '', response.url)
-//         })
-//       case 201:
-//         return
-//       case 400:
-//         return response.text().then(onError)
-//       case 401:
-//         return response.text().then(function (text) {
-//           return onError(text ? 'Unauthorized: ' + text : 'Unauthorized')
-//         })
-//       case 403:
-//         return response.text().then(function (text) {
-//           return onError(text ? 'Forbidden: ' + text : 'Forbidden')
-//         })
-//       case 409:
-//         return response.text().then(function (text) {
-//           return onError(text ? 'Conflict: ' + text : 'Conflict')
-//         })
-//       case 500:
-//         return response.text().then(function (text) {
-//           return onError('Internal Server Error: ' + text)
-//         })
-//       default:
-//         return onError('Unexpected response status: ' + response.status)
-//     }
-//   }, function (error) {
-//     submitButton.disabled = false
-//     console.error(error)
-//     return onError('Offline: ' + error.message || error)
-//   })
-// })
+  // TODO: Add a loading indicator
+  fetch(form.action, {
+    method: 'POST',
+    body: form_data,
+  }).then(function (response) {
+    submitButton.disabled = false
+    switch (response.status) {
+      case 200:
+        // TODO assert content type html
+        return response.text().then(function (text) {
+          load(text)
+          history.pushState({}, '', response.url)
+        })
+      case 201:
+        return
+      case 400:
+        return response.text().then(onError)
+      case 401:
+        return response.text().then(function (text) {
+          return onError(text ? 'Unauthorized: ' + text : 'Unauthorized')
+        })
+      case 403:
+        return response.text().then(function (text) {
+          return onError(text ? 'Forbidden: ' + text : 'Forbidden')
+        })
+      case 409:
+        return response.text().then(function (text) {
+          return onError(text ? 'Conflict: ' + text : 'Conflict')
+        })
+      case 500:
+        return response.text().then(function (text) {
+          return onError('Internal Server Error: ' + text)
+        })
+      default:
+        return onError('Unexpected response status: ' + response.status)
+    }
+  }, function (error) {
+    submitButton.disabled = false
+    console.error(error)
+    return onError('Offline: ' + error.message || error)
+  })
+})
 
 /* SHOW DIALOG ON UNSAVED FORM */
 
