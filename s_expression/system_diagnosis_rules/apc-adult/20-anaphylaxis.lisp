@@ -58,10 +58,20 @@
 )
 (system_diagnosis_rule
   (diagnosis
-    (snomed_concept "Anaphylaxis" "disorder")
-    possible
+    (snomed_concept "Eczema" "disorder")
+    probable 
   )
   adult
+			(clinical_finding (snomed_concept “Xeroderma” (disorder) “Patch” (unit of presentation))
+			(clinical_finding (snomed_concept "Scaly skin” (finding) “Patch’ (unit of presentation))
+			(clinical_finding (snomed_concept "Pruritic rash” (disorder) “Patch” (unit of presentation))
+			(clinical_finding (snomed_concept "Skin structure of multiple topographic sites” (body structure))
+			ANY
+			(clinical_finding (snomed_concept "Wrist region structure” (body structure))
+			(clinical_finding (snomed_concept "Skin structure of medial surface of elbow” (body structure))
+			(clinical_finding (snomed_concept "Ankle region structure” (body structure))
+			(clinical_finding (snomed_concept "Knee region structure” (body structure) “Behind” (qualifier value))
+
   (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
