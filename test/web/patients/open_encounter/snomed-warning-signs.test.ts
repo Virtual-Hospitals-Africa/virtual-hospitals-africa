@@ -5,8 +5,6 @@ import { addTestEmployeeWithSession } from 'test/_helpers/employees.ts'
 import { createTestOrganization } from 'test/_helpers/organizations.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import waitUntilTestServerUp from 'test/_helpers/waitUntilTestServerUp.ts'
-import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
-import asFormData from '../../../../util/asFormData.ts'
 
 describeParallel('snomed-warning-signs', () => {
   before(waitUntilTestServerUp)
@@ -17,27 +15,18 @@ describeParallel('snomed-warning-signs', () => {
       'responds to a search for earache',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchJSON } = await addTestEmployeeWithSession(db, {
+        const { fetchJSON } = await addTestEmployeeWithSession(db, {
           role: 'nurse',
-
           organization_id: clinic.id,
         })
 
-        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          nurse.organization_id,
-          {
-            employment_id: nurse.employee_id,
-          },
-        )
-
         const first_page = await fetchJSON(
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs?search=earache`,
+          `/app/snomed/warning-signs?age_determination=adult&search=earache`,
         )
 
         assertEquals(first_page, {
           'page': 1,
-          'rows_per_page': 20,
+          'rows_per_page': 10,
           'results': [
             {
               'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Pain of ear" "finding"))',
@@ -45,7 +34,9 @@ describeParallel('snomed-warning-signs', () => {
               'name': 'Pain of ear',
               'description': 'finding',
               'category': 'Search Results',
-              'similarity': 1,
+              'best_similarity': 1,
+              'priority': null,
+              'priority_by_virtue_of_matching_warning_sign': null,
             },
             {
               'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Otalgia of left ear" "finding"))',
@@ -53,7 +44,9 @@ describeParallel('snomed-warning-signs', () => {
               'name': 'Otalgia of left ear',
               'description': 'finding',
               'category': 'Search Results',
-              'similarity': 0.47058824,
+              'best_similarity': 0.47058824,
+              'priority': null,
+              'priority_by_virtue_of_matching_warning_sign': null,
             },
             {
               'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Bilateral earache" "finding"))',
@@ -61,7 +54,9 @@ describeParallel('snomed-warning-signs', () => {
               'name': 'Bilateral earache',
               'description': 'finding',
               'category': 'Search Results',
-              'similarity': 0.44444445,
+              'best_similarity': 0.44444445,
+              'priority': null,
+              'priority_by_virtue_of_matching_warning_sign': null,
             },
             {
               'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Otalgia of right ear" "finding"))',
@@ -69,7 +64,9 @@ describeParallel('snomed-warning-signs', () => {
               'name': 'Otalgia of right ear',
               'description': 'finding',
               'category': 'Search Results',
-              'similarity': 0.44444445,
+              'best_similarity': 0.44444445,
+              'priority': null,
+              'priority_by_virtue_of_matching_warning_sign': null,
             },
             {
               'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Aching pain" "finding"))',
@@ -77,12 +74,14 @@ describeParallel('snomed-warning-signs', () => {
               'name': 'Aching pain',
               'description': 'finding',
               'category': 'Search Results',
-              'similarity': 0.3,
+              'best_similarity': 0.3,
+              'priority': null,
+              'priority_by_virtue_of_matching_warning_sign': null,
             },
           ],
           'has_next_page': false,
           'search_terms': {
-            'patient_id': encounter.patient.id,
+            'age_determination': 'adult',
             'categories': ['finding', 'morphologic abnormality', 'disorder'],
             'search': 'earache',
           },
@@ -94,22 +93,13 @@ describeParallel('snomed-warning-signs', () => {
       'responds to a search for appendicular pain, which has priority Urgent by virtue of it being a descendant of Abdominal pain',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchJSON } = await addTestEmployeeWithSession(db, {
+        const { fetchJSON } = await addTestEmployeeWithSession(db, {
           role: 'nurse',
-
           organization_id: clinic.id,
         })
 
-        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          nurse.organization_id,
-          {
-            employment_id: nurse.employee_id,
-          },
-        )
-
         const { results } = await fetchJSON(
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs?search=appendicular+pain`,
+          `/app/snomed/warning-signs?age_determination=adult&search=appendicular+pain`,
         )
 
         assertEquals(results[0], {
@@ -119,7 +109,7 @@ describeParallel('snomed-warning-signs', () => {
           'description': 'finding',
           'priority': 'Urgent',
           'priority_by_virtue_of_matching_warning_sign': 'Abdominal pain',
-          'similarity': 1,
+          'best_similarity': 1,
           'category': 'Search Results',
         })
       },
@@ -129,40 +119,13 @@ describeParallel('snomed-warning-signs', () => {
       'responds to a search for appendicular pain for a pregnant person, which has priority Very urgent by virtue of it being a descendant of Abdominal pain',
       async () => {
         const clinic = await createTestOrganization(db)
-        const { health_worker: nurse, fetchJSON, fetchOk } = await addTestEmployeeWithSession(db, {
+        const { fetchJSON } = await addTestEmployeeWithSession(db, {
           role: 'nurse',
-
           organization_id: clinic.id,
         })
 
-        const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(
-          db,
-          nurse.organization_id,
-          {
-            employment_id: nurse.employee_id,
-          },
-        )
-
-        await fetchOk(
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/triage/brief_history`,
-          {
-            method: 'POST',
-            body: asFormData({
-              common_conditions: {
-                diabetes: {
-                  existence: 'No',
-                },
-                pregnancy: {
-                  existence: 'Yes',
-                },
-              },
-            }),
-          },
-          { cancel_response_body: true },
-        )
-
         const { results } = await fetchJSON(
-          `/app/organizations/${clinic.id}/patients/${encounter.patient.id}/open_encounter/snomed-warning-signs?search=appendicular+pain`,
+          `/app/snomed/warning-signs?age_determination=adult&pregnancy=true&search=appendicular+pain`,
         )
 
         assertEquals(results[0], {
@@ -172,7 +135,7 @@ describeParallel('snomed-warning-signs', () => {
           'description': 'finding',
           'priority': 'Very urgent',
           'priority_by_virtue_of_matching_warning_sign': 'Pregnancy and abdominal pain',
-          'similarity': 1,
+          'best_similarity': 1,
           'category': 'Search Results',
         })
       },

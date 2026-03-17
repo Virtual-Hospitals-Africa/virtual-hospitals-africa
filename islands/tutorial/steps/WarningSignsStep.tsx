@@ -5,7 +5,7 @@
 
 import { useSignal } from '@preact/signals'
 import { MIGRAINE_SEARCH_RESPONSE, TUTORIAL_WARNING_SIGNS } from '../../../shared/tutorial/mock-data.ts'
-import { AsyncSearchHookResult, SnomedConceptSearchResult, WarningSignWithMaybeRecord } from '../../../types.ts'
+import { AsyncSearchHookResult, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../../types.ts'
 import WarningSignsInnerContent from '../../WarningSigns/InnerContent.tsx'
 import { useEffect } from 'preact/hooks'
 
@@ -20,7 +20,7 @@ export function WarningSignsStep() {
     pages: [],
     has_next_page: false,
   }
-  const initial_async_search: AsyncSearchHookResult<SnomedConceptSearchResult> = {
+  const initial_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult> = {
     loading: false,
     search: initial_search,
     search_route: '/tutorial/unused',
@@ -30,7 +30,7 @@ export function WarningSignsStep() {
     },
   }
 
-  const mock_snomed_warning_signs_async_search = useSignal<AsyncSearchHookResult<SnomedConceptSearchResult>>(initial_async_search)
+  const mock_snomed_warning_signs_async_search = useSignal<AsyncSearchHookResult<SnomedWarningSignSearchResult>>(initial_async_search)
 
   useEffect(() => {
     function searchMigraineListener() {

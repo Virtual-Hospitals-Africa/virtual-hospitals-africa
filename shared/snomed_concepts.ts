@@ -7,7 +7,7 @@ type Def = {
   category: SnomedCategory
 }
 
-export function asConceptSExpression(def: Def) {
+export function asConceptSExpression(def: Pick<Def, 'name' | 'category'>) {
   return `(snomed_concept "${def.name}" "${def.category}")`
 }
 

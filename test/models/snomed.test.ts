@@ -1,52 +1,25 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { snomed_model } from '../../db/models/snomed.ts'
+import { snomed_concept_finding_like } from '../../db/models/snomed_concept_finding_like.ts'
 import { assert } from 'std/assert/assert.ts'
 
-describeParallel('db/models/snomed.ts', () => {
+describeParallel('db/models/snomed_concept_finding_like.ts', () => {
   afterAll(() => db.destroy())
-  itParallel('excludes results of the later named categories if there are matching results with the identical name', async () => {
-    snomed_model.verbose = true
-    const preferring_finding = await snomed_model.search(db, {
+  itParallel('prefers the finding category, excluding results identically named findings of other categories', async () => {
+    const preferring_finding = await snomed_concept_finding_like.search(db, {
       search: 'collapse',
-      categories: [
-        'finding' as const,
-        'morphologic abnormality' as const,
-        'disorder' as const,
-      ],
     })
 
     assert(preferring_finding.results.some((result) =>
       result.name === 'Collapse' &&
-      result.description === 'finding'
+      result.category === 'finding'
     ))
 
     assert(
       !preferring_finding.results.some((result) =>
         result.name === 'Collapse' &&
-        result.description === 'morphologic abnormality'
-      ),
-    )
-
-    const preferring_morphologic_abnormality = await snomed_model.search(db, {
-      search: 'collapse',
-      categories: [
-        'morphologic abnormality' as const,
-        'finding' as const,
-        'disorder' as const,
-      ],
-    })
-
-    assert(preferring_morphologic_abnormality.results.some((result) =>
-      result.name === 'Collapse' &&
-      result.description === 'morphologic abnormality'
-    ))
-
-    assert(
-      !preferring_morphologic_abnormality.results.some((result) =>
-        result.name === 'Collapse' &&
-        result.description === 'finding'
+        result.category === 'morphologic abnormality'
       ),
     )
   })

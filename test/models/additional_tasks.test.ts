@@ -240,11 +240,11 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
       {
         atom: 'task',
-        description: 'Check for urgent joint conditions',
+        description: 'Check for urgent arm or hand symptom conditions',
       },
       {
         atom: 'task',
-        description: 'Check for urgent arm or hand symptom conditions',
+        description: 'Check for urgent joint conditions',
       },
     ])
   })

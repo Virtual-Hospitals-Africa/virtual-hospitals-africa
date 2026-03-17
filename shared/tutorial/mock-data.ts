@@ -15,7 +15,7 @@ import type {
   RenderedPatientCompletedRegistration,
   RenderedSidebarWorkflow,
   RenderedWaitingRoom,
-  SnomedConceptSearchResult,
+  SnomedWarningSignSearchResult,
   TaskGroup,
   TriageAssignPriorityTableRow,
   VitalAssessmentFormInputDefition,
@@ -1961,7 +1961,7 @@ export const EMPTY_PATIENT_HISTORY = {
 }
 
 export const MIGRAINE_SEARCH_RESPONSE: {
-  results: OptionalUndefinedFields<SnomedConceptSearchResult>[]
+  results: OptionalUndefinedFields<SnomedWarningSignSearchResult>[]
   page: number
 } = {
   'page': 1,
@@ -1971,7 +1971,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '37796009',
       'name': 'Migraine',
       'description': 'disorder' as const,
-      'similarity': 1,
+      'best_similarity': 1,
       'category': 'Search Results' as const,
     },
     {
@@ -1979,7 +1979,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '56097005',
       'name': 'Migraine without aura',
       'description': 'disorder' as const,
-      'similarity': 0.5625,
+      'best_similarity': 0.5625,
       'category': 'Search Results' as const,
     },
     {
@@ -1987,7 +1987,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '95655001',
       'name': 'Ophthalmic migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5625,
+      'best_similarity': 0.5625,
       'category': 'Search Results' as const,
     },
     {
@@ -1995,7 +1995,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '79267007',
       'name': 'Retinal migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5294118,
+      'best_similarity': 0.5294118,
       'category': 'Search Results' as const,
     },
     {
@@ -2003,7 +2003,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '427419006',
       'name': 'Transformed migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5294118,
+      'best_similarity': 0.5294118,
       'category': 'Search Results' as const,
     },
     {
@@ -2011,7 +2011,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '83351003',
       'name': 'Basilar migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5294118,
+      'best_similarity': 0.5294118,
       'category': 'Search Results' as const,
     },
     {
@@ -2019,7 +2019,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '193039006',
       'name': 'Complicated migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5294118,
+      'best_similarity': 0.5294118,
       'category': 'Search Results' as const,
     },
     {
@@ -2027,7 +2027,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '471651000124106',
       'name': 'Episodic migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5,
+      'best_similarity': 0.5,
       'category': 'Search Results' as const,
     },
     {
@@ -2035,7 +2035,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '23186000',
       'name': 'Menstrual migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5,
+      'best_similarity': 0.5,
       'category': 'Search Results' as const,
     },
     {
@@ -2043,7 +2043,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '193030005',
       'name': 'Migraine variants',
       'description': 'disorder' as const,
-      'similarity': 0.5,
+      'best_similarity': 0.5,
       'category': 'Search Results' as const,
     },
     {
@@ -2051,7 +2051,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '145611000119107',
       'name': 'Allergic migraine',
       'description': 'disorder' as const,
-      'similarity': 0.5,
+      'best_similarity': 0.5,
       'category': 'Search Results' as const,
     },
     {
@@ -2059,7 +2059,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '193031009',
       'name': 'Cluster headache syndrome',
       'description': 'disorder' as const,
-      'similarity': 0.47368422,
+      'best_similarity': 0.47368422,
       'category': 'Search Results' as const,
     },
     {
@@ -2069,7 +2069,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'description': 'disorder' as const,
       'priority': 'Urgent',
       'priority_by_virtue_of_matching_warning_sign': 'Abdominal pain',
-      'similarity': 0.47368422,
+      'best_similarity': 0.47368422,
       'category': 'Search Results' as const,
     },
     {
@@ -2077,7 +2077,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '4473006',
       'name': 'Migraine with aura',
       'description': 'disorder' as const,
-      'similarity': 0.47368422,
+      'best_similarity': 0.47368422,
       'category': 'Search Results' as const,
     },
     {
@@ -2085,7 +2085,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '59292006',
       'name': 'Hemiplegic migraine',
       'description': 'disorder' as const,
-      'similarity': 0.45,
+      'best_similarity': 0.45,
       'category': 'Search Results' as const,
     },
     {
@@ -2093,7 +2093,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '230465000',
       'name': 'Migraine aura without headache',
       'description': 'disorder' as const,
-      'similarity': 0.45,
+      'best_similarity': 0.45,
       'category': 'Search Results' as const,
     },
     {
@@ -2101,7 +2101,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '232284007',
       'name': 'Vestibular migraine',
       'description': 'disorder' as const,
-      'similarity': 0.45,
+      'best_similarity': 0.45,
       'category': 'Search Results' as const,
     },
     {
@@ -2109,7 +2109,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '423894005',
       'name': 'Refractory migraine',
       'description': 'disorder' as const,
-      'similarity': 0.45,
+      'best_similarity': 0.45,
       'category': 'Search Results' as const,
     },
     {
@@ -2117,7 +2117,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'snomed_concept_id': '26150009',
       'name': 'Lower half migraine',
       'description': 'disorder' as const,
-      'similarity': 0.45,
+      'best_similarity': 0.45,
       'category': 'Search Results' as const,
     },
     {
@@ -2127,7 +2127,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'description': 'disorder' as const,
       'priority': 'Very urgent' as const,
       'priority_by_virtue_of_matching_warning_sign': 'Focal neurology',
-      'similarity': 0.45,
+      'best_similarity': 0.45,
       'category': 'Search Results' as const,
     },
   ],

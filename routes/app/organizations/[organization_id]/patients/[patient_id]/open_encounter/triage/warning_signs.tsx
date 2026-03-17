@@ -13,7 +13,6 @@ import { assert } from 'std/assert/assert.ts'
 import { AgeDetermination, CommonSymptom, TrxOrDb, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
 import { normalForm, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
-import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
 import partition from '../../../../../../../../util/partition.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
@@ -32,6 +31,8 @@ import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.
 
 import sortBy from '../../../../../../../../util/sortBy.ts'
 import { insertable_finding_base } from '../../../../../../../../shared/s_expression_schemas.ts'
+import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
+import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 
 export const TriageWarningSignSchema = z.object({
   s_expression: sExpressionZodValidator(insertable_finding_base),
@@ -305,15 +306,31 @@ function* signsMatchedWithPriorRecords(
   }
 }
 
+function x(
+  { state: { trx, patient_id, encounter, health_worker_id } }: OpenEncounterWorkflowContext,
+) {
+  return brief_history.renderedMostRecentRecords(
+    trx,
+    {
+      patient_id,
+      encounter,
+      health_worker_id,
+      conditions: COMMON_CONDITIONS.filter((condition) => condition.key === 'pregnancy'),
+    },
+  )
+}
+
 export async function TriageWarningSignsPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const {
     prior_findings,
     warning_signs_for_patient,
+    brief_history,
   } = await promiseProps({
     prior_findings: getAllFindingsReportedPreviouslyOnThisPage(ctx),
     warning_signs_for_patient: getWarningSignsForPatient(ctx.state.trx, ctx.state.patient_id, ctx.state.patient_age_determination),
+    brief_history: x(ctx),
   })
 
   const warning_signs = signsMatchedWithPriorRecords(
@@ -322,14 +339,15 @@ export async function TriageWarningSignsPage(
     COMMON_SYMPTOMS,
   )
 
+  const warning_signs_search_params = new URLSearchParams()
+  warning_signs_search_params.set('age_determination', exists(ctx.state.patient_age_determination))
+  if (brief_history.pregnancy?.existence === 'Yes') {
+    warning_signs_search_params.set('pregnancy', 'true')
+  }
+
   return (
     <WarningSignsPage
-      search_route={hrefFromCtx(ctx, (url) => {
-        url.pathname = url.pathname.replace(
-          '/triage/warning_signs',
-          '/snomed-warning-signs',
-        )
-      })}
+      search_route={`/app/snomed/warning-signs?${warning_signs_search_params}`}
       warning_signs={Array.from(warning_signs)}
     />
   )

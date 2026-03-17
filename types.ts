@@ -67,6 +67,8 @@ export type NonEmptyArray<T> = [T, ...T[]]
 
 export type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
+export type UnwrappedGenerator<G> = G extends Generator<infer T, any, any> ? T : never
+
 export type NumberIndexable<T> = {
   [index: number]: T
   length: number
@@ -2910,14 +2912,14 @@ export type NavLinks = {
   route: string
 }[]
 
-export type SnomedConceptSearchResult = {
+export type SnomedWarningSignSearchResult = {
   clinical_finding_s_expression: string
   snomed_concept_id: string
   name: string
   description: SnomedCategory
-  priority: 'Urgent' | 'Very urgent' | 'Emergency' | undefined
-  priority_by_virtue_of_matching_warning_sign: string | undefined
-  similarity: number
+  priority: Maybe<'Urgent' | 'Very urgent' | 'Emergency'>
+  priority_by_virtue_of_matching_warning_sign: Maybe<string>
+  best_similarity: number
   category: 'Search Results'
 }
 

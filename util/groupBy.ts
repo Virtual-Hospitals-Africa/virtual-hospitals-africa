@@ -8,19 +8,21 @@ export function groupBy<
     | ((value: T, i: number) => string | number | symbol)
   ),
 >(
-  array: T[],
+  array: Iterable<T>,
   keyBy: KeyBy,
 ): KeyBy extends keyof T ? Map<T[KeyBy], NonEmptyArray<T>>
   : KeyBy extends (value: T, i: number) => infer K ? Map<K, NonEmptyArray<T>>
   : never {
   const result = new Map()
-  for (const [i, item] of array.entries()) {
+  let i = 0
+  for (const item of array) {
     const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
     if (result.has(key)) {
       result.get(key)!.push(item)
     } else {
       result.set(key, [item])
     }
+    i++
   }
   return result as any
 }
