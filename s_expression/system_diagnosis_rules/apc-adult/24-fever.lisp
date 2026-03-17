@@ -31,3 +31,13 @@
     (clinical_finding (snomed_concept "Tenderness of right lower quadrant of abdomen" "finding"))
   )
 )
+Page 24 - Fever: malaria likely
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Malaria" "disorder")
+    probable
+		(clnical_finding (snomed_concept “Fever” (finding))
+		(clinical_finding (snomed_concept “Nausea” (finding))
+		(clinical_finding (snomed_concept “Vomiting” (disorder))
+		(clinical_finding (snomed_concept “History of travel with high risk of exposure to communicable disease” (situation) “Malaria” (disorder) “month” (qualifier value)3))
+		(clinical_finding (snomed_concept “Malaria antigen test” (procedure) “Positive” (qualifier value))
