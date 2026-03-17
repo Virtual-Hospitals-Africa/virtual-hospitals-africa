@@ -22,7 +22,7 @@ export function EmergencyCallButton(props: EmergencyCallButtonProps) {
   return (
     <Button
       variant='destructive'
-      className={cls('w-full transition-all', collapsed.value && 'p-0!')}
+      className={cls('w-full transition-all gap-0', collapsed.value && 'p-0!')}
       {...props}
     >
       <span className={cls('transition-all', collapsed.value ? 'ml-0.5' : '-ml-1')}>

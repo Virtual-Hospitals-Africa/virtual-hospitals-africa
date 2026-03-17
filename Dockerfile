@@ -1,4 +1,4 @@
-FROM denoland/deno:2.6.4 AS build
+FROM denoland/deno:2.7.5 AS build
 WORKDIR /app
 
 # Workaround for deno loader 0.3.10 failed reading lockfile during vite build

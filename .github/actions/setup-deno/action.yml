@@ -7,7 +7,7 @@ runs:
     - name: Set up Deno
       uses: denoland/setup-deno@v2
       with:
-        deno-version: v2.6.4
+        deno-version: v2.7.5
 
     - uses: actions/cache/restore@v4
       name: Restore deno modules
