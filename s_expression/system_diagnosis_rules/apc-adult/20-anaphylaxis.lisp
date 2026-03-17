@@ -58,10 +58,17 @@
 )
 (system_diagnosis_rule
   (diagnosis
-    (snomed_concept "Anaphylaxis" "disorder")
+    (snomed_concept "Allergic rhinitis" "disorder")
     possible
   )
   adult
+			(>clinical_finding (snomed_concept “Sneezing” (finding) “Recurrent” (qualifier value) “Most” (qualifier value) “day” (qualifier value)“week” (qualifier value) 4))
+			(>clinical_finding (snomed_concept "Itching” (finding) “Nasal structure” (body structure) “Most” (qualifier value) “day” (qualifier value) “week” (qualifier value) 4))
+			(>clinical_finding (snomed_concept "Nasal discharge” (finding) “Most” (qualifier value) “day” (qualifier value) “week” (qualifier value) 4))
+			(>clinical_finding (snomed_concept "Nasal congestion” (finding) “Most” (qualifier value) “day” (qualifier value) “week” (qualifier value) 4))
+
+
+
   (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
       (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
