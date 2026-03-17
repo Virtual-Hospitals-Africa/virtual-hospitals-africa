@@ -1,7 +1,7 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import type { RenderedEmployee } from '../../../types.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from './HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { HealthWorkerHomePageSidebar } from '../Sidebar.tsx'
+import { HealthWorkerHomePageSidebar } from '../sidebar/Sidebar.tsx'
 import { HealthWorkerSidebarBottom } from '../HealthWorkerSidebarBottom.tsx'
 
 /**

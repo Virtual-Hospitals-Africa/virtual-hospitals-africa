@@ -1,7 +1,7 @@
 import { Button } from '../components/library/Button.tsx'
 import { PhoneIcon } from '../components/library/icons/heroicons/mini.tsx'
 import cls from '../util/cls.ts'
-import { useSidebarCollapsed } from './SidebarToggleButton.tsx'
+import { useSidebarCollapsed } from './sidebar/useSidebarCollapsed.tsx'
 
 type EmergencyCallButtonProps = {
   type: 'submit'

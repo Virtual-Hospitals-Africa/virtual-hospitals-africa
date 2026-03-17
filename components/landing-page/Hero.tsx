@@ -1,5 +1,4 @@
 import { Button } from '../../components/library/Button.tsx'
-import { LogoWithFullText } from '../../components/library/Logo.tsx'
 import HeroContents from './HeroContents.tsx'
 
 export function Hero() {

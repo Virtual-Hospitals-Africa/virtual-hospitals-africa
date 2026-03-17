@@ -7,10 +7,10 @@ import { Button } from './library/Button.tsx'
 
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { StepsSidebar } from './library/Sidebar.tsx'
 import { PatientDrawerV4Props } from '../types.ts'
 import { Workflow } from '../db.d.ts'
 import { hyphenate } from '../util/hyphenate.ts'
+import { StepsSidebar } from './library/sidebar/Steps.tsx'
 
 export function OpenEncounterWorkflowLayout({
   id,

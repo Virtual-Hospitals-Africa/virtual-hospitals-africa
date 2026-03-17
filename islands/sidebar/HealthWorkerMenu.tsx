@@ -1,8 +1,8 @@
-import { EllipsisVerticalIcon } from '../components/library/icons/heroicons/mini.tsx'
-import { Person } from '../components/library/Person.tsx'
-import cls from '../util/cls.ts'
-import Menu from './Menu.tsx'
-import { useSidebarCollapsed } from './SidebarToggleButton.tsx'
+import { EllipsisVerticalIcon } from '../../components/library/icons/heroicons/mini.tsx'
+import { Person } from '../../components/library/Person.tsx'
+import cls from '../../util/cls.ts'
+import Menu from '../Menu.tsx'
+import { useSidebarCollapsed } from './useSidebarCollapsed.tsx'
 
 export function SidebarHealthWorkerMenu(
   { menu_items, ...person }: {

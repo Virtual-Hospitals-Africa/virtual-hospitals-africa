@@ -13,7 +13,7 @@ import type {
   Transaction,
   ValueExpression,
 } from 'kysely'
-import type { JSX } from 'preact'
+import type { ComponentChild, JSX } from 'preact'
 import type { AgeUnit, DB, EncounterReason, FamilyType, MaritalStatus, MessagePriority, PatientCohabitation, SnomedCategory, Workflow } from './db.d.ts'
 import type { Department } from './shared/departments.ts'
 import type { Priority } from './shared/priorities.ts'
@@ -2949,4 +2949,17 @@ export type MailingListRecipient = {
   interest?: string | undefined
   message?: string | undefined
   support?: string | undefined
+}
+
+export type SidebarProps = {
+  top: {
+    href: string
+    child: ComponentChild
+  }
+  bottom?: ComponentChild
+  route: string
+  params: Record<string, string>
+  urlSearchParams: URLSearchParams
+  nav_links: LinkDef[]
+  tutorial?: boolean
 }
