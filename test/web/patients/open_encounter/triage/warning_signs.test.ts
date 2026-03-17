@@ -860,7 +860,7 @@ describeParallel('triage/warning_signs', () => {
     itParallel(
       'saves findings other than warning signs, including a priority level if the concept is a descendant of a warning sign',
       async () => {
-        const { $, clinic, nurse, patient_id, getStep, postStep } = await setupTriageNewPatient({
+        const { $, nurse, patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           early_brief_history: {
             common_conditions: {
@@ -876,11 +876,11 @@ describeParallel('triage/warning_signs', () => {
 
         assertEquals(
           search_route,
-          `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/snomed-warning-signs`,
+          `/app/snomed/warning-signs?age_determination=adult&pregnancy=true`,
         )
 
         const { results } = await nurse.fetchJSON(
-          `${search_route}?search=appendicular+pain`,
+          `${search_route}&search=appendicular+pain`,
         )
         assertEquals(results[0], {
           category: 'Search Results',
@@ -890,7 +890,7 @@ describeParallel('triage/warning_signs', () => {
           description: 'finding',
           priority: 'Very urgent',
           priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
-          similarity: 1,
+          best_similarity: 1,
         })
 
         // deno-lint-ignore no-explicit-any
