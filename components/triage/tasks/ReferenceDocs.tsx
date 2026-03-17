@@ -1,6 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
-import SectionHeader from './library/typography/SectionHeader.tsx'
-import { Maybe } from '../types.ts'
+
+import { Maybe } from '../../../types.ts'
+import { RenderedEvaluationRelativeToHealthWorker, RenderedFindingRelativeToHealthWorker } from '../../../types.ts'
+import { DueTo } from './DueTo.tsx'
+import SectionHeader from '../../library/typography/SectionHeader.tsx'
 
 type ReferenceDoc = {
   thumbnail_href?: Maybe<string>
@@ -22,8 +25,10 @@ function ReferenceDoc({ reference_doc }: {
   )
 }
 
-export function ReferenceDocs({ reference_docs }: {
+export function ReferenceDocs({ reference_docs, due_to, organization_id }: {
   reference_docs: ReferenceDoc[]
+  due_to: null | (RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker)[]
+  organization_id?: string
 }) {
   if (!reference_docs.length) return null
   return (
@@ -31,6 +36,7 @@ export function ReferenceDocs({ reference_docs }: {
       <SectionHeader className='w-full xl:w-60 mb-2'>
         Reference Documents
       </SectionHeader>
+      {due_to && <DueTo due_to={due_to} organization_id={organization_id!} />}
       {reference_docs.map(
         (reference_doc) => <ReferenceDoc key={reference_doc.href} reference_doc={reference_doc} />,
       )}

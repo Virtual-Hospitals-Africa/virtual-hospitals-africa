@@ -1,13 +1,13 @@
 import { assert } from 'std/assert/assert.ts'
 import { TaskGroup } from '../../types.ts'
 import cls from '../../util/cls.ts'
-import compactMap from '../../util/compactMap.ts'
 import { HiddenInput } from '../library/HiddenInput.tsx'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
-import { ReferenceDocs } from '../ReferenceDocs.tsx'
 import { NoTasks } from './tasks/NoTasks.tsx'
 import { TaskGroupCard } from './tasks/TaskGroupCard.tsx'
 import { isLink } from './tasks/type-predicates.ts'
+import negate from '../../util/negate.ts'
+import { ReferenceDocs } from './tasks/ReferenceDocs.tsx'
 
 export default function AdditionalTasks({
   organization_id,
@@ -23,20 +23,15 @@ export default function AdditionalTasks({
   }
 
   const all_tasks = task_groups.flatMap((task_group) => task_group.tasks)
+  const all_due_to = task_groups.flatMap((task_group) => task_group.due_to)
 
+  const some_soliticing_finding_task = all_tasks.some(negate(isLink))
   const reference_docs = all_tasks.filter(isLink)
-  const reference_docs_el = <ReferenceDocs reference_docs={reference_docs} />
+  const reference_docs_el = (
+    <ReferenceDocs reference_docs={reference_docs} due_to={some_soliticing_finding_task ? null : all_due_to} organization_id={organization_id} />
+  )
 
-  const task_group_cards = compactMap(task_groups, (group, index) => (
-    <TaskGroupCard
-      key={index}
-      group={group}
-      organization_id={organization_id}
-    />
-  ))
-
-  console.log('mm')
-  const column_count = Number(!!reference_docs_el) + Number(!!task_group_cards.length)
+  const column_count = Number(!!reference_docs_el) + Number(some_soliticing_finding_task)
   if (!column_count) {
     return <NoTasks />
   }
@@ -50,12 +45,18 @@ export default function AdditionalTasks({
           'grid-cols-1': column_count === 1,
         })}
       >
-        {!!task_group_cards.length && (
+        {some_soliticing_finding_task && (
           <div id='additional-investigations-column' class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
             <SectionHeader className='w-full xl:w-60'>
               Additional Investigations
             </SectionHeader>
-            {task_group_cards}
+            {task_groups.map((group, index) => (
+              <TaskGroupCard
+                key={index}
+                group={group}
+                organization_id={organization_id}
+              />
+            ))}
           </div>
         )}
         {reference_docs_el}

@@ -4,9 +4,7 @@
 (task
   "Check for urgent skin symptom conditions"
   adult
-  (or
-    (clinical_finding (finding_site (snomed_concept "Skin structure" "body structure")))
-    (clinical_finding (snomed_concept "Eruption" "morphologic abnormality")))
+  (clinical_finding (finding_site (snomed_concept "Skin structure" "body structure")))
   (check_for
     (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
     (clinical_finding (snomed_concept "Generalized rash" "disorder"))
