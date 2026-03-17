@@ -1,14 +1,11 @@
 import { ComponentChild } from 'preact'
 import * as ProgressIcons from '../icons/progress.tsx'
 import { prettyStepName } from '../../../shared/workflow.ts'
-import { defaultTop } from './tops.tsx'
 import { GenericSidebar } from './Generic.tsx'
+import { DefaultTop } from './Top.tsx'
 
 type StepsSidebarProps = {
-  top?: {
-    href: string
-    child: ComponentChild
-  }
+  top?: ComponentChild
   url: URL
   route?: string | null
   params: Record<string, string>
@@ -25,7 +22,7 @@ export function StepsSidebar(
 ) {
   return (
     <GenericSidebar
-      top={top || defaultTop(url)}
+      top={top || <DefaultTop url={url} />}
       bottom={bottom}
       route={route!}
       params={params}

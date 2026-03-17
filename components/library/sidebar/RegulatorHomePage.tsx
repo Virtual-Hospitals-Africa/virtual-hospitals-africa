@@ -1,6 +1,6 @@
 import { GenericSidebar } from './Generic.tsx'
 import { regulator_home_page_nav_links } from './home_page_links/regulator.ts'
-import { RegulatorDefaultTop } from './tops.tsx'
+import { RegulatorDefaultTop } from './Top.tsx'
 
 export function RegulatorHomePageSidebar(
   { route, params, urlSearchParams }: {

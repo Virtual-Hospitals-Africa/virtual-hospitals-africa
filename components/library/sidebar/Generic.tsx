@@ -5,7 +5,6 @@ import {} from '../icons/heroicons/outline.tsx'
 import {} from '../icons/heroicons/outline.tsx'
 import {} from '../icons/heroicons/outline.tsx'
 import { replaceParams } from '../../../util/replaceParams.ts'
-import { HEADER_HEIGHT_PX } from '../HeaderHeight.ts'
 import SidebarToggleButton from '../../../islands/sidebar/ToggleButton.tsx'
 import { NavItem } from './NavItem.tsx'
 import { SidebarProps } from '../../../types.ts'
@@ -20,18 +19,7 @@ export function GenericSidebar(
     <div className='inset-y-0 h-full max-w-44'>
       <div className='relative flex flex-col flex-auto bg-white border-r border-gray-200 overflow-visible h-full'>
         <SidebarToggleButton />
-        <a
-          href={top.href}
-          className='flex items-center w-full h-full gap-3 shrink-0'
-          style={{
-            height: HEADER_HEIGHT_PX,
-            display: 'grid',
-            placeItems: 'center',
-            width: '100%',
-          }}
-        >
-          {top.child}
-        </a>
+        {top}
         <nav className='flex flex-col flex-1 px-3'>
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (

@@ -1,6 +1,6 @@
 import { ComponentChild } from 'preact'
 import { practitioner_home_page_nav_links } from './home_page_links/health_worker.ts'
-import { HealthWorkerDefaultTop } from './tops.tsx'
+import { HealthWorkerDefaultTop } from './Top.tsx'
 import { GenericSidebar } from './Generic.tsx'
 
 export type HealthWorkerHomePageSidebarProps = {
@@ -20,7 +20,7 @@ export function HealthWorkerHomePageSidebar(
       params={params}
       urlSearchParams={urlSearchParams}
       nav_links={practitioner_home_page_nav_links}
-      top={HealthWorkerDefaultTop}
+      top={<HealthWorkerDefaultTop />}
       bottom={bottom}
       tutorial={tutorial}
     />

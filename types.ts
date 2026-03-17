@@ -2952,10 +2952,7 @@ export type MailingListRecipient = {
 }
 
 export type SidebarProps = {
-  top: {
-    href: string
-    child: ComponentChild
-  }
+  top: ComponentChild
   bottom?: ComponentChild
   route: string
   params: Record<string, string>
