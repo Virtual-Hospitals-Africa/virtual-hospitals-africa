@@ -16,7 +16,7 @@ import re
 import sys
 from pathlib import Path
 
-REPO_ROOT  = Path(__file__).parent.parent
+REPO_ROOT  = Path(__file__).parent.parent.parent
 JSON_PATH  = REPO_ROOT / "backend/recommended_doses/parsed/recommended_doses.json"
 PDF_INPUT  = REPO_ROOT / "static/medical-resources/za/eml/Hospital-Level-Adults-Standard-Treatment-Guidelines-and-EMP-6th-Edition-2024.pdf"
 PDF_OUTPUT = REPO_ROOT / "static/medical-resources/za/eml/named-destinations/Hospital-Level-Adults-Standard-Treatment-Guidelines-and-EMP-6th-Edition-2024.pdf"
@@ -55,7 +55,7 @@ print(f"Scanning for {len(unique_disorders)} disorders and "
 
 doc = fitz.open(PDF_INPUT)
 
-found_disorders: dict[str, tuple[int, float, float]] = {}  # num -> (page, y0, page_h)
+found_disorders: dict[str, tuple[int, float, float, float, float, float]] = {}  # num -> (page, x0, y0, x1, y1, page_h)
 not_found_disorders = set(disorder_numbers)
 
 def get_grey_rects(page: fitz.Page) -> list[fitz.Rect]:
@@ -92,7 +92,7 @@ for page_num in range(len(doc)):
                 span_rect = fitz.Rect(span["bbox"])
                 for gr in grey_rects:
                     if gr.intersects(span_rect):
-                        found_disorders[num] = (page_num, gr.y0, page.rect.height)
+                        found_disorders[num] = (page_num, gr.x0, gr.y0, gr.x1, gr.y1, page.rect.height)
                         not_found_disorders.discard(num)
                         break
 
@@ -101,7 +101,7 @@ for page_num in range(len(doc)):
 # ICD codes); using found_disorders avoids treating the ICD-codes rect as a
 # separate boundary that would cut the scan off prematurely.
 disorder_positions: list[tuple[int, float, str]] = sorted(
-    (pn, y0, num) for num, (pn, y0, _) in found_disorders.items()
+    (pn, y0, num) for num, (pn, _x0, y0, _x1, _y1, _ph) in found_disorders.items()
 )
 
 print(f"Found {len(found_disorders)} / {len(unique_disorders)} disorders")
@@ -121,7 +121,7 @@ def find_medicine(
     end_page: int,
     end_y: float,
     medicine_name: str,
-) -> tuple[int, float, float] | None:
+) -> tuple[int, float, float, float, float, float] | None:
     """
     Scan text blocks from (start_page, start_y) up to (end_page, end_y).
     Returns (page_num, block_y0, page_height) of the first block containing
@@ -146,11 +146,11 @@ def find_medicine(
         for block in blocks:
             if block["type"] != 0:
                 continue
-            block_y = block["bbox"][1]
+            x0, y0, x1, y1 = block["bbox"]
 
-            if page_num == start_page and block_y < start_y - TOLERANCE:
+            if page_num == start_page and y0 < start_y - TOLERANCE:
                 continue
-            if page_num == end_page and block_y >= end_y:
+            if page_num == end_page and y0 >= end_y:
                 return None   # correct because blocks are sorted
 
             block_text = " ".join(
@@ -160,17 +160,17 @@ def find_medicine(
             ).lower()
 
             if needle in block_text:
-                return (page_num, block_y, page.rect.height)
+                return (page_num, x0, y0, x1, y1, page.rect.height)
 
     return None
 
-found_medicines: dict[tuple[str, str], tuple[int, float, float]] = {}
+found_medicines: dict[tuple[str, str], tuple[int, float, float, float, float, float]] = {}
 not_found_medicines: list[tuple[str, str]] = []
 
 for disorder_num, medicine_name in sorted(unique_medicine_targets):
     if disorder_num not in found_disorders:
         continue   # disorder itself wasn't found; already reported above
-    start_page, start_y, _ = found_disorders[disorder_num]
+    start_page, _, start_y, _, _, _ = found_disorders[disorder_num]
     end_page, end_y = next_section_boundary(start_page, start_y)
     result = find_medicine(start_page, start_y, end_page, end_y, medicine_name)
     if result is None:
@@ -198,25 +198,30 @@ def sort_key(num: str) -> list:
 with pikepdf.open(PDF_INPUT) as pdf:
     # Collect all destinations then sort by name in lexicographic (byte) order,
     # which is what PDF name trees require for binary search to work.
-    all_dests: list[tuple[str, int, float, float]] = []
+    all_dests: list[tuple[str, int, float, float, float, float, float]] = []
 
-    for num, (page_num, fitz_y, page_height) in found_disorders.items():
-        all_dests.append((num, page_num, fitz_y, page_height))
+    for num, (page_num, x0, y0, x1, y1, page_height) in found_disorders.items():
+        all_dests.append((num, page_num, x0, y0, x1, y1, page_height))
 
-    for (disorder_num, medicine_name), (page_num, fitz_y, page_height) in found_medicines.items():
-        all_dests.append((f"{disorder_num}-{medicine_name}", page_num, fitz_y, page_height))
+    for (disorder_num, medicine_name), (page_num, x0, y0, x1, y1, page_height) in found_medicines.items():
+        all_dests.append((f"{disorder_num}-{medicine_name}", page_num, x0, y0, x1, y1, page_height))
 
     all_dests.sort(key=lambda t: t[0])
 
     dests_array = pikepdf.Array()
-    for name, page_num, fitz_y, page_height in all_dests:
-        pdf_y = float(page_height - fitz_y)
+    for name, page_num, fitz_x0, fitz_y0, fitz_x1, fitz_y1, page_height in all_dests:
+        # Convert fitz (top-left origin) to PDF (bottom-left origin)
+        pdf_left   = float(fitz_x0)
+        pdf_bottom = float(page_height - fitz_y1)
+        pdf_right  = float(fitz_x1)
+        pdf_top    = float(page_height - fitz_y0)
         dest = pikepdf.Array([
             pdf.pages[page_num].obj,
-            pikepdf.Name("/XYZ"),
-            None,
-            pikepdf.Real(pdf_y),
-            None,
+            pikepdf.Name("/FitR"),
+            pikepdf.Real(pdf_left),
+            pikepdf.Real(pdf_bottom),
+            pikepdf.Real(pdf_right),
+            pikepdf.Real(pdf_top),
         ])
         dests_array.append(pikepdf.String(name))
         dests_array.append(dest)
