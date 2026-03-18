@@ -29,3 +29,15 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+;; Page 38 - Cough/Breathing: Post-infectious cough likely
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Post-infectious disorder” (disorder) “Cough” (finding))
+    probable
+  )
+  adult
+		(>=(clinical_finding (snomed_concept “Cough” (finding) week (qualifier value) 2)) “History of” (contextual qualifier) (qualifier value))
+		(>=(clinical_finding (snomed_concept “Difficulty breathing” (finding) week (qualifier value)2)) “History of” (contextual qualifier) (qualifier value))
+		(clinical_finding (snomed_concept “Upper respiratory infection” (disorder) “Recent” (qualifier value))
+		(clinical_finding (snomed_concept “Normal respiratory function” (finding))
+
