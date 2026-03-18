@@ -21,5 +21,7 @@
     (clinical_finding (snomed_concept "Decreased breath sounds" "finding"))
     (clinical_finding (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))
     (clinical_finding (snomed_concept "Trachea displaced" "disorder"))
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding) Supine body position (finding) Worse (qualifier value)
+		(clinical_finding (snomed_concept “Dyspnea” (finding) Speaking (observable entity) Associated with (attribute)
   )
 )
