@@ -29,3 +29,16 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+
+(system_diagnosis_rule
+  (referral
+    (snomed_concept "Obstructive sleep apnea syndrome” "disorder")
+  )
+  adult
+		(clinical_finding (snomed_concept “Obstructive sleep apnea syndrome” (disorder))
+		(clinical_finding (snomed_concept “Patient referral” (procedure))
+		(clinical_finding (snomed_concept “Enlarged tonsil” (finding) “Bilateral palatine tonsils” (body structure))
+		(clinical_finding (snomed_concept “Stops breathing” (finding) “During sleep” (qualifier value))
+		(clinical_finding (snomed_concept “Choking” (finding) “During sleep” (qualifier value))
+		(clinical_finding (snomed_concept “Gasping for breath” (finding) “During sleep” (qualifier value))
+
