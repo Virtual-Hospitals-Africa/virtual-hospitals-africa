@@ -7,7 +7,7 @@ import db from '../../db/db.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 
 const expected_links = [
-  '/waitlist?entrypoint=hero',
+  '/mailing-list',
   '/schedule-demo?entrypoint=health-workers',
   '/waitlist?entrypoint=patients',
   '/schedule-demo?entrypoint=research',
