@@ -29,3 +29,19 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+;; Page 38 - Cough/Breathing: Acute bronchitis likely 
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Acute bronchitis" "disorder")
+    probable
+	)
+	adult
+		(<duration (clinical_finding (snomed_concept “Cough” (finding) “week” (qualifier value) 2))
+		(clinical_finding (snomed_concept “Cough” (finding) “No recurrence of problem” (situation)
+)
+		(clinical_finding (snomed_concept “Exposure to cold” (event) “Recent” (qualifier value)
+		AND ANY
+		(clinical_finding (snomed_concept “Tight chest” (finding))
+		(clinical_finding (snomed_concept “Chest discomfort” (finding))
+		(clinical_finding (snomed_concept “Productive cough” (finding))
+
