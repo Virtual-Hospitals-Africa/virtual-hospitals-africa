@@ -95,13 +95,13 @@ export default function AdditionalTasks({
   }
 
   const reference_docs = task_groups.flatMap((task_group) => task_group.tasks).filter(isLink)
-  const reference_docs_el = <ReferenceDocs reference_docs={reference_docs} />
+  const has_reference_docs = reference_docs.length > 0
 
   return (
     <div
-      class={cls('grid', {
-        'grid-cols-2': !!reference_docs_el,
-        'grid-cols-1': !reference_docs_el,
+      class={cls({
+        'flex flex-col-reverse gap-4': has_reference_docs,
+        'sm:grid sm:grid-cols-2': has_reference_docs,
       })}
     >
       <div id='additional-investigations-column' class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
@@ -120,7 +120,7 @@ export default function AdditionalTasks({
           />
         ))}
       </div>
-      {reference_docs_el}
+      <ReferenceDocs reference_docs={reference_docs} />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import SectionHeader from './library/typography/SectionHeader.tsx'
 import { Maybe } from '../types.ts'
+import { BookOpenIcon } from './library/icons/heroicons/outline.tsx'
 
 type ReferenceDoc = {
   thumbnail_href?: Maybe<string>
@@ -14,7 +15,13 @@ function ReferenceDoc({ reference_doc }: {
   assert(reference_doc.thumbnail_href)
   return (
     <a href={reference_doc.href} className='flex text-sm font-medium text-gray-600 leading-5 w-fit'>
-      <figure>
+      {/* Small screen: book icon + title */}
+      <span class='flex items-center gap-2 sm:hidden'>
+        <BookOpenIcon class='w-5 h-5 shrink-0' />
+        <span>{reference_doc.title}</span>
+      </span>
+      {/* Larger screens: thumbnail image */}
+      <figure class='hidden sm:block'>
         <img width='400' src={reference_doc.thumbnail_href} />
         <figcaption>{reference_doc.title}</figcaption>
       </figure>
