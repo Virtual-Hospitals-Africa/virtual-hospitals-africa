@@ -5,7 +5,7 @@
 
 import { useEffect } from 'preact/hooks'
 import type { ScriptItem, TutorialHashState } from '../../shared/tutorial/types.ts'
-import { advance, initialState } from '../../shared/tutorial/state.ts'
+import { advance } from '../../shared/tutorial/state.ts'
 import { TutorialDialogue } from './TutorialDialogue.tsx'
 import { TutorialSpotlight } from './TutorialSpotlight.tsx'
 import { TutorialConfetti } from './TutorialConfetti.tsx'
@@ -44,7 +44,7 @@ export function TutorialOverlay({ script, item, hash_state, setHashState }: Prop
     // Synthetic events have isTrusted=false which HeadlessUI ignores, so instead we
     // find open PopoverButtons by their aria-expanded state and call .click() to toggle them closed.
     const click_target_on_advance = item.click_target_on_advance && document.querySelectorAll<HTMLElement>(item.click_target_on_advance)
-    if (click_target_on_advance) click_target_on_advance.forEach(el => el.click())
+    if (click_target_on_advance) click_target_on_advance.forEach((el) => el.click())
 
     item.onLeave?.()
 
@@ -57,8 +57,8 @@ export function TutorialOverlay({ script, item, hash_state, setHashState }: Prop
     setHashState(next)
   }
 
-  const handleRestart = () => {
-    setHashState(initialState())
+  const handleSignUp = () => {
+    globalThis.location.href = '/mailing-list'
   }
 
   // Check if this is the final step
@@ -69,8 +69,8 @@ export function TutorialOverlay({ script, item, hash_state, setHashState }: Prop
       {is_final && <TutorialConfetti />}
       <RenderItem
         item={item}
-        onNext={is_final ? handleRestart : handleAdvance}
-        button_text={is_final ? 'Restart Tutorial' : 'Next'}
+        onNext={is_final ? handleSignUp : handleAdvance}
+        button_text={is_final ? 'Sign Up for Updates' : 'Next'}
       />
     </>
   )
@@ -88,9 +88,7 @@ function handleInput({ field, value }: {
   }
 
   // If the element is a radio input (or contains one), click it
-  const radio = el instanceof HTMLInputElement && el.type === 'radio'
-    ? el
-    : el.querySelector<HTMLInputElement>('input[type="radio"]')
+  const radio = el instanceof HTMLInputElement && el.type === 'radio' ? el : el.querySelector<HTMLInputElement>('input[type="radio"]')
   if (radio) {
     return radio.click()
   }

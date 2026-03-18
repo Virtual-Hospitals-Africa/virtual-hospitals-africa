@@ -268,7 +268,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "Findings can be inspected for more details and we can message the health worker who originally recorded them.",
+    text: 'Findings can be inspected for more details and we can message the health worker who originally recorded them.',
     highlight: '#record-chip-allergy-to-peanut > button, .record-chip [data-open]',
     click_target_on_advance: '.record-chip button[aria-expanded="true"]',
   },
@@ -446,40 +446,43 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
       '.yes-no-question-label[data-question="check_for.finding-dizziness.existence"], .yes-no-question-input[data-question="check_for.finding-dizziness.existence"]',
     input: {
       field: '.yes-no-question-input[data-question="check_for.finding-dizziness.existence"][data-existence="Yes"]',
-      value: 'Yes'
-    }
+      value: 'Yes',
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     position: 'top-right',
     text: '"Yes" for difficulty breathing',
-    highlight: '.yes-no-question-label[data-question="check_for.finding-difficulty-breathing.existence"], .yes-no-question-input[data-question="check_for.finding-difficulty-breathing.existence"]',
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-difficulty-breathing.existence"], .yes-no-question-input[data-question="check_for.finding-difficulty-breathing.existence"]',
     input: {
       field: '.yes-no-question-input[data-question="check_for.finding-difficulty-breathing.existence"][data-existence="Yes"]',
-      value: 'Yes'
-    }
+      value: 'Yes',
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     position: 'top-right',
     text: '"Yes" for sudden onset itching',
-    highlight: '.yes-no-question-label[data-question="check_for.finding-sudden-onset-itching.existence"], .yes-no-question-input[data-question="check_for.finding-sudden-onset-itching.existence"]',
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-sudden-onset-itching.existence"], .yes-no-question-input[data-question="check_for.finding-sudden-onset-itching.existence"]',
     input: {
       field: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-itching.existence"][data-existence="Yes"]',
-      value: 'Yes'
-    }
+      value: 'Yes',
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     position: 'top-right',
     text: 'and "Yes" for sudden onset eruption (rash)',
-    highlight: '.yes-no-question-label[data-question="check_for.finding-sudden-onset-eruption.existence"], .yes-no-question-input[data-question="check_for.finding-sudden-onset-eruption.existence"]',
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-sudden-onset-eruption.existence"], .yes-no-question-input[data-question="check_for.finding-sudden-onset-eruption.existence"]',
     input: {
       field: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-eruption.existence"][data-existence="Yes"]',
-      value: 'Yes'
+      value: 'Yes',
     },
     click_target_on_advance: 'button.yes-no-header[data-existence="No"]',
   },
@@ -488,7 +491,8 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     position: 'top-right',
     text: `We'll click "No" at the top to fill in "No" for all the remaining unanswered questions`,
-    highlight: '.task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"] button.yes-no-header[data-existence="No"], .task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"] .yes-no-question-input[data-existence="No"]',
+    highlight:
+      '.task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"] button.yes-no-header[data-existence="No"], .task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"] .yes-no-question-input[data-existence="No"]',
   },
 
   {
@@ -507,6 +511,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'bottom-right',
     text: "Here we can see a summary of everything we've learned from this visit and a final prioritization for Duduzile's case.",
     highlight: TUTORIAL_TARGETS.ASSIGN_PRIORITY_TABLE,
     onLeave() {
@@ -517,13 +522,18 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'bottom-right',
     text: 'Based on the evidence collected, an anaphylaxis diagnosis is now probable',
     highlight: 'tr:nth-child(1) > td:nth-child(1), tr:nth-child(1) > td:nth-child(2)',
-    click_target_on_advance: '.record-chip button[aria-expanded="true"]',
+    onLeave() {
+      const button = document.querySelector('tr:nth-child(1) > td:nth-child(2) button') as HTMLButtonElement
+      button?.click()
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: 'Numeric measurements are plotted against their reference ranges',
     highlight: `
       tr:nth-child(6) > td:nth-child(3), 
@@ -564,12 +574,13 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'doctor',
-    text: "Confirmed - this is anaphylaxis. I'm prescribing adrenaline immediately, plus sodium chloride 0.9% IV until blood pressure stabilises.",
+    text:
+      "Confirmed - this is textbook anaphylaxis. I'm prescribing adrenaline immediately along with sodium chloride 0.9% IV until blood pressure stabilises.",
   },
   {
     type: 'dialogue',
     speaker: 'nurse',
-    text: "Thank you, Dr. Mokoena. I'll send the prescription through to Lazarus in the pharmacy now.",
+    text: "Thank you, Dr. Zungu. I'll send the prescription through to Thabo in the pharmacy now.",
   },
   {
     type: 'dialogue',
@@ -588,6 +599,11 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'step_transition',
     to_step: 'complete',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text: 'Well done! With your help, Duduzile was able to get diagnosed and treated quickly, potentially saving her life',
   },
   {
     type: 'dialogue',

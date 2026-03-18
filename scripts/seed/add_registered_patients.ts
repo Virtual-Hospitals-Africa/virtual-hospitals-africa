@@ -6,13 +6,12 @@ import range from '../../util/range.ts'
 import { employees } from '../../db/models/employees.ts'
 import { addTestEmployee } from '../../mocks/testEmployee.ts'
 
-
 async function addPatients(count: number) {
   const receptionist = await findOrCreateReceptionist()
   await forEach(range(count), () => {
     return insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db, TEST_ORGANIZATION_UUIDS.ZA.clinic, {
       employment_id: receptionist.employee_id,
-      is_tutorial: true
+      is_tutorial: true,
     })
   })
 }
@@ -20,12 +19,12 @@ async function addPatients(count: number) {
 async function findOrCreateReceptionist() {
   const receptionist = await employees.findOneOptional(db, {
     organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
-    roles: ['receptionist']
+    roles: ['receptionist'],
   })
   if (receptionist) return receptionist
 
   return addTestEmployee(db, {
-    role: 'receptionist'
+    role: 'receptionist',
   })
 }
 
