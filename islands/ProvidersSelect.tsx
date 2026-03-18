@@ -6,6 +6,7 @@ import { employeeDisplay } from '../util/healthWorkerDisplay.ts'
 import { Priority } from '../shared/priorities.ts'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
 import { HealthWorkerPresence } from '../components/HealthWorkerPresence.tsx'
+import OnlineIndicator from '../components/library/OnlineIndicator.tsx'
 
 export type AvailabilityInfo = {
   label: string
@@ -40,17 +41,19 @@ export function ProviderSelectOption(
         onInput={toggleSelection}
       />
       <span className='flex items-center gap-3'>
-        <Avatar
-          src={display.avatar_url}
-          className='h-14 w-14'
-        />
+        <div className='relative'>
+          <Avatar
+            src={display.avatar_url}
+            className='h-14 w-14'
+          />
+          <OnlineIndicator online={provider.at_work} />
+        </div>
         <span className='flex flex-col'>
           <span
             id={`provider-${provider.employee_id}-label`}
             className='font-medium text-gray-900 text-md'
           >
             {display.display_name}
-            {provider.at_work && <span className='text-xs text-green-600 font-normal'>Online</span>}
           </span>
           <span
             id={`provider-${provider.employee_id}-description-0`}

@@ -102,7 +102,7 @@ export const TUTORIAL_EMPLOYEE: RenderedEmployee = {
       in_departments: [],
       active_licences: [{
         'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-        'created_at': '2026-03-06T18:35:03.951367+00:00',
+        'created_at': new Date(),
         'updated_at': '2026-03-06T18:35:03.951367+00:00',
         licence_number: 'NMC-2024-001',
         regulatory_agency: {
@@ -170,7 +170,7 @@ export const TUTORIAL_OTHER_EMPLOYEE: RenderedEmployee = {
       in_departments: [],
       active_licences: [{
         'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-        'created_at': '2026-03-06T18:35:03.951367+00:00',
+        'created_at': new Date(),
         'updated_at': '2026-03-06T18:35:03.951367+00:00',
         licence_number: 'NMC-2024-001',
         regulatory_agency: {
@@ -691,7 +691,7 @@ export const TUTORIAL_HEIGHT_WEIGHT: RenderedFindingRelativeToHealthWorker[] = [
 const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
   {
     'id': 'f09f64f2-35f3-43c1-aea9-09fb8bbce3d3',
-    'created_at': '2026-03-10T17:06:31.575Z',
+    'created_at': new Date(),
     'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
     'root_snomed_concept_id': '118245000',
     'root_snomed_concept_name': 'Measurement finding',
@@ -704,7 +704,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     'evaluations': [
       {
         'id': 'f2ce9b25-49a4-4e5a-95db-7b730fcf8e0e',
-        'created_at': '2026-03-10T17:06:31.575675+00:00',
+        'created_at': new Date(),
         'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
         'root_snomed_concept_id': '129265001',
         'root_snomed_concept_name': 'Evaluation - action',
@@ -777,7 +777,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'active_licences': [
             {
               'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-              'created_at': '2026-03-06T18:35:03.951367+00:00',
+              'created_at': new Date(),
               'updated_at': '2026-03-06T18:35:03.951367+00:00',
               'profession': 'PROFESSIONAL NURSE',
               'specialty': 'Primary care',
@@ -806,7 +806,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
   },
   {
     'id': '6968a46a-8187-4983-99e6-ece747d849a9',
-    'created_at': '2026-03-10T17:06:31.575Z',
+    'created_at': new Date(),
     'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
     'root_snomed_concept_id': '404684003',
     'root_snomed_concept_name': 'Clinical finding',
@@ -819,7 +819,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     'evaluations': [
       {
         'id': '6225c9d9-23bb-433b-8fa8-bd67e7a3918f',
-        'created_at': '2026-03-10T17:06:31.575675+00:00',
+        'created_at': new Date(),
         'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
         'root_snomed_concept_id': '129265001',
         'root_snomed_concept_name': 'Evaluation - action',
@@ -892,7 +892,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'active_licences': [
             {
               'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-              'created_at': '2026-03-06T18:35:03.951367+00:00',
+              'created_at': new Date(),
               'updated_at': '2026-03-06T18:35:03.951367+00:00',
               'profession': 'PROFESSIONAL NURSE',
               'specialty': 'Primary care',
@@ -921,7 +921,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
   },
   {
     'id': '61f3a4df-2cf7-4652-8c15-a2829d8141b1',
-    'created_at': '2026-03-10T17:06:31.575Z',
+    'created_at': new Date(),
     'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
     'root_snomed_concept_id': '404684003',
     'root_snomed_concept_name': 'Clinical finding',
@@ -934,7 +934,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     'evaluations': [
       {
         'id': '2f976769-08ef-415d-b7da-7d5f0c3b45cf',
-        'created_at': '2026-03-10T17:06:31.575675+00:00',
+        'created_at': new Date(),
         'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
         'root_snomed_concept_id': '129265001',
         'root_snomed_concept_name': 'Evaluation - action',
@@ -1007,7 +1007,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'active_licences': [
             {
               'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-              'created_at': '2026-03-06T18:35:03.951367+00:00',
+              'created_at': new Date(),
               'updated_at': '2026-03-06T18:35:03.951367+00:00',
               'profession': 'PROFESSIONAL NURSE',
               'specialty': 'Primary care',
@@ -1036,7 +1036,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
   },
   {
     'id': 'bae1ebf5-f8a4-48d5-80e3-fcdb2a85b8aa',
-    'created_at': '2026-03-10T17:06:31.575Z',
+    'created_at': new Date(),
     'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
     'root_snomed_concept_id': '404684003',
     'root_snomed_concept_name': 'Clinical finding',
@@ -1049,7 +1049,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     'evaluations': [
       {
         'id': 'c5f3dd73-1d32-4835-8973-3c29a23135fd',
-        'created_at': '2026-03-10T17:06:31.575675+00:00',
+        'created_at': new Date(),
         'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
         'root_snomed_concept_id': '129265001',
         'root_snomed_concept_name': 'Evaluation - action',
@@ -1118,7 +1118,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'active_licences': [
             {
               'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-              'created_at': '2026-03-06T18:35:03.951367+00:00',
+              'created_at': new Date(),
               'updated_at': '2026-03-06T18:35:03.951367+00:00',
               'profession': 'PROFESSIONAL NURSE',
               'specialty': 'Primary care',
@@ -1147,7 +1147,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
   },
   {
     'id': 'f1a1e8cf-33b3-4098-8e80-418e86386f1f',
-    'created_at': '2026-03-10T17:06:31.575Z',
+    'created_at': new Date(),
     'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
     'root_snomed_concept_id': '118245000',
     'root_snomed_concept_name': 'Measurement finding',
@@ -1160,7 +1160,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     'evaluations': [
       {
         'id': '90e9f1a7-43f8-4272-afd3-8f1e6fc0a099',
-        'created_at': '2026-03-10T17:06:31.575675+00:00',
+        'created_at': new Date(),
         'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
         'root_snomed_concept_id': '129265001',
         'root_snomed_concept_name': 'Evaluation - action',
@@ -1229,7 +1229,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'active_licences': [
             {
               'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-              'created_at': '2026-03-06T18:35:03.951367+00:00',
+              'created_at': new Date(),
               'updated_at': '2026-03-06T18:35:03.951367+00:00',
               'profession': 'PROFESSIONAL NURSE',
               'specialty': 'Primary care',
@@ -1258,7 +1258,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
   },
   {
     'id': '17944151-5e75-4932-8caa-12e067a67a10',
-    'created_at': '2026-03-10T17:06:31.575Z',
+    'created_at': new Date(),
     'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
     'root_snomed_concept_id': '118245000',
     'root_snomed_concept_name': 'Measurement finding',
@@ -1271,7 +1271,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     'evaluations': [
       {
         'id': '703c702f-f121-477f-832b-cee4e9c68835',
-        'created_at': '2026-03-10T17:06:31.575675+00:00',
+        'created_at': new Date(),
         'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
         'root_snomed_concept_id': '129265001',
         'root_snomed_concept_name': 'Evaluation - action',
@@ -1344,7 +1344,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'active_licences': [
             {
               'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-              'created_at': '2026-03-06T18:35:03.951367+00:00',
+              'created_at': new Date(),
               'updated_at': '2026-03-06T18:35:03.951367+00:00',
               'profession': 'PROFESSIONAL NURSE',
               'specialty': 'Primary care',
@@ -1373,7 +1373,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
   },
   {
     'id': 'f68075c7-8084-4fab-8666-05f6f19493f1',
-    'created_at': '2026-03-10T17:06:31.575Z',
+    'created_at': new Date(),
     'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
     'root_snomed_concept_id': '118245000',
     'root_snomed_concept_name': 'Measurement finding',
@@ -1386,7 +1386,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
     'evaluations': [
       {
         'id': '8d059ce5-4439-436a-8020-858a1fbcf378',
-        'created_at': '2026-03-10T17:06:31.575675+00:00',
+        'created_at': new Date(),
         'patient_encounter_id': '52b0cfb1-7d43-466a-996d-2660148ffd4c',
         'root_snomed_concept_id': '129265001',
         'root_snomed_concept_name': 'Evaluation - action',
@@ -1455,7 +1455,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'active_licences': [
             {
               'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-              'created_at': '2026-03-06T18:35:03.951367+00:00',
+              'created_at': new Date(),
               'updated_at': '2026-03-06T18:35:03.951367+00:00',
               'profession': 'PROFESSIONAL NURSE',
               'specialty': 'Primary care',
@@ -2149,7 +2149,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
     'due_to': [
       {
         'id': '3f3fb76d-482b-4eab-bc50-9c4fe3ab104a',
-        'created_at': '2026-03-12T02:46:28.511Z',
+        'created_at': new Date(),
         'patient_encounter_id': 'd9cc7030-8ea7-447d-8c45-19668626356f',
         'root_snomed_concept_id': '404684003',
         'root_snomed_concept_name': 'Clinical finding',
@@ -2217,7 +2217,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'profession': 'PROFESSIONAL NURSE',
                   'specialty': 'Primary care',
@@ -2492,7 +2492,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
     'due_to': [
       {
         'id': 'ffe638e8-55e2-48e4-a847-0fb7466477f0',
-        'created_at': '2026-03-12T02:46:48.167Z',
+        'created_at': new Date(),
         'patient_encounter_id': 'd9cc7030-8ea7-447d-8c45-19668626356f',
         'root_snomed_concept_id': '439401001',
         'root_snomed_concept_name': 'Diagnosis',
@@ -2511,7 +2511,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
         'destination_relations': [
           {
             'id': '57c72e85-7f2a-4d94-b06b-245776479b35',
-            'created_at': '2026-03-12T02:46:47.973517+00:00',
+            'created_at': new Date(),
             'patient_encounter_id': 'd9cc7030-8ea7-447d-8c45-19668626356f',
             'root_snomed_concept_id': '118245000',
             'root_snomed_concept_name': 'Measurement finding',
@@ -2529,7 +2529,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
           },
           {
             'id': 'b005185a-59e8-4bdb-b866-f6354aa2bc1a',
-            'created_at': '2026-03-12T02:46:47.973517+00:00',
+            'created_at': new Date(),
             'patient_encounter_id': 'd9cc7030-8ea7-447d-8c45-19668626356f',
             'root_snomed_concept_id': '118245000',
             'root_snomed_concept_name': 'Measurement finding',
@@ -2547,7 +2547,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
           },
           {
             'id': '3f3fb76d-482b-4eab-bc50-9c4fe3ab104a',
-            'created_at': '2026-03-12T02:46:28.511228+00:00',
+            'created_at': new Date(),
             'patient_encounter_id': 'd9cc7030-8ea7-447d-8c45-19668626356f',
             'root_snomed_concept_id': '404684003',
             'root_snomed_concept_name': 'Clinical finding',
@@ -2651,7 +2651,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
         'displays': { 'value': null, 'finding': 'Insect bite - wound', 'full': 'Insect bite - wound' },
         'existing_finding': {
           'id': '3f3fb76d-482b-4eab-bc50-9c4fe3ab104a',
-          'created_at': '2026-03-12T02:46:28.511Z',
+          'created_at': new Date(),
           'patient_encounter_id': 'd9cc7030-8ea7-447d-8c45-19668626356f',
           'root_snomed_concept_id': '404684003',
           'root_snomed_concept_name': 'Clinical finding',
@@ -2719,7 +2719,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
                 'active_licences': [
                   {
                     'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                    'created_at': '2026-03-06T18:35:03.951367+00:00',
+                    'created_at': new Date(),
                     'updated_at': '2026-03-06T18:35:03.951367+00:00',
                     'profession': 'PROFESSIONAL NURSE',
                     'specialty': 'Primary care',
@@ -2839,7 +2839,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
         'displays': { 'value': null, 'finding': 'Dizziness', 'full': 'Dizziness' },
         'existing_finding': {
           'id': '77eaf011-d915-4797-bd86-5e4423a8760b',
-          'created_at': '2026-03-12T02:46:28.511Z',
+          'created_at': new Date(),
           'patient_encounter_id': 'd9cc7030-8ea7-447d-8c45-19668626356f',
           'root_snomed_concept_id': '404684003',
           'root_snomed_concept_name': 'Clinical finding',
@@ -2912,7 +2912,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
                 'active_licences': [
                   {
                     'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                    'created_at': '2026-03-06T18:35:03.951367+00:00',
+                    'created_at': new Date(),
                     'updated_at': '2026-03-06T18:35:03.951367+00:00',
                     'profession': 'PROFESSIONAL NURSE',
                     'specialty': 'Primary care',
@@ -3081,7 +3081,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
       'previous': null,
       'finding': {
         'id': '26b30162-fd47-4d4f-ba14-9ef59dacf165',
-        'created_at': '2026-03-12T06:42:48.742Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '439401001',
@@ -3102,7 +3102,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'destination_relations': [
           {
             'id': 'a3a0052d-6223-45e9-94b0-dcfaed67ffe0',
-            'created_at': '2026-03-12T06:42:48.508978+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': 404684003,
@@ -3120,7 +3120,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
             'modifiers': [
               {
                 'id': '674ee9a1-3249-425b-be8c-3d80015aedaf',
-                'created_at': '2026-03-12T06:42:48.508978+00:00',
+                'created_at': new Date(),
                 'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
                 'root_snomed_concept_id': '362981000',
                 'root_snomed_concept_name': 'Qualifier value',
@@ -3135,7 +3135,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
           },
           {
             'id': '7247403f-10f4-45b1-815c-d183d8c97c9b',
-            'created_at': '2026-03-12T06:42:48.508978+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': 404684003,
@@ -3157,7 +3157,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
             'modifiers': [
               {
                 'id': '8d2e38e4-33e0-42df-992c-45493c0b02b1',
-                'created_at': '2026-03-12T06:42:48.508978+00:00',
+                'created_at': new Date(),
                 'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
                 'root_snomed_concept_id': '362981000',
                 'root_snomed_concept_name': 'Qualifier value',
@@ -3172,7 +3172,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
           },
           {
             'id': 'b75236eb-357d-4fc4-b1ed-d910028851f3',
-            'created_at': '2026-03-12T06:42:48.508978+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': 404684003,
@@ -3191,7 +3191,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
           },
           {
             'id': 'ff671c9b-04e2-40ae-a972-837750a1a064',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': 118245000,
@@ -3214,7 +3214,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
           },
           {
             'id': '1608ed37-593b-47d4-9c24-5dcb09e94f3b',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': 118245000,
@@ -3237,7 +3237,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
           },
           {
             'id': '18c1085d-ff7a-4b61-9f3e-48aa8cf26641',
-            'created_at': '2026-03-12T06:42:48.508978+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': 404684003,
@@ -3277,7 +3277,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
       'previous': null,
       'finding': {
         'id': 'd3f7178d-330c-4993-9756-527c578b7c54',
-        'created_at': '2026-03-12T06:42:10.454Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -3347,7 +3347,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -3383,7 +3383,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': '4773d790-5f33-4abf-a71b-c6b1bd09d893',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -3397,7 +3397,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'evaluations': [
           {
             'id': 'ffb38218-6e08-42a4-8988-75c883b4ad00',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '129265001',
@@ -3473,7 +3473,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -3514,7 +3514,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': 'f5d8cac4-f140-4cd7-95ed-e2cc8b87dad5',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -3528,7 +3528,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'evaluations': [
           {
             'id': 'f8b7e03e-1a5d-4f81-81bf-8ca95065afbb',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '129265001',
@@ -3604,7 +3604,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -3645,7 +3645,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': 'b1529bc5-e92e-491f-8be8-e4f9d3b73090',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -3659,7 +3659,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'evaluations': [
           {
             'id': 'd72f7a66-bfe1-4729-a27c-6685ac7c9720',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '129265001',
@@ -3731,7 +3731,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -3772,7 +3772,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': '9b754fde-0c45-4ff6-9063-752f9978ead2',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '118245000',
@@ -3786,7 +3786,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'evaluations': [
           {
             'id': 'ec344ad6-12ca-4882-b0a8-6a41d6295bc8',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '129265001',
@@ -3858,7 +3858,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -3906,7 +3906,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': 'a055a20d-0102-45fc-9a8d-334dc2d95111',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '118245000',
@@ -3920,7 +3920,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'evaluations': [
           {
             'id': 'e6e7461b-b4f3-434e-a139-03e68811f955',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '129265001',
@@ -3992,7 +3992,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4041,7 +4041,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': '608a57c5-b039-4f80-9e0b-a81ec85bed86',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '118245000',
@@ -4055,7 +4055,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'evaluations': [
           {
             'id': 'e45b239f-4932-4c00-8820-b963094fec04',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '129265001',
@@ -4127,7 +4127,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4173,7 +4173,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': 'ff671c9b-04e2-40ae-a972-837750a1a064',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '118245000',
@@ -4187,7 +4187,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'evaluations': [
           {
             'id': '82eb7de8-5e30-4ec9-8fc8-06000cae56a0',
-            'created_at': '2026-03-12T06:42:29.057113+00:00',
+            'created_at': new Date(),
             'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '129265001',
@@ -4259,7 +4259,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4311,7 +4311,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': '1608ed37-593b-47d4-9c24-5dcb09e94f3b',
-        'created_at': '2026-03-12T06:42:29.057Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '118245000',
@@ -4379,7 +4379,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4425,7 +4425,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': 'b3538110-d5d1-47a7-b5c6-1016fb5f105d',
-        'created_at': '2026-03-12T06:42:15.090Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '118245000',
@@ -4493,7 +4493,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4535,7 +4535,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
     {
       'finding': {
         'id': '6e7dbe20-36a8-47d7-bbc2-8276931b9ce7',
-        'created_at': '2026-03-12T06:42:15.090Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '118245000',
@@ -4603,7 +4603,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4647,7 +4647,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
       'previous': null,
       'finding': {
         'id': 'a3a0052d-6223-45e9-94b0-dcfaed67ffe0',
-        'created_at': '2026-03-12T06:42:48.508Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -4679,7 +4679,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'modifiers': [
           {
             'id': '674ee9a1-3249-425b-be8c-3d80015aedaf',
-            'created_at': '2026-03-12T06:42:48.508978+00:00',
+            'created_at': new Date(),
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '362981000',
             'root_snomed_concept_name': 'Qualifier value',
@@ -4731,7 +4731,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4769,7 +4769,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
       'previous': null,
       'finding': {
         'id': '7247403f-10f4-45b1-815c-d183d8c97c9b',
-        'created_at': '2026-03-12T06:42:48.508Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -4801,7 +4801,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
         'modifiers': [
           {
             'id': '8d2e38e4-33e0-42df-992c-45493c0b02b1',
-            'created_at': '2026-03-12T06:42:48.508978+00:00',
+            'created_at': new Date(),
             'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
             'root_snomed_concept_id': '362981000',
             'root_snomed_concept_name': 'Qualifier value',
@@ -4853,7 +4853,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4891,7 +4891,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
       'previous': null,
       'finding': {
         'id': '18c1085d-ff7a-4b61-9f3e-48aa8cf26641',
-        'created_at': '2026-03-12T06:42:48.508Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -4961,7 +4961,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',
@@ -4999,7 +4999,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
       'previous': null,
       'finding': {
         'id': 'b75236eb-357d-4fc4-b1ed-d910028851f3',
-        'created_at': '2026-03-12T06:42:48.508Z',
+        'created_at': new Date(),
         'patient_id': '142851b3-8a0c-4f3c-9de1-7bc509a10cc6',
         'patient_encounter_id': 'e2f5abff-7f0d-4ded-97cb-689ca36cb9d6',
         'root_snomed_concept_id': '404684003',
@@ -5069,7 +5069,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'active_licences': [
                 {
                   'id': '380626b7-b92a-4058-ad0e-8d397d60b528',
-                  'created_at': '2026-03-06T18:35:03.951367+00:00',
+                  'created_at': new Date(),
                   'updated_at': '2026-03-06T18:35:03.951367+00:00',
                   'health_worker_licence_number_id': 'd4686863-36d2-4182-b4af-9d148e0fb301',
                   'profession': 'PROFESSIONAL NURSE',

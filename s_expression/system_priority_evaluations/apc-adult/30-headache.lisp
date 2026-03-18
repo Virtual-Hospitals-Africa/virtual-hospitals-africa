@@ -1,15 +1,3 @@
-;; Page 30 - Headache: Emergency if decreased consciousness or seizure
-(system_priority_evaluation
-  adult
-  Emergency
-  (and
-    (clinical_finding (snomed_concept "Headache" "finding"))
-    (or
-      (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-      (clinical_finding (snomed_concept "Seizure" "finding"))
-    )
-  )
-)
 ;; Page 30 - Headache: Urgent for other danger signs
 (system_priority_evaluation
   adult
@@ -19,7 +7,7 @@
     (or
       (clinical_finding (snomed_concept "Stiff neck" "finding"))
       (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Confusional state" "disorder"))
+      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
       (clinical_finding (snomed_concept "Purpuric rash" "disorder"))
       (clinical_finding (snomed_concept "Visual disturbance" "disorder"))
       (clinical_finding (snomed_concept "Pain in eye" "finding"))

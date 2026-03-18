@@ -27,8 +27,8 @@ export default function VitalsInputRow(
 ) {
   return (
     <div className={cls('@container', `vital-input-row-${name}`)}>
-      <div className='grid grid-cols-1 @md:grid-cols-[1fr_auto] @md:row-gap-2 @md:grid-rows-[min-content_min-content] w-full'>
-        <Label htmlFor={name} className='@md:col-start-1 @md:row-start-1'>
+      <div className='grid grid-cols-1 w-full'>
+        <Label htmlFor={name}>
           <LabelSpan
             required={required}
             label={capitalize(label)}
@@ -36,7 +36,7 @@ export default function VitalsInputRow(
         </Label>
         <div
           className={cls(
-            'flex items-center @md:col-start-2 @md:row-start-1 @md:row-span-2 @md:self-stretch',
+            'flex items-center',
             input_width,
           )}
         >
@@ -45,7 +45,6 @@ export default function VitalsInputRow(
         <MostRecentRecord
           record={most_recent_patient_finding}
           organization_id={organization_id}
-          className='@md:col-start-1 @md:row-start-2'
         />
       </div>
     </div>

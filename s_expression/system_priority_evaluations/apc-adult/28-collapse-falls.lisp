@@ -1,15 +1,3 @@
-;; Page 28 - Collapse/Falls: Emergency if seizure or decreased consciousness
-(system_priority_evaluation
-  adult
-  Emergency
-  (and
-    (clinical_finding (snomed_concept "Collapse" "finding"))
-    (or
-      (clinical_finding (snomed_concept "Seizure" "finding"))
-      (clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))
-    )
-  )
-)
 ;; Page 28 - Collapse/Falls: Urgent for other danger signs
 (system_priority_evaluation
   adult

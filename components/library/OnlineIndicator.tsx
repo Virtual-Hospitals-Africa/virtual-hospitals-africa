@@ -11,7 +11,7 @@ export default function OnlineIndicator(
   return (
     <span
       className={cls(
-        'absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white',
+        'absolute right-0 bottom-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white',
         online ? 'bg-green-400' : 'bg-gray-300',
       )}
       aria-hidden='true'

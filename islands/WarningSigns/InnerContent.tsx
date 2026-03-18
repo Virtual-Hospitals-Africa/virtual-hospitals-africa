@@ -6,11 +6,12 @@ import { AsyncSearchHookResult, SnomedWarningSignSearchResult, WarningSignWithMa
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { uniqBy } from '../../util/uniqBy.ts'
+import { FindingModal } from '../finding/Modal.tsx'
 import Search from '../Search.tsx'
 import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
-import { CATEGORIES, CheckedWarningSign, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
+import { CATEGORIES, CheckedWarningSign, FindingDetails, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -28,6 +29,8 @@ export default function WarningSignsInnerContent({
         checked: true,
       }),
   )
+
+  const active_modal_sign = useSignal<SelectedWarningSign | null>(null)
 
   const table_signs_to_display = computed(() => search_results.value || warning_signs)
 
@@ -64,6 +67,14 @@ export default function WarningSignsInnerContent({
     selected_signs.value = selected_signs.value.filter((checked_sign) => uniqueIdentifier(checked_sign) !== uniqueIdentifier(sign))
   }
 
+  function onOpenDetails(sign: SelectedWarningSign) {
+    active_modal_sign.value = sign
+  }
+
+  function onSaveDetails(sign: SelectedWarningSign, details: FindingDetails) {
+    selected_signs.value = selected_signs.value.map((s) => uniqueIdentifier(s) === uniqueIdentifier(sign) ? { ...s, details } : s)
+  }
+
   return (
     <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs'>
       <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1'>
@@ -94,12 +105,18 @@ export default function WarningSignsInnerContent({
           {...config}
           onCheck={onCheck}
           onUncheck={onUncheck}
+          onOpenDetails={onOpenDetails}
           key={config.category}
           signs={grouped.value.get(config.category) || []}
         />
       ))}
       <WarningSignsHiddenInputs
         signs_to_send_to_server={signs_to_send_to_server.value}
+      />
+      <FindingModal
+        finding={active_modal_sign.value}
+        onSave={onSaveDetails}
+        onClose={() => active_modal_sign.value = null}
       />
     </div>
   )

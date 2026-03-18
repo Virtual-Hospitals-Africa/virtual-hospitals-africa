@@ -36,8 +36,15 @@ export const EMERGENCY_SUBCATEGORY_ORDER = [
 
 export type CategoryConfig = typeof CATEGORIES[number]
 
+export type FindingDetails = {
+  refined_concept?: string
+  attributes?: Record<string, string[]>
+  qualifier?: string
+}
+
 export type CheckedWarningSign = WarningSignWithMaybeRecord & {
   checked: boolean
+  details?: FindingDetails
 }
 
 export type SelectedWarningSign = CheckedWarningSign & { checked: true }

@@ -41,6 +41,7 @@ export async function insertRegistrationWithEmployeeForTest(
     organization,
     organization_employment,
   )
+
   return {
     ...result,
     organization,

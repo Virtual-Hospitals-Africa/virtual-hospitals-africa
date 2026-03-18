@@ -43,8 +43,8 @@ export function TutorialOverlay({ script, item, hash_state, setHashState }: Prop
     // Close any open HeadlessUI popovers before advancing.
     // Synthetic events have isTrusted=false which HeadlessUI ignores, so instead we
     // find open PopoverButtons by their aria-expanded state and call .click() to toggle them closed.
-    const click_target_on_advance = item.click_target_on_advance && document.querySelector<HTMLElement>(item.click_target_on_advance)
-    if (click_target_on_advance) click_target_on_advance.click()
+    const click_target_on_advance = item.click_target_on_advance && document.querySelectorAll<HTMLElement>(item.click_target_on_advance)
+    if (click_target_on_advance) click_target_on_advance.forEach(el => el.click())
 
     item.onLeave?.()
 
@@ -80,11 +80,19 @@ function handleInput({ field, value }: {
   field: string
   value: string
 }) {
-  const el = document.querySelector<HTMLInputElement | HTMLSelectElement>(field)
+  const el = document.querySelector<HTMLElement>(field)
   assert(el, `No element found matching selector ${field}`)
   if (el instanceof HTMLSelectElement) {
     el.value = value
     return el.dispatchEvent(new Event('change', { bubbles: true }))
+  }
+
+  // If the element is a radio input (or contains one), click it
+  const radio = el instanceof HTMLInputElement && el.type === 'radio'
+    ? el
+    : el.querySelector<HTMLInputElement>('input[type="radio"]')
+  if (radio) {
+    return radio.click()
   }
 
   const native_setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set

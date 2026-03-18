@@ -18,6 +18,7 @@ export function WarningSignsHiddenInputs({ signs_to_send_to_server }: { signs_to
             id: sign.existing_record.id,
             altered: sign.existing_record.existence !== existence,
           },
+          details: sign.details,
         }}
       />
     )

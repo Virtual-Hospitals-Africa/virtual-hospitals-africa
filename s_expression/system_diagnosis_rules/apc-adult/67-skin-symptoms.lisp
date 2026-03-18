@@ -10,7 +10,7 @@
     (or
       (clinical_finding (snomed_concept "Stiff neck" "finding"))
       (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Confusional state" "disorder"))
+      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
       (clinical_finding (snomed_concept "Fever" "finding"))
     )
   )

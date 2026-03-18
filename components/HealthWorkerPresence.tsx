@@ -38,7 +38,7 @@ function computeAvailability(
     }
   }
   if (employee.at_work) {
-    return { label: 'TODO' }
+    return { label: 'Present' }
   }
   return { label: 'Not at work at present' }
 }

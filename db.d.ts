@@ -1463,6 +1463,11 @@ export interface SnomedConcept {
   module_id: Int8
 }
 
+export interface SnomedConceptBodyStructure {
+  id: Int8
+  term: string
+}
+
 export interface SnomedConceptFindingLike {
   id: Int8
   term: string
@@ -1874,6 +1879,7 @@ export interface DB {
   snomed_ci_refset_description_type: SnomedCiRefsetDescriptionType
   snomed_cisscc_refset_mrcm_attribute_domain: SnomedCissccRefsetMrcmAttributeDomain
   snomed_concept: SnomedConcept
+  snomed_concept_body_structure: SnomedConceptBodyStructure
   snomed_concept_finding_like: SnomedConceptFindingLike
   snomed_concept_prioritizations: SnomedConceptPrioritizations
   snomed_description: SnomedDescription

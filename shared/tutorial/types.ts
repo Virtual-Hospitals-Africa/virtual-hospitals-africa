@@ -60,14 +60,14 @@ export const SPEAKERS = {
     role: 'Senior Primary care Nurse',
   },
   doctor: {
-    name: 'Dr. Nokwanda Mokoena',
-    avatar: '/bongani.png',
+    name: 'Dr. Lufuno Zungu',
+    avatar: '/lufuno.png',
     color: 'blue',
     role: 'Doctor',
   },
   pharmacist: {
-    name: 'Lazarus Dhlamini',
-    avatar: '/bongani.png',
+    name: 'Thabo Dhlamini',
+    avatar: '/thabo.png',
     color: 'teal',
     role: 'Pharmacist',
   },

@@ -9,7 +9,7 @@
       (clinical_finding (snomed_concept "Dyspnea" "finding"))
     )
     (or
-      (clinical_finding (snomed_concept "Confusional state" "disorder"))
+      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
       (clinical_finding (snomed_concept "Feeling agitated" "finding"))
       (clinical_finding (snomed_concept "Tension pneumothorax" "disorder"))
       (clinical_finding (snomed_concept "Hemoptysis" "finding"))

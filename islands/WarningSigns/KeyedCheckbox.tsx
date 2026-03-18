@@ -1,11 +1,14 @@
+// import { Button } from '../../components/library/Button.tsx'
+// import { PlusIcon } from '../../components/library/icons/heroicons/mini.tsx'
 import cls from '../../util/cls.ts'
-import { CheckedWarningSign, OnToggle, uniqueIdentifier } from './shared.ts'
+import { CheckedWarningSign, OnToggle, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
 
 export function KeyedWarningSignCheckbox(
-  { sign, onCheck, onUncheck }: {
+  { sign, onCheck, onUncheck /*, onOpenDetails*/ }: {
     sign: CheckedWarningSign
     onCheck: OnToggle
     onUncheck: OnToggle
+    onOpenDetails?(sign: SelectedWarningSign): void
   },
 ) {
   return (
@@ -28,11 +31,29 @@ export function KeyedWarningSignCheckbox(
         <span className='text-xs 2xl:text-sm font-medium text-gray-600 leading-4 2xl:leading-5'>
           {sign.name}
         </span>
-        {sign.description && (
-          <span className='text-[8pt] 2xl:text-xs text-gray-500 leading-3 2xl:leading-4'>
-            {sign.description}
-          </span>
-        )}
+        {
+          /*sign.checked
+          ? (
+            <Button
+              variant='tertiary'
+              size='sm'
+              type='button'
+              className='!h-auto !px-1.5 !py-0.5 !text-[8pt] 2xl:!text-xs self-start'
+              left_icon={<PlusIcon className='h-2.5 w-2.5 2xl:h-3 2xl:w-3' />}
+              onClick={(e) => {
+                e.preventDefault()
+                onOpenDetails?.(sign as SelectedWarningSign)
+              }}
+            >
+              add details
+            </Button>
+          )
+          : */ sign.description && (
+            <span className='text-[8pt] 2xl:text-xs text-gray-500 leading-3 2xl:leading-4'>
+              {sign.description}
+            </span>
+          )
+        }
       </div>
     </label>
   )

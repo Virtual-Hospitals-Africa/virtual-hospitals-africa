@@ -8,7 +8,7 @@
       (clinical_finding (snomed_concept "Pale conjunctiva" "finding"))
       (clinical_finding (snomed_concept "Acute abdominal pain" "finding"))
       (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Confusional state" "disorder"))
+      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
       (clinical_finding (snomed_concept "Easy bruising" "finding"))
       (clinical_finding (snomed_concept "Finding of tendency to bleed" "finding"))
       (>= (measurement (snomed_concept "Body temperature" "observable entity") °C) 38)

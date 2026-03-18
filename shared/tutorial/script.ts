@@ -263,18 +263,13 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     text: "'History' shows records from past visits. Duduzile is a returning patient so we can skip taking her history, height, and weight.",
     highlight: [TUTORIAL_TARGETS.PATIENT_DRAWER_HISTORY, '#sidebar-list-item-brief-history, #sidebar-list-item-height-weight'],
-  },
-  {
-    type: 'wait_click',
-    text: "We can click findings to learn more and speak with the health workers who originally recorded them. Click 'Allergy to peanut' as an example",
-    target: '#record-chip-allergy-to-peanut > button',
+    click_target_on_advance: '#record-chip-allergy-to-peanut > button',
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text:
-      "The health worker who originally recorded the finding is shown and we can message or video call them. In this case there's no need, but doctors may want to message us about cases we escalate to them.",
-    highlight: '[data-floating-ui-focusable]',
+    text: "Findings can be inspected for more details and we can message the health worker who originally recorded them.",
+    highlight: '#record-chip-allergy-to-peanut > button, .record-chip [data-open]',
     click_target_on_advance: '.record-chip button[aria-expanded="true"]',
   },
   {
@@ -296,6 +291,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text: "Let's fill this in.",
+    highlight: TUTORIAL_TARGETS.VITALS_FORM,
   },
   {
     type: 'dialogue',
@@ -338,7 +334,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Heart rate is elevated at 62 bpm - a bit low, but in the normal range.',
+    text: 'Heart rate is at 62 bpm - a bit low, but in the normal range.',
     highlight: TUTORIAL_TARGETS.VITAL_HEART_RATE,
     input: { field: "[name='measurements.heart_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.heart_rate.value'] },
   },
@@ -442,29 +438,59 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
       '.yes-no-question-label[data-question="check_for.finding-dizziness.existence"], .yes-no-question-input[data-question="check_for.finding-dizziness.existence"]',
   },
   {
-    type: 'wait_click',
-    position: 'bottom-right',
-    text: 'Click the "Yes" checkbox to indicate dizziness',
-    target: '.yes-no-question-input[data-question="check_for.finding-dizziness.existence"][data-existence="Yes"]',
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'top-right',
+    text: `We'll check "Yes" for dizziness`,
+    highlight:
+      '.yes-no-question-label[data-question="check_for.finding-dizziness.existence"], .yes-no-question-input[data-question="check_for.finding-dizziness.existence"]',
+    input: {
+      field: '.yes-no-question-input[data-question="check_for.finding-dizziness.existence"][data-existence="Yes"]',
+      value: 'Yes'
+    }
   },
   {
-    type: 'wait_click',
-    position: 'bottom-right',
-    text: 'Click the "Yes" checkbox to indicate difficulty breathing',
-    target: '.yes-no-question-input[data-question="check_for.finding-difficulty-breathing.existence"][data-existence="Yes"]',
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'top-right',
+    text: '"Yes" for difficulty breathing',
+    highlight: '.yes-no-question-label[data-question="check_for.finding-difficulty-breathing.existence"], .yes-no-question-input[data-question="check_for.finding-difficulty-breathing.existence"]',
+    input: {
+      field: '.yes-no-question-input[data-question="check_for.finding-difficulty-breathing.existence"][data-existence="Yes"]',
+      value: 'Yes'
+    }
   },
   {
-    type: 'wait_click',
-    position: 'bottom-right',
-    text: 'Click the "Yes" checkbox to indicate sudden onset itching',
-    target: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-itching.existence"][data-existence="Yes"]',
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'top-right',
+    text: '"Yes" for sudden onset itching',
+    highlight: '.yes-no-question-label[data-question="check_for.finding-sudden-onset-itching.existence"], .yes-no-question-input[data-question="check_for.finding-sudden-onset-itching.existence"]',
+    input: {
+      field: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-itching.existence"][data-existence="Yes"]',
+      value: 'Yes'
+    }
   },
   {
-    type: 'wait_click',
-    position: 'bottom-right',
-    text: 'Click the "Yes" checkbox to indicate sudden onset eruption (rash)',
-    target: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-eruption.existence"][data-existence="Yes"]',
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'top-right',
+    text: 'and "Yes" for sudden onset eruption (rash)',
+    highlight: '.yes-no-question-label[data-question="check_for.finding-sudden-onset-eruption.existence"], .yes-no-question-input[data-question="check_for.finding-sudden-onset-eruption.existence"]',
+    input: {
+      field: '.yes-no-question-input[data-question="check_for.finding-sudden-onset-eruption.existence"][data-existence="Yes"]',
+      value: 'Yes'
+    },
+    click_target_on_advance: 'button.yes-no-header[data-existence="No"]',
   },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    position: 'top-right',
+    text: `We'll click "No" at the top to fill in "No" for all the remaining unanswered questions`,
+    highlight: '.task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"] button.yes-no-header[data-existence="No"], .task-group-card[data-due-to="anaphylaxis-diagnosis-possible-diagnosis"] .yes-no-question-input[data-existence="No"]',
+  },
+
   {
     type: 'dialogue',
     speaker: 'guide',

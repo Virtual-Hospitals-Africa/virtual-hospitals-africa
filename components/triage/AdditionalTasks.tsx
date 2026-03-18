@@ -47,9 +47,8 @@ export default function AdditionalTasks({
   return (
     <>
       <div
-        class={cls('grid gap-6', {
-          'grid-cols-2': column_count === 2,
-          'grid-cols-1': column_count === 1,
+        class={cls('grid gap-6 grid-cols-1', {
+          'xl:grid-cols-2': column_count === 2,
         })}
       >
         {some_soliticing_finding_task && (

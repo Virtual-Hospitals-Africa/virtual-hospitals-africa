@@ -9,7 +9,7 @@
       (>= (measurement (snomed_concept "Heart rate" "observable entity") bpm) 120)
       (clinical_finding (snomed_concept "Feeling agitated" "finding"))
       (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Confusional state" "disorder"))
+      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
     )
   )
 )

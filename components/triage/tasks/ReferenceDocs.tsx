@@ -48,7 +48,7 @@ export function ReferenceDocs({ reference_docs, due_to, organization_id, use_pdf
 }) {
   if (!reference_docs.length) return null
   return (
-    <div id='reference-docs' class='flex flex-col gap-2'>
+    <div id='reference-docs' class='flex flex-col gap-2 order-first xl:order-last'>
       <SectionHeader className='w-full xl:w-60 mb-2'>
         Reference Documents
       </SectionHeader>

@@ -14,7 +14,7 @@
       (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
       (clinical_finding (snomed_concept "Abdominal rigidity" "finding"))
       (clinical_finding (snomed_concept "Drowsy" "finding"))
-      (clinical_finding (snomed_concept "Confusional state" "disorder"))
+      (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
       (clinical_finding (snomed_concept "Deep breathing" "finding"))
       (and
         (clinical_finding (snomed_concept "Abdominal pain" "finding"))
