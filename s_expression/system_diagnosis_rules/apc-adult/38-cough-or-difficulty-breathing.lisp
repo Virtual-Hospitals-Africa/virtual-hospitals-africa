@@ -29,3 +29,15 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+;; Page 38 - Cough/Breathing: Bacterial pneumonia 
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Bacterial pneumonia” (disorder) “Severe” (severity modifier) (qualifier value))
+    probable
+  )
+  adult
+		(clinical_finding (snomed_concept “Bacterial pneumonia” (disorder) “Severe” (severity modifier) (qualifier value))
+		(clinical_finding (snomed_concept “Cough” (finding))
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding))
+		(>=measurement (snomed_concept “Respiratory rate” (observable entity) “Breaths/minute” (qualifier value) 30))
+		(>=measurement (clinical_finding (snomed_concept " Body temperature” (observable entity) “Degrees Celsius” (qualifier value)38))
