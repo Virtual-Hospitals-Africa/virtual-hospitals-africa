@@ -29,3 +29,16 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+;; Page 38 - Cough/Breathing: Obstructive sleep apnea syndrome likely 
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Obstructive sleep apnea syndrome” "disorder")
+    probable
+  )
+  adult
+  	(clinical_finding (snomed_concept “Obstructive sleep apnea syndrome” (disorder))
+		(>=(clinical_finding (snomed_concept “Cough” (finding) “week” (qualifier value) 2))
+		(>=(clinical_finding (snomed_concept “Difficulty breathing” (finding) “week” (qualifier value)2))
+		(clinical_finding (snomed_concept “Snoring” (finding) “Persistence” (finding))
+		(clinical_finding (snomed_concept “Difficulty sleeping” (finding))
+		(clinical_finding (snomed_concept “Overweight” (finding))
