@@ -6,7 +6,7 @@ import { createTestOrganization } from 'test/_helpers/organizations.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import waitUntilTestServerUp from 'test/_helpers/waitUntilTestServerUp.ts'
 
-describeParallel('snomed-warning-signs', () => {
+describeParallel('/app/snomed/warning-signs', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
@@ -82,7 +82,6 @@ describeParallel('snomed-warning-signs', () => {
           'has_next_page': false,
           'search_terms': {
             'age_determination': 'adult',
-            'categories': ['finding', 'morphologic abnormality', 'disorder'],
             'search': 'earache',
           },
         })

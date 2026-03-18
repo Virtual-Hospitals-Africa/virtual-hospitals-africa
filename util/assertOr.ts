@@ -1,14 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import { ExtendedActionData, NonEmptyArray } from '../types.ts'
+import { HttpError } from 'fresh'
 
-export class StatusError extends Error {
-  location?: string
-  constructor(message: string, public status: number) {
-    super(message)
-  }
-}
-
-export class AlertWithActionsError extends StatusError {
+export class AlertWithActionsError extends HttpError {
   expected = true
 
   constructor(
@@ -17,14 +11,21 @@ export class AlertWithActionsError extends StatusError {
     level: 'error' | 'warning' | 'success' = 'error',
   ) {
     super(
+      400,
       JSON.stringify({
         name: 'alert_with_actions',
         level,
         message,
         actions,
       }),
-      400,
     )
+  }
+}
+
+export class RedirectError extends Error {
+  status = 302
+  constructor(public location: string) {
+    super('redirect')
   }
 }
 
@@ -33,7 +34,7 @@ export function assertOr400(
   message = 'Bad Request',
 ): asserts condition {
   if (!condition) {
-    throw new StatusError(message, 400)
+    throw new HttpError(400, message)
   }
 }
 
@@ -42,7 +43,7 @@ export function assertOr401(
   message = 'Unauthorized',
 ): asserts condition {
   if (!condition) {
-    throw new StatusError(message, 401)
+    throw new HttpError(401, message)
   }
 }
 
@@ -51,7 +52,7 @@ export function assertOr403(
   message = 'Forbidden',
 ): asserts condition {
   if (!condition) {
-    throw new StatusError(message, 403)
+    throw new HttpError(403, message)
   }
 }
 
@@ -60,7 +61,7 @@ export function assertOr404(
   message = 'Not Found',
 ): asserts condition {
   if (!condition) {
-    throw new StatusError(message, 404)
+    throw new HttpError(404, message)
   }
 }
 
@@ -69,7 +70,7 @@ export function assertOr405(
   message = 'Method Not Allowed',
 ): asserts condition {
   if (!condition) {
-    throw new StatusError(message, 405)
+    throw new HttpError(405, message)
   }
 }
 
@@ -78,7 +79,7 @@ export function assertOr409(
   message = 'Conflict',
 ): asserts condition {
   if (!condition) {
-    throw new StatusError(message, 409)
+    throw new HttpError(409, message)
   }
 }
 
@@ -95,9 +96,7 @@ export function assertOrRedirect(
       'Redirect to non-absolute path not allowed',
     )
   }
-  const error = new StatusError('redirect', 302)
-  error.location = location
-  throw error
+  throw new RedirectError(location)
 }
 
 export function assertOr500(
@@ -105,7 +104,7 @@ export function assertOr500(
   message = 'Server Error',
 ): asserts condition {
   if (!condition) {
-    throw new StatusError(message, 500)
+    throw new HttpError(500, message)
   }
 }
 

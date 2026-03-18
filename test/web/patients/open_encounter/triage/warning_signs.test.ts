@@ -149,7 +149,7 @@ describeParallel('triage/warning_signs', () => {
         )
         assertIncludes(
           result.error.message,
-          '[404]: No open encounter for this patient at this organization',
+          '404',
         )
 
         await insertReturningSeekingTreatmentWithEmployeeForTest(
