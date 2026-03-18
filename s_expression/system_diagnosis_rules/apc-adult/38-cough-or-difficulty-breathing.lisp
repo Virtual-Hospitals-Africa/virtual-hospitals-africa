@@ -27,3 +27,13 @@
     (< (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg) 90)
   )
 )
+;; Page 38 - Cough/Breathing: Heart failure likely 
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Heart failure” "disorder")
+    probable 
+  )
+  adult
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding) Supine body position (finding) Worse (qualifier value))
+		(clinical_finding (snomed_concept “Orthopnea” (finding))
+		(clinical_finding (snomed_concept “Swelling of lower limb” (finding))
