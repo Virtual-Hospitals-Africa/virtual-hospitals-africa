@@ -29,3 +29,17 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+;; Page 38 - Cough/Breathing: Chronic bronchitis likely 
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Chronic bronchitis" "disorder")
+    probable
+  )
+  adult
+		(clinical_finding (snomed_concept “Chronic bronchitis” (disorder))
+		(>=(clinical_finding (snomed_concept “Cough” (finding) “week” (qualifier value) 2)) “History of” (contextual qualifier) (qualifier value))
+		(>=(clinical_finding (snomed_concept “Difficulty breathing” (finding) “week” (qualifier value)2)) “History of” (contextual qualifier) (qualifier value))
+		(clinical_finding (snomed_concept “Smoker” (finding))
+		(clinical_finding (snomed_concept “Stopped smoking” (finding) “Recent” (qualifier value))
+		(clinical_finding (snomed_concept “Productive cough” (finding)) “Frequent” (qualifier value) “month” (qualifier value) 3))
+(>=clinical_finding (snomed_concept “Productive cough” (finding) “year” (qualifier value) 2))
