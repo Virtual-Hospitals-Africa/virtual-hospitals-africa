@@ -29,3 +29,17 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+(system_diagnosis_rule
+  (referral 
+    (snomed_concept "Pneumocystosis jirovecii pneumonia”  "disorder")
+    urgent
+		(clinical_finding (snomed_concept “Urgent referral” (procedure) “In” (attribute) “hour” (qualifier value) 24))
+  )
+  adult
+		(clinical_finding (snomed_concept “Atypical pneumonia” (disorder)) 
+		AND 
+		(clinical_finding (snomed_concept “Plain X-ray of chest abnormal” (finding))
+)
+		(clinical_finding (snomed_concept “Plain X-ray of chest” (procedure) “Not available” (qualifier value))
+		AND
+		(>measurement (snomed_concept “Respiratory rate” (observable entity) “Breaths/minute” (qualifier value) 24))
