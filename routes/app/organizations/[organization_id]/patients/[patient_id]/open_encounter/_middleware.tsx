@@ -52,12 +52,12 @@ import matching from '../../../../../../../util/matching.ts'
 import { HealthWorkerSidebarBottom } from '../../../../../../../components/library/HealthWorkerSidebarBottom.tsx'
 import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
 import { PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
-import { get } from '../../../../../../../util/get.ts'
 import { patientAgeDetermination } from '../../../../../../../shared/patient_age_determination.ts'
 import { completedPersonal } from '../../../../../../../shared/patient_registration.ts'
 import { OpenEncounterWorkflowLayout } from '../../../../../../../components/OpenEncounterWorkflowLayout.tsx'
 import { arrayIsNonEmpty } from '../../../../../../../util/arraySize.ts'
 import { diagnoses } from '../../../../../../../db/models/diagnoses.ts'
+import { timeMiddlewareCallNext } from '../../../../../../../backend/timeMiddleware.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -215,7 +215,7 @@ export function getWorkflowStatus(
   return workflow_status
 }
 
-export async function workflowHandler(
+export const workflowHandler = timeMiddlewareCallNext(async function workflowHandler(
   ctx: OpenEncounterContext,
 ) {
   const { trx, encounter, encounter_employee_presence, health_worker_id } = ctx.state
@@ -286,9 +286,7 @@ export async function workflowHandler(
   }
 
   Object.assign(ctx.state, workflow_props)
-
-  return ctx.next()
-}
+})
 
 async function findPatientOpenEncounter(
   ctx: OrganizationContext,
@@ -312,10 +310,10 @@ async function findPatientOpenEncounter(
   return patient_encounter as RenderedPatientOpenEncounter
 }
 
-export async function handler(
+export const handler = timeMiddlewareCallNext(async function attachOpenEncounter(
   ctx: OrganizationContext,
 ) {
-  const { trx, organization_id, organization_employment } = ctx.state
+  const { organization_id, organization_employment } = ctx.state
 
   const encounter = await findPatientOpenEncounter(ctx)
 
@@ -344,15 +342,15 @@ export async function handler(
 
   Object.assign(ctx.state, encounter_props)
 
-  const response = await ctx.next()
+  // const response = await ctx.next()
 
-  // Run assertions to ensure any modifications to encounters
-  if (ctx.req.method === 'POST' && !get(ctx.state, 'encounter_expected_to_not_exist_after_post')) {
-    await patient_encounters.getById(trx, encounter.patient_encounter_id)
-  }
+  // // Run assertions to ensure any modifications to encounters
+  // if (ctx.req.method === 'POST' && !get(ctx.state, 'encounter_expected_to_not_exist_after_post')) {
+  //   await patient_encounters.getById(trx, encounter.patient_encounter_id)
+  // }
 
-  return response
-}
+  // return response
+})
 
 export function assertAllPriorStepsCompleted(
   ctx: OpenEncounterWorkflowContext,

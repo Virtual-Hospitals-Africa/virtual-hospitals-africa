@@ -30,6 +30,7 @@ rule_no_camel_case() {
     stub
     memoize
     ruleRunner
+    timeMiddlewareCallNext
     once
     logArgsOnError
     deduplicate

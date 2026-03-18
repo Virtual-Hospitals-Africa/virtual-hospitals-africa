@@ -1,8 +1,9 @@
 import { Context } from 'fresh'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../../../util/replaceParams.ts'
+import { timeMiddlewareCallNext } from '../../../../../../../../backend/timeMiddleware.ts'
 
-export function handler(
+export const handler = timeMiddlewareCallNext(function redirectToPatientInformationGeneral(
   ctx: Context<unknown>,
 ) {
   if (ctx.route!.endsWith('/patient_information')) {
@@ -11,5 +12,4 @@ export function handler(
       ctx.params,
     ))
   }
-  return ctx.next()
-}
+})

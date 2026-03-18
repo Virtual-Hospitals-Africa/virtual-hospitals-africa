@@ -1,4 +1,5 @@
 import { JSX } from 'preact'
+
 import { appointments } from '../../../../../../../db/models/appointments.ts'
 import { patients } from '../../../../../../../db/models/patients.ts'
 import { patient_primary_doctor } from '../../../../../../../db/models/patient_primary_doctor.ts'

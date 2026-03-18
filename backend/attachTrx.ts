@@ -10,12 +10,10 @@ export type TrxContext = Context<
   }
 >
 
-export async function attachTrx(
+export function attachTrx(
   ctx: TrxContext,
 ) {
   ctx.state.trx = db
-  const response = await ctx.next()
-  return response
   // return db.connection().execute(async (conn) => {
   //   setApplicationNameAndAttachTrx(ctx, conn)
   // })

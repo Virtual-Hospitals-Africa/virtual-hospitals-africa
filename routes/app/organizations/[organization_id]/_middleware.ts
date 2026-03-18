@@ -1,6 +1,7 @@
 import { HealthWorkerOrganization, LoggedInHealthWorkerContext, RenderedEmployee, RenderedOrganization } from '../../../../types.ts'
 import { organizations } from '../../../../db/models/organizations.ts'
 import { assertOr403 } from '../../../../util/assertOr.ts'
+import { timeMiddlewareCallNext } from '../../../../backend/timeMiddleware.ts'
 
 export type OrganizationState = {
   organization: RenderedOrganization
@@ -17,7 +18,7 @@ export type OrganizationState = {
 
 export type OrganizationContext<T = Record<never, never>> = LoggedInHealthWorkerContext<OrganizationState & T>
 
-export async function handler(
+export const handler = timeMiddlewareCallNext(async function attachOrganization(
   ctx: OrganizationContext,
 ) {
   const { health_worker } = ctx.state
@@ -57,6 +58,4 @@ export async function handler(
   }
 
   Object.assign(ctx.state, organization_state)
-
-  return ctx.next()
-}
+})
