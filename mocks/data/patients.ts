@@ -7,6 +7,7 @@ import type {
   Priority,
   RecordValueLink,
   RenderedCareTeamHealthWorker,
+  RenderedEvaluationRelativeToHealthWorker,
   RenderedFindingRelativeToHealthWorker,
   RenderedPatientCompletedRegistration,
   RenderedPatientHistory,
@@ -355,6 +356,7 @@ export type MockPatientCase = {
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
   this_visit_findings: RenderedSidebarWorkflow[]
+  this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   description: string
 }
 
@@ -452,6 +454,7 @@ const BREAST_CANCER_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Johannesburg Oncology Centre' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -539,6 +542,7 @@ const DIABETIC_FOOT_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Durban Diabetes Clinic' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -636,6 +640,7 @@ const HIGH_RISK_PREGNANCY_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Pretoria Maternity Hospital' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -717,6 +722,7 @@ const HIV_ART_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Cape Town HIV Clinic' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -808,6 +814,7 @@ const PEDIATRIC_ASTHMA_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: "Johannesburg Children's Hospital" },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -933,6 +940,7 @@ const ELDERLY_MULTIMORBID_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Bloemfontein Home Care' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -1007,6 +1015,7 @@ const MENTAL_HEALTH_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Tara Hospital Psychiatric Unit' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -1078,6 +1087,7 @@ const TUBERCULOSIS_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'King Dinuzulu Hospital' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -1149,6 +1159,7 @@ const POST_SURGICAL_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Netcare Milpark Hospital' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 
@@ -1225,6 +1236,7 @@ const TRAUMA_PATIENT: MockPatientCase = {
       organization: { id: 'org-001', name: 'Chris Hani Baragwanath Hospital' },
     },
   ],
+  this_visit_diagnoses: [],
   this_visit_findings: [],
 }
 

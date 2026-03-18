@@ -25,6 +25,7 @@ export function OpenEncounterWorkflowLayout({
   priority,
   organization_id,
   this_visit_findings,
+  this_visit_diagnoses,
   steps_completed,
   sidebar_bottom,
   patient_history,
@@ -71,6 +72,7 @@ export function OpenEncounterWorkflowLayout({
             priority={priority}
             organization_id={organization_id}
             this_visit_findings={this_visit_findings}
+            this_visit_diagnoses={this_visit_diagnoses}
             patient_history={patient_history}
             care_team={care_team}
           />

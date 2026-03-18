@@ -2407,6 +2407,7 @@ export type PatientDrawerV4Props = {
   priority: Priority | null
   organization_id: string
   this_visit_findings: RenderedSidebarWorkflow[]
+  this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
 }
@@ -2415,7 +2416,7 @@ export type RenderedSidebarWorkflowStep = {
   workflow_step: string
   title: string
   status: 'not started' | 'in progress' | 'completed'
-  records: RenderedFindingRelativeToHealthWorker[]
+  records: Array<RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker>
 }
 
 export type RenderedSidebarWorkflow = {

@@ -4,6 +4,7 @@ import {
   AgeDetermination,
   LoggedInHealthWorkerContext,
   PreviouslyCompletedProcedures,
+  RenderedEvaluationRelativeToHealthWorker,
   RenderedPatient,
   RenderedPatientEncounterEmployee,
   RenderedPatientHistory,
@@ -56,6 +57,7 @@ import { patientAgeDetermination } from '../../../../../../../shared/patient_age
 import { completedPersonal } from '../../../../../../../shared/patient_registration.ts'
 import { OpenEncounterWorkflowLayout } from '../../../../../../../components/OpenEncounterWorkflowLayout.tsx'
 import { arrayIsNonEmpty } from '../../../../../../../util/arraySize.ts'
+import { diagnoses } from '../../../../../../../db/models/diagnoses.ts'
 
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
@@ -80,6 +82,7 @@ type WorkflowState = {
   encounter_employee_presence: RenderedPatientEncounterEmployee
   patient_encounter_employee_id: string
   this_visit_findings: RenderedSidebarWorkflow[]
+  this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
 }
 
@@ -238,7 +241,7 @@ export async function workflowHandler(
   const fetched = await promiseProps({
     this_visit_findings: this_visit_findings.get(trx, {
       encounter,
-      health_worker_id: ctx.state.health_worker.id,
+      health_worker_id,
       current_workflow_state: {
         workflow,
         step,
@@ -246,6 +249,10 @@ export async function workflowHandler(
         workflow_step_snomed_concept,
         workflow_status,
       },
+    }),
+    this_visit_diagnoses: diagnoses.get(trx, {
+      encounter,
+      health_worker_id,
     }),
     patient_history: patient_history.get(trx, {
       encounter,

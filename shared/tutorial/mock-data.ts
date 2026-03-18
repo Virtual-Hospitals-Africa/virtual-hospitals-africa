@@ -11,6 +11,7 @@ import type {
   RenderedBriefHistoryRelativeToHealthWorker,
   RenderedEmployee,
   RenderedEmployeeWithPresence,
+  RenderedEvaluationRelativeToHealthWorker,
   RenderedFindingRelativeToHealthWorker,
   RenderedPatientCompletedRegistration,
   RenderedSidebarWorkflow,
@@ -1769,6 +1770,48 @@ export function buildSidebarFindings(
       steps,
     },
   ]
+}
+
+/**
+ * Anaphylaxis diagnosis shown in the sidebar once additional tasks is completed.
+ */
+const ANAPHYLAXIS_DIAGNOSIS: RenderedEvaluationRelativeToHealthWorker = {
+  type: 'evaluation',
+  id: 'tutorial-diagnosis-anaphylaxis',
+  created_at: new Date(),
+  patient_encounter_id: 'tutorial-encounter-001',
+  root_snomed_concept_id: '404684003',
+  root_snomed_concept_name: 'Clinical finding',
+  root_snomed_concept_category: 'finding' as const,
+  specific_snomed_concept_id: '39579001',
+  specific_snomed_concept_name: 'Anaphylaxis',
+  specific_snomed_concept_category: 'disorder' as const,
+  value: null,
+  priority: null,
+  modifiers: [],
+  attributes: [],
+  evaluations: [],
+  destination_relations: [],
+  displays: {
+    finding: 'Anaphylaxis',
+    value: null,
+    full: 'Anaphylaxis',
+  },
+  provider: MOCK_PROVIDER_IS_ME,
+  as_part_of_procedure: null,
+}
+
+/**
+ * Build sidebar diagnoses based on current tutorial step.
+ * Anaphylaxis diagnosis appears once additional tasks is completed.
+ */
+export function buildSidebarDiagnoses(
+  currentStep: TutorialStep,
+): RenderedEvaluationRelativeToHealthWorker[] {
+  if (isStepCompleted(currentStep, 'additional_tasks_and_investigations')) {
+    return [ANAPHYLAXIS_DIAGNOSIS]
+  }
+  return []
 }
 
 // =============================================================================

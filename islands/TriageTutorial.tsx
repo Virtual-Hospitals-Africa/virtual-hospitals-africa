@@ -18,7 +18,7 @@ import { TUTORIAL_SCRIPT } from '../shared/tutorial/script.ts'
 import type { TutorialHashState, TutorialStep } from '../shared/tutorial/types.ts'
 import { isTutorialState } from '../shared/tutorial/types.ts'
 import { getCompletedSteps, getItem, initialState, parseIndex } from '../shared/tutorial/state.ts'
-import { buildSidebarFindings, EMPTY_PATIENT_HISTORY } from '../shared/tutorial/mock-data.ts'
+import { buildSidebarDiagnoses, buildSidebarFindings, EMPTY_PATIENT_HISTORY } from '../shared/tutorial/mock-data.ts'
 
 // Step components
 import {
@@ -75,6 +75,10 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
     return buildSidebarFindings(current_step)
   }, [current_step])
 
+  const sidebar_diagnoses = useMemo(() => {
+    return buildSidebarDiagnoses(current_step)
+  }, [current_step])
+
   const steps_completed = useMemo(() => {
     return getCompletedSteps(current_step)
   }, [current_step])
@@ -121,6 +125,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         priority={null}
         organization_id='tutorial-org'
         this_visit_findings={sidebar_findings}
+        this_visit_diagnoses={sidebar_diagnoses}
         steps_completed={steps_completed}
         patient_history={EMPTY_PATIENT_HISTORY}
         ContainerTag='div'

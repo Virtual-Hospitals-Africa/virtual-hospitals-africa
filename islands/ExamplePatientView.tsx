@@ -43,6 +43,7 @@ export function ExamplePatientView({ url, route, mock_patient }: Props) {
       priority={mock_patient.priority}
       organization_id='example-org-001'
       this_visit_findings={mock_patient.this_visit_findings}
+      this_visit_diagnoses={mock_patient.this_visit_diagnoses}
       steps_completed={['warning_signs']}
       patient_history={mock_patient.patient_history}
       ContainerTag='div'
