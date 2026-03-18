@@ -4,6 +4,7 @@ import parseJSON from '../../util/parseJSON.ts'
 import { patientAgeDetermination } from '../../shared/patient_age_determination.ts'
 import type { ICD10Indications, ParsedDose } from '../../backend/recommended_doses/shared.ts'
 import { AppliedDose, Medicine, MedicineSchema, ParsedDoseSchema, ParsedPatientCase } from '../../shared/recommended_doses.ts'
+import { assert } from 'std/assert/assert.ts'
 
 function resolvePerKg(per_size: ParsedDose['per_size']): number | null {
   if (per_size === 'kg') return 1
@@ -12,10 +13,9 @@ function resolvePerKg(per_size: ParsedDose['per_size']): number | null {
   return null
 }
 
-// deno-lint-ignore no-explicit-any
-function applyWeight(dose: any, weight_kg: number): any {
+function realizeValue(dose: ParsedDose, weight_kg: number): AppliedDose {
   const kg_factor = resolvePerKg(dose.per_size)
-  const result = { ...dose }
+  const result: AppliedDose = { ...dose }
 
   if (kg_factor !== null) {
     const { value, minimum, maximum } = dose
@@ -30,17 +30,19 @@ function applyWeight(dose: any, weight_kg: number): any {
     result.per_size = undefined
   }
 
-  // deno-lint-ignore no-explicit-any
-  if (result.low) result.low = result.low.map((d: any) => applyWeight(d, weight_kg))
-  // deno-lint-ignore no-explicit-any
-  if (result.high) result.high = result.high.map((d: any) => applyWeight(d, weight_kg))
-  // deno-lint-ignore no-explicit-any
-  if (result.min) result.min = result.min.map((d: any) => applyWeight(d, weight_kg))
-  // deno-lint-ignore no-explicit-any
-  if (result.max) result.max = result.max.map((d: any) => applyWeight(d, weight_kg))
-  if (result.titrate) {
-    const t = result.titrate
-    result.titrate = {
+  return result
+}
+
+function applyWeight(dose: ParsedDose, weight_kg: number): AppliedDose {
+  const realized_value = realizeValue(dose, weight_kg)
+
+  if (realized_value.low) realized_value.low = realized_value.low.map((d) => applyWeight(d, weight_kg))
+  if (realized_value.high) realized_value.high = realized_value.high.map((d) => applyWeight(d, weight_kg))
+  if (realized_value.min) realized_value.min = realized_value.min.map((d) => applyWeight(d, weight_kg))
+  if (realized_value.max) realized_value.max = realized_value.max.map((d) => applyWeight(d, weight_kg))
+  if (realized_value.titrate) {
+    const t = realized_value.titrate
+    realized_value.titrate = {
       ...t,
       min: t.min ? applyWeight(t.min, weight_kg) : undefined,
       max: t.max ? applyWeight(t.max, weight_kg) : undefined,
@@ -49,7 +51,7 @@ function applyWeight(dose: any, weight_kg: number): any {
     }
   }
 
-  return result
+  return realized_value
 }
 
 const getAllParsedMedications = memoize(async (): Promise<Medicine[]> => {
@@ -99,53 +101,81 @@ function getAgeInYears(dob: string): number {
   return Math.max(0, age_in_years)
 }
 
-function scheduleMatchesAge(schedule: z.infer<typeof ParsedDoseSchema>, patient_is_adult: boolean | undefined): boolean {
-  if (!schedule.age_classifier) return true
-  const adult_classifiers = new Set(['adult', 'elderly'])
-  const child_classifiers = new Set(['child', 'adolescent', 'infant', 'newborn', 'premature baby', 'breastfed infant'])
-  if (patient_is_adult === true) return adult_classifiers.has(schedule.age_classifier)
-  if (patient_is_adult === false) return child_classifiers.has(schedule.age_classifier)
-  return true
-}
-
-function findMatchingMedicines(medicines: Medicine[], query: ParsedPatientCase): Medicine[] {
-  const codes = extractConditionCodes(query.conditions)
-  if (!codes.length) return []
-
-  const age_determination = patientAgeDetermination({
-    age_years: getAgeInYears(query.dob),
-    most_recent_height_cm_measurement: String(query.height_cm),
-  })
-
-  const patient_is_adult = age_determination === 'adult'
-
-  return medicines
-    .filter((m) => indicationsMatch(m.icd10_indications, codes))
-    .map((m) => {
-      if (patient_is_adult === undefined) return m
-      const filtered_schedules = m.schedules.filter((s) => scheduleMatchesAge(s, patient_is_adult))
-      if (!filtered_schedules.length) return m // keep all if none match age
-      return { ...m, schedules: filtered_schedules }
-    })
-}
-
-function applyPatientCase(medicine: Medicine, patient_case: ParsedPatientCase) {
-  return {
-    ...medicine,
-    patient_case,
-    schedules: medicine.schedules.map((s) => applyWeight(s, Number(patient_case.weight_kg)) as AppliedDose),
-  }
-}
+const vacuously_true = () => true
 
 export const recommended_doses = {
+  scheduleMatchesAgeAndWeight(schedule: z.infer<typeof ParsedDoseSchema>, patient_case: ParsedPatientCase): boolean {
+    const age_determination = patientAgeDetermination({
+      age_years: getAgeInYears(patient_case.dob),
+      most_recent_height_cm_measurement: String(patient_case.height_cm),
+    })
+    assert(age_determination)
+    // Consider the presence of all classifiers 'adult', 'elderly' 'child', 'adolescent', 'infant', 'newborn', 'premature baby', 'breastfed infant'])
+    const age_classifier_check = schedule.age_classifier
+      ? (): boolean => {
+          const c = schedule.age_classifier!
+          if (c === 'adult' || c === 'elderly' || c === 'adolescent') return age_determination === 'adult'
+          if (c === 'child') return age_determination === 'older child' || age_determination === 'younger child'
+          // infant, newborn, breastfed infant, premature baby
+          return age_determination === 'younger child'
+        }
+      : vacuously_true
+    const age_in_months = getAgeInYears(patient_case.dob) * 12
+    const age_range_max_check = schedule.age_range?.max != null
+      ? (): boolean => {
+          const max = schedule.age_range!.max!
+          const max_months = max.units === 'years' ? max.value * 12 : max.value
+          return age_in_months <= max_months
+        }
+      : vacuously_true
+    const age_range_min_check = schedule.age_range?.min != null
+      ? (): boolean => {
+          const min = schedule.age_range!.min!
+          const min_months = min.units === 'years' ? min.value * 12 : min.value
+          return age_in_months >= min_months
+        }
+      : vacuously_true
+    const kg_max_check = schedule.kg_limit_max != null
+      ? (): boolean => Number(patient_case.weight_kg) <= schedule.kg_limit_max!
+      : vacuously_true
+    const kg_min_check = schedule.kg_limit_min != null
+      ? (): boolean => Number(patient_case.weight_kg) >= schedule.kg_limit_min!
+      : vacuously_true
+
+    const checks = [
+      age_classifier_check,
+      age_range_max_check,
+      age_range_min_check,
+      kg_max_check,
+      kg_min_check,
+    ]
+    const passes_all = checks.every(check => check())
+    return passes_all
+  },
+  findMatchingMedicines(medicines: Medicine[], patient_case: ParsedPatientCase): Medicine[] {
+    const codes = extractConditionCodes(patient_case.conditions)
+    if (!codes.length) return []
+
+
+    return medicines
+      .filter((m) => indicationsMatch(m.icd10_indications, codes))
+      .map((m) => {
+        const filtered_schedules = m.schedules.filter((s) => recommended_doses.scheduleMatchesAgeAndWeight(s, patient_case))
+        if (!filtered_schedules.length) return m // keep all if none match age
+        return { ...m, schedules: filtered_schedules }
+      })
+  },
+
+  applyPatientCase(medicine: Medicine, patient_case: ParsedPatientCase) {
+    return {
+      ...medicine,
+      patient_case,
+      schedules: medicine.schedules.map((s) => applyWeight(s as ParsedDose, Number(patient_case.weight_kg))),
+    }
+  },
   async getRecommendedDosesWithPatientCaseApplied(patient_case: ParsedPatientCase) {
     const medicines = await getAllParsedMedications()
-
-    // TODO route back to create patient case if query params not present
-    const matching_medicines = findMatchingMedicines(medicines, patient_case)
-
-    return matching_medicines.map((medicine) => applyPatientCase(medicine, patient_case))
-    // const condition_codes = extractConditionCodes(patient_case.conditions)
-    // const conditions_items =
+    const matching_medicines = recommended_doses.findMatchingMedicines(medicines, patient_case)
+    return matching_medicines.map((medicine) => recommended_doses.applyPatientCase(medicine, patient_case))
   },
 }
