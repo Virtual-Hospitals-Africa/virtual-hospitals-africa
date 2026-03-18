@@ -8,6 +8,7 @@ import { addTestEmployee } from '../../mocks/testEmployee.ts'
 
 async function addPatients(count: number) {
   const receptionist = await findOrCreateReceptionist()
+  await findOrCreatePrimaryCareNurse()
   await forEach(range(count), () => {
     return insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db, TEST_ORGANIZATION_UUIDS.ZA.clinic, {
       employment_id: receptionist.employee_id,
@@ -17,7 +18,7 @@ async function addPatients(count: number) {
 }
 
 async function findOrCreateReceptionist() {
-  const receptionist = await employees.findOneOptional(db, {
+  const receptionist = await employees.findFirstOptional(db, {
     organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
     roles: ['receptionist'],
   })
@@ -25,6 +26,19 @@ async function findOrCreateReceptionist() {
 
   return addTestEmployee(db, {
     role: 'receptionist',
+  })
+}
+async function findOrCreatePrimaryCareNurse() {
+  const nurse = await employees.findFirstOptional(db, {
+    organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
+    roles: ['nurse'],
+  })
+  if (nurse) return nurse
+
+  return addTestEmployee(db, {
+    organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
+    role: 'nurse',
+    specialty: 'Primary care',
   })
 }
 
