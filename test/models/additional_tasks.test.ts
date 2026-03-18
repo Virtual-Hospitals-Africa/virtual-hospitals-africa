@@ -13,6 +13,13 @@ import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { additional_tasks } from '../../db/models/additional_tasks.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
+import assertLength from '../../util/assertLength.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { isLink } from '../../components/triage/tasks/type-predicates.ts'
+import entries from '../../util/entries.ts'
+import { ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS } from '../../shared/pack-adult.ts'
+import { groupBy } from '../../util/groupBy.ts'
+import { toRecord } from '../../util/toRecord.ts'
 
 describeParallel('db/models/additional_tasks.ts', () => {
   afterAll(() => db.destroy())
@@ -248,4 +255,85 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
     ])
   })
+
+  itParallel('does not add duplicative tasks to the same encounter', async () => {
+    const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+    const { employee, patient_id, patient_encounter_id } = encounter
+    {
+      const itching_of_skin = await patient_findings.insertMany(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          patient_encounter_employee_id: employee.patient_encounter_employee_id,
+          employment_id: employee.employee_id,
+          procedure: {
+            create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
+          },
+          findings: [
+            `(clinical_finding (snomed_concept "Itching of skin" "finding"))`,
+          ],
+        },
+      )
+
+      assert(itching_of_skin.finding_ids[0])
+      await additional_tasks.insertTasksIfNotAlreadyIdentified(db, {
+        patient_id,
+        patient_encounter_id,
+        patient_age_determination: 'adult',
+        records: [{
+          id: itching_of_skin.finding_ids[0],
+          existence: 'Yes',
+        }],
+      })
+
+      const { task_groups } = await additional_tasks.getTasksGroups(db, {
+        health_worker_id: employee.id,
+        encounter
+      })
+
+      assertLength(task_groups, 1)
+      const medical_guidance = task_groups[0].tasks.find(isLink)
+      assertEquals(medical_guidance!.title, 'APC 2023 — Itch')
+    }
+
+    {
+      const itching_of_skin = await patient_findings.insertMany(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          patient_encounter_employee_id: employee.patient_encounter_employee_id,
+          employment_id: employee.employee_id,
+          procedure: {
+            create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
+          },
+          findings: [
+            `(clinical_finding (snomed_concept "Itching" "finding"))`,
+          ],
+        },
+      )
+
+      assert(itching_of_skin.finding_ids[0])
+      await additional_tasks.insertTasksIfNotAlreadyIdentified(db, {
+        patient_id,
+        patient_encounter_id,
+        patient_age_determination: 'adult',
+        records: [{
+          id: itching_of_skin.finding_ids[0],
+          existence: 'Yes',
+        }],
+      })
+
+      const { task_groups } = await additional_tasks.getTasksGroups(db, {
+        health_worker_id: employee.id,
+        encounter
+      })
+
+      assertLength(task_groups, 1)
+      const medical_guidance = task_groups[0].tasks.find(isLink)
+      assertEquals(medical_guidance!.title, 'APC 2023 — Itch')
+    }
+  })
+
 })

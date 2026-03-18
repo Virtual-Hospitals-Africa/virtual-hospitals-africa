@@ -96,7 +96,7 @@ export const additional_tasks = {
       first_task,
     )
 
-    // debugLog(all_tasks_query)
+    debugLog(all_tasks_query)
 
     const all_t = await all_tasks_query.execute()
 
@@ -171,6 +171,20 @@ export const additional_tasks = {
     const inserted = results.filter((r) => r != null)
     return inserted.length ? `Inserted ${inserted.length} task(s): ${inserted.join(', ')}` : 'No new tasks to insert'
   },
+  taskEvaluations(
+    trx: TrxOrDbOrQueryCreator,
+    { patient_id, patient_encounter_id }: {
+      patient_id: string
+      patient_encounter_id: string
+    },
+  ) {
+    return patient_evaluations.findAll(trx, {
+      patient_id,
+      patient_encounter_id,
+      s_expression: `(evaluation ${ACTION_STATUS.s_expression} ${TO_BE_DONE.s_expression})`,
+    })
+  },
+
   async getTasksGroups(
     trx: TrxOrDbOrQueryCreator,
     { health_worker_id, encounter }: {

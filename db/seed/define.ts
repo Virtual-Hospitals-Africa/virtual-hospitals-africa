@@ -45,6 +45,9 @@ export function define(
     }
 
     const tables_with_data = table_names.filter((_table_name, index) => have_rows[index])
+    if (tables_with_data.length) {
+      console.log('dropping tables with data', { tables_with_data })
+    }
     await drop(tables_with_data)
 
     const all_seeds_present = table_names.every((table_name) => {

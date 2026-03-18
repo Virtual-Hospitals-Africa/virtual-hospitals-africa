@@ -2,9 +2,9 @@
 import { NonEmptyArray } from '../types.ts'
 
 export function groupBy<
-  T extends Record<string, unknown>,
+  T,
   KeyBy extends (
-    | keyof T
+    | (T extends Record<string, unknown> ? keyof T : never)
     | ((value: T, i: number) => string | number | symbol)
   ),
 >(
@@ -16,7 +16,7 @@ export function groupBy<
   const result = new Map()
   let i = 0
   for (const item of array) {
-    const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
+    const key = typeof keyBy === 'function' ? keyBy(item, i) : (item as any)[keyBy as any]
     if (result.has(key)) {
       result.get(key)!.push(item)
     } else {
@@ -28,9 +28,9 @@ export function groupBy<
 }
 
 export function groupByUniq<
-  T extends Record<string, unknown>,
+  T,
   KeyBy extends (
-    | keyof T
+    | (T extends Record<string, unknown> ? keyof T : never)
     | ((value: T, i: number) => string | number | symbol)
   ),
 >(
@@ -42,7 +42,7 @@ export function groupByUniq<
   : never {
   const result = new Map()
   for (const [i, item] of array.entries()) {
-    const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
+    const key = typeof keyBy === 'function' ? keyBy(item, i) : (item as any)[keyBy as any]
     if (!result.has(key)) {
       result.set(key, item)
       continue
@@ -55,13 +55,13 @@ export function groupByUniq<
 }
 
 export function groupByMapped<
-  T extends Record<string, unknown>,
+  T,
   KeyBy extends (
-    | keyof T
+    | (T extends Record<string, unknown> ? keyof T : never)
     | ((value: T, i: number) => string | number | symbol)
   ),
   ValueBy extends (
-    | keyof T
+    | (T extends Record<string, unknown> ? keyof T : never)
     | ((value: T, i: number) => unknown)
   ),
 >(
@@ -77,12 +77,12 @@ export function groupByMapped<
   : never {
   const result = new Map()
   for (const [i, item] of array.entries()) {
-    const key = typeof keyBy === 'function' ? keyBy(item, i) : item[keyBy as any]
+    const key = typeof keyBy === 'function' ? keyBy(item, i) : (item as any)[keyBy as any]
 
     if (result.has(key)) {
       throw new Error('Duplicate key: ' + key)
     }
-    const value = typeof valueBy === 'function' ? valueBy(item, i) : item[valueBy as any]
+    const value = typeof valueBy === 'function' ? valueBy(item, i) : (item as any)[valueBy as any]
     result.set(key, value)
   }
   return result as any
