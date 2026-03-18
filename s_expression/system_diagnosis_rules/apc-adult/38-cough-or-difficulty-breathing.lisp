@@ -29,3 +29,19 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+(system_diagnosis_rule
+  (referral
+    (snomed_concept "Pneumonia" "disorder")
+  )
+  adult
+			(clinical_finding (snomed_concept “Patient referral” (procedure))
+			(clinical_finding (snomed_concept “Drug compliance poor” (finding))
+			(clinical_finding (snomed_concept “Urgent care clinic” (environment) “Difficult” (qualifier value) “Access” (attribute))
+			(clinical_finding (snomed_concept “Human immunodeficiency virus infection” (disorder))
+			(>clinical_finding (snomed_concept “Current chronological age” (observable entity) “year” (qualifier value) 65))
+			(clinical_finding (snomed_concept “Disorder of lung” (disorder))
+			(clinical_finding (snomed_concept “Heart disease” (disorder))
+			(clinical_finding (snomed_concept “Disorder of liver” (disorder))
+			(clinical_finding (snomed_concept “Kidney disease” (disorder))
+			(clinical_finding (snomed_concept “Diabetes mellitus” (disorder))
+			(clinical_finding (snomed_concept “Current drinker of alcohol” (finding))
