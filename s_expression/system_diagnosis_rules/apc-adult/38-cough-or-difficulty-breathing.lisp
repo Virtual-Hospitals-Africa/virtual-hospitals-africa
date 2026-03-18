@@ -29,3 +29,19 @@
     (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
   )
 )
+;; Page 38 - Cough/Breathing: Pneumocystosis jirovecii pneumonia likely 
+(system_diagnosis_rule
+  (diagnosis
+    (snomed_concept "Pneumocystosis jirovecii pneumonia” "disorder")
+    probable
+  )
+  adult
+		(>=(clinical_finding (snomed_concept “Cough” (finding) “week” (qualifier value) 2))
+		(>=(clinical_finding (snomed_concept “Difficulty breathing” (finding) “week” (qualifier value)2))
+		(clinical_finding (snomed_concept “Cough” (finding) “Recurrent” (qualifier value))
+		(clinical_finding (snomed_concept “Difficulty breathing” (finding) “Recurrent” (qualifier value))
+		(clinical_finding (snomed_concept “Human immunodeficiency virus infection” (disorder))
+		AND
+		(<clinical_finding (snomed_concept “Helper cell decrease, function” (observable entity) “cells/microliter” (qualifier value) 200))
+		(clinical_finding (snomed_concept “Dry cough” (finding))
+		(clinical_finding (snomed_concept “Dyspnea” (finding))
