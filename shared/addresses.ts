@@ -1,10 +1,10 @@
 import { InsertObject } from 'kysely'
 import type { DB } from '../db.d.ts'
 import { InsertShapeLiteral } from '../types.ts'
-import { StatusError } from '../util/assertOr.ts'
 import compact from '../util/compact.ts'
 import uniq from '../util/uniq.ts'
 import { COUNTRIES } from './countries.ts'
+import { HttpError } from 'fresh'
 
 export type AddressInsert = InsertShapeLiteral<InsertObject<DB, 'addresses'>>
 
@@ -39,7 +39,7 @@ export function formatAddress(
   } else if (TO_COUNTRY_OFFICIAL_NAME.has(country)) {
     country_full_name = TO_COUNTRY_OFFICIAL_NAME.get(country)!
   } else {
-    throw new StatusError(`Unrecognized country ${country}`, 400)
+    throw new HttpError(400, `Unrecognized country ${country}`)
   }
 
   // Extract street number, route, and unit from street if it is present and route is not

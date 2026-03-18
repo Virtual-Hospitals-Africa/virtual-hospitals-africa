@@ -1,4 +1,6 @@
-export const handler = () => new Response('TODO')
+export const handler = function examinationsHandler() {
+  return new Response('TODO')
+}
 // import { JSX } from 'preact'
 // import { examinations } from '../../../../../../../../../db/models/examinations.ts'
 // import { completeAndProceedToNextStep, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../../_middleware.tsx'

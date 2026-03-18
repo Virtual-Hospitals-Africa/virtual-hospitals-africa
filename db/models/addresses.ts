@@ -2,10 +2,10 @@ import { InsertObject } from 'kysely'
 import { Address, InsertShapeLiteral, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import uniq from '../../util/uniq.ts'
-import { StatusError } from '../../util/assertOr.ts'
 import { COUNTRIES } from '../../shared/countries.ts'
 import type { DB } from '../../db.d.ts'
 import { base, identity, simpleBaseQuery } from './_base.ts'
+import { HttpError } from 'fresh'
 
 export type AddressInsert = InsertShapeLiteral<InsertObject<DB, 'addresses'>>
 
@@ -51,7 +51,7 @@ export const addresses = base({
     } else if (TO_COUNTRY_OFFICIAL_NAME.has(country)) {
       country_full_name = TO_COUNTRY_OFFICIAL_NAME.get(country)!
     } else {
-      throw new StatusError(`Unrecognized country ${country}`, 400)
+      throw new HttpError(400, `Unrecognized country ${country}`)
     }
 
     // Extract street number, route, and unit from street if it is present and route is not

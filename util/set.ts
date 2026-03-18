@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
-import { StatusError } from './assertOr.ts'
 import isObjectLike from './isObjectLike.ts'
 import last from './last.ts'
+import { HttpError } from 'fresh'
 
 // deno-lint-ignore no-explicit-any
 export default function set(obj: any, path: string, value: any) {
@@ -47,5 +47,5 @@ export default function set(obj: any, path: string, value: any) {
   }
 
   const earlier_keys_str = earlier_keys.join('.')
-  throw new StatusError(`attempting to assign property ${last_key} to ${earlier_keys_str}, but ${earlier_keys_str} is a ${typeof current}`, 400)
+  throw new HttpError(400, `attempting to assign property ${last_key} to ${earlier_keys_str}, but ${earlier_keys_str} is a ${typeof current}`)
 }

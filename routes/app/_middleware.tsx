@@ -20,12 +20,13 @@ import { HealthWorkerHomePageLayout } from '../../components/library/layout/Heal
 import { getSessionCookie, session_key } from '../../shared/session_cookie.ts'
 import { __local_storage__ } from '../../backend/local_storage.ts'
 import { exists } from '../../util/exists.ts'
+import { timeMiddlewareCallNext } from '../../backend/timeMiddleware.ts'
 
 export default [
-  ensureSessionCookiePresent,
-  setSidebarCollapsed,
-  getLoggedInHealthWorker({ require_employment: true }),
-  attachTrx,
+  timeMiddlewareCallNext(ensureSessionCookiePresent),
+  timeMiddlewareCallNext(setSidebarCollapsed),
+  timeMiddlewareCallNext(getLoggedInHealthWorker({ require_employment: true })),
+  timeMiddlewareCallNext(attachTrx),
 ]
 
 export const could_not_locate_account_href = warning(
@@ -38,14 +39,15 @@ export function noSession() {
 
 // deno-lint-ignore no-explicit-any
 export function ensureSessionCookiePresent(ctx: Context<any>) {
-  return getSessionCookie(ctx.req) ? ctx.next() : noSession()
+  if (!getSessionCookie(ctx.req)) {
+    return noSession()
+  }
 }
 
 function setSidebarCollapsed(ctx: Context<unknown>) {
   const sidebar_collapsed = getCookies(ctx.req.headers)['sidebar_collapsed'] === 'true'
   const store = exists(__local_storage__.getStore())
   store.sidebar_collapsed = sidebar_collapsed
-  return ctx.next()
 }
 
 function isGettingHtml(req: Request) {
@@ -59,7 +61,7 @@ function isGettingHtml(req: Request) {
 export function getLoggedInHealthWorker(
   { require_employment }: { require_employment: boolean },
 ) {
-  return async function (
+  return async function getLoggedInHealthWorkerScoped(
     // deno-lint-ignore no-explicit-any
     ctx: Context<any>,
   ) {
@@ -92,7 +94,7 @@ export function getLoggedInHealthWorker(
       ctx.state.health_worker = health_worker
       ctx.state.health_worker_id = health_worker.id
       ctx.state.present_encounter = present_encounter
-      return ctx.next()
+      return
     }
 
     assertOr401(isGettingHtml(ctx.req))

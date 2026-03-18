@@ -3,10 +3,10 @@ import { Workflow } from '../db.d.ts'
 import entries from '../util/entries.ts'
 import fromEntries from '../util/fromEntries.ts'
 import { HealthWorkerOrganization, Maybe, NonEmptyArray, RenderedEmployee, RenderedHealthWorker, RenderedOrganizationWithDepartments } from '../types.ts'
-import { StatusError } from '../util/assertOr.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
 import memoize from '../util/memoize.ts'
+import { HttpError } from 'fresh'
 
 export const DEPARTMENTS = [
   'Primary care' as const,
@@ -112,7 +112,7 @@ export function departmentsOfProfession(
         case 'Primary care':
           return ['Primary care', 'Triage', 'Reception']
         default: {
-          throw new StatusError(`${specialty} not yet supported`, 400)
+          throw new HttpError(400, `${specialty} not yet supported`)
         }
       }
     }

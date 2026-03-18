@@ -23,7 +23,7 @@ export default function HeroContents() {
                 </Button>
 
                 <Button
-                  href='/waitlist?entrypoint=hero'
+                  href='/mailing-list'
                   variant='hyperlink'
                 >
                   Join the waitlist
