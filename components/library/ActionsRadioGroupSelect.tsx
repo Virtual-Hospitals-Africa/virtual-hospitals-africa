@@ -36,6 +36,7 @@ export function ActionsRadioGroupSelect(
                 'rounded-bl-lg rounded-br-lg sm:rounded-bl-none': idx === options.length - 1,
               },
             )}
+            data-option-value={option.id}
           >
             <input
               type='radio'

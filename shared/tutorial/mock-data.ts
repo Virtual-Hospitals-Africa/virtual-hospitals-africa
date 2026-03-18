@@ -457,8 +457,8 @@ export const TUTORIAL_WAITING_ROOM: RenderedWaitingRoom[] = [
       record_ids: [],
     },
     present_employees: [makeMockWaitingRoomEmployee({
-      id: 'tutorial-hw-005',
-      employee_id: 'tutorial-emp-005',
+      id: 'tutorial-hw-bongani',
+      employee_id: 'tutorial-emp-bongani',
       name: 'Bongani Sibeko',
       first_names: 'Bongani',
       surname: 'Sibeko',
@@ -1921,8 +1921,8 @@ const SAPC = { name: 'South African Pharmacy Council', acronym: 'SAPC' }
  */
 export const TUTORIAL_CLINIC_EMPLOYEES: RenderedEmployeeWithPresence[] = [
   makeMockClinicEmployee({
-    id: 'tutorial-hw-006',
-    employee_id: 'tutorial-emp-006',
+    id: 'tutorial-hw-bongani',
+    employee_id: 'tutorial-emp-bongani',
     name: 'Bongani Sibeko',
     first_names: 'Bongani',
     surname: 'Sibeko',

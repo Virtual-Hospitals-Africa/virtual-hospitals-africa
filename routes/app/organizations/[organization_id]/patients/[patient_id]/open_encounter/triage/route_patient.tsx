@@ -56,7 +56,7 @@ export const handler = postHandler(
           `/app/organizations/${organization.id}/waiting_room`,
         ))
       }
-      case 'refer_case': {
+      case 'hand_over': {
         const { redirect_to } = await promiseProps({
           completing_last_step,
           redirect_to: startWorkflow(

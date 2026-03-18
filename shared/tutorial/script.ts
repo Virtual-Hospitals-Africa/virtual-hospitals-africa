@@ -290,12 +290,14 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: "Let's fill this in.",
     highlight: TUTORIAL_TARGETS.VITALS_FORM,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: 'She is Alert.',
     highlight: TUTORIAL_TARGETS.VITAL_CONSCIOUSNESS,
     input: { field: "[name='assessments.consciousness.s_expression']", value: TUTORIAL_ASSESSMENT_VALUES['assessments.consciousness.s_expression'] },
@@ -303,6 +305,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: 'Walking normally.',
     highlight: TUTORIAL_TARGETS.VITAL_MOBILITY,
     input: {
@@ -313,6 +316,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: 'No trauma.',
     highlight: TUTORIAL_TARGETS.VITAL_TRAUMA,
     input: { field: "[name='assessments.trauma_presence.s_expression']", value: TUTORIAL_ASSESSMENT_VALUES['assessments.trauma_presence.s_expression'] },
@@ -320,6 +324,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: 'Temperature is 36.8 degrees - within the normal range.',
     highlight: TUTORIAL_TARGETS.VITAL_TEMPERATURE,
     input: { field: "[name='measurements.temperature.value']", value: TUTORIAL_VITAL_VALUES['measurements.temperature.value'] },
@@ -327,6 +332,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: 'Respiratory rate is 12 - also normal.',
     highlight: TUTORIAL_TARGETS.VITAL_RESPIRATORY_RATE,
     input: { field: "[name='measurements.respiratory_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.respiratory_rate.value'] },
@@ -334,6 +340,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: 'Heart rate is at 62 bpm - a bit low, but in the normal range.',
     highlight: TUTORIAL_TARGETS.VITAL_HEART_RATE,
     input: { field: "[name='measurements.heart_rate.value']", value: TUTORIAL_VITAL_VALUES['measurements.heart_rate.value'] },
@@ -341,6 +348,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    position: 'top-right',
     text: "Blood pressure is low at 85/55 mmHg. That's 1 point on the Triage Early Warning Scale.",
     highlight: TUTORIAL_TARGETS.VITAL_BLOOD_PRESSURE,
     input: [
@@ -352,6 +360,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text: "Let's continue.",
+    click_target_on_advance: '#sidebar-toggle-button',
   },
 
   // =========================================================================
@@ -562,14 +571,20 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
+    text: 'Because the case is urgent we are recommended to hand over the case',
+    highlight: '#route_patient_next_step [data-option-value="hand_over"]',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
     text: "Our senior primary care nurse Bongani Sibeko is on call today and is currently handling a routine case. Let's route the case to him.",
-    highlight: TUTORIAL_TARGETS.ROUTE_PATIENT_PANEL,
+    highlight: '#provider-tutorial-emp-bongani',
   },
   {
     type: 'dialogue',
     speaker: 'nurse',
     text:
-      'Hm, blood pressure very low and heart rate high. Insect sting and known peanut allergy - this looks like anaphylaxis. Let me get Dr. Mokoena to confirm the diagnosis.',
+      'Hm, insect sting, low blood pressure, dizzy, difficulty breathing, with a sudden onset itchy rash - this looks like anaphylaxis. Let me get Dr. Zungu at the nearby hospital to confirm the diagnosis.',
   },
   {
     type: 'dialogue',
@@ -603,12 +618,13 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Well done! With your help, Duduzile was able to get diagnosed and treated quickly, potentially saving her life',
+    text:
+      'Well done! With your help, Duduzile was able to get diagnosed and treated quickly, potentially saving her life. We were able to get doctor sign off without having to transport the patient saving everyone valuable time.',
   },
   {
     type: 'dialogue',
     speaker: 'patient',
-    text: 'Thank you for taking care of me!',
+    text: `Thank you for taking care of me — I'm feeling much better now!`,
   },
   {
     type: 'dialogue',

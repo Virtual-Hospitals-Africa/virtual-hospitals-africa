@@ -90,7 +90,7 @@ export function TutorialDialogue({
       <div className='relative bg-[#f0f0f0] flex-1 p-4 md:p-8 w-80 md:w-120 border-4 border-[#1a1a2e] shadow-[4px_4px_0px_#1a1a2e]'>
         <div
           className={cls(
-            'absolute -top-4 md:-top-5 px-3 md:px-5 py-1 md:py-1.5 text-base md:text-2xl font-bold text-white border-[3px] border-[#1a1a2e] [font-family:GeistPixel,monospace]',
+            'absolute -top-4 md:-top-5 px-3 md:px-5 py-1 md:py-1.5  text-lg xl:text-2xl font-bold text-white border-[3px] border-[#1a1a2e] [font-family:GeistPixel,monospace]',
             getSpeakerBgClass(speaker),
             {
               'left-3 right-auto': is_left_aligned,
@@ -114,7 +114,7 @@ export function TutorialDialogue({
           })}
         />
         <p
-          className='text-gray-800 text-base md:text-2xl leading-relaxed mb-4 md:mb-6 mt-2 md:mt-4 font-bold [font-family:GeistPixel,monospace]'
+          className='text-gray-800 text-lg xl:text-2xl leading-relaxed mb-4 md:mb-6 mt-2 md:mt-4 font-bold [font-family:GeistPixel,monospace]'
           {...(dangerousHTML ? { dangerouslySetInnerHTML: { __html: text } } : {})}
         >
           {dangerousHTML ? undefined : text}

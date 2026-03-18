@@ -47,15 +47,15 @@ export function NextStepSelect(
           ]),
         },
         {
-          id: 'refer_case' satisfies TriageRoutePatientNextStep,
-          name: 'Refer case',
+          id: 'hand_over' satisfies TriageRoutePatientNextStep,
+          name: 'Hand over',
           icon: AtSymbolIcon,
           iconForeground: 'text-sky-700',
           iconBackground: 'bg-sky-50',
           description: compact([
             `I will stay here with ${patient.names.preferred_name}.`,
             `${capitalize(staff)} will be notified immediately about ${posessivePronoun(patient)} case and location.`,
-            default_next_step === 'refer_case' && (
+            default_next_step === 'hand_over' && (
               <span key='recommended' className='italic'>Recommended based on {objectPronoun(patient)} having a {priority.name.toLowerCase()} case.</span>
             ),
           ]),

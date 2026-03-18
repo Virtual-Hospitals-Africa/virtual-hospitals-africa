@@ -13,6 +13,7 @@ export default function SidebarToggleButton() {
 
   return (
     <button
+      id='sidebar-toggle-button'
       type='button'
       onClick={toggle}
       className='absolute -right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50 focus:outline-none'

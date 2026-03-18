@@ -19,7 +19,7 @@ function defaultNextStep(priority: Priority): TriageRoutePatientNextStep {
       return 'await_consultation'
     case 'Urgent':
     case 'Deceased':
-      return 'refer_case'
+      return 'hand_over'
     case 'Very urgent':
     case 'Emergency':
       return 'stabilize_patient'
@@ -36,7 +36,7 @@ function defaultToBeNotified(next_step: TriageRoutePatientNextStep, clinic_emplo
   switch (next_step) {
     case 'await_consultation':
       return []
-    case 'refer_case':
+    case 'hand_over':
     case 'stabilize_patient': {
       const shcp = getSHCP(clinic_employees)
       return shcp ? [shcp] : []
@@ -74,7 +74,7 @@ export default function TriageRoutePatientSection(
 
   return (
     <>
-      <FormSection header='Next Step'>
+      <FormSection id='route_patient_next_step' header='Next Step'>
         <FormRow>
           <NextStepSelect
             patient={patient}
@@ -89,6 +89,7 @@ export default function TriageRoutePatientSection(
         <FormRow>
           <ProvidersSelect
             providers={clinic_employees}
+            initialSelected={to_be_notified.value}
             onChange={(employees) => to_be_notified.value = employees}
           />
         </FormRow>

@@ -26,6 +26,7 @@ export function ProviderSelectOption(
 
   return (
     <label
+      id={`provider-${provider.employee_id}`}
       className={cls(
         'provider-select-option relative block cursor-pointer rounded-lg border bg-white px-4 py-3 shadow-sm focus:outline-none sm:flex sm:justify-between',
         active.value ? 'border-indigo-600 ring-2 ring-indigo-600' : 'border-gray-300',
@@ -89,12 +90,13 @@ type TrackFormDataSomehow = {
 }
 
 export default function ProvidersSelect(
-  { providers, name = 'employee_ids', className, onChange }: {
+  { providers, name = 'employee_ids', className, onChange, initialSelected = [] }: {
     providers: RenderedEmployeeWithPresence[]
     className?: string
+    initialSelected?: RenderedEmployeeWithPresence[]
   } & TrackFormDataSomehow,
 ) {
-  const selected = useSignal<Set<RenderedEmployeeWithPresence>>(new Set())
+  const selected = useSignal<Set<RenderedEmployeeWithPresence>>(new Set(initialSelected))
 
   if (!providers.length) {
     return (
