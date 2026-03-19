@@ -17,7 +17,7 @@ const categories: SnomedCategory[] = [
 function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
   assertOr400(terms.search, 'Must be searching for a term')
 
-  const best_similarity = sql<number>`max(similarity(term, ${terms.search}))`
+  const best_similarity = sql<number>`max(similarity(${terms.search}, term))`
 
   return trx
     .selectFrom('snomed_concept_finding_like')
@@ -47,7 +47,7 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
           : join.on(sql<boolean>`false`),
     )
     .where('preferred_category_of_same_name.id', 'is', null)
-    .where(sql<boolean>`term % ${terms.search}`)
+    .where(sql<boolean>`${terms.search} <% term`)
     .select([
       'snomed_inferred_canonical_name_and_category.id',
       'snomed_inferred_canonical_name_and_category.name',

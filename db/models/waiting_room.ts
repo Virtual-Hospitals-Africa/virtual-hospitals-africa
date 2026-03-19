@@ -23,7 +23,6 @@ import { exists } from '../../util/exists.ts'
 import findMatching from '../../util/findMatching.ts'
 import { health_workers } from './health_workers.ts'
 import { employees } from './employees.ts'
-import { logReadableJson } from '../../util/humanReadableJson.ts'
 
 function asWaitingRoomAction(
   patient_encounter: RenderedPatientOpenEncounter,
@@ -208,7 +207,6 @@ export const waiting_room = {
       encounter: RenderedPatientOpenEncounter
     },
   ) {
-    logReadableJson(encounter)
     if (!encounter.status.patient_presence.current_workflow) return
 
     const patient_presence: InsertObject<DB, 'patient_presence'> = {

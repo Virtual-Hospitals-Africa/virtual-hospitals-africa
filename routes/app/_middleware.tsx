@@ -89,7 +89,7 @@ export function getLoggedInHealthWorker(
           .select('patient_encounters.id')
           .executeTakeFirst(),
       ),
-      // update_session: traceTime('sessions.tickUpdatedAt', sessions.tickUpdatedAt(db, { session_id, health_worker_id })),
+      update_session: traceTime('sessions.tickUpdatedAt', sessions.tickUpdatedAt(db, { session_id, health_worker_id })),
       health_worker: traceTime(
         'health_workers.getByIdOptional',
         health_workers.getByIdOptional(

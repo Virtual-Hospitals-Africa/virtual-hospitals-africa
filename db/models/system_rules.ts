@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { buildExpression } from './s_expression.ts'
 import { AgeDetermination, Priority, TrxOrDb } from '../../types.ts'
-import { literalString, temporaryTable } from '../helpers.ts'
+import { debugLog, literalString, temporaryTable } from '../helpers.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { Lang, MeasurementComparison, QueryableNode } from '../../shared/s_expression_schemas.ts'
 import compactMap from '../../util/compactMap.ts'
@@ -251,6 +251,8 @@ export function ruleRunner<
       ])
 
     console.time(`${listener_name} ${listener_id} all_records_for_rules`)
+    console.log('xxxmmmmmmmm')
+    debugLog(all_records_for_rules_query)
     const all_records_for_rules = await all_records_for_rules_query.execute()
     console.timeEnd(`${listener_name} ${listener_id} all_records_for_rules`)
 
