@@ -28,7 +28,7 @@ export function MostRecentRecord(
   return (
     <Popover
       id={`most-recent-finding-${record.pertaining_to_key || record.id}`}
-      className={cls('relative', className)}
+      className={cls('relative text-sm', className)}
     >
       {
         /* <span
@@ -44,7 +44,6 @@ export function MostRecentRecord(
         onClick={(event) => {
           console.log('lkwelkwelk', event)
         }}
-        // href={`#most-recent-finding-${record.pertaining_to_key || record.id}`}
       >
         {display}
       </PopoverButton>

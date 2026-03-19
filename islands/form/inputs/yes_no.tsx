@@ -1,6 +1,7 @@
 import { ComponentChild, ComponentChildren } from 'preact'
 import { Existence, Maybe } from '../../../types.ts'
 import { useRef } from 'preact/hooks'
+import cls from '../../../util/cls.ts'
 
 export function YesNoQuestion({
   name,
@@ -59,7 +60,7 @@ export function YesNoGrid(
 ) {
   const ref = useRef<HTMLInputElement>(null)
 
-  function Header({ existence }: { existence: Existence }) {
+  function Header({ existence, placement }: { existence: Existence, placement: 'top' | 'bottom' }) {
     function checkAllWithoutValues() {
       const container = ref.current!
       const inputs = container.querySelectorAll<HTMLInputElement>(`input[type="radio"][value="${existence}"]`)
@@ -75,7 +76,10 @@ export function YesNoGrid(
     return (
       <button
         type='button'
-        className='yes-no-header cursor-pointer text-sm font-medium text-center text-indigo-900 bg-indigo-50 border-b border-gray-300 py-4'
+        className={cls('yes-no-header cursor-pointer text-sm font-medium text-center text-indigo-900 bg-indigo-50 py-4 border-gray-300', {
+          'border-b': placement === 'top',
+          'border-t': placement === 'bottom',
+        })}
         onClick={checkAllWithoutValues}
         data-existence={existence}
       >
@@ -84,18 +88,30 @@ export function YesNoGrid(
     )
   }
 
-  return (
-    <div
-      className='overflow-scroll border border-b border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-2 xl:gap-y-4 items-start pb-4'
-      ref={ref}
-    >
-      <div className='text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-b border-gray-300 pl-4 py-4'>
+
+  function Title({ title, placement }: { title: string, placement: 'top' | 'bottom' }) {
+    return <div className={cls('text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-gray-300 pl-4 py-4', {
+          'border-b': placement === 'top',
+          'border-t': placement === 'bottom',
+        })}>
         {title}
       </div>
-      <Header existence='Yes' />
-      <Header existence='No' />
-      <Header existence='Unknown' />
+  }
+
+  return (
+    <div
+      className='overflow-scroll border border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-2 xl:gap-y-4 items-start'
+      ref={ref}
+    >
+      <Title title={title} placement="top" />
+      <Header existence='Yes' placement="top" />
+      <Header existence='No' placement="top" />
+      <Header existence='Unknown' placement="top" />
       {children}
+      <Title title={title} placement="bottom" />
+      <Header existence='Yes' placement="bottom" />
+      <Header existence='No' placement="bottom" />
+      <Header existence='Unknown' placement="bottom" />
     </div>
   )
 }
