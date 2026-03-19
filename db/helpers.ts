@@ -550,7 +550,11 @@ export function temporaryTable<T extends Record<string, unknown>>(
   return records.map((record) =>
     trx.selectNoFrom(() =>
       entries(record).map(([key, value]) =>
-        typeof value === 'string' && isUUID(value) ? sql.raw(`'${value}'::uuid`).as(key as string) : sql.lit(value).as(key as string)
+        typeof value === 'string' && isUUID(value)
+          ? sql.raw(`'${value}'::uuid`).as(key as string)
+          : key === 'snomed_concept_id'
+          ? sql.raw(`'${value}'::bigint`).as(key as string)
+          : sql.lit(value).as(key as string)
       )
     )
   ).reduce((acc, curr) => acc.unionAll(curr)) as unknown as SelectQueryBuilder<

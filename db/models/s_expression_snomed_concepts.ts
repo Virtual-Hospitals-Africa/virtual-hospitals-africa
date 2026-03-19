@@ -28,7 +28,11 @@ function basePredicate(
     return sql<boolean>`true`
   }
   const parent_id = snomedConceptIdPredicate(specific_snomed_concept)
-  return sql<boolean>`is_descendant(${sql.ref(column_ref)}, ${parent_id}::bigint)`
+  return sql<boolean>`EXISTS (
+    SELECT 1 FROM snomed_concept_active_descendants_realized
+    WHERE ancestor_id = ${parent_id}::bigint
+    AND descendant_id = ${sql.ref(column_ref)}
+  )`
 }
 
 type PredicateAtom =

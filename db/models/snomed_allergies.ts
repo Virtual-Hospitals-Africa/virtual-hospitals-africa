@@ -46,10 +46,12 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, terms: SearchTerms) {
     .where('preferred_category_of_same_name.id', 'is', null)
     .where(sql<boolean>`term % ${terms.search}`)
     .$if(!!terms.descendant_of_concept, (qb) =>
-      qb.where((eb) =>
-        sql<boolean>`
-          is_descendant(${eb.ref('snomed_description.concept_id')}, ${terms.descendant_of_concept!.id}::bigint)
-        `
+      qb.innerJoin(
+        'snomed_concept_active_descendants_realized as allergy_descendant_filter',
+        (join) =>
+          join
+            .onRef('allergy_descendant_filter.descendant_id', '=', 'snomed_description.concept_id')
+            .on('allergy_descendant_filter.ancestor_id', '=', terms.descendant_of_concept!.id),
       ))
     .$if(!!terms.categories, (qb) => qb.where('snomed_inferred_canonical_name_and_category.category', 'in', terms.categories!))
     .select((eb) => [

@@ -18,7 +18,6 @@ import { NO_QUALIFIER, UNKNOWN_QUALIFIER } from '../../../../../../../../shared/
 import compactMap from '../../../../../../../../util/compactMap.ts'
 import zip from '../../../../../../../../util/zip.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-import { logJSONToFileIfOnServer } from '../../../../../../../../util/logJSONToFileIfOnServer.ts'
 
 export const TriageAdditionalTasksAndInvestigationsSchema = z.object({
   evaluation_ids: z.string().uuid().array(),

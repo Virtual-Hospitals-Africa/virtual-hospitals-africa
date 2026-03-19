@@ -12,7 +12,7 @@ export function DueTo(
   return (
     <div class={cls('flex flex-row gap-1 text-sm leading-5', className)}>
       <span class='font-semibold text-gray-600'>
-        {'Due to '}
+        {'Due to '}
       </span>
 
       {due_to.map((record) => (

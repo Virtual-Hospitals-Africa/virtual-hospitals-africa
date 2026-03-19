@@ -80,6 +80,7 @@ export type MedicationFrequency =
   | 'q2h'
   | 'q30'
   | 'q30h'
+  | 'q3h'
   | 'q48h'
   | 'q4h'
   | 'q6h'
@@ -1255,10 +1256,10 @@ export interface PatientWorkflowStepsCompleted {
 }
 
 export interface PgStatStatements {
+  blk_read_time: number | null
+  blk_write_time: number | null
   calls: Int8 | null
   dbid: number | null
-  jit_deform_count: Int8 | null
-  jit_deform_time: number | null
   jit_emission_count: Int8 | null
   jit_emission_time: number | null
   jit_functions: Int8 | null
@@ -1267,8 +1268,6 @@ export interface PgStatStatements {
   jit_inlining_time: number | null
   jit_optimization_count: Int8 | null
   jit_optimization_time: number | null
-  local_blk_read_time: number | null
-  local_blk_write_time: number | null
   local_blks_dirtied: Int8 | null
   local_blks_hit: Int8 | null
   local_blks_read: Int8 | null
@@ -1279,18 +1278,14 @@ export interface PgStatStatements {
   mean_plan_time: number | null
   min_exec_time: number | null
   min_plan_time: number | null
-  minmax_stats_since: Timestamp | null
   plans: Int8 | null
   query: string | null
   queryid: Int8 | null
   rows: Int8 | null
-  shared_blk_read_time: number | null
-  shared_blk_write_time: number | null
   shared_blks_dirtied: Int8 | null
   shared_blks_hit: Int8 | null
   shared_blks_read: Int8 | null
   shared_blks_written: Int8 | null
-  stats_since: Timestamp | null
   stddev_exec_time: number | null
   stddev_plan_time: number | null
   temp_blk_read_time: number | null
@@ -1466,6 +1461,11 @@ export interface SnomedConcept {
   effective_time: Timestamp
   id: Int8
   module_id: Int8
+}
+
+export interface SnomedConceptActiveDescendantsRealized {
+  ancestor_id: Int8
+  descendant_id: Int8
 }
 
 export interface SnomedConceptBodyStructure {
@@ -1884,6 +1884,7 @@ export interface DB {
   snomed_ci_refset_description_type: SnomedCiRefsetDescriptionType
   snomed_cisscc_refset_mrcm_attribute_domain: SnomedCissccRefsetMrcmAttributeDomain
   snomed_concept: SnomedConcept
+  snomed_concept_active_descendants_realized: SnomedConceptActiveDescendantsRealized
   snomed_concept_body_structure: SnomedConceptBodyStructure
   snomed_concept_finding_like: SnomedConceptFindingLike
   snomed_concept_prioritizations: SnomedConceptPrioritizations

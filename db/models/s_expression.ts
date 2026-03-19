@@ -123,9 +123,12 @@ function baseQuery(
                 '=',
                 'Yes',
               ),
-              sql<boolean>`
-                is_descendant(${eb.ref('patient_records_aggregated.specific_snomed_concept_id')}, ${snomed_concept}::bigint)
-              `,
+              eb.exists(
+                trx.selectFrom('snomed_concept_active_descendants_realized')
+                  .where('snomed_concept_active_descendants_realized.descendant_id', '=', eb.ref('patient_records_aggregated.specific_snomed_concept_id'))
+                  .where('snomed_concept_active_descendants_realized.ancestor_id', '=', snomed_concept)
+                  .select(sql`1`.as('x')),
+              ),
             ]),
           ])
         }),
@@ -135,16 +138,23 @@ function baseQuery(
       (qb) =>
         qb
           .innerJoin('patient_records', 'patient_records.id', 'patient_records_aggregated.id')
+          .$if(!exact, (q) =>
+            q.innerJoin(
+              'snomed_concept_active_descendants_realized as value_descendants',
+              (join) =>
+                join
+                  .onRef('value_descendants.descendant_id', '=', 'patient_records.value_snomed_concept_id')
+                  .on('value_descendants.ancestor_id', '=', snomedConceptBase(trx, value_snomed_concept!)),
+            ))
           .where((eb) => {
             const snomed_concept = snomedConceptBase(trx, value_snomed_concept!)
-            const matches = exact
-              ? eb('patient_records.value_snomed_concept_id', '=', snomed_concept)
-              : sql<boolean>`is_descendant(${eb.ref('patient_records.value_snomed_concept_id')}, ${snomed_concept}::bigint)`
-
-            return eb.and([
-              eb('patient_records.value_snomed_concept_id', 'is not', null),
-              matches,
-            ])
+            if (exact) {
+              return eb.and([
+                eb('patient_records.value_snomed_concept_id', 'is not', null),
+                eb('patient_records.value_snomed_concept_id', '=', snomed_concept),
+              ])
+            }
+            return eb('patient_records.value_snomed_concept_id', 'is not', null)
           }),
     )
     .$if(
@@ -200,10 +210,12 @@ function baseQuery(
               '=',
               eb.ref('patient_records_aggregated.specific_snomed_concept_id'),
             )
-            .where(
-              sql<
-                boolean
-              >`is_descendant(snomed_relationship.destination_id, ${snomedConceptBase(trx, value)}::bigint)`,
+            .innerJoin(
+              'snomed_concept_active_descendants_realized as dest_descendants',
+              (join) =>
+                join
+                  .onRef('dest_descendants.descendant_id', '=', 'snomed_relationship.destination_id')
+                  .on('dest_descendants.ancestor_id', '=', snomedConceptBase(trx, value)),
             ),
         ),
       ])

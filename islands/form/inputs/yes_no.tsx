@@ -60,7 +60,7 @@ export function YesNoGrid(
 ) {
   const ref = useRef<HTMLInputElement>(null)
 
-  function Header({ existence, placement }: { existence: Existence, placement: 'top' | 'bottom' }) {
+  function Header({ existence, placement }: { existence: Existence; placement: 'top' | 'bottom' }) {
     function checkAllWithoutValues() {
       const container = ref.current!
       const inputs = container.querySelectorAll<HTMLInputElement>(`input[type="radio"][value="${existence}"]`)
@@ -88,14 +88,17 @@ export function YesNoGrid(
     )
   }
 
-
-  function Title({ title, placement }: { title: string, placement: 'top' | 'bottom' }) {
-    return <div className={cls('text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-gray-300 pl-4 py-4', {
+  function Title({ title, placement }: { title: string; placement: 'top' | 'bottom' }) {
+    return (
+      <div
+        className={cls('text-sm font-medium text-indigo-900 capitalize bg-indigo-50 border-gray-300 pl-4 py-4', {
           'border-b': placement === 'top',
           'border-t': placement === 'bottom',
-        })}>
+        })}
+      >
         {title}
       </div>
+    )
   }
 
   return (
@@ -103,15 +106,15 @@ export function YesNoGrid(
       className='overflow-scroll border border-gray-300 rounded-lg grid grid-cols-[auto_minmax(80px,1fr)_minmax(80px,1fr)_minmax(80px,1fr)] gap-y-2 xl:gap-y-4 items-start'
       ref={ref}
     >
-      <Title title={title} placement="top" />
-      <Header existence='Yes' placement="top" />
-      <Header existence='No' placement="top" />
-      <Header existence='Unknown' placement="top" />
+      <Title title={title} placement='top' />
+      <Header existence='Yes' placement='top' />
+      <Header existence='No' placement='top' />
+      <Header existence='Unknown' placement='top' />
       {children}
-      <Title title={title} placement="bottom" />
-      <Header existence='Yes' placement="bottom" />
-      <Header existence='No' placement="bottom" />
-      <Header existence='Unknown' placement="bottom" />
+      <Title title={title} placement='bottom' />
+      <Header existence='Yes' placement='bottom' />
+      <Header existence='No' placement='bottom' />
+      <Header existence='Unknown' placement='bottom' />
     </div>
   )
 }

@@ -123,6 +123,9 @@ if $use_test_servers; then
   if ! $test_servers_were_already_running; then
     ./scripts/test/run_servers.sh "$run_test_server_args" &
     test_servers_pid="$!"
+  else
+    : >"/tmp/vha_server.log"
+    : >"/tmp/vha_proxy.log"
   fi
 fi
 

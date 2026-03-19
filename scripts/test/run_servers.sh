@@ -26,15 +26,6 @@ https_proxy_server_pid=""
 http_server_pid=""
 
 
-mktemp_with_suffix() {
-  local suffix="$1"
-  # shellcheck disable=SC2155
-  local filename=$(mktemp -u)
-  local temp="$filename.$suffix"
-  : >"$temp"
-  echo "$temp"
-}
-
 # On CI, write logs to a known directory for artifact upload
 # Otherwise, use temp files
 if [[ "${CI:-}" == "true" ]]; then
@@ -44,8 +35,10 @@ if [[ "${CI:-}" == "true" ]]; then
   : >"$test_http_server_output"
   : >"$test_https_proxy_server_output"
 else
-  test_http_server_output=$(mktemp_with_suffix log)
-  test_https_proxy_server_output=$(mktemp_with_suffix log)
+  test_http_server_output="/tmp/vha_server.log"
+  test_https_proxy_server_output="/tmp/vha_proxy.log"
+  : >"$test_http_server_output"
+  : >"$test_https_proxy_server_output"
 fi
 
 task=vite

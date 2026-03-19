@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import type { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, identity } from './_base.ts'
-import { assertOr401 } from '../../util/assertOr.ts'
 
 export type EntityType = 'health_worker' /* | 'regulator' */
 
@@ -34,7 +33,7 @@ export const sessions = base({
   async tickUpdatedAt(trx: TrxOrDbOrQueryCreator, { session_id, health_worker_id }: {
     session_id: string
     health_worker_id: string
-  }) {
+  }): Promise<{ session_found: boolean }> {
     const updates = { updated_at: new Date() }
 
     const result = await trx
@@ -45,6 +44,6 @@ export const sessions = base({
       .set(updates)
       .executeTakeFirst()
 
-    assertOr401(result.numUpdatedRows)
+    return { session_found: !!result.numUpdatedRows }
   },
 })

@@ -1,5 +1,4 @@
 import { assert } from 'std/assert/assert.ts'
-import { sql } from 'kysely'
 import {
   Existence,
   MostRecentBriefHistoryFindings,
@@ -43,11 +42,12 @@ function mostRecentRecords(
           .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_findings.id')
           .where('patient_records.patient_id', '=', patient_id)
           .innerJoin(
+            'snomed_concept_active_descendants_realized as brief_history_descendants',
+            (join) => join.onRef('brief_history_descendants.descendant_id', '=', 'patient_records.specific_snomed_concept_id'),
+          )
+          .innerJoin(
             'common_conditions',
-            (join) =>
-              join.on((eb) =>
-                sql<boolean>`is_descendant(${eb.ref('patient_records.specific_snomed_concept_id')}, ${eb.ref('common_conditions.snomed_concept_id')}::bigint)`
-              ),
+            (join) => join.onRef('brief_history_descendants.ancestor_id', '=', 'common_conditions.snomed_concept_id'),
           )
           .select((eb) => [
             'patient_findings.id',
