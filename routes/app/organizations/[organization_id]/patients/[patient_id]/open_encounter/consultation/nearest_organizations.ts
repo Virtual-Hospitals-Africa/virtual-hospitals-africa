@@ -8,7 +8,7 @@ export const handler = jsonSearchHandler<
   NearestOrganizationSearchResult,
   OpenEncounterWorkflowContext<BlankRecord>
 >(nearest_organizations, (ctx) => ({
-  location: ctx.state.encounter.organization.location!,
-  excluding_id: ctx.state.encounter_employee_presence.organization_id,
+  location: ctx.state.organization.location!,
+  excluding_id: ctx.state.organization.id,
   // has_doctors: true,
 }))

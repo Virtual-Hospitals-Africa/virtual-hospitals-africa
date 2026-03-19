@@ -7,7 +7,6 @@ import { SearchResult } from './_base.ts'
 import { patient_encounter_employees } from './patient_encounter_employees.ts'
 import compact from '../../util/compact.ts'
 import { collapse } from '../helpers.ts'
-import { groupByUniq } from '../../util/groupBy.ts'
 
 async function hydrateIntermediateRecords<
   IntermediateRecord extends SearchResult<typeof patient_findings>,
@@ -109,12 +108,8 @@ const getAllReferencedEmployees = collapse(
       employees: [] as { patient_encounter_id: string; employment_id: string }[],
     }
 
-    const encounters_we_already_have = groupByUniq(compact(queries.map(([q]) => q.encounter)), 'patient_encounter_id', { allow_multiple: true })
-
     for (const [{ records }] of queries) {
       for (const record of records) {
-        if (encounters_we_already_have.has(record.patient_encounter_id)) continue
-
         if (record.type === 'finding') {
           to_look_for.employee_ids.push(record.patient_encounter_employee_id)
           continue
@@ -128,7 +123,7 @@ const getAllReferencedEmployees = collapse(
       }
     }
 
-    const employees_from_other_encounters = to_look_for.employee_ids.length || to_look_for.employees.length
+    return to_look_for.employee_ids.length || to_look_for.employees.length
       ? await patient_encounter_employees.baseQuery(trx, {})
         .where((eb) =>
           eb.or(compact([
@@ -143,11 +138,6 @@ const getAllReferencedEmployees = collapse(
         )
         .execute()
       : []
-
-    return [
-      ...queries.flatMap(([{ encounter }]) => encounter?.all_employees_seen || []),
-      ...employees_from_other_encounters,
-    ]
   },
   (employee, params) =>
     params[0].records.some((record) =>

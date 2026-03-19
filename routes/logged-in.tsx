@@ -10,7 +10,7 @@ import { google_tokens } from '../db/models/google_tokens.ts'
 import { events } from '../db/models/events.ts'
 import * as google from '../external-clients/google.ts'
 import { media } from '../db/models/media.ts'
-import { GoogleProfile, HasStringId, Regulator, TrxOrDb } from '../types.ts'
+import { GoogleProfile, TrxOrDb } from '../types.ts'
 import { assertOrRedirect } from '../util/assertOr.ts'
 import { warning } from '../util/alerts.ts'
 import * as cookie from '../shared/session_cookie.ts'
@@ -139,6 +139,10 @@ export async function initializeHealthWorkerWithoutInvites(
     name: cookie.session_key,
     value: session_id,
   })
+  setCookie(response.headers, {
+    name: 'health_worker_id',
+    value: health_worker_id,
+  })
 
   return response
 }
@@ -153,27 +157,6 @@ async function checkPermissions(
 const insufficient_permissions = warning(
   'You need to grant permission to access your Google Calendar to use this app.',
 )
-
-export async function startRegulatorSession(
-  trx: TrxOrDb,
-  regulator: HasStringId<Regulator>,
-) {
-  const session_id = await sessions.insertOne(trx, {
-    entity_type: 'regulator',
-    entity_id: regulator.id,
-  })
-
-  const response = redirect(
-    `/regulator/${regulator.country}/pharmacies`,
-  )
-
-  setCookie(response.headers, {
-    name: cookie.session_key,
-    value: session_id,
-  })
-
-  return response
-}
 
 export const handler = {
   async GET(ctx: Context<unknown>) {

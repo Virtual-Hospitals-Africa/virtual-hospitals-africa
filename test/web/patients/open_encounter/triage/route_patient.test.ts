@@ -103,6 +103,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         'health_worker_ids_to_be_notified': [shcp.id],
         'notes': null,
       }, { strict: true })
+
       logReadableJson({ route_patient_form_labels })
       logReadableJson({ route_patient_form_options })
 

@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import type { IdSelection, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, identity } from './_base.ts'
+import { assertOr401 } from '../../util/assertOr.ts'
 
 export type EntityType = 'health_worker' /* | 'regulator' */
 
@@ -30,29 +31,20 @@ export const sessions = base({
       .where('id', '=', session_id)
       .select('entity_id as id')
   },
-  // deno-lint-ignore require-await
-  async tickUpdatedAt(_trx: TrxOrDbOrQueryCreator, _session_id: string) {
-    return
-    // console.log('session_id', session_id)
-    // const session = sessions.getFromCache(session_id)
-    // console.log('const session = sessions.getFromCache(session_id)', session)
-    // const updates = { updated_at: new Date() }
-    // console.log('const updates = { updated_at: new Date() }', updates)
-    // if (session) {
-    //   Object.assign(session, updates)
-    // }
+  async tickUpdatedAt(trx: TrxOrDbOrQueryCreator, { session_id, health_worker_id }: {
+    session_id: string
+    health_worker_id: string
+  }) {
+    const updates = { updated_at: new Date() }
 
-    // debugLog(trx
-    //   .updateTable('sessions')
-    //   .where('id', '=', session_id)
-    //   .set(updates))
+    const result = await trx
+      .updateTable('sessions')
+      .where('id', '=', session_id)
+      .where('sessions.entity_type', '=', 'health_worker')
+      .where('sessions.entity_id', '=', health_worker_id)
+      .set(updates)
+      .executeTakeFirst()
 
-    // await trx
-    //   .updateTable('sessions')
-    //   .where('id', '=', session_id)
-    //   .set(updates)
-    //   .execute()
-
-    // console.log('updated session')
+    assertOr401(result.numUpdatedRows)
   },
 })

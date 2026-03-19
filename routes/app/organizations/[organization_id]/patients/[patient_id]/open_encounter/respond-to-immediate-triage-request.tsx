@@ -9,6 +9,7 @@ import { HealthWorkerHomePage } from '../../../../../_middleware.tsx'
 import capitalize from '../../../../../../../util/capitalize.ts'
 import Form from '../../../../../../../components/library/Form.tsx'
 import { Button } from '../../../../../../../components/library/Button.tsx'
+import { employees } from '../../../../../../../db/models/employees.ts'
 
 export default HealthWorkerHomePage<OrganizationContext>(
   'Immediate Triage Request',
@@ -30,6 +31,7 @@ export default HealthWorkerHomePage<OrganizationContext>(
     const { patient } = patient_encounter
 
     const present_with_patient = presentWithPatient(patient_encounter)
+    const present_with_patient_employees = present_with_patient.length ? await employees.getByIds(trx, present_with_patient.map((e) => e.employee_id)) : []
 
     return {
       drawer: (
@@ -131,7 +133,7 @@ export default HealthWorkerHomePage<OrganizationContext>(
             </div>
           </div>
 
-          {present_with_patient.length > 0 && (
+          {present_with_patient_employees.length > 0 && (
             <div className='bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6'>
               <h3 className='text-lg font-semibold mb-3 text-blue-900'>
                 Already Responding
@@ -140,9 +142,9 @@ export default HealthWorkerHomePage<OrganizationContext>(
                 The following health workers are currently with this patient:
               </p>
               <div className='space-y-2'>
-                {present_with_patient.map((employee) => (
+                {present_with_patient_employees.map((employee) => (
                   <div
-                    key={employee.patient_encounter_employee_id}
+                    key={employee.employee_id}
                     className='flex items-center bg-white rounded px-3 py-2'
                   >
                     <Person

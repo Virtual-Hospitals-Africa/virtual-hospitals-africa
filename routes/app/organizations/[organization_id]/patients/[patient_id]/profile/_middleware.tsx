@@ -86,9 +86,7 @@ export const PatientProfilePage = (
       )
       assert(hasName(patient))
 
-      const as_waiting_room = open_encounter ? waiting_room.asWaitingRoom(open_encounter, organization_employment) : null
-
-      const action = as_waiting_room?.actions[0]
+      const action = open_encounter ? waiting_room.asWaitingRoomAction(open_encounter, organization_employment) : null
 
       const tabs = [
         'summary',

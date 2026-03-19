@@ -339,13 +339,13 @@ export const EVENTS = {
         )
 
         const can_perform_triage = await employees.findAll(trx, {
-          organization_id: patient_encounter.organization.id,
+          organization_id: patient_encounter.organization_id,
           can_perform_workflow: 'triage',
         })
 
         if (!can_perform_triage.length) {
           console.warn(
-            `No health workers can perform triage for organization ${patient_encounter.organization.id}`,
+            `No health workers can perform triage for organization ${patient_encounter.organization_id}`,
           )
           return 'Skipped: no health workers can perform triage at this organization'
         }
@@ -361,7 +361,7 @@ export const EVENTS = {
             notification_type: 'patient_encounter_immediate_triage',
             action_title: 'View patient case',
             action_href:
-              `/app/organizations/${patient_encounter.organization.id}/patients/${patient_encounter.patient.id}/open_encounter/respond-to-immediate-triage-request`,
+              `/app/organizations/${patient_encounter.organization_id}/patients/${patient_encounter.patient.id}/open_encounter/respond-to-immediate-triage-request`,
           })
         }
         return `Notified ${can_perform_triage.length} health worker(s) of immediate triage request`

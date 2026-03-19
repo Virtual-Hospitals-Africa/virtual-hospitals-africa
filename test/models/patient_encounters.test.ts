@@ -28,6 +28,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
     const {
       organization,
       organization_employment,
+      health_worker,
       patient_encounter_id,
       patient_id,
       patient_encounter_employee_id,
@@ -79,7 +80,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       1,
     )
     assertEquals(open_encounter, {
-      organization,
+      organization_id: organization.id,
       workflows: {
         registration: {
           patient_workflow_id: open_encounter.workflows.registration!.patient_workflow_id,
@@ -109,24 +110,20 @@ describeParallel('db/models/patient_encounters.ts', () => {
       patient_encounter_id,
       arrived_timestamp: open_encounter.arrived_timestamp,
       notes: null,
-      appointment: null,
+      appointment_id: null,
       wait_time: open_encounter.wait_time,
       all_employees_seen: [
         {
           ...open_encounter.all_employees_seen[0],
           patient_encounter_employee_id,
-          id: receptionist.id,
           employee_id: exists(organization_employment).employment_id,
-          name: receptionist.name,
-          role: 'receptionist',
-          avatar_url: `/health_workers/${open_encounter.all_employees_seen[0].id}/avatar`,
-          organization_id: organization.id,
         },
       ],
     })
 
     const [in_waiting_room] = await waiting_room.get(
       db,
+      health_worker,
       organization_employment,
     )
 
@@ -172,6 +169,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       const {
         organization,
         organization_employment,
+        health_worker,
         patient_encounter_id,
         employee,
         patient,
@@ -198,7 +196,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       assert(open_encounter.workflows.registration!.completed_at)
       assert(open_encounter.arrived_timestamp instanceof Date)
       assertEquals(open_encounter, {
-        organization,
+        organization_id: organization.id,
         workflows: {
           registration: {
             patient_workflow_id: open_encounter.workflows.registration!.patient_workflow_id,
@@ -251,23 +249,20 @@ describeParallel('db/models/patient_encounters.ts', () => {
         patient_encounter_id,
         arrived_timestamp: open_encounter.arrived_timestamp,
         notes: null,
-        appointment: null,
+        appointment_id: null,
         wait_time: open_encounter.wait_time,
         all_employees_seen: [
           {
             ...open_encounter.all_employees_seen[0],
             patient_encounter_employee_id: employee.patient_encounter_employee_id,
             employee_id: exists(organization_employment).employment_id,
-            organization_id: organization_employment.id,
-            role: 'receptionist',
-            id: receptionist.id,
-            name: receptionist.name,
           },
         ],
       })
 
       const [in_waiting_room] = await waiting_room.get(
         db,
+        health_worker,
         organization_employment,
       )
 

@@ -1,11 +1,11 @@
-import { RenderedPatientEncounterEmployee, RenderedPatientOpenEncounter } from '../types.ts'
+import { RenderedPatientOpenEncounter } from '../types.ts'
 import { arrayIsEmpty } from '../util/arraySize.ts'
 import { exists } from '../util/exists.ts'
 import matching from '../util/matching.ts'
 
 export function presentWithPatient(
   { all_employees_seen, status }: RenderedPatientOpenEncounter,
-): RenderedPatientEncounterEmployee[] {
+) {
   const { present_with_patient_encounter_employee_ids } = status.patient_presence
   if (arrayIsEmpty(present_with_patient_encounter_employee_ids)) {
     return []

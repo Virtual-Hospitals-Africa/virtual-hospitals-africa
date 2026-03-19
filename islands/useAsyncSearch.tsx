@@ -53,7 +53,6 @@ export default function useAsyncSearch<
     request.open('GET', url.toString())
     request.setRequestHeader('accept', 'application/json')
     request.onload = () => {
-      console.log('zzz', request)
       if (request.status !== 200) {
         const event = new CustomEvent('show-alert', {
           detail: request.responseText,

@@ -14,6 +14,8 @@ export const handler = {
     })
     assertOr404(avatar)
 
-    return file(avatar.binary_data, avatar.mime_type)
+    const response = file(avatar.binary_data, avatar.mime_type)
+    response.headers.set('cache-control', 'public, max-age=86400, immutable')
+    return response
   },
 }

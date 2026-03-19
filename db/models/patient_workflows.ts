@@ -1,6 +1,13 @@
 import { DB, Workflow } from '../../db.d.ts'
 import { workflowStepKey } from '../../shared/workflow.ts'
-import { HealthWorkerOrganization, RenderedPatientEncounter, RenderedPatientOpenEncounter, TrxOrDbOrQueryCreator } from '../../types.ts'
+import {
+  HealthWorkerOrganization,
+  RenderedEmployee,
+  RenderedPatientEncounter,
+  RenderedPatientOpenEncounter,
+  TrxOrDb,
+  TrxOrDbOrQueryCreator,
+} from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { blankSelection } from '../helpers.ts'
 import { AlertWithActionsError } from '../../util/assertOr.ts'
@@ -9,6 +16,8 @@ import { objectPronoun } from '../../shared/sex_and_gender.ts'
 import { preferredName } from '../../util/asNames.ts'
 import findMatching from '../../util/findMatching.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
+import { health_workers } from './health_workers.ts'
+import { employees } from './employees.ts'
 
 export function* employeesPresentWithPatient(
   { status, all_employees_seen }: RenderedPatientOpenEncounter,
@@ -18,13 +27,15 @@ export function* employeesPresentWithPatient(
   }
 }
 
-export function otherEmployeePresentWithPatient(
+export async function otherEmployeePresentWithPatient(
+  trx: TrxOrDb,
   encounter: RenderedPatientOpenEncounter,
   organization_employment: HealthWorkerOrganization,
-) {
+): Promise<undefined | RenderedEmployee> {
   for (const employee of employeesPresentWithPatient(encounter)) {
     if (organization_employment.employment_id !== employee.employee_id) {
-      return employee
+      const health_worker = await health_workers.getById(trx, employee.health_worker_id)
+      return employees.fromHealthWorker(health_worker, employee.organization_id)
     }
   }
 }
@@ -32,39 +43,28 @@ export function otherEmployeePresentWithPatient(
 export class PresentWithAnotherPatientError extends AlertWithActionsError {
   constructor(
     encounter: RenderedPatientOpenEncounter,
-    organization_employment: HealthWorkerOrganization,
+    other_employee: undefined | RenderedEmployee,
   ) {
-    const { patient, organization, status } = encounter
-    const other_employee = otherEmployeePresentWithPatient(encounter, organization_employment)
+    const { patient, organization_id, status } = encounter
+    // const other_employee = otherEmployeePresentWithPatient(encounter, organization_employment)
 
     super('You cannot register new patients while present with another patient', [
       {
         text: `Continue with ${preferredName(patient, 'patient')}`,
-        href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/${status.patient_presence.current_workflow}`,
+        href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/${status.patient_presence.current_workflow}`,
       },
       other_employee
         ? {
           text: `Leave ${objectPronoun(patient)} with ${employeeDisplay(other_employee).display_name}`,
-          href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/leave-with-another`,
+          href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/leave-with-another`,
           method: 'POST',
         }
         : {
           text: `Move ${objectPronoun(patient)} to the waiting room`,
-          href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/move-to-waiting-room`,
+          href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/move-to-waiting-room`,
           method: 'POST',
         },
     ], 'warning')
-  }
-}
-export function assertNoPresentEncounter(
-  maybe_encounter: RenderedPatientOpenEncounter | null,
-  organization_employment: HealthWorkerOrganization,
-): asserts maybe_encounter is null {
-  if (maybe_encounter) {
-    throw new PresentWithAnotherPatientError(
-      maybe_encounter,
-      organization_employment,
-    )
   }
 }
 

@@ -2,6 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import {
   ExtendedActionData,
   HealthWorkerOrganization,
+  RenderedHealthWorker,
   RenderedOrganization,
   RenderedPatientOpenEncounter,
   RenderedWaitingRoom,
@@ -19,10 +20,53 @@ import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { InsertObject } from 'kysely'
 import type { DB } from '../../db.d.ts'
 import { exists } from '../../util/exists.ts'
+import findMatching from '../../util/findMatching.ts'
+import { health_workers } from './health_workers.ts'
+import { employees } from './employees.ts'
+
+function asWaitingRoomAction(
+  patient_encounter: RenderedPatientOpenEncounter,
+  organization_employment: HealthWorkerOrganization,
+): ExtendedActionData {
+  const {
+    patient,
+    status,
+    workflows,
+  } = patient_encounter
+
+  const {
+    current_workflow,
+    next_workflow,
+  } = status.patient_presence
+
+  const next_workflow_status = next_workflow && workflows[next_workflow]
+  const current_workflow_status = current_workflow &&
+    workflows[current_workflow]
+
+  const workflow_to_start = current_workflow_status?.workflow ||
+    next_workflow_status?.workflow
+  assert(workflow_to_start)
+
+  const can_perform_action = organization_employment.in_departments.some(
+    (department) =>
+      departmentResponsibleForWorkflow(
+        department.name as Department,
+        workflow_to_start,
+      ),
+  )
+
+  return {
+    text: workflow_to_start,
+    method: 'POST',
+    href: `/app/organizations/${organization_employment.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=${workflow_to_start}`,
+    disabled: !can_perform_action,
+  }
+}
 
 function asWaitingRoom(
   patient_encounter: RenderedPatientOpenEncounter,
   organization_employment: HealthWorkerOrganization,
+  all_health_workers: RenderedHealthWorker[],
 ): RenderedWaitingRoom {
   const {
     patient_encounter_id,
@@ -68,7 +112,11 @@ function asWaitingRoom(
     (present_with_patient_encounter_employee_ids as string[]).includes(
       employee.patient_encounter_employee_id,
     )
-  )
+  ).map(({ health_worker_id, patient_encounter_employee_id }) => {
+    const health_worker = findMatching(all_health_workers, { id: health_worker_id })
+    const employee = employees.fromHealthWorker(health_worker, organization_employment.id)
+    return { ...employee, patient_encounter_employee_id }
+  })
 
   const next_workflow_status = next_workflow && workflows[next_workflow]
   const current_workflow_status = current_workflow &&
@@ -85,25 +133,6 @@ function asWaitingRoom(
     assert(next_workflow_status)
     assertArrayEmpty(present_with_patient_encounter_employee_ids)
     workflow_status_display = `Awaiting ${next_workflow_status.workflow}`
-  }
-
-  const workflow_to_start = current_workflow_status?.workflow ||
-    next_workflow_status?.workflow
-  assert(workflow_to_start)
-
-  const can_perform_action = organization_employment.in_departments.some(
-    (department) =>
-      departmentResponsibleForWorkflow(
-        department.name as Department,
-        workflow_to_start,
-      ),
-  )
-
-  const action: ExtendedActionData = {
-    text: workflow_to_start,
-    method: 'POST',
-    href: `/app/organizations/${organization_employment.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=${workflow_to_start}`,
-    disabled: !can_perform_action,
   }
 
   return {
@@ -123,16 +152,16 @@ function asWaitingRoom(
     present_employees,
     workflow_status_display: capitalize(workflow_status_display),
     arrived_ago_display: timeAgoDisplay(wait_time),
-    actions: [action],
-    // appointment,
-    // reviewers,
+    actions: [asWaitingRoomAction(patient_encounter, organization_employment)],
   }
 }
 
 export const waiting_room = {
+  asWaitingRoomAction,
   asWaitingRoom,
   async get(
     trx: TrxOrDbOrQueryCreator,
+    health_worker: RenderedHealthWorker,
     organization_employment: HealthWorkerOrganization,
   ): Promise<RenderedWaitingRoom[]> {
     const open_encounters = await patient_encounters.getOpen(
@@ -144,12 +173,24 @@ export const waiting_room = {
 
     assertAll(open_encounters, (encounter) => {
       assertEquals(
-        encounter.organization.id,
+        encounter.organization_id,
         organization_employment.id,
       )
     })
 
-    const waiting_room_unsorted = open_encounters.map((encounter) => asWaitingRoom(encounter, organization_employment))
+    const all_health_workers_ids_present_with_patients_other_than_provided = new Set<string>()
+    for (const encounter of open_encounters) {
+      for (const patient_encounter_employee_id of encounter.status.patient_presence.present_with_patient_encounter_employee_ids) {
+        const employee = findMatching(encounter.all_employees_seen, { patient_encounter_employee_id })
+        all_health_workers_ids_present_with_patients_other_than_provided.add(employee.health_worker_id)
+      }
+    }
+    all_health_workers_ids_present_with_patients_other_than_provided.delete(health_worker.id)
+    const health_workers_to_fetch = [...all_health_workers_ids_present_with_patients_other_than_provided]
+    const fetched_health_workers = health_workers_to_fetch.length ? await health_workers.getByIds(trx, health_workers_to_fetch) : []
+    const all_health_workers = [health_worker, ...fetched_health_workers]
+
+    const waiting_room_unsorted = open_encounters.map((encounter) => asWaitingRoom(encounter, organization_employment, all_health_workers))
 
     return sortBy(
       waiting_room_unsorted,
@@ -174,8 +215,8 @@ export const waiting_room = {
       organization_id: organization.id,
       current_workflow: null,
       next_workflow: encounter.status.patient_presence.current_workflow,
-      department_name: 'Waiting room',
       organization_room_id: exists(organization.waiting_room_id),
+      department_name: 'Waiting room',
     }
 
     await trx.insertInto('patient_presence').values(
@@ -195,6 +236,7 @@ export const waiting_room = {
           encounter.status.patient_presence
             .present_with_patient_encounter_employee_ids[0],
     )
+
     assert(employee_present_with_patient)
 
     const non_admin_employment_id = organization_employment.employment_id

@@ -1,3 +1,4 @@
+import { getCookies } from 'std/http/cookie.ts'
 import { completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowContext, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
@@ -205,9 +206,7 @@ export async function TriageAdditionalTasksAndInvestigationsPage(
   await events.allProcessedForEncounter(trx, { patient_encounter_id })
   const { evaluation_ids, task_groups } = await additional_tasks.getTasksGroups(trx, { health_worker_id, encounter })
 
-  logJSONToFileIfOnServer(task_groups)
-
-  const use_pdf_viewer = ctx.req.headers.get('X-Requested-With') !== null
+  const use_pdf_viewer = getCookies(ctx.req.headers)['twa'] === '1'
 
   return (
     <AdditionalTasks

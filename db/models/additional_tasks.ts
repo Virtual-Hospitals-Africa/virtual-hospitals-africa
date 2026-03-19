@@ -15,7 +15,7 @@ import {
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { exists } from '../../util/exists.ts'
-import { jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
+import { debugLog, jsonArrayFromColumn, literalString, success_true } from '../helpers.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -96,9 +96,11 @@ export const additional_tasks = {
       first_task,
     )
 
-    // debugLog(all_tasks_query)
+    console.time(`${patient_encounter_id} getTasksToInsert`)
+    debugLog(all_tasks_query)
 
     const all_t = await all_tasks_query.execute()
+    console.timeEnd(`${patient_encounter_id} getTasksToInsert`)
 
     return compactMap(
       zip(

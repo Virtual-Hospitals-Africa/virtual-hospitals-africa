@@ -13,6 +13,7 @@ export const handler = {
     }
     const response = redirect('/')
     deleteCookie(response.headers, session_key)
+    deleteCookie(response.headers, 'health_worker_id')
     return response
   },
 }
