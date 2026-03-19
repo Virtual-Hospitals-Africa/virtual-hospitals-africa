@@ -9,10 +9,6 @@ import { stripAnsiCode } from 'std/fmt/colors.ts'
 import { grokPostgresError } from '../backend/grokPostgresError.ts'
 // import { grokPostgresError } from '../backend/grokPostgresError.ts'
 
-function createAsyncContext(ctx: Context<unknown>) {
-  return __local_storage__.run({}, () => ctx.next())
-}
-
 function generateTraceparent(): string {
   const trace_id = generateUUID().replace(/-/g, '')
   const span_id = generateUUID().replace(/-/g, '').slice(0, 16)
@@ -28,6 +24,10 @@ async function attachTraceParent(ctx: Context<any>) {
   console.timeEnd(`${ctx.req.method} ${ctx.req.url} ${traceparent} Response`)
   response.headers.set('traceparent', traceparent)
   return response
+}
+
+function createAsyncContext(ctx: Context<{ traceparent: string }>) {
+  return __local_storage__.run({ traceparent: ctx.state.traceparent }, () => ctx.next())
 }
 
 // deno-lint-ignore no-explicit-any

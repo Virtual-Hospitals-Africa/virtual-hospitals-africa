@@ -45,6 +45,7 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
   const refresh_token = generateUUID()
   const expires_at = new Date()
   expires_at.setDate(expires_at.getDate() + 60)
+
   const health_worker = await health_worker_google_tokens
     .insertWithGoogleCredentials(trx, {
       ...names,
@@ -66,6 +67,10 @@ async function fakeGoogleLogin(trx: TrxOrDb) {
     name: cookie.session_key,
     value: session_id,
   })
+  setCookie(response.headers, {
+    name: 'health_worker_id',
+    value: health_worker.id,
+  })
 
   return response
 }
@@ -84,6 +89,7 @@ export const handler = {
     if (!session) {
       const response = await (FAKE_GOOGLE_AUTH ? fakeGoogleLogin(db) : redirect(loginHref()))
       deleteCookie(response.headers, cookie.session_key)
+      deleteCookie(response.headers, 'health_worker_id')
       return response
     }
 

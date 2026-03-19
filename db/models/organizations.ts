@@ -39,9 +39,9 @@ export type OrganizationInsert = {
 
 export const organizations = base({
   top_level_table: 'organizations',
-  // caching: {
-  //   number_of_items: 100,
-  // },
+  caching: {
+    number_of_items: 100,
+  },
   baseQuery(trx: TrxOrDbOrQueryCreator, opts: OrganizationSearch) {
     let qb = trx
       .selectFrom('organizations')

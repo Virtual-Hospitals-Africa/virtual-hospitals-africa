@@ -1,9 +1,8 @@
 import { Context } from 'fresh'
 import { deleteCookie, getCookies } from 'std/http/cookie.ts'
-import { LoggedInHealthWorkerContext } from '../../types.ts'
+import { LoggedInHealthWorker, LoggedInHealthWorkerContext } from '../../types.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
 import { employees } from '../../db/models/employees.ts'
-import { patient_encounters } from '../../db/models/patient_encounters.ts'
 import { notifications } from '../../db/models/notifications.ts'
 import { sessions } from '../../db/models/sessions.ts'
 import redirect from '../../util/redirect.ts'
@@ -17,7 +16,7 @@ import { attachTrx } from '../../backend/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
 import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 import { HealthWorkerHomePageLayout } from '../../components/library/layout/HealthWorkerHomePage.tsx'
-import { getSessionCookie, session_key } from '../../shared/session_cookie.ts'
+import { getHealthWorkerCookie, getSessionCookie, session_key } from '../../shared/session_cookie.ts'
 import { __local_storage__ } from '../../backend/local_storage.ts'
 import { exists } from '../../util/exists.ts'
 import { timeMiddlewareCallNext } from '../../backend/timeMiddleware.ts'
@@ -34,12 +33,18 @@ export const could_not_locate_account_href = warning(
 )
 
 export function noSession() {
-  return redirect(could_not_locate_account_href)
+  const response = redirect(could_not_locate_account_href)
+  deleteCookie(response.headers, session_key)
+  deleteCookie(response.headers, 'health_worker_id')
+  return response
 }
 
 // deno-lint-ignore no-explicit-any
 export function ensureSessionCookiePresent(ctx: Context<any>) {
   if (!getSessionCookie(ctx.req)) {
+    return noSession()
+  }
+  if (!getHealthWorkerCookie(ctx.req)) {
     return noSession()
   }
 }
@@ -67,22 +72,22 @@ export function getLoggedInHealthWorker(
   ) {
     const session_id = getSessionCookie(ctx.req)
     assert(session_id)
-
-    const health_worker_id_selection = sessions.getHealthWorkerId(
-      db,
-      session_id,
-    )
+    const health_worker_id = getHealthWorkerCookie(ctx.req)
+    assert(health_worker_id)
 
     const { health_worker, present_encounter } = await promiseProps({
-      update_session: sessions.tickUpdatedAt(db, session_id),
+      update_session: sessions.tickUpdatedAt(db, { session_id, health_worker_id }),
       health_worker: health_workers.getByIdOptional(
         db,
-        health_worker_id_selection,
+        health_worker_id,
       ),
-      present_encounter: patient_encounters.findOneOptional(db, {
-        is_open: true,
-        presence_health_worker_id: health_worker_id_selection,
-      }),
+      present_encounter: db.selectFrom('employment')
+        .innerJoin('patient_encounter_employees', 'patient_encounter_employees.employment_id', 'employment.id')
+        .innerJoin('patient_encounters', 'patient_encounter_employees.patient_encounter_id', 'patient_encounters.id')
+        .where('employment.health_worker_id', '=', health_worker_id)
+        .where('patient_encounters.closed_at', 'is', null)
+        .select('patient_encounters.id')
+        .executeTakeFirst(),
     })
 
     if (
@@ -90,10 +95,13 @@ export function getLoggedInHealthWorker(
         !require_employment || health_workers.isEmployed(health_worker)
       )
     ) {
-      ctx.state.session_id = session_id
-      ctx.state.health_worker = health_worker
-      ctx.state.health_worker_id = health_worker.id
-      ctx.state.present_encounter = present_encounter
+      const logged_in_health_worker: LoggedInHealthWorker = {
+        session_id,
+        health_worker,
+        health_worker_id: health_worker.id,
+        present_encounter_id: present_encounter?.id || null,
+      }
+      Object.assign(ctx.state, logged_in_health_worker)
       return
     }
 
@@ -102,6 +110,7 @@ export function getLoggedInHealthWorker(
     const from_login = ctx.url.searchParams.has('from_login')
     const response = from_login ? redirect(loginHref()) : noSession()
     deleteCookie(response.headers, session_key)
+    deleteCookie(response.headers, 'health_worker_id')
     return response
   }
 }

@@ -8,7 +8,6 @@ import {
   PostgresInterval,
   RenderedOrganization,
   RenderedPatientEncounter,
-  RenderedPatientEncounterEmployee,
   RenderedPatientEncounterStatus,
   RenderedPatientOpenEncounter,
   RenderedPatientPresence,
@@ -17,9 +16,7 @@ import {
   WorkflowStatus,
 } from '../../types.ts'
 import { patients } from './patients.ts'
-import { employees } from './employees.ts'
 import { patient_encounter_employees } from './patient_encounter_employees.ts'
-import { organizations } from './organizations.ts'
 
 import {
   asText,
@@ -41,8 +38,7 @@ import { arrayIsEmpty, arrayIsNonEmpty, assertArrayEmpty, assertArrayNonEmpty } 
 import { canPerform, isWorkflow, WORKFLOW_STEPS } from '../../shared/workflow.ts'
 import { assertAll } from '../../util/assertAll.ts'
 import first from '../../util/first.ts'
-import { health_workers } from './health_workers.ts'
-import { makeAssertion } from '../../util/makeAssertion.ts'
+
 import matching from '../../util/matching.ts'
 import { exists } from '../../util/exists.ts'
 import { organization_rooms } from './organization_rooms.ts'
@@ -84,6 +80,8 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
       'patient_encounters.closed_at',
       'patient_encounters.reason',
       'patient_encounters.notes',
+      'patient_encounters.appointment_id',
+      'patient_encounters.organization_id',
       jsonObjectFrom(
         patients.baseQuery(trx, { include_incomplete_registration: true })
           .where(
@@ -92,35 +90,6 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
             eb_encounters.ref('patient_encounters.patient_id'),
           ),
       ).$notNull().as('patient'),
-      jsonObjectFrom(
-        organizations.baseQuery(trx, {})
-          .where(
-            'organizations.id',
-            '=',
-            eb_encounters.ref('patient_encounters.organization_id'),
-          ),
-      ).as('organization'),
-      jsonObjectFrom(
-        eb_encounters.selectFrom('appointments')
-          .whereRef('appointments.id', '=', 'patient_encounters.appointment_id')
-          .select((eb_appointments) => [
-            'appointments.id',
-            'appointments.start',
-            jsonArrayFrom(
-              employees.baseQuery(trx, {})
-                .innerJoin(
-                  'appointment_employees',
-                  'appointment_employees.employee_id',
-                  'employment.id',
-                )
-                .where(
-                  'appointment_employees.appointment_id',
-                  '=',
-                  eb_appointments.ref('appointments.id'),
-                ),
-            ).as('employees'),
-          ]),
-      ).as('appointment'),
       sql<
         PostgresInterval
       >`(current_timestamp - patient_encounters.created_at)::interval`
@@ -289,7 +258,13 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
       jsonArrayFrom(
         patient_encounter_employees.baseQuery(trx, {
           patient_encounter_id: eb_encounters.ref('patient_encounters.id'),
-        }),
+        }).clearSelect()
+          .select([
+            'employment.health_worker_id',
+            'employment.organization_id',
+            'patient_encounter_employees.employment_id as employee_id',
+            'patient_encounter_employees.id as patient_encounter_employee_id',
+          ]),
       ).as('all_employees_seen'),
     ])
     .$if(!!opts.is_open, (qb) => qb.where('patient_encounters.closed_at', 'is', null))
@@ -478,32 +453,19 @@ export const patient_encounters = base({
   formatResult: (
     {
       workflows,
-      organization,
       priority,
       patient_presence,
       closed_at,
       patient,
       reason,
-      all_employees_seen,
       ...patient_encounter
     },
   ): RenderedPatientEncounter => {
-    assert(organization)
-    assertAll(
-      all_employees_seen,
-      makeAssertion(health_workers.isEmployed),
-    )
-
     const status = asStatus(patient_presence, closed_at)
 
     return {
-      organization,
       workflows: asWorkflows(workflows, status),
       priority: asPriority(priority),
-      all_employees_seen: all_employees_seen.map((employee) => {
-        assertArrayNonEmpty(employee.organizations)
-        return employee as RenderedPatientEncounterEmployee
-      }),
       status,
       patient,
       reason,

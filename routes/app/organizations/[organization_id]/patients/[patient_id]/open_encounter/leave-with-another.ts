@@ -16,7 +16,7 @@ export const handler = postHandler(
   async ({ params, state }: OpenEncounterContext) => {
     const { trx, encounter, organization_employment } = state
 
-    const other_employee = otherEmployeePresentWithPatient(encounter, organization_employment)
+    const other_employee = await otherEmployeePresentWithPatient(trx, encounter, organization_employment)
     assertOr400(
       other_employee,
       'Leaving patients is only allowed when another health worker is tending to them',

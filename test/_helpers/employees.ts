@@ -18,7 +18,7 @@ export async function addTestEmployeeWithSession(
     entity_type: 'health_worker',
     entity_id: health_worker.id,
   })
-  const Cookie = `session_id=${session_id}`
+  const Cookie = `session_id=${session_id}; health_worker_id=${health_worker.id}`
 
   function fetchWithSession(
     input: URL | RequestInfo,

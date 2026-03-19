@@ -8,9 +8,9 @@ import { health_worker_organizations } from './health_worker_organizations.ts'
 
 export const health_workers = base({
   top_level_table: 'health_workers',
-  // caching: {
-  //   number_of_items: 100,
-  // },
+  caching: {
+    number_of_items: 100,
+  },
   baseQuery(trx: TrxOrDbOrQueryCreator, opts: HealthWorkerSearch) {
     return health_workers_base.baseQuery(trx, opts)
       .select((eb) => [

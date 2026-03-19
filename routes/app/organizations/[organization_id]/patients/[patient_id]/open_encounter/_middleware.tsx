@@ -6,7 +6,6 @@ import {
   PreviouslyCompletedProcedures,
   RenderedEvaluationRelativeToHealthWorker,
   RenderedPatient,
-  RenderedPatientEncounterEmployee,
   RenderedPatientHistory,
   RenderedPatientOpenEncounter,
   RenderedSidebarWorkflow,
@@ -38,7 +37,7 @@ import {
   WORKFLOW_STEPS,
   workflowStepSnomedConcept,
 } from '../../../../../../../shared/workflow.ts'
-import { patient_workflows, PresentWithAnotherPatientError } from '../../../../../../../db/models/patient_workflows.ts'
+import { otherEmployeePresentWithPatient, patient_workflows, PresentWithAnotherPatientError } from '../../../../../../../db/models/patient_workflows.ts'
 import last from '../../../../../../../util/last.ts'
 import compact from '../../../../../../../util/compact.ts'
 import { OrganizationContext, OrganizationState } from '../../../_middleware.ts'
@@ -59,15 +58,20 @@ import { arrayIsNonEmpty } from '../../../../../../../util/arraySize.ts'
 import { diagnoses } from '../../../../../../../db/models/diagnoses.ts'
 import { timeMiddlewareCallNext } from '../../../../../../../backend/timeMiddleware.ts'
 
+type EncounterEmployeePresence = {
+  health_worker_id: string
+  employee_id: string
+  patient_encounter_employee_id: string
+}
+
 type OpenEncounterState = OrganizationState & {
   patient: RenderedPatient
   patient_age_determination: AgeDetermination | null
   patient_id: string
   encounter: RenderedPatientOpenEncounter
   patient_encounter_id: string
-  encounter_employee_presence: RenderedPatientEncounterEmployee | null
+  encounter_employee_presence: EncounterEmployeePresence | null
   encounter_expected_to_not_exist_after_post?: true
-  /* /app/ */
   open_encounter_pathname: string
 }
 
@@ -79,7 +83,7 @@ type WorkflowState = {
   workflow_status: WorkflowStatus
   previously_completed_step: boolean
   previously_completed_procedures: PreviouslyCompletedProcedures
-  encounter_employee_presence: RenderedPatientEncounterEmployee
+  encounter_employee_presence: EncounterEmployeePresence
   patient_encounter_employee_id: string
   this_visit_findings: RenderedSidebarWorkflow[]
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
@@ -197,7 +201,7 @@ function workflowStepFromUrl(
   assert(isWorkflow(workflow), `Invalid workflow: ${workflow}`)
   assertOrRedirect(
     step,
-    `/app/organizations/${ctx.state.encounter.organization.id}/patients/${ctx.state.encounter.patient.id}/open_encounter/${ctx.state.encounter.status.patient_presence.current_workflow}/${
+    `/app/organizations/${ctx.state.encounter.organization_id}/patients/${ctx.state.encounter.patient.id}/open_encounter/${ctx.state.encounter.status.patient_presence.current_workflow}/${
       firstIncompleteStepStatus(getWorkflowStatus(ctx, workflow))
     }`,
   )
@@ -215,7 +219,7 @@ export function getWorkflowStatus(
   return workflow_status
 }
 
-export const workflowHandler = timeMiddlewareCallNext(async function workflowHandler(
+export const workflowHandler = timeMiddlewareCallNext(async function workflowHandlerInner(
   ctx: OpenEncounterContext,
 ) {
   const { trx, encounter, encounter_employee_presence, health_worker_id } = ctx.state
@@ -292,17 +296,17 @@ async function findPatientOpenEncounter(
   ctx: OrganizationContext,
 ): Promise<RenderedPatientOpenEncounter> {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-  const { trx, present_encounter, organization_employment } = ctx.state
-  if (present_encounter) {
-    if (present_encounter.patient.id !== patient_id) {
-      throw new PresentWithAnotherPatientError(present_encounter, organization_employment)
-    }
-    return present_encounter
-  }
-
+  const { trx, present_encounter_id, organization_employment } = ctx.state
   const patient_encounter = await patient_encounters.getFirstOpen(trx, {
     patient_id,
   })
+  if (present_encounter_id && (present_encounter_id !== patient_encounter?.patient_encounter_id)) {
+    const present_encounter = await patient_encounters.getById(trx, present_encounter_id)
+    assert(patient_encounters.isOpen(present_encounter))
+    const other_employee = await otherEmployeePresentWithPatient(trx, present_encounter, organization_employment)
+    throw new PresentWithAnotherPatientError(present_encounter, other_employee)
+  }
+
   assertOr404(
     patient_encounter,
     'No open encounter for this patient at this organization',

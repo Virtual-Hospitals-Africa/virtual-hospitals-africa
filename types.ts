@@ -1519,7 +1519,7 @@ export type LoggedInHealthWorker = {
   session_id: string
   health_worker: RenderedHealthWorker
   health_worker_id: string
-  present_encounter: RenderedPatientOpenEncounter | null
+  present_encounter_id: null | string
 }
 
 export type LoggedInHealthWorkerContext<T = Record<string, never>> = Context<
@@ -1770,7 +1770,7 @@ export type RenderedPatientEncounterStatus =
 
 export type RenderedPatientEncounterEmployee = RenderedEmployee & {
   patient_encounter_employee_id: string
-  seen_at: Date
+  // seen_at: Date
 }
 
 export type RenderedPatientEncounter = {
@@ -1778,12 +1778,8 @@ export type RenderedPatientEncounter = {
   reason: EncounterReason | null
   notes: null | string
   patient: RenderedPatient
-  organization: RenderedOrganization
-  appointment: {
-    id: string
-    start: Date
-    employees: RenderedEmployee[]
-  } | null
+  organization_id: string
+  appointment_id: string | null
   workflows: Partial<
     {
       [w in Workflow]: WorkflowStatus
@@ -1798,7 +1794,12 @@ export type RenderedPatientEncounter = {
   arrived_timestamp: Date
   wait_time: PostgresInterval
   status: RenderedPatientEncounterStatus
-  all_employees_seen: RenderedPatientEncounterEmployee[]
+  all_employees_seen: {
+    health_worker_id: string
+    employee_id: string
+    organization_id: string
+    patient_encounter_employee_id: string
+  }[]
 }
 
 export type RenderedPatientOpenEncounter = RenderedPatientEncounter & {
