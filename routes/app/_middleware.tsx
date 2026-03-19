@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import { deleteCookie, getCookies } from 'std/http/cookie.ts'
+import { deleteCookie, getCookies, setCookie } from 'std/http/cookie.ts'
 import { LoggedInHealthWorker, LoggedInHealthWorkerContext } from '../../types.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
 import { employees } from '../../db/models/employees.ts'
@@ -22,7 +22,18 @@ import { exists } from '../../util/exists.ts'
 import { timeMiddlewareCallNext } from '../../backend/timeMiddleware.ts'
 import { traceTime } from '../../util/traceTime.ts'
 
+// deno-lint-ignore no-explicit-any
+function setTwaCookie(ctx: Context<any>) {
+  const url = new URL(ctx.req.url)
+  if (!url.searchParams.has('twa')) return
+  url.searchParams.delete('twa')
+  const response = redirect(url.pathname + url.search)
+  setCookie(response.headers, { name: 'twa', value: '1', path: '/', maxAge: 365 * 24 * 60 * 60 })
+  return response
+}
+
 export default [
+  timeMiddlewareCallNext(setTwaCookie),
   timeMiddlewareCallNext(ensureSessionCookiePresent),
   timeMiddlewareCallNext(setSidebarCollapsed),
   timeMiddlewareCallNext(getLoggedInHealthWorker({ require_employment: true })),

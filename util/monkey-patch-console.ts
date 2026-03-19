@@ -17,6 +17,10 @@ export const monkeyPatchConsole = once(function monkeyPatchConsole() {
     if (line_number.includes('db/helpers.ts')) {
       line_number = getFileLineNumber(3)
     }
+    // Same goes for logReadableJson
+    if (line_number.includes('humanReadableJson.ts')) {
+      line_number = getFileLineNumber(3)
+    }
     const timestamp = new Date().toISOString()
     original_log(timestamp, line_number, ...args)
   }

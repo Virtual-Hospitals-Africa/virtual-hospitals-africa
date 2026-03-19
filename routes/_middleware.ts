@@ -77,7 +77,7 @@ async function handleError(ctx: Context<any>) {
       console.error(error)
     }
 
-    if (ctx.req.method === 'POST') {
+    if (ctx.req.method === 'POST' || Deno.env.get('IS_TEST')) {
       const message: string = grokPostgresError(error) || String(error.message) || 'Internal Server Error'
       return new Response(stripAnsiCode(message), { status })
     }
