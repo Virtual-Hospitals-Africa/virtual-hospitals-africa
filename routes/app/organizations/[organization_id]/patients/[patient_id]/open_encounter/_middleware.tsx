@@ -57,6 +57,7 @@ import { OpenEncounterWorkflowLayout } from '../../../../../../../components/Ope
 import { arrayIsNonEmpty } from '../../../../../../../util/arraySize.ts'
 import { diagnoses } from '../../../../../../../db/models/diagnoses.ts'
 import { timeMiddlewareCallNext } from '../../../../../../../backend/timeMiddleware.ts'
+import { logReadableJson } from '../../../../../../../util/humanReadableJson.ts'
 
 type EncounterEmployeePresence = {
   health_worker_id: string
@@ -288,6 +289,7 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
     workflow_snomed_concept: WORKFLOW_SNOMED_CONCEPTS[workflow],
     ...fetched,
   }
+  logReadableJson(ctx.state.encounter)
 
   Object.assign(ctx.state, workflow_props)
 })
@@ -299,6 +301,10 @@ async function findPatientOpenEncounter(
   const { trx, present_encounter_id, organization_employment } = ctx.state
   const patient_encounter = await patient_encounters.getFirstOpen(trx, {
     patient_id,
+  })
+  console.log('zzzzzlkweklewlk', {
+    present_encounter_id,
+    patient_encounter,
   })
   if (present_encounter_id && (present_encounter_id !== patient_encounter?.patient_encounter_id)) {
     const present_encounter = await patient_encounters.getById(trx, present_encounter_id)

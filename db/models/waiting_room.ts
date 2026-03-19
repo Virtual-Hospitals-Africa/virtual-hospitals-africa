@@ -23,6 +23,7 @@ import { exists } from '../../util/exists.ts'
 import findMatching from '../../util/findMatching.ts'
 import { health_workers } from './health_workers.ts'
 import { employees } from './employees.ts'
+import { logReadableJson } from '../../util/humanReadableJson.ts'
 
 function asWaitingRoomAction(
   patient_encounter: RenderedPatientOpenEncounter,
@@ -207,6 +208,7 @@ export const waiting_room = {
       encounter: RenderedPatientOpenEncounter
     },
   ) {
+    logReadableJson(encounter)
     if (!encounter.status.patient_presence.current_workflow) return
 
     const patient_presence: InsertObject<DB, 'patient_presence'> = {
@@ -215,8 +217,8 @@ export const waiting_room = {
       organization_id: organization.id,
       current_workflow: null,
       next_workflow: encounter.status.patient_presence.current_workflow,
-      department_name: 'Waiting room',
       organization_room_id: exists(organization.waiting_room_id),
+      department_name: 'Waiting room',
     }
 
     await trx.insertInto('patient_presence').values(
@@ -236,6 +238,7 @@ export const waiting_room = {
           encounter.status.patient_presence
             .present_with_patient_encounter_employee_ids[0],
     )
+
     assert(employee_present_with_patient)
 
     const non_admin_employment_id = organization_employment.employment_id

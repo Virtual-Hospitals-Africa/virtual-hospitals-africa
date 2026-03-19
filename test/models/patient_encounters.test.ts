@@ -28,6 +28,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
     const {
       organization,
       organization_employment,
+      health_worker,
       patient_encounter_id,
       patient_id,
       patient_encounter_employee_id,
@@ -79,7 +80,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       1,
     )
     assertEquals(open_encounter, {
-      organization,
+      organization_id: organization.id,
       workflows: {
         registration: {
           patient_workflow_id: open_encounter.workflows.registration!.patient_workflow_id,
@@ -122,6 +123,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
 
     const [in_waiting_room] = await waiting_room.get(
       db,
+      health_worker,
       organization_employment,
     )
 
@@ -167,6 +169,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       const {
         organization,
         organization_employment,
+        health_worker,
         patient_encounter_id,
         employee,
         patient,
@@ -259,6 +262,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
 
       const [in_waiting_room] = await waiting_room.get(
         db,
+        health_worker,
         organization_employment,
       )
 
