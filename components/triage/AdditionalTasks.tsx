@@ -5,6 +5,7 @@ import { HiddenInput } from '../library/HiddenInput.tsx'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import { NoTasks } from './tasks/NoTasks.tsx'
 import { TaskGroupCard } from './tasks/TaskGroupCard.tsx'
+import { CheckForGroup } from './tasks/CheckForGroup.tsx'
 import { isLink } from './tasks/type-predicates.ts'
 import negate from '../../util/negate.ts'
 import { ReferenceDocs } from './tasks/ReferenceDocs.tsx'
@@ -52,10 +53,14 @@ export default function AdditionalTasks({
         })}
       >
         {some_soliticing_finding_task && (
-          <div id='additional-investigations-column' class='flex flex-col gap-3.5 pb-4 pt-2 w-full max-w-3xl'>
+          <div id='additional-investigations-column' class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
             <SectionHeader className='w-full xl:w-60'>
               Additional Investigations
             </SectionHeader>
+            <CheckForGroup
+              task_groups={task_groups}
+              organization_id={organization_id}
+            />
             {task_groups.map((group, index) => (
               <TaskGroupCard
                 key={index}
