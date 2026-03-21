@@ -1529,6 +1529,7 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   session_id: string
+  traceparent: string
   health_worker: RenderedHealthWorker
   health_worker_id: string
   present_encounter_id: null | string

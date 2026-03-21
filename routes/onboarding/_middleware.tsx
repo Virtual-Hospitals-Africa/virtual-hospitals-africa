@@ -3,7 +3,7 @@ import { RenderedHealthWorker } from '../../types.ts'
 import { attachTrx, TrxContext } from '../../backend/attachTrx.ts'
 import { health_workers } from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
-import { timeMiddlewareCallNext } from '../../backend/timeMiddleware.ts'
+import { timeMiddleware, timeMiddlewareCallNext } from '../../backend/timeMiddleware.ts'
 
 export type OnboardingContext = TrxContext & {
   state: {
@@ -16,7 +16,7 @@ export const handler = [
   timeMiddlewareCallNext(ensureSessionCookiePresent),
   timeMiddlewareCallNext(getLoggedInHealthWorker({ require_employment: false })),
   timeMiddlewareCallNext(redirectToAppIfEmployedAlready),
-  timeMiddlewareCallNext(attachTrx),
+  timeMiddleware(attachTrx),
 ]
 
 function redirectToAppIfEmployedAlready(

@@ -2,6 +2,7 @@ import { Context } from 'fresh'
 
 import db from '../db/db.ts'
 import { TrxOrDb } from '../types.ts'
+import { timeout, TimeoutError } from '../util/timeout.ts'
 // import { assert } from 'std/assert/assert.ts'
 
 export type TrxContext = Context<
@@ -10,10 +11,33 @@ export type TrxContext = Context<
   }
 >
 
-export function attachTrx(
+export async function attachTrx(
   ctx: TrxContext,
-) {
-  ctx.state.trx = db
+): Promise<Response> {
+  if (ctx.req.method !== 'POST') {
+    ctx.state.trx = db
+    return ctx.next()
+  }
+
+  return await db
+    .transaction()
+    .setIsolationLevel('read committed')
+    .execute(async (trx): Promise<Response>  => {
+      ctx.state.trx = trx
+      console.log('ATTACH TRX')
+      const response = Promise.resolve(ctx.next())
+      const timer = timeout<Response>(10000)
+      try {
+        return await Promise.race([response, timer])
+      } catch (err) {
+        if (err instanceof TimeoutError) {
+          console.error(`TIMEOUT ${ctx.req.method}:${ctx.url.pathname}`)
+        }
+        throw err
+      } finally {
+        timer.cancel()
+      }
+    })
   // return db.connection().execute(async (conn) => {
   //   setApplicationNameAndAttachTrx(ctx, conn)
   // })

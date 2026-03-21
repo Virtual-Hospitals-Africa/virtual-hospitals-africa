@@ -4,10 +4,10 @@ export class TimeoutError extends Error {
   }
 }
 
-export function timeout(millis: number): Promise<void> & {
+export function timeout<T>(millis: number): Promise<T> & {
   cancel(): void
 } {
-  const deferred = Promise.withResolvers<void>()
+  const deferred = Promise.withResolvers<T>()
   const timer = setTimeout(
     () => deferred.reject(new TimeoutError(millis)),
     millis,
