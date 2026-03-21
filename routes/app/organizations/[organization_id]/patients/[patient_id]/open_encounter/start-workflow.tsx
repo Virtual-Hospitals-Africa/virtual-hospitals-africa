@@ -1,10 +1,10 @@
 import { z } from 'zod'
-import { assertOr400, assertOr403 } from '../../../../../../../util/assertOr.ts'
+import { AlertWithActionsError, assertOr400, assertOr403 } from '../../../../../../../util/assertOr.ts'
 import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../../util/redirect.ts'
 import { OpenEncounterContext } from './_middleware.tsx'
 import { canPerform, Workflow, WORKFLOW_STEPS } from '../../../../../../../shared/workflow.ts'
-import { patient_workflows } from '../../../../../../../db/models/patient_workflows.ts'
+import { otherEmployeePresentWithPatient, otherEmployeeSyncPresentWithPatient, patient_workflows } from '../../../../../../../db/models/patient_workflows.ts'
 import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
 import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -20,6 +20,7 @@ const StartWorkflowSchema = z.object({
     'prescription_refill' as const,
     'doctor_review' as const,
   ]),
+  start_even_if_someone_already_present: z.boolean().optional(),
 })
 
 export async function startWorkflow<T>(
@@ -28,6 +29,7 @@ export async function startWorkflow<T>(
   opts: {
     planning: 'create_anew_every_time' | 'do_not_create_only_start_if_already_planned'
     patient_presence: 'move_into_specificed_workflow' | 'leave_in_current_workflow'
+    start_even_if_someone_already_present?: boolean
   },
 ) {
   const { trx, organization_employment, encounter } = ctx.state
@@ -38,6 +40,20 @@ export async function startWorkflow<T>(
     department_handling_workflow,
     `You must be employed in the ${WORKFLOW_DEPARTMENTS[workflow].join(' or ')} department to start ${workflow}`,
   )
+  
+  const problematic_other_employee = opts.start_even_if_someone_already_present ? null : otherEmployeeSyncPresentWithPatient(encounter, organization_employment)
+
+  if (problematic_other_employee) {
+    throw new AlertWithActionsError(
+      `Someone else is currently performing ${encounter.status.patient_presence.current_workflow}`,
+      [{
+        text: `Join ${encounter.status.patient_presence.current_workflow} anyway`,
+        href: `${ctx.url}&start_even_if_someone_already_present=true`,
+        method: 'POST',
+      }],
+      'warning'
+    )
+  }
 
   const do_create_workflow = !encounter.workflows[workflow] || opts.planning === 'create_anew_every_time'
   const created_workflow = do_create_workflow && await patient_workflows.insertOne(
@@ -57,6 +73,7 @@ export async function startWorkflow<T>(
     }
     : encounter.workflows[workflow]
 
+
   assertOr400(workflow_status, `${workflow} workflow not planned`)
 
   if (opts.planning === 'do_not_create_only_start_if_already_planned') {
@@ -72,7 +89,7 @@ export async function startWorkflow<T>(
     (employee) => employee.employee_id === employment_id,
   )?.patient_encounter_employee_id || null
 
-  await patient_workflows.start(
+  const { patient_encounter_employee_id, present_patient_encounter_employees } = await patient_workflows.start(
     trx,
     {
       encounter,
@@ -81,6 +98,24 @@ export async function startWorkflow<T>(
       patient_workflow_id: workflow_status.patient_workflow_id,
     },
   )
+  console.log({present_patient_encounter_employees})
+
+  if (!opts.start_even_if_someone_already_present) {
+    const someone_else_is_present = present_patient_encounter_employees.some(
+      (e) => e.patient_encounter_employee_id !== patient_encounter_employee_id,
+    )
+    if (someone_else_is_present) {
+      throw new AlertWithActionsError(
+        `Someone else is currently performing ${encounter.status.patient_presence.current_workflow}`,
+        [{
+          text: `Join ${encounter.status.patient_presence.current_workflow} anyway`,
+          href: `${ctx.url}&start_even_if_someone_already_present=true`,
+          method: 'POST',
+        }],
+        'warning',
+      )
+    }
+  }
 
   if (opts.patient_presence === 'move_into_specificed_workflow') {
     await patient_presence.set(
@@ -111,13 +146,14 @@ export async function startWorkflow<T>(
 
 export const handler = postHandler(
   StartWorkflowSchema,
-  (ctx: OpenEncounterContext, { workflow }) =>
+  (ctx: OpenEncounterContext, { workflow, start_even_if_someone_already_present }) =>
     startWorkflow(
       ctx,
       workflow,
       {
         planning: 'do_not_create_only_start_if_already_planned',
         patient_presence: 'move_into_specificed_workflow',
+        start_even_if_someone_already_present,
       },
     ).then(redirect),
 )

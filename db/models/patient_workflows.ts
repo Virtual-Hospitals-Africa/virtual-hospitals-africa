@@ -9,7 +9,7 @@ import {
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { blankSelection } from '../helpers.ts'
+import { blankSelection, jsonArrayFrom } from '../helpers.ts'
 import { AlertWithActionsError } from '../../util/assertOr.ts'
 import { InsertObject } from 'kysely'
 import { objectPronoun } from '../../shared/sex_and_gender.ts'
@@ -27,17 +27,26 @@ export function* employeesPresentWithPatient(
   }
 }
 
+export function otherEmployeeSyncPresentWithPatient(
+  encounter: RenderedPatientOpenEncounter,
+  organization_employment: HealthWorkerOrganization,
+) {
+  for (const employee of employeesPresentWithPatient(encounter)) {
+    if (organization_employment.employment_id !== employee.employee_id) {
+      return employee
+    }
+  }
+}
+
 export async function otherEmployeePresentWithPatient(
   trx: TrxOrDb,
   encounter: RenderedPatientOpenEncounter,
   organization_employment: HealthWorkerOrganization,
 ): Promise<undefined | RenderedEmployee> {
-  for (const employee of employeesPresentWithPatient(encounter)) {
-    if (organization_employment.employment_id !== employee.employee_id) {
-      const health_worker = await health_workers.getById(trx, employee.health_worker_id)
-      return employees.fromHealthWorker(health_worker, employee.organization_id)
-    }
-  }
+  const other_employee = otherEmployeeSyncPresentWithPatient(encounter, organization_employment)
+  if (!other_employee) return
+  const health_worker = await health_workers.getById(trx, other_employee.health_worker_id)
+  return employees.fromHealthWorker(health_worker, other_employee.organization_id)
 }
 
 export class PresentWithAnotherPatientError extends AlertWithActionsError {
@@ -111,7 +120,13 @@ export const patient_workflows = {
       patient_workflow_id: string
       existing_patient_encounter_employee_id: string | null
     },
-  ) {
+  ): Promise<{
+    patient_encounter_employee_id: string
+    present_patient_encounter_employees: {
+      patient_encounter_employee_id: string
+      seen_at: string | Date
+    }[]
+  }> {
     const patient_encounter_employee_id = existing_patient_encounter_employee_id ||
       generateUUID()
 
@@ -140,14 +155,32 @@ export const patient_workflows = {
               with_patient_id: encounter.patient.id,
             })
           ),
-    )
-      .insertInto('patient_workflows_started')
+    ).with('inserting_patient_workflows_started', qb =>
+      qb.insertInto('patient_workflows_started')
       .values({
         patient_encounter_employee_id,
         patient_workflow_id,
       })
       .onConflict((oc) => oc.constraint('patient_workflows_started_once').doNothing())
-      .execute()
+      .returning('patient_encounter_employee_id')
+    )
+      .selectNoFrom((eb) => [
+        jsonArrayFrom(
+          eb.selectFrom('patient_workflows_started')
+            .innerJoin(
+              'patient_encounter_employees',
+              'patient_encounter_employees.id',
+              'patient_workflows_started.patient_encounter_employee_id',
+            )
+            .where('patient_workflows_started.patient_workflow_id', '=', patient_workflow_id)
+            .select([
+              'patient_encounter_employees.id as patient_encounter_employee_id',
+              'patient_encounter_employees.seen_at',
+            ]),
+        ).as('present_patient_encounter_employees'),
+      ])
+      .executeTakeFirstOrThrow()
+      .then((result) => ({ ...result, patient_encounter_employee_id }))
   },
   insertMany(
     trx: TrxOrDbOrQueryCreator,
