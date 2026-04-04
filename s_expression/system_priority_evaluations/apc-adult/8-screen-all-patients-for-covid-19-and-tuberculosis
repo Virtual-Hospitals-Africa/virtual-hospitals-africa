@@ -1,0 +1,27 @@
+;;Page 8 – Screen all patients for Covid 29 and Tuberculosis 
+"Urgent Covid 19 condition"
+(urgent 
+	(clinical_finding (snomed_concept "Coronavirus infection” (disorder) “Known” (qualifier value))
+	(adult 
+	(check for
+		(clinical_finding (snomed_concept "Coronavirus infection” (disorder) “Known” (qualifier value))
+		AND 
+		(clinical_finding (snomed_concept “Symptom severity” (finding) Worsening” (qualifier value))
+			(clinical_finding (snomed_concept “Dyspnea” (finding))
+			(clinical_finding (snomed_concept “Difficulty breathing” (finding))
+			(clinical_finding (snomed_concept “Cough” (finding))
+			(clinical_finding (snomed_concept “Sore throat” (finding))
+			(clinical_finding (snomed_concept “Headache” (finding))
+			(clinical_finding (snomed_concept “Nasal congestion” (finding))
+			(clinical_finding (snomed_concept “Nasal discharge” (finding))
+			(clinical_finding (snomed_concept “Loss of sense of smell” (finding))
+			(clinical_finding (snomed_concept “Taste sense altered” (finding))
+			(clinical_finding (snomed_concept “Asthma” (disorder) Known (qualifier value)
+			(clinical_finding (snomed_concept “Chronic cough” (finding) “Worsening” (qualifier value))
+			(clinical_finding (snomed_concept “Difficulty breathing” (finding)) “Chronic” (qualifier value) “Worsening” (qualifier value))
+			(clinical_finding (snomed_concept “Chronic obstructive pulmonary disease” (disorder) Known (qualifier value)) 
+			(clinical_finding (snomed_concept “Chronic cough” (finding) “Worsening” (qualifier value))
+			(clinical_finding (snomed_concept “Difficulty breathing” (finding) “Chronic” (qualifier value) “Worsening” (qualifier value))
+			)
+	)
+)
