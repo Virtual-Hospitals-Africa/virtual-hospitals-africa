@@ -1,0 +1,17 @@
+Give urgent attention to the patient with a fever and any of:
+• Fits or just had a fit  19.
+• Decreased consciousness  16
+• Neck stiffness, drowsy/confused or purple/red rash, meningitis likely
+• Respiratory rate > 30 or difficulty breathing
+• BP < 90/60
+• Tender in right lower abdomen, appendicitis likely
+• Severe abdominal or back pain
+• Jaundice
+• Easy bleeding or bruising
+Management:
+• If BP < 90/60, give sodium chloride 0.9% 500mL IV over 30 minutes, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing worsens.
+• If likely meningitis, decreased consciousness, fits or respiratory rate > 30/difficulty breathing: give ceftriaxone 2g IV1/IM. Avoid injecting > 1g IM at one injection site.
+• If patient was in a malaria area in past 3 months and malaria test2 positive: give artesunate 2.4mg/kg IM and notify. Refer urgently within 6 hours. Record artesunate dose in referral letter. If artesunate
+unavailable, give quinine as slow IV infusion over 4 hours: dilute quinine 20mg/kg in dextrose 5% 5-10mL/kg. If IV not possible, give IM3 diluted in sodium chloride 0.9%.
+• If glucose < 3 or ≥ 11.1  17.
+• Refer urgently.

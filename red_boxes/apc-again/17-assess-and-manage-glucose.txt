@@ -1,0 +1,84 @@
+Check if patient needs urgent attention:
+• Decreased consciousness 16
+• Chest pain 37
+• Fits  19
+• Drowsiness
+• Confusion
+• Nausea or vomiting
+• Abdominal pain
+• Rapid deep breathing
+• Temperature ≥ 38°C
+• Dehydration5
+
+Give urgent attention
+Is patient alert?
+• Give glucose1
+5mL/kg orally.
+• If unable to
+take orally, give
+instead glucose1
+or dextrose
+10%2 5mL/kg via
+nasogastric tube
+(NGT).
+• Check glucose
+after 15 minutes:
+Give further
+glucose1 or
+dextrose
+10%2 2mL/
+kg orally/
+via NGT and
+discuss/
+refer.
+Yes
+< 3
+≥ 3
+Look for
+cause.
+Return to
+symptom
+page.
+• If known alcohol
+user, give
+thiamine 100mg
+IM/IV.
+• Give dextrose
+10%2 5mL/kg IV.
+• If decreased
+consciousness
+16.
+• If fits  19.
+• Check glucose
+after 15 minutes:
+No
+• Give
+dextrose
+10%2
+2mL/kg IV.
+• Then give
+dextrose
+5% 1L IV
+< 3
+6 hourly.
+• Refer.
+
+• Give sodium
+chloride 0.9%
+20mL/kg IV over
+the first hour, then
+10mL/kg/hour
+thereafter. Stop if
+breathing worsens.
+• If referral delay
+> 2 hours: give
+short-acting
+insulin 0.1units/kg
+IM (not IV)6. Avoid
+using insulin
+needle to give IM
+insulin. Use 22-25
+gauge needle
+depending on
+weight of patient.
+• Refer urgently.

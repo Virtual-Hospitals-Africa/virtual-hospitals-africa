@@ -1,0 +1,84 @@
+Start chest compressions in the unresponsive child with no pulse or pulse < 60:
+• Record start time.
+• Give continuous cycles of 15 chest compressions and 2 breaths with bag-valve-mask attached to 100% oxygen at of 10-15L/min. If you are alone, give cycles of 30 compressions
+and 2 breaths. If choking suspected, check mouth for foreign body after every cycle of compressions, before giving next 2 breaths.
+• Attach monitor/defibrillator and pause compressions to check heart rhythm:
+Ventricular fibrillation (VF)
+• Establish IV access. If unsuccessful after 1 minute, establish IO access.
+• Give adrenaline 0.01mg/kg IV/IO (see dose table), followed by 5mL NaCl 0.9%. Repeat every 4 minutes (every 2 cycles).
+• Doctor to consider intubation: decide ET tube size  175. If intubated, give 1 breath every 6 seconds and continuous chest compressions.
+• Give NaCl 0.9% 10mL/kg IV/IO. Repeat if needed. If unsure, discuss with doctor.
+• Look for and manage possible cause:
+ - If temperature < 35°C, hypothermia likely  31. If glucose < 3mmol/L (< 4 if diabetes)  32.
+ - If overdose or poisoning  36.
+ - If decreased breath sounds/more resonant on 1 side of chest or deviated trachea, tension pneumothorax likely: doctor to insert large bore
+cannula above 3rd rib in mid-clavicular line.
+VF
+Give 1 shock of
+4J/kg using paediatric
+paddles.
+• If no pulse after 30 minutes of continuous CPR:
+ - If ongoing VF/pVT, temperature ≤ 35.5°C or overdose/poisoning, continue CPR and discuss/transfer urgently.
+Give 1 shock of 4J/kg using paediatric paddles.
+After every 2 minutes of CPR or if any breathing/coughing/movement, pause compressions and check heart rhythm:
+pVT
+Pulseless ventricular tachycardia (pVT)
+Immediately restart CPR, starting with chest compressions.
+While giving continuous cycles of CPR:
+Asystole
+No pulse
+Immediately restart CPR as above.
+Decide when to stop CPR:
+Asystole
+Other rhythm
+Feel for pulse for up to 10 seconds.
+Pulse < 60
+PEA
+Any other rhythm:
+Pulseless electrical activity (PEA)
+Unsure
+Pulse ≥ 60
+Stop
+CPR and
+reassess the
+emergency
+child
+24.
+Dose IV/IO adrenaline
+(1:10 000 solution)1 according to weight.
+If weight unknown, use age.
+Weight
+2.5-7kg
+7-11kg
+11-17.5kg
+17.5-25kg
+25-35kg
+35-55kg
+Ensure correct chest
+compression technique
+• Push hard (≥ ⅓ of depth of chest) and
+fast (100-120/minute).
+• Compress over lower sternum (not on
+xiphisternum). Allow full chest recoil.
+• Minimise interruptions in compressions.
+• Rotate compressor every 2 minutes.
+Use 2 fingers or 2 thumbs encircling chest.
+Child ≥ 1 year old
+Use heel of hand/s.
+Volume
+Age
+0.5mL
+0-6 months
+1mL
+6-18 months
+1.5mL
+18 months- 5 years
+2mL
+5-7 years
+3mL
+7-11 years
+5mL
+11-15 years
+Baby < 1 year old
+ - If none of above and fixed dilated pupils, consider stopping CPR in consultation with doctor. If CPR stopped pronounce dead
+and arrange bereavement counselling for family/carer.

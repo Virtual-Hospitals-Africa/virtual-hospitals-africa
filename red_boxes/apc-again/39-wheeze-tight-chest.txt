@@ -1,0 +1,44 @@
+Give urgent attention to the patient with wheeze/tight chest:
+Assess severity of episode:
+Any of: respiratory rate > 30, pulse > 120, unable to talk in full sentences, using accessory muscles, silent chest (tight chest but no wheeze), agitated, drowsy or confused?
+• Give inhaled salbutamol via spacer 400-800mcg (4-8 puffs) or nebulise 1mL salbutamol 0.5% solution in 4mL sodium chloride 0.9%,
+with oxygen at flow rate of 8L/minute. If no better, repeat salbutamol every 20 minutes during first hour.
+• If known asthma or COPD, give prednisone 40mg orally.
+• Monitor response regularly:
+Wheeze/tight chest
+resolved
+• If first episode of wheeze/tight chest, assess
+for asthma and COPD 123.
+• If known asthma/COPD, give routine care: if
+asthma 125, if COPD 126.
+Improving or no change after 1 hour of treatment
+Check respiratory rate. Can patient talk normally?
+Able to talk normally and respiratory rate < 20
+Wheeze/tight chest still present
+• Repeat salbutamol every 2-4 hours as needed.
+• Is wheeze/tight chest still present after
+3 hours of treatment?
+No
+Yes
+Continue salbutamol
+every 2-4 hours as
+needed and refer.
+No
+Mild or moderate
+Unable to talk normally or has
+respiratory rate ≥ 20
+• Refer urgently.
+• While awaiting transport:
+ - Give 40% face mask oxygen (if known COPD, give 24-28% face mask oxygen) while preparing
+nebuliser and between nebulisations/doses.
+ - Nebulise 1mL salbutamol 0.5% solution in 4mL sodium chloride 0.9% with oxygen at flow rate of
+8L/minute, every 20 minutes (or continuously if needed). If nebuliser unavailable, give instead
+inhaled salbutamol via spacer 400-800mcg (4-8 puffs) every 20 minutes.
+ - If not already given, give single dose prednisone 40mg orally. If unable to take oral medication,
+give single dose hydrocortisone 100mg IM/slow IV.
+ - If poor response to salbutamol, add 2mL (0.5mg) ipratropium bromide solution to salbutamol
+nebuliser every 20 minutes for 3 doses only. If nebuliser unavailable, add instead inhaled ipratropium
+bromide via spacer 80-160 mcg (2-4 puffs), every 20 minutes as needed for up to 3 hours.
+Worsening despite treatment
+Yes
+Severe

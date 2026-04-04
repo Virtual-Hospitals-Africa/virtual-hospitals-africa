@@ -1,0 +1,26 @@
+Give urgent attention to the patient with possible anaphylaxis:
+In the few hours before symptoms started, was patient exposed to any medication, food1 or insect bite/sting which has caused anaphylaxis before?
+Yes
+2) Difficulty breathing 3) BP < 90/60 or dizziness/collapse 4) Abdominal pain or vomiting
+Treat for anaphylaxis.
+Is there sudden onset of ≥ 2 of: 1) Generalised itch/rash or face/tongue swelling
+Yes
+In the few hours before symptoms started, was patient exposed to any medication, food1 or insect bite/sting?
+Yes
+Anaphylaxis unlikely. Treat symptoms as on symptom pages. If unsure, discuss.
+No
+No
+Is there sudden onset generalised itch/rash or face/tongue swelling and
+any of: difficulty breathing, BP < 90/60 or dizziness/collapse?
+No
+No
+Yes
+Treat for anaphylaxis.
+Manage anaphylaxis and refer urgently:
+• Give immediately adrenaline2 0.5mL (1:1000 solution) IM into mid outer thigh. Repeat every 5 minutes if needed.
+• Raise legs and give 100% face mask oxygen.
+• Give sodium chloride 0.9% 1-2L IV rapidly regardless of BP. Then, if BP < 90/60, also give sodium chloride 0.9% 500mL IV rapidly, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if
+breathing worsens.
+• If persistent wheeze or difficulty breathing despite adrenaline2, also give 1mL salbutamol 0.5% solution and 2mL ipratropium bromide solution in 4mL sodium chloride 0.9% via nebuliser every
+20 minutes for 3 doses. If needed, assess and further manage airway  14.
+• Give hydrocortisone 200mg IM/slow IV immediately and promethazine 50mg IM/slow IV.

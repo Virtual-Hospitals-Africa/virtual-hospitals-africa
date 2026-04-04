@@ -1,0 +1,8 @@
+Give urgent attention to the patient with diarrhoea and any of:
+• Thirst, dry mouth, poor skin turgor, sunken eyes, drowsiness/confusion, BP < 90/60, pulse ≥ 100, dehydration likely
+• If patient has watery diarrhoea (with or without vomiting) and has been in cholera outbreak area in past 5 days, cholera likely 47.
+Management:
+• Give oral rehydration solution (ORS) and observe: encourage small frequent sips. Aim for at least 1-2L in first 2 hours. If patient vomits, wait 10 minutes and try again more slowly.
+ - If no better after 2 hours, give IV fluids as below and refer same day.
+• If unable to drink or BP < 90/60, give sodium chloride 0.9% 1L IV rapidly, repeat until systolic BP > 90. Continue 1L 6 hourly. Stop if breathing worsens. Refer same day.
+• If patient has been in cholera outbreak area in past week, cholera likely. Give single dose ciprofloxacin 1g orally.

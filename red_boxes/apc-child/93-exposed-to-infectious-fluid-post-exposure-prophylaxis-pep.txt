@@ -1,0 +1,54 @@
+Give urgent attention to the child exposed to infectious fluids in the last 72 hours and any of:
+• Exposure through mucosa or broken skin to any of: blood or blood-stained fluid, semen,
+vaginal secretions, breast milk from woman other than mother, wound secretions
+• If broken skin, clean area immediately with soap and water. If human bite severe enough to cause bleeding only, prevent only hepatitis B if needed: move to Step 3 below.
+• If splash to eyes, mouth or nose, immediately rinse mouth/nose or irrigate eye thoroughly with water.
+• If child exposed to breast milk from woman other than mother, discuss immediately with HIV expert/hotline if milk needs to be aspirated via nasogastric tube (NGT)  170.
+Child < 18 months old
+Do HIV PCR test and review
+result within 2 days.
+• Give PEP while awaiting results: choose HIV PEP according to age and weight of child:
+ - If exposed neonate1 or < 3kg or if source failing PI-based ART or on 3rd line ART, discuss HIV PEP options with HIV expert/hotline  170
+ - If < 10 years old or < 30kg, give zidovudine (AZT) + lamivudine (3TC) + dolutegravir (DTG)2 for 28 days  168. Give first dose now.
+ - If ≥ 10 years old and ≥ 30kg, give tenofovir (TDF) + lamivudine (3TC) + dolutegravir (DTG)2 (TLD) fixed dose combination (FDC) for
+28 days  168. Give first dose now.
+• Check RtHB: a fully vaccinated child received 4 doses of hepatitis B vaccine, usually at 6, 10, 14 weeks and 18 months.
+• If not fully vaccinated/vaccination status unknown, give hepatitis B vaccine: If < 11 years give 0.5mL (10mcg/0.5mL) IM; if ≥ 11 years, give 1mL (20mcg/mL) IM.
+• Continue to assess child for hepatitis B PEP, even if fully vaccinated  94.
+• Exposed child:
+ - All: hepatitis B surface antibodies (HBsAb)
+ - If HIV PEP: if using TDF, do creatinine. If using AZT, do FBC + diff
+ - If sexual exposure: syphilis
+ - If needle-stick/sharps injury or source hepatitis C positive/unknown: hepatitis C antibody (HCV Ab)
+Obtain consent, test for HIV, check other blood tests (see below) and manage further according to age and HIV test result:
+≥ 24 months old
+Confirm with HIV ELISA
+STEP 3: Assess exposed child’s need for hepatitis B PEP and give first dose if needed
+STEP 1: Give child immediate attention
+STEP 2: Assess exposed child’s need for HIV PEP according to HIV status
+Child HIV negative or status unknown
+Negative
+STEP 4: Check other blood tests in exposed child and source client
+Child ≥ 18 months old: Do HIV rapid test:
+Do HIV PCR test. Review result within 2 days
+• Sexual assault/rape (oral, vaginal or anal)  144
+• Received or gave a human bite that broke the skin
+18-24 months old
+• Source (if available and consents to test/s):
+ - If HIV unknown: HIV ELISA
+ - If hepatitis B unknown: hepatitis B surface antigen (HBsAg)
+ - If hepatitis C unknown: hepatitis C antibody (HCV Ab)
+ - If sexual exposure: syphilis
+Positive
+test. Communicate result
+• Needle-stick or sharps injury
+≥ 24 months old
+Confirm with HIV rapid
+ 96
+Avoid giving HIV PEP,
+give instead HIV routine care  97.
+Child
+known HIV
+positive
+STEP 5. Review with blood results within 3 days  94.
+ If sexual assault, ensure child transferred to Thuthuzela care centre/district hospital same day.

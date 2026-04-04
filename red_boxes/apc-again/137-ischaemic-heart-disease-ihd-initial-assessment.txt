@@ -1,0 +1,21 @@
+Acute coronary syndrome (heart attack or unstable angina) likely
+Do ECG2 within first 10 minutes. While doing ECG, start management and discuss with doctor:
+• If oxygen saturation < 94% or oxygen saturation machine not available, or respiratory rate ≥ 30, give 40%
+face mask oxygen.
+• Give single dose aspirin 150mg chewed.
+• Establish IV access.
+• Doctor to review ECG and assess for streptokinase as soon as possible:
+ -  Give streptokinase only if ECG shows ST elevation3 or left bundle branch block and if ≤ 6 hours since
+onset of chest pain or ongoing chest pain. If > 6hrs since onset of chest pain, discuss streptokinase with
+specialist or referral hospital.
+ -  Avoid if streptokinase given in past year4 or known allergy to it, stroke in past 3 months, recent major
+trauma, surgery or head injury, bleeding within past month, active bleeding, known bleeding disorder,
+aneurysm or aortic dissection.
+ -  Give streptokinase 1.5 million IU diluted in 100mL sodium chloride 0.9% IV over 30-60 minutes.
+ -  Monitor BP: if < 90/60, slow rate of infusion (avoid stopping it).
+• If current chest pain and BP > 90/60:
+ -  Give isosorbide dinitrate sublingual 5mg every 5 minutes until pain relieved to a maximum of 4 doses of
+5mg. Avoid if sildenafil (Viagra®) or vardenafil used within past 24 hours.
+ -  Only if ongoing severe pain: give morphine 2-4mg slow IV5.
+• If BP < 90/60 or > 180/130, discuss further management with specialist or referral hospital.
+• Refer urgently.
