@@ -171,6 +171,7 @@ export function getWorkflowStatus(
   ctx: OpenEncounterContext,
   workflow: Workflow,
 ) {
+  console.log('test run')
   const { workflows } = ctx.state.encounter
   const workflow_status = workflows[workflow]
   assert(workflow_status, `No workflow status found for ${workflow}`)
