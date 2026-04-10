@@ -5,6 +5,7 @@
 This guide walks through launching and configuring a persistent EC2 instance for VHA staging deployments. The setup minimizes deployment time by caching SNOMED data and dependencies on persistent EBS volumes.
 
 **Expected Timeline:**
+
 - Initial EC2 setup: ~10 minutes
 - First deployment (with SNOMED load): ~15 minutes
 - Subsequent deployments: ~2-3 minutes
@@ -37,6 +38,7 @@ aws cloudformation create-stack \
 ```
 
 Or via AWS Console:
+
 - Go to CloudFormation > Create Stack
 - Upload template: `scripts/vha-staging-cloudformation.yaml`
 - Fill in parameters and create
@@ -67,6 +69,7 @@ aws cloudformation describe-stacks \
 ### Step 1: Launch EC2 Instance
 
 **AWS Console:**
+
 1. Go to EC2 > Instances > Launch Instance
 2. **AMI**: Debian 12 or Ubuntu 24.04 LTS
 3. **Instance Type**: t3.large (2 vCPU, 8GB RAM)
@@ -280,6 +283,7 @@ Total:                        ~$42/month
 ### Cost Reduction Options
 
 **Reserved Instances** (if you'll keep it running):
+
 ```
 EC2 t3.large (1-year reserved): ~$12/month
 EBS (reserved):               ~$6/month
@@ -287,6 +291,7 @@ Total:                        ~$18/month (save 50%)
 ```
 
 **Stop instance when not in use:**
+
 ```bash
 # From your local machine
 aws ec2 stop-instances --instance-ids i-xxxxxxxx
@@ -359,6 +364,7 @@ docker system prune -a --volumes
 ### For Production/Public Staging
 
 1. **Restrict SSH access**:
+
 ```bash
 # Edit security group to allow SSH only from your IP
 aws ec2 authorize-security-group-ingress \
@@ -368,6 +374,7 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 2. **Use AWS Systems Session Manager** (no SSH key needed):
+
 ```bash
 aws ssm start-session --target i-xxxxxxxx
 ```
@@ -378,6 +385,7 @@ aws ssm start-session --target i-xxxxxxxx
    - Use AWS Secrets Manager to store passwords
 
 4. **Enable CloudWatch monitoring**:
+
 ```bash
 # The CloudFormation template includes CloudWatch agent
 # Check CloudWatch dashboard for metrics

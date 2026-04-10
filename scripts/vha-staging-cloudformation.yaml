@@ -6,18 +6,18 @@ Parameters:
     Type: AWS::EC2::KeyPair::KeyName
     Description: EC2 Key Pair for SSH access
     ConstraintDescription: Must be the name of an existing EC2 KeyPair
-  
+
   DBPassword:
     Type: String
     NoEcho: true
     Description: PostgreSQL admin password (min 12 characters)
     MinLength: 12
     ConstraintDescription: Must be at least 12 characters
-  
+
   VPC:
     Type: AWS::EC2::VPC::Id
     Description: VPC ID where EC2 will be launched
-  
+
   Subnet:
     Type: AWS::EC2::Subnet::Id
     Description: Subnet ID (must be in selected VPC)

@@ -5,6 +5,7 @@
 Your repository now has a complete, production-ready staging environment setup with 7 new files:
 
 ### Configuration Files
+
 1. **[docker-compose.staging.yml](docker-compose.staging.yml)** - Multi-service Docker stack
    - PostgreSQL 16 with persistent EBS volume
    - Deno/Fresh web application
@@ -17,6 +18,7 @@ Your repository now has a complete, production-ready staging environment setup w
    - Copy to `.env.staging` and customize
 
 ### Scripts
+
 3. **[scripts/ec2-setup.sh](scripts/ec2-setup.sh)** - EC2 initialization (one-time)
    - Auto-installs Docker, Docker Compose, Deno
    - Formats and mounts EBS volumes
@@ -42,6 +44,7 @@ Your repository now has a complete, production-ready staging environment setup w
    - Requires GitHub Secrets setup
 
 ### Documentation
+
 7. **[EC2_SETUP_GUIDE.md](EC2_SETUP_GUIDE.md)** - Comprehensive setup guide (50+ sections)
    - Both CloudFormation and manual setup options
    - Troubleshooting guide
@@ -62,6 +65,7 @@ Your repository now has a complete, production-ready staging environment setup w
 ### Step 1: Launch EC2 (5-7 minutes)
 
 **Option A: CloudFormation (Recommended)**
+
 ```bash
 aws cloudformation create-stack \
   --stack-name vha-staging \
@@ -75,6 +79,7 @@ aws cloudformation create-stack \
 ```
 
 **Option B: Manual Launch**
+
 - Launch t3.large EC2 (Debian 12, 50GB root + 100GB secondary)
 - SSH in: `ssh -i key.pem admin@<IP>`
 - Run setup: `bash scripts/ec2-setup.sh 'YourPassword123!'`
@@ -92,6 +97,7 @@ DB_PASSWORD      = [Same password as above]
 ### Step 3: Deploy (15 minutes first time, 2-3 min subsequent)
 
 **First deployment (includes SNOMED data initialization):**
+
 ```bash
 ssh -i key.pem admin@<IP>
 cd /home/admin/virtual-hospitals-africa
@@ -100,6 +106,7 @@ vha-deploy
 ```
 
 **Subsequent deploys:**
+
 ```bash
 git push origin main
 # GitHub Actions automatically deploys!
@@ -111,14 +118,16 @@ git push origin main
 ## 📊 Performance & Cost
 
 ### Deployment Times
-| Phase | Time |
-|-------|------|
-| EC2 infrastructure setup | ~5-7 min |
-| Initial application deployment with SNOMED | ~15 min |
-| Subsequent code deployments | ~2-3 min per push |
-| Database backup per deployment | ~1 min |
+
+| Phase                                      | Time              |
+| ------------------------------------------ | ----------------- |
+| EC2 infrastructure setup                   | ~5-7 min          |
+| Initial application deployment with SNOMED | ~15 min           |
+| Subsequent code deployments                | ~2-3 min per push |
+| Database backup per deployment             | ~1 min            |
 
 ### Monthly Cost
+
 ```
 EC2 t3.large:              $30
 EBS storage (100GB gp3):   $10
@@ -148,7 +157,7 @@ vha-status              # System status & disk usage
 ✅ **Simple** - Single command deploys or automatic via GitHub  
 ✅ **Cost-Effective** - Persistent instance costs way less than spinning up new ones  
 ✅ **Reproducible** - Infrastructure as code (CloudFormation)  
-✅ **Documented** - Comprehensive guides for team  
+✅ **Documented** - Comprehensive guides for team
 
 ---
 
@@ -222,6 +231,7 @@ A: Yes! Check GitHub Actions tab, or backups: `ls -lh /mnt/pgdata/backups/`
 ## 📞 Support
 
 If you encounter issues:
+
 1. Check [EC2_SETUP_GUIDE.md](EC2_SETUP_GUIDE.md) Troubleshooting section
 2. View logs: `vha-logs web` or `vha-logs postgres`
 3. Check system: `vha-status`

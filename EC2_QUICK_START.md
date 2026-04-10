@@ -70,6 +70,7 @@ aws cloudformation describe-stacks \
 ### Step 1: Launch EC2 Instance
 
 **Via AWS Console:**
+
 1. EC2 Dashboard > Instances > Launch Instance
 2. AMI: Debian 12 (or Ubuntu 24.04)
 3. Instance Type: `t3.large`
@@ -85,6 +86,7 @@ aws cloudformation describe-stacks \
 7. Launch
 
 **Via AWS CLI:**
+
 ```bash
 INSTANCE_ID=$(aws ec2 run-instances \
   --image-id ami-0a8e758f5e873d1c1 \
@@ -141,7 +143,7 @@ bash ec2-setup.sh "$DB_PASSWORD"
 Name: EC2_STAGING_KEY
 Value: [Contents of your .pem private key]
 
-Name: EC2_STAGING_HOST  
+Name: EC2_STAGING_HOST
 Value: [The public IP from above - e.g., 54.123.456.789]
 
 Name: DB_PASSWORD
@@ -210,12 +212,14 @@ curl http://localhost:8000
 ## 📋 Deployment Workflow
 
 ### First Time Setup (Developers)
+
 1. ✅ Check EC2 is running and accessible
 2. ✅ Configure `.env.staging`
 3. ✅ Run `vha-deploy` manually (watch SNOMED load)
 4. ✅ Verify at `http://<IP>:8000`
 
 ### Subsequent Changes
+
 ```bash
 # Make code changes locally
 git commit -am "feature/my-feature"
@@ -226,6 +230,7 @@ git push origin main
 ```
 
 ### Manual Deploy During Development
+
 ```bash
 # SSH to EC2
 ssh -i key.pem admin@<IP>
@@ -239,6 +244,7 @@ vha-deploy
 ## 🔧 Useful Commands
 
 **On EC2 instance:**
+
 ```bash
 vha-deploy              # Run deployment
 vha-logs [service]      # View logs (web/postgres/redis)
@@ -246,6 +252,7 @@ vha-status              # System status
 ```
 
 **From local machine:**
+
 ```bash
 # SSH to EC2
 ssh -i key.pem admin@<IP>
@@ -276,13 +283,13 @@ aws ce get-cost-and-usage \
 
 ## 🆘 Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Can't SSH | Security group allows port 22? Wait 30s after launch |
-| SNOMED download stalled | Check disk space: `df -h /mnt/pgdata` |
-| Web server won't start | Check logs: `vha-logs web` |
-| Database won't connect | Restart postgres: `vha-logs postgres` |
-| Out of disk | Clean backups: `rm /mnt/pgdata/backups/old-*.sql.gz` |
+| Issue                   | Solution                                             |
+| ----------------------- | ---------------------------------------------------- |
+| Can't SSH               | Security group allows port 22? Wait 30s after launch |
+| SNOMED download stalled | Check disk space: `df -h /mnt/pgdata`                |
+| Web server won't start  | Check logs: `vha-logs web`                           |
+| Database won't connect  | Restart postgres: `vha-logs postgres`                |
+| Out of disk             | Clean backups: `rm /mnt/pgdata/backups/old-*.sql.gz` |
 
 See **EC2_SETUP_GUIDE.md** for detailed troubleshooting.
 
