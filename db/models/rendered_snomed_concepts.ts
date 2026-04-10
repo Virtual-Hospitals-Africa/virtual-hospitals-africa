@@ -24,8 +24,7 @@ export const rendered_snomed_concepts = base({
       .$if(!!opts.search, (qb) =>
         qb
           .where(sql<boolean>`${opts.search} <% snomed_inferred_canonical_name_and_category.name`)
-          .orderBy(sql<number>`similarity(${opts.search}, snomed_inferred_canonical_name_and_category.name)`, 'desc')
-      )
+          .orderBy(sql<number>`similarity(${opts.search}, snomed_inferred_canonical_name_and_category.name)`, 'desc'))
       .where('snomed_concept.active', '=', !opts?.include_inactive)
       .select((eb) => [
         asText(eb, 'snomed_concept.id').as('id'),

@@ -15,8 +15,7 @@ function parseNumber(s: string): number | null {
 }
 
 function fireInput(el: HTMLInputElement, value: string) {
-  const setter =
-    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
+  const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
   setter?.call(el, value)
   el.dispatchEvent(new Event('input', { bubbles: true }))
   el.dispatchEvent(new Event('change', { bubbles: true }))
@@ -101,8 +100,7 @@ function setAssessmentValue(valueText: string) {
 
   for (const sel of selects) {
     const opts = Array.from(sel.options)
-    const match =
-      opts.find((o) => normalize(o.textContent || '') === spoken) ??
+    const match = opts.find((o) => normalize(o.textContent || '') === spoken) ??
       opts.find((o) => normalize(o.textContent || '').includes(spoken))
 
     if (match) {
@@ -115,7 +113,6 @@ function setAssessmentValue(valueText: string) {
 
   return false
 }
-
 
 // =======================
 // Main Island
@@ -179,7 +176,7 @@ export default function MeasureVitalsVoiceCommands() {
   }, [])
 
   return (
-    <div class="flex items-center gap-2">
+    <div class='flex items-center gap-2'>
       <VoiceMicButton />
     </div>
   )

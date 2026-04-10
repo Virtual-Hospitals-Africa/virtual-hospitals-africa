@@ -52,20 +52,20 @@ type SpeechRecognitionStatic = {
   install?: (opts: { langs: string[]; processLocally?: boolean }) => Promise<boolean>
 }
 
-function getSpeechRecognitionStatic(): SpeechRecognitionStatic | null {
+function getSpeechRecognitionStatic(): SpeechRecognitionStatic | undefined {
   // deno-lint-ignore no-explicit-any
-  const SR = (globalThis as any).SpeechRecognition as SpeechRecognitionStatic | undefined
-  return SR ?? null
+  return (globalThis as any).SpeechRecognition || (globalThis as any).webkitSpeechRecognition
 }
 
 export default function VoiceMicButton() {
+  console.log('VoiceMicButton')
   const status = useSignal<VoiceStatus>('idle')
   const want_listening = useSignal(false)
 
   const recognition_ref = useRef<SpeechRecognition | null>(null)
 
-  const isListening = status.value === 'listening'
-  const isUnavailable = status.value === 'unsupported' || status.value === 'permission_denied'
+  const is_listening = status.value === 'listening'
+  const is_unavailable = status.value === 'unsupported' || status.value === 'permission_denied'
 
   function ensureRecognition(): SpeechRecognition | null {
     if (recognition_ref.current) return recognition_ref.current
@@ -85,6 +85,7 @@ export default function VoiceMicButton() {
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const result = event.results[i]
+        console.log(result)
         if (!result.isFinal) continue
 
         const transcript = result[0]?.transcript?.trim()
@@ -128,23 +129,31 @@ export default function VoiceMicButton() {
 
   async function start() {
     const recognition = ensureRecognition()
-    if (!recognition) return
+    if (!recognition) return console.log('!recognition')
 
     want_listening.value = true
 
     const SR = getSpeechRecognitionStatic()
     const lang = recognition.lang || 'en-US'
 
+    if (!SR) throw new Error('ya')
+
+    console.log({ SR })
+    // debugger
+
     try {
-      if (SR?.available && SR?.install && ('processLocally' in recognition) && recognition.processLocally) {
+      if (SR.available && SR.install && ('processLocally' in recognition) && recognition.processLocally) {
         const availability = await SR.available({ langs: [lang], processLocally: true })
+        console.log({ availability })
 
         if (availability === 'unavailable') {
           recognition.processLocally = false
         }
 
         if (availability === 'downloadable' || availability === 'downloading') {
+          console.log('preinstall')
           const ok = await SR.install({ langs: [lang], processLocally: true })
+          console.log('postinstall')
           if (!ok) {
             status.value = 'error'
             want_listening.value = false
@@ -155,7 +164,9 @@ export default function VoiceMicButton() {
 
       recognition.start()
       status.value = 'listening'
+      console.log('listening')
     } catch (e) {
+      console.error(e)
       // deno-lint-ignore no-explicit-any
       const err = (e as any)?.message as string | undefined
       if (err?.includes('not-allowed')) status.value = 'permission_denied'
@@ -172,8 +183,9 @@ export default function VoiceMicButton() {
   }
 
   function handleClick() {
-    if (isUnavailable) return
-    if (isListening) stop()
+    console.log('handleClick', { is_unavailable, is_listening })
+    if (is_unavailable) return
+    if (is_listening) stop()
     else start()
   }
 
@@ -189,25 +201,19 @@ export default function VoiceMicButton() {
     <button
       type='button'
       onClick={handleClick}
-      aria-pressed={isListening}
+      aria-pressed={is_listening}
       aria-label='Toggle voice commands'
       className={cls(
         'fixed z-50 bottom-5 right-5',
         'w-14 h-14 rounded-full flex items-center justify-center shadow-lg',
         'transition-all duration-200 ease-in-out',
-        isUnavailable
-          ? 'bg-gray-300 cursor-not-allowed'
-          : isListening
-          ? 'bg-red-600 hover:bg-red-700'
-          : 'bg-indigo-600 hover:bg-indigo-700',
-        isListening && 'scale-105',
+        is_unavailable ? 'bg-gray-300 cursor-not-allowed' : is_listening ? 'bg-red-600 hover:bg-red-700' : 'bg-indigo-600 hover:bg-indigo-700',
+        is_listening && 'scale-105',
       )}
     >
-      {isListening && (
-        <span className='absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-40 animate-ping' />
-      )}
+      {is_listening && <span className='absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-40 animate-ping' />}
 
-      <MicrophoneIcon className={cls('h-6 w-6 text-white', isListening && 'animate-pulse')} />
+      <MicrophoneIcon className={cls('h-6 w-6 text-white', is_listening && 'animate-pulse')} />
     </button>
   )
 }

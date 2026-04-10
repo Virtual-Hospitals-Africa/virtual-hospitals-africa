@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'preact/hooks'
-import VoiceMicButton, { VOICE_TRANSCRIPT_EVENT } from './VoiceMicButton.tsx' 
+import VoiceMicButton, { VOICE_TRANSCRIPT_EVENT } from './VoiceMicButton.tsx'
 
 type Existence = 'Yes' | 'No' | 'Unknown'
 
@@ -119,9 +119,8 @@ export default function BriefHistoryVoiceCommands() {
   }, [])
 
   return (
-    <div class="flex items-center gap-2">
+    <div class='flex items-center gap-2'>
       <VoiceMicButton />
     </div>
   )
 }
-

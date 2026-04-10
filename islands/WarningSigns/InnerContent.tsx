@@ -12,6 +12,29 @@ import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
 import { CATEGORIES, CheckedWarningSign, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
+import { useEffect } from 'preact/hooks'
+import { VOICE_TRANSCRIPT_EVENT } from '../voice/VoiceMicButton.tsx'
+
+function normalizeSpeech(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function extractHaveAClaim(normalized: string) {
+  // matches: "have a X", "having a X", "has a X"
+  const m = normalized.match(/\b(?:have|having|has)(?:\s+a)?\s+(.+)$/)
+  return m?.[1]?.trim() || null
+}
+
+function endsWithWordBoundary(haystack: string, needle: string) {
+  if (haystack === needle) return true
+  if (!haystack.endsWith(needle)) return false
+  const idx = haystack.length - needle.length - 1
+  return idx < 0 ? true : haystack[idx] === ' '
+}
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -78,6 +101,48 @@ export default function WarningSignsInnerContent({
       uniqueIdentifier(s) === uniqueIdentifier(sign) ? { ...s, augmented: augmented_sign ?? undefined } : s
     )
   }
+
+  useEffect(() => {
+    function onTranscript(e: Event) {
+      console.log('[WARNING_SIGNS] event received')
+      const evt = e as CustomEvent<{ transcript?: string }>
+      const transcript = evt.detail?.transcript
+      console.log('[WARNING_SIGNS] transcript:', transcript)
+
+      if (!transcript) return
+
+      const normalized = normalizeSpeech(transcript)
+      console.log('[WARNING_SIGNS] normalized:', normalized)
+      const claim = extractHaveAClaim(normalized)
+      console.log('[WARNING_SIGNS] claim:', claim)
+      if (!claim) return
+
+      // Ignore burns for now
+      if (claim.includes('burn')) return
+
+      const candidates = table_signs_with_checked.value
+
+      let matched: CheckedWarningSign | null = null
+      for (const sign of candidates) {
+        const label = normalizeSpeech(sign.name)
+        if (!label) continue
+        if (label.includes('burn')) continue // also ignore burn labels
+
+        if (endsWithWordBoundary(claim, label)) {
+          matched = sign
+          break
+        }
+      }
+
+      if (!matched) return
+      if (matched.checked) return
+
+      onCheck(matched)
+    }
+
+    globalThis.addEventListener(VOICE_TRANSCRIPT_EVENT, onTranscript as EventListener)
+    return () => globalThis.removeEventListener(VOICE_TRANSCRIPT_EVENT, onTranscript as EventListener)
+  }, [])
 
   return (
     <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs'>
