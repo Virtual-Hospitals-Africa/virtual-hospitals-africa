@@ -56,13 +56,8 @@
     "rules:rebuild:prod": "deno task rules:rebuild && deno task prod db:seed reload 30_rules",
     "dummyx": "triggerdockerrebuild"
   },
-  "compilerOptions": { 
-    "lib": [
-      "dom",
-      "dom.asynciterable",
-      "dom.iterable",
-      "deno.ns"
-    ],
+  "compilerOptions": {
+    "lib": ["dom", "dom.asynciterable", "dom.iterable", "deno.ns"],
     "jsx": "precompile",
     "jsxImportSource": "preact",
     "jsxPrecompileSkipElements": [
@@ -81,9 +76,7 @@
       "noscript",
       "template"
     ],
-    "types": [
-      "vite/client"
-    ]
+    "types": ["vite/client"]
   },
   "fmt": {
     "indentWidth": 2,
@@ -147,5 +140,5 @@
     "marked": "npm:marked@15.0.7"
   },
   "exclude": ["**/_fresh/*"],
-  "nodeModulesDir": "manual"
+  "nodeModulesDir": "auto"
 }
