@@ -1,0 +1,190 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "VHA Staging Environment - EC2 + Storage Stack"
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: EC2 Key Pair for SSH access
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair
+  
+  DBPassword:
+    Type: String
+    NoEcho: true
+    Description: PostgreSQL admin password (min 12 characters)
+    MinLength: 12
+    ConstraintDescription: Must be at least 12 characters
+  
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID where EC2 will be launched
+  
+  Subnet:
+    Type: AWS::EC2::Subnet::Id
+    Description: Subnet ID (must be in selected VPC)
+
+Resources:
+  # Security Group
+  StagingSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: VHA Staging Environment Security Group
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        # SSH from your IP (restrict this in production)
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: SSH access
+        # HTTP
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: HTTP
+        # HTTPS
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+          Description: HTTPS
+        # Application port
+        - IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          CidrIp: 0.0.0.0/0
+          Description: VHA Application
+
+  # IAM Role for EC2 to access S3 backups
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Policies:
+        - PolicyName: S3BackupAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                Resource:
+                  - arn:aws:s3:::vha-staging-backups
+                  - arn:aws:s3:::vha-staging-backups/*
+
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2Role
+
+  # Secondary EBS Volume
+  DataVolume:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: 100
+      VolumeType: gp3
+      Iops: 3000
+      Throughput: 125
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      Tags:
+        - Key: Name
+          Value: vha-staging-pgdata
+
+  # EC2 Instance
+  StagingInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Sub "{{resolve:ssm:/aws/service/debian/release/12/latest/amd64/hvm/ebs/image-id}}"
+      InstanceType: t3.large
+      KeyName: !Ref KeyName
+      SubnetId: !Ref Subnet
+      SecurityGroupIds:
+        - !Ref StagingSecurityGroup
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 50
+            VolumeType: gp3
+            Iops: 3000
+            Throughput: 125
+            DeleteOnTermination: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          apt-get update
+          apt-get install -y git awscli
+          git clone https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa.git /home/admin/vha
+          cd /home/admin/vha
+          bash scripts/ec2-setup.sh "${DBPassword}"
+      Tags:
+        - Key: Name
+          Value: vha-staging-server
+        - Key: Environment
+          Value: staging
+
+  # Attach secondary volume to instance
+  VolumeAttachment:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      VolumeId: !Ref DataVolume
+      InstanceId: !Ref StagingInstance
+      Device: /dev/sdf
+
+  # S3 Bucket for backups
+  BackupBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "vha-staging-backups-${AWS::AccountId}"
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldBackups
+            Status: Enabled
+            ExpirationInDays: 30
+            NoncurrentVersionExpirationInDays: 7
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+Outputs:
+  InstancePublicIP:
+    Value: !GetAtt StagingInstance.PublicIpAddress
+    Description: Public IP of EC2 instance
+    Export:
+      Name: VHAStagingPublicIP
+
+  InstanceId:
+    Value: !Ref StagingInstance
+    Description: EC2 Instance ID
+    Export:
+      Name: VHAStagingInstanceId
+
+  SSHCommand:
+    Value: !Sub "ssh -i /path/to/${KeyName}.pem admin@${StagingInstance.PublicIpAddress}"
+    Description: SSH command to connect to instance
+
+  BackupBucketName:
+    Value: !Ref BackupBucket
+    Description: S3 bucket for database backups
+    Export:
+      Name: VHAStagingBackupBucket
+
+  DeployCommand:
+    Value: !Sub "ssh -i /path/to/${KeyName}.pem admin@${StagingInstance.PublicIpAddress} 'vha-deploy'"
+    Description: Command to run deployment

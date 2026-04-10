@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  # PostgreSQL with persistent volume
+  postgres:
+    image: postgres:16-alpine
+    container_name: vha_postgres_staging
+    environment:
+      POSTGRES_USER: vha_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_MULTIPLE_DATABASES: vha_staging,vha_test
+    ports:
+      - "5432:5432"
+    volumes:
+      - /mnt/pgdata:/var/lib/postgresql/data # Persistent EBS volume
+      - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
+    command: >
+      postgres
+      -c shared_preload_libraries=pg_stat_monitor
+      -c pg_stat_monitor.pgsm_query_max_len=2048
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vha_admin -d vha_staging"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vha-net
+
+  # Application container
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vha_web_staging
+    environment:
+      - DATABASE_URL=postgresql://vha_admin:${DB_PASSWORD}@postgres:5432/vha_staging
+      - ENVIRONMENT=staging
+      - NODE_ENV=production
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - /root/.deno:/deno-dir # Deno module cache
+    networks:
+      - vha-net
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: vha_redis_staging
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - vha-net
+
+volumes:
+  redis_data:
+
+networks:
+  vha-net:
+    driver: bridge

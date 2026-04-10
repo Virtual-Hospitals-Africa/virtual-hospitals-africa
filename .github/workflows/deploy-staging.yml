@@ -1,0 +1,26 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Deploy to EC2
+        env:
+          EC2_KEY: ${{ secrets.EC2_STAGING_KEY }}
+          EC2_HOST: ${{ secrets.EC2_STAGING_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_KEY" > ~/.ssh/ec2_key.pem
+          chmod 600 ~/.ssh/ec2_key.pem
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+
+          scp -i ~/.ssh/ec2_key.pem scripts/deploy-staging.sh admin@$EC2_HOST:~
+          ssh -i ~/.ssh/ec2_key.pem admin@$EC2_HOST "bash deploy-staging.sh"
