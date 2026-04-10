@@ -1,0 +1,429 @@
+// deno-lint-ignore-file
+
+if (window.ALREADY_RAN_GENERAL_SCRIPT) {
+  throw new Error('This script is only supposed to load once')
+}
+window.ALREADY_RAN_GENERAL_SCRIPT = true
+
+function getAttr(el, attr) {
+  var item = el.attributes.getNamedItem(attr)
+  return item && item.value
+}
+
+/* FOCUS ON LOCATION HASH */
+
+// Set focus on an element by its id or name
+function setFocus(focus) {
+  var focusableElement = document.getElementById(focus) ||
+    document.querySelector(
+      'input[name="' + focus + '"], select[name="' + focus +
+        '"], textarea[name="' + focus + '"]',
+    )
+
+  if (focusableElement) {
+    focusableElement.focus()
+  }
+}
+
+function hashFocus() {
+  if (!location.hash) return
+
+  var params = new URLSearchParams(location.hash.replace('#', '?'))
+
+  var focus = params.get('focus')
+  if (!focus) return
+
+  setFocus(focus)
+}
+
+// Set focus on the first input or select element in the form when
+// navigating to a subsection with hash
+addEventListener('navigate', hashFocus)
+
+hashFocus()
+
+/* FOCUS ON NEXT INCOMPLETE FORM ELEMENT */
+
+// function findNode(nodes, callback) {
+//   for (var i = 0; i < nodes.length; i++) {
+//     // console.log('node', nodes[i])
+//     if (callback(nodes[i])) {
+//       return nodes[i]
+//     }
+//     var found = findNode(nodes[i].childNodes, callback)
+//     // console.log('found', found)
+//     if (found) {
+//       return found
+//     }
+//   }
+// }
+
+// // Focus on any form elements that were newly created as a result of a click
+// var observer = new MutationObserver(function (mutations) {
+//   for (var i = 0; i < mutations.length; i++) {
+//     var mutation = mutations[i]
+//     if (mutation.type === 'childList') {
+//       var found = findNode(mutation.addedNodes, (node) => {
+//         var hasFormElementTag = node.tagName === 'INPUT' ||
+//           node.tagName === 'SELECT' ||
+//           node.tagName === 'TEXTAREA' || node.tagName === 'BUTTON'
+
+//         return hasFormElementTag &&
+//           !getAttr(node, 'disabled') &&
+//           !getAttr(node, 'readonly') &&
+//           !getAttr(node, 'hidden')
+//       })
+//       if (found) {
+//         found.focus()
+//         return
+//       }
+//     }
+//   }
+// })
+
+// addEventListener('click', function () {
+//   observer.observe(document.body, {
+//     childList: true,
+//     subtree: true,
+//   })
+// }, { capture: true })
+
+// function focusOnNextFormElement(
+//   e,
+// ) {
+//   // debugger
+//   var formElements = Array.from(e.target.form.elements)
+//   var currentIndex = formElements.indexOf(e.target)
+//   var nextElement = formElements.slice(currentIndex + 1).find(function (el) {
+//     return getAttr(el, 'name') && !getAttr(el, 'disabled') &&
+//       (getAttr(el, 'type') !== 'hidden')
+//   })
+
+//   if (nextElement) {
+//     setTimeout(function () {
+//       nextElement.focus()
+//     }, 100)
+//   }
+// }
+
+// addEventListener('input', function (e) {
+//   // console.log('input', e)
+//   var is_input = e.target.tagName === 'INPUT'
+//   if (!is_input) {
+//     return
+//   }
+//   var is_text = (getAttr(e.target, 'type') || 'text') === 'text'
+//   var pattern = getAttr(e.target, 'pattern')
+
+//   var input_matches_pattern = is_text && pattern &&
+//     new RegExp(pattern).test(e.target.value)
+
+//   if (input_matches_pattern) {
+//     return focusOnNextFormElement(e)
+//   }
+// })
+
+// // If the user types 01/01, and then types "2", we don't interpret
+// // this as a year. We check for the user not being done typing the year
+// // by checking if the year is less than 1800.
+// addEventListener('change', function (e) {
+//   var is_date = e.target.tagName === 'INPUT' &&
+//     getAttr(e.target, 'type') === 'date'
+
+//   if (is_date) {
+//     if (e.target.defaultValue) {
+//       return
+//     }
+//     var date = e.target.value
+//     var [year] = date.split('-')
+//     if (parseInt(year) < 1800) {
+//       return
+//     }
+//   }
+
+//   focusOnNextFormElement(e)
+// })
+
+// addEventListener('select', function (e) {
+//   var is_select = e.target.tagName === 'SELECT'
+//   if (!is_select) return
+//   focusOnNextFormElement(e)
+// })
+
+// addEventListener('search-select', function (e) {
+//   focusOnNextFormElement({
+//     target: e.detail,
+//   })
+// })
+
+/* HIJACK FORM SUBMISSION A LA TURBOLINKS */
+
+// A hack? Maybe, but the idea is to hijack all form submissions so that we can
+// do a fetch request and then show an error on the current page if there is one, rather than losing the whole form.
+// The logic for 200s is to replace the current page with the response text. This is more complicated than I'd like,
+// but there's no way to manually get the 302 location without following the redirect and getting the whole HTML, so
+// rather than fetch the page twice, we replace the current page with the response text.
+addEventListener('submit', function (event) {
+  var submitButton
+
+  function onError(error_message) {
+    submitButton.disabled = false
+    console.log('error_message', error_message)
+
+    // On ZodError's focus on the first invalid input
+    // Mark the other inputs as invalid as well, which should get cleared before submission
+    if (error_message.startsWith('{')) {
+      var json = JSON.parse(error_message)
+      if (json.name === 'ZodError') {
+        console.log('js', json)
+        json.issues.forEach(function (issue, index) {
+          var is_first_issue = index === 0
+          var path = issue.path.join('.')
+          var elements = document.querySelectorAll('[name="' + path + '"]')
+          if (!elements.length) {
+            elements = document.querySelectorAll('input[name^="' + path + '"]')
+          }
+
+          var message = issue.message === 'Required'
+            ? 'A value must be input'
+            : issue.message
+          
+          if (!elements.length) {
+            return dispatchEvent(
+              new CustomEvent('show-alert', { detail: message }),
+            )
+          }
+          if (elements.length > 1) {
+            var label = document.querySelector('[for="' + path + '"]') || document.querySelector('[for^="' + path + '"]')
+            var detail = label
+              ? label.textContent + ': ' + message
+              : message
+            return dispatchEvent(
+              new CustomEvent('show-alert', { detail: detail }),
+            )
+          }
+          var element = elements[0]
+          if (
+            getAttr(element, 'type') === 'hidden' &&
+            path.endsWith('id')
+          ) {
+            element = document.querySelector(
+              '[name="' + path.replace(/id$/, 'name') + '"]',
+            )
+          }
+          element.setCustomValidity(message)
+          if (is_first_issue) {
+            element.focus()
+            element.reportValidity()
+          }
+        })
+        return
+      } else if (json.name === 'alert_with_actions') {
+        return dispatchEvent(
+          new CustomEvent('show-alert', { detail: json }),
+        )
+      } else {
+        throw new Error(`Unrecognized error: ${json.name}`)
+      }
+    }
+
+    dispatchEvent(
+      new CustomEvent('show-alert', { detail: error_message }),
+    )
+  }
+
+  var form = event.target
+  if (form.method !== 'post') return
+
+  event.preventDefault()
+  var form_data = new FormData(form)
+
+  if (event.submitter) {
+    form_data.append(event.submitter.name, event.submitter.value)
+  }
+
+  submitButton = form.querySelector('button[type="submit"]')
+  submitButton.disabled = true
+
+  // Copied from turbolinks
+  function load(innerHTML) {
+    var htmlElement = document.createElement('html')
+    htmlElement.innerHTML = innerHTML
+    var hijackScript = htmlElement.querySelector(
+      'script[src="/scripts/general.js"]',
+    )
+    if (hijackScript) {
+      hijackScript.parentNode.removeChild(hijackScript)
+    }
+    var newHead = htmlElement.querySelector('head')
+    var newBody = htmlElement.querySelector('body')
+    document.documentElement.replaceChild(newHead, document.head)
+    document.documentElement.replaceChild(newBody, document.body)
+    document.documentElement.querySelectorAll('script').forEach(
+      function (element) {
+        var parentNode = element.parentNode
+        if (parentNode) {
+          var createdScriptElement = document.createElement('script')
+          createdScriptElement.textContent = element.textContent
+          createdScriptElement.async = false
+          Array.prototype.forEach.call(element.attributes, function (attr) {
+            createdScriptElement.setAttribute(attr.name, attr.value)
+          })
+          parentNode.replaceChild(createdScriptElement, element)
+        }
+      },
+    )
+  }
+
+  // TODO: Add a loading indicator
+  fetch(form.action, {
+    method: 'POST',
+    body: form_data,
+  }).then(function (response) {
+    submitButton.disabled = false
+    switch (response.status) {
+      case 200:
+        // TODO assert content type html
+        return response.text().then(function (text) {
+          load(text)
+          history.pushState({}, '', response.url)
+        })
+      case 201:
+        return
+      case 400:
+        return response.text().then(onError)
+      case 401:
+        return response.text().then(function (text) {
+          return onError(text ? 'Unauthorized: ' + text : 'Unauthorized')
+        })
+      case 403:
+        return response.text().then(function (text) {
+          return onError(text ? 'Forbidden: ' + text : 'Forbidden')
+        })
+      case 409:
+        return response.text().then(function (text) {
+          return onError(text ? 'Conflict: ' + text : 'Conflict')
+        })
+      case 500:
+        return response.text().then(function (text) {
+          if (text.startsWith('<!DOCTYPE html>')) {
+            load(text)
+            return history.pushState({}, '', response.url)
+          }
+          return onError('Internal Server Error: ' + text)
+        })
+      default:
+        return onError('Unexpected response status: ' + response.status)
+    }
+  }, function (error) {
+    submitButton.disabled = false
+    console.error(error)
+    return onError('Offline: ' + error.message || error)
+  })
+})
+
+/* SHOW DIALOG ON UNSAVED FORM */
+
+// // TODO: turn this back on? It's not working with hash changes and is just kind of overbearing during development
+
+// // Disable form submission if any inputs are modified
+// var modified_inputs = new Set()
+// var defaultValue = ''
+
+// // store original values
+// function onBeforeInput(event) {
+//   var target = event.target
+
+//   if (!(defaultValue in target || defaultValue in target.dataset)) {
+//     target.dataset[defaultValue] = ('' + target.value).trim()
+//   }
+// }
+
+// // TODO: handle select elements?
+// // store modified values
+// function onInput(event) {
+//   var target = event.target
+
+//   var original
+//   if (defaultValue in target) {
+//     original = target[defaultValue]
+//   } else {
+//     original = target.dataset[defaultValue]
+//   }
+//   if (original !== ('' + target.value).trim()) {
+//     if (!modified_inputs.has(target)) {
+//       modified_inputs.add(target)
+//     }
+//   } else if (modified_inputs.has(target)) {
+//     modified_inputs.delete(target)
+//   }
+// }
+
+// // clear modified inputs on form submission
+// function onSubmit() {
+//   modified_inputs.clear()
+// }
+
+// // warn before exiting if any inputs are modified
+// function onBeforeUnload(event) {
+//   if (modified_inputs.size) {
+//     event.preventDefault()
+//   }
+// }
+
+// addEventListener('beforeinput', onBeforeInput)
+// addEventListener('input', onInput)
+// addEventListener('submit', onSubmit)
+// addEventListener('beforeunload', onBeforeUnload)
+
+/* NOTIFICATIONS SUBSCRIPTION */
+Notification.requestPermission().then(function (result) {
+  if (result !== 'granted') {
+    return console.log('Permissions not granted', result)
+  }
+
+  var wsUri = 'wss://' + self.location.host + '/app/notifications-websocket'
+  var websocket = new WebSocket(wsUri)
+
+  websocket.onopen = function () {
+    console.log('websocket open')
+  }
+
+  websocket.onclose = function () {
+    console.log('websocket close')
+  }
+
+  websocket.onmessage = function (e) {
+    var notification_data = JSON.parse(e.data)
+    /*
+    {
+        "created_at": notification_data.created_at,
+        "updated_at": notification_data.updated_at,
+        "health_worker_id": nurse.health_worker.id,
+        "notification_type": "patient_encounter_immediate_triage",
+        "title": "Immediate Triage Requested",
+        "description": `${employeeDisplay(receptionist_employee).display_name} has requested immediate triage for a patient`,
+        "avatar_url": "/images/heroicons/24/solid/exclamation-triangle.svg",
+        "seen_at": null,
+        "notification_id": notification_data.notification_id,
+        "time_display": "Just now",
+        "action": {
+          "title": "View patient case",
+          "href": `/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/respond-to-immediate-triage-request`
+        }
+      }
+    */
+    var notification = new Notification(notification_data.title, {
+      body: notification_data.description,
+      icon: notification_data.avatar_url,
+      timestamp: notification_data.created_at,
+    })
+    notification.onclick = function () {
+      window.location.href = notification_data.action.href
+    }
+  }
+
+  websocket.onerror = function (e) {
+    console.error(e)
+  }
+})

@@ -1,0 +1,1 @@
+import{c as m}from"./cls-BnMDatMY.js";import{u as r}from"./jsxRuntime.module-5TnUcV_J.js";function c({label:e,className:t,children:l,htmlFor:a}){return r("label",{htmlFor:a,className:m("block text-sm font-medium leading-6 text-black-900 relative text-left",t),children:[e,l]})}export{c as L};

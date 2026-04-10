@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+
+# 1209208002 |Pallor of skin of face (finding)|
+
+
+# Converts SNOMED concept format from stdin or pbpaste to TypeScript constant
+# Input format: 409060008 |Evaluation for signs and symptoms of physical health problems (procedure)|
+# Output: TypeScript export const
+
+# Check if stdin has data available
+if [ -t 0 ]; then
+  # stdin is a terminal (no pipe), so read from pbpaste
+  input=$(pbpaste)
+  use_clipboard=true
+else
+  # stdin has data (pipe), so read from stdin
+  read -r input
+  use_clipboard=false
+fi
+
+# Extract the ID (everything before the first space)
+# id=$(echo "$input" | sed 's/ |.*//')
+
+# Extract the full term inside the pipes
+full_term=$(echo "$input" | sed 's/^[0-9]* |//; s/|$//')
+
+# Extract the category from parentheses at the end
+category=$(echo "$full_term" | sed 's/.*(\([^)]*\))$/\1/')
+
+# Extract the name (remove the category suffix)
+name=$(echo "$full_term" | sed 's/ ([^)]*)$//')
+
+# Convert name to SCREAMING_SNAKE_CASE for the constant name
+# const_name=$(echo "$name" | tr '[:lower:]' '[:upper:]' | sed "s/[^A-Z0-9]/_/g" | sed 's/__*/_/g' | sed 's/^_//; s/_$//')
+
+output="(snomed_concept \"$name\" \"$category\")"
+
+if [ "$use_clipboard" = true ]; then
+  echo "$output"
+  echo "$output" | pbcopy
+  echo "Copied to your clipboard"
+else
+  echo "$output"
+fi

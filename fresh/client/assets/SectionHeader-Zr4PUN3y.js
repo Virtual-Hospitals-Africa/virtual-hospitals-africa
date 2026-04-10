@@ -1,0 +1,1 @@
+import{c as a}from"./cls-BnMDatMY.js";import{u as o}from"./jsxRuntime.module-5TnUcV_J.js";function m({children:e,className:t}){return o("h2",{className:a("text-xl font-semibold leading-7 text-gray-900",t),children:e})}export{m as S};

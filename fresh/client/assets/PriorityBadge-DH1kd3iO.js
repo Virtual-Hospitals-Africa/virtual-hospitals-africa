@@ -1,0 +1,1 @@
+import{B as t}from"./Badge-BqgVqR16.js";import{c as e}from"./cls-BnMDatMY.js";import{p as s}from"./priorities-CDy2YnRL.js";import{u as a}from"./jsxRuntime.module-5TnUcV_J.js";function n(r){return r.replaceAll(" "," ")}function p({priority:r}){const o=s(r);return a(t,{content:n(r??"Undetermined"),classNames:e(o.bg,o.text)})}export{p as P};

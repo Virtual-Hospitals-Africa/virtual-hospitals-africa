@@ -1,0 +1,1 @@
+import{c as r}from"./cls-BnMDatMY.js";import{u as s}from"./jsxRuntime.module-5TnUcV_J.js";const a="flex flex-col gap-2";function f({className:o,...m}){return s("form",{className:r(a,o),...m})}export{f as F};

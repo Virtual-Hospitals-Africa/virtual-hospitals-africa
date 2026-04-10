@@ -1,0 +1,1 @@
+import{d as i,y as a}from"./hooks.module-Bsfzl0G6.js";import{u as m}from"./jsxRuntime.module-5TnUcV_J.js";import"./preact.module-CDZd89wq.js";function p(){const[t,r]=i({start:Date.now(),elapsed:0});function e(){r({start:t.start,elapsed:Date.now()-t.start}),requestAnimationFrame(e)}return a(()=>{requestAnimationFrame(e)},[]),m("div",{children:[t.elapsed,"ms"]})}export{p as Timer};

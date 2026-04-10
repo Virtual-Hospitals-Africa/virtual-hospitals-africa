@@ -1,0 +1,1 @@
+import{a as n}from"./assert-D548vnps.js";import{a as s}from"./arraySize-Bn47-X-m.js";function u(e,t){return n(e!=null,"Expected object to not be null"),e}function i(e){return s(Object.keys(e)),function(t){for(const r in e)if(e[r]!==t[r])return!1;return!0}}export{u as e,i as m};

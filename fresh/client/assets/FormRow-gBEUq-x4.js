@@ -1,0 +1,1 @@
+import{c as a}from"./cls-BnMDatMY.js";import{u as m}from"./jsxRuntime.module-5TnUcV_J.js";function f({className:o,children:r}){return m("div",{className:a("flex w-full gap-6",o),children:r})}export{f as F};

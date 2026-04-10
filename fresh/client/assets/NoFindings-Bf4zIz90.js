@@ -1,0 +1,1 @@
+import{c as s}from"./cls-BnMDatMY.js";import{r as o}from"./recordChipClassName-aFjqhjTD.js";import{u as i}from"./jsxRuntime.module-5TnUcV_J.js";function t({explanation:r,with_padding_x:a}){return i("span",{className:s(o({with_padding_x:a}),"text-gray-400"),children:r})}export{t as N};

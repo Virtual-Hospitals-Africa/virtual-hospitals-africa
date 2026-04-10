@@ -1,0 +1,1 @@
+import{R as o}from"./RadioButtonGroup-DxhFRaPt.js";import{u as a}from"./jsxRuntime.module-5TnUcV_J.js";import"./cls-BnMDatMY.js";import"./preact.module-CDZd89wq.js";function m({organizations:t}){return a(o,{name:"organization_id",variant:"panel-with-border",defaultValue:t[0].id,options:t.map(r=>({...r,description:r.formatted_address}))})}export{m as default};

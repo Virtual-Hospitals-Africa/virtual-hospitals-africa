@@ -1,0 +1,12 @@
+import { aU as base } from "../server-entry.mjs";
+function baseQuery(trx, opts) {
+  return trx.selectFrom("conditions").select(["conditions.id", "conditions.name", "conditions.term_icd9_code", "conditions.term_icd9_text", "conditions.consumer_name", "conditions.is_procedure", "conditions.info_link_href", "conditions.info_link_text"]).$if(!!opts.search, (qb) => qb.where("name", "ilike", `%${opts.search}%`)).where("is_procedure", "=", opts.is_procedure);
+}
+const conditions = base({
+  top_level_table: "conditions",
+  baseQuery,
+  formatResult: (x) => x
+});
+export {
+  conditions as c
+};

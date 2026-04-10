@@ -1,0 +1,1 @@
+import{l as s}from"./last-DDhrEzgG.js";function i(e){const t=e.split(" ").filter(r=>!!r);switch(t.length){case 0:return"";case 1:return t[0][0].toUpperCase();default:return t[0][0].toUpperCase()+s(t)[0].toUpperCase()}}export{i};

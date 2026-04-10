@@ -1,0 +1,1 @@
+import{a as t}from"./assert-D548vnps.js";import{i as a}from"./isNumber-Cys9yKl4.js";function e(n,r,i=" "){for(;n.length<r;)n=i+n;return n}function u(n){return n?e(String(n),2,"0"):"00"}function s(n){const r=a(n)?n:parseInt(n);return t(r>=1),t(r<=12),e(String(n),2,"0")}function f(n){const r=a(n)?n:parseInt(n);return t(r>=1),t(r<=31),e(String(n),2,"0")}export{f as a,u as b,s as p};

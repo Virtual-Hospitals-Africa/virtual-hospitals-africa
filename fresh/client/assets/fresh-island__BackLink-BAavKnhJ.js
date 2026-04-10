@@ -1,0 +1,1 @@
+import{a as r}from"./outline-SQ8JyNjS.js";import{u as i}from"./jsxRuntime.module-5TnUcV_J.js";import"./cls-BnMDatMY.js";import"./preact.module-CDZd89wq.js";function m({href:o}){return i("a",{href:o,onClick:o?void 0:()=>history.back(),className:"h-6 w-6",children:i(r,{stroke:"white"})})}export{m as default};

@@ -1,0 +1,1 @@
+function i(o,a){if(typeof o!="function")throw new TypeError("Expected a function");const e=function(...c){const n=a?a.apply(this,c):c[0],t=e.cache;if(t.has(n))return t.get(n);const h=o.apply(this,c);return e.cache=t.set(n,h)||t,h};return e.cache=new(i.Cache||Map),e}i.Cache=Map;export{i as m};

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ ! -f _fresh/server/server-entry.mjs ]; then 
+if [ ! -f fresh/server/server-entry.mjs ]; then 
   echo 'Run deno task build first'
   exit 1
 fi
@@ -16,4 +16,4 @@ DENO_TLS_CA_STORE=system \
     --env \
     --unsafely-ignore-certificate-errors \
     --port "$port" \
-    _fresh/server/server-entry.mjs
+    fresh/server/server-entry.mjs

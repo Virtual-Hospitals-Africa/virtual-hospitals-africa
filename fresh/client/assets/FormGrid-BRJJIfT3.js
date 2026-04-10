@@ -1,0 +1,1 @@
+import{c as i}from"./cls-BnMDatMY.js";import{u as l}from"./jsxRuntime.module-5TnUcV_J.js";function d({columns:r,children:s,className:o}){return l("div",{className:i("grid w-full gap-4",r===3?"grid-cols-1 sm:grid-cols-2 lg:grid-cols-3":"grid-cols-1 sm:grid-cols-2",o),children:s})}export{d as F};
