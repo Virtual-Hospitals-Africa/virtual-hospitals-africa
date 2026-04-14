@@ -20,6 +20,8 @@ export async function addSubscriber(recipient: MailingListRecipient) {
         ...(recipient.interest && { interest: recipient.interest }),
         ...(recipient.message && { message: recipient.message }),
         ...(recipient.support && { support: recipient.support }),
+        ...(recipient.company_name && { company: recipient.company_name }),
+        ...(recipient.job_title && { job_title: recipient.job_title }),
       },
     }),
   })

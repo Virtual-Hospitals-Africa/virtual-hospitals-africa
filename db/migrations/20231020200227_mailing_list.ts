@@ -13,6 +13,8 @@ export function up(db: Kysely<DB>) {
         .addColumn('message', 'text')
         .addColumn('support', 'varchar(255)')
         .addColumn('interest', 'varchar(255)')
+        .addColumn('company_name', 'varchar(255)')
+        .addColumn('job_title', 'varchar(255)')
         .addUniqueConstraint('mailing_list_email', ['email']),
   )
 }
