@@ -5,6 +5,7 @@
   Urgent
   (and
     (clinical_finding (snomed_concept "Injury of head" "disorder"))
-    (clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure")))
+    (clinical_finding (snomed_concept "Cerebrospinal fluid rhinorrhea" "disorder"))
+    (clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))
   )
 )
