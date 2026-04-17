@@ -5,6 +5,7 @@ set -eo pipefail
 source .env
 HTTP_SERVER_PORT=${HTTP_SERVER_PORT:-8004}
 HTTPS_PROXY_SERVER_PORT=${HTTPS_PROXY_SERVER_PORT:-8005}
+MARKETING_HTTP_SERVER_PORT=${MARKETING_HTTP_SERVER_PORT:-8006}
 
 fail() {
   >&2 echo "$@"
@@ -28,7 +29,8 @@ elif [ -f .env.docker ]; then
   cmp --silent .env .env.docker || fail $'.env differs from .env.docker\nrun deno task switch:docker before running tests'
 fi
 
-use_test_servers=false
+need_web_servers=false
+need_marketing_server=false
 run_test_server_args=""
 test_servers_were_already_running=false
 test_servers_pid=
@@ -105,14 +107,21 @@ is_ignored() {
 
 if [[ $# -eq 0 ]]; then
   if ! is_ignored "test/web"; then
-    use_test_servers=true
+    need_web_servers=true
+  fi
+  if ! is_ignored "test/marketing"; then
+    need_marketing_server=true
   fi
 else
   for arg in "$@"; do
     if [[ "$arg" == "test/web" || "$arg" == test/web/* ]]; then
       if ! is_ignored "$arg"; then
-        use_test_servers=true
-        break
+        need_web_servers=true
+      fi
+    fi
+    if [[ "$arg" == "test/marketing" || "$arg" == test/marketing/* ]]; then
+      if ! is_ignored "$arg"; then
+        need_marketing_server=true
       fi
     fi
   done
@@ -124,8 +133,13 @@ fi
 
 cleanup() {
   if ! [ -z $test_servers_pid ]; then
-    ./scripts/general-bash/kill_process_on_port.sh "$HTTP_SERVER_PORT" || true
-    ./scripts/general-bash/kill_process_on_port.sh "$HTTPS_PROXY_SERVER_PORT" || true
+    if $need_web_servers; then
+      ./scripts/general-bash/kill_process_on_port.sh "$HTTP_SERVER_PORT" || true
+      ./scripts/general-bash/kill_process_on_port.sh "$HTTPS_PROXY_SERVER_PORT" || true
+    fi
+    if $need_marketing_server; then
+      ./scripts/general-bash/kill_process_on_port.sh "$MARKETING_HTTP_SERVER_PORT" || true
+    fi
     kill $test_servers_pid > /dev/null || true
   fi
 }
@@ -134,6 +148,7 @@ run_tests() {
   DENO_TLS_CA_STORE=system \
   IS_TEST=true \
   HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
+  MARKETING_HTTP_SERVER_PORT=$MARKETING_HTTP_SERVER_PORT \
   MAX_PARALLEL_TESTS=$MAX_PARALLEL_TESTS \
   deno test \
     -A \
@@ -147,14 +162,20 @@ run_tests() {
 
 trap cleanup EXIT
 
-if $use_test_servers; then
+server_args=()
+if [[ -n "$run_test_server_args" ]]; then
+  server_args+=("$run_test_server_args")
+fi
+if $need_web_servers && ! $need_marketing_server; then
+  server_args+=("--main-only")
+elif $need_marketing_server && ! $need_web_servers; then
+  server_args+=("--marketing-only")
+fi
+
+if $need_web_servers || $need_marketing_server; then
   if ! $test_servers_were_already_running; then
-    ./scripts/test/run_servers.sh "$run_test_server_args" &
+    ./scripts/test/run_servers.sh "${server_args[@]}" &
     test_servers_pid="$!"
-  else
-    : >"/tmp/vha_server.log"
-    : >"/tmp/vha_proxy.log"
-    : >"/tmp/vha_events.log"
   fi
 fi
 

@@ -50,7 +50,37 @@ jobs:
         deno task db:restore snomed
         deno task db:migrate all
       run: |
-        deno task test --ignore=test/web
+        deno task test --ignore=test/web --ignore=test/marketing
+
+  test_marketing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-deno
+
+      - uses: ./.github/actions/write-test-env
+
+      - name: Install marketing dependencies
+        working-directory: marketing
+        run: deno install --allow-scripts
+
+      - name: Init logs directory
+        run: mkdir -p logs/slow_queries
+
+      - name: Run marketing tests
+        run: deno task test test/marketing
+
+      - name: Upload server logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-marketing-logs
+          path: |
+            logs/
+          retention-days: 3
+          if-no-files-found: ignore
 
   # TODO turn back on
   # test_chatbot:

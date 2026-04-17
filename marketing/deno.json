@@ -2,7 +2,7 @@
   "tasks": {
     "build": "NO_EXTERNAL_CONNECT=1 vite build",
     "dev": "vite",
-    "preview": "deno serve -A _fresh/server.js",
+    "preview": "deno serve -A --port ${PORT:-8002} _fresh/server.js",
     "compile:blog": "deno run -A scripts/compile_blog.ts"
   },
   "compilerOptions": {

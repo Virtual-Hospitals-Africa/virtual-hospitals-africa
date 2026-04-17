@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" height="100%" overflow="visible" preserveAspectRatio="none" style="display: block;" viewBox="0 0 24 80" width="100%">
+<g clip-path="url(#clip0_0_4616)" id="lucide/circle-check">
+<g id="Code layer 9">
+</g>
+<path d="M12 30L12 90" id="Vector 15" stroke="var(--stroke-0, #1D652F)" stroke-dasharray="2 2"/>
+</g>
+<defs>
+<clipPath id="clip0_0_4616">
+<rect fill="white" height="80" width="24"/>
+</clipPath>
+</defs>
+</svg>

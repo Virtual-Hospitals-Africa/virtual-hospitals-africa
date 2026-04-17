@@ -1,0 +1,121 @@
+name: Deploy Virtual Hospitals Africa Marketing to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+
+      - name: Compute marketing image hash
+        id: hash
+        run: |
+          HASH=$(git ls-tree -r HEAD -- \
+            Dockerfile.marketing \
+            marketing/ \
+            components/ \
+            islands/ \
+            util/ \
+            shared/ \
+            external-clients/ \
+            backend/parseForm.ts \
+            deno.lock \
+            | sha256sum | cut -c1-12)
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
+          echo "Marketing image hash: $HASH"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: af-south-1
+
+      - name: Check if image already exists in ECR
+        id: check
+        env:
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          HASH: ${{ steps.hash.outputs.hash }}
+        run: |
+          if aws ecr describe-images \
+            --repository-name "$ECR_REPOSITORY" \
+            --image-ids "imageTag=marketing-$HASH" \
+            >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Image marketing-$HASH already exists in ECR; skipping build and deploy"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "Image marketing-$HASH not found in ECR; will build and deploy"
+          fi
+
+      - name: Login to Amazon ECR
+        if: steps.check.outputs.skip != 'true'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        if: steps.check.outputs.skip != 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build, tag, and push marketing-image to Amazon ECR
+        if: steps.check.outputs.skip != 'true'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          SHA: ${{ github.sha }}
+          HASH: ${{ steps.hash.outputs.hash }}
+        run: |
+          docker buildx build \
+            -f Dockerfile.marketing \
+            -t "$ECR_REGISTRY/$ECR_REPOSITORY:marketing-$HASH" \
+            -t "$ECR_REGISTRY/$ECR_REPOSITORY:marketing-$SHA" \
+            -t "$ECR_REGISTRY/$ECR_REPOSITORY:marketing-latest" \
+            --platform linux/arm64 \
+            --cache-from type=gha,scope=marketing \
+            --cache-to type=gha,mode=max,scope=marketing \
+            --push .
+
+      - name: Deploy to EC2
+        if: steps.check.outputs.skip != 'true'
+        uses: appleboy/ssh-action@master
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          HASH: ${{ steps.hash.outputs.hash }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: ECR_REGISTRY,ECR_REPOSITORY,HASH
+          script: |
+            set -euo pipefail
+
+            # Login to ECR
+            aws ecr get-login-password --region af-south-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+            # Pull the marketing image
+            docker pull $ECR_REGISTRY/$ECR_REPOSITORY:marketing-$HASH
+
+            # Stop and remove existing marketing container if it exists
+            docker stop vha-marketing || true
+            docker rm vha-marketing || true
+
+            # Run the new marketing container
+            docker run -d \
+              --name vha-marketing \
+              --restart unless-stopped \
+              -p 8080:8000 \
+              --env-file /home/ec2-user/.env.marketing \
+              --log-driver=awslogs \
+              --log-opt awslogs-region=af-south-1 \
+              --log-opt awslogs-group=/docker/virtual-hospitals-africa \
+              --log-opt awslogs-stream=vha-marketing \
+              $ECR_REGISTRY/$ECR_REPOSITORY:marketing-$HASH
+
+            docker ps | grep vha-marketing
+            echo "Marketing deployment complete"
