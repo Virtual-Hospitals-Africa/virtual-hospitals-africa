@@ -1,11 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
-import db from './db/db.ts'
 import type { Context } from 'fresh'
 import type {
   ColumnType,
   ExpressionWrapper,
   Generated,
   InsertObject,
+  Kysely,
   QueryCreator,
   RawBuilder,
   SelectQueryBuilder,
@@ -1397,7 +1397,7 @@ export type WhatsAppMessageOption = {
   title: string
 }
 
-export type TrxOrDb = Transaction<DatabaseSchema> | typeof db
+export type TrxOrDb = Transaction<DatabaseSchema> | Kysely<DatabaseSchema>
 
 export type TrxOrDbOrQueryCreator = TrxOrDb | QueryCreator<DB>
 
@@ -2999,14 +2999,7 @@ export type AsyncSearchHookResult<T> = {
   setQuery: (query: string) => void
 }
 
-export type MailingListRecipient = {
-  name: string
-  email: string
-  entrypoint: 'mailing_list_signup' | 'general_inquiry' | 'book_a_demo' | 'book_an_intro_call' | 'request_investor_deck'
-  interest?: string | undefined
-  message?: string | undefined
-  support?: string | undefined
-}
+export type { MailingListRecipient } from './shared/mailing_list.ts'
 
 export type SidebarProps = {
   top: ComponentChild

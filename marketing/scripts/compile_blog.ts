@@ -158,7 +158,7 @@ function generateIndexFile(posts: BlogPost[]): string {
   return `// Auto-generated from /blog/*.md
 // Do not edit manually - run \`deno task compile:blog\` to regenerate
 
-import LayoutBlogIndex from '../components/library/layout/BlogIndex.tsx'
+import LayoutBlogIndex from '../../components/library/layout/BlogIndex.tsx'
 
 type BlogPostMeta = {
   title: string
@@ -193,7 +193,7 @@ function generateRouteFile(posts: BlogPost[]): string {
 // Do not edit manually - run \`deno task compile:blog\` to regenerate
 
 import { Context } from 'fresh'
-import LayoutBlogPost from '../../components/library/layout/Blog.tsx'
+import LayoutBlogPost from '../../../components/library/layout/Blog.tsx'
 
 type BlogPostMeta = {
   title: string

@@ -1,11 +1,9 @@
 import { z } from 'zod'
-import * as discord from '../external-clients/discord.ts'
-import redirect from '../util/redirect.ts'
-import { CONTACT_REASON_OPTIONS, ContactReason } from '../components/library/ContactForm.tsx'
+import * as discord from '../../external-clients/discord.ts'
+import redirect from '../../util/redirect.ts'
+import { CONTACT_REASON_OPTIONS, ContactReason } from '../../components/library/ContactForm.tsx'
 import { postHandler } from '../backend/postHandler.ts'
-import db from '../db/db.ts'
-import { mailing_list } from '../db/models/mailing_list.ts'
-import { addSubscriber } from '../external-clients/mailerlite.ts'
+import { addSubscriber } from '../../external-clients/mailerlite.ts'
 
 const contact_reasons = CONTACT_REASON_OPTIONS.map((o) => o.value) as [ContactReason, ...ContactReason[]]
 
@@ -32,7 +30,6 @@ export const handler = postHandler(
   async (_ctx, recipient) => {
     await addSubscriber(recipient)
     await discord.notifyMailingListSignup(recipient)
-    await mailing_list.add(db, recipient)
     const success = success_messages[recipient.entrypoint](recipient.name)
     return redirect(`/thank-you?message=${encodeURIComponent(success)}`)
   },

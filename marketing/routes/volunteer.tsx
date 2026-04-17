@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
 
 // import {
 //   CalendarDaysIcon,
@@ -7,7 +7,7 @@ import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
 //   UserCircleIcon,
 // } from '../components/library/icons/heroicons/solid.tsx'
 // import { Button } from '../components/library/Button.tsx'
-import SideBySide from '../components/library/SideBySide.tsx'
+import SideBySide from '../../components/library/SideBySide.tsx'
 
 // import { ArrowUpCircleIcon } from '../components/library/icons/heroicons/mini.tsx'
 // import { ComponentChildren } from 'preact'

@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
 
 // deno-lint-ignore require-await
 export default async function ThankYouPage(ctx: Context<unknown>) {

@@ -1,11 +1,11 @@
 import { Context } from 'fresh'
-import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
-import { Button } from '../components/library/Button.tsx'
-import PageHeader from '../components/library/typography/PageHeader.tsx'
-import { json } from '../util/responses.ts'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import PageHeader from '../../components/library/typography/PageHeader.tsx'
+import { json } from '../../util/responses.ts'
 
-import FormRow from '../components/library/FormRow.tsx'
-import { TextInput } from '../islands/form/inputs/text.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
 import { postHandler } from '../backend/postHandler.ts'
 import z from 'zod'
 

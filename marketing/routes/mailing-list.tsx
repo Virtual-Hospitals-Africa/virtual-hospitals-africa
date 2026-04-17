@@ -1,5 +1,5 @@
 import { Context } from 'fresh'
-import SignupTemplate from '../components/SignupTemplate.tsx'
+import SignupTemplate from '../../components/SignupTemplate.tsx'
 
 // deno-lint-ignore require-await
 export default async function MailingListPage(ctx: Context<unknown>) {

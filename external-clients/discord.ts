@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { MailingListRecipient } from '../types.ts'
+import { MailingListRecipient } from '../shared/mailing_list.ts'
 
 const DISCORD_MAILING_LIST_WEBHOOK_URL = Deno.env.get(
   'DISCORD_MAILING_LIST_WEBHOOK_URL',

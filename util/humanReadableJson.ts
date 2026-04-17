@@ -1,5 +1,5 @@
 import { Formatter } from 'fracturedjsonjs'
-import { Result } from '../types.ts'
+import type { Result } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { parse } from 'std/path/parse.ts'
 import { wrapError } from './wrapError.ts'

@@ -1,0 +1,74 @@
+{
+  "tasks": {
+    "build": "NO_EXTERNAL_CONNECT=1 vite build",
+    "dev": "vite",
+    "preview": "deno serve -A _fresh/server.js",
+    "compile:blog": "deno run -A scripts/compile_blog.ts"
+  },
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.asynciterable",
+      "dom.iterable",
+      "deno.ns"
+    ],
+    "jsx": "precompile",
+    "jsxImportSource": "preact",
+    "jsxPrecompileSkipElements": [
+      "a",
+      "img",
+      "source",
+      "body",
+      "html",
+      "head",
+      "title",
+      "meta",
+      "script",
+      "link",
+      "style",
+      "base",
+      "noscript",
+      "template"
+    ],
+    "types": [
+      "vite/client"
+    ]
+  },
+  "fmt": {
+    "indentWidth": 2,
+    "semiColons": false,
+    "singleQuote": true,
+    "lineWidth": 160,
+    "proseWrap": "preserve",
+    "include": ["**/*.ts", "**/*.tsx"]
+  },
+  "lint": {
+    "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.0",
+    "@std/fs": "jsr:@std/fs@^1.0.23",
+    "@headlessui/react": "npm:@headlessui/react@2.2.9",
+    "@preact/signals": "npm:@preact/signals@^2.5.0",
+    "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
+    "@tailwindcss/typography": "npm:@tailwindcss/typography@0.5.16",
+    "@tailwindcss/vite": "npm:@tailwindcss/vite@4.1.12",
+    "preact": "npm:preact@10.27.2",
+    "preact/": "npm:/preact@10.27.2/",
+    "react": "npm:/preact@10.27.2/compat",
+    "tailwindcss": "npm:tailwindcss@4.1.18",
+    "tailwindcss/plugin": "npm:/tailwindcss@4.1.10/plugin.js",
+    "tailwind-merge": "npm:tailwind-merge@2.6.0",
+    "fresh": "jsr:@fresh/core@2.2.0",
+    "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@1.0.8",
+    "fracturedjsonjs": "npm:fracturedjsonjs@5.0.1",
+    "vite": "npm:vite@^7.1.3",
+    "marked": "npm:marked@18.0.0",
+    "std/": "https://deno.land/std@0.224.0/",
+    "zod": "npm:zod@4.2.1",
+    "decimal": "npm:decimal.js-light@2.5.1",
+    "kysely": "npm:kysely@0.28.8"
+  },
+  "exclude": ["**/_fresh/*"],
+  "nodeModulesDir": "manual"
+}

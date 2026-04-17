@@ -2,7 +2,7 @@
 // Do not edit manually - run `deno task compile:blog` to regenerate
 
 import { Context } from 'fresh'
-import LayoutBlogPost from '../../components/library/layout/Blog.tsx'
+import LayoutBlogPost from '../../../components/library/layout/Blog.tsx'
 
 type BlogPostMeta = {
   title: string

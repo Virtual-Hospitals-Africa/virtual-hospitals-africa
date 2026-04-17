@@ -1,5 +1,5 @@
 import { PageProps } from 'fresh'
-import ContactPage from '../components/library/ContactPage.tsx'
+import ContactPage from '../../components/library/ContactPage.tsx'
 
 export default function BookDemoPage(
   props: PageProps,
@@ -7,11 +7,11 @@ export default function BookDemoPage(
   return (
     <ContactPage
       url={props.url}
-      title='Book a demo'
+      title='Contact Us'
       message={
         <p class='text-xl leading-8 text-gray-600'>
           <i>
-            TK. Book a demo
+            TK. Contact Us
           </i>
         </p>
       }

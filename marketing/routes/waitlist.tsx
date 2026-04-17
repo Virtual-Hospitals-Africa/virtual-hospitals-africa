@@ -1,5 +1,5 @@
 import { PageProps } from 'fresh'
-import ContactPage from '../components/library/ContactPage.tsx'
+import ContactPage from '../../components/library/ContactPage.tsx'
 
 export default function WaitlistPage(
   props: PageProps,

@@ -1,12 +1,12 @@
 import { Context } from 'fresh'
-import JustLogoLayout from '../components/library/JustLogoLayout.tsx'
-import { Button } from '../components/library/Button.tsx'
-import FormRow from '../components/library/FormRow.tsx'
-import Form from '../components/library/Form.tsx'
-import SideBySide from '../components/library/SideBySide.tsx'
-import SelectWithOther from '../islands/SelectWithOther.tsx'
-import { TextInput } from '../islands/form/inputs/text.tsx'
-import { TextArea } from '../islands/form/inputs/textarea.tsx'
+import JustLogoLayout from '../../components/library/JustLogoLayout.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import FormRow from '../../components/library/FormRow.tsx'
+import Form from '../../components/library/Form.tsx'
+import SideBySide from '../../components/library/SideBySide.tsx'
+import SelectWithOther from '../../islands/SelectWithOther.tsx'
+import { TextInput } from '../../islands/form/inputs/text.tsx'
+import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 
 // deno-lint-ignore require-await
 export default async function PartnerPage(ctx: Context<unknown>) {

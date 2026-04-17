@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { Maybe } from '../types.ts'
+import type { Maybe } from '../types.ts'
 import set from '../util/set.ts'
 import { assertOr400 } from '../util/assertOr.ts'
 import deepRemoveHoles from '../util/deepRemoveHoles.ts'

@@ -31,11 +31,9 @@
     "local": "./scripts/env/local.sh",
     "prod": "./scripts/env/prod.sh",
     "compile": "DENO_TLS_CA_STORE=system deno compile -A --unsafely-ignore-certificate-errors --unstable --target x86_64-unknown-linux-gnu",
-    "compile:blog": "deno task run:trusted scripts/compile_blog.ts",
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
     "compile:web": "deno task compile --output binaries/web main.ts",
     "compile:s_expressions": "deno task script ./s_expression/compile.ts",
-    "compile:blog": "deno task run:trusted scripts/compile_blog.ts",
     "lock:reset": "./scripts/file-manipulation/lock_reset.sh",
     "rm_unused_imports": "deno task script remove-unused-imports",
     "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors --unstable-temporal --env --eval-file=repl.ts",
@@ -150,6 +148,6 @@
     "rollup": "npm:rollup@4.53.0",
     "marked": "npm:marked@15.0.7"
   },
-  "exclude": ["**/_fresh/*"],
+  "exclude": ["**/_fresh/*", "marketing/"],
   "nodeModulesDir": "manual"
 }

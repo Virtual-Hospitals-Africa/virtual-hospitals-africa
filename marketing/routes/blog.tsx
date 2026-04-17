@@ -1,7 +1,7 @@
 // Auto-generated from /blog/*.md
 // Do not edit manually - run `deno task compile:blog` to regenerate
 
-import LayoutBlogIndex from '../components/library/layout/BlogIndex.tsx'
+import LayoutBlogIndex from '../../components/library/layout/BlogIndex.tsx'
 
 type BlogPostMeta = {
   title: string

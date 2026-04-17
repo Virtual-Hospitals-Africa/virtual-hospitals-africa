@@ -1,5 +1,5 @@
 import { PageProps } from 'fresh'
-import SignupTemplate from '../../components/SignupTemplate.tsx'
+import SignupTemplate from '../../../components/SignupTemplate.tsx'
 
 export default function GeneralInquiryPage({ url }: PageProps) {
   return (

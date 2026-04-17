@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { ExtendedActionData, NonEmptyArray } from '../types.ts'
+import type { ExtendedActionData, NonEmptyArray } from '../types.ts'
 import { HttpError } from 'fresh'
 
 export class AlertWithActionsError extends HttpError {

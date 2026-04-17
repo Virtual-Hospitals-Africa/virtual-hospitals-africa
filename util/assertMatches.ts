@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import isDate from './isDate.ts'
 import { humanReadableJson } from './humanReadableJson.ts'
-import { JsonSerializable } from '../types.ts'
+import type { JsonSerializable } from '../types.ts'
 import isObjectLike from './isObjectLike.ts'
 
 function isZodType(value: unknown): value is z.ZodType {
