@@ -7,7 +7,7 @@ import { patient_findings } from '../../db/models/patient_findings.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-import { measurement_comparator } from '../../shared/s_expression_schemas.ts'
+import { active_condition, any_query_evidence, measurement_comparator } from '../../shared/s_expression_schemas.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { SYSTEM_DIAGNOSIS_RULES_PARSED } from '../../shared/system_diagnosis_rules.ts'
 import findMatching from '../../util/findMatching.ts'
@@ -102,6 +102,76 @@ describeParallel('db/models/s_expression_evidence.ts', () => {
       }, anaphylaxis_possible_rule.due_to)
 
       assert(!result.satisfies)
+    },
+  )
+
+  itParallel(
+    'can detect that a finding with a finding site matches',
+    async () => {
+      const { employee, patient_id, patient_encounter_id } = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const inserted_findings = await patient_findings.insertMany(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          patient_encounter_employee_id: employee.patient_encounter_employee_id,
+          employment_id: employee.employee_id,
+          procedure: {
+            create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
+          },
+          findings: [
+            `(clinical_finding (snomed_concept "Nasal discharge" "finding"))`,
+          ],
+        },
+      )
+
+      const result = await s_expression_evidence.evaluate(db, {
+        patient_id,
+        patient_encounter_id,
+      }, parseWithSchema(`(clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure")))`, any_query_evidence))
+
+      assert(result.satisfies)
+      assertEquals(
+        result.contributing_records.sort(),
+        [
+          inserted_findings.finding_ids[0],
+        ].sort(),
+      )
+    },
+  )
+
+  itParallel.only(
+    'can detect that a situation with an associated finding matches',
+    async () => {
+      const { employee, patient_id, patient_encounter_id } = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const inserted_findings = await patient_findings.insertMany(
+        db,
+        {
+          patient_id,
+          patient_encounter_id,
+          patient_encounter_employee_id: employee.patient_encounter_employee_id,
+          employment_id: employee.employee_id,
+          procedure: {
+            create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
+          },
+          findings: [
+            `(clinical_finding (snomed_concept "Nasal discharge present" "situation"))`,
+          ],
+        },
+      )
+
+      const result = await s_expression_evidence.evaluate(db, {
+        patient_id,
+        patient_encounter_id,
+      }, parseWithSchema(`(clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure")))`, any_query_evidence))
+
+      assert(result.satisfies)
+      assertEquals(
+        result.contributing_records.sort(),
+        [
+          inserted_findings.finding_ids[0],
+        ].sort(),
+      )
     },
   )
 })

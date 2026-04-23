@@ -137,7 +137,10 @@ function baseQuery(
                   .where('snomed_concept_active_descendants_realized.ancestor_id', '=', snomed_concept),
               ),
             ]),
-          ])
+          ]),
+          eb.and(
+            
+          )
         }),
     )
     .$if(

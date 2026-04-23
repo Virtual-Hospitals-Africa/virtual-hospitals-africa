@@ -383,7 +383,11 @@ export const ADULT_PAC_SYMPTOMS_TABLE_OF_CONTENTS_TO_SNOMED: Dict<TableOfContent
   },
   'Nose symptoms': {
     'type': 'specific_concept',
-    's_expression': '(active_condition (snomed_concept "Nasal symptom" "finding") possible)',
+    's_expression': `
+      (or
+        (clinical_finding (snomed_concept "Nose finding" "finding"))
+        (clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure"))))
+    `,
     'snomed_concept_id': '249307003',
     'name': 'Nasal symptom',
     'category': 'finding',
