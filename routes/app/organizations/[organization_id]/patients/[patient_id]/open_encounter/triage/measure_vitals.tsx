@@ -352,7 +352,7 @@ export async function TriageMeasureVitalsPage(
         ]}
         organization_id={ctx.state.organization.id}
       />
-      <MeasureVitalsVoiceCommands />
+      <MeasureVitalsVoiceCommands healthWorker={ctx.state.health_worker} />
     </>
   )
 }

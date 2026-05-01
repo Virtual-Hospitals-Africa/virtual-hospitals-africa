@@ -1,54 +1,46 @@
 import { useEffect, useRef } from 'preact/hooks'
 import VoiceMicButton, { VOICE_TRANSCRIPT_EVENT } from './VoiceMicButton.tsx'
+import { ASSESSMENT_VALUE_ALIASES, COMMON_BLOOD_PRESSURE_READINGS, parseNumber, VITAL_VOICE_ALIASES } from '../../shared/voice_commands.ts'
+import type { RenderedHealthWorker } from '../../types.ts'
 
 function normalize(s: string) {
   return s
     .toLowerCase()
     .trim()
-    .replace(/[.,!?]/g, '')
+    .replace(/(?<!\d)\.(?!\d)/g, ' ')
+    .replace(/[^\w.\s-]/g, ' ')
+    .replace(/-/g, ' ')
     .replace(/\s+/g, ' ')
 }
 
-function parseNumber(s: string): number | null {
-  const n = Number(s)
-  return Number.isFinite(n) ? n : null
-}
-
 function fireInput(el: HTMLInputElement, value: string) {
-  const setter =
-    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
+  const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
+
   setter?.call(el, value)
+
   el.dispatchEvent(new Event('input', { bubbles: true }))
   el.dispatchEvent(new Event('change', { bubbles: true }))
 }
 
-// =======================
-// Measurements
-// =======================
+function fireSelect(sel: HTMLSelectElement, value: string) {
+  const setter = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')?.set
+
+  setter?.call(sel, value)
+
+  sel.dispatchEvent(new Event('input', { bubbles: true }))
+  sel.dispatchEvent(new Event('change', { bubbles: true }))
+}
 
 function setMeasurement(spokenVital: string, value: number) {
-  const cleaned = normalize(spokenVital)
-    .replace(/\s+/g, '_')
+  const cleaned = normalize(spokenVital).replace(/\s+/g, '_')
 
-  // direct match
   let el = document.querySelector<HTMLInputElement>(
     `input[name="measurements.${CSS.escape(cleaned)}.value"]`,
   )
 
-  // aliases
   if (!el) {
-    const alias: Record<string, string> = {
-      temp: 'temperature',
-      temperature: 'temperature',
-      pulse: 'heart_rate',
-      'heart rate': 'heart_rate',
-      breathing: 'respiratory_rate',
-      'respiratory rate': 'respiratory_rate',
-      glucose: 'blood_glucose',
-      'blood glucose': 'blood_glucose',
-    }
+    const mapped = VITAL_VOICE_ALIASES[cleaned]
 
-    const mapped = alias[cleaned]
     if (mapped) {
       el = document.querySelector<HTMLInputElement>(
         `input[name="measurements.${CSS.escape(mapped)}.value"]`,
@@ -76,52 +68,120 @@ function setBloodPressure(systolic: number, diastolic: number) {
   return Boolean(sys || dia)
 }
 
-// =======================
-// Assessments
-// =======================
-
 function setAssessmentValue(valueText: string) {
   const spoken = normalize(valueText)
+  const candidates = ASSESSMENT_VALUE_ALIASES[spoken] ?? [spoken]
 
-  const labels = Array.from(document.querySelectorAll<HTMLLabelElement>('label'))
-
-  for (const lab of labels) {
-    const txt = normalize(lab.textContent || '')
-    if (!txt) continue
-
-    if (txt === spoken || txt.includes(spoken)) {
-      lab.click()
-      return true
-    }
-  }
+  console.log('--- ASSESSMENT DEBUG START ---')
+  console.log('spoken value:', spoken)
+  console.log('candidate values:', candidates)
 
   const selects = Array.from(
-    document.querySelectorAll<HTMLSelectElement>('select[name^="assessments."]'),
+    document.querySelectorAll<HTMLSelectElement>(
+      'select[name^="assessments."][name$=".s_expression"]',
+    ),
   )
 
-  for (const sel of selects) {
-    const opts = Array.from(sel.options)
-    const match =
-      opts.find((o) => normalize(o.textContent || '') === spoken) ??
-      opts.find((o) => normalize(o.textContent || '').includes(spoken))
+  console.log(
+    'selects found:',
+    selects.map((s) => ({
+      name: s.name,
+      id: s.id,
+      currentValue: s.value,
+    })),
+  )
 
-    if (match) {
-      sel.value = match.value
-      sel.dispatchEvent(new Event('input', { bubbles: true }))
-      sel.dispatchEvent(new Event('change', { bubbles: true }))
-      return true
+  if (!selects.length) {
+    console.warn('No assessment selects found')
+    console.log('--- ASSESSMENT DEBUG END ---')
+    return false
+  }
+
+  for (const sel of selects) {
+    console.log('checking select:', sel.name)
+
+    const opts = Array.from(sel.options)
+
+    console.log(
+      'options:',
+      opts.map((o) => ({
+        text: o.textContent,
+        value: o.value,
+        normalizedText: normalize(o.textContent || ''),
+        normalizedValue: normalize(o.value || ''),
+      })),
+    )
+
+    for (const candidate of candidates) {
+      const c = normalize(candidate)
+
+      console.log('checking candidate:', c)
+
+      for (const o of opts) {
+        const txt = normalize(o.textContent || '')
+        const val = normalize(o.value || '')
+
+        console.log('compare:', {
+          spoken,
+          candidate: c,
+          optionText: txt,
+          optionValue: val,
+        })
+
+        if (txt === c) {
+          console.log('EXACT TEXT MATCH')
+          console.log('SETTING VALUE:', o.value)
+
+          fireSelect(sel, o.value)
+
+          console.log('--- ASSESSMENT DEBUG SUCCESS ---')
+          return true
+        }
+
+        if (val === c) {
+          console.log('VALUE MATCH')
+          console.log('SETTING VALUE:', o.value)
+
+          fireSelect(sel, o.value)
+
+          console.log('--- ASSESSMENT DEBUG SUCCESS ---')
+          return true
+        }
+
+        if (val.includes(c)) {
+          console.log('PARTIAL VALUE MATCH')
+          console.log('SETTING VALUE:', o.value)
+
+          fireSelect(sel, o.value)
+
+          console.log('--- ASSESSMENT DEBUG SUCCESS ---')
+          return true
+        }
+
+        if (txt.includes(c)) {
+          console.log('PARTIAL TEXT MATCH')
+          console.log('SETTING VALUE:', o.value)
+
+          fireSelect(sel, o.value)
+
+          console.log('--- ASSESSMENT DEBUG SUCCESS ---')
+          return true
+        }
+      }
     }
   }
+
+  console.warn('No assessment match found')
+  console.log('--- ASSESSMENT DEBUG END ---')
 
   return false
 }
 
-
-// =======================
-// Main Island
-// =======================
-
-export default function MeasureVitalsVoiceCommands() {
+export default function MeasureVitalsVoiceCommands({
+  healthWorker,
+}: {
+  healthWorker: RenderedHealthWorker
+}) {
   const last = useRef<string>('')
 
   useEffect(() => {
@@ -136,34 +196,42 @@ export default function MeasureVitalsVoiceCommands() {
       if (t === last.current) return
       last.current = t
 
-      // Blood pressure
+      const bp_match = COMMON_BLOOD_PRESSURE_READINGS.find(([spoken]) => t.includes(spoken) || spoken.includes(t))
+
+      if (bp_match) {
+        const [, systolic, diastolic] = bp_match
+        setBloodPressure(systolic, diastolic)
+        return
+      }
+
       const bp = t.match(
-        /^blood pressure\s+(\d{2,3})\s*(?:over\s*)?(\d{2,3})$/,
+        /^blood pressure\s*:?\s*(\d{2,3})\s*(?:over\s*)?(\d{2,3})$/,
       )
+
       if (bp) {
         const sys = parseNumber(bp[1])
         const dia = parseNumber(bp[2])
+
         if (sys != null && dia != null) {
           setBloodPressure(sys, dia)
         }
+
         return
       }
 
-      // Generic vital measurement
-      const m = t.match(
-        /^([a-z ]+?)\s+(-?\d+(?:\.\d+)?)$/,
-      )
+      const m = t.match(/^([a-z ]+?)\s*:?\s*(-?\d+(?:\.\d+)?)$/)
+
       if (m) {
         const vital = m[1]
         const value = parseNumber(m[2])
+
         if (value != null) {
           setMeasurement(vital, value)
         }
+
         return
       }
 
-      // Assessment values (alert / confused / trauma / etc.)
-      console.log(t)
       setAssessmentValue(t)
     }
 
@@ -171,6 +239,7 @@ export default function MeasureVitalsVoiceCommands() {
       VOICE_TRANSCRIPT_EVENT,
       onTranscript as EventListener,
     )
+
     return () =>
       globalThis.removeEventListener(
         VOICE_TRANSCRIPT_EVENT,
@@ -179,8 +248,8 @@ export default function MeasureVitalsVoiceCommands() {
   }, [])
 
   return (
-    <div class="flex items-center gap-2">
-      <VoiceMicButton />
+    <div class='flex items-center gap-2'>
+      <VoiceMicButton healthWorker={healthWorker} />
     </div>
   )
 }

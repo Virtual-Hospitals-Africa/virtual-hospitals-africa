@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'preact/hooks'
-import VoiceMicButton, { VOICE_TRANSCRIPT_EVENT } from './VoiceMicButton.tsx' 
+import type { RenderedHealthWorker } from '../../types.ts'
+import VoiceMicButton, { VOICE_TRANSCRIPT_EVENT } from './VoiceMicButton.tsx'
 
 type Existence = 'Yes' | 'No' | 'Unknown'
 
@@ -63,7 +64,7 @@ function setAll(value: Existence) {
   for (const key of CONDITION_KEYS) setExistence(key, value)
 }
 
-export default function BriefHistoryVoiceCommands() {
+export default function BriefHistoryVoiceCommands({ healthWorker }: { healthWorker: RenderedHealthWorker }) {
   const last = useRef<string>('')
 
   useEffect(() => {
@@ -119,9 +120,8 @@ export default function BriefHistoryVoiceCommands() {
   }, [])
 
   return (
-    <div class="flex items-center gap-2">
-      <VoiceMicButton />
+    <div class='flex items-center gap-2'>
+      <VoiceMicButton healthWorker={healthWorker} />
     </div>
   )
 }
-

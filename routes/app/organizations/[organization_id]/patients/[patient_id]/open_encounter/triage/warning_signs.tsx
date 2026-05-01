@@ -324,16 +324,16 @@ export async function TriageWarningSignsPage(
 
   return (
     <>
-    <WarningSigns
-      search_route={hrefFromCtx(ctx, (url) => {
-        url.pathname = url.pathname.replace(
-          '/triage/warning_signs',
-          '/snomed-warning-signs',
-        )
-      })}
-      warning_signs={Array.from(warning_signs)}
-    />
-    <VoiceMicButton />
+      <WarningSigns
+        search_route={hrefFromCtx(ctx, (url) => {
+          url.pathname = url.pathname.replace(
+            '/triage/warning_signs',
+            '/snomed-warning-signs',
+          )
+        })}
+        warning_signs={Array.from(warning_signs)}
+      />
+      <VoiceMicButton healthWorker={ctx.state.health_worker} />
     </>
   )
 }

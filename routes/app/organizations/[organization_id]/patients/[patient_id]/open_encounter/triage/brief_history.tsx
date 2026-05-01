@@ -220,13 +220,13 @@ export async function TriageBriefHistoryPage(
 
   return (
     <>
-    <BriefHistorySection
-      most_recent_findings={most_recent_findings}
-      existing_allergies={existing_allergies}
-      sex={patient.sex}
-      organization_id={organization_employment.id}
-    />
-    <BriefHistoryVoiceCommands />
+      <BriefHistorySection
+        most_recent_findings={most_recent_findings}
+        existing_allergies={existing_allergies}
+        sex={patient.sex}
+        organization_id={organization_employment.id}
+      />
+      <BriefHistoryVoiceCommands healthWorker={ctx.state.health_worker} />
     </>
   )
 }

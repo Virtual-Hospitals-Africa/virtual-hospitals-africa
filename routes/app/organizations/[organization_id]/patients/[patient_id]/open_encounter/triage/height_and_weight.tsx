@@ -17,6 +17,7 @@ import entries from '../../../../../../../../util/entries.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
+import HeightWeightVoiceCommands from '../../../../../../../../islands/voice/HeightWeightVoiceCommands.tsx'
 
 export const TriageHeightAndWeightSchema = z.object({
   measurements: z.record(
@@ -90,25 +91,28 @@ export async function TriageHeightAndWeightPage(
     )
 
   return (
-    <VitalsMeasurementsForm
-      vital_measurements_for_this_encounter={[
-        {
-          vital: 'height',
-          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.id,
-          required: true,
-          units: 'cm',
-        },
-        {
-          vital: 'weight',
-          snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.id,
-          required: true,
-          units: 'kg',
-        },
-      ]}
-      triage_assessments={[]}
-      most_recent_patient_vitals={most_recent_patient_vitals}
-      organization_id={ctx.state.organization.id}
-    />
+    <>
+      <VitalsMeasurementsForm
+        vital_measurements_for_this_encounter={[
+          {
+            vital: 'height',
+            snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.height.id,
+            required: true,
+            units: 'cm',
+          },
+          {
+            vital: 'weight',
+            snomed_concept_id: VITAL_MEASUREMENTS_SNOMED_CONCEPTS.weight.id,
+            required: true,
+            units: 'kg',
+          },
+        ]}
+        triage_assessments={[]}
+        most_recent_patient_vitals={most_recent_patient_vitals}
+        organization_id={ctx.state.organization.id}
+      />
+      <HeightWeightVoiceCommands healthWorker={ctx.state.health_worker} />
+    </>
   )
 }
 

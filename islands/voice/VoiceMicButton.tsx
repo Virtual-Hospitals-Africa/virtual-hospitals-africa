@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { useSignal } from '@preact/signals'
 import cls from '../../util/cls.ts'
 import { MicrophoneIcon } from '../../components/library/icons/heroicons/solid.tsx'
+import type { RenderedHealthWorker } from '../../types.ts'
+import { VOICE_COMMANDS_TUTORIAL_STEPS, VoiceCommandsTutorialModal } from './VoiceCommandsTutorialModal.tsx'
 
 export interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number
@@ -13,7 +15,6 @@ export interface SpeechRecognition extends EventTarget {
   continuous: boolean
   interimResults: boolean
 
-  // Experimental on-device flag (may not exist in all browsers)
   processLocally?: boolean
 
   start(): void
@@ -43,8 +44,6 @@ function getSpeechRecognitionCtor(): SpeechRecognitionCtor {
 
 export const VOICE_TRANSCRIPT_EVENT = 'vha-voice:transcript'
 
-// Minimal typing for the experimental static methods.
-// In supporting browsers, these exist on globalThis.SpeechRecognition. :contentReference[oaicite:2]{index=2}
 type SpeechRecognitionStatic = {
   available?: (opts: { langs: string[]; processLocally?: boolean }) => Promise<
     'available' | 'downloadable' | 'downloading' | 'unavailable'
@@ -58,14 +57,16 @@ function getSpeechRecognitionStatic(): SpeechRecognitionStatic | null {
   return SR ?? null
 }
 
-export default function VoiceMicButton() {
+export default function VoiceMicButton({ healthWorker }: { healthWorker: RenderedHealthWorker }) {
   const status = useSignal<VoiceStatus>('idle')
   const want_listening = useSignal(false)
+  const [show_tutorial, set_show_tutorial] = useState(false)
+  const [tutorial_step, set_tutorial_step] = useState(0)
 
   const recognition_ref = useRef<SpeechRecognition | null>(null)
 
-  const isListening = status.value === 'listening'
-  const isUnavailable = status.value === 'unsupported' || status.value === 'permission_denied'
+  const is_listening = status.value === 'listening'
+  const is_unavailable = status.value === 'unsupported' || status.value === 'permission_denied'
 
   function ensureRecognition(): SpeechRecognition | null {
     if (recognition_ref.current) return recognition_ref.current
@@ -113,7 +114,6 @@ export default function VoiceMicButton() {
     }
 
     recognition.onend = () => {
-      // Chrome can stop unexpectedly; restart if we still want listening
       if (want_listening.value) {
         recognition.start()
         status.value = 'listening'
@@ -172,8 +172,19 @@ export default function VoiceMicButton() {
   }
 
   function handleClick() {
-    if (isUnavailable) return
-    if (isListening) stop()
+    if (is_unavailable) return
+
+    const has_seen_help_key = `voice-commands-help-seen-${healthWorker.id}`
+    const has_seen_help = localStorage.getItem(has_seen_help_key) === 'true'
+
+    if (!has_seen_help) {
+      localStorage.setItem(has_seen_help_key, 'true')
+      set_tutorial_step(0)
+      set_show_tutorial(true)
+      return
+    }
+
+    if (is_listening) stop()
     else start()
   }
 
@@ -186,28 +197,43 @@ export default function VoiceMicButton() {
   }, [])
 
   return (
-    <button
-      type='button'
-      onClick={handleClick}
-      aria-pressed={isListening}
-      aria-label='Toggle voice commands'
-      className={cls(
-        'fixed z-50 bottom-5 right-5',
-        'w-14 h-14 rounded-full flex items-center justify-center shadow-lg',
-        'transition-all duration-200 ease-in-out',
-        isUnavailable
-          ? 'bg-gray-300 cursor-not-allowed'
-          : isListening
-          ? 'bg-red-600 hover:bg-red-700'
-          : 'bg-indigo-600 hover:bg-indigo-700',
-        isListening && 'scale-105',
-      )}
-    >
-      {isListening && (
-        <span className='absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-40 animate-ping' />
+    <>
+      {show_tutorial && (
+        <VoiceCommandsTutorialModal
+          step={tutorial_step}
+          step_count={VOICE_COMMANDS_TUTORIAL_STEPS.length}
+          text={VOICE_COMMANDS_TUTORIAL_STEPS[tutorial_step]}
+          on_prev={() => set_tutorial_step((current) => Math.max(0, current - 1))}
+          on_next={() => {
+            const next_step = Math.min(VOICE_COMMANDS_TUTORIAL_STEPS.length - 1, tutorial_step + 1)
+            if (next_step === tutorial_step && tutorial_step === VOICE_COMMANDS_TUTORIAL_STEPS.length - 1) {
+              set_show_tutorial(false)
+              start()
+            } else {
+              set_tutorial_step(next_step)
+            }
+          }}
+          on_close={() => set_show_tutorial(false)}
+        />
       )}
 
-      <MicrophoneIcon className={cls('h-6 w-6 text-white', isListening && 'animate-pulse')} />
-    </button>
+      <button
+        type='button'
+        onClick={handleClick}
+        aria-pressed={is_listening}
+        aria-label='Toggle voice commands'
+        className={cls(
+          'fixed z-50 bottom-5 right-5',
+          'w-14 h-14 rounded-full flex items-center justify-center shadow-lg',
+          'transition-all duration-200 ease-in-out',
+          is_unavailable ? 'bg-gray-300 cursor-not-allowed' : is_listening ? 'bg-red-600 hover:bg-red-700' : 'bg-indigo-600 hover:bg-indigo-700',
+          is_listening && 'scale-105',
+        )}
+      >
+        {is_listening && <span className='absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-40 animate-ping' />}
+
+        <MicrophoneIcon className={cls('h-6 w-6 text-white', is_listening && 'animate-pulse')} />
+      </button>
+    </>
   )
 }
