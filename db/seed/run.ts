@@ -182,8 +182,8 @@ export async function run(cmd: Cmd, target?: string) {
   for (const seed_name of targets) {
     await spinner(`${gerund[cmd]} seed ${seed_name}`, async () => {
       const seed = seeds[seed_name]
-      await seed[cmd]()
-      return `${seed_name} ${past_tense[cmd]}. Tables affected: ${seed.table_names.join(', ')}.`
+      const result = await seed[cmd]() as string | void
+      return `${seed_name} ${result || past_tense[cmd]}. Tables affected: ${seed.table_names.join(', ')}.`
     })
   }
 }
