@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "kysely": "^0.29.0"
+  }
+}

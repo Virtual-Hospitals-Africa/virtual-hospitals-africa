@@ -69,6 +69,7 @@
     "npm:fracturedjsonjs@5.0.1": "5.0.1",
     "npm:html@latest": "1.0.0",
     "npm:kysely@0.28.8": "0.28.8",
+    "npm:kysely@0.29": "0.29.0",
     "npm:marked@15.0.7": "15.0.7",
     "npm:natural@6.10.4": "6.10.4",
     "npm:patch-package@latest": "8.0.1",
@@ -2192,6 +2193,9 @@
     "kysely@0.28.8": {
       "integrity": "sha512-QUOgl5ZrS9IRuhq5FvOKFSsD/3+IA6MLE81/bOOTRA/YQpKDza2sFdN5g6JCB9BOpqMJDGefLCQ9F12hRS13TA=="
     },
+    "kysely@0.29.0": {
+      "integrity": "sha512-LrQfPUeTW7MXbMvT62moEMnpMTuj9TO3lqjCeLKjM975PJ4Alrl/43f2tlDX7xOsNptKgH4LSNGwIbXwEkLg4g=="
+    },
     "lightningcss-darwin-arm64@1.30.1": {
       "integrity": "sha512-c8JK7hyE65X1MHMN+Viq9n11RRC7hgin3HhYKhrMyaXflk5GVplZ60IxyoVtzILeKr+xAJwg6zK6sjTBJ0FKYQ==",
       "os": ["darwin"],
@@ -3299,6 +3303,11 @@
       "npm:tiny-lru@11.4.5",
       "npm:vite@^7.1.3",
       "npm:zod@4.2.1"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:kysely@0.29"
+      ]
+    }
   }
 }
