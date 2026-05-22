@@ -54,7 +54,8 @@
     "util": "deno task run:trusted ./util.ts",
     "rules:rebuild": "deno task compile:s_expressions && deno task docker db:seed recreate 31_rules",
     "rules:rebuild:prod": "deno task prod db:seed recreate 31_rules",
-    "dummyx": "triggerdockerrebuild"
+    "dummyx": "triggerdockerrebuild",
+    "scrape:hpcsa-doctors": "DENO_TLS_CA_STORE=system deno run --allow-net --allow-read --allow-write --allow-env --allow-run --allow-sys --unstable-temporal scripts/data-munging/scrape-hpcsa-doctors.ts"
   },
   "compilerOptions": { 
     "lib": [
@@ -120,7 +121,6 @@
     "@types/pg": "npm:@types/pg@8.16.0",
     "pg-cursor": "npm:pg-cursor@2.15.3",
     "@types/pg-cursor": "npm:@types/pg-cursor@2.7.2",
-    "marked": "npm:marked@18.0.0",
     "pdfjs-dist": "npm:pdfjs-dist@4.10.38",
     "preact": "npm:preact@10.27.2",
     "preact/": "npm:/preact@10.27.2/",
