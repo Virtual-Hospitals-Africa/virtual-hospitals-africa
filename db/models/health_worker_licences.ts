@@ -1,11 +1,12 @@
 import { DOCTOR_LICENCES } from '../../shared/regulatory_agencies.ts'
 import type { IdSelection, Maybe, NonNullableProperty, RenderedLicence, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { assertUnreachable } from '../../util/assertUnreachable.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 import generateUUID from '../../util/uuid.ts'
 import { jsonBuildNullableObject, jsonBuildObject, literalString, now } from '../helpers.ts'
 import { base, identity } from './_base.ts'
 
-type LicenceSearch = {
+export type LicenceSearch = {
   country?: string
   regulatory_agency_acronym?: string
   licence_number?: Maybe<string>
@@ -84,6 +85,8 @@ export const health_worker_licences = base({
               eb('expiry_date', '>=', now),
             ])
           )
+        default:
+          assertUnreachable(opts.status)
       }
     }
   },
