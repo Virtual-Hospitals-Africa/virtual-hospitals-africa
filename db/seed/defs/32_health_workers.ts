@@ -4,7 +4,8 @@ import { groupBy } from '../../../util/groupBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { asNames } from '../../../util/asNames.ts'
 
-const doctors_file_path = '/Users/willweiss/Downloads/hpcsa_doctors_2026-05-22.json'
+// adjust file path as needed - this is the path on testing local machine
+const doctors_file_path = '/Users/liuh/Downloads/hpcsa_doctors_2026-05-22.json'
 const doctor_specialties = parseJSONSync(doctors_file_path)
 
 const doctors = groupBy(doctor_specialties, 'Registration')
