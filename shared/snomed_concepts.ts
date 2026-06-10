@@ -689,3 +689,8 @@ export const RESOLVED = asConcept({
   name: 'Resolved',
   category: 'qualifier value' as const,
 })
+export const CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL = asConcept({
+  id: '107728002',
+  name: 'Chart evaluation by healthcare professional',
+  category: 'procedure' as const,
+})

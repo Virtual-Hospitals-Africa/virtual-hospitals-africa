@@ -7,6 +7,7 @@ import capitalize from '../util/capitalize.ts'
 import mapEntries from '../util/mapEntries.ts'
 import {
   BODY_MEASUREMENT,
+  CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL,
   DISPENSING_MEDICATION,
   EMERGENCY_EXAMINATION_FOR_TRIAGE,
   ENCOUNTER_FOR_PROBLEM,
@@ -35,6 +36,7 @@ export const WORKFLOWS = [
   'prescription_refill' as const,
   'doctor_review' as const,
   'create_google_meet' as const,
+  'referral_review' as const,
   // 'resuscitation' as const,
 ]
 
@@ -44,6 +46,7 @@ export const WORKFLOW_SNOMED_CONCEPTS = {
   registration: PATIENT_REGISTRATION,
   triage: TRIAGE,
   referral_placed: REFERRAL_PLACED,
+  referral_review: CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL,
   emergency_escalation: REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
   stabilization: STABILIZATION,
   consultation: ENCOUNTER_FOR_PROBLEM,
@@ -77,6 +80,9 @@ export const WORKFLOW_STEPS = {
   referral_placed: [
     'confirm_handoff',
   ],
+  referral_review: [
+    'review_case',
+  ],
   emergency_escalation: [
     'identify_patient',
     'emergency_reason',
@@ -89,19 +95,13 @@ export const WORKFLOW_STEPS = {
     'monitor_patient',
   ],
   consultation: [
-    'chief_complaint',
-    'vitals',
-    'symptoms',
-    'history',
-    'general_assessments',
+    'clinical_notes',
     'examinations',
-    'diagnostic_tests',
-    'diagnoses',
+    'diagnosis',
     'prescriptions',
     'orders',
-    'clinical_notes',
-    'request_review',
-    'close_visit',
+    'referral',
+    'revert',
   ],
   maternity: [
     'checkup',

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
-import TriageRoutePatientSection from '../../../../../../../../islands/triage/RoutePatientSection.tsx'
+import ReviewCaseSection from '../../../../../../../../islands/triage/RoutePatientSection.tsx'
 import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
@@ -10,7 +10,6 @@ import { OpenEncounterWorkflowContext, UpdateShape } from '../../../../../../../
 import { DB } from '../../../../../../../../db.d.ts'
 import { success } from '../../../../../../../../util/alerts.ts'
 import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS } from '../../../../../../../../shared/triage_route_patient.ts'
 import { startWorkflow } from '../start-workflow.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { redirectToFirstIncompleteStep } from '../index.tsx'
@@ -20,15 +19,19 @@ import { isManage } from '../../../../../../../../shared/tasks.ts'
 import partition from '../../../../../../../../util/partition.ts'
 import { notifications } from '../../../../../../../../db/models/notifications.ts'
 import { assertArrayNonEmpty } from '../../../../../../../../util/arraySize.ts'
+import { assertUnreachable } from '../../../../../../../../util/assertUnreachable.ts'
 
-export const TriageRoutePatientSchema = z.object({
-  next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
+export const ReviewCaseSchema = z.object({
+  next_step: z.enum([
+    'accept_case',
+    'rerefer'
+  ]),
   notes: z.string().nullish(),
   health_worker_ids_to_be_notified: z.string().uuid().array().optional().default([]),
 })
 
 export const handler = postHandler(
-  TriageRoutePatientSchema,
+  ReviewCaseSchema,
   async (ctx: OpenEncounterWorkflowContext, { next_step, health_worker_ids_to_be_notified }) => {
     const { trx, patient, organization, organization_employment } = ctx.state
 
@@ -36,7 +39,7 @@ export const handler = postHandler(
     const completing_last_step = completeLastStep(ctx)
 
     switch (next_step) {
-      case 'await_consultation': {
+      case 'accept_case': {
         const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
           current_workflow: null,
           department_name: 'Waiting room' as const,
@@ -62,8 +65,7 @@ export const handler = postHandler(
           `/app/organizations/${organization.id}/waiting_room`,
         ))
       }
-      case 'manage_and_refer':
-      case 'refer': {
+      case 'rerefer': {
         const patient_presence_updates: UpdateShape<DB['patient_presence']> = {
           current_workflow: null,
           next_workflow: 'consultation' as const,
@@ -116,7 +118,7 @@ export const handler = postHandler(
 
       // }
       default: {
-        throw new Error('Not yet supported')
+        assertUnreachable(next_step)
       }
     }
   },
@@ -139,7 +141,7 @@ async function managePatientTasks(
   return manage_patient_tasks
 }
 
-export async function PatientTriageRoutePatientPage(
+export async function PatientReviewCasePage(
   ctx: OpenEncounterWorkflowContext,
 ) {
   const {
@@ -157,13 +159,9 @@ export async function PatientTriageRoutePatientPage(
   assert(completedPersonal(patient))
 
   const { clinic_employees, manage_patient_tasks } = await promiseProps({
-    clinic_employees: employees_presence.getAllAtOrganization(trx, {
+    clinic_employees: employees_presence.findAll(trx, {
       organization_id,
-      excluding_health_worker: {
-        health_worker_id,
-        at_work: true,
-        seniority_order: organization_employment.seniority_order,
-      },
+      excluding_health_worker_id: health_worker_id,
     }),
     manage_patient_tasks: managePatientTasks(ctx),
   })
@@ -178,7 +176,7 @@ export async function PatientTriageRoutePatientPage(
   })
 
   return (
-    <TriageRoutePatientSection
+    <ReviewCaseSection
       this_visit={{ reason, notes }}
       patient={patient}
       priority={priority}
@@ -189,4 +187,4 @@ export async function PatientTriageRoutePatientPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(PatientTriageRoutePatientPage)
+export default OpenEncounterWorkflowPage(PatientReviewCasePage)
