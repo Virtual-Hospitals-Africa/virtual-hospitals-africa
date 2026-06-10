@@ -84,3 +84,9 @@ manifest-checksum.txt
 /app
 
 !scripts/build
+
+#/tssv and json file need to be encrypted and not committed to git
+db/resources/hpcsa_doctors*
+db/seed/dumps/health_worker_licence_numbers.tsv
+db/seed/dumps/health_worker_licences.tsv
+db/seed/dumps/health_workers.tsv
