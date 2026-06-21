@@ -24,7 +24,7 @@ import { assertUnreachable } from '../../../../../../../../util/assertUnreachabl
 export const ReviewCaseSchema = z.object({
   next_step: z.enum([
     'accept_case',
-    'rerefer'
+    'rerefer',
   ]),
   notes: z.string().nullish(),
   health_worker_ids_to_be_notified: z.string().uuid().array().optional().default([]),
