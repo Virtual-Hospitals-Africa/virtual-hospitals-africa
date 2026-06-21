@@ -196,6 +196,7 @@ export type Workflow =
   | 'prescription_refill'
   | 'referral_placed'
   | 'registration'
+  | 'same_facility_referral_review'
   | 'stabilization'
   | 'triage'
 

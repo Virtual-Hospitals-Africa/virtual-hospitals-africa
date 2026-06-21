@@ -36,7 +36,7 @@ export const WORKFLOWS = [
   'prescription_refill' as const,
   'doctor_review' as const,
   'create_google_meet' as const,
-  'referral_review' as const,
+  'same_facility_referral_review' as const,
   // 'resuscitation' as const,
 ]
 
@@ -46,7 +46,7 @@ export const WORKFLOW_SNOMED_CONCEPTS = {
   registration: PATIENT_REGISTRATION,
   triage: TRIAGE,
   referral_placed: REFERRAL_PLACED,
-  referral_review: CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL,
+  same_facility_referral_review: CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL,
   emergency_escalation: REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
   stabilization: STABILIZATION,
   consultation: ENCOUNTER_FOR_PROBLEM,
@@ -80,7 +80,7 @@ export const WORKFLOW_STEPS = {
   referral_placed: [
     'confirm_handoff',
   ],
-  referral_review: [
+  same_facility_referral_review: [
     'review_case',
   ],
   emergency_escalation: [
