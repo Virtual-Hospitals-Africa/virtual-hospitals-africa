@@ -54,10 +54,6 @@ For each SNOMED concept the UI records:
 
 Auditors and clinicians can see **why** a medication suggestion appeared.
 
-## Resume / portfolio summary (copy-ready)
-
-> Built SNOMED CT → ICD-10 decision-support mapping for an EML-based dose calculator in a clinician-facing web app. The feature **suggests** ICD-10 candidate codes and weight-adjusted dose options — it never auto-prescribes. Implemented sex-aware resolution of context-dependent map rules, primary-vs-supplementary ICD-10 handling for lookup, and a per-concept audit trail that surfaces unclassifiable or ambiguous mappings for explicit clinician verification.
-
 ## Related code
 
 - `shared/snomed_to_icd10.ts` — types, constants, lookup policy
