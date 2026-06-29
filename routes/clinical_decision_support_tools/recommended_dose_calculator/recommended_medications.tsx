@@ -1,18 +1,65 @@
-import { Context } from 'fresh'
 import { parseRequest } from '../../../backend/parseForm.ts'
+import { TrxContext } from '../../../backend/attachTrx.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { MedicineRecommendation, RecommendedMedication } from '../../../components/RecommendedMedication.tsx'
+import { RecommendedMedication } from '../../../components/RecommendedMedication.tsx'
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
 import { recommended_doses } from '../../../db/models/recommended_doses.ts'
+import { snomed_to_icd10 } from '../../../db/models/snomed_to_icd10.ts'
 import { PatientCaseSchema } from '../../../shared/recommended_doses.ts'
 import { StepsSidebar } from '../../../components/library/sidebar/Steps.tsx'
 import { Top } from '../../../components/library/sidebar/Top.tsx'
 
+const create_patient_case_route = '/clinical_decision_support_tools/recommended_dose_calculator/create_patient_case'
+
 export default async function RecommendedMedications(
-  ctx: Context<unknown>,
+  ctx: TrxContext,
 ) {
-  const patient_case = await parseRequest(ctx.req, PatientCaseSchema.parse)
-  const matching_medicines = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(patient_case)
+  const parsed = await parseRequest(ctx.req, PatientCaseSchema.safeParse)
+  if (!parsed.success) {
+    return (
+      <HealthWorkerContentsWithSidebarAndDrawer
+        title='Recommended Dose Calculator'
+        url={ctx.url}
+        sidebar={
+          <StepsSidebar
+            top={{
+              href: '/clinical_decision_support_tools',
+              child: <LogoWithFullText variant='indigo' className='w-full' />,
+            }}
+            url={ctx.url}
+            route={ctx.route}
+            params={ctx.params}
+            nav_links={[
+              {
+                step: 'Create patient case',
+                route: create_patient_case_route,
+              },
+              {
+                step: 'Recommended medications',
+                route: '/clinical_decision_support_tools/recommended_dose_calculator/recommended_medications',
+              },
+            ]}
+            steps_completed={[]}
+          />
+        }
+      >
+        <div class='flex flex-col gap-4 py-6 px-4'>
+          <h2 class='text-lg font-semibold text-gray-900'>Missing patient details</h2>
+          <p class='text-sm text-gray-700'>
+            Please fill in the patient case form (Date of Birth, Sex, Height and Weight are required) before viewing recommended medications.
+          </p>
+          <a href={create_patient_case_route} class='text-sm font-medium text-indigo-600 hover:text-indigo-500'>
+            ← Back to create patient case
+          </a>
+        </div>
+      </HealthWorkerContentsWithSidebarAndDrawer>
+    )
+  }
+  const patient_case = parsed.data
+  const icd10_by_concept = await snomed_to_icd10.icd10Codes(ctx.state.trx, patient_case.snomed_concept_ids)
+  const mapped_icd10_codes = [...new Set([...icd10_by_concept.values()].flat())]
+  const conditions = [...patient_case.conditions, ...mapped_icd10_codes]
+  const matching_medicines = await recommended_doses.getRecommendedDosesWithPatientCaseApplied({ ...patient_case, conditions })
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       title='Recommended Dose Calculator'
@@ -66,13 +113,18 @@ export default async function RecommendedMedications(
 
         <section class='flex flex-col gap-2'>
           <h2 class='text-lg font-semibold text-gray-900'>Conditions</h2>
-          {(patient_case.conditions?.length || 0) > 0
+          {conditions.length > 0
             ? (
               <ul class='flex flex-col gap-1 list-disc list-inside'>
-                {/* {patient_case.conditions!.map((item, i) => <li key={i} class='text-sm text-gray-900'>{item.name}</li>)} */}
+                {conditions.map((code) => <li key={code} class='text-sm text-gray-900'>{code}</li>)}
               </ul>
             )
             : <p class='text-sm text-gray-500'>No conditions specified.</p>}
+          {patient_case.snomed_concept_ids.length > 0 && (
+            <p class='text-xs text-gray-500'>
+              SNOMED {patient_case.snomed_concept_ids.join(', ')} → ICD-10 {mapped_icd10_codes.length ? mapped_icd10_codes.join(', ') : '(no mapping)'}
+            </p>
+          )}
         </section>
 
         <section class='flex flex-col gap-2'>
@@ -86,7 +138,7 @@ export default async function RecommendedMedications(
                 {matching_medicines.map((med, i) => (
                   <RecommendedMedication
                     key={i}
-                    medicine={med as unknown as MedicineRecommendation}
+                    medicine={med}
                   />
                 ))}
               </div>

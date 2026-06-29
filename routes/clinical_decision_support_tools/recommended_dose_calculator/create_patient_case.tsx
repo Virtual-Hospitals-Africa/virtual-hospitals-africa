@@ -6,6 +6,7 @@ import FormSection from '../../../components/library/FormSection.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { DateInput } from '../../../islands/form/inputs/date.tsx'
 import { NumberInput } from '../../../islands/form/inputs/number.tsx'
+import { TextInput } from '../../../islands/form/inputs/text.tsx'
 import { SelectWithOptions } from '../../../islands/form/inputs/select_with_options.tsx'
 import PatientConditionsSection from '../../../islands/recommended_dose_calculator/PatientConditionsSection.tsx'
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
@@ -77,6 +78,13 @@ export default function CreatePatientCase(ctx: Context<unknown>) {
 
         <FormSection header='Patient Conditions'>
           <PatientConditionsSection />
+        </FormSection>
+
+        <FormSection header='SNOMED Diagnoses'>
+          <TextInput
+            name='snomed_concept_ids'
+            label='SNOMED concept IDs (comma-separated). Translated to ICD-10 before matching.'
+          />
         </FormSection>
 
         <div>

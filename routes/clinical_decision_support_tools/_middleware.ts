@@ -1,6 +1,7 @@
 import { attachTrx } from '../../backend/attachTrx.ts'
-import { callNext } from '../../backend/timeMiddleware.ts'
+import { timeMiddlewareCallNext } from '../../backend/timeMiddleware.ts'
 
 export const handler = [
-  callNext(attachTrx),
+  // attachTrx returns void; wrap it so the middleware chain continues via ctx.next()
+  timeMiddlewareCallNext(attachTrx),
 ]
