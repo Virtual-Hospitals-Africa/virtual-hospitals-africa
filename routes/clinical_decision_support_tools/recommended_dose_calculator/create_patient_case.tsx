@@ -4,6 +4,7 @@ import Form from '../../../components/library/Form.tsx'
 import FormGrid from '../../../components/library/FormGrid.tsx'
 import FormSection from '../../../components/library/FormSection.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
+import { DecisionSupportDisclaimer } from '../../../components/SnomedIcd10MappingAudit.tsx'
 import { DateInput } from '../../../islands/form/inputs/date.tsx'
 import { NumberInput } from '../../../islands/form/inputs/number.tsx'
 import { TextInput } from '../../../islands/form/inputs/text.tsx'
@@ -12,6 +13,10 @@ import PatientConditionsSection from '../../../islands/recommended_dose_calculat
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
 import { StepsSidebar } from '../../../components/library/sidebar/Steps.tsx'
 import { Top } from '../../../components/library/sidebar/Top.tsx'
+import {
+  RECOMMENDED_DOSE_CALCULATOR_SNOMED_FIELD_HELP,
+  RECOMMENDED_DOSE_CALCULATOR_SUBMIT_LABEL,
+} from '../../../shared/snomed_to_icd10.ts'
 
 export default function CreatePatientCase(ctx: Context<unknown>) {
   return (
@@ -47,6 +52,8 @@ export default function CreatePatientCase(ctx: Context<unknown>) {
         action='/clinical_decision_support_tools/recommended_dose_calculator/recommended_medications'
         className='flex flex-col gap-8 py-6 px-4'
       >
+        <DecisionSupportDisclaimer />
+
         <FormSection header='Demographic Details'>
           <FormGrid columns={2}>
             <DateInput
@@ -83,12 +90,12 @@ export default function CreatePatientCase(ctx: Context<unknown>) {
         <FormSection header='SNOMED Diagnoses'>
           <TextInput
             name='snomed_concept_ids'
-            label='SNOMED concept IDs (comma-separated). Translated to ICD-10 before matching.'
+            label={RECOMMENDED_DOSE_CALCULATOR_SNOMED_FIELD_HELP}
           />
         </FormSection>
 
         <div>
-          <Button type='submit'>Calculate Recommended Doses</Button>
+          <Button type='submit'>{RECOMMENDED_DOSE_CALCULATOR_SUBMIT_LABEL}</Button>
         </div>
       </Form>
     </HealthWorkerContentsWithSidebarAndDrawer>

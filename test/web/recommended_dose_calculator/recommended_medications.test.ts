@@ -4,6 +4,7 @@ import db from '../../../db/db.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import waitUntilTestServerUp from 'test/_helpers/waitUntilTestServerUp.ts'
 import { route } from '../../_route.ts'
+import { RECOMMENDED_DOSE_CALCULATOR_DISCLAIMER } from '../../../shared/snomed_to_icd10.ts'
 
 const recommended_medications_url = route +
   '/clinical_decision_support_tools/recommended_dose_calculator/recommended_medications'
@@ -25,10 +26,11 @@ describeParallel('/clinical_decision_support_tools/recommended_dose_calculator/r
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  itParallel('prompts for missing patient details when no query params are provided', async () => {
+  itParallel('states decision-support disclaimer on missing patient details', async () => {
     const response = await fetch(recommended_medications_url)
     assert(response.ok, `expected 200, got ${response.status}`)
     const body = await response.text()
+    assert(body.includes(RECOMMENDED_DOSE_CALCULATOR_DISCLAIMER))
     assert(body.includes('Missing patient details'))
     assert(body.includes('Date of Birth, Sex, Height and Weight are required'))
     assert(body.includes('/clinical_decision_support_tools/recommended_dose_calculator/create_patient_case'))
@@ -51,29 +53,28 @@ describeParallel('/clinical_decision_support_tools/recommended_dose_calculator/r
     const body = await response.text()
     assert(body.includes('E11.9'), 'expected ICD-10 code E11.9 from SNOMED 44054006')
     assert(body.includes('J45.9'), 'expected ICD-10 code J45.9 from SNOMED 195967001')
-    assert(
-      body.includes('SNOMED 44054006, 195967001'),
-      'expected SNOMED concept ids in mapping summary',
-    )
+    assert(body.includes('SNOMED → ICD-10 mapping audit'))
+    assert(body.includes('SNOMED 44054006'))
+    assert(body.includes('SNOMED 195967001'))
   })
 
-  itParallel('renders patient details and recommended medications for a valid patient case', async () => {
+  itParallel('renders patient details and suggested medications for a valid patient case', async () => {
     const response = await fetch(urlWithParams(valid_patient_case))
     assert(response.ok, `expected 200, got ${response.status}`)
     const body = await response.text()
     assert(body.includes('Patient Details'))
-    assert(body.includes('Conditions'))
-    assert(body.includes('Recommended Medications'))
+    assert(body.includes('ICD-10 codes used for dose lookup'))
+    assert(body.includes('Suggested medications (for your review)'))
     assert(body.includes('1988-10-10'))
     assert(body.includes('male'))
     assert(
-      !body.includes('No recommended medications found for the specified conditions.'),
-      'expected recommended medications for mapped ICD-10 conditions',
+      !body.includes('No suggested medications matched the specified ICD-10 codes.'),
+      'expected suggested medications for mapped ICD-10 conditions',
     )
-    assert(body.match(/Recommended Medications[\s\S]*?\(\d+\)/), 'expected a medication count when matches exist')
+    assert(body.match(/Suggested medications \(for your review\)[\s\S]*?\(\d+\)/), 'expected a medication count when matches exist')
   })
 
-  itParallel('reports no recommended medications when no conditions are specified', async () => {
+  itParallel('reports no suggested medications when no conditions are specified', async () => {
     const response = await fetch(urlWithParams({
       dob: '1988-10-10',
       sex: 'male',
@@ -82,6 +83,6 @@ describeParallel('/clinical_decision_support_tools/recommended_dose_calculator/r
     }))
     assert(response.ok, `expected 200, got ${response.status}`)
     const body = await response.text()
-    assert(body.includes('No conditions specified.'))
+    assert(body.includes('No ICD-10 codes available for lookup'))
   })
 })
