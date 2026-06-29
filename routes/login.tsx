@@ -12,6 +12,7 @@ import memoize from '../util/memoize.ts'
 import { readBooleanEnvironmentVariable, readMandatoryStringEnvironmentVariable } from '../util/env.ts'
 import { redirectUri } from '../external-clients/google.ts'
 import { health_worker_google_tokens } from '../db/models/health_worker_google_tokens.ts'
+import { health_workers } from '../db/models/health_workers.ts'
 import randomAvatarMediaId from '../mocks/randomAvatar.ts'
 
 const FAKE_GOOGLE_AUTH = readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH')
@@ -94,6 +95,10 @@ export const handler = {
     }
 
     if (session.entity_type === 'health_worker') {
+      const health_worker = await health_workers.getByIdOptional(db, session.entity_id)
+      if (health_worker && !health_workers.isEmployed(health_worker)) {
+        return redirect('/onboarding/welcome')
+      }
       return redirect(`/app?from_login=true`)
     }
 

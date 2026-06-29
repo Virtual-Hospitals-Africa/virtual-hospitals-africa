@@ -124,5 +124,4 @@ export const RECOMMENDED_DOSE_CALCULATOR_SNOMED_FIELD_HELP =
 
 export const RECOMMENDED_DOSE_CALCULATOR_SUBMIT_LABEL = 'Review suggested doses'
 
-export const RECOMMENDED_DOSE_CALCULATOR_SUGGESTED_MEDICATIONS_HEADER =
-  'Suggested medications (for your review)'
+export const RECOMMENDED_DOSE_CALCULATOR_SUGGESTED_MEDICATIONS_HEADER = 'Suggested medications (for your review)'

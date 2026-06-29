@@ -1,17 +1,10 @@
 import { parseRequest } from '../../../backend/parseForm.ts'
 import { TrxContext } from '../../../backend/attachTrx.ts'
-import {
-  DecisionSupportDisclaimer,
-  SnomedIcd10MappingAudit,
-} from '../../../components/SnomedIcd10MappingAudit.tsx'
+import { DecisionSupportDisclaimer } from '../../../components/SnomedIcd10MappingAudit.tsx'
+import { RecommendedDosesResults } from '../../../components/RecommendedDosesResults.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { RecommendedMedication } from '../../../components/RecommendedMedication.tsx'
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
-import { recommended_doses } from '../../../db/models/recommended_doses.ts'
-import { snomed_to_icd10 } from '../../../db/models/snomed_to_icd10.ts'
-import {
-  RECOMMENDED_DOSE_CALCULATOR_SUGGESTED_MEDICATIONS_HEADER,
-} from '../../../shared/snomed_to_icd10.ts'
+import { recommended_dose_calculator } from '../../../db/models/recommended_dose_calculator.ts'
 import { PatientCaseSchema } from '../../../shared/recommended_doses.ts'
 import { StepsSidebar } from '../../../components/library/sidebar/Steps.tsx'
 import { Top } from '../../../components/library/sidebar/Top.tsx'
@@ -64,17 +57,7 @@ export default async function RecommendedMedications(
     )
   }
   const patient_case = parsed.data
-  const mapping_result = await snomed_to_icd10.mapConcepts(
-    ctx.state.trx,
-    patient_case.snomed_concept_ids,
-    { sex: patient_case.sex, dob: patient_case.dob },
-  )
-  const primary_snomed_icd10 = snomed_to_icd10.primaryIcd10CodesForLookup(mapping_result)
-  const conditions_for_lookup = [...patient_case.conditions, ...primary_snomed_icd10]
-  const matching_medicines = await recommended_doses.getRecommendedDosesWithPatientCaseApplied({
-    ...patient_case,
-    conditions: conditions_for_lookup,
-  })
+  const lookup = await recommended_dose_calculator.lookup(ctx.state.trx, patient_case)
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       title='Recommended Dose Calculator'
@@ -104,76 +87,12 @@ export default async function RecommendedMedications(
       }
     >
       <div class='flex flex-col gap-6 py-6 px-4'>
-        <DecisionSupportDisclaimer />
-
-        <section class='flex flex-col gap-2'>
-          <h2 class='text-lg font-semibold text-gray-900'>Patient Details</h2>
-          <dl class='flex flex-col gap-1'>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Date of Birth</dt>
-              <dd class='text-sm text-gray-900'>{patient_case.dob}</dd>
-            </div>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Sex</dt>
-              <dd class='text-sm text-gray-900'>{patient_case.sex}</dd>
-            </div>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Height (cm)</dt>
-              <dd class='text-sm text-gray-900'>{String(patient_case.height_cm)}</dd>
-            </div>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Weight (kg)</dt>
-              <dd class='text-sm text-gray-900'>{String(patient_case.weight_kg)}</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class='flex flex-col gap-2'>
-          <h2 class='text-lg font-semibold text-gray-900'>ICD-10 codes used for dose lookup</h2>
-          <p class='text-sm text-gray-600'>
-            Manually entered ICD-10 codes plus primary SNOMED-derived candidates only. Supplementary SNOMED map groups are listed in the audit trail below and do not broaden suggestions.
-          </p>
-          {conditions_for_lookup.length > 0
-            ? (
-              <ul class='flex flex-col gap-1 list-disc list-inside'>
-                {conditions_for_lookup.map((code) => <li key={code} class='text-sm text-gray-900'>{code}</li>)}
-              </ul>
-            )
-            : <p class='text-sm text-gray-500'>No ICD-10 codes available for lookup. Enter ICD-10 manually or add SNOMED concepts above.</p>}
-        </section>
-
-        <SnomedIcd10MappingAudit
-          snomed_concept_ids={patient_case.snomed_concept_ids}
-          mappings={mapping_result}
+        <RecommendedDosesResults
+          patient_case={patient_case}
+          lookup={lookup}
+          snomed_source_description='Optional SNOMED concept ids from the form above, translated to suggested ICD-10 candidate codes for matching.'
+          icd10_lookup_description='Manually entered ICD-10 codes plus primary SNOMED-derived candidates only. Supplementary SNOMED map groups are listed in the audit trail below and do not broaden suggestions.'
         />
-
-        <section class='flex flex-col gap-2'>
-          <h2 class='text-lg font-semibold text-gray-900'>
-            {RECOMMENDED_DOSE_CALCULATOR_SUGGESTED_MEDICATIONS_HEADER}
-            {matching_medicines.length > 0 && <span class='ml-2 text-sm font-normal text-gray-500'>({matching_medicines.length})</span>}
-          </h2>
-          <p class='text-sm text-gray-600'>
-            Dose calculations below are suggestions based on the codes above. Review each option before prescribing.
-          </p>
-          {matching_medicines.length > 0
-            ? (
-              <div class='flex flex-col gap-4'>
-                {matching_medicines.map((med, i) => (
-                  <RecommendedMedication
-                    key={i}
-                    medicine={med}
-                  />
-                ))}
-              </div>
-            )
-            : (
-              <p class='text-sm text-gray-500'>
-                {!conditions_for_lookup.length
-                  ? 'No ICD-10 codes specified for lookup.'
-                  : 'No suggested medications matched the specified ICD-10 codes.'}
-              </p>
-            )}
-        </section>
       </div>
     </HealthWorkerContentsWithSidebarAndDrawer>
   )

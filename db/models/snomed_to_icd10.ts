@@ -7,8 +7,8 @@ import {
   SNOMED_MAP_CATEGORY,
   SnomedIcd10CodeMapping,
   SnomedIcd10ConceptMapping,
-  SnomedIcd10MapStatus,
   SnomedIcd10MappingResult,
+  SnomedIcd10MapStatus,
   SnomedIcd10PatientContext,
   SnomedIcd10ResolvedVia,
 } from '../../shared/snomed_to_icd10.ts'

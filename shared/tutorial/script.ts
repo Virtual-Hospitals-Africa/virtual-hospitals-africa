@@ -574,7 +574,21 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   },
 
   // =========================================================================
-  // SECTION 8: ROUTE PATIENT
+  // SECTION 8: RECOMMENDED DOSES
+  // =========================================================================
+  {
+    type: 'step_transition',
+    to_step: 'recommended_doses',
+  },
+  {
+    type: 'dialogue',
+    speaker: 'guide',
+    text:
+      "Before routing the patient, review suggested medication doses derived from this visit's SNOMED findings and diagnoses. These are decision-support suggestions only — you remain responsible for every prescription.",
+  },
+
+  // =========================================================================
+  // SECTION 9: ROUTE PATIENT
   // =========================================================================
   {
     type: 'step_transition',

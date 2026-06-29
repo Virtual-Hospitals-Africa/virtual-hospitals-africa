@@ -38,9 +38,7 @@ function CodeDetail({
       {flags.length > 0 && (
         <span class='text-gray-500'>
           {' '}
-          —
-          {' '}
-          {flags.join(' · ')}
+          — {flags.join(' · ')}
         </span>
       )}
     </li>
@@ -69,8 +67,7 @@ export function SnomedIcd10MappingAudit({
       <div class='flex flex-col gap-1'>
         <h2 class='text-lg font-semibold text-gray-900'>SNOMED → ICD-10 mapping audit</h2>
         <p class='text-sm text-gray-600'>
-          Candidate ICD-10 codes suggested from SNOMED. Primary codes (map group 1) drive dose lookup;
-          supplementary codes are shown for traceability only.
+          Candidate ICD-10 codes suggested from SNOMED. Primary codes (map group 1) drive dose lookup; supplementary codes are shown for traceability only.
         </p>
       </div>
       <ul class='flex flex-col gap-4'>
@@ -92,9 +89,7 @@ export function SnomedIcd10MappingAudit({
               {mapping.codes.length > 0
                 ? (
                   <ul class='flex flex-col gap-1 list-disc list-inside'>
-                    {mapping.codes.map((code) => (
-                      <CodeDetail key={`${code.map_group}-${code.icd10_code}`} code={code} />
-                    ))}
+                    {mapping.codes.map((code) => <CodeDetail key={`${code.map_group}-${code.icd10_code}`} code={code} />)}
                   </ul>
                 )
                 : null}

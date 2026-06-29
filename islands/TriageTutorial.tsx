@@ -114,6 +114,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
 
   const is_urgent = [
     'assign_priority',
+    'recommended_doses',
     'route_patient',
     'complete',
   ].includes(current_step)
@@ -207,6 +208,14 @@ const StepRenderer = memo(function StepRenderer({
 
     case 'assign_priority':
       return <AssignPriorityStep />
+
+    case 'recommended_doses':
+      return (
+        <div class='flex flex-col gap-4 p-4'>
+          <h2 class='text-lg font-semibold'>Suggested medication doses</h2>
+          <p class='text-sm text-gray-600'>Review SNOMED-derived ICD-10 mappings and EML dose suggestions before routing the patient.</p>
+        </div>
+      )
 
     case 'route_patient':
       return <RoutePatientStep />
