@@ -203,7 +203,7 @@ export const snomed_to_icd10 = {
       .execute()
 
     const rows_by_concept = groupBy(rows, 'referenced_component_id')
-    
+
     const by_concept = new Map<string, SnomedIcd10ConceptMapping>()
     for (const snomed_concept_id of snomed_concept_ids) {
       by_concept.set(
