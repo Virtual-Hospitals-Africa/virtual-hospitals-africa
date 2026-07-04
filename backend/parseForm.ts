@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { Maybe } from '../types.ts'
+import { AnyRecord, Maybe } from '../types.ts'
 import set from '../util/set.ts'
 import { assertOr400 } from '../util/assertOr.ts'
 import deepRemoveHoles from '../util/deepRemoveHoles.ts'
@@ -55,6 +55,7 @@ function isBlank(form_data: Maybe<FormData>) {
 
 export async function requestAsRecord(
   req: Request,
+  params?: AnyRecord,
 ): Promise<Record<string, unknown>> {
   assert(['POST', 'GET'].includes(req.method))
 
@@ -88,7 +89,10 @@ export async function requestAsRecord(
   })
   Object.keys(files).forEach((key) => values_map.delete(key))
 
-  const record = parseFormWithoutFilesNoTypeCheck(values_map)
+  const record = {
+    ...params,
+    ...parseFormWithoutFilesNoTypeCheck(values_map),
+  }
 
   // We could write to a file instead of to memory. Either way, better than lugging around the db/trx just for this
   await Promise.all(

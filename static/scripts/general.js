@@ -453,7 +453,12 @@ websocket.onmessage = function (e) {
       timestamp: message_data.created_at,
     })
     notification.onclick = function () {
-      window.location.href = message_data.action.href
+      window.focus()
+      var form = document.createElement('form')
+      form.method = 'POST'
+      form.action = message_data.action.href
+      document.body.appendChild(form)
+      form.submit()
     }
   }
   dispatchEvent(

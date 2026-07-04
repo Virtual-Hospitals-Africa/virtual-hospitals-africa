@@ -188,6 +188,7 @@ export type VitalAssessment = 'consciousness' | 'mobility_assessment' | 'trauma_
 export type WarningSignPriority = 'Emergency' | 'Urgent' | 'Very urgent'
 
 export type Workflow =
+  | 'chart_review'
   | 'check_with_colleague'
   | 'consultation'
   | 'create_google_meet'

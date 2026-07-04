@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { Client } from 'pg'
 import { isPriority, ORDERED_PRIORITIES, Priority, PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
-import { NonEmptyArray, PostgresInterval, RenderedNotification, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { Maybe, NonEmptyArray, PostgresInterval, RenderedNotification, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { orderByArrayPosition } from '../helpers.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 import { base } from './_base.ts'
@@ -307,6 +307,31 @@ export const notifications = base({
       .where('seen_at', 'is', null)
       .executeTakeFirst()
     return Number(result.numUpdatedRows)
+  },
+  markSeenByActionHref(
+    trx: TrxOrDb,
+    { health_worker_id, action_href, patient_encounter_id }: {
+      health_worker_id: string
+      action_href: string
+      patient_encounter_id: Maybe<string>
+    },
+  ) {
+    // Reminder that for all other routes we want the route to uniquely identify a resource.
+    // Maybe this `open_encounter` was a bad idea, but it's grandfathered in for sure
+    if (action_href.includes('/open_encounter')) {
+      assert(
+        patient_encounter_id,
+        'Must include patient_encounter_id for actions involving the open encounter, lest we mark notifications seen for past encounters',
+      )
+    }
+    return trx
+      .updateTable('health_worker_web_notifications')
+      .set({ seen_at: new Date() })
+      .where('health_worker_id', '=', health_worker_id)
+      .where('action_href', '=', action_href)
+      .where('seen_at', 'is', null)
+      .$if(!!patient_encounter_id, (qb) => qb.where('patient_encounter_id', '=', patient_encounter_id!))
+      .execute()
   },
   async initializeNotificationsPubSub(): Promise<NotificationsPubSub> {
     // deno-lint-ignore no-explicit-any

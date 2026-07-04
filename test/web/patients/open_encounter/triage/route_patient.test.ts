@@ -19,9 +19,7 @@ import assertLength from '../../../../../util/assertLength.ts'
 
 describeParallel('triage/additional_tasks_and_investigations', () => {
   before(waitUntilTestServerUp)
-  before(async () => {
-    await events.initializeAllProcessedPubSub()
-  })
+  before(() => events.initializeAllProcessedPubSub())
   afterAll(() => db.destroy())
   afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
@@ -120,7 +118,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         route_patient: route_patient_form_values,
       })
 
-      assert($check_with_colleague.url.endsWith('/open_encounter/check_with_colleague/await_instructions'))
+      assert($check_with_colleague.url.endsWith('/open_encounter/check_with_colleague/await_orders'))
 
       const notifications_of_shcp_post = await notifications.findAll(db, {
         health_worker_id: shcp.id,

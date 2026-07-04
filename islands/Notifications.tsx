@@ -6,7 +6,7 @@ import { useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
 import { Fragment } from 'preact'
-import { markNotificationsSeen } from './notifications/markNotificationsSeen.ts'
+import { NotificationActionButton } from './notifications/NotificationActionButton.tsx'
 
 /* NOTIFICATIONS SUBSCRIPTION */
 
@@ -70,15 +70,6 @@ export function Notification(
     dismiss: () => void
   },
 ) {
-  function markSeenOnActivate() {
-    void markNotificationsSeen(notification.notification_id, { keepalive: true })
-  }
-
-  function handleActionAuxClick(event: MouseEvent) {
-    if (event.button !== 1) return
-    markSeenOnActivate()
-  }
-
   return (
     <div className='flex self-end float-right w-full max-w-md bg-white rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5 z-9'>
       <div className='flex-1 w-0 p-4'>
@@ -101,15 +92,13 @@ export function Notification(
       <div className='flex border-l border-gray-200'>
         <div className='flex flex-col divide-y divide-gray-200'>
           <div className='flex flex-1 h-0'>
-            <a
-              type='button'
-              className='flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-indigo-600 border border-transparent rounded-none rounded-tr-lg hover:text-indigo-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500'
+            <NotificationActionButton
+              notification_id={notification.notification_id}
               href={notification.action.href}
-              onClick={markSeenOnActivate}
-              onAuxClick={handleActionAuxClick}
+              className='flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-indigo-600 border border-transparent rounded-none rounded-tr-lg hover:text-indigo-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-indigo-500'
             >
               {notification.action.title}
-            </a>
+            </NotificationActionButton>
           </div>
           <div className='flex flex-1 h-0'>
             <button

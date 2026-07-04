@@ -25,18 +25,26 @@ const default_deps: DispatchWebPushForNotificationDeps = {
   sendWebPushNotification: defaultSendWebPushNotification,
 }
 
-function webPushUrlForNotification(action_href: string): string {
-  if (!action_href || action_href === '#todo') return '/app/notifications'
+// action_href is a URL to POST to, which the service worker does on
+// notification click before navigating to wherever the POST redirects
+function webPushActionHrefForNotification(
+  action_href: string,
+): string | undefined {
+  if (!action_href || action_href === '#todo') return undefined
   return action_href
 }
 
 function webPushPayloadFromNotification(
   notification: RenderedNotification,
 ): WebPushNotificationPayload {
+  const action_href = webPushActionHrefForNotification(
+    notification.action.href,
+  )
   return {
     title: notification.title,
     body: notification.description,
-    url: webPushUrlForNotification(notification.action.href),
+    url: '/app/notifications',
+    ...(action_href && { action_href }),
     notification_id: notification.notification_id,
     notification_type: notification.notification_type,
   }

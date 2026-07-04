@@ -18,6 +18,7 @@ import findMatching from '../../util/findMatching.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { health_workers } from './health_workers.ts'
 import { employees } from './employees.ts'
+import { base, identity, simpleBaseQuery } from './_base.ts'
 
 export function* employeesPresentWithPatient(
   { status, all_employees_seen }: RenderedPatientOpenEncounter,
@@ -68,7 +69,10 @@ export class PresentWithAnotherPatientError extends AlertWithActionsError {
   }
 }
 
-export const patient_workflows = {
+export const patient_workflows = base({
+  top_level_table: 'patient_workflows',
+  baseQuery: simpleBaseQuery('patient_workflows'),
+  formatResult: identity,
   completedStep(
     trx: TrxOrDbOrQueryCreator,
     { patient_workflow_id, workflow, step }: {
@@ -159,14 +163,4 @@ export const patient_workflows = {
     return trx.insertInto('patient_workflows')
       .values(to_insert).execute()
   },
-  insertOne(
-    trx: TrxOrDbOrQueryCreator,
-    to_insert: InsertObject<DB, 'patient_workflows'>,
-  ) {
-    return trx
-      .insertInto('patient_workflows')
-      .values(to_insert)
-      .returning('id')
-      .executeTakeFirstOrThrow()
-  },
-}
+})

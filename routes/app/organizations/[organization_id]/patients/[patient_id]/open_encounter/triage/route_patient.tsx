@@ -11,15 +11,16 @@ import { DB } from '../../../../../../../../db.d.ts'
 import { success } from '../../../../../../../../util/alerts.ts'
 import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS, triageNextStepRecommendations } from '../../../../../../../../shared/triage_route_patient.ts'
-import { startWorkflow } from '../start-workflow.tsx'
+import { startWorkflow } from '../start-workflow/[workflow].tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { redirectToFirstIncompleteStep } from '../index.tsx'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
-import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
+import { assertOr400, assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { isManage } from '../../../../../../../../shared/tasks.ts'
 import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
 import { notifications } from '../../../../../../../../db/models/notifications.ts'
-import { assertArrayNonEmpty } from '../../../../../../../../util/arraySize.ts'
+import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
+import { pMap } from '../../../../../../../../util/inParallel.ts'
 
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
@@ -30,7 +31,7 @@ export const TriageRoutePatientSchema = z.object({
 export const handler = postHandler(
   TriageRoutePatientSchema,
   async (ctx: OpenEncounterWorkflowContext, { next_step, health_worker_ids_to_be_notified }) => {
-    const { trx, patient, organization, organization_employment } = ctx.state
+    const { trx, patient, patient_encounter_id, organization, organization_employment } = ctx.state
 
     assert(completedPersonal(patient))
     const completing_last_step = completeLastStep(ctx)
@@ -68,6 +69,8 @@ export const handler = postHandler(
       }
 
       case 'check_with_colleague': {
+        assertOr400(health_worker_ids_to_be_notified.length, 'Must specify at least one colleague')
+
         const { redirect_to } = await promiseProps({
           completing_last_step,
           redirect_to: startWorkflow(
@@ -78,26 +81,30 @@ export const handler = postHandler(
               patient_presence: 'move_into_specificed_workflow',
             },
           ),
-        })
-
-        assertArrayNonEmpty(health_worker_ids_to_be_notified)
-        for (const to_notify_id of health_worker_ids_to_be_notified) {
-          await notifications.insert(
-            ctx.state.trx,
+          chart_review: patient_workflows.insertOne(
+            trx,
             {
-              action_title: 'Referral',
-              action_href: '#todo',
-              avatar_url: ctx.state.health_worker.avatar_url!,
-              description: `A case was referred to you`,
-              patient_encounter_id: ctx.state.patient_encounter_id,
-              table_name: 'patient_encounters',
-              row_id: ctx.state.patient_encounter_id,
-              notification_type: 'case_referral',
-              title: 'Case Referral',
-              health_worker_id: to_notify_id,
+              workflow: 'chart_review',
+              patient_encounter_id,
             },
-          )
-        }
+          ),
+          insert_notifications: pMap(health_worker_ids_to_be_notified, (to_notify_id) =>
+            notifications.insert(
+              trx,
+              {
+                action_title: 'Review Chart',
+                action_href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/start-workflow/chart_review`,
+                avatar_url: ctx.state.health_worker.avatar_url!,
+                description: `A case was referred to you to review`,
+                patient_encounter_id,
+                table_name: 'patient_encounters',
+                row_id: ctx.state.patient_encounter_id,
+                notification_type: 'case_referral',
+                title: 'Chart review',
+                health_worker_id: to_notify_id,
+              },
+            )),
+        })
         return redirect(redirect_to)
       }
       // case 'stabilize_patient': {

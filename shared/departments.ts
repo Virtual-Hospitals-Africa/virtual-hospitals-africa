@@ -50,6 +50,7 @@ export const WORKFLOW_DEPARTMENTS = {
   check_with_colleague: DEPARTMENTS as NonEmptyArray<Department>,
   hand_over: DEPARTMENTS as NonEmptyArray<Department>,
   create_google_meet: DEPARTMENTS as NonEmptyArray<Department>,
+  chart_review: DEPARTMENTS as NonEmptyArray<Department>,
 } satisfies {
   [w in Workflow]: NonEmptyArray<Department>
 }

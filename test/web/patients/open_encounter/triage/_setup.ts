@@ -168,7 +168,7 @@ export async function setupTriage({
   }
 
   await nurse.fetchCheerio(
-    openEncounterRoute('start-workflow?workflow=triage'),
+    openEncounterRoute('start-workflow/triage'),
     { method: 'POST' },
   )
   const $ = await (keys(steps).length ? postStep(steps) : getStep('warning_signs'))

@@ -85,7 +85,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
       assertEquals(payload, {
         title: 'Web push title',
         body: 'Web push description',
-        url: '/app/custom',
+        url: '/app/notifications',
+        action_href: '/app/custom',
         notification_id,
         notification_type: 'encounter_update',
       })
@@ -145,7 +146,7 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
       assertEquals(log_error.calls.length, 1)
     })
 
-    it('uses /app/notifications when action_href is #todo', async () => {
+    it('omits action_href when it is #todo', async () => {
       const health_worker = await addTestEmployee(db, { role: 'nurse' })
       const { id: notification_id } = await insertTestNotification(health_worker.id, {
         action_href: '#todo',
@@ -156,14 +157,13 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
       await dispatchWebPushForNotification({ notification_id, health_worker_id: health_worker.id }, deps)
 
       assertEquals(calls.length, 1)
-      let url: string | undefined
       for (const call of calls) {
-        url = call.payload.url
+        assertEquals(call.payload.url, '/app/notifications')
+        assertEquals('action_href' in call.payload, false)
       }
-      assertEquals(url, '/app/notifications')
     })
 
-    it('uses /app/notifications when action_href is empty', async () => {
+    it('omits action_href when it is empty', async () => {
       const health_worker = await addTestEmployee(db, { role: 'nurse' })
       const { id: notification_id } = await insertTestNotification(health_worker.id, {
         action_href: '',
@@ -174,11 +174,10 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
       await dispatchWebPushForNotification({ notification_id, health_worker_id: health_worker.id }, deps)
 
       assertEquals(calls.length, 1)
-      let url: string | undefined
       for (const call of calls) {
-        url = call.payload.url
+        assertEquals(call.payload.url, '/app/notifications')
+        assertEquals('action_href' in call.payload, false)
       }
-      assertEquals(url, '/app/notifications')
     })
 
     it('deletes expired subscriptions', async () => {

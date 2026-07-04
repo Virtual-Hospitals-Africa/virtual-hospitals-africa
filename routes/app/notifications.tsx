@@ -8,7 +8,7 @@ import { BellIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { vapid_public_key } from '../../external-clients/web-push-config.ts'
 import { EnableWebPushNotifications } from '../../islands/notifications/EnableWebPushNotifications.tsx'
 import { MarkPageNotificationsSeen } from '../../islands/notifications/MarkPageNotificationsSeen.tsx'
-import { NotificationSeenLink } from '../../islands/notifications/NotificationSeenLink.tsx'
+import { NotificationActionButton } from '../../islands/notifications/NotificationActionButton.tsx'
 
 const ROWS_PER_PAGE = 25
 
@@ -71,13 +71,13 @@ function NotificationRow(
         <p className='mt-1 text-sm text-gray-500'>{notification.description}</p>
         <p className='mt-1 text-xs text-gray-400'>{notification.time_display}</p>
       </div>
-      <NotificationSeenLink
+      <NotificationActionButton
         notification_id={notification.notification_id}
         href={notification.action.href}
         className='text-sm font-medium text-indigo-600 hover:text-indigo-500 whitespace-nowrap'
       >
         {notification.action.title}
-      </NotificationSeenLink>
+      </NotificationActionButton>
     </li>
   )
 }
