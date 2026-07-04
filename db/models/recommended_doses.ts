@@ -5,6 +5,7 @@ import { patientAgeDetermination } from '../../shared/patient_age_determination.
 import type { ICD10Indications, ParsedDose } from '../../backend/recommended_doses/shared.ts'
 import { AppliedDose, Medicine, MedicineSchema, ParsedDoseSchema, ParsedPatientCase } from '../../shared/recommended_doses.ts'
 import compactMap from '../../util/compactMap.ts'
+import { assertUnreachable } from '../../util/assertUnreachable.ts'
 
 function resolvePerKg(per_size: ParsedDose['per_size']): number | null {
   if (per_size === 'kg') return 1
@@ -101,14 +102,63 @@ function getAgeInYears(dob: string): number {
   return Math.max(0, age_in_years)
 }
 
-function scheduleMatchesAge(schedule: z.infer<typeof ParsedDoseSchema>, patient_is_adult: boolean | undefined): boolean {
-  console.log({ schedule, patient_is_adult })
+function scheduleMatchesAgeClassifier(schedule: z.infer<typeof ParsedDoseSchema>, patient_is_adult: boolean | undefined, dob: string): boolean {
   if (!schedule.age_classifier) return true
-  const adult_classifiers = new Set(['adult', 'elderly'])
-  const child_classifiers = new Set(['child', 'adolescent', 'infant', 'newborn', 'premature baby', 'breastfed infant'])
-  if (patient_is_adult === true) return adult_classifiers.has(schedule.age_classifier)
-  if (patient_is_adult === false) return child_classifiers.has(schedule.age_classifier)
-  return true
+  switch (schedule.age_classifier) {
+    case 'adult':
+      return patient_is_adult === true
+    case 'child':
+      return patient_is_adult === false
+    case 'elderly':
+      return scheduleMatchesAgeRange({ age_range: { min: { value: 65, units: 'years', inclusive: true } } }, dob)
+    case 'adolescent':
+      return scheduleMatchesAgeRange({
+        age_range: { min: { value: 10, units: 'years', inclusive: true }, max: { value: 19, units: 'years', inclusive: true } },
+      }, dob)
+    case 'infant':
+      return scheduleMatchesAgeRange({
+        age_range: { min: { value: 1, units: 'months', inclusive: true }, max: { value: 12, units: 'months', inclusive: true } },
+      }, dob)
+    case 'newborn':
+      return scheduleMatchesAgeRange({ age_range: { max: { value: 1, units: 'months', inclusive: true } } }, dob)
+    case 'premature baby':
+      // Prematurity isn't derivable from dob, so match any neonate and let the clinician decide
+      return scheduleMatchesAgeRange({ age_range: { max: { value: 1, units: 'months', inclusive: true } } }, dob)
+    case 'breastfed infant':
+      // Breastfeeding status isn't derivable from dob, so match any infant and let the clinician decide
+      return scheduleMatchesAgeRange({ age_range: { max: { value: 12, units: 'months', inclusive: true } } }, dob)
+    default:
+      assertUnreachable(schedule.age_classifier)
+  }
+}
+
+type AgeBound = { value: number; units: 'months' | 'years'; inclusive: boolean }
+
+function ageInUnits(age_in_years: number, units: 'months' | 'years'): number {
+  return units === 'years' ? age_in_years : age_in_years * 12
+}
+
+function meetsMin(bound: AgeBound | null | undefined, age_in_years: number): boolean {
+  if (!bound) return true
+  const age = ageInUnits(age_in_years, bound.units)
+  return bound.inclusive ? age >= bound.value : age > bound.value
+}
+
+function meetsMax(bound: AgeBound | null | undefined, age_in_years: number): boolean {
+  if (!bound) return true
+  const age = ageInUnits(age_in_years, bound.units)
+  // An inclusive max covers the entire final unit: a max of 19 years still
+  // matches a 19.6-year-old, who remains 19 until their 20th birthday
+  return bound.inclusive ? age < bound.value + 1 : age < bound.value
+}
+
+function scheduleMatchesAgeRange(schedule: z.infer<typeof ParsedDoseSchema>, dob: string): boolean {
+  if (!schedule.age_range) return true
+
+  const age_in_years = getAgeInYears(dob)
+
+  return meetsMin(schedule.age_range.min, age_in_years) &&
+    meetsMax(schedule.age_range.max, age_in_years)
 }
 
 function findMatchingMedicines(medicines: Medicine[], query: ParsedPatientCase): Medicine[] {
@@ -125,7 +175,10 @@ function findMatchingMedicines(medicines: Medicine[], query: ParsedPatientCase):
   return compactMap(medicines, (m) => {
     if (!indicationsMatch(m.icd10_indications, codes)) return
     if (patient_is_adult === undefined) return m
-    const filtered_schedules = m.schedules.filter((s) => scheduleMatchesAge(s, patient_is_adult))
+    const filtered_schedules = m.schedules.filter((s) =>
+      scheduleMatchesAgeClassifier(s, patient_is_adult, query.dob) &&
+      scheduleMatchesAgeRange(s, query.dob)
+    )
     if (!filtered_schedules.length) return
     return { ...m, schedules: filtered_schedules }
   })

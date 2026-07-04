@@ -124,8 +124,8 @@ export const BuildingDoseSchema = z.object({
   ]).optional(),
 
   age_range: z.object({
-    min: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']) })).optional(),
-    max: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']) })).optional(),
+    min: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']), inclusive: z.boolean() })).optional(),
+    max: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']), inclusive: z.boolean() })).optional(),
   }).optional(),
 
   sex: z.enum(['all', 'female', 'male']).optional(),

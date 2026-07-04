@@ -19,16 +19,26 @@ function dobYearsAgo(years: number): string {
   return date.toISOString().slice(0, 10)
 }
 
+function dobMonthsAgo(months: number): string {
+  const date = new Date()
+  date.setMonth(date.getMonth() - months)
+  // Move safely past the month boundary so the patient is unambiguously `months` old
+  date.setDate(date.getDate() - 10)
+  return date.toISOString().slice(0, 10)
+}
+
 function testPatient(opts: {
   sex?: 'male' | 'female'
-  age_years: number
+  age_years?: number
+  age_months?: number
   height_cm: number
   weight_kg: number
   conditions: string[]
 }): ParsedPatientCase {
+  const dob = opts.age_months !== undefined ? dobMonthsAgo(opts.age_months) : dobYearsAgo(opts.age_years!)
   return PatientCaseSchema.parse({
     sex: opts.sex ?? 'female',
-    dob: dobYearsAgo(opts.age_years),
+    dob,
     height_cm: opts.height_cm,
     weight_kg: opts.weight_kg,
     conditions: opts.conditions,
@@ -103,33 +113,99 @@ describe('db/models/recommended_doses.ts', () => {
       assertEquals(benzyl.schedules.map((s) => s.age_classifier), ['adult'])
     })
 
-    it('gives a child only the child-classified schedules (adolescent is a child classifier)', async () => {
-      const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(child_7yo(['B85.1']))
+    it('gives a child in the adolescent age range only the adolescent schedules', async () => {
+      const child_11yo = testPatient({ sex: 'male', age_years: 11, height_cm: 140, weight_kg: 35, conditions: ['B85.1'] })
+      const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(child_11yo)
       const benzyl = getMedicine(results, 'Benzyl benzoate')
       assertEquals(benzyl.schedules.map((s) => s.age_classifier), ['adolescent'])
     })
 
+    it('matches an inclusive max age bound for the entire final year', async () => {
+      // The adolescent schedule's 10-19 years range is inclusive, so a patient
+      // past their 19th birthday (but not yet 20) is still 19 and matches it
+      // alongside the adult schedule
+      const adult_19yo = testPatient({ sex: 'female', age_years: 19, height_cm: 165, weight_kg: 60, conditions: ['B85.1'] })
+      const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(adult_19yo)
+      const benzyl = getMedicine(results, 'Benzyl benzoate')
+      assertEquals(benzyl.schedules.map((s) => s.age_classifier), ['adolescent', 'adult'])
+    })
+
+    it('excludes the medicine for a child below the adolescent age range', async () => {
+      // A 7-year-old matches neither the adolescent (10-19 years) nor the adult schedule
+      const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(child_7yo(['B85.1']))
+      assertEquals(getMedicines(results, 'Benzyl benzoate'), [])
+    })
+
     it('treats a patient 150cm or taller as an adult regardless of age', async () => {
+      // The adult schedule matches by height; the adolescent schedule still
+      // matches because an 11-year-old is within its 10-19 years age range
       const tall_11yo = testPatient({ sex: 'male', age_years: 11, height_cm: 152, weight_kg: 45, conditions: ['B85.1'] })
       const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(tall_11yo)
       const benzyl = getMedicine(results, 'Benzyl benzoate')
-      assertEquals(benzyl.schedules.map((s) => s.age_classifier), ['adult'])
+      assertEquals(benzyl.schedules.map((s) => s.age_classifier), ['adolescent', 'adult'])
     })
 
     it('treats a patient 12 or older as an adult regardless of height', async () => {
+      // The adult schedule matches by age; the adolescent schedule still
+      // matches because a 13-year-old is within its 10-19 years age range
       const short_13yo = testPatient({ sex: 'female', age_years: 13, height_cm: 140, weight_kg: 40, conditions: ['B85.1'] })
       const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(short_13yo)
       const benzyl = getMedicine(results, 'Benzyl benzoate')
-      assertEquals(benzyl.schedules.map((s) => s.age_classifier), ['adult'])
+      assertEquals(benzyl.schedules.map((s) => s.age_classifier), ['adolescent', 'adult'])
     })
 
-    it('keeps all schedules when none match the patient age group', async () => {
-      // Aciclovir "250 mg/m2/dose" (B00.1) only has a child schedule; an adult
-      // still sees the medicine rather than an empty schedule list
+    it('excludes a medicine when no schedule matches the patient age group', async () => {
+      // Aciclovir "250 mg/m2/dose" (B00.1) only has a child schedule, so an
+      // adult does not see it
       const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(adult_male(['B00.1']))
-      const aciclovir = getMedicine(results, 'Aciclovir', '250 mg/m2/dose')
-      assertEquals(aciclovir.schedules.length, 1)
-      assertEquals(aciclovir.schedules[0].age_classifier, 'child')
+      assertEquals(getMedicines(results, 'Aciclovir', '250 mg/m2/dose'), [])
+    })
+
+    it('filters schedules by age ranges expressed in months', async () => {
+      // Potassium Chloride "125mg (<6 months); 250mg (>6 months)" (A09.0) has
+      // one schedule with max 6 months and one with min 6 months
+      const infant_4mo = testPatient({ sex: 'male', age_months: 4, height_cm: 62, weight_kg: 7, conditions: ['A09.0'] })
+      const for_4mo = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(infant_4mo)
+      const kcl_4mo = getMedicine(for_4mo, 'Potassium Chloride', '125mg (<6 months); 250mg (>6 months)')
+      assertEquals(kcl_4mo.schedules.map((s) => s.value), [125])
+
+      const for_1yo = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(infant_1yo(['A09.0']))
+      const kcl_1yo = getMedicine(for_1yo, 'Potassium Chloride', '125mg (<6 months); 250mg (>6 months)')
+      assertEquals(kcl_1yo.schedules.map((s) => s.value), [250])
+    })
+
+    it('filters schedules by age ranges expressed in years', async () => {
+      // Albendazole "200 mg (1-2 years); 400mg (>2 years)" (B68.0) has one
+      // schedule for 1-2 years and one for 2+ years
+      const toddler_18mo = testPatient({ sex: 'female', age_months: 18, height_cm: 80, weight_kg: 11, conditions: ['B68.0'] })
+      const for_18mo = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(toddler_18mo)
+      const albendazole_18mo = getMedicine(for_18mo, 'Albendazole', '200 mg (1-2 years); 400mg (>2 years)')
+      assertEquals(albendazole_18mo.schedules.map((s) => s.value), [200])
+
+      const for_7yo = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(child_7yo(['B68.0']))
+      const albendazole_7yo = getMedicine(for_7yo, 'Albendazole', '200 mg (1-2 years); 400mg (>2 years)')
+      assertEquals(albendazole_7yo.schedules.map((s) => s.value), [400])
+    })
+
+    it('filters schedules whose age range mixes months and years', async () => {
+      // Vitamin A (E40-43) has schedules for <6 months, 6-11 months, and
+      // 12 months - 5 years; the last mixes units within one range
+      const raw_dose = '50 000 IU (<6 months); 100 000 IU (6-11 months); 200 000 IU (12 months - 5 years)'
+
+      const infant_8mo = testPatient({ sex: 'male', age_months: 8, height_cm: 69, weight_kg: 8, conditions: ['E40-43'] })
+      const for_8mo = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(infant_8mo)
+      assertEquals(getMedicine(for_8mo, 'Vitamin A', raw_dose).schedules.map((s) => s.value), [100000])
+
+      const child_3yo = testPatient({ sex: 'female', age_years: 3, height_cm: 95, weight_kg: 14, conditions: ['E40-43'] })
+      const for_3yo = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(child_3yo)
+      assertEquals(getMedicine(for_3yo, 'Vitamin A', raw_dose).schedules.map((s) => s.value), [200000])
+    })
+
+    it('excludes a schedule whose age range does not match even when its age classifier does', async () => {
+      // Aciclovir "400mg" (B00.1) has a child-classified schedule restricted
+      // to 15+ years and an adult schedule; a 7-year-old matches neither
+      const results = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(child_7yo(['B00.1']))
+      assertEquals(getMedicines(results, 'Aciclovir', '400mg'), [])
     })
 
     it('includes schedules without an age classifier for patients of any age', async () => {

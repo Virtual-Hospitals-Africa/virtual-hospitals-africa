@@ -2767,7 +2767,7 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "q8h",
-                "age_range"     : { "max": {"value": 15, "units": "years"} },
+                "age_range"     : { "max": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -2800,7 +2800,7 @@
                 "units"         : "mg",
                 "value"         : 400,
                 "frequency"     : "q8h",
-                "age_range"     : { "min": {"value": 15, "units": "years"} },
+                "age_range"     : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -3413,7 +3413,7 @@
                 "low"           : [ {"per_dose": true, "per_size": "kg", "units": "mg", "value": 10} ],
                 "high"          : [ {"per_dose": true, "per_size": "kg", "units": "mg", "value": 15} ],
                 "frequency"     : "q6h",
-                "age_range"     : { "max": {"value": 6, "units": "years"} },
+                "age_range"     : { "max": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -3496,7 +3496,7 @@
             {
                 "value"         : 0.005,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -8511,13 +8511,19 @@
             {
                 "units"         : "ml",
                 "value"         : 32,
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 5, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 5, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             },
             {
                 "units"         : "ml",
                 "value"         : 64,
-                "age_range"     : { "min": {"value": 5, "units": "years"}, "max": {"value": 11, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value":  5, "units": "years", "inclusive": true},
+                    "max": {"value": 11, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -8715,14 +8721,14 @@
             {
                 "units"         : "mg",
                 "value"         : 125,
-                "age_range"     : { "max": {"value": 6, "units": "months"} },
+                "age_range"     : { "max": {"value": 6, "units": "months", "inclusive": false} },
                 "frequency"     : "q8h",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 250,
-                "age_range"     : { "min": {"value": 6, "units": "months"} },
+                "age_range"     : { "min": {"value": 6, "units": "months", "inclusive": false} },
                 "frequency"     : "q8h",
                 "age_classifier": "child"
             }
@@ -8754,14 +8760,14 @@
             {
                 "units"         : "mg",
                 "value"         : 125,
-                "age_range"     : { "max": {"value": 6, "units": "months"} },
+                "age_range"     : { "max": {"value": 6, "units": "months", "inclusive": false} },
                 "frequency"     : "q8h",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 250,
-                "age_range"     : { "min": {"value": 6, "units": "months"} },
+                "age_range"     : { "min": {"value": 6, "units": "months", "inclusive": false} },
                 "frequency"     : "q8h",
                 "age_classifier": "child"
             }
@@ -9210,21 +9216,27 @@
             {
                 "units"         : "iu",
                 "value"         : 50000,
-                "age_range"     : { "max": {"value": 6, "units": "months"} },
+                "age_range"     : { "max": {"value": 6, "units": "months", "inclusive": false} },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             },
             {
                 "units"         : "iu",
                 "value"         : 100000,
-                "age_range"     : { "min": {"value": 6, "units": "months"}, "max": {"value": 11, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value":  6, "units": "months", "inclusive": true},
+                    "max": {"value": 11, "units": "months", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             },
             {
                 "units"         : "iu",
                 "value"         : 200000,
-                "age_range"     : { "min": {"value": 12, "units": "months"}, "max": {"value": 5, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 12, "units": "months", "inclusive": true},
+                    "max": {"value":  5, "units": "years",  "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             }
@@ -9257,7 +9269,7 @@
             {
                 "units"               : "iu",
                 "value"               : 50000,
-                "age_range"           : { "max": {"value": 6, "units": "months"} },
+                "age_range"           : { "max": {"value": 6, "units": "months", "inclusive": false} },
                 "divided_dose_count"  : 3,
                 "special_instructions": "day 1, day 2 and day 15",
                 "age_classifier"      : "child"
@@ -9266,8 +9278,8 @@
                 "units"               : "iu",
                 "value"               : 100000,
                 "age_range"           : {
-                    "min": {"value":  6, "units": "months"},
-                    "max": {"value": 11, "units": "months"}
+                    "min": {"value":  6, "units": "months", "inclusive": true},
+                    "max": {"value": 11, "units": "months", "inclusive": true}
                 },
                 "divided_dose_count"  : 3,
                 "special_instructions": "day 1, day 2 and day 15",
@@ -9277,8 +9289,8 @@
                 "units"               : "iu",
                 "value"               : 200000,
                 "age_range"           : {
-                    "min": {"value": 12, "units": "months"},
-                    "max": {"value":  5, "units": "years" }
+                    "min": {"value": 12, "units": "months", "inclusive": true},
+                    "max": {"value":  5, "units": "years",  "inclusive": true}
                 },
                 "divided_dose_count"  : 3,
                 "special_instructions": "day 1, day 2 and day 15",
@@ -9704,14 +9716,17 @@
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "qd",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "qd",
                 "age_classifier": "child"
             }
@@ -9743,28 +9758,34 @@
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "qd",
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "qd",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "qd",
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "qd",
                 "age_classifier": "child"
             }
@@ -9799,14 +9820,17 @@
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             }
@@ -9841,28 +9865,34 @@
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "stat",
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             }
@@ -9897,14 +9927,17 @@
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             }
@@ -9939,28 +9972,34 @@
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 200,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "stat",
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 400,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             }
@@ -10236,7 +10275,7 @@
                 "value"               : 0.5,
                 "special_instructions": "can increase to 12 hourly",
                 "frequency"           : "qd",
-                "age_range"           : { "min": {"value": 12, "units": "months"} },
+                "age_range"           : { "min": {"value": 12, "units": "months", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -10405,14 +10444,17 @@
             {
                 "units"         : "mg",
                 "value"         : 100,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : ["q12h", "stat"],
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 500,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : ["q12h", "stat"],
                 "age_classifier": "child"
             }
@@ -10447,28 +10489,34 @@
             {
                 "units"         : "mg",
                 "value"         : 100,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : ["q12h", "stat"],
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 100,
-                "age_range"     : { "min": {"value": 1, "units": "years"}, "max": {"value": 2, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "years", "inclusive": true},
+                    "max": {"value": 2, "units": "years", "inclusive": true}
+                },
                 "frequency"     : ["q12h", "stat"],
                 "age_classifier": "child"
             },
             {
                 "units"         : "mg",
                 "value"         : 500,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : ["q12h", "stat"],
                 "age_classifier": "adult"
             },
             {
                 "units"         : "mg",
                 "value"         : 500,
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "frequency"     : ["q12h", "stat"],
                 "age_classifier": "child"
             }
@@ -10503,7 +10551,7 @@
             {
                 "units"               : "mg",
                 "value"               : 100,
-                "age_range"           : { "min": {"value": 1, "units": "years"} },
+                "age_range"           : { "min": {"value": 1, "units": "years", "inclusive": false} },
                 "frequency"           : "stat",
                 "special_instructions": "repeated after 2 weeks",
                 "age_classifier"      : "child"
@@ -10539,7 +10587,7 @@
             {
                 "units"               : "mg",
                 "value"               : 100,
-                "age_range"           : { "min": {"value": 1, "units": "years"} },
+                "age_range"           : { "min": {"value": 1, "units": "years", "inclusive": false} },
                 "frequency"           : "stat",
                 "special_instructions": "repeated after 2 weeks",
                 "age_classifier"      : "adult"
@@ -10547,7 +10595,7 @@
             {
                 "units"               : "mg",
                 "value"               : 100,
-                "age_range"           : { "min": {"value": 1, "units": "years"} },
+                "age_range"           : { "min": {"value": 1, "units": "years", "inclusive": false} },
                 "frequency"           : "stat",
                 "special_instructions": "repeated after 2 weeks",
                 "age_classifier"      : "child"
@@ -11027,7 +11075,7 @@
                 "special_instructions": "can increase to 4 tablets",
                 "frequency"           : "nocte",
                 "quantity"            : 1,
-                "age_range"           : { "min": {"value": 15, "units": "years"} },
+                "age_range"           : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -11165,8 +11213,8 @@
                 "units"               : "iu",
                 "value"               : 100000,
                 "age_range"           : {
-                    "min": {"value":  6, "units": "months"},
-                    "max": {"value": 11, "units": "months"}
+                    "min": {"value":  6, "units": "months", "inclusive": true},
+                    "max": {"value": 11, "units": "months", "inclusive": true}
                 },
                 "special_instructions": "age dependant",
                 "age_classifier"      : "child"
@@ -11175,8 +11223,8 @@
                 "value"               : 200000,
                 "units"               : "Capsule",
                 "age_range"           : {
-                    "min": {"value": 12, "units": "months"},
-                    "max": {"value":  5, "units": "years" }
+                    "min": {"value": 12, "units": "months", "inclusive": true},
+                    "max": {"value":  5, "units": "years",  "inclusive": true}
                 },
                 "special_instructions": "age dependant",
                 "age_classifier"      : "child"
@@ -11773,7 +11821,7 @@
                 "units"         : "mg",
                 "value"         : 100,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 12, "units": "months"} },
+                "age_range"     : { "max": {"value": 12, "units": "months", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -12020,7 +12068,7 @@
                 "units"         : "mg",
                 "value"         : 15,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 12, "units": "months"} },
+                "age_range"     : { "min": {"value": 12, "units": "months", "inclusive": true} },
                 "age_classifier": "child"
             }
         ],
@@ -17123,7 +17171,7 @@
                 "frequency"     : "qd",
                 "units"         : "mg",
                 "value"         : 2.5,
-                "age_range"     : { "max": {"value": 6, "units": "months"} },
+                "age_range"     : { "max": {"value": 6, "units": "months", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -17159,7 +17207,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "kg_limit_min"  : 5,
-                "age_range"     : { "min": {"value": 6, "units": "months"}, "max": {"value": 5, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 6, "units": "months", "inclusive": true},
+                    "max": {"value": 5, "units": "years",  "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -17874,7 +17925,10 @@
                 "per_size"      : "kg",
                 "units"         : "mg",
                 "value"         : 0.05,
-                "age_range"     : { "min": {"value": 0, "units": "months"}, "max": {"value": 1, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value": 0, "units": "months", "inclusive": true},
+                    "max": {"value": 1, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -17908,7 +17962,10 @@
                 "per_size"      : "kg",
                 "units"         : "mg",
                 "value"         : 0.1,
-                "age_range"     : { "min": {"value": 1, "units": "months"}, "max": {"value": 12, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value":  1, "units": "months", "inclusive": true},
+                    "max": {"value": 12, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -17943,7 +18000,7 @@
                 "high"          : [
                     {"frequency": "q4h", "per_dose": true, "per_size": "kg", "units": "mg", "value": 0.4}
                 ],
-                "age_range"     : { "min": {"value": 12, "units": "months"} },
+                "age_range"     : { "min": {"value": 12, "units": "months", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -26461,7 +26518,7 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 11, "units": "years"} },
+                "age_range"     : { "min": {"value": 11, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -26494,7 +26551,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "tw",
-                "age_range"     : { "max": {"value": 11, "units": "years"} },
+                "age_range"     : { "max": {"value": 11, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -27420,7 +27477,10 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 18, "units": "months"}, "max": {"value": 11, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 18, "units": "months", "inclusive": true},
+                    "max": {"value": 11, "units": "years",  "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -27453,7 +27513,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 11, "units": "years"} },
+                "age_range"     : { "min": {"value": 11, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -31347,7 +31407,7 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "q8h",
-                "age_range"     : { "max": {"value": 15, "units": "years"} },
+                "age_range"     : { "max": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -31383,7 +31443,7 @@
                 "units"         : "mg",
                 "value"         : 400,
                 "frequency"     : "q8h",
-                "age_range"     : { "min": {"value": 15, "units": "years"} },
+                "age_range"     : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -31479,7 +31539,7 @@
                 "units"         : "mg",
                 "value"         : 200,
                 "frequency"     : "qd",
-                "age_range"     : { "max": {"value": 2, "units": "years"} },
+                "age_range"     : { "max": {"value": 2, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -31512,7 +31572,7 @@
                 "units"         : "mg",
                 "value"         : 400,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -31545,7 +31605,7 @@
                 "units"         : "mg",
                 "value"         : 400,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -31732,7 +31792,7 @@
             {
                 "value"               : 0.25,
                 "special_instructions": "apply and leave overnight",
-                "age_range"           : { "max": {"value": 6, "units": "years"} },
+                "age_range"           : { "max": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -31764,7 +31824,7 @@
             {
                 "value"               : 0.25,
                 "special_instructions": "apply and leave overnight",
-                "age_range"           : { "min": {"value": 6, "units": "years"} },
+                "age_range"           : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -31967,7 +32027,7 @@
         "schedules"        : [
             {
                 "frequency"     : "prn",
-                "age_range"     : { "max": {"value": 2, "units": "years"} },
+                "age_range"     : { "max": {"value": 2, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -32053,7 +32113,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -32089,7 +32152,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -32121,7 +32184,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -32154,7 +32220,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -32186,7 +32252,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -32219,7 +32288,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -32251,7 +32320,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -32284,7 +32356,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -32317,7 +32389,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -32349,7 +32421,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -32382,7 +32457,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -32414,7 +32489,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -32447,7 +32525,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33146,7 +33224,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 12} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 25} ],
                 "frequency"     : "q6h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33191,7 +33269,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33223,7 +33301,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 12} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 25} ],
                 "frequency"     : "q6h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33256,7 +33334,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33288,7 +33366,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 12} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 25} ],
                 "frequency"     : "q6h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33321,7 +33399,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33377,7 +33455,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 12} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 25} ],
                 "frequency"     : "q6h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33410,7 +33488,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -33724,7 +33802,7 @@
             {
                 "value"               : 0.05,
                 "special_instructions": "apply and leave overnight",
-                "age_range"           : { "min": {"value": 6, "units": "years"} },
+                "age_range"           : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -33755,7 +33833,7 @@
             {
                 "value"               : 0.05,
                 "special_instructions": "dilute and apply and leave overnight",
-                "age_range"           : { "max": {"value": 6, "units": "years"} },
+                "age_range"           : { "max": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -34568,7 +34646,7 @@
                 "units"         : "mg",
                 "value"         : 25,
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -34601,7 +34679,7 @@
                 "units"         : "mg",
                 "value"         : 25,
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -34634,7 +34712,7 @@
                 "units"         : "mg",
                 "value"         : 25,
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -34667,7 +34745,7 @@
                 "units"         : "mg",
                 "value"         : 25,
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 7, "units": "years"} },
+                "age_range"     : { "max": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -34712,7 +34790,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -34745,7 +34823,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -34778,7 +34856,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -34811,7 +34889,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -64369,7 +64447,7 @@
                 "units"         : "mg",
                 "value"         : 80,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 2, "units": "months"} },
+                "age_range"     : { "max": {"value": 2, "units": "months", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -68184,13 +68262,16 @@
                         "units"          : "mg",
                         "value"          : 120,
                         "age_range"      : {
-                            "min": {"value": 6, "units": "months"},
-                            "max": {"value": 3, "units": "years" }
+                            "min": {"value": 6, "units": "months", "inclusive": true},
+                            "max": {"value": 3, "units": "years",  "inclusive": true}
                         },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 6, "units": "months"}, "max": {"value": 3, "units": "years"} },
+                "age_range": {
+                    "min": {"value": 6, "units": "months", "inclusive": true},
+                    "max": {"value": 3, "units": "years",  "inclusive": true}
+                },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "adult"
             },
@@ -68201,13 +68282,16 @@
                         "units"          : "mg",
                         "value"          : 120,
                         "age_range"      : {
-                            "min": {"value": 6, "units": "months"},
-                            "max": {"value": 3, "units": "years" }
+                            "min": {"value": 6, "units": "months", "inclusive": true},
+                            "max": {"value": 3, "units": "years",  "inclusive": true}
                         },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 6, "units": "months"}, "max": {"value": 3, "units": "years"} },
+                "age_range": {
+                    "min": {"value": 6, "units": "months", "inclusive": true},
+                    "max": {"value": 3, "units": "years",  "inclusive": true}
+                },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "child"
             },
@@ -68218,13 +68302,16 @@
                         "units"          : "mg",
                         "value"          : 240,
                         "age_range"      : {
-                            "min": {"value": 3, "units": "years"},
-                            "max": {"value": 8, "units": "years"}
+                            "min": {"value": 3, "units": "years", "inclusive": true},
+                            "max": {"value": 8, "units": "years", "inclusive": true}
                         },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 3, "units": "years"}, "max": {"value": 8, "units": "years"} },
+                "age_range": {
+                    "min": {"value": 3, "units": "years", "inclusive": true},
+                    "max": {"value": 8, "units": "years", "inclusive": true}
+                },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "adult"
             },
@@ -68235,13 +68322,16 @@
                         "units"          : "mg",
                         "value"          : 240,
                         "age_range"      : {
-                            "min": {"value": 3, "units": "years"},
-                            "max": {"value": 8, "units": "years"}
+                            "min": {"value": 3, "units": "years", "inclusive": true},
+                            "max": {"value": 8, "units": "years", "inclusive": true}
                         },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 3, "units": "years"}, "max": {"value": 8, "units": "years"} },
+                "age_range": {
+                    "min": {"value": 3, "units": "years", "inclusive": true},
+                    "max": {"value": 8, "units": "years", "inclusive": true}
+                },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "child"
             },
@@ -68252,13 +68342,16 @@
                         "units"          : "mg",
                         "value"          : 360,
                         "age_range"      : {
-                            "min": {"value":  8, "units": "years"},
-                            "max": {"value": 12, "units": "years"}
+                            "min": {"value":  8, "units": "years", "inclusive": true},
+                            "max": {"value": 12, "units": "years", "inclusive": true}
                         },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 8, "units": "years"}, "max": {"value": 12, "units": "years"} },
+                "age_range": {
+                    "min": {"value":  8, "units": "years", "inclusive": true},
+                    "max": {"value": 12, "units": "years", "inclusive": true}
+                },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "adult"
             },
@@ -68269,13 +68362,16 @@
                         "units"          : "mg",
                         "value"          : 360,
                         "age_range"      : {
-                            "min": {"value":  8, "units": "years"},
-                            "max": {"value": 12, "units": "years"}
+                            "min": {"value":  8, "units": "years", "inclusive": true},
+                            "max": {"value": 12, "units": "years", "inclusive": true}
                         },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 8, "units": "years"}, "max": {"value": 12, "units": "years"} },
+                "age_range": {
+                    "min": {"value":  8, "units": "years", "inclusive": true},
+                    "max": {"value": 12, "units": "years", "inclusive": true}
+                },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "child"
             },
@@ -68285,11 +68381,11 @@
                     {
                         "units"          : "mg",
                         "value"          : 480,
-                        "age_range"      : { "min": {"value": 12, "units": "years"} },
+                        "age_range"      : { "min": {"value": 12, "units": "years", "inclusive": false} },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 12, "units": "years"} },
+                "age_range": { "min": {"value": 12, "units": "years", "inclusive": false} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "adult"
             },
@@ -68299,11 +68395,11 @@
                     {
                         "units"          : "mg",
                         "value"          : 480,
-                        "age_range"      : { "min": {"value": 12, "units": "years"} },
+                        "age_range"      : { "min": {"value": 12, "units": "years", "inclusive": false} },
                         "ingredient_name": "lumefantrine"
                     }
                 ],
-                "age_range": { "min": {"value": 12, "units": "years"} },
+                "age_range": { "min": {"value": 12, "units": "years", "inclusive": false} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
                 "age_classifier": "child"
             }
@@ -69485,14 +69581,20 @@
             {
                 "units"         : "iu",
                 "value"         : 100000,
-                "age_range"     : { "min": {"value": 6, "units": "months"}, "max": {"value": 11, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value":  6, "units": "months", "inclusive": true},
+                    "max": {"value": 11, "units": "months", "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             },
             {
                 "units"         : "iu",
                 "value"         : 200000,
-                "age_range"     : { "min": {"value": 12, "units": "months"}, "max": {"value": 5, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 12, "units": "months", "inclusive": true},
+                    "max": {"value":  5, "units": "years",  "inclusive": true}
+                },
                 "frequency"     : "stat",
                 "age_classifier": "child"
             }
@@ -70737,8 +70839,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -70816,8 +70918,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -71002,8 +71104,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -71047,8 +71149,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -71092,8 +71194,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -71158,7 +71260,10 @@
                 "units"         : "mg",
                 "value"         : 50,
                 "after"         : { "event": "TDF + 3TC + DTG", "time": {"value": 12, "units": "hour"} },
-                "age_range"     : { "min": {"value": 10, "units": "years"}, "max": {"value": 19, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "adolescent"
             },
             {
@@ -71197,8 +71302,8 @@
                 "value"               : 50,
                 "special_instructions": "Add DTG 50 mg 12 hours after TLD dose",
                 "age_range"           : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"      : "adolescent"
             },
@@ -71237,7 +71342,10 @@
                 "units"         : "mg",
                 "value"         : 50,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 10, "units": "years"}, "max": {"value": 19, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "adolescent"
             },
             {"units": "mg", "value": 50, "frequency": "qd", "age_classifier": "adult"}
@@ -71271,8 +71379,8 @@
                 "value"               : 50,
                 "special_instructions": "with ABC/3CT",
                 "age_range"           : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"      : "adolescent"
             },
@@ -71307,8 +71415,8 @@
                 "value"               : 50,
                 "special_instructions": "with AZT/3CT",
                 "age_range"           : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"      : "adolescent"
             },
@@ -71342,7 +71450,10 @@
                 "units"         : "mg",
                 "value"         : 300,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 10, "units": "years"}, "max": {"value": 19, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "adolescent"
             },
             {"units": "mg", "value": 300, "frequency": "qd", "age_classifier": "adult"}
@@ -71375,7 +71486,10 @@
                 "units"         : "mg",
                 "value"         : 300,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 10, "units": "years"}, "max": {"value": 19, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "adolescent"
             },
             {"units": "mg", "value": 300, "frequency": "qd", "age_classifier": "adult"}
@@ -71703,7 +71817,10 @@
                 "units"         : "mg",
                 "value"         : 300,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 10, "units": "years"}, "max": {"value": 19, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "adolescent"
             },
             {"units": "mg", "value": 300, "frequency": "qd", "age_classifier": "adult"}
@@ -71769,8 +71886,8 @@
                 ],
                 "frequency"         : "q12h",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -71847,8 +71964,8 @@
                 ],
                 "frequency"         : "q12h",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -71892,8 +72009,8 @@
                 ],
                 "frequency"         : "q12h",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72096,7 +72213,10 @@
         "schedules": [
             {
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 10, "units": "years"}, "max": {"value": 19, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "adolescent"
             },
             {"frequency": "qd", "age_classifier": "adult"}
@@ -72184,8 +72304,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72235,8 +72355,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72286,8 +72406,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72365,8 +72485,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72410,8 +72530,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72455,8 +72575,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72500,8 +72620,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72545,8 +72665,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72591,8 +72711,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72638,8 +72758,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72685,8 +72805,8 @@
                 ],
                 "frequency"         : "qd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -72824,8 +72944,8 @@
                 ],
                 "frequency"         : "bd",
                 "age_range"         : {
-                    "min": {"value": 10, "units": "years"},
-                    "max": {"value": 19, "units": "years"}
+                    "min": {"value": 10, "units": "years", "inclusive": true},
+                    "max": {"value": 19, "units": "years", "inclusive": true}
                 },
                 "age_classifier"    : "adolescent"
             },
@@ -93321,7 +93441,7 @@
                 "units"         : "mg",
                 "value"         : 125,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 6, "units": "years"} },
+                "age_range"     : { "max": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -93389,7 +93509,10 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "stat",
-                "age_range"     : { "min": {"value": 6, "units": "years"}, "max": {"value": 12, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value":  6, "units": "years", "inclusive": true},
+                    "max": {"value": 12, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -93428,7 +93551,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "stat",
-                "age_range"     : { "min": {"value": 12, "units": "years"} },
+                "age_range"     : { "min": {"value": 12, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -107816,7 +107939,7 @@
                 "units"         : "mcg",
                 "value"         : 100,
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 6, "units": "years"} },
+                "age_range"     : { "max": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -107849,7 +107972,7 @@
                 "units"         : "mcg",
                 "value"         : 200,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -107930,7 +108053,7 @@
                 "units"         : "mcg",
                 "value"         : 200,
                 "frequency"     : "prn",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -107963,7 +108086,7 @@
                 "units"         : "mcg",
                 "value"         : 200,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108020,7 +108143,7 @@
                 "units"         : "mcg",
                 "value"         : 200,
                 "frequency"     : "prn",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108103,7 +108226,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -108146,7 +108269,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -108254,7 +108377,7 @@
                 "units"         : "mg",
                 "value"         : 4,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108287,7 +108410,7 @@
                 "units"         : "mg",
                 "value"         : 4,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108419,7 +108542,7 @@
                     "every": { "value": [20, 30], "units": "minute" }
                 },
                 "as_required"   : true,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108454,7 +108577,7 @@
                     "every": { "value": [20, 30], "units": "minute" }
                 },
                 "as_required"   : true,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108523,7 +108646,7 @@
                     "every": { "value": [20, 30], "units": "minute" }
                 },
                 "as_required"   : true,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108804,7 +108927,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 1} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 2} ],
                 "frequency"     : "qd",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108836,7 +108959,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 1} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 2} ],
                 "frequency"     : "qd",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108868,7 +108991,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 1} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 2} ],
                 "frequency"     : "qd",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -108900,7 +109023,7 @@
                 "low"           : [ {"per_size": "kg", "units": "mg", "value": 1} ],
                 "high"          : [ {"per_size": "kg", "units": "mg", "value": 2} ],
                 "frequency"     : "qd",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -109036,7 +109159,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109119,7 +109242,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109162,7 +109285,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109205,7 +109328,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109292,7 +109415,7 @@
                 "units"         : "mg",
                 "value"         : 25,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 8, "units": "years"} },
+                "age_range"     : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -109367,7 +109490,7 @@
                 "low"           : [ {"units": "mg", "value": 12.5} ],
                 "high"          : [ {"units": "mg", "value": 25} ],
                 "frequency"     : "qd",
-                "age_range"     : { "max": {"value": 8, "units": "years"} },
+                "age_range"     : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -109411,7 +109534,7 @@
                 "units"         : "mg",
                 "value"         : 25,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 8, "units": "years"} },
+                "age_range"     : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -109556,7 +109679,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "min": {"value": 8, "units": "years"} },
+                "age_range"           : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109599,7 +109722,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "min": {"value": 8, "units": "years"} },
+                "age_range"           : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109642,7 +109765,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "min": {"value": 8, "units": "years"} },
+                "age_range"           : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109685,7 +109808,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "min": {"value": 8, "units": "years"} },
+                "age_range"           : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109728,7 +109851,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109771,7 +109894,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109814,7 +109937,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -109861,7 +109984,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 8, "units": "years"} },
+                "age_range"           : { "max": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -110006,7 +110129,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "min": {"value": 8, "units": "years"} },
+                "age_range"           : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -110057,7 +110180,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "min": {"value": 8, "units": "years"} },
+                "age_range"           : { "min": {"value": 8, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -110154,7 +110277,7 @@
                 "high"          : [ {"units": "mcg", "value": 600} ],
                 "duration"      : { "value": [2, 4], "units": "hour" },
                 "frequency"     : "prn",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110187,7 +110310,7 @@
                 "high"          : [ {"units": "mcg", "value": 1000} ],
                 "duration"      : { "value": [2, 4], "units": "hour" },
                 "frequency"     : "prn",
-                "age_range"     : { "min": {"value": 5, "units": "years"} },
+                "age_range"     : { "min": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110284,7 +110407,7 @@
                 "high"          : [ {"units": "mg", "value": 5} ],
                 "duration"      : { "value": [2, 4], "units": "hour" },
                 "frequency"     : "prn",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110352,7 +110475,7 @@
                 "value"         : 200,
                 "as_required"   : true,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110410,7 +110533,7 @@
                 "low"           : [ {"units": "mcg", "value": 100} ],
                 "high"          : [ {"units": "mcg", "value": 200} ],
                 "frequency"     : ["q6h", "q8h"],
-                "age_range"     : { "max": {"value": 6, "units": "years"} },
+                "age_range"     : { "max": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110443,7 +110566,7 @@
                 "units"         : "mcg",
                 "value"         : 200,
                 "frequency"     : "prn",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110478,7 +110601,7 @@
                     "every": { "value": [20, 30], "units": "minute" }
                 },
                 "as_required"   : true,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110548,7 +110671,7 @@
                     "every": { "value": [20, 30], "units": "minute" }
                 },
                 "as_required"   : true,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110583,7 +110706,7 @@
                     "every": { "value": [20, 30], "units": "minute" }
                 },
                 "as_required"   : true,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110683,7 +110806,7 @@
             {
                 "duration"      : { "value": [2, 4], "units": "hour" },
                 "frequency"     : "prn",
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -110839,7 +110962,7 @@
                     "every": { "value": [20, 30], "units": "minute" }
                 },
                 "as_required"   : true,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -111028,7 +111151,7 @@
                 "units"         : "g",
                 "value"         : 1,
                 "frequency"     : "stat",
-                "age_range"     : { "min": {"value": 12, "units": "years"} },
+                "age_range"     : { "min": {"value": 12, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -111251,7 +111374,7 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "stat",
-                "age_range"     : { "min": {"value": 12, "units": "years"} },
+                "age_range"     : { "min": {"value": 12, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -114702,19 +114825,22 @@
             {
                 "units"         : "iu",
                 "value"         : 75,
-                "age_range"     : { "max": {"value": 5, "units": "years"} },
+                "age_range"     : { "max": {"value": 5, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             },
             {
                 "units"         : "iu",
                 "value"         : 125,
-                "age_range"     : { "min": {"value": 5, "units": "years"}, "max": {"value": 10, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value":  5, "units": "years", "inclusive": true},
+                    "max": {"value": 10, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             },
             {
                 "units"         : "iu",
                 "value"         : 250,
-                "age_range"     : { "min": {"value": 10, "units": "years"} },
+                "age_range"     : { "min": {"value": 10, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -115000,7 +115126,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -115032,7 +115158,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -115266,7 +115395,10 @@
                 "units"         : "mg",
                 "value"         : 0.1,
                 "frequency"     : ["q6h", "q8h"],
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -115326,7 +115458,7 @@
                 "units"         : "drop",
                 "value"         : 1,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -115365,7 +115497,7 @@
                 "units"         : "drop",
                 "value"         : 1,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -115723,7 +115855,7 @@
                 "units"         : "drop",
                 "value"         : 1,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -115755,7 +115887,10 @@
                 "units"         : "drop",
                 "value"         : 1,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -116024,7 +116159,7 @@
                 "units"         : "mg",
                 "value"         : 45,
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 3, "units": "years"} },
+                "age_range"     : { "max": {"value": 3, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -116087,7 +116222,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q8h",
-                "age_range"     : { "min": {"value": 3, "units": "years"} },
+                "age_range"     : { "min": {"value": 3, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -117038,7 +117173,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 3, "units": "years"} },
+                "age_range"     : { "min": {"value": 3, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -117210,7 +117345,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -124221,7 +124356,10 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 18, "units": "months"}, "max": {"value": 11, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 18, "units": "months", "inclusive": true},
+                    "max": {"value": 11, "units": "years",  "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -124253,7 +124391,10 @@
                 "units"         : "mg",
                 "value"         : 5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 2, "units": "years"}, "max": {"value": 6, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 2, "units": "years", "inclusive": true},
+                    "max": {"value": 6, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -124286,7 +124427,7 @@
                 "units"         : "mg",
                 "value"         : 10,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 6, "units": "years"} },
+                "age_range"     : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -124395,7 +124536,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q6h",
-                "age_range"     : { "min": {"value": 7, "units": "years"} },
+                "age_range"     : { "min": {"value": 7, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -124466,7 +124607,7 @@
                 "units"               : "mcg",
                 "value"               : 100,
                 "frequency"           : "q12h",
-                "age_range"           : { "min": {"value": 6, "units": "years"} },
+                "age_range"           : { "min": {"value": 6, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -124817,7 +124958,10 @@
                 "units"         : "mg",
                 "value"         : 250,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 18, "units": "months"}, "max": {"value": 11, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 18, "units": "months", "inclusive": true},
+                    "max": {"value": 11, "units": "years",  "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -124853,7 +124997,7 @@
                 "units"         : "mg",
                 "value"         : 500,
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 11, "units": "years"} },
+                "age_range"     : { "min": {"value": 11, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -128993,7 +129137,7 @@
                 "units"         : "mg",
                 "value"         : 0.1,
                 "frequency"     : ["q6h", "q8h"],
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -132510,7 +132654,10 @@
                 "high"          : [
                     { "frequency": ["q6h", "q8h"], "per_size": "kg", "units": "mcg", "value": 500 }
                 ],
-                "age_range"     : { "min": {"value": 1, "units": "months"}, "max": {"value": 4, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "months", "inclusive": true},
+                    "max": {"value": 4, "units": "years",  "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -132545,7 +132692,10 @@
                 "high"          : [
                     { "frequency": ["q6h", "q8h"], "units": "mg", "value": 10 }
                 ],
-                "age_range"     : { "min": {"value": 5, "units": "years"}, "max": {"value": 11, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value":  5, "units": "years", "inclusive": true},
+                    "max": {"value": 11, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -132580,7 +132730,10 @@
                 "high"          : [
                     { "frequency": ["q6h", "q8h"], "units": "mg", "value": 20 }
                 ],
-                "age_range"     : { "min": {"value": 12, "units": "years"}, "max": {"value": 17, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 12, "units": "years", "inclusive": true},
+                    "max": {"value": 17, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -132615,7 +132768,10 @@
                 "high"          : [
                     { "frequency": ["q6h", "q8h"], "per_size": "kg", "units": "mcg", "value": 500 }
                 ],
-                "age_range"     : { "min": {"value": 1, "units": "months"}, "max": {"value": 4, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 1, "units": "months", "inclusive": true},
+                    "max": {"value": 4, "units": "years",  "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -132650,7 +132806,10 @@
                 "high"          : [
                     { "frequency": ["q6h", "q8h"], "units": "mg", "value": 10 }
                 ],
-                "age_range"     : { "min": {"value": 5, "units": "years"}, "max": {"value": 11, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value":  5, "units": "years", "inclusive": true},
+                    "max": {"value": 11, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -132685,7 +132844,10 @@
                 "high"          : [
                     { "frequency": ["q6h", "q8h"], "units": "mg", "value": 20 }
                 ],
-                "age_range"     : { "min": {"value": 12, "units": "years"}, "max": {"value": 17, "units": "years"} },
+                "age_range"     : {
+                    "min": {"value": 12, "units": "years", "inclusive": true},
+                    "max": {"value": 17, "units": "years", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -133945,7 +134107,10 @@
                 "per_size"      : "kg",
                 "units"         : "mg",
                 "value"         : 0.025,
-                "age_range"     : { "min": {"value": 1, "units": "months"}, "max": {"value": 12, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value":  1, "units": "months", "inclusive": true},
+                    "max": {"value": 12, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -134009,7 +134174,10 @@
                 "per_size"      : "kg",
                 "units"         : "mcg",
                 "value"         : 25,
-                "age_range"     : { "min": {"value": 0, "units": "months"}, "max": {"value": 1, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value": 0, "units": "months", "inclusive": true},
+                    "max": {"value": 1, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -134043,7 +134211,10 @@
                 "per_size"      : "kg",
                 "units"         : "mcg",
                 "value"         : 50,
-                "age_range"     : { "min": {"value": 1, "units": "months"}, "max": {"value": 12, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value":  1, "units": "months", "inclusive": true},
+                    "max": {"value": 12, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -134078,7 +134249,7 @@
                 "high"          : [
                     {"frequency": "q4h", "per_dose": true, "per_size": "kg", "units": "mcg", "value": 200}
                 ],
-                "age_range"     : { "min": {"value": 12, "units": "months"} },
+                "age_range"     : { "min": {"value": 12, "units": "months", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -134113,7 +134284,7 @@
                 "high"          : [
                     {"frequency": "q4h", "per_dose": true, "per_size": "kg", "units": "mcg", "value": 200}
                 ],
-                "age_range"     : { "min": {"value": 12, "units": "months"} },
+                "age_range"     : { "min": {"value": 12, "units": "months", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -134146,7 +134317,10 @@
                 "per_size"      : "kg",
                 "units"         : "mg",
                 "value"         : 0.1,
-                "age_range"     : { "min": {"value": 0, "units": "months"}, "max": {"value": 1, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value": 0, "units": "months", "inclusive": true},
+                    "max": {"value": 1, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -134179,7 +134353,10 @@
                 "per_size"      : "kg",
                 "units"         : "mg",
                 "value"         : 0.025,
-                "age_range"     : { "min": {"value": 1, "units": "months"}, "max": {"value": 12, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value":  1, "units": "months", "inclusive": true},
+                    "max": {"value": 12, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -134242,7 +134419,10 @@
                 "per_size"      : "kg",
                 "units"         : "mg",
                 "value"         : 0.1,
-                "age_range"     : { "min": {"value": 0, "units": "months"}, "max": {"value": 1, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value": 0, "units": "months", "inclusive": true},
+                    "max": {"value": 1, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -134275,7 +134455,10 @@
                 "per_size"      : "kg",
                 "units"         : "mg",
                 "value"         : 0.025,
-                "age_range"     : { "min": {"value": 1, "units": "months"}, "max": {"value": 12, "units": "months"} },
+                "age_range"     : {
+                    "min": {"value":  1, "units": "months", "inclusive": true},
+                    "max": {"value": 12, "units": "months", "inclusive": true}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -134340,7 +134523,7 @@
                 "high"          : [
                     {"frequency": "q4h", "per_dose": true, "per_size": "kg", "units": "mcg", "value": 400}
                 ],
-                "age_range"     : { "min": {"value": 12, "units": "months"} },
+                "age_range"     : { "min": {"value": 12, "units": "months", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -135914,7 +136097,7 @@
                 "units"         : "mg",
                 "value"         : 0.5,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 12, "units": "years"} },
+                "age_range"     : { "max": {"value": 12, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -136007,7 +136190,7 @@
             {
                 "special_instructions": "See dosing table",
                 "frequency"           : "qd",
-                "age_range"           : { "max": {"value": 10, "units": "years"} },
+                "age_range"           : { "max": {"value": 10, "units": "years", "inclusive": false} },
                 "age_classifier"      : "child"
             }
         ],
@@ -136496,7 +136679,7 @@
                 "low"           : [ {"units": "mg", "value": 200} ],
                 "high"          : [ {"units": "mg", "value": 400} ],
                 "frequency"     : "q8h",
-                "age_range"     : { "min": {"value": 12, "units": "years"} },
+                "age_range"     : { "min": {"value": 12, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -136609,7 +136792,7 @@
                 "units"         : "mg",
                 "value"         : 4,
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 10, "units": "years"} },
+                "age_range"     : { "max": {"value": 10, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -136895,7 +137078,10 @@
                 "units"         : "mg",
                 "value"         : 0.5,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 12, "units": "years"}, "min": {"value": 6, "units": "months"} },
+                "age_range"     : {
+                    "max": {"value": 12, "units": "years",  "inclusive": false},
+                    "min": {"value":  6, "units": "months", "inclusive": false}
+                },
                 "age_classifier": "child"
             }
         ],
@@ -137521,7 +137707,7 @@
                 "units"         : "mg",
                 "value"         : 20,
                 "frequency"     : "stat",
-                "age_range"     : { "max": {"value": 12, "units": "years"} },
+                "age_range"     : { "max": {"value": 12, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -137685,7 +137871,7 @@
                 "units"         : "mg",
                 "value"         : 0.25,
                 "frequency"     : "stat",
-                "age_range"     : { "min": {"value": 2, "units": "years"} },
+                "age_range"     : { "min": {"value": 2, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -138656,7 +138842,7 @@
                 "low"           : [ {"per_size": "m2", "units": "mg", "value": 180} ],
                 "high"          : [ {"per_size": "m2", "units": "mg", "value": 240} ],
                 "frequency"     : "q12h",
-                "age_range"     : { "max": {"value": 10, "units": "years"} },
+                "age_range"     : { "max": {"value": 10, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -142041,7 +142227,7 @@
                 "low"           : [ {"units": "ml", "value": 2.5} ],
                 "high"          : [ {"units": "ml", "value": 10} ],
                 "frequency"     : "q12h",
-                "age_range"     : { "min": {"value": 15, "units": "years"} },
+                "age_range"     : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -142122,7 +142308,7 @@
                 "low"           : [ {"units": "ml", "value": 10} ],
                 "high"          : [ {"units": "ml", "value": 30} ],
                 "frequency"     : ["q12h", "q24h"],
-                "age_range"     : { "min": {"value": 15, "units": "years"} },
+                "age_range"     : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -142166,7 +142352,7 @@
                 "low"           : [ {"units": "ml", "value": 10} ],
                 "high"          : [ {"units": "ml", "value": 30} ],
                 "frequency"     : ["q12h", "q24h"],
-                "age_range"     : { "min": {"value": 15, "units": "years"} },
+                "age_range"     : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -142639,7 +142825,7 @@
                 "units"         : "mg",
                 "value"         : 13.5,
                 "frequency"     : "qd",
-                "age_range"     : { "min": {"value": 15, "units": "years"} },
+                "age_range"     : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
@@ -142678,7 +142864,7 @@
                 "units"         : "mg",
                 "value"         : 13.5,
                 "frequency"     : "qn",
-                "age_range"     : { "min": {"value": 15, "units": "years"} },
+                "age_range"     : { "min": {"value": 15, "units": "years", "inclusive": false} },
                 "age_classifier": "child"
             }
         ],
