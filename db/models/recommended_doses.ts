@@ -4,11 +4,13 @@ import parseJSON from '../../util/parseJSON.ts'
 import { patientAgeDetermination } from '../../shared/patient_age_determination.ts'
 import type { ICD10Indications, ParsedDose } from '../../backend/recommended_doses/shared.ts'
 import { AppliedDose, Medicine, MedicineSchema, ParsedDoseSchema, ParsedPatientCase } from '../../shared/recommended_doses.ts'
+import compactMap from '../../util/compactMap.ts'
 
 function resolvePerKg(per_size: ParsedDose['per_size']): number | null {
   if (per_size === 'kg') return 1
   if (per_size === 'm2') return null
-  if (per_size && typeof per_size === 'object' && 'kg' in per_size) return per_size.kg
+  // { kg: N } means the dose is expressed per N kg of body weight
+  if (per_size && typeof per_size === 'object' && 'kg' in per_size) return 1 / per_size.kg
   return null
 }
 
@@ -100,6 +102,7 @@ function getAgeInYears(dob: string): number {
 }
 
 function scheduleMatchesAge(schedule: z.infer<typeof ParsedDoseSchema>, patient_is_adult: boolean | undefined): boolean {
+  console.log({ schedule, patient_is_adult })
   if (!schedule.age_classifier) return true
   const adult_classifiers = new Set(['adult', 'elderly'])
   const child_classifiers = new Set(['child', 'adolescent', 'infant', 'newborn', 'premature baby', 'breastfed infant'])
@@ -119,14 +122,13 @@ function findMatchingMedicines(medicines: Medicine[], query: ParsedPatientCase):
 
   const patient_is_adult = age_determination === 'adult'
 
-  return medicines
-    .filter((m) => indicationsMatch(m.icd10_indications, codes))
-    .map((m) => {
-      if (patient_is_adult === undefined) return m
-      const filtered_schedules = m.schedules.filter((s) => scheduleMatchesAge(s, patient_is_adult))
-      if (!filtered_schedules.length) return m // keep all if none match age
-      return { ...m, schedules: filtered_schedules }
-    })
+  return compactMap(medicines, (m) => {
+    if (!indicationsMatch(m.icd10_indications, codes)) return
+    if (patient_is_adult === undefined) return m
+    const filtered_schedules = m.schedules.filter((s) => scheduleMatchesAge(s, patient_is_adult))
+    if (!filtered_schedules.length) return
+    return { ...m, schedules: filtered_schedules }
+  })
 }
 
 function applyPatientCase(medicine: Medicine, patient_case: ParsedPatientCase) {
@@ -143,9 +145,6 @@ export const recommended_doses = {
 
     // TODO route back to create patient case if query params not present
     const matching_medicines = findMatchingMedicines(medicines, patient_case)
-
     return matching_medicines.map((medicine) => applyPatientCase(medicine, patient_case))
-    // const condition_codes = extractConditionCodes(patient_case.conditions)
-    // const conditions_items =
   },
 }

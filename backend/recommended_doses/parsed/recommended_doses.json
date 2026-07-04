@@ -4594,7 +4594,7 @@
             "ingredients": [ {"name": "Cryoprecipitate"} ]
         },
         "schedules"        : [
-            { "per_size": {"kg": 1}, "units": "unit", "value": 1, "frequency": "stat", "age_classifier": "adult" }
+            { "per_size": {"kg": 10}, "units": "unit", "value": 1, "frequency": "stat", "age_classifier": "adult" }
         ],
         "raw_dose"         : "1 unit/10kg",
         "raw_dose_interval": "single dose",
@@ -14163,7 +14163,7 @@
             {
                 "units"         : "mg",
                 "value"         : 75,
-                "age_range"     : { "min": {"value": 3, "units": "months"} },
+                "duration"      : {"value": 3, "units": "month"},
                 "frequency"     : "qd",
                 "age_classifier": "adult"
             }
@@ -23043,6 +23043,40 @@
         "section_number"   : "4.9",
         "disorder_number"  : "4.9.1",
         "disorder"         : "Heart failure, acute with pulmonary oedema - severe hypotensive or refractory failure"
+    },
+    {
+        "atc"              : "C09AA02",
+        "form"             : "Tablet/capsule/granules",
+        "route"            : "Oral",
+        "aware"            : null,
+        "acute_chronic"    : "Chronic",
+        "prescriber"       : "Doctor prescribed",
+        "icd10_indications": { "type": "codes", "codes": ["I10"] },
+        "medicine"         : {
+            "name"       : "Enalapril",
+            "ingredients": [ {"name": "Enalapril"} ]
+        },
+        "schedules"        : [
+            {
+                "per_dose"      : true,
+                "per_size"      : "kg",
+                "units"         : "mg",
+                "value"         : 0.04,
+                "frequency"     : "q12h",
+                "age_classifier": "child"
+            }
+        ],
+        "raw_dose"         : "0.04 mg/kg/dose (maximum = 0.3 mg/kg/dose up to 40 mg)",
+        "raw_dose_interval": "12 hourly",
+        "raw_duration"     : null,
+        "publication"      : "Paediatric Hospital Level",
+        "chapter_name"     : "Cardiovascular System",
+        "chapter_number"   : "4",
+        "adult_children"   : "Children",
+        "section_number"   : "4.11",
+        "disorder_number"  : "4.11.2",
+        "disorder"         : "Hypertension, chronic",
+        "max"              : {"per_dose": true, "per_size": "kg", "units": "mg", "value": 0.3}
     },
     {
         "atc"              : "C09AA02",
@@ -45931,6 +45965,40 @@
         "max"              : { "per_size": "kg", "per_time": {"value": 1, "units": "day"}, "units": "mg", "value": 15 }
     },
     {
+        "atc"              : "C09AA02",
+        "form"             : "Tablet/capsule/granules",
+        "route"            : "Oral",
+        "aware"            : null,
+        "acute_chronic"    : "Acute",
+        "prescriber"       : "Doctor prescribed",
+        "icd10_indications": { "type": "codes", "codes": ["E10.21"] },
+        "medicine"         : {
+            "name"       : "Enalapril",
+            "ingredients": [ {"name": "Enalapril"} ]
+        },
+        "schedules"        : [
+            {
+                "per_dose"      : true,
+                "per_size"      : "kg",
+                "units"         : "mg",
+                "value"         : 0.1,
+                "frequency"     : ["od", "bd"],
+                "age_classifier": "child"
+            }
+        ],
+        "raw_dose"         : "0.1mg/kg/dose (maximum dose = 0.5mg/kg or 40mg/day)",
+        "raw_dose_interval": "once or twice daily",
+        "raw_duration"     : null,
+        "publication"      : "Paediatric Hospital Level",
+        "chapter_name"     : "Endocrine system",
+        "chapter_number"   : "7",
+        "adult_children"   : "Children",
+        "section_number"   : "7.5",
+        "disorder_number"  : "7.5.2.4",
+        "disorder"         : "Insulin Dependent: Acute Complications - Diabetic Nephropathy",
+        "max"              : {"per_size": "kg", "units": "mg", "value": 0.5}
+    },
+    {
         "atc"              : "H02AA02",
         "form"             : "Tablet/capsule/granules",
         "route"            : "Oral",
@@ -59847,7 +59915,7 @@
             "ingredients": [ {"name": "Varicella-zoster immunoglobulin"} ]
         },
         "schedules"        : [
-            { "per_size": {"kg": 1}, "units": "units", "value": 125, "frequency": "stat", "age_classifier": "adult" }
+            { "per_size": {"kg": 10}, "units": "units", "value": 125, "frequency": "stat", "age_classifier": "adult" }
         ],
         "raw_dose"         : "125 units/10kg",
         "raw_dose_interval": "single dose",
@@ -68111,8 +68179,16 @@
         "schedules": [
             {
                 "active_ingredients": [
-                    {"value":  20, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 120, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 20, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 120,
+                        "age_range"      : {
+                            "min": {"value": 6, "units": "months"},
+                            "max": {"value": 3, "units": "years" }
+                        },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 6, "units": "months"}, "max": {"value": 3, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -68120,8 +68196,16 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  20, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 120, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 20, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 120,
+                        "age_range"      : {
+                            "min": {"value": 6, "units": "months"},
+                            "max": {"value": 3, "units": "years" }
+                        },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 6, "units": "months"}, "max": {"value": 3, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -68129,8 +68213,16 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  40, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 240, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 40, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 240,
+                        "age_range"      : {
+                            "min": {"value": 3, "units": "years"},
+                            "max": {"value": 8, "units": "years"}
+                        },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 3, "units": "years"}, "max": {"value": 8, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -68138,8 +68230,16 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  40, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 240, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 40, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 240,
+                        "age_range"      : {
+                            "min": {"value": 3, "units": "years"},
+                            "max": {"value": 8, "units": "years"}
+                        },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 3, "units": "years"}, "max": {"value": 8, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -68147,8 +68247,16 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  60, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 360, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 60, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 360,
+                        "age_range"      : {
+                            "min": {"value":  8, "units": "years"},
+                            "max": {"value": 12, "units": "years"}
+                        },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 8, "units": "years"}, "max": {"value": 12, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -68156,8 +68264,16 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  60, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 360, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 60, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 360,
+                        "age_range"      : {
+                            "min": {"value":  8, "units": "years"},
+                            "max": {"value": 12, "units": "years"}
+                        },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 8, "units": "years"}, "max": {"value": 12, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -68165,8 +68281,13 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  80, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 480, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 80, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 480,
+                        "age_range"      : { "min": {"value": 12, "units": "years"} },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 12, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -68174,8 +68295,13 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  80, "units": "mg", "ingredient_name": "Artemether"  },
-                    {"value": 480, "units": "mg", "ingredient_name": "lumefantrine"}
+                    {"value": 80, "units": "mg", "ingredient_name": "Artemether"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 480,
+                        "age_range"      : { "min": {"value": 12, "units": "years"} },
+                        "ingredient_name": "lumefantrine"
+                    }
                 ],
                 "age_range": { "min": {"value": 12, "units": "years"} },
                 "special_instructions": "First dose immediately, second dose after 8 hours, then 12 hourly for 2 days (total 6 doses in 3 days)",
@@ -69922,8 +70048,8 @@
         "schedules"        : [
             {
                 "active_ingredients": [
-                    {"value":  240, "units": "injection", "ingredient_name": "Trimethoprim"    },
-                    {"value": 1200, "units": "Injection", "ingredient_name": "Sulfamethoxazole"}
+                    {"value":  240, "units": "injection", "ingredient_name": "Trimethoprim"                        },
+                    {"value": 1200, "units": "Injection", "ingredient_name": "Sulfamethoxazole", "kg_limit_max": 60}
                 ],
                 "kg_limit_max"      : 60,
                 "frequency"         : "q6h",
@@ -69931,8 +70057,8 @@
             },
             {
                 "active_ingredients": [
-                    {"value":  320, "units": "mg", "ingredient_name": "Trimethoprim"    },
-                    {"value": 1600, "units": "mg", "ingredient_name": "Sulfamethoxazole"}
+                    {"value":  320, "units": "mg", "ingredient_name": "Trimethoprim"                        },
+                    {"value": 1600, "units": "mg", "ingredient_name": "Sulfamethoxazole", "kg_limit_min": 60}
                 ],
                 "kg_limit_min"      : 60,
                 "frequency"         : "q6h",
@@ -73017,8 +73143,13 @@
         "schedules"        : [
             {
                 "active_ingredients": [
-                    {"value":  320, "units": "mg", "ingredient_name": "Trimethoprim"    },
-                    {"value": 1600, "units": "mg", "ingredient_name": "Sulfamethoxazole"}
+                    {"value": 320, "units": "mg", "ingredient_name": "Trimethoprim"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 1600,
+                        "duration"       : {"value": 4, "units": "week"},
+                        "ingredient_name": "Sulfamethoxazole"
+                    }
                 ],
                 "duration"          : {"value": 4, "units": "week"},
                 "frequency"         : "q12h",
@@ -73026,8 +73157,13 @@
             },
             {
                 "active_ingredients": [
-                    {"value": 160, "units": "mg", "ingredient_name": "Trimethoprim"    },
-                    {"value": 800, "units": "mg", "ingredient_name": "Sulfamethoxazole"}
+                    {"value": 160, "units": "mg", "ingredient_name": "Trimethoprim"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 800,
+                        "duration"       : {"value": 12, "units": "week"},
+                        "ingredient_name": "Sulfamethoxazole"
+                    }
                 ],
                 "duration"          : {"value": 12, "units": "week"},
                 "frequency"         : "q12h",
@@ -73066,8 +73202,13 @@
         "schedules"        : [
             {
                 "active_ingredients": [
-                    {"value":  320, "units": "mg", "ingredient_name": "Trimethoprim"    },
-                    {"value": 1600, "units": "mg", "ingredient_name": "Sulfamethoxazole"}
+                    {"value": 320, "units": "mg", "ingredient_name": "Trimethoprim"},
+                    {
+                        "units"          : "mg",
+                        "value"          : 1600,
+                        "duration"       : {"value": 10, "units": "day"},
+                        "ingredient_name": "Sulfamethoxazole"
+                    }
                 ],
                 "duration"          : {"value": 10, "units": "day"},
                 "frequency"         : "q12h",
@@ -73075,8 +73216,13 @@
             },
             {
                 "active_ingredients"  : [
-                    {"value": 160, "units": "mg", "ingredient_name": "Trimethoprim"    },
-                    {"value": 800, "units": "mg", "ingredient_name": "Sulfamethoxazole"}
+                    {"value": 160, "units": "mg", "ingredient_name": "Trimethoprim"},
+                    {
+                        "units"               : "mg",
+                        "value"               : 800,
+                        "special_instructions": "until CD4 > 200",
+                        "ingredient_name"     : "Sulfamethoxazole"
+                    }
                 ],
                 "special_instructions": "until CD4 > 200",
                 "frequency"           : "q12h",
@@ -83898,6 +84044,39 @@
         "max": { "per_size": "kg", "per_time": {"value": 1, "units": "minute"}, "units": "mg", "value": 3 }
     },
     {
+        "atc": "N03AB02",
+        "form": "Injection",
+        "route": "Intravenous injection (IV)",
+        "aware": null,
+        "acute_chronic": "Acute",
+        "prescriber": "Doctor prescribed",
+        "icd10_indications": { "type": "codes", "codes": ["G41.9"] },
+        "medicine": {
+            "name"       : "Phenytoin",
+            "ingredients": [ {"name": "Phenytoin"} ]
+        },
+        "schedules": [
+            {
+                "per_size"      : "kg",
+                "units"         : "mg",
+                "value"         : 20,
+                "duration"      : {"value": 20, "units": "minute"},
+                "age_classifier": "child"
+            }
+        ],
+        "raw_dose": "20mg/kg (maximum 600mg/dose)",
+        "raw_dose_interval": "over 20 minutes (maximum = 3mg/kg/min)",
+        "raw_duration": null,
+        "publication": "Paediatric Hospital Level",
+        "chapter_name": "The Nervous System",
+        "chapter_number": "13",
+        "adult_children": "Children",
+        "section_number": "13.2",
+        "disorder_number": "13.2.1",
+        "disorder": "Status Epilepticus - Epileptic seizures and status epilepticus in children < 13 years of age - Established status - phenobarbital given and no response 5 mins after administration",
+        "max": {"per_dose": true, "units": "mg", "value": 600}
+    },
+    {
         "atc"              : "H02AB07",
         "form"             : "Solution",
         "route"            : "Oral",
@@ -89542,7 +89721,7 @@
         },
         "schedules"        : [
             {
-                "per_size"            : {"kg": 0.5},
+                "per_size"            : {"kg": 12.5},
                 "units"               : "mg",
                 "value"               : 0.5,
                 "special_instructions": "after each loose stool",
@@ -89627,7 +89806,7 @@
             "ingredients": [ {"name": "Loperamide"} ]
         },
         "schedules"        : [
-            { "per_size": {"kg": 0.5}, "units": "mg", "value": 1, "frequency": "stat", "age_classifier": "child" }
+            { "per_size": {"kg": 12.5}, "units": "mg", "value": 1, "frequency": "stat", "age_classifier": "child" }
         ],
         "raw_dose"         : "1mg/12.5kg body mass",
         "raw_dose_interval": "stat",
@@ -89701,7 +89880,7 @@
             "ingredients": [ {"name": "Loperamide"} ]
         },
         "schedules"        : [
-            { "per_size": {"kg": 0.5}, "units": "mg", "value": 1, "age_classifier": "child" }
+            { "per_size": {"kg": 12.5}, "units": "mg", "value": 1, "age_classifier": "child" }
         ],
         "raw_dose"         : "1mg/12.5kg body mass",
         "raw_dose_interval": "n/a",
@@ -89727,7 +89906,7 @@
             "ingredients": [ {"name": "Loperamide"} ]
         },
         "schedules"        : [
-            { "per_size": {"kg": 0.5}, "units": "mg", "value": 0.5, "age_classifier": "child" }
+            { "per_size": {"kg": 12.5}, "units": "mg", "value": 0.5, "age_classifier": "child" }
         ],
         "raw_dose"         : "0.5mg/12.5kg",
         "raw_dose_interval": "n/a",
@@ -89833,6 +90012,44 @@
         "section_number"   : "14.1",
         "disorder_number"  : "14.1",
         "disorder"         : "Sedation of acutely disturbed child or adolescent - <6 years"
+    },
+    {
+        "atc"              : "N06BA04",
+        "form"             : "Tablet/capsule/granules",
+        "route"            : "Oral",
+        "aware"            : null,
+        "acute_chronic"    : "Acute",
+        "prescriber"       : "Doctor prescribed",
+        "icd10_indications": {
+            "type" : "codes",
+            "codes": ["F90.0", "F90.1", "F90.2", "F90.3", "F90.4", "F90.5", "F90.6", "F90.7", "F90.8", "F90.9"]
+        },
+        "medicine"         : {
+            "name"       : "Methylphenidate - short acting only",
+            "ingredients": [ {"name": "Methylphenidate - short acting only"} ]
+        },
+        "schedules"        : [
+            {
+                "per_size"            : "kg",
+                "per_time"            : {"value": 1, "units": "day"},
+                "units"               : "mg",
+                "value"               : 1,
+                "divided_dose_count"  : [2, 3],
+                "special_instructions": "every 3-3.5 hours (at breakfast, lunch and no later than 14h30)",
+                "age_classifier"      : "child"
+            }
+        ],
+        "raw_dose"         : "1mg/kg/day (maximum daily dose = 60mg = 2mg/kg/day)",
+        "raw_dose_interval": "2 - 3 times daily (every 3 - 3.5 hours (at breakfast, lunch and no later than 14h30))",
+        "raw_duration"     : null,
+        "publication"      : "Paediatric Hospital Level",
+        "chapter_name"     : "Child and Adolescent Psychiatry",
+        "chapter_number"   : "14",
+        "adult_children"   : "Children",
+        "section_number"   : "14.3",
+        "disorder_number"  : "14.3",
+        "disorder"         : "Attention Defecit Hyperactivity Disorder (ADHD) - >6 years of age",
+        "max"              : { "units": "mg", "value": 60, "per_time": {"value": 1, "units": "day"} }
     },
     {
         "atc"              : "N02AA01",
@@ -132798,6 +133015,60 @@
             "ingredients": [ {"name": "Metoclopramide"} ]
         },
         "schedules"        : [
+            {"per_size": "kg", "units": "mcg", "value": 100, "frequency": "q12h", "age_classifier": "child"}
+        ],
+        "raw_dose"         : "100 mcg/kg (maximum = 1000 mcg/dose = 1mg/dose)",
+        "raw_dose_interval": "12 hourly",
+        "raw_duration"     : null,
+        "publication"      : "Paediatric Hospital Level",
+        "chapter_name"     : "Palliative Care",
+        "chapter_number"   : "21",
+        "adult_children"   : "Children",
+        "section_number"   : "21.1",
+        "disorder_number"  : "21.1.1.2",
+        "disorder"         : "Gastro-intestinal symptoms - Nausea and vomiting - 1–11 months (up to 10 kg)",
+        "max"              : {"per_dose": true, "units": "mcg", "value": 1000}
+    },
+    {
+        "atc"              : "A03FA01",
+        "form"             : "Injection",
+        "route"            : "Intravenous injection (IV)",
+        "aware"            : null,
+        "acute_chronic"    : "Acute",
+        "prescriber"       : "Doctor prescribed",
+        "icd10_indications": { "type": "codes", "codes": ["R11"] },
+        "medicine"         : {
+            "name"       : "Metoclopramide",
+            "ingredients": [ {"name": "Metoclopramide"} ]
+        },
+        "schedules"        : [
+            {"per_size": "kg", "units": "mcg", "value": 100, "frequency": "q12h", "age_classifier": "child"}
+        ],
+        "raw_dose"         : "100 mcg/kg (maximum = 1000 mcg/dose = 1mg/dose)",
+        "raw_dose_interval": "12 hourly",
+        "raw_duration"     : null,
+        "publication"      : "Paediatric Hospital Level",
+        "chapter_name"     : "Palliative Care",
+        "chapter_number"   : "21",
+        "adult_children"   : "Children",
+        "section_number"   : "21.1",
+        "disorder_number"  : "21.1.1.2",
+        "disorder"         : "Gastro-intestinal symptoms - Nausea and vomiting - 1–11 months (up to 10 kg)",
+        "max"              : {"per_dose": true, "units": "mcg", "value": 1000}
+    },
+    {
+        "atc"              : "A03FA01",
+        "form"             : "Solution",
+        "route"            : "Oral",
+        "aware"            : null,
+        "acute_chronic"    : "Acute",
+        "prescriber"       : "Doctor prescribed",
+        "icd10_indications": { "type": "codes", "codes": ["R11"] },
+        "medicine"         : {
+            "name"       : "Metoclopramide",
+            "ingredients": [ {"name": "Metoclopramide"} ]
+        },
+        "schedules"        : [
             { "per_size": "kg", "units": "mcg", "value": 100, "frequency": ["q6h", "q8h"], "age_classifier": "child" }
         ],
         "raw_dose"         : "100 mcg/kg",
@@ -138861,8 +139132,8 @@
         "disorder_number"  : "22.1.1",
         "disorder"         : "Local and Regional Anaesthesia - with adrenaline (epinephrine)",
         "max"              : {
-            "low" : [ {"per_size": "kg", "units": "mg", "value": 2} ],
-            "high": [ {"per_size": "kg", "units": "mg", "value": 3} ]
+            "low" : [ {"per_size": "kg", "units": "mg", "value": 2}, {"per_size": "kg", "units": "mL", "value": 0.4} ],
+            "high": [ {"per_size": "kg", "units": "mg", "value": 3}, {"per_size": "kg", "units": "mL", "value": 0.6} ]
         }
     },
     {
@@ -138895,8 +139166,8 @@
         "disorder_number"  : "22.1.1",
         "disorder"         : "Local and Regional Anaesthesia - without adrenaline (epinephrine)",
         "max"              : {
-            "low" : [ {"per_size": "kg", "units": "mg", "value": 2} ],
-            "high": [ {"per_size": "kg", "units": "mg", "value": 3} ]
+            "low" : [ {"per_size": "kg", "units": "mg", "value": 2}, {"per_size": "kg", "units": "mL", "value": 0.4} ],
+            "high": [ {"per_size": "kg", "units": "mg", "value": 3}, {"per_size": "kg", "units": "mL", "value": 0.6} ]
         }
     },
     {
@@ -139811,7 +140082,12 @@
         "section_number"   : "22.1",
         "disorder_number"  : "22.1.1",
         "disorder"         : "Local and Regional Anaesthesia - with adrenaline (epinephrine)",
-        "max"              : {"per_size": "kg", "units": "mg", "value": 7}
+        "max"              : {
+            "per_size"      : "kg",
+            "units"         : "mg",
+            "value"         : 7,
+            "other_schedule": {"per_size": "kg", "units": "ml", "value": 0.3}
+        }
     },
     {
         "atc"              : "N01BB02",
@@ -139837,7 +140113,12 @@
         "section_number"   : "22.1",
         "disorder_number"  : "22.1.1",
         "disorder"         : "Local and Regional Anaesthesia - without adrenaline (epinephrine)",
-        "max"              : {"per_size": "kg", "units": "mg", "value": 3}
+        "max"              : {
+            "per_size"      : "kg",
+            "units"         : "mg",
+            "value"         : 3,
+            "other_schedule": {"per_size": "kg", "units": "ml", "value": 0.15}
+        }
     },
     {
         "atc": "n/a",

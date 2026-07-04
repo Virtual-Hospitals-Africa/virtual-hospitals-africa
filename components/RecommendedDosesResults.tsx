@@ -1,6 +1,6 @@
 import { RecommendedMedication } from './RecommendedMedication.tsx'
 import { DecisionSupportDisclaimer, SnomedIcd10MappingAudit } from './SnomedIcd10MappingAudit.tsx'
-import type { RecommendedDoseCalculatorLookup } from '../shared/recommended_dose_calculator/lookup.ts'
+import type { RecommendedDoseCalculatorLookup } from '../types.ts'
 import type { ParsedPatientCase } from '../shared/recommended_doses.ts'
 import { RECOMMENDED_DOSE_CALCULATOR_SUGGESTED_MEDICATIONS_HEADER } from '../shared/snomed_to_icd10.ts'
 

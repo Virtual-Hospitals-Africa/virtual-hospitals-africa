@@ -38,6 +38,8 @@ import type { InsertableFindingBase, Lang, QueryableEvidenceNode } from './share
 import type { PrescriptionFrequency } from './shared/prescription.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { TriageRoutePatientNextStep } from './shared/triage_route_patient.ts'
+import { AppliedDose, Medicine, ParsedPatientCase } from './shared/recommended_doses.ts'
+import { SnomedIcd10MappingResult } from './shared/snomed_to_icd10.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -3247,4 +3249,14 @@ export type TriageNextStepRecommendations = {
   }[]
   to_be_notified: RenderedEmployeeWithPresenceAndSeniority[]
   tasks_identified_requiring_staff_not_on_duty_at_this_facility: boolean
+}
+export type RecommendedMedicineWithPatientCase = Omit<Medicine, 'schedules'> & {
+  patient_case: ParsedPatientCase
+  schedules: AppliedDose[]
+}
+
+export type RecommendedDoseCalculatorLookup = {
+  mapping_result: SnomedIcd10MappingResult
+  conditions_for_lookup: string[]
+  matching_medicines: RecommendedMedicineWithPatientCase[]
 }

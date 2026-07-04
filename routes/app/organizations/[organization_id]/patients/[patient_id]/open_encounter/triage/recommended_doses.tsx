@@ -26,7 +26,7 @@ export default OpenEncounterWorkflowPage(async function TriageRecommendedDosesPa
   const {
     trx,
     patient,
-    patient_age_determination,
+    // patient_age_determination, @Xin let's use this
     this_visit_diagnoses,
     this_visit_findings,
   } = ctx.state

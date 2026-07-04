@@ -915,7 +915,7 @@ export class DosageParser {
     this.lookFor(/\/?(% burn)/i, () => ({ per_percent_burn: true }))
 
     this.lookFor(/\/(kg|m2)/i, (per_size) => ({ per_size: per_size as 'kg' | 'm2' }))
-    this.lookFor(/\/\d*(\.\d+)?kg/i, (kg) => ({ per_size: { kg: parseFloat(kg) || 1 } }))
+    this.lookFor(/\/(\d*\.?\d+)kg/i, (kg) => ({ per_size: { kg: parseFloat(kg) } }))
     this.lookFor(/\/(second|sec|minute|min|hour|hr|day|week)/i, (units) => ({
       per_time: {
         value: 1,
