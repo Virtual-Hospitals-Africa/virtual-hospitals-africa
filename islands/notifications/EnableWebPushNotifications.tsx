@@ -10,6 +10,19 @@ function browserSupportsWebPush() {
     'PushManager' in window
 }
 
+async function persistPushSubscription(subscription: PushSubscription) {
+  const subscription_json = subscription.toJSON()
+  const save_response = await fetch('/app/web-push-subscription', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      endpoint: subscription_json.endpoint,
+      keys: subscription_json.keys,
+    }),
+  })
+  return save_response.ok
+}
+
 async function ensurePushSubscription(
   service_worker: ServiceWorkerRegistration,
   vapid_public_key: string,
@@ -47,20 +60,26 @@ export function EnableWebPushNotifications(
     async function restoreSubscriptionState() {
       try {
         if (!browserSupportsWebPush()) return
+        if (Notification.permission !== 'granted') return
 
         const service_worker = await navigator.serviceWorker.getRegistration()
         if (!service_worker) return
 
         const subscription = await service_worker.pushManager.getSubscription()
         if (
-          Notification.permission === 'granted' &&
-          subscription &&
-          applicationServerKeysMatch(
+          !subscription ||
+          !applicationServerKeysMatch(
             subscription.options.applicationServerKey,
             vapid_public_key,
           )
         ) {
+          return
+        }
+
+        if (await persistPushSubscription(subscription)) {
           enabled.value = true
+        } else {
+          console.error('Could not persist existing push subscription during mount reconciliation')
         }
       } catch (error) {
         console.error(error)
@@ -96,17 +115,7 @@ export function EnableWebPushNotifications(
 
       const subscription = await ensurePushSubscription(service_worker, vapid_public_key)
 
-      const subscription_json = subscription.toJSON()
-      const save_response = await fetch('/app/web-push-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          endpoint: subscription_json.endpoint,
-          keys: subscription_json.keys,
-        }),
-      })
-
-      if (!save_response.ok) {
+      if (!(await persistPushSubscription(subscription))) {
         showAlertMessage({
           level: 'error',
           message: 'Could not save your push notification subscription. Please try again.',
