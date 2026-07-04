@@ -13,10 +13,7 @@ import PatientConditionsSection from '../../../islands/recommended_dose_calculat
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
 import { StepsSidebar } from '../../../components/library/sidebar/Steps.tsx'
 import { Top } from '../../../components/library/sidebar/Top.tsx'
-import {
-  RECOMMENDED_DOSE_CALCULATOR_SNOMED_FIELD_HELP,
-  RECOMMENDED_DOSE_CALCULATOR_SUBMIT_LABEL,
-} from '../../../shared/snomed_to_icd10.ts'
+import { RECOMMENDED_DOSE_CALCULATOR_SNOMED_FIELD_HELP, RECOMMENDED_DOSE_CALCULATOR_SUBMIT_LABEL } from '../../../shared/snomed_to_icd10.ts'
 
 export default function CreatePatientCase(ctx: Context<unknown>) {
   return (

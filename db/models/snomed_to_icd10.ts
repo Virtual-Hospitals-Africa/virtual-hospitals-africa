@@ -13,6 +13,7 @@ import {
   SnomedIcd10ResolvedVia,
 } from '../../shared/snomed_to_icd10.ts'
 import { TrxOrDb } from '../../types.ts'
+import { groupBy } from '../../util/groupBy.ts'
 
 type ExtendedMapRow = {
   referenced_component_id: string | bigint
@@ -177,8 +178,9 @@ export const snomed_to_icd10 = {
     snomed_concept_ids: string[],
     context: SnomedIcd10PatientContext,
   ): Promise<SnomedIcd10MappingResult> {
-    const by_concept = new Map<string, SnomedIcd10ConceptMapping>()
-    if (!snomed_concept_ids.length) return { by_concept }
+    if (!snomed_concept_ids.length) {
+      return { by_concept: new Map() }
+    }
 
     const rows = await trx
       .selectFrom('snomed_iissscc_refset_extended_map')
@@ -200,23 +202,9 @@ export const snomed_to_icd10 = {
       .orderBy('map_priority')
       .execute()
 
-    const rows_by_concept = new Map<string, ExtendedMapRow[]>()
-    for (const row of rows) {
-      const concept_id = String(row.referenced_component_id)
-      const concept_rows = rows_by_concept.get(concept_id) ?? []
-      concept_rows.push({
-        referenced_component_id: row.referenced_component_id,
-        map_group: row.map_group,
-        map_priority: row.map_priority,
-        map_rule: row.map_rule,
-        map_advice: row.map_advice,
-        map_target: row.map_target,
-        map_category_id: row.map_category_id,
-        correlation_id: row.correlation_id,
-      })
-      rows_by_concept.set(concept_id, concept_rows)
-    }
-
+    const rows_by_concept = groupBy(rows, 'referenced_component_id')
+    
+    const by_concept = new Map<string, SnomedIcd10ConceptMapping>()
     for (const snomed_concept_id of snomed_concept_ids) {
       by_concept.set(
         snomed_concept_id,
@@ -227,7 +215,6 @@ export const snomed_to_icd10 = {
         ),
       )
     }
-
     return { by_concept }
   },
 

@@ -1,11 +1,11 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { describe, it } from 'std/testing/bdd.ts'
-import { buildPatientCaseFromEncounter, snomedConceptIdsFromEncounter } from '../../../shared/recommended_dose_calculator/patient_case_from_encounter.ts'
+import { buildPatientCaseFromEncounter, positiveRecordsFromEncounter } from '../../../shared/recommended_dose_calculator/patient_case_from_encounter.ts'
 
 describe('shared/recommended_dose_calculator/patient_case_from_encounter.ts', () => {
   it('collects SNOMED concept ids from diagnoses and findings', () => {
     assertEquals(
-      snomedConceptIdsFromEncounter({
+      positiveRecordsFromEncounter({
         this_visit_diagnoses: [{
           specific_snomed_concept_id: '195967001',
           type: 'evaluation',
