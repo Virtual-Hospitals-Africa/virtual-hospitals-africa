@@ -8,7 +8,7 @@ import { triageNextStepRecommendations } from '../../../shared/triage_route_pati
 import {
   getTutorialRoutePatientData,
   TUTORIAL_CLINIC_EMPLOYEES,
-  TUTORIAL_MANAGE_PATIENT_TASKS,
+  TUTORIAL_MANAGE_PATIENT_TASK_GROUPS,
   TUTORIAL_ORGANIZATION_EMPLOYMENT,
 } from '../../../shared/tutorial/mock-data.ts'
 import TriageRoutePatientSection from '../../triage/RoutePatientSection.tsx'
@@ -24,8 +24,12 @@ export function RoutePatientStep() {
     target_treatment_time: new Date(),
   }
 
-  const tasks_with_permissions = applyPermissions(TUTORIAL_ORGANIZATION_EMPLOYMENT, TUTORIAL_CLINIC_EMPLOYEES, TUTORIAL_MANAGE_PATIENT_TASKS)
-  const triage_next_step_recommendations = triageNextStepRecommendations(priority.name, TUTORIAL_CLINIC_EMPLOYEES, tasks_with_permissions)
+  const task_groups_with_permissions = applyPermissions(TUTORIAL_ORGANIZATION_EMPLOYMENT, TUTORIAL_CLINIC_EMPLOYEES, TUTORIAL_MANAGE_PATIENT_TASK_GROUPS)
+  const triage_next_step_recommendations = triageNextStepRecommendations(
+    priority.name,
+    TUTORIAL_CLINIC_EMPLOYEES,
+    task_groups_with_permissions.flatMap((group) => group.tasks),
+  )
 
   return (
     <div data-tutorial='route-patient'>
@@ -36,8 +40,9 @@ export function RoutePatientStep() {
           gender: 'woman',
         }}
         priority={priority}
+        organization_id={TUTORIAL_ORGANIZATION_EMPLOYMENT.id}
         clinic_employees={TUTORIAL_CLINIC_EMPLOYEES}
-        tasks_with_permissions={tasks_with_permissions}
+        task_groups_with_permissions={task_groups_with_permissions}
         triage_next_step_recommendations={triage_next_step_recommendations}
       />
     </div>

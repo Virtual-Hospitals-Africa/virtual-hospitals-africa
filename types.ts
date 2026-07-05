@@ -3233,6 +3233,11 @@ export type TaskWithPermissions = {
   permissions: TaskPermissions
 }
 
+export type TaskGroupWithPermissions = {
+  due_to: TaskGroup['due_to']
+  tasks: TaskWithPermissions[]
+}
+
 export type TriageNextStepRecommendations = {
   next_step: TriageRoutePatientNextStep
   employees_with_tasks: {

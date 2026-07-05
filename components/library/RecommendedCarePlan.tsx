@@ -1,8 +1,10 @@
 import { ComponentChildren } from 'preact'
-import { RenderedEmployeeWithPresenceAndSeniority, TaskWithPermissions, TriageNextStepRecommendations } from '../../types.ts'
+import { RenderedEmployeeWithPresenceAndSeniority, TaskGroupWithPermissions } from '../../types.ts'
 import { initials } from '../../util/initials.ts'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
+import { DueTo } from '../triage/tasks/DueTo.tsx'
+import { hyphenate } from '../../util/hyphenate.ts'
 
 // A tiny avatar for an employee who can do/approve a task. On-duty employees are
 // shown at full opacity; off-duty ones are greyed out. Employees that are slated
@@ -58,56 +60,51 @@ function TaskRow({ children }: { children: ComponentChildren }) {
 }
 
 export default function RecommendedCarePlan(
-  { to_be_notified, tasks_with_permissions }: {
+  { to_be_notified, task_groups_with_permissions, organization_id }: {
     to_be_notified: RenderedEmployeeWithPresenceAndSeniority[]
-    clinic_employees: RenderedEmployeeWithPresenceAndSeniority[]
-    tasks_with_permissions: TaskWithPermissions[]
-    triage_next_step_recommendations: TriageNextStepRecommendations
+    task_groups_with_permissions: TaskGroupWithPermissions[]
+    organization_id: string
   },
 ) {
-  // tasks_with_permissions[0].task
-
   const to_be_notified_ids = new Set(to_be_notified.map((employee) => employee.id))
 
-  // Tasks not needing permission first, those needing approval next, and those
-  // outside the scope of practice (cant_do) last.
-  const no_approval_needed = tasks_with_permissions.filter((task) => task.permissions.type === 'no_approval_needed')
-  const approval_needed = tasks_with_permissions.filter((task) => task.permissions.type === 'approval_needed')
-  const cant_do = tasks_with_permissions.filter((task) => task.permissions.type === 'cant_do')
-
   return (
-    <ul class='w-full flex flex-col gap-2'>
-      {no_approval_needed.map(({ task }, i) => (
-        <TaskRow key={`no-approval-${i}`}>
-          <span>{task.description}</span>
-        </TaskRow>
+    <div class='w-full flex flex-col gap-4'>
+      {task_groups_with_permissions.map((group) => (
+        <div
+          key={group.due_to.map((record) => record.id).join('-')}
+          class='task-group-card flex flex-col gap-2'
+          data-due-to={group.due_to.map((record) => hyphenate(record.displays.full)).join('-')}
+        >
+          <DueTo
+            due_to={group.due_to}
+            organization_id={organization_id}
+          />
+          <ul class='w-full flex flex-col gap-2'>
+            {group.tasks.map(({ task, permissions }) => (
+              <TaskRow key={task.description}>
+                <span>{task.description}</span>
+                {permissions.type === 'approval_needed' && (
+                  <PermissionEmployees
+                    label='requires approval from'
+                    on_duty={permissions.employees_who_can_approve.on_duty}
+                    off_duty={permissions.employees_who_can_approve.off_duty}
+                    to_be_notified_ids={to_be_notified_ids}
+                  />
+                )}
+                {permissions.type === 'cant_do' && (
+                  <PermissionEmployees
+                    label='can be done by'
+                    on_duty={permissions.employees_who_can_do.on_duty}
+                    off_duty={permissions.employees_who_can_do.off_duty}
+                    to_be_notified_ids={to_be_notified_ids}
+                  />
+                )}
+              </TaskRow>
+            ))}
+          </ul>
+        </div>
       ))}
-      {approval_needed.map(({ task, permissions }, i) =>
-        permissions.type === 'approval_needed' && (
-          <TaskRow key={`approval-${i}`}>
-            <span>{task.description}</span>
-            <PermissionEmployees
-              label='requires approval from'
-              on_duty={permissions.employees_who_can_approve.on_duty}
-              off_duty={permissions.employees_who_can_approve.off_duty}
-              to_be_notified_ids={to_be_notified_ids}
-            />
-          </TaskRow>
-        )
-      )}
-      {cant_do.map(({ task, permissions }, i) =>
-        permissions.type === 'cant_do' && (
-          <TaskRow key={`cant-do-${i}`}>
-            <span>{task.description}</span>
-            <PermissionEmployees
-              label='can be done by'
-              on_duty={permissions.employees_who_can_do.on_duty}
-              off_duty={permissions.employees_who_can_do.off_duty}
-              to_be_notified_ids={to_be_notified_ids}
-            />
-          </TaskRow>
-        )
-      )}
-    </ul>
+    </div>
   )
 }

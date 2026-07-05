@@ -5514,3 +5514,13 @@ export const TUTORIAL_MANAGE_PATIENT_TASKS: Array<
     'description': 'Raise legs',
   },
 ]
+
+// The manage tasks are all anaphylaxis management, so they share the
+// Anaphylaxis due_to from TUTORIAL_TASK_GROUPS.
+export const TUTORIAL_MANAGE_PATIENT_TASK_GROUPS: TaskGroup[] = [
+  {
+    completed: false,
+    due_to: TUTORIAL_TASK_GROUPS[1].due_to,
+    tasks: TUTORIAL_MANAGE_PATIENT_TASKS,
+  },
+]

@@ -1,4 +1,4 @@
-import { Maybe, Names, Priority, RenderedEmployeeWithPresenceAndSeniority, TaskWithPermissions, TriageNextStepRecommendations } from '../../types.ts'
+import { Maybe, Names, Priority, RenderedEmployeeWithPresenceAndSeniority, TaskGroupWithPermissions, TriageNextStepRecommendations } from '../../types.ts'
 import { EncounterReason } from '../../db.d.ts'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
@@ -10,7 +10,7 @@ import RecommendedCarePlan from '../../components/library/RecommendedCarePlan.ts
 import ProvidersSelect from '../ProvidersSelect.tsx'
 
 export default function TriageRoutePatientSection(
-  { this_visit, patient, priority, clinic_employees, tasks_with_permissions, triage_next_step_recommendations }: {
+  { this_visit, patient, priority, organization_id, clinic_employees, task_groups_with_permissions, triage_next_step_recommendations }: {
     this_visit: {
       reason: Maybe<EncounterReason>
       notes?: Maybe<string>
@@ -23,11 +23,13 @@ export default function TriageRoutePatientSection(
       name: Priority
       target_treatment_time: Date | null
     }
+    organization_id: string
     clinic_employees: RenderedEmployeeWithPresenceAndSeniority[]
-    tasks_with_permissions: TaskWithPermissions[]
+    task_groups_with_permissions: TaskGroupWithPermissions[]
     triage_next_step_recommendations: TriageNextStepRecommendations
   },
 ) {
+  const tasks_with_permissions = task_groups_with_permissions.flatMap((group) => group.tasks)
   const next_step = useSignal<string>(triage_next_step_recommendations.next_step)
 
   const to_be_notified = useSignal<RenderedEmployeeWithPresenceAndSeniority[]>(triage_next_step_recommendations.to_be_notified)
@@ -38,14 +40,13 @@ export default function TriageRoutePatientSection(
 
   return (
     <div class='flex flex-col gap-6'>
-      {!!tasks_with_permissions.length && (
+      {!!task_groups_with_permissions.length && (
         <FormSection id='recommended_care_plan' header='Recommended Care Plan' always_column>
           <FormRow>
             <RecommendedCarePlan
               to_be_notified={to_be_notified.value}
-              clinic_employees={clinic_employees}
-              tasks_with_permissions={tasks_with_permissions}
-              triage_next_step_recommendations={triage_next_step_recommendations}
+              task_groups_with_permissions={task_groups_with_permissions}
+              organization_id={organization_id}
             />
           </FormRow>
         </FormSection>

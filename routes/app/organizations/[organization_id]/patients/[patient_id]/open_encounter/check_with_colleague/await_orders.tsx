@@ -6,14 +6,12 @@ import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
 import { preferredName } from '../../../../../../../../util/asNames.ts'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
-import { isManage } from '../../../../../../../../shared/tasks.ts'
-import { ManagePatientGroup } from '../../../../../../../../components/triage/tasks/ManagePatientGroup.tsx'
 import SectionHeader from '../../../../../../../../components/library/typography/SectionHeader.tsx'
 import { NoTasks } from '../../../../../../../../components/triage/tasks/NoTasks.tsx'
 import { employees } from '../../../../../../../../db/models/employees.ts'
-import { employeeDisplay } from '../../../../../../../../util/healthWorkerDisplay.ts'
-import { Person } from '../../../../../../../../components/library/Person.tsx'
-import Badge from '../../../../../../../../components/library/Badge.tsx'
+import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
+import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
+import RecommendedCarePlan from '../../../../../../../../components/library/RecommendedCarePlan.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
 import { referrals } from '../../../../../../../../db/models/referrals.ts'
@@ -77,8 +75,16 @@ async function CheckWithColleagueAwaitOrdersPage(
 ) {
   const { trx, health_worker_id, encounter, organization_employment, organization_id, patient_encounter_id } = ctx.state
 
-  const { task_groups } = await promiseProps({
+  const { task_groups, clinic_employees } = await promiseProps({
     task_groups: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }).then((r) => r.task_groups),
+    clinic_employees: employees_presence.getAllAtOrganization(trx, {
+      organization_id,
+      excluding_health_worker: {
+        health_worker_id,
+        at_work: true,
+        seniority_order: organization_employment.seniority_order,
+      },
+    }),
   })
 
   const [referral] = await referrals.findAll(
@@ -89,7 +95,13 @@ async function CheckWithColleagueAwaitOrdersPage(
     },
   )
 
-  const groups_with_manage_tasks = task_groups.filter((group) => group.tasks.some(isManage))
+  const task_groups_with_permissions = applyPermissions(organization_employment, clinic_employees, task_groups)
+
+  // Highlight the colleagues we're awaiting orders from.
+  const referral_recipient_health_worker_ids = new Set(
+    (referral?.recipients ?? []).map((recipient) => recipient.health_worker.id),
+  )
+  const to_be_notified = clinic_employees.filter((employee) => referral_recipient_health_worker_ids.has(employee.id))
 
   return (
     <div class='flex flex-col gap-6'>
@@ -102,19 +114,15 @@ async function CheckWithColleagueAwaitOrdersPage(
           />
         </div>
       )}
-      {groups_with_manage_tasks.length > 0
+      {task_groups_with_permissions.length > 0
         ? (
           <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
             <SectionHeader>Patient Management Tasks</SectionHeader>
-            {groups_with_manage_tasks.map((group, index) => (
-              <ManagePatientGroup
-                key={index}
-                group={group}
-                organization_employment={organization_employment}
-                organization_id={organization_id}
-                primary_care_nurse={primary_care_nurse}
-              />
-            ))}
+            <RecommendedCarePlan
+              to_be_notified={to_be_notified}
+              task_groups_with_permissions={task_groups_with_permissions}
+              organization_id={organization_id}
+            />
           </div>
         )
         : <NoTasks />}
