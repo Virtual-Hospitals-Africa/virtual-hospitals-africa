@@ -6,7 +6,7 @@ import { json } from '../../../util/responses.ts'
 
 const MarkNotificationsSeenSchema = z.object({
   notification_ids: z.array(z.string().uuid()).min(1),
-}).strict()
+})
 
 export const handler = {
   async POST(ctx: LoggedInHealthWorkerContext) {

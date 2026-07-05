@@ -699,3 +699,8 @@ export const CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL = asConcept({
   name: 'Chart evaluation by healthcare professional',
   category: 'procedure' as const,
 })
+export const EXPECTANT_MANAGEMENT = asConcept({
+  id: '438758006',
+  name: 'Expectant management',
+  category: 'procedure' as const,
+})

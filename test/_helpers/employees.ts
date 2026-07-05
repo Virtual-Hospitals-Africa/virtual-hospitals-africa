@@ -21,6 +21,13 @@ export async function addTestEmployeeWithSession(
   opts?: TestHealthWorkerOpts,
 ) {
   const health_worker = await addTestEmployee(trx, opts)
+  return addSessionForEmployee(trx, health_worker)
+}
+
+export async function addSessionForEmployee<HealthWorker extends { id: string }>(
+  trx: TrxOrDb,
+  health_worker: HealthWorker,
+) {
   const session_id = await sessions.insertOne(trx, {
     entity_type: 'health_worker',
     entity_id: health_worker.id,

@@ -45,7 +45,7 @@ export const TriageWarningSignSchema = z.object({
     id: z.string(),
     altered: z.boolean().optional(),
   }).optional(),
-}).strict()
+})
 
 export const TriageWarningSignsSchema = z.object({
   warning_signs: z.record(
@@ -53,7 +53,7 @@ export const TriageWarningSignsSchema = z.object({
     TriageWarningSignSchema,
   ).optional().default({}).transform(values),
   __test_only_skip_inserting_negative_findings: z.boolean().optional(),
-}).strict()
+})
 
 const NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges = Symbol(
   'NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges',

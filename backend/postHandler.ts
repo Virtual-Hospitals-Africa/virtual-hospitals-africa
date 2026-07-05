@@ -6,6 +6,7 @@ import { timeout, TimeoutError } from '../util/timeout.ts'
 // import { assert } from 'std/assert/assert.ts'
 import { parseWithValues } from '../util/assertMatches.ts'
 import { notifications } from '../db/models/notifications.ts'
+import { inBackground } from '../util/inBackground.ts'
 
 export function postHandler<
   // deno-lint-ignore no-explicit-any
@@ -34,10 +35,15 @@ export function postHandler<
           ctx.state.trx = trx
           // There may not be one, but
           const response = Promise.resolve(callback(ctx, form_values))
-          const mark_notification_seen = notifications.markSeenByActionHref(trx, { health_worker_id, patient_encounter_id, action_href: ctx.url.pathname })
           const timer = timeout(10000)
           try {
-            return await Promise.race([Promise.all([response, mark_notification_seen]), timer])
+            return await Promise.race([
+              inBackground(
+                response,
+                () => notifications.markSeenByActionHref(trx, { health_worker_id, patient_encounter_id, action_href: ctx.url.pathname }),
+              ),
+              timer,
+            ])
           } catch (err) {
             if (err instanceof TimeoutError) {
               console.error(`TIMEOUT ${ctx.req.method}:${ctx.url.pathname}`)

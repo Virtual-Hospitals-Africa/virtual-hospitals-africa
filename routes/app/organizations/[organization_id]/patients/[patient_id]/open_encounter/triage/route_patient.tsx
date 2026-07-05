@@ -15,12 +15,10 @@ import { startWorkflow } from '../start-workflow/[workflow].tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { redirectToFirstIncompleteStep } from '../index.tsx'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
-import { assertOr400, assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
+import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { isManage } from '../../../../../../../../shared/tasks.ts'
 import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
-import { notifications } from '../../../../../../../../db/models/notifications.ts'
-import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
-import { pMap } from '../../../../../../../../util/inParallel.ts'
+import { referrals } from '../../../../../../../../db/models/referrals.ts'
 
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
@@ -69,8 +67,6 @@ export const handler = postHandler(
       }
 
       case 'check_with_colleague': {
-        assertOr400(health_worker_ids_to_be_notified.length, 'Must specify at least one colleague')
-
         const { redirect_to } = await promiseProps({
           completing_last_step,
           redirect_to: startWorkflow(
@@ -81,30 +77,15 @@ export const handler = postHandler(
               patient_presence: 'move_into_specificed_workflow',
             },
           ),
-          chart_review: patient_workflows.insertOne(
-            trx,
-            {
-              workflow: 'chart_review',
-              patient_encounter_id,
-            },
-          ),
-          insert_notifications: pMap(health_worker_ids_to_be_notified, (to_notify_id) =>
-            notifications.insert(
-              trx,
-              {
-                action_title: 'Review Chart',
-                action_href: `/app/organizations/${organization.id}/patients/${patient.id}/open_encounter/start-workflow/chart_review`,
-                avatar_url: ctx.state.health_worker.avatar_url!,
-                description: `A case was referred to you to review`,
-                patient_encounter_id,
-                table_name: 'patient_encounters',
-                row_id: ctx.state.patient_encounter_id,
-                title: 'Chart review',
-                notification_type: 'case_referral',
-                health_worker_id: to_notify_id,
-                originator_health_worker_id: health_worker_id,
-              },
-            )),
+          referral: referrals.insert(trx, {
+            patient_id: patient.id,
+            patient_encounter_id,
+            organization_id: organization.id,
+            employment_id: organization_employment.employment_id,
+            originator_health_worker_id: health_worker_id,
+            originator_avatar_url: ctx.state.health_worker.avatar_url!,
+            health_worker_ids_to_be_notified,
+          }),
         })
         return redirect(redirect_to)
       }

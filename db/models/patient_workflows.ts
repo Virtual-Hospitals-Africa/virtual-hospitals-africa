@@ -91,12 +91,22 @@ export const patient_workflows = base({
   },
   async completedWorkflow(
     trx: TrxOrDbOrQueryCreator,
-    { patient_workflow_id }: {
+    { patient_workflow_id, patient_encounter_employee_id }: {
       patient_workflow_id: string
+      patient_encounter_employee_id: string
     },
   ) {
     await trx.insertInto('patient_workflows_completed')
-      .values({ id: patient_workflow_id })
+      .values({
+        id: trx.selectFrom('patient_workflows_started')
+          .select('patient_workflows_started.id')
+          .where('patient_workflow_id', '=', patient_workflow_id)
+          .where(
+            'patient_encounter_employee_id',
+            '=',
+            patient_encounter_employee_id,
+          ),
+      })
       .onConflict((oc) => oc.doNothing())
       .execute()
 

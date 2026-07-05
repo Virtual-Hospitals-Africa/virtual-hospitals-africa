@@ -26,9 +26,9 @@ export const TriageHeightAndWeightSchema = z.object({
     z.object({
       value: positive_decimal,
       units: z.string().min(1),
-    }).strict(),
+    }),
   ),
-}).strict()
+})
 
 export const handler = postHandler(
   TriageHeightAndWeightSchema,

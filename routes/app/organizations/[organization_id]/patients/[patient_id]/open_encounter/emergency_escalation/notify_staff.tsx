@@ -13,7 +13,7 @@ import { employees_presence } from '../../../../../../../../db/models/employees_
 
 export const EmergencyEscalationNotifyStaffSchema = z.object({
   employee_ids: z.string().uuid().array(),
-}).strict()
+})
 
 export const handler = postHandler(
   EmergencyEscalationNotifyStaffSchema,

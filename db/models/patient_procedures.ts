@@ -12,11 +12,12 @@ import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 
-type ProcedureInsert = {
+export type ProcedureInsert = {
   patient_id: string
   patient_encounter_id: string
   procedure: Lang['procedure']
   employment_id: string
+  procedure_id?: string
 }
 
 export function baseQuery(
@@ -54,6 +55,63 @@ export function baseQuery(
         },
       ).as('as_part_of_procedure'),
     ])
+}
+
+export function insertOneQuery(
+  trx: TrxOrDbOrQueryCreator,
+  {
+    patient_id,
+    employment_id,
+    patient_encounter_id,
+    procedure,
+    procedure_id = generateUUID(),
+  }: ProcedureInsert,
+) {
+  assertHasProperty(procedure, 'root_snomed_concept')
+  assertHasProperty(procedure, 'specific_snomed_concept')
+
+  return patient_records.baseInsert(
+    trx,
+    {
+      patient_id,
+      patient_encounter_id,
+      record_id: procedure_id,
+      value_snomed_concept: null,
+      ...procedure,
+    },
+  ).with(
+    'inserting_procedure',
+    (qb) =>
+      qb.insertInto('patient_procedures')
+        .values({
+          id: procedure_id,
+          employment_id,
+        }),
+  )
+    .with(
+      'inserting_record_s_expression',
+      (qb) =>
+        Array.isArray(procedure.value)
+          ? qb.insertInto('patient_record_s_expressions')
+            .values({
+              id: procedure_id,
+              s_expression: inverseSExpressions(procedure.value),
+            })
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_record_link',
+      (qb) =>
+        isObjectLike(procedure.value) && procedure.value.atom === 'link'
+          ? qb.insertInto('patient_record_links')
+            .values({
+              id: procedure_id,
+              title: procedure.value.title,
+              href: procedure.value.href,
+              thumbnail_href: procedure.value.thumbnail_href,
+            })
+          : blankSelection(qb),
+    )
 }
 
 export const patient_procedures = base({
@@ -97,61 +155,15 @@ export const patient_procedures = base({
     }
   },
 
+  insertOneQuery,
+
   insertOneNested(
     trx: TrxOrDbOrQueryCreator,
-    {
-      patient_id,
-      employment_id,
-      patient_encounter_id,
-      procedure,
-    }: ProcedureInsert,
+    to_insert: ProcedureInsert,
   ) {
-    assertHasProperty(procedure, 'root_snomed_concept')
-    assertHasProperty(procedure, 'specific_snomed_concept')
-    const procedure_id = generateUUID()
+    const procedure_id = to_insert.procedure_id ?? generateUUID()
 
-    return patient_records.baseInsert(
-      trx,
-      {
-        patient_id,
-        patient_encounter_id,
-        record_id: procedure_id,
-        value_snomed_concept: null,
-        ...procedure,
-      },
-    ).with(
-      'inserting_procedure',
-      (qb) =>
-        qb.insertInto('patient_procedures')
-          .values({
-            id: procedure_id,
-            employment_id,
-          }),
-    )
-      .with(
-        'inserting_record_s_expression',
-        (qb) =>
-          Array.isArray(procedure.value)
-            ? qb.insertInto('patient_record_s_expressions')
-              .values({
-                id: procedure_id,
-                s_expression: inverseSExpressions(procedure.value),
-              })
-            : blankSelection(qb),
-      )
-      .with(
-        'inserting_record_link',
-        (qb) =>
-          isObjectLike(procedure.value) && procedure.value.atom === 'link'
-            ? qb.insertInto('patient_record_links')
-              .values({
-                id: procedure_id,
-                title: procedure.value.title,
-                href: procedure.value.href,
-                thumbnail_href: procedure.value.thumbnail_href,
-              })
-            : blankSelection(qb),
-      )
+    return insertOneQuery(trx, { ...to_insert, procedure_id })
       .selectNoFrom([
         success_true,
         sql<true>`true`.as('inserted_new'),

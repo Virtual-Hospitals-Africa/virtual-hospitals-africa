@@ -9,8 +9,8 @@ const WebPushSubscriptionSchema = z.object({
   keys: z.object({
     p256dh: z.string().min(1),
     auth: z.string().min(1),
-  }).strict(),
-}).strict()
+  }),
+})
 
 export const handler = {
   async POST(ctx: LoggedInHealthWorkerContext) {

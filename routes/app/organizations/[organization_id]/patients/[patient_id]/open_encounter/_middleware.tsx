@@ -60,7 +60,7 @@ import { patient_evaluation_scores } from '../../../../../../../db/models/patien
 import { logToFileIfOnServer } from '../../../../../../../util/logToFileIfOnServer.ts'
 
 export function completeLastStep(
-  { state: { trx, workflow, step, workflow_status } }: OpenEncounterWorkflowContext,
+  { state: { trx, workflow, step, workflow_status, patient_encounter_employee_id } }: OpenEncounterWorkflowContext,
 ) {
   assertEquals(
     step,
@@ -84,6 +84,7 @@ export function completeLastStep(
     }),
     completed_workflow: patient_workflows.completedWorkflow(trx, {
       patient_workflow_id,
+      patient_encounter_employee_id,
     }),
   })
 }
@@ -139,6 +140,7 @@ export async function completeAndProceedToNextStep(
 ) {
   const { workflow } = ctx.state
   const { first_incomplete_step } = await completeStep(ctx)
+  console.log({ first_incomplete_step })
 
   return redirect(
     replaceParams(

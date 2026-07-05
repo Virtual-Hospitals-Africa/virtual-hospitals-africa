@@ -145,10 +145,10 @@ export const notifications = base({
         >`(current_timestamp - health_worker_web_notifications.created_at)::interval`
           .as('wait_time'),
       )
-      .$if(!!terms.health_worker_id, qb => qb.where('health_worker_id', '=', terms.health_worker_id!))
-      .$if(!!terms.originator_health_worker_id, qb => qb.where('originator_health_worker_id', '=', terms.originator_health_worker_id!))
-      .$if(!!terms.patient_encounter_id, qb => qb.where('patient_encounter_id', '=', terms.patient_encounter_id!))
-      .$if(!!terms.notification_type, qb => qb.where('notification_type', '=', terms.notification_type!))
+      .$if(!!terms.health_worker_id, (qb) => qb.where('health_worker_id', '=', terms.health_worker_id!))
+      .$if(!!terms.originator_health_worker_id, (qb) => qb.where('originator_health_worker_id', '=', terms.originator_health_worker_id!))
+      .$if(!!terms.patient_encounter_id, (qb) => qb.where('patient_encounter_id', '=', terms.patient_encounter_id!))
+      .$if(!!terms.notification_type, (qb) => qb.where('notification_type', '=', terms.notification_type!))
       .orderBy(
         'health_worker_web_notifications.created_at',
         terms?.recent_first ? 'desc' : 'asc',

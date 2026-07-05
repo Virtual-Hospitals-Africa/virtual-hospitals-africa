@@ -35,15 +35,15 @@ export const TriageMeasureVitalsSchema = z.object({
     z.object({
       value: positive_decimal.optional(),
       units: z.string().min(1),
-    }).strict().transform(({ value, units }) => value ? { value, units } : undefined),
+    }).transform(({ value, units }) => value ? { value, units } : undefined),
   ).default({}),
   assessments: z.partialRecord(
     z.enum(keys(VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS)),
     z.object({
       s_expression: sExpressionZodValidator(insertable_finding_base),
-    }).strict(),
+    }),
   ).default({}),
-}).strict()
+})
 
 async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
   assertAllPriorStepsCompleted(ctx, {

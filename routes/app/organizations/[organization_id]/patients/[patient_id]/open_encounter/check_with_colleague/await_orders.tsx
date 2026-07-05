@@ -16,7 +16,8 @@ import { Person } from '../../../../../../../../components/library/Person.tsx'
 import Badge from '../../../../../../../../components/library/Badge.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
-import { notifications } from '../../../../../../../../db/models/notifications.ts'
+import { referrals } from '../../../../../../../../db/models/referrals.ts'
+import { ReferralRecipients } from '../../../../../../../../islands/referral/ReferralRecipients.tsx'
 
 const CheckWithColleagueAwaitOrdersSchema = z.object({})
 
@@ -71,15 +72,6 @@ export const handler = postHandler(
   },
 )
 
-type Order = any
-
-type ReferralState = 
-| { type: 'seen' }
-| { type: 'busy' }
-| { type: 'not_seen' }
-| { type: 'reviewing' }
-| { type: 'reverted', orders: Order[] }
-
 async function CheckWithColleagueAwaitOrdersPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
@@ -89,16 +81,13 @@ async function CheckWithColleagueAwaitOrdersPage(
     task_groups: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }).then((r) => r.task_groups),
   })
 
-  const referrals = await notifications.findAll(
+  const [referral] = await referrals.findAll(
     trx,
     {
       patient_encounter_id,
-      notification_type: 'case_referral',
       originator_health_worker_id: health_worker_id,
-    }
+    },
   )
-
-  
 
   // TODO actually put something in the db to retrieve here
   const primary_care_nurse = await employees.findFirst(trx, { organization_id, can_perform_workflow: 'consultation' })
@@ -116,6 +105,15 @@ async function CheckWithColleagueAwaitOrdersPage(
           </div>
         )}
       </div>
+      {referral && (
+        <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
+          <SectionHeader>Referral status</SectionHeader>
+          <ReferralRecipients
+            referral_id={referral.id}
+            recipients={referral.recipients}
+          />
+        </div>
+      )}
       {groups_with_manage_tasks.length > 0
         ? (
           <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>

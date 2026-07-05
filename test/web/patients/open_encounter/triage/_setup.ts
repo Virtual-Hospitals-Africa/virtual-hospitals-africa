@@ -155,6 +155,7 @@ export async function setupTriage({
     for (const [step, data] of entries(steps)) {
       if (!data) continue
       const step_name = step === 'early_brief_history' ? 'brief_history' : step
+      console.log({ data, step_name })
       $ = await nurse.fetchCheerio(
         triageRoute(step_name),
         {
@@ -291,6 +292,7 @@ export function weightOf(age_determination: AgeDetermination): number {
 export function asVitalMeasurementFormValues(
   measurement_values: Partial<Record<VitalMeasurement, number>>,
 ) {
+  console.log({ measurement_values })
   return mapEntries(measurement_values, (value, vital) => ({
     value,
     units: VITAL_MEASUREMENTS_UNITS[vital],

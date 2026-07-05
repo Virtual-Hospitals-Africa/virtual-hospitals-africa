@@ -1303,6 +1303,16 @@ export type RenderedCountryHealthWorker = RenderedHealthWorker & {
   licences: RenderedLicence[]
 }
 
+export type ReferralState = {
+  state: 'not_seen' | 'seen' | 'busy' | 'reviewing' | 'reverted'
+  as_of: Date
+}
+
+export type RenderedReferralRecipient = {
+  health_worker: RenderedHealthWorker
+  referral_state: ReferralState
+}
+
 export type Availability = {
   start: string
   end: string
