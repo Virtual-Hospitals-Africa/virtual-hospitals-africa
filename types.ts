@@ -2048,6 +2048,7 @@ export type NotificationType = string
 // export type NotificationType = 'doctor_review_request'
 
 export type RenderedNotification = {
+  health_worker_id: string
   notification_id: string
   notification_type: NotificationType
   avatar_url: string | null

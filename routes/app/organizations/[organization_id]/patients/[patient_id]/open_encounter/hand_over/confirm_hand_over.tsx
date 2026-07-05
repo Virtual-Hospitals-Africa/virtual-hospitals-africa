@@ -91,7 +91,7 @@ async function HandOverConfirmHandOverPage(
         {primary_care_nurse && (
           <div class='flex items-center gap-3'>
             <Person person={employeeDisplay(primary_care_nurse)} />
-            <Badge content='Awaiting handOver' color='yellow' />
+            <Badge content='Awaiting hand over' color='yellow' />
           </div>
         )}
       </div>

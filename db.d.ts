@@ -562,6 +562,7 @@ export interface HealthWorkerWebNotifications {
   health_worker_id: string
   id: Generated<string>
   notification_type: string
+  originator_health_worker_id: string | null
   patient_encounter_id: string | null
   row_id: string
   seen_at: Timestamp | null

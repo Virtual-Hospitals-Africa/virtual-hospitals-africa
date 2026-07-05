@@ -123,7 +123,10 @@ const ENCOUNTER_PRIORITY_SNOMED_ORDER = ENCOUNTER_ORDERED_PRIORITIES.map(
 ) as NonEmptyArray<string>
 
 type Terms = {
-  health_worker_id: string
+  health_worker_id?: Maybe<string>
+  originator_health_worker_id?: Maybe<string>
+  patient_encounter_id?: Maybe<string>
+  notification_type?: Maybe<string>
   past_ts?: number | Date
   only_unread?: boolean
   recent_first?: boolean
@@ -132,7 +135,7 @@ type Terms = {
 export const notifications = base({
   top_level_table: 'health_worker_web_notifications',
   baseQuery(trx, terms: Terms) {
-    assertOr400(terms.health_worker_id)
+    assertOr400(terms.health_worker_id || terms.originator_health_worker_id)
     return trx
       .selectFrom('health_worker_web_notifications')
       .selectAll('health_worker_web_notifications')
@@ -142,7 +145,10 @@ export const notifications = base({
         >`(current_timestamp - health_worker_web_notifications.created_at)::interval`
           .as('wait_time'),
       )
-      .where('health_worker_id', '=', terms.health_worker_id)
+      .$if(!!terms.health_worker_id, qb => qb.where('health_worker_id', '=', terms.health_worker_id!))
+      .$if(!!terms.originator_health_worker_id, qb => qb.where('originator_health_worker_id', '=', terms.originator_health_worker_id!))
+      .$if(!!terms.patient_encounter_id, qb => qb.where('patient_encounter_id', '=', terms.patient_encounter_id!))
+      .$if(!!terms.notification_type, qb => qb.where('notification_type', '=', terms.notification_type!))
       .orderBy(
         'health_worker_web_notifications.created_at',
         terms?.recent_first ? 'desc' : 'asc',
@@ -192,6 +198,7 @@ export const notifications = base({
         notification_type: string
         title: string
         patient_encounter_id?: string | null
+        originator_health_worker_id?: Maybe<string>
       }
       & (
         | { health_worker_id: string; employment_id?: never }

@@ -31,7 +31,7 @@ export const TriageRoutePatientSchema = z.object({
 export const handler = postHandler(
   TriageRoutePatientSchema,
   async (ctx: OpenEncounterWorkflowContext, { next_step, health_worker_ids_to_be_notified }) => {
-    const { trx, patient, patient_encounter_id, organization, organization_employment } = ctx.state
+    const { trx, patient, patient_encounter_id, organization, organization_employment, health_worker_id } = ctx.state
 
     assert(completedPersonal(patient))
     const completing_last_step = completeLastStep(ctx)
@@ -99,9 +99,10 @@ export const handler = postHandler(
                 patient_encounter_id,
                 table_name: 'patient_encounters',
                 row_id: ctx.state.patient_encounter_id,
-                notification_type: 'case_referral',
                 title: 'Chart review',
+                notification_type: 'case_referral',
                 health_worker_id: to_notify_id,
+                originator_health_worker_id: health_worker_id,
               },
             )),
         })

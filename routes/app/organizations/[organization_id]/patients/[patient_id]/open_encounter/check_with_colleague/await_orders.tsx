@@ -16,6 +16,7 @@ import { Person } from '../../../../../../../../components/library/Person.tsx'
 import Badge from '../../../../../../../../components/library/Badge.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
+import { notifications } from '../../../../../../../../db/models/notifications.ts'
 
 const CheckWithColleagueAwaitOrdersSchema = z.object({})
 
@@ -70,14 +71,34 @@ export const handler = postHandler(
   },
 )
 
+type Order = any
+
+type ReferralState = 
+| { type: 'seen' }
+| { type: 'busy' }
+| { type: 'not_seen' }
+| { type: 'reviewing' }
+| { type: 'reverted', orders: Order[] }
+
 async function CheckWithColleagueAwaitOrdersPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, health_worker_id, encounter, organization_employment, organization_id } = ctx.state
+  const { trx, health_worker_id, encounter, organization_employment, organization_id, patient_encounter_id } = ctx.state
 
   const { task_groups } = await promiseProps({
     task_groups: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }).then((r) => r.task_groups),
   })
+
+  const referrals = await notifications.findAll(
+    trx,
+    {
+      patient_encounter_id,
+      notification_type: 'case_referral',
+      originator_health_worker_id: health_worker_id,
+    }
+  )
+
+  
 
   // TODO actually put something in the db to retrieve here
   const primary_care_nurse = await employees.findFirst(trx, { organization_id, can_perform_workflow: 'consultation' })
