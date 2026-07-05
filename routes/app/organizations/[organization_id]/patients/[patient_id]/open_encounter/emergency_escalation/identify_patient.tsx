@@ -31,8 +31,9 @@ export const handler = postHandler(
     const { trx, organization, organization_employment, workflow, step, organization_id } = ctx.state
     const newly_created_patient = ctx.state.patient_id
 
-    // New patient
-    if (!identified_patient_id) {
+    // New patient. The patient_id URL param is merged into the form values, so
+    // seeing the newly created patient's id means no returning patient was selected.
+    if (!identified_patient_id || identified_patient_id === newly_created_patient) {
       const { response } = await promiseProps({
         updating_patient: patients.updateById(trx, newly_created_patient, {
           ...asNames({

@@ -5,6 +5,7 @@ import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
 import { preferredName } from '../../../../../../../../util/asNames.ts'
+import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
 
 const ChartReviewGiveOrdersSchema = z.object({})
 
@@ -14,6 +15,12 @@ export const handler = postHandler(
     const { trx, patient, organization_pathname, organization_employment } = ctx.state
 
     await completeLastStep(ctx)
+
+    // The chart goes back to the colleague still awaiting orders in check_with_colleague
+    await patient_presence.set(trx, patient.id, {
+      current_workflow: 'check_with_colleague',
+      next_workflow: null,
+    })
 
     // TODO actually record the orders and notify the colleague awaiting them
     await trx.updateTable('employment_presence')

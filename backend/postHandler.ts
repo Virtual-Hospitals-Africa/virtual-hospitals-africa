@@ -26,7 +26,6 @@ export function postHandler<
       const form_values = parseWithValues(schema, record)
       const health_worker_id = ctx.state.health_worker.id
       const patient_encounter_id = z.string().optional().parse(ctx.state.patient_encounter_id)
-      console.log({ z: 'mm', health_worker_id, patient_encounter_id })
 
       return await db
         .transaction()
