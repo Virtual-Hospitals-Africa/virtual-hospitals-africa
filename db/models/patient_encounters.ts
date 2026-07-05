@@ -250,15 +250,24 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: EncounterSearch) {
             '=',
             'patient_encounters.id',
           )
-          .leftJoin(
-            'patient_workflows_completed',
-            'patient_workflows.id',
-            'patient_workflows_completed.id',
-          )
           .select((eb_patient_workflows) => [
             'patient_workflows.id as patient_workflow_id',
             'patient_workflows.workflow',
-            'patient_workflows_completed.created_at as completed_at',
+            eb_patient_workflows.selectFrom('patient_workflows_started')
+              .innerJoin(
+                'patient_workflows_completed',
+                'patient_workflows_completed.id',
+                'patient_workflows_started.id',
+              )
+              .whereRef(
+                'patient_workflows_started.patient_workflow_id',
+                '=',
+                'patient_workflows.id',
+              )
+              .select('patient_workflows_completed.created_at')
+              .orderBy('patient_workflows_completed.created_at', 'asc')
+              .limit(1)
+              .as('completed_at'),
             jsonArrayFromColumn(
               'step',
               eb_patient_workflows.selectFrom(

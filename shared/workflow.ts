@@ -7,17 +7,18 @@ import capitalize from '../util/capitalize.ts'
 import mapEntries from '../util/mapEntries.ts'
 import {
   BODY_MEASUREMENT,
+  CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL,
   DISPENSING_MEDICATION,
   EMERGENCY_EXAMINATION_FOR_TRIAGE,
   ENCOUNTER_FOR_PROBLEM,
   EVALUATION_OF_CARE_PLAN,
   EVALUATION_PROCEDURE,
+  EXPECTANT_MANAGEMENT,
   HANDOFF_COMMUNICATION,
   HISTORY_TAKING_LIMITED,
   PATIENT_REGISTRATION,
   PRENATAL_EXAMINATION_AND_CARE_OF_MOTHER,
   REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
-  REFERRAL_TO_PERSON,
   STABILIZATION,
   TAKING_PATIENT_VITAL_SIGNS_ASSESSMENT,
   TELEMEDICINE_CONSULTATION_WITH_PATIENT,
@@ -36,6 +37,7 @@ export const WORKFLOWS = [
   'prescription_refill' as const,
   'doctor_review' as const,
   'create_google_meet' as const,
+  'chart_review' as const,
   // 'resuscitation' as const,
 ]
 
@@ -44,7 +46,7 @@ export type Workflow = (typeof WORKFLOWS)[number]
 export const WORKFLOW_SNOMED_CONCEPTS = {
   registration: PATIENT_REGISTRATION,
   triage: TRIAGE,
-  check_with_colleague: REFERRAL_TO_PERSON,
+  check_with_colleague: EXPECTANT_MANAGEMENT,
   hand_over: HANDOFF_COMMUNICATION,
   emergency_escalation: REFERRAL_TO_ACCIDENT_AND_EMERGENCY_SERVICE,
   stabilization: STABILIZATION,
@@ -53,6 +55,7 @@ export const WORKFLOW_SNOMED_CONCEPTS = {
   prescription_refill: DISPENSING_MEDICATION,
   doctor_review: EVALUATION_OF_CARE_PLAN,
   create_google_meet: TELEMEDICINE_CONSULTATION_WITH_PATIENT,
+  chart_review: CHART_EVALUATION_BY_HEALTHCARE_PROFESSIONAL,
 } satisfies {
   [w in Workflow]: unknown
 }
@@ -76,8 +79,12 @@ export const WORKFLOW_STEPS = {
     'assign_priority',
     'route_patient',
   ],
+  chart_review: [
+    'review_case',
+    'give_orders',
+  ],
   check_with_colleague: [
-    'await_instructions',
+    'await_orders',
   ],
   hand_over: [
     'confirm_hand_over',

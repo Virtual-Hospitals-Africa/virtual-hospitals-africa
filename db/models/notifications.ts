@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { Client } from 'pg'
 import { isPriority, ORDERED_PRIORITIES, Priority, PRIORITY_SNOMED_CODES } from '../../shared/priorities.ts'
-import { NonEmptyArray, PostgresInterval, RenderedNotification, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { Maybe, NonEmptyArray, PostgresInterval, RenderedNotification, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { orderByArrayPosition } from '../helpers.ts'
 import { timeAgoDisplay } from '../../util/timeAgoDisplay.ts'
 import { base } from './_base.ts'
@@ -123,7 +123,10 @@ const ENCOUNTER_PRIORITY_SNOMED_ORDER = ENCOUNTER_ORDERED_PRIORITIES.map(
 ) as NonEmptyArray<string>
 
 type Terms = {
-  health_worker_id: string
+  health_worker_id?: Maybe<string>
+  originator_health_worker_id?: Maybe<string>
+  patient_encounter_id?: Maybe<string>
+  notification_type?: Maybe<string>
   past_ts?: number | Date
   only_unread?: boolean
   recent_first?: boolean
@@ -132,7 +135,7 @@ type Terms = {
 export const notifications = base({
   top_level_table: 'health_worker_web_notifications',
   baseQuery(trx, terms: Terms) {
-    assertOr400(terms.health_worker_id)
+    assertOr400(terms.health_worker_id || terms.originator_health_worker_id)
     return trx
       .selectFrom('health_worker_web_notifications')
       .selectAll('health_worker_web_notifications')
@@ -142,7 +145,10 @@ export const notifications = base({
         >`(current_timestamp - health_worker_web_notifications.created_at)::interval`
           .as('wait_time'),
       )
-      .where('health_worker_id', '=', terms.health_worker_id)
+      .$if(!!terms.health_worker_id, (qb) => qb.where('health_worker_id', '=', terms.health_worker_id!))
+      .$if(!!terms.originator_health_worker_id, (qb) => qb.where('originator_health_worker_id', '=', terms.originator_health_worker_id!))
+      .$if(!!terms.patient_encounter_id, (qb) => qb.where('patient_encounter_id', '=', terms.patient_encounter_id!))
+      .$if(!!terms.notification_type, (qb) => qb.where('notification_type', '=', terms.notification_type!))
       .orderBy(
         'health_worker_web_notifications.created_at',
         terms?.recent_first ? 'desc' : 'asc',
@@ -192,6 +198,7 @@ export const notifications = base({
         notification_type: string
         title: string
         patient_encounter_id?: string | null
+        originator_health_worker_id?: Maybe<string>
       }
       & (
         | { health_worker_id: string; employment_id?: never }
@@ -307,6 +314,31 @@ export const notifications = base({
       .where('seen_at', 'is', null)
       .executeTakeFirst()
     return Number(result.numUpdatedRows)
+  },
+  markSeenByActionHref(
+    trx: TrxOrDb,
+    { health_worker_id, action_href, patient_encounter_id }: {
+      health_worker_id: string
+      action_href: string
+      patient_encounter_id: Maybe<string>
+    },
+  ) {
+    // Reminder that for all other routes we want the route to uniquely identify a resource.
+    // Maybe this `open_encounter` was a bad idea, but it's grandfathered in for sure
+    if (action_href.includes('/open_encounter')) {
+      assert(
+        patient_encounter_id,
+        'Must include patient_encounter_id for actions involving the open encounter, lest we mark notifications seen for past encounters',
+      )
+    }
+    return trx
+      .updateTable('health_worker_web_notifications')
+      .set({ seen_at: new Date() })
+      .where('health_worker_id', '=', health_worker_id)
+      .where('action_href', '=', action_href)
+      .where('seen_at', 'is', null)
+      .$if(!!patient_encounter_id, (qb) => qb.where('patient_encounter_id', '=', patient_encounter_id!))
+      .execute()
   },
   async initializeNotificationsPubSub(): Promise<NotificationsPubSub> {
     // deno-lint-ignore no-explicit-any

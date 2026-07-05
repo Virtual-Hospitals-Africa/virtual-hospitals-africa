@@ -11,7 +11,7 @@ const VitalsMeasurementSchema = z.object({
       snomed_concept_id,
       value: z.number().positive().optional(),
       units: z.string().min(1, 'Units are required'),
-    }).strict(),
+    }),
   ).optional().transform((findings) =>
     Object.entries(findings || {}).map((
       [finding_id, finding],
@@ -21,7 +21,7 @@ const VitalsMeasurementSchema = z.object({
       evaluation: null,
     }))
   ),
-}).strict()
+})
 
 // function hasValue(
 //   finding: { value?: number },

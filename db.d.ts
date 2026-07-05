@@ -188,6 +188,7 @@ export type VitalAssessment = 'consciousness' | 'mobility_assessment' | 'trauma_
 export type WarningSignPriority = 'Emergency' | 'Urgent' | 'Very urgent'
 
 export type Workflow =
+  | 'chart_review'
   | 'check_with_colleague'
   | 'consultation'
   | 'create_google_meet'
@@ -561,6 +562,7 @@ export interface HealthWorkerWebNotifications {
   health_worker_id: string
   id: Generated<string>
   notification_type: string
+  originator_health_worker_id: string | null
   patient_encounter_id: string | null
   row_id: string
   seen_at: Timestamp | null

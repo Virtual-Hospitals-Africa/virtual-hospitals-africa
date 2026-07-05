@@ -104,6 +104,7 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
     patient_id,
     patient_workflow_id,
     patient_encounter_id,
+    patient_encounter_employee_id,
     organization,
     organization_employment,
     health_worker,
@@ -130,7 +131,10 @@ export async function insertPatientSeekingTreatmentWithEmployeeAndCompleteRegist
       patient_workflow_id,
       is_tutorial,
     ),
-    patient_workflows.completedWorkflow(trx, { patient_workflow_id }),
+    patient_workflows.completedWorkflow(trx, {
+      patient_workflow_id,
+      patient_encounter_employee_id,
+    }),
     patient_encounters.updateOne(trx, patient_encounter_id, {
       reason: 'seeking treatment',
     }),

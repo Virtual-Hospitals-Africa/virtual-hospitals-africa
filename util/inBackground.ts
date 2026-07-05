@@ -1,7 +1,7 @@
 export async function inBackground<T>(
-  promise: Promise<unknown>,
-  task: () => Promise<T>,
+  promise: Promise<T>,
+  task: () => Promise<unknown>,
 ): Promise<T> {
-  const [, result] = await Promise.all([promise, task()])
-  return result
+  await Promise.all([promise, task()])
+  return promise
 }

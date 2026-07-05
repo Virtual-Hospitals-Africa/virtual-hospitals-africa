@@ -1,25 +1,18 @@
 import { z } from 'zod'
-import { assertOr400, assertOr403 } from '../../../../../../../util/assertOr.ts'
-import { postHandler } from '../../../../../../../backend/postHandler.ts'
-import redirect from '../../../../../../../util/redirect.ts'
-import { OpenEncounterContext } from '../../../../../../../types.ts'
-import { canPerform, Workflow, WORKFLOW_STEPS } from '../../../../../../../shared/workflow.ts'
-import { patient_workflows } from '../../../../../../../db/models/patient_workflows.ts'
-import { WORKFLOW_DEPARTMENTS } from '../../../../../../../shared/departments.ts'
-import { arrayIsEmpty } from '../../../../../../../util/arraySize.ts'
+import { assertOr400, assertOr403 } from '../../../../../../../../util/assertOr.ts'
+import { postHandler } from '../../../../../../../../backend/postHandler.ts'
+import redirect from '../../../../../../../../util/redirect.ts'
+import { OpenEncounterContext } from '../../../../../../../../types.ts'
+import { canPerform, Workflow, WORKFLOW_STEPS, WORKFLOWS } from '../../../../../../../../shared/workflow.ts'
+import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
+import { WORKFLOW_DEPARTMENTS } from '../../../../../../../../shared/departments.ts'
+import { arrayIsEmpty } from '../../../../../../../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
-import { patient_presence } from '../../../../../../../db/models/patient_presence.ts'
-import { WorkflowStatus } from '../../../../../../../types.ts'
+import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
+import { WorkflowStatus } from '../../../../../../../../types.ts'
 
 const StartWorkflowSchema = z.object({
-  workflow: z.enum([
-    'registration' as const,
-    'triage' as const,
-    'consultation' as const,
-    'maternity' as const,
-    'prescription_refill' as const,
-    'doctor_review' as const,
-  ]),
+  workflow: z.enum(WORKFLOWS),
 })
 
 export async function startWorkflow<T>(
@@ -53,16 +46,16 @@ export async function startWorkflow<T>(
   async function createOrUseExistingWorkflow(): Promise<WorkflowStatus> {
     const do_create_workflow = !encounter.workflows[workflow] || opts.planning === 'create_anew_every_time'
 
-    const created_workflow = do_create_workflow && await patient_workflows.insertOne(
+    const created_workflow_id = do_create_workflow && await patient_workflows.insertOne(
       trx,
       {
         workflow,
         patient_encounter_id: ctx.state.patient_encounter_id,
       },
     )
-    if (created_workflow) {
+    if (created_workflow_id) {
       return {
-        patient_workflow_id: created_workflow.id,
+        patient_workflow_id: created_workflow_id,
         workflow,
         status: 'not started' as const,
         steps_completed: [],

@@ -6,6 +6,8 @@ export type WebPushNotificationPayload = {
   title: string
   body: string
   url?: string
+  // URL the service worker POSTs to when the notification is clicked
+  action_href?: string
   notification_id?: string
   notification_type?: string
 }

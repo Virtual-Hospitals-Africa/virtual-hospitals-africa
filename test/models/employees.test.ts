@@ -30,7 +30,6 @@ describeParallel('db/models/employees.ts', () => {
 
       const health_worker = await addTestEmployee(db, {
         role: 'doctor',
-
         organization_id: TEST_ORGANIZATION_UUIDS.ZA.hospital,
       })
 
@@ -120,19 +119,14 @@ describeParallel('db/models/employees.ts', () => {
 
   itParallel('can find employees who can do triage', async () => {
     const organization = await createTestOrganization(db)
-    await Promise.all([
-      addTestEmployee(db, {
-        role: 'receptionist',
-
-        organization_id: organization.id,
-      }),
-      addTestEmployee(db, {
-        role: 'nurse',
-
-        organization_id: organization.id,
-      }),
-    ])
-
+    await addTestEmployee(db, {
+      role: 'receptionist',
+      organization_id: organization.id,
+    })
+    await addTestEmployee(db, {
+      role: 'nurse',
+      organization_id: organization.id,
+    })
     const can_perform_triage = await employees.findAll(db, {
       organization_id: organization.id,
       can_perform_workflow: 'triage',

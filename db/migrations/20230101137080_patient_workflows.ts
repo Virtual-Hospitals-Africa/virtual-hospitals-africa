@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import type { DB } from '../../db.d.ts'
-import { createPointerTable, createStandardTable } from '../createTable.ts'
+import { createStandardTable } from '../createTable.ts'
 
 export async function up(db: Kysely<DB>) {
   await createStandardTable(
@@ -27,19 +27,8 @@ export async function up(db: Kysely<DB>) {
     .on('patient_workflows')
     .column('patient_encounter_id')
     .execute()
-
-  await createPointerTable(
-    db,
-    'patient_workflows_completed',
-    {
-      references: 'patient_workflows',
-      primary_key_type: 'uuid',
-      include_created_at: true,
-    },
-  )
 }
 
 export async function down(db: Kysely<DB>) {
-  await db.schema.dropTable('patient_workflows_completed').execute()
   await db.schema.dropTable('patient_workflows').execute()
 }

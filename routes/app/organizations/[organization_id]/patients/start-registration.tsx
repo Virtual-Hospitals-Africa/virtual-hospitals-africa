@@ -11,6 +11,7 @@ export const handler = postHandler(
   z.object({}),
   async (ctx: OrganizationContext) => {
     const { trx, organization, present_encounter_id, organization_employment } = ctx.state
+    console.log({ trx, organization, present_encounter_id, organization_employment })
     if (present_encounter_id) {
       const present_encounter = await patient_encounters.getById(trx, present_encounter_id)
       assert(patient_encounters.isOpen(present_encounter))

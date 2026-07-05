@@ -25,6 +25,7 @@ export async function up(db: Kysely<DB>) {
     .on('health_worker_web_notifications')
     .column('health_worker_id')
     .execute()
+
   await db.schema
     .createIndex('idx_health_worker_web_notifications_unread_priority_lookup')
     .on('health_worker_web_notifications')

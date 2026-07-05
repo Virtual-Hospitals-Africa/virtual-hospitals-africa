@@ -3,11 +3,13 @@ import {
   RenderedEmployeeWithPresenceAndSeniority,
   RenderedLicence,
   RenderedManageTaskToBeDone,
+  TaskGroup,
+  TaskGroupWithPermissions,
   TaskPermissions,
-  TaskWithPermissions,
 } from '../types.ts'
 import partition from '../util/partition.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { isManage } from './tasks.ts'
 
 // The permissions a `manage` procedure can carry (see `manage`/`permission_entry`
 // in shared/s_expression_schemas.ts):
@@ -42,11 +44,19 @@ function satisfiesPermission(candidate: Candidate, permission: Permission): bool
   return role_matches && satisfiesSpecialty(candidate, permission.specialty)
 }
 
+// Tasks not needing permission first, those needing approval next, and those
+// outside the scope of practice (cant_do) last.
+const PERMISSION_ORDER = {
+  no_approval_needed: 0,
+  approval_needed: 1,
+  cant_do: 2,
+}
+
 export function applyPermissions(
   me: Me,
   clinic_employees: RenderedEmployeeWithPresenceAndSeniority[],
-  manage_patient_tasks: RenderedManageTaskToBeDone[],
-): TaskWithPermissions[] {
+  task_groups: TaskGroup[],
+): TaskGroupWithPermissions[] {
   // clinic_employees excludes me, and `senior_on_duty` is computed relative to
   // me, so if no present employee is the senior on duty then I am.
   const senior_on_duty = !clinic_employees.some((employee) => employee.senior_on_duty)
@@ -81,7 +91,23 @@ export function applyPermissions(
     }
   }
 
-  return manage_patient_tasks.map((task) => ({ task, permissions: getPermissions(task) }))
+  // Task groups sharing the same due_to records are merged.
+  const groups = new Map<string, TaskGroupWithPermissions>()
+  for (const task_group of task_groups) {
+    const tasks = task_group.tasks.filter(isManage).map((task) => ({ task, permissions: getPermissions(task) }))
+    if (!tasks.length) continue
+    const key = task_group.due_to.map((record) => record.id).join('-')
+    const group = groups.get(key)
+    if (group) {
+      group.tasks.push(...tasks)
+    } else {
+      groups.set(key, { due_to: task_group.due_to, tasks })
+    }
+  }
+  return [...groups.values()].map((group) => ({
+    ...group,
+    tasks: group.tasks.toSorted((a, b) => PERMISSION_ORDER[a.permissions.type] - PERMISSION_ORDER[b.permissions.type]),
+  }))
 }
 
 // export function divideTasksByPermissionsNeeded(

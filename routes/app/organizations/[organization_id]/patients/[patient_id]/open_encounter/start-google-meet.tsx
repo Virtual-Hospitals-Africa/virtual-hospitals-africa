@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import { OpenEncounterContext } from '../../../../../../../types.ts'
-import { startWorkflow } from './start-workflow.tsx'
+import { startWorkflow } from './start-workflow/[workflow].tsx'
 // import { HealthWorkerGoogleClient } from '../../../../../external-clients/google.ts'
 // import { preferredName } from '../../../../util/asNames.ts'
 import { HealthWorkerGoogleClient } from '../../../../../../../external-clients/google.ts'

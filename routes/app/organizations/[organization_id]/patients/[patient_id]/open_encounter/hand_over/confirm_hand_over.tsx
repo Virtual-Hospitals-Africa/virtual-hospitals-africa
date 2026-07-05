@@ -26,7 +26,7 @@ export const handler = postHandler(
     await completeLastStep(ctx)
     // TODO actually put something in the db to retrieve here
     const primary_care_nurse = await employees.findFirst(trx, { organization_id, can_perform_workflow: 'consultation' })
-    const patient_workflow = await patient_workflows.insertOne(trx, {
+    const patient_workflow_id = await patient_workflows.insertOne(trx, {
       patient_encounter_id,
       workflow: 'consultation',
     })
@@ -35,8 +35,8 @@ export const handler = postHandler(
       trx,
       {
         encounter,
+        patient_workflow_id,
         employment_id: primary_care_nurse.employee_id,
-        patient_workflow_id: patient_workflow.id,
         existing_patient_encounter_employee_id: null,
       },
     )
@@ -91,7 +91,7 @@ async function HandOverConfirmHandOverPage(
         {primary_care_nurse && (
           <div class='flex items-center gap-3'>
             <Person person={employeeDisplay(primary_care_nurse)} />
-            <Badge content='Awaiting handOver' color='yellow' />
+            <Badge content='Awaiting hand over' color='yellow' />
           </div>
         )}
       </div>

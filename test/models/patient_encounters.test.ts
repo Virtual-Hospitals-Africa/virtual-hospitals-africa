@@ -144,7 +144,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
         disabled: false,
         text: 'registration',
         method: 'POST',
-        href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow?workflow=registration`,
+        href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow/registration`,
       }],
       present_employees: [
         omit(open_encounter.all_employees_seen[0], ['health_worker_id']),
@@ -285,7 +285,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
           disabled: true,
           text: 'triage',
           method: 'POST',
-          href: `/app/organizations/${clinic.id}/patients/${patient.id}/open_encounter/start-workflow?workflow=triage`,
+          href: `/app/organizations/${clinic.id}/patients/${patient.id}/open_encounter/start-workflow/triage`,
         }],
         present_employees: [],
         reason: 'seeking treatment',

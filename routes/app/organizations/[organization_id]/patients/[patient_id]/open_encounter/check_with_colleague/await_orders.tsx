@@ -6,27 +6,27 @@ import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
 import { preferredName } from '../../../../../../../../util/asNames.ts'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
-import { isManage } from '../../../../../../../../shared/tasks.ts'
-import { ManagePatientGroup } from '../../../../../../../../components/triage/tasks/ManagePatientGroup.tsx'
 import SectionHeader from '../../../../../../../../components/library/typography/SectionHeader.tsx'
 import { NoTasks } from '../../../../../../../../components/triage/tasks/NoTasks.tsx'
 import { employees } from '../../../../../../../../db/models/employees.ts'
-import { employeeDisplay } from '../../../../../../../../util/healthWorkerDisplay.ts'
-import { Person } from '../../../../../../../../components/library/Person.tsx'
-import Badge from '../../../../../../../../components/library/Badge.tsx'
+import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
+import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
+import RecommendedCarePlan from '../../../../../../../../components/library/RecommendedCarePlan.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
+import { referrals } from '../../../../../../../../db/models/referrals.ts'
+import { ReferralRecipients } from '../../../../../../../../islands/referral/ReferralRecipients.tsx'
 
-const CheckWithColleagueAwaitInstructionsSchema = z.object({})
+const CheckWithColleagueAwaitOrdersSchema = z.object({})
 
 export const handler = postHandler(
-  CheckWithColleagueAwaitInstructionsSchema,
+  CheckWithColleagueAwaitOrdersSchema,
   async (ctx: OpenEncounterWorkflowContext, _form_values) => {
     const { trx, encounter, organization_id, organization_pathname, organization_employment, patient, patient_id, patient_encounter_id } = ctx.state
     await completeLastStep(ctx)
     // TODO actually put something in the db to retrieve here
     const primary_care_nurse = await employees.findFirst(trx, { organization_id, can_perform_workflow: 'consultation' })
-    const patient_workflow = await patient_workflows.insertOne(trx, {
+    const patient_workflow_id = await patient_workflows.insertOne(trx, {
       patient_encounter_id,
       workflow: 'consultation',
     })
@@ -35,8 +35,8 @@ export const handler = postHandler(
       trx,
       {
         encounter,
+        patient_workflow_id,
         employment_id: primary_care_nurse.employee_id,
-        patient_workflow_id: patient_workflow.id,
         existing_patient_encounter_employee_id: null,
       },
     )
@@ -70,44 +70,59 @@ export const handler = postHandler(
   },
 )
 
-async function CheckWithColleagueAwaitInstructionsPage(
+async function CheckWithColleagueAwaitOrdersPage(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const { trx, health_worker_id, encounter, organization_employment, organization_id } = ctx.state
+  const { trx, health_worker_id, encounter, organization_employment, organization_id, patient_encounter_id } = ctx.state
 
-  const { task_groups } = await promiseProps({
+  const { task_groups, clinic_employees } = await promiseProps({
     task_groups: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }).then((r) => r.task_groups),
+    clinic_employees: employees_presence.getAllAtOrganization(trx, {
+      organization_id,
+      excluding_health_worker: {
+        health_worker_id,
+        at_work: true,
+        seniority_order: organization_employment.seniority_order,
+      },
+    }),
   })
 
-  // TODO actually put something in the db to retrieve here
-  const primary_care_nurse = await employees.findFirst(trx, { organization_id, can_perform_workflow: 'consultation' })
+  const [referral] = await referrals.findAll(
+    trx,
+    {
+      patient_encounter_id,
+      originator_health_worker_id: health_worker_id,
+    },
+  )
 
-  const groups_with_manage_tasks = task_groups.filter((group) => group.tasks.some(isManage))
+  const task_groups_with_permissions = applyPermissions(organization_employment, clinic_employees, task_groups)
+
+  // Highlight the colleagues we're awaiting orders from.
+  const referral_recipient_health_worker_ids = new Set(
+    (referral?.recipients ?? []).map((recipient) => recipient.health_worker.id),
+  )
+  const to_be_notified = clinic_employees.filter((employee) => referral_recipient_health_worker_ids.has(employee.id))
 
   return (
     <div class='flex flex-col gap-6'>
-      <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
-        <SectionHeader>Primary care nurse</SectionHeader>
-        {primary_care_nurse && (
-          <div class='flex items-center gap-3'>
-            <Person person={employeeDisplay(primary_care_nurse)} />
-            <Badge content='Awaiting handoff' color='yellow' />
-          </div>
-        )}
-      </div>
-      {groups_with_manage_tasks.length > 0
+      {referral && (
+        <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
+          <SectionHeader>Referral status</SectionHeader>
+          <ReferralRecipients
+            referral_id={referral.id}
+            recipients={referral.recipients}
+          />
+        </div>
+      )}
+      {task_groups_with_permissions.length > 0
         ? (
           <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
             <SectionHeader>Patient Management Tasks</SectionHeader>
-            {groups_with_manage_tasks.map((group, index) => (
-              <ManagePatientGroup
-                key={index}
-                group={group}
-                organization_employment={organization_employment}
-                organization_id={organization_id}
-                primary_care_nurse={primary_care_nurse}
-              />
-            ))}
+            <RecommendedCarePlan
+              to_be_notified={to_be_notified}
+              task_groups_with_permissions={task_groups_with_permissions}
+              organization_id={organization_id}
+            />
           </div>
         )
         : <NoTasks />}
@@ -115,4 +130,4 @@ async function CheckWithColleagueAwaitInstructionsPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(CheckWithColleagueAwaitInstructionsPage)
+export default OpenEncounterWorkflowPage(CheckWithColleagueAwaitOrdersPage)

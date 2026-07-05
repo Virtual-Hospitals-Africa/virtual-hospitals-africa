@@ -1303,6 +1303,16 @@ export type RenderedCountryHealthWorker = RenderedHealthWorker & {
   licences: RenderedLicence[]
 }
 
+export type ReferralState = {
+  state: 'not_seen' | 'seen' | 'busy' | 'reviewing' | 'reverted'
+  as_of: Date
+}
+
+export type RenderedReferralRecipient = {
+  health_worker: RenderedHealthWorker
+  referral_state: ReferralState
+}
+
 export type Availability = {
   start: string
   end: string
@@ -2048,6 +2058,7 @@ export type NotificationType = string
 // export type NotificationType = 'doctor_review_request'
 
 export type RenderedNotification = {
+  health_worker_id: string
   notification_id: string
   notification_type: NotificationType
   avatar_url: string | null
@@ -3220,6 +3231,11 @@ export type TaskPermissions = {
 export type TaskWithPermissions = {
   task: RenderedManageTaskToBeDone
   permissions: TaskPermissions
+}
+
+export type TaskGroupWithPermissions = {
+  due_to: TaskGroup['due_to']
+  tasks: TaskWithPermissions[]
 }
 
 export type TriageNextStepRecommendations = {
