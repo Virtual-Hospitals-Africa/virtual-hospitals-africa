@@ -89,22 +89,10 @@ async function CheckWithColleagueAwaitOrdersPage(
     },
   )
 
-  // TODO actually put something in the db to retrieve here
-  const primary_care_nurse = await employees.findFirst(trx, { organization_id, can_perform_workflow: 'consultation' })
-
   const groups_with_manage_tasks = task_groups.filter((group) => group.tasks.some(isManage))
 
   return (
     <div class='flex flex-col gap-6'>
-      <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
-        <SectionHeader>Primary care nurse</SectionHeader>
-        {primary_care_nurse && (
-          <div class='flex items-center gap-3'>
-            <Person person={employeeDisplay(primary_care_nurse)} />
-            <Badge content='Awaiting handoff' color='yellow' />
-          </div>
-        )}
-      </div>
       {referral && (
         <div class='flex flex-col gap-3 pb-4 pt-2 w-full max-w-3xl'>
           <SectionHeader>Referral status</SectionHeader>
