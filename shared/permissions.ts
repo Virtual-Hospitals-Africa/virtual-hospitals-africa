@@ -149,10 +149,13 @@ export function applyPrescriberPermissions(
   }
 
   return medicine_groups.map((group) => ({
-    name: group.name,
+    name: group.medicine_name,
     due_to: group.due_to,
-    options: group.options
-      .map((option) => ({ option, permissions: getPermissions(option.prescriber) }))
-      .toSorted((a, b) => PERMISSION_ORDER[a.permissions.type] - PERMISSION_ORDER[b.permissions.type]),
+    forms: group.forms.map((form) => ({
+      form_route: form.form_route,
+      options: form.options
+        .map((option) => ({ option, permissions: getPermissions(option.prescriber) }))
+        .toSorted((a, b) => PERMISSION_ORDER[a.permissions.type] - PERMISSION_ORDER[b.permissions.type]),
+    })),
   }))
 }

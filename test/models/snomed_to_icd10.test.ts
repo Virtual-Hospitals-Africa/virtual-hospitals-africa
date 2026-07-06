@@ -4,6 +4,7 @@ import db from '../../db/db.ts'
 import { snomed_to_icd10 } from '../../db/models/snomed_to_icd10.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { RenderedPositiveRecordRelativeToHealthWorker } from '../../types.ts'
+import { PEPTIC_ULCER } from '../../shared/snomed_concepts.ts'
 
 const adult_context = { sex: 'female' as const, dob: '1988-01-01' }
 
@@ -15,6 +16,14 @@ function asPositiveRecord(specific_snomed_concept_id: string): RenderedPositiveR
 
 describeParallel('db/models/snomed_to_icd10.ts', () => {
   afterAll(() => db.destroy())
+
+  itParallel('handles peptic ulcer', async () => {
+    const record = asPositiveRecord(PEPTIC_ULCER.id)
+    const result = await snomed_to_icd10.mapConcepts(db, adult_context, [record])
+    assertEquals(result.by_concept.size, 1)
+    const [x] = [...result.by_concept.values()]
+    console.log(x)
+  })
 
   itParallel('maps a simple one-to-one concept (type 2 diabetes mellitus -> E11.9)', async () => {
     const record = asPositiveRecord('44054006')

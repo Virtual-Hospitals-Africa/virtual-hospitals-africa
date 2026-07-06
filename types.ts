@@ -3271,9 +3271,12 @@ export type RecommendedMedicineOption = Omit<RecommendedMedicineWithPatientCase,
 // All the recommended options for a single medicine name, with due_to unioned
 // across the options.
 export type RecommendedMedicineGroup = {
-  name: string
+  medicine_name: string
   due_to: RenderedPositiveRecordRelativeToHealthWorker[]
-  options: RecommendedMedicineOption[]
+  forms: {
+    form_route: string
+    options: RecommendedMedicineOption[]
+  }[]
 }
 
 export type RecommendedMedicineOptionWithPermissions = {
@@ -3284,7 +3287,10 @@ export type RecommendedMedicineOptionWithPermissions = {
 export type MedicineGroupWithPermissions = {
   name: string
   due_to: RenderedPositiveRecordRelativeToHealthWorker[]
-  options: RecommendedMedicineOptionWithPermissions[]
+  forms: {
+    form_route: string
+    options: RecommendedMedicineOptionWithPermissions[]
+  }[]
 }
 
 // A card in the recommended care plan: everything due to one set of positive

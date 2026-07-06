@@ -1,8 +1,5 @@
 // SNOMED CT → ICD-10 complex map constants and decision-support framing.
 // See docs/clinical_decision_support/recommended_dose_calculator.md
-
-import { RenderedPositiveRecordRelativeToHealthWorker } from '../types.ts'
-
 export const SNOMED_ICD10_COMPLEX_MAP_REFSET_ID = '447562003'
 
 // IFA rule context concepts (International Edition ICD-10 complex map).
@@ -46,8 +43,8 @@ export type SnomedIcd10ConceptMapping = {
   codes: SnomedIcd10CodeMapping[]
 }
 
-export type SnomedIcd10MappingResult = {
-  by_concept: Map<RenderedPositiveRecordRelativeToHealthWorker, SnomedIcd10ConceptMapping>
+export type SnomedIcd10MappingResult<PositiveRecord extends { specific_snomed_concept_id: string }> = {
+  by_concept: Map<PositiveRecord, SnomedIcd10ConceptMapping>
 }
 
 // EML dose lookup matches on primary ICD-10 codes (map group 1) from SNOMED only.

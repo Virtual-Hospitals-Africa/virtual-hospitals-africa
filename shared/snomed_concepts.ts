@@ -704,3 +704,8 @@ export const EXPECTANT_MANAGEMENT = asConcept({
   name: 'Expectant management',
   category: 'procedure' as const,
 })
+export const PEPTIC_ULCER = asConcept({
+  id: '13200003',
+  name: 'Peptic ulcer',
+  category: 'disorder' as const,
+})

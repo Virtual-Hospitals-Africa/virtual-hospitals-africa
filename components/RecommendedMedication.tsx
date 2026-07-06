@@ -117,7 +117,7 @@ function Titrate({ titrate }: { titrate: NonNullable<AppliedDose['titrate']> }):
 }
 
 export function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
-  const { frequency, slowly, special_instructions, duration, titrate } = dose
+  const { frequency, slowly, special_instructions, for_condition, duration, titrate } = dose
 
   const freq_el = frequency
     ? (
@@ -128,9 +128,38 @@ export function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
     )
     : null
 
-  const duration_el = duration ? <span class='text-gray-600'>over {formatTimeSpec(duration)}</span> : null
-  const slowly_el = slowly ? <span class='text-amber-700 font-medium'>slowly</span> : null
-  const instructions_el = special_instructions ? <span class='text-gray-600 italic'>— {special_instructions}</span> : null
+  const duration_el = duration
+    ? (
+      <>
+        {' '}
+        <span class='text-gray-600'>over {formatTimeSpec(duration)}</span>
+      </>
+    )
+    : null
+  const slowly_el = slowly
+    ? (
+      <>
+        {' '}
+        <span class='text-amber-700 font-medium'>slowly</span>
+      </>
+    )
+    : null
+  const for_condition_el = for_condition
+    ? (
+      <>
+        {' '}
+        <span class='text-gray-600 italic'>for {for_condition}</span>
+      </>
+    )
+    : null
+  const instructions_el = special_instructions
+    ? (
+      <>
+        {' '}
+        <span class='text-gray-600 italic'>— {special_instructions}</span>
+      </>
+    )
+    : null
 
   // Low / high range
   if (dose.low?.length || dose.high?.length) {
@@ -144,6 +173,7 @@ export function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
         {freq_el}
         {duration_el}
         {slowly_el}
+        {for_condition_el}
         {instructions_el}
       </span>
     )
@@ -163,6 +193,7 @@ export function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
         {freq_el}
         {duration_el}
         {slowly_el}
+        {for_condition_el}
         {instructions_el}
       </span>
     )
@@ -175,6 +206,7 @@ export function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
       {slowly_el}
       {freq_el}
       {duration_el}
+      {for_condition_el}
       {instructions_el}
     </span>
   )
