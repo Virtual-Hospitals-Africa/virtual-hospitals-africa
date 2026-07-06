@@ -163,6 +163,16 @@ export const patient_workflows = base({
       .onConflict((oc) => oc.constraint('patient_workflows_started_once').doNothing())
       .execute()
   },
+  insertOne(
+    trx: TrxOrDbOrQueryCreator,
+    to_insert: InsertObject<DB, 'patient_workflows'>,
+  ) {
+    return trx
+      .insertInto('patient_workflows')
+      .values(to_insert)
+      .returning('id')
+      .executeTakeFirstOrThrow() as unknown as Promise<{ id: string }>
+  },
   insertMany(
     trx: TrxOrDbOrQueryCreator,
     to_insert: InsertObject<

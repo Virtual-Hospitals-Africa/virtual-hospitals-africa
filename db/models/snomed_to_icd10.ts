@@ -1,9 +1,7 @@
+import { assert } from 'std/assert/assert.ts'
 import {
   primaryIcd10CodesFromSnomedMappings,
   SNOMED_ICD10_COMPLEX_MAP_REFSET_ID,
-  SNOMED_IFA_AGE_AT_ONSET_CONCEPT_ID,
-  SNOMED_IFA_FEMALE_CONCEPT_ID,
-  SNOMED_IFA_MALE_CONCEPT_ID,
   SNOMED_MAP_CATEGORY,
   SnomedIcd10CodeMapping,
   SnomedIcd10ConceptMapping,
@@ -12,7 +10,7 @@ import {
   SnomedIcd10PatientContext,
   SnomedIcd10ResolvedVia,
 } from '../../shared/snomed_to_icd10.ts'
-import { RenderedPositiveRecordRelativeToHealthWorker, TrxOrDb } from '../../types.ts'
+import { TrxOrDb } from '../../types.ts'
 import { groupBy } from '../../util/groupBy.ts'
 
 type ExtendedMapRow = {
@@ -26,19 +24,45 @@ type ExtendedMapRow = {
   correlation_id: string | bigint
 }
 
-function ifaContextConceptId(map_rule: string): string | null {
-  const match = map_rule.match(/^IFA (\d+)/)
-  return match?.[1] ?? null
-}
+// All distinct IFA (If Applicable) map_rule strings present in the
+// International Extended Map (SNOMED release 2025-12-01). If a future SNOMED
+// release adds new rules outside this set the assertion in evaluateIFARule will
+// catch it so we can update the handling explicitly.
+const KNOWN_IFA_RULES = new Set([
+  'IFA 248152002 | Female (finding) |',
+  'IFA 248153007 | Male (finding) |',
+  'IFA 445518008 | Age at onset of clinical finding (observable entity) | <= 15.0 years',
+  'IFA 445518008 | Age at onset of clinical finding (observable entity) | < 15.0 years',
+  'IFA 445518008 | Age at onset of clinical finding (observable entity) | < 19.0 years',
+  'IFA 445518008 | Age at onset of clinical finding (observable entity) | < 28.0 days',
+  'IFA 445518008 | Age at onset of clinical finding (observable entity) | <= 18.0 years',
+  'IFA 445518008 | Age at onset of clinical finding (observable entity) | >= 12.0 years AND IFA 445518008 | Age at onset of clinical finding (observable entity) | < 19.0 years',
+  'IFA 445518008 | Age at onset of clinical finding (observable entity) | >= 65.0 years',
+])
 
-function ifaRuleMatches(map_rule: string, context: SnomedIcd10PatientContext): boolean {
-  const concept_id = ifaContextConceptId(map_rule)
-  if (!concept_id) return false
-  if (concept_id === SNOMED_IFA_FEMALE_CONCEPT_ID) return context.sex === 'female'
-  if (concept_id === SNOMED_IFA_MALE_CONCEPT_ID) return context.sex === 'male'
-  // Age-at-onset IFA rules need the age when the finding began, not current age from DOB.
-  if (concept_id === SNOMED_IFA_AGE_AT_ONSET_CONCEPT_ID) return false
-  return false
+// Evaluate a single IFA rule against the patient context.
+// Returns true  — condition is met (use this row's ICD-10 code).
+// Returns false — condition is not met (skip this row).
+// Returns null  — condition cannot be evaluated with available context
+//                 (e.g. age-at-onset rules require onset age, not current age).
+//                 Callers should fall through to TRUE / OTHERWISE rows.
+function evaluateIFARule(map_rule: string, context: SnomedIcd10PatientContext): boolean | null {
+  // AND: split on the literal token and require every part to match.
+  if (map_rule.includes(' AND ')) {
+    const parts = map_rule.split(' AND ')
+    const results = parts.map((part) => evaluateIFARule(part.trim(), context))
+    if (results.some((r) => r === null)) return null
+    return results.every((r) => r === true)
+  }
+
+  assert(KNOWN_IFA_RULES.has(map_rule), `Unexpected IFA map_rule: ${map_rule}`)
+
+  if (map_rule === 'IFA 248152002 | Female (finding) |') return context.sex === 'female'
+  if (map_rule === 'IFA 248153007 | Male (finding) |') return context.sex === 'male'
+
+  // All remaining rules reference 445518008 (Age at onset of clinical finding).
+  // We do not have onset age — only current age from DOB — so these cannot be resolved.
+  return null
 }
 
 function isOtherwiseRule(map_rule: string | null): boolean {
@@ -63,7 +87,7 @@ function resolveMapGroup(
   const otherwise_row = rows.find((row) => isOtherwiseRule(row.map_rule))
 
   for (const row of ifa_rows) {
-    if (ifaRuleMatches(row.map_rule!, context) && row.map_target) {
+    if (evaluateIFARule(row.map_rule!, context) === true && row.map_target) {
       return {
         code: rowToCodeMapping(row, 'context'),
         status: 'mapped',
@@ -176,7 +200,7 @@ export const snomed_to_icd10 = {
   async mapConcepts<PositiveRecord extends { specific_snomed_concept_id: string }>(
     trx: TrxOrDb,
     context: SnomedIcd10PatientContext,
-    positive_records: RenderedPositiveRecordRelativeToHealthWorker[],
+    positive_records: PositiveRecord[],
   ): Promise<SnomedIcd10MappingResult<PositiveRecord>> {
     if (!positive_records.length) {
       return { by_concept: new Map() }

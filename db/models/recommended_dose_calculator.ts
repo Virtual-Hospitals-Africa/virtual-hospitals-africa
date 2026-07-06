@@ -35,12 +35,12 @@ function groupByMedicineName(medicines_with_patient_case: Array<RecommendedMedic
 }
 
 export const recommended_dose_calculator = {
-  async lookup(
+  async lookup<PositiveRecord extends RenderedPositiveRecordRelativeToHealthWorker>(
     trx: TrxOrDb,
     patient_case: ParsedPatientCase,
-    positive_records: RenderedPositiveRecordRelativeToHealthWorker[],
+    positive_records: PositiveRecord[],
   ): Promise<RecommendedMedicineGroup[]> {
-    const mapping_result = await snomed_to_icd10.mapConcepts<RenderedPositiveRecordRelativeToHealthWorker>(
+    const mapping_result = await snomed_to_icd10.mapConcepts<PositiveRecord>(
       trx,
       patient_case,
       positive_records,
