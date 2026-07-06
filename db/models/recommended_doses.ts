@@ -60,16 +60,12 @@ const getAllParsedMedications = memoize(async (): Promise<Medicine[]> => {
   return MedicineSchema.array().parse(json)
 })
 
-function extractConditionCodes(conditions: ParsedPatientCase['conditions']): string[] {
-  if (!conditions) return []
-  const items = Array.isArray(conditions) ? conditions : Object.values(conditions)
-  return items.flatMap((item) => {
-    if (typeof item === 'string') return [item]
-    if (item && typeof item === 'object' && 'id' in item && typeof (item as Record<string, unknown>).id === 'string') {
-      return [(item as { id: string }).id]
-    }
-    return []
-  })
+// A set of ICD-10 codes along with the thing (a positive finding/diagnosis, or
+// anything else the caller wants back) that put those codes into play. Matched
+// medicines report which sources contributed as their `due_to`.
+export type ConditionSource<T> = {
+  due_to: T
+  codes: string[]
 }
 
 function codeMatches(indicator_code: string, patient_code: string): boolean {
@@ -89,6 +85,13 @@ function indicationsMatch(indications: ICD10Indications, patient_codes: string[]
   return indications.indications.every((group) => group.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc))))
 }
 
+// Whether any of this source's codes match any of the medicine's indicator
+// codes, i.e. whether the source played a part in the medicine matching.
+function sourceContributes(indications: ICD10Indications, source_codes: string[]): boolean {
+  const indicator_codes = indications.type === 'codes' ? indications.codes : indications.indications.flatMap((group) => group.codes)
+  return indicator_codes.some((code) => source_codes.some((pc) => codeMatches(code, pc)))
+}
+
 function getAgeInYears(dob: string): number {
   const birth_date = new Date(dob)
   const today = new Date()
@@ -104,9 +107,9 @@ function getAgeInYears(dob: string): number {
 }
 
 function scheduleMatchesAgeClassifier(
-  schedule: z.infer<typeof ParsedDoseSchema>, 
-  patient_is_adult: boolean | undefined, 
-  dob: string
+  schedule: z.infer<typeof ParsedDoseSchema>,
+  patient_is_adult: boolean | undefined,
+  dob: string,
 ): boolean {
   if (!schedule.age_classifier) return true
   switch (schedule.age_classifier) {
@@ -126,12 +129,12 @@ function scheduleMatchesAgeClassifier(
       }, dob)
     case 'newborn':
       return scheduleMatchesAgeRange({ age_range: { max: { value: 1, units: 'months', inclusive: true } } }, dob)
-    
+
     // TODO feed in history to make this determination
     case 'premature baby':
       // Prematurity isn't derivable from dob, so match any neonate and let the clinician decide
       return scheduleMatchesAgeRange({ age_range: { max: { value: 1, units: 'months', inclusive: true } } }, dob)
-    
+
     // TODO feed in history to make this determination
     case 'breastfed infant':
       // Breastfeeding status isn't derivable from dob, so match any infant and let the clinician decide
@@ -170,8 +173,12 @@ function scheduleMatchesAgeRange(schedule: z.infer<typeof ParsedDoseSchema>, dob
     meetsMax(schedule.age_range.max, age_in_years)
 }
 
-function findMatchingMedicines(medicines: Medicine[], query: ParsedPatientCase): Medicine[] {
-  const codes = extractConditionCodes(query.conditions)
+function findMatchingMedicines<T>(
+  medicines: Medicine[],
+  query: ParsedPatientCase,
+  sources: ConditionSource<T>[],
+): Array<Medicine & { due_to: T[] }> {
+  const codes = sources.flatMap((source) => source.codes)
   if (!codes.length) return []
 
   const age_determination = patientAgeDetermination({
@@ -183,17 +190,21 @@ function findMatchingMedicines(medicines: Medicine[], query: ParsedPatientCase):
 
   return compactMap(medicines, (m) => {
     if (!indicationsMatch(m.icd10_indications, codes)) return
-    if (patient_is_adult === undefined) return m
+    const due_to = sources.filter((source) => sourceContributes(m.icd10_indications, source.codes)).map((source) => source.due_to)
+    if (patient_is_adult === undefined) return { ...m, due_to }
     const filtered_schedules = m.schedules.filter((s) =>
       scheduleMatchesAgeClassifier(s, patient_is_adult, query.dob) &&
       scheduleMatchesAgeRange(s, query.dob)
     )
     if (!filtered_schedules.length) return
-    return { ...m, schedules: filtered_schedules }
+    return { ...m, due_to, schedules: filtered_schedules }
   })
 }
 
-function applyPatientCase(medicine: Medicine, patient_case: ParsedPatientCase) {
+function applyPatientCase<M extends Medicine>(
+  medicine: M,
+  patient_case: ParsedPatientCase,
+): Omit<M, 'schedules'> & { patient_case: ParsedPatientCase; schedules: AppliedDose[] } {
   return {
     ...medicine,
     patient_case,
@@ -202,11 +213,12 @@ function applyPatientCase(medicine: Medicine, patient_case: ParsedPatientCase) {
 }
 
 export const recommended_doses = {
-  async getRecommendedDosesWithPatientCaseApplied(
-    patient_case: ParsedPatientCase
+  async getRecommendedDosesWithPatientCaseApplied<T>(
+    patient_case: ParsedPatientCase,
+    sources: ConditionSource<T>[],
   ) {
     const medicines = await getAllParsedMedications()
-    const matching_medicines = findMatchingMedicines(medicines, patient_case)
+    const matching_medicines = findMatchingMedicines(medicines, patient_case, sources)
     return matching_medicines.map((medicine) => applyPatientCase(medicine, patient_case))
   },
 }

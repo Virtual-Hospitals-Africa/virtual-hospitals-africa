@@ -9,7 +9,7 @@ function parseAll() {
   const parsed: ParsedMedicineRecommendedDose[] = []
   const failures: { medicine_row: MedicineRow; error_message: string; error_stack: string }[] = []
   for (const medicine_row of getZARecommendedDoses()) {
-    console.log({medicine_row})
+    console.log({ medicine_row })
     const result = asResult(() => MedicineParser.parse(medicine_row))
     if (result.success) {
       parsed.push(result.value.parsed)

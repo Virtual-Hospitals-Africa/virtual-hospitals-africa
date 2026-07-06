@@ -57,7 +57,7 @@ describe('shared/recommended_dose_calculator/patient_case_from_encounter.ts', ()
 
     assertEquals(
       records.map((record) => record.specific_snomed_concept_id),
-      ['195967001', '44054006', '38341003'],
+      ['73211009', '44054006', '38341003'],
     )
   })
 })

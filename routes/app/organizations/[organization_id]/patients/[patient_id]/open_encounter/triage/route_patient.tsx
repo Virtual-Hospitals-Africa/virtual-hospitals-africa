@@ -16,7 +16,8 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { redirectToFirstIncompleteStep } from '../index.tsx'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
-import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
+import { applyPermissions, applyPrescriberPermissions } from '../../../../../../../../shared/permissions.ts'
+import { buildCarePlanGroups } from '../../../../../../../../shared/care_plan.ts'
 import { referrals } from '../../../../../../../../db/models/referrals.ts'
 import { positiveRecordsFromEncounter } from '../../../../../../../../shared/recommended_dose_calculator/patient_case_from_encounter.ts'
 import { PatientCaseSchema } from '../../../../../../../../shared/recommended_doses.ts'
@@ -136,7 +137,9 @@ export async function PatientTriageRoutePatientPage(
     this_visit_findings,
   }))
 
-  const patient_case = PatientCaseSchema.parse({
+  // Dose recommendations need sex, dob, height and weight; when any are
+  // missing (e.g. an emergency skipped height & weight) we route without them.
+  const patient_case = PatientCaseSchema.safeParse({
     sex: patient.sex,
     dob: patient.date_of_birth,
     height_cm: patient.most_recent_height?.cm,
@@ -149,7 +152,7 @@ export async function PatientTriageRoutePatientPage(
   }
   assert(completedPersonal(patient))
 
-  const { clinic_employees, manage_patient_task_groups } = await promiseProps({
+  const { clinic_employees, manage_patient_task_groups, recommended_medicine_groups } = await promiseProps({
     clinic_employees: employees_presence.getAllAtOrganization(trx, {
       organization_id,
       excluding_health_worker: {
@@ -159,14 +162,18 @@ export async function PatientTriageRoutePatientPage(
       },
     }),
     manage_patient_task_groups: managePatientTaskGroups(ctx),
-    recommended_doses: recommended_dose_calculator.lookup(
-      trx, 
-      patient_case,
-      positive_records
-    ),
+    recommended_medicine_groups: patient_case.success
+      ? recommended_dose_calculator.lookup(
+        trx,
+        patient_case.data,
+        positive_records,
+      )
+      : Promise.resolve([]),
   })
 
   const task_groups_with_permissions = applyPermissions(organization_employment, clinic_employees, manage_patient_task_groups)
+  const medicine_groups_with_permissions = applyPrescriberPermissions(organization_employment, clinic_employees, recommended_medicine_groups)
+  const care_plan_groups = buildCarePlanGroups(task_groups_with_permissions, medicine_groups_with_permissions)
   const triage_next_step_recommendations = triageNextStepRecommendations(
     priority.name,
     clinic_employees,
@@ -180,7 +187,7 @@ export async function PatientTriageRoutePatientPage(
       priority={priority}
       organization_id={organization_id}
       clinic_employees={clinic_employees}
-      task_groups_with_permissions={task_groups_with_permissions}
+      care_plan_groups={care_plan_groups}
       triage_next_step_recommendations={triage_next_step_recommendations}
     />
   )

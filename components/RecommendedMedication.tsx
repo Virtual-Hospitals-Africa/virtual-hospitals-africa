@@ -116,7 +116,7 @@ function Titrate({ titrate }: { titrate: NonNullable<AppliedDose['titrate']> }):
   )
 }
 
-function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
+export function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
   const { frequency, slowly, special_instructions, duration, titrate } = dose
 
   const freq_el = frequency
@@ -180,7 +180,7 @@ function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
   )
 }
 
-function AwareBadge({ aware }: { aware: MedicineRecommendation['aware'] }): JSX.Element | null {
+export function AwareBadge({ aware }: { aware: MedicineRecommendation['aware'] }): JSX.Element | null {
   if (!aware) return null
   const colours: Record<string, string> = {
     Access: 'bg-green-100 text-green-800',

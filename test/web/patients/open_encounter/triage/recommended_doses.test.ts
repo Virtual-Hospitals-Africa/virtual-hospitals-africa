@@ -5,15 +5,14 @@ import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import waitUntilTestServerUp from '../../../../_helpers/waitUntilTestServerUp.ts'
 import { asVitalAssessmentFormValues, asVitalMeasurementFormValues, asWarningSignsAdult, setupTriageNewPatient } from './_setup.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
-import { RECOMMENDED_DOSE_CALCULATOR_DISCLAIMER } from '../../../../../shared/snomed_to_icd10.ts'
 
-describeParallel('triage/recommended_doses', () => {
+describeParallel('triage/route_patient recommended medicines', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  itParallel('shows suggested doses from encounter SNOMED concepts after assign priority', async () => {
+  itParallel('recommends medicines due to encounter SNOMED concepts in the care plan, showing who can prescribe', async () => {
     const asthma_s_expr = '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Asthma" "disorder"))'
-    const { $, postStep } = await setupTriageNewPatient({
+    const { $ } = await setupTriageNewPatient({
       patient_demographics: randomDemographics('ZA', 'male', 'adult'),
       warning_signs: asWarningSignsAdult([], { pregnant: false }, asthma_s_expr),
       brief_history: {
@@ -46,13 +45,20 @@ describeParallel('triage/recommended_doses', () => {
       assign_priority: {},
     })
 
-    assert($.url.endsWith('/open_encounter/triage/recommended_doses'))
-    const body = $.html()
-    assert(body.includes('Suggested medication doses'))
-    assert(body.includes(RECOMMENDED_DOSE_CALCULATOR_DISCLAIMER))
-    assert(body.includes('Suggested medications (for your review)'))
+    // The dedicated recommended_doses step is gone: assign_priority proceeds
+    // straight to route_patient, where the care plan holds the medicines.
+    assert($.url.endsWith('/open_encounter/triage/route_patient'))
+    assert($.html().includes('Recommended Care Plan'))
 
-    const $route_patient = await postStep({ recommended_doses: {} })
-    assert($route_patient.url.endsWith('/open_encounter/triage/route_patient'))
+    // The asthma finding maps to ICD-10 J45* and recommends salbutamol, in a
+    // care plan card attributed to the finding
+    const asthma_card = $('.task-group-card[data-due-to*="asthma"]')
+    assert(asthma_card.length, 'expected a care plan card due to asthma')
+    assert(asthma_card.find('[data-medicine="salbutamol"]').length, 'expected salbutamol to be recommended due to asthma')
+
+    // Doctor-only options can't be prescribed by the triage nurse, and this
+    // clinic staffs no doctor, so a doctor role icon is shown
+    assert($.html().includes('can be prescribed by'))
+    assert($('[data-permitted="doctor"]').length, 'expected a doctor role icon for doctor-only prescriptions')
   })
 })

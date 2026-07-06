@@ -16,14 +16,6 @@ export const SNOMED_MAP_CATEGORY = {
   context_dependent: '447639009',
 } as const
 
-export const SNOMED_MAP_CORRELATION = {
-  not_specified: '447561005',
-  exact: '447561009',
-  narrower: '447562005',
-  broader: '447563000',
-  partial_overlap: '447564006',
-} as const
-
 export type SnomedIcd10PatientContext = {
   sex: 'male' | 'female'
   dob: string
@@ -74,56 +66,3 @@ export function primaryIcd10CodesFromSnomedMappings(
   }
   return codes
 }
-
-export function mapCategoryLabel(map_category_id: string): string | null {
-  switch (map_category_id) {
-    case SNOMED_MAP_CATEGORY.properly_classified:
-      return null
-    case SNOMED_MAP_CATEGORY.not_classifiable:
-      return 'Not classifiable — please confirm'
-    case SNOMED_MAP_CATEGORY.context_dependent:
-      return 'Context-dependent mapping — please verify'
-    default:
-      return null
-  }
-}
-
-export function correlationLabel(correlation_id: string): string | null {
-  switch (correlation_id) {
-    case SNOMED_MAP_CORRELATION.not_specified:
-      return null
-    case SNOMED_MAP_CORRELATION.exact:
-      return 'Exact match'
-    case SNOMED_MAP_CORRELATION.narrower:
-      return 'Narrower than source (approximate)'
-    case SNOMED_MAP_CORRELATION.broader:
-      return 'Broader than source (approximate)'
-    case SNOMED_MAP_CORRELATION.partial_overlap:
-      return 'Partial overlap (approximate)'
-    default:
-      return null
-  }
-}
-
-export function conceptMappingClinicianMessage(mapping: SnomedIcd10ConceptMapping): string | null {
-  switch (mapping.status) {
-    case 'not_classifiable':
-      return 'This SNOMED concept could not be classified to ICD-10 with available data. Please confirm or enter ICD-10 manually.'
-    case 'unresolved_context':
-      return 'Mapping depends on patient context that could not be resolved (e.g. sex-specific rules without a matching patient sex). Please confirm the ICD-10 code manually.'
-    case 'no_mapping':
-      return 'No ICD-10 mapping was found for this SNOMED concept. Please confirm or enter ICD-10 manually.'
-    default:
-      return null
-  }
-}
-
-export const RECOMMENDED_DOSE_CALCULATOR_DISCLAIMER =
-  'Clinical decision support only. SNOMED→ICD-10 translations and dose calculations suggest candidates for your review — they are not prescriptions and never auto-select treatment. You remain the final decision-maker for every medication and dose.'
-
-export const RECOMMENDED_DOSE_CALCULATOR_SNOMED_FIELD_HELP =
-  'Optional. Each SNOMED concept is translated to suggested ICD-10 candidate code(s) for matching — never applied without your review.'
-
-export const RECOMMENDED_DOSE_CALCULATOR_SUBMIT_LABEL = 'Review suggested doses'
-
-export const RECOMMENDED_DOSE_CALCULATOR_SUGGESTED_MEDICATIONS_HEADER = 'Suggested medications (for your review)'

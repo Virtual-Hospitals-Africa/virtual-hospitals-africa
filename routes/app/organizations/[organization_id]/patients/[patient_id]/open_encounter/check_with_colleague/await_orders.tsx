@@ -11,6 +11,7 @@ import { NoTasks } from '../../../../../../../../components/triage/tasks/NoTasks
 import { employees } from '../../../../../../../../db/models/employees.ts'
 import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
 import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
+import { buildCarePlanGroups } from '../../../../../../../../shared/care_plan.ts'
 import RecommendedCarePlan from '../../../../../../../../components/library/RecommendedCarePlan.tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
@@ -120,7 +121,7 @@ async function CheckWithColleagueAwaitOrdersPage(
             <SectionHeader>Patient Management Tasks</SectionHeader>
             <RecommendedCarePlan
               to_be_notified={to_be_notified}
-              task_groups_with_permissions={task_groups_with_permissions}
+              care_plan_groups={buildCarePlanGroups(task_groups_with_permissions, [])}
               organization_id={organization_id}
             />
           </div>

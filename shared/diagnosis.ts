@@ -44,12 +44,12 @@ export function isPositiveDiagnosis(
 ) {
   const certainty = certaintyOf(diagnosis)
   switch (certainty) {
+    case 'definite':
+    case 'probable':
+    case 'possible':
+      return true
     case 'equivocal':
     case 'improbable':
-      return true
-    case 'definite':
-    case 'possible':
-    case 'probable':
       return false
     default:
       assertUnreachable(certainty)

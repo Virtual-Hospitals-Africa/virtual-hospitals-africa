@@ -176,12 +176,12 @@ export const snomed_to_icd10 = {
   async mapConcepts(
     trx: TrxOrDb,
     context: SnomedIcd10PatientContext,
-    positive_records: RenderedPositiveRecordRelativeToHealthWorker[]
+    positive_records: RenderedPositiveRecordRelativeToHealthWorker[],
   ): Promise<SnomedIcd10MappingResult> {
     if (!positive_records.length) {
       return { by_concept: new Map() }
     }
-    const snomed_concept_ids = positive_records.map(record => record.specific_snomed_concept_id)
+    const snomed_concept_ids = positive_records.map((record) => record.specific_snomed_concept_id)
 
     const rows = await trx
       .selectFrom('snomed_iissscc_refset_extended_map')

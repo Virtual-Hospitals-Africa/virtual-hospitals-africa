@@ -19,7 +19,6 @@ import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizat
 import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
 import { TriageAdditionalTasksAndInvestigationsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/additional_tasks_and_investigations.tsx'
 import { TriageAssignPrioritySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/assign_priority.tsx'
-import { TriageRecommendedDosesSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/recommended_doses.tsx'
 import { TriageRoutePatientSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/route_patient.tsx'
 import fromEntries from '../../../../../util/fromEntries.ts'
 import { KEYED_WARNING_SIGNS, WARNING_SIGNS } from '../../../../../shared/warning_signs.ts'
@@ -44,7 +43,6 @@ export type TriageSteps = {
   measure_vitals?: z.input<typeof TriageMeasureVitalsSchema>
   additional_tasks_and_investigations?: z.input<typeof TriageAdditionalTasksAndInvestigationsSchema>
   assign_priority?: z.input<typeof TriageAssignPrioritySchema>
-  recommended_doses?: z.input<typeof TriageRecommendedDosesSchema>
   route_patient?: z.input<typeof TriageRoutePatientSchema>
 }
 

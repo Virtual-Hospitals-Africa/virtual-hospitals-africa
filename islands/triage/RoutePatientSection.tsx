@@ -1,4 +1,4 @@
-import { Maybe, Names, Priority, RenderedEmployeeWithPresenceAndSeniority, TaskGroupWithPermissions, TriageNextStepRecommendations } from '../../types.ts'
+import { CarePlanGroup, Maybe, Names, Priority, RenderedEmployeeWithPresenceAndSeniority, TriageNextStepRecommendations } from '../../types.ts'
 import { EncounterReason } from '../../db.d.ts'
 import { TextArea } from '../../islands/form/inputs/textarea.tsx'
 import FormRow from '../../components/library/FormRow.tsx'
@@ -10,7 +10,7 @@ import RecommendedCarePlan from '../../components/library/RecommendedCarePlan.ts
 import ProvidersSelect from '../ProvidersSelect.tsx'
 
 export default function TriageRoutePatientSection(
-  { this_visit, patient, priority, organization_id, clinic_employees, task_groups_with_permissions, triage_next_step_recommendations }: {
+  { this_visit, patient, priority, organization_id, clinic_employees, care_plan_groups, triage_next_step_recommendations }: {
     this_visit: {
       reason: Maybe<EncounterReason>
       notes?: Maybe<string>
@@ -25,11 +25,11 @@ export default function TriageRoutePatientSection(
     }
     organization_id: string
     clinic_employees: RenderedEmployeeWithPresenceAndSeniority[]
-    task_groups_with_permissions: TaskGroupWithPermissions[]
+    care_plan_groups: CarePlanGroup[]
     triage_next_step_recommendations: TriageNextStepRecommendations
   },
 ) {
-  const tasks_with_permissions = task_groups_with_permissions.flatMap((group) => group.tasks)
+  const tasks_with_permissions = care_plan_groups.flatMap((group) => group.tasks)
   const next_step = useSignal<string>(triage_next_step_recommendations.next_step)
 
   const to_be_notified = useSignal<RenderedEmployeeWithPresenceAndSeniority[]>(triage_next_step_recommendations.to_be_notified)
@@ -40,12 +40,12 @@ export default function TriageRoutePatientSection(
 
   return (
     <div class='flex flex-col gap-6'>
-      {!!task_groups_with_permissions.length && (
+      {!!care_plan_groups.length && (
         <FormSection id='recommended_care_plan' header='Recommended Care Plan' always_column>
           <FormRow>
             <RecommendedCarePlan
               to_be_notified={to_be_notified.value}
-              task_groups_with_permissions={task_groups_with_permissions}
+              care_plan_groups={care_plan_groups}
               organization_id={organization_id}
             />
           </FormRow>

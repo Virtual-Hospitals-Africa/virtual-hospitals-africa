@@ -19,7 +19,6 @@ export type TutorialStep =
   | 'measure_vitals'
   | 'additional_tasks_and_investigations'
   | 'assign_priority'
-  | 'recommended_doses'
   | 'route_patient'
   | 'complete'
 
@@ -31,7 +30,6 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   'measure_vitals',
   'additional_tasks_and_investigations',
   'assign_priority',
-  'recommended_doses',
   'route_patient',
   'complete',
 ]
