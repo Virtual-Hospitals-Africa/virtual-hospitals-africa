@@ -465,31 +465,40 @@ export class DosageParser {
     this.lookFor(/^breastfed infants$/i, () => ({ age_classifier: 'breastfed infant' as const }))
     // Combined age + weight constraint: "<N years and <Mkg"
     this.lookFor(/^<(\d+)\s?(year|month)s?\s+and\s+<(\d+)\s?kg$/i, (age_val, age_units, kg_val) => ({
-      age_range: { max: { value: parseInt(age_val), units: (age_units + 's') as 'months' | 'years' } },
+      age_range: { max: { value: parseInt(age_val), units: (age_units + 's') as 'months' | 'years', inclusive: false } },
       kg_limit_max: parseInt(kg_val),
     }))
-    this.lookFor(/^(?:>|≥|over)\s*(\d+)\s?(month|year)s?(?: and adults)?$/i, (age_min_value, age_min_units) => ({
+    this.lookFor(/^(>=|≥|>|over)\s*(\d+)\s?(month|year)s?(?: and adults)?$/i, (operator, age_min_value, age_min_units) => ({
       age_range: {
-        min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years' },
+        min: {
+          value: parseInt(age_min_value),
+          units: age_min_units + 's' as 'months' | 'years',
+          inclusive: operator === '≥' || operator === '>=',
+        },
       },
     }))
-    this.lookFor(/^(?:<|under)\s?(\d+)\s?(month|year)s?$/i, (age_max_value, age_max_units) => ({
+    this.lookFor(/^(<=|≤|<|under)\s?(\d+)\s?(month|year)s?$/i, (operator, age_max_value, age_max_units) => ({
       age_range: {
-        max: { value: parseInt(age_max_value), units: age_max_units + 's' as 'months' | 'years' },
+        max: {
+          value: parseInt(age_max_value),
+          units: age_max_units + 's' as 'months' | 'years',
+          inclusive: operator === '≤' || operator === '<=',
+        },
       },
     }))
+    // Explicit ranges like "10-19 years" are inclusive of both bounds
     this.lookFor(/(?:>)?(?:Infants )?(\d+)\s?(?:-|to)\s?(\d+)\s?(month|year)s?$/i, (age_min_value, age_max_value, age_max_units) => ({
       age_range: {
-        min: { value: parseInt(age_min_value), units: age_max_units + 's' as 'months' | 'years' },
-        max: { value: parseInt(age_max_value), units: age_max_units + 's' as 'months' | 'years' },
+        min: { value: parseInt(age_min_value), units: age_max_units + 's' as 'months' | 'years', inclusive: true },
+        max: { value: parseInt(age_max_value), units: age_max_units + 's' as 'months' | 'years', inclusive: true },
       },
     }))
     this.lookFor(
       /(?:>)?(?:infants )?(\d+)\s?(month|year)s?\s?(?:-|to)\s?(\d+)\s?(month|year)s?/i,
       (age_min_value, age_min_units, age_max_value, age_max_units) => ({
         age_range: {
-          min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years' },
-          max: { value: parseInt(age_max_value), units: age_max_units + 's' as 'months' | 'years' },
+          min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years', inclusive: true },
+          max: { value: parseInt(age_max_value), units: age_max_units + 's' as 'months' | 'years', inclusive: true },
         },
       }),
     )
@@ -498,7 +507,7 @@ export class DosageParser {
     if (!this.is_parenthetical) {
       this.lookFor(/^(\d+)\s?(month|year)s?$/i, (age_min_value, age_min_units) => ({
         age_range: {
-          min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years' },
+          min: { value: parseInt(age_min_value), units: age_min_units + 's' as 'months' | 'years', inclusive: true },
         },
       }))
     }
@@ -915,7 +924,7 @@ export class DosageParser {
     this.lookFor(/\/?(% burn)/i, () => ({ per_percent_burn: true }))
 
     this.lookFor(/\/(kg|m2)/i, (per_size) => ({ per_size: per_size as 'kg' | 'm2' }))
-    this.lookFor(/\/\d*(\.\d+)?kg/i, (kg) => ({ per_size: { kg: parseFloat(kg) || 1 } }))
+    this.lookFor(/\/(\d*\.?\d+)kg/i, (kg) => ({ per_size: { kg: parseFloat(kg) } }))
     this.lookFor(/\/(second|sec|minute|min|hour|hr|day|week)/i, (units) => ({
       per_time: {
         value: 1,

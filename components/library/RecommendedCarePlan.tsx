@@ -1,10 +1,20 @@
-import { ComponentChildren } from 'preact'
-import { RenderedEmployeeWithPresenceAndSeniority, TaskGroupWithPermissions } from '../../types.ts'
+import { ComponentChildren, JSX } from 'preact'
+import {
+  CarePlanGroup,
+  MedicineGroupWithPermissions,
+  RecommendedMedicineOptionWithPermissions,
+  RenderedEmployeeWithPresenceAndSeniority,
+  TaskPermissions,
+} from '../../types.ts'
 import { initials } from '../../util/initials.ts'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 import { DueTo } from '../triage/tasks/DueTo.tsx'
 import { hyphenate } from '../../util/hyphenate.ts'
+import { AwareBadge, Schedule } from '../RecommendedMedication.tsx'
+import { NurseIcon } from './icons/Nurse.tsx'
+import { DoctorIcon } from './icons/Doctor.tsx'
+import { AcademicCapIcon, FaceSmileIcon, UserIcon } from './icons/heroicons/mini.tsx'
 
 // A tiny avatar for an employee who can do/approve a task. On-duty employees are
 // shown at full opacity; off-duty ones are greyed out. Employees that are slated
@@ -29,27 +39,55 @@ function EmployeeAvatar(
   )
 }
 
+const ROLE_ICONS: Record<string, (props: { className?: string }) => JSX.Element> = {
+  doctor: DoctorIcon,
+  nurse: NurseIcon,
+  specialist: AcademicCapIcon,
+  dentist: FaceSmileIcon,
+}
+
+// Shown in place of employee avatars when nobody at this facility holds a role
+// satisfying the permission: a tiny avatar whose contents are an icon for the
+// role that would be permitted.
+function RoleIconAvatar({ permitted }: { permitted: string }) {
+  const Icon = ROLE_ICONS[permitted] ?? UserIcon
+  return (
+    <div
+      title={permitted}
+      data-permitted={permitted}
+      class='flex-none h-6 w-6 rounded-full bg-gray-100 ring-2 ring-white flex items-center justify-center text-gray-500'
+    >
+      <Icon className='h-4 w-4' />
+    </div>
+  )
+}
+
 // "requires approval from"/"can be done by" followed by the tiny avatars of the
-// employees who can satisfy the task's permission, on-duty first.
+// employees who can satisfy the permission, on-duty first. When no employee at
+// this facility qualifies, an icon for the permitted role is shown instead.
 function PermissionEmployees(
-  { label, on_duty, off_duty, to_be_notified_ids }: {
+  { label, permitted, on_duty, off_duty, to_be_notified_ids }: {
     label: string
+    permitted: string
     on_duty: RenderedEmployeeWithPresenceAndSeniority[]
     off_duty: RenderedEmployeeWithPresenceAndSeniority[]
     to_be_notified_ids: Set<string>
   },
 ) {
+  const employees = [...on_duty, ...off_duty]
   return (
     <div class='flex items-center gap-2 flex-none'>
       <span class='text-xs text-gray-500 whitespace-nowrap'>{label}</span>
       <div class='flex -space-x-1 overflow-hidden items-center'>
-        {[...on_duty, ...off_duty].map((employee) => (
-          <EmployeeAvatar
-            key={employee.id}
-            employee={employee}
-            to_be_notified={to_be_notified_ids.has(employee.id)}
-          />
-        ))}
+        {employees.length
+          ? employees.map((employee) => (
+            <EmployeeAvatar
+              key={employee.id}
+              employee={employee}
+              to_be_notified={to_be_notified_ids.has(employee.id)}
+            />
+          ))
+          : <RoleIconAvatar permitted={permitted} />}
       </div>
     </div>
   )
@@ -59,10 +97,102 @@ function TaskRow({ children }: { children: ComponentChildren }) {
   return <li class='flex items-center justify-between gap-3 text-sm text-gray-700'>{children}</li>
 }
 
+// "can be prescribed by" plus the avatars of who can, shown only when the
+// current health worker can't prescribe it themselves.
+function CanBePrescribedBy(
+  { permissions, to_be_notified_ids }: {
+    permissions: TaskPermissions
+    to_be_notified_ids: Set<string>
+  },
+) {
+  if (permissions.type !== 'cant_do') return null
+  return (
+    <PermissionEmployees
+      label='can be prescribed by'
+      permitted={permissions.permitted}
+      on_duty={permissions.employees_who_can_do.on_duty}
+      off_duty={permissions.employees_who_can_do.off_duty}
+      to_be_notified_ids={to_be_notified_ids}
+    />
+  )
+}
+
+// Two permissions render identically iff they'd show the same avatars, so
+// compare by kind plus the employees involved.
+function prescriberKey(permissions: TaskPermissions): string {
+  if (permissions.type !== 'cant_do') return permissions.type
+  return JSON.stringify([
+    permissions.permitted,
+    permissions.employees_who_can_do.on_duty.map((employee) => employee.id),
+    permissions.employees_who_can_do.off_duty.map((employee) => employee.id),
+  ])
+}
+
+// When every option renders the same prescriber permissions, return them so
+// they can be shown once at a higher level; null when the options differ.
+function sharedPermissions(options: RecommendedMedicineOptionWithPermissions[]): TaskPermissions | null {
+  const [first, ...rest] = options
+  const key = prescriberKey(first.permissions)
+  return rest.every(({ permissions }) => prescriberKey(permissions) === key) ? first.permissions : null
+}
+
+// One recommended medicine: the name once, then its options grouped by
+// form/route. Each option (an EML row) shows the disorder it treats and its
+// dose schedules. "Can be prescribed by" is hoisted to the highest level at
+// which the prescriber is the same: the medicine, the form/route, or failing
+// both, the individual option.
+function MedicineGroup(
+  { group, to_be_notified_ids }: {
+    group: MedicineGroupWithPermissions
+    to_be_notified_ids: Set<string>
+  },
+) {
+  const group_permissions = sharedPermissions(group.forms.flatMap((form) => form.options))
+  return (
+    <li class='flex flex-col gap-1' data-medicine={hyphenate(group.name)}>
+      <span class='flex items-center gap-3'>
+        <span class='text-sm font-medium text-gray-900'>{group.name}</span>
+        {group_permissions && <CanBePrescribedBy permissions={group_permissions} to_be_notified_ids={to_be_notified_ids} />}
+      </span>
+      <ul class='flex flex-col gap-1.5 pl-4'>
+        {group.forms.map((form) => {
+          const form_permissions = group_permissions ? null : sharedPermissions(form.options)
+          return (
+            <li key={form.form_route} class='flex flex-col gap-1' data-form-route={hyphenate(form.form_route)}>
+              <span class='flex items-center gap-3'>
+                <span class='text-xs text-gray-500'>{form.form_route}</span>
+                {form_permissions && <CanBePrescribedBy permissions={form_permissions} to_be_notified_ids={to_be_notified_ids} />}
+              </span>
+              <ul class='flex flex-col gap-1.5 pl-4'>
+                {form.options.map(({ option, permissions }, index) => (
+                  <li key={index} class='flex items-start gap-3 text-sm text-gray-700'>
+                    <div class='flex flex-col'>
+                      <span class='text-xs text-gray-500'>
+                        {option.disorder} <AwareBadge aware={option.aware} />
+                      </span>
+                      {option.schedules.map((schedule, schedule_index) => (
+                        <span key={schedule_index}>
+                          {schedule.age_classifier && <span class='text-xs uppercase tracking-wide text-gray-400 mr-1'>[{schedule.age_classifier}]</span>}
+                          <Schedule dose={schedule} />
+                        </span>
+                      ))}
+                    </div>
+                    {!group_permissions && !form_permissions && <CanBePrescribedBy permissions={permissions} to_be_notified_ids={to_be_notified_ids} />}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          )
+        })}
+      </ul>
+    </li>
+  )
+}
+
 export default function RecommendedCarePlan(
-  { to_be_notified, task_groups_with_permissions, organization_id }: {
+  { to_be_notified, care_plan_groups, organization_id }: {
     to_be_notified: RenderedEmployeeWithPresenceAndSeniority[]
-    task_groups_with_permissions: TaskGroupWithPermissions[]
+    care_plan_groups: CarePlanGroup[]
     organization_id: string
   },
 ) {
@@ -70,7 +200,7 @@ export default function RecommendedCarePlan(
 
   return (
     <div class='w-full flex flex-col gap-4'>
-      {task_groups_with_permissions.map((group) => (
+      {care_plan_groups.map((group) => (
         <div
           key={group.due_to.map((record) => record.id).join('-')}
           class='task-group-card flex flex-col gap-2'
@@ -87,6 +217,7 @@ export default function RecommendedCarePlan(
                 {permissions.type === 'approval_needed' && (
                   <PermissionEmployees
                     label='requires approval from'
+                    permitted={permissions.permitted}
                     on_duty={permissions.employees_who_can_approve.on_duty}
                     off_duty={permissions.employees_who_can_approve.off_duty}
                     to_be_notified_ids={to_be_notified_ids}
@@ -95,12 +226,20 @@ export default function RecommendedCarePlan(
                 {permissions.type === 'cant_do' && (
                   <PermissionEmployees
                     label='can be done by'
+                    permitted={permissions.permitted}
                     on_duty={permissions.employees_who_can_do.on_duty}
                     off_duty={permissions.employees_who_can_do.off_duty}
                     to_be_notified_ids={to_be_notified_ids}
                   />
                 )}
               </TaskRow>
+            ))}
+            {group.medicines.map((medicine_group) => (
+              <MedicineGroup
+                key={medicine_group.name}
+                group={medicine_group}
+                to_be_notified_ids={to_be_notified_ids}
+              />
             ))}
           </ul>
         </div>

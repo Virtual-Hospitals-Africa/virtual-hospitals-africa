@@ -38,6 +38,7 @@ import type { InsertableFindingBase, Lang, QueryableEvidenceNode } from './share
 import type { PrescriptionFrequency } from './shared/prescription.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { TriageRoutePatientNextStep } from './shared/triage_route_patient.ts'
+import { AppliedDose, Medicine, ParsedPatientCase } from './shared/recommended_doses.ts'
 export { type Department } from './shared/departments.ts'
 export { type DietFrequency } from './shared/diet.ts'
 export { type Priority } from './shared/priorities.ts'
@@ -2745,6 +2746,10 @@ export type RenderedRecordRelativeToHealthWorker =
   | RenderedEvaluationRelativeToHealthWorker
   | RenderedProcedureRelativeToHealthWorker
 
+export type RenderedPositiveRecordRelativeToHealthWorker =
+  | RenderedFindingRelativeToHealthWorker
+  | RenderedEvaluationRelativeToHealthWorker
+
 export type RenderedMeasurementRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {
@@ -3216,12 +3221,14 @@ export type TaskPermissions = {
   type: 'no_approval_needed'
 } | {
   type: 'approval_needed'
+  permitted: string
   employees_who_can_approve: {
     on_duty: RenderedEmployeeWithPresenceAndSeniority[]
     off_duty: RenderedEmployeeWithPresenceAndSeniority[]
   }
 } | {
   type: 'cant_do'
+  permitted: string
   employees_who_can_do: {
     on_duty: RenderedEmployeeWithPresenceAndSeniority[]
     off_duty: RenderedEmployeeWithPresenceAndSeniority[]
@@ -3247,4 +3254,47 @@ export type TriageNextStepRecommendations = {
   }[]
   to_be_notified: RenderedEmployeeWithPresenceAndSeniority[]
   tasks_identified_requiring_staff_not_on_duty_at_this_facility: boolean
+}
+export type RecommendedMedicineWithPatientCase = Omit<Medicine, 'schedules'> & {
+  patient_case: ParsedPatientCase
+  schedules: AppliedDose[]
+}
+
+// One EML row (form/route/dose spec) recommended for this patient, along with
+// the positive records whose ICD-10 codes contributed to the match. The
+// patient case is omitted (its Decimal measurements can't serialize as island
+// props): the schedules already have it applied.
+export type RecommendedMedicineOption = Omit<RecommendedMedicineWithPatientCase, 'patient_case'> & {
+  due_to: RenderedPositiveRecordRelativeToHealthWorker[]
+}
+
+// All the recommended options for a single medicine name, with due_to unioned
+// across the options.
+export type RecommendedMedicineGroup = {
+  medicine_name: string
+  due_to: RenderedPositiveRecordRelativeToHealthWorker[]
+  forms: {
+    form_route: string
+    options: RecommendedMedicineOption[]
+  }[]
+}
+
+export type RecommendedMedicineOptionWithPermissions = {
+  option: RecommendedMedicineOption
+  permissions: TaskPermissions
+}
+
+export type MedicineGroupWithPermissions = {
+  name: string
+  due_to: RenderedPositiveRecordRelativeToHealthWorker[]
+  forms: {
+    form_route: string
+    options: RecommendedMedicineOptionWithPermissions[]
+  }[]
+}
+
+// A card in the recommended care plan: everything due to one set of positive
+// records — tasks to be done plus medicines that could be prescribed.
+export type CarePlanGroup = TaskGroupWithPermissions & {
+  medicines: MedicineGroupWithPermissions[]
 }

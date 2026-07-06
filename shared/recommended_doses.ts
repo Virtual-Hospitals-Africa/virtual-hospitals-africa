@@ -9,9 +9,6 @@ export const PatientCaseSchema = z.object({
   dob: z.string().date(),
   height_cm: positive_decimal,
   weight_kg: positive_decimal,
-  conditions: z.object({
-    id: z.string(),
-  }).array().optional().default([]),
 })
 
 export type ParsedPatientCase = z.infer<typeof PatientCaseSchema>
@@ -116,8 +113,8 @@ export const BuildingDoseSchema = z.object({
   ]).optional(),
 
   age_range: z.object({
-    min: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']) })).optional(),
-    max: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']) })).optional(),
+    min: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']), inclusive: z.boolean() })).optional(),
+    max: MaybeSchema(z.object({ value: z.number(), units: z.enum(['months', 'years']), inclusive: z.boolean() })).optional(),
   }).optional(),
 
   sex: z.enum(['all', 'female', 'male']).optional(),

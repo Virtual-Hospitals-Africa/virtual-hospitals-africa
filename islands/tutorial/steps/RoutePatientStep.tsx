@@ -4,6 +4,7 @@
 // =============================================================================
 
 import { applyPermissions } from '../../../shared/permissions.ts'
+import { buildCarePlanGroups } from '../../../shared/care_plan.ts'
 import { triageNextStepRecommendations } from '../../../shared/triage_route_patient.ts'
 import {
   getTutorialRoutePatientData,
@@ -42,7 +43,7 @@ export function RoutePatientStep() {
         priority={priority}
         organization_id={TUTORIAL_ORGANIZATION_EMPLOYMENT.id}
         clinic_employees={TUTORIAL_CLINIC_EMPLOYEES}
-        task_groups_with_permissions={task_groups_with_permissions}
+        care_plan_groups={buildCarePlanGroups(task_groups_with_permissions, [])}
         triage_next_step_recommendations={triage_next_step_recommendations}
       />
     </div>

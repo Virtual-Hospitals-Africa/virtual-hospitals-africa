@@ -16,8 +16,12 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { redirectToFirstIncompleteStep } from '../index.tsx'
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
-import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
+import { applyPermissions, applyPrescriberPermissions } from '../../../../../../../../shared/permissions.ts'
+import { buildCarePlanGroups } from '../../../../../../../../shared/care_plan.ts'
 import { referrals } from '../../../../../../../../db/models/referrals.ts'
+import { positiveRecordsFromEncounter } from '../../../../../../../../shared/recommended_dose_calculator/patient_case_from_encounter.ts'
+import { PatientCaseSchema } from '../../../../../../../../shared/recommended_doses.ts'
+import { recommended_dose_calculator } from '../../../../../../../../db/models/recommended_dose_calculator.ts'
 
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
@@ -124,14 +128,31 @@ export async function PatientTriageRoutePatientPage(
     organization_id,
     organization_employment,
     encounter,
+    this_visit_diagnoses,
+    this_visit_findings,
   } = ctx.state
+
+  const positive_records = Array.from(positiveRecordsFromEncounter({
+    this_visit_diagnoses,
+    this_visit_findings,
+  }))
+
+  // Dose recommendations need sex, dob, height and weight; when any are
+  // missing (e.g. an emergency skipped height & weight) we route without them.
+  const patient_case = PatientCaseSchema.safeParse({
+    sex: patient.sex,
+    dob: patient.date_of_birth,
+    height_cm: patient.most_recent_height?.cm,
+    weight_kg: patient.most_recent_weight?.kg,
+  })
+
   const { reason, notes, priority } = encounter
   if (!priority) {
     return redirectToFirstIncompleteStep(ctx, { warning_message: 'Please complete triage before routing the patient' })
   }
   assert(completedPersonal(patient))
 
-  const { clinic_employees, manage_patient_task_groups } = await promiseProps({
+  const { clinic_employees, manage_patient_task_groups, recommended_medicine_groups } = await promiseProps({
     clinic_employees: employees_presence.getAllAtOrganization(trx, {
       organization_id,
       excluding_health_worker: {
@@ -141,9 +162,18 @@ export async function PatientTriageRoutePatientPage(
       },
     }),
     manage_patient_task_groups: managePatientTaskGroups(ctx),
+    recommended_medicine_groups: patient_case.success
+      ? recommended_dose_calculator.lookup(
+        trx,
+        patient_case.data,
+        positive_records,
+      )
+      : Promise.resolve([]),
   })
 
   const task_groups_with_permissions = applyPermissions(organization_employment, clinic_employees, manage_patient_task_groups)
+  const medicine_groups_with_permissions = applyPrescriberPermissions(organization_employment, clinic_employees, recommended_medicine_groups)
+  const care_plan_groups = buildCarePlanGroups(task_groups_with_permissions, medicine_groups_with_permissions)
   const triage_next_step_recommendations = triageNextStepRecommendations(
     priority.name,
     clinic_employees,
@@ -157,7 +187,7 @@ export async function PatientTriageRoutePatientPage(
       priority={priority}
       organization_id={organization_id}
       clinic_employees={clinic_employees}
-      task_groups_with_permissions={task_groups_with_permissions}
+      care_plan_groups={care_plan_groups}
       triage_next_step_recommendations={triage_next_step_recommendations}
     />
   )

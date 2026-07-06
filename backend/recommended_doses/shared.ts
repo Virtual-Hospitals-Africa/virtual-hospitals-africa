@@ -63,8 +63,8 @@ export type ParsedDose = {
   total?: true | ParsedDose
   age_classifier?: 'premature baby' | 'breastfed infant' | 'child' | 'adolescent' | 'infant' | 'newborn' | 'adult' | 'elderly'
   age_range?: {
-    min?: Maybe<{ value: number; units: 'months' | 'years' }>
-    max?: Maybe<{ value: number; units: 'months' | 'years' }>
+    min?: Maybe<{ value: number; units: 'months' | 'years'; inclusive: boolean }>
+    max?: Maybe<{ value: number; units: 'months' | 'years'; inclusive: boolean }>
   }
   sex?: 'all' | 'female' | 'male'
   plus_minus?: {

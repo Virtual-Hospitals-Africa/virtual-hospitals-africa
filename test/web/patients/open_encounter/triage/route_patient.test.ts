@@ -30,7 +30,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     'routes to the referral placed page after referring an anaphylaxis case, creating a notification for another health worker',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Itching" "finding"))'
-      const { $: $additional_tasks, patient_encounter_id, shcp, postStep } = await setupTriageNewPatient({
+      const { $: $additional_tasks, patient_encounter_id, shcp, postStep, getStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -86,7 +86,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         }
       }
 
-      const $route_patient = await postStep({
+      await postStep({
         additional_tasks_and_investigations: additional_tasks_post_data,
         assign_priority: {},
       })
@@ -101,6 +101,8 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       })
       assert(isObjectLike(anaphylaxis_diagnosis.value))
       assertEquals(anaphylaxis_diagnosis.value.name, 'Probable diagnosis (contextual qualifier)')
+
+      const $route_patient = await getStep('route_patient')
 
       const route_patient_form_values = getFormValues($route_patient)
       const _route_patient_form_labels = getFormLabels($route_patient)

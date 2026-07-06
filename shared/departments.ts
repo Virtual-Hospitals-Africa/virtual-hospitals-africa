@@ -108,15 +108,13 @@ export function departmentsOfProfession(
   switch (profession) {
     case 'nurse': {
       assert(specialty)
-      switch (specialty) {
-        case 'Triage':
-          return ['Triage', 'Reception']
-        case 'Primary care':
-          return ['Primary care', 'Triage', 'Reception']
-        default: {
-          throw new HttpError(400, `${specialty} not yet supported`)
-        }
+      if (specialty === 'Triage' || specialty === 'triage') {
+        return ['Triage', 'Reception']
       }
+      if (specialty === 'Primary care') {
+        return ['Primary care', 'Triage', 'Reception']
+      }
+      throw new HttpError(400, `${specialty} not yet supported`)
     }
     case 'doctor': {
       assert(specialty)
