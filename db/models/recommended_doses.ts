@@ -84,6 +84,7 @@ function indicationsMatch(indications: ICD10Indications, patient_codes: string[]
     if (indications.codes.length === 0) return false
     return indications.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc)))
   }
+  // TODO verify this
   // 'and': every group must have at least one matching code
   return indications.indications.every((group) => group.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc))))
 }
@@ -102,7 +103,11 @@ function getAgeInYears(dob: string): number {
   return Math.max(0, age_in_years)
 }
 
-function scheduleMatchesAgeClassifier(schedule: z.infer<typeof ParsedDoseSchema>, patient_is_adult: boolean | undefined, dob: string): boolean {
+function scheduleMatchesAgeClassifier(
+  schedule: z.infer<typeof ParsedDoseSchema>, 
+  patient_is_adult: boolean | undefined, 
+  dob: string
+): boolean {
   if (!schedule.age_classifier) return true
   switch (schedule.age_classifier) {
     case 'adult':
@@ -121,9 +126,13 @@ function scheduleMatchesAgeClassifier(schedule: z.infer<typeof ParsedDoseSchema>
       }, dob)
     case 'newborn':
       return scheduleMatchesAgeRange({ age_range: { max: { value: 1, units: 'months', inclusive: true } } }, dob)
+    
+    // TODO feed in history to make this determination
     case 'premature baby':
       // Prematurity isn't derivable from dob, so match any neonate and let the clinician decide
       return scheduleMatchesAgeRange({ age_range: { max: { value: 1, units: 'months', inclusive: true } } }, dob)
+    
+    // TODO feed in history to make this determination
     case 'breastfed infant':
       // Breastfeeding status isn't derivable from dob, so match any infant and let the clinician decide
       return scheduleMatchesAgeRange({ age_range: { max: { value: 12, units: 'months', inclusive: true } } }, dob)
@@ -193,10 +202,10 @@ function applyPatientCase(medicine: Medicine, patient_case: ParsedPatientCase) {
 }
 
 export const recommended_doses = {
-  async getRecommendedDosesWithPatientCaseApplied(patient_case: ParsedPatientCase) {
+  async getRecommendedDosesWithPatientCaseApplied(
+    patient_case: ParsedPatientCase
+  ) {
     const medicines = await getAllParsedMedications()
-
-    // TODO route back to create patient case if query params not present
     const matching_medicines = findMatchingMedicines(medicines, patient_case)
     return matching_medicines.map((medicine) => applyPatientCase(medicine, patient_case))
   },

@@ -49,11 +49,6 @@ describeParallel('db/models/snomed_to_icd10.ts', () => {
     )
   })
 
-  itParallel('resolves several concepts at once', async () => {
-    const codes = await snomed_to_icd10.icd10Codes(db, ['44054006', '195967001'], adult_context)
-    assertEquals(codes.get('44054006'), ['E11.9'])
-    assertEquals(codes.get('195967001'), ['J45.9'])
-  })
 
   itParallel('returns an empty map when given no concepts', async () => {
     const result = await snomed_to_icd10.mapConcepts(db, [], adult_context)

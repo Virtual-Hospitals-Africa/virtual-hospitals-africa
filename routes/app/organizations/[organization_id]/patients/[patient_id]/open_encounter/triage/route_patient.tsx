@@ -18,6 +18,9 @@ import { additional_tasks } from '../../../../../../../../db/models/additional_t
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { applyPermissions } from '../../../../../../../../shared/permissions.ts'
 import { referrals } from '../../../../../../../../db/models/referrals.ts'
+import { positiveRecordsFromEncounter } from '../../../../../../../../shared/recommended_dose_calculator/patient_case_from_encounter.ts'
+import { PatientCaseSchema } from '../../../../../../../../shared/recommended_doses.ts'
+import { recommended_dose_calculator } from '../../../../../../../../db/models/recommended_dose_calculator.ts'
 
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
@@ -124,7 +127,22 @@ export async function PatientTriageRoutePatientPage(
     organization_id,
     organization_employment,
     encounter,
+    this_visit_diagnoses,
+    this_visit_findings,
   } = ctx.state
+
+  const positive_records = Array.from(positiveRecordsFromEncounter({
+    this_visit_diagnoses,
+    this_visit_findings,
+  }))
+
+  const patient_case = PatientCaseSchema.parse({
+    sex: patient.sex,
+    dob: patient.date_of_birth,
+    height_cm: patient.most_recent_height?.cm,
+    weight_kg: patient.most_recent_weight?.kg,
+  })
+
   const { reason, notes, priority } = encounter
   if (!priority) {
     return redirectToFirstIncompleteStep(ctx, { warning_message: 'Please complete triage before routing the patient' })
@@ -141,6 +159,11 @@ export async function PatientTriageRoutePatientPage(
       },
     }),
     manage_patient_task_groups: managePatientTaskGroups(ctx),
+    recommended_doses: recommended_dose_calculator.lookup(
+      trx, 
+      patient_case,
+      positive_records
+    ),
   })
 
   const task_groups_with_permissions = applyPermissions(organization_employment, clinic_employees, manage_patient_task_groups)

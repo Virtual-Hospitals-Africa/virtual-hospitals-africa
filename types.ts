@@ -2747,6 +2747,10 @@ export type RenderedRecordRelativeToHealthWorker =
   | RenderedEvaluationRelativeToHealthWorker
   | RenderedProcedureRelativeToHealthWorker
 
+export type RenderedPositiveRecordRelativeToHealthWorker =
+  | RenderedFindingRelativeToHealthWorker
+  | RenderedEvaluationRelativeToHealthWorker
+
 export type RenderedMeasurementRelativeToHealthWorker =
   & RenderedFindingRelativeToHealthWorker
   & {

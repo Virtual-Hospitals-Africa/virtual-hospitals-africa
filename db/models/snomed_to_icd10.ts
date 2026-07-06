@@ -12,7 +12,7 @@ import {
   SnomedIcd10PatientContext,
   SnomedIcd10ResolvedVia,
 } from '../../shared/snomed_to_icd10.ts'
-import { TrxOrDb } from '../../types.ts'
+import { RenderedPositiveRecordRelativeToHealthWorker, TrxOrDb } from '../../types.ts'
 import { groupBy } from '../../util/groupBy.ts'
 
 type ExtendedMapRow = {
@@ -175,12 +175,13 @@ function buildConceptMapping(
 export const snomed_to_icd10 = {
   async mapConcepts(
     trx: TrxOrDb,
-    snomed_concept_ids: string[],
     context: SnomedIcd10PatientContext,
+    positive_records: RenderedPositiveRecordRelativeToHealthWorker[]
   ): Promise<SnomedIcd10MappingResult> {
-    if (!snomed_concept_ids.length) {
+    if (!positive_records.length) {
       return { by_concept: new Map() }
     }
+    const snomed_concept_ids = positive_records.map(record => record.specific_snomed_concept_id)
 
     const rows = await trx
       .selectFrom('snomed_iissscc_refset_extended_map')
@@ -204,33 +205,19 @@ export const snomed_to_icd10 = {
 
     const rows_by_concept = groupBy(rows, 'referenced_component_id')
 
-    const by_concept = new Map<string, SnomedIcd10ConceptMapping>()
-    for (const snomed_concept_id of snomed_concept_ids) {
+    const by_concept = new Map()
+    for (const positive_record of positive_records) {
       by_concept.set(
-        snomed_concept_id,
+        positive_record,
         buildConceptMapping(
-          snomed_concept_id,
-          rows_by_concept.get(snomed_concept_id) ?? [],
+          positive_record.specific_snomed_concept_id,
+          rows_by_concept.get(positive_record.specific_snomed_concept_id) ?? [],
           context,
         ),
       )
     }
-    return { by_concept }
-  },
 
-  // Returns every resolved ICD-10 code per SNOMED concept (all map groups).
-  async icd10Codes(
-    trx: TrxOrDb,
-    snomed_concept_ids: string[],
-    context: SnomedIcd10PatientContext,
-  ): Promise<Map<string, string[]>> {
-    const { by_concept } = await this.mapConcepts(trx, snomed_concept_ids, context)
-    const codes_by_concept = new Map<string, string[]>()
-    for (const [concept_id, mapping] of by_concept) {
-      const codes = mapping.codes.map((code) => code.icd10_code)
-      if (codes.length) codes_by_concept.set(concept_id, codes)
-    }
-    return codes_by_concept
+    return { by_concept }
   },
 
   primaryIcd10CodesForLookup(mappings: SnomedIcd10MappingResult): string[] {
