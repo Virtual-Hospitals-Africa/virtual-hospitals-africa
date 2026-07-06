@@ -1,18 +1,63 @@
-import { Context } from 'fresh'
 import { parseRequest } from '../../../backend/parseForm.ts'
+import { TrxContext } from '../../../backend/attachTrx.ts'
+import { DecisionSupportDisclaimer } from '../../../components/SnomedIcd10MappingAudit.tsx'
+import { RecommendedDosesResults } from '../../../components/RecommendedDosesResults.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from '../../../components/library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { MedicineRecommendation, RecommendedMedication } from '../../../components/RecommendedMedication.tsx'
 import { LogoWithFullText } from '../../../components/library/Logo.tsx'
-import { recommended_doses } from '../../../db/models/recommended_doses.ts'
+import { recommended_dose_calculator } from '../../../db/models/recommended_dose_calculator.ts'
 import { PatientCaseSchema } from '../../../shared/recommended_doses.ts'
 import { StepsSidebar } from '../../../components/library/sidebar/Steps.tsx'
 import { Top } from '../../../components/library/sidebar/Top.tsx'
 
+const create_patient_case_route = '/clinical_decision_support_tools/recommended_dose_calculator/create_patient_case'
+
 export default async function RecommendedMedications(
-  ctx: Context<unknown>,
+  ctx: TrxContext,
 ) {
-  const patient_case = await parseRequest(ctx.req, PatientCaseSchema.parse)
-  const matching_medicines = await recommended_doses.getRecommendedDosesWithPatientCaseApplied(patient_case)
+  const parsed = await parseRequest(ctx.req, PatientCaseSchema.safeParse)
+  if (!parsed.success) {
+    return (
+      <HealthWorkerContentsWithSidebarAndDrawer
+        title='Recommended Dose Calculator'
+        url={ctx.url}
+        sidebar={
+          <StepsSidebar
+            top={{
+              href: '/clinical_decision_support_tools',
+              child: <LogoWithFullText variant='indigo' className='w-full' />,
+            }}
+            url={ctx.url}
+            route={ctx.route}
+            params={ctx.params}
+            nav_links={[
+              {
+                step: 'Create patient case',
+                route: create_patient_case_route,
+              },
+              {
+                step: 'Recommended medications',
+                route: '/clinical_decision_support_tools/recommended_dose_calculator/recommended_medications',
+              },
+            ]}
+            steps_completed={[]}
+          />
+        }
+      >
+        <div class='flex flex-col gap-4 py-6 px-4'>
+          <DecisionSupportDisclaimer />
+          <h2 class='text-lg font-semibold text-gray-900'>Missing patient details</h2>
+          <p class='text-sm text-gray-700'>
+            Please fill in the patient case form (Date of Birth, Sex, Height and Weight are required) before viewing suggested doses.
+          </p>
+          <a href={create_patient_case_route} class='text-sm font-medium text-indigo-600 hover:text-indigo-500'>
+            ← Back to create patient case
+          </a>
+        </div>
+      </HealthWorkerContentsWithSidebarAndDrawer>
+    )
+  }
+  const patient_case = parsed.data
+  const lookup = await recommended_dose_calculator.lookup(ctx.state.trx, patient_case)
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       title='Recommended Dose Calculator'
@@ -41,62 +86,13 @@ export default async function RecommendedMedications(
         />
       }
     >
-      <div class='flex flex-col gap-6 py-6  px-4'>
-        <section class='flex flex-col gap-2'>
-          <h2 class='text-lg font-semibold text-gray-900'>Patient Details</h2>
-          <dl class='flex flex-col gap-1'>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Date of Birth</dt>
-              <dd class='text-sm text-gray-900'>{patient_case.dob}</dd>
-            </div>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Sex</dt>
-              <dd class='text-sm text-gray-900'>{patient_case.sex}</dd>
-            </div>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Height (cm)</dt>
-              <dd class='text-sm text-gray-900'>{String(patient_case.height_cm)}</dd>
-            </div>
-            <div class='flex gap-4'>
-              <dt class='w-32 text-sm font-medium text-gray-500'>Weight (kg)</dt>
-              <dd class='text-sm text-gray-900'>{String(patient_case.weight_kg)}</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class='flex flex-col gap-2'>
-          <h2 class='text-lg font-semibold text-gray-900'>Conditions</h2>
-          {(patient_case.conditions?.length || 0) > 0
-            ? (
-              <ul class='flex flex-col gap-1 list-disc list-inside'>
-                {/* {patient_case.conditions!.map((item, i) => <li key={i} class='text-sm text-gray-900'>{item.name}</li>)} */}
-              </ul>
-            )
-            : <p class='text-sm text-gray-500'>No conditions specified.</p>}
-        </section>
-
-        <section class='flex flex-col gap-2'>
-          <h2 class='text-lg font-semibold text-gray-900'>
-            Recommended Medications
-            {matching_medicines.length > 0 && <span class='ml-2 text-sm font-normal text-gray-500'>({matching_medicines.length})</span>}
-          </h2>
-          {matching_medicines.length > 0
-            ? (
-              <div class='flex flex-col gap-4'>
-                {matching_medicines.map((med, i) => (
-                  <RecommendedMedication
-                    key={i}
-                    medicine={med as unknown as MedicineRecommendation}
-                  />
-                ))}
-              </div>
-            )
-            : (
-              <p class='text-sm text-gray-500'>
-                {!patient_case.conditions?.length ? 'No conditions specified.' : 'No recommended medications found for the specified conditions.'}
-              </p>
-            )}
-        </section>
+      <div class='flex flex-col gap-6 py-6 px-4'>
+        <RecommendedDosesResults
+          patient_case={patient_case}
+          lookup={lookup}
+          snomed_source_description='Optional SNOMED concept ids from the form above, translated to suggested ICD-10 candidate codes for matching.'
+          icd10_lookup_description='Manually entered ICD-10 codes plus primary SNOMED-derived candidates only. Supplementary SNOMED map groups are listed in the audit trail below and do not broaden suggestions.'
+        />
       </div>
     </HealthWorkerContentsWithSidebarAndDrawer>
   )

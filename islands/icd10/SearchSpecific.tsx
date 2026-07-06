@@ -33,12 +33,14 @@ export function ICD10SearchSpecific({
   href,
   value,
   className,
+  required = true,
 }: {
   name: string
   label: string
   href: string
   value?: RenderedICD10DiagnosisTreeWithOptionalIncludes
   className?: string
+  required?: boolean
 }) {
   const search = useSignal(value?.description || '')
   const selected_parent = useSignal(value)
@@ -116,7 +118,7 @@ export function ICD10SearchSpecific({
     <>
       <AsyncSearch
         name={selected_c0.value ? undefined : name}
-        required
+        required={required}
         search_route={href}
         label={label}
         value={value}

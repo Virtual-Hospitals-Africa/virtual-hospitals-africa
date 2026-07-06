@@ -86,7 +86,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         }
       }
 
-      const $route_patient = await postStep({
+      await postStep({
         additional_tasks_and_investigations: additional_tasks_post_data,
         assign_priority: {},
       })
@@ -101,6 +101,10 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
       })
       assert(isObjectLike(anaphylaxis_diagnosis.value))
       assertEquals(anaphylaxis_diagnosis.value.name, 'Probable diagnosis (contextual qualifier)')
+
+      const $route_patient = await postStep({
+        recommended_doses: {},
+      })
 
       const route_patient_form_values = getFormValues($route_patient)
       const _route_patient_form_labels = getFormLabels($route_patient)
@@ -311,6 +315,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         },
         additional_tasks_and_investigations: {},
         assign_priority: {},
+        recommended_doses: {},
       })
 
       await events.allProcessedForEncounter(db, { patient_encounter_id })

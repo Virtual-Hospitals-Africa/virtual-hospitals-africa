@@ -8,6 +8,7 @@ import { sessions } from '../../db/models/sessions.ts'
 import redirect from '../../util/redirect.ts'
 import { warning } from '../../util/alerts.ts'
 import { loginHref } from '../login.tsx'
+import { readBooleanEnvironmentVariable } from '../../util/env.ts'
 import { JSX } from 'preact/jsx-runtime'
 import { promiseProps } from '../../util/promiseProps.ts'
 import db from '../../db/db.ts'
@@ -127,10 +128,18 @@ export function getLoggedInHealthWorker(
       return
     }
 
+    if (health_worker && !health_workers.isEmployed(health_worker)) {
+      return redirect('/onboarding/welcome')
+    }
+
     assertOr401(isGettingHtml(ctx.req))
 
     const from_login = ctx.url.searchParams.has('from_login')
-    const response = from_login ? redirect(loginHref()) : noSession()
+    const response = from_login
+      ? redirect(
+        readBooleanEnvironmentVariable('FAKE_GOOGLE_AUTH') ? '/login' : loginHref(),
+      )
+      : noSession()
     deleteCookie(response.headers, session_key)
     deleteCookie(response.headers, 'health_worker_id')
     return response

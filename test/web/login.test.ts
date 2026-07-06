@@ -30,7 +30,7 @@ describeParallel('/login', () => {
   })
 
   describeParallel('when logged in', () => {
-    itParallel("doesn't allow unemployed access to /app", async () => {
+    itParallel('redirects unemployed users to onboarding when accessing /app', async () => {
       const mock = await addTestEmployeeWithSession(db, { role: 'none' })
       const response = await mock.fetch(`/app`, {
         headers: {
@@ -40,10 +40,7 @@ describeParallel('/login', () => {
       if (!response.ok) {
         throw new Error(await response.text())
       }
-      assertEquals(
-        response.url,
-        `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20organization%27s%20administrator.`,
-      )
+      assertEquals(response.url, `${route}/onboarding/welcome`)
       await response.body?.cancel()
     })
 

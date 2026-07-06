@@ -77,6 +77,7 @@ export const WORKFLOW_STEPS = {
     'measure_vitals',
     'additional_tasks_and_investigations',
     'assign_priority',
+    'recommended_doses',
     'route_patient',
   ],
   chart_review: [

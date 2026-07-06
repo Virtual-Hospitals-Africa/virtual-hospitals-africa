@@ -9,9 +9,17 @@ export const PatientCaseSchema = z.object({
   dob: z.string().date(),
   height_cm: positive_decimal,
   weight_kg: positive_decimal,
-  conditions: z.object({
-    id: z.string(),
-  }).array().optional().default([]),
+  conditions: z.string().array().optional().default([]),
+  // SNOMED diagnosis concept ids, translated to ICD-10 server-side before matching.
+  // Accepts an array or a comma/whitespace-separated string (from a plain text input).
+  snomed_concept_ids: z.preprocess(
+    (value) => {
+      if (Array.isArray(value)) return value
+      if (typeof value === 'string') return value.split(/[\s,]+/).filter(Boolean)
+      return []
+    },
+    z.string().regex(/^\d+$/).array(),
+  ).optional().default([]),
 })
 
 export type ParsedPatientCase = z.infer<typeof PatientCaseSchema>

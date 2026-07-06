@@ -31,6 +31,7 @@ export default function PatientConditionsSection() {
                 label='Condition (ICD-10)'
                 href='/clinical_decision_support_tools/icd10'
                 className='w-full'
+                required={false}
               />
             </RemoveRow>
           )
@@ -41,6 +42,7 @@ export default function PatientConditionsSection() {
               label='Condition (ICD-10)'
               href='/clinical_decision_support_tools/icd10'
               className='w-full'
+              required={false}
             />
           )
       ))}
