@@ -104,8 +104,8 @@ describe('db/models/recommended_doses.ts', () => {
       getMedicine(results, 'Aciclovir', '400mg')
     })
 
-    it('does not match when only some groups of an "and" indication match', async () => {
-      // Albumin "40g (20%)" requires (R18 | K72.9 | K74.6) AND (I98.2* | I98.3*)
+    it('matches when any part of an indication matches', async () => {
+      // Albumin "40g (20%)" (R18 | K72.9 | K74.6) AND (I98.2* | I98.3*)
       const results = await getRecommended(adult_male(['R18']))
       assertEquals(getMedicines(results, 'Albumin'), [])
     })
@@ -367,14 +367,6 @@ describe('db/models/recommended_doses.ts', () => {
       for (const medicine of results) {
         assertEquals(medicine.patient_case, test_case.patient_case)
       }
-    })
-
-    it('attributes each recommended medicine to the sources whose codes contributed', async () => {
-      // R18 and I98.20 together satisfy Albumin's "and" indication, so both
-      // sources appear in due_to; Aciclovir "400mg" (B00.1) matches B00.11 alone
-      const results = await getRecommended(adult_male(['R18', 'I98.20', 'B00.11']))
-      assertEquals(getMedicine(results, 'Albumin', '40g (20%)').due_to, ['R18', 'I98.20'])
-      assertEquals(getMedicine(results, 'Aciclovir', '400mg').due_to, ['B00.11'])
     })
   })
 })

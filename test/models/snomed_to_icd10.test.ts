@@ -21,8 +21,23 @@ describeParallel('db/models/snomed_to_icd10.ts', () => {
     const record = asPositiveRecord(PEPTIC_ULCER.id)
     const result = await snomed_to_icd10.mapConcepts(db, adult_context, [record])
     assertEquals(result.by_concept.size, 1)
-    const [x] = [...result.by_concept.values()]
-    console.log(x)
+    const [mapped] = [...result.by_concept.values()]
+    assertEquals(mapped, {
+      snomed_concept_id: '13200003',
+      status: 'mapped',
+      codes: [
+        {
+          icd10_code: 'K27.9',
+          map_group: 1,
+          is_primary: true,
+          map_category_id: '447637006',
+          correlation_id: '447561005',
+          map_rule: 'TRUE',
+          map_advice: 'ALWAYS K27.9',
+          resolved_via: 'unconditional',
+        },
+      ],
+    })
   })
 
   itParallel('maps a simple one-to-one concept (type 2 diabetes mellitus -> E11.9)', async () => {

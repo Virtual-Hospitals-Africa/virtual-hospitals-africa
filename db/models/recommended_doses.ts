@@ -80,9 +80,9 @@ function indicationsMatch(indications: ICD10Indications, patient_codes: string[]
     if (indications.codes.length === 0) return false
     return indications.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc)))
   }
-  // TODO verify this
   // 'and': every group must have at least one matching code
-  return indications.indications.some((group) => group.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc))))
+  if (indications.indications.length === 0) return false
+  return indications.indications.every((group) => group.codes.some((code) => patient_codes.some((pc) => codeMatches(code, pc))))
 }
 
 // Whether any of this source's codes match any of the medicine's indicator
