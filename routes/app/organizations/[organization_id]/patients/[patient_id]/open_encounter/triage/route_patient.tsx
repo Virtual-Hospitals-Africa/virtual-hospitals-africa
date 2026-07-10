@@ -6,7 +6,13 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
-import { OpenEncounterWorkflowContext, TaskGroup, UpdateShape } from '../../../../../../../../types.ts'
+import {
+  OpenEncounterWorkflowContext,
+  RenderedFindingRelativeToHealthWorker,
+  RenderedSidebarWorkflow,
+  TaskGroup,
+  UpdateShape,
+} from '../../../../../../../../types.ts'
 import { DB } from '../../../../../../../../db.d.ts'
 import { success } from '../../../../../../../../util/alerts.ts'
 import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
@@ -22,6 +28,35 @@ import { referrals } from '../../../../../../../../db/models/referrals.ts'
 import { positiveRecordsFromEncounter } from '../../../../../../../../shared/recommended_dose_calculator/patient_case_from_encounter.ts'
 import { PatientCaseSchema } from '../../../../../../../../shared/recommended_doses.ts'
 import { recommended_dose_calculator } from '../../../../../../../../db/models/recommended_dose_calculator.ts'
+import { caseReferralNotificationDescription } from '../../../../../../../../shared/notifications/case_referral_notification.ts'
+import { employeeDisplay } from '../../../../../../../../util/healthWorkerDisplay.ts'
+import { priorityOrder } from '../../../../../../../../shared/sats.ts'
+import sortBy from '../../../../../../../../util/sortBy.ts'
+import first from '../../../../../../../../util/first.ts'
+
+function presentingIssueFromTriageFindings(
+  this_visit_findings: RenderedSidebarWorkflow[],
+): string | null {
+  const positive_findings: RenderedFindingRelativeToHealthWorker[] = this_visit_findings.flatMap(
+    (workflow) =>
+      workflow.steps
+        .filter((step) =>
+          step.workflow_step === 'warning_signs' ||
+          step.workflow_step === 'additional_tasks_and_investigations'
+        )
+        .flatMap((step) =>
+          step.records.flatMap((record) =>
+            record.type === 'finding' &&
+              record.existence === 'Yes' &&
+              record.value?.type !== 'measurement'
+              ? [record]
+              : []
+          )
+        ),
+  )
+
+  return first(sortBy(positive_findings, priorityOrder))?.displays.finding ?? null
+}
 
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
@@ -32,7 +67,17 @@ export const TriageRoutePatientSchema = z.object({
 export const handler = postHandler(
   TriageRoutePatientSchema,
   async (ctx: OpenEncounterWorkflowContext, { next_step, health_worker_ids_to_be_notified }) => {
-    const { trx, patient, patient_encounter_id, organization, organization_employment, health_worker_id } = ctx.state
+    const {
+      trx,
+      patient,
+      patient_encounter_id,
+      organization,
+      organization_employment,
+      health_worker_id,
+      employee,
+      encounter,
+      this_visit_findings,
+    } = ctx.state
 
     assert(completedPersonal(patient))
     const completing_last_step = completeLastStep(ctx)
@@ -70,6 +115,7 @@ export const handler = postHandler(
       }
 
       case 'check_with_colleague': {
+        assert(encounter.priority)
         const { redirect_to } = await promiseProps({
           completing_last_step,
           redirect_to: startWorkflow(
@@ -88,6 +134,11 @@ export const handler = postHandler(
             originator_health_worker_id: health_worker_id,
             originator_avatar_url: ctx.state.health_worker.avatar_url!,
             health_worker_ids_to_be_notified,
+            notification_description: caseReferralNotificationDescription({
+              originator_display_name: employeeDisplay(employee).display_name,
+              priority_name: encounter.priority.name,
+              presenting_issue: presentingIssueFromTriageFindings(this_visit_findings),
+            }),
           }),
         })
         return redirect(redirect_to)
