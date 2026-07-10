@@ -179,6 +179,8 @@ export const referrals = base({
       originator_health_worker_id,
       originator_avatar_url,
       health_worker_ids_to_be_notified,
+      notification_title,
+      notification_description,
     }: {
       patient_id: string
       patient_encounter_id: string
@@ -187,6 +189,8 @@ export const referrals = base({
       originator_health_worker_id: string
       originator_avatar_url: string
       health_worker_ids_to_be_notified: string[]
+      notification_title?: string
+      notification_description?: string
     },
   ) {
     assertOr400(
@@ -227,8 +231,8 @@ export const referrals = base({
               table_name: 'patient_workflows',
               row_id: procedure_id,
               notification_type: 'case_referral',
-              title: 'Chart review',
-              description: 'A case was referred to you to review',
+              title: notification_title ?? 'Chart review',
+              description: notification_description ?? 'A case was referred to you to review',
               action_title: 'Review Chart',
               action_href: `/app/organizations/${organization_id}/patients/${patient_id}/open_encounter/start-workflow/chart_review`,
               avatar_url: originator_avatar_url,
