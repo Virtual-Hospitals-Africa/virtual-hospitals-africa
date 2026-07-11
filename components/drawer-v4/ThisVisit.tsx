@@ -22,14 +22,15 @@ function WorkflowSection(
 }
 
 export function DrawerThisVisit(
-  { organization_id, this_visit_findings, this_visit_diagnoses }: {
+  { organization_id, this_visit_findings, this_visit_diagnoses, id = 'patient-drawer-this-visit' }: {
     organization_id: string
     this_visit_findings: RenderedSidebarWorkflow[]
     this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
+    id?: string
   },
 ) {
   return (
-    <div id='patient-drawer-this-visit' className={section_class_name}>
+    <div id={id} className={section_class_name}>
       <Header>This Visit</Header>
       <div className='flex flex-col gap-2.5'>
         {this_visit_findings.map((workflow) => <WorkflowSection key={workflow.workflow} workflow={workflow} organization_id={organization_id} />)}

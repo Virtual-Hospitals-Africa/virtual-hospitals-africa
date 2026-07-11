@@ -234,7 +234,7 @@ export const referrals = base({
               title: notification_title ?? 'Chart review',
               description: notification_description ?? 'A case was referred to you to review',
               action_title: 'Review Chart',
-              action_href: `/app/organizations/${organization_id}/patients/${patient_id}/open_encounter/start-workflow/chart_review`,
+              action_href: `/app/organizations/${organization_id}/patients/${patient_id}/open_encounter/review_chart`,
               avatar_url: originator_avatar_url,
             }))),
       )

@@ -74,7 +74,7 @@ function NotificationRow(
       <NotificationActionButton
         notification_id={notification.notification_id}
         href={notification.action.href}
-        className='text-sm font-medium text-indigo-600 hover:text-indigo-500 whitespace-nowrap'
+        className='inline-flex items-center justify-center shrink-0 border border-gray-300 bg-white text-indigo-600 font-semibold rounded-lg hover:border-indigo-600 hover:bg-indigo-50 h-8 px-3 text-sm whitespace-nowrap'
       >
         {notification.action.title}
       </NotificationActionButton>
