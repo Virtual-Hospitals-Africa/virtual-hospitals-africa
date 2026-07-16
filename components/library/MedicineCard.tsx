@@ -1,6 +1,6 @@
-import { JSX } from 'preact'
+import { JSX, SVGAttributes } from 'preact'
 import { MedicineGroupWithPermissions, RecommendedMedicineOptionWithPermissions, TaskPermissions } from '../../types.ts'
-import { AwareBadge, Schedule } from '../RecommendedMedication.tsx'
+import { Schedule } from '../RecommendedMedication.tsx'
 import { CheckCircleIcon, ExclamationCircleIcon, XCircleIcon } from './icons/heroicons/mini.tsx'
 import { ChevronDownIcon } from './icons/heroicons/mini.tsx'
 import cls from '../../util/cls.ts'
@@ -10,23 +10,9 @@ import { initials } from '../../util/initials.ts'
 import { NurseIcon } from './icons/Nurse.tsx'
 import { DoctorIcon } from './icons/Doctor.tsx'
 import { AcademicCapIcon, FaceSmileIcon, UserIcon } from './icons/heroicons/mini.tsx'
+import { AwareCircle } from './Aware.tsx'
 
-const AWARE_STYLES: Record<string, { bg: string; text: string }> = {
-  Access: { bg: 'bg-[#6eb43d]', text: 'text-white' },
-  Watch: { bg: 'bg-[#fee001]', text: 'text-black' },
-  Reserve: { bg: 'bg-[#ff0100]', text: 'text-white' },
-}
-
-function AwareCircle({ aware }: { aware: NonNullable<MedicineGroupWithPermissions['aware']> }): JSX.Element {
-  const style = AWARE_STYLES[aware] ?? { bg: 'bg-gray-400', text: 'text-white' }
-  return (
-    <div class={cls('flex items-center justify-center rounded-full w-9 h-9 font-bold text-base', style.bg, style.text)}>
-      {aware[0]}
-    </div>
-  )
-}
-
-const STOCK_ICON: Record<string, (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element> = {
+const STOCK_ICON: Record<string, (props: SVGAttributes<SVGSVGElement>) => JSX.Element> = {
   in_stock: CheckCircleIcon,
   low: ExclamationCircleIcon,
   out: XCircleIcon,
@@ -175,7 +161,7 @@ export default function MedicineCard(
                 {form.options.map(({ option }, index) => (
                   <div key={index} class='flex flex-col gap-1 pl-1'>
                     <span class='text-xs text-gray-500'>
-                      {option.disorder} <AwareBadge aware={option.aware} />
+                      {option.disorder} <AwareCircle aware={option.aware} />
                     </span>
                     {option.schedules.map((schedule, si) => (
                       <div key={si} class='text-sm text-gray-800 bg-gray-50 rounded px-2 py-1.5'>
@@ -208,7 +194,7 @@ export default function MedicineCard(
             {group.aware && (
               <div class='flex items-center gap-1.5 text-xs text-gray-500'>
                 <span>AWaRe classification:</span>
-                <AwareBadge aware={group.aware} />
+                <AwareCircle aware={group.aware} />
               </div>
             )}
           </div>
