@@ -151,6 +151,9 @@ export function applyPrescriberPermissions(
   return medicine_groups.map((group) => ({
     name: group.medicine_name,
     due_to: group.due_to,
+    facility_availabilities: [],
+    aware: group.forms[0]?.options[0]?.aware ?? null,
+    guidelines: null,
     forms: group.forms.map((form) => ({
       form_route: form.form_route,
       options: form.options

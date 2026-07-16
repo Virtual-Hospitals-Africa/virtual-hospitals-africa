@@ -3287,6 +3287,18 @@ export type RecommendedMedicineOptionWithPermissions = {
 export type MedicineGroupWithPermissions = {
   name: string
   due_to: RenderedPositiveRecordRelativeToHealthWorker[]
+  facility_availabilities: {
+    facility: {
+      id: string
+      name: string
+    }
+    stock_level: 'out' | 'low' | 'in_stock'
+  }[]
+  aware: null | 'Watch' | 'Access' | 'Reserve'
+  guidelines: null | {
+    document_name: string // Paediatric STGs and EML 2023
+    href: string
+  }
   forms: {
     form_route: string
     options: RecommendedMedicineOptionWithPermissions[]
