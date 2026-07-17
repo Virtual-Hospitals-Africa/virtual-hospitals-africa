@@ -2707,6 +2707,7 @@ export type RenderedRecordRelativeToHealthWorkerDef<Type extends string, Rest> =
         // modifiers: IntermediateBaseRecord[]
       }
     >
+    created_at: string | Date
     value: null | RecordValue
     priority: Priority | null
   }
