@@ -1,17 +1,11 @@
 import { ComponentChildren, JSX } from 'preact'
-import {
-  CarePlanGroup,
-  MedicineGroupWithPermissions,
-  RecommendedMedicineOptionWithPermissions,
-  RenderedEmployeeWithPresenceAndSeniority,
-  TaskPermissions,
-} from '../../types.ts'
+import { CarePlanGroup, RenderedEmployeeWithPresenceAndSeniority } from '../../types.ts'
 import { initials } from '../../util/initials.ts'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 import { DueTo } from '../triage/tasks/DueTo.tsx'
 import { hyphenate } from '../../util/hyphenate.ts'
-import { AwareBadge, Schedule } from '../RecommendedMedication.tsx'
+import MedicineCard from './MedicineCard.tsx'
 import { NurseIcon } from './icons/Nurse.tsx'
 import { DoctorIcon } from './icons/Doctor.tsx'
 import { AcademicCapIcon, FaceSmileIcon, UserIcon } from './icons/heroicons/mini.tsx'
@@ -97,98 +91,6 @@ function TaskRow({ children }: { children: ComponentChildren }) {
   return <li class='flex items-center justify-between gap-3 text-sm text-gray-700'>{children}</li>
 }
 
-// "can be prescribed by" plus the avatars of who can, shown only when the
-// current health worker can't prescribe it themselves.
-function CanBePrescribedBy(
-  { permissions, to_be_notified_ids }: {
-    permissions: TaskPermissions
-    to_be_notified_ids: Set<string>
-  },
-) {
-  if (permissions.type !== 'cant_do') return null
-  return (
-    <PermissionEmployees
-      label='can be prescribed by'
-      permitted={permissions.permitted}
-      on_duty={permissions.employees_who_can_do.on_duty}
-      off_duty={permissions.employees_who_can_do.off_duty}
-      to_be_notified_ids={to_be_notified_ids}
-    />
-  )
-}
-
-// Two permissions render identically iff they'd show the same avatars, so
-// compare by kind plus the employees involved.
-function prescriberKey(permissions: TaskPermissions): string {
-  if (permissions.type !== 'cant_do') return permissions.type
-  return JSON.stringify([
-    permissions.permitted,
-    permissions.employees_who_can_do.on_duty.map((employee) => employee.id),
-    permissions.employees_who_can_do.off_duty.map((employee) => employee.id),
-  ])
-}
-
-// When every option renders the same prescriber permissions, return them so
-// they can be shown once at a higher level; null when the options differ.
-function sharedPermissions(options: RecommendedMedicineOptionWithPermissions[]): TaskPermissions | null {
-  const [first, ...rest] = options
-  const key = prescriberKey(first.permissions)
-  return rest.every(({ permissions }) => prescriberKey(permissions) === key) ? first.permissions : null
-}
-
-// One recommended medicine: the name once, then its options grouped by
-// form/route. Each option (an EML row) shows the disorder it treats and its
-// dose schedules. "Can be prescribed by" is hoisted to the highest level at
-// which the prescriber is the same: the medicine, the form/route, or failing
-// both, the individual option.
-function MedicineGroup(
-  { group, to_be_notified_ids }: {
-    group: MedicineGroupWithPermissions
-    to_be_notified_ids: Set<string>
-  },
-) {
-  const group_permissions = sharedPermissions(group.forms.flatMap((form) => form.options))
-  return (
-    <li class='flex flex-col gap-1' data-medicine={hyphenate(group.name)}>
-      <span class='flex items-center gap-3'>
-        <span class='text-sm font-medium text-gray-900'>{group.name}</span>
-        {group_permissions && <CanBePrescribedBy permissions={group_permissions} to_be_notified_ids={to_be_notified_ids} />}
-      </span>
-      <ul class='flex flex-col gap-1.5 pl-4'>
-        {group.forms.map((form) => {
-          const form_permissions = group_permissions ? null : sharedPermissions(form.options)
-          return (
-            <li key={form.form_route} class='flex flex-col gap-1' data-form-route={hyphenate(form.form_route)}>
-              <span class='flex items-center gap-3'>
-                <span class='text-xs text-gray-500'>{form.form_route}</span>
-                {form_permissions && <CanBePrescribedBy permissions={form_permissions} to_be_notified_ids={to_be_notified_ids} />}
-              </span>
-              <ul class='flex flex-col gap-1.5 pl-4'>
-                {form.options.map(({ option, permissions }, index) => (
-                  <li key={index} class='flex items-start gap-3 text-sm text-gray-700'>
-                    <div class='flex flex-col'>
-                      <span class='text-xs text-gray-500'>
-                        {option.disorder} <AwareBadge aware={option.aware} />
-                      </span>
-                      {option.schedules.map((schedule, schedule_index) => (
-                        <span key={schedule_index}>
-                          {schedule.age_classifier && <span class='text-xs uppercase tracking-wide text-gray-400 mr-1'>[{schedule.age_classifier}]</span>}
-                          <Schedule dose={schedule} />
-                        </span>
-                      ))}
-                    </div>
-                    {!group_permissions && !form_permissions && <CanBePrescribedBy permissions={permissions} to_be_notified_ids={to_be_notified_ids} />}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          )
-        })}
-      </ul>
-    </li>
-  )
-}
-
 export default function RecommendedCarePlan(
   { to_be_notified, care_plan_groups, organization_id }: {
     to_be_notified: RenderedEmployeeWithPresenceAndSeniority[]
@@ -235,10 +137,11 @@ export default function RecommendedCarePlan(
               </TaskRow>
             ))}
             {group.medicines.map((medicine_group) => (
-              <MedicineGroup
+              <MedicineCard
                 key={medicine_group.name}
                 group={medicine_group}
                 to_be_notified_ids={to_be_notified_ids}
+                prescribable={false}
               />
             ))}
           </ul>

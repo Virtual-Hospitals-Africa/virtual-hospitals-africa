@@ -2,6 +2,7 @@ import { JSX } from 'preact'
 import { PrescriptionFrequencies } from '../shared/prescription.ts'
 import type { TimeSpecification } from '../backend/recommended_doses/shared.ts'
 import type { AppliedDose } from '../shared/recommended_doses.ts'
+import { AwareCircle } from './library/Aware.tsx'
 
 export type MedicineRecommendation = {
   atc: string
@@ -211,21 +212,6 @@ export function Schedule({ dose }: { dose: AppliedDose }): JSX.Element {
     </span>
   )
 }
-
-export function AwareBadge({ aware }: { aware: MedicineRecommendation['aware'] }): JSX.Element | null {
-  if (!aware) return null
-  const colours: Record<string, string> = {
-    Access: 'bg-green-100 text-green-800',
-    Watch: 'bg-yellow-100 text-yellow-800',
-    Reserve: 'bg-red-100 text-red-800',
-  }
-  return (
-    <span class={`inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium ${colours[aware] ?? 'bg-gray-100 text-gray-700'}`}>
-      {aware}
-    </span>
-  )
-}
-
 export function RecommendedMedication({ medicine: med }: { medicine: MedicineRecommendation }): JSX.Element {
   return (
     <div class='border border-gray-200 rounded-lg p-4 flex flex-col gap-3'>
@@ -234,7 +220,7 @@ export function RecommendedMedication({ medicine: med }: { medicine: MedicineRec
         <div class='flex items-center gap-2 flex-wrap'>
           <h3 class='text-base font-semibold text-gray-900'>{med.medicine.name}</h3>
           {med.medicine.alternate_name && <span class='text-sm text-gray-500'>({med.medicine.alternate_name})</span>}
-          <AwareBadge aware={med.aware} />
+          <AwareCircle aware={med.aware} />
           {med.acute_chronic && (
             <span class='inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800'>
               {med.acute_chronic}
