@@ -64,12 +64,6 @@ describeParallel('db/models/snomed_to_icd10.ts', () => {
     )
   })
 
-  itParallel('uses primary map group codes only for EML lookup', async () => {
-    const record = asPositiveRecord('103981000119101')
-    const result = await snomed_to_icd10.mapConcepts(db, adult_context, [record])
-    assertEquals(snomed_to_icd10.primaryIcd10CodesForLookup(result), ['E14.3'])
-  })
-
   itParallel('reports unresolved context when sex-dependent rules cannot be matched', async () => {
     const record = asPositiveRecord('1259396001')
     const result = await snomed_to_icd10.mapConcepts(db, { sex: 'female', dob: '1988-01-01' }, [record])

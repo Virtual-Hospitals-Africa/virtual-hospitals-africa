@@ -219,8 +219,4 @@ export const snomed_to_icd10 = {
 
     return { by_concept }
   },
-
-  primaryIcd10CodesForLookup<PositiveRecord extends { specific_snomed_concept_id: string }>(mappings: SnomedIcd10MappingResult<PositiveRecord>): string[] {
-    return primaryIcd10CodesFromSnomedMappings(mappings.by_concept.values())
-  },
 }
