@@ -58,7 +58,7 @@ describeParallel('triage/route_patient recommended medicines', () => {
 
     // Doctor-only options can't be prescribed by the triage nurse, and this
     // clinic staffs no doctor, so a doctor role icon is shown
-    assert($.html().includes('can be prescribed by'))
+    assert($.html().includes('Prescribable by'))
     assert($('[data-permitted="doctor"]').length, 'expected a doctor role icon for doctor-only prescriptions')
   })
 })
