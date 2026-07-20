@@ -77,7 +77,7 @@ function PrescriberInfo(
   const Icon = ROLE_ICONS[permitted] ?? UserIcon
 
   return (
-    <div class='flex items-center gap-2 text-xs text-gray-500'>
+    <div class='flex items-center gap-2 text-xs text-gray-500' data-permitted={permitted}>
       <Icon className='w-4 h-4 flex-none' />
       <span>Prescribable by {permitted}</span>
       {employees.length > 0 && (
