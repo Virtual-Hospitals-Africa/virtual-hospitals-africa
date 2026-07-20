@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import {
   primaryIcd10CodesFromSnomedMappings,
   SNOMED_ICD10_COMPLEX_MAP_REFSET_ID,
@@ -26,19 +27,92 @@ type ExtendedMapRow = {
   correlation_id: string | bigint
 }
 
-function ifaContextConceptId(map_rule: string): string | null {
-  const match = map_rule.match(/^IFA (\d+)/)
-  return match?.[1] ?? null
+// The International Extended Map (release 2025-12-01) contains exactly 9
+// non-TRUE/OTHERWISE map_rule rows, 8 distinct clauses (one row is a compound
+// AND of two age-at-onset clauses). Hardcoded per mentor guidance rather than
+// generically parsed, since the set is small and stable. If a future SNOMED
+// release introduces a rule outside this set, evaluateIFAClause asserts below
+// so we notice and add explicit handling instead of silently mismapping.
+const SEX_IFA_RULES: Record<string, 'female' | 'male'> = {
+  [`IFA ${SNOMED_IFA_FEMALE_CONCEPT_ID} | Female (finding) |`]: 'female',
+  [`IFA ${SNOMED_IFA_MALE_CONCEPT_ID} | Male (finding) |`]: 'male',
 }
 
-function ifaRuleMatches(map_rule: string, context: SnomedIcd10PatientContext): boolean {
-  const concept_id = ifaContextConceptId(map_rule)
-  if (!concept_id) return false
-  if (concept_id === SNOMED_IFA_FEMALE_CONCEPT_ID) return context.sex === 'female'
-  if (concept_id === SNOMED_IFA_MALE_CONCEPT_ID) return context.sex === 'male'
-  // Age-at-onset IFA rules need the age when the finding began, not current age from DOB.
-  if (concept_id === SNOMED_IFA_AGE_AT_ONSET_CONCEPT_ID) return false
-  return false
+type AgeAtOnsetClause = {
+  comparator: '<' | '<=' | '>='
+  value: number
+  unit: 'years' | 'days'
+}
+
+const AGE_AT_ONSET_IFA_PREFIX = `IFA ${SNOMED_IFA_AGE_AT_ONSET_CONCEPT_ID} | Age at onset of clinical finding (observable entity) | `
+
+// Includes '>= 12.0 years', which never appears as its own row — only as the
+// first clause of the single AND row.
+const AGE_AT_ONSET_IFA_CLAUSES: Record<string, AgeAtOnsetClause> = {
+  [`${AGE_AT_ONSET_IFA_PREFIX}< 15.0 years`]: { comparator: '<', value: 15, unit: 'years' },
+  [`${AGE_AT_ONSET_IFA_PREFIX}<= 15.0 years`]: { comparator: '<=', value: 15, unit: 'years' },
+  [`${AGE_AT_ONSET_IFA_PREFIX}< 19.0 years`]: { comparator: '<', value: 19, unit: 'years' },
+  [`${AGE_AT_ONSET_IFA_PREFIX}< 28.0 days`]: { comparator: '<', value: 28, unit: 'days' },
+  [`${AGE_AT_ONSET_IFA_PREFIX}<= 18.0 years`]: { comparator: '<=', value: 18, unit: 'years' },
+  [`${AGE_AT_ONSET_IFA_PREFIX}>= 65.0 years`]: { comparator: '>=', value: 65, unit: 'years' },
+  [`${AGE_AT_ONSET_IFA_PREFIX}>= 12.0 years`]: { comparator: '>=', value: 12, unit: 'years' },
+}
+
+// Age in days between the patient's DOB and when the finding/diagnosis was
+// recorded — this is what the age-at-onset IFA rules actually need, not the
+// patient's current age. Returns null if either date is missing/invalid so
+// callers can fall through to TRUE/OTHERWISE rather than mismatching on NaN.
+function ageAtOnsetInDays(dob: string, onset_date: Date | string): number | null {
+  const birth_date = new Date(dob)
+  const onset = new Date(onset_date)
+  if (Number.isNaN(birth_date.getTime()) || Number.isNaN(onset.getTime())) return null
+  return (onset.getTime() - birth_date.getTime()) / (1000 * 60 * 60 * 24)
+}
+
+function evaluateAgeAtOnsetClause(clause: AgeAtOnsetClause, onset_age_days: number): boolean {
+  const threshold_days = clause.unit === 'years' ? clause.value * 365.25 : clause.value
+  switch (clause.comparator) {
+    case '<':
+      return onset_age_days < threshold_days
+    case '<=':
+      return onset_age_days <= threshold_days
+    case '>=':
+      return onset_age_days >= threshold_days
+  }
+}
+
+// Evaluates a single (non-AND) clause.
+// Returns true/false when it can be resolved with available context.
+// Returns null when the clause is an age-at-onset check but we don't have an
+// onset date for this finding (caller should fall through to TRUE/OTHERWISE).
+function evaluateIFAClause(
+  clause: string,
+  context: SnomedIcd10PatientContext,
+  onset_age_days: number | null,
+): boolean | null {
+  const sex = SEX_IFA_RULES[clause]
+  if (sex) return context.sex === sex
+
+  const age_clause = AGE_AT_ONSET_IFA_CLAUSES[clause]
+  if (age_clause) {
+    if (onset_age_days === null) return null
+    return evaluateAgeAtOnsetClause(age_clause, onset_age_days)
+  }
+
+  assert(false, `Unexpected IFA map_rule clause: ${clause}`)
+}
+
+// Handles the single known AND rule generically by splitting on ' AND ' and
+// requiring every clause to resolve to true. Any clause that can't be
+// resolved (missing onset date) makes the whole rule unresolved.
+function evaluateIFARule(
+  map_rule: string,
+  context: SnomedIcd10PatientContext,
+  onset_age_days: number | null,
+): boolean | null {
+  const results = map_rule.split(' AND ').map((clause) => evaluateIFAClause(clause.trim(), context, onset_age_days))
+  if (results.some((result) => result === null)) return null
+  return results.every((result) => result === true)
 }
 
 function isOtherwiseRule(map_rule: string | null): boolean {
@@ -55,6 +129,7 @@ function comparePriority(
 function resolveMapGroup(
   rows: ExtendedMapRow[],
   context: SnomedIcd10PatientContext,
+  onset_age_days: number | null,
 ): { code: SnomedIcd10CodeMapping | null; status: SnomedIcd10MapStatus | null } {
   const ifa_rows = rows
     .filter((row) => row.map_rule?.startsWith('IFA '))
@@ -63,7 +138,7 @@ function resolveMapGroup(
   const otherwise_row = rows.find((row) => isOtherwiseRule(row.map_rule))
 
   for (const row of ifa_rows) {
-    if (ifaRuleMatches(row.map_rule!, context) && row.map_target) {
+    if (evaluateIFARule(row.map_rule!, context, onset_age_days) === true && row.map_target) {
       return {
         code: rowToCodeMapping(row, 'context'),
         status: 'mapped',
@@ -126,6 +201,7 @@ function buildConceptMapping(
   snomed_concept_id: string,
   rows: ExtendedMapRow[],
   context: SnomedIcd10PatientContext,
+  onset_age_days: number | null,
 ): SnomedIcd10ConceptMapping {
   if (!rows.length) {
     return {
@@ -149,7 +225,7 @@ function buildConceptMapping(
   for (const map_group of [...rows_by_group.keys()].sort((left, right) => left - right)) {
     const group_rows = rows_by_group.get(map_group)
     if (!group_rows) continue
-    const resolved = resolveMapGroup(group_rows, context)
+    const resolved = resolveMapGroup(group_rows, context, onset_age_days)
     if (resolved.code) {
       codes.push(resolved.code)
     } else if (resolved.status === 'unresolved_context' || resolved.status === 'not_classifiable') {
@@ -207,12 +283,14 @@ export const snomed_to_icd10 = {
 
     const by_concept = new Map()
     for (const positive_record of positive_records) {
+      const onset_age_days = ageAtOnsetInDays(context.dob, positive_record.created_at)
       by_concept.set(
         positive_record,
         buildConceptMapping(
           positive_record.specific_snomed_concept_id,
           rows_by_concept.get(positive_record.specific_snomed_concept_id) ?? [],
           context,
+          onset_age_days,
         ),
       )
     }
