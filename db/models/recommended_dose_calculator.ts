@@ -21,7 +21,7 @@ function groupByMedicineName(medicines_with_patient_case: Array<RecommendedMedic
     const form_route = compact([medicine.form, medicine.route]).join(' · ')
     let form = group.forms.find(matching({ form_route }))
     if (!form) {
-      form = { form_route, options: [] }
+      form = { form_route, options: [], form: medicine.form, route: medicine.route }
       group.forms.push(form)
     }
     form.options.push(medicine)

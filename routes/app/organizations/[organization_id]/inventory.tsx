@@ -3,6 +3,7 @@ import { assertOr404 } from '../../../../util/assertOr.ts'
 import InventoryView from '../../../../components/inventory/View.tsx'
 import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import { OrganizationContext } from '../../../../types.ts'
+import OrganizationTabs from '../../../../components/organizations/OrganizationTabs.tsx'
 
 export default HealthWorkerHomePage<OrganizationContext>(
   'Inventory',
@@ -36,14 +37,17 @@ export default HealthWorkerHomePage<OrganizationContext>(
       : []
 
     return (
-      <InventoryView
-        organization_id={organization.id}
-        devices={organization_devices}
-        consumables={organization_consumbales}
-        medicines={organization_medicines}
-        is_admin={is_admin_at_organization}
-        active_tab={active_tab}
-      />
+      <>
+        <OrganizationTabs organization_id={organization.id} active_tab='inventory' />
+        <InventoryView
+          organization_id={organization.id}
+          devices={organization_devices}
+          consumables={organization_consumbales}
+          medicines={organization_medicines}
+          is_admin={is_admin_at_organization}
+          active_tab={active_tab}
+        />
+      </>
     )
   },
 )

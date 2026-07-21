@@ -3356,6 +3356,8 @@ export type RecommendedMedicineGroup = {
   medicine_name: string
   due_to: RenderedPositiveRecordRelativeToHealthWorker[]
   forms: {
+    form: string
+    route: string
     form_route: string
     options: RecommendedMedicineOption[]
   }[]
