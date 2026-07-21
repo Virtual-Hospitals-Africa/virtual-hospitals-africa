@@ -9,7 +9,13 @@ export default function OrganizationsTable({ organizations }: { organizations: R
   const columns: TableColumn<RenderedOrganization>[] = [
     {
       label: 'Name',
-      data: 'name',
+      data(row) {
+        return (
+          <a href={`/app/organizations/${row.id}`} class='text-indigo-600 hover:text-indigo-900 font-medium'>
+            {row.name}
+          </a>
+        )
+      },
     },
     {
       label: 'Category',
@@ -20,6 +26,10 @@ export default function OrganizationsTable({ organizations }: { organizations: R
       data: 'country',
     },
     {
+      label: 'Address',
+      data: 'formatted_address',
+    },
+    {
       label: 'Ownership',
       data: 'ownership',
     },
@@ -27,6 +37,13 @@ export default function OrganizationsTable({ organizations }: { organizations: R
       label: 'Test',
       data(row) {
         return row.is_test ? <Badge color='purple' content='Test' /> : null
+      },
+    },
+    {
+      label: 'Actions',
+      type: 'actions',
+      data(row) {
+        return { text: 'Dashboard', href: `/app/organizations/${row.id}/dashboard` }
       },
     },
   ]

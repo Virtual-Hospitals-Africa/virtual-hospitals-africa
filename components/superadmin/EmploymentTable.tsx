@@ -9,11 +9,26 @@ export default function EmploymentTable({ rows }: { rows: RenderedEmploymentRow[
   const columns: TableColumn<RenderedEmploymentRow>[] = [
     {
       label: 'Health Worker',
-      data: 'health_worker_name',
+      data(row) {
+        return (
+          <a
+            href={`/app/organizations/${row.organization_id}/employees/${row.health_worker_id}`}
+            class='text-indigo-600 hover:text-indigo-900 font-medium'
+          >
+            {row.health_worker_name}
+          </a>
+        )
+      },
     },
     {
       label: 'Organization',
-      data: 'organization_name',
+      data(row) {
+        return (
+          <a href={`/app/organizations/${row.organization_id}`} class='text-indigo-600 hover:text-indigo-900'>
+            {row.organization_name}
+          </a>
+        )
+      },
     },
     {
       label: 'Role',
