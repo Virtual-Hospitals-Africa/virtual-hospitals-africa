@@ -110978,31 +110978,6 @@
         "disorder"         : "Acute Asthma, Children - severe attacks"
     },
     {
-        "atc"              : "n/a",
-        "form"             : "n/a",
-        "route"            : "n/a",
-        "aware"            : null,
-        "acute_chronic"    : null,
-        "prescriber"       : "Doctor/Nurse",
-        "icd10_indications": { "type": "codes", "codes": ["J46", "J45.0", "J45.1", "J45.8", "J45.9"] },
-        "medicine"         : {
-            "name"          : "Spacer",
-            "alternate_name": "for metered dose inhaler",
-            "ingredients"   : [ {"name": "Spacer", "alternate_name": "for metered dose inhaler"} ]
-        },
-        "schedules"        : [ {"age_classifier": "adult"}, {"age_classifier": "child"} ],
-        "raw_dose"         : "n/a",
-        "raw_dose_interval": "n/a",
-        "raw_duration"     : null,
-        "publication"      : "Primary Healthcare",
-        "chapter_name"     : "Respiratory Conditions",
-        "chapter_number"   : "17",
-        "adult_children"   : "Adult/Children",
-        "section_number"   : "17.1",
-        "disorder_number"  : "17.1.1",
-        "disorder"         : "Acute Asthma and Acute exacerbation of COPD, Adults - mild to moderate attacks"
-    },
-    {
         "atc"              : "J01MA14",
         "form"             : "Tablet/Capsule",
         "route"            : "Oral",
