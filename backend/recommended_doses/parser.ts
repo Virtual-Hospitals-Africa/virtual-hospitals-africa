@@ -5,10 +5,24 @@ import { MedicineParser } from './MedicineParser.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
 import { getZARecommendedDoses } from './south_africa_recommended_doses.ts'
 
+// Non-medicine devices/appliances that appear in the source alongside real
+// medications but carry no ATC, form, route, or dose and should not be parsed
+// as recommended doses.
+const NON_MEDICINE_NAMES = new Set(['spacer'])
+
+function isNonMedicineRow(medicine_row: MedicineRow): boolean {
+  const name = medicine_row['MEDICINE NAME (International Nonproprietary Name)']
+    .replace(/\(.*\)/, '')
+    .trim()
+    .toLowerCase()
+  return NON_MEDICINE_NAMES.has(name)
+}
+
 function parseAll() {
   const parsed: ParsedMedicineRecommendedDose[] = []
   const failures: { medicine_row: MedicineRow; error_message: string; error_stack: string }[] = []
   for (const medicine_row of getZARecommendedDoses()) {
+    if (isNonMedicineRow(medicine_row)) continue
     console.log({ medicine_row })
     const result = asResult(() => MedicineParser.parse(medicine_row))
     if (result.success) {
