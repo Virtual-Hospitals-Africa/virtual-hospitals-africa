@@ -11,23 +11,21 @@ import type { LoggedInHealthWorkerContext } from '../../types.ts'
 
 const json_handler = jsonSearchHandler(organizations)
 
-export const handler = {
-  GET(ctx: LoggedInHealthWorkerContext) {
-    const accept = ctx.req.headers.get('accept') || ''
-    if (accept.includes('application/json') || !accept.includes('text/html')) {
-      return json_handler.GET(ctx)
-    }
-
-    return page_handler(ctx)
-  },
-}
-
 const KIND_OPTIONS = [
   { value: 'physical', label: 'Physical' },
   { value: 'virtual', label: 'Virtual' },
 ] as const
 
-const page_handler = HealthWorkerHomePage(async function Organizations(ctx: LoggedInHealthWorkerContext) {
+export const handler = {
+  GET(ctx: LoggedInHealthWorkerContext) {
+    const accept = ctx.req.headers.get('accept') || ''
+    if (!accept.includes('text/html')) {
+      return json_handler.GET(ctx)
+    }
+  },
+}
+
+export default HealthWorkerHomePage(async function Organizations(ctx: LoggedInHealthWorkerContext) {
   const search = ctx.url.searchParams.get('search') || undefined
   const category = ctx.url.searchParams.get('category') || null
   const country = ctx.url.searchParams.get('country') || null
