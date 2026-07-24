@@ -144,7 +144,6 @@ export async function completeAndProceedToNextStep(
 ) {
   const { workflow } = ctx.state
   const { first_incomplete_step } = await completeStep(ctx)
-  console.log({ first_incomplete_step })
 
   return redirect(
     replaceParams(
