@@ -27,7 +27,6 @@ export async function up(db: Kysely<DB>) {
         .addColumn('network_type', 'varchar(50)')
         .addColumn('claims_submission_email', 'varchar(255)')
         .addColumn('member_portal_url', 'varchar(255)')
-        .addColumn('is_active', 'boolean', (col) => col.notNull().defaultTo(true))
         .addColumn('inactive_reason', 'varchar(255)')
   )
 
@@ -44,21 +43,9 @@ export async function up(db: Kysely<DB>) {
     .execute()
 
   await db.schema
-    .createIndex('idx_insurance_network_is_active')
-    .on('insurance_network')
-    .column('is_active')
-    .execute()
-
-  await db.schema
     .createIndex('idx_insurance_network_avatar_media_id')
     .on('insurance_network')
     .column('avatar_media_id')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_insurance_network_country_is_active')
-    .on('insurance_network')
-    .columns(['country', 'is_active'])
     .execute()
 }
 

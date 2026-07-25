@@ -1,9 +1,8 @@
-import { Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base } from './_base.ts'
 
 type InsuranceNetworkSearch = {
   country?: string
-  is_active?: boolean
 }
 
 function baseQuery(trx: TrxOrDbOrQueryCreator, opts: InsuranceNetworkSearch = {}) {
@@ -11,7 +10,6 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: InsuranceNetworkSearch = {}
     .selectFrom('insurance_network')
     .selectAll()
     .$if(!!opts.country, (qb) => qb.where('country', '=', opts.country!))
-    .$if(opts.is_active !== undefined, (qb) => qb.where('is_active', '=', opts.is_active!))
 }
 
 export const insurance_network = base({

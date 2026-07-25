@@ -16,7 +16,7 @@ export async function up(db: Kysely<DB>) {
         )
         .addColumn('member_since', 'date', (col) => col.notNull())
         .addColumn('member_until', 'date')
-        .addColumn('is_active', 'boolean', (col) => col.notNull().defaultTo(true))
+        .addColumn('inactive_reason', 'varchar(255)')
         .addColumn('provider_id', 'varchar(100)')
         .addColumn('membership_tier', 'varchar(100)')
         .addUniqueConstraint('unique_health_worker_insurance_network', [
@@ -37,17 +37,6 @@ export async function up(db: Kysely<DB>) {
     .column('insurance_network_id')
     .execute()
 
-  await db.schema
-    .createIndex('idx_insurance_network_membership_is_active')
-    .on('insurance_network_membership')
-    .column('is_active')
-    .execute()
-
-  await db.schema
-    .createIndex('idx_insurance_network_membership_network_active')
-    .on('insurance_network_membership')
-    .columns(['insurance_network_id', 'is_active'])
-    .execute()
 }
 
 // deno-lint-ignore no-explicit-any

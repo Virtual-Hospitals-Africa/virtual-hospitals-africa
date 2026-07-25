@@ -4,7 +4,6 @@ import { base } from './_base.ts'
 type OrganizationInsuranceNetworkMembershipSearch = {
   organization_id?: string
   insurance_network_id?: string
-  is_active?: boolean
 }
 
 function baseQuery(
@@ -19,9 +18,6 @@ function baseQuery(
     )
     .$if(!!opts.insurance_network_id, (qb) =>
       qb.where('insurance_network_id', '=', opts.insurance_network_id!)
-    )
-    .$if(opts.is_active !== undefined, (qb) =>
-      qb.where('is_active', '=', opts.is_active!)
     )
 }
 
