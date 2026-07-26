@@ -5,7 +5,6 @@
 
 import { useEffect } from 'preact/hooks'
 import { type ScriptItem, SPEAKERS, type TutorialHashState } from '../../shared/tutorial/types.ts'
-import { advance } from '../../shared/tutorial/state.ts'
 import { TutorialDialogue } from './TutorialDialogue.tsx'
 import { TutorialSpotlight } from './TutorialSpotlight.tsx'
 import { TutorialConfetti } from './TutorialConfetti.tsx'
@@ -18,6 +17,8 @@ type Props = {
   item: Maybe<ScriptItem>
   hash_state: TutorialHashState | { action: 'none' }
   setHashState: (state: TutorialHashState | { action: 'none' }) => void
+  advance: (state: TutorialHashState, script: ScriptItem[]) => TutorialHashState | null
+  speakers?: Record<string, { name: string; avatar_src: string; bg_class: string; color?: string; role?: string }>
 }
 
 /**
@@ -28,7 +29,8 @@ type Props = {
  * - wait_click: Wait for user to click target
  * - step_transition: Handled by state.advance()
  */
-export function TutorialOverlay({ script, item, hash_state, setHashState }: Props) {
+export function TutorialOverlay({ script, item, hash_state, setHashState, advance, speakers }: Props) {
+  const speakers_map = speakers ?? SPEAKERS
   // No item = tutorial not started
   if (!item) return null
   assert(hash_state.action !== 'none')
@@ -71,6 +73,7 @@ export function TutorialOverlay({ script, item, hash_state, setHashState }: Prop
         item={item}
         onNext={is_final ? handleSignUp : handleAdvance}
         button_text={is_final ? 'Sign Up for Updates' : 'Next'}
+        speakers={speakers_map}
       />
     </>
   )
@@ -107,16 +110,19 @@ type DialogueProps = Parameters<typeof TutorialDialogue>[0]
  * For items without a dialogue (highlight, modal), returns show=false with
  * placeholder values so the component stays mounted in the DOM.
  */
+type SpeakersMap = Record<string, { name: string; avatar_src: string; bg_class: string; color?: string; role?: string }>
+
 function getDialogueProps(
   item: ScriptItemSansTransition,
   onNext: () => void,
   button_text: string,
+  speakers: SpeakersMap = SPEAKERS,
 ): DialogueProps {
   switch (item.type) {
     case 'dialogue':
       return {
         show: true,
-        speaker: SPEAKERS[item.speaker],
+        speaker: speakers[item.speaker],
         text: item.text,
         dangerousHTML: !!item.dangerousHTML,
         onNext,
@@ -127,7 +133,7 @@ function getDialogueProps(
     case 'wait_click':
       return {
         show: true,
-        speaker: SPEAKERS.guide,
+        speaker: speakers.guide,
         text: item.text ?? 'Complete the action highlighted above to continue.',
         dangerousHTML: !!item.dangerousHTML,
         position: item.position || 'bottom-left',
@@ -136,7 +142,7 @@ function getDialogueProps(
     case 'modal':
       return {
         show: false,
-        speaker: SPEAKERS.guide,
+        speaker: speakers.guide,
         text: '',
         position: 'bottom-left',
       }
@@ -153,10 +159,12 @@ function RenderItem({
   item,
   onNext,
   button_text,
+  speakers,
 }: {
   item: ScriptItemSansTransition
   onNext: () => void
   button_text: string
+  speakers: SpeakersMap
 }) {
   useEffect(() => {
     item.onArrive?.()
@@ -170,7 +178,7 @@ function RenderItem({
 
   return (
     <>
-      <TutorialDialogue {...getDialogueProps(item, onNext, button_text)} />
+      <TutorialDialogue {...getDialogueProps(item, onNext, button_text, speakers)} />
       {item.type === 'dialogue' && <DialogueRenderer item={item} onNext={onNext} />}
       {item.type === 'highlight' && <HighlightRenderer item={item} onNext={onNext} />}
       {item.type === 'wait_click' && <WaitClickRenderer item={item} onNext={onNext} />}

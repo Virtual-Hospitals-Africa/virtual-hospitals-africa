@@ -101,19 +101,13 @@ export const WORKFLOW_STEPS = {
     'monitor_patient',
   ],
   consultation: [
-    'chief_complaint',
-    'vitals',
-    'symptoms',
-    'history',
-    'general_assessments',
-    'examinations',
-    'diagnostic_tests',
-    'diagnoses',
-    'prescriptions',
-    'orders',
-    'clinical_notes',
-    'request_review',
-    'close_visit',
+    'examinations', // findings
+    'diagnoses', // evaluations
+    'prescriptions', // 
+    'orders', // order labs + regime/therapy
+    'clinical_notes', // confirm everything looks kosher
+    'referral', // refer
+    'close_visit', 
   ],
   maternity: [
     'checkup',
