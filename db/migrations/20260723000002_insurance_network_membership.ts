@@ -8,12 +8,8 @@ export async function up(db: Kysely<DB>) {
     'insurance_network_membership',
     (qb) =>
       qb
-        .addColumn('insurance_network_id', 'uuid', (col) =>
-          col.notNull().references('insurance_network.id').onDelete('cascade')
-        )
-        .addColumn('health_worker_id', 'uuid', (col) =>
-          col.notNull().references('health_workers.id').onDelete('cascade')
-        )
+        .addColumn('insurance_network_id', 'uuid', (col) => col.notNull().references('insurance_network.id').onDelete('cascade'))
+        .addColumn('health_worker_id', 'uuid', (col) => col.notNull().references('health_workers.id').onDelete('cascade'))
         .addColumn('member_since', 'date', (col) => col.notNull())
         .addColumn('member_until', 'date')
         .addColumn('inactive_reason', 'varchar(255)')
@@ -22,7 +18,7 @@ export async function up(db: Kysely<DB>) {
         .addUniqueConstraint('unique_health_worker_insurance_network', [
           'health_worker_id',
           'insurance_network_id',
-        ])
+        ]),
   )
 
   await db.schema
@@ -36,7 +32,6 @@ export async function up(db: Kysely<DB>) {
     .on('insurance_network_membership')
     .column('insurance_network_id')
     .execute()
-
 }
 
 // deno-lint-ignore no-explicit-any

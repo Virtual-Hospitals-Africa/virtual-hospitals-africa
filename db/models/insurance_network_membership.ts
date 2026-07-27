@@ -13,12 +13,8 @@ function baseQuery(
   return trx
     .selectFrom('insurance_network_membership')
     .selectAll()
-    .$if(!!opts.health_worker_id, (qb) =>
-      qb.where('health_worker_id', '=', opts.health_worker_id!)
-    )
-    .$if(!!opts.insurance_network_id, (qb) =>
-      qb.where('insurance_network_id', '=', opts.insurance_network_id!)
-    )
+    .$if(!!opts.health_worker_id, (qb) => qb.where('health_worker_id', '=', opts.health_worker_id!))
+    .$if(!!opts.insurance_network_id, (qb) => qb.where('insurance_network_id', '=', opts.insurance_network_id!))
 }
 
 export const insurance_network_membership = base({
