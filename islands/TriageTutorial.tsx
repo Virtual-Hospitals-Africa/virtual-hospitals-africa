@@ -16,7 +16,7 @@ import { WORKFLOW_NAV_LINKS } from '../shared/workflow.ts'
 import { TutorialOverlay } from './tutorial/TutorialOverlay.tsx'
 import type { TutorialHashState, TutorialStep } from '../shared/tutorial/types.ts'
 import { isTutorialState } from '../shared/tutorial/types.ts'
-import { getCompletedSteps, getItem, initialState, parseIndex } from '../shared/tutorial/state.ts'
+import { advance, getCompletedSteps, getItem, initialState, parseIndex } from '../shared/tutorial/state.ts'
 import { buildSidebarDiagnoses, buildSidebarFindings, EMPTY_PATIENT_HISTORY } from '../shared/tutorial/mock-data.ts'
 
 // Step components
@@ -67,9 +67,9 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
     }
   })
 
-  const current_step: TutorialStep = useMemo(() => {
+  const current_step = useMemo((): TutorialStep => {
     if (hash.value.action === 'none') return 'waiting_room'
-    return hash.value.step
+    return hash.value.step as TutorialStep
   }, [hash.value])
 
   const sidebar_findings = useMemo<RenderedSidebarWorkflow[]>(() => {
@@ -107,6 +107,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
           hash_state={hash.value}
           item={script_item}
           setHashState={handleSetHashState}
+          advance={advance}
         />
       </>
     )
@@ -168,6 +169,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         hash_state={hash.value}
         item={script_item}
         setHashState={handleSetHashState}
+        advance={advance}
       />
     </>
   )

@@ -174,6 +174,23 @@ export const FAMILY_HISTORY_WITH_EXPLICIT_CONTEXT = asConcept({
   name: 'Family history with explicit context',
   category: 'situation' as const,
 })
+// Anchors for the patient history drawer categories. Each is used to select
+// findings whose specific concept is subsumed by (a descendant of) the anchor.
+export const HISTORY_OF_SURGERY = asConcept({
+  id: '161615003',
+  name: 'History of surgery',
+  category: 'situation' as const,
+})
+export const HISTORY_OF_DRUG_THERAPY = asConcept({
+  id: '438553004',
+  name: 'History of drug therapy',
+  category: 'situation' as const,
+})
+export const HEALTH_RELATED_BEHAVIOR_FINDING = asConcept({
+  id: '365949003',
+  name: 'Health-related behavior finding',
+  category: 'finding' as const,
+})
 export const MEASUREMENT_FINDING = asConcept({
   id: '118245000',
   name: 'Measurement finding',

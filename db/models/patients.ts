@@ -33,7 +33,16 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
 
-function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { search?: string | null; has_name?: boolean; include_incomplete_registration: boolean }) {
+function baseQuery(
+  trx: TrxOrDbOrQueryCreator,
+  opts: {
+    search?: string | null
+    has_name?: boolean
+    include_incomplete_registration: boolean
+    sex?: string | null
+    registration_status?: 'complete' | 'incomplete' | null
+  },
+) {
   return trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
@@ -118,6 +127,9 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, opts: { search?: string | null; h
     .$if(!!opts.has_name, (qb) => qb.where('patients.name', 'is not', null))
     .$if(!!opts.search, (qb) => qb.where('patients.name', 'ilike', `%${opts.search}%`))
     .$if(!opts.include_incomplete_registration, (qb) => qb.where('patients.completed_registration', '=', true))
+    .$if(!!opts.sex, (qb) => qb.where('patients.sex', '=', opts.sex! as 'female' | 'male'))
+    .$if(opts.registration_status === 'complete', (qb) => qb.where('patients.completed_registration', '=', true))
+    .$if(opts.registration_status === 'incomplete', (qb) => qb.where('patients.completed_registration', '=', false))
 }
 
 type PatientUpsert =

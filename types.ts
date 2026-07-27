@@ -2445,12 +2445,18 @@ export type RenderedChiefComplaint = {
   }
 }
 
+// Medications may be either self-reported/history findings or medications we've
+// prescribed (which are rendered as procedures), so the field is a union of both.
+export type RenderedMedicationHistoryItem =
+  | RenderedFindingRelativeToHealthWorker
+  | RenderedProcedureRelativeToHealthWorker
+
 export type RenderedPatientHistory = {
   pre_existing_conditions: RenderedFindingRelativeToHealthWorker[]
   allergies: RenderedFindingRelativeToHealthWorker[]
   family_history: RenderedFindingRelativeToHealthWorker[]
   major_surgeries: RenderedFindingRelativeToHealthWorker[]
-  medications: RenderedFindingRelativeToHealthWorker[]
+  medications: RenderedMedicationHistoryItem[]
   lifestyle: RenderedFindingRelativeToHealthWorker[]
   documents?: RenderedFindingRelativeToHealthWorker[]
   lab_results?: RenderedFindingRelativeToHealthWorker[]
@@ -2479,7 +2485,7 @@ export type RenderedSidebarWorkflowStep = {
   workflow_step: string
   title: string
   status: 'not started' | 'in progress' | 'completed'
-  records: Array<RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker>
+  records: RenderedRecordRelativeToHealthWorker[]
 }
 
 export type RenderedSidebarWorkflow = {
@@ -3275,6 +3281,8 @@ export type RecommendedMedicineGroup = {
   medicine_name: string
   due_to: RenderedPositiveRecordRelativeToHealthWorker[]
   forms: {
+    form: string
+    route: string
     form_route: string
     options: RecommendedMedicineOption[]
   }[]

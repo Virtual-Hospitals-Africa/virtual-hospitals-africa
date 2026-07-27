@@ -3,6 +3,7 @@ import {
   ArchiveBoxIcon,
   ArrowRightOnRectangleIcon,
   BellIcon,
+  BuildingOffice2Icon,
   CalendarDaysIcon,
   ChatBubbleLeftRightIcon,
   ClockIcon,
@@ -10,6 +11,8 @@ import {
   LightBulbIcon,
   PresentationChartBarIcon,
   Squares2x2Icon,
+  UserGroupIcon,
+  UsersIcon,
 } from '../../icons/heroicons/outline.tsx'
 import type { Priority } from '../../../../shared/priorities.ts'
 import { LinkDef } from '../../../../types.ts'
@@ -33,6 +36,9 @@ export function practitionerHomePageNavLinks({
       Icon: ClockIcon,
     },
     { route: '/app/employees', title: 'Employees', Icon: IdentificationIcon },
+    { route: '/app/health_workers', title: 'Health Workers', Icon: UserGroupIcon },
+    { route: '/app/patients', title: 'Patients', Icon: UsersIcon },
+    { route: '/app/organizations', title: 'Organizations', Icon: BuildingOffice2Icon },
     { route: '/app/calendar', title: 'Calendar', Icon: CalendarDaysIcon },
     {
       route: '/app/messaging',

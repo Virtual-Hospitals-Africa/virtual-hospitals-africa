@@ -38,7 +38,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
 // Speakers
 // -----------------------------------------------------------------------------
 
-export type Speaker = 'guide' | 'patient' | 'nurse' | 'doctor' | 'pharmacist'
+export type Speaker = string
 
 export const SPEAKERS = {
   guide: {
@@ -119,7 +119,7 @@ type WaitClickItem = {
  */
 type StepTransitionItem = {
   type: 'step_transition'
-  to_step: TutorialStep
+  to_step: string
 }
 
 /**
@@ -161,7 +161,7 @@ export type ScriptItem =
 
 export type TutorialHashState = {
   action: 'tutorial'
-  step: TutorialStep
+  step: string
   index: string // numeric index as string
 }
 

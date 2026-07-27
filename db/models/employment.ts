@@ -7,7 +7,7 @@ import { health_workers } from './health_workers.ts'
 export const employment = {
   async search(
     trx: TrxOrDbOrQueryCreator,
-    search_terms: { search?: string | null },
+    search_terms: { search?: string | null; role?: string | null; is_admin?: boolean | null },
     opts?: { page?: number; rows_per_page?: number },
   ) {
     const page = opts?.page ?? 1
@@ -36,6 +36,8 @@ export const employment = {
             eb('organizations.name', 'ilike', `%${search_terms.search}%`),
           ])
         ))
+      .$if(!!search_terms.role, (qb) => qb.where('employment.role', '=', search_terms.role!))
+      .$if(search_terms.is_admin != null, (qb) => qb.where('employment.is_admin', '=', search_terms.is_admin!))
       .orderBy('employment.created_at', 'desc')
       .limit(rows_per_page + 1)
       .offset(offset)
