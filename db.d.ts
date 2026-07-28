@@ -646,6 +646,40 @@ export interface Icd10Sections {
   section: string
 }
 
+export interface InsuranceNetwork {
+  address_id: string | null
+  avatar_media_id: string | null
+  business_name: string
+  business_registration_id: string | null
+  claims_submission_email: string | null
+  country: string
+  created_at: Generated<Timestamp>
+  email: string | null
+  id: Generated<string>
+  inactive_reason: string | null
+  is_active: Generated<boolean>
+  location: string | null
+  member_portal_url: string | null
+  network_code: string | null
+  network_type: string | null
+  telephone: string | null
+  updated_at: Generated<Timestamp>
+  website: string | null
+}
+
+export interface InsuranceNetworkMembership {
+  created_at: Generated<Timestamp>
+  health_worker_id: string
+  id: Generated<string>
+  insurance_network_id: string
+  is_active: Generated<boolean>
+  member_since: Timestamp
+  member_until: Timestamp | null
+  membership_tier: string | null
+  provider_id: string | null
+  updated_at: Generated<Timestamp>
+}
+
 export interface Languages {
   iso_639_1: string | null
   iso_639_2_b: string
@@ -888,6 +922,18 @@ export interface OrganizationDevices {
   serial_number: string | null
   updated_at: Generated<Timestamp>
   updated_by: string | null
+}
+
+export interface OrganizationInsuranceNetworkMembership {
+  contract_end_date: Timestamp | null
+  contract_start_date: Timestamp
+  contract_terms: string | null
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  insurance_network_id: string
+  is_active: Generated<boolean>
+  organization_id: string
+  updated_at: Generated<Timestamp>
 }
 
 export interface OrganizationRooms {
@@ -1892,6 +1938,8 @@ export interface DB {
   icd10_diagnoses_excludes_codes: Icd10DiagnosesExcludesCodes
   icd10_diagnoses_includes: Icd10DiagnosesIncludes
   icd10_sections: Icd10Sections
+  insurance_network: InsuranceNetwork
+  insurance_network_membership: InsuranceNetworkMembership
   languages: Languages
   mailing_list: MailingList
   measurement_reference_ranges: MeasurementReferenceRanges
@@ -1920,6 +1968,7 @@ export interface DB {
   organization_department_rooms: OrganizationDepartmentRooms
   organization_departments: OrganizationDepartments
   organization_devices: OrganizationDevices
+  organization_insurance_network_membership: OrganizationInsuranceNetworkMembership
   organization_rooms: OrganizationRooms
   organizations: Organizations
   patient_age: PatientAge
