@@ -1,65 +1,65 @@
-name: Teardown Preview Environment
+# name: Teardown Preview Environment
 
-on:
-  pull_request:
-    branches: [main]
-    types: [closed]
+# on:
+#   pull_request:
+#     branches: [main]
+#     types: [closed]
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
+# permissions:
+#   contents: read
+#   pull-requests: write
+#   issues: write
 
-concurrency:
-  group: preview-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+# concurrency:
+#   group: preview-${{ github.event.pull_request.number }}
+#   cancel-in-progress: true
 
-jobs:
-  teardown:
-    runs-on: ubuntu-latest
+# jobs:
+#   teardown:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v5
+#     steps:
+#       - uses: actions/checkout@v5
 
-      - name: Teardown preview environment
-        uses: appleboy/ssh-action@master
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        with:
-          host: ${{ secrets.PREVIEW_EC2_HOST }}
-          username: ${{ secrets.PREVIEW_EC2_USERNAME }}
-          key: ${{ secrets.PREVIEW_EC2_SSH_KEY }}
-          envs: PR_NUMBER
-          script_path: scripts/deploy/preview_teardown.sh
+#       - name: Teardown preview environment
+#         uses: appleboy/ssh-action@master
+#         env:
+#           PR_NUMBER: ${{ github.event.pull_request.number }}
+#         with:
+#           host: ${{ secrets.PREVIEW_EC2_HOST }}
+#           username: ${{ secrets.PREVIEW_EC2_USERNAME }}
+#           key: ${{ secrets.PREVIEW_EC2_SSH_KEY }}
+#           envs: PR_NUMBER
+#           script_path: scripts/deploy/preview_teardown.sh
 
-      - name: Comment teardown on PR
-        uses: actions/github-script@v7
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        with:
-          script: |
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: parseInt(process.env.PR_NUMBER),
-            });
+#       - name: Comment teardown on PR
+#         uses: actions/github-script@v7
+#         env:
+#           PR_NUMBER: ${{ github.event.pull_request.number }}
+#         with:
+#           script: |
+#             const { data: comments } = await github.rest.issues.listComments({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               issue_number: parseInt(process.env.PR_NUMBER),
+#             });
 
-            const existing = comments.find(c => c.body.includes('Preview Environment'));
+#             const existing = comments.find(c => c.body.includes('Preview Environment'));
 
-            const body = `### Preview Environment\n\nTorn down.`;
+#             const body = `### Preview Environment\n\nTorn down.`;
 
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: parseInt(process.env.PR_NUMBER),
-                body,
-              });
-            }
+#             if (existing) {
+#               await github.rest.issues.updateComment({
+#                 owner: context.repo.owner,
+#                 repo: context.repo.repo,
+#                 comment_id: existing.id,
+#                 body,
+#               });
+#             } else {
+#               await github.rest.issues.createComment({
+#                 owner: context.repo.owner,
+#                 repo: context.repo.repo,
+#                 issue_number: parseInt(process.env.PR_NUMBER),
+#                 body,
+#               });
+#             }
