@@ -38,7 +38,7 @@ export function ReferralStep() {
         <div data-tutorial='referral-reason'>
           <label className='block text-sm font-medium text-gray-700 mb-1'>Reason for Referral</label>
           <div className='px-3 py-2 bg-gray-50 rounded border border-gray-200 text-sm text-gray-900'>
-            Probable primary hyperparathyroidism \u2014 requires specialist management. Elevated calcium (3.1 mmol/L) and PTH (12.5 pmol/L) with proximal muscle
+            Probable primary hyperparathyroidism requires specialist management. Elevated calcium (3.1 mmol/L) and PTH (12.5 pmol/L) with proximal muscle
             weakness and bone pain.
           </div>
         </div>

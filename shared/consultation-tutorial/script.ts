@@ -13,7 +13,7 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "I'm Lindiwe Nkosi. This we'll walk through a patient consultation, playing the role of Dr. Lufuno Zungu, a primary care doctor.",
+    text: "I'm Lindiwe Nkosi. In this tutorial, we'll walk through a patient consultation, playing the role of Dr. Lufuno Zungu, a primary care doctor.",
   },
   {
     type: 'dialogue',
@@ -264,6 +264,7 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text: "Nomsa's GP consultation has a co-payment of R150, which is collected from the patient at reception.",
+    position: 'top-right',
     highlight: CONSULTATION_TARGETS.BILLING_COPAYMENT,
   },
   {

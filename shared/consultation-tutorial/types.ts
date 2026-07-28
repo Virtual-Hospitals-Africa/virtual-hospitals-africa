@@ -58,7 +58,7 @@ export const CONSULTATION_SPEAKERS = {
   },
   endocrinologist: {
     name: 'Dr. Amahle Dlamini',
-    avatar_src: '/images/avatars/random/female/4.png',
+    avatar_src: '/amahle.png',
     bg_class: 'bg-rose-500',
     color: 'rose',
     role: 'Endocrinologist',
