@@ -14,6 +14,10 @@ export const handler = postHandler(
   async (ctx: OpenEncounterWorkflowContext, _form_values) => {
     const { trx, patient, organization_pathname, organization_employment } = ctx.state
 
+    // TODO: Workaround for waiting_room model design issue. The waiting_room strictly asserts
+    // that current_workflow must never be 'completed', but this prevents smooth workflow transitions.
+    // Better long-term fix: calculate current_workflow from workflows table or refactor the assertion.
+    // See: db/models/waiting_room.ts:134 (assertNotEquals) and line 199 (filter logic).
     // Clear current workflow before completing the step
     await patient_presence.set(trx, patient.id, {
       current_workflow: null,
