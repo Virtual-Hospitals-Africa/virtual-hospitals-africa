@@ -14,6 +14,12 @@ export const handler = postHandler(
   async (ctx: OpenEncounterWorkflowContext, _form_values) => {
     const { trx, patient, organization_pathname, organization_employment } = ctx.state
 
+    // Clear current workflow before completing the step
+    await patient_presence.set(trx, patient.id, {
+      current_workflow: null,
+      next_workflow: null,
+    })
+
     await completeLastStep(ctx)
 
     // The chart goes back to the colleague still awaiting orders in check_with_colleague
