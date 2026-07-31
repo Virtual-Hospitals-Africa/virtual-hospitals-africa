@@ -20,7 +20,7 @@ import { referrals } from '../../../../../db/models/referrals.ts'
 import first from '../../../../../util/first.ts'
 import { addSessionForEmployee, addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
 
-describeParallel('triage/additional_tasks_and_investigations', () => {
+describeParallel('triage/route_patient', () => {
   before(waitUntilTestServerUp)
   before(() => events.initializeAllProcessedPubSub())
   afterAll(() => db.destroy())

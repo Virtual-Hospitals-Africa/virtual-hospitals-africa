@@ -657,7 +657,6 @@ export interface InsuranceNetwork {
   email: string | null
   id: Generated<string>
   inactive_reason: string | null
-  is_active: Generated<boolean>
   location: string | null
   member_portal_url: string | null
   network_code: string | null
@@ -671,8 +670,8 @@ export interface InsuranceNetworkMembership {
   created_at: Generated<Timestamp>
   health_worker_id: string
   id: Generated<string>
+  inactive_reason: string | null
   insurance_network_id: string
-  is_active: Generated<boolean>
   member_since: Timestamp
   member_until: Timestamp | null
   membership_tier: string | null
@@ -930,8 +929,8 @@ export interface OrganizationInsuranceNetworkMembership {
   contract_terms: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
+  inactive_reason: string | null
   insurance_network_id: string
-  is_active: Generated<boolean>
   organization_id: string
   updated_at: Generated<Timestamp>
 }

@@ -18,6 +18,7 @@ import { ActionButton } from '../../../../../../../components/library/ActionButt
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../../../../../../util/haveNames.ts'
 import { employeeDisplay } from '../../../../../../../util/healthWorkerDisplay.ts'
+import { exists } from '../../../../../../../util/exists.ts'
 
 export type PatientProfileState = {
   patient: RenderedPatient & {
@@ -45,7 +46,7 @@ export const PatientProfilePage = (
     title,
     async function PatientContents(ctx) {
       const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
-      const { trx, organization_employment } = ctx.state
+      const { trx, organization_employment, health_worker } = ctx.state
 
       const {
         patient,
@@ -85,7 +86,7 @@ export const PatientProfilePage = (
       )
       assert(hasName(patient))
 
-      const action = open_encounter ? waiting_room.asWaitingRoomAction(open_encounter, organization_employment) : null
+      const action = open_encounter ? exists(waiting_room.asWaitingRoom(open_encounter, organization_employment, [health_worker]).actions[0]) : null
 
       const tabs = [
         'summary',
