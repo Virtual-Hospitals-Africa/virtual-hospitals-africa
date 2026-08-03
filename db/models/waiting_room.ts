@@ -2,11 +2,13 @@ import { assert } from 'std/assert/assert.ts'
 import {
   ExtendedActionData,
   HealthWorkerOrganization,
+  Maybe,
   RenderedHealthWorker,
   RenderedOrganization,
   RenderedPatientOpenEncounter,
   RenderedWaitingRoom,
   TrxOrDbOrQueryCreator,
+  WorkflowStatus,
 } from '../../types.ts'
 import { patient_encounters } from './patient_encounters.ts'
 import sortBy from '../../util/sortBy.ts'
@@ -28,6 +30,7 @@ import matching from '../../util/matching.ts'
 function asWaitingRoomAction(
   patient_encounter: RenderedPatientOpenEncounter,
   organization_employment: HealthWorkerOrganization,
+  workflow_status: Maybe<WorkflowStatus['status']>,
 ): ExtendedActionData {
   const {
     patient,
@@ -60,11 +63,19 @@ function asWaitingRoomAction(
       ),
   )
 
+  const disabled = !can_perform_action || with_employee_other_than_me
+
   return {
+    disabled,
     method: 'POST',
     href: `/app/organizations/${organization_employment.id}/patients/${patient.id}/open_encounter/start-workflow/${workflow_to_start}`,
-    text: with_employee_other_than_me && workflow_to_start !== 'check_with_colleague' ? `In ${workflow_to_start}` : workflow_to_start,
-    disabled: !can_perform_action || with_employee_other_than_me,
+    text: with_employee_other_than_me && workflow_to_start !== 'check_with_colleague'
+      ? `In ${workflow_to_start}`
+      : disabled
+      ? workflow_to_start
+      : workflow_status === 'in progress'
+      ? `Continue ${workflow_to_start}`
+      : `Start ${workflow_to_start}`,
   }
 }
 
@@ -157,7 +168,7 @@ function asWaitingRoom(
     present_employees,
     workflow_status_display: capitalize(workflow_status_display),
     arrived_ago_display: timeAgoDisplay(wait_time),
-    actions: [asWaitingRoomAction(patient_encounter, organization_employment)],
+    actions: [asWaitingRoomAction(patient_encounter, organization_employment, current_workflow_status?.status)],
   }
 }
 

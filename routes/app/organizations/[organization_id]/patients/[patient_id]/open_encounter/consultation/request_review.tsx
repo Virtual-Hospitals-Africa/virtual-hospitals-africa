@@ -1,4 +1,22 @@
-export const handler = () => new Response('TODO')
+import { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+
+export const handler = {
+  // deno-lint-ignore require-await
+  async POST(ctx: OpenEncounterWorkflowContext) {
+    const completing_step = completeAndProceedToNextStep(ctx)
+    return completing_step
+  },
+}
+
+export default OpenEncounterWorkflowPage(
+  function RequestReviewPage(
+    _ctx,
+  ) {
+    return <p>TODO</p>
+  },
+)
+
 // import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 // import { TabProps, Tabs } from '../../../../../../../../components/library/Tabs.tsx'
 // import hrefFromCtx from '../../../../../../../../util/hrefFromCtx.ts'

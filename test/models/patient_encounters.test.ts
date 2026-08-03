@@ -142,7 +142,7 @@ describeParallel('db/models/patient_encounters.ts', () => {
       workflow_status_display: 'Registration In Progress',
       actions: [{
         disabled: false,
-        text: 'registration',
+        text: 'Continue registration',
         method: 'POST',
         href: `/app/organizations/${organization_id}/patients/${patient.id}/open_encounter/start-workflow/registration`,
       }],
