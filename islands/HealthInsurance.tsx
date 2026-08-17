@@ -2,10 +2,12 @@ import { useSignal } from '@preact/signals'
 import FormSection from '../components/library/FormSection.tsx'
 import FormGrid from '../components/library/FormGrid.tsx'
 
-import { RenderedPatientInsurance } from '../types.ts'
+import { RenderedPatientInsurance, InsuranceNetworkSearchOption } from '../types.ts'
 import { CheckboxInput } from './form/inputs/checkbox.tsx'
 import { DateInput } from './form/inputs/date.tsx'
 import { TextInput } from './form/inputs/text.tsx'
+import InsuranceSearch from './InsuranceSearch.tsx'
+import { HiddenInput } from '../components/library/HiddenInput.tsx'
 
 export function HealthInsuranceSection(
   { current_insurance, previously_completed_form }: {
@@ -19,6 +21,15 @@ export function HealthInsuranceSection(
   const is_dependent_signal = useSignal(
     current_insurance?.is_dependent ?? false,
   )
+  const selected_insurance_signal = useSignal<InsuranceNetworkSearchOption | undefined>(
+    current_insurance
+      ? {
+          id: '',
+          business_name: current_insurance.insurance_provider,
+          avatar_media_id: undefined,
+        }
+      : undefined,
+  )
 
   return (
     <FormSection header='Current Insurance'>
@@ -30,14 +41,23 @@ export function HealthInsuranceSection(
       />
 
       <FormGrid columns={2}>
-        <TextInput
-          name='insurance.insurance_provider'
-          label='Provider'
-          placeholder='Search Health Insurance'
-          required
-          disabled={has_no_insurance_signal.value}
-          value={current_insurance?.insurance_provider}
-        />
+        <div>
+          <InsuranceSearch
+            name='insurance_provider_search'
+            label='Provider'
+            placeholder='Search Health Insurance'
+            search_route='/app/insurance-networks'
+            required={!has_no_insurance_signal.value}
+            disabled={has_no_insurance_signal.value}
+            signal={selected_insurance_signal}
+          />
+          {selected_insurance_signal.value && (
+            <HiddenInput
+              name='insurance.insurance_provider'
+              value={selected_insurance_signal.value.business_name}
+            />
+          )}
+        </div>
         <TextInput
           name='insurance.plan_name'
           label='Plan Name'
