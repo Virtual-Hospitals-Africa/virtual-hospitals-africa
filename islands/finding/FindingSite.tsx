@@ -7,17 +7,17 @@ import { Maybe, RenderedSnomedConcept } from '../../types.ts'
 const base_search_route = '/app/snomed/body-structure'
 
 function SingularFindingSiteSearch({ initial_value, onChange }: {
-  initial_value: RenderedSnomedConcept
+  initial_value?: Maybe<RenderedSnomedConcept>
   onChange(body_structures: RenderedSnomedConcept[]): void
 }) {
-  const params = new URLSearchParams({
+  const params = initial_value && new URLSearchParams({
     descendant_of_snomed_concept_name: initial_value.name,
     descendant_of_snomed_concept_category: initial_value.category,
   })
 
   return (
     <AsyncSearch<RenderedSnomedConcept>
-      search_route={`${base_search_route}?${params}`}
+      search_route={params ? `${base_search_route}?${params}` : base_search_route}
       value={initial_value}
       onSelect={(value) => onChange(value ? [value] : [])}
       placeholder='Search for a body structure...'

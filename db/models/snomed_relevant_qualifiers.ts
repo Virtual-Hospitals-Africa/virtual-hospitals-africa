@@ -30,6 +30,13 @@ export const snomed_relevant_qualifiers = base({
   formatResult: identity,
   async distinct(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) {
     const raw = await snomed_relevant_qualifiers.findAll(trx, { snomed_concept })
-    return raw.flatMap(({ s_expression }) => parseWithSchema(s_expression, finding_base).qualifiers)
+    const all = raw.flatMap(({ s_expression }) => parseWithSchema(s_expression, finding_base).qualifiers)
+    const seen = new Set<string>()
+    return all.filter((q) => {
+      const key = JSON.stringify(q)
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
   },
 })

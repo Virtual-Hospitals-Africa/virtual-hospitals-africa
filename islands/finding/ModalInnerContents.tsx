@@ -184,6 +184,11 @@ export function FindingModalInnerContents({
     })
   }
 
+  console.log({
+    search_within_finding_site,
+    'finding_sites.value': finding_sites.value,
+  })
+
   return (
     <>
       <div className='overflow-y-auto flex-1 px-6 pb-4 flex flex-col gap-5'>
