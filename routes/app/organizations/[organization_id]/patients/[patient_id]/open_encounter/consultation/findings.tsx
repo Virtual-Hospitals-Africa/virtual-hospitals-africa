@@ -10,7 +10,7 @@ export const handler = {
 }
 
 export default OpenEncounterWorkflowPage(
-  function ExaminationsPage(
+  function FindingsPage(
     _ctx,
   ) {
     return <p>TODO</p>
