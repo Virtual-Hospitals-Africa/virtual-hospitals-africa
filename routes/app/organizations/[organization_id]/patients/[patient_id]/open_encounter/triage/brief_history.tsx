@@ -25,6 +25,7 @@ import zip from '../../../../../../../../util/zip.ts'
 import { snomed_concept_finding_like } from '../../../../../../../../db/models/snomed_concept_finding_like.ts'
 import { patient_records_any_top_level } from '../../../../../../../../db/models/patient_records_any_top_level.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
+import BriefHistoryVoiceCommands from '../../../../../../../../islands/voice/BriefHistoryVoiceCommands.tsx'
 
 const ConditionSchemaOptional = z.object(
   {
@@ -268,13 +269,16 @@ export async function TriageBriefHistoryPage(
   })
 
   return (
-    <BriefHistorySection
-      most_recent_findings={most_recent_findings}
-      additional_chronic_conditions={additional_chronic_conditions}
-      existing_allergies={existing_allergies}
-      sex={patient.sex}
-      organization_id={organization_employment.id}
-    />
+    <>
+      <BriefHistorySection
+        most_recent_findings={most_recent_findings}
+        additional_chronic_conditions={additional_chronic_conditions}
+        existing_allergies={existing_allergies}
+        sex={patient.sex}
+        organization_id={organization_employment.id}
+      />
+      <BriefHistoryVoiceCommands />
+    </>
   )
 }
 

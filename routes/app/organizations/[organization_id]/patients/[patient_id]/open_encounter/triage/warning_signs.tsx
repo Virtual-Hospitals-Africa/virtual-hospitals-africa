@@ -36,6 +36,8 @@ import { brief_history } from '../../../../../../../../db/models/brief_history.t
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 import { subsets } from '../../../../../../../../util/subsets.ts'
 
+import VoiceMicButton from '../../../../../../../../islands/voice/VoiceMicButton.tsx'
+
 export const TriageWarningSignSchema = z.object({
   s_expression: sExpressionZodValidator(insertable_finding_base),
   existence: z.enum(['Yes', 'No']).optional().transform((existence) => existence || 'No'),
@@ -376,10 +378,13 @@ export async function TriageWarningSignsPage(
   }
 
   return (
-    <WarningSignsPage
-      search_route={`/app/snomed/warning-signs?${warning_signs_search_params}`}
-      warning_signs={Array.from(warning_signs)}
-    />
+    <>
+      <WarningSignsPage
+        search_route={`/app/snomed/warning-signs?${warning_signs_search_params}`}
+        warning_signs={Array.from(warning_signs)}
+      />
+      <VoiceMicButton />
+    </>
   )
 }
 
