@@ -25,6 +25,7 @@ import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { VitalAssessmentFormInputDefition, VitalMeasurementFormInputDefition } from '../../../../../../../../types.ts'
 import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
 import compact from '../../../../../../../../util/compact.ts'
+import zip from '../../../../../../../../util/zip.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { insertable_finding_base, measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
@@ -283,12 +284,21 @@ export const handler = postHandler(
         patient_age_determination,
         procedure_id: insert_result.procedure_id,
         records: [
-          ...insert_result.finding_ids,
-          ...insert_result.measurement_ids,
-        ].map((id) => ({
-          id,
-          existence: 'Yes' as const,
-        })),
+          // Assessments can be negative findings, like "no difficulty walking", so the
+          // rules engine must be told each finding's existence rather than assuming Yes.
+          ...Array.from(
+            zip(insert_result.finding_ids, assessments_to_insert).map((
+              [id, { existence }],
+            ) => ({
+              id,
+              existence,
+            })),
+          ),
+          ...insert_result.measurement_ids.map((id) => ({
+            id,
+            existence: 'Yes' as const,
+          })),
+        ],
       },
     })
 
