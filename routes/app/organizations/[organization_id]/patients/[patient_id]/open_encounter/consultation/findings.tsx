@@ -35,7 +35,7 @@ export default OpenEncounterWorkflowPage(
 
     return (
       <ul>
-        {prior_findings_this_encounter.map((finding) => <RecordPanel record={finding} organization_id={organization_id} />)}
+        {prior_findings_this_encounter.map((finding) => <RecordPanel key={finding.id} record={finding} organization_id={organization_id} />)}
       </ul>
     )
   },
