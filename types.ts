@@ -3072,6 +3072,8 @@ export type MailingListRecipient = {
   interest?: string | undefined
   message?: string | undefined
   support?: string | undefined
+  company_name?: string | undefined
+  job_title?: string | undefined
 }
 
 export type SidebarProps = {

@@ -16,6 +16,8 @@ const MailingListRecipientSchema = z.object({
   interest: z.string().optional(),
   message: z.string().optional(),
   support: z.string().optional(),
+  company_name: z.string().optional(),
+  job_title: z.string().optional(),
 })
 
 const success_messages = {

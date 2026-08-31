@@ -42,6 +42,12 @@ export default function SignupTemplate({ url, title, h1, entrypoint, rationale }
             <TextInput name='email' type='email' required />
           </FormRow>
           <FormRow>
+            <TextInput name='company_name' label='Company Name' />
+          </FormRow>
+          <FormRow>
+            <TextInput name='job_title' label='Job Title' />
+          </FormRow>
+          <FormRow>
             <SelectWithOther
               name='support'
               label='Any particular interest?'

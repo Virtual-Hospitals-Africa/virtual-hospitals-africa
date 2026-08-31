@@ -691,11 +691,13 @@ export interface Languages {
 }
 
 export interface MailingList {
+  company_name: string | null
   created_at: Generated<Timestamp>
   email: string
   entrypoint: string
   id: Generated<string>
   interest: string | null
+  job_title: string | null
   message: string | null
   name: string
   support: string | null
