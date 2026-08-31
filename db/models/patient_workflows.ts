@@ -163,6 +163,24 @@ export const patient_workflows = base({
       .onConflict((oc) => oc.constraint('patient_workflows_started_once').doNothing())
       .execute()
   },
+  async planOne(
+    trx: TrxOrDbOrQueryCreator,
+    encounter: RenderedPatientEncounter,
+    workflow: Workflow,
+    opts: {
+      create_rule: 'create_anew_every_time' | 'ignore_if_already_exists'
+    },
+  ) {
+    if (opts.create_rule === 'ignore_if_already_exists' && encounter.workflows[workflow]) return
+
+    await trx
+      .insertInto('patient_workflows')
+      .values({
+        patient_encounter_id: encounter.patient_encounter_id,
+        workflow,
+      })
+      .executeTakeFirstOrThrow()
+  },
   insertMany(
     trx: TrxOrDbOrQueryCreator,
     to_insert: InsertObject<

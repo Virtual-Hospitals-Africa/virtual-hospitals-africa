@@ -144,7 +144,7 @@ export default function MedicineCard(
       </div>
 
       {/* Footer */}
-      <div class='flex items-center justify-between border-t border-gray-200 px-3 py-3'>
+      <div class='flex items-start justify-between border-t border-gray-200 px-3 py-3'>
         {/* More info toggle */}
         <details class='group flex-1'>
           <summary class='flex items-center gap-1.5 py-1 cursor-pointer text-xs font-medium text-gray-500 list-none [&::-webkit-details-marker]:hidden'>
@@ -164,7 +164,7 @@ export default function MedicineCard(
                       {option.disorder} <AwareCircle aware={option.aware} />
                     </span>
                     {option.schedules.map((schedule, si) => (
-                      <div key={si} class='text-sm text-gray-800 bg-gray-50 rounded px-2 py-1.5'>
+                      <div key={si} class='text-sm text-gray-800'>
                         {schedule.age_classifier && (
                           <span class='text-xs uppercase tracking-wide text-gray-400 mr-1'>
                             [{schedule.age_classifier}]
