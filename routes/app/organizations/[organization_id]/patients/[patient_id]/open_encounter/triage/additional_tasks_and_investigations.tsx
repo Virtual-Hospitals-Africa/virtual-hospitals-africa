@@ -6,7 +6,7 @@ import AdditionalTasks from '../../../../../../../../components/triage/Additiona
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
-import { FindingNodeToInsert, MeasurementToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
+import { FindingNodeToInsert, InsertedRecord, MeasurementToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { measurement, to_be_done } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
@@ -14,7 +14,6 @@ import values from '../../../../../../../../util/values.ts'
 import { assert } from 'std/assert/assert.ts'
 import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import compactMap from '../../../../../../../../util/compactMap.ts'
-import zip from '../../../../../../../../util/zip.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { check_for, CheckForSchema } from '../../../../../../../../db/models/check_for.ts'
 import { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
@@ -52,7 +51,7 @@ const NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges = Symbol(
 
 type InsertedSummary = {
   procedure_id: string
-  records: { id: string; existence: 'Yes' | 'No' | 'Unknown' }[]
+  records: InsertedRecord[]
 } | typeof NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
 
 export const handler = postHandler(
@@ -110,7 +109,7 @@ export const handler = postHandler(
         return NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
       }
 
-      const { success, procedure_id, finding_ids, measurement_ids } = await patient_findings.insertMany(
+      const { success, procedure_id, findings, measurements } = await patient_findings.insertMany(
         trx,
         {
           patient_id,
@@ -127,19 +126,7 @@ export const handler = postHandler(
       assert(success)
       assert(procedure_id)
 
-      const finding_records = Array.from(
-        zip(finding_ids, findings_to_insert).map(([id, { existence }]) => ({
-          id,
-          existence,
-        })),
-      )
-
-      const measurement_records = measurement_ids.map((id) => ({
-        id,
-        existence: 'Yes' as const,
-      }))
-
-      return { procedure_id, records: [...finding_records, ...measurement_records] }
+      return { procedure_id, records: [...findings, ...measurements] }
     }
 
     function dispatchEvent(

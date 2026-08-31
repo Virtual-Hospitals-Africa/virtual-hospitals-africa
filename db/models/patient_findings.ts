@@ -1,5 +1,5 @@
-import { ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalString, literalUUIDArray, success_true } from '../helpers.ts'
+import { Existence, ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalJsonArray, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
 import { sql } from 'kysely'
@@ -11,6 +11,7 @@ import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { InsertableFindingBase, Lang, MeasurementComparison } from '../../shared/s_expression_schemas.ts'
 import { asNode } from '../../shared/s_expression.ts'
+import { asExistence } from '../../shared/existence.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
   DUE_TO,
@@ -71,6 +72,27 @@ type FindingsInsert = InsertCommon & {
   procedure: ExtantProcedureOrCreationIntent
   findings: Array<FindingNodeToInsert | string>
   measurements?: Array<MeasurementToInsert>
+}
+
+export type InsertedRecord = {
+  id: string
+  existence: Existence
+}
+
+/*
+  Callers dispatch events about what was just inserted, so they need each
+  record's existence alongside its id rather than having to derive it themselves.
+*/
+function insertedRecord(
+  { record_id, value_snomed_concept }: {
+    record_id: string
+    value_snomed_concept: Maybe<Lang['snomed_concept']>
+  },
+): InsertedRecord {
+  return {
+    id: record_id,
+    existence: asExistence(value_snomed_concept),
+  }
 }
 
 export const patient_findings = base({
@@ -468,8 +490,8 @@ export const patient_findings = base({
       .select([
         success_true,
         'inserting_procedure_record.id as procedure_id',
-        literalUUIDArray(findings_to_insert.map((f) => f.record_id)).as('finding_ids'),
-        literalUUIDArray(measurements_to_insert.map((m) => m.record_id)).as('measurement_ids'),
+        literalJsonArray(findings_to_insert.map(insertedRecord)).as('findings'),
+        literalJsonArray(measurements_to_insert.map(insertedRecord)).as('measurements'),
       ])
       .executeTakeFirstOrThrow()
   },

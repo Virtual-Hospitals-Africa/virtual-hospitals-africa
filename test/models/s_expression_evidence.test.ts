@@ -53,7 +53,7 @@ describeParallel('db/models/s_expression_evidence.ts', () => {
           ],
         },
       )
-      assert(irrelevant_findings.finding_ids[0])
+      assert(irrelevant_findings.findings[0])
 
       const anaphylaxis_possible_rule = findMatching(SYSTEM_DIAGNOSIS_RULES_PARSED, { description: 'Diagnose possible anaphylaxis' })
 
@@ -66,9 +66,9 @@ describeParallel('db/models/s_expression_evidence.ts', () => {
       assertEquals(
         result.contributing_records.sort(),
         [
-          inserted_findings.finding_ids[0],
-          inserted_findings.measurement_ids[0],
-        ].sort(),
+          ...inserted_findings.findings,
+          ...inserted_findings.measurements,
+        ].map((record) => record.id).sort(),
       )
     },
   )

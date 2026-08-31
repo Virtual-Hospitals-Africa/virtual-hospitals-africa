@@ -69,15 +69,13 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
     )
 
-    assert(inserted_findings.finding_ids[0])
+    const [inserted_finding] = inserted_findings.findings
+    assert(inserted_finding)
     const due_to_result = await due_to.determineFromNewRecords(db, {
       patient_id,
       patient_encounter_id,
       patient_age_determination: 'adult',
-      records: [{
-        id: inserted_findings.finding_ids[0],
-        existence: 'Yes',
-      }],
+      records: [inserted_finding],
     })
     assert(!isString(due_to_result))
     const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, due_to_result)
@@ -108,14 +106,15 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
     )
 
-    assert(inserted_findings.finding_ids[0])
+    const [inserted_finding] = inserted_findings.findings
+    assert(inserted_finding)
     const inserted_evalution = await patient_evaluations.insertOneNested(
       db,
       {
         patient_id,
         patient_encounter_id,
         by_system: true,
-        evaluates_record_id: inserted_findings.finding_ids[0],
+        evaluates_record_id: inserted_finding.id,
         evaluation: `(diagnosis (snomed_concept "Anaphylaxis" "disorder") possible)`,
       },
     ).executeTakeFirstOrThrow()
@@ -228,15 +227,13 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
     )
 
-    assert(inserted_findings.finding_ids[0])
+    const [inserted_finding] = inserted_findings.findings
+    assert(inserted_finding)
     const due_to_result = await due_to.determineFromNewRecords(db, {
       patient_id,
       patient_encounter_id,
       patient_age_determination: 'adult',
-      records: [{
-        id: inserted_findings.finding_ids[0],
-        existence: 'Yes',
-      }],
+      records: [inserted_finding],
     })
     assert(!isString(due_to_result))
     const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, due_to_result)
@@ -268,15 +265,13 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
     )
 
-    assert(inserted_findings.finding_ids[0])
+    const [inserted_finding] = inserted_findings.findings
+    assert(inserted_finding)
     const due_to_result = await due_to.determineFromNewRecords(db, {
       patient_id,
       patient_encounter_id,
       patient_age_determination: 'adult',
-      records: [{
-        id: inserted_findings.finding_ids[0],
-        existence: 'Yes',
-      }],
+      records: [inserted_finding],
     })
     assert(!isString(due_to_result))
     const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, due_to_result)
@@ -306,15 +301,13 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
     )
 
-    assert(inserted_findings.finding_ids[0])
+    const [inserted_finding] = inserted_findings.findings
+    assert(inserted_finding)
     const due_to_result = await due_to.determineFromNewRecords(db, {
       patient_id,
       patient_encounter_id,
       patient_age_determination: 'adult',
-      records: [{
-        id: inserted_findings.finding_ids[0],
-        existence: 'Yes',
-      }],
+      records: [inserted_finding],
     })
     assert(!isString(due_to_result))
     const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, due_to_result)
@@ -344,15 +337,13 @@ describeParallel('db/models/additional_tasks.ts', () => {
       },
     )
 
-    assert(inserted_findings.finding_ids[0])
+    const [inserted_finding] = inserted_findings.findings
+    assert(inserted_finding)
     const due_to_result = await due_to.determineFromNewRecords(db, {
       patient_id,
       patient_encounter_id,
       patient_age_determination: 'adult',
-      records: [{
-        id: inserted_findings.finding_ids[0],
-        existence: 'Yes',
-      }],
+      records: [inserted_finding],
     })
     assert(!isString(due_to_result))
     const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, due_to_result)

@@ -234,7 +234,7 @@ describeParallel('db/models/s_expression.ts', () => {
       `(clinical_finding (snomed_concept "Bite - wound" "disorder"))`,
     ).execute()
 
-    assertEquals(bite_result, [{ id: inserted_findings.finding_ids[0] }])
+    assertEquals(bite_result, [{ id: inserted_findings.findings[0]?.id }])
 
     const excluding_animal_bite_result = await buildExpression(
       db,
@@ -296,6 +296,6 @@ describeParallel('db/models/s_expression.ts', () => {
       `(no (clinical_finding (snomed_concept "Insect bite - wound" "disorder")))`,
     ).execute()
 
-    assertEquals(negative_insect_bite_result, [{ id: inserted_findings.finding_ids[0] }])
+    assertEquals(negative_insect_bite_result, [{ id: inserted_findings.findings[0]?.id }])
   })
 })
