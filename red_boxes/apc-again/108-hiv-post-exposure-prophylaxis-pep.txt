@@ -1,0 +1,53 @@
+Give urgent attention to the patient exposed to infectious fluid:
+• Exposure to blood, blood-stained fluid/tissue, pleural/pericardial/peritoneal/amniotic/synovial/cerebrospinal fluid, vaginal secretions, semen or breast milk
+• Human bite severe enough to cause bleeding
+Patient
+known HIV
+positive
+Avoid giving HIV PEP, give instead
+routine HIV care  111.
+• If broken skin, clean area immediately with soap and water.
+• If splash to eye, mouth or nose, immediately rinse mouth/nose or irrigate eye thoroughly with water.
+Positive
+Was there sexual contact, sharps injury, splash to eye/open wound/mouth/nose?
+STEP 2. Assess need for HIV PEP and give immediately if ≤ 72 hours since exposure:
+Patient HIV negative or unknown: give first dose of HIV PEP (as below), obtain consent and do HIV rapid test  110.
+• Give TDF 300mg + 3TC 300mg + DTG 50mg once daily for 28 days as a fixed combination tablet (TLD). If kidney
+disease, give instead AZT 300mg + 3TC 150mg 12 hourly plus DTG 50mg once daily.
+• Check for medication interactions and adjust doses if needed  118, especially TB and epilepsy treatment,
+contraceptives and other common medications like: calcium, iron, zinc, antacids, metformin.
+• If source is failing 2nd line ART, discuss PEP with HIV hotline  178.
+STEP 1. Give exposed patient immediate attention:
+Negative
+Give HIV PEP only if ≤ 72 hours since exposure (ideally within 1 hour) for 28 days:
+Yes
+Yes
+One positive and one negative
+Patient refuses HIV rapid test
+No
+• If human bite severe
+enough to cause
+bleeding, prevent
+hepatitis B only. Risk
+of HIV transmission
+negligible and there is
+no need for HIV PEP.
+• For all other exposures,
+reassure that HIV and
+hepatitis transmission
+is unlikely, avoid
+giving PEP.
+• If unsure, discuss with
+HIV hotline  178 or
+specialist.
+No
+STEP 3. Take blood from exposed patient: if giving TDF, do creatinine (eGFR). If giving AZT, do FBC + differential count.
+Send exposed patient’s blood for HBsAb titre (unless occupational exposure with documented HBsAb titre ≥ 10).
+STEP 4. Take blood from source, if possible and source consents:
+• Do rapid HIV test  110 and send blood for HBsAg and hepatitis C antibody. If case of human bite, only do HBsAg. If sexual exposure, also do syphilis.
+• If source HIV rapid negative, no need to continue PEP unless signs of acute HIV infection (history of flu-like symptoms - fever, sore throat, headache). If unsure, discuss PEP with HIV hotline  178.
+STEP 5. Give hepatitis B PEP if needed:
+If exposed patient has not previously had 3 doses of hepatitis B vaccine or unsure, give 1st dose of hepatitis B vaccine 1mL IM. If sharps injury, give within 7 days. If sexual exposure, within 14 days.
+STEP 6. Continue to assess and manage the patient:
+If sexual assault  88. If emergency contraception needed  154. Review patient and blood results within 3 days 109.
+AZT – zidovudine;   DTG – dolutegravir;   FTC – emtricitabine;   TDF – tenofovir;   3TC – lamivudine;   HBsAg – Hepatitis B surface antigen;   HBsAbs – Hepatitis B surface antibody

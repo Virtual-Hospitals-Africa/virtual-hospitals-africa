@@ -58,9 +58,16 @@ def get_red_rects(page):
 def get_page_number(page):
     """
     Read the printed page number.
-    All pages in this PDF are rotated 90°; the number sits at raw (550–610, 40–80).
+
+    Adult PDF (rotation=90): number sits at raw coords (550–610, 40–80).
+    Child PDF (rotation=0):  number sits at the top-right corner of the page.
     """
-    words = page.get_text("words", clip=fitz.Rect(550, 40, 610, 80))
+    if page.rotation == 0:
+        w = page.rect.width
+        clip = fitz.Rect(w - 65, 0, w, 25)
+    else:
+        clip = fitz.Rect(550, 40, 610, 80)
+    words = page.get_text("words", clip=clip)
     for w in words:
         text = w[4].strip()
         if re.match(r"^\d{1,3}$", text):

@@ -1,0 +1,9 @@
+Treat the HIV positive patient in labour
+• If on ART, continue ART throughout delivery. Check viral load, regardless of when last done, and review results at 3-6 day postnatal visit.
+• If not on ART, give together single dose NVP 200mg as early as possible in labour and single dose (TLD) TDF/3TC/DTG 300/300/50mg.
+Note: fill 'C#DELIVERY' in the code field on
+blood request form so VL not rejected.
+• Give ideally during early labour, and urgently if delivery is imminent.
+• Start mother on ART next day  114. Give mother 2 months ART supply.
+• Decide HIV transmission risk of HIV-exposed baby and give infant prophylaxis according to risk  168.
+DTG - dolutegravir;     FTC – emtricitabine;     NVP - nevirapine;     TDF – tenofovir;     3TC – lamivudine,     TLD - TDF/3TC/DTG or tenofovir/lamivudine/dolutegravir
