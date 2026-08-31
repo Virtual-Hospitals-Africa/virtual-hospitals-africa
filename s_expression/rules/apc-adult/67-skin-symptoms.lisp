@@ -39,7 +39,7 @@
   "Diagnose possible adverse drug reaction"
   (diagnosis
     (snomed_concept "Adverse reaction caused by drug" "disorder")
-    possible
+    probable
   )
   adult
   (and

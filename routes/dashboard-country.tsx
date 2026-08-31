@@ -1,5 +1,6 @@
 import { Fragment } from 'preact'
 import { PageProps } from 'fresh'
+import AnomalyDetection from '../components/dashboard/AnomalyDetection.tsx'
 import FilterBar from '../components/dashboard/FilterBar.tsx'
 import DateRangeInput from '../components/dashboard/filters/DateRangeInput.tsx'
 import { parseDateRange } from '../util/dashboard/filters.ts'
@@ -33,6 +34,7 @@ export default function DashboardCountry({ url }: PageProps) {
 
   return (
     <div class='min-h-screen bg-gray-50'>
+      <AnomalyDetection />
       <header class='border-b border-gray-200 bg-white'>
         <div class='mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-3 px-6 py-5'>
           <div>
