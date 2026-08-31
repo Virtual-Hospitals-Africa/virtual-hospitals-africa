@@ -30,7 +30,16 @@ describeParallel('triage/route_patient', () => {
     'routes to the referral placed page after referring an anaphylaxis case, creating a notification for another health worker',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Itching" "finding"))'
-      const { $: $additional_tasks, patient_encounter_id, shcp, postStep, getStep } = await setupTriageNewPatient({
+      const {
+        $: $additional_tasks,
+        patient_encounter_id,
+        nurse,
+        shcp,
+        postStep,
+        getStep,
+        openEncounterRoute,
+        encounter,
+      } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -129,6 +138,80 @@ describeParallel('triage/route_patient', () => {
         health_worker_id: shcp.id,
       })
       assertLength(notifications_of_shcp_post, 1)
+      const referral_notification = first(notifications_of_shcp_post)
+      assert(referral_notification)
+      assertEquals(referral_notification.notification_type, 'case_referral')
+      assertEquals(referral_notification.title, 'Chart review')
+      assert(
+        referral_notification.description.includes(nurse.health_worker.name),
+        `expected referrer name in description: ${referral_notification.description}`,
+      )
+      assert(
+        referral_notification.description.includes('Urgent'),
+        `expected priority in description: ${referral_notification.description}`,
+      )
+      assert(
+        referral_notification.description.includes('itching'),
+        `expected presenting issue in description: ${referral_notification.description}`,
+      )
+      assert(
+        referral_notification.description !== 'A case was referred to you to review',
+        `expected enriched description, got generic copy: ${referral_notification.description}`,
+      )
+      assertEquals(referral_notification.action.title, 'Review Chart')
+      assert(
+        referral_notification.action.href.endsWith('/open_encounter/review_chart'),
+        `expected review_chart action href, got ${referral_notification.action.href}`,
+      )
+      assert(
+        !referral_notification.action.href.includes('/start-workflow/chart_review'),
+        `notification action should not start chart_review workflow: ${referral_notification.action.href}`,
+      )
+      assertEquals(
+        referral_notification.action.href,
+        openEncounterRoute('review_chart'),
+      )
+
+      const shcp_with_session = await addSessionForEmployee(db, shcp)
+      const $review_chart = await shcp_with_session.fetchCheerio(
+        referral_notification.action.href,
+        { method: 'POST' },
+      )
+      assert(
+        $review_chart.url.endsWith('/open_encounter/review_chart'),
+        `expected review_chart page, got ${$review_chart.url}`,
+      )
+      assert($review_chart.text().includes('Patient Chart'))
+      assert($review_chart.text().includes('Back'))
+      assert(encounter.patient.name)
+      assert($review_chart.text().includes(encounter.patient.name))
+      assertEquals($review_chart('#patient-drawer-priority').text().trim(), 'Urgent')
+      assert(
+        $review_chart.text().toLowerCase().includes('itching'),
+        `expected itching finding on review_chart page: ${$review_chart('#review-chart-this-visit').text()}`,
+      )
+
+      const encounter_after_review = await patient_encounters.getById(db, patient_encounter_id)
+      assertEquals(
+        encounter_after_review.workflows.chart_review?.status,
+        'not started',
+        'notification Review Chart must not start chart_review',
+      )
+
+      const $review_chart_again = await shcp_with_session.fetchCheerio(
+        referral_notification.action.href,
+        { method: 'POST' },
+      )
+      assert(
+        $review_chart_again.url.endsWith('/open_encounter/review_chart'),
+        `expected review_chart to remain accessible, got ${$review_chart_again.url}`,
+      )
+      assert($review_chart_again.text().includes('Patient Chart'))
+      assertEquals(
+        (await patient_encounters.getById(db, patient_encounter_id)).workflows
+          .chart_review?.status,
+        'not started',
+      )
     },
   )
 
