@@ -17,7 +17,7 @@ import { WarningSign } from '../../../../../types.ts'
 import assertLength from '../../../../../util/assertLength.ts'
 import { getTableDisplay } from '../../../../_helpers/table.ts'
 import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
-import { CLINICAL_FINDING, STATUS_ATTRIBUTE } from '../../../../../shared/snomed_concepts.ts'
+import { CLINICAL_FINDING, PAIN_LEVEL, SEVERE_PAIN, STATUS_ATTRIBUTE } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { asWarningSignsAdult, asWarningSignsOlderChild, setupTriageNewPatient } from './_setup.ts'
@@ -31,6 +31,11 @@ import { getGridDisplay } from 'test/_helpers/grid.ts'
 import { nobreak } from '../../../../../util/nobreak.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+
+const COUGH = '(clinical_finding (snomed_concept "Cough" "finding"))'
+
+/* What the finding modal's pain level input produces, see islands/finding/PainLevel.tsx */
+const COUGH_WITH_SEVERE_PAIN = `(clinical_finding (snomed_concept "Cough" "finding") (attribute ${PAIN_LEVEL.s_expression} ${SEVERE_PAIN.s_expression}))`
 
 describeParallel('triage/warning_signs', () => {
   before(waitUntilTestServerUp)
@@ -72,14 +77,12 @@ describeParallel('triage/warning_signs', () => {
             'HaemorrhageUncontrolled',
             'Dislocation of larger jointnot finger or toe',
             'Compound fracturewith a break in the skin',
-            'Severe pain',
             'BurnModerate severity',
           ],
           'Urgent': [
             'Persistent vomiting',
             'Dislocation of finger',
             'Closed fractureno break in the skin',
-            'Moderate pain',
             'BurnOther',
             'HaemorrhageControlled',
             'Dislocation of toe joint',
@@ -974,6 +977,44 @@ describeParallel('triage/warning_signs', () => {
       },
     )
 
+    itParallel(
+      'a cough on its own gets no priority',
+      async () => {
+        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+          patient_demographics: {},
+          warning_signs: asWarningSignsAdult([], { pregnant: false }, COUGH),
+        })
+
+        await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+        assertMatches(await patient_findings.findAll(db, { patient_id }), [{
+          specific_snomed_concept_name: 'Cough',
+          priority: null,
+        }])
+      },
+    )
+
+    itParallel(
+      'a cough with a severe pain level is marked Very urgent by the pain level system priority evaluation',
+      async () => {
+        const { patient_id, patient_encounter_id } = await setupTriageNewPatient({
+          patient_demographics: {},
+          warning_signs: asWarningSignsAdult([], { pregnant: false }, COUGH_WITH_SEVERE_PAIN),
+        })
+
+        await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+        assertMatches(await patient_findings.findAll(db, { patient_id }), [{
+          specific_snomed_concept_name: 'Cough',
+          priority: 'Very urgent',
+          attributes: [{
+            specific_snomed_concept_name: PAIN_LEVEL.name,
+            value: { name: SEVERE_PAIN.name },
+          }],
+        }])
+      },
+    )
+
     function testRoundTrip(sign: WarningSign, pregnant: boolean, opts?: TestOpts) {
       itParallel(
         `renders the page with the ${sign.key} sign checked after having submitted it (TODO emergency logic will be different probably)`,
@@ -1045,10 +1086,8 @@ describeParallel('triage/warning_signs', () => {
             'Haemorrhage Uncontrolled',
             'Eye injury',
             'Dislocation of larger joint',
-            'Severe pain',
             'Closed fracture',
             'Pregnancy and abdominal trauma',
-            'Moderate pain',
             'Haemorrhage Controlled',
             'Abdominal pain',
           ])

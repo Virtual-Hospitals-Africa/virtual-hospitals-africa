@@ -1,10 +1,12 @@
 import { useSignal, useSignalEffect } from '@preact/signals'
 import { useRef } from 'preact/hooks'
-import { AugmentedSign, BySExpressionResult, Maybe, NonEmptyArray, RenderedSnomedConcept } from '../../types.ts'
+import { AugmentedSign, BySExpressionResult, Maybe, NonEmptyArray, RenderedSnomedConcept, SnomedConcept } from '../../types.ts'
 import { FindingSite } from './FindingSite.tsx'
+import { PainLevel } from './PainLevel.tsx'
 import { QualifierSearch } from './QualifierSearch.tsx'
 import { groupBy } from '../../util/groupBy.ts'
-import { ATTRIBUTE, EVENT, FINDING_SITE, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
+import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
+import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
 import { Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
 import { findingToDisplayableRecord, formatRecord } from '../../shared/patient_records.ts'
@@ -25,6 +27,13 @@ function getPredefinedFindingSite(attributes_map: Map<string, NonEmptyArray<Lang
   if (!finding_site) return
   assert(isSnomedConceptAttribute(finding_site))
   return finding_site
+}
+
+function getPainLevel(attributes_map: Map<string, NonEmptyArray<Lang['attribute']>>): Maybe<SnomedConcept> {
+  const pain_level = attributes_map.get(PAIN_LEVEL.name)?.[0]
+  if (!pain_level) return
+  assert(isSnomedConceptAttribute(pain_level))
+  return PAIN_LEVELS.find(({ concept }) => concept.name === pain_level.value.name)?.concept
 }
 
 export function FindingModalInnerContents({
@@ -53,6 +62,10 @@ export function FindingModalInnerContents({
     return { id: '@@triggersearch', snomed_concept_id: '@@triggersearch', ...s.value }
   }))
 
+  const pain_level = useSignal<Maybe<SnomedConcept>>(
+    getPainLevel(all_augmented_attributes) || getPainLevel(all_original_attributes),
+  )
+
   const initial_qualifiers = augmented_node?.qualifiers ?? []
   const qualifiers = useSignal<RenderedSnomedConcept[]>(initial_qualifiers.map((q) => ({
     id: '@@triggersearch',
@@ -63,7 +76,6 @@ export function FindingModalInnerContents({
 
   const mounted = useRef(false)
   useSignalEffect(() => {
-    qualifiers.value
     if (!mounted.current) {
       mounted.current = true
       return
@@ -92,6 +104,33 @@ export function FindingModalInnerContents({
       })
       return !identical_finding_site_already_existed
     })
+
+    const pain_level_already_existed = (all_original_attributes.get(PAIN_LEVEL.name) || []).some((attribute) => {
+      assert(attribute.value.atom === 'snomed_concept')
+      return attribute.value.name === pain_level.value?.name
+    })
+
+    if (pain_level.value && !pain_level_already_existed) {
+      any_updates = true
+      new_node.attributes.push({
+        atom: 'attribute' as const,
+        root_snomed_concept: {
+          atom: 'snomed_concept' as const,
+          name: ATTRIBUTE.name,
+          category: ATTRIBUTE.category,
+        },
+        specific_snomed_concept: {
+          atom: 'snomed_concept' as const,
+          name: PAIN_LEVEL.name,
+          category: PAIN_LEVEL.category,
+        },
+        value: {
+          atom: 'snomed_concept' as const,
+          name: pain_level.value.name,
+          category: pain_level.value.category,
+        },
+      })
+    }
 
     if (qualifiers.value.length) {
       any_updates = true
@@ -184,17 +223,19 @@ export function FindingModalInnerContents({
     })
   }
 
-  console.log({
-    search_within_finding_site,
-    'finding_sites.value': finding_sites.value,
-  })
-
   return (
     <>
       <div className='overflow-y-auto flex-1 px-6 pb-4 flex flex-col gap-5'>
         <OnsetRow
           onChange={(value) => {
             dates.value = value
+            runOnChange()
+          }}
+        />
+        <PainLevel
+          value={pain_level.value}
+          onChange={(value) => {
+            pain_level.value = value
             runOnChange()
           }}
         />

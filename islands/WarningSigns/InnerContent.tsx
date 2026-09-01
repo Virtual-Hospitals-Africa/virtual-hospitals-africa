@@ -53,15 +53,16 @@ export default function WarningSignsInnerContent({
   )
 
   function onCheck(sign: CheckedWarningSign) {
+    const selected_sign = { ...sign, checked: true as const }
     selected_signs.value = selected_signs.value = [
       ...selected_signs.value,
-      { ...sign, checked: true },
+      selected_sign,
     ]
     if (search_results.value) {
       search_results.value = null
       snomed_warning_signs_async_search.setQuery('')
-      return
     }
+    active_modal_sign.value = selected_sign
   }
 
   function onUncheck(sign: CheckedWarningSign) {
