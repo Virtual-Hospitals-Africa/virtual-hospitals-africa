@@ -6,6 +6,7 @@ import { assert } from 'std/assert/assert.ts'
 import { Client } from 'pg'
 import { once } from '../util/once.ts'
 import { isUUID } from '../util/uuid.ts'
+import { forEach } from '../util/inParallel.ts'
 
 export type EventProcessor = {
   start(): void
@@ -87,15 +88,21 @@ async function onEventListener(event_listener_id: string) {
   }
 }
 
-function processAllUnprocessedOnStartup(client: Client) {
-  client.query(`
-    select id
-      from event_listeners
-     where started_processing_at is null
-  `).then(({ rows }) => {
-    for (const { id } of rows) {
-      onEventListener(id)
-    }
+const STARTUP_CONCURRENCY = 4
+
+function processAllUnprocessedOnStartup() {
+  const unprocessed = db
+    .selectFrom('event_listeners')
+    .select('id')
+    .where('started_processing_at', 'is', null)
+    .stream()
+
+  forEach(
+    unprocessed,
+    ({ id }) => onEventListener(id),
+    { concurrency: STARTUP_CONCURRENCY },
+  ).then(() => {
+    console.log('Processed startup backlog')
   }).catch((err) => {
     console.error(err)
     Deno.exit(1)
@@ -109,7 +116,7 @@ const initializeEventListener = once(
     await client.connect()
     await client.query(`LISTEN event_listener_to_be_processed`)
 
-    processAllUnprocessedOnStartup(client)
+    processAllUnprocessedOnStartup()
 
     client.on('notification', function (event) {
       const { payload: event_listener_id } = event
