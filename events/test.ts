@@ -91,7 +91,7 @@ function processAllUnprocessedOnStartup(client: Client) {
   client.query(`
     select id
       from event_listeners
-     where started_processing_at is null
+      where started_processing_at is null
   `).then(({ rows }) => {
     for (const { id } of rows) {
       onEventListener(id)
