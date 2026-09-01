@@ -76,8 +76,10 @@ describeParallel('/login', () => {
     })
 
     itParallel('redirects from /login to /app', async () => {
+      const organization = await createTestOrganization(db)
       const mock = await addTestEmployeeWithSession(db, {
         role: sample(['admin', 'doctor', 'nurse']),
+        organization_id: organization.id,
       })
 
       const response = await mock.fetch(`/login`, {

@@ -8,6 +8,7 @@ export default function PatientDrawerV4({
   patient,
   priority,
   priority_evaluation,
+  current_workflow,
   this_visit_findings,
   this_visit_diagnoses,
   patient_history,
@@ -26,6 +27,7 @@ export default function PatientDrawerV4({
         priority_evaluation={priority_evaluation}
       />
       <DrawerThisVisit
+        current_workflow={current_workflow}
         this_visit_findings={this_visit_findings}
         this_visit_diagnoses={this_visit_diagnoses}
         organization_id={organization_id}

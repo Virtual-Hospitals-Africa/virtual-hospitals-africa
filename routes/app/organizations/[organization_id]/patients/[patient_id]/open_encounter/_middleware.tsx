@@ -415,6 +415,7 @@ export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, c
       steps_completed={ctx.state.workflow_status.steps_completed}
       care_team={[]}
       sidebar_bottom={<HealthWorkerSidebarBottom employee={ctx.state.employee} />}
+      current_workflow={ctx.state.workflow}
       {
         // care_team={ctx.state.patient.primary_doctor
         //   ? [{ ...ctx.state.patient.primary_doctor, role: 'doctor' }]

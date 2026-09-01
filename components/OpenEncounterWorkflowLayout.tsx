@@ -73,6 +73,7 @@ export function OpenEncounterWorkflowLayout({
             priority={priority}
             priority_evaluation={priority_evaluation}
             organization_id={organization_id}
+            current_workflow={workflow}
             this_visit_findings={this_visit_findings}
             this_visit_diagnoses={this_visit_diagnoses}
             patient_history={patient_history}

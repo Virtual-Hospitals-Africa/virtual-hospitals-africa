@@ -146,6 +146,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         patient_history={EMPTY_PATIENT_HISTORY}
         ContainerTag='div'
         workflow='triage'
+        current_workflow='triage'
         care_team={[]}
         sidebar_bottom={
           <div className='space-y-3'>

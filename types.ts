@@ -2469,6 +2469,7 @@ export type PatientDrawerV4Props = {
   priority: RenderedPatientEncounter['priority']
   priority_evaluation: RenderedEvaluationRelativeToHealthWorker | null
   organization_id: string
+  current_workflow: Workflow
   this_visit_findings: RenderedSidebarWorkflow[]
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
