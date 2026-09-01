@@ -216,6 +216,7 @@ export function FindingModalInnerContents({
     }
 
     const s_expression = inverseSExpression(new_node)
+    console.log({ s_expression })
     const full_display = formatRecord(findingToDisplayableRecord(new_node)).displays.full
     onChange({
       s_expression,

@@ -47,6 +47,7 @@ export function FindingModalContents(
   }, [finding.clinical_finding_s_expression])
 
   function handleSave() {
+    console.log('handleSave', finding, augmented.value)
     onSave(finding, augmented.value)
     onClose()
   }

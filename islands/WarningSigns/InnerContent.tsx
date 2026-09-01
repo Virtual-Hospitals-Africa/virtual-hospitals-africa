@@ -75,6 +75,7 @@ export default function WarningSignsInnerContent({
   }
 
   function onSaveDetails(sign: SelectedWarningSign, augmented_sign: Maybe<AugmentedSign>) {
+    console.log({ sign, augmented_sign })
     selected_signs.value = selected_signs.value.map((s) =>
       uniqueIdentifier(s) === uniqueIdentifier(sign) ? { ...s, augmented: augmented_sign ?? undefined } : s
     )
