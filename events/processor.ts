@@ -96,6 +96,9 @@ function processAllUnprocessedOnStartup(client: Client) {
     for (const { id } of rows) {
       onEventListener(id)
     }
+  }).catch((err) => {
+    console.error(err)
+    Deno.exit(1)
   })
 }
 
