@@ -5,6 +5,7 @@ import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { VitalsMeasurementsForm } from '../../../../../../../../components/vitals/MeasurementsForm.tsx'
 import {
+  ASESSMENT_OPTIONS,
   getScoreForAssessment,
   getScoreForMeasurement,
   measureVitalsInputDefinitions,
@@ -114,8 +115,8 @@ export const handler = postHandler(
 
     // Prepare assessments for bulk insert
     const assessments_to_insert = compact(
-      entries(form_values.assessments).map(([vital, assessment]) => {
-        if (!assessment) return undefined
+      entries(form_values.assessments).flatMap(([vital, assessment]) => {
+        if (!assessment) return []
         assert(assessment.s_expression)
         const score = getScoreForAssessment(
           patient_age_determination,
@@ -123,7 +124,7 @@ export const handler = postHandler(
           assessment.s_expression,
         )
         const evaluation_snomed_concept = VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS[vital]
-        return {
+        const positive_assessment = {
           ...assessment.s_expression,
           score: score != null
             ? {
@@ -132,6 +133,32 @@ export const handler = postHandler(
             }
             : undefined,
         }
+        if (score !== 0) return [positive_assessment]
+
+        // The patient is normal for this vital, so explicitly record that each
+        // abnormal option was checked for and not found.
+        const negative_assessments = compact(
+          ASESSMENT_OPTIONS[vital]
+            .filter((option) =>
+              option.score > 0 &&
+              option.available_to_ages.includes(patient_age_determination)
+            )
+            .map((option) => {
+              // An option that already asserts a value, like "Ability to move: Abnormal for age",
+              // can't be wrapped in (no ...). The 0 score option recorded above states the opposite.
+              const { value_snomed_concept } = parseWithSchema(
+                option.s_expression,
+                insertable_finding_base,
+              )
+              if (value_snomed_concept) return
+              return parseWithSchema(
+                `(no ${option.s_expression})`,
+                insertable_finding_base,
+              )
+            }),
+        )
+
+        return [positive_assessment, ...negative_assessments]
       }),
     )
 
@@ -177,8 +204,8 @@ export const handler = postHandler(
         return Promise.resolve({
           success: true,
           procedure_id: completed_procedure.procedure_id,
-          finding_ids: [],
-          measurement_ids: [],
+          findings: [],
+          measurements: [],
         })
       }
 
@@ -255,13 +282,7 @@ export const handler = postHandler(
         patient_encounter_id,
         patient_age_determination,
         procedure_id: insert_result.procedure_id,
-        records: [
-          ...insert_result.finding_ids,
-          ...insert_result.measurement_ids,
-        ].map((id) => ({
-          id,
-          existence: 'Yes' as const,
-        })),
+        records: [...insert_result.findings, ...insert_result.measurements],
       },
     })
 

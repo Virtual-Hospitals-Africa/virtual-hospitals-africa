@@ -22,6 +22,7 @@ import { referrals } from '../../../../../../../../db/models/referrals.ts'
 import { positiveRecordsFromEncounter } from '../../../../../../../../shared/recommended_dose_calculator/patient_case_from_encounter.ts'
 import { PatientCaseSchema } from '../../../../../../../../shared/recommended_doses.ts'
 import { recommended_dose_calculator } from '../../../../../../../../db/models/recommended_dose_calculator.ts'
+import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
 
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
@@ -32,7 +33,7 @@ export const TriageRoutePatientSchema = z.object({
 export const handler = postHandler(
   TriageRoutePatientSchema,
   async (ctx: OpenEncounterWorkflowContext, { next_step, health_worker_ids_to_be_notified }) => {
-    const { trx, patient, patient_encounter_id, organization, organization_employment, health_worker_id } = ctx.state
+    const { trx, encounter, patient, patient_encounter_id, organization, organization_employment, health_worker_id } = ctx.state
 
     assert(completedPersonal(patient))
     const completing_last_step = completeLastStep(ctx)
@@ -55,6 +56,12 @@ export const handler = postHandler(
               organization_employment.employment_id,
             )
             .execute(),
+          patient_workflows.planOne(
+            trx,
+            encounter,
+            'consultation' as const,
+            { create_rule: 'ignore_if_already_exists' },
+          ),
         ])
 
         const redirect_success_message = `Please escort ${patient.names.preferred_name} to the waiting room to await consultation.`

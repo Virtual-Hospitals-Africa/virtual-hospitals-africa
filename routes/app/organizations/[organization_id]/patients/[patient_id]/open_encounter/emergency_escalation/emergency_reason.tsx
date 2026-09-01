@@ -3,7 +3,7 @@ import type { OpenEncounterWorkflowContext } from '../../../../../../../../types
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSignsPage from '../../../../../../../../islands/WarningSigns/Page.tsx'
-import { FindingNodeToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
+import { FindingNodeToInsert, InsertedRecord, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
@@ -20,7 +20,6 @@ import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
 
 import { assertOr409 } from '../../../../../../../../util/assertOr.ts'
-import zip from '../../../../../../../../util/zip.ts'
 import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 import { now } from '../../../../../../../../db/helpers.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
@@ -54,7 +53,7 @@ const NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges = Symbol(
 
 type InsertedSummary = {
   procedure_id: string
-  records: { id: string; existence: 'Yes' | 'No' }[]
+  records: InsertedRecord[]
 } | typeof NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
 
 export const handler = postHandler(
@@ -128,7 +127,7 @@ export const handler = postHandler(
         return NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
       }
 
-      const { success, procedure_id, finding_ids } = await patient_findings.insertMany(
+      const { success, procedure_id, findings } = await patient_findings.insertMany(
         trx,
         {
           patient_id,
@@ -144,14 +143,7 @@ export const handler = postHandler(
       assert(success)
       assert(procedure_id)
 
-      const records = Array.from(
-        zip(finding_ids, needing_insert).map(([id, { existence }]) => ({
-          id,
-          existence,
-        })),
-      )
-
-      return { records, procedure_id }
+      return { records: findings, procedure_id }
     }
 
     function dispatchEvent(

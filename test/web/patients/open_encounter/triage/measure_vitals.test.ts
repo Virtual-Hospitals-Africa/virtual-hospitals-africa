@@ -1076,6 +1076,8 @@ describeParallel('triage/measure_vitals', () => {
       { ...DEFAULT_MEASUREMENTS['adult'], heart_rate: 150 },
       DEFAULT_ASSESSMENTS['adult'],
       baseScores({ 'Pulse, function': 3 }),
+      // { expected_task_groups: [] },
+      // { only: true }
     )
 
     // =========================================

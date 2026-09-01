@@ -6,6 +6,7 @@ import partition from '../util/partition.ts'
 import { assertArrayEmpty } from '../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import { isAtom, Units, UNITS_ARRAY } from './s_expression.ts'
+import { asExistence } from './existence.ts'
 import { AgeDetermination, Coordinates, Existence, Maybe, NonNullableProperty } from '../types.ts'
 import { snomed_category } from '../util/validators.ts'
 import { SnomedCategory, WarningSignPriority } from '../db.d.ts'
@@ -303,17 +304,6 @@ function isAttribute(node: AnyNode): node is Lang['attribute'] {
 
 function isExcluding(node: AnyNode): node is Lang['excluding'] {
   return node.atom === 'excluding'
-}
-
-function asExistence(value_snomed_concept: Maybe<Lang['snomed_concept']>): Existence {
-  switch (value_snomed_concept?.name) {
-    case 'No':
-      return 'No'
-    case 'Unknown':
-      return 'Unknown'
-    default:
-      return 'Yes'
-  }
 }
 
 export const finding_base: z.ZodType<Lang['finding']> = z.lazy(() =>

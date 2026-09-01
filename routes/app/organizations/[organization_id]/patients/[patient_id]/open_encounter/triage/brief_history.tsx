@@ -21,7 +21,6 @@ import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { parseWithSchema } from '../../../../../../../../shared/s_expression.ts'
 import { insertable_finding_base, InsertableFindingBase } from '../../../../../../../../shared/s_expression_schemas.ts'
-import zip from '../../../../../../../../util/zip.ts'
 import { snomed_concept_finding_like } from '../../../../../../../../db/models/snomed_concept_finding_like.ts'
 import { patient_records_any_top_level } from '../../../../../../../../db/models/patient_records_any_top_level.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
@@ -198,10 +197,7 @@ export const handler = postHandler(
           patient_encounter_id,
           patient_age_determination,
           procedure_id: insert_result.procedure_id,
-          records: zip(insert_result.finding_ids, findings_to_insert).map(([id, finding]) => ({
-            id,
-            existence: finding.existence,
-          })).toArray(),
+          records: insert_result.findings,
         },
       })
     }

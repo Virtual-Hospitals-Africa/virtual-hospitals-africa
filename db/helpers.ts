@@ -130,6 +130,14 @@ export function literalUUIDArray(ids: string[]): RawBuilder<string[]> {
   return sql<string[]>`ARRAY[${sql.join(ids.map((id) => sql.lit(id)), sql`, `)}]::uuid[]`
 }
 
+/*
+  Select a value known in javascript as a json array, useful for returning what
+  a query just inserted alongside the query's own results.
+*/
+export function literalJsonArray<T>(values: T[]): RawBuilder<T[]> {
+  return sql<T[]>`${sql.lit(JSON.stringify(values))}::json`
+}
+
 /**
  * A postgres helper for turning a subquery (or other expression) into a JSON object.
  *

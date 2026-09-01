@@ -93,12 +93,12 @@ describeParallel('consultation', () => {
       const start_consultation_action = $waiting_room('[data-column="actions"] form').attr('action')!
       assertEquals(start_consultation_action, `/app/organizations/${clinic.id}/patients/${patient_id}/open_encounter/start-workflow/consultation`)
 
-      const $consultation_examinations = await shcp_session.fetchCheerio(start_consultation_action, {
+      const $consultation_findings = await shcp_session.fetchCheerio(start_consultation_action, {
         method: 'POST',
       })
-      assert(new URL($consultation_examinations.url).pathname.endsWith('/examinations'))
+      assert(new URL($consultation_findings.url).pathname.endsWith('/findings'))
 
-      const $consultation_diagnoses = await shcp_session.fetchCheerio($consultation_examinations.url, {
+      const $consultation_diagnoses = await shcp_session.fetchCheerio($consultation_findings.url, {
         method: 'POST',
       })
       assert(new URL($consultation_diagnoses.url).pathname.endsWith('/diagnoses'))

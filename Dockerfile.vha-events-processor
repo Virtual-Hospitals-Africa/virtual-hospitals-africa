@@ -7,6 +7,7 @@ RUN deno install
 COPY events ./events
 COPY util ./util
 COPY shared ./shared
+COPY backend ./backend
 COPY external-clients ./external-clients
 COPY db/models ./db/models
 COPY db/db.ts ./db/db.ts

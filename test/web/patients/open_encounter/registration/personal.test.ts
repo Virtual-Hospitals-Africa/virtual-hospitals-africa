@@ -3,7 +3,7 @@ import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import db from '../../../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../../../_helpers/employees.ts'
-import { TEST_ORGANIZATION_UUIDS } from '../../../../_helpers/organizations.ts'
+import { createTestOrganization } from '../../../../_helpers/organizations.ts'
 import { isUUID } from '../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../mocks/randomPhoneNumber.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
@@ -37,12 +37,14 @@ describeParallel(
     itParallel(
       'is accessed immediately after the start-registration process',
       async () => {
+        const organization = await createTestOrganization(db)
         const { fetchCheerio, fetchOk } = await addTestEmployeeWithSession(db, {
           role: 'receptionist',
+          organization_id: organization.id,
         })
 
         const $ = await fetchCheerio(
-          `/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/start-registration`,
+          `/app/organizations/${organization.id}/patients/start-registration`,
           {
             method: 'POST',
           },
@@ -69,7 +71,7 @@ describeParallel(
 
         assertEquals(
           response.url,
-          `${route}/app/organizations/${TEST_ORGANIZATION_UUIDS.ZA.clinic}/patients/${patient_id}/open_encounter/registration/this_visit`,
+          `${route}/app/organizations/${organization.id}/patients/${patient_id}/open_encounter/registration/this_visit`,
         )
       },
     )

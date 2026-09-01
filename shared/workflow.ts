@@ -101,7 +101,7 @@ export const WORKFLOW_STEPS = {
     'monitor_patient',
   ],
   consultation: [
-    'examinations',
+    'findings',
     'diagnoses',
     'prescriptions',
     'orders',
