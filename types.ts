@@ -3211,12 +3211,13 @@ export type OpenEncounterWorkflowContext<T = Record<never, never>> = LoggedInHea
 >
 
 export type FindingRelatedModifiers = {
-  predefined_attributes: Lang['attribute'][]
-  relevant_qualifiers: Lang['qualifier'][]
+  predefined_attributes: {
+    s_expression: string
+  }[]
+  relevant_qualifiers: {
+    s_expression: string
+  }[]
 }
-
-export type BySExpressionResult = InsertableFindingBase & FindingRelatedModifiers
-
 export type TasksDividedByPermission = {
   tasks_i_can_do_without_approval_needed: RenderedManageTaskToBeDone[]
   tasks_i_can_do_with_approval: RenderedManageTaskToBeDone[]

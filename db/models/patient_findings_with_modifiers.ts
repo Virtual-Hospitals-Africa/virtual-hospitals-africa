@@ -26,10 +26,5 @@ export const patient_findings_with_modifiers = base({
         ).as('relevant_qualifiers'),
       ])
   },
-  formatResult({ relevant_qualifiers, ...row }) {
-    return {
-      ...formatRecord(row),
-      relevant_qualifiers: snomed_relevant_qualifiers.asUniqueQualifiers(relevant_qualifiers),
-    }
-  },
+  formatResult: formatRecord,
 })

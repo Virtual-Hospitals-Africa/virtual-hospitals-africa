@@ -45,7 +45,7 @@ export const snomed_warning_signs = base({
         ).as('relevant_qualifiers'),
       ])
   },
-  formatResult({ id: snomed_concept_id, relevant_qualifiers, ...result }): SnomedWarningSignSearchResult {
+  formatResult({ id: snomed_concept_id, ...result }): SnomedWarningSignSearchResult {
     const concept_s_expression = asConceptSExpression(result)
     const clinical_finding_s_expression = `(clinical_finding ${concept_s_expression})`
     return {
@@ -54,7 +54,6 @@ export const snomed_warning_signs = base({
       snomed_concept_id,
       category: 'Search Results' as const,
       description: result.category,
-      relevant_qualifiers: snomed_relevant_qualifiers.asUniqueQualifiers(relevant_qualifiers),
     }
   },
 })

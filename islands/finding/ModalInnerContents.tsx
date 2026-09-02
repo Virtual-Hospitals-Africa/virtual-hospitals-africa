@@ -7,7 +7,7 @@ import { QualifierSearch } from './QualifierSearch.tsx'
 // import { groupBy } from '../../util/groupBy.ts'
 import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
 // import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
-import { Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
+import { attribute, Lang, qualifier, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
@@ -17,6 +17,7 @@ import compact from '../../util/compact.ts'
 import { higherPriority } from '../../shared/priorities.ts'
 import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
 import { exists } from '../../util/exists.ts'
+import { parseWithSchema } from '../../shared/s_expression.ts'
 
 function isFindingSite(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
   return attribute.specific_snomed_concept.name === FINDING_SITE.name
@@ -33,8 +34,8 @@ export function FindingModalInnerContents({
   finding: ConfiguredFinding
   onChange(finding: ConfiguredFinding): void
 }) {
-  console.log('zzlkwelkwlkwel', finding)
-  const search_within_finding_site = finding.predefined_attributes.find(isFindingSite)
+  const predefined_attributes = finding.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
+  const search_within_finding_site = predefined_attributes.find(isFindingSite)
 
   const dates = useSignal<{ onset: string; resolved: string | null } | null>(null)
   let initial_finding_sites = finding.node.attributes.filter(isFindingSite)
@@ -195,7 +196,8 @@ export function FindingModalInnerContents({
         <QualifierSearch signal={qualifiers} />
         {!!finding.relevant_qualifiers.length && (
           <CheckboxGrid title='relevant qualifiers' id='relevant-qualifiers'>
-            {finding.relevant_qualifiers.map((relevant_qualifier) => {
+            {finding.relevant_qualifiers.map(({ s_expression }) => {
+              const relevant_qualifier = parseWithSchema(s_expression, qualifier)
               const matches = (q: RenderedSnomedConcept) =>
                 q.name === relevant_qualifier.specific_snomed_concept.name &&
                 q.category === relevant_qualifier.specific_snomed_concept.category

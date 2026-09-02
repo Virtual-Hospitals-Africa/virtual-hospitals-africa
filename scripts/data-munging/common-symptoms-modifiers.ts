@@ -14,7 +14,7 @@ async function commonSymptomsModifiers() {
     const node = parseWithSchema(common_symptom.clinical_finding_s_expression, finding)
     assert(node.specific_snomed_concept)
     const predefined_attributes = await snomed_predefined_attributes.findAll(db, { snomed_concept: node.specific_snomed_concept })
-    const relevant_qualifiers = await snomed_relevant_qualifiers.distinct(db, { snomed_concept: node.specific_snomed_concept })
+    const relevant_qualifiers = await snomed_relevant_qualifiers.findAll(db, { snomed_concept: node.specific_snomed_concept })
     return [common_symptom.key, {
       predefined_attributes,
       relevant_qualifiers,

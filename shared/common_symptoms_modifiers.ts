@@ -5,40 +5,10 @@ export default {
   'Nasal discharge': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Associated morphology',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Discharge',
-          'category': 'morphologic abnormality',
-        },
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Discharge" "morphologic abnormality"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Nasal structure',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nasal structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -46,40 +16,10 @@ export default {
   'Fever': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Has interpretation',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Above reference range',
-          'category': 'qualifier value',
-        },
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Above reference range" "qualifier value"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Interprets',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Body temperature',
-          'category': 'observable entity',
-        },
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Body temperature" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -87,40 +27,10 @@ export default {
   'Cough': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Respiratory tract structure',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Respiratory tract structure" "body structure"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Interprets',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Respiratory function',
-          'category': 'observable entity',
-        },
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Respiratory function" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -128,22 +38,7 @@ export default {
   'Sore throat': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Structure of pharynx and/or larynx',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of pharynx and/or larynx" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -151,64 +46,22 @@ export default {
   'Headache': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Head structure',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Head structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [
       {
-        'atom': 'qualifier',
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Sudden onset',
-          'category': 'qualifier value',
-        },
-        'qualifiers': [],
+        's_expression': '(qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))',
       },
       {
-        'atom': 'qualifier',
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Severe (severity modifier)',
-          'category': 'qualifier value',
-        },
-        'qualifiers': [],
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
       },
     ],
   },
   'Fatigue': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Interprets',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Energy / stamina',
-          'category': 'observable entity',
-        },
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Energy / stamina" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -216,73 +69,22 @@ export default {
   'Dyspnea': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Structure of respiratory system',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of respiratory system" "body structure"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Interprets',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Ease of respiration',
-          'category': 'observable entity',
-        },
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Ease of respiration" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [
       {
-        'atom': 'qualifier',
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Sudden',
-          'category': 'qualifier value',
-        },
-        'qualifiers': [],
+        's_expression': '(qualifier (snomed_concept "Sudden" "qualifier value"))',
       },
     ],
   },
   'Nausea': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Upper gastrointestinal tract structure',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Upper gastrointestinal tract structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -290,40 +92,10 @@ export default {
   'Vomiting': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Gastrointestinal tract structure',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Gastrointestinal tract structure" "body structure"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Interprets',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Digestive system function',
-          'category': 'observable entity',
-        },
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Digestive system function" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -331,33 +103,12 @@ export default {
   'Diarrhea': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Structure of digestive system',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of digestive system" "body structure"))',
       },
     ],
     'relevant_qualifiers': [
       {
-        'atom': 'qualifier',
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Watery',
-          'category': 'qualifier value',
-        },
-        'qualifiers': [],
+        's_expression': '(qualifier (snomed_concept "Watery" "qualifier value"))',
       },
     ],
   },
@@ -368,22 +119,7 @@ export default {
   'Muscle pain': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Skeletal muscle structure',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skeletal muscle structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -391,142 +127,40 @@ export default {
   'Insect bite': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Associated morphology',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Superficial bite wound',
-          'category': 'morphologic abnormality',
-        },
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Superficial bite wound" "morphologic abnormality"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Due to',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Bite of insect',
-          'category': 'event',
-        },
+        's_expression': '(attribute (snomed_concept "Due to" "attribute") (snomed_concept "Bite of insect" "event"))',
       },
     ],
     'relevant_qualifiers': [
       {
-        'atom': 'qualifier',
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Recent',
-          'category': 'qualifier value',
-        },
-        'qualifiers': [],
+        's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
   },
   'Backache': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Structure of posterior region of trunk',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of posterior region of trunk" "body structure"))',
       },
     ],
     'relevant_qualifiers': [
       {
-        'atom': 'qualifier',
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Severe (severity modifier)',
-          'category': 'qualifier value',
-        },
-        'qualifiers': [],
+        's_expression': '(qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))',
       },
     ],
   },
   'Constipation': {
     'predefined_attributes': [
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Finding site',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Intestinal structure',
-          'category': 'body structure',
-        },
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Intestinal structure" "body structure"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Has interpretation',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Altered',
-          'category': 'qualifier value',
-        },
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Altered" "qualifier value"))',
       },
       {
-        'atom': 'attribute',
-        'root_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Attribute',
-          'category': 'attribute',
-        },
-        'specific_snomed_concept': {
-          'atom': 'snomed_concept',
-          'name': 'Interprets',
-          'category': 'attribute',
-        },
-        'value': {
-          'atom': 'snomed_concept',
-          'name': 'Bowel action',
-          'category': 'observable entity',
-        },
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Bowel action" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
