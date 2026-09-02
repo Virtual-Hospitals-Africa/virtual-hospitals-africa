@@ -900,6 +900,27 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Very urgent',
           priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
           best_similarity: 1.4,
+          predefined_attributes: [
+            {
+              atom: 'attribute',
+              root_snomed_concept: {
+                atom: 'snomed_concept',
+                category: 'attribute',
+                name: 'Attribute',
+              },
+              specific_snomed_concept: {
+                atom: 'snomed_concept',
+                category: 'attribute',
+                name: 'Finding site',
+              },
+              value: {
+                atom: 'snomed_concept',
+                category: 'body structure',
+                name: 'Appendix structure',
+              },
+            },
+          ],
+          relevant_qualifiers: [],
         })
 
         // deno-lint-ignore no-explicit-any

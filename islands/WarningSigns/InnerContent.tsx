@@ -144,6 +144,7 @@ export default function WarningSignsInnerContent({
 function asConfiguredFinding(sign: SelectedWarningSign | null): ConfiguredFinding | null {
   if (!sign) return null
 
+  // TODO I don't necessarily love that the parser now is needed on  the frontend, but I don't see a viable alternative
   const sign_node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
   if (!sign.existing_record?.augmented) {
     return {

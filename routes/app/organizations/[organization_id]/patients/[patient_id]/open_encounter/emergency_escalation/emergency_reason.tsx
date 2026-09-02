@@ -1,5 +1,5 @@
-// import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-// import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 // import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 // import WarningSignsPage from '../../../../../../../../islands/WarningSigns/Page.tsx'
@@ -298,9 +298,9 @@ export const EmergencyEscalationEmergencyReasonSchema = z.object({
 //   )
 // }
 
-// export default OpenEncounterWorkflowPage(EmergencyEscalationReasonPage)
-
 // deno-lint-ignore require-await
-export async function EmergencyEscalationReasonPage() {
-  throw new Error('Todo')
+export async function EmergencyEscalationReasonPage(_ctx: OpenEncounterWorkflowContext) {
+  return <div>TODO: Emergency Reason</div>
 }
+
+export default OpenEncounterWorkflowPage(EmergencyEscalationReasonPage)
