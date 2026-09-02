@@ -1,11 +1,10 @@
 import type { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, identity } from './_base.ts'
-import { nameAndCategorySnomedConceptBase } from './s_expression.ts'
+import { snomedConceptSelection } from './s_expression.ts'
 import { finding_base, Lang } from '../../shared/s_expression_schemas.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { ExpressionWrapper } from 'kysely'
 import { DB } from '../../db.d.ts'
-import { isExpression } from '../helpers.ts'
 
 type SearchTerms = {
   // deno-lint-ignore no-explicit-any
@@ -21,8 +20,7 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) 
     .where('due_to_findings.value_snomed_concept_id', 'is', null)
     .where(
       'snomed_concept_active_descendants_realized.descendant_id',
-      'in',
-      isExpression(snomed_concept) ? snomed_concept : nameAndCategorySnomedConceptBase(trx, snomed_concept),
+      ...snomedConceptSelection(trx, snomed_concept),
     )
     .select('due_to.s_expression')
     .distinct()

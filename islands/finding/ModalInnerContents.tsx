@@ -2,7 +2,7 @@ import { useSignal, useSignalEffect } from '@preact/signals'
 import { useRef } from 'preact/hooks'
 import { ConfiguredFinding, RenderedSnomedConcept } from '../../types.ts'
 import { FindingSite } from './FindingSite.tsx'
-import { PainLevel } from './PainLevel.tsx'
+import { PainLevelSelect } from './PainLevel.tsx'
 import { QualifierSearch } from './QualifierSearch.tsx'
 // import { groupBy } from '../../util/groupBy.ts'
 import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
@@ -14,6 +14,9 @@ import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
 import { CheckboxGrid, CheckboxGridItem } from '../form/inputs/checkbox_grid.tsx'
 import compact from '../../util/compact.ts'
+import { higherPriority } from '../../shared/priorities.ts'
+import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
+import { exists } from '../../util/exists.ts'
 
 function isFindingSite(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
   return attribute.specific_snomed_concept.name === FINDING_SITE.name
@@ -42,8 +45,12 @@ export function FindingModalInnerContents({
     return { id: '@@triggersearch', snomed_concept_id: '@@triggersearch', ...s.value }
   }))
 
+  const pain_level_attribute = finding.node.attributes.find(isPainLevel)?.value
+
   const pain_level = useSignal(
-    finding.node.attributes.find(isPainLevel)?.value,
+    pain_level_attribute && exists(PAIN_LEVELS.find(pain_level => 
+      pain_level.concept.name === pain_level_attribute.name
+    ))
   )
 
   const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => finding.nonremovable_qualifiers.includes(qualifier))
@@ -121,7 +128,6 @@ export function FindingModalInnerContents({
             location: null,
           },
         },
-
         pain_level.value && {
           atom: 'attribute' as const,
           root_snomed_concept: {
@@ -136,8 +142,8 @@ export function FindingModalInnerContents({
           },
           value: {
             atom: 'snomed_concept' as const,
-            name: pain_level.value.name,
-            category: pain_level.value.category,
+            name: pain_level.value.concept.name,
+            category: pain_level.value.concept.category,
           },
         },
         ...new_finding_sites.map((site) => ({
@@ -165,6 +171,7 @@ export function FindingModalInnerContents({
       ...finding,
       node: new_node,
       s_expression: inverseSExpression(new_node),
+      priority: higherPriority(pain_level.value?.priority, finding.priority),
       display: formatRecord(findingToDisplayableRecord(new_node)).displays.full,
     })
   }
@@ -178,9 +185,10 @@ export function FindingModalInnerContents({
             runOnChange()
           }}
         />
-        <PainLevel
+        <PainLevelSelect
           value={pain_level.value}
           onChange={(value) => {
+            console.log('set pain', value)
             pain_level.value = value ?? undefined
             runOnChange()
           }}

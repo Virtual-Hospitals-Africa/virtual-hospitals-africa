@@ -77,6 +77,7 @@ export default function WarningSignsInnerContent({
   }
 
   function onSaveDetails(finding: ConfiguredFinding) {
+    console.log({finding})
     selected_signs.value = selected_signs.value.map((s) =>
       uniqueIdentifier(s) === uniqueIdentifier(active_modal_sign.value!)
         ? {

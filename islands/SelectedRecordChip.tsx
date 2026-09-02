@@ -9,7 +9,7 @@ type Selected = {
   display_name?: Maybe<string>
   description?: Maybe<string>
   priority?: Maybe<Priority>
-  augmented?: { display: string }
+  augmented?: { display: string, priority?: Maybe<Priority> }
 }
 
 export function SelectedChip<Item extends Selected>({ item, onUncheck }: {
@@ -19,7 +19,9 @@ export function SelectedChip<Item extends Selected>({ item, onUncheck }: {
   return (
     <button
       type='button'
-      className={recordChipClassName(item)}
+      className={recordChipClassName({
+        priority: item.augmented?.priority || item.priority
+      })}
       onClick={() => onUncheck(item)}
     >
       {item.augmented?.display || item.display_name || item.name}

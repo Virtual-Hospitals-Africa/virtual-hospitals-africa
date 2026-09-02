@@ -301,6 +301,7 @@ function* signsMatchedWithPriorRecords(
           existing_record!.augmented = {
             s_expression: canonical_normal_form,
             display: matching_prior_finding.displays.full,
+            priority: matching_prior_finding.priority,
           }
         }
       }
