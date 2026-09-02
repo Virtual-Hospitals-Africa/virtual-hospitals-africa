@@ -7,12 +7,12 @@ import { QualifierSearch } from './QualifierSearch.tsx'
 // import { groupBy } from '../../util/groupBy.ts'
 import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
 // import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
-import { attribute, Lang, qualifier, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
+import { attribute, Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
-import { CheckboxGrid, CheckboxGridItem } from '../form/inputs/checkbox_grid.tsx'
+
 import compact from '../../util/compact.ts'
 import { higherPriority } from '../../shared/priorities.ts'
 import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
@@ -193,36 +193,7 @@ export function FindingModalInnerContents({
             runOnChange()
           }}
         />
-        <QualifierSearch signal={qualifiers} />
-        {!!finding.relevant_qualifiers.length && (
-          <CheckboxGrid title='relevant qualifiers' id='relevant-qualifiers'>
-            {finding.relevant_qualifiers.map(({ s_expression }) => {
-              const relevant_qualifier = parseWithSchema(s_expression, qualifier)
-              const matches = (q: RenderedSnomedConcept) =>
-                q.name === relevant_qualifier.specific_snomed_concept.name &&
-                q.category === relevant_qualifier.specific_snomed_concept.category
-              return (
-                <CheckboxGridItem
-                  label={relevant_qualifier.specific_snomed_concept.name}
-                  checked={qualifiers.value.some(matches)}
-                  onChange={(checked) => {
-                    if (checked) {
-                      if (!qualifiers.value.some(matches)) {
-                        qualifiers.value = [...qualifiers.value, {
-                          snomed_concept_id: '@@triggersearch',
-                          name: relevant_qualifier.specific_snomed_concept.name,
-                          category: relevant_qualifier.specific_snomed_concept.category,
-                        }]
-                      }
-                    } else {
-                      qualifiers.value = qualifiers.value.filter((q) => !matches(q))
-                    }
-                  }}
-                />
-              )
-            })}
-          </CheckboxGrid>
-        )}
+        <QualifierSearch signal={qualifiers} relevant_qualifiers={finding.relevant_qualifiers} />
         <FindingSite
           search_within={search_within_finding_site}
           value={finding_sites.value}

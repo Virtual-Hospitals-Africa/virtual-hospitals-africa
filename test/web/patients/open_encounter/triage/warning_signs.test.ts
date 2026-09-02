@@ -902,22 +902,7 @@ describeParallel('triage/warning_signs', () => {
           best_similarity: 1.4,
           predefined_attributes: [
             {
-              atom: 'attribute',
-              root_snomed_concept: {
-                atom: 'snomed_concept',
-                category: 'attribute',
-                name: 'Attribute',
-              },
-              specific_snomed_concept: {
-                atom: 'snomed_concept',
-                category: 'attribute',
-                name: 'Finding site',
-              },
-              value: {
-                atom: 'snomed_concept',
-                category: 'body structure',
-                name: 'Appendix structure',
-              },
+              s_expression: '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Appendix structure" "body structure"))',
             },
           ],
           relevant_qualifiers: [],
