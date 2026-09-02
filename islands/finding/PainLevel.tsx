@@ -33,8 +33,7 @@ export function PainLevelSelect({ value, onChange }: {
                   event.preventDefault()
                   onChange(null)
                 }}
-                onChange={() =>
-                  onChange(pain_level)}
+                onChange={() => onChange(pain_level)}
               />
               {pain_level.label}
             </label>

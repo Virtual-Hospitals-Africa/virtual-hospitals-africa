@@ -9,7 +9,7 @@ import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } f
 // import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
 import { Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
-import { findingToDisplayableRecord, formatRecord } from '../../shared/patient_records.ts'
+import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
 import { CheckboxGrid, CheckboxGridItem } from '../form/inputs/checkbox_grid.tsx'
@@ -33,6 +33,7 @@ export function FindingModalInnerContents({
   finding: ConfiguredFinding
   onChange(finding: ConfiguredFinding): void
 }) {
+  console.log('zzlkwelkwlkwel', finding)
   const search_within_finding_site = finding.predefined_attributes.find(isFindingSite)
 
   const dates = useSignal<{ onset: string; resolved: string | null } | null>(null)
@@ -48,9 +49,7 @@ export function FindingModalInnerContents({
   const pain_level_attribute = finding.node.attributes.find(isPainLevel)?.value
 
   const pain_level = useSignal(
-    pain_level_attribute && exists(PAIN_LEVELS.find(pain_level => 
-      pain_level.concept.name === pain_level_attribute.name
-    ))
+    pain_level_attribute && exists(PAIN_LEVELS.find((pain_level) => pain_level.concept.name === pain_level_attribute.name)),
   )
 
   const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => finding.nonremovable_qualifiers.includes(qualifier))
@@ -172,7 +171,7 @@ export function FindingModalInnerContents({
       node: new_node,
       s_expression: inverseSExpression(new_node),
       priority: higherPriority(pain_level.value?.priority, finding.priority),
-      display: formatRecord(findingToDisplayableRecord(new_node)).displays.full,
+      display: findingFullDisplay(new_node),
     })
   }
 

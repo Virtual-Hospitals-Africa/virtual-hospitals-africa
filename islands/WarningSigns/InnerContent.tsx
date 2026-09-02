@@ -14,6 +14,7 @@ import { WarningSignsPriorityTable } from './PriorityTable.tsx'
 import { CATEGORIES, CheckedWarningSign, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
+import { findingFullDisplay } from '../../shared/patient_records.ts'
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -77,7 +78,7 @@ export default function WarningSignsInnerContent({
   }
 
   function onSaveDetails(finding: ConfiguredFinding) {
-    console.log({finding})
+    console.log({ finding })
     selected_signs.value = selected_signs.value.map((s) =>
       uniqueIdentifier(s) === uniqueIdentifier(active_modal_sign.value!)
         ? {
@@ -148,7 +149,7 @@ function asConfiguredFinding(sign: SelectedWarningSign | null): ConfiguredFindin
     return {
       node: sign_node,
       s_expression: sign.clinical_finding_s_expression,
-      display: sign.name,
+      display: findingFullDisplay(sign_node),
       priority: sign.priority,
       nonremovable_qualifiers: sign_node.qualifiers,
       predefined_attributes: sign.predefined_attributes,
@@ -156,7 +157,7 @@ function asConfiguredFinding(sign: SelectedWarningSign | null): ConfiguredFindin
     }
   }
 
-  const node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
+  const node = parseWithSchema(sign.existing_record.augmented.s_expression, insertable_finding_base)
 
   return {
     node,

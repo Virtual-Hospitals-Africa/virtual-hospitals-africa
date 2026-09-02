@@ -1,5 +1,5 @@
 import { MILD_PAIN, MODERATE_PAIN, NO_PAIN, SEVERE_PAIN } from './snomed_concepts.ts'
-import { SnomedConcept, Priority } from '../types.ts'
+import { Priority, SnomedConcept } from '../types.ts'
 
 /*
   Pain is never a finding on its own, it's always the pain of something. So instead of
