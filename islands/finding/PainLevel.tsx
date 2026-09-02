@@ -1,17 +1,18 @@
 import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
-import { Maybe, SnomedConcept } from '../../types.ts'
+import type { Lang } from '../../shared/s_expression_schemas.ts'
+import type { Maybe } from '../../types.ts'
 import cls from '../../util/cls.ts'
 
 export function PainLevel({ value, onChange }: {
-  value: Maybe<SnomedConcept>
-  onChange(pain_level: Maybe<SnomedConcept>): void
+  value: Maybe<Lang['snomed_concept']>
+  onChange(pain_level: Maybe<Lang['snomed_concept']>): void
 }) {
   return (
     <div className='flex flex-col gap-2'>
       <h3 className='text-sm font-semibold text-gray-900'>Pain Level</h3>
       <fieldset className='grid grid-cols-4 gap-2'>
         {PAIN_LEVELS.map((pain_level) => {
-          const checked = value?.id === pain_level.concept.id
+          const checked = value?.name === pain_level.concept.name
           return (
             <label
               key={pain_level.concept.id}
@@ -33,7 +34,11 @@ export function PainLevel({ value, onChange }: {
                   event.preventDefault()
                   onChange(null)
                 }}
-                onChange={() => onChange(pain_level.concept)}
+                onChange={() =>
+                  onChange({
+                    atom: 'snomed_concept',
+                    ...pain_level.concept,
+                  })}
               />
               {pain_level.label}
             </label>

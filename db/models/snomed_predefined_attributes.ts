@@ -1,12 +1,15 @@
 import type { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, identity } from './_base.ts'
-import { jsonBuildObject, literalString } from '../helpers.ts'
+import { isExpression, jsonBuildObject, literalString } from '../helpers.ts'
 import { ATTRIBUTE, IS_A } from '../../shared/snomed_concepts.ts'
 import { nameAndCategorySnomedConceptBase } from './s_expression.ts'
 import { Lang } from '../../shared/s_expression_schemas.ts'
+import { ExpressionWrapper } from 'kysely'
+import { DB } from '../../db.d.ts'
 
 type SearchTerms = {
-  snomed_concept: Lang['snomed_concept']
+  // deno-lint-ignore no-explicit-any
+  snomed_concept: Lang['snomed_concept'] | ExpressionWrapper<DB, any, string>
 }
 
 function baseQuery(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) {
@@ -25,7 +28,7 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) 
     .where(
       'snomed_relationship.source_id',
       'in',
-      nameAndCategorySnomedConceptBase(trx, snomed_concept),
+      isExpression(snomed_concept) ? snomed_concept : nameAndCategorySnomedConceptBase(trx, snomed_concept),
     )
     .where('snomed_relationship.active', '=', true)
     .where('snomed_relationship.type_id', '!=', IS_A.id)

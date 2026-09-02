@@ -702,7 +702,7 @@ export async function insertChunks<Table extends keyof DB>(trx: TrxOrDb, table: 
   }
 }
 
-function isExpression(obj: any): obj is Expression<any> {
+export function isExpression(obj: any): obj is Expression<any> {
   return isObjectLike(obj) && obj.constructor.name === 'ExpressionWrapper'
 }
 

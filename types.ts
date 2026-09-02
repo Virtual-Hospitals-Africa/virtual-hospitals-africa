@@ -2569,6 +2569,11 @@ export type RecordDisplays = {
   full: string
 }
 
+export type SnomedConceptShort = {
+  name: string
+  category: SnomedCategory
+}
+
 export type RenderedSnomedConcept = {
   snomed_concept_id: string
   name: string
@@ -2783,7 +2788,7 @@ export type MostRecentBriefHistoryFindings = {
   [c in CommonConditionKey]?: RenderedBriefHistoryRelativeToHealthWorker
 }
 
-type SignShared<Category> = {
+type SignShared<Category> = FindingRelatedModifiers & {
   clinical_finding_s_expression: string
   name: string
   description: string | null
@@ -2805,16 +2810,17 @@ export type WarningSign = Omit<WarningSignDef<'Urgent' | 'Very urgent' | 'Emerge
   subcategory?: string
 }
 
-export type CommonSymptom = SignShared<'Common Symptoms'>
+export type CommonSymptom = SignShared<'Common Symptoms'> & { key: string }
 
 export type AugmentedSign = {
   s_expression: string
-  full_display: string
+  display: string
+  priority?: Maybe<Priority>
 }
 
 export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record'>) & {
   existing_record?: {
-    id: string
+    id?: string
     existence: Existence
     augmented?: AugmentedSign
   }
@@ -3036,7 +3042,7 @@ export type NavLinks = {
   route: string
 }[]
 
-export type SnomedWarningSignSearchResult = {
+export type SnomedWarningSignSearchResult = FindingRelatedModifiers & {
   clinical_finding_s_expression: string
   snomed_concept_id: string
   name: string
@@ -3311,4 +3317,13 @@ export type MedicineGroupWithPermissions = {
 // records — tasks to be done plus medicines that could be prescribed.
 export type CarePlanGroup = TaskGroupWithPermissions & {
   medicines: MedicineGroupWithPermissions[]
+}
+
+export type ConfiguredFinding = FindingRelatedModifiers & {
+  node: InsertableFindingBase
+  s_expression: string
+  display: string
+  priority?: Maybe<Priority>
+  nonremovable_qualifiers: Lang['qualifier'][]
+  // nonremovable_attribute_s_expressions: string[]
 }

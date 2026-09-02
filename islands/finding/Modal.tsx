@@ -1,12 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'preact'
-import { SelectedWarningSign } from '../WarningSigns/shared.ts'
 import { FindingModalContents } from './ModalContents.tsx'
-import { AugmentedSign, Maybe } from '../../types.ts'
+import { ConfiguredFinding } from '../../types.ts'
 
 type FindingModalProps = {
-  finding: SelectedWarningSign | null
-  onSave: (finding: SelectedWarningSign, augmented_sign: Maybe<AugmentedSign>) => void
+  finding: ConfiguredFinding | null
+  onSave: (finding: ConfiguredFinding) => void
   onClose: () => void
 }
 

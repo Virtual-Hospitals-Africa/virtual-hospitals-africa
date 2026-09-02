@@ -1,7 +1,9 @@
-import { CommonSymptom } from '../types.ts'
+import { CommonSymptom, FindingRelatedModifiers } from '../types.ts'
 import { normalForm } from './s_expression.ts'
+import common_symptoms_modifiers from './common_symptoms_modifiers.ts'
+import { assert } from 'std/assert/assert.ts'
 
-export const COMMON_SYMPTOMS: CommonSymptom[] = [
+export const COMMON_SYMPTOMS_DEFS: Omit<CommonSymptom, 'predefined_attributes' | 'relevant_qualifiers'>[] = [
   {
     'key': 'Nasal discharge' as const,
     'clinical_finding_s_expression': normalForm(`(clinical_finding (snomed_concept "Nasal discharge" "finding"))`),
@@ -124,3 +126,13 @@ export const COMMON_SYMPTOMS: CommonSymptom[] = [
   //   'category': 'Common Symptoms' as const,
   // },
 ]
+
+export const COMMON_SYMPTOMS = COMMON_SYMPTOMS_DEFS.map((symptom) => {
+  const modifiers: FindingRelatedModifiers = common_symptoms_modifiers[symptom.key]
+  assert(modifiers, 'No match found, run scripts/data-munging/common-symptoms-modifiers.ts')
+
+  return {
+    ...symptom,
+    ...modifiers,
+  }
+})

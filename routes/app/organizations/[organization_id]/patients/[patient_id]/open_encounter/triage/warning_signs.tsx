@@ -34,6 +34,7 @@ import { insertable_finding_base } from '../../../../../../../../shared/s_expres
 import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 import { subsets } from '../../../../../../../../util/subsets.ts'
+import { patient_findings_with_modifiers } from '../../../../../../../../db/models/patient_findings_with_modifiers.ts'
 
 export const TriageWarningSignSchema = z.object({
   s_expression: sExpressionZodValidator(insertable_finding_base),
@@ -204,10 +205,11 @@ function getAllFindingsReportedPreviouslyOnThisPage(
   const { trx, patient_id, patient_encounter_id } = ctx.state
   const completed_procedure = completedProcedure(ctx)
   if (!completed_procedure) return Promise.resolve([])
-  return patient_findings.findAll(trx, {
+  return patient_findings_with_modifiers.findAll(trx, {
     patient_id,
     patient_encounter_id,
     ...completed_procedure,
+    // Leave in so we don't overwrite these records
     include_negative: true,
     before: now,
   })
@@ -242,12 +244,12 @@ export async function getWarningSignsForPatient(
 }
 
 function* signsMatchedWithPriorRecords(
-  prior_findings: SearchResult<typeof patient_findings>[],
+  prior_findings: SearchResult<typeof patient_findings_with_modifiers>[],
   warning_signs_for_patient: WarningSign[],
   common_symptoms: CommonSymptom[],
 ): Generator<WarningSignWithMaybeRecord> {
   const prior_findings_remaining = new Set(prior_findings)
-  const prior_findings_map = new Map<string, SearchResult<typeof patient_findings>>()
+  const prior_findings_map = new Map<string, SearchResult<typeof patient_findings_with_modifiers>>()
   // Findings may add qualifiers or attributes. So we look for any subset of them when looking for matches
   // With a modest size of these, this should not get out of hand
   for (const prior_finding of prior_findings) {
@@ -298,7 +300,7 @@ function* signsMatchedWithPriorRecords(
         if (canonical_normal_form !== normalized_sign_s_expression) {
           existing_record!.augmented = {
             s_expression: canonical_normal_form,
-            full_display: matching_prior_finding.displays.full,
+            display: matching_prior_finding.displays.full,
           }
         }
       }
@@ -323,6 +325,8 @@ function* signsMatchedWithPriorRecords(
         id: finding.id,
         existence: finding.existence,
       },
+      predefined_attributes: finding.predefined_attributes,
+      relevant_qualifiers: finding.relevant_qualifiers,
       category: 'Prior record' as const,
     }
   }

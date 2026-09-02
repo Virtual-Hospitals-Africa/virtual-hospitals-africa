@@ -4,6 +4,8 @@ import { keyBy } from '../util/keyBy.ts'
 import sortBy from '../util/sortBy.ts'
 import { ORDERED_PRIORITIES } from './priorities.ts'
 import { normalForm } from './s_expression.ts'
+import warning_signs_modifiers from './warning_signs_modifiers.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type AgeGroupOrder<EmergencyType> = {
   Emergency: EmergencyType
@@ -128,7 +130,7 @@ const WARNING_SIGN_ORDER: {
   },
 }
 
-const WARNING_SIGN_DEFS = [
+export const WARNING_SIGN_DEFS = [
   // ── ADULT SIGNS ──────────────────────────────────────────────────────────────
   {
     key: 'Obstructed airway' as const,
@@ -805,9 +807,14 @@ function buildNormalizedSign<T extends typeof WARNING_SIGN_DEFS[number]>(
   sign: T,
   overrides: { priority: 'Emergency' | 'Very urgent' | 'Urgent'; category: string; subcategory?: string },
 ) {
+  const modifiers = warning_signs_modifiers[sign.key]
+  assert(modifiers, 'No match found, run scripts/data-munging/warning-signs-modifiers.ts')
+  const { predefined_attributes, relevant_qualifiers } = modifiers
   return omitUndefinedProperties({
     ...sign,
     ...overrides,
+    predefined_attributes,
+    relevant_qualifiers,
     clinical_finding_s_expression: normalForm(sign.clinical_finding_s_expression),
     excluding_s_expressions: sign.excluding_s_expressions && sign.excluding_s_expressions.map(normalForm),
     prompt_when_s_expression: sign.prompt_when_s_expression && normalForm(sign.prompt_when_s_expression),

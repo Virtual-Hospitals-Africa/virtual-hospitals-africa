@@ -15,7 +15,7 @@ export function WarningSignsPriorityTable({
   signs: CheckedWarningSign[]
   onCheck: OnToggle
   onUncheck: OnToggle
-  onOpenDetails?: (sign: SelectedWarningSign) => void
+  onOpenDetails(sign: SelectedWarningSign): void
 }) {
   if (!signs.length) return null
   const colors = priorityColors(priority)

@@ -3,9 +3,13 @@ import { base, identity } from './_base.ts'
 import { nameAndCategorySnomedConceptBase } from './s_expression.ts'
 import { finding_base, Lang } from '../../shared/s_expression_schemas.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
+import { ExpressionWrapper } from 'kysely'
+import { DB } from '../../db.d.ts'
+import { isExpression } from '../helpers.ts'
 
 type SearchTerms = {
-  snomed_concept: Lang['snomed_concept']
+  // deno-lint-ignore no-explicit-any
+  snomed_concept: Lang['snomed_concept'] | ExpressionWrapper<DB, any, string>
 }
 
 function baseQuery(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) {
@@ -18,7 +22,7 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) 
     .where(
       'snomed_concept_active_descendants_realized.descendant_id',
       'in',
-      nameAndCategorySnomedConceptBase(trx, snomed_concept),
+      isExpression(snomed_concept) ? snomed_concept : nameAndCategorySnomedConceptBase(trx, snomed_concept),
     )
     .select('due_to.s_expression')
     .distinct()
@@ -28,8 +32,7 @@ export const snomed_relevant_qualifiers = base({
   top_level_table: 'due_to_findings',
   baseQuery,
   formatResult: identity,
-  async distinct(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) {
-    const raw = await snomed_relevant_qualifiers.findAll(trx, { snomed_concept })
+  asUniqueQualifiers(raw: { s_expression: string }[]) {
     const all = raw.flatMap(({ s_expression }) => parseWithSchema(s_expression, finding_base).qualifiers)
     const seen = new Set<string>()
     return all.filter((q) => {
@@ -38,5 +41,9 @@ export const snomed_relevant_qualifiers = base({
       seen.add(key)
       return true
     })
+  },
+  async distinct(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) {
+    const raw = await snomed_relevant_qualifiers.findAll(trx, { snomed_concept })
+    return snomed_relevant_qualifiers.asUniqueQualifiers(raw)
   },
 })
