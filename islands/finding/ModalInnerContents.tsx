@@ -1,50 +1,44 @@
 import { useSignal, useSignalEffect } from '@preact/signals'
 import { useRef } from 'preact/hooks'
-import { AugmentedSign, BySExpressionResult, Maybe, NonEmptyArray, RenderedSnomedConcept } from '../../types.ts'
+import { ConfiguredFinding, RenderedSnomedConcept } from '../../types.ts'
 import { FindingSite } from './FindingSite.tsx'
+import { PainLevelSelect } from './PainLevel.tsx'
 import { QualifierSearch } from './QualifierSearch.tsx'
-import { groupBy } from '../../util/groupBy.ts'
-import { ATTRIBUTE, EVENT, FINDING_SITE, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
-import { Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
+// import { groupBy } from '../../util/groupBy.ts'
+import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
+// import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
+import { attribute, Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
-import { findingToDisplayableRecord, formatRecord } from '../../shared/patient_records.ts'
+import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
-import { CheckboxGrid, CheckboxGridItem } from '../form/inputs/checkbox_grid.tsx'
 
-function groupAttributes(attributes: Lang['attribute'][]) {
-  return groupBy(attributes, (attr) => attr.specific_snomed_concept.name)
+import compact from '../../util/compact.ts'
+import { higherPriority } from '../../shared/priorities.ts'
+import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
+import { exists } from '../../util/exists.ts'
+import { parseWithSchema } from '../../shared/s_expression.ts'
+
+function isFindingSite(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
+  return attribute.specific_snomed_concept.name === FINDING_SITE.name
 }
 
-function isSnomedConceptAttribute(attr: Lang['attribute']): attr is SnomedConceptAttribute {
-  return attr.value.atom === 'snomed_concept'
-}
-
-function getPredefinedFindingSite(attributes_map: Map<string, NonEmptyArray<Lang['attribute']>>): Maybe<SnomedConceptAttribute> {
-  const finding_site = attributes_map.get(FINDING_SITE.name)?.[0]
-  if (!finding_site) return
-  assert(isSnomedConceptAttribute(finding_site))
-  return finding_site
+function isPainLevel(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
+  return attribute.specific_snomed_concept.name === PAIN_LEVEL.name
 }
 
 export function FindingModalInnerContents({
-  original_node,
-  augmented_node,
+  finding,
   onChange,
 }: {
-  original_node: BySExpressionResult
-  augmented_node: Maybe<BySExpressionResult>
-  onChange(augmented: Maybe<AugmentedSign>): void
+  finding: ConfiguredFinding
+  onChange(finding: ConfiguredFinding): void
 }) {
-  const all_original_attributes = groupAttributes([
-    ...original_node.attributes,
-    ...original_node.predefined_attributes,
-  ])
-  const search_within_finding_site = getPredefinedFindingSite(all_original_attributes)
-  const all_augmented_attributes = augmented_node ? groupAttributes(augmented_node.attributes) : new Map<string, NonEmptyArray<Lang['attribute']>>()
+  const predefined_attributes = finding.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
+  const search_within_finding_site = predefined_attributes.find(isFindingSite)
 
   const dates = useSignal<{ onset: string; resolved: string | null } | null>(null)
-  let initial_finding_sites = all_augmented_attributes.get(FINDING_SITE.name) || []
+  let initial_finding_sites = finding.node.attributes.filter(isFindingSite)
   if (!initial_finding_sites.length && search_within_finding_site) {
     initial_finding_sites = [search_within_finding_site]
   }
@@ -53,8 +47,14 @@ export function FindingModalInnerContents({
     return { id: '@@triggersearch', snomed_concept_id: '@@triggersearch', ...s.value }
   }))
 
-  const initial_qualifiers = augmented_node?.qualifiers ?? []
-  const qualifiers = useSignal<RenderedSnomedConcept[]>(initial_qualifiers.map((q) => ({
+  const pain_level_attribute = finding.node.attributes.find(isPainLevel)?.value
+
+  const pain_level = useSignal(
+    pain_level_attribute && exists(PAIN_LEVELS.find((pain_level) => pain_level.concept.name === pain_level_attribute.name)),
+  )
+
+  const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => finding.nonremovable_qualifiers.includes(qualifier))
+  const qualifiers = useSignal<RenderedSnomedConcept[]>(removable_qualifiers.map((q) => ({
     id: '@@triggersearch',
     snomed_concept_id: '@@triggersearch',
     name: q.specific_snomed_concept.name,
@@ -63,7 +63,6 @@ export function FindingModalInnerContents({
 
   const mounted = useRef(false)
   useSignalEffect(() => {
-    qualifiers.value
     if (!mounted.current) {
       mounted.current = true
       return
@@ -72,31 +71,17 @@ export function FindingModalInnerContents({
   })
 
   function runOnChange() {
-    /* We have the original_node & original attributes
-    // Focusing just on finding site for now, if we
-      1. selected finding sites where there were none previously, form a new augmented node with those as attributes
-      1. selected finding sites but it's the same as the original node
-        a. if predefined, omit
-        b. if not predefined include
-      2. no finding sites, ignore
-    */
-
-    const new_node = structuredClone(original_node)
-    let any_updates = false
-
     const new_finding_sites = finding_sites.value.filter((finding_site) => {
       assert(finding_site.category === 'body structure')
-      const identical_finding_site_already_existed = (all_original_attributes.get(FINDING_SITE.name) || []).some((attribute) => {
-        assert(attribute.value.atom === 'snomed_concept')
-        return attribute.value.name === finding_site.name
-      })
-      return !identical_finding_site_already_existed
+      const identical_finding_site_already_predefined = !!search_within_finding_site && finding_site.name === search_within_finding_site.value.name
+      return !identical_finding_site_already_predefined
     })
 
-    if (qualifiers.value.length) {
-      any_updates = true
-      for (const qualifier of qualifiers.value) {
-        new_node.qualifiers.push({
+    const new_node = {
+      ...finding.node,
+      qualifiers: [
+        ...finding.nonremovable_qualifiers,
+        ...qualifiers.value.map((qualifier) => ({
           atom: 'qualifier' as const,
           specific_snomed_concept: {
             atom: 'snomed_concept' as const,
@@ -104,54 +89,28 @@ export function FindingModalInnerContents({
             category: qualifier.category,
           },
           qualifiers: [],
-        })
-      }
-    }
-
-    for (const site of new_finding_sites) {
-      any_updates = true
-      new_node.attributes.push({
-        atom: 'attribute' as const,
-        root_snomed_concept: {
-          atom: 'snomed_concept' as const,
-          name: ATTRIBUTE.name,
-          category: ATTRIBUTE.category,
+        })),
+      ],
+      attributes: compact([
+        dates.value && {
+          atom: 'attribute' as const,
+          root_snomed_concept: {
+            atom: 'snomed_concept' as const,
+            name: EVENT.name,
+            category: EVENT.category,
+          },
+          specific_snomed_concept: {
+            atom: 'snomed_concept' as const,
+            name: TIME_OF_ONSET.name,
+            category: TIME_OF_ONSET.category,
+          },
+          value: {
+            atom: 'event' as const,
+            datetime: dates.value.onset,
+            location: null,
+          },
         },
-        specific_snomed_concept: {
-          atom: 'snomed_concept' as const,
-          name: FINDING_SITE.name,
-          category: FINDING_SITE.category,
-        },
-        value: {
-          atom: 'snomed_concept' as const,
-          name: site.name,
-          category: site.category,
-        },
-      })
-    }
-
-    if (dates.value) {
-      any_updates = true
-      new_node.attributes.push({
-        atom: 'attribute' as const,
-        root_snomed_concept: {
-          atom: 'snomed_concept' as const,
-          name: EVENT.name,
-          category: EVENT.category,
-        },
-        specific_snomed_concept: {
-          atom: 'snomed_concept' as const,
-          name: TIME_OF_ONSET.name,
-          category: TIME_OF_ONSET.category,
-        },
-        value: {
-          atom: 'event' as const,
-          datetime: dates.value.onset,
-          location: null,
-        },
-      })
-      if (dates.value.resolved) {
-        new_node.attributes.push({
+        dates.value?.resolved && {
           atom: 'attribute' as const,
           root_snomed_concept: {
             atom: 'snomed_concept' as const,
@@ -168,26 +127,54 @@ export function FindingModalInnerContents({
             datetime: dates.value.resolved,
             location: null,
           },
-        })
-      }
+        },
+        pain_level.value && {
+          atom: 'attribute' as const,
+          root_snomed_concept: {
+            atom: 'snomed_concept' as const,
+            name: ATTRIBUTE.name,
+            category: ATTRIBUTE.category,
+          },
+          specific_snomed_concept: {
+            atom: 'snomed_concept' as const,
+            name: PAIN_LEVEL.name,
+            category: PAIN_LEVEL.category,
+          },
+          value: {
+            atom: 'snomed_concept' as const,
+            name: pain_level.value.concept.name,
+            category: pain_level.value.concept.category,
+          },
+        },
+        ...new_finding_sites.map((site) => ({
+          atom: 'attribute' as const,
+          root_snomed_concept: {
+            atom: 'snomed_concept' as const,
+            name: ATTRIBUTE.name,
+            category: ATTRIBUTE.category,
+          },
+          specific_snomed_concept: {
+            atom: 'snomed_concept' as const,
+            name: FINDING_SITE.name,
+            category: FINDING_SITE.category,
+          },
+          value: {
+            atom: 'snomed_concept' as const,
+            name: site.name,
+            category: site.category,
+          },
+        })),
+      ]),
     }
 
-    if (!any_updates) {
-      return onChange(null)
-    }
-
-    const s_expression = inverseSExpression(new_node)
-    const full_display = formatRecord(findingToDisplayableRecord(new_node)).displays.full
     onChange({
-      s_expression,
-      full_display,
+      ...finding,
+      node: new_node,
+      s_expression: inverseSExpression(new_node),
+      priority: higherPriority(pain_level.value?.priority, finding.priority),
+      display: findingFullDisplay(new_node),
     })
   }
-
-  console.log({
-    search_within_finding_site,
-    'finding_sites.value': finding_sites.value,
-  })
 
   return (
     <>
@@ -198,35 +185,15 @@ export function FindingModalInnerContents({
             runOnChange()
           }}
         />
-        <QualifierSearch signal={qualifiers} />
-        {!!original_node.relevant_qualifiers.length && (
-          <CheckboxGrid title='relevant qualifiers' id='relevant-qualifiers'>
-            {original_node.relevant_qualifiers.map((relevant_qualifier) => {
-              const matches = (q: RenderedSnomedConcept) =>
-                q.name === relevant_qualifier.specific_snomed_concept.name &&
-                q.category === relevant_qualifier.specific_snomed_concept.category
-              return (
-                <CheckboxGridItem
-                  label={relevant_qualifier.specific_snomed_concept.name}
-                  checked={qualifiers.value.some(matches)}
-                  onChange={(checked) => {
-                    if (checked) {
-                      if (!qualifiers.value.some(matches)) {
-                        qualifiers.value = [...qualifiers.value, {
-                          snomed_concept_id: '@@triggersearch',
-                          name: relevant_qualifier.specific_snomed_concept.name,
-                          category: relevant_qualifier.specific_snomed_concept.category,
-                        }]
-                      }
-                    } else {
-                      qualifiers.value = qualifiers.value.filter((q) => !matches(q))
-                    }
-                  }}
-                />
-              )
-            })}
-          </CheckboxGrid>
-        )}
+        <PainLevelSelect
+          value={pain_level.value}
+          onChange={(value) => {
+            console.log('set pain', value)
+            pain_level.value = value ?? undefined
+            runOnChange()
+          }}
+        />
+        <QualifierSearch signal={qualifiers} relevant_qualifiers={finding.relevant_qualifiers} />
         <FindingSite
           search_within={search_within_finding_site}
           value={finding_sites.value}

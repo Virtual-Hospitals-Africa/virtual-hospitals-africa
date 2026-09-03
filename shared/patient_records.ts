@@ -590,3 +590,7 @@ export function asNormalFormSExpression<Rest>(
     }
   }
 }
+
+export function findingFullDisplay(node: Lang['finding']) {
+  return formatRecord(findingToDisplayableRecord(node)).displays.full
+}

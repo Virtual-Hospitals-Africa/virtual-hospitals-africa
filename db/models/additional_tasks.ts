@@ -339,11 +339,6 @@ export const additional_tasks = {
     const unsorted_task_groups_with_potentially_duplicative_findings: TaskGroup[] = []
 
     for (const [record_ids_joined, evaluations] of task_group_map) {
-      console.log({
-        record_ids_joined,
-        due_to_findings,
-        due_to_evaluations,
-      })
       const due_to = record_ids_joined.split(';').map((record_id) =>
         exists(
           due_to_findings.find(matching({ id: record_id })) ||

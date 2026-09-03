@@ -4,6 +4,8 @@ import { keyBy } from '../util/keyBy.ts'
 import sortBy from '../util/sortBy.ts'
 import { ORDERED_PRIORITIES } from './priorities.ts'
 import { normalForm } from './s_expression.ts'
+import warning_signs_modifiers from './warning_signs_modifiers.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type AgeGroupOrder<EmergencyType> = {
   Emergency: EmergencyType
@@ -43,7 +45,6 @@ const WARNING_SIGN_ORDER: {
       'Haemorrhage Uncontrolled',
       'Dislocation of larger joint',
       'Compound Fracture',
-      'Severe pain',
       'Burn Moderate severity',
       'Pregnancy and abdominal trauma',
       'Pregnancy and abdominal pain',
@@ -52,7 +53,6 @@ const WARNING_SIGN_ORDER: {
       'Persistent vomiting',
       'Dislocation of finger',
       'Closed fracture',
-      'Moderate pain',
       'Burn Other',
       'Haemorrhage Controlled',
       'Dislocation of toe joint',
@@ -130,7 +130,7 @@ const WARNING_SIGN_ORDER: {
   },
 }
 
-const WARNING_SIGN_DEFS = [
+export const WARNING_SIGN_DEFS = [
   // ── ADULT SIGNS ──────────────────────────────────────────────────────────────
   {
     key: 'Obstructed airway' as const,
@@ -326,14 +326,6 @@ const WARNING_SIGN_DEFS = [
     category: 'Very urgent' as const,
   },
   {
-    key: 'Severe pain' as const,
-    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Severe pain" "finding"))',
-    name: 'Severe pain',
-    description: null,
-    priority: 'Very urgent' as const,
-    category: 'Very urgent' as const,
-  },
-  {
     key: 'Burn Moderate severity' as const,
     clinical_finding_s_expression:
       '(clinical_finding (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Moderate (severity modifier)" "qualifier value")))',
@@ -380,14 +372,6 @@ const WARNING_SIGN_DEFS = [
     key: 'Dislocation of toe joint' as const,
     clinical_finding_s_expression: '(clinical_finding (snomed_concept "Dislocation of toe joint" "disorder"))',
     name: 'Dislocation of toe joint',
-    description: null,
-    priority: 'Urgent' as const,
-    category: 'Urgent' as const,
-  },
-  {
-    key: 'Moderate pain' as const,
-    clinical_finding_s_expression: '(clinical_finding (snomed_concept "Moderate pain" "finding"))',
-    name: 'Moderate pain',
     description: null,
     priority: 'Urgent' as const,
     category: 'Urgent' as const,
@@ -823,9 +807,14 @@ function buildNormalizedSign<T extends typeof WARNING_SIGN_DEFS[number]>(
   sign: T,
   overrides: { priority: 'Emergency' | 'Very urgent' | 'Urgent'; category: string; subcategory?: string },
 ) {
+  const modifiers = warning_signs_modifiers[sign.key]
+  assert(modifiers, 'No match found, run scripts/data-munging/warning-signs-modifiers.ts')
+  const { predefined_attributes, relevant_qualifiers } = modifiers
   return omitUndefinedProperties({
     ...sign,
     ...overrides,
+    predefined_attributes,
+    relevant_qualifiers,
     clinical_finding_s_expression: normalForm(sign.clinical_finding_s_expression),
     excluding_s_expressions: sign.excluding_s_expressions && sign.excluding_s_expressions.map(normalForm),
     prompt_when_s_expression: sign.prompt_when_s_expression && normalForm(sign.prompt_when_s_expression),

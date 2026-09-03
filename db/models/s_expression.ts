@@ -1,10 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import type { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
-import type { SelectQueryBuilder } from 'kysely'
+import type { ExpressionWrapper, SelectQueryBuilder } from 'kysely'
 import type { DB, Existence } from '../../db.d.ts'
 import isString from '../../util/isString.ts'
 import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
-import { deduplicate } from '../helpers.ts'
+import { deduplicate, isExpression } from '../helpers.ts'
 import { any_query_single, Lang, MeasurementComparison, QueryableSingleNode } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
 import { DUE_TO, MEASUREMENT_FINDING, QUALIFIER_VALUE, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
@@ -33,6 +33,20 @@ export function nameAndCategorySnomedConceptBase(
     .where('name', '=', snomed_concept.name)
     .where('category', '=', snomed_concept.category)
     .select('id')
+}
+
+// A snomed_concept search term can either be an atom, which we resolve with a subquery,
+// or a reference to a column in an enclosing query, which we compare directly.
+export function snomedConceptSelection(
+  trx: TrxOrDbOrQueryCreator,
+  // deno-lint-ignore no-explicit-any
+  snomed_concept: Lang['snomed_concept'] | ExpressionWrapper<DB, any, string>,
+): [
+  '=' | 'in',
+  // deno-lint-ignore no-explicit-any
+  ExpressionWrapper<DB, any, string> | ReturnType<typeof nameAndCategorySnomedConceptBase>,
+] {
+  return isExpression(snomed_concept) ? ['=', snomed_concept] : ['in', nameAndCategorySnomedConceptBase(trx, snomed_concept)]
 }
 
 export function snomedConceptBase(

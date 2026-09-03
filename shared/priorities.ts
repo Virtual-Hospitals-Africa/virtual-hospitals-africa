@@ -39,6 +39,16 @@ export const ORDERED_PRIORITIES = sortBy(
   ([, minutes]) => minutes,
 ).map(([priority]) => priority)
 
+export function higherPriority(
+  priority1: Maybe<Priority>,
+  priority2: Maybe<Priority>,
+) {
+  console.log({ priority1, priority2, z: ORDERED_PRIORITIES.indexOf(priority1!), xx: ORDERED_PRIORITIES.indexOf(priority2!) })
+  if (!priority1) return priority2
+  if (!priority2) return priority1
+  return ORDERED_PRIORITIES.indexOf(priority1) < ORDERED_PRIORITIES.indexOf(priority2) ? priority1 : priority2
+}
+
 export const TRIAGE_LEVELS = keys(TARGET_TIME_TO_TREATMENT_MINUTES)
 
 export function isTriageLevel(priority: string): priority is TriageLevel {

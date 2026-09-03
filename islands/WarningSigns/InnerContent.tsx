@@ -2,7 +2,7 @@ import { computed, Signal, useSignal } from '@preact/signals'
 import { assert } from 'std/assert/assert.ts'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassCircleIcon } from '../../components/library/icons/heroicons/mini.tsx'
-import { AsyncSearchHookResult, AugmentedSign, Maybe, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
+import { AsyncSearchHookResult, ConfiguredFinding, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { uniqBy } from '../../util/uniqBy.ts'
@@ -12,6 +12,9 @@ import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
 import { CATEGORIES, CheckedWarningSign, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
+import { parseWithSchema } from '../../shared/s_expression.ts'
+import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
+import { findingFullDisplay } from '../../shared/patient_records.ts'
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -53,15 +56,16 @@ export default function WarningSignsInnerContent({
   )
 
   function onCheck(sign: CheckedWarningSign) {
+    const selected_sign = { ...sign, checked: true as const }
     selected_signs.value = selected_signs.value = [
       ...selected_signs.value,
-      { ...sign, checked: true },
+      selected_sign,
     ]
     if (search_results.value) {
       search_results.value = null
       snomed_warning_signs_async_search.setQuery('')
-      return
     }
+    active_modal_sign.value = selected_sign
   }
 
   function onUncheck(sign: CheckedWarningSign) {
@@ -73,10 +77,21 @@ export default function WarningSignsInnerContent({
     active_modal_sign.value = sign
   }
 
-  function onSaveDetails(sign: SelectedWarningSign, augmented_sign: Maybe<AugmentedSign>) {
+  function onSaveDetails(finding: ConfiguredFinding) {
+    console.log({ finding })
     selected_signs.value = selected_signs.value.map((s) =>
-      uniqueIdentifier(s) === uniqueIdentifier(sign) ? { ...s, augmented: augmented_sign ?? undefined } : s
+      uniqueIdentifier(s) === uniqueIdentifier(active_modal_sign.value!)
+        ? {
+          ...s,
+          augmented: {
+            s_expression: finding.s_expression,
+            display: finding.display,
+            priority: finding.priority,
+          },
+        }
+        : s
     )
+    active_modal_sign.value = null
   }
 
   return (
@@ -118,10 +133,40 @@ export default function WarningSignsInnerContent({
         signs_to_send_to_server={signs_to_send_to_server.value}
       />
       <FindingModal
-        finding={active_modal_sign.value}
+        finding={asConfiguredFinding(active_modal_sign.value)}
         onSave={onSaveDetails}
         onClose={() => active_modal_sign.value = null}
       />
     </div>
   )
+}
+
+function asConfiguredFinding(sign: SelectedWarningSign | null): ConfiguredFinding | null {
+  if (!sign) return null
+
+  // TODO I don't necessarily love that the parser now is needed on  the frontend, but I don't see a viable alternative
+  const sign_node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
+  if (!sign.existing_record?.augmented) {
+    return {
+      node: sign_node,
+      s_expression: sign.clinical_finding_s_expression,
+      display: findingFullDisplay(sign_node),
+      priority: sign.priority,
+      nonremovable_qualifiers: sign_node.qualifiers,
+      predefined_attributes: sign.predefined_attributes,
+      relevant_qualifiers: sign.relevant_qualifiers,
+    }
+  }
+
+  const node = parseWithSchema(sign.existing_record.augmented.s_expression, insertable_finding_base)
+
+  return {
+    node,
+    s_expression: sign.existing_record.augmented.s_expression,
+    display: sign.existing_record.augmented.display,
+    priority: sign.existing_record.augmented.priority || sign.priority,
+    nonremovable_qualifiers: sign_node.qualifiers,
+    predefined_attributes: sign.predefined_attributes,
+    relevant_qualifiers: sign.relevant_qualifiers,
+  }
 }

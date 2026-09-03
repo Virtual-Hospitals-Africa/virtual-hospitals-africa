@@ -714,3 +714,28 @@ export const ADMINISTRATIVE_PROCEDURE = asConcept({
   name: 'Administrative procedure',
   category: 'procedure' as const,
 })
+export const PAIN_LEVEL = asConcept({
+  id: '405161002',
+  name: 'Pain level',
+  category: 'observable entity' as const,
+})
+export const NO_PAIN = asConcept({
+  id: '81765008',
+  name: 'No pain',
+  category: 'situation' as const,
+})
+export const MILD_PAIN = asConcept({
+  id: '40196000',
+  name: 'Mild pain',
+  category: 'finding' as const,
+})
+export const MODERATE_PAIN = asConcept({
+  id: '50415004',
+  name: 'Moderate pain',
+  category: 'finding' as const,
+})
+export const SEVERE_PAIN = asConcept({
+  id: '76948002',
+  name: 'Severe pain',
+  category: 'finding' as const,
+})

@@ -3,6 +3,9 @@ import { base } from './_base.ts'
 import { AgeDetermination } from '../../db.d.ts'
 import { asConceptSExpression } from '../../shared/snomed_concepts.ts'
 import { snomed_concept_finding_like } from './snomed_concept_finding_like.ts'
+import { jsonArrayFrom } from '../helpers.ts'
+import { snomed_predefined_attributes } from './snomed_predefined_attributes.ts'
+import { snomed_relevant_qualifiers } from './snomed_relevant_qualifiers.ts'
 
 type SearchTerms = {
   search?: string
@@ -27,9 +30,19 @@ export const snomed_warning_signs = base({
             .on('snomed_concept_prioritizations.pregnancy', '=', !!pregnancy),
       )
       .selectAll('results')
-      .select([
+      .select((eb) => [
         'snomed_concept_prioritizations.priority',
         'snomed_concept_prioritizations.warning_sign as priority_by_virtue_of_matching_warning_sign',
+        jsonArrayFrom(
+          snomed_predefined_attributes.baseQuery(trx, {
+            snomed_concept: eb.ref('results.id'),
+          }),
+        ).as('predefined_attributes'),
+        jsonArrayFrom(
+          snomed_relevant_qualifiers.baseQuery(trx, {
+            snomed_concept: eb.ref('results.id'),
+          }),
+        ).as('relevant_qualifiers'),
       ])
   },
   formatResult({ id: snomed_concept_id, ...result }): SnomedWarningSignSearchResult {
