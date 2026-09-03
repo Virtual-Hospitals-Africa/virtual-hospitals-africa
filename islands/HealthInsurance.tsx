@@ -2,7 +2,7 @@ import { useSignal } from '@preact/signals'
 import FormSection from '../components/library/FormSection.tsx'
 import FormGrid from '../components/library/FormGrid.tsx'
 
-import { RenderedPatientInsurance, InsuranceNetworkSearchOption } from '../types.ts'
+import { InsuranceNetworkSearchOption, RenderedPatientInsurance } from '../types.ts'
 import { CheckboxInput } from './form/inputs/checkbox.tsx'
 import { DateInput } from './form/inputs/date.tsx'
 import { TextInput } from './form/inputs/text.tsx'
@@ -24,10 +24,10 @@ export function HealthInsuranceSection(
   const selected_insurance_signal = useSignal<InsuranceNetworkSearchOption | undefined>(
     current_insurance
       ? {
-          id: '',
-          business_name: current_insurance.insurance_provider,
-          avatar_media_id: undefined,
-        }
+        id: '',
+        business_name: current_insurance.insurance_provider,
+        avatar_media_id: undefined,
+      }
       : undefined,
   )
 
