@@ -6,8 +6,8 @@ import { InsuranceNetworkSearchOption, RenderedPatientInsurance } from '../types
 import { CheckboxInput } from './form/inputs/checkbox.tsx'
 import { DateInput } from './form/inputs/date.tsx'
 import { TextInput } from './form/inputs/text.tsx'
-import InsuranceSearch from './InsuranceSearch.tsx'
 import { HiddenInput } from '../components/library/HiddenInput.tsx'
+import AsyncSearch from './AsyncSearch.tsx'
 
 export function HealthInsuranceSection(
   { current_insurance, previously_completed_form }: {
@@ -42,14 +42,15 @@ export function HealthInsuranceSection(
 
       <FormGrid columns={2}>
         <div>
-          <InsuranceSearch
-            name='insurance_provider_search'
+          <AsyncSearch
+            name='insurance_provider'
             label='Provider'
             placeholder='Search Health Insurance'
             search_route='/app/insurance-networks'
             required={!has_no_insurance_signal.value}
             disabled={has_no_insurance_signal.value}
             signal={selected_insurance_signal}
+            addable
           />
           {selected_insurance_signal.value && (
             <HiddenInput
@@ -62,7 +63,6 @@ export function HealthInsuranceSection(
           name='insurance.plan_name'
           label='Plan Name'
           placeholder='Select Plan'
-          required
           disabled={has_no_insurance_signal.value}
           value={current_insurance?.plan_name}
         />
