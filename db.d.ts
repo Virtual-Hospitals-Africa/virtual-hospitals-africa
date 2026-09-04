@@ -1088,6 +1088,7 @@ export interface PatientEvaluationScores {
 
 export interface PatientEvents {
   address_id: string | null
+  comparator: Generated<Comparator>
   datetime: Timestamp
   id: string
   location: string | null

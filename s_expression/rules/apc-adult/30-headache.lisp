@@ -38,7 +38,7 @@
 
     (clinical_finding (snomed_concept "Seizure" "finding") (qualifier (snomed_concept "Recent" "qualifier value")))
 
-    (<= (timestamp (clinical_finding (snomed_concept "Highly active antiretroviral therapy" "procedure")))
+    (<= (onset (clinical_finding (snomed_concept "Highly active antiretroviral therapy" "procedure")))
         (time_ago 3 months))
 
     (clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))

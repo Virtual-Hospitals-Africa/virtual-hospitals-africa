@@ -101,21 +101,24 @@ describe('s_expression', () => {
         }
       }
     })
-    it('no task checks for a finding that is already part of its own due_to', () => {
-      const tasks_checking_for_their_own_due_to = [...tasksCheckingForTheirOwnDueTo()]
+    it('no task checks for a finding that is already part of its own due_to', async () => {
+      const tasks_checking_for_their_own_due_to = await collect(tasksCheckingForTheirOwnDueTo())
       assertArrayEmpty(tasks_checking_for_their_own_due_to)
 
-      function* tasksCheckingForTheirOwnDueTo() {
-        for (const s_expression of TASKS_LISP) {
-          const task_node = parseWithSchema(s_expression, task)
-          if (!isCheckFor(task_node.to_be_done)) continue
-          const due_to = new Set(Array.from(allEvidenceToLookFor(task_node.due_to), (evidence) => inverseSExpression(evidence)))
-          for (const finding of task_node.to_be_done.value) {
-            const finding_s_expression = inverseSExpression(finding)
-            if (due_to.has(finding_s_expression)) {
-              yield {
-                description: task_node.description,
-                already_known_from_due_to: finding_s_expression,
+      async function* tasksCheckingForTheirOwnDueTo() {
+        for await (const file_path of walkDirectory()) {
+          for (const task_node of await parseLispFile(file_path)) {
+            if (task_node.atom !== 'task') continue
+            if (!isCheckFor(task_node.to_be_done)) continue
+            const due_to = new Set(Array.from(allEvidenceToLookFor(task_node.due_to), (evidence) => inverseSExpression(evidence)))
+            for (const finding of task_node.to_be_done.value) {
+              const finding_s_expression = inverseSExpression(finding)
+              if (due_to.has(finding_s_expression)) {
+                yield {
+                  file_path,
+                  description: task_node.description,
+                  already_known_from_due_to: finding_s_expression,
+                }
               }
             }
           }

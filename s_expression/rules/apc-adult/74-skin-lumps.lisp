@@ -14,7 +14,6 @@
     (clinical_finding (snomed_concept "Firm mass" "morphologic abnormality"))
     (clinical_finding (snomed_concept "Erythema" "finding"))
     (clinical_finding (snomed_concept "Warm skin" "finding"))
-    (clinical_finding (snomed_concept "Mass of skin" "finding"))
     (clinical_finding (snomed_concept "Fluctuant mass" "morphologic abnormality"))
   )
 )

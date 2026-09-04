@@ -19,7 +19,7 @@
     (clinical_finding (snomed_concept "Tightly retracted foreskin" "finding"))
     (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Glans penis structure" "body structure")))
     (clinical_finding (snomed_concept "Severe pain" "finding") (finding_site (snomed_concept "Glans penis structure" "body structure")))
-    (<= (timestamp (clinical_finding (snomed_concept "Priapism" "disorder")))
+    (<= (onset (clinical_finding (snomed_concept "Priapism" "disorder")))
         (time_ago 4 hours))
   )
 )

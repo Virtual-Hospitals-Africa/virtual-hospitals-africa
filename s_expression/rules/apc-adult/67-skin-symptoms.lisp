@@ -20,7 +20,7 @@
     (clinical_finding (snomed_concept "Drowsy" "finding"))
     (clinical_finding (snomed_concept "Clouded consciousness" "finding"))
     (clinical_finding (snomed_concept "Headache" "finding"))
-    (<= (timestamp (clinical_finding (snomed_concept "Eruption caused by drug" "disorder")))
+    (<= (onset (clinical_finding (snomed_concept "Eruption caused by drug" "disorder")))
         (time_ago 3 months))
     (clinical_finding (snomed_concept "Jaundice" "finding"))
     (clinical_finding (snomed_concept "Blister" "morphologic abnormality"))

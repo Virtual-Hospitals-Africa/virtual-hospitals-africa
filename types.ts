@@ -68,6 +68,12 @@ export type NonNullableProperty<T, K extends keyof T> =
     [P in K]-?: NonNullable<T[P]>
   } extends infer O ? { [P in keyof O]: O[P] } : never
 
+export type NullableProperty<T, K extends keyof T> =
+  & Pick<T, Exclude<keyof T, K>>
+  & {
+    [P in K]?: Maybe<T[P]>
+  }
+
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
@@ -3330,4 +3336,5 @@ export type FindingModalMetadata = {
     s_expression: string
   }[]
   priority?: Maybe<Priority>
+  onset_required: boolean
 }
