@@ -15,6 +15,7 @@ import { CATEGORIES, CheckedWarningSign, SelectedWarningSign, uniqueIdentifier }
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
+import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -34,7 +35,10 @@ export default function WarningSignsInnerContent({
       }),
   )
 
-  const active_modal_sign = useSignal<SelectedWarningSign | null>(null)
+  const active_modal = useSignal<null | {
+    configured_finding: ConfiguredFinding
+    sign: CheckedWarningSign
+  }>(null)
 
   const table_signs_to_display = computed(() => search_results.value || warning_signs)
 
@@ -56,7 +60,16 @@ export default function WarningSignsInnerContent({
   )
 
   function onCheck(sign: CheckedWarningSign) {
-    const selected_sign = { ...sign, checked: true as const }
+    active_modal.value = { sign, configured_finding: asConfiguredFinding(sign) }
+    const selected_sign = {
+      ...sign,
+      checked: true as const,
+      augmented: {
+        s_expression: active_modal.value.configured_finding.s_expression,
+        display: active_modal.value.configured_finding.display,
+        priority: active_modal.value.configured_finding.priority,
+      },
+    }
     selected_signs.value = selected_signs.value = [
       ...selected_signs.value,
       selected_sign,
@@ -65,7 +78,6 @@ export default function WarningSignsInnerContent({
       search_results.value = null
       snomed_warning_signs_async_search.setQuery('')
     }
-    active_modal_sign.value = selected_sign
   }
 
   function onUncheck(sign: CheckedWarningSign) {
@@ -74,13 +86,15 @@ export default function WarningSignsInnerContent({
   }
 
   function onOpenDetails(sign: SelectedWarningSign) {
-    active_modal_sign.value = sign
+    active_modal.value = {
+      sign,
+      configured_finding: asConfiguredFinding(sign)
+    }
   }
 
   function onSaveDetails(finding: ConfiguredFinding) {
-    console.log({ finding })
     selected_signs.value = selected_signs.value.map((s) =>
-      uniqueIdentifier(s) === uniqueIdentifier(active_modal_sign.value!)
+      uniqueIdentifier(s) === uniqueIdentifier(active_modal.value!.sign)
         ? {
           ...s,
           augmented: {
@@ -91,7 +105,7 @@ export default function WarningSignsInnerContent({
         }
         : s
     )
-    active_modal_sign.value = null
+    active_modal.value = null
   }
 
   return (
@@ -133,28 +147,32 @@ export default function WarningSignsInnerContent({
         signs_to_send_to_server={signs_to_send_to_server.value}
       />
       <FindingModal
-        finding={asConfiguredFinding(active_modal_sign.value)}
+        finding={active_modal.value?.configured_finding ?? null}
         onSave={onSaveDetails}
-        onClose={() => active_modal_sign.value = null}
+        onClose={() => active_modal.value = null}
       />
     </div>
   )
 }
 
-function asConfiguredFinding(sign: SelectedWarningSign | null): ConfiguredFinding | null {
-  if (!sign) return null
-
+function asConfiguredFinding(sign: CheckedWarningSign): ConfiguredFinding {
   // TODO I don't necessarily love that the parser now is needed on  the frontend, but I don't see a viable alternative
   const sign_node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
+  const nonremovable_qualifiers = sign_node.qualifiers
+
+  const relevant_qualifiers = sign.relevant_qualifiers.filter(relevant_qualifier =>
+    !nonremovable_qualifiers.some(nonremovable_qualifier => inverseSExpression(nonremovable_qualifier) === relevant_qualifier.s_expression)
+  )
+
   if (!sign.existing_record?.augmented) {
     return {
       node: sign_node,
       s_expression: sign.clinical_finding_s_expression,
       display: findingFullDisplay(sign_node),
       priority: sign.priority,
-      nonremovable_qualifiers: sign_node.qualifiers,
+      nonremovable_qualifiers,
       predefined_attributes: sign.predefined_attributes,
-      relevant_qualifiers: sign.relevant_qualifiers,
+      relevant_qualifiers
     }
   }
 
@@ -165,8 +183,8 @@ function asConfiguredFinding(sign: SelectedWarningSign | null): ConfiguredFindin
     s_expression: sign.existing_record.augmented.s_expression,
     display: sign.existing_record.augmented.display,
     priority: sign.existing_record.augmented.priority || sign.priority,
-    nonremovable_qualifiers: sign_node.qualifiers,
+    nonremovable_qualifiers,
     predefined_attributes: sign.predefined_attributes,
-    relevant_qualifiers: sign.relevant_qualifiers,
+    relevant_qualifiers
   }
 }

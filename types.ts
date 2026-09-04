@@ -2820,7 +2820,7 @@ export type AugmentedSign = {
 
 export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record'>) & {
   existing_record?: {
-    id?: string
+    id: string
     existence: Existence
     augmented?: AugmentedSign
   }
@@ -3326,5 +3326,4 @@ export type ConfiguredFinding = FindingRelatedModifiers & {
   display: string
   priority?: Maybe<Priority>
   nonremovable_qualifiers: Lang['qualifier'][]
-  // nonremovable_attribute_s_expressions: string[]
 }

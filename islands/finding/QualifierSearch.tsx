@@ -19,6 +19,8 @@ export function QualifierSearch({
 }) {
   const add_relevant_qualifiers = compactMap(relevant_qualifiers, ({ s_expression }) => {
     const relevant_qualifier = parseWithSchema(s_expression, qualifier)
+
+    // TODO wouldn't work in case of nested qualifiers
     const matches = (q: RenderedSnomedConcept) =>
       q.name === relevant_qualifier.specific_snomed_concept.name &&
       q.category === relevant_qualifier.specific_snomed_concept.category

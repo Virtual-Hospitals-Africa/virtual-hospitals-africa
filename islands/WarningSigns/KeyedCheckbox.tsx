@@ -47,7 +47,7 @@ export function KeyedWarningSignCheckbox(
                 onOpenDetails?.(sign as SelectedWarningSign)
               }}
             >
-              + Add details
+              + Edit details
             </span>
           )
           : (

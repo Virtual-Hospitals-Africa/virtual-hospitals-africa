@@ -6,6 +6,7 @@ import { XMarkIcon } from '../components/library/icons/heroicons/mini.tsx'
 type Selected = {
   id?: string
   name?: Maybe<string>
+  display?: Maybe<string>
   display_name?: Maybe<string>
   description?: Maybe<string>
   priority?: Maybe<Priority>
@@ -24,7 +25,7 @@ export function SelectedChip<Item extends Selected>({ item, onUncheck }: {
       })}
       onClick={() => onUncheck(item)}
     >
-      {item.augmented?.display || item.display_name || item.name}
+      {item.augmented?.display || item.display_name  || item.display || item.name}
       <XMarkIcon className='-ml-1.5 -mr-2.5 p-0.5' />
     </button>
   )
