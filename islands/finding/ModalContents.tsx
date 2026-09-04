@@ -53,8 +53,8 @@ export function FindingModalContents(
     pain_level_attribute && exists(PAIN_LEVELS.find((pain_level) => pain_level.concept.name === pain_level_attribute.name)),
   )
 
-  const nonremovable_qualifiers = new Set(finding.nonremovable_qualifiers.map((q) => inverseSExpression(q)))
-  const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => !nonremovable_qualifiers.has(inverseSExpression(qualifier)))
+  const inherent_qualifiers = new Set(finding.inherent_qualifiers.map((q) => inverseSExpression(q)))
+  const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => !inherent_qualifiers.has(inverseSExpression(qualifier)))
   const qualifiers = useSignal<RenderedSnomedConcept[]>(removable_qualifiers.map((q) => ({
     id: '@@triggersearch',
     snomed_concept_id: '@@triggersearch',
@@ -72,7 +72,7 @@ export function FindingModalContents(
     const new_node = {
       ...finding.node,
       qualifiers: [
-        ...finding.nonremovable_qualifiers,
+        ...finding.inherent_qualifiers,
         ...qualifiers.value.map((qualifier) => ({
           atom: 'qualifier' as const,
           specific_snomed_concept: {
@@ -193,7 +193,7 @@ export function FindingModalContents(
         />
         <QualifierSearch
           signal={qualifiers}
-          relevant_qualifiers={finding.relevant_qualifiers}
+          optional_relevant_qualifiers={finding.optional_relevant_qualifiers}
         />
         <FindingSite
           search_within={search_within_finding_site}

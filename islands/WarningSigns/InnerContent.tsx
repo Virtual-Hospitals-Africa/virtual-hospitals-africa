@@ -11,7 +11,7 @@ import Search from '../Search.tsx'
 import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
-import { CATEGORIES, CheckedWarningSign, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
+import { CATEGORIES, CheckedWarningSign, sameSign, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
@@ -19,6 +19,62 @@ import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { higherPriority } from '../../shared/priorities.ts'
 import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
 import negate from '../../util/negate.ts'
+import memoize from '../../util/memoize.ts'
+
+//
+let parseSExpressionAsFinding = (s_expression: string) => parseWithSchema(s_expression, insertable_finding_base)
+if (typeof window !== 'undefined') {
+  parseSExpressionAsFinding = memoize(parseSExpressionAsFinding)
+}
+
+function asAugmented(sign: WarningSignWithMaybeRecord) {
+  return {
+    s_expression: sign.clinical_finding_s_expression,
+    display: findingFullDisplay(parseSExpressionAsFinding(sign.clinical_finding_s_expression)),
+    priority: sign.priority,
+  }
+}
+
+// TODO when working on making a FindingsModal that's actually reusable we may want to make aspects of this logic more portable
+function asConfiguredFinding({
+  checked,
+  augmented,
+  clinical_finding_s_expression,
+  priority,
+  predefined_attributes,
+  relevant_qualifiers,
+}: SelectedWarningSign): ConfiguredFinding {
+  assert(checked)
+  assert(augmented)
+
+  // TODO I don't necessarily love that the parser now is needed on the frontend, but I don't see a viable alternative
+  const sign_node = parseSExpressionAsFinding(clinical_finding_s_expression)
+  const node = parseSExpressionAsFinding(augmented.s_expression)
+
+  // The sign's qualifers are inherent to the sign itself and thus nonremovable
+  const inherent_qualifiers = sign_node.qualifiers
+  const inherent_qualifiers_s_expressions = new Set(inherent_qualifiers.map(inverseSExpression))
+
+  // The backend sends relevant_qualifiers that are in a sense redundant because they're inherent in the sign
+  // We form the optional_relevant_qualifiers, which are those that are not inherent in the sign and thus can be included or not
+  // As an example for Circumferential Burn, "Circumferential" is inherent but also sent as a relevant qualifier (because it would be relevant for a Burn)
+  // We don't want the user removing "Circumferential" for that sign, so it is not optional
+  // TODO Evaluate whether it's worth having the backend do this deduplication
+  const optional_relevant_qualifiers = relevant_qualifiers.filter((relevant_qualifier) =>
+    !inherent_qualifiers_s_expressions.has(relevant_qualifier.s_expression)
+  )
+
+  return {
+    node,
+    predefined_attributes,
+    inherent_qualifiers,
+    optional_relevant_qualifiers,
+    s_expression: augmented.s_expression,
+    display: augmented.display,
+    original_priority: priority,
+    augmented_priority: augmented.priority,
+  }
+}
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -33,8 +89,8 @@ export default function WarningSignsInnerContent({
     compactMap(warning_signs, (sign) =>
       sign.existing_record?.existence === 'Yes' && {
         ...sign,
-        augmented: sign.existing_record.augmented,
         checked: true,
+        augmented: sign.existing_record.augmented || asAugmented(sign),
       }),
   )
 
@@ -46,17 +102,18 @@ export default function WarningSignsInnerContent({
     }
   >(null)
 
+  console.log('wekllwekkwe', search_results.value)
+
   const table_signs_to_display = computed(() => search_results.value || warning_signs)
 
   const table_signs_with_checked = computed(() =>
     table_signs_to_display.value.map((sign) => {
-      const selected = selected_signs.value.find((checked_sign) => uniqueIdentifier(checked_sign) === uniqueIdentifier(sign))
-      return selected || { ...sign, checked: false }
+      const selected = selected_signs.value.find((checked_sign) => sameSign(checked_sign, sign))
+      return selected || { ...sign, checked: false as const }
     })
   )
 
   const grouped = computed(() => groupBy(table_signs_with_checked.value, 'category'))
-  console.log({ grouped })
 
   const signs_to_send_to_server = computed(() =>
     uniqBy([
@@ -66,23 +123,21 @@ export default function WarningSignsInnerContent({
   )
 
   function onCheck(sign: CheckedWarningSign) {
-    active_modal.value = { sign, just_checked: true, configured_finding: asConfiguredFinding(sign) }
     const selected_sign = {
       ...sign,
       checked: true as const,
-      augmented: {
-        s_expression: active_modal.value.configured_finding.s_expression,
-        display: active_modal.value.configured_finding.display,
-        priority: higherPriority(
-          active_modal.value.configured_finding.augmented_priority,
-          active_modal.value.configured_finding.original_priority,
-        ),
-      },
+      augmented: sign.augmented || asAugmented(sign),
     }
     selected_signs.value = selected_signs.value = [
       ...selected_signs.value,
       selected_sign,
     ]
+    active_modal.value = {
+      sign,
+      just_checked: true,
+      configured_finding: asConfiguredFinding(selected_sign),
+    }
+
     if (search_results.value) {
       search_results.value = null
       snomed_warning_signs_async_search.setQuery('')
@@ -91,7 +146,7 @@ export default function WarningSignsInnerContent({
 
   function onUncheck(sign: CheckedWarningSign) {
     assert(sign.checked)
-    selected_signs.value = selected_signs.value.filter((checked_sign) => uniqueIdentifier(checked_sign) !== uniqueIdentifier(sign))
+    selected_signs.value = selected_signs.value.filter((checked_sign) => !sameSign(checked_sign, sign))
   }
 
   function onOpenDetails(sign: SelectedWarningSign) {
@@ -102,26 +157,21 @@ export default function WarningSignsInnerContent({
     }
   }
 
-  function onSaveDetails(finding: ConfiguredFinding | typeof RemoveFindingSymbol) {
-    const isActiveSign = (sign: SelectedWarningSign) => uniqueIdentifier(sign) === uniqueIdentifier(active_modal.value!.sign)
+  function updatedSigns(finding: ConfiguredFinding | typeof RemoveFindingSymbol) {
+    const isActiveSign = (sign: SelectedWarningSign) => sameSign(sign, active_modal.value!.sign)
 
-    selected_signs.value = finding === RemoveFindingSymbol
-      ? selected_signs.value.filter(negate(isActiveSign))
-      : selected_signs.value.map((s) =>
-        isActiveSign(s)
-          ? {
-            ...s,
-            augmented: {
-              s_expression: finding.s_expression,
-              display: finding.display,
-              priority: higherPriority(
-                finding.augmented_priority,
-                finding.original_priority,
-              ),
-            },
-          }
-          : s
-      )
+    if (finding === RemoveFindingSymbol) {
+      return selected_signs.value.filter(negate(isActiveSign))
+    }
+
+    const { s_expression, display, augmented_priority, original_priority } = finding
+    const priority = higherPriority(augmented_priority, original_priority)
+    const augmented = { s_expression, display, priority }
+    return selected_signs.value.map((s) => isActiveSign(s) ? { ...s, augmented } : s)
+  }
+
+  function onSaveDetails(finding: ConfiguredFinding | typeof RemoveFindingSymbol) {
+    selected_signs.value = updatedSigns(finding)
     active_modal.value = null
   }
 
@@ -134,13 +184,14 @@ export default function WarningSignsInnerContent({
           data-searchroute={snomed_warning_signs_async_search.search_route}
           options={snomed_warning_signs_async_search.results}
           onQuery={snomed_warning_signs_async_search.setQuery}
+          loading_options={snomed_warning_signs_async_search.loading}
           do_not_render_built_in_options
           is_async
         />
         <SelectedChips
           id='warning-signs-selected-chips'
           items={selected_signs.value}
-          onUncheck={onUncheck}
+          onEdit={onOpenDetails}
         />
       </div>
       {grouped.value.size === 0 && (
@@ -171,40 +222,4 @@ export default function WarningSignsInnerContent({
       />
     </div>
   )
-}
-
-function asConfiguredFinding(sign: CheckedWarningSign): ConfiguredFinding {
-  // TODO I don't necessarily love that the parser now is needed on  the frontend, but I don't see a viable alternative
-  const sign_node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
-  const nonremovable_qualifiers = sign_node.qualifiers
-
-  const relevant_qualifiers = sign.relevant_qualifiers.filter((relevant_qualifier) =>
-    !nonremovable_qualifiers.some((nonremovable_qualifier) => inverseSExpression(nonremovable_qualifier) === relevant_qualifier.s_expression)
-  )
-
-  if (!sign.augmented) {
-    return {
-      node: sign_node,
-      s_expression: sign.clinical_finding_s_expression,
-      display: findingFullDisplay(sign_node),
-      original_priority: sign.priority,
-      augmented_priority: sign.priority,
-      nonremovable_qualifiers,
-      predefined_attributes: sign.predefined_attributes,
-      relevant_qualifiers,
-    }
-  }
-
-  const node = parseWithSchema(sign.augmented.s_expression, insertable_finding_base)
-
-  return {
-    node,
-    s_expression: sign.augmented.s_expression,
-    display: sign.augmented.display,
-    original_priority: sign.priority,
-    augmented_priority: sign.augmented.priority,
-    nonremovable_qualifiers,
-    predefined_attributes: sign.predefined_attributes,
-    relevant_qualifiers,
-  }
 }

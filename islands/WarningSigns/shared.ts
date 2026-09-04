@@ -36,12 +36,10 @@ export const EMERGENCY_SUBCATEGORY_ORDER = [
 
 export type CategoryConfig = typeof CATEGORIES[number]
 
-export type CheckedWarningSign = WarningSignWithMaybeRecord & {
-  checked: boolean
-  augmented?: AugmentedSign
-}
+export type CheckedWarningSign = SelectedWarningSign | NotSelectedWarningSign
 
-export type SelectedWarningSign = CheckedWarningSign & { checked: true }
+export type SelectedWarningSign = WarningSignWithMaybeRecord & { checked: true; augmented: AugmentedSign }
+export type NotSelectedWarningSign = WarningSignWithMaybeRecord & { checked: false; augmented?: never }
 
 export type OnToggle = (sign: CheckedWarningSign) => void
 
@@ -51,3 +49,5 @@ export const uniqueIdentifier = memoize(
     return hyphenate([category, ...latter].join('-').toLowerCase())
   },
 )
+
+export const sameSign = (sign1: WarningSignWithMaybeRecord, sign2: WarningSignWithMaybeRecord) => uniqueIdentifier(sign1) === uniqueIdentifier(sign2)

@@ -3320,12 +3320,18 @@ export type CarePlanGroup = TaskGroupWithPermissions & {
   medicines: MedicineGroupWithPermissions[]
 }
 
-export type ConfiguredFinding = FindingRelatedModifiers & {
+export type ConfiguredFinding = {
   node: InsertableFindingBase
   s_expression: string
   display: string
   original_priority?: Maybe<Priority>
   // Currently only used for pain level, but in principle could be used for more?
   augmented_priority?: Maybe<Priority>
-  nonremovable_qualifiers: Lang['qualifier'][]
+  inherent_qualifiers: Lang['qualifier'][]
+  predefined_attributes: {
+    s_expression: string
+  }[]
+  optional_relevant_qualifiers: {
+    s_expression: string
+  }[]
 }

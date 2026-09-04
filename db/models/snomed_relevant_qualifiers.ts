@@ -10,20 +10,6 @@ type SearchTerms = {
   snomed_concept: Lang['snomed_concept'] | ExpressionWrapper<DB, any, string>
 }
 
-// A parenthesized group containing no nested parens, e.g. (snomed_concept "Watery" "qualifier value")
-const FLAT_GROUP = String.raw`\([^()]*\)`
-
-// A parenthesized group nested one level deep, e.g. (qualifier (snomed_concept "Watery" "qualifier value"))
-const NESTED_GROUP = String.raw`\((?:[^()]|${FLAT_GROUP})*\)`
-
-/*
-  Matches a whole (qualifier ...) node, including any qualifiers nested within it.
-  Because the group being matched is balanced, the leftmost-longest match starting at
-  "(qualifier " is exactly that node, so a global match walks the sibling qualifiers
-  one by one, the same way flatMapping over the parsed finding's top-level qualifiers would.
-*/
-const QUALIFIER_NODE = String.raw`\(qualifier (?:[^()]|${NESTED_GROUP})*\)`
-
 function baseQuery(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) {
   return trx
     .selectFrom('due_to_findings')
@@ -35,9 +21,7 @@ function baseQuery(trx: TrxOrDbOrQueryCreator, { snomed_concept }: SearchTerms) 
       'snomed_concept_active_descendants_realized.descendant_id',
       ...snomedConceptSelection(trx, snomed_concept),
     )
-    .select(
-      sql<string>`(regexp_matches(due_to.s_expression, ${QUALIFIER_NODE}, 'g'))[1]`.as('s_expression'),
-    )
+    .select(sql<string>`unnest(due_to.qualifiers)`.as('s_expression'))
     .distinct()
     .orderBy('s_expression')
 }
