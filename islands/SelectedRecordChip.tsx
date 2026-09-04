@@ -1,4 +1,4 @@
-import type { Maybe, Priority } from '../types.ts'
+import type { EnteredFinding, Maybe, Priority } from '../types.ts'
 import { NoFindings } from '../components/drawer-v4/NoFindings.tsx'
 import { recordChipClassName } from '../components/drawer-v4/recordChipClassName.ts'
 import { PencilIcon } from '../components/library/icons/heroicons/mini.tsx'
@@ -11,7 +11,7 @@ type Selected = {
   display_name?: Maybe<string>
   description?: Maybe<string>
   priority?: Maybe<Priority>
-  augmented?: { display: string; priority?: Maybe<Priority> }
+  entered?: Maybe<EnteredFinding>
 }
 
 export function SelectedChip<Item extends Selected>({ item, click_action, onClick }: {
@@ -23,11 +23,11 @@ export function SelectedChip<Item extends Selected>({ item, click_action, onClic
     <button
       type='button'
       className={recordChipClassName({
-        priority: item.augmented?.priority || item.priority,
+        priority: item.entered?.priority || item.priority,
       })}
       onClick={onClick}
     >
-      {item.augmented?.display || item.display_name || item.display || item.name}
+      {item.entered?.display || item.display_name || item.display || item.name}
       {click_action === 'edit' ? <PencilIcon className='-ml-1.5 -mr-2.5 p-0.5' /> : <XMarkIcon className='-ml-1.5 -mr-2.5 p-0.5' />}
     </button>
   )

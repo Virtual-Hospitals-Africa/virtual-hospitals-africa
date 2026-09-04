@@ -2,14 +2,13 @@ import { DialogTitle } from '@headlessui/react'
 import { useSignal } from '@preact/signals'
 import { Button } from '../../components/library/Button.tsx'
 import { PaperAirplaneIcon, XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
-import { ConfiguredFinding, Maybe, RenderedSnomedConcept } from '../../types.ts'
+import { EnteredFinding, FindingModalMetadata, Maybe, RenderedSnomedConcept } from '../../types.ts'
 import { FindingSite } from './FindingSite.tsx'
 import { PainLevelSelect } from './PainLevel.tsx'
 import { QualifierSearch } from './QualifierSearch.tsx'
 import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
 import { attribute, Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
-import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
 import compact from '../../util/compact.ts'
@@ -17,6 +16,9 @@ import { PAIN_LEVELS, PainLevel } from '../../shared/pain_levels.ts'
 import { exists } from '../../util/exists.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { RemoveFindingSymbol } from './RemoveFindingSymbol.tsx'
+import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
+import { higherPriority } from '../../shared/priorities.ts'
+import { findingFullDisplay } from '../../shared/patient_records.ts'
 
 function isFindingSite(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
   return attribute.specific_snomed_concept.name === FINDING_SITE.name
@@ -27,18 +29,20 @@ function isPainLevel(attribute: Lang['attribute']): attribute is SnomedConceptAt
 }
 
 export function FindingModalContents(
-  { finding, just_checked, onSave, onClose }: {
-    finding: ConfiguredFinding
+  { metadata, entered, just_checked, onSave, onClose }: {
+    metadata: FindingModalMetadata
+    entered: EnteredFinding
     just_checked: boolean
-    onSave(finding: ConfiguredFinding | typeof RemoveFindingSymbol): void
+    onSave(finding: EnteredFinding | typeof RemoveFindingSymbol): void
     onClose(): void
   },
 ) {
-  const predefined_attributes = finding.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
+  const node = parseSExpressionAsInsertableFinding(entered.s_expression)
+  const predefined_attributes = metadata.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
   const search_within_finding_site = predefined_attributes.find(isFindingSite)
 
   const dates = useSignal<{ onset: string; resolved: string | null } | null>(null)
-  let initial_finding_sites = finding.node.attributes.filter(isFindingSite)
+  let initial_finding_sites = node.attributes.filter(isFindingSite)
   if (!initial_finding_sites.length && search_within_finding_site) {
     initial_finding_sites = [search_within_finding_site]
   }
@@ -47,14 +51,14 @@ export function FindingModalContents(
     return { id: '@@triggersearch', snomed_concept_id: '@@triggersearch', ...s.value }
   }))
 
-  const pain_level_attribute = finding.node.attributes.find(isPainLevel)?.value
+  const pain_level_attribute = node.attributes.find(isPainLevel)?.value
 
   const pain_level = useSignal<Maybe<PainLevel>>(
     pain_level_attribute && exists(PAIN_LEVELS.find((pain_level) => pain_level.concept.name === pain_level_attribute.name)),
   )
 
-  const inherent_qualifiers = new Set(finding.inherent_qualifiers.map((q) => inverseSExpression(q)))
-  const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => !inherent_qualifiers.has(inverseSExpression(qualifier)))
+  const inherent_qualifiers = new Set(metadata.inherent_qualifiers.map((q) => inverseSExpression(q)))
+  const removable_qualifiers = node.qualifiers.filter((qualifier) => !inherent_qualifiers.has(inverseSExpression(qualifier)))
   const qualifiers = useSignal<RenderedSnomedConcept[]>(removable_qualifiers.map((q) => ({
     id: '@@triggersearch',
     snomed_concept_id: '@@triggersearch',
@@ -70,9 +74,9 @@ export function FindingModalContents(
     })
 
     const new_node = {
-      ...finding.node,
+      ...node,
       qualifiers: [
-        ...finding.inherent_qualifiers,
+        ...metadata.inherent_qualifiers,
         ...qualifiers.value.map((qualifier) => ({
           atom: 'qualifier' as const,
           specific_snomed_concept: {
@@ -159,12 +163,13 @@ export function FindingModalContents(
       ]),
     }
 
+    const priority = higherPriority(pain_level.value?.priority, metadata.priority)
+    const display = findingFullDisplay(new_node)
+
     onSave({
-      ...finding,
-      node: new_node,
+      priority,
+      display,
       s_expression: inverseSExpression(new_node),
-      display: findingFullDisplay(new_node),
-      augmented_priority: pain_level.value?.priority,
     })
   }
 
@@ -180,7 +185,7 @@ export function FindingModalContents(
           <XMarkIcon className='h-5 w-5' />
         </button>
         <DialogTitle className='text-xl font-bold text-gray-900'>
-          {finding.display}
+          {metadata.display}
         </DialogTitle>
       </div>
       <div className='overflow-y-auto flex-1 px-6 pb-4 flex flex-col gap-5'>
@@ -193,7 +198,7 @@ export function FindingModalContents(
         />
         <QualifierSearch
           signal={qualifiers}
-          optional_relevant_qualifiers={finding.optional_relevant_qualifiers}
+          optional_relevant_qualifiers={metadata.optional_relevant_qualifiers}
         />
         <FindingSite
           search_within={search_within_finding_site}

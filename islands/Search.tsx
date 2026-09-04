@@ -146,7 +146,6 @@ export default function Search<
     hasId(value) ? value : null,
   ))
 
-  console.log({ loading_options, is_async })
   const selected_multi = multi ? signal : undefined
 
   const [query, setQuery] = useState(value?.name ?? '')

@@ -1,12 +1,11 @@
 import cls from '../../util/cls.ts'
-import { CheckedWarningSign, OnToggle, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
+import { CheckedWarningSign, OnToggle, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
 
 export function KeyedWarningSignCheckbox(
   { sign, onCheck, onOpenDetails }: {
-    sign: CheckedWarningSign
+    sign: ToggleableWarningSign
     onCheck: OnToggle
-    onUncheck: OnToggle
-    onOpenDetails?(sign: SelectedWarningSign): void
+    onOpenDetails?(sign: CheckedWarningSign): void
   },
 ) {
   const span_class = 'text-[8pt] 2xl:text-xs text-gray-500 leading-3 2xl:leading-4'
@@ -18,17 +17,17 @@ export function KeyedWarningSignCheckbox(
         sign.category === 'Common Symptoms' ? 'py-1.5 2xl:py-2' : 'py-2 2xl:py-3',
       )}
       onClick={(e) => {
-        if (!sign.checked) return
+        if (!sign.entered) return
         if (e.target && 'tagName' in e.target && e.target.tagName === 'INPUT') return
         e.preventDefault()
-        onOpenDetails?.(sign as SelectedWarningSign)
+        onOpenDetails?.(sign as CheckedWarningSign)
       }}
     >
       <div className='pt-0.5'>
         <input
           id={uniqueIdentifier(sign)}
           type='checkbox'
-          checked={!!sign.checked}
+          checked={!!sign.entered}
           className='w-4 h-4 2xl:w-5 2xl:h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
           // Atypical, but if they uncheck the box still launch the modal,
           // Requiring them to click "Remove" before it's truly removed
@@ -36,7 +35,7 @@ export function KeyedWarningSignCheckbox(
             if (event.currentTarget.checked) {
               onCheck(sign)
             } else {
-              onOpenDetails?.(sign as SelectedWarningSign)
+              onOpenDetails?.(sign as CheckedWarningSign)
             }
           }}
         />

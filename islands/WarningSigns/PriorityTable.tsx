@@ -1,21 +1,19 @@
-import { priorityColors } from '../../shared/priorities.ts'
 import cls from '../../util/cls.ts'
+import { priorityColors } from '../../shared/priorities.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
 import { KeyedWarningSignCheckbox } from './KeyedCheckbox.tsx'
-import { CategoryConfig, CheckedWarningSign, EMERGENCY_SUBCATEGORY_ORDER, OnToggle, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
+import { CategoryConfig, CheckedWarningSign, EMERGENCY_SUBCATEGORY_ORDER, OnToggle, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
 
 export function WarningSignsPriorityTable({
   priority,
   category,
   signs,
   onCheck,
-  onUncheck,
   onOpenDetails,
 }: CategoryConfig & {
-  signs: CheckedWarningSign[]
+  signs: ToggleableWarningSign[]
   onCheck: OnToggle
-  onUncheck: OnToggle
-  onOpenDetails(sign: SelectedWarningSign): void
+  onOpenDetails(sign: CheckedWarningSign): void
 }) {
   if (!signs.length) return null
   const colors = priorityColors(priority)
@@ -52,7 +50,6 @@ export function WarningSignsPriorityTable({
                         key={uniqueIdentifier(sign)}
                         sign={sign}
                         onCheck={onCheck}
-                        onUncheck={onUncheck}
                         onOpenDetails={onOpenDetails}
                       />
                     ))}
@@ -69,7 +66,6 @@ export function WarningSignsPriorityTable({
                 key={uniqueIdentifier(sign)}
                 sign={sign}
                 onCheck={onCheck}
-                onUncheck={onUncheck}
                 onOpenDetails={onOpenDetails}
               />
             ))}
