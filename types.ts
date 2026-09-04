@@ -3325,6 +3325,7 @@ export type ConfiguredFinding = FindingRelatedModifiers & {
   s_expression: string
   display: string
   original_priority?: Maybe<Priority>
+  // Currently only used for pain level, but in principle could be used for more?
   augmented_priority?: Maybe<Priority>
   nonremovable_qualifiers: Lang['qualifier'][]
 }

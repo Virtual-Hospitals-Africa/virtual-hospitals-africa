@@ -17,6 +17,8 @@ import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { higherPriority } from '../../shared/priorities.ts'
+import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
+import negate from '../../util/negate.ts'
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -38,6 +40,7 @@ export default function WarningSignsInnerContent({
 
   const active_modal = useSignal<
     null | {
+      just_checked: boolean
       configured_finding: ConfiguredFinding
       sign: CheckedWarningSign
     }
@@ -63,7 +66,7 @@ export default function WarningSignsInnerContent({
   )
 
   function onCheck(sign: CheckedWarningSign) {
-    active_modal.value = { sign, configured_finding: asConfiguredFinding(sign) }
+    active_modal.value = { sign, just_checked: true, configured_finding: asConfiguredFinding(sign) }
     const selected_sign = {
       ...sign,
       checked: true as const,
@@ -92,30 +95,33 @@ export default function WarningSignsInnerContent({
   }
 
   function onOpenDetails(sign: SelectedWarningSign) {
-    console.log('onOpenDetails', { sign })
     active_modal.value = {
       sign,
+      just_checked: false,
       configured_finding: asConfiguredFinding(sign),
     }
   }
 
-  function onSaveDetails(finding: ConfiguredFinding) {
-    console.log('onSaveDetails', { finding })
-    selected_signs.value = selected_signs.value.map((s) =>
-      uniqueIdentifier(s) === uniqueIdentifier(active_modal.value!.sign)
-        ? {
-          ...s,
-          augmented: {
-            s_expression: finding.s_expression,
-            display: finding.display,
-            priority: higherPriority(
-              finding.augmented_priority,
-              finding.original_priority,
-            ),
-          },
-        }
-        : s
-    )
+  function onSaveDetails(finding: ConfiguredFinding | typeof RemoveFindingSymbol) {
+    const isActiveSign = (sign: SelectedWarningSign) => uniqueIdentifier(sign) === uniqueIdentifier(active_modal.value!.sign)
+
+    selected_signs.value = finding === RemoveFindingSymbol
+      ? selected_signs.value.filter(negate(isActiveSign))
+      : selected_signs.value.map((s) =>
+        isActiveSign(s)
+          ? {
+            ...s,
+            augmented: {
+              s_expression: finding.s_expression,
+              display: finding.display,
+              priority: higherPriority(
+                finding.augmented_priority,
+                finding.original_priority,
+              ),
+            },
+          }
+          : s
+      )
     active_modal.value = null
   }
 
@@ -159,6 +165,7 @@ export default function WarningSignsInnerContent({
       />
       <FindingModal
         finding={active_modal.value?.configured_finding ?? null}
+        just_checked={active_modal.value?.just_checked || false}
         onSave={onSaveDetails}
         onClose={() => active_modal.value = null}
       />
@@ -167,7 +174,6 @@ export default function WarningSignsInnerContent({
 }
 
 function asConfiguredFinding(sign: CheckedWarningSign): ConfiguredFinding {
-  console.log({ sign })
   // TODO I don't necessarily love that the parser now is needed on  the frontend, but I don't see a viable alternative
   const sign_node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
   const nonremovable_qualifiers = sign_node.qualifiers

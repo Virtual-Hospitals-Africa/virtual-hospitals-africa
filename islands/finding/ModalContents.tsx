@@ -16,6 +16,7 @@ import compact from '../../util/compact.ts'
 import { PAIN_LEVELS, PainLevel } from '../../shared/pain_levels.ts'
 import { exists } from '../../util/exists.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
+import { RemoveFindingSymbol } from './RemoveFindingSymbol.tsx'
 
 function isFindingSite(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
   return attribute.specific_snomed_concept.name === FINDING_SITE.name
@@ -26,10 +27,11 @@ function isPainLevel(attribute: Lang['attribute']): attribute is SnomedConceptAt
 }
 
 export function FindingModalContents(
-  { finding, onSave, onClose }: {
+  { finding, just_checked, onSave, onClose }: {
     finding: ConfiguredFinding
-    onSave: (finding: ConfiguredFinding) => void
-    onClose: () => void
+    just_checked: boolean
+    onSave(finding: ConfiguredFinding | typeof RemoveFindingSymbol): void
+    onClose(): void
   },
 ) {
   const predefined_attributes = finding.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
@@ -161,10 +163,9 @@ export function FindingModalContents(
       ...finding,
       node: new_node,
       s_expression: inverseSExpression(new_node),
-      augmented_priority: pain_level.value?.priority,
       display: findingFullDisplay(new_node),
+      augmented_priority: pain_level.value?.priority,
     })
-    onClose()
   }
 
   return (
@@ -174,7 +175,7 @@ export function FindingModalContents(
         <button
           type='button'
           className='absolute right-4 top-4 rounded-md p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500'
-          onClick={onClose}
+          onClick={handleSave}
         >
           <XMarkIcon className='h-5 w-5' />
         </button>
@@ -184,9 +185,7 @@ export function FindingModalContents(
       </div>
       <div className='overflow-y-auto flex-1 px-6 pb-4 flex flex-col gap-5'>
         <OnsetRow
-          onChange={(value) => {
-            dates.value = value
-          }}
+          onChange={(value) => dates.value = value}
         />
         <PainLevelSelect
           value={pain_level.value}
@@ -199,16 +198,22 @@ export function FindingModalContents(
         <FindingSite
           search_within={search_within_finding_site}
           value={finding_sites.value}
-          onChange={(value) => {
-            finding_sites.value = value
-          }}
+          onChange={(value) => finding_sites.value = value}
         />
       </div>
 
       {/* Footer */}
       <div className='flex gap-3 border-t border-gray-100 px-6 py-4'>
-        <Button variant='tertiary' className='flex-1' type='button' onClick={onClose}>
-          Cancel
+        <Button
+          variant={just_checked ? 'tertiary' : 'semidestructive'}
+          className='flex-1'
+          type='button'
+          onClick={() => {
+            onSave(RemoveFindingSymbol)
+            onClose()
+          }}
+        >
+          {just_checked ? 'Cancel' : 'Remove'}
         </Button>
         <Button
           variant='primary'
