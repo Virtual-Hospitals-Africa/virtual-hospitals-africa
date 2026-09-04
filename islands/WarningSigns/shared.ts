@@ -1,4 +1,4 @@
-import { AugmentedSign, WarningSignWithMaybeRecord } from '../../types.ts'
+import { EnteredFinding, WarningSignWithMaybeRecord } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
 import memoize from '../../util/memoize.ts'
@@ -36,12 +36,12 @@ export const EMERGENCY_SUBCATEGORY_ORDER = [
 
 export type CategoryConfig = typeof CATEGORIES[number]
 
-export type CheckedWarningSign = SelectedWarningSign | NotSelectedWarningSign
+export type CheckedWarningSign = WarningSignWithMaybeRecord & { entered: EnteredFinding }
+export type UncheckedWarningSign = WarningSignWithMaybeRecord & { entered?: never }
 
-export type SelectedWarningSign = WarningSignWithMaybeRecord & { checked: true; augmented: AugmentedSign }
-export type NotSelectedWarningSign = WarningSignWithMaybeRecord & { checked: false; augmented?: never }
+export type ToggleableWarningSign = CheckedWarningSign | UncheckedWarningSign
 
-export type OnToggle = (sign: CheckedWarningSign) => void
+export type OnToggle = (sign: ToggleableWarningSign) => void
 
 export const uniqueIdentifier = memoize(
   function uniqueIdentifier({ key, category, name, description }: WarningSignWithMaybeRecord) {

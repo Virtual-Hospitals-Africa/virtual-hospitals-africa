@@ -1,11 +1,11 @@
 import { HiddenInput } from '../../components/library/HiddenInput.tsx'
-import { CheckedWarningSign, uniqueIdentifier } from './shared.ts'
+import { ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
 
-export function WarningSignsHiddenInputs({ signs_to_send_to_server }: { signs_to_send_to_server: CheckedWarningSign[] }) {
+export function WarningSignsHiddenInputs({ signs_to_send_to_server }: { signs_to_send_to_server: ToggleableWarningSign[] }) {
   return signs_to_send_to_server.map((sign) => {
     const key = uniqueIdentifier(sign)
-    const existence = sign.checked ? 'Yes' : 'No'
-    const s_expression = sign.augmented?.s_expression || sign.clinical_finding_s_expression
+    const existence = sign.entered ? 'Yes' : 'No'
+    const s_expression = sign.entered?.s_expression || sign.clinical_finding_s_expression
 
     return (
       <HiddenInput
@@ -15,7 +15,7 @@ export function WarningSignsHiddenInputs({ signs_to_send_to_server }: { signs_to
           existence,
           s_expression,
           warning_sign_key: sign.key,
-          priority_level: sign.augmented?.priority || sign.priority,
+          priority_level: sign.entered?.priority || sign.priority,
           existing_record: sign.existing_record && {
             id: sign.existing_record.id,
             // altered if existence differs or the s_expressions differ

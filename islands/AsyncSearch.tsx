@@ -51,14 +51,13 @@ export default function AsyncSearch<
   if (onQueryBlanked) {
     assert(skip_blank_search, 'onQueryBlanked only makes sense when skip_blank_search')
   }
-  const { results, loading, loadMore, setQuery, search } = useAsyncSearch({
+  const { results, loading, loadMore, setQuery } = useAsyncSearch({
     search_route,
     skip_blank_search,
     value,
     onSearchResults,
     onQueryBlanked,
   })
-  console.log({ loading, search, results })
   return (
     <Search
       {...rest}

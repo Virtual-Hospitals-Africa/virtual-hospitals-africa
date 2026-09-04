@@ -23,6 +23,7 @@ rule_no_camel_case() {
     tdClassName
     clipPath
     fsRoutes
+    parseSExpressionAsInsertableFinding
   )
 
   # Functions/patterns that create functions

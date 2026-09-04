@@ -1,8 +1,7 @@
 import { computed, Signal, useSignal } from '@preact/signals'
-import { assert } from 'std/assert/assert.ts'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
-import { MagnifyingGlassCircleIcon } from '../../components/library/icons/heroicons/mini.tsx'
-import { AsyncSearchHookResult, ConfiguredFinding, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
+import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
+import { AsyncSearchHookResult, EnteredFinding, FindingModalMetadata, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { uniqBy } from '../../util/uniqBy.ts'
@@ -11,45 +10,28 @@ import Search from '../Search.tsx'
 import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
-import { CATEGORIES, CheckedWarningSign, sameSign, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
-import { parseWithSchema } from '../../shared/s_expression.ts'
-import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
+import { CATEGORIES, CheckedWarningSign, sameSign, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
+import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { higherPriority } from '../../shared/priorities.ts'
 import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
 import negate from '../../util/negate.ts'
-import memoize from '../../util/memoize.ts'
 
-//
-let parseSExpressionAsFinding = (s_expression: string) => parseWithSchema(s_expression, insertable_finding_base)
-if (typeof window !== 'undefined') {
-  parseSExpressionAsFinding = memoize(parseSExpressionAsFinding)
+function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
+  const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
+  return { s_expression, priority, display }
 }
 
-function asAugmented(sign: WarningSignWithMaybeRecord) {
-  return {
-    s_expression: sign.clinical_finding_s_expression,
-    display: findingFullDisplay(parseSExpressionAsFinding(sign.clinical_finding_s_expression)),
-    priority: sign.priority,
-  }
-}
-
+// TODO we technically only need this on-demand when launching the modal, hence calling it as such
+// Could be memoized
 // TODO when working on making a FindingsModal that's actually reusable we may want to make aspects of this logic more portable
-function asConfiguredFinding({
-  checked,
-  augmented,
-  clinical_finding_s_expression,
+function asFindingModalMetadata({
   priority,
-  predefined_attributes,
   relevant_qualifiers,
-}: SelectedWarningSign): ConfiguredFinding {
-  assert(checked)
-  assert(augmented)
-
-  // TODO I don't necessarily love that the parser now is needed on the frontend, but I don't see a viable alternative
-  const sign_node = parseSExpressionAsFinding(clinical_finding_s_expression)
-  const node = parseSExpressionAsFinding(augmented.s_expression)
+  predefined_attributes,
+  clinical_finding_s_expression,
+}: WarningSignWithMaybeRecord): FindingModalMetadata {
+  const sign_node = parseSExpressionAsInsertableFinding(clinical_finding_s_expression)
 
   // The sign's qualifers are inherent to the sign itself and thus nonremovable
   const inherent_qualifiers = sign_node.qualifiers
@@ -65,14 +47,11 @@ function asConfiguredFinding({
   )
 
   return {
-    node,
+    priority,
     predefined_attributes,
     inherent_qualifiers,
     optional_relevant_qualifiers,
-    s_expression: augmented.s_expression,
-    display: augmented.display,
-    original_priority: priority,
-    augmented_priority: augmented.priority,
+    display: findingFullDisplay(sign_node),
   }
 }
 
@@ -85,31 +64,20 @@ export default function WarningSignsInnerContent({
   snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
   warning_signs: WarningSignWithMaybeRecord[]
 }) {
-  const selected_signs = useSignal<SelectedWarningSign[]>(
+  const checked_signs = useSignal<CheckedWarningSign[]>(
     compactMap(warning_signs, (sign) =>
       sign.existing_record?.existence === 'Yes' && {
         ...sign,
-        checked: true,
-        augmented: sign.existing_record.augmented || asAugmented(sign),
+        entered: sign.existing_record.augmented || asEntered(sign),
       }),
   )
-
-  const active_modal = useSignal<
-    null | {
-      just_checked: boolean
-      configured_finding: ConfiguredFinding
-      sign: CheckedWarningSign
-    }
-  >(null)
-
-  console.log('wekllwekkwe', search_results.value)
 
   const table_signs_to_display = computed(() => search_results.value || warning_signs)
 
   const table_signs_with_checked = computed(() =>
     table_signs_to_display.value.map((sign) => {
-      const selected = selected_signs.value.find((checked_sign) => sameSign(checked_sign, sign))
-      return selected || { ...sign, checked: false as const }
+      const checked = checked_signs.value.find((checked_sign) => sameSign(checked_sign, sign))
+      return checked || sign
     })
   )
 
@@ -117,25 +85,32 @@ export default function WarningSignsInnerContent({
 
   const signs_to_send_to_server = computed(() =>
     uniqBy([
-      ...selected_signs.value,
+      ...checked_signs.value,
       ...table_signs_with_checked.value,
     ], uniqueIdentifier)
   )
 
-  function onCheck(sign: CheckedWarningSign) {
-    const selected_sign = {
-      ...sign,
-      checked: true as const,
-      augmented: sign.augmented || asAugmented(sign),
+  const active_modal = useSignal<
+    null | {
+      metadata: FindingModalMetadata
+      sign: CheckedWarningSign
+      just_checked: boolean
     }
-    selected_signs.value = selected_signs.value = [
-      ...selected_signs.value,
-      selected_sign,
+  >(null)
+
+  function onCheck(sign: ToggleableWarningSign) {
+    const checked_sign = {
+      ...sign,
+      entered: sign.entered || asEntered(sign),
+    }
+    checked_signs.value = [
+      ...checked_signs.value,
+      checked_sign,
     ]
     active_modal.value = {
-      sign,
       just_checked: true,
-      configured_finding: asConfiguredFinding(selected_sign),
+      sign: checked_sign,
+      metadata: asFindingModalMetadata(sign),
     }
 
     if (search_results.value) {
@@ -144,34 +119,26 @@ export default function WarningSignsInnerContent({
     }
   }
 
-  function onUncheck(sign: CheckedWarningSign) {
-    assert(sign.checked)
-    selected_signs.value = selected_signs.value.filter((checked_sign) => !sameSign(checked_sign, sign))
-  }
-
-  function onOpenDetails(sign: SelectedWarningSign) {
+  function onOpenDetails(sign: CheckedWarningSign) {
     active_modal.value = {
       sign,
       just_checked: false,
-      configured_finding: asConfiguredFinding(sign),
+      metadata: asFindingModalMetadata(sign),
     }
   }
 
-  function updatedSigns(finding: ConfiguredFinding | typeof RemoveFindingSymbol) {
-    const isActiveSign = (sign: SelectedWarningSign) => sameSign(sign, active_modal.value!.sign)
+  function updatedSigns(finding: EnteredFinding | typeof RemoveFindingSymbol) {
+    const isActiveSign = (sign: CheckedWarningSign) => sameSign(sign, active_modal.value!.sign)
 
     if (finding === RemoveFindingSymbol) {
-      return selected_signs.value.filter(negate(isActiveSign))
+      return checked_signs.value.filter(negate(isActiveSign))
     }
 
-    const { s_expression, display, augmented_priority, original_priority } = finding
-    const priority = higherPriority(augmented_priority, original_priority)
-    const augmented = { s_expression, display, priority }
-    return selected_signs.value.map((s) => isActiveSign(s) ? { ...s, augmented } : s)
+    return checked_signs.value.map((s) => isActiveSign(s) ? { ...s, entered: finding } : s)
   }
 
-  function onSaveDetails(finding: ConfiguredFinding | typeof RemoveFindingSymbol) {
-    selected_signs.value = updatedSigns(finding)
+  function onSaveDetails(finding: EnteredFinding | typeof RemoveFindingSymbol) {
+    checked_signs.value = updatedSigns(finding)
     active_modal.value = null
   }
 
@@ -190,7 +157,7 @@ export default function WarningSignsInnerContent({
         />
         <SelectedChips
           id='warning-signs-selected-chips'
-          items={selected_signs.value}
+          items={checked_signs.value}
           onEdit={onOpenDetails}
         />
       </div>
@@ -198,14 +165,13 @@ export default function WarningSignsInnerContent({
         <EmptyState
           header='No findings found matching that search or its aliases'
           explanation='Try a different search'
-          icon={<MagnifyingGlassCircleIcon className='h-5 w-5' />}
+          icon={<MagnifyingGlassIcon className='h-5 w-5' />}
         />
       )}
       {CATEGORIES.map((config) => (
         <WarningSignsPriorityTable
           {...config}
           onCheck={onCheck}
-          onUncheck={onUncheck}
           onOpenDetails={onOpenDetails}
           key={config.category}
           signs={grouped.value.get(config.category) || []}
@@ -215,8 +181,11 @@ export default function WarningSignsInnerContent({
         signs_to_send_to_server={signs_to_send_to_server.value}
       />
       <FindingModal
-        finding={active_modal.value?.configured_finding ?? null}
-        just_checked={active_modal.value?.just_checked || false}
+        finding={active_modal.value && {
+          metadata: active_modal.value.metadata,
+          just_checked: active_modal.value.just_checked,
+          entered: active_modal.value.sign.entered,
+        }}
         onSave={onSaveDetails}
         onClose={() => active_modal.value = null}
       />

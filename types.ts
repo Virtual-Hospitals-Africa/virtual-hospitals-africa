@@ -34,7 +34,7 @@ import type { CommonConditionKey } from './shared/brief_history.ts'
 import type { VitalAssessment, VitalMeasurement } from './shared/vitals.ts'
 import type { WarningSignKey } from './shared/warning_signs.ts'
 import type { Decimal } from './util/decimal.ts'
-import type { InsertableFindingBase, Lang, QueryableEvidenceNode } from './shared/s_expression_schemas.ts'
+import type { Lang, QueryableEvidenceNode } from './shared/s_expression_schemas.ts'
 import type { PrescriptionFrequency } from './shared/prescription.ts'
 import { SEXED_RELATION_SNOMED_CONCEPT_IDS } from './shared/family.ts'
 import { TriageRoutePatientNextStep } from './shared/triage_route_patient.ts'
@@ -2812,7 +2812,7 @@ export type WarningSign = Omit<WarningSignDef<'Urgent' | 'Very urgent' | 'Emerge
 
 export type CommonSymptom = SignShared<'Common Symptoms'> & { key: string }
 
-export type AugmentedSign = {
+export type EnteredFinding = {
   s_expression: string
   display: string
   priority?: Maybe<Priority>
@@ -2822,7 +2822,7 @@ export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShar
   existing_record?: {
     id: string
     existence: Existence
-    augmented?: AugmentedSign
+    augmented?: EnteredFinding
   }
 }
 
@@ -3320,18 +3320,14 @@ export type CarePlanGroup = TaskGroupWithPermissions & {
   medicines: MedicineGroupWithPermissions[]
 }
 
-export type ConfiguredFinding = {
-  node: InsertableFindingBase
-  s_expression: string
+export type FindingModalMetadata = {
   display: string
-  original_priority?: Maybe<Priority>
-  // Currently only used for pain level, but in principle could be used for more?
-  augmented_priority?: Maybe<Priority>
-  inherent_qualifiers: Lang['qualifier'][]
   predefined_attributes: {
     s_expression: string
   }[]
+  inherent_qualifiers: Lang['qualifier'][]
   optional_relevant_qualifiers: {
     s_expression: string
   }[]
+  priority?: Maybe<Priority>
 }
