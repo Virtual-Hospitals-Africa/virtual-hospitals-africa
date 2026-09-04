@@ -308,9 +308,7 @@ export default function Search<
                 aria-disabled={disabled}
                 readonly={readonly}
                 autoComplete='off'
-                onBlur={() => {
-                  console.log('in here', { addable, selected_singular, query })
-                  if (!addable) return
+                onBlur={!addable ? undefined : () => {
                   if (selected_singular?.value) return
                   if (!query) return
                   onSelect?.(add_option)

@@ -543,6 +543,7 @@ describeParallel('triage/warning_signs', () => {
 
         const $ = await getStep('warning_signs')
         const form_values = getFormValues($)
+        console.log({ form_values })
 
         assertMatches(form_values, {
           'warning_signs': {
