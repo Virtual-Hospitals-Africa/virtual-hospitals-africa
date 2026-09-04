@@ -31,6 +31,7 @@ export function QualifierSearch({
       <Button
         variant='ghostlink'
         type='button'
+        title={`Add ${relevant_qualifier.specific_snomed_concept.name}`}
         onClick={() => {
           signal.value = [...signal.value, {
             snomed_concept_id: '@@triggersearch',
@@ -54,7 +55,7 @@ export function QualifierSearch({
         placeholder='Search for a qualifier...'
         skip_blank_search
       />
-      <div title='relevant qualifiers' id='relevant-qualifiers' class='flex flex-row gap-2'>
+      <div id='relevant-qualifiers' class='flex flex-row gap-2'>
         {add_optional_relevant_qualifiers}
         {!add_optional_relevant_qualifiers.length && !!optional_relevant_qualifiers.length && (
           <Button

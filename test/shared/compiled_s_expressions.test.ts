@@ -50,6 +50,78 @@ describe('s_expression', () => {
       const not_found = await filter(nodesAndConceptsTasks(), conceptDoesNotExist)
       assertArrayEmpty(not_found)
     })
+    it('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', () => {
+      const checked_for_but_never_used_as_evidence = [...checkedForButNeverUsedAsEvidence()]
+      assertArrayEmpty(checked_for_but_never_used_as_evidence)
+
+      function* checkedForButNeverUsedAsEvidence() {
+        const task_nodes = TASKS_LISP.map((s_expression) => parseWithSchema(s_expression, task))
+
+        const rule_evidence = new Set([
+          ...SYSTEM_DIAGNOSIS_RULES_LISP.map((s_expression) => parseWithSchema(s_expression, system_diagnosis_rule)),
+          ...SYSTEM_PRIORITY_EVALUATIONS_LISP.map((s_expression) => parseWithSchema(s_expression, system_priority_evaluation)),
+        ].flatMap((rule) => Array.from(allEvidenceToLookFor(rule.due_to), (evidence) => inverseSExpression(evidence))))
+
+        // Which tasks each piece of evidence triggers, by index into task_nodes
+        const tasks_triggered_by = new Map<string, Set<number>>()
+        for (const [index, task_node] of task_nodes.entries()) {
+          for (const evidence of allEvidenceToLookFor(task_node.due_to)) {
+            const evidence_s_expression = inverseSExpression(evidence)
+            const triggered = tasks_triggered_by.get(evidence_s_expression) ?? new Set()
+            triggered.add(index)
+            tasks_triggered_by.set(evidence_s_expression, triggered)
+          }
+        }
+
+        const already_yielded = new Set<string>()
+
+        for (const [index, task_node] of task_nodes.entries()) {
+          if (!isCheckFor(task_node.to_be_done)) continue
+          for (const finding of task_node.to_be_done.value) {
+            const finding_s_expression = inverseSExpression(finding)
+            // A rule keying off of the finding's absence still relies on us having checked for it
+            if (isUsedByAnythingElse(finding_s_expression, index)) continue
+            if (isUsedByAnythingElse(`(no ${finding_s_expression})`, index)) continue
+            if (already_yielded.has(finding_s_expression)) continue
+            already_yielded.add(finding_s_expression)
+            yield {
+              description: task_node.description,
+              never_used_as_evidence: finding_s_expression,
+            }
+          }
+        }
+
+        // Triggering some other task counts as using the finding. Triggering only the very task
+        // that checks for it does not; see the self-referentiality test below.
+        function isUsedByAnythingElse(evidence_s_expression: string, checking_task_index: number): boolean {
+          if (rule_evidence.has(evidence_s_expression)) return true
+          const triggered = tasks_triggered_by.get(evidence_s_expression)
+          if (!triggered) return false
+          return [...triggered].some((index) => index !== checking_task_index)
+        }
+      }
+    })
+    it('no task checks for a finding that is already part of its own due_to', () => {
+      const tasks_checking_for_their_own_due_to = [...tasksCheckingForTheirOwnDueTo()]
+      assertArrayEmpty(tasks_checking_for_their_own_due_to)
+
+      function* tasksCheckingForTheirOwnDueTo() {
+        for (const s_expression of TASKS_LISP) {
+          const task_node = parseWithSchema(s_expression, task)
+          if (!isCheckFor(task_node.to_be_done)) continue
+          const due_to = new Set(Array.from(allEvidenceToLookFor(task_node.due_to), (evidence) => inverseSExpression(evidence)))
+          for (const finding of task_node.to_be_done.value) {
+            const finding_s_expression = inverseSExpression(finding)
+            if (due_to.has(finding_s_expression)) {
+              yield {
+                description: task_node.description,
+                already_known_from_due_to: finding_s_expression,
+              }
+            }
+          }
+        }
+      }
+    })
   })
   describe('SYSTEM_PRIORITY_EVALUATIONS_LISP', () => {
     it('has valid snomed concepts', async () => {
@@ -65,8 +137,8 @@ describe('s_expression', () => {
         return system_diagnosis_rule.diagnosis.snomed_concept
       })
 
-      const rules_without_corresponding_check_foror_system_diagnosis_rule = await collect(systemPriorityEvaluationsWithNoCheckForNorDiagnosis())
-      assertArrayEmpty(rules_without_corresponding_check_foror_system_diagnosis_rule)
+      const rules_without_corresponding_check_for_system_diagnosis_rule = await collect(systemPriorityEvaluationsWithNoCheckForNorDiagnosis())
+      assertArrayEmpty(rules_without_corresponding_check_for_system_diagnosis_rule)
 
       async function* systemPriorityEvaluationsWithNoCheckForNorDiagnosis() {
         for await (const { file_path, system_priority_evaluations, tasks } of correspondingAPCRules()) {
@@ -203,6 +275,7 @@ describe('s_expression', () => {
       }
     })
   })
+
   describe('apc-adult', () => {
     it('has maximum one file per page number', async () => {
       const filepaths = await collect(walkDirectory('s_expression/rules/apc-adult'))
