@@ -2,25 +2,20 @@ import { DialogTitle } from '@headlessui/react'
 import { useSignal } from '@preact/signals'
 import { Button } from '../../components/library/Button.tsx'
 import { PaperAirplaneIcon, XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
-import { ConfiguredFinding, RenderedSnomedConcept } from '../../types.ts'
+import { ConfiguredFinding, Maybe, RenderedSnomedConcept } from '../../types.ts'
 import { FindingSite } from './FindingSite.tsx'
 import { PainLevelSelect } from './PainLevel.tsx'
 import { QualifierSearch } from './QualifierSearch.tsx'
-// import { groupBy } from '../../util/groupBy.ts'
 import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
-// import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
 import { attribute, Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
-
 import compact from '../../util/compact.ts'
-import { higherPriority } from '../../shared/priorities.ts'
-import { PAIN_LEVELS } from '../../shared/pain_levels.ts'
+import { PAIN_LEVELS, PainLevel } from '../../shared/pain_levels.ts'
 import { exists } from '../../util/exists.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-
 
 function isFindingSite(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
   return attribute.specific_snomed_concept.name === FINDING_SITE.name
@@ -30,7 +25,6 @@ function isPainLevel(attribute: Lang['attribute']): attribute is SnomedConceptAt
   return attribute.specific_snomed_concept.name === PAIN_LEVEL.name
 }
 
-
 export function FindingModalContents(
   { finding, onSave, onClose }: {
     finding: ConfiguredFinding
@@ -38,7 +32,6 @@ export function FindingModalContents(
     onClose: () => void
   },
 ) {
-  
   const predefined_attributes = finding.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
   const search_within_finding_site = predefined_attributes.find(isFindingSite)
 
@@ -54,15 +47,12 @@ export function FindingModalContents(
 
   const pain_level_attribute = finding.node.attributes.find(isPainLevel)?.value
 
-  const pain_level = useSignal(
+  const pain_level = useSignal<Maybe<PainLevel>>(
     pain_level_attribute && exists(PAIN_LEVELS.find((pain_level) => pain_level.concept.name === pain_level_attribute.name)),
   )
 
-  const nonremovable_qualifiers = new Set(finding.nonremovable_qualifiers.map(q => inverseSExpression(q)))
-  const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => 
-    !nonremovable_qualifiers.has(inverseSExpression(qualifier))
-  )
-  console.log({removable_qualifiers})
+  const nonremovable_qualifiers = new Set(finding.nonremovable_qualifiers.map((q) => inverseSExpression(q)))
+  const removable_qualifiers = finding.node.qualifiers.filter((qualifier) => !nonremovable_qualifiers.has(inverseSExpression(qualifier)))
   const qualifiers = useSignal<RenderedSnomedConcept[]>(removable_qualifiers.map((q) => ({
     id: '@@triggersearch',
     snomed_concept_id: '@@triggersearch',
@@ -167,12 +157,11 @@ export function FindingModalContents(
       ]),
     }
 
-    console.log({new_node})
     onSave({
       ...finding,
       node: new_node,
       s_expression: inverseSExpression(new_node),
-      priority: higherPriority(pain_level.value?.priority, finding.priority),
+      augmented_priority: pain_level.value?.priority,
       display: findingFullDisplay(new_node),
     })
     onClose()
@@ -201,19 +190,15 @@ export function FindingModalContents(
         />
         <PainLevelSelect
           value={pain_level.value}
-          onChange={(value) => {
-            console.log('set pain', value)
-            pain_level.value = value ?? undefined
-          }}
+          onChange={(value) => pain_level.value = value}
         />
-        <QualifierSearch 
-          signal={qualifiers} 
+        <QualifierSearch
+          signal={qualifiers}
           relevant_qualifiers={finding.relevant_qualifiers}
         />
         <FindingSite
           search_within={search_within_finding_site}
           value={finding_sites.value}
-          // value={null}
           onChange={(value) => {
             finding_sites.value = value
           }}

@@ -6,7 +6,6 @@ export function PainLevelSelect({ value, onChange }: {
   value: Maybe<PainLevel>
   onChange(pain_level: Maybe<PainLevel>): void
 }) {
-  console.log('welk', { value })
   return (
     <div className='flex flex-col gap-2'>
       <h3 className='text-sm font-semibold text-gray-900'>Pain Level</h3>

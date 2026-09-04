@@ -16,6 +16,7 @@ import { parseWithSchema } from '../../shared/s_expression.ts'
 import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
+import { higherPriority } from '../../shared/priorities.ts'
 
 export default function WarningSignsInnerContent({
   search_results,
@@ -35,22 +36,24 @@ export default function WarningSignsInnerContent({
       }),
   )
 
-  const active_modal = useSignal<null | {
-    configured_finding: ConfiguredFinding
-    sign: CheckedWarningSign
-  }>(null)
+  const active_modal = useSignal<
+    null | {
+      configured_finding: ConfiguredFinding
+      sign: CheckedWarningSign
+    }
+  >(null)
 
   const table_signs_to_display = computed(() => search_results.value || warning_signs)
 
   const table_signs_with_checked = computed(() =>
-    table_signs_to_display.value.map((sign) => ({
-      ...sign,
-      augmented: sign.existing_record?.augmented,
-      checked: selected_signs.value.some((checked_sign) => uniqueIdentifier(checked_sign) === uniqueIdentifier(sign)),
-    }))
+    table_signs_to_display.value.map((sign) => {
+      const selected = selected_signs.value.find((checked_sign) => uniqueIdentifier(checked_sign) === uniqueIdentifier(sign))
+      return selected || { ...sign, checked: false }
+    })
   )
 
   const grouped = computed(() => groupBy(table_signs_with_checked.value, 'category'))
+  console.log({ grouped })
 
   const signs_to_send_to_server = computed(() =>
     uniqBy([
@@ -67,7 +70,10 @@ export default function WarningSignsInnerContent({
       augmented: {
         s_expression: active_modal.value.configured_finding.s_expression,
         display: active_modal.value.configured_finding.display,
-        priority: active_modal.value.configured_finding.priority,
+        priority: higherPriority(
+          active_modal.value.configured_finding.augmented_priority,
+          active_modal.value.configured_finding.original_priority,
+        ),
       },
     }
     selected_signs.value = selected_signs.value = [
@@ -86,13 +92,15 @@ export default function WarningSignsInnerContent({
   }
 
   function onOpenDetails(sign: SelectedWarningSign) {
+    console.log('onOpenDetails', { sign })
     active_modal.value = {
       sign,
-      configured_finding: asConfiguredFinding(sign)
+      configured_finding: asConfiguredFinding(sign),
     }
   }
 
   function onSaveDetails(finding: ConfiguredFinding) {
+    console.log('onSaveDetails', { finding })
     selected_signs.value = selected_signs.value.map((s) =>
       uniqueIdentifier(s) === uniqueIdentifier(active_modal.value!.sign)
         ? {
@@ -100,7 +108,10 @@ export default function WarningSignsInnerContent({
           augmented: {
             s_expression: finding.s_expression,
             display: finding.display,
-            priority: finding.priority,
+            priority: higherPriority(
+              finding.augmented_priority,
+              finding.original_priority,
+            ),
           },
         }
         : s
@@ -156,35 +167,38 @@ export default function WarningSignsInnerContent({
 }
 
 function asConfiguredFinding(sign: CheckedWarningSign): ConfiguredFinding {
+  console.log({ sign })
   // TODO I don't necessarily love that the parser now is needed on  the frontend, but I don't see a viable alternative
   const sign_node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
   const nonremovable_qualifiers = sign_node.qualifiers
 
-  const relevant_qualifiers = sign.relevant_qualifiers.filter(relevant_qualifier =>
-    !nonremovable_qualifiers.some(nonremovable_qualifier => inverseSExpression(nonremovable_qualifier) === relevant_qualifier.s_expression)
+  const relevant_qualifiers = sign.relevant_qualifiers.filter((relevant_qualifier) =>
+    !nonremovable_qualifiers.some((nonremovable_qualifier) => inverseSExpression(nonremovable_qualifier) === relevant_qualifier.s_expression)
   )
 
-  if (!sign.existing_record?.augmented) {
+  if (!sign.augmented) {
     return {
       node: sign_node,
       s_expression: sign.clinical_finding_s_expression,
       display: findingFullDisplay(sign_node),
-      priority: sign.priority,
+      original_priority: sign.priority,
+      augmented_priority: sign.priority,
       nonremovable_qualifiers,
       predefined_attributes: sign.predefined_attributes,
-      relevant_qualifiers
+      relevant_qualifiers,
     }
   }
 
-  const node = parseWithSchema(sign.existing_record.augmented.s_expression, insertable_finding_base)
+  const node = parseWithSchema(sign.augmented.s_expression, insertable_finding_base)
 
   return {
     node,
-    s_expression: sign.existing_record.augmented.s_expression,
-    display: sign.existing_record.augmented.display,
-    priority: sign.existing_record.augmented.priority || sign.priority,
+    s_expression: sign.augmented.s_expression,
+    display: sign.augmented.display,
+    original_priority: sign.priority,
+    augmented_priority: sign.augmented.priority,
     nonremovable_qualifiers,
     predefined_attributes: sign.predefined_attributes,
-    relevant_qualifiers
+    relevant_qualifiers,
   }
 }

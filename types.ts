@@ -3324,6 +3324,7 @@ export type ConfiguredFinding = FindingRelatedModifiers & {
   node: InsertableFindingBase
   s_expression: string
   display: string
-  priority?: Maybe<Priority>
+  original_priority?: Maybe<Priority>
+  augmented_priority?: Maybe<Priority>
   nonremovable_qualifiers: Lang['qualifier'][]
 }
