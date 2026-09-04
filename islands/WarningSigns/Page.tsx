@@ -19,6 +19,9 @@ export default function WarningSigns({
       // TODO one day we'll type results from jsonSearchHandler
       search_results.value = results.pages.flatMap((page) => page.results) as unknown as SnomedWarningSignSearchResult[]
     },
+    onQueryBlanked() {
+      search_results.value = null
+    },
   })
 
   return (

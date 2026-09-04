@@ -21,6 +21,8 @@ const variant_styles = {
     'bg-white text-indigo-600 font-semibold rounded-lg hover:border-indigo-600 hover:bg-indigo-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:border-indigo-700 active:bg-indigo-100 disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:bg-white',
   destructive:
     'bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 active:bg-red-800 disabled:opacity-40 disabled:hover:bg-red-600',
+  semidestructive:
+    'bg-red-400 text-white font-semibold rounded-lg hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400 active:bg-red-700 disabled:opacity-40 disabled:hover:bg-red-400',
   ghost: 'hover:text-blue-600 focus-visible:text-blue-600 !p-0',
   ghostlink: 'text-indigo-600 font-semibold hover:text-blue-600 focus-visible:text-blue-600 !p-0',
 }

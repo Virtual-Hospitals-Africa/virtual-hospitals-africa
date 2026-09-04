@@ -15,6 +15,7 @@ import { HiddenInput } from '../components/library/HiddenInput.tsx'
 import isString from '../util/isString.ts'
 import { LabelSpan } from './form/inputs/labelled.tsx'
 import { SelectedChip } from './SelectedRecordChip.tsx'
+import { Spinner } from '../components/library/Spinner.tsx'
 
 function hasId(value: unknown): value is { id: string } {
   return isObjectLike(value) && !!value.id && isString(value.id)
@@ -144,6 +145,8 @@ export default function Search<
   const selected_singular = multi ? undefined : (signal || useSignal<T | null>(
     hasId(value) ? value : null,
   ))
+
+  console.log({ loading_options, is_async })
   const selected_multi = multi ? signal : undefined
 
   const [query, setQuery] = useState(value?.name ?? '')
@@ -244,7 +247,8 @@ export default function Search<
                   <SelectedChip
                     key={selected.id}
                     item={selected}
-                    onUncheck={() => {
+                    click_action='remove'
+                    onClick={() => {
                       selected_multi.value = remove(
                         selected_multi.value,
                         selected,
@@ -273,7 +277,6 @@ export default function Search<
                   readonly={readonly}
                   autoComplete='off'
                   placeholder={selected_multi!.value.length ? '' : placeholder}
-                  aria-label='findings search'
                 />
               </div>
             )
@@ -300,6 +303,7 @@ export default function Search<
                   button_ref.current?.click()
                 }}
                 value={selected_singular?.value?.name || undefined}
+                displayValue={(option: T | null | undefined) => option?.name ?? query}
                 required={required}
                 aria-disabled={disabled}
                 readonly={readonly}
@@ -313,7 +317,6 @@ export default function Search<
                   }
                 }}
                 placeholder={placeholder}
-                aria-label='findings search'
               />
             )}
           <ComboboxButton
@@ -321,12 +324,19 @@ export default function Search<
             className='absolute inset-y-0 right-0 flex items-center px-2 rounded-r-md focus:outline-none'
           >
             {is_async
-              ? (
-                <MagnifyingGlassIcon
-                  className='w-5 h-5 text-gray-400'
-                  aria-hidden='true'
-                />
-              )
+              ? loading_options
+                ? (
+                  <Spinner
+                    className='w-5 h-5 text-gray-400'
+                    aria-hidden='true'
+                  />
+                )
+                : (
+                  <MagnifyingGlassIcon
+                    className='w-5 h-5 text-gray-400'
+                    aria-hidden='true'
+                  />
+                )
               : (
                 <ChevronUpDownIcon
                   className='w-5 h-5 text-gray-400'

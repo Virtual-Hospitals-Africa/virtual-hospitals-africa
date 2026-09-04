@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import Search, { OptionLike, SearchPropsCommon, SearchPropsMulti, SearchPropsSingular } from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 
@@ -24,6 +25,7 @@ export type AsyncSearchProps<
       }
       has_next_page: boolean
     }): void
+    onQueryBlanked?(): void
   }
   & (
     SearchPropsSingular<T> | SearchPropsMulti<T>
@@ -43,14 +45,20 @@ export default function AsyncSearch<
   skip_blank_search,
   onQuery,
   onSearchResults,
+  onQueryBlanked,
   ...rest
 }: AsyncSearchProps<T>) {
-  const { results, loading, loadMore, setQuery } = useAsyncSearch({
+  if (onQueryBlanked) {
+    assert(skip_blank_search, 'onQueryBlanked only makes sense when skip_blank_search')
+  }
+  const { results, loading, loadMore, setQuery, search } = useAsyncSearch({
     search_route,
     skip_blank_search,
     value,
     onSearchResults,
+    onQueryBlanked,
   })
+  console.log({ loading, search, results })
   return (
     <Search
       {...rest}

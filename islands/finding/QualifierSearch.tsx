@@ -10,15 +10,17 @@ const base_search_route = '/app/snomed/qualifier-value'
 
 export function QualifierSearch({
   signal,
-  relevant_qualifiers,
+  optional_relevant_qualifiers,
 }: {
   signal: Signal<RenderedSnomedConcept[]>
-  relevant_qualifiers: {
+  optional_relevant_qualifiers: {
     s_expression: string
   }[]
 }) {
-  const add_relevant_qualifiers = compactMap(relevant_qualifiers, ({ s_expression }) => {
+  const add_optional_relevant_qualifiers = compactMap(optional_relevant_qualifiers, ({ s_expression }) => {
     const relevant_qualifier = parseWithSchema(s_expression, qualifier)
+
+    // TODO wouldn't work in case of nested qualifiers
     const matches = (q: RenderedSnomedConcept) =>
       q.name === relevant_qualifier.specific_snomed_concept.name &&
       q.category === relevant_qualifier.specific_snomed_concept.category
@@ -37,7 +39,7 @@ export function QualifierSearch({
           }]
         }}
       >
-        + Add {relevant_qualifier.specific_snomed_concept.name}
+        + {relevant_qualifier.specific_snomed_concept.name}
       </Button>
     )
   })
@@ -53,8 +55,8 @@ export function QualifierSearch({
         skip_blank_search
       />
       <div title='relevant qualifiers' id='relevant-qualifiers' class='flex flex-row gap-2'>
-        {add_relevant_qualifiers}
-        {!add_relevant_qualifiers.length && !!relevant_qualifiers.length && (
+        {add_optional_relevant_qualifiers}
+        {!add_optional_relevant_qualifiers.length && !!optional_relevant_qualifiers.length && (
           <Button
             variant='ghostlink'
             type='button'

@@ -30,21 +30,7 @@ export function MostRecentRecord(
       id={`most-recent-finding-${record.pertaining_to_key || record.id}`}
       className={cls('relative text-sm', className)}
     >
-      {
-        /* <span
-        className={cls({
-          'opacity-50': record.existence === 'No' ||
-            record.existence === 'Unknown',
-        })}
-      > */
-      }
-      <PopoverButton
-        // tabIndex={-1}
-        className='text-blue-500'
-        onClick={(event) => {
-          console.log('lkwelkwelk', event)
-        }}
-      >
+      <PopoverButton className='text-blue-500'>
         {display}
       </PopoverButton>
       {!omit_timestamp && (
@@ -53,7 +39,6 @@ export function MostRecentRecord(
           <LocalTime timestamp={record.created_at} expected_time_range='past' preceding_past_participle='recorded' />
         </>
       )}
-      {/* </span> */}
       <PopoverPanel
         anchor={{ to: 'bottom start', gap: 8, padding: 8 }}
         className='panel z-50 transition duration-100 ease-out'

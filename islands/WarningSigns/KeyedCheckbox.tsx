@@ -2,7 +2,7 @@ import cls from '../../util/cls.ts'
 import { CheckedWarningSign, OnToggle, SelectedWarningSign, uniqueIdentifier } from './shared.ts'
 
 export function KeyedWarningSignCheckbox(
-  { sign, onCheck, onUncheck, onOpenDetails }: {
+  { sign, onCheck, onOpenDetails }: {
     sign: CheckedWarningSign
     onCheck: OnToggle
     onUncheck: OnToggle
@@ -30,32 +30,24 @@ export function KeyedWarningSignCheckbox(
           type='checkbox'
           checked={!!sign.checked}
           className='w-4 h-4 2xl:w-5 2xl:h-5 rounded-md border-gray-300 text-indigo-700 focus:ring-indigo-700'
-          onInput={(event) => event.currentTarget.checked ? onCheck(sign) : onUncheck(sign)}
+          // Atypical, but if they uncheck the box still launch the modal,
+          // Requiring them to click "Remove" before it's truly removed
+          onInput={(event) => {
+            if (event.currentTarget.checked) {
+              onCheck(sign)
+            } else {
+              onOpenDetails?.(sign as SelectedWarningSign)
+            }
+          }}
         />
       </div>
       <div className='flex flex-col gap-0.75 2xl:gap-1 pt-0.5'>
         <span className='text-xs 2xl:text-sm font-medium text-gray-600 leading-4 2xl:leading-5'>
           {sign.name}
         </span>
-        {sign.checked
-          ? (
-            <span
-              role='button'
-              className={cls(span_class, 'text-indigo-700')}
-              onClick={(e) => {
-                e.preventDefault()
-                onOpenDetails?.(sign as SelectedWarningSign)
-              }}
-            >
-              + Add details
-            </span>
-          )
-          : (
-            // Include even if no description so layout doesn't shift
-            <span className={span_class}>
-              {sign.description || ''}
-            </span>
-          )}
+        <span className={span_class}>
+          {sign.description || ''}
+        </span>
       </div>
     </label>
   )

@@ -12,6 +12,7 @@ export default function useAsyncSearch<
   skip_blank_search,
   debounce_milliseconds = 220,
   onSearchResults,
+  onQueryBlanked,
 }: AsyncSearchProps<T>): AsyncSearchHookResult<T> {
   const [search, setSearch] = useState({
     query: value?.name ?? '',
@@ -29,6 +30,7 @@ export default function useAsyncSearch<
       if (search.active_request) {
         search.active_request.abort()
       }
+      onQueryBlanked?.()
       return setSearch((search) => ({
         ...search,
         page: 1,
@@ -121,6 +123,7 @@ export default function useAsyncSearch<
   }, [search.query, search.page, search_route])
 
   const loading = !!search.delay || !!search.active_request
+  console.log({ loading })
 
   const loadMore = !loading && search.has_next_page
     ? () => {

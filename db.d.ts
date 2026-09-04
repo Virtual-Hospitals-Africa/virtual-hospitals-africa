@@ -357,6 +357,7 @@ export interface DueTo {
   created_at: Generated<Timestamp>
   history: boolean
   id: Generated<string>
+  qualifiers: Generated<string[]>
   s_expression: string
   updated_at: Generated<Timestamp>
 }
