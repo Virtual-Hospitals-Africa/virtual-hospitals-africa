@@ -3229,6 +3229,22 @@ export type FindingRelatedModifiers = {
   relevant_qualifiers: {
     s_expression: string
   }[]
+  // to_check_for: {
+  //   check_for_s_expression: string
+  //   could_indicate_priority: Priority | null
+  //   could_indicate_diagnoses: {
+  //     s_expression: string
+  //     only_if_matching_one_of_qualifiers: {
+  //       s_expression: string
+  //     }[]
+  //   }[]
+  //   only_if_matching_one_of_qualifiers: {
+  //     s_expression: string
+  //   }[]
+  // }[]
+  // could_indicate_diagnoses: {
+  //   s_expression: string
+  // }[]
   onset_required: boolean
 }
 export type TasksDividedByPermission = {
