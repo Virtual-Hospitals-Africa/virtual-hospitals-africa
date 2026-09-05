@@ -3,7 +3,7 @@ import { normalForm } from './s_expression.ts'
 import common_symptoms_modifiers from './common_symptoms_modifiers.ts'
 import { assert } from 'std/assert/assert.ts'
 
-export const COMMON_SYMPTOMS_DEFS: Omit<CommonSymptom, 'predefined_attributes' | 'relevant_qualifiers'>[] = [
+export const COMMON_SYMPTOMS_DEFS: Omit<CommonSymptom, keyof FindingRelatedModifiers>[] = [
   {
     'key': 'Nasal discharge' as const,
     'clinical_finding_s_expression': normalForm(`(clinical_finding (snomed_concept "Nasal discharge" "finding"))`),

@@ -30,6 +30,7 @@ function asFindingModalMetadata({
   relevant_qualifiers,
   predefined_attributes,
   clinical_finding_s_expression,
+  onset_required,
 }: WarningSignWithMaybeRecord): FindingModalMetadata {
   const sign_node = parseSExpressionAsInsertableFinding(clinical_finding_s_expression)
 
@@ -51,6 +52,7 @@ function asFindingModalMetadata({
     predefined_attributes,
     inherent_qualifiers,
     optional_relevant_qualifiers,
+    onset_required,
     display: findingFullDisplay(sign_node),
   }
 }

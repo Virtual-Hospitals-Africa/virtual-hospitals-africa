@@ -19,7 +19,6 @@ import { RemoveFindingSymbol } from './RemoveFindingSymbol.tsx'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
 import { higherPriority } from '../../shared/priorities.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
-import { meta } from 'zod/v4/core'
 
 function isFindingSite(attribute: Lang['attribute']): attribute is SnomedConceptAttribute {
   return attribute.specific_snomed_concept.name === FINDING_SITE.name

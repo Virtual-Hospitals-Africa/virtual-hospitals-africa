@@ -3223,7 +3223,7 @@ export type FindingRelatedModifiers = {
   relevant_qualifiers: {
     s_expression: string
   }[]
-  onset_required: true
+  onset_required: boolean
 }
 export type TasksDividedByPermission = {
   tasks_i_can_do_without_approval_needed: RenderedManageTaskToBeDone[]
