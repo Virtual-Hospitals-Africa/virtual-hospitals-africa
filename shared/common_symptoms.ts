@@ -3,6 +3,7 @@ import { normalForm } from './s_expression.ts'
 import common_symptoms_modifiers from './common_symptoms_modifiers.ts'
 import { assert } from 'std/assert/assert.ts'
 
+// TODO: make this age dependent
 export const COMMON_SYMPTOMS_DEFS: Omit<CommonSymptom, keyof FindingRelatedModifiers>[] = [
   {
     'key': 'Nasal discharge' as const,

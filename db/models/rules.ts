@@ -2,7 +2,7 @@ import { sql } from 'kysely'
 import { AgeDetermination, ApplicableRule, NewRecordsToConsiderWithSatisfyingDueToIds, RecordsSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, jsonBuildObject, literalString } from '../helpers.ts'
 
-import { QueryableEvidenceNode } from '../../shared/s_expression_schemas.ts'
+import { EventTimeComparison, QueryableEvidenceNode } from '../../shared/s_expression_schemas.ts'
 import uniq from '../../util/uniq.ts'
 import { EvidenceNode } from './s_expression_evidence.ts'
 import compactMap from '../../util/compactMap.ts'
@@ -211,18 +211,17 @@ export function evaluateEvidence(due_to: QueryableEvidenceNode, evidence: Eviden
     case '<=':
     case '=':
     case '>':
-    case '>=': {
-      if (due_to.type === 'measurement') return evaluateSingle(due_to, evidence)
-      // TODO timestamp time_ago
-      return { satisfies: false }
-    }
+    case '>=':
+      // Both measurement and event_time comparisons are resolved in SQL when tagging
+      // due_tos, so the evidence rows already carry the due_to's s_expression if satisfied
+      return evaluateSingle(due_to, evidence)
 
     default:
       throw new Error(`Not supported ${(due_to as QueryableEvidenceNode).atom}`)
   }
 }
 
-export function evaluateSingle(due_to: EvidenceNode, evidence: Evidence): Result {
+export function evaluateSingle(due_to: EvidenceNode | EventTimeComparison, evidence: Evidence): Result {
   const due_to_s_expression = inverseSExpression(due_to)
   const contributing_records = evidence
     .filter((record) => record.s_expression === due_to_s_expression)

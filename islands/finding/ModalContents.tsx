@@ -41,7 +41,7 @@ export function FindingModalContents(
   const predefined_attributes = metadata.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
   const search_within_finding_site = predefined_attributes.find(isFindingSite)
 
-  const dates = useSignal<{ onset: string; resolved: string | null } | null>(null)
+  const dates = useSignal<{ onset: string | null; resolved: string | null } | null>(null)
   let initial_finding_sites = node.attributes.filter(isFindingSite)
   if (!initial_finding_sites.length && search_within_finding_site) {
     initial_finding_sites = [search_within_finding_site]
@@ -88,7 +88,7 @@ export function FindingModalContents(
         })),
       ],
       attributes: compact([
-        dates.value && {
+        dates.value?.onset && {
           atom: 'attribute' as const,
           root_snomed_concept: {
             atom: 'snomed_concept' as const,
@@ -174,7 +174,13 @@ export function FindingModalContents(
   }
 
   return (
-    <div className='flex flex-col max-h-[90vh]'>
+    <form
+      className='flex flex-col max-h-[90vh]'
+      onSubmit={(event) => {
+        event.preventDefault()
+        handleSave()
+      }}
+    >
       {/* Header */}
       <div className='relative px-6 pt-8 pb-4 text-center'>
         <button
@@ -225,13 +231,12 @@ export function FindingModalContents(
         <Button
           variant='primary'
           className='flex-1'
-          type='button'
-          onClick={handleSave}
+          type='submit'
           left_icon={<PaperAirplaneIcon className='h-4 w-4' />}
         >
           Save to Record
         </Button>
       </div>
-    </div>
+    </form>
   )
 }

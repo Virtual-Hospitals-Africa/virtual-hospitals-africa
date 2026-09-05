@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals'
 import { Maybe } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import { nowDatetimeLocalInJohannesburg, rfc3339_regex, yesterdayAtNoonInJohannesburg } from '../../util/date.ts'
+import { nowDatetimeLocalInJohannesburg, rfc3339_regex } from '../../util/date.ts'
 import { CheckboxInput } from '../form/inputs/checkbox.tsx'
 import { DatetimeInput } from '../form/inputs/datetime.tsx'
 
@@ -15,7 +15,7 @@ export function OnsetRow({
     onset: Maybe<string>
     resolved: Maybe<string>
   }>
-  onChange?: (dates: { onset: string; resolved: string | null }) => void
+  onChange?: (dates: { onset: string | null; resolved: string | null }) => void
 }) {
   const now = nowDatetimeLocalInJohannesburg()
   if (dates?.onset) {
@@ -24,12 +24,12 @@ export function OnsetRow({
   if (dates?.resolved) {
     assert(rfc3339_regex.test(dates.resolved))
   }
-  const onset = useSignal(dates?.onset || yesterdayAtNoonInJohannesburg())
+  const onset = useSignal(dates?.onset)
   const resolved = useSignal(dates?.resolved)
   const ongoing = useSignal(!dates?.resolved)
   const callback = () => {
     onChange?.({
-      onset: onset.value,
+      onset: onset.value || null,
       resolved: resolved.value || null,
     })
   }

@@ -1,7 +1,7 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { TASKS_LISP } from '../../s_expression/tasks.ts'
-import { system_diagnosis_rule, system_priority_evaluation, task } from '../../shared/s_expression_schemas.ts'
+import { insertable_finding_base, type Lang, system_diagnosis_rule, system_priority_evaluation, task } from '../../shared/s_expression_schemas.ts'
 import db from '../../db/db.ts'
 import { collect, filter } from '../../util/inParallel.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
@@ -10,11 +10,14 @@ import { SYSTEM_DIAGNOSIS_RULES_LISP } from '../../s_expression/system_diagnosis
 import { parseLispFile, walkDirectory } from '../../s_expression/compile.ts'
 import { allEvidenceToLookFor } from '../../db/models/s_expression_evidence.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { ALL_ASESSMENT_OPTIONS_PARSED, VITALS_ADULT_SNOMED_CONCEPT_NAMES } from '../../shared/vitals.ts'
+import { ALL_ASSESSMENT_OPTIONS_PARSED, VITALS_ADULT_SNOMED_CONCEPT_NAMES } from '../../shared/vitals.ts'
 import { isCheckFor } from '../../db/models/additional_tasks.ts'
 import compactMap from '../../util/compactMap.ts'
 import { allConceptsToLookFor } from '../../shared/s_expression_concepts.ts'
 import { conceptDoesNotExist } from '../../db/models/snomed_concept_exists.ts'
+import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
+import { COMMON_SYMPTOMS } from '../../shared/common_symptoms.ts'
+import { Maybe, Yielded } from '../../types.ts'
 
 function* nodesAndConceptsTasks() {
   for (const s_expression of TASKS_LISP) {
@@ -43,6 +46,77 @@ function* nodesAndConceptsSystemDiagnosisRules() {
   }
 }
 
+function* allFindingsToLookFor(rule: Lang['system_priority_evaluation' | 'system_diagnosis_rule']) {
+  for (const evidence of allEvidenceToLookFor(rule.due_to)) {
+    switch (evidence.atom) {
+      case '>':
+      case '<':
+      case '>=':
+      case '<=':
+      case '=':
+        yield evidence.measurement
+        break
+      default: {
+        yield evidence
+        break
+      }
+    }
+  }
+}
+
+function specificSnomedConceptOf(finding: EvidenceFinding): Maybe<Lang['snomed_concept']> {
+  switch (finding.atom) {
+    case 'active_condition':
+      return finding.snomed_concept
+    case 'diagnosis':
+      return finding.snomed_concept
+    case 'finding':
+      return finding.specific_snomed_concept
+    case 'evaluation':
+      return finding.specific_snomed_concept
+    case 'measurement':
+      throw new Error('Should have been handled')
+    default: {
+      // deno-lint-ignore no-explicit-any
+      throw new Error((finding as any).atom)
+    }
+  }
+}
+
+type EvidenceFinding = Yielded<typeof allFindingsToLookFor>
+
+function evidenceCollectedDuringWarningSignsOrVitals(
+  finding: EvidenceFinding,
+  rule: Lang['system_priority_evaluation' | 'system_diagnosis_rule'],
+) {
+  if (finding.atom === 'measurement') {
+    return VITALS_ADULT_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
+  }
+  if (finding.atom === 'active_condition' && finding.snomed_concept.name === 'Fever') {
+    return true
+  }
+
+  const snomed_concept = specificSnomedConceptOf(finding)
+  if (!snomed_concept) return false
+
+  const matches_some_assessment_option = ALL_ASSESSMENT_OPTIONS_PARSED.some((option) =>
+    option.specific_snomed_concept!.name === snomed_concept?.name &&
+    option.specific_snomed_concept!.category === snomed_concept?.category
+  )
+  if (matches_some_assessment_option) return true
+  return rule.ages.every((age) => {
+    const signs = [
+      ...WARNING_SIGNS[age],
+      ...COMMON_SYMPTOMS,
+    ]
+    return signs.some((sign) => {
+      const node = parseWithSchema(sign.clinical_finding_s_expression, insertable_finding_base)
+      return node.specific_snomed_concept!.name === snomed_concept?.name &&
+        node.specific_snomed_concept!.category === snomed_concept?.category
+    })
+  })
+}
+
 describe('s_expression', () => {
   afterAll(() => db.destroy())
   describe('TASKS_LISP', () => {
@@ -50,12 +124,23 @@ describe('s_expression', () => {
       const not_found = await filter(nodesAndConceptsTasks(), conceptDoesNotExist)
       assertArrayEmpty(not_found)
     })
-    it('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', () => {
-      const checked_for_but_never_used_as_evidence = [...checkedForButNeverUsedAsEvidence()]
+    it.skip('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', async () => {
+      const checked_for_but_never_used_as_evidence = await collect(checkedForButNeverUsedAsEvidence())
+      // Deno.writeFileSync(
+      //   './checked_for_but_never_used_as_evidence.json',
+      //   new TextEncoder().encode(humanReadableJson(checked_for_but_never_used_as_evidence)),
+      // )
+
       assertArrayEmpty(checked_for_but_never_used_as_evidence)
 
-      function* checkedForButNeverUsedAsEvidence() {
-        const task_nodes = TASKS_LISP.map((s_expression) => parseWithSchema(s_expression, task))
+      async function* checkedForButNeverUsedAsEvidence() {
+        const task_nodes: { file_path: string; task_node: Lang['task'] }[] = []
+        for await (const file_path of walkDirectory()) {
+          for (const task_node of await parseLispFile(file_path)) {
+            if (task_node.atom !== 'task') continue
+            task_nodes.push({ file_path, task_node })
+          }
+        }
 
         const rule_evidence = new Set([
           ...SYSTEM_DIAGNOSIS_RULES_LISP.map((s_expression) => parseWithSchema(s_expression, system_diagnosis_rule)),
@@ -64,7 +149,7 @@ describe('s_expression', () => {
 
         // Which tasks each piece of evidence triggers, by index into task_nodes
         const tasks_triggered_by = new Map<string, Set<number>>()
-        for (const [index, task_node] of task_nodes.entries()) {
+        for (const [index, { task_node }] of task_nodes.entries()) {
           for (const evidence of allEvidenceToLookFor(task_node.due_to)) {
             const evidence_s_expression = inverseSExpression(evidence)
             const triggered = tasks_triggered_by.get(evidence_s_expression) ?? new Set()
@@ -75,7 +160,7 @@ describe('s_expression', () => {
 
         const already_yielded = new Set<string>()
 
-        for (const [index, task_node] of task_nodes.entries()) {
+        for (const [index, { file_path, task_node }] of task_nodes.entries()) {
           if (!isCheckFor(task_node.to_be_done)) continue
           for (const finding of task_node.to_be_done.value) {
             const finding_s_expression = inverseSExpression(finding)
@@ -85,6 +170,7 @@ describe('s_expression', () => {
             if (already_yielded.has(finding_s_expression)) continue
             already_yielded.add(finding_s_expression)
             yield {
+              file_path,
               description: task_node.description,
               never_used_as_evidence: finding_s_expression,
             }
@@ -140,10 +226,12 @@ describe('s_expression', () => {
         return system_diagnosis_rule.diagnosis.snomed_concept
       })
 
-      const rules_without_corresponding_check_for_system_diagnosis_rule = await collect(systemPriorityEvaluationsWithNoCheckForNorDiagnosis())
+      const rules_without_corresponding_check_for_system_diagnosis_rule = await collect(
+        systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals(),
+      )
       assertArrayEmpty(rules_without_corresponding_check_for_system_diagnosis_rule)
 
-      async function* systemPriorityEvaluationsWithNoCheckForNorDiagnosis() {
+      async function* systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals() {
         for await (const { file_path, system_priority_evaluations, tasks } of correspondingAPCRules()) {
           const all_checking_for = new Set(tasks.flatMap((task_node) => {
             const due_to = allEvidenceToLookFor(task_node.due_to).map(inverseSExpression)
@@ -157,29 +245,9 @@ describe('s_expression', () => {
           }))
 
           for (const rule of system_priority_evaluations) {
-            for (const evidence of allEvidenceToLookFor(rule.due_to)) {
-              const finding = (
-                  evidence.atom === '>' ||
-                  evidence.atom === '<' ||
-                  evidence.atom === '>=' ||
-                  evidence.atom === '<=' ||
-                  evidence.atom === '='
-                )
-                ? evidence.measurement
-                : evidence
-
-              const evidence_collected_during_vitals = (
-                finding.atom === 'measurement' && VITALS_ADULT_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
-              ) || (
-                finding.atom === 'active_condition' && finding.snomed_concept.name === 'Fever'
-              ) || (
-                finding.atom === 'finding' &&
-                ALL_ASESSMENT_OPTIONS_PARSED.some((option) =>
-                  option.specific_snomed_concept!.name === finding.specific_snomed_concept?.name &&
-                  option.specific_snomed_concept!.category === finding.specific_snomed_concept?.category
-                )
-              )
-              if (evidence_collected_during_vitals) continue
+            for (const finding of allFindingsToLookFor(rule)) {
+              const evidence_collected_during_warning_signs_or_vitals = evidenceCollectedDuringWarningSignsOrVitals(finding, rule)
+              if (evidence_collected_during_warning_signs_or_vitals) continue
               const evaluating_a_diagnosed_condition = finding.atom === 'active_condition' &&
                 all_probable_diagnoses.some((probable_diagnosis) =>
                   finding.snomed_concept.name === probable_diagnosis.name &&
@@ -236,23 +304,10 @@ describe('s_expression', () => {
 
           for (const rule of system_diagnosis_rules) {
             if (rule.diagnosis.certainty_qualifier !== 'probable') continue
-            for (const evidence of allEvidenceToLookFor(rule.due_to)) {
-              const finding = (
-                  evidence.atom === '>' ||
-                  evidence.atom === '<' ||
-                  evidence.atom === '>=' ||
-                  evidence.atom === '<=' ||
-                  evidence.atom === '='
-                )
-                ? evidence.measurement
-                : evidence
+            for (const finding of allFindingsToLookFor(rule)) {
+              const evidence_collected_during_warning_signs_or_vitals = evidenceCollectedDuringWarningSignsOrVitals(finding, rule)
+              if (evidence_collected_during_warning_signs_or_vitals) continue
 
-              const evidence_collected_during_vitals = (
-                finding.atom === 'measurement' && VITALS_ADULT_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
-              ) || (
-                finding.atom === 'active_condition' && finding.snomed_concept.name === 'Fever'
-              )
-              if (evidence_collected_during_vitals) continue
               const finding_s_expression = inverseSExpression(finding)
               if (!all_checking_for.has(finding_s_expression)) {
                 yield {

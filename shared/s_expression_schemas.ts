@@ -218,7 +218,7 @@ export type ToBeDone = NonNullableProperty<Lang['procedure'], 'root_snomed_conce
 
 export type ToBeDoneProcedureLink = ToBeDone & { value: Lang['link'] }
 export type ToBeDoneProcedureProcedure = ToBeDone & { value: Lang['snomed_concept'] }
-export type ToBeDoneProcedureCheckFor = ToBeDone & { value: Array<Lang['finding'] | EventTimeComparison> }
+export type ToBeDoneProcedureCheckFor = ToBeDone & { value: Lang['finding'][] }
 export type ToBeDoneProcedureMeasurements = ToBeDone & { value: Lang['measurement'][] }
 
 export type SnomedConceptAttribute = Lang['attribute'] & { value: { atom: 'snomed_concept' } }
@@ -898,12 +898,10 @@ export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
       qualifiers: [],
       attributes: [],
       history: false,
-      value: check_for.map((node) => {
-        if (node.atom === 'finding') {
-          return { ...node, existence: 'Any' as const }
-        }
-        return node
-      }),
+      value: check_for.map((node) => ({
+        ...node,
+        existence: 'Any' as const,
+      })),
     })),
 ).describe('check_for')
 

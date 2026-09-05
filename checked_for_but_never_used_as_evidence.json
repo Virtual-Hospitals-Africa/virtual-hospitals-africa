@@ -1,0 +1,1207 @@
+[
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Incomplete emptying of urinary bladder\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fecal impaction\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of saddle area\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty walking\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Upper abdominal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to lumbar region of back\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right flank pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postmenopausal state\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Left inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/63-back-pain.lisp",
+        "description": "Check for urgent back pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right inguinal pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/57-abnormal-vaginal-bleeding.lisp",
+        "description": "Check for urgent vaginal bleeding conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/57-abnormal-vaginal-bleeding.lisp",
+        "description": "Check for urgent vaginal bleeding conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/57-abnormal-vaginal-bleeding.lisp",
+        "description": "Check for urgent vaginal bleeding conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/57-abnormal-vaginal-bleeding.lisp",
+        "description": "Check for urgent vaginal bleeding conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling faint\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Postprocedural period\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Administration of vaccine to produce active immunity\" \"procedure\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized pruritus\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Generalized rash\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Substance\" \"substance\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history with explicit context\" \"situation\") (snomed_concept \"Collapse\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of sudden death\" \"situation\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiogram abnormal\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Heart disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Collapse\" \"finding\") (qualifier (snomed_concept \"Temporal periods relating to exercise\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/28-collapse-falls.lisp",
+        "description": "Check for urgent collapse conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Missed period\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/26-weakness-or-tiredness.lisp",
+        "description": "Check for urgent weakness/tiredness conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Thirst due to water deprivation\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/26-weakness-or-tiredness.lisp",
+        "description": "Check for urgent weakness/tiredness conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Xerostomia due to dehydration\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/26-weakness-or-tiredness.lisp",
+        "description": "Check for urgent weakness/tiredness conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/21-burns.lisp",
+        "description": "Check for urgent burn conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn injury with charring\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/21-burns.lisp",
+        "description": "Check for urgent burn conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hoarse\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/21-burns.lisp",
+        "description": "Check for urgent burn conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Stridor\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/21-burns.lisp",
+        "description": "Check for urgent burn conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dirty sputum\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/21-burns.lisp",
+        "description": "Check for urgent burn conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn\" \"disorder\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Neck structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/19-seizures.lisp",
+        "description": "Check for urgent seizure conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Current\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/19-seizures.lisp",
+        "description": "Check for urgent seizure conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unconscious\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/19-seizures.lisp",
+        "description": "Check for urgent seizure conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypoglycemia\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/19-seizures.lisp",
+        "description": "Check for urgent seizure conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol use disorder\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/19-seizures.lisp",
+        "description": "Check for urgent seizure conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Status epilepticus\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/19-seizures.lisp",
+        "description": "Check for urgent seizure conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cardiac arrhythmia\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/48-constipation-and-anal-symptoms.lisp",
+        "description": "Check for urgent constipation conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Constipation\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/48-constipation-and-anal-symptoms.lisp",
+        "description": "Check for urgent anal conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/48-constipation-and-anal-symptoms.lisp",
+        "description": "Check for urgent anal conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Anal polyp\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest discomfort\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to left shoulder\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain radiating to right shoulder\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of treatment for ischemic heart disease\" \"situation\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Diabetes mellitus\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Smoker\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypercholesterolemia\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of ischemic heart disease\" \"situation\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment elevation\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"ST segment depression\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Electrocardiographic left bundle branch block\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain on breathing\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/37-chest-pain.lisp",
+        "description": "Check for urgent chest pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pleuritic pain\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/41-acute-covid-19.lisp",
+        "description": "Check for urgent acute Covid-19 conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/41-acute-covid-19.lisp",
+        "description": "Check for urgent acute Covid-19 conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tight chest\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/41-acute-covid-19.lisp",
+        "description": "Check for urgent acute Covid-19 conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clouded consciousness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/41-acute-covid-19.lisp",
+        "description": "Check for urgent acute Covid-19 conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Drowsy\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/80-scalp-symptoms.lisp",
+        "description": "Check for urgent scalp conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Loss of scalp hair\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/80-scalp-symptoms.lisp",
+        "description": "Check for urgent scalp conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Eruption of scalp\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/80-scalp-symptoms.lisp",
+        "description": "Check for urgent scalp conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Scalp structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/36-gum-teeth-symptoms.lisp",
+        "description": "Check for urgent dental conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower jaw region\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/36-gum-teeth-symptoms.lisp",
+        "description": "Check for urgent dental conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Wakes up during night\" \"finding\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/36-gum-teeth-symptoms.lisp",
+        "description": "Check for urgent dental conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Toothache\" \"finding\") (qualifier (snomed_concept \"Spontaneous\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/79-changes-in-skin-colour.lisp",
+        "description": "Check for urgent jaundice with haemodynamic or hepatic danger signs",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute abdominal pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/79-changes-in-skin-colour.lisp",
+        "description": "Check for urgent jaundice with haemodynamic or hepatic danger signs",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Alcohol dependence\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/79-changes-in-skin-colour.lisp",
+        "description": "Check for urgent jaundice with haemodynamic or hepatic danger signs",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Bleeds easily\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/79-changes-in-skin-colour.lisp",
+        "description": "Check for urgent jaundice with haemodynamic or hepatic danger signs",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Illicit drug use\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/79-changes-in-skin-colour.lisp",
+        "description": "Check for urgent jaundice with haemodynamic or hepatic danger signs",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Taking medication\" \"observable entity\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/59-urinary-symptoms.lisp",
+        "description": "Check for urgent urinary symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abdominal discomfort\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/59-urinary-symptoms.lisp",
+        "description": "Check for urgent urinary symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Distension of abdomen\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Lower abdomen structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/59-urinary-symptoms.lisp",
+        "description": "Check for urgent urinary symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Oliguria\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/59-urinary-symptoms.lisp",
+        "description": "Check for urgent urinary symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of bilateral feet\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/42-ongoing-covid-19-symptoms.lisp",
+        "description": "Check for urgent ongoing Covid-19 symptoms",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chest pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/42-ongoing-covid-19-symptoms.lisp",
+        "description": "Check for urgent ongoing Covid-19 symptoms",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Difficulty breathing\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/42-ongoing-covid-19-symptoms.lisp",
+        "description": "Check for urgent ongoing Covid-19 symptoms",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling agitated\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/42-ongoing-covid-19-symptoms.lisp",
+        "description": "Check for urgent ongoing Covid-19 symptoms",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hemoptysis\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/39-wheeze-or-tight-chest.lisp",
+        "description": "Check for urgent wheeze or tight chest conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unable to complete a sentence in one breath\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/39-wheeze-or-tight-chest.lisp",
+        "description": "Check for urgent wheeze or tight chest conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Accessory respiratory muscles used\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/39-wheeze-or-tight-chest.lisp",
+        "description": "Check for urgent wheeze or tight chest conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Absent breath sounds\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/39-wheeze-or-tight-chest.lisp",
+        "description": "Check for urgent wheeze or tight chest conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Asthma\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/39-wheeze-or-tight-chest.lisp",
+        "description": "Check for urgent wheeze or tight chest conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic obstructive pulmonary disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nails dirty\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Unkempt appearance\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nail deformity\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nail bed structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nail fold finding\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of cuticle of nail\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nail unit structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Structure of proximal nail fold\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Purulent discharge\" \"morphologic abnormality\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Nail unit structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Yellow nails\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nails crumble\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nail discoloration\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/82-nail-symptoms.lisp",
+        "description": "Check for urgent nail symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Beau's lines\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/139-peripheral-vascular-disease.lisp",
+        "description": "Check for urgent peripheral vascular disease conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Low blood pressure\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intentionally harming self\" \"event\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicide attempt\" \"event\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Suicidal thoughts\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Planning suicide\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Physical aggression\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Feeling upset\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Does not communicate\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"At increased risk of self-injurious behavior\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/86-low-mood-stress-and-anxiety.lisp",
+        "description": "Check for urgent low mood, stress and anxiety conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"High suicide risk\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic foot with rest pain\" \"disorder\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of lower limb\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pale complexion\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peripheral pulse absent\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ischemic foot with rest pain\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gangrene\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ulcer\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Intermittent claudication\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Buttock structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/66-foot-symptoms.lisp",
+        "description": "Check for urgent foot symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of lower limb\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/73-drug-rash.lisp",
+        "description": "Check for urgent drug rash conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Perioral dermatitis\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/73-drug-rash.lisp",
+        "description": "Check for urgent drug rash conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Periocular dermatitis\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/73-drug-rash.lisp",
+        "description": "Check for urgent drug rash conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Rash of genitalia\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/73-drug-rash.lisp",
+        "description": "Check for urgent drug rash conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Blister\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/73-drug-rash.lisp",
+        "description": "Check for urgent drug rash conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Peeling of skin\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/45-nausea-or-vomiting.lisp",
+        "description": "Check for urgent nausea or vomiting conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of travel with high risk of exposure to communicable disease\" \"situation\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/45-nausea-or-vomiting.lisp",
+        "description": "Check for urgent nausea or vomiting conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deep breathing\" \"finding\") (qualifier (snomed_concept \"Rapid\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/45-nausea-or-vomiting.lisp",
+        "description": "Check for urgent nausea or vomiting conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right lower quadrant pain\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/45-nausea-or-vomiting.lisp",
+        "description": "Check for urgent nausea or vomiting conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Finding of vomiting\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/45-nausea-or-vomiting.lisp",
+        "description": "Check for urgent nausea or vomiting conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/29-dizziness.lisp",
+        "description": "Check for urgent dizziness conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/29-dizziness.lisp",
+        "description": "Check for urgent dizziness conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Vomiting\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/29-dizziness.lisp",
+        "description": "Check for urgent dizziness conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of eye movements\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/29-dizziness.lisp",
+        "description": "Check for urgent dizziness conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal gait\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/25-lump-swelling-in-neck-axilla-or-groin.lisp",
+        "description": "Check for urgent groin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Acute constipation\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/25-lump-swelling-in-neck-axilla-or-groin.lisp",
+        "description": "Check for urgent groin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irreducible hernia\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/40-covid-19-diagnosis.lisp",
+        "description": "Check for presence of Covid-19",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea at rest\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/40-covid-19-diagnosis.lisp",
+        "description": "Check for presence of Covid-19",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dyspnea\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/65-leg-symptoms.lisp",
+        "description": "Check for urgent leg symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/65-leg-symptoms.lisp",
+        "description": "Check for urgent leg symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swollen calf\" \"finding\") (qualifier (snomed_concept \"Unilateral\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/65-leg-symptoms.lisp",
+        "description": "Check for urgent leg symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/65-leg-symptoms.lisp",
+        "description": "Check for urgent leg symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impaired mobility\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/65-leg-symptoms.lisp",
+        "description": "Check for urgent leg symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Estrogen hormone therapy\" \"procedure\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/65-leg-symptoms.lisp",
+        "description": "Check for urgent leg symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tuberculosis\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/65-leg-symptoms.lisp",
+        "description": "Check for urgent leg symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Malignant neoplastic disease\" \"disorder\") (qualifier (snomed_concept \"Known present\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/44-abdominal-pain.lisp",
+        "description": "Check for urgent abdominal pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Delivery finding\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/44-abdominal-pain.lisp",
+        "description": "Check for urgent abdominal pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Miscarriage\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/44-abdominal-pain.lisp",
+        "description": "Check for urgent abdominal pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Induced termination of pregnancy\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/44-abdominal-pain.lisp",
+        "description": "Check for urgent abdominal pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Right upper quadrant pain\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/33-ear-symptoms.lisp",
+        "description": "Check for urgent ear symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of ear\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/33-ear-symptoms.lisp",
+        "description": "Check for urgent ear symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Ear discharge\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/33-ear-symptoms.lisp",
+        "description": "Check for urgent ear symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of ear\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/33-ear-symptoms.lisp",
+        "description": "Check for urgent ear symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hearing difficulty\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/33-ear-symptoms.lisp",
+        "description": "Check for urgent ear symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tinnitus\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/34-nose-symptoms.lisp",
+        "description": "Check for urgent nose conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Cerebrospinal fluid rhinorrhea\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/34-nose-symptoms.lisp",
+        "description": "Check for urgent nose conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nasal discharge\" \"finding\") (qualifier (snomed_concept \"Clear\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Postpartum state\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Edema of eyelid\" \"disorder\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Red eye\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Abnormal vision\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Herpes zoster involving tip of nose\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Herpes zoster ophthalmicus\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/31-eye-vision-symptoms.lisp",
+        "description": "Check for urgent eye or vision conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Burn of cornea\" \"disorder\"))"
+    },
+    {
+        "file_path"             : "s_expression/rules/apc-adult/20-anaphylaxis.lisp",
+        "description"           : "Check for Anaphylaxis",
+        "never_used_as_evidence": "(allergy (snomed_concept \"Drug or medicament\" \"substance\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/20-anaphylaxis.lisp",
+        "description": "Check for Anaphylaxis",
+        "never_used_as_evidence": "(finding (snomed_concept \"Exposure to (contextual qualifier)\" \"qualifier value\") (snomed_concept \"Drug or medicament\" \"substance\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent arm or hand symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in left arm\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent arm or hand symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in right arm\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent arm or hand symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hand pain\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent arm or hand symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of musculoskeletal system\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent arm or hand symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint swelling\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent arm or hand symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity\" \"finding\") (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent arm or hand symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent neck pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Clumsiness\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent neck pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Joint stiffness\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent neck pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Decreased coordination\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/64-neck-pain-arm-hand.lisp",
+        "description": "Check for urgent neck pain conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of neck\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of limbs\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Numbness of face\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Speech problem\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Visual symptoms\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in eye\" \"finding\") (qualifier (snomed_concept \"New\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Dizziness\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")) (qualifier (snomed_concept \"Severe (severity modifier)\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Frequent headache\" \"finding\") (qualifier (snomed_concept \"Worsening\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Wakes up during night\" \"finding\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Persistent vomiting\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Nausea\" \"finding\") (qualifier (snomed_concept \"Symptom is continuous\" \"finding\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Headache\" \"finding\") (qualifier (snomed_concept \"Symptom is continuous\" \"finding\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Chronic headache disorder\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Seizure\" \"finding\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Highly active antiretroviral therapy\" \"procedure\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/30-headache.lisp",
+        "description": "Check for urgent headache conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of head\" \"disorder\") (qualifier (snomed_concept \"Recent\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/32-face-symptoms.lisp",
+        "description": "Check for urgent face symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of face muscles\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/32-face-symptoms.lisp",
+        "description": "Check for urgent face symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Muscle weakness of upper limb\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/32-face-symptoms.lisp",
+        "description": "Check for urgent face symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Weakness of muscle of lower limb\" \"finding\") (qualifier (snomed_concept \"Sudden\" \"qualifier value\")) (qualifier (snomed_concept \"New\" \"qualifier value\")) (qualifier (snomed_concept \"Asymmetry\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/32-face-symptoms.lisp",
+        "description": "Check for urgent face symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Face structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/32-face-symptoms.lisp",
+        "description": "Check for urgent face symptom conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Tongue structure\" \"body structure\")) (qualifier (snomed_concept \"Sudden\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/35-mouth-or-throat-symptoms.lisp",
+        "description": "Check for urgent mouth or throat conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pharyngeal swelling\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/38-cough-or-difficulty-breathing.lisp",
+        "description": "Check for urgent cough/breathing conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of lower limb\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/22-bites-and-stings.lisp",
+        "description": "Check for urgent bite/sting conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Avulsion - injury\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/62-joint-symptoms.lisp",
+        "description": "Check for urgent joint conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain of joint\" \"finding\") (qualifier (snomed_concept \"Acute pain\" \"finding\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/62-joint-symptoms.lisp",
+        "description": "Check for urgent joint conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Injury of musculoskeletal system\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/62-joint-symptoms.lisp",
+        "description": "Check for urgent joint conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Limitation of joint movement\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/62-joint-symptoms.lisp",
+        "description": "Check for urgent joint conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Deformity\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/24-fever.lisp",
+        "description": "Check for urgent fever conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Petechiae of skin\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/75-skin-ulcer-or-non-healing-wound.lisp",
+        "description": "Check for urgent skin ulcer and wound conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Erythema\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/75-skin-ulcer-or-non-healing-wound.lisp",
+        "description": "Check for urgent skin ulcer and wound conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Warm skin\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/75-skin-ulcer-or-non-healing-wound.lisp",
+        "description": "Check for urgent skin ulcer and wound conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling of skin\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/75-skin-ulcer-or-non-healing-wound.lisp",
+        "description": "Check for urgent skin ulcer and wound conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Soft tissue crepitus\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented skin lesion\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Irregular outline of pigmented skin lesion\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Change in skin lesion\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pigmented nevus\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Itching of skin\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Skin structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Firm mass\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/74-skin-lumps.lisp",
+        "description": "Check for urgent skin lump conditions",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Fluctuant mass\" \"morphologic abnormality\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Sedentary lifestyle\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Hypertensive disorder, systemic arterial\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Family history of diabetes mellitus\" \"situation\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Polycystic ovary syndrome\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Indian origin\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Disorder of cardiovascular system\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Gestational diabetes mellitus\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Past pregnancy history of delivery of macrosomal infant\" \"situation\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Impaired fasting glycemia\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/17-assess-and-manage-glucose.lisp",
+        "description": "Symptoms associated with low or high blood glucose",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"History of tuberculosis\" \"situation\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Pain in scrotum\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\") (qualifier (snomed_concept \"Sudden onset\" \"qualifier value\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Retractile testis\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Torsion of testis\" \"disorder\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Tightly retracted foreskin\" \"finding\"))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Swelling\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Glans penis structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Severe pain\" \"finding\") (attribute (snomed_concept \"Finding site\" \"attribute\") (snomed_concept \"Glans penis structure\" \"body structure\")))"
+    },
+    {
+        "file_path": "s_expression/rules/apc-adult/50-genital-symptoms-man.lisp",
+        "description": "Check for urgent genital symptoms in a man",
+        "never_used_as_evidence": "(finding (snomed_concept \"Clinical finding\" \"finding\") (snomed_concept \"Priapism\" \"disorder\"))"
+    }
+]

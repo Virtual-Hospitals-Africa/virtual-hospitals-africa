@@ -91,6 +91,12 @@ export type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9
 
 export type UnwrappedGenerator<G> = G extends Generator<infer T, any, any> ? T : never
 
+/** The yielded type of a generator, async generator, or a function returning one. Like `Awaited` for promises. */
+export type Yielded<G> = G extends (...args: any) => infer R ? Yielded<R>
+  : G extends Generator<infer T, any, any> ? T
+  : G extends AsyncGenerator<infer T, any, any> ? T
+  : never
+
 export type NumberIndexable<T> = {
   [index: number]: T
   length: number

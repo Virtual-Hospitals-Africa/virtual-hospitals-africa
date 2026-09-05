@@ -108,6 +108,7 @@ jobs:
         run: deno task compile:chatbot
 
   deploy_preview:
+    if: false
     # needs:
     #   - check
     #   - test_web
