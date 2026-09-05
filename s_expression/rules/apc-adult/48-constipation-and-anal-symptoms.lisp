@@ -27,7 +27,7 @@
 )
 ;; Page 48 - Constipation: Urgent for bowel obstruction signs
 (system_priority_evaluation
-  "Urgent: constipation with bowel obstruction signs"
+  "Urgent: constipation lasting over 24 hours with abdominal pain"
   adult
   Urgent
   (and

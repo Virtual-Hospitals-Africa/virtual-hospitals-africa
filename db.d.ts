@@ -1,4 +1,5 @@
 import type { ColumnType } from 'kysely'
+import type { IPostgresInterval } from 'postgres-interval'
 
 export type AgeDetermination = 'adult' | 'older child' | 'younger child'
 
@@ -43,6 +44,8 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U> ? Col
 export type GuardianRelation = 'adopted parent' | 'biological parent' | 'foster parent' | 'grandparent' | 'other guardian' | 'sibling' | 'sibling of parent'
 
 export type Int8 = ColumnType<string, bigint | number | string, bigint | number | string>
+
+export type Interval = ColumnType<IPostgresInterval, IPostgresInterval | number, IPostgresInterval | number>
 
 export type Json = JsonValue
 
@@ -360,6 +363,15 @@ export interface DueTo {
   qualifiers: Generated<string[]>
   s_expression: string
   updated_at: Generated<Timestamp>
+}
+
+export interface DueToEventTimeComparisons {
+  comparator: Comparator
+  duration: Interval
+  event_snomed_concept_id: Int8
+  id: string
+  root_snomed_concept_id: Int8 | null
+  specific_snomed_concept_id: Int8
 }
 
 export interface DueToFindings {
@@ -1908,6 +1920,7 @@ export interface DB {
   device_capabilities: DeviceCapabilities
   devices: Devices
   due_to: DueTo
+  due_to_event_time_comparisons: DueToEventTimeComparisons
   due_to_finding_sites: DueToFindingSites
   due_to_findings: DueToFindings
   due_to_measurements: DueToMeasurements

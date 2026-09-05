@@ -193,7 +193,7 @@ export const additional_tasks = {
       ({ task }) => task.description,
     )
 
-    const s_expression_to_existing_findings = new Map<string, Lang['finding' | 'measurement']>()
+    const s_expression_to_existing_findings = new Map<string, Lang['measurement'] | MatchingFinding>()
     const s_expression_to_already_done = new Map<string, ToBeDone>()
     for (const { task } of evaluations_with_proto_tasks) {
       const value = task.to_be_done.value satisfies

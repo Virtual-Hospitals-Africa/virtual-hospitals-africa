@@ -3336,5 +3336,5 @@ export type FindingModalMetadata = {
     s_expression: string
   }[]
   priority?: Maybe<Priority>
-  onset_required: boolean
+  onset_required?: boolean
 }

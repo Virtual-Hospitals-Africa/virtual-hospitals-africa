@@ -664,7 +664,7 @@ export const EXPRESSION_BUILDERS = {
     // guarantees the queried one.
     const cutoff = timeAgoCutoff(node.duration)
 
-    const qb = finding(trx, patient, node.timestamp_of_event.finding)
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
 
     const attribute_query = attribute(trx, patient, {
       atom: 'attribute',
@@ -730,7 +730,7 @@ export const EXPRESSION_BUILDERS = {
 
     const cutoff = timeAgoCutoff(node.duration)
 
-    const qb = finding(trx, patient, node.timestamp_of_event.finding)
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
 
     const attribute_query = attribute(trx, patient, {
       atom: 'attribute',
@@ -782,7 +782,7 @@ export const EXPRESSION_BUILDERS = {
 
     const cutoff = timeAgoCutoff(node.duration)
 
-    const qb = finding(trx, patient, node.timestamp_of_event.finding)
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
 
     const attribute_query = attribute(trx, patient, {
       atom: 'attribute',
@@ -820,7 +820,7 @@ export const EXPRESSION_BUILDERS = {
 
     const cutoff = timeAgoCutoff(node.duration)
 
-    const qb = finding(trx, patient, node.timestamp_of_event.finding)
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
 
     const attribute_query = attribute(trx, patient, {
       atom: 'attribute',
@@ -858,7 +858,7 @@ export const EXPRESSION_BUILDERS = {
 
     const cutoff = timeAgoCutoff(node.duration)
 
-    const qb = finding(trx, patient, node.timestamp_of_event.finding)
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
 
     const attribute_query = attribute(trx, patient, {
       atom: 'attribute',

@@ -285,7 +285,7 @@ function schemaByAtom(atom: string) {
     case '>=':
     case '<=':
     case '=':
-      return schemas.measurement_comparator
+      return schemas.comparator
     default: {
       if (!isKeyOf(atom, schemas)) {
         console.log(schemas)

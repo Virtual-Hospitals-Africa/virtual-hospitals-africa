@@ -1,12 +1,48 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
-import { clinical_finding, task } from '../../shared/s_expression_schemas.ts'
+import { clinical_finding, comparator, task } from '../../shared/s_expression_schemas.ts'
 import { dueToInsert, getRuleByDescription } from '../../shared/rules.ts'
 import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 
 describe('shared/rules.ts', () => {
+  it('returns a single event_time_comparison insert for an onset comparison of an active_condition', () => {
+    const parsed = parseWithSchema(
+      `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      comparator,
+    )
+    const inserts = dueToInsert(parsed)
+    assertLength(inserts, 1)
+    assert(inserts[0].type === 'event_time_comparison')
+    const { duration, ...rest } = inserts[0]
+    assertEquals(duration.value, 24)
+    assertEquals(duration.units, 'hours')
+    assertEquals(rest, {
+      type: 'event_time_comparison',
+      s_expression: `(>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      event_snomed_concept: { atom: 'snomed_concept', name: 'Time of onset', category: 'observable entity' },
+      root_snomed_concept: null,
+      specific_snomed_concept: { atom: 'snomed_concept', name: 'Constipation', category: 'finding' },
+      comparator: '>=',
+      always_applies_if_present: true,
+      history: true,
+    })
+  })
+
+  it('returns a single event_time_comparison insert for an onset comparison of a clinical_finding', () => {
+    const parsed = parseWithSchema(
+      `(>= (onset (clinical_finding (snomed_concept "Constipation" "finding"))) (time_ago 24 hours))`,
+      comparator,
+    )
+    const inserts = dueToInsert(parsed)
+    assertLength(inserts, 1)
+    assert(inserts[0].type === 'event_time_comparison')
+    assertEquals(inserts[0].root_snomed_concept, { atom: 'snomed_concept', name: 'Clinical finding', category: 'finding' })
+    assertEquals(inserts[0].specific_snomed_concept, { atom: 'snomed_concept', name: 'Constipation', category: 'finding' })
+    assertEquals(inserts[0].history, false)
+  })
+
   it('returns always_applies_if_present: false for dueToInsert for face symptoms', () => {
     const z = parseWithSchema(
       `

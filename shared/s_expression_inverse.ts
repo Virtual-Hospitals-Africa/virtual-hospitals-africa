@@ -163,9 +163,9 @@ export function inverseSExpression(node: AnyNode): string {
 
     case 'timestamp_of_event': {
       if (node.event_snomed_concept.name === TIME_OF_ONSET.name) {
-        return `(onset ${inverseSExpression(node.finding)})`
+        return `(onset ${inverseSExpression(node.subject)})`
       }
-      return `(timestamp_of_event ${snomedConceptToString(node.event_snomed_concept)} ${inverseSExpression(node.finding)})`
+      return `(timestamp_of_event ${snomedConceptToString(node.event_snomed_concept)} ${inverseSExpression(node.subject)})`
     }
 
     case 'time_ago': {
