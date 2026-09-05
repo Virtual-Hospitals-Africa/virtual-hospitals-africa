@@ -124,7 +124,7 @@ describe('s_expression', () => {
       const not_found = await filter(nodesAndConceptsTasks(), conceptDoesNotExist)
       assertArrayEmpty(not_found)
     })
-    it.skip('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', async () => {
+    it('each finding we check_for is used as part of a due_to for at least one system_diagnosis_rule or system_priority_evaluation', async () => {
       const checked_for_but_never_used_as_evidence = await collect(checkedForButNeverUsedAsEvidence())
       // Deno.writeFileSync(
       //   './checked_for_but_never_used_as_evidence.json',
