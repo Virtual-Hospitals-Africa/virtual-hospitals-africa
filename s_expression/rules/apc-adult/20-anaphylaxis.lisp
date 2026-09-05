@@ -26,10 +26,9 @@
     (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))
     (allergy (snomed_concept "Tree nut" "substance"))
     (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))
-    (allergy (snomed_concept "Peanut" "substance"))
-    (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))
     (allergy (snomed_concept "Drug or medicament" "substance"))
     (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+    (allergy (snomed_concept "Insect venom" "substance"))
   )
 )
 (task
@@ -92,6 +91,7 @@
   )
   adult
   (or
+    ;; Q1 = Yes: exposed to something which has caused anaphylaxis before (see 20-anaphylaxis-flowchart.md)
     (and (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))
          (allergy (snomed_concept "Fish" "substance")))
     (and (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))
@@ -102,12 +102,21 @@
          (allergy (snomed_concept "Tree nut" "substance")))
     (and (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))
          (allergy (snomed_concept "Peanut" "substance")))
+    (and (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+         (allergy (snomed_concept "Drug or medicament" "substance")))
+    (and (or (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+             (clinical_finding (snomed_concept "Insect sting" "disorder")))
+         (allergy (snomed_concept "Insect venom" "substance")))
+    ;; Q2 = Yes: exposed to medication, food or insect bite/sting (no prior anaphylaxis to it) → need ≥ 2 symptom groups
     (and
       (or (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Fish" "substance"))
           (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Milk" "substance"))
           (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Eggs (edible)" "substance"))
           (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Tree nut" "substance"))
           (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Peanut" "substance"))
+          (finding (snomed_concept "Exposure to (contextual qualifier)" "qualifier value") (snomed_concept "Drug or medicament" "substance"))
+          (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
+          (clinical_finding (snomed_concept "Insect sting" "disorder"))
       )
       (any2
         (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
@@ -126,6 +135,8 @@
         )
       )
     )
+    ;; Q2 = No → Q4 = Yes: sudden onset skin sign AND any of difficulty breathing, BP < 90/60, dizziness/collapse
+    ;; (the page's Q4 does not list abdominal pain/vomiting here)
     (and
       (or (clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
           (clinical_finding (snomed_concept "Eruption" "morphologic abnormality") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
@@ -137,8 +148,6 @@
           (< (measurement (snomed_concept "Diastolic blood pressure" "observable entity") mmHg) 60)
           (clinical_finding (snomed_concept "Dizziness" "finding"))
           (clinical_finding (snomed_concept "Collapse" "finding"))
-          (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-          (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
       )
     )
   )
