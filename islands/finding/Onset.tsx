@@ -6,25 +6,27 @@ import { CheckboxInput } from '../form/inputs/checkbox.tsx'
 import { DatetimeInput } from '../form/inputs/datetime.tsx'
 
 export function OnsetRow({
-  symptom,
+  onset_required,
+  dates,
   onChange,
 }: {
-  symptom?: Maybe<{
+  onset_required: boolean
+  dates?: Maybe<{
     onset: Maybe<string>
     resolved: Maybe<string>
   }>
-  onChange?: (symptom: { onset: string; resolved: string | null }) => void
+  onChange?: (dates: { onset: string; resolved: string | null }) => void
 }) {
   const now = nowDatetimeLocalInJohannesburg()
-  if (symptom?.onset) {
-    assert(rfc3339_regex.test(symptom.onset))
+  if (dates?.onset) {
+    assert(rfc3339_regex.test(dates.onset))
   }
-  if (symptom?.resolved) {
-    assert(rfc3339_regex.test(symptom.resolved))
+  if (dates?.resolved) {
+    assert(rfc3339_regex.test(dates.resolved))
   }
-  const onset = useSignal(symptom?.onset || yesterdayAtNoonInJohannesburg())
-  const resolved = useSignal(symptom?.resolved)
-  const ongoing = useSignal(!symptom?.resolved)
+  const onset = useSignal(dates?.onset || yesterdayAtNoonInJohannesburg())
+  const resolved = useSignal(dates?.resolved)
+  const ongoing = useSignal(!dates?.resolved)
   const callback = () => {
     onChange?.({
       onset: onset.value,
@@ -39,7 +41,7 @@ export function OnsetRow({
         value={onset.value}
         max={now}
         label='Onset'
-        required
+        required={onset_required}
         onInput={(e) => {
           onset.value = e.currentTarget.value
           callback()

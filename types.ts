@@ -3223,6 +3223,7 @@ export type FindingRelatedModifiers = {
   relevant_qualifiers: {
     s_expression: string
   }[]
+  onset_required: true
 }
 export type TasksDividedByPermission = {
   tasks_i_can_do_without_approval_needed: RenderedManageTaskToBeDone[]
@@ -3336,5 +3337,5 @@ export type FindingModalMetadata = {
     s_expression: string
   }[]
   priority?: Maybe<Priority>
-  onset_required?: boolean
+  onset_required: boolean
 }
