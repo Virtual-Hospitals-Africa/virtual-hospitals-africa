@@ -33,7 +33,7 @@ deno task db:codegen               # Regenerate db.d.ts types
 
 ## Key Points
 
-- **Runtime**: Deno 2.6.1 (not Node.js)
+- **Runtime**: Deno 2.8.0 (not Node.js)
 - **Frontend**: Fresh 2 + Preact + Signals, Tailwind
 - **Database**: PostgreSQL 16 + Kysely
 - **Naming**: `snake_case` for data, `camelCase` for functions, `PascalCase` for types

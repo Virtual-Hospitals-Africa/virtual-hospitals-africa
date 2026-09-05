@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import compact from '../util/compact.ts'
 import { AnyNode, EventValue, Lang } from './s_expression_schemas.ts'
 import { AgeDetermination } from '../types.ts'
-import { ALLERGIC_CONDITION, ATTRIBUTE, PATIENT_MANAGEMENT_PROCEDURE, PROCEDURE } from './snomed_concepts.ts'
+import { ALLERGIC_CONDITION, ATTRIBUTE, PATIENT_MANAGEMENT_PROCEDURE, PROCEDURE, TIME_OF_ONSET } from './snomed_concepts.ts'
 import assertLength from '../util/assertLength.ts'
 
 // TODO: come back to this idea maybe.
@@ -96,7 +96,7 @@ export function inverseSExpression(node: AnyNode): string {
 
     case 'procedure': {
       if (Array.isArray(node.value)) {
-        const atom = node.value[0].atom === 'finding' ? 'check_for' : 'measure'
+        const atom = node.value[0].atom === 'measurement' ? 'measure' : 'check_for'
         const parts: string[] = [atom, ...node.value.map(inverseSExpression)]
         return `(${parts.join(' ')})`
       }
@@ -161,8 +161,11 @@ export function inverseSExpression(node: AnyNode): string {
       return `(${parts.join(' ')})`
     }
 
-    case 'timestamp': {
-      return `(timestamp ${inverseSExpression(node.finding)})`
+    case 'timestamp_of_event': {
+      if (node.event_snomed_concept.name === TIME_OF_ONSET.name) {
+        return `(onset ${inverseSExpression(node.subject)})`
+      }
+      return `(timestamp_of_event ${snomedConceptToString(node.event_snomed_concept)} ${inverseSExpression(node.subject)})`
     }
 
     case 'time_ago': {
@@ -181,7 +184,7 @@ export function inverseSExpression(node: AnyNode): string {
       if (node.type === 'measurement') {
         return `(${node.atom} ${inverseSExpression(node.measurement)} ${node.value})`
       }
-      return `(${node.atom} (timestamp ${inverseSExpression(node.finding)}) (time_ago ${node.duration.value} ${node.duration.units}))`
+      return `(${node.atom} ${inverseSExpression(node.timestamp_of_event)} (time_ago ${node.duration.value} ${node.duration.units}))`
     }
 
     case 'not': {

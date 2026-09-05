@@ -809,12 +809,13 @@ function buildNormalizedSign<T extends typeof WARNING_SIGN_DEFS[number]>(
 ) {
   const modifiers = warning_signs_modifiers[sign.key]
   assert(modifiers, 'No match found, run scripts/data-munging/warning-signs-modifiers.ts')
-  const { predefined_attributes, relevant_qualifiers } = modifiers
+  const { predefined_attributes, relevant_qualifiers, onset_required } = modifiers
   return omitUndefinedProperties({
     ...sign,
     ...overrides,
     predefined_attributes,
     relevant_qualifiers,
+    onset_required,
     clinical_finding_s_expression: normalForm(sign.clinical_finding_s_expression),
     excluding_s_expressions: sign.excluding_s_expressions && sign.excluding_s_expressions.map(normalForm),
     prompt_when_s_expression: sign.prompt_when_s_expression && normalForm(sign.prompt_when_s_expression),

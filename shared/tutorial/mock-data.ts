@@ -2073,6 +2073,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Migraine without aura" "disorder"))',
@@ -2083,6 +2084,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Ophthalmic migraine" "disorder"))',
@@ -2093,6 +2095,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Retinal migraine" "disorder"))',
@@ -2103,6 +2106,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Transformed migraine" "disorder"))',
@@ -2113,6 +2117,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Basilar migraine" "disorder"))',
@@ -2123,6 +2128,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Complicated migraine" "disorder"))',
@@ -2133,6 +2139,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Episodic migraine" "disorder"))',
@@ -2143,6 +2150,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Menstrual migraine" "disorder"))',
@@ -2153,6 +2161,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Migraine variants" "disorder"))',
@@ -2163,6 +2172,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Allergic migraine" "disorder"))',
@@ -2173,6 +2183,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Cluster headache syndrome" "disorder"))',
@@ -2183,6 +2194,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Abdominal migraine" "disorder"))',
@@ -2195,6 +2207,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Migraine with aura" "disorder"))',
@@ -2205,6 +2218,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Hemiplegic migraine" "disorder"))',
@@ -2215,6 +2229,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Migraine aura without headache" "disorder"))',
@@ -2225,6 +2240,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Vestibular migraine" "disorder"))',
@@ -2235,6 +2251,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Refractory migraine" "disorder"))',
@@ -2245,6 +2262,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Lower half migraine" "disorder"))',
@@ -2255,6 +2273,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
     {
       'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Stroke co-occurrent with migraine" "disorder"))',
@@ -2267,6 +2286,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
       'category': 'Search Results' as const,
       'predefined_attributes': [],
       'relevant_qualifiers': [],
+      'onset_required': false,
     },
   ],
   // 'search_terms': {

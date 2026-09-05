@@ -543,7 +543,6 @@ describeParallel('triage/warning_signs', () => {
 
         const $ = await getStep('warning_signs')
         const form_values = getFormValues($)
-        console.log({ form_values })
 
         assertMatches(form_values, {
           'warning_signs': {
@@ -901,6 +900,7 @@ describeParallel('triage/warning_signs', () => {
           priority: 'Very urgent',
           priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
           best_similarity: 1.4,
+          onset_required: false,
           predefined_attributes: [
             {
               s_expression: '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Appendix structure" "body structure"))',

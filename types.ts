@@ -68,6 +68,12 @@ export type NonNullableProperty<T, K extends keyof T> =
     [P in K]-?: NonNullable<T[P]>
   } extends infer O ? { [P in keyof O]: O[P] } : never
 
+export type NullableProperty<T, K extends keyof T> =
+  & Pick<T, Exclude<keyof T, K>>
+  & {
+    [P in K]?: Maybe<T[P]>
+  }
+
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>
   }
@@ -84,6 +90,12 @@ export type NonEmptyArray<T> = [T, ...T[]]
 export type DigitChar = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
 export type UnwrappedGenerator<G> = G extends Generator<infer T, any, any> ? T : never
+
+/** The yielded type of a generator, async generator, or a function returning one. Like `Awaited` for promises. */
+export type Yielded<G> = G extends (...args: any) => infer R ? Yielded<R>
+  : G extends Generator<infer T, any, any> ? T
+  : G extends AsyncGenerator<infer T, any, any> ? T
+  : never
 
 export type NumberIndexable<T> = {
   [index: number]: T
@@ -3217,6 +3229,7 @@ export type FindingRelatedModifiers = {
   relevant_qualifiers: {
     s_expression: string
   }[]
+  onset_required: boolean
 }
 export type TasksDividedByPermission = {
   tasks_i_can_do_without_approval_needed: RenderedManageTaskToBeDone[]
@@ -3330,4 +3343,5 @@ export type FindingModalMetadata = {
     s_expression: string
   }[]
   priority?: Maybe<Priority>
+  onset_required: boolean
 }

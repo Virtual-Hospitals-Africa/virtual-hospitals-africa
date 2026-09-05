@@ -256,7 +256,7 @@ export const ASESSMENT_OPTIONS: {
 }
 // deno-fmt-ignore-end
 
-export const ALL_ASESSMENT_OPTIONS_PARSED = values(ASESSMENT_OPTIONS).flatMap(options => options.map(option => 
+export const ALL_ASSESSMENT_OPTIONS_PARSED = values(ASESSMENT_OPTIONS).flatMap(options => options.map(option => 
   parseWithSchema(option.s_expression, finding)
 ))
 

@@ -1,5 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'
+import { snomed_onset_required } from '../../db/models/snomed_onset_required.ts'
 import { snomed_predefined_attributes } from '../../db/models/snomed_predefined_attributes.ts'
 import { snomed_relevant_qualifiers } from '../../db/models/snomed_relevant_qualifiers.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
@@ -15,9 +16,11 @@ async function warningSignsModifiers() {
     assert(node.specific_snomed_concept)
     const predefined_attributes = await snomed_predefined_attributes.findAll(db, { snomed_concept: node.specific_snomed_concept })
     const relevant_qualifiers = await snomed_relevant_qualifiers.findAll(db, { snomed_concept: node.specific_snomed_concept })
+    const onset_required = await snomed_onset_required.check(db, { snomed_concept: node.specific_snomed_concept })
     return [warning_sign.key, {
       predefined_attributes,
       relevant_qualifiers,
+      onset_required,
     }]
   })
 

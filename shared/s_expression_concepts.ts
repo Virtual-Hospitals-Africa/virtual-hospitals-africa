@@ -56,7 +56,12 @@ export function* allConceptsToLookFor(
     case '=':
     case '>':
     case '>=':
-      if (node.type === 'measurement') yield* allConceptsToLookFor(node.measurement)
+      if (node.type === 'measurement') {
+        yield* allConceptsToLookFor(node.measurement)
+      } else {
+        yield node.timestamp_of_event.event_snomed_concept
+        yield* allConceptsToLookFor(node.timestamp_of_event.subject)
+      }
       break
     case 'or':
     case 'and':

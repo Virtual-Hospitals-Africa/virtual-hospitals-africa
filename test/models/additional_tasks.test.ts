@@ -23,7 +23,7 @@ describeParallel('db/models/additional_tasks.ts', () => {
   afterAll(() => db.destroy())
 
   itParallel(
-    'all of the findings referenced to check_for actually exist',
+    'all of the findings referenced to in check_for actually exist',
     async () => {
       const findings = TASKS.flatMap(({ to_be_done }): Lang['finding' | 'measurement'][] => {
         if (isCheckFor(to_be_done)) return to_be_done.value

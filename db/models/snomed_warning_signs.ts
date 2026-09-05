@@ -4,6 +4,7 @@ import { AgeDetermination } from '../../db.d.ts'
 import { asConceptSExpression } from '../../shared/snomed_concepts.ts'
 import { snomed_concept_finding_like } from './snomed_concept_finding_like.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+import { snomed_onset_required } from './snomed_onset_required.ts'
 import { snomed_predefined_attributes } from './snomed_predefined_attributes.ts'
 import { snomed_relevant_qualifiers } from './snomed_relevant_qualifiers.ts'
 
@@ -43,6 +44,11 @@ export const snomed_warning_signs = base({
             snomed_concept: eb.ref('results.id'),
           }),
         ).as('relevant_qualifiers'),
+        eb.exists(
+          snomed_onset_required.baseQuery(trx, {
+            snomed_concept: eb.ref('results.id'),
+          }),
+        ).$castTo<boolean>().as('onset_required'),
       ])
   },
   formatResult({ id: snomed_concept_id, ...result }): SnomedWarningSignSearchResult {

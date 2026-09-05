@@ -1,13 +1,13 @@
 import { assert } from 'std/assert/assert.ts'
 import type { IdSelection, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
-import type { ExpressionWrapper, SelectQueryBuilder } from 'kysely'
+import { type ExpressionWrapper, type SelectQueryBuilder, sql } from 'kysely'
 import type { DB, Existence } from '../../db.d.ts'
 import isString from '../../util/isString.ts'
 import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
 import { deduplicate, isExpression } from '../helpers.ts'
-import { any_query_single, Lang, MeasurementComparison, QueryableSingleNode } from '../../shared/s_expression_schemas.ts'
+import { any_query_single, EventTimeComparison, Lang, QueryableSingleNode } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
-import { DUE_TO, MEASUREMENT_FINDING, QUALIFIER_VALUE, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
+import { DUE_TO, EVENT, MEASUREMENT_FINDING, QUALIFIER_VALUE, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
@@ -382,46 +382,101 @@ function evaluation(
       ))
 }
 
-export const EXPRESSION_BUILDERS = {
-  finding(
-    trx,
-    { patient_id, patient_encounter_id, procedure_id },
-    {
-      root_snomed_concept,
-      value_snomed_concept,
-      specific_snomed_concept,
-      qualifiers,
-      attributes,
-      excluding,
-      exact,
-      existence,
-      history,
-    },
-  ) {
-    return baseQuery(trx, {
-      patient_id,
-      root_snomed_concept,
-      specific_snomed_concept,
-      value_snomed_concept,
-      qualifiers,
-      attributes,
-      excluding,
-      exact,
-      existence,
-      // For historical findings, look for findings at any point in the patient's history
-      patient_encounter_id,
-      history,
-    })
-      .innerJoin(
-        'patient_findings',
-        'patient_records_aggregated.id',
-        'patient_findings.id',
-      )
-      .$if(
-        !!procedure_id,
-        (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
-      )
+function finding(
+  trx: TrxOrDbOrQueryCreator,
+  { patient_id, patient_encounter_id, procedure_id }: PatientIdentifiers,
+  {
+    root_snomed_concept,
+    value_snomed_concept,
+    specific_snomed_concept,
+    qualifiers,
+    attributes,
+    excluding,
+    exact,
+    existence,
+    history,
+  }: Lang['finding'],
+) {
+  return baseQuery(trx, {
+    patient_id,
+    root_snomed_concept,
+    specific_snomed_concept,
+    value_snomed_concept,
+    qualifiers,
+    attributes,
+    excluding,
+    exact,
+    existence,
+    // For historical findings, look for findings at any point in the patient's history
+    patient_encounter_id,
+    history,
+  })
+    .innerJoin(
+      'patient_findings',
+      'patient_records_aggregated.id',
+      'patient_findings.id',
+    )
+    .$if(
+      !!procedure_id,
+      (qb) => qb.where('patient_findings.procedure_id', '=', procedure_id!),
+    )
+}
+
+function attribute(
+  trx: TrxOrDbOrQueryCreator,
+  { patient_id, patient_encounter_id }: PatientIdentifiers,
+  { root_snomed_concept, specific_snomed_concept, value }: Omit<Lang['attribute'], 'value'> & {
+    value: Lang['attribute']['value'] | {
+      atom: 'event'
+      datetime?: never
+    }
   },
+) {
+  const matches_attr = baseQuery(trx, {
+    patient_id,
+    patient_encounter_id,
+    root_snomed_concept,
+    specific_snomed_concept,
+    value_snomed_concept: value.atom === 'event' ? undefined : value,
+    // TODO revisit this, but I think in practice since these are qualifying an existing record
+    // We don't want to exclude historical qualifiers for new records ()
+    history: true,
+  })
+    .innerJoin(
+      'patient_record_qualifiers',
+      'patient_records_aggregated.id',
+      'patient_record_qualifiers.id',
+    )
+
+  if (value?.atom !== 'event') {
+    return matches_attr
+  }
+
+  // Without a datetime we only require that the event attribute exists. Callers
+  // wanting to constrain the datetime (the comparator builders below) join
+  // patient_events themselves; joining it here too would name the table twice.
+  return matches_attr.$if(
+    !!value.datetime,
+    (qb) =>
+      qb
+        .innerJoin(
+          'patient_events',
+          'patient_events.id',
+          'patient_record_qualifiers.id',
+        )
+        .where('patient_events.datetime', '=', new Date(value.datetime!)),
+  )
+}
+
+// The cutoff datetime that a time_ago duration refers to, evaluated at query
+// time. Duration units are already plural lowercase, so they drop straight
+// into a Postgres interval.
+function timeAgoCutoff({ value, units }: EventTimeComparison['duration']) {
+  return sql<Date>`now() - ${`${value} ${units}`}::interval`
+}
+
+export const EXPRESSION_BUILDERS = {
+  finding,
   procedure(
     trx,
     { patient_id, patient_encounter_id },
@@ -500,39 +555,7 @@ export const EXPRESSION_BUILDERS = {
         'patient_record_qualifiers.id',
       )
   },
-  attribute(
-    trx,
-    { patient_id, patient_encounter_id },
-    { root_snomed_concept, specific_snomed_concept, value },
-  ) {
-    const matches_attr = baseQuery(trx, {
-      patient_id,
-      patient_encounter_id,
-      root_snomed_concept,
-      specific_snomed_concept,
-      value_snomed_concept: value.atom === 'event' ? undefined : value,
-      // TODO revisit this, but I think in practice since these are qualifying an existing record
-      // We don't want to exclude historical qualifiers for new records ()
-      history: true,
-    })
-      .innerJoin(
-        'patient_record_qualifiers',
-        'patient_records_aggregated.id',
-        'patient_record_qualifiers.id',
-      )
-
-    if (value.atom !== 'event') {
-      return matches_attr
-    }
-
-    return matches_attr
-      .innerJoin(
-        'patient_events',
-        'patient_events.id',
-        'patient_record_qualifiers.id',
-      )
-      .where('patient_events.datetime', '=', new Date(value.datetime))
-  },
+  attribute,
   // not(trx, { patient_id, patient_encounter_id }, { expression }) {
   //   return baseQuery(trx, {
   //     patient_id,
@@ -612,62 +635,256 @@ export const EXPRESSION_BUILDERS = {
       )
   },
   '>'(trx, patient, node) {
-    const { measurement: m, value } = node as MeasurementComparison
-    return measurement(trx, patient, m)
+    if (node.type === 'measurement') {
+      const { measurement: m, value } = node
+      return measurement(trx, patient, m)
+        .where((eb) =>
+          eb.or([
+            eb.and([
+              eb('patient_measurements.comparator', '=', '='),
+              eb('patient_measurements.value', '>', String(value)),
+            ]),
+            eb.and([
+              eb('patient_measurements.comparator', '=', '>'),
+              eb('patient_measurements.value', '>=', String(value)),
+            ]),
+            eb.and([
+              eb('patient_measurements.comparator', '=', '>='),
+              eb('patient_measurements.value', '>', String(value)),
+            ]),
+          ])
+        )
+    }
+
+    // patient_events.comparator qualifies the stored datetime in time-ago
+    // space: ('>=', t) records "the event happened at or before t", i.e. at
+    // least that long ago at entry. A duration comparison therefore inverts on
+    // datetime — a duration '>' the given time_ago means the event datetime is
+    // before the cutoff — and a stored row only matches when its own range
+    // guarantees the queried one.
+    const cutoff = timeAgoCutoff(node.duration)
+
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
+
+    const attribute_query = attribute(trx, patient, {
+      atom: 'attribute',
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: EVENT.name,
+        category: EVENT.category,
+      },
+      specific_snomed_concept: node.timestamp_of_event.event_snomed_concept,
+      value: { atom: 'event' },
+    })
+      .innerJoin(
+        'patient_events',
+        'patient_events.id',
+        'patient_record_qualifiers.id',
+      )
+      .clearSelect()
       .where((eb) =>
         eb.or([
           eb.and([
-            eb('patient_measurements.comparator', '=', '='),
-            eb('patient_measurements.value', '>', String(value)),
+            eb('patient_events.comparator', '=', '='),
+            eb('patient_events.datetime', '<', cutoff),
           ]),
           eb.and([
-            eb('patient_measurements.comparator', '=', '>'),
-            eb('patient_measurements.value', '>=', String(value)),
+            eb('patient_events.comparator', '=', '>'),
+            eb('patient_events.datetime', '<=', cutoff),
           ]),
           eb.and([
-            eb('patient_measurements.comparator', '=', '>='),
-            eb('patient_measurements.value', '>', String(value)),
+            eb('patient_events.comparator', '=', '>='),
+            eb('patient_events.datetime', '<', cutoff),
           ]),
         ])
       )
+      .select('patient_record_qualifiers.qualifies_record_id')
+
+    return qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      attribute_query,
+    )
   },
   '<'(trx, patient, node) {
-    const { measurement: m, value } = node as MeasurementComparison
-    return measurement(trx, patient, m)
+    if (node.type === 'measurement') {
+      const { measurement: m, value } = node
+      return measurement(trx, patient, m)
+        .where((eb) =>
+          eb.or([
+            eb.and([
+              eb('patient_measurements.comparator', '=', '='),
+              eb('patient_measurements.value', '<', String(value)),
+            ]),
+            eb.and([
+              eb('patient_measurements.comparator', '=', '<'),
+              eb('patient_measurements.value', '<=', String(value)),
+            ]),
+            eb.and([
+              eb('patient_measurements.comparator', '=', '<='),
+              eb('patient_measurements.value', '<', String(value)),
+            ]),
+          ])
+        )
+    }
+
+    const cutoff = timeAgoCutoff(node.duration)
+
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
+
+    const attribute_query = attribute(trx, patient, {
+      atom: 'attribute',
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: EVENT.name,
+        category: EVENT.category,
+      },
+      specific_snomed_concept: node.timestamp_of_event.event_snomed_concept,
+      value: { atom: 'event' },
+    })
+      .innerJoin(
+        'patient_events',
+        'patient_events.id',
+        'patient_record_qualifiers.id',
+      )
+      .clearSelect()
       .where((eb) =>
         eb.or([
           eb.and([
-            eb('patient_measurements.comparator', '=', '='),
-            eb('patient_measurements.value', '<', String(value)),
+            eb('patient_events.comparator', '=', '='),
+            eb('patient_events.datetime', '>', cutoff),
           ]),
           eb.and([
-            eb('patient_measurements.comparator', '=', '<'),
-            eb('patient_measurements.value', '<=', String(value)),
+            eb('patient_events.comparator', '=', '<'),
+            eb('patient_events.datetime', '>=', cutoff),
           ]),
           eb.and([
-            eb('patient_measurements.comparator', '=', '<='),
-            eb('patient_measurements.value', '<', String(value)),
+            eb('patient_events.comparator', '=', '<='),
+            eb('patient_events.datetime', '>', cutoff),
           ]),
         ])
       )
+      .select('patient_record_qualifiers.qualifies_record_id')
+
+    return qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      attribute_query,
+    )
   },
   '>='(trx, patient, node) {
-    const { measurement: m, value } = node as MeasurementComparison
-    return measurement(trx, patient, m)
-      .where('patient_measurements.comparator', 'in', ['=', '>', '>='])
-      .where('patient_measurements.value', '>=', String(value))
+    if (node.type === 'measurement') {
+      const { measurement: m, value } = node
+      return measurement(trx, patient, m)
+        .where('patient_measurements.comparator', 'in', ['=', '>', '>='])
+        .where('patient_measurements.value', '>=', String(value))
+    }
+
+    const cutoff = timeAgoCutoff(node.duration)
+
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
+
+    const attribute_query = attribute(trx, patient, {
+      atom: 'attribute',
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: EVENT.name,
+        category: EVENT.category,
+      },
+      specific_snomed_concept: node.timestamp_of_event.event_snomed_concept,
+      value: { atom: 'event' },
+    })
+      .innerJoin(
+        'patient_events',
+        'patient_events.id',
+        'patient_record_qualifiers.id',
+      )
+      .clearSelect()
+      .where('patient_events.comparator', 'in', ['=', '>', '>='])
+      .where('patient_events.datetime', '<=', cutoff)
+      .select('patient_record_qualifiers.qualifies_record_id')
+
+    return qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      attribute_query,
+    )
   },
   '<='(trx, patient, node) {
-    const { measurement: m, value } = node as MeasurementComparison
-    return measurement(trx, patient, m)
-      .where('patient_measurements.comparator', 'in', ['=', '<', '<='])
-      .where('patient_measurements.value', '<=', String(value))
+    if (node.type === 'measurement') {
+      const { measurement: m, value } = node
+      return measurement(trx, patient, m)
+        .where('patient_measurements.comparator', 'in', ['=', '<', '<='])
+        .where('patient_measurements.value', '<=', String(value))
+    }
+
+    const cutoff = timeAgoCutoff(node.duration)
+
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
+
+    const attribute_query = attribute(trx, patient, {
+      atom: 'attribute',
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: EVENT.name,
+        category: EVENT.category,
+      },
+      specific_snomed_concept: node.timestamp_of_event.event_snomed_concept,
+      value: { atom: 'event' },
+    })
+      .innerJoin(
+        'patient_events',
+        'patient_events.id',
+        'patient_record_qualifiers.id',
+      )
+      .clearSelect()
+      .where('patient_events.comparator', 'in', ['=', '<', '<='])
+      .where('patient_events.datetime', '>=', cutoff)
+      .select('patient_record_qualifiers.qualifies_record_id')
+
+    return qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      attribute_query,
+    )
   },
   '='(trx, patient, node) {
-    const { measurement: m, value } = node as MeasurementComparison
-    return measurement(trx, patient, m)
-      .where('patient_measurements.comparator', '=', '=')
-      .where('patient_measurements.value', '=', String(value))
+    if (node.type === 'measurement') {
+      const { measurement: m, value } = node
+      return measurement(trx, patient, m)
+        .where('patient_measurements.comparator', '=', '=')
+        .where('patient_measurements.value', '=', String(value))
+    }
+
+    const cutoff = timeAgoCutoff(node.duration)
+
+    const qb = buildExpression(trx, patient, node.timestamp_of_event.subject)
+
+    const attribute_query = attribute(trx, patient, {
+      atom: 'attribute',
+      root_snomed_concept: {
+        atom: 'snomed_concept' as const,
+        name: EVENT.name,
+        category: EVENT.category,
+      },
+      specific_snomed_concept: node.timestamp_of_event.event_snomed_concept,
+      value: { atom: 'event' },
+    })
+      .innerJoin(
+        'patient_events',
+        'patient_events.id',
+        'patient_record_qualifiers.id',
+      )
+      .clearSelect()
+      .where('patient_events.comparator', '=', '=')
+      .where('patient_events.datetime', '=', cutoff)
+      .select('patient_record_qualifiers.qualifies_record_id')
+
+    return qb.where(
+      'patient_records_aggregated.id',
+      'in',
+      attribute_query,
+    )
   },
   // any2(trx, patient, { expressions }) {
   //   return baseQuery(trx, patient)

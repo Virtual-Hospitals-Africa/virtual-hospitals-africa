@@ -6,11 +6,8 @@
   (check_for
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
     (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
-    (<= (timestamp (clinical_finding (snomed_concept "Constipation" "finding")))
-        (time_ago 24 hours))
-    (<= (timestamp (clinical_finding (snomed_concept "Unable to break wind" "finding")))
-        (time_ago 24 hours))
-    (clinical_finding (snomed_concept "Acute constipation" "finding"))
+    (clinical_finding (snomed_concept "Constipation" "finding"))
+    (clinical_finding (snomed_concept "Unable to break wind" "finding"))
   )
 )
 
@@ -28,15 +25,19 @@
 )
 ;; Page 48 - Constipation: Urgent for bowel obstruction signs
 (system_priority_evaluation
-  "Urgent: constipation with bowel obstruction signs"
+  "Urgent: constipation lasting over 24 hours with abdominal pain"
   adult
   Urgent
   (and
-    (clinical_finding (snomed_concept "Acute constipation" "finding"))
-    (clinical_finding (snomed_concept "Unable to break wind" "finding"))
     (or
-      (clinical_finding (snomed_concept "Abdominal pain" "finding"))
-      (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
+      (>= (onset (active_condition (snomed_concept "Constipation" "finding")))
+          (time_ago 24 hours))
+      (>= (onset (active_condition (snomed_concept "Unable to break wind" "finding")))
+          (time_ago 24 hours))
+    )
+    (or
+      (active_condition (snomed_concept "Abdominal pain" "finding"))
+      (active_condition (snomed_concept "Distension of abdomen" "finding"))
     )
   )
 )

@@ -15,6 +15,8 @@ import compact from '../../util/compact.ts'
 import { events } from './events.ts'
 import isString from '../../util/isString.ts'
 
+type DueToMatchType = 'finding' | 'measurement' | 'finding_site' | 'event_time_comparison'
+
 export const due_to = base({
   top_level_table: 'due_to',
   baseQuery(trx: TrxOrDbOrQueryCreator, {
@@ -51,7 +53,7 @@ export const due_to = base({
         ])
       )
       .select([
-        literalString('finding' as 'finding' | 'measurement' | 'finding_site').as('type'),
+        literalString('finding' as DueToMatchType).as('type'),
         'due_to.id as due_to_id',
         'patient_records.id as patient_record_id',
         's_expression',
@@ -103,7 +105,7 @@ export const due_to = base({
         ])
       )
       .select([
-        literalString('finding_site' as 'finding' | 'measurement' | 'finding_site').as('type'),
+        literalString('finding_site' as DueToMatchType).as('type'),
         'due_to.id as due_to_id',
         'patient_records.id as patient_record_id',
         's_expression',
@@ -138,17 +140,47 @@ export const due_to = base({
         ])
       )
       .select([
-        literalString('measurement' as 'finding' | 'measurement' | 'finding_site').as('type'),
+        literalString('measurement' as DueToMatchType).as('type'),
         'due_to.id as due_to_id',
         'patient_records.id as patient_record_id',
         's_expression',
         literalBoolean(false).as('is_somehow_qualified'),
       ])
 
+    // Candidate match on the subject concept only. The comparator/duration are
+    // evaluated by re-running the s_expression through buildExpression (the
+    // is_somehow_qualified path), which encodes the time-ago guarantee logic.
+    const by_event_time_comparisons_query = trx.selectFrom('due_to_event_time_comparisons')
+      .innerJoin('due_to', 'due_to.id', 'due_to_event_time_comparisons.id')
+      .innerJoin(
+        'snomed_concept_active_descendants_realized as specific_descendants',
+        'specific_descendants.ancestor_id',
+        'due_to_event_time_comparisons.specific_snomed_concept_id',
+      )
+      .innerJoin('patient_records', 'patient_records.specific_snomed_concept_id', 'specific_descendants.descendant_id')
+      .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
+      .where('due_to.age_determinations', '@>', sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`)
+      .where('patient_records.id', 'in', positive_record_ids)
+      // root is null when the subject was an active_condition
+      .where((eb) =>
+        eb.or([
+          eb('due_to_event_time_comparisons.root_snomed_concept_id', 'is', null),
+          eb('patient_records.root_snomed_concept_id', '=', eb.ref('due_to_event_time_comparisons.root_snomed_concept_id')),
+        ])
+      )
+      .select([
+        literalString('event_time_comparison' as DueToMatchType).as('type'),
+        'due_to.id as due_to_id',
+        'patient_records.id as patient_record_id',
+        's_expression',
+        literalBoolean(true).as('is_somehow_qualified'),
+      ])
+
     return trx.with('matching_due_tos', () =>
       by_findings_query
         .unionAll(by_finding_sites_query)
-        .unionAll(by_measurements_query)).selectFrom('matching_due_tos')
+        .unionAll(by_measurements_query)
+        .unionAll(by_event_time_comparisons_query)).selectFrom('matching_due_tos')
       .selectAll('matching_due_tos')
   },
 
@@ -170,7 +202,7 @@ export const due_to = base({
     const due_to_matching_records: {
       s_expression: string
       is_somehow_qualified: boolean
-      type: 'finding' | 'measurement' | 'finding_site'
+      type: DueToMatchType
       patient_record_id: string
       due_to_id: string
     }[] = await due_to.findAll(trx, {

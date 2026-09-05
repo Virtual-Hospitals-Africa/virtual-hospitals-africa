@@ -83,6 +83,7 @@
     "npm:pdfjs-dist@4.10.38": "4.10.38",
     "npm:pg-cursor@2.15.3": "2.15.3_pg@8.16.0",
     "npm:pg@8.16.0": "8.16.0",
+    "npm:postgres-interval@^4.1.0": "4.1.0",
     "npm:preact-render-to-string@^6.6.3": "6.6.7_preact@10.29.1",
     "npm:preact@10.29.1": "10.29.1",
     "npm:preact@^10.28.2": "10.29.1",
@@ -2694,7 +2695,7 @@
         "postgres-array",
         "postgres-bytea",
         "postgres-date",
-        "postgres-interval"
+        "postgres-interval@1.2.0"
       ]
     },
     "pg@8.16.0": {
@@ -2754,6 +2755,9 @@
       "dependencies": [
         "xtend"
       ]
+    },
+    "postgres-interval@4.1.0": {
+      "integrity": "sha512-nJLACcOHi2iyRuMJeW6CuIA0Dc0i1YEpRr26XDyHAfxPjYUJOFxwZjmOc5oFFctTTh/OlRAMlnlXEJvr170fJg=="
     },
     "preact-render-to-string@6.6.7_preact@10.29.1": {
       "integrity": "sha512-3XdbsX3+vn9dQW+jJI/FsI9rlkgl6dbeUpqLsChak6jp3j3auFqBCkno7VChbMFs5Q8ylBj6DrUkKRwtVN3nvw==",
@@ -3510,6 +3514,7 @@
       "npm:pdfjs-dist@4.10.38",
       "npm:pg-cursor@2.15.3",
       "npm:pg@8.16.0",
+      "npm:postgres-interval@^4.1.0",
       "npm:preact@10.29.1",
       "npm:puppeteer@24.40.0",
       "npm:react-sparklines@1.7.0",

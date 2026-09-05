@@ -328,6 +328,7 @@ function* signsMatchedWithPriorRecords(
       },
       predefined_attributes: finding.predefined_attributes,
       relevant_qualifiers: finding.relevant_qualifiers,
+      onset_required: finding.onset_required,
       category: 'Prior record' as const,
     }
   }

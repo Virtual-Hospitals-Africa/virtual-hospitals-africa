@@ -3,6 +3,7 @@ import { TrxOrDbOrQueryCreator } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_findings, PatientFindingsSearch } from './patient_findings.ts'
+import { snomed_onset_required } from './snomed_onset_required.ts'
 import { snomed_predefined_attributes } from './snomed_predefined_attributes.ts'
 import { snomed_relevant_qualifiers } from './snomed_relevant_qualifiers.ts'
 
@@ -24,6 +25,11 @@ export const patient_findings_with_modifiers = base({
             snomed_concept: eb.ref('patient_records_aggregated.specific_snomed_concept_id'),
           }),
         ).as('relevant_qualifiers'),
+        eb.exists(
+          snomed_onset_required.baseQuery(trx, {
+            snomed_concept: eb.ref('patient_records_aggregated.specific_snomed_concept_id'),
+          }),
+        ).$castTo<boolean>().as('onset_required'),
       ])
   },
   formatResult: formatRecord,

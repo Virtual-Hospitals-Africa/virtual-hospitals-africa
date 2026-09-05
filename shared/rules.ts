@@ -4,7 +4,7 @@ import { AgeDetermination, Comparator } from '../db.d.ts'
 import { diagnosisToEvaluation } from './diagnosis.ts'
 import { activeConditionAsOr } from './s_expression_active_condition_as_or.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
-import { Lang, QueryableEvidenceNode } from './s_expression_schemas.ts'
+import { EventTimeComparison, Lang, QueryableEvidenceNode } from './s_expression_schemas.ts'
 import findMatching from '../util/findMatching.ts'
 import memoize from '../util/memoize.ts'
 import { SYSTEM_PRIORITY_EVALUATIONS_PARSED } from './system_priority_evaluations.ts'
@@ -39,6 +39,18 @@ export type DueToInsert =
     value: string
     comparator: Comparator
     history: false
+  }
+  | {
+    type: 'event_time_comparison'
+    s_expression: string
+    event_snomed_concept: Lang['snomed_concept']
+    root_snomed_concept: null | Lang['snomed_concept']
+    specific_snomed_concept: Lang['snomed_concept']
+    is_somehow_qualified?: never
+    always_applies_if_present: boolean
+    comparator: Comparator
+    duration: EventTimeComparison['duration']
+    history: boolean
   }
 
 export function dueToInsert(due_to: QueryableEvidenceNode): DueToInsert[] {
@@ -100,15 +112,31 @@ export function dueToInsert(due_to: QueryableEvidenceNode): DueToInsert[] {
     case '=':
     case '>':
     case '>=': {
-      assert(due_to.type === 'measurement', 'Only measurement comparators supported in due_to')
+      if (due_to.type === 'measurement') {
+        return [{
+          type: 'measurement',
+          s_expression: inverseSExpression(due_to),
+          specific_snomed_concept: due_to.measurement.snomed_concept,
+          comparator: due_to.atom,
+          value: due_to.value.toString(),
+          always_applies_if_present: true,
+          history: false,
+        }]
+      }
+
+      assert(due_to.type === 'event_time_comparison')
+      assert(due_to.atom !== '=', `An event time comparison in a due_to must constrain a range, not an exact time\n${inverseSExpression(due_to)}`)
+      const { subject, event_snomed_concept } = due_to.timestamp_of_event
       return [{
-        type: 'measurement',
+        type: 'event_time_comparison',
         s_expression: inverseSExpression(due_to),
-        specific_snomed_concept: due_to.measurement.snomed_concept,
+        event_snomed_concept,
+        ...(subject.atom === 'active_condition'
+          ? { root_snomed_concept: null, specific_snomed_concept: subject.snomed_concept, history: true }
+          : { root_snomed_concept: subject.root_snomed_concept, specific_snomed_concept: subject.specific_snomed_concept, history: subject.history }),
         comparator: due_to.atom,
-        value: due_to.value.toString(),
+        duration: due_to.duration,
         always_applies_if_present: true,
-        history: false,
       }]
     }
     case 'or': {

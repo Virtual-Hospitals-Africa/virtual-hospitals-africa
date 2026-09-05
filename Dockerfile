@@ -1,4 +1,4 @@
-FROM denoland/deno:2.7.5 AS build
+FROM denoland/deno:2.8.0 AS build
 WORKDIR /app
 
 # Workaround for deno loader 0.3.10 failed reading lockfile during vite build
@@ -16,7 +16,7 @@ COPY ./ ./
 RUN deno task build
 
 
-FROM denoland/deno:2.7.5
+FROM denoland/deno:2.8.0
 WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client && rm -rf /var/lib/apt/lists/*
 RUN touch .env

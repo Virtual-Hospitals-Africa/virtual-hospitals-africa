@@ -21,6 +21,7 @@ import {
   NO_QUALIFIER,
   PATIENT_MANAGEMENT_PROCEDURE,
   PROCEDURE,
+  TIME_OF_ONSET,
 } from './snomed_concepts.ts'
 
 export type Comparisons = '>' | '<' | '>=' | '<=' | '='
@@ -56,9 +57,13 @@ type NonQueryableBaseLang = {
   }
 
   time_ago: Duration
-  timestamp: {
-    finding: InsertableFindingBase
+  // Only ever appears inside a comparison, never as a standalone query
+  timestamp_of_event: {
+    atom: 'timestamp_of_event'
+    event_snomed_concept: Lang['snomed_concept']
+    subject: (InsertableFinding & { atom: 'finding' }) | Lang['active_condition']
   }
+
   // Represents a task rule definition. Its procedure is what is to be done
   task: {
     description: string
@@ -166,15 +171,15 @@ type QueryableSingleBaseLang =
         value: Decimal
       }
       | {
-        type: 'finding_recency'
-        finding: InsertableFindingBase
+        type: 'event_time_comparison'
+        timestamp_of_event: Lang['timestamp_of_event']
         duration: Duration
       }
   }
 
 export type MeasurementComparison = Lang[Comparisons] & { type: 'measurement' }
 
-export type FindingRecencyComparison = Lang[Comparisons] & { type: 'finding_recency' }
+export type EventTimeComparison = Lang[Comparisons] & { type: 'event_time_comparison' }
 
 type BaseLang = NonQueryableBaseLang & QueryableSingleBaseLang & QueryableMultiBaseLang
 
@@ -192,6 +197,17 @@ export type QueryableEvidenceNode = QueryableSingleNode | Lang[keyof QueryableMu
 
 export type InsertableFindingBase = NonNullableProperty<Lang['finding'], 'root_snomed_concept' | 'specific_snomed_concept'> & {
   existence: Existence
+}
+
+// A timestamp_of_event whose subject can be inserted as a finding, as when a
+// check_for is answered. Query contexts (due_to) may instead use an
+// active_condition subject, which is only ever matched, never inserted.
+export type InsertableTimestampOfEvent = Lang['timestamp_of_event'] & {
+  subject: InsertableFinding & { atom: 'finding' }
+}
+
+export type InsertableEventTimeComparison = EventTimeComparison & {
+  timestamp_of_event: InsertableTimestampOfEvent
 }
 
 export type MatchingFinding = Omit<InsertableFindingBase, 'existence'> & { existence: 'Any' }
@@ -466,13 +482,6 @@ export const no_finding: z.ZodType<Lang['finding']> = z.lazy(() =>
   })
 ).describe('no_finding')
 
-export const timestamp: z.ZodType<Lang['timestamp']> = z.lazy(() =>
-  z.object({
-    atom: z.literal('timestamp'),
-    args: z.tuple([insertable_finding_base]),
-  }).transform(({ atom, args: [finding] }) => ({ atom, finding }))
-).describe('timestamp')
-
 const time_unit = z.enum([
   'seconds',
   'minutes',
@@ -696,6 +705,49 @@ export const event: z.ZodType<Lang['attribute']> = z.lazy(() =>
   }))
 ).describe('event')
 
+const timestamp_of_event_subject = z.lazy(() => insertable_finding_base.or(active_condition))
+
+export const timestamp_of_event_base: z.ZodType<Lang['timestamp_of_event']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('timestamp_of_event'),
+    args: z.tuple([snomed_concept, timestamp_of_event_subject]),
+  }).transform(({ args: [event_snomed_concept, subject] }) => ({
+    atom: 'timestamp_of_event' as const,
+    event_snomed_concept,
+    subject,
+  }))
+).describe('timestamp_of_event_base')
+
+export const onset: z.ZodType<Lang['timestamp_of_event']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('onset'),
+    args: z.tuple([timestamp_of_event_subject]),
+  }).transform(({ args: [subject] }) => ({
+    atom: 'timestamp_of_event' as const,
+    event_snomed_concept: {
+      atom: 'snomed_concept' as const,
+      name: TIME_OF_ONSET.name,
+      category: TIME_OF_ONSET.category,
+    },
+    subject,
+  }))
+).describe('onset')
+
+export const timestamp_of_event: z.ZodType<Lang['timestamp_of_event']> = z.lazy(() => z.union([timestamp_of_event_base, onset])).describe('timestamp_of_event')
+
+export const insertable_timestamp_of_event: z.ZodType<InsertableTimestampOfEvent> = z.lazy(() =>
+  timestamp_of_event
+    .refine(
+      (node) => node.subject.atom === 'finding',
+      {
+        message: 'the subject of an insertable timestamp_of_event must be a finding, not an active_condition',
+        path: ['args'],
+      },
+    )
+    // .refine doesn't do type winnowing
+    .transform((node) => node as InsertableTimestampOfEvent)
+).describe('insertable_timestamp_of_event')
+
 export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() => z.union([attribute_base, finding_site, event])).describe('attribute')
 
 export const measurement: z.ZodType<Lang['measurement']> = z.lazy(() =>
@@ -826,7 +878,7 @@ export const procedure_base: z.ZodType<Lang['procedure']> = z.lazy(() =>
   }))
 ).describe('procedure_base')
 
-const can_check_for = z.lazy(() => insertable_finding_base.or(finding_recency_comparator))
+const can_check_for = z.lazy(() => insertable_finding_base)
 
 export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
   () =>
@@ -846,13 +898,10 @@ export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
       qualifiers: [],
       attributes: [],
       history: false,
-      value: check_for.map((node) => {
-        const inner_finding: InsertableFindingBase = node.atom === 'finding' ? node : node.finding
-        return {
-          ...inner_finding,
-          existence: 'Any' as const,
-        }
-      }),
+      value: check_for.map((node) => ({
+        ...node,
+        existence: 'Any' as const,
+      })),
     })),
 ).describe('check_for')
 
@@ -974,19 +1023,31 @@ export const measurement_comparator: z.ZodType<MeasurementComparison> = z.lazy((
   }))
 ).describe('measurement_comparator')
 
-export const finding_recency_comparator: z.ZodType<Lang[Comparisons] & { type: 'finding_recency' }> = z.lazy(() =>
+export const event_time_comparison: z.ZodType<Lang[Comparisons] & { type: 'event_time_comparison' }> = z.lazy(() =>
   z.object({
     atom: comparator_operator,
-    args: z.tuple([timestamp, time_ago]),
-  }).transform(({ atom, args: [{ finding }, duration] }) => ({
+    args: z.tuple([timestamp_of_event, time_ago]),
+  }).transform(({ atom, args: [timestamp_of_event, duration] }) => ({
     atom,
-    type: 'finding_recency' as const,
-    finding,
+    type: 'event_time_comparison' as const,
+    timestamp_of_event,
     duration,
   }))
-).describe('time_comparator')
+).describe('event_time_comparison')
 
-// export const comparator = measurement_comparator.or(finding_recency_comparator)
+export const insertable_event_time_comparison: z.ZodType<InsertableEventTimeComparison> = z.lazy(() =>
+  z.object({
+    atom: comparator_operator,
+    args: z.tuple([insertable_timestamp_of_event, time_ago]),
+  }).transform(({ atom, args: [timestamp_of_event, duration] }) => ({
+    atom,
+    type: 'event_time_comparison' as const,
+    timestamp_of_event,
+    duration,
+  }))
+).describe('insertable_event_time_comparison')
+
+export const comparator = z.lazy(() => measurement_comparator.or(event_time_comparison)).describe('comparator')
 
 export const history_finding: z.ZodType<Lang['finding'] & { history: true }> = z.lazy(() =>
   z.object({
@@ -1164,6 +1225,7 @@ export const any_query_single: z.ZodType<QueryableSingleNode> = z.lazy(() =>
     measurement,
     active_condition,
     measurement_comparator,
+    event_time_comparison,
     qualifier,
     exact,
   ])
@@ -1179,6 +1241,7 @@ export const any_query_evidence: z.ZodType<QueryableEvidenceNode> = z.lazy(() =>
     measurement,
     active_condition,
     measurement_comparator,
+    event_time_comparison,
     qualifier,
     exact,
     or,

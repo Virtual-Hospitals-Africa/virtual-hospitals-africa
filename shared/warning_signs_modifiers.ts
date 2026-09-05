@@ -13,6 +13,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Cardiac arrest': {
     'predefined_attributes': [
@@ -21,6 +22,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Seizure': {
     'predefined_attributes': [
@@ -29,6 +31,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Burn Facial': {
     'predefined_attributes': [
@@ -50,6 +53,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Burn Inhalation': {
     'predefined_attributes': [
@@ -64,6 +68,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Acute shortness of breath': {
     'predefined_attributes': [
@@ -79,6 +84,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Sudden" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Chest pain': {
     'predefined_attributes': [
@@ -94,6 +100,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Unilateral" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Seizure - post ictal': {
     'predefined_attributes': [
@@ -105,6 +112,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Focal neurology': {
     'predefined_attributes': [
@@ -119,6 +127,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Burn Chemical': {
     'predefined_attributes': [
@@ -137,10 +146,12 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Poisoning': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Aggression': {
     'predefined_attributes': [
@@ -149,10 +160,12 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Dislocation of larger joint': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Severe limb ischemia': {
     'predefined_attributes': [
@@ -165,6 +178,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Known present" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Burn Circumferential': {
     'predefined_attributes': [
@@ -183,6 +197,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Vomiting fresh blood': {
     'predefined_attributes': [
@@ -204,6 +219,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Coughing blood': {
     'predefined_attributes': [
@@ -225,6 +241,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Stabbed neck': {
     'predefined_attributes': [
@@ -243,6 +260,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Eye injury': {
     'predefined_attributes': [
@@ -251,6 +269,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Burn Over 20%': {
     'predefined_attributes': [
@@ -272,6 +291,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'High energy transfer': {
     'predefined_attributes': [
@@ -287,6 +307,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Haemorrhage Uncontrolled': {
     'predefined_attributes': [
@@ -302,10 +323,12 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Compound Fracture': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Burn Moderate severity': {
     'predefined_attributes': [
@@ -324,6 +347,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Pregnancy and abdominal trauma': {
     'predefined_attributes': [
@@ -336,6 +360,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Pregnancy and abdominal pain': {
     'predefined_attributes': [
@@ -345,6 +370,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Persistent vomiting': {
     'predefined_attributes': [
@@ -356,6 +382,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Dislocation of finger': {
     'predefined_attributes': [
@@ -367,6 +394,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Dislocation of toe joint': {
     'predefined_attributes': [
@@ -378,6 +406,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Burn Other': {
     'predefined_attributes': [
@@ -396,6 +425,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Haemorrhage Controlled': {
     'predefined_attributes': [
@@ -411,6 +441,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Closed fracture': {
     'predefined_attributes': [
@@ -422,6 +453,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Abdominal pain': {
     'predefined_attributes': [
@@ -431,6 +463,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Not breathing or Reported apnoea': {
     'predefined_attributes': [
@@ -445,6 +478,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Obstructed breathing': {
     'predefined_attributes': [
@@ -456,6 +490,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Central cyanosis (SPO2 less than 92%)': {
     'predefined_attributes': [
@@ -476,6 +511,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Respiratory distress (Severe)': {
     'predefined_attributes': [
@@ -490,6 +526,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Cold Hands': {
     'predefined_attributes': [
@@ -501,6 +538,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Pulse weak & fast': {
     'predefined_attributes': [
@@ -518,6 +556,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Capillary refill time (3 sec or more)': {
     'predefined_attributes': [
@@ -538,6 +577,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Lethargic': {
     'predefined_attributes': [
@@ -546,6 +586,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Uncontrolled bleeding (not nose bleed)': {
     'predefined_attributes': [
@@ -561,6 +602,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Convulsing or Immediately Post-Ictal not alert': {
     'predefined_attributes': [
@@ -569,10 +611,12 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'AVPU: responds only To Pain (P)': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'AVPU: Unresponsive (U)': {
     'predefined_attributes': [
@@ -581,6 +625,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Confusion': {
     'predefined_attributes': [
@@ -595,6 +640,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Diarrhoea or Vomiting': {
     'predefined_attributes': [
@@ -619,6 +665,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Watery" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Lethargy/ floppy infant': {
     'predefined_attributes': [
@@ -633,6 +680,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Very sunken eyes': {
     'predefined_attributes': [
@@ -641,6 +689,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Skin pinch very slow (2 secs or more)': {
     'predefined_attributes': [
@@ -655,6 +704,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Facial /Inhalation burn': {
     'predefined_attributes': [
@@ -676,6 +726,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Hypoglycaemia recorded at any time': {
     'predefined_attributes': [
@@ -690,6 +741,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Glucose less than 3mmol/L': {
     'predefined_attributes': [
@@ -701,6 +753,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Purpuric rash': {
     'predefined_attributes': [
@@ -722,6 +775,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Tiny baby (Younger than 2 months)': {
     'predefined_attributes': [
@@ -733,6 +787,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Inconsolable crying (Severe pain)': {
     'predefined_attributes': [
@@ -747,6 +802,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Presenting complaint more sleepy than normal': {
     'predefined_attributes': [
@@ -758,10 +814,12 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Poisoning or overdose': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Focal neurology acute': {
     'predefined_attributes': [
@@ -776,6 +834,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Severe mechanism of injury': {
     'predefined_attributes': [
@@ -791,6 +850,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Burn 10% or more (Circumferential, electrical, chemical)': {
     'predefined_attributes': [
@@ -812,6 +872,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Eye Injury': {
     'predefined_attributes': [
@@ -820,14 +881,17 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Fracture (Open or threatened limb)': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Dislocation of larger joint (not finger or toe)': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Some respiratory distress': {
     'predefined_attributes': [
@@ -839,10 +903,12 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Some Dehydration (Diarrhoea or Diarrhoea and vomiting)': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Sunken eyes': {
     'predefined_attributes': [
@@ -851,6 +917,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Restless/ irritable': {
     'predefined_attributes': [
@@ -859,6 +926,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Thirsty/decreased urine output': {
     'predefined_attributes': [
@@ -873,6 +941,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Dry mouth': {
     'predefined_attributes': [
@@ -881,6 +950,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Crying without tears': {
     'predefined_attributes': [
@@ -889,6 +959,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Skin pinch slow (Less than 2 sec)': {
     'predefined_attributes': [
@@ -903,6 +974,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Unable to drink /feed or vomit everything': {
     'predefined_attributes': [
@@ -914,10 +986,12 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Malnutrition (Visible severe wasting)': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Malnutrition Oedema (pitting Oedema of both feet)': {
     'predefined_attributes': [
@@ -932,6 +1006,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Unwell child with known diabetes': {
     'predefined_attributes': [
@@ -940,6 +1015,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Any other burn less than 10%': {
     'predefined_attributes': [
@@ -958,6 +1034,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Dislocation of finger or toe': {
     'predefined_attributes': [
@@ -969,5 +1046,6 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
 } as Record<WarningSignKey, FindingRelatedModifiers>

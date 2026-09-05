@@ -12,6 +12,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Fever': {
     'predefined_attributes': [
@@ -23,6 +24,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Cough': {
     'predefined_attributes': [
@@ -34,6 +36,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Sore throat': {
     'predefined_attributes': [
@@ -42,6 +45,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Headache': {
     'predefined_attributes': [
@@ -57,6 +61,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Fatigue': {
     'predefined_attributes': [
@@ -65,6 +70,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Dyspnea': {
     'predefined_attributes': [
@@ -80,6 +86,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Sudden" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Nausea': {
     'predefined_attributes': [
@@ -88,6 +95,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Vomiting': {
     'predefined_attributes': [
@@ -99,6 +107,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Diarrhea': {
     'predefined_attributes': [
@@ -111,10 +120,12 @@ export default {
         's_expression': '(qualifier (snomed_concept "Watery" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Dizziness': {
     'predefined_attributes': [],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Muscle pain': {
     'predefined_attributes': [
@@ -123,6 +134,7 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
   },
   'Insect bite': {
     'predefined_attributes': [
@@ -138,6 +150,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Recent" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Backache': {
     'predefined_attributes': [
@@ -150,6 +163,7 @@ export default {
         's_expression': '(qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))',
       },
     ],
+    'onset_required': false,
   },
   'Constipation': {
     'predefined_attributes': [
@@ -164,5 +178,6 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': true,
   },
 } as Record<string, FindingRelatedModifiers>

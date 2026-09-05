@@ -1,3 +1,4 @@
+import type { IPostgresInterval } from 'postgres-interval'
 import { define } from '../define.ts'
 import { TASKS } from '../../../shared/tasks.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -16,6 +17,7 @@ export default define([
   'due_to_findings',
   'due_to_finding_sites',
   'due_to_measurements',
+  'due_to_event_time_comparisons',
   'rule_due_to',
   'tasks',
   'system_diagnosis_rules',
@@ -53,6 +55,9 @@ export default define([
   const due_to_measurements = due_to_entries.filter((e): e is DueToEntry & { insert: Extract<DueToInsert, { type: 'measurement' }> } =>
     e.insert.type === 'measurement'
   )
+  const due_to_event_time_comparisons = due_to_entries.filter((e): e is DueToEntry & { insert: Extract<DueToInsert, { type: 'event_time_comparison' }> } =>
+    e.insert.type === 'event_time_comparison'
+  )
 
   // Step 2: Upsert all due_to rows, letting the DB generate/return ids
   const inserted_due_tos = await trx.insertInto('due_to')
@@ -71,6 +76,7 @@ export default define([
 
   const due_to_id_by_s_expression = new Map(inserted_due_tos.map((r) => [r.s_expression, r.id]))
 
+  // console.log({due_to_findings})
   // Insert due_to_findings
   if (due_to_findings.length) {
     await trx.insertInto('due_to_findings')
@@ -124,6 +130,29 @@ export default define([
           specific_snomed_concept_id: (eb) => eb.ref('excluded.specific_snomed_concept_id'),
           comparator: (eb) => eb.ref('excluded.comparator'),
           value: (eb) => eb.ref('excluded.value'),
+        })
+      )
+      .execute()
+  }
+
+  // Insert due_to_event_time_comparisons
+  if (due_to_event_time_comparisons.length) {
+    await trx.insertInto('due_to_event_time_comparisons')
+      .values(due_to_event_time_comparisons.map((e) => ({
+        id: due_to_id_by_s_expression.get(e.s_expression)!,
+        event_snomed_concept_id: snomedConceptId(e.insert.event_snomed_concept),
+        root_snomed_concept_id: e.insert.root_snomed_concept ? snomedConceptId(e.insert.root_snomed_concept) : null,
+        specific_snomed_concept_id: snomedConceptId(e.insert.specific_snomed_concept),
+        comparator: e.insert.comparator,
+        duration: sql<IPostgresInterval>`${`${e.insert.duration.value} ${e.insert.duration.units}`}::interval`,
+      })))
+      .onConflict((oc) =>
+        oc.column('id').doUpdateSet({
+          event_snomed_concept_id: (eb) => eb.ref('excluded.event_snomed_concept_id'),
+          root_snomed_concept_id: (eb) => eb.ref('excluded.root_snomed_concept_id'),
+          specific_snomed_concept_id: (eb) => eb.ref('excluded.specific_snomed_concept_id'),
+          comparator: (eb) => eb.ref('excluded.comparator'),
+          duration: (eb) => eb.ref('excluded.duration'),
         })
       )
       .execute()
