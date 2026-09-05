@@ -6,10 +6,8 @@
   (check_for
     (clinical_finding (snomed_concept "Severe pain" "finding"))
     (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
-    (<= (onset (clinical_finding (snomed_concept "Unable to break wind" "finding")))
-        (time_ago 24 hours))
-    (<= (onset (clinical_finding (snomed_concept "Acute constipation" "finding")))
-        (time_ago 24 hours))
+    (clinical_finding (snomed_concept "Unable to break wind" "finding"))
+    (clinical_finding (snomed_concept "Acute constipation" "finding"))
     (clinical_finding (snomed_concept "Irreducible hernia" "morphologic abnormality"))
     (clinical_finding (snomed_concept "Pulsatile mass of abdomen" "finding"))
     (clinical_finding (snomed_concept "Groin mass" "finding") (qualifier (snomed_concept "Pulsatile" "qualifier value")))

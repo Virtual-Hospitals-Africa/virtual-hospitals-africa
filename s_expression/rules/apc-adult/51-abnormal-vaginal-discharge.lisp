@@ -4,12 +4,9 @@
   adult
   (clinical_finding (snomed_concept "Female genitalia finding" "finding"))
   (check_for
-    (<= (onset (clinical_finding (snomed_concept "Delivery finding" "finding")))
-        (time_ago 6 weeks))
-    (<= (onset (clinical_finding (snomed_concept "Miscarriage" "disorder")))
-        (time_ago 6 weeks))
-    (<= (onset (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder")))
-        (time_ago 6 weeks))
+    (clinical_finding (snomed_concept "Delivery finding" "finding"))
+    (clinical_finding (snomed_concept "Miscarriage" "disorder"))
+    (clinical_finding (snomed_concept "Induced termination of pregnancy" "disorder"))
     (clinical_finding (snomed_concept "Pregnancy" "finding"))
     (clinical_finding (snomed_concept "Missed period" "finding"))
     (clinical_finding (snomed_concept "Abnormal vaginal bleeding" "finding"))

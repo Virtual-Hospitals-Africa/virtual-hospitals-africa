@@ -6,10 +6,8 @@
   (check_for
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
     (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
-    (>= (onset (clinical_finding (snomed_concept "Constipation" "finding")))
-        (time_ago 24 hours))
-    (>= (onset (clinical_finding (snomed_concept "Unable to break wind" "finding")))
-        (time_ago 24 hours))
+    (clinical_finding (snomed_concept "Constipation" "finding"))
+    (clinical_finding (snomed_concept "Unable to break wind" "finding"))
   )
 )
 

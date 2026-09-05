@@ -6,8 +6,7 @@
   (check_for
     (clinical_finding (snomed_concept "Pain of joint" "finding") (qualifier (snomed_concept "Acute pain" "finding")))
     (clinical_finding (snomed_concept "Joint warm" "finding"))
-    (<= (onset (clinical_finding (snomed_concept "Injury of musculoskeletal system" "disorder")))
-        (time_ago 48 hours))
+    (clinical_finding (snomed_concept "Injury of musculoskeletal system" "disorder"))
     (clinical_finding (snomed_concept "Limitation of joint movement" "finding"))
     (clinical_finding (snomed_concept "Severe pain" "finding"))
     (clinical_finding (snomed_concept "Joint swelling" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))

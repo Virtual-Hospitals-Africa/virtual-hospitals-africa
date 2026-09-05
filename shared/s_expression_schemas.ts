@@ -210,9 +210,7 @@ export type InsertableEventTimeComparison = EventTimeComparison & {
   timestamp_of_event: InsertableTimestampOfEvent
 }
 
-export type MatchingFinding =
-  | Omit<InsertableFindingBase, 'existence'> & { existence: 'Any' }
-  | InsertableEventTimeComparison
+export type MatchingFinding = Omit<InsertableFindingBase, 'existence'> & { existence: 'Any' }
 
 export type InsertableFinding = InsertableFindingBase | MeasurementComparison
 
@@ -220,7 +218,7 @@ export type ToBeDone = NonNullableProperty<Lang['procedure'], 'root_snomed_conce
 
 export type ToBeDoneProcedureLink = ToBeDone & { value: Lang['link'] }
 export type ToBeDoneProcedureProcedure = ToBeDone & { value: Lang['snomed_concept'] }
-export type ToBeDoneProcedureCheckFor = ToBeDone & { value: Lang['finding'][] }
+export type ToBeDoneProcedureCheckFor = ToBeDone & { value: Array<Lang['finding'] | EventTimeComparison> }
 export type ToBeDoneProcedureMeasurements = ToBeDone & { value: Lang['measurement'][] }
 
 export type SnomedConceptAttribute = Lang['attribute'] & { value: { atom: 'snomed_concept' } }
@@ -880,7 +878,7 @@ export const procedure_base: z.ZodType<Lang['procedure']> = z.lazy(() =>
   }))
 ).describe('procedure_base')
 
-const can_check_for = z.lazy(() => insertable_finding_base.or(insertable_event_time_comparison))
+const can_check_for = z.lazy(() => insertable_finding_base)
 
 export const check_for: z.ZodType<Lang['procedure']> = z.lazy(
   () =>
