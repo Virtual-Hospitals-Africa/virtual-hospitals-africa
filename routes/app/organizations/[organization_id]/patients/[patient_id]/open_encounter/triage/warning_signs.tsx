@@ -79,6 +79,7 @@ export const handler = postHandler(
       workflow_step_snomed_concept,
     } = ctx.state
 
+    assert(workflow_step_snomed_concept)
     const completed_procedure = completedProcedure(ctx)
 
     const { response, inserted, previously_reported } = await promiseProps({

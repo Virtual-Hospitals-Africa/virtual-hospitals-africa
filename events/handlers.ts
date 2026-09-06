@@ -91,6 +91,28 @@ export const EVENTS = {
       },
     },
   ),
+  SinglePositiveFindingAdded: defineEvent(
+    z.object({
+      workflow: z.enum(WORKFLOWS),
+      step: z.string(),
+      patient_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
+      patient_encounter_id: z.string().uuid(),
+      procedure_id: z.string().uuid(),
+      positive_finding_id: z.string().uuid(),
+    }),
+    {
+      tagRecordsWithDueTos(trx, { data: { positive_finding_id, ...data } }) {
+        return due_to.addFromNewRecords(trx, {
+          ...data,
+          records: [{
+            id: positive_finding_id,
+            existence: 'Yes' as const,
+          }],
+        })
+      },
+    },
+  ),
   ProcedureCompleted: defineEvent(
     z.object({
       workflow: z.enum(WORKFLOWS),

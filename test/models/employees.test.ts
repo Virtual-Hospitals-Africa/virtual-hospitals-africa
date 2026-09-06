@@ -256,6 +256,7 @@ describeParallel('db/models/employees.ts', () => {
 
       const health_worker = await addTestEmployee(db, {
         role: 'nurse',
+        organization_id: test_clinic.id,
       })
 
       await employment.addOne(db, {

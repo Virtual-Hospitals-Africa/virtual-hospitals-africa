@@ -2427,9 +2427,15 @@ export type ExtantPatientOrCreationIntent = {
 export type ExtantProcedureOrCreationIntent = {
   procedure_id: string
   create_with_specific_snomed_concept_id?: never
+  if_not_already_exists?: never
 } | {
   procedure_id?: never
   create_with_specific_snomed_concept_id: string
+  if_not_already_exists?: never
+} | {
+  procedure_id: IdSelection
+  create_with_specific_snomed_concept_id: string
+  if_not_already_exists?: true
 }
 
 export type PatientFamilyHistoryShared = {
