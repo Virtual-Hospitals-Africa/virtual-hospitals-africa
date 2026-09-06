@@ -1,5 +1,5 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
-import { parseWithSchema } from '../../shared/s_expression.ts'
+import { normalForm, parseWithSchema } from '../../shared/s_expression.ts'
 import { TASKS_LISP } from '../../s_expression/tasks.ts'
 import { insertable_finding_base, type Lang, system_diagnosis_rule, system_priority_evaluation, task } from '../../shared/s_expression_schemas.ts'
 import db from '../../db/db.ts'
@@ -254,13 +254,15 @@ describe('s_expression', () => {
                   finding.snomed_concept.category === probable_diagnosis.category
                 )
               if (evaluating_a_diagnosed_condition) continue
-              const finding_s_expression = inverseSExpression(finding)
-              if (all_checking_for.has(finding_s_expression)) continue
+              const as_finding_s_expression = finding.atom === 'active_condition'
+                ? normalForm(`(clinical_finding (snomed_concept "${finding.snomed_concept.name}" "${finding.snomed_concept.category}"))`)
+                : inverseSExpression(finding)
+              if (all_checking_for.has(as_finding_s_expression)) continue
 
               yield {
                 file_path,
                 description: rule.description,
-                didnt_check_for: finding_s_expression,
+                didnt_check_for: as_finding_s_expression,
               }
             }
           }

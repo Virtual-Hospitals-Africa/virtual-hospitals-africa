@@ -7,6 +7,7 @@ import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { PROCEDURE } from '../../shared/snomed_concepts.ts'
+import { createTestOrganization } from 'test/_helpers/organizations.ts'
 
 describeParallel('db/models/patient_procedures.ts', () => {
   afterAll(() => db.destroy())
@@ -15,8 +16,10 @@ describeParallel('db/models/patient_procedures.ts', () => {
     itParallel(
       'can insert an action representing excessive garment removal',
       async () => {
+        const organization = await createTestOrganization(db)
         const nurse = await addTestEmployee(db, {
           role: 'nurse',
+          organization_id: organization.id,
         })
 
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(

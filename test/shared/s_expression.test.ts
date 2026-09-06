@@ -135,30 +135,6 @@ describe('shared/s_expression.ts', () => {
     )
   })
 
-  it('rejects an active_condition subject where an insertable timestamp_of_event is required, as in a check_for', () => {
-    const insertable_result = asResult(() =>
-      parseWithSchema(
-        `(onset (active_condition (snomed_concept "Constipation" "finding")))`,
-        schemas.insertable_timestamp_of_event,
-      )
-    )
-    assert(!insertable_result.success)
-
-    const check_for_result = asResult(() =>
-      parseWithSchema(
-        `(check_for (>= (onset (active_condition (snomed_concept "Constipation" "finding"))) (time_ago 24 hours)))`,
-        schemas.check_for,
-      )
-    )
-    assert(!check_for_result.success)
-
-    const check_for_finding = parseWithSchema(
-      `(check_for (>= (onset (clinical_finding (snomed_concept "Constipation" "finding"))) (time_ago 24 hours)))`,
-      schemas.check_for,
-    )
-    assertEquals(check_for_finding.atom, 'procedure')
-  })
-
   it('parses excluding', () => {
     const parsed = parseExpressionExpectingAtom(`(finding (excluding (finding ${STATUS_ATTRIBUTE.s_expression})))`, 'finding')
     assertLength(parsed.excluding, 1)

@@ -8,6 +8,7 @@ import { dispatchWebPushForNotification, type DispatchWebPushForNotificationDeps
 import type { SendWebPushNotificationResult, WebPushNotificationPayload, WebPushSubscriptionInput } from '../../../external-clients/web-push.ts'
 import { addTestEmployee } from '../../_helpers/employees.ts'
 import generateUUID from '../../../util/uuid.ts'
+import { createTestOrganization } from 'test/_helpers/organizations.ts'
 
 type SendWebPushCall = WebPushSubscriptionInput & { payload: WebPushNotificationPayload }
 
@@ -67,7 +68,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('sends a mapped payload to one subscription', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id, {
         action_href: '/app/custom',
         notification_type: 'encounter_update',
@@ -93,7 +95,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('attempts delivery to every subscription', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id)
       await insertTestSubscription(health_worker.id, 'https://push.example.test/a')
       await insertTestSubscription(health_worker.id, 'https://push.example.test/b')
@@ -109,7 +112,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('returns safely when there are no subscriptions', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id)
 
       const { calls, deps } = createSendMock(() => ({ ok: true }))
@@ -119,7 +123,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('returns safely when the notification does not exist', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
 
       const { calls, deps } = createSendMock(() => ({ ok: true }))
       await dispatchWebPushForNotification({
@@ -131,8 +136,9 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('returns safely when the notification belongs to a different health worker', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
-      const other_health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
+      const other_health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id)
       log_error = stub(console, 'error')
 
@@ -147,7 +153,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('omits action_href when it is #todo', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id, {
         action_href: '#todo',
       })
@@ -164,7 +171,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('omits action_href when it is empty', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id, {
         action_href: '',
       })
@@ -181,7 +189,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('deletes expired subscriptions', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id)
       const endpoint = 'https://push.example.test/expired'
       await insertTestSubscription(health_worker.id, endpoint)
@@ -202,7 +211,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('logs non-expired failures without deleting the subscription', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id)
       const endpoint = 'https://push.example.test/failed'
       await insertTestSubscription(health_worker.id, endpoint)
@@ -225,7 +235,8 @@ describe('backend/notifications/dispatch_web_push_for_notification.ts', () => {
     })
 
     it('still attempts other subscriptions when one send throws unexpectedly', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id: organization.id })
       const { id: notification_id } = await insertTestNotification(health_worker.id)
       await insertTestSubscription(health_worker.id, 'https://push.example.test/throws')
       await insertTestSubscription(health_worker.id, 'https://push.example.test/ok')
