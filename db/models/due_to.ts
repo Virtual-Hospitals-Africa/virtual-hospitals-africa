@@ -2,20 +2,28 @@ import { sql } from 'kysely'
 import { AgeDetermination, NewRecordsToConsider, NewRecordsToConsiderWithSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { literalBoolean, literalString } from '../helpers.ts'
 import { FINDING_SITE } from '../../shared/snomed_concepts.ts'
-import { parseWithSchema } from '../../shared/s_expression.ts'
-import { any_query_single } from '../../shared/s_expression_schemas.ts'
+import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
+import { any_query_single, InsertableFindingBase } from '../../shared/s_expression_schemas.ts'
 import partition from '../../util/partition.ts'
 import { base, identity } from './_base.ts'
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
 import { pMap } from '../../util/inParallel.ts'
-import { buildExpression } from './s_expression.ts'
+import { buildExpression, snomedConceptBase } from './s_expression.ts'
 import compact from '../../util/compact.ts'
 import { events } from './events.ts'
 import isString from '../../util/isString.ts'
+import { hypotheticalFindingSatisfies } from './s_expression_hypothetical.ts'
+import { uniqBy } from '../../util/uniqBy.ts'
 
 type DueToMatchType = 'finding' | 'measurement' | 'finding_site' | 'event_time_comparison'
+
+export type HypotheticalDueToMatch = {
+  due_to_id: string
+  s_expression: string
+  history: boolean
+}
 
 export const due_to = base({
   top_level_table: 'due_to',
@@ -185,6 +193,110 @@ export const due_to = base({
   },
 
   formatResult: identity,
+
+  /*
+    Read-only counterpart of determineFromNewRecords for a finding that has not been
+    inserted. Mirrors the by_findings and by_finding_sites branches of baseQuery against
+    the node's own concepts, then re-checks qualified due_tos in memory the same way
+    determineFromNewRecords re-runs their s_expression against the inserted record.
+
+    Measurement and event-time due_tos are not considered: the former never apply to a
+    clinical finding and the latter need an onset, which a not-yet-entered finding lacks.
+  */
+  async forHypotheticalFinding(
+    trx: TrxOrDbOrQueryCreator,
+    { patient_age_determination, finding }: {
+      patient_age_determination: AgeDetermination
+      finding: InsertableFindingBase
+    },
+  ): Promise<HypotheticalDueToMatch[]> {
+    if (finding.existence !== 'Yes') return []
+
+    const age_filter = sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`
+    const specific_snomed_concept_id = snomedConceptBase(trx, finding.specific_snomed_concept)
+
+    const by_findings_query = trx.selectFrom('due_to_findings')
+      .innerJoin('due_to', 'due_to_findings.id', 'due_to.id')
+      .innerJoin(
+        'snomed_concept_active_descendants_realized as specific_descendants',
+        'specific_descendants.ancestor_id',
+        'due_to_findings.specific_snomed_concept_id',
+      )
+      .where('specific_descendants.descendant_id', '=', specific_snomed_concept_id)
+      .where('due_to_findings.root_snomed_concept_id', '=', snomedConceptBase(trx, finding.root_snomed_concept))
+      .where('due_to.age_determinations', '@>', age_filter)
+      .where((eb) =>
+        eb.or([
+          eb('due_to_findings.value_snomed_concept_id', 'is', null),
+          ...(finding.value_snomed_concept
+            ? [
+              eb.exists(
+                eb.selectFrom('snomed_concept_active_descendants_realized as value_descendants')
+                  .whereRef('value_descendants.ancestor_id', '=', 'due_to_findings.value_snomed_concept_id')
+                  .where('value_descendants.descendant_id', '=', snomedConceptBase(trx, finding.value_snomed_concept)),
+              ),
+            ]
+            : []),
+        ])
+      )
+      .select([
+        'due_to.id as due_to_id',
+        'due_to.s_expression',
+        'due_to.history',
+        'due_to_findings.is_somehow_qualified',
+      ])
+
+    const explicit_finding_sites = compact(
+      finding.attributes.map((attribute) =>
+        attribute.specific_snomed_concept.name === FINDING_SITE.name && attribute.value.atom === 'snomed_concept' && attribute.value
+      ),
+    )
+
+    const by_finding_sites_query = trx.selectFrom('due_to_finding_sites')
+      .innerJoin('due_to', 'due_to.id', 'due_to_finding_sites.id')
+      .where('due_to.age_determinations', '@>', age_filter)
+      .where((eb) =>
+        eb.or([
+          ...explicit_finding_sites.map((finding_site) =>
+            eb.exists(
+              eb.selectFrom('snomed_concept_active_descendants_realized as dest_descendants')
+                .whereRef('dest_descendants.ancestor_id', '=', 'due_to_finding_sites.value_snomed_concept_id')
+                .where('dest_descendants.descendant_id', '=', snomedConceptBase(trx, finding_site)),
+            )
+          ),
+          eb.exists(
+            eb.selectFrom('snomed_relationship')
+              .innerJoin(
+                'snomed_concept_active_descendants_realized as dest_descendants',
+                'dest_descendants.descendant_id',
+                'snomed_relationship.destination_id',
+              )
+              .whereRef('dest_descendants.ancestor_id', '=', 'due_to_finding_sites.value_snomed_concept_id')
+              .where('snomed_relationship.active', '=', true)
+              .where('snomed_relationship.type_id', '=', FINDING_SITE.id)
+              .where('snomed_relationship.source_id', '=', specific_snomed_concept_id),
+          ),
+        ])
+      )
+      .select([
+        'due_to.id as due_to_id',
+        'due_to.s_expression',
+        'due_to.history',
+        'due_to_finding_sites.is_somehow_qualified',
+      ])
+
+    const candidates = await by_findings_query.unionAll(by_finding_sites_query).execute()
+
+    const matches = await pMap(candidates, async (candidate) => {
+      if (!candidate.is_somehow_qualified) return candidate
+      const node = parseWithSchema(candidate.s_expression, any_query_single)
+      if (!isAtom(node, 'finding')) return
+      const satisfies = await hypotheticalFindingSatisfies(trx, finding, node)
+      return satisfies ? candidate : undefined
+    }).then(compact)
+
+    return uniqBy(matches, 'due_to_id').map(({ due_to_id, s_expression, history }) => ({ due_to_id, s_expression, history }))
+  },
 
   async determineFromNewRecords(
     trx: TrxOrDbOrQueryCreator,

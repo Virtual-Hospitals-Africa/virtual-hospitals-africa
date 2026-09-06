@@ -76,6 +76,54 @@ export function isMeasurements(to_be_done: ToBeDone): to_be_done is ToBeDoneProc
   return Array.isArray(to_be_done.value) && to_be_done.value[0].atom === 'measurement'
 }
 
+/*
+  For each s_expression (keyed to its parsed node), the most recently recorded finding in
+  this encounter satisfying it, including negative findings. Rows carry the s_expression
+  they were found for alongside the full patient_findings row.
+*/
+export function existingFindingsMatching(
+  trx: TrxOrDbOrQueryCreator,
+  { patient_id, patient_encounter_id, nodes }: {
+    patient_id: string
+    patient_encounter_id: string
+    nodes: Map<string, Lang['measurement'] | MatchingFinding | Lang['finding']>
+  },
+) {
+  if (!nodes.size) return Promise.resolve([])
+
+  const existing_findings_query = trx.with('existing_findings', (qb) => {
+    const [first, ...others] = nodes.entries().map(([s_expression, node]) =>
+      qb.selectNoFrom([
+        literalString(s_expression)
+          .as('s_expression'),
+        buildExpression(
+          trx,
+          { patient_id, patient_encounter_id },
+          node,
+        )
+          .orderBy('patient_records_aggregated.created_at', 'desc')
+          .limit(1)
+          .as('finding_id'),
+      ])
+    )
+
+    return others.reduce(
+      (acc, curr) => acc.unionAll(curr),
+      first,
+    )
+  })
+    .selectFrom('existing_findings')
+    .innerJoin(
+      patient_findings.baseQuery(trx, { include_negative: true }).as('join_against'),
+      'join_against.id',
+      'existing_findings.finding_id',
+    )
+    .select('existing_findings.s_expression')
+    .selectAll('join_against')
+
+  return existing_findings_query.execute()
+}
+
 export const additional_tasks = {
   async getTasksToInsertUsingPreComputedTables(
     trx: TrxOrDbOrQueryCreator,
@@ -218,39 +266,7 @@ export const additional_tasks = {
     }
 
     function existingFindings() {
-      if (!s_expression_to_existing_findings.size) return Promise.resolve([])
-
-      const existing_findings_query = trx.with('existing_findings', (qb) => {
-        const [first, ...others] = s_expression_to_existing_findings.entries().map(([s_expression, node]) =>
-          qb.selectNoFrom([
-            literalString(s_expression)
-              .as('s_expression'),
-            buildExpression(
-              trx,
-              { patient_id, patient_encounter_id },
-              node,
-            )
-              .orderBy('patient_records_aggregated.created_at', 'desc')
-              .limit(1)
-              .as('finding_id'),
-          ])
-        )
-
-        return others.reduce(
-          (acc, curr) => acc.unionAll(curr),
-          first,
-        )
-      })
-        .selectFrom('existing_findings')
-        .innerJoin(
-          patient_findings.baseQuery(trx, { include_negative: true }).as('join_against'),
-          'join_against.id',
-          'existing_findings.finding_id',
-        )
-        .select('existing_findings.s_expression')
-        .selectAll('join_against')
-
-      return existing_findings_query.execute()
+      return existingFindingsMatching(trx, { patient_id, patient_encounter_id, nodes: s_expression_to_existing_findings })
     }
 
     function alreadyDone() {

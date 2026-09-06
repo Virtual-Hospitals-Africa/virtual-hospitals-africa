@@ -3231,6 +3231,26 @@ export type FindingRelatedModifiers = {
   }[]
   onset_required: boolean
 }
+
+export type FindingToCheckFor = {
+  s_expression: string
+  existing_record: null | {
+    s_expression: string
+    existence: Existence
+  }
+  // could_indicate_priority: Priority | null
+  // could_indicate_diagnoses: {
+  //   s_expression: string
+  // }[]
+}
+
+// findings_to_check_for: []
+// could_indicate_diagnoses: {
+//   s_expression: string
+//   only_if_matching_one_of_qualifiers: {
+//     s_expression: string
+//   }[]
+// }[]
 export type TasksDividedByPermission = {
   tasks_i_can_do_without_approval_needed: RenderedManageTaskToBeDone[]
   tasks_i_can_do_with_approval: RenderedManageTaskToBeDone[]

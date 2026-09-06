@@ -6,7 +6,7 @@ import db from '../../db/db.ts'
 import { exists } from '../../util/exists.ts'
 import assertLength from '../../util/assertLength.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
-import { createTestOrganization, TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
+import { createTestOrganization } from '../_helpers/organizations.ts'
 import { employees } from '../../db/models/employees.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -23,17 +23,16 @@ describeParallel('db/models/employees.ts', () => {
   itParallel(
     'handles a health worker who is a doctor at one organization and a receptionist in another ordering hospitals first',
     async () => {
-      const getting_test_clinic = organizations_with_departments.getById(
+      const test_clinic = await organizations_with_departments.getById(
         db,
-        TEST_ORGANIZATION_UUIDS.ZA.clinic,
+        (await createTestOrganization(db)).id,
       )
+      const test_hospital = await createTestOrganization(db, { category: 'Hospital' })
 
       const health_worker = await addTestEmployee(db, {
         role: 'doctor',
-        organization_id: TEST_ORGANIZATION_UUIDS.ZA.hospital,
+        organization_id: test_hospital.id,
       })
-
-      const test_clinic = await getting_test_clinic
 
       const reception_department_id = exists(
         test_clinic.departments.find((d) => d.name === 'Administration'),
@@ -42,7 +41,7 @@ describeParallel('db/models/employees.ts', () => {
         health_worker_id: health_worker.id,
         role: 'receptionist',
         is_admin: false,
-        organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
+        organization_id: test_clinic.id,
         department_ids: [reception_department_id],
       })
 
@@ -54,13 +53,13 @@ describeParallel('db/models/employees.ts', () => {
       assertLength(doctor_result.organizations, 2)
       assertEquals(
         doctor_result.organizations[0].id,
-        TEST_ORGANIZATION_UUIDS.ZA.hospital,
+        test_hospital.id,
       )
 
       assertEquals(doctor_result.organizations[0].role, 'doctor')
       assertEquals(
         doctor_result.organizations[1].id,
-        TEST_ORGANIZATION_UUIDS.ZA.clinic,
+        test_clinic.id,
       )
       assertEquals(
         doctor_result.organizations[1].role,
@@ -72,7 +71,7 @@ describeParallel('db/models/employees.ts', () => {
       )
       assertEquals(
         doctor_result.organization_id,
-        TEST_ORGANIZATION_UUIDS.ZA.hospital,
+        test_hospital.id,
       )
       assertEquals(
         doctor_result.role,
@@ -87,7 +86,7 @@ describeParallel('db/models/employees.ts', () => {
       assertLength(receptionist_result.organizations, 2)
       assertEquals(
         receptionist_result.organizations[0].id,
-        TEST_ORGANIZATION_UUIDS.ZA.hospital,
+        test_hospital.id,
       )
 
       assertEquals(
@@ -96,7 +95,7 @@ describeParallel('db/models/employees.ts', () => {
       )
       assertEquals(
         receptionist_result.organizations[1].id,
-        TEST_ORGANIZATION_UUIDS.ZA.clinic,
+        test_clinic.id,
       )
       assertEquals(
         receptionist_result.organizations[1].role,
@@ -108,7 +107,7 @@ describeParallel('db/models/employees.ts', () => {
       )
       assertEquals(
         receptionist_result.organization_id,
-        TEST_ORGANIZATION_UUIDS.ZA.clinic,
+        test_clinic.id,
       )
       assertEquals(
         receptionist_result.role,
@@ -211,18 +210,21 @@ describeParallel('db/models/employees.ts', () => {
     itParallel(
       'can prioritize a given organization, while still returning results from another organization',
       async () => {
+        const test_clinic = await createTestOrganization(db)
+        const test_hospital = await createTestOrganization(db, { category: 'Hospital' })
+
         const name_base = generateUUID()
         await Promise.all([
           addTestEmployee(db, {
             role: 'doctor',
-            organization_id: '00000000-0000-1000-8000-000000000001',
+            organization_id: test_clinic.id,
             health_worker_attrs: {
               name: name_base + ' ' + generateUUID(),
             },
           }),
           addTestEmployee(db, {
             role: 'doctor',
-            organization_id: '00000000-0000-1000-8000-000000000002',
+            organization_id: test_hospital.id,
             health_worker_attrs: {
               name: name_base + ' ' + generateUUID(),
             },
@@ -231,7 +233,7 @@ describeParallel('db/models/employees.ts', () => {
 
         const { results } = await employees.search(db, {
           search: name_base,
-          prioritize_organization_id: '00000000-0000-1000-8000-000000000002',
+          prioritize_organization_id: test_hospital.id,
         })
         assertArrayNonEmpty(results)
         const first_result = first(results)
@@ -239,16 +241,19 @@ describeParallel('db/models/employees.ts', () => {
 
         assertEquals(
           first_result.organization_id,
-          '00000000-0000-1000-8000-000000000002',
+          test_hospital.id,
         )
         assertNotEquals(
           last_result.organization_id,
-          '00000000-0000-1000-8000-000000000002',
+          test_hospital.id,
         )
       },
     )
 
     itParallel('can filter by organization_id', async () => {
+      const test_clinic = await createTestOrganization(db)
+      const test_hospital = await createTestOrganization(db, { category: 'Hospital' })
+
       const health_worker = await addTestEmployee(db, {
         role: 'nurse',
       })
@@ -256,18 +261,18 @@ describeParallel('db/models/employees.ts', () => {
       await employment.addOne(db, {
         health_worker_id: health_worker.id,
         role: 'nurse',
-        organization_id: '00000000-0000-1000-8000-000000000002',
+        organization_id: test_hospital.id,
         is_admin: false,
       })
 
       const same_organization_search = await employees.search(db, {
         search: health_worker.name,
-        organization_id: '00000000-0000-1000-8000-000000000001',
+        organization_id: test_clinic.id,
       })
       assertLength(same_organization_search.results, 1)
       assertEquals(
         same_organization_search.results[0].organization_id,
-        TEST_ORGANIZATION_UUIDS.ZA.clinic,
+        test_clinic.id,
       )
 
       const other_organization_search = await employees.search(db, {
