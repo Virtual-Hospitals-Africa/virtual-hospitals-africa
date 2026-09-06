@@ -1,5 +1,12 @@
 import { sql } from 'kysely'
-import { AgeDetermination, ApplicableRule, NewRecordsToConsiderWithSatisfyingDueToIds, RecordsSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
+import {
+  AgeDetermination,
+  ApplicableRule,
+  ApplicableRuleEffect,
+  NewRecordsToConsiderWithSatisfyingDueToIds,
+  RecordsSatisfyingDueToIds,
+  TrxOrDbOrQueryCreator,
+} from '../../types.ts'
 import { asText, jsonBuildObject, literalString } from '../helpers.ts'
 
 import { EventTimeComparison, QueryableEvidenceNode } from '../../shared/s_expression_schemas.ts'
@@ -15,6 +22,26 @@ import { activeConditionAsOr } from '../../shared/s_expression_active_condition_
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 import { getRuleByDescription } from '../../shared/rules.ts'
+import type { HypotheticalDueToMatch } from './due_to.ts'
+
+type RuleType = 'task' | 'system_priority_evaluation' | 'system_diagnosis_rule'
+
+// Stands in for the id of a record that has not been inserted when evaluating rules for it
+export const HYPOTHETICAL_RECORD_ID = 'hypothetical'
+
+type RuleSearchTerms =
+  & {
+    patient_id: string
+    patient_encounter_id: string
+    patient_age_determination: AgeDetermination
+    type?: RuleType
+  }
+  & (
+    // Rules linked to due_tos that inserted records have been tagged as satisfying
+    | { satisfying_due_to_ids: string[]; due_to_ids?: never }
+    // Rules linked to these due_tos directly, for a record that has not been inserted
+    | { due_to_ids: string[]; satisfying_due_to_ids?: never }
+  )
 
 export const rules = base({
   top_level_table: 'rules',
@@ -22,28 +49,30 @@ export const rules = base({
     patient_id,
     patient_encounter_id,
     patient_age_determination,
-    positive_records_satisfying_some_due_to,
+    satisfying_due_to_ids,
+    due_to_ids,
     type,
-  }: {
-    patient_id: string
-    patient_encounter_id: string
-    patient_age_determination: AgeDetermination
-    positive_records_satisfying_some_due_to: RecordsSatisfyingDueToIds
-    type?: 'task' | 'system_priority_evaluation' | 'system_diagnosis_rule'
-  }) {
-    assert(positive_records_satisfying_some_due_to.length)
+  }: RuleSearchTerms) {
+    const age_filter = sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`
 
-    const all_satisfying_due_to_ids = positive_records_satisfying_some_due_to
-      .flatMap((r) => r.satisfying_due_to_ids)
-
-    const matching_rules_query = trx
-      .selectFrom('patient_record_satisfying_due_tos')
-      .where('patient_record_satisfying_due_tos.id', 'in', all_satisfying_due_to_ids)
-      .innerJoin('rule_due_to', 'rule_due_to.due_to_id', 'patient_record_satisfying_due_tos.due_to_id')
-      .innerJoin('rules', 'rules.id', 'rule_due_to.rule_id')
-      .where('rules.age_determinations', '@>', sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`)
-      .select('rules.id')
-      .distinct()
+    const matching_rules_query = satisfying_due_to_ids
+      ? (assert(satisfying_due_to_ids.length),
+        trx
+          .selectFrom('patient_record_satisfying_due_tos')
+          .where('patient_record_satisfying_due_tos.id', 'in', satisfying_due_to_ids)
+          .innerJoin('rule_due_to', 'rule_due_to.due_to_id', 'patient_record_satisfying_due_tos.due_to_id')
+          .innerJoin('rules', 'rules.id', 'rule_due_to.rule_id')
+          .where('rules.age_determinations', '@>', age_filter)
+          .select('rules.id')
+          .distinct())
+      : (assert(due_to_ids.length),
+        trx
+          .selectFrom('rule_due_to')
+          .where('rule_due_to.due_to_id', 'in', due_to_ids)
+          .innerJoin('rules', 'rules.id', 'rule_due_to.rule_id')
+          .where('rules.age_determinations', '@>', age_filter)
+          .select('rules.id')
+          .distinct())
 
     return trx.with('matching_rules', () => matching_rules_query)
       .selectFrom('matching_rules')
@@ -112,9 +141,9 @@ export const rules = base({
   async getApplicableBasedOnNewRecords(
     trx: TrxOrDbOrQueryCreator,
     { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: NewRecordsToConsiderWithSatisfyingDueToIds,
-    type?: 'task' | 'system_priority_evaluation' | 'system_diagnosis_rule',
+    type?: RuleType,
   ): Promise<string | ApplicableRule[]> {
-    const positive_records_satisfying_some_due_to = records
+    const positive_records_satisfying_some_due_to: RecordsSatisfyingDueToIds = records
       .filter((r) => r.existence === 'Yes')
       .filter((r) => !!r.satisfying_due_to_ids.length)
 
@@ -124,25 +153,65 @@ export const rules = base({
       patient_id,
       patient_encounter_id,
       patient_age_determination,
-      positive_records_satisfying_some_due_to,
+      satisfying_due_to_ids: positive_records_satisfying_some_due_to.flatMap((r) => r.satisfying_due_to_ids),
       type,
     })
 
-    const parsed_rules = rules_matching_some_finding.map((rule) => ({
-      ...rule,
-      ...getRuleByDescription(rule.description),
-      // TODO The uniq could be removed probably if upstream we enforce uniqueness
-      matching_finding_ids: uniq(rule.evidence.map((record) => record.patient_record_id)),
-      certainly_applies: rule.evidence.some((record) => record.always_applies_if_present),
-    }))
+    return applicableRules(rules_matching_some_finding)
+  },
 
-    return compactMap(parsed_rules, (rule) => {
-      const result = evaluateEvidence(rule.due_to, rule.evidence)
-      return result.satisfies && {
-        ...rule,
-        matching_finding_ids: result.contributing_records,
-      }
+  /*
+    Which rules would apply if a record satisfying `matched_due_tos` were inserted now.
+    The patient's real evidence is read from patient_record_satisfying_due_tos as usual;
+    the hypothetical record's evidence is added in memory under HYPOTHETICAL_RECORD_ID,
+    so and/any2 rules combine it with what is already recorded. Nothing is written.
+  */
+  async getApplicableForHypotheticalRecord(
+    trx: TrxOrDbOrQueryCreator,
+    { patient_id, patient_encounter_id, patient_age_determination, matched_due_tos, type }: {
+      patient_id: string
+      patient_encounter_id: string
+      patient_age_determination: AgeDetermination
+      matched_due_tos: HypotheticalDueToMatch[]
+      type?: RuleType
+    },
+  ): Promise<ApplicableRule[]> {
+    if (arrayIsEmpty(matched_due_tos)) return []
+
+    const matched_by_due_to_id = new Map(matched_due_tos.map((match) => [match.due_to_id, match]))
+
+    const rules_matching = await rules.findAll(trx, {
+      patient_id,
+      patient_encounter_id,
+      patient_age_determination,
+      due_to_ids: [...matched_by_due_to_id.keys()],
+      type,
     })
+    if (arrayIsEmpty(rules_matching)) return []
+
+    const rule_due_tos = await trx.selectFrom('rule_due_to')
+      .where('rule_due_to.rule_id', 'in', rules_matching.map((rule) => rule.id))
+      .where('rule_due_to.due_to_id', 'in', [...matched_by_due_to_id.keys()])
+      .select(['rule_due_to.rule_id', 'rule_due_to.due_to_id', 'rule_due_to.always_applies_if_present'])
+      .execute()
+
+    return applicableRules(rules_matching.map((rule) => ({
+      ...rule,
+      evidence: [
+        ...rule.evidence,
+        ...compactMap(rule_due_tos, ({ rule_id, due_to_id, always_applies_if_present }) => {
+          if (rule_id !== rule.id) return
+          const matched = matched_by_due_to_id.get(due_to_id)
+          assert(matched)
+          return {
+            patient_record_id: HYPOTHETICAL_RECORD_ID,
+            s_expression: matched.s_expression,
+            history: matched.history,
+            always_applies_if_present,
+          }
+        }),
+      ],
+    })))
   },
 })
 
@@ -152,6 +221,28 @@ type Evidence = {
   history: boolean
   s_expression: string
 }[]
+
+function applicableRules<
+  Rule extends { id: string; description: string; evidence: Evidence; rule_effect: ApplicableRuleEffect },
+>(
+  rules_with_evidence: Rule[],
+): ApplicableRule[] {
+  const parsed_rules = rules_with_evidence.map((rule) => ({
+    ...rule,
+    ...getRuleByDescription(rule.description),
+    // TODO The uniq could be removed probably if upstream we enforce uniqueness
+    matching_finding_ids: uniq(rule.evidence.map((record) => record.patient_record_id)),
+    certainly_applies: rule.evidence.some((record) => record.always_applies_if_present),
+  }))
+
+  return compactMap(parsed_rules, (rule) => {
+    const result = evaluateEvidence(rule.due_to, rule.evidence)
+    return result.satisfies && {
+      ...rule,
+      matching_finding_ids: result.contributing_records,
+    }
+  })
+}
 
 type Result =
   | { satisfies: true; contributing_records: string[] }
