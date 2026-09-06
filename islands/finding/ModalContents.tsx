@@ -1,5 +1,5 @@
 import { DialogTitle } from '@headlessui/react'
-import { useSignal } from '@preact/signals'
+import { useComputed, useSignal, useSignalEffect } from '@preact/signals'
 import { Button } from '../../components/library/Button.tsx'
 import { PaperAirplaneIcon, XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { EnteredFinding, FindingModalMetadata, Maybe, RenderedSnomedConcept } from '../../types.ts'
@@ -29,11 +29,13 @@ function isPainLevel(attribute: Lang['attribute']): attribute is SnomedConceptAt
 }
 
 export function FindingModalContents(
-  { metadata, entered, just_checked, onSave, onClose }: {
+  { metadata, entered, just_checked, onSave, onChange, onClose }: {
     metadata: FindingModalMetadata
     entered: EnteredFinding
     just_checked: boolean
     onSave(finding: EnteredFinding | typeof RemoveFindingSymbol): void
+    // Called with the finding as currently entered: once on open and again on every edit
+    onChange?(finding: EnteredFinding): void
     onClose(): void
   },
 ) {
@@ -66,7 +68,7 @@ export function FindingModalContents(
     category: q.specific_snomed_concept.category,
   })))
 
-  function handleSave() {
+  const entered_finding = useComputed((): EnteredFinding => {
     const new_finding_sites = finding_sites.value.filter((finding_site) => {
       assert(finding_site.category === 'body structure')
       const identical_finding_site_already_predefined = !!search_within_finding_site && finding_site.name === search_within_finding_site.value.name
@@ -166,11 +168,19 @@ export function FindingModalContents(
     const priority = higherPriority(pain_level.value?.priority, metadata.priority)
     const display = findingFullDisplay(new_node)
 
-    onSave({
+    return {
       priority,
       display,
       s_expression: inverseSExpression(new_node),
-    })
+    }
+  })
+
+  useSignalEffect(() => {
+    onChange?.(entered_finding.value)
+  })
+
+  function handleSave() {
+    onSave(entered_finding.value)
   }
 
   return (

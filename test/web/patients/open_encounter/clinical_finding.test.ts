@@ -11,7 +11,7 @@ import { assertMatches } from '../../../../util/assertMatches.ts'
 import asFormData from '../../../../util/asFormData.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import { EMERGENCY_EXAMINATION_FOR_TRIAGE, HISTORY_TAKING_LIMITED } from '../../../../shared/snomed_concepts.ts'
-import { ClinicalFindingSchema } from '../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/clinical_finding.ts'
+import { ClinicalFindingSchema } from '../../../../shared/clinical_finding_post.ts'
 import { z } from 'zod'
 import { route } from '../../../_route.ts'
 

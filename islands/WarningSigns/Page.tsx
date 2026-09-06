@@ -5,9 +5,13 @@ import WarningSignsInnerContent from './InnerContent.tsx'
 
 export default function WarningSigns({
   search_route,
+  post_route,
+  findings_to_check_for_route,
   warning_signs,
 }: {
   search_route: string
+  post_route: string
+  findings_to_check_for_route: string
   warning_signs: WarningSignWithMaybeRecord[]
 }) {
   const search_results = useSignal<null | WarningSignWithMaybeRecord[]>(null)
@@ -26,6 +30,8 @@ export default function WarningSigns({
 
   return (
     <WarningSignsInnerContent
+      post_route={post_route}
+      findings_to_check_for_route={findings_to_check_for_route}
       warning_signs={warning_signs}
       search_results={search_results}
       snomed_warning_signs_async_search={snomed_warning_signs_async_search}
