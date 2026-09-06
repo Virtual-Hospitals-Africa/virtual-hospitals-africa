@@ -7,20 +7,11 @@ import { FindingNodeToInsert, patient_findings } from '../../../../../../../db/m
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
 import { markEnteredInError } from '../../../../../../../db/models/patient_records_base.ts'
 import { events } from '../../../../../../../db/models/events.ts'
-import { sExpressionZodValidator } from '../../../../../../../shared/s_expression.ts'
-import { insertable_finding_base } from '../../../../../../../shared/s_expression_schemas.ts'
-import { ORDERED_PRIORITIES } from '../../../../../../../shared/priorities.ts'
 import { WORKFLOW_STEPS, workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
 import { json } from '../../../../../../../util/responses.ts'
 import compact from '../../../../../../../util/compact.ts'
-
-export const ClinicalFindingSchema = z.object({
-  finding_id: z.string().uuid(),
-  s_expression: sExpressionZodValidator(insertable_finding_base),
-  priority_level: z.enum(ORDERED_PRIORITIES).optional(),
-  entered_in_error_record_id: z.string().uuid().optional(),
-})
+import { ClinicalFindingSchema } from '../../../../../../../shared/clinical_finding_post.ts'
 
 /*
   This route sits outside any workflow. The workflow is the patient's current one,

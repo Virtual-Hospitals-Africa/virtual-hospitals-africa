@@ -16,6 +16,8 @@ import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
 import negate from '../../util/negate.ts'
+import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
+import { assert } from 'std/assert/assert.ts'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
@@ -58,10 +60,12 @@ function asFindingModalMetadata({
 }
 
 export default function WarningSignsInnerContent({
+  post_route,
   search_results,
   snomed_warning_signs_async_search,
   warning_signs,
 }: {
+  post_route: string // /app/organizations/[organization_id]/patients/[patient_id]/open_encounter/clinical_finding
   search_results: Signal<null | WarningSignWithMaybeRecord[]>
   snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
   warning_signs: WarningSignWithMaybeRecord[]
@@ -71,8 +75,11 @@ export default function WarningSignsInnerContent({
       sign.existing_record?.existence === 'Yes' && {
         ...sign,
         entered: sign.existing_record.augmented || asEntered(sign),
+        saving: false,
       }),
   )
+
+  const follow_ups_needed = useSignal([])
 
   const table_signs_to_display = computed(() => search_results.value || warning_signs)
 
@@ -104,6 +111,7 @@ export default function WarningSignsInnerContent({
     const checked_sign = {
       ...sign,
       entered: sign.entered || asEntered(sign),
+      saving: false as const,
     }
     checked_signs.value = [
       ...checked_signs.value,
@@ -129,18 +137,79 @@ export default function WarningSignsInnerContent({
     }
   }
 
-  function updatedSigns(finding: EnteredFinding | typeof RemoveFindingSymbol) {
-    const isActiveSign = (sign: CheckedWarningSign) => sameSign(sign, active_modal.value!.sign)
+  async function postEntered(sign: ClinicalFindingPostBody) {
+    const as_finding_id = crypto.randomUUID()
+    const response = await fetch(post_route, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(sign),
+    })
+  }
+
+  function updateSigns(finding: EnteredFinding | typeof RemoveFindingSymbol) {
+    const active_modal_sign = active_modal.value!.sign
+    const isActiveSign = (sign: CheckedWarningSign) => sameSign(sign, active_modal_sign)
 
     if (finding === RemoveFindingSymbol) {
-      return checked_signs.value.filter(negate(isActiveSign))
+      checked_signs.value = checked_signs.value.filter(negate(isActiveSign))
+      return
     }
 
-    return checked_signs.value.map((s) => isActiveSign(s) ? { ...s, entered: finding } : s)
+    let edited: CheckedWarningSign
+    checked_signs.value = checked_signs.value.map((sign) => {
+      if (!isActiveSign(sign)) return sign
+      assert(!edited)
+
+      // TODO
+      // if (sign.existing_record) {
+      //   if (sign.existing_record.augmented.s_expression === finding.s_expression) {
+      //     ...
+      //   }
+      // }
+
+      const as_finding_id = crypto.randomUUID()
+      const to_post: ClinicalFindingPostBody = {
+        finding_id: as_finding_id,
+        s_expression: finding.s_expression,
+        priority_level: finding.priority,
+        // TODO
+        // entered_in_error_record_id
+      }
+      fetch(post_route, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(to_post),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          assert(json.success)
+          checked_signs.value = checked_signs.value.map((sign) => {
+            if (!isActiveSign(sign)) return sign
+            // TODO consider assert(sign.saving) ?
+            if (!sign.saving) return sign
+            if (sign.saving.as_finding_id !== as_finding_id) return sign
+            return {
+              ...sign,
+              existing_record: {
+                id: as_finding_id,
+                existence: 'Yes' as const,
+                augmented: finding,
+              },
+              saving: false,
+            }
+          })
+        })
+      return edited = {
+        ...sign,
+        entered: finding,
+        saving: { as_finding_id },
+      }
+    })
+    assert(edited!)
   }
 
   function onSaveDetails(finding: EnteredFinding | typeof RemoveFindingSymbol) {
-    checked_signs.value = updatedSigns(finding)
+    updateSigns(finding)
     active_modal.value = null
   }
 

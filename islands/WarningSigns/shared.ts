@@ -36,7 +36,7 @@ export const EMERGENCY_SUBCATEGORY_ORDER = [
 
 export type CategoryConfig = typeof CATEGORIES[number]
 
-export type CheckedWarningSign = WarningSignWithMaybeRecord & { entered: EnteredFinding }
+export type CheckedWarningSign = WarningSignWithMaybeRecord & { entered: EnteredFinding; saving: false | { as_finding_id: string } }
 export type UncheckedWarningSign = WarningSignWithMaybeRecord & { entered?: never }
 
 export type ToggleableWarningSign = CheckedWarningSign | UncheckedWarningSign
