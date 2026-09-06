@@ -45,6 +45,8 @@ type InsertCommon = {
 }
 
 export type FindingNodeToInsert = InsertableFindingBase & {
+  // Callers may supply the record id, as when the frontend generates it ahead of time
+  id?: string
   priority?: Maybe<{
     level: Priority
     by_system: boolean
@@ -199,7 +201,13 @@ export const patient_findings = base({
       throw new Error('insertMany requires at least one finding or measurement')
     }
 
-    const procedure_id = procedure.procedure_id || generateUUID()
+    /*
+      With if_not_already_exists, procedure.procedure_id is a query for a procedure that may or may
+      not exist yet. The procedure_record CTE below resolves to either that existing record or the one
+      inserted here, so dependent rows reference it via a subquery rather than a fixed id.
+    */
+    const procedure_id = procedure.if_not_already_exists ? sql<string>`(select id from procedure_record)` : procedure.procedure_id || generateUUID()
+    const new_procedure_id = generateUUID()
 
     // Parse findings and generate IDs
     const findings_to_insert = findings.map((finding) => {
@@ -208,10 +216,11 @@ export const patient_findings = base({
       assertHasProperty(finding_node, 'specific_snomed_concept')
       const priority = typeof finding === 'object' && 'priority' in finding ? finding.priority : undefined
       const score = typeof finding === 'object' && 'score' in finding ? finding.score : undefined
+      const record_id = typeof finding === 'object' && finding.id ? finding.id : generateUUID()
       return {
         patient_id,
         patient_encounter_id,
-        record_id: generateUUID(),
+        record_id,
         ...finding_node,
         priority,
         score,
@@ -381,9 +390,21 @@ export const patient_findings = base({
 
     return baseInsertMany(trx, records_to_insert)
       .with(
-        'inserting_procedure_record',
+        'maybe_inserting_procedure_record',
         (qb) =>
-          procedure.create_with_specific_snomed_concept_id
+          procedure.if_not_already_exists
+            ? qb.insertInto('patient_records')
+              .columns(['id', 'patient_id', 'patient_encounter_id', 'root_snomed_concept_id', 'specific_snomed_concept_id'])
+              .expression(
+                qb.selectNoFrom([
+                  literalString(new_procedure_id).as('id'),
+                  literalString(patient_id).as('patient_id'),
+                  literalString(patient_encounter_id).as('patient_encounter_id'),
+                  literalString(PROCEDURE.id).as('root_snomed_concept_id'),
+                  literalString(procedure.create_with_specific_snomed_concept_id).as('specific_snomed_concept_id'),
+                ]).where(({ not, exists }) => not(exists(procedure.procedure_id))),
+              ).returning('id')
+            : procedure.create_with_specific_snomed_concept_id
             ? qb.insertInto('patient_records')
               .values({
                 id: procedure_id,
@@ -396,9 +417,25 @@ export const patient_findings = base({
               literalString(procedure.procedure_id!).as('id'),
             ]),
       ).with(
+        'procedure_record',
+        (qb) => {
+          const maybe_inserted = qb.selectFrom('maybe_inserting_procedure_record').select('id')
+          // All CTEs share one snapshot, so at most one side of this union yields a row
+          return procedure.if_not_already_exists ? maybe_inserted.unionAll(procedure.procedure_id).limit(1) : maybe_inserted
+        },
+      ).with(
         'inserting_procedure',
         (qb) =>
-          procedure.create_with_specific_snomed_concept_id
+          procedure.if_not_already_exists
+            ? qb.insertInto('patient_procedures')
+              .columns(['id', 'employment_id'])
+              .expression(
+                qb.selectFrom('maybe_inserting_procedure_record').select([
+                  'id',
+                  literalString(employment_id).as('employment_id'),
+                ]),
+              )
+            : procedure.create_with_specific_snomed_concept_id
             ? qb.insertInto('patient_procedures')
               .values({
                 id: procedure_id,
@@ -485,11 +522,11 @@ export const patient_findings = base({
         'inserting_scores',
         (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
       ).selectFrom('inserting_records')
-      .innerJoin('inserting_procedure_record', (join) => join.onTrue())
-      .groupBy('inserting_procedure_record.id')
+      .innerJoin('procedure_record', (join) => join.onTrue())
+      .groupBy('procedure_record.id')
       .select([
         success_true,
-        'inserting_procedure_record.id as procedure_id',
+        'procedure_record.id as procedure_id',
         literalJsonArray(findings_to_insert.map(insertedRecord)).as('findings'),
         literalJsonArray(measurements_to_insert.map(insertedRecord)).as('measurements'),
       ])

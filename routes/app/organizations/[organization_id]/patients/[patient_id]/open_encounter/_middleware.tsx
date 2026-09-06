@@ -528,16 +528,17 @@ export function nextRouteAfterCompletingWorkflow(
 export function completedProcedure(
   ctx: OpenEncounterWorkflowContext,
 ) {
-  const previously_completed_procedure_record_id = ctx.state.workflow_step_snomed_concept
-    ? ctx.state.previously_completed_procedures.workflow_step_record_id
-    : ctx.state.previously_completed_procedures.workflow_record_id
+  const { workflow_step_snomed_concept, previously_completed_procedures } = ctx.state
+
+  const previously_completed_procedure_record_id = workflow_step_snomed_concept
+    ? previously_completed_procedures.workflow_step_record_id
+    : previously_completed_procedures.workflow_record_id
 
   if (previously_completed_procedure_record_id) {
     return {
       procedure_id: previously_completed_procedure_record_id,
     }
   }
-
   return null
 }
 

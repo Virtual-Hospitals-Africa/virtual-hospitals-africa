@@ -118,6 +118,26 @@ export const patient_procedures = base({
   top_level_table: 'patient_procedures',
   baseQuery,
   formatResult: formatRecord,
+  previouslyCompletedWorkflowStepQuery(
+    trx: TrxOrDbOrQueryCreator,
+    {
+      patient_encounter_id,
+      workflow_step_snomed_concept,
+    }: {
+      patient_encounter_id: string
+      workflow_step_snomed_concept: SnomedConcept
+    },
+  ) {
+    return trx.selectFrom('patient_procedures')
+      .innerJoin(
+        'patient_records',
+        'patient_procedures.id',
+        'patient_records.id',
+      )
+      .where('specific_snomed_concept_id', '=', workflow_step_snomed_concept.id)
+      .where('patient_encounter_id', '=', patient_encounter_id)
+      .select('patient_records.id')
+  },
   async previouslyCompleted(
     trx: TrxOrDbOrQueryCreator,
     {
