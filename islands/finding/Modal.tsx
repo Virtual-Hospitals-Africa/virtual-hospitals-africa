@@ -11,11 +11,12 @@ type FindingModalProps = {
     just_checked: boolean
   }
   onSave(finding: EnteredFinding | typeof RemoveFindingSymbol): void
+  onChange?(finding: EnteredFinding): void
   onClose: () => void
 }
 
 export function FindingModal(
-  { finding, onSave, onClose }: FindingModalProps,
+  { finding, onSave, onChange, onClose }: FindingModalProps,
 ) {
   return (
     <Transition.Root show={finding !== null} as={Fragment}>
@@ -48,6 +49,7 @@ export function FindingModal(
                   <FindingModalContents
                     {...finding}
                     onSave={onSave}
+                    onChange={onChange}
                     onClose={onClose}
                   />
                 )}

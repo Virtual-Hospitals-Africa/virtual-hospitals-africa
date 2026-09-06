@@ -1,7 +1,15 @@
 import { computed, Signal, useSignal } from '@preact/signals'
+import { useMemo, useRef } from 'preact/hooks'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
-import { AsyncSearchHookResult, EnteredFinding, FindingModalMetadata, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../types.ts'
+import {
+  AsyncSearchHookResult,
+  EnteredFinding,
+  FindingModalMetadata,
+  FindingToCheckFor,
+  SnomedWarningSignSearchResult,
+  WarningSignWithMaybeRecord,
+} from '../../types.ts'
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
 import { uniqBy } from '../../util/uniqBy.ts'
@@ -18,6 +26,9 @@ import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
 import negate from '../../util/negate.ts'
 import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
 import { assert } from 'std/assert/assert.ts'
+import debounce from '../../util/debounce.ts'
+import { accumulateFollowUps, FollowUpGroup } from './follow_ups.ts'
+import { FollowUpsPanel } from './FollowUpsPanel.tsx'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
@@ -61,11 +72,13 @@ function asFindingModalMetadata({
 
 export default function WarningSignsInnerContent({
   post_route,
+  findings_to_check_for_route,
   search_results,
   snomed_warning_signs_async_search,
   warning_signs,
 }: {
   post_route: string // /app/organizations/[organization_id]/patients/[patient_id]/open_encounter/clinical_finding
+  findings_to_check_for_route: string | null // .../open_encounter/findings_to_check_for, null skips prefetching (tutorial)
   search_results: Signal<null | WarningSignWithMaybeRecord[]>
   snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
   warning_signs: WarningSignWithMaybeRecord[]
@@ -79,7 +92,42 @@ export default function WarningSignsInnerContent({
       }),
   )
 
-  const follow_ups_needed = useSignal([])
+  const follow_ups_needed = useSignal<FollowUpGroup[]>([])
+
+  // Dry-run results keyed by the exact s_expression, held as promises so a save
+  // can await a request still in flight. Failed requests are evicted.
+  const follow_ups_cache = useRef(new Map<string, Promise<FindingToCheckFor[]>>())
+  // The first onChange from an opened modal fetches immediately, subsequent edits are debounced
+  const modal_prefetched = useRef(false)
+
+  function fetchFollowUps(s_expression: string): Promise<FindingToCheckFor[]> {
+    if (!findings_to_check_for_route) return Promise.resolve([])
+    const cached = follow_ups_cache.current.get(s_expression)
+    if (cached) return cached
+
+    const params = new URLSearchParams({ s_expression })
+    const request = fetch(`${findings_to_check_for_route}?${params}`, { headers: { accept: 'application/json' } })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`findings_to_check_for responded ${response.status}`)
+        const json = await response.json()
+        return json.findings_to_check_for as FindingToCheckFor[]
+      })
+      .catch((error) => {
+        console.error(error)
+        follow_ups_cache.current.delete(s_expression)
+        return []
+      })
+    follow_ups_cache.current.set(s_expression, request)
+    return request
+  }
+
+  const debounced_fetch_follow_ups = useMemo(() => debounce(fetchFollowUps, 220), [findings_to_check_for_route])
+
+  function onModalChange(finding: EnteredFinding) {
+    if (modal_prefetched.current) return debounced_fetch_follow_ups(finding.s_expression)
+    modal_prefetched.current = true
+    fetchFollowUps(finding.s_expression)
+  }
 
   const table_signs_to_display = computed(() => search_results.value || warning_signs)
 
@@ -117,6 +165,7 @@ export default function WarningSignsInnerContent({
       ...checked_signs.value,
       checked_sign,
     ]
+    modal_prefetched.current = false
     active_modal.value = {
       just_checked: true,
       sign: checked_sign,
@@ -130,20 +179,12 @@ export default function WarningSignsInnerContent({
   }
 
   function onOpenDetails(sign: CheckedWarningSign) {
+    modal_prefetched.current = false
     active_modal.value = {
       sign,
       just_checked: false,
       metadata: asFindingModalMetadata(sign),
     }
-  }
-
-  async function postEntered(sign: ClinicalFindingPostBody) {
-    const as_finding_id = crypto.randomUUID()
-    const response = await fetch(post_route, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(sign),
-    })
   }
 
   function updateSigns(finding: EnteredFinding | typeof RemoveFindingSymbol) {
@@ -180,8 +221,9 @@ export default function WarningSignsInnerContent({
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(to_post),
       })
-        .then((response) => response.json())
-        .then((json) => {
+        .then(async (response) => {
+          if (!response.ok) throw new Error(`clinical_finding responded ${response.status}: ${await response.text()}`)
+          const json = await response.json()
           assert(json.success)
           checked_signs.value = checked_signs.value.map((sign) => {
             if (!isActiveSign(sign)) return sign
@@ -199,6 +241,14 @@ export default function WarningSignsInnerContent({
             }
           })
         })
+        .catch((error) => {
+          // The sign stays entered so it is still submitted with the page, but is no longer marked as saving
+          console.error(error)
+          checked_signs.value = checked_signs.value.map((sign) => {
+            if (!isActiveSign(sign) || !sign.saving || sign.saving.as_finding_id !== as_finding_id) return sign
+            return { ...sign, saving: false }
+          })
+        })
       return edited = {
         ...sign,
         entered: finding,
@@ -209,8 +259,20 @@ export default function WarningSignsInnerContent({
   }
 
   function onSaveDetails(finding: EnteredFinding | typeof RemoveFindingSymbol) {
+    const key = uniqueIdentifier(active_modal.value!.sign)
     updateSigns(finding)
     active_modal.value = null
+    debounced_fetch_follow_ups.cancel()
+
+    if (finding === RemoveFindingSymbol) {
+      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: null, findings_to_check_for: [] })
+      return
+    }
+
+    // Usually already resolved having been prefetched while the modal was open
+    fetchFollowUps(finding.s_expression).then((findings_to_check_for) => {
+      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, findings_to_check_for })
+    })
   }
 
   return (
@@ -258,7 +320,12 @@ export default function WarningSignsInnerContent({
           entered: active_modal.value.sign.entered,
         }}
         onSave={onSaveDetails}
+        onChange={onModalChange}
         onClose={() => active_modal.value = null}
+      />
+      <FollowUpsPanel
+        groups={follow_ups_needed.value}
+        onDismiss={() => follow_ups_needed.value = []}
       />
     </div>
   )
