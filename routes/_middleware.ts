@@ -8,7 +8,6 @@ import { __local_storage__ } from '../backend/local_storage.ts'
 import { stripAnsiCode } from 'std/fmt/colors.ts'
 import { grokPostgresError } from '../backend/grokPostgresError.ts'
 import { logToFileIfOnServer } from '../util/logToFileIfOnServer.ts'
-// import { grokPostgresError } from '../backend/grokPostgresError.ts'
 
 function generateTraceparent(): string {
   const trace_id = generateUUID().replace(/-/g, '')
@@ -51,9 +50,6 @@ async function handleError(ctx: Context<any>) {
       assert(typeof error.location === 'string', '302 redirect must have a location')
       return redirect(error.location)
     }
-    Object.assign(error, {
-      url: ctx.url.href,
-    })
     if (error instanceof ZodError) {
       console.error(error)
       return new Response(JSON.stringify(error), {
