@@ -61,6 +61,13 @@ export async function requestAsRecord(
 
   const content_type = req.headers.get('content-type')
 
+  if (content_type === 'application/json') {
+    return {
+      ...params,
+      ...(await req.json()),
+    }
+  }
+
   let body_consumed = false
   let form_data: FormData | undefined
   if (content_type?.startsWith('multipart/form-data')) {
