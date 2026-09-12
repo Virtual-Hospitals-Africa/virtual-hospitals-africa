@@ -7,7 +7,8 @@ import { Button } from './library/Button.tsx'
 
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { PatientDrawerV4Props } from '../types.ts'
+import { PriorityEscalationListener } from '../islands/PriorityEscalation/PriorityEscalationListener.tsx'
+import { PatientDrawerV4Props, RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../types.ts'
 import { Workflow } from '../db.d.ts'
 import { hyphenate } from '../util/hyphenate.ts'
 import { StepsSidebar } from './library/sidebar/Steps.tsx'
@@ -34,6 +35,8 @@ export function OpenEncounterWorkflowLayout({
   workflow,
   care_team,
   onSubmit,
+  escalation_candidates,
+  nearest_hospital,
 }: {
   id: string
   url: URL
@@ -51,6 +54,8 @@ export function OpenEncounterWorkflowLayout({
   children: ComponentChildren
   ContainerTag: 'form' | 'div'
   onSubmit?: (event: TargetedSubmitEvent<HTMLButtonElement>) => void
+  escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
+  nearest_hospital: RenderedOrganization | null
 } & PatientDrawerV4Props): JSX.Element {
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
@@ -82,6 +87,10 @@ export function OpenEncounterWorkflowLayout({
         )
         : undefined}
     >
+      <PriorityEscalationListener
+        escalation_candidates={escalation_candidates}
+        nearest_hospital={nearest_hospital}
+      />
       <ContainerTag method='POST' className='h-full flex flex-col' id={id}>
         <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>
           {children}

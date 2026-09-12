@@ -157,6 +157,8 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         // next_step_text='Next'
         // buttons={<TutorialModeButton />}
         onSubmit={(e) => e.preventDefault()}
+        escalation_candidates={[]}
+        nearest_hospital={null}
       >
         <StepRenderer
           step={current_step}

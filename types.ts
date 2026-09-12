@@ -3210,6 +3210,8 @@ export type WorkflowState = {
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   priority_evaluation: null | RenderedEvaluationRelativeToHealthWorker
   patient_history: RenderedPatientHistory
+  escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
+  nearest_hospital: RenderedOrganization | null
 }
 
 export type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState
