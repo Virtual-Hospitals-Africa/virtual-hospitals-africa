@@ -124,6 +124,118 @@ function markInvalid(
     .executeTakeFirstOrThrow()
 }
 
+/*
+  Marks a single finding entered in error, expressing every precondition in SQL rather than
+  reading the record into JS first. The target CTE yields the finding only when it belongs to
+  this patient, belongs to this encounter, and is still valid; nothing else in the statement
+  produces rows without it. So an undefined result means the caller asked for something it
+  isn't entitled to alter, which callers surface as a 400.
+*/
+export function markFindingEnteredInError(
+  trx: TrxOrDbOrQueryCreator,
+  {
+    patient_id,
+    patient_encounter_id,
+    employment_id,
+    procedure_id,
+    record_id,
+  }: {
+    patient_id: string
+    patient_encounter_id: string
+    employment_id: string
+    procedure_id: string
+    record_id: string
+  },
+) {
+  const entered_in_error_id = generateUUID()
+
+  return trx.with('target', () =>
+    trx.selectFrom('patient_findings')
+      .innerJoin('patient_records', 'patient_records.id', 'patient_findings.id')
+      .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_findings.id')
+      .where('patient_findings.id', '=', record_id)
+      .where('patient_records.patient_id', '=', patient_id)
+      .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
+      .select('patient_findings.id'))
+    .with('affected_diagnoses', (qb) =>
+      patient_evaluations.distinctIds(
+        trx,
+        {
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: DIAGNOSIS.id,
+        },
+      ).where(
+        'patient_evaluations.id',
+        'in',
+        qb
+          .selectFrom('patient_record_relations')
+          .innerJoin('patient_records', 'patient_records.id', 'patient_record_relations.id')
+          .where('patient_record_relations.destination_id', 'in', qb.selectFrom('target').select('target.id'))
+          .where('patient_records.specific_snomed_concept_id', '=', EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id)
+          .select('patient_record_relations.source_id as diagnosis_id')
+          .distinct(),
+      )
+        .select([
+          sql`gen_random_uuid()`.as('invalid_diagnosis_id'),
+        ]))
+    .with('inserting_altered_diagnosis_records', (qb) =>
+      qb.insertInto('patient_records')
+        .columns(['id', 'patient_id', 'patient_encounter_id', 'root_snomed_concept_id', 'specific_snomed_concept_id'])
+        .expression(
+          qb.selectFrom('affected_diagnoses')
+            .select([
+              'affected_diagnoses.invalid_diagnosis_id as id',
+              sql.lit(patient_id).as('patient_id'),
+              sql.lit(patient_encounter_id).as('patient_encounter_id'),
+              sql.lit(EVALUATION_ACTION.id).as('root_snomed_concept_id'),
+              sql.lit(ALTERED.id).as('specific_snomed_concept_id'),
+            ]),
+        ))
+    .with('inserting_altered_diagnosis_evaluations', (qb) =>
+      qb.insertInto('patient_evaluations')
+        .columns(['id', 'employment_id', 'procedure_id', 'evaluates_record_id', 'by_system'])
+        .expression(
+          qb.selectFrom('affected_diagnoses')
+            .select([
+              'affected_diagnoses.invalid_diagnosis_id as id',
+              sql.lit(employment_id).as('employment_id'),
+              sql.lit(procedure_id).as('procedure_id'),
+              'affected_diagnoses.id as evaluates_record_id',
+              sql.lit(false).as('by_system'),
+            ]),
+        ))
+    .with('inserting_record', (qb) =>
+      qb.insertInto('patient_records')
+        .columns(['id', 'patient_id', 'patient_encounter_id', 'root_snomed_concept_id', 'specific_snomed_concept_id'])
+        .expression(
+          qb.selectFrom('target')
+            .select([
+              sql.lit(entered_in_error_id).as('id'),
+              sql.lit(patient_id).as('patient_id'),
+              sql.lit(patient_encounter_id).as('patient_encounter_id'),
+              sql.lit(EVALUATION_ACTION.id).as('root_snomed_concept_id'),
+              sql.lit(ENTERED_IN_ERROR.id).as('specific_snomed_concept_id'),
+            ]),
+        ))
+    .with('inserting_evaluation', (qb) =>
+      qb.insertInto('patient_evaluations')
+        .columns(['id', 'employment_id', 'procedure_id', 'evaluates_record_id', 'by_system'])
+        .expression(
+          qb.selectFrom('target')
+            .select([
+              sql.lit(entered_in_error_id).as('id'),
+              sql.lit(employment_id).as('employment_id'),
+              sql.lit(procedure_id).as('procedure_id'),
+              'target.id as evaluates_record_id',
+              sql.lit(false).as('by_system'),
+            ]),
+        ))
+    .selectFrom('target')
+    .select(success_true)
+    .executeTakeFirst()
+}
+
 export function markAltered(
   trx: TrxOrDbOrQueryCreator,
   opts: MarkInvalidSharedOpts,

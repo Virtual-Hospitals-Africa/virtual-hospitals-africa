@@ -113,6 +113,18 @@ export const EVENTS = {
       },
     },
   ),
+  SingleFindingMarkedAsError: defineEvent(
+    z.object({
+      workflow: z.enum(WORKFLOWS),
+      step: z.string(),
+      patient_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
+      patient_encounter_id: z.string().uuid(),
+      procedure_id: z.string().uuid(),
+      entered_in_error_record_id: z.string().uuid(),
+    }),
+    {},
+  ),
   ProcedureCompleted: defineEvent(
     z.object({
       workflow: z.enum(WORKFLOWS),
