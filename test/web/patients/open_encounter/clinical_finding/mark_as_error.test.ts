@@ -118,7 +118,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
               patient_encounter_id,
               patient_age_determination: 'adult',
               procedure_id,
-              entered_in_error_record_id: cardiac_arrest.id,
+              altered_record_id: cardiac_arrest.id,
             },
           },
         )

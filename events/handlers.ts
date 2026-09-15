@@ -155,7 +155,7 @@ export const EVENTS = {
       patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
       patient_encounter_id: z.string().uuid(),
       procedure_id: z.string().uuid(),
-      entered_in_error_record_id: z.string().uuid(),
+      altered_record_id: z.string().uuid(),
     }),
     {},
   ),
