@@ -223,7 +223,7 @@ export default function WarningSignsInnerContent({
         s_expression: finding.s_expression,
         priority_level: finding.priority,
         // TODO
-        // entered_in_error_record_id
+        // altered_record_id
       }
       fetch(post_route, {
         method: 'POST',

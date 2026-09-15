@@ -131,7 +131,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       assertEquals(cough.priority, null)
     })
 
-    itParallel('marks the entered_in_error_record_id as entered in error', async () => {
+    itParallel('marks the altered_record_id as altered', async () => {
       const setup = await setupTriageNewPatient({ patient_demographics: {} })
       const { patient_id, triageRoute } = setup
       const referer = `${route}${triageRoute('brief_history')}`
@@ -141,7 +141,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       await postClinicalFindingOk(setup, { finding_id: first_finding_id, s_expression: COUGH }, { referer })
       await postClinicalFindingOk(
         setup,
-        { finding_id: second_finding_id, s_expression: COUGH, entered_in_error_record_id: first_finding_id },
+        { finding_id: second_finding_id, s_expression: COUGH, altered_record_id: first_finding_id },
         { referer },
       )
 
