@@ -2435,9 +2435,8 @@ export type ExtantProcedureOrCreationIntent = {
 } | {
   procedure_id: IdSelection
   create_with_specific_snomed_concept_id: string
-  if_not_already_exists?: true
+  if_not_already_exists: true
 }
-
 export type PatientFamilyHistoryShared = {
   snomed_concept_id: string
   family_members: Array<{

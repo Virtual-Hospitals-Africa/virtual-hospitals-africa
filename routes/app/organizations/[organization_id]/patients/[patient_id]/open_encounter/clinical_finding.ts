@@ -1,56 +1,15 @@
-import { z } from 'zod'
 import { assert } from 'std/assert/assert.ts'
 import { postHandler } from '../../../../../../../backend/postHandler.ts'
+import { workflowStepFromReferer } from '../../../../../../../backend/workflowStepFromReferer.ts'
 import type { OpenEncounterContext } from '../../../../../../../types.ts'
-import type { Workflow } from '../../../../../../../db.d.ts'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../db/models/patient_findings.ts'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
 import { markEnteredInError } from '../../../../../../../db/models/patient_records_base.ts'
 import { events } from '../../../../../../../db/models/events.ts'
-import { sExpressionZodValidator } from '../../../../../../../shared/s_expression.ts'
-import { insertable_finding_base } from '../../../../../../../shared/s_expression_schemas.ts'
-import { ORDERED_PRIORITIES } from '../../../../../../../shared/priorities.ts'
-import { WORKFLOW_STEPS, workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
+import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
 import { json } from '../../../../../../../util/responses.ts'
-import compact from '../../../../../../../util/compact.ts'
-
-export const ClinicalFindingSchema = z.object({
-  finding_id: z.string().uuid(),
-  s_expression: sExpressionZodValidator(insertable_finding_base),
-  priority_level: z.enum(ORDERED_PRIORITIES).optional(),
-  entered_in_error_record_id: z.string().uuid().optional(),
-})
-
-/*
-  This route sits outside any workflow. The workflow is the patient's current one,
-  but the encounter only tracks which steps are complete, not which step page the
-  health worker is on (they may be revisiting a completed step). So the step comes
-  from the referer, whose path must be a step of the current workflow declared in
-  shared/workflow.ts for this very encounter.
-*/
-function workflowStepFromReferer(
-  ctx: OpenEncounterContext,
-): { workflow: Workflow; step: string } {
-  const { current_workflow } = ctx.state.encounter.status.patient_presence
-  assertOr400(current_workflow, 'The patient must be in a workflow to add a finding')
-
-  const referer = ctx.req.headers.get('referer')
-  assertOr400(referer, 'Missing referer header, expected to be sent from a workflow step page')
-
-  const { pathname } = new URL(referer, ctx.url.origin)
-  const workflow_step_prefix = `${ctx.state.open_encounter_pathname}/${current_workflow}/`
-  assertOr400(
-    pathname.startsWith(workflow_step_prefix),
-    `Expected referer to be a ${current_workflow} step page of this patient's open encounter, got: ${pathname}`,
-  )
-
-  const [step, ...rest] = compact(pathname.slice(workflow_step_prefix.length).split('/'))
-  assertOr400(step && WORKFLOW_STEPS[current_workflow].includes(step), `Invalid step in referer for ${current_workflow}: ${step}`)
-  assertOr400(rest.length === 0, `Unexpected trailing path in referer: ${pathname}`)
-
-  return { workflow: current_workflow, step }
-}
+import { ClinicalFindingSchema } from '../../../../../../../shared/clinical_finding_post.ts'
 
 export const handler = postHandler(
   ClinicalFindingSchema,
