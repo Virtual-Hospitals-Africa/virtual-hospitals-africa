@@ -471,6 +471,56 @@ export const additional_tasks = {
       task_groups: task_groups_complete_first.toReversed(),
     }
   },
+  /*
+    Marks a task done from a procedure other than the additional tasks page, as when the
+    health worker says none of a check_for task's findings apply from the warning signs
+    page. The task's evaluation is materialised asynchronously once the record it is due to
+    has been tagged, so it may not exist yet, in which case this throws rather than silently
+    leaving the task open. Should the pipeline have materialised the task more than once,
+    every evaluation is marked done.
+  */
+  async markTaskDone(
+    trx: TrxOrDbOrQueryCreator,
+    { patient_id, patient_encounter_id, procedure_id, task_id }: {
+      patient_id: string
+      patient_encounter_id: string
+      procedure_id: string
+      task_id: string
+    },
+  ): Promise<string> {
+    const evaluations = await trx.selectFrom('patient_record_tasks')
+      .innerJoin('patient_records', 'patient_records.id', 'patient_record_tasks.id')
+      .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
+      .leftJoin(
+        (eb) =>
+          eb.selectFrom('patient_record_relations')
+            .innerJoin('patient_records as done_records', 'done_records.id', 'patient_record_relations.id')
+            .where('patient_record_relations.source_id', '=', procedure_id)
+            .where('done_records.specific_snomed_concept_id', '=', DONE.id)
+            .select('patient_record_relations.destination_id')
+            .as('already_done'),
+        (join) => join.onRef('already_done.destination_id', '=', 'patient_record_tasks.id'),
+      )
+      .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
+      .where('patient_record_tasks.task_id', '=', task_id)
+      .select(['patient_record_tasks.id', 'already_done.destination_id as already_done'])
+      .execute()
+    assert(
+      evaluations.length,
+      `No evaluation for task "${task_id}" in encounter ${patient_encounter_id}. The task pipeline for the record it is due to may not have run yet`,
+    )
+
+    const evaluation_ids = compactMap(evaluations, (evaluation) => !evaluation.already_done && evaluation.id)
+    if (!evaluation_ids.length) return `Task "${task_id}" was already marked done by procedure ${procedure_id}`
+
+    await additional_tasks.procedureCompletedTasks(trx, {
+      patient_id,
+      patient_encounter_id,
+      procedure_id,
+      evaluation_ids,
+    })
+    return `Marked task "${task_id}" done by procedure ${procedure_id}`
+  },
   async procedureCompletedTasks(
     trx: TrxOrDbOrQueryCreator,
     { procedure_id, evaluation_ids, patient_id, patient_encounter_id }: {

@@ -113,6 +113,40 @@ export const EVENTS = {
       },
     },
   ),
+  /*
+    The health worker said none of a check_for task's remaining findings apply, recording
+    them as negatives. The task is marked done before the negatives are tagged so that by the
+    time RecordDueTosTagged is processed, insertImprobableDiagnoses sees the DONE relation.
+    Both steps run in one listener, and so one transaction, to keep that ordering.
+  */
+  NoneOfTheAboveFindings: defineEvent(
+    z.object({
+      workflow: z.enum(WORKFLOWS),
+      step: z.string(),
+      patient_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
+      patient_encounter_id: z.string().uuid(),
+      procedure_id: z.string().uuid(),
+      task_id: z.string(),
+      negative_finding_ids: z.string().uuid().array(),
+    }),
+    {
+      async markTaskDoneThenTagRecordsWithDueTos(trx, { data: { task_id, negative_finding_ids, ...data } }) {
+        const marked = await additional_tasks.markTaskDone(trx, {
+          patient_id: data.patient_id,
+          patient_encounter_id: data.patient_encounter_id,
+          procedure_id: data.procedure_id,
+          task_id,
+        })
+        if (!negative_finding_ids.length) return `${marked}. Nothing newly recorded to tag`
+        const tagged = await due_to.addFromNewRecords(trx, {
+          ...data,
+          records: negative_finding_ids.map((id) => ({ id, existence: 'No' as const })),
+        })
+        return `${marked}. ${tagged}`
+      },
+    },
+  ),
   SingleFindingMarkedAsError: defineEvent(
     z.object({
       workflow: z.enum(WORKFLOWS),

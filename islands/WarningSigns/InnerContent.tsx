@@ -27,8 +27,9 @@ import negate from '../../util/negate.ts'
 import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../../util/debounce.ts'
-import { accumulateFollowUps, FollowUpGroup } from './follow_ups.ts'
+import { accumulateFollowUps, asCheckedFollowUpSign, asFollowUpSign, findCheckedFollowUp, FollowUpGroup, noneOfTheAboveRequests } from './follow_ups.ts'
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
+import { NoneOfTheAboveFindingsResponse } from '../../shared/none_of_the_above_findings_post.ts'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
@@ -73,12 +74,14 @@ function asFindingModalMetadata({
 export default function WarningSignsInnerContent({
   post_route,
   findings_to_check_for_route,
+  none_of_the_above_findings_route,
   search_results,
   snomed_warning_signs_async_search,
   warning_signs,
 }: {
   post_route: string // /app/organizations/[organization_id]/patients/[patient_id]/open_encounter/clinical_finding
   findings_to_check_for_route: string | null // .../open_encounter/findings_to_check_for, null skips prefetching (tutorial)
+  none_of_the_above_findings_route: string | null // .../open_encounter/none_of_the_above_findings, null hides the button (tutorial)
   search_results: Signal<null | WarningSignWithMaybeRecord[]>
   snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
   warning_signs: WarningSignWithMaybeRecord[]
@@ -93,6 +96,11 @@ export default function WarningSignsInnerContent({
   )
 
   const follow_ups_needed = useSignal<FollowUpGroup[]>([])
+
+  // Follow ups recorded as absent via "None of the above". Like every record made from this
+  // page they must be resubmitted with it, so they join the hidden inputs.
+  const negated_follow_ups = useSignal<WarningSignWithMaybeRecord[]>([])
+  const none_of_the_above_saving = useSignal(false)
 
   // Dry-run results keyed by the exact s_expression, held as promises so a save
   // can await a request still in flight. Failed requests are evicted.
@@ -144,6 +152,7 @@ export default function WarningSignsInnerContent({
     uniqBy([
       ...checked_signs.value,
       ...table_signs_with_checked.value,
+      ...negated_follow_ups.value,
     ], uniqueIdentifier)
   )
 
@@ -272,7 +281,61 @@ export default function WarningSignsInnerContent({
     // Usually already resolved having been prefetched while the modal was open
     fetchFollowUps(finding.s_expression).then((findings_to_check_for) => {
       follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, findings_to_check_for })
+
+      // Follow ups already recorded as present in this encounter start out checked
+      const already_present = compactMap(findings_to_check_for, (follow_up) => {
+        if (findCheckedFollowUp(checked_signs.value, follow_up)) return
+        return asCheckedFollowUpSign(follow_up)
+      })
+      if (already_present.length) {
+        checked_signs.value = [...checked_signs.value, ...already_present]
+      }
     })
+  }
+
+  async function onNoneOfTheAbove() {
+    if (!none_of_the_above_findings_route || none_of_the_above_saving.value) return
+    none_of_the_above_saving.value = true
+
+    const follow_ups_by_s_expression = new Map(
+      follow_ups_needed.value.flatMap((group) => group.findings_to_check_for.map((follow_up) => [follow_up.s_expression, follow_up] as const)),
+    )
+
+    try {
+      // One after another so a finding checked for by two tasks is only recorded once
+      for (const request of noneOfTheAboveRequests(follow_ups_needed.value, checked_signs.value)) {
+        const response = await fetch(none_of_the_above_findings_route, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify(request),
+        })
+        if (!response.ok) throw new Error(`none_of_the_above_findings responded ${response.status}: ${await response.text()}`)
+        const json: NoneOfTheAboveFindingsResponse = await response.json()
+        assert(json.success)
+        negated_follow_ups.value = [
+          ...negated_follow_ups.value,
+          ...json.records.map(({ id, s_expression }) => {
+            const follow_up = follow_ups_by_s_expression.get(s_expression)
+            const sign = follow_up ? asFollowUpSign(follow_up) : asFollowUpSign({
+              s_expression,
+              name: s_expression,
+              task_ids: [request.task_id],
+              predefined_attributes: [],
+              relevant_qualifiers: [],
+              onset_required: false,
+              existing_record: null,
+            })
+            return { ...sign, existing_record: { id, existence: 'No' as const } }
+          }),
+        ]
+      }
+      follow_ups_needed.value = []
+    } catch (error) {
+      // The panel stays open so the health worker can try again
+      console.error(error)
+    } finally {
+      none_of_the_above_saving.value = false
+    }
   }
 
   return (
@@ -325,6 +388,11 @@ export default function WarningSignsInnerContent({
       />
       <FollowUpsPanel
         groups={follow_ups_needed.value}
+        checked_signs={checked_signs.value}
+        onCheck={onCheck}
+        onOpenDetails={onOpenDetails}
+        onNoneOfTheAbove={none_of_the_above_findings_route ? onNoneOfTheAbove : null}
+        none_of_the_above_saving={none_of_the_above_saving.value}
         onDismiss={() => follow_ups_needed.value = []}
       />
     </div>

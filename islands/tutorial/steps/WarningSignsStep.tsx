@@ -64,6 +64,7 @@ export function WarningSignsStep() {
     <WarningSignsInnerContent
       post_route='/tutorial/unused'
       findings_to_check_for_route={null}
+      none_of_the_above_findings_route={null}
       warning_signs={TUTORIAL_WARNING_SIGNS}
       search_results={search_results}
       snomed_warning_signs_async_search={mock_snomed_warning_signs_async_search.value}
