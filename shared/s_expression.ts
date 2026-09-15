@@ -326,6 +326,12 @@ export function sExpressionZodValidator<Schema extends Values<typeof schemas>>(
   return z.string().transform((expression) => parseWithSchema(expression, schema))
 }
 
+export function sExpressionsZodValidator<Schema extends Values<typeof schemas>>(
+  schema: Schema,
+) {
+  return z.string().transform((expression) => parseArrayWithSchema(expression, schema))
+}
+
 export function normalForm(s_expression: string): string {
   const trimmed = s_expression.trim()
   const match = trimmed.match(/^\(([a-z|\d|_]+)\s/)

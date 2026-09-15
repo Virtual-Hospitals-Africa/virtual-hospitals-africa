@@ -18,6 +18,11 @@ const nose_bleed: EnteredFinding = {
 
 const check_for = (name: string): FindingToCheckFor => ({
   s_expression: `(clinical_finding (snomed_concept "${name}" "finding"))`,
+  name,
+  task_ids: ['Check for something'],
+  predefined_attributes: [],
+  relevant_qualifiers: [],
+  onset_required: false,
   existing_record: null,
 })
 
