@@ -22,6 +22,7 @@ import sortBy from '../../util/sortBy.ts'
 import uniq from '../../util/uniq.ts'
 import { pMap } from '../../util/inParallel.ts'
 import matching from '../../util/matching.ts'
+import { NewRecordsToConsider } from '../../types.ts'
 
 const URGENT_BITE_STING_CHECK_FORS = [
   '(clinical_finding (snomed_concept "Generalized muscle weakness" "finding"))',
@@ -66,7 +67,8 @@ async function dryRun(
   return sortBy(result, 's_expression')
 }
 
-async function insertFindingsAndTagDueTos(
+// insertMany tags the findings with the due_tos they satisfy as part of the insert
+async function insertFindings(
   encounter: Awaited<ReturnType<typeof insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest>>,
   findings: string[],
 ) {
@@ -76,18 +78,19 @@ async function insertFindingsAndTagDueTos(
     patient_encounter_id,
     patient_encounter_employee_id: employee.patient_encounter_employee_id,
     employment_id: employee.employee_id,
+    patient_age_determination: 'adult',
     procedure: {
       create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
     },
     findings,
   })
-  const due_to_result = await due_to.determineFromNewRecords(db, {
+  const new_records: NewRecordsToConsider = {
     patient_id,
     patient_encounter_id,
     patient_age_determination: 'adult',
     records: inserted.findings,
-  })
-  return { inserted, due_to_result }
+  }
+  return { inserted, new_records }
 }
 
 describeParallel('db/models/findings_to_check_for.ts', () => {
@@ -100,7 +103,7 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
 
     assertEquals(
       result.map((r) => r.s_expression),
-      URGENT_BITE_STING_CHECK_FORS.toSorted(),
+      [...URGENT_BITE_STING_CHECK_FORS, ...SNAKE_BITE_CHECK_FORS].toSorted(),
     )
     assert(result.every((r) => r.existing_record === null))
 
@@ -110,23 +113,6 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
       include_negative: true,
     })
     assertEquals(records, [], 'Dry run must not insert any records')
-  })
-
-  itParallel('honors an (excluding ...) clause on the due_to', async () => {
-    const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
-
-    // An insect bite is an animal bite, so the snake bite task is excluded
-    const insect_bite = await dryRun(encounter, '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))')
-    for (const s_expression of SNAKE_BITE_CHECK_FORS) {
-      assert(!insect_bite.some(matching({ s_expression })), `Did not expect ${s_expression}`)
-    }
-
-    // A generic bite wound is not an animal bite, so both bite tasks apply
-    const bite = await dryRun(encounter, '(clinical_finding (snomed_concept "Bite - wound" "disorder"))')
-    assertEquals(
-      bite.map((r) => r.s_expression),
-      [...URGENT_BITE_STING_CHECK_FORS, ...SNAKE_BITE_CHECK_FORS].toSorted(),
-    )
   })
 
   itParallel('matches a finding_site due_to via an explicit finding_site attribute', async () => {
@@ -168,7 +154,7 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
 
   itParallel('reports an existing record for check_for findings already recorded in this encounter', async () => {
     const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
-    await insertFindingsAndTagDueTos(encounter, [
+    await insertFindings(encounter, [
       '(no (clinical_finding (snomed_concept "Difficulty swallowing" "finding")))',
       '(clinical_finding (snomed_concept "Diplopia" "disorder"))',
     ])
@@ -229,7 +215,7 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
       // (and (Bite - wound) (or ... Generalized muscle weakness ...)) needs a bite on record
       assert(!(await applicableDescriptions()).includes('Urgent: bite with danger signs'))
 
-      await insertFindingsAndTagDueTos(encounter, ['(clinical_finding (snomed_concept "Bite - wound" "disorder"))'])
+      await insertFindings(encounter, ['(clinical_finding (snomed_concept "Bite - wound" "disorder"))'])
 
       assert((await applicableDescriptions()).includes('Urgent: bite with danger signs'))
     })
@@ -247,8 +233,8 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
 
         const dry_run = await dryRun(encounter, s_expression)
 
-        const { due_to_result } = await insertFindingsAndTagDueTos(encounter, [s_expression])
-        const tasks_to_insert = isString(due_to_result) ? [] : await additional_tasks.getTasksToInsertUsingPreComputedTables(db, due_to_result)
+        const { new_records } = await insertFindings(encounter, [s_expression])
+        const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, new_records)
         assert(!isString(tasks_to_insert))
 
         const actual = uniq(tasks_to_insert.flatMap((task) => isCheckFor(task.to_be_done) ? task.to_be_done.value.map((f) => inverseSExpression(f)) : []))

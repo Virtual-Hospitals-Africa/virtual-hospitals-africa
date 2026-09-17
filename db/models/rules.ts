@@ -137,7 +137,7 @@ export const rules = base({
     { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: NewRecordsToConsiderWithSatisfyingDueToIds,
     type?: RuleType,
   ): Promise<string | ApplicableRule[]> {
-    const positive_records: RecordsSatisfyingDueToIds = records
+    const positive_records: string[] = records
       .filter((r) => r.existence === 'Yes')
       .map((r) => r.id)
 

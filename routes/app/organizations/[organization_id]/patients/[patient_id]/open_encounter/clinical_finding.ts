@@ -83,8 +83,6 @@ export const handler = postHandler(
     await events.insert(trx, {
       type: 'RecordsAdded',
       data: {
-        workflow,
-        step,
         patient_id,
         patient_encounter_id,
         patient_age_determination,

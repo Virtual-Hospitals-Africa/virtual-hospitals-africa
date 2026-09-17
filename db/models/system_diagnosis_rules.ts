@@ -113,27 +113,32 @@ export const system_diagnosis_rules = {
       destination_id: record_id,
     }))
 
-    const inserted = await patient_evaluations.insertOneNestedQuery(trx, {
+    const { query, tag } = patient_evaluations.insertOneNestedQuery(trx, {
       evaluation_id,
       patient_id,
       patient_encounter_id,
       evaluation: diagnosis_node,
       by_system: true,
-    }).with(
-      'inserting_relation_patient_records',
-      (qb) =>
-        relations.length
-          ? qb.insertInto('patient_records').values(relations.map(({ id }) => ({
-            id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: RELATIONSHIP.id,
-            specific_snomed_concept_id: EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id,
-          })))
-          : blankSelection(qb),
-    ).with(
-      'inserting_relations',
-      (qb) => relations.length ? qb.insertInto('patient_record_relations').values(relations) : blankSelection(qb),
+      patient_age_determination,
+    })
+
+    const inserted = await tag(
+      query.with(
+        'inserting_relation_patient_records',
+        (qb) =>
+          relations.length
+            ? qb.insertInto('patient_records').values(relations.map(({ id }) => ({
+              id,
+              patient_id,
+              patient_encounter_id,
+              root_snomed_concept_id: RELATIONSHIP.id,
+              specific_snomed_concept_id: EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id,
+            })))
+            : blankSelection(qb),
+      ).with(
+        'inserting_relations',
+        (qb) => relations.length ? qb.insertInto('patient_record_relations').values(relations) : blankSelection(qb),
+      ),
     )
       .selectFrom('inserting_record')
       .select((eb) => [
@@ -152,7 +157,7 @@ export const system_diagnosis_rules = {
           patient_encounter_id,
           patient_age_determination: exists(patient_age_determination),
           records: [{
-            id: 'evaluation_id',
+            id: evaluation_id,
             existence: 'Yes',
           }],
         },

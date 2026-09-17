@@ -84,8 +84,6 @@ export const handler = postHandler(
       patient_encounter_id,
       patient_age_determination,
       patient_encounter_employee_id,
-      workflow,
-      step,
       workflow_step_snomed_concept,
     } = ctx.state
 
@@ -288,8 +286,8 @@ export const handler = postHandler(
       events.insert(trx, {
         type: 'TriageMeasureVitalsCompleted',
         data: {
-          workflow,
-          step,
+          workflow: 'triage',
+          step: 'measure_vitals',
           patient_id,
           patient_encounter_id,
           patient_age_determination,

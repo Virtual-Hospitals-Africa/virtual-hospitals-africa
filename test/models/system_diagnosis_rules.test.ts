@@ -4,8 +4,6 @@ import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { system_diagnosis_rules } from '../../db/models/system_diagnosis_rules.ts'
 import { assert } from 'std/assert/assert.ts'
 import { InsertedRecord, patient_findings } from '../../db/models/patient_findings.ts'
-import { due_to } from '../../db/models/due_to.ts'
-import isString from '../../util/isString.ts'
 import { RuleRunnerInput } from '../../types.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
@@ -22,22 +20,18 @@ import { check_for } from '../../db/models/check_for.ts'
 import { exists } from '../../util/exists.ts'
 
 /*
-  Mirrors due_to.addFromNewRecords: tag the new records with the due_tos they satisfy,
-  falling back to empty satisfying_due_to_ids when nothing matched so the rule runners
-  still get a chance to run (e.g. to downgrade possible diagnoses).
+  The records were tagged with the due_tos they satisfy as they were inserted, so the rule
+  runners need only be told which records are new.
 */
-async function tagDueTos(
+function asRuleRunnerInput(
   { patient_id, patient_encounter_id, procedure_id, records }: {
     patient_id: string
     patient_encounter_id: string
     procedure_id?: string
     records: InsertedRecord[]
   },
-): Promise<RuleRunnerInput & { procedure_id?: string }> {
-  const new_records = { patient_id, patient_encounter_id, patient_age_determination: 'adult' as const, procedure_id, records }
-  const due_to_result = await due_to.determineFromNewRecords(db, new_records)
-  const tagged = isString(due_to_result) ? { ...new_records, records: records.map((record) => ({ ...record, satisfying_due_to_ids: [] })) } : due_to_result
-  return { listener_id: 'test', listener_name: 'test', ...tagged }
+): RuleRunnerInput & { procedure_id?: string } {
+  return { listener_id: 'test', listener_name: 'test', patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records }
 }
 
 describeParallel('db/models/system_diagnosis_rules.ts', () => {
@@ -54,6 +48,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -69,7 +64,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       assert(inserted_findings.findings[0])
       const diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_findings.procedure_id,
@@ -134,6 +129,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -146,7 +142,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       assert(inserted_warning_signs.findings[0])
       const warning_signs_diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_warning_signs.procedure_id,
@@ -162,6 +158,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.snomed_concept_id,
           },
@@ -174,7 +171,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       const vitals_diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_vitals.procedure_id,
@@ -240,6 +237,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -256,7 +254,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       const diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_findings.procedure_id,
@@ -279,6 +277,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -301,7 +300,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_findings.procedure_id,
@@ -343,6 +342,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -358,7 +358,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       // First call: temperature triggers the "Diagnose fever" rule only
       const fever_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_temp.procedure_id,
@@ -367,15 +367,9 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       )
       assert(fever_result.startsWith('Inserted 1 diagnosis(es): '), `Expected fever diagnosis, got: ${fever_result}`)
 
-      // In production the SystemDiagnosisCreated event tags the new diagnosis with the due_tos it satisfies.
-      // Events aren't processed in this test, so do that tagging here.
+      // The diagnosis was tagged with the due_tos it satisfies as it was inserted
       const fever_evaluation = await patient_evaluations.findOne(db, { patient_id })
       assertMatches(fever_evaluation, { specific_snomed_concept_name: 'Fever' })
-      await tagDueTos({
-        patient_id,
-        patient_encounter_id,
-        records: [{ id: fever_evaluation.id, existence: 'Yes' }],
-      })
 
       // Insert stiff neck + drowsy in a second batch
       const inserted_neuro = await patient_findings.insertMany(
@@ -385,6 +379,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             procedure_id: inserted_temp.procedure_id,
           },
@@ -402,7 +397,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       // fever via active_condition — matching the definite fever diagnosis already in the DB
       const meningitis_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_neuro.procedure_id,
@@ -469,6 +464,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -490,7 +486,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_findings.procedure_id,
@@ -515,6 +511,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -530,7 +527,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       assert(inserted_findings.findings[0])
       await additional_tasks.insertTasksIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           records: [...inserted_findings.findings, ...inserted_findings.measurements],
@@ -538,7 +535,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       )
       const diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_findings.procedure_id,
@@ -560,7 +557,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       await additional_tasks.insertTasksIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           records: [
@@ -608,6 +605,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.additional_tasks_and_investigations.snomed_concept_id,
           },
@@ -626,7 +624,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       const improbable_diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        await tagDueTos({
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
           procedure_id: inserted_additional_task_findings.procedure_id,

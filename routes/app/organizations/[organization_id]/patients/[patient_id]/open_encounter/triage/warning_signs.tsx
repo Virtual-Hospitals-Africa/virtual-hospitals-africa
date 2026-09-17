@@ -70,8 +70,6 @@ export const handler = postHandler(
   async (ctx: TriageContext, form_values) => {
     const {
       trx,
-      workflow,
-      step,
       patient_id,
       employment_id,
       patient_encounter_id,
@@ -352,7 +350,6 @@ function getBriefHistory(
 export async function TriageWarningSignsPage(
   ctx: TriageContext,
 ) {
-  console.log('inwekwelklkwe')
   const {
     prior_findings,
     warning_signs_for_patient,

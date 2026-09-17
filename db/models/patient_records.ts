@@ -1,6 +1,6 @@
 import { IdSelectable, IdSelection, InsertRows, Priority, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { blankSelection, idSelection, jsonArrayFrom } from '../helpers.ts'
+import { idSelection, jsonArrayFrom, literalBoolean } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
@@ -13,6 +13,7 @@ import { ExpressionBuilder, RawBuilder, sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
 import { DB } from '../../db.d.ts'
+import type { InsertedRecordCtes } from './due_to.ts'
 
 export type PatientRecordsSearch = {
   patient_id?: string | IdSelection
@@ -51,6 +52,12 @@ export function baseInsert(
     qualifiers = [],
   } = insert
 
+  // The CTEs returning the inserted rows, for due_to.withTaggingOfInsertedRecords
+  const inserted: InsertedRecordCtes = {
+    patient_records: ['inserting_record'],
+    patient_record_qualifiers: [],
+  }
+
   let query = trx.with(
     `inserting_record`,
     (qb) =>
@@ -81,6 +88,9 @@ export function baseInsert(
     const qualifier_id = generateUUID()
     const id_token = qualifier_id.replaceAll('-', '_')
 
+    inserted.patient_records.push(`inserting_qualifier_record_${id_token}`)
+    inserted.patient_record_qualifiers.push(`inserting_qualifiers_${id_token}`)
+
     let next_query = qb.with(
       `inserting_qualifier_record_${id_token}`,
       (qb) =>
@@ -94,7 +104,7 @@ export function baseInsert(
               trx,
               qualifier.specific_snomed_concept,
             ),
-          }),
+          }).returningAll(),
     ).with(
       `inserting_qualifiers_${id_token}`,
       (qb) =>
@@ -102,7 +112,7 @@ export function baseInsert(
           .values({
             id: qualifier_id,
             qualifies_record_id,
-          }),
+          }).returningAll(),
     ) as unknown as typeof query
 
     for (const sub_qualifier of qualifier.qualifiers) {
@@ -120,7 +130,7 @@ export function baseInsert(
     query = qualifierCte(query, qualifier, record_id)
   }
 
-  return query
+  return { query, inserted }
 }
 
 type RecordInsertMany = {
@@ -213,25 +223,27 @@ export function baseInsertMany(
     }
   }
 
-  // Build query with one CTE per table
+  /*
+    Build query with one CTE per table. Each CTE returns the rows it inserted (or an empty
+    selection of the same shape) so that later CTEs in the same statement can see the new
+    rows: sibling CTEs all share one snapshot, so reading the tables themselves would miss them.
+  */
   return trx.with(
     'inserting_records',
-    (qb) =>
-      qb.insertInto('patient_records').values(patient_record_rows).returning(
-        'id',
-      ),
+    (qb) => qb.insertInto('patient_records').values(patient_record_rows).returningAll(),
   )
     .with(
       'inserting_qualifier_records',
-      (qb) => qualifier_record_rows.length ? qb.insertInto('patient_records').values(qualifier_record_rows) : blankSelection(qb),
+      (qb) =>
+        qualifier_record_rows.length
+          ? qb.insertInto('patient_records').values(qualifier_record_rows).returningAll()
+          : qb.selectFrom('patient_records').selectAll().where(literalBoolean(false)),
     ).with(
       'inserting_qualifier_links',
       (qb) =>
         qualifier_record_rows.length
-          ? qb.insertInto('patient_record_qualifiers').values(
-            qualifier_link_rows,
-          )
-          : blankSelection(qb),
+          ? qb.insertInto('patient_record_qualifiers').values(qualifier_link_rows).returningAll()
+          : qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)),
     )
 }
 

@@ -1,4 +1,4 @@
-import { type Expression, sql } from 'kysely'
+import { type Expression, type QueryCreator, type RawBuilder, sql } from 'kysely'
 import type { IPostgresInterval } from 'postgres-interval'
 import { AgeDetermination, IdSelectable, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { idSelection, literalBoolean, literalString } from '../helpers.ts'
@@ -533,3 +533,70 @@ export const due_to = base({
     })
   },
 })
+
+/*
+  Names of the CTEs in a statement that return the rows it inserts into each table, i.e. the
+  RETURNING output of its INSERTs. Every table the by_id due_to match reads for a new record.
+*/
+export type InsertedRecordCtes = {
+  patient_records: string[]
+  patient_record_qualifiers: string[]
+  patient_events?: string[]
+  patient_measurements?: string[]
+}
+
+/*
+  Tag records inserted earlier in `query`, in that same statement, with the due_tos they satisfy.
+
+  Every CTE in a statement shares one snapshot, so due_to.baseQuery cannot see the rows the
+  inserting CTEs write by reading the tables: it would find nothing. The only thing one CTE can
+  see of another is its RETURNING output. PostgreSQL resolves an unqualified table name against
+  the WITH list before the catalog, so the CTEs added here, named exactly like the tables the
+  due_to query reads, stand in for those tables for the rest of the statement, each built from
+  the RETURNING output of the inserting CTEs named in `inserted`. Every row the by_id match
+  needs for a new record (its qualifiers, attributes, events and measurement) is itself new in
+  the statement, so the shadows are complete.
+
+  Because the shadows hide the real tables, PostgreSQL will refuse a later INSERT into a table
+  of the same name, so this must come after every other CTE that writes to these tables.
+*/
+// deno-lint-ignore no-explicit-any
+export function withTaggingOfInsertedRecords<Q extends QueryCreator<any>>(
+  query: Q,
+  trx: TrxOrDbOrQueryCreator,
+  { patient_id, patient_age_determination, positive_record_ids, inserted }: {
+    patient_id: string
+    patient_age_determination: AgeDetermination
+    // Only a positive record can satisfy a due_to
+    positive_record_ids: string[]
+    inserted: InsertedRecordCtes
+  },
+): Q {
+  if (!positive_record_ids.length) return query
+
+  // A raw CTE body is not parenthesised by Kysely, so each shadow does so itself
+  function shadow(table: string, ctes: string[] = []): RawBuilder<Record<string, unknown>> {
+    if (!ctes.length) return sql<Record<string, unknown>>`(select * from ${sql.table(table)} where false)`
+    return sql<Record<string, unknown>>`(${sql.join(ctes.map((cte) => sql`select * from ${sql.ref(cte)}`), sql` union all `)})`
+  }
+
+  return query
+    .with('patient_records', () => shadow('patient_records', inserted.patient_records))
+    // Nothing has had the chance to invalidate a record inserted in this statement
+    .with('patient_records_still_valid', () => sql<Record<string, unknown>>`(select id from patient_records)`)
+    .with('patient_record_qualifiers', () => shadow('patient_record_qualifiers', inserted.patient_record_qualifiers))
+    .with('patient_events', () => shadow('patient_events', inserted.patient_events))
+    .with('patient_measurements', () => shadow('patient_measurements', inserted.patient_measurements))
+    .with('inserting_due_tos', (qb) =>
+      qb.insertInto('patient_record_satisfying_due_tos')
+        .columns(['due_to_id', 'patient_record_id'])
+        .expression(() =>
+          due_to.baseQuery(trx, {
+            patient_id,
+            patient_age_determination,
+            positive_records: { type: 'by_id', ids: positive_record_ids },
+          })
+            .clearSelect()
+            .select(['due_to_id', 'patient_record_id'])
+        )) as unknown as Q
+}

@@ -1,5 +1,5 @@
 import { AgeDetermination, Existence, ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalJsonArray, literalString, success_true } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalBoolean, literalJsonArray, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
 import { sql } from 'kysely'
@@ -29,7 +29,7 @@ import {
 import isString from '../../util/isString.ts'
 
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
-import { due_to } from './due_to.ts'
+import { withTaggingOfInsertedRecords } from './due_to.ts'
 
 export type PatientFindingsSearch = PatientRecordsSearch & {
   procedure_id?: string | IdSelection
@@ -251,6 +251,11 @@ export const patient_findings = base({
 
     const records_to_insert = [...findings_to_insert, ...measurements_to_insert]
 
+    // Only a positive record can satisfy a due_to
+    const positive_record_ids = records_to_insert
+      .filter((record) => asExistence(record.value_snomed_concept) === 'Yes')
+      .map((record) => record.record_id)
+
     const attribute_records: InsertRows<'patient_records'> = []
     const attribute_qualifiers: InsertRows<'patient_record_qualifiers'> = []
     const event_values: InsertRows<'patient_events'> = []
@@ -391,7 +396,7 @@ export const patient_findings = base({
       }
     }
 
-    return baseInsertMany(trx, records_to_insert)
+    const inserting = baseInsertMany(trx, records_to_insert)
       .with(
         'maybe_inserting_procedure_record',
         (qb) =>
@@ -463,7 +468,12 @@ export const patient_findings = base({
               })),
             ],
           ),
-      ).with(
+      )
+      /*
+        The CTEs below return what they insert (or an empty selection of the same shape) so the
+        due_to tagging further down can see the new rows. See the shadow CTEs before inserting_due_tos.
+      */
+      .with(
         'inserting_measurements',
         (qb) =>
           measurements_to_insert.length
@@ -473,23 +483,27 @@ export const patient_findings = base({
                 units: m.measurement_node.units,
                 value: m.measurement_value.toFixed(),
               })),
-            )
-            : blankSelection(qb),
+            ).returningAll()
+            : qb.selectFrom('patient_measurements').selectAll().where(literalBoolean(false)),
       )
       .with(
         'inserting_attribute_records',
-        (qb) => attribute_records.length ? qb.insertInto('patient_records').values(attribute_records) : blankSelection(qb),
+        (qb) =>
+          attribute_records.length
+            ? qb.insertInto('patient_records').values(attribute_records).returningAll()
+            : qb.selectFrom('patient_records').selectAll().where(literalBoolean(false)),
       ).with(
         'inserting_attribute_qualifier_links',
         (qb) =>
           attribute_records.length
-            ? qb.insertInto('patient_record_qualifiers').values(
-              attribute_qualifiers,
-            )
-            : blankSelection(qb),
+            ? qb.insertInto('patient_record_qualifiers').values(attribute_qualifiers).returningAll()
+            : qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)),
       ).with(
         'inserting_events',
-        (qb) => event_values.length ? qb.insertInto('patient_events').values(event_values) : blankSelection(qb),
+        (qb) =>
+          event_values.length
+            ? qb.insertInto('patient_events').values(event_values).returningAll()
+            : qb.selectFrom('patient_events').selectAll().where(literalBoolean(false)),
       ).with(
         'inserting_triage_level_records',
         (qb) => triage_level_records.length ? qb.insertInto('patient_records').values(triage_level_records) : blankSelection(qb),
@@ -525,27 +539,19 @@ export const patient_findings = base({
         'inserting_scores',
         (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
       )
-      .with('inserting_due_tos', (qb) =>
-        qb.insertInto('patient_record_satisfying_due_tos')
-          .columns([
-            'due_to_id',
-            'patient_record_id',
-          ])
-          .expression(() =>
-            due_to.baseQuery(trx, {
-              patient_id,
-              patient_age_determination,
-              positive_records: {
-                type: 'by_id',
-                ids: qb.selectFrom('inserting_records').select('id'),
-              },
-            })
-              .clearSelect()
-              .select([
-                'due_to_id',
-                'patient_record_id',
-              ])
-          ))
+
+    // Must come last: it shadows the tables written above (see withTaggingOfInsertedRecords)
+    return withTaggingOfInsertedRecords(inserting, trx, {
+      patient_id,
+      patient_age_determination,
+      positive_record_ids,
+      inserted: {
+        patient_records: ['inserting_records', 'inserting_qualifier_records', 'inserting_attribute_records'],
+        patient_record_qualifiers: ['inserting_qualifier_links', 'inserting_attribute_qualifier_links'],
+        patient_events: ['inserting_events'],
+        patient_measurements: ['inserting_measurements'],
+      },
+    })
       .selectFrom('inserting_records')
       .innerJoin('procedure_record', (join) => join.onTrue())
       .groupBy('procedure_record.id')
@@ -581,7 +587,7 @@ export const patient_findings = base({
         record_id: finding_id,
         ...finding_node,
       },
-    ).with('inserting_findings', (qb) =>
+    ).query.with('inserting_findings', (qb) =>
       qb.insertInto('patient_findings')
         .values({
           id: finding_id,

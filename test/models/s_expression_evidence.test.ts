@@ -26,6 +26,7 @@ describeParallel('db/models/s_expression_evidence.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -45,6 +46,7 @@ describeParallel('db/models/s_expression_evidence.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },
@@ -84,6 +86,7 @@ describeParallel('db/models/s_expression_evidence.ts', () => {
           patient_encounter_id,
           patient_encounter_employee_id: employee.patient_encounter_employee_id,
           employment_id: employee.employee_id,
+          patient_age_determination: 'adult',
           procedure: {
             create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
           },

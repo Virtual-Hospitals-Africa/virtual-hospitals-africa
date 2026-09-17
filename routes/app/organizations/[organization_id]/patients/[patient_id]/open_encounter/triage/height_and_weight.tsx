@@ -19,7 +19,6 @@ import compact from '../../../../../../../../util/compact.ts'
 import { measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
-import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 
 export const TriageHeightAndWeightSchema = z.object({
   measurements: z.record(
