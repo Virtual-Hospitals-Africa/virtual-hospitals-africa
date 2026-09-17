@@ -1,5 +1,5 @@
 import { describe, it } from 'std/testing/bdd.ts'
-import { normalForm, parseExpressionExpectingAtom, parseWithSchema } from '../../shared/s_expression.ts'
+import { normalForm, parseArrayWithSchema, parseExpressionExpectingAtom, parseWithSchema } from '../../shared/s_expression.ts'
 import * as schemas from '../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { CLINICAL_FINDING, HEMOGLOBIN_SATURATION_WITH_OXYGEN, STATUS_ATTRIBUTE } from '../../shared/snomed_concepts.ts'
@@ -166,6 +166,25 @@ describe('shared/s_expression.ts', () => {
       { type: 'approved_by', role: 'nurse', specialty: 'Primary care' },
       { type: 'approved_by', role: 'nurse', specialty: 'Pediatrics' },
     ])
+  })
+
+  describe('parseArrayWithSchema', () => {
+    it('parses a lisp array of findings', () => {
+      const parsed = parseArrayWithSchema(
+        `((clinical_finding (snomed_concept "Cough" "finding")) (clinical_finding (snomed_concept "Fever" "finding")))`,
+        schemas.insertable_finding_base,
+      )
+      assertEquals(parsed.map((node) => node.specific_snomed_concept?.name), ['Cough', 'Fever'])
+    })
+
+    it('parses the empty lisp array () as no findings', () => {
+      assertEquals(parseArrayWithSchema('()', schemas.insertable_finding_base), [])
+    })
+
+    it('rejects a single s expression that is not wrapped in an array', () => {
+      const result = asResult(() => parseArrayWithSchema(`(clinical_finding (snomed_concept "Cough" "finding"))`, schemas.insertable_finding_base))
+      assert(!result.success)
+    })
   })
 
   describe('helpful parse errors', () => {
