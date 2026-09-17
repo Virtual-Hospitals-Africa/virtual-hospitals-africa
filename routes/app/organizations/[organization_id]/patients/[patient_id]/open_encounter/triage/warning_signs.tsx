@@ -1,6 +1,5 @@
 import { completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
 import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
-import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSignsPage from '../../../../../../../../islands/WarningSigns/Page.tsx'
 import { FindingNodeToInsert, InsertedRecord, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
@@ -12,61 +11,49 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { assert } from 'std/assert/assert.ts'
 
 import { AgeDetermination, CommonSymptom, TrxOrDb, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
-import { normalForm, sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
-import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
+import { normalForm } from '../../../../../../../../shared/s_expression.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
 import partition from '../../../../../../../../util/partition.ts'
 import { SearchResult } from '../../../../../../../../db/models/_base.ts'
 import { ORDERED_PRIORITIES } from '../../../../../../../../shared/priorities.ts'
-import values from '../../../../../../../../util/values.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
 
-import { assertOr409 } from '../../../../../../../../util/assertOr.ts'
-import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
+import { assertOr400, assertOr409 } from '../../../../../../../../util/assertOr.ts'
 import { now } from '../../../../../../../../db/helpers.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-import compactMap from '../../../../../../../../util/compactMap.ts'
 import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.ts'
 
 import sortBy from '../../../../../../../../util/sortBy.ts'
-import { insertable_finding_base } from '../../../../../../../../shared/s_expression_schemas.ts'
+import type { InsertableFindingBase, MatchingFinding } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { brief_history } from '../../../../../../../../db/models/brief_history.ts'
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 import { subsets } from '../../../../../../../../util/subsets.ts'
 import { patient_findings_with_modifiers } from '../../../../../../../../db/models/patient_findings_with_modifiers.ts'
+import { existingFindingsMatching } from '../../../../../../../../db/models/additional_tasks.ts'
+import { inverseSExpression } from '../../../../../../../../shared/s_expression_inverse.ts'
+import { TriageWarningSignsSchema } from '../../../../../../../../shared/warning_signs_post.ts'
 
-export const TriageWarningSignSchema = z.object({
-  s_expression: sExpressionZodValidator(insertable_finding_base),
-  existence: z.enum(['Yes', 'No']).optional().transform((existence) => existence || 'No'),
-  warning_sign_key: z.string().optional(),
-  priority_level: z.enum(ORDERED_PRIORITIES).optional(),
-  existing_record: z.object({
-    id: z.string(),
-    altered: z.boolean().optional(),
-  }).optional(),
-})
-
-export const TriageWarningSignsSchema = z.object({
-  warning_signs: z.record(
-    z.string(),
-    TriageWarningSignSchema,
-  ).optional().default({}).transform(values),
-  __test_only_skip_inserting_negative_findings: z.boolean().optional(),
-})
-
-const NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges = Symbol(
-  'NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges',
+const NoInsertOnAccountOfEveryUncheckedSignAlreadyRecorded = Symbol(
+  'NoInsertOnAccountOfEveryUncheckedSignAlreadyRecorded',
 )
 
 type InsertedSummary = {
   procedure_id: string
   records: InsertedRecord[]
-} | typeof NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
+} | typeof NoInsertOnAccountOfEveryUncheckedSignAlreadyRecorded
 
+/*
+  Positive findings were saved one at a time through the clinical_finding route as they
+  were checked, and removed through its mark_as_error route. So on submission the page
+  vouches for the records it still shows (saved_record_ids), which must all be valid
+  positive findings of this encounter and must account for every positive finding recorded
+  under this step, and lists the signs left unchecked (none_of_these), each recorded as
+  absent unless this encounter already has a record for it, of any existence.
+*/
 export const handler = postHandler(
   TriageWarningSignsSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowContext, { saved_record_ids, none_of_these }) => {
     const {
       trx,
       workflow,
@@ -82,60 +69,63 @@ export const handler = postHandler(
     assert(workflow_step_snomed_concept)
     const completed_procedure = completedProcedure(ctx)
 
-    const { response, inserted, previously_reported } = await promiseProps({
-      previously_reported: getAllFindingsReportedPreviouslyOnThisPage(ctx),
-      inserted: insertSigns(),
-      response: completeAndProceedToNextStep(ctx),
-      mark_modified_as_invalid: markAlteredRecords(),
-    })
-
-    for (const previous_finding of previously_reported) {
-      const just_submitted = form_values.warning_signs.find((submitted) => submitted.existing_record?.id === previous_finding.id)
-      assertOr409(
-        just_submitted,
-        `It is expected that the frontend resubmit previously submitted records. Missing: ${humanReadableJson(previous_finding)}`,
-      )
-      // TODO: More than just existence now, we also can alter a recored by adding a finding site
-      // const client_said_was_altered = !!just_submitted.existing_record?.altered
-      // const was_indeed_altered = just_submitted.existence !== previous_finding.existence
-      // assertOr409(
-      //   client_said_was_altered === was_indeed_altered,
-      //   `It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${previous_finding.id} which had existence: ${previous_finding.existence}, but just_submitted.existence: ${just_submitted?.existence}`,
-      // )
+    for (const s_expression of none_of_these.s_expressions) {
+      assertOr400(s_expression.existence === 'Yes', 'Send the unchecked signs as positive findings, they are recorded as absent here')
     }
 
+    await assertSavedRecordsAreThePositiveFindings()
+    const inserted = await insertUncheckedSignsAsAbsent()
+    const response = await completeAndProceedToNextStep(ctx)
     await dispatchEvent(inserted)
 
     return response
 
-    async function insertSigns(): Promise<InsertedSummary> {
-      const needing_insert = form_values.warning_signs
-        .filter((sign) => !sign.existing_record || sign.existing_record.altered)
-        .filter((sign) => sign.existence === 'Yes' || !form_values.__test_only_skip_inserting_negative_findings)
+    async function assertSavedRecordsAreThePositiveFindings() {
+      const valid_positive_findings = await patient_findings.findAll(trx, {
+        patient_id,
+        patient_encounter_id,
+        not_measurements: true,
+      })
+      const valid_positive_ids = new Set(valid_positive_findings.map((finding) => finding.id))
+      const claimed_ids = new Set(saved_record_ids)
 
-      const findings_to_insert = needing_insert.map((
-        sign,
-      ): FindingNodeToInsert => ({
-        ...sign.s_expression,
-        priority: sign.existence === 'Yes' && sign.priority_level
-          ? {
-            level: sign.priority_level,
-            by_system: true,
-          }
-          : null,
-        value_snomed_concept: sign.existence === 'Yes' ? null : {
-          atom: 'snomed_concept',
-          ...NO_QUALIFIER,
-        },
-      }))
+      const not_valid = saved_record_ids.filter((id) => !valid_positive_ids.has(id))
+      assertOr409(
+        !not_valid.length,
+        `These saved_record_ids are not valid positive findings of this encounter: ${not_valid.join(', ')}`,
+      )
 
-      if (!findings_to_insert.length) {
-        assert(
-          completed_procedure,
-          'Your first time submitting warning signs there must be findings to insert',
-        )
-        return NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
+      const not_resubmitted = valid_positive_findings
+        .filter((finding) => completed_procedure && finding.as_part_of_procedure?.id === completed_procedure.procedure_id)
+        .filter((finding) => !claimed_ids.has(finding.id))
+        .map((finding) => finding.id)
+      assertOr409(
+        !not_resubmitted.length,
+        `It is expected that the frontend resubmit the records of positive findings saved from this page. Missing: ${not_resubmitted.join(', ')}`,
+      )
+    }
+
+    async function insertUncheckedSignsAsAbsent(): Promise<InsertedSummary> {
+      const nodes = new Map<string, InsertableFindingBase>()
+      for (const node of none_of_these.s_expressions) {
+        nodes.set(inverseSExpression(node), node)
       }
+
+      const matching = new Map<string, MatchingFinding>(
+        nodes.entries().map(([s_expression, node]) => [s_expression, { ...node, existence: 'Any' }]),
+      )
+      const existing_findings = await existingFindingsMatching(trx, { patient_id, patient_encounter_id, nodes: matching })
+      const already_recorded = new Set(existing_findings.map((finding) => finding.s_expression))
+
+      const findings_to_insert = [...nodes.entries()]
+        .filter(([s_expression]) => !already_recorded.has(s_expression))
+        .map(([, node]): FindingNodeToInsert => ({
+          ...node,
+          existence: 'No',
+          value_snomed_concept: { atom: 'snomed_concept', ...NO_QUALIFIER },
+        }))
+
+      if (!findings_to_insert.length) return NoInsertOnAccountOfEveryUncheckedSignAlreadyRecorded
 
       const { success, procedure_id, findings } = await patient_findings.insertMany(
         trx,
@@ -159,7 +149,7 @@ export const handler = postHandler(
     function dispatchEvent(
       inserted: InsertedSummary,
     ) {
-      if (inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges) return
+      if (inserted === NoInsertOnAccountOfEveryUncheckedSignAlreadyRecorded) return
       return events.insert(trx, {
         type: 'ProcedureCompleted',
         data: {
@@ -170,31 +160,6 @@ export const handler = postHandler(
           patient_age_determination,
           ...inserted,
         },
-      })
-    }
-
-    function markAlteredRecords() {
-      if (!completed_procedure) {
-        for (const sign of form_values.warning_signs) {
-          assertOr409(
-            !sign.existing_record?.altered,
-            'With no previously completed procedure, there cannot be record alterations',
-          )
-        }
-        return
-      }
-
-      const altered_record_ids = compactMap(
-        form_values.warning_signs,
-        (sign) => sign.existing_record?.altered && sign.existing_record.id,
-      )
-
-      return markEnteredInError(trx, {
-        patient_id,
-        employment_id,
-        patient_encounter_id,
-        altered_record_ids,
-        ...completed_procedure,
       })
     }
   },
@@ -251,24 +216,35 @@ function* signsMatchedWithPriorRecords(
 ): Generator<WarningSignWithMaybeRecord> {
   const prior_findings_remaining = new Set(prior_findings)
   const prior_findings_map = new Map<string, SearchResult<typeof patient_findings_with_modifiers>>()
+
+  // We don't use the value when calculating the normal form
+  // of the s_expression here so that negative findings match.
+  // That is if a previous submission found no chest pain,
+  // then that should match and be the finding corresponding to
+  // the chest pain warning sign.
+  function normalFormOf(
+    prior_finding: SearchResult<typeof patient_findings_with_modifiers>,
+    modifiers: typeof prior_finding.modifiers,
+    attributes: typeof prior_finding.attributes,
+  ) {
+    return asNormalFormSExpression({ ...prior_finding, modifiers, attributes, existence: 'Yes', value: null })
+  }
+
   // Findings may add qualifiers or attributes. So we look for any subset of them when looking for matches
-  // With a modest size of these, this should not get out of hand
-  for (const prior_finding of prior_findings) {
+  // With a modest size of these, this should not get out of hand.
+  // Several findings can produce the same key (Burn, and Moderate Burn without its qualifier), so a
+  // finding as recorded in full claims a key ahead of any finding's subset, and positive ahead of
+  // negative. Otherwise the negative Moderate Burn could stand in for the sign matching the positive Burn.
+  const prior_findings_positive_first = sortBy(prior_findings, (finding) => finding.existence === 'Yes' ? 0 : 1)
+  for (const prior_finding of prior_findings_positive_first) {
+    const in_full = normalFormOf(prior_finding, prior_finding.modifiers, prior_finding.attributes)
+    if (!prior_findings_map.has(in_full)) prior_findings_map.set(in_full, prior_finding)
+  }
+  for (const prior_finding of prior_findings_positive_first) {
     for (const modifier_subset of subsets(prior_finding.modifiers)) {
       for (const attribute_subset of subsets(prior_finding.attributes)) {
-        // We don't use the value when calculating the normal form
-        // of the s_expression here so that negative findings match.
-        // That is if a previous submission found no chest pain,
-        // then that should match and be the finding corresponding to
-        // the chest pain warning sign.
-        const normal_form_s_expression = asNormalFormSExpression({
-          ...prior_finding,
-          modifiers: modifier_subset,
-          attributes: attribute_subset,
-          existence: 'Yes',
-          value: null,
-        })
-        prior_findings_map.set(normal_form_s_expression, prior_finding)
+        const as_subset = normalFormOf(prior_finding, modifier_subset, attribute_subset)
+        if (!prior_findings_map.has(as_subset)) prior_findings_map.set(as_subset, prior_finding)
       }
     }
   }
@@ -317,10 +293,8 @@ function* signsMatchedWithPriorRecords(
   for (const finding of prior_findings_remaining) {
     yield {
       priority: finding.priority,
-      clinical_finding_s_expression: asNormalFormSExpression({
-        ...finding,
-        value: null,
-      }),
+      // As with every sign, the s_expression is of the finding itself; whether it was present is existing_record's to say
+      clinical_finding_s_expression: normalFormOf(finding, finding.modifiers, finding.attributes),
       name: finding.specific_snomed_concept_name,
       description: finding.specific_snomed_concept_category,
       existing_record: {

@@ -21,7 +21,6 @@ import { CLINICAL_FINDING, PAIN_LEVEL, SEVERE_PAIN, STATUS_ATTRIBUTE } from '../
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
 import { asWarningSignsAdult, asWarningSignsOlderChild, setupTriageNewPatient } from './_setup.ts'
-import { hyphenate } from '../../../../../util/hyphenate.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { asResultAsync } from '../../../../../util/asResult.ts'
 import values from '../../../../../util/values.ts'
@@ -31,8 +30,32 @@ import { getGridDisplay } from 'test/_helpers/grid.ts'
 import { nobreak } from '../../../../../util/nobreak.ts'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import { CheerioAPI } from 'cheerio'
+import { TriageWarningSignsPostBody } from '../../../../../shared/warning_signs_post.ts'
+import { normalForm, parseArrayWithSchema } from '../../../../../shared/s_expression.ts'
+import { insertable_finding_base } from '../../../../../shared/s_expression_schemas.ts'
+import { inverseSExpression } from '../../../../../shared/s_expression_inverse.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 const COUGH = '(clinical_finding (snomed_concept "Cough" "finding"))'
+
+/* The hidden inputs the warning signs page submits, see islands/WarningSigns/form_values.ts */
+const WarningSignsForm = z.object({
+  saved_record_ids: z.array(z.string().uuid()).default([]),
+  none_of_these: z.object({ s_expressions: z.string() }),
+})
+
+function scrapedWarningSignsForm($: CheerioAPI): z.output<typeof WarningSignsForm> {
+  return WarningSignsForm.parse(getFormValues($))
+}
+
+function noneOfThese(form: TriageWarningSignsPostBody): Set<string> {
+  return new Set(parseArrayWithSchema(form.none_of_these.s_expressions, insertable_finding_base).map(inverseSExpression))
+}
+
+function signNormalForm(sign: WarningSign): string {
+  return normalForm(sign.clinical_finding_s_expression)
+}
 
 /* What the finding modal's pain level input produces, see islands/finding/PainLevel.tsx */
 const COUGH_WITH_SEVERE_PAIN = `(clinical_finding (snomed_concept "Cough" "finding") (attribute ${PAIN_LEVEL.s_expression} ${SEVERE_PAIN.s_expression}))`
@@ -166,25 +189,15 @@ describeParallel('triage/warning_signs', () => {
 
         const $warning_signs = await getStep('warning_signs')
 
-        const form_values = getFormValues($warning_signs)
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-pregnancy-and-abdominal-trauma': {
-              'existence': 'No',
-              's_expression': KEYED_WARNING_SIGNS['Pregnancy and abdominal trauma'].clinical_finding_s_expression,
-            },
-            'very-urgent-pregnancy-and-abdominal-pain': {
-              'existence': 'No',
-              's_expression': KEYED_WARNING_SIGNS['Pregnancy and abdominal pain'].clinical_finding_s_expression,
-            },
-            'very-urgent-severe-limb-ischemia': {
-              'existence': 'No',
-              's_expression': KEYED_WARNING_SIGNS['Severe limb ischemia'].clinical_finding_s_expression,
-            },
-          },
-        })
-
-        assert(!form_values['warning_signs']['urgent-abdominal-pain'])
+        const form = scrapedWarningSignsForm($warning_signs)
+        assertEquals(form.saved_record_ids, [])
+        const none_of_these = noneOfThese(form)
+        assert(none_of_these.has(signNormalForm(KEYED_WARNING_SIGNS['Pregnancy and abdominal trauma'])))
+        assert(none_of_these.has(signNormalForm(KEYED_WARNING_SIGNS['Pregnancy and abdominal pain'])))
+        assert(none_of_these.has(signNormalForm(KEYED_WARNING_SIGNS['Severe limb ischemia'])))
+        // The pregnancy sign shares its s_expression with the general abdominal pain sign, which is not shown
+        assertEquals($warning_signs('#very-urgent-pregnancy-and-abdominal-pain').length, 1)
+        assertEquals($warning_signs('#urgent-abdominal-pain').length, 0)
       },
     )
 
@@ -460,31 +473,14 @@ describeParallel('triage/warning_signs', () => {
         ])
 
         const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-        assertMatches(form_values, {
-          'warning_signs': {
-            'emergency-seizure': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Seizure" "finding"))',
-              'warning_sign_key': 'Seizure',
-              'priority_level': 'Emergency',
-              'existing_record': {
-                'id': z.string().uuid(),
-              },
-              'existence': 'Yes',
-            },
-            'very-urgent-dislocation-of-larger-joint': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
-              'warning_sign_key': 'Dislocation of larger joint',
-              'priority_level': 'Very urgent',
-            },
-          },
-        })
+        const form = scrapedWarningSignsForm($)
+        assertEquals(form.saved_record_ids, this_patient_findings.map((finding) => finding.id))
+        const none_of_these = noneOfThese(form)
+        assert(!none_of_these.has(signNormalForm(KEYED_WARNING_SIGNS['Seizure'])))
+        assert(none_of_these.has(signNormalForm(KEYED_WARNING_SIGNS['Dislocation of larger joint'])))
 
         // Repost without modification
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: form_values as any,
-        })
+        await postStep({ warning_signs: form })
 
         const this_patient_findings2 = await patient_findings.findAll(db, {
           patient_id,
@@ -527,192 +523,96 @@ describeParallel('triage/warning_signs', () => {
     )
 
     itParallel(
-      'marks a warning sign as having been entered in error if a second POST on the same page modifies it',
+      'records a sign as absent once it has been removed via mark_as_error and the page is resubmitted',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
+        const { patient_id, getStep, postStep, postMarkAsError } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
-        assertLength(
-          await patient_findings.findAll(db, {
-            patient_id,
-          }),
-          1,
-        )
+        const [chest_pain] = await patient_findings.findAll(db, { patient_id })
+        assert(chest_pain)
+        assertEquals(chest_pain.specific_snomed_concept_name, 'Chest pain')
 
+        await postMarkAsError(chest_pain.id)
+
+        // Having been removed, the page no longer shows chest pain as checked
         const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
+        const form = scrapedWarningSignsForm($)
+        assertEquals(form.saved_record_ids, [])
+        assert(noneOfThese(form).has(signNormalForm(KEYED_WARNING_SIGNS['Chest pain'])))
 
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-high-energy-transfer': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
-              'warning_sign_key': 'High energy transfer',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-            },
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-              'existence': 'Yes',
-            },
-          },
-        })
+        await postStep({ warning_signs: form })
 
-        const next_form_submission = structuredClone(form_values)
-        // @ts-ignore the frontend sends this back blank
-        delete next_form_submission.warning_signs['very-urgent-chest-pain'].existence
-        next_form_submission.warning_signs['very-urgent-chest-pain'].existing_record
-          .altered = true
+        assertLength(await patient_findings.findAll(db, { patient_id }), 0)
 
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: next_form_submission as any,
-        })
-
-        assertLength(
-          await patient_findings.findAll(db, {
-            patient_id,
-          }),
-          0,
-        )
+        const recordsOf = (name: string) => all_records.filter((finding) => finding.specific_snomed_concept_name === name)
+        const all_records = await patient_findings.findAll(db, { patient_id, include_negative: true })
+        // Chest pain is now recorded as absent, while a sign that already had a record was not recorded again
+        assertMatches(recordsOf('Chest pain'), [{ existence: 'No' }])
+        assertMatches(recordsOf('Cardiac arrest'), [{ existence: 'No' }])
       },
     )
 
     itParallel(
-      '409s if the client fails to include previously submitted records',
+      '409s if the client fails to include a previously saved record, naming it',
       async () => {
         const { patient_id, getStep, postStep } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
-        assertLength(
-          await patient_findings.findAll(db, {
-            patient_id,
-          }),
-          1,
-        )
+        const [chest_pain] = await patient_findings.findAll(db, { patient_id })
+        assert(chest_pain)
 
         const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-high-energy-transfer': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
-              'warning_sign_key': 'High energy transfer',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-            },
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-              'existence': 'Yes',
-            },
-          },
-        })
-
-        const next_form_submission = structuredClone(form_values)
-        // @ts-ignore deleting chest-pain entirely
-        delete next_form_submission.warning_signs['very-urgent-chest-pain']
+        const form = scrapedWarningSignsForm($)
+        assertEquals(form.saved_record_ids, [chest_pain.id])
 
         const result = await asResultAsync(() =>
           postStep({
-            // deno-lint-ignore no-explicit-any
-            warning_signs: next_form_submission as any,
+            warning_signs: { ...form, saved_record_ids: [] },
           })
         )
 
         assert(!result.success)
-        assertIncludes(
-          result.error.message,
-          '[409]: It is expected that the frontend resubmit previously submitted records',
-        )
+        assertIncludes(result.error.message, '[409]')
+        assertIncludes(result.error.message, chest_pain.id)
       },
     )
 
-    itParallel.skip(
-      '409s if the client fails to mark records as altered when they were',
+    itParallel(
+      '409s if the client claims a saved record that is not a valid positive finding of this encounter, naming it',
       async () => {
-        const { patient_id, getStep, postStep } = await setupTriageNewPatient({
+        const { patient_id, getStep, postStep, postMarkAsError } = await setupTriageNewPatient({
           patient_demographics: {},
           warning_signs: asWarningSignsAdult(['Chest pain'], { pregnant: false }),
         })
 
-        assertLength(
-          await patient_findings.findAll(db, {
-            patient_id,
-          }),
-          1,
-        )
+        const [chest_pain] = await patient_findings.findAll(db, { patient_id })
+        assert(chest_pain)
 
         const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
+        const form = scrapedWarningSignsForm($)
 
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-high-energy-transfer': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Injury caused by causative force" "disorder"))',
-              'warning_sign_key': 'High energy transfer',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-            },
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-                'altered': false,
-              },
-              'existence': 'Yes',
-            },
-          },
-        })
-
-        const next_form_submission = structuredClone(form_values)
-        Object.assign(
-          next_form_submission.warning_signs['very-urgent-high-energy-transfer'],
-          {
-            existence: 'Yes',
-          },
-        )
-
-        const result = await asResultAsync(() =>
+        const never_saved = generateUUID()
+        const with_unknown = await asResultAsync(() =>
           postStep({
-            // deno-lint-ignore no-explicit-any
-            warning_signs: next_form_submission as any,
+            warning_signs: { ...form, saved_record_ids: [...form.saved_record_ids, never_saved] },
           })
         )
+        assert(!with_unknown.success)
+        const [status_line] = with_unknown.error.message.split('\n')
+        assertIncludes(status_line, '[409]')
+        assertIncludes(status_line, never_saved)
+        assert(!status_line.includes(chest_pain.id), 'chest pain is validly saved and so is not an offender')
 
-        assert(!result.success)
-        assertEquals(
-          result.error.message.split('\n')[0],
-          `[409]: It is expected that the frontend keep track of whether the previously submitted record was altered. Detected a mismatch for ${
-            form_values.warning_signs['very-urgent-high-energy-transfer'].existing_record.id
-          } which had existence: No, but just_submitted.existence: Yes`,
-        )
+        // A record since marked as entered in error is no longer valid
+        await postMarkAsError(chest_pain.id)
+        const with_removed = await asResultAsync(() => postStep({ warning_signs: form }))
+        assert(!with_removed.success)
+        assertIncludes(with_removed.error.message, '[409]')
+        assertIncludes(with_removed.error.message, chest_pain.id)
       },
     )
 
@@ -747,38 +647,19 @@ describeParallel('triage/warning_signs', () => {
         assertEquals(findings_count_after_first_insertion.length, 1)
 
         const $ = await getStep('warning_signs')
-        const form_values = getFormValues($)
-        assertMatches(form_values, {
-          'warning_signs': {
-            'very-urgent-chest-pain': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Chest pain" "finding"))',
-              'warning_sign_key': 'Chest pain',
-              'priority_level': 'Very urgent',
-              'existing_record': {
-                'id': z.string().uuid(),
-              },
-              'existence': 'Yes',
-            },
-            'very-urgent-dislocation-of-larger-joint': {
-              's_expression': '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Dislocation" "morphologic abnormality"))',
-              'warning_sign_key': 'Dislocation of larger joint',
-              'priority_level': 'Very urgent',
-            },
-          },
-        })
+        const form = scrapedWarningSignsForm($)
+        assertEquals(form.saved_record_ids, findings_count_after_first_insertion.map((finding) => finding.id))
+        assert(noneOfThese(form).has(signNormalForm(KEYED_WARNING_SIGNS['Dislocation of larger joint'])))
 
-        // Repost without modification
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: form_values as any,
-        })
+        // Reposting the page as rendered records the common symptoms as absent, which the shorthand above never sent
+        await postStep({ warning_signs: form })
+        assertEquals(await patient_findings.countAll(db, { patient_id }), 1)
+        const all_count_after_second_insertion = await patient_findings.countAll(db, { patient_id, include_negative: true })
 
-        const findings_count_after_second_insertion = await patient_findings
-          .countAll(db, {
-            patient_id,
-          })
-
-        assertEquals(findings_count_after_second_insertion, 1)
+        // Reposting again records nothing further, every sign now having a record
+        await postStep({ warning_signs: form })
+        assertEquals(await patient_findings.countAll(db, { patient_id }), 1)
+        assertEquals(await patient_findings.countAll(db, { patient_id, include_negative: true }), all_count_after_second_insertion)
       },
     )
 
@@ -854,10 +735,7 @@ describeParallel('triage/warning_signs', () => {
         )
 
         // Posting again has no effect
-        await postStep({
-          // deno-lint-ignore no-explicit-any
-          warning_signs: getFormValues($) as any,
-        })
+        await postStep({ warning_signs: scrapedWarningSignsForm($) })
 
         const subsequent_findings = await patient_findings.findAll(db, {
           patient_id,
@@ -909,17 +787,17 @@ describeParallel('triage/warning_signs', () => {
           relevant_qualifiers: [],
         })
 
-        // deno-lint-ignore no-explicit-any
-        const form_values = getFormValues($) as any
-
-        form_values.warning_signs['s275406005'] = {
-          existence: 'Yes',
-          priority_level: results[0].priority,
-          s_expression: results[0].clinical_finding_s_expression,
-        }
-
         await postStep({
-          warning_signs: form_values,
+          warning_signs: {
+            warning_signs: {
+              ...asWarningSignsAdult([], { pregnant: true }).warning_signs,
+              's275406005': {
+                existence: 'Yes',
+                priority_level: results[0].priority,
+                s_expression: results[0].clinical_finding_s_expression,
+              },
+            },
+          },
         })
 
         const findings = await patient_findings.findAll(db, {
@@ -1061,17 +939,9 @@ describeParallel('triage/warning_signs', () => {
 
           const $warning_signs = await getStep('warning_signs')
 
-          const form_values = getFormValues($warning_signs)
-          const hyphenated_key = hyphenate(sign.priority + '-' + sign.key.toLowerCase())
-          assertMatches(form_values, {
-            warning_signs: {
-              [hyphenated_key]: {
-                warning_sign_key: sign.key,
-                priority_level: sign.priority,
-                s_expression: sign.clinical_finding_s_expression,
-              },
-            },
-          })
+          const form = scrapedWarningSignsForm($warning_signs)
+          assertLength(form.saved_record_ids, 1)
+          assert(!noneOfThese(form).has(signNormalForm(sign)), `${sign.key} is checked so should not be among none_of_these`)
 
           await events.allProcessedForEncounter(db, { patient_encounter_id })
 
