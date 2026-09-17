@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
-import { AgeDetermination, NewRecordsToConsider, NewRecordsToConsiderWithSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { literalBoolean, literalString } from '../helpers.ts'
+import { AgeDetermination, IdSelectable, NewRecordsToConsider, NewRecordsToConsiderWithSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { idSelection, literalBoolean, literalString } from '../helpers.ts'
 import { FINDING_SITE } from '../../shared/snomed_concepts.ts'
 import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
 import { any_query_single, InsertableFindingBase } from '../../shared/s_expression_schemas.ts'
@@ -34,9 +34,11 @@ export const due_to = base({
   }: {
     patient_id: string
     patient_age_determination: AgeDetermination
-    positive_record_ids: string[]
+    positive_record_ids: IdSelectable
   }) {
-    assert(positive_record_ids.length)
+    if (Array.isArray(positive_record_ids)) {
+      assert(positive_record_ids.length)
+    }
 
     const by_findings_query = trx.selectFrom('due_to_findings')
       .innerJoin('due_to', 'due_to_findings.id', 'due_to.id')
@@ -49,7 +51,7 @@ export const due_to = base({
       .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
       .whereRef('patient_records.root_snomed_concept_id', '=', 'due_to_findings.root_snomed_concept_id')
       .where('due_to.age_determinations', '@>', sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`)
-      .where('patient_records.id', 'in', positive_record_ids)
+      .where('patient_records.id', ...idSelection(positive_record_ids))
       .where((eb) =>
         eb.or([
           eb('due_to_findings.value_snomed_concept_id', 'is', null),
@@ -58,6 +60,74 @@ export const due_to = base({
               .whereRef('value_descendants.ancestor_id', '=', 'due_to_findings.value_snomed_concept_id')
               .whereRef('value_descendants.descendant_id', '=', 'patient_records.value_snomed_concept_id'),
           ),
+        ])
+      )
+      /*
+        Every due_to_qualifier must be satisfied by the record. due_to_qualifiers holds one row
+        per qualifier and per attribute of the due_to; both are recorded on the patient side as
+        records pointing at the matched record through patient_record_qualifiers, so one join
+        covers both. A qualifier row leaves root and value null, which reads here as "unconstrained".
+
+        Anything is_somehow_qualified still gets re-checked against its s_expression by
+        determineFromNewRecords: this only narrows the candidates. So the clauses below err
+        towards admitting a row — no datetime check on event-valued attributes, no existence
+        check on the qualifying records — rather than dropping a real match.
+      */
+      .where((eb) =>
+        eb.or([
+          eb('due_to_findings.is_somehow_qualified', '=', false),
+          eb.not(eb.exists(
+            eb.selectFrom('due_to_qualifiers')
+              .whereRef('due_to_qualifiers.due_to_id', '=', 'due_to.id')
+              .where((eb) =>
+                eb.not(eb.or([
+                  // Explicitly recorded as a qualifier or attribute of the record
+                  eb.exists(
+                    eb.selectFrom('patient_records as qualifying_records')
+                      .innerJoin('patient_record_qualifiers', 'patient_record_qualifiers.id', 'qualifying_records.id')
+                      .innerJoin('patient_records_still_valid as qualifying_records_valid', 'qualifying_records_valid.id', 'qualifying_records.id')
+                      .innerJoin(
+                        'snomed_concept_active_descendants_realized as qualifier_specific_descendants',
+                        (join) =>
+                          join
+                            .onRef('qualifier_specific_descendants.descendant_id', '=', 'qualifying_records.specific_snomed_concept_id')
+                            .on('qualifier_specific_descendants.ancestor_id', '=', eb.ref('due_to_qualifiers.specific_snomed_concept_id')),
+                      )
+                      .whereRef('patient_record_qualifiers.qualifies_record_id', '=', 'patient_records.id')
+                      .where((eb) =>
+                        eb.or([
+                          eb('due_to_qualifiers.root_snomed_concept_id', 'is', null),
+                          eb('qualifying_records.root_snomed_concept_id', '=', eb.ref('due_to_qualifiers.root_snomed_concept_id')),
+                        ])
+                      )
+                      .where((eb) =>
+                        eb.or([
+                          eb('due_to_qualifiers.value_snomed_concept_id', 'is', null),
+                          eb.exists(
+                            eb.selectFrom('snomed_concept_active_descendants_realized as qualifier_value_descendants')
+                              .whereRef('qualifier_value_descendants.ancestor_id', '=', 'due_to_qualifiers.value_snomed_concept_id')
+                              .whereRef('qualifier_value_descendants.descendant_id', '=', 'qualifying_records.value_snomed_concept_id'),
+                          ),
+                        ])
+                      ),
+                  ),
+                  // Or implied by SNOMED itself, e.g. Epistaxis has Finding site = Nasal structure
+                  // without anyone recording it. Never matches when value is null.
+                  eb.exists(
+                    eb.selectFrom('snomed_relationship')
+                      .innerJoin(
+                        'snomed_concept_active_descendants_realized as attribute_value_descendants',
+                        'attribute_value_descendants.descendant_id',
+                        'snomed_relationship.destination_id',
+                      )
+                      .whereRef('attribute_value_descendants.ancestor_id', '=', 'due_to_qualifiers.value_snomed_concept_id')
+                      .where('snomed_relationship.active', '=', true)
+                      .whereRef('snomed_relationship.type_id', '=', 'due_to_qualifiers.specific_snomed_concept_id')
+                      .whereRef('snomed_relationship.source_id', '=', 'patient_records.specific_snomed_concept_id'),
+                  ),
+                ]))
+              ),
+          )),
         ])
       )
       .select([
@@ -73,7 +143,7 @@ export const due_to = base({
       .innerJoin('patient_records', (join) => join.onTrue())
       .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
       .where('due_to.age_determinations', '@>', sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`)
-      .where('patient_records.id', 'in', positive_record_ids)
+      .where('patient_records.id', ...idSelection(positive_record_ids))
       .where((eb) =>
         eb.or([
           eb.exists(
@@ -126,7 +196,7 @@ export const due_to = base({
       .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
       .innerJoin('patient_measurements', 'patient_records.id', 'patient_measurements.id')
       .where('due_to.age_determinations', '@>', sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`)
-      .where('patient_records.id', 'in', positive_record_ids)
+      .where('patient_records.id', ...idSelection(positive_record_ids))
       .where((eb) =>
         eb.or([
           eb.and([
@@ -168,7 +238,7 @@ export const due_to = base({
       .innerJoin('patient_records', 'patient_records.specific_snomed_concept_id', 'specific_descendants.descendant_id')
       .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
       .where('due_to.age_determinations', '@>', sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`)
-      .where('patient_records.id', 'in', positive_record_ids)
+      .where('patient_records.id', ...idSelection(positive_record_ids))
       // root is null when the subject was an active_condition
       .where((eb) =>
         eb.or([
