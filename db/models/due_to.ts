@@ -14,8 +14,6 @@ import { buildExpression, snomedConceptBase } from './s_expression.ts'
 import compact from '../../util/compact.ts'
 import { events } from './events.ts'
 import isString from '../../util/isString.ts'
-import { hypotheticalFindingSatisfies } from './s_expression_hypothetical.ts'
-import { uniqBy } from '../../util/uniqBy.ts'
 
 type DueToMatchType = 'finding' | 'measurement' | 'finding_site' | 'event_time_comparison'
 
@@ -70,16 +68,6 @@ function snomedDefinedAttribute(
     .where('snomed_relationship.source_id', '=', source)
     .where('attribute_value_descendants.ancestor_id', '=', value)
     .select('snomed_relationship.source_id')
-}
-
-/*
-  The one clause the due_to candidate tables cannot express: the record must not itself satisfy
-  any (excluding ...) of the due_to. Such due_tos are re-checked against their s_expression,
-  which is what every is_somehow_qualified due_to went through before due_to_qualifiers.
-*/
-function findingWithExclusions(s_expression: string): Lang['finding'] | null {
-  const node = parseWithSchema(s_expression, any_query_single)
-  return isAtom(node, 'finding') && node.excluding.length ? node : null
 }
 
 export const due_to = base({
@@ -562,7 +550,7 @@ export const due_to = base({
 
     if (arrayIsEmpty(positive_record_ids)) return 'Skipped: no positive findings to check'
 
-    const candidates: {
+    const to_insert: {
       s_expression: string
       type: DueToMatchType
       patient_record_id: string
@@ -572,15 +560,6 @@ export const due_to = base({
       patient_age_determination,
       positive_records: { type: 'by_id', ids: positive_record_ids },
     })
-
-    const to_insert = await pMap(candidates, async (candidate) => {
-      const node = findingWithExclusions(candidate.s_expression)
-      if (!node) return candidate
-      const matches = await buildExpression(trx, { patient_id, patient_encounter_id }, node)
-        .where('patient_records_aggregated.id', '=', candidate.patient_record_id)
-        .executeTakeFirst()
-      return matches ? candidate : undefined
-    }).then(compact)
 
     if (!to_insert.length) {
       return 'No due_to matched'

@@ -1,4 +1,4 @@
-import { Existence, ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { AgeDetermination, Existence, ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalJsonArray, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
@@ -29,6 +29,7 @@ import {
 import isString from '../../util/isString.ts'
 
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
+import { due_to } from './due_to.ts'
 
 export type PatientFindingsSearch = PatientRecordsSearch & {
   procedure_id?: string | IdSelection
@@ -71,6 +72,7 @@ type FindingInsert = InsertCommon & {
 }
 type FindingsInsert = InsertCommon & {
   employment_id: string
+  patient_age_determination: AgeDetermination
   procedure: ExtantProcedureOrCreationIntent
   findings: Array<FindingNodeToInsert | string>
   measurements?: Array<MeasurementToInsert>
@@ -192,6 +194,7 @@ export const patient_findings = base({
       patient_encounter_id,
       employment_id,
       patient_encounter_employee_id,
+      patient_age_determination,
       procedure,
       findings,
       measurements = [],
@@ -521,7 +524,30 @@ export const patient_findings = base({
       ).with(
         'inserting_scores',
         (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
-      ).selectFrom('inserting_records')
+      )
+      .with('inserting_due_tos', qb =>
+        qb.insertInto('patient_record_satisfying_due_tos')
+          .columns([
+            'due_to_id',
+            'patient_record_id',
+          ])
+          .expression(() =>
+            due_to.baseQuery(trx, {
+              patient_id,
+              patient_age_determination,
+              positive_records: { 
+                type: 'by_id', 
+                ids: qb.selectFrom('inserting_records').select('id')
+              },
+            })
+            .clearSelect()
+            .select([
+              'due_to_id',
+              'patient_record_id',
+            ])
+          )
+      )
+      .selectFrom('inserting_records')
       .innerJoin('procedure_record', (join) => join.onTrue())
       .groupBy('procedure_record.id')
       .select([
