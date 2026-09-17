@@ -396,6 +396,16 @@ export interface DueToMeasurements {
   value: Numeric
 }
 
+export interface DueToQualifiers {
+  created_at: Generated<Timestamp>
+  due_to_id: string
+  id: Generated<string>
+  root_snomed_concept_id: Int8 | null
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
+}
+
 export interface Employment {
   created_at: Generated<Timestamp>
   health_worker_id: string
@@ -1924,6 +1934,7 @@ export interface DB {
   due_to_finding_sites: DueToFindingSites
   due_to_findings: DueToFindings
   due_to_measurements: DueToMeasurements
+  due_to_qualifiers: DueToQualifiers
   employment: Employment
   employment_calendars: EmploymentCalendars
   employment_presence: EmploymentPresence

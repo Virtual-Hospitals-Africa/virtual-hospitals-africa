@@ -5,15 +5,17 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import { snomedConceptId } from '../../models/s_expression_snomed_concepts.ts'
 import { inverseSExpression } from '../../../shared/s_expression_inverse.ts'
-import { TrxOrDb } from '../../../types.ts'
+import { InsertRows, TrxOrDb } from '../../../types.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { ALL_RULES, DueToEntry, DueToInsert, dueToInsert } from '../../../shared/rules.ts'
 import { SYSTEM_DIAGNOSIS_RULES_PARSED } from '../../../shared/system_diagnosis_rules.ts'
 import { SYSTEM_PRIORITY_EVALUATIONS_PARSED } from '../../../shared/system_priority_evaluations.ts'
+import { Lang } from '../../../shared/s_expression_schemas.ts'
 
 export default define([
   'rules',
   'due_to',
+  'due_to_qualifiers',
   'due_to_findings',
   'due_to_finding_sites',
   'due_to_measurements',
@@ -75,6 +77,48 @@ export default define([
     .execute()
 
   const due_to_id_by_s_expression = new Map(inserted_due_tos.map((r) => [r.s_expression, r.id]))
+
+  /*
+    Insert due_to_qualifiers: a row per qualifier and per attribute of each finding/evaluation
+    due_to. A (qualifier ...) node carries only a concept, so it stores (null, concept, null),
+    while an attribute stores its whole (root, specific, value) triple, with a null value when
+    the attribute's value is an event rather than a concept.
+
+    Nested qualifiers are flattened. Like due_to_findings, this table is a candidate index, not
+    the whole predicate: anything is_somehow_qualified gets re-checked against its s_expression.
+  */
+  function qualifierRows(due_to_id: string, qualifiers: Lang['qualifier'][]): InsertRows<'due_to_qualifiers'> {
+    return qualifiers.flatMap((qualifier) => [
+      {
+        due_to_id,
+        root_snomed_concept_id: null,
+        specific_snomed_concept_id: snomedConceptId(qualifier.specific_snomed_concept),
+        value_snomed_concept_id: null,
+      },
+      ...qualifierRows(due_to_id, qualifier.qualifiers),
+    ])
+  }
+
+  const due_to_qualifier_rows: InsertRows<'due_to_qualifiers'> = due_to_findings.flatMap((e) => {
+    const due_to_id = due_to_id_by_s_expression.get(e.s_expression)!
+    return [
+      ...qualifierRows(due_to_id, e.insert.qualifiers),
+      ...e.insert.attributes.map((attribute) => ({
+        due_to_id,
+        root_snomed_concept_id: snomedConceptId(attribute.root_snomed_concept),
+        specific_snomed_concept_id: snomedConceptId(attribute.specific_snomed_concept),
+        value_snomed_concept_id: attribute.value.atom === 'snomed_concept' ? snomedConceptId(attribute.value) : null,
+      })),
+    ]
+  })
+
+  // No natural key to conflict on, so the rows for this run replace whatever was there
+  await trx.deleteFrom('due_to_qualifiers').execute()
+  if (due_to_qualifier_rows.length) {
+    await trx.insertInto('due_to_qualifiers')
+      .values(due_to_qualifier_rows)
+      .execute()
+  }
 
   // console.log({due_to_findings})
   // Insert due_to_findings
