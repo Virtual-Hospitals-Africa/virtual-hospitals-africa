@@ -1,7 +1,8 @@
 import { sql } from 'kysely'
+import type { IPostgresInterval } from 'postgres-interval'
 import { AgeDetermination, IdSelectable, NewRecordsToConsider, NewRecordsToConsiderWithSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { idSelection, literalBoolean, literalString } from '../helpers.ts'
-import { FINDING_SITE } from '../../shared/snomed_concepts.ts'
+import { EVENT, FINDING_SITE } from '../../shared/snomed_concepts.ts'
 import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
 import { any_query_single, InsertableFindingBase } from '../../shared/s_expression_schemas.ts'
 import partition from '../../util/partition.ts'
@@ -31,14 +32,22 @@ export const due_to = base({
     // patient_id,
     patient_age_determination,
     positive_record_ids,
+    // positive_records,
   }: {
     patient_id: string
     patient_age_determination: AgeDetermination
-    positive_record_ids: IdSelectable
-  }) {
-    if (Array.isArray(positive_record_ids)) {
-      assert(positive_record_ids.length)
+    // positive_record_ids: IdSelectable
+    positive_records: {
+      type: 'by_id'
+      ids: IdSelectable
+    } | {
+      type: 'explicit'
+      finding: InsertableFindingBase
     }
+  }) {
+    // if (Array.isArray(positive_record_ids)) {
+    //   assert(positive_record_ids.length)
+    // }
 
     const by_findings_query = trx.selectFrom('due_to_findings')
       .innerJoin('due_to', 'due_to_findings.id', 'due_to.id')
@@ -135,7 +144,6 @@ export const due_to = base({
         'due_to.id as due_to_id',
         'patient_records.id as patient_record_id',
         's_expression',
-        'is_somehow_qualified',
       ])
 
     const by_finding_sites_query = trx.selectFrom('due_to_finding_sites')
@@ -187,7 +195,6 @@ export const due_to = base({
         'due_to.id as due_to_id',
         'patient_records.id as patient_record_id',
         's_expression',
-        'is_somehow_qualified',
       ])
 
     const by_measurements_query = trx.selectFrom('due_to_measurements')
@@ -222,7 +229,6 @@ export const due_to = base({
         'due_to.id as due_to_id',
         'patient_records.id as patient_record_id',
         's_expression',
-        literalBoolean(false).as('is_somehow_qualified'),
       ])
 
     // Candidate match on the subject concept only. The comparator/duration are
@@ -246,12 +252,49 @@ export const due_to = base({
           eb('patient_records.root_snomed_concept_id', '=', eb.ref('due_to_event_time_comparisons.root_snomed_concept_id')),
         ])
       )
+      /*
+        The event (e.g. onset) is an attribute record with root Event pointing at the
+        subject through patient_record_qualifiers; patient_events holds its datetime.
+        Historical qualifiers still count, as in attribute() in s_expression.ts, so the
+        event record is not required to be still valid.
+      */
+      .innerJoin('patient_record_qualifiers as event_qualifiers', 'event_qualifiers.qualifies_record_id', 'patient_records.id')
+      .innerJoin('patient_records as event_records', 'event_records.id', 'event_qualifiers.id')
+      .innerJoin(
+        'snomed_concept_active_descendants_realized as event_descendants',
+        'event_descendants.descendant_id',
+        'event_records.specific_snomed_concept_id',
+      )
+      .innerJoin('patient_events', 'patient_events.id', 'event_records.id')
+      .where('event_records.root_snomed_concept_id', '=', EVENT.id)
+      .whereRef('event_descendants.ancestor_id', '=', 'due_to_event_time_comparisons.event_snomed_concept_id')
+      /*
+        actual_duration = patient_records.created_at - onset, i.e. how long ago the event was
+        at entry. patient_events.comparator qualifies the stored datetime in time-ago space, so
+        a stored row only matches when its own range guarantees the rule's: ('>=', t) means
+        "at or before t", which can satisfy a >= duration but never a <= one. Mirrors the
+        '>=' and '<=' builders in s_expression.ts.
+      */
+      .where((eb) => {
+        const actual_duration = sql<IPostgresInterval>`${eb.ref('patient_records.created_at')} - ${eb.ref('patient_events.datetime')}`
+        return eb.or([
+          eb.and([
+            eb('due_to_event_time_comparisons.comparator', '=', '>='),
+            eb('patient_events.comparator', 'in', ['=', '>', '>=']),
+            eb(actual_duration, '>=', eb.ref('due_to_event_time_comparisons.duration')),
+          ]),
+          eb.and([
+            eb('due_to_event_time_comparisons.comparator', '=', '<='),
+            eb('patient_events.comparator', 'in', ['=', '<', '<=']),
+            eb(actual_duration, '<=', eb.ref('due_to_event_time_comparisons.duration')),
+          ]),
+        ])
+      })
       .select([
         literalString('event_time_comparison' as DueToMatchType).as('type'),
         'due_to.id as due_to_id',
         'patient_records.id as patient_record_id',
         's_expression',
-        literalBoolean(true).as('is_somehow_qualified'),
       ])
 
     return trx.with('matching_due_tos', () =>
@@ -381,9 +424,8 @@ export const due_to = base({
 
     if (arrayIsEmpty(positive_record_ids)) return 'Skipped: no positive findings to check'
 
-    const due_to_matching_records: {
+    const to_insert: {
       s_expression: string
-      is_somehow_qualified: boolean
       type: DueToMatchType
       patient_record_id: string
       due_to_id: string
@@ -392,24 +434,6 @@ export const due_to = base({
       patient_age_determination,
       positive_record_ids,
     })
-
-    const [is_somehow_qualified, unqualified] = partition(due_to_matching_records, (due_to_matching_record) => due_to_matching_record.is_somehow_qualified)
-
-    const matches_qualifiers = await pMap(is_somehow_qualified, async (due_to_matching_record) => {
-      const node = parseWithSchema(due_to_matching_record.s_expression, any_query_single)
-      const matches = await buildExpression(
-        trx,
-        { patient_id, patient_encounter_id },
-        node,
-      ).where('patient_records_aggregated.id', '=', due_to_matching_record.patient_record_id)
-        .executeTakeFirst()
-
-      if (matches) {
-        return due_to_matching_record
-      }
-    }).then(compact)
-
-    const to_insert = [...matches_qualifiers, ...unqualified]
 
     if (!to_insert.length) {
       return 'No due_to matched'

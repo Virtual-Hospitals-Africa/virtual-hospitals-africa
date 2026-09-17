@@ -384,7 +384,6 @@ export interface DueToFindings {
 
 export interface DueToFindingSites {
   id: string
-  is_somehow_qualified: boolean
   value_snomed_concept_id: Int8
 }
 

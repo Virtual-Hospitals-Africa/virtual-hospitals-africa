@@ -74,8 +74,7 @@ export async function up(db: Kysely<DB>) {
 
   await createPointerTable(db, 'due_to_finding_sites', { references: 'due_to', primary_key_type: 'uuid' }, (qb) =>
     qb
-      .addColumn('value_snomed_concept_id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade'))
-      .addColumn('is_somehow_qualified', 'boolean', (col) => col.notNull()))
+      .addColumn('value_snomed_concept_id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade')))
 
   await db.schema.createIndex('rule_due_to_finding_sites_value_snomed_concept_id_idx')
     .on('due_to_finding_sites')
