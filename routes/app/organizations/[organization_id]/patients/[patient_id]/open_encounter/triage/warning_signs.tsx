@@ -22,7 +22,7 @@ import values from '../../../../../../../../util/values.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
 
-import { assertOr409 } from '../../../../../../../../util/assertOr.ts'
+import { assertOr400, assertOr409 } from '../../../../../../../../util/assertOr.ts'
 import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 import { now } from '../../../../../../../../db/helpers.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
@@ -80,6 +80,7 @@ export const handler = postHandler(
     } = ctx.state
 
     assert(workflow_step_snomed_concept)
+    assertOr400(patient_age_determination, 'Need patient age to insert finding')
     const completed_procedure = completedProcedure(ctx)
 
     const { response, inserted, previously_reported } = await promiseProps({
@@ -144,6 +145,7 @@ export const handler = postHandler(
           employment_id,
           patient_encounter_id,
           patient_encounter_employee_id,
+          patient_age_determination,
           findings: findings_to_insert,
           procedure: completed_procedure || {
             create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),

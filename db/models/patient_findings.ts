@@ -525,7 +525,7 @@ export const patient_findings = base({
         'inserting_scores',
         (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
       )
-      .with('inserting_due_tos', qb =>
+      .with('inserting_due_tos', (qb) =>
         qb.insertInto('patient_record_satisfying_due_tos')
           .columns([
             'due_to_id',
@@ -535,18 +535,17 @@ export const patient_findings = base({
             due_to.baseQuery(trx, {
               patient_id,
               patient_age_determination,
-              positive_records: { 
-                type: 'by_id', 
-                ids: qb.selectFrom('inserting_records').select('id')
+              positive_records: {
+                type: 'by_id',
+                ids: qb.selectFrom('inserting_records').select('id'),
               },
             })
-            .clearSelect()
-            .select([
-              'due_to_id',
-              'patient_record_id',
-            ])
-          )
-      )
+              .clearSelect()
+              .select([
+                'due_to_id',
+                'patient_record_id',
+              ])
+          ))
       .selectFrom('inserting_records')
       .innerJoin('procedure_record', (join) => join.onTrue())
       .groupBy('procedure_record.id')

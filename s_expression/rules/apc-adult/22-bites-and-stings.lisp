@@ -22,6 +22,7 @@
   "Check for snake bite"
   adult
   (clinical_finding (snomed_concept "Bite - wound" "disorder")
+    ;; TODO: handle this kind of check another way. As it is, this is not so bad
     ;; (excluding (clinical_finding (snomed_concept "Animal bite wound" "disorder")))
   )
   (check_for

@@ -18,7 +18,6 @@ import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, TRIAGE_INDEX } from '../shared/snomed_concepts.ts'
 import { triageLevelFromTEWSTotal } from '../shared/vitals.ts'
 import { system_diagnosis_rules } from '../db/models/system_diagnosis_rules.ts'
-import { due_to } from '../db/models/due_to.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -78,41 +77,41 @@ export const EVENTS = {
       evaluation_id: z.string().uuid(),
     }),
     {
-      tagRecordsWithDueTos(trx, payload) {
-        return due_to.addFromNewRecords(trx, {
-          ...payload.data,
-          // listener_id: payload.listener_id,
-          // listener_name: payload.listener_name,
-          records: [{
-            id: payload.data.evaluation_id,
-            existence: 'Yes' as const,
-          }],
-        })
-      },
+      // tagRecordsWithDueTos(trx, payload) {
+      //   return due_to.addFromNewRecords(trx, {
+      //     ...payload.data,
+      //     // listener_id: payload.listener_id,
+      //     // listener_name: payload.listener_name,
+      //     records: [{
+      //       id: payload.data.evaluation_id,
+      //       existence: 'Yes' as const,
+      //     }],
+      //   })
+      // },
     },
   ),
-  SinglePositiveFindingAdded: defineEvent(
-    z.object({
-      workflow: z.enum(WORKFLOWS),
-      step: z.string(),
-      patient_id: z.string().uuid(),
-      patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
-      patient_encounter_id: z.string().uuid(),
-      procedure_id: z.string().uuid(),
-      positive_finding_id: z.string().uuid(),
-    }),
-    {
-      tagRecordsWithDueTos(trx, { data: { positive_finding_id, ...data } }) {
-        return due_to.addFromNewRecords(trx, {
-          ...data,
-          records: [{
-            id: positive_finding_id,
-            existence: 'Yes' as const,
-          }],
-        })
-      },
-    },
-  ),
+  // RecordsAdded: defineEvent(
+  //   z.object({
+  //     workflow: z.enum(WORKFLOWS),
+  //     step: z.string(),
+  //     patient_id: z.string().uuid(),
+  //     patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
+  //     patient_encounter_id: z.string().uuid(),
+  //     procedure_id: z.string().uuid(),
+  //     positive_finding_id: z.string().uuid(),
+  //   }),
+  //   {
+  //     // tagRecordsWithDueTos(trx, { data: { positive_finding_id, ...data } }) {
+  //     //   return due_to.addFromNewRecords(trx, {
+  //     //     ...data,
+  //     //     records: [{
+  //     //       id: positive_finding_id,
+  //     //       existence: 'Yes' as const,
+  //     //     }],
+  //     //   })
+  //     // },
+  //   },
+  // ),
   SingleFindingMarkedAsError: defineEvent(
     z.object({
       workflow: z.enum(WORKFLOWS),
@@ -139,9 +138,9 @@ export const EVENTS = {
       }).array(),
     }),
     {
-      tagRecordsWithDueTos(trx, payload) {
-        return due_to.addFromNewRecords(trx, payload.data)
-      },
+      // tagRecordsWithDueTos(trx, payload) {
+      //   return due_to.addFromNewRecords(trx, payload.data)
+      // },
       async insertTotalScoreAfterMeasureVitals(trx, { data: { workflow, step, patient_id, patient_age_determination, patient_encounter_id, procedure_id } }) {
         const completed_measure_vitals = workflow === 'triage' && step === 'measure_vitals'
         if (!completed_measure_vitals) return 'Skipped: procedure is not measure_vitals in triage'
@@ -175,7 +174,7 @@ export const EVENTS = {
       },
     },
   ),
-  RecordDueTosTagged: defineEvent(
+  RecordsAdded: defineEvent(
     z.object({
       // workflow: z.enum(WORKFLOWS),
       // step: z.string(),
@@ -186,7 +185,7 @@ export const EVENTS = {
       records: z.object({
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
-        satisfying_due_to_ids: z.string().uuid().array(),
+        // satisfying_due_to_ids: z.string().uuid().array(),
       }).array(),
     }),
     {

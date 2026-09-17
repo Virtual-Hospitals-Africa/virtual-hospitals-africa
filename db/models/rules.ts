@@ -4,7 +4,6 @@ import {
   ApplicableRule,
   ApplicableRuleEffect,
   NewRecordsToConsiderWithSatisfyingDueToIds,
-  RecordsSatisfyingDueToIds,
   TrxOrDbOrQueryCreator,
 } from '../../types.ts'
 import { asText, jsonBuildObject, literalString } from '../helpers.ts'
@@ -38,9 +37,9 @@ type RuleSearchTerms =
   }
   & (
     // Rules linked to due_tos that inserted records have been tagged as satisfying
-    | { satisfying_due_to_ids: string[]; due_to_ids?: never }
+    | { patient_record_ids: string[]; due_to_ids?: never }
     // Rules linked to these due_tos directly, for a record that has not been inserted
-    | { due_to_ids: string[]; satisfying_due_to_ids?: never }
+    | { due_to_ids: string[]; patient_record_ids?: never }
   )
 
 export const rules = base({
@@ -49,17 +48,18 @@ export const rules = base({
     patient_id,
     patient_encounter_id,
     patient_age_determination,
-    satisfying_due_to_ids,
+    patient_record_ids,
     due_to_ids,
     type,
   }: RuleSearchTerms) {
     const age_filter = sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`
 
-    const matching_rules_query = satisfying_due_to_ids
-      ? (assert(satisfying_due_to_ids.length),
+    const matching_rules_query = patient_record_ids
+      ? (assert(patient_record_ids.length),
         trx
           .selectFrom('patient_record_satisfying_due_tos')
-          .where('patient_record_satisfying_due_tos.id', 'in', satisfying_due_to_ids)
+          .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_record_satisfying_due_tos.patient_record_id')
+          .where('patient_records_still_valid.id', 'in', patient_record_ids)
           .innerJoin('rule_due_to', 'rule_due_to.due_to_id', 'patient_record_satisfying_due_tos.due_to_id')
           .innerJoin('rules', 'rules.id', 'rule_due_to.rule_id')
           .where('rules.age_determinations', '@>', age_filter)
@@ -143,17 +143,17 @@ export const rules = base({
     { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: NewRecordsToConsiderWithSatisfyingDueToIds,
     type?: RuleType,
   ): Promise<string | ApplicableRule[]> {
-    const positive_records_satisfying_some_due_to: RecordsSatisfyingDueToIds = records
+    const positive_records: RecordsSatisfyingDueToIds = records
       .filter((r) => r.existence === 'Yes')
-      .filter((r) => !!r.satisfying_due_to_ids.length)
+      .map(r => r.id)
 
-    if (arrayIsEmpty(positive_records_satisfying_some_due_to)) return 'Skipped: no positive findings satisfying some due_to'
+    if (arrayIsEmpty(positive_records)) return 'Skipped: no positive findings'
 
     const rules_matching_some_finding = await rules.findAll(trx, {
       patient_id,
       patient_encounter_id,
       patient_age_determination,
-      satisfying_due_to_ids: positive_records_satisfying_some_due_to.flatMap((r) => r.satisfying_due_to_ids),
+      patient_record_ids: positive_records,
       type,
     })
 

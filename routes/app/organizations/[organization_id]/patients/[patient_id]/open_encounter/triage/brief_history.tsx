@@ -137,6 +137,7 @@ export const handler = postHandler(
     } = ctx.state
 
     const completed_procedure = completedProcedure(ctx)
+    assertOr400(patient_age_determination, 'Need patient age to insert finding')
     const most_recent_findings = await mostRecentRecords(ctx)
 
     const findings_to_insert: InsertableFindingBase[] = []
@@ -218,6 +219,7 @@ export const handler = postHandler(
         employment_id,
         patient_encounter_id,
         patient_encounter_employee_id,
+        patient_age_determination,
         findings: findings_to_insert,
         procedure: completed_procedure || {
           create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),

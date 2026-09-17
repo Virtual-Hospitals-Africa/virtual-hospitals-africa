@@ -19,6 +19,7 @@ import compact from '../../../../../../../../util/compact.ts'
 import { measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
+import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 
 export const TriageHeightAndWeightSchema = z.object({
   measurements: z.record(
@@ -39,10 +40,12 @@ export const handler = postHandler(
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      patient_age_determination,
       workflow_step_snomed_concept,
     } = ctx.state
 
     const completed_procedure = completedProcedure(ctx)
+    assertOr400(patient_age_determination, 'Need patient age to insert finding')
 
     const measurements_to_insert = compact(
       entries(form_values.measurements).map(([vital, measurement]) => {
@@ -69,6 +72,7 @@ export const handler = postHandler(
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      patient_age_determination,
       employment_id,
       procedure: completed_procedure || {
         create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),

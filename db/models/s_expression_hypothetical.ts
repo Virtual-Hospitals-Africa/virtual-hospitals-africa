@@ -1,5 +1,5 @@
 import type { TrxOrDbOrQueryCreator } from '../../types.ts'
-import type { InsertableFindingBase, Lang } from '../../shared/s_expression_schemas.ts'
+import type { Lang } from '../../shared/s_expression_schemas.ts'
 import { nameAndCategorySnomedConceptBase } from './s_expression.ts'
 
 /*
@@ -55,71 +55,4 @@ export async function hasInferredAttribute(
     .limit(1)
     .executeTakeFirst()
   return !!row
-}
-
-async function every<T>(items: T[], predicate: (item: T) => Promise<boolean>): Promise<boolean> {
-  for (const item of items) {
-    if (!(await predicate(item))) return false
-  }
-  return true
-}
-
-async function some<T>(items: T[], predicate: (item: T) => Promise<boolean>): Promise<boolean> {
-  for (const item of items) {
-    if (await predicate(item)) return true
-  }
-  return false
-}
-
-// EXPRESSION_BUILDERS.qualifier: a qualifier record whose concept is the required
-// concept or a descendant of it, itself carrying every nested qualifier required.
-function qualifierSatisfied(
-  trx: TrxOrDbOrQueryCreator,
-  record_qualifiers: Lang['qualifier'][],
-  required: Lang['qualifier'],
-): Promise<boolean> {
-  return some(record_qualifiers, async (record_qualifier) => {
-    const concept_matches = await isDescendantOrSelf(trx, {
-      ancestor: required.specific_snomed_concept,
-      descendant: record_qualifier.specific_snomed_concept,
-    })
-    if (!concept_matches) return false
-    return every(required.qualifiers, (nested) => qualifierSatisfied(trx, record_qualifier.qualifiers, nested))
-  })
-}
-
-function sameDatetime(a: string, b: string): boolean {
-  return new Date(a).getTime() === new Date(b).getTime()
-}
-
-// EXPRESSION_BUILDERS.attribute, plus the snomed_relationship inference fallback that
-// baseQuery applies for concept-valued attributes.
-async function attributeSatisfied(
-  trx: TrxOrDbOrQueryCreator,
-  record: InsertableFindingBase,
-  required: Lang['attribute'],
-): Promise<boolean> {
-  const explicitly_recorded = await some(record.attributes, async (attribute) => {
-    if (!sameConcept(attribute.root_snomed_concept, required.root_snomed_concept)) return false
-    const specific_matches = await isDescendantOrSelf(trx, {
-      ancestor: required.specific_snomed_concept,
-      descendant: attribute.specific_snomed_concept,
-    })
-    if (!specific_matches) return false
-
-    if (required.value.atom === 'event') {
-      if (attribute.value.atom !== 'event') return false
-      return !required.value.datetime || sameDatetime(attribute.value.datetime, required.value.datetime)
-    }
-    if (attribute.value.atom !== 'snomed_concept') return false
-    return isDescendantOrSelf(trx, { ancestor: required.value, descendant: attribute.value })
-  })
-  if (explicitly_recorded) return true
-  if (required.value.atom === 'event') return false
-
-  return hasInferredAttribute(trx, {
-    source: record.specific_snomed_concept,
-    attribute_type: required.specific_snomed_concept,
-    value: required.value,
-  })
 }

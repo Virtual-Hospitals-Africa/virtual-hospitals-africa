@@ -214,6 +214,7 @@ export const handler = postHandler(
         patient_encounter_id,
         patient_encounter_employee_id,
         employment_id,
+        patient_age_determination,
         procedure: completed_procedure || {
           create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
         },

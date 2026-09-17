@@ -1,19 +1,15 @@
 import { type Expression, sql } from 'kysely'
 import type { IPostgresInterval } from 'postgres-interval'
-import { AgeDetermination, IdSelectable, NewRecordsToConsider, NewRecordsToConsiderWithSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { AgeDetermination, IdSelectable, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { idSelection, literalBoolean, literalString } from '../helpers.ts'
 import { EVENT, FINDING_SITE, QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
-import { isAtom, parseWithSchema } from '../../shared/s_expression.ts'
-import { any_query_single, InsertableFindingBase, Lang } from '../../shared/s_expression_schemas.ts'
+
+import { InsertableFindingBase } from '../../shared/s_expression_schemas.ts'
 import { base, identity } from './_base.ts'
-import { arrayIsEmpty } from '../../util/arraySize.ts'
+
 import { assert } from 'std/assert/assert.ts'
-import pick from '../../util/pick.ts'
-import { pMap } from '../../util/inParallel.ts'
-import { buildExpression, snomedConceptBase } from './s_expression.ts'
+import { snomedConceptBase } from './s_expression.ts'
 import compact from '../../util/compact.ts'
-import { events } from './events.ts'
-import isString from '../../util/isString.ts'
 
 type DueToMatchType = 'finding' | 'measurement' | 'finding_site' | 'event_time_comparison'
 
@@ -535,86 +531,5 @@ export const due_to = base({
       patient_age_determination,
       positive_records: { type: 'explicit', finding },
     })
-  },
-
-  async determineFromNewRecords(
-    trx: TrxOrDbOrQueryCreator,
-    new_records: NewRecordsToConsider,
-  ): Promise<string | NewRecordsToConsiderWithSatisfyingDueToIds> {
-    const { patient_id, patient_encounter_id, patient_age_determination, records } = new_records
-    if (!patient_age_determination) return 'Skipped: patient age determination is unknown'
-
-    const positive_record_ids = records
-      .filter((r) => r.existence === 'Yes')
-      .map((r) => r.id)
-
-    if (arrayIsEmpty(positive_record_ids)) return 'Skipped: no positive findings to check'
-
-    const to_insert: {
-      s_expression: string
-      type: DueToMatchType
-      patient_record_id: string
-      due_to_id: string
-    }[] = await due_to.findAll(trx, {
-      patient_id,
-      patient_age_determination,
-      positive_records: { type: 'by_id', ids: positive_record_ids },
-    })
-
-    if (!to_insert.length) {
-      return 'No due_to matched'
-    }
-
-    const inserted = await trx.insertInto('patient_record_satisfying_due_tos')
-      .values(to_insert.map(pick(['due_to_id', 'patient_record_id'])))
-      .returning([
-        'id as patient_record_satisfying_due_to_id',
-        'patient_record_id',
-      ])
-      .execute()
-
-    const records_with_satisfying_due_to_ids = new_records.records.map((record) => {
-      const satisfying_due_to_ids = inserted
-        .filter((satisfying_due_to) => satisfying_due_to.patient_record_id === record.id)
-        .map((satisfying_due_to) => satisfying_due_to.patient_record_satisfying_due_to_id)
-
-      return { ...record, satisfying_due_to_ids }
-    })
-
-    return { ...new_records, patient_age_determination, records: records_with_satisfying_due_to_ids }
-  },
-
-  async addFromNewRecords(
-    trx: TrxOrDbOrQueryCreator,
-    new_records: NewRecordsToConsider,
-  ): Promise<string> {
-    const new_records_with_satisfying_due_to_ids = await due_to.determineFromNewRecords(trx, new_records)
-
-    if (isString(new_records_with_satisfying_due_to_ids)) {
-      // Even when no positive findings matched due_tos, if we have a procedure_id we still
-      // need to emit RecordDueTosTagged so insertImprobableDiagnoses can run and downgrade
-      // any possible diagnoses whose check_for tasks are now all answered "No".
-      const { procedure_id, patient_id, patient_encounter_id, patient_age_determination, records } = new_records
-      if (procedure_id && patient_age_determination) {
-        await events.insert(trx, {
-          type: 'RecordDueTosTagged',
-          data: {
-            procedure_id,
-            patient_id,
-            patient_encounter_id,
-            patient_age_determination,
-            records: records.map((r) => ({ ...r, satisfying_due_to_ids: [] })),
-          },
-        })
-      }
-      return new_records_with_satisfying_due_to_ids
-    }
-
-    await events.insert(trx, {
-      type: 'RecordDueTosTagged',
-      data: new_records_with_satisfying_due_to_ids,
-    })
-
-    return `Inserted ${new_records_with_satisfying_due_to_ids.records.flatMap((item) => item.satisfying_due_to_ids)}`
   },
 })
