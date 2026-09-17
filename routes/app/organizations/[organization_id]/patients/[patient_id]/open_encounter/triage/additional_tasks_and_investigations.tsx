@@ -1,5 +1,5 @@
 import { getCookies } from 'std/http/cookie.ts'
-import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure } from '../_middleware.tsx'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import AdditionalTasks from '../../../../../../../../components/triage/AdditionalTasks.tsx'
@@ -16,8 +16,8 @@ import { markEnteredInError } from '../../../../../../../../db/models/patient_re
 import compactMap from '../../../../../../../../util/compactMap.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { check_for, CheckForSchema } from '../../../../../../../../db/models/check_for.ts'
-import { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
-import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
+import type { TriageContext } from '../../../../../../../../types.ts'
+import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 
 export const TriageAdditionalTasksAndInvestigationsSchema = z.object({
   evaluation_ids: z.string().uuid().array().optional().default([]),
@@ -56,14 +56,12 @@ type InsertedSummary = {
 
 export const handler = postHandler(
   TriageAdditionalTasksAndInvestigationsSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: TriageContext, form_values) => {
     const {
       trx,
       health_worker_id,
       encounter,
       employment_id,
-      workflow,
-      step,
       patient_age_determination,
       patient_id,
       patient_encounter_id,
@@ -116,7 +114,7 @@ export const handler = postHandler(
           employment_id,
           patient_encounter_id,
           patient_encounter_employee_id,
-          patient_age_determination,
+          patient_age_determination: exists(patient_age_determination),
           findings: findings_to_insert,
           measurements: measurements_to_insert,
           procedure: completed_procedure || {
@@ -135,10 +133,8 @@ export const handler = postHandler(
     ) {
       if (inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges) return
       return events.insert(trx, {
-        type: 'ProcedureCompleted',
+        type: 'RecordsAdded',
         data: {
-          workflow,
-          step,
           patient_id,
           patient_encounter_id,
           patient_age_determination,
@@ -166,7 +162,7 @@ export const handler = postHandler(
 )
 
 export async function TriageAdditionalTasksAndInvestigationsPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
   redirectToRoutePatientIfEmergency(ctx)
   assertAllPriorStepsCompleted(ctx, {
@@ -187,6 +183,6 @@ export async function TriageAdditionalTasksAndInvestigationsPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(
+export default TriagePage(
   TriageAdditionalTasksAndInvestigationsPage,
 )

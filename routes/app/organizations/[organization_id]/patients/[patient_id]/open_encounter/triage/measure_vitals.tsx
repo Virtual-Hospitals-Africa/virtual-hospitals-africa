@@ -1,5 +1,5 @@
-import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure } from '../_middleware.tsx'
+import type { TriageContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
@@ -28,7 +28,7 @@ import compact from '../../../../../../../../util/compact.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { insertable_finding_base, measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
+import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 
 export const TriageMeasureVitalsSchema = z.object({
   measurements: z.partialRecord(
@@ -46,7 +46,7 @@ export const TriageMeasureVitalsSchema = z.object({
   ).default({}),
 })
 
-async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
+async function sharedVitalsDeterminations(ctx: TriageContext) {
   assertAllPriorStepsCompleted(ctx, {
     attempting_to_complete_workflow: false,
   })
@@ -75,7 +75,7 @@ async function sharedVitalsDeterminations(ctx: OpenEncounterWorkflowContext) {
 
 export const handler = postHandler(
   TriageMeasureVitalsSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: TriageContext, form_values) => {
     const {
       trx,
       health_worker_id,
@@ -214,7 +214,7 @@ export const handler = postHandler(
         patient_encounter_id,
         patient_encounter_employee_id,
         employment_id,
-        patient_age_determination,
+        patient_age_determination: exists(patient_age_determination),
         procedure: completed_procedure || {
           create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
         },
@@ -274,25 +274,37 @@ export const handler = postHandler(
       )
     }
 
-    await events.insert(trx, {
-      type: 'ProcedureCompleted',
-      data: {
-        workflow,
-        step,
-        patient_id,
-        patient_encounter_id,
-        patient_age_determination,
-        procedure_id: insert_result.procedure_id,
-        records: [...insert_result.findings, ...insert_result.measurements],
-      },
-    })
+    await Promise.all([
+      events.insert(trx, {
+        type: 'RecordsAdded',
+        data: {
+          patient_id,
+          patient_encounter_id,
+          patient_age_determination,
+          procedure_id: insert_result.procedure_id,
+          records: [...insert_result.findings, ...insert_result.measurements],
+        },
+      }),
+      events.insert(trx, {
+        type: 'TriageMeasureVitalsCompleted',
+        data: {
+          workflow,
+          step,
+          patient_id,
+          patient_encounter_id,
+          patient_age_determination,
+          procedure_id: insert_result.procedure_id,
+          records: [...insert_result.findings, ...insert_result.measurements],
+        },
+      }),
+    ])
 
     return response
   },
 )
 
 export async function TriageMeasureVitalsPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
   if (
     !ctx.state.encounter.workflows.triage!.steps_completed.includes('measure_vitals')
@@ -376,4 +388,4 @@ export async function TriageMeasureVitalsPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(TriageMeasureVitalsPage)
+export default TriagePage(TriageMeasureVitalsPage)

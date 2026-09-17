@@ -151,7 +151,7 @@ export const EmergencyEscalationEmergencyReasonSchema = z.object({
 //     ) {
 //       if (inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges) return
 //       return events.insert(trx, {
-//         type: 'ProcedureCompleted',
+//         type: 'RecordsAdded',
 //         data: {
 //           patient_id,
 //           patient_encounter_id,

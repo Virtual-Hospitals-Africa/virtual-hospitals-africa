@@ -3217,6 +3217,12 @@ export type OpenEncounterWorkflowContext<T = Record<never, never>> = LoggedInHea
   OpenEncounterWorkflowState & T
 >
 
+export type TriageState<T = Record<never, never>> = OpenEncounterWorkflowState & T & {
+  patient_age_determination: AgeDetermination
+}
+
+export type TriageContext<T = Record<never, never>> = LoggedInHealthWorkerContext<TriageState<T>>
+
 export type FindingRelatedModifiers = {
   predefined_attributes: {
     s_expression: string

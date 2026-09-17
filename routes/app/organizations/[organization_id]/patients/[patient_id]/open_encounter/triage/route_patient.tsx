@@ -6,10 +6,10 @@ import { assert } from 'std/assert/assert.ts'
 import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { completedPersonal } from '../../../../../../../../shared/patient_registration.ts'
-import { OpenEncounterWorkflowContext, TaskGroup, UpdateShape } from '../../../../../../../../types.ts'
+import { TriageContext, TaskGroup, UpdateShape } from '../../../../../../../../types.ts'
 import { DB } from '../../../../../../../../db.d.ts'
 import { success } from '../../../../../../../../util/alerts.ts'
-import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
+import { completeLastStep } from '../_middleware.tsx'
 import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS, triageNextStepRecommendations } from '../../../../../../../../shared/triage_route_patient.ts'
 import { startWorkflow } from '../start-workflow/[workflow].tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
@@ -23,6 +23,7 @@ import { positiveRecordsFromEncounter } from '../../../../../../../../shared/rec
 import { PatientCaseSchema } from '../../../../../../../../shared/recommended_doses.ts'
 import { recommended_dose_calculator } from '../../../../../../../../db/models/recommended_dose_calculator.ts'
 import { patient_workflows } from '../../../../../../../../db/models/patient_workflows.ts'
+import { TriagePage } from './_middleware.tsx'
 
 export const TriageRoutePatientSchema = z.object({
   next_step: z.enum(TRIAGE_ROUTE_PATIENT_NEXT_STEPS),
@@ -32,7 +33,7 @@ export const TriageRoutePatientSchema = z.object({
 
 export const handler = postHandler(
   TriageRoutePatientSchema,
-  async (ctx: OpenEncounterWorkflowContext, { next_step, health_worker_ids_to_be_notified }) => {
+  async (ctx: TriageContext, { next_step, health_worker_ids_to_be_notified }) => {
     const { trx, encounter, patient, patient_encounter_id, organization, organization_employment, health_worker_id } = ctx.state
 
     assert(completedPersonal(patient))
@@ -111,7 +112,7 @@ export const handler = postHandler(
 
 // While we have the evaluation_ids, this is not the time we do those tasks so we do not include them
 async function managePatientTaskGroups(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ): Promise<TaskGroup[]> {
   const { trx, health_worker_id, encounter, open_encounter_pathname } = ctx.state
   const { task_groups } = await additional_tasks.getTasksGroups(trx, { health_worker_id, encounter })
@@ -126,7 +127,7 @@ async function managePatientTaskGroups(
 }
 
 export async function PatientTriageRoutePatientPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
   const {
     trx,
@@ -200,4 +201,4 @@ export async function PatientTriageRoutePatientPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(PatientTriageRoutePatientPage)
+export default TriagePage(PatientTriageRoutePatientPage)

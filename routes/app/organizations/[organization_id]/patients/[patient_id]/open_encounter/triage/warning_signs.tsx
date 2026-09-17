@@ -1,5 +1,5 @@
-import { completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { completeAndProceedToNextStep, completedProcedure } from '../_middleware.tsx'
+import type { TriageContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSignsPage from '../../../../../../../../islands/WarningSigns/Page.tsx'
@@ -22,7 +22,7 @@ import values from '../../../../../../../../util/values.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { NO_QUALIFIER } from '../../../../../../../../shared/snomed_concepts.ts'
 
-import { assertOr400, assertOr409 } from '../../../../../../../../util/assertOr.ts'
+import { assertOr409 } from '../../../../../../../../util/assertOr.ts'
 import { humanReadableJson } from '../../../../../../../../util/humanReadableJson.ts'
 import { now } from '../../../../../../../../db/helpers.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
@@ -35,6 +35,7 @@ import { brief_history } from '../../../../../../../../db/models/brief_history.t
 import { COMMON_CONDITIONS } from '../../../../../../../../shared/brief_history.ts'
 import { subsets } from '../../../../../../../../util/subsets.ts'
 import { patient_findings_with_modifiers } from '../../../../../../../../db/models/patient_findings_with_modifiers.ts'
+import { TriagePage } from './_middleware.tsx'
 
 export const TriageWarningSignSchema = z.object({
   s_expression: sExpressionZodValidator(insertable_finding_base),
@@ -66,7 +67,7 @@ type InsertedSummary = {
 
 export const handler = postHandler(
   TriageWarningSignsSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: TriageContext, form_values) => {
     const {
       trx,
       workflow,
@@ -80,7 +81,7 @@ export const handler = postHandler(
     } = ctx.state
 
     assert(workflow_step_snomed_concept)
-    assertOr400(patient_age_determination, 'Need patient age to insert finding')
+
     const completed_procedure = completedProcedure(ctx)
 
     const { response, inserted, previously_reported } = await promiseProps({
@@ -137,7 +138,6 @@ export const handler = postHandler(
         )
         return NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
       }
-
       const { success, procedure_id, findings } = await patient_findings.insertMany(
         trx,
         {
@@ -163,10 +163,8 @@ export const handler = postHandler(
     ) {
       if (inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges) return
       return events.insert(trx, {
-        type: 'ProcedureCompleted',
+        type: 'RecordsAdded',
         data: {
-          workflow,
-          step,
           patient_id,
           patient_encounter_id,
           patient_age_determination,
@@ -203,7 +201,7 @@ export const handler = postHandler(
 )
 
 function getAllFindingsReportedPreviouslyOnThisPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
   const { trx, patient_id, patient_encounter_id } = ctx.state
   const completed_procedure = completedProcedure(ctx)
@@ -338,7 +336,7 @@ function* signsMatchedWithPriorRecords(
 }
 
 function getBriefHistory(
-  { state: { trx, patient_id, encounter, health_worker_id } }: OpenEncounterWorkflowContext,
+  { state: { trx, patient_id, encounter, health_worker_id } }: TriageContext,
 ) {
   return brief_history.renderedMostRecentRecords(
     trx,
@@ -352,8 +350,9 @@ function getBriefHistory(
 }
 
 export async function TriageWarningSignsPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
+  console.log('inwekwelklkwe')
   const {
     prior_findings,
     warning_signs_for_patient,
@@ -386,4 +385,4 @@ export async function TriageWarningSignsPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(TriageWarningSignsPage)
+export default TriagePage(TriageWarningSignsPage)

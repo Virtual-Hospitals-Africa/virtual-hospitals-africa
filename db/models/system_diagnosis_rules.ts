@@ -146,12 +146,15 @@ export const system_diagnosis_rules = {
     await events.insert(
       trx,
       {
-        type: 'SystemDiagnosisCreated',
+        type: 'RecordsAdded',
         data: {
           patient_id,
           patient_encounter_id,
           patient_age_determination: exists(patient_age_determination),
-          evaluation_id,
+          records: [{
+            id: 'evaluation_id',
+            existence: 'Yes',
+          }],
         },
       },
     )
@@ -315,7 +318,7 @@ export const system_diagnosis_rules = {
   async insertSystemDiagnosesIfNotAlreadyIdentified(
     trx: TrxOrDb,
     input: RuleRunnerInput & {
-      procedure_id?: string
+      task_completed_id?: string
     },
   ) {
     const rules_result = await rules.getApplicableBasedOnNewRecords(trx, input, 'system_diagnosis_rule')

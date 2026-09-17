@@ -1,11 +1,5 @@
 import { sql } from 'kysely'
-import {
-  AgeDetermination,
-  ApplicableRule,
-  ApplicableRuleEffect,
-  NewRecordsToConsiderWithSatisfyingDueToIds,
-  TrxOrDbOrQueryCreator,
-} from '../../types.ts'
+import { AgeDetermination, ApplicableRule, ApplicableRuleEffect, NewRecordsToConsiderWithSatisfyingDueToIds, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, jsonBuildObject, literalString } from '../helpers.ts'
 
 import { EventTimeComparison, QueryableEvidenceNode } from '../../shared/s_expression_schemas.ts'
@@ -145,7 +139,7 @@ export const rules = base({
   ): Promise<string | ApplicableRule[]> {
     const positive_records: RecordsSatisfyingDueToIds = records
       .filter((r) => r.existence === 'Yes')
-      .map(r => r.id)
+      .map((r) => r.id)
 
     if (arrayIsEmpty(positive_records)) return 'Skipped: no positive findings'
 

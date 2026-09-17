@@ -1,5 +1,5 @@
-import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure } from '../_middleware.tsx'
+import type { TriageContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
@@ -18,7 +18,7 @@ import entries from '../../../../../../../../util/entries.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
+import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 
 export const TriageHeightAndWeightSchema = z.object({
@@ -33,7 +33,7 @@ export const TriageHeightAndWeightSchema = z.object({
 
 export const handler = postHandler(
   TriageHeightAndWeightSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: TriageContext, form_values) => {
     const {
       trx,
       employment_id,
@@ -45,7 +45,6 @@ export const handler = postHandler(
     } = ctx.state
 
     const completed_procedure = completedProcedure(ctx)
-    assertOr400(patient_age_determination, 'Need patient age to insert finding')
 
     const measurements_to_insert = compact(
       entries(form_values.measurements).map(([vital, measurement]) => {
@@ -86,7 +85,7 @@ export const handler = postHandler(
 )
 
 export async function TriageHeightAndWeightPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
   redirectToRoutePatientIfEmergency(ctx)
   assertAllPriorStepsCompleted(ctx, {
@@ -114,4 +113,4 @@ export async function TriageHeightAndWeightPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(TriageHeightAndWeightPage)
+export default TriagePage(TriageHeightAndWeightPage)
