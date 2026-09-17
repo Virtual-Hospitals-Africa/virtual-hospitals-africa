@@ -534,28 +534,19 @@ export const due_to = base({
     inserted: baseQuery's explicit case matches the node's own concepts, qualifiers and
     attributes against the due_to tables in place of patient_records.
   */
-  async forHypotheticalFinding(
+  forHypotheticalFinding(
     trx: TrxOrDbOrQueryCreator,
     { patient_age_determination, finding }: {
       patient_age_determination: AgeDetermination
       finding: InsertableFindingBase
     },
   ): Promise<HypotheticalDueToMatch[]> {
-    if (finding.existence !== 'Yes') return []
+    if (finding.existence !== 'Yes') return Promise.resolve([])
 
-    const candidates: HypotheticalDueToMatch[] = await due_to.findAll(trx, {
+    return due_to.findAll(trx, {
       patient_age_determination,
       positive_records: { type: 'explicit', finding },
     })
-
-    const matches = await pMap(candidates, async (candidate) => {
-      const node = findingWithExclusions(candidate.s_expression)
-      if (!node) return candidate
-      const satisfies = await hypotheticalFindingSatisfies(trx, finding, node)
-      return satisfies ? candidate : undefined
-    }).then(compact)
-
-    return uniqBy(matches, 'due_to_id').map(pick(['due_to_id', 's_expression', 'history']))
   },
 
   async determineFromNewRecords(
