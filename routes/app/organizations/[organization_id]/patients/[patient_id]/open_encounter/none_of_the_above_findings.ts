@@ -4,7 +4,7 @@ import { workflowStepFromReferer } from '../../../../../../../backend/workflowSt
 import type { OpenEncounterContext } from '../../../../../../../types.ts'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../db/models/patient_findings.ts'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
-import { existingFindingsMatching, isCheckFor } from '../../../../../../../db/models/additional_tasks.ts'
+import { additional_tasks, existingFindingsMatching, isCheckFor } from '../../../../../../../db/models/additional_tasks.ts'
 import { events } from '../../../../../../../db/models/events.ts'
 import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { getTaskById } from '../../../../../../../shared/tasks.ts'
@@ -21,12 +21,13 @@ import type { InsertableFindingBase, MatchingFinding } from '../../../../../../.
   The health worker has looked at the findings a check_for task asked them to check for and
   none of those still unchecked apply. Each is recorded as a negative finding under the
   procedure for the step they are on, identified from the referer as the sibling
-  clinical_finding route does. With every finding it asks about recorded, the task is complete.
+  clinical_finding route does, and that same procedure marks the task done. With every finding
+  it asks about recorded, the task shows as complete whether or not it was marked done.
 
   The FindingsAdded dispatched names the task, so that the diagnosis rules can rule out the
   possible diagnosis it was due to. It is dispatched even when every finding already had a
   record, since a finding checked in the meantime may have left the task answered without
-  anyone having said so.
+  anyone having said so, and it does not wait on the task having been marked done.
 
   The step's procedure already exists: the follow ups a check_for task is shown in only
   appear once a sign has been saved through the clinical_finding route, which creates the
@@ -98,6 +99,13 @@ export const handler = postHandler(
     const procedure_id = procedure.id
 
     if (to_insert.length) await insertNegatives()
+
+    await additional_tasks.markTaskDone(trx, {
+      patient_id,
+      patient_encounter_id,
+      procedure_id,
+      task_description,
+    })
 
     await events.insert(trx, {
       type: 'FindingsAdded',

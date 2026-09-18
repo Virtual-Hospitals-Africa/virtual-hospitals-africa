@@ -18,6 +18,7 @@ export type FollowUpGroup = {
   key: string
   due_to: EnteredFinding
   findings_to_check_for: FindingToCheckFor[]
+  saving?: boolean
 }
 
 export function accumulateFollowUps(

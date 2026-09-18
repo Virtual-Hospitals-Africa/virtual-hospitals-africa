@@ -10,7 +10,7 @@ import { patient_evaluations } from '../../../../db/models/patient_evaluations.t
 import { events } from '../../../../db/models/events.ts'
 import { assertMatches } from '../../../../util/assertMatches.ts'
 import asFormData from '../../../../util/asFormData.ts'
-import { EMERGENCY_EXAMINATION_FOR_TRIAGE } from '../../../../shared/snomed_concepts.ts'
+import { DONE, EMERGENCY_EXAMINATION_FOR_TRIAGE } from '../../../../shared/snomed_concepts.ts'
 import { getTaskById, TASKS } from '../../../../shared/tasks.ts'
 import { isCheckFor } from '../../../../db/models/additional_tasks.ts'
 import { inverseSExpression } from '../../../../shared/s_expression_inverse.ts'
@@ -161,6 +161,31 @@ async function diagnosisRuleMessages(patient_encounter_id: string): Promise<stri
   })
 }
 
+/*
+  The task evaluations present before the health worker answers. Ruling the diagnosis out can
+  itself see the pipeline materialise the task afresh, so only the evaluations that existed
+  beforehand are expected to be marked done.
+*/
+function taskEvaluationIds(patient_encounter_id: string, task_description: string) {
+  return db.selectFrom('patient_record_tasks')
+    .innerJoin('patient_records', 'patient_records.id', 'patient_record_tasks.id')
+    .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
+    .where('patient_record_tasks.task_id', '=', task_description)
+    .select('patient_record_tasks.id')
+    .execute()
+    .then((rows) => rows.map(({ id }) => id))
+}
+
+function doneRelations(procedure_id: string, evaluation_id: string) {
+  return db.selectFrom('patient_record_relations')
+    .innerJoin('patient_records', 'patient_records.id', 'patient_record_relations.id')
+    .where('patient_record_relations.source_id', '=', procedure_id)
+    .where('patient_record_relations.destination_id', '=', evaluation_id)
+    .where('patient_records.specific_snomed_concept_id', '=', DONE.id)
+    .select('patient_record_relations.id')
+    .execute()
+}
+
 function anaphylaxisDiagnoses(patient_id: string, s_expression: string) {
   return patient_evaluations.findAll(db, { patient_id, s_expression })
 }
@@ -202,12 +227,14 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       },
     )
 
-    itParallel('dispatches FindingsAdded naming the task, whose diagnosis rules downgrade the possible diagnosis to improbable', async () => {
+    itParallel('marks the task done and dispatches FindingsAdded naming it, whose diagnosis rules downgrade the possible diagnosis to improbable', async () => {
       const setup = await setupWithPossibleAnaphylaxis()
       const { patient_id, patient_encounter_id } = setup
       await events.allProcessedForEncounter(db, { patient_encounter_id })
       assertEquals((await anaphylaxisDiagnoses(patient_id, POSSIBLE_ANAPHYLAXIS)).length, 1)
       const s_expressions = uncheckedAnaphylaxisSExpressions()
+      const evaluation_ids = await taskEvaluationIds(patient_encounter_id, CHECK_FOR_ANAPHYLAXIS)
+      assert(evaluation_ids.length >= 1)
 
       const { records } = await postNoneOfTheAboveOk(
         setup,
@@ -219,6 +246,11 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
         .then((findings) => findings.filter((finding) => finding.id === records[0].id))
       assert(negative?.as_part_of_procedure)
       const procedure_id = negative.as_part_of_procedure.id
+
+      // Marked done by the step procedure the negatives were recorded under
+      for (const evaluation_id of evaluation_ids) {
+        assertEquals((await doneRelations(procedure_id, evaluation_id)).length, 1)
+      }
 
       const [findings_added, ...others] = await findingsAddedNamingTheTask(patient_encounter_id)
       assertEquals(others, [])
@@ -251,6 +283,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       await events.allProcessedForEncounter(db, { patient_encounter_id })
       const referer = warningSignsReferer(setup)
       const s_expressions = uncheckedAnaphylaxisSExpressions()
+      const evaluation_ids = await taskEvaluationIds(patient_encounter_id, CHECK_FOR_ANAPHYLAXIS)
 
       const first = await postNoneOfTheAboveOk(
         setup,
@@ -279,6 +312,13 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
         first.records.map(({ id }) => ({ id, existence: 'No' })),
         [],
       ])
+
+      // The second click marks nothing done again, so the evaluations keep the one DONE relation each
+      const [negative] = all_findings.filter((finding) => finding.id === first.records[0].id)
+      assert(negative?.as_part_of_procedure)
+      for (const evaluation_id of evaluation_ids) {
+        assertEquals((await doneRelations(negative.as_part_of_procedure.id, evaluation_id)).length, 1)
+      }
 
       // The diagnosis was ruled out once
       assertEquals((await anaphylaxisDiagnoses(patient_id, IMPROBABLE_ANAPHYLAXIS)).length, 1)

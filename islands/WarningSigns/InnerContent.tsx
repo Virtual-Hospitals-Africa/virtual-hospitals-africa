@@ -1,5 +1,5 @@
 import { computed, Signal, useSignal } from '@preact/signals'
-import { useMemo, useRef } from 'preact/hooks'
+import { useEffect, useMemo, useRef } from 'preact/hooks'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
 import {
@@ -29,6 +29,8 @@ import { assert } from 'std/assert/assert.ts'
 import debounce from '../../util/debounce.ts'
 import { accumulateFollowUps, asCheckedFollowUpSign, findCheckedFollowUp, FollowUpGroup, noneOfTheAboveRequests } from './follow_ups.ts'
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
+import { exists } from '../../util/exists.ts'
+import { showAlertMessage } from '../alert/AlertListener.tsx'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
@@ -96,6 +98,24 @@ export default function WarningSignsInnerContent({
 
   const follow_ups_needed = useSignal<FollowUpGroup[]>([])
   const none_of_the_above_saving = useSignal(false)
+
+  useEffect(() => {
+    const warning_signs_form = exists(document.getElementById('warning_signs'))
+    console.log({ warning_signs_form })
+    function callback(event: SubmitEvent) {
+      console.log('in here', follow_ups_needed.value)
+      if (follow_ups_needed.value.length) {
+        event.preventDefault()
+        event.stopPropagation()
+        showAlertMessage({
+          message: 'Please answer follow up questions before continuing',
+          level: 'warning',
+        })
+      }
+    }
+    warning_signs_form.addEventListener('submit', callback)
+    return () => warning_signs_form.removeEventListener('submit', callback)
+  })
 
   // Dry-run results keyed by the exact s_expression, held as promises so a save
   // can await a request still in flight. Failed requests are evicted.

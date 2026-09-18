@@ -20,6 +20,8 @@ import type { TriageContext } from '../../../../../../../../types.ts'
 import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 
 export const TriageAdditionalTasksAndInvestigationsSchema = z.object({
+  // The evaluations of every task shown on the page, which the submission marks done
+  evaluation_ids: z.string().uuid().array().optional().default([]),
   just_do_it_tasks: z.record(
     z.string(),
     z.object({
@@ -81,21 +83,18 @@ export const handler = postHandler(
     })
 
     /*
-      Tasks are no longer marked done from this page. check_for tasks are answered on the warning
-      signs page via none_of_the_above_findings, and count as complete once every finding they
-      ask about has a record.
+      The DONE relations record that this procedure answered the tasks on the page. Nothing
+      downstream relies on them, so FindingsAdded is dispatched alongside rather than after.
     */
-    // await promiseProps({
-    //   _: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges ? Promise.resolve() : additional_tasks.procedureCompletedTasks(trx, {
-    //     patient_id,
-    //     patient_encounter_id,
-    //     patient_age_determination: exists(patient_age_determination),
-    //     procedure_id: inserted.procedure_id,
-    //     evaluation_ids: form_values.evaluation_ids,
-    //   }),
-    //   dispatched: dispatchEvent(inserted),
-    // })
-    await dispatchEvent(inserted)
+    await promiseProps({
+      _: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges ? Promise.resolve() : additional_tasks.procedureCompletedTasks(trx, {
+        patient_id,
+        patient_encounter_id,
+        procedure_id: inserted.procedure_id,
+        evaluation_ids: form_values.evaluation_ids,
+      }),
+      dispatched: dispatchEvent(inserted),
+    })
 
     return response
 
