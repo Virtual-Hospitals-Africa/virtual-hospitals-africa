@@ -1,4 +1,4 @@
-import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDbOrQueryCreator, VoidResult } from '../../types.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { EventInsertAny, EVENTS } from '../../events/handlers.ts'
 import { Client } from 'pg'
@@ -531,12 +531,32 @@ export const events = {
 
     const processed_a_matching_listener = Promise.withResolvers<void>()
     let event_listener_result: EventResultShared
+    function setListenerResult(to_set: EventResultShared): VoidResult {
+      if (event_listener_result) {
+        if (event_listener_result.id !== to_set.id) {
+          return {
+            success: false,
+            error: new Error(
+              `Multiple distinct events listened to but with the same parameters were returned ${
+                JSON.stringify({ patient_encounter_id, event_type, listener_name })
+              }`,
+            ),
+          }
+        }
+      }
+      event_listener_result = to_set
+      return { success: true }
+    }
+
     function callback(result: ListenerResult) {
       if (result.event_type !== event_type) return
       if (result.listener_name !== listener_name) return
       if (result.processing) {
-        assert(!event_listener_result, '!event_listener_result')
-        return event_listener_result = result
+        const set_result = setListenerResult(result)
+        if (!set_result.success) {
+          processed_a_matching_listener.reject(set_result.error)
+        }
+        return
       }
       if (result.id !== event_listener_result?.id) return
       if (result.success) return processed_a_matching_listener.resolve()
@@ -565,7 +585,8 @@ export const events = {
 
           if (event_listener.processed_at) return
 
-          event_listener_result = event_listener
+          const set_result = setListenerResult(event_listener)
+          if (!set_result.success) throw set_result.error
 
           await processed_a_matching_listener.promise
         })(),

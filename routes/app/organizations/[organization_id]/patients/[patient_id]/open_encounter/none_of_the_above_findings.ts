@@ -14,7 +14,6 @@ import { NoneOfTheAboveFindingsResponse, NoneOfTheAboveFindingsSchema } from '..
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
 import { json } from '../../../../../../../util/responses.ts'
 import { asResult } from '../../../../../../../util/asResult.ts'
-import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 import generateUUID from '../../../../../../../util/uuid.ts'
 import type { InsertableFindingBase, MatchingFinding } from '../../../../../../../shared/s_expression_schemas.ts'
 
@@ -93,16 +92,13 @@ export const handler = postHandler(
     assertOr400(procedure, `No ${step} procedure to record these findings under`)
     const procedure_id = procedure.id
 
-    // Nothing here depends on the other: the task is answered by this procedure either way
-    const { marked } = await promiseProps({
-      inserted: to_insert.length ? insertNegatives() : Promise.resolve(),
-      marked: additional_tasks.markTaskDone(trx, {
-        patient_id,
-        patient_encounter_id,
-        patient_age_determination,
-        procedure_id,
-        task_id,
-      }),
+    await to_insert.length ? insertNegatives() : Promise.resolve()
+    const marked = await additional_tasks.markTaskDone(trx, {
+      patient_id,
+      patient_encounter_id,
+      patient_age_determination,
+      procedure_id,
+      task_id,
     })
 
     /*

@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import { RawBuilder, sql } from 'kysely'
 import { NO_QUALIFIER, UNKNOWN_QUALIFIER } from '../../../shared/snomed_concepts.ts'
 import {
@@ -5,7 +6,6 @@ import {
   RecordValueLink,
   RecordValueMeasurement,
   RecordValueScore,
-  // RecordValueSExpression,
   RecordValueSnomedConcept,
   RecordValueTask,
   TrxOrDb,
@@ -149,6 +149,25 @@ export default define([
   // Compile the Kysely query to SQL
   const compiled_sql = asCompiledSql(aggregation_query)
 
+  // The trigger fires once per statement rather than once per row, so the query
+  // reads the newly inserted rows out of the NEW TABLE transition table instead
+  // of re-reading patient_records. Aliasing it as patient_records keeps every
+  // patient_records.<column> reference in the compiled SQL valid.
+  //
+  // It has to read the transition table directly: filtering patient_records by
+  // `id in (select id from new_rows)` plans terribly, as the transition tuplestore
+  // carries no statistics for the planner to work with.
+  const from_patient_records = /\bfrom\s+"patient_records"/g
+  const occurrences = compiled_sql.match(from_patient_records)?.length ?? 0
+  assert(
+    occurrences === 1,
+    `Expected exactly one 'from "patient_records"' in the compiled aggregation query, got ${occurrences}`,
+  )
+  const compiled_sql_over_new_rows = compiled_sql.replace(
+    from_patient_records,
+    'from "new_rows" as "patient_records"',
+  )
+
   // Create trigger function that uses the compiled SQL
   const function_name = 'populate_patient_records_aggregated'
   const trigger_name = `${function_name}_trigger`
@@ -171,15 +190,19 @@ export default define([
         existence,
         value
       )
-      ${sql.raw(compiled_sql)}
-      WHERE patient_records.id = NEW.id;
-      RETURN NEW;
+      ${sql.raw(compiled_sql_over_new_rows)};
+      RETURN NULL;
     END;
     $$ LANGUAGE plpgsql;
 
-    CREATE OR REPLACE TRIGGER ${sql.raw(trigger_name)}
+    -- Dropped rather than replaced because CREATE OR REPLACE TRIGGER cannot
+    -- switch an existing FOR EACH ROW trigger to FOR EACH STATEMENT.
+    DROP TRIGGER IF EXISTS ${sql.raw(trigger_name)} ON patient_records;
+
+    CREATE TRIGGER ${sql.raw(trigger_name)}
     AFTER INSERT ON patient_records
-    FOR EACH ROW
+    REFERENCING NEW TABLE AS new_rows
+    FOR EACH STATEMENT
     EXECUTE FUNCTION ${sql.raw(function_name)}();
   `.execute(db)
 }, { always_run: true })
