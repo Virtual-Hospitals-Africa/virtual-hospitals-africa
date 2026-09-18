@@ -53,13 +53,13 @@ export async function up(db: Kysely<DB>) {
         -- for the same event are processed concurrently
         PERFORM pg_advisory_xact_lock(hashtext(NEW.event_id::text));
 
-        PERFORM pg_notify('event_listener_processed', json_build_object(
-          'id', NEW.id,
-          'event_id', NEW.event_id,
-          'event_type', event_type,
-          'listener_name', NEW.listener_name,
-          'patient_encounter_id', patient_encounter_id
-        )::text);
+        -- PERFORM pg_notify('event_listener_processed', json_build_object(
+        --   'id', NEW.id,
+        --   'event_id', NEW.event_id,
+        --   'event_type', event_type,
+        --   'listener_name', NEW.listener_name,
+        --   'patient_encounter_id', patient_encounter_id
+        -- )::text);
 
         SELECT COUNT(*) INTO unprocessed_count
           FROM event_listeners
@@ -72,7 +72,7 @@ export async function up(db: Kysely<DB>) {
           WHERE events.id = NEW.event_id
             AND events.all_processed_at IS NULL;
 
-          PERFORM pg_notify('event_all_processed', NEW.event_id::text);
+          -- PERFORM pg_notify('event_all_processed', NEW.event_id::text);
         END IF;
       END IF;
       RETURN NEW;
