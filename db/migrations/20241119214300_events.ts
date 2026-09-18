@@ -147,8 +147,15 @@ export async function up(db: Kysely<DB>) {
         INSERT INTO event_listeners (id, event_id, listener_name, created_at, updated_at)
         VALUES (new_event_listener_id, NEW.id, listener_name, now(), now());
 
-        PERFORM pg_notify('event_listener_to_be_processed', new_event_listener_id::text);
+        PERFORM pg_notify('event_listener_to_be_processed', json_build_object(
+          'id', new_event_listener_id,
+          'event_id', NEW.id,
+          'event_type', NEW.type,
+          'listener_name', listener_name,
+          'patient_encounter_id', NEW.patient_encounter_id
+        )::text);
       END LOOP;
+
       PERFORM pg_notify('event_inserted', json_build_object('id', NEW.id, 'data', NEW.data)::text);
       RETURN NEW;
     END;

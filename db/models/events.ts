@@ -1,4 +1,4 @@
-import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDbOrQueryCreator, VoidResult } from '../../types.ts'
+import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { EventInsertAny, EVENTS } from '../../events/handlers.ts'
 import { Client } from 'pg'
@@ -19,7 +19,18 @@ import { DB } from '../../db.d.ts'
 // 'notification' event listener).
 const _PUBSUB_GLOBAL_KEY = '__vha_allProcessedPubSub__'
 
-type ListenerResult = { listener_id: string; listener_name: string; event_type: string } & VoidResult
+type ListenerResult =
+  & {
+    id: string
+    listener_name: string
+    event_id: string
+    event_type: string
+  }
+  & (
+    | { success: true; processing: false }
+    | { success: false; error: Error; processing: false }
+    | { success: null; processing: true }
+  )
 
 /**
  * We need a dedicated query for the listener.
@@ -44,9 +55,33 @@ export const initializeAllProcessedPubSub = once(
     // await client.query(`LISTEN event_all_processed`)
     await client.query(`LISTEN event_listener_failure`)
     await client.query(`LISTEN event_listener_processed`)
+    await client.query(`LISTEN event_listener_to_be_processed`)
     await client.query(`LISTEN all_events_settled_for_patient_encounter`)
     client.on('notification', function (event) {
       switch (event.channel) {
+        case 'event_listener_to_be_processed': {
+          assert(event.payload)
+          const event_listener = JSON.parse(event.payload)
+          assertHasProperty(event_listener, 'id')
+          assertHasProperty(event_listener, 'event_id')
+          assertHasProperty(event_listener, 'event_type')
+          assertHasProperty(event_listener, 'listener_name')
+          assertHasProperty(event_listener, 'patient_encounter_id')
+          const listener_subscriptions = event_listener_by_patient_encounter_id_subscribers.get(event_listener.patient_encounter_id)
+          if (listener_subscriptions?.size) {
+            for (const subscription of listener_subscriptions) {
+              subscription({
+                id: event_listener.id,
+                listener_name: event_listener.listener_name,
+                event_id: event_listener.event_id,
+                event_type: event_listener.event_type,
+                processing: true as const,
+                success: null,
+              })
+            }
+          }
+          break
+        }
         case 'event_listener_processed': {
           assert(event.payload)
           const event_listener = JSON.parse(event.payload)
@@ -60,9 +95,11 @@ export const initializeAllProcessedPubSub = once(
           if (!subscriptions?.size) break
           for (const subscription of subscriptions) {
             subscription({
-              listener_id: event_listener.id,
+              id: event_listener.id,
               listener_name: event_listener.listener_name,
+              event_id: event_listener.event_id,
               event_type: event_listener.event_type,
+              processing: false as const,
               success: true as const,
             })
           }
@@ -84,9 +121,11 @@ export const initializeAllProcessedPubSub = once(
           if (listener_subscriptions?.size) {
             for (const subscription of listener_subscriptions) {
               subscription({
-                listener_id: event_listener.id,
+                id: event_listener.id,
                 listener_name: event_listener.listener_name,
+                event_id: event_listener.event_id,
                 event_type: event_listener.event_type,
+                processing: false as const,
                 success: false as const,
                 error,
               })
@@ -491,15 +530,19 @@ export const events = {
     const timer = timeout(timeout_ms)
 
     const processed_a_matching_listener = Promise.withResolvers<void>()
-    let event_listener: ReturnedEventListener
+    let event_listener_result: EventResultShared
     function callback(result: ListenerResult) {
       if (result.event_type !== event_type) return
       if (result.listener_name !== listener_name) return
-      if (result.listener_id !== event_listener?.id) return
+      if (result.processing) {
+        assert(!event_listener_result, '!event_listener_result')
+        return event_listener_result = result
+      }
+      if (result.id !== event_listener_result?.id) return
       if (result.success) return processed_a_matching_listener.resolve()
       return processed_a_matching_listener.reject(result.error)
     }
-    // Subscribe BEFORE querying to avoid missing notifications
+    // Subscribe BEFORE querying to avoid missing notifications./
     pub_sub.by_event_listener_encounter.subscribe(patient_encounter_id, callback)
 
     try {
@@ -515,22 +558,14 @@ export const events = {
             .selectAll('event_listeners')
             .orderBy('event_listeners.created_at', 'desc')
 
-          event_listener = await modifyQuery(query).executeTakeFirstOrThrow()
-          throwIfErrored(event_listener)
+          const event_listener = await modifyQuery(query).executeTakeFirstOrThrow()
+          if (event_listener.error_message) {
+            throw new Error(`[${event_listener.listener_name}] ${event_listener.error_message}`)
+          }
+
           if (event_listener.processed_at) return
 
-          /*
-            Which listener to match notifications against was only known once the read above
-            returned, so a notification arriving during it was dropped by the callback. Reading
-            that row once more closes the window: the listener commits before it notifies, so
-            anything missed is already visible here.
-          */
-          const read_again = await trx.selectFrom('event_listeners')
-            .where('event_listeners.id', '=', event_listener.id)
-            .selectAll('event_listeners')
-            .executeTakeFirstOrThrow()
-          throwIfErrored(read_again)
-          if (read_again.processed_at) return
+          event_listener_result = event_listener
 
           await processed_a_matching_listener.promise
         })(),
@@ -542,11 +577,11 @@ export const events = {
   },
 }
 
-function throwIfErrored(event_listener: Pick<ReturnedEventListener, 'listener_name' | 'error_message'>) {
-  if (!event_listener.error_message) return
-  throw new Error(`[${event_listener.listener_name}] ${event_listener.error_message}`)
+type EventResultShared = {
+  id: string
+  event_id: string
+  listener_name: string
 }
-
 type ReturnedEventListener = {
   created_at: Date
   error_message: string | null

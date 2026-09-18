@@ -7,6 +7,7 @@ import { Client } from 'pg'
 import { once } from '../util/once.ts'
 import { isUUID } from '../util/uuid.ts'
 import { forEach } from '../util/inParallel.ts'
+import isString from '../util/isString.ts'
 
 export type EventProcessor = {
   start(): void
@@ -119,10 +120,10 @@ const initializeEventListener = once(
     processAllUnprocessedOnStartup()
 
     client.on('notification', function (event) {
-      const { payload: event_listener_id } = event
-      assert(isUUID(event_listener_id))
-      console.log('event_listener_to_be_processed', event_listener_id)
-      onEventListener(event_listener_id)
+      assert(isString(event.payload))
+      const event_listener = JSON.parse(event.payload)
+      assert(isUUID(event_listener.id))
+      onEventListener(event_listener.id)
     })
 
     return client
