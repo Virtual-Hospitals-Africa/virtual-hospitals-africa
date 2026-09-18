@@ -1,6 +1,7 @@
 import { afterAll, describe } from 'std/testing/bdd.ts'
 import { itUsesTrxAnd } from '../../_helpers/transaction.ts'
 import { addTestEmployee } from '../../_helpers/employees.ts'
+import { createTestOrganization } from '../../_helpers/organizations.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as makeAppointment from '../../../backend/scheduling/makeAppointment.ts'
 import { appointments } from '../../../db/models/appointments.ts'
@@ -21,8 +22,10 @@ describe('scheduling/makeAppointment.ts', () => {
             id: 'inserted google event id',
           } as GCalEvent)
         )
+        const organization = await createTestOrganization(trx)
         const health_worker = await addTestEmployee(trx, {
           role: 'doctor',
+          organization_id: organization.id,
         })
 
         const patient = await patients.insert(trx, {

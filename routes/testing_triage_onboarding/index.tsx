@@ -72,6 +72,7 @@ export const handler = postHandler(
 
       const health_worker = await addTestEmployee(trx, {
         specialty: 'Triage',
+        organization_id: organization.id,
       })
       const session_id = await sessions.insertOne(trx, {
         entity_type: 'health_worker',

@@ -25,6 +25,7 @@ describeParallel(
       async () => {
         const { fetchCheerio } = await addTestEmployeeWithSession(db, {
           role: 'receptionist',
+          organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
         })
 
         const $personal = await fetchCheerio(

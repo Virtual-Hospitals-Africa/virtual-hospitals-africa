@@ -2,6 +2,7 @@ import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll, before } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
+import { createTestOrganization } from '../_helpers/organizations.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { route } from '../_route.ts'
@@ -14,9 +15,11 @@ describeParallel(
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     itParallel('can search for organizations by name', async () => {
+      const organization = await createTestOrganization(db)
       const { fetch } = await addTestEmployeeWithSession(db, {
         role: 'nurse',
         specialty: 'Primary care',
+        organization_id: organization.id,
       })
       const response = await fetch(
         `${route}/app/organizations?search=VHA Test`,

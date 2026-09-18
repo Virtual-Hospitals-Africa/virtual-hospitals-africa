@@ -4,6 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { addTestEmployeeWithSession } from '../_helpers/employees.ts'
+import { createTestOrganization } from '../_helpers/organizations.ts'
 import { route } from '../_route.ts'
 import waitUntilTestServerUp from '../_helpers/waitUntilTestServerUp.ts'
 import matching from '../../util/matching.ts'
@@ -14,11 +15,13 @@ describeParallel(
     before(waitUntilTestServerUp)
     afterAll(() => db.destroy())
     itParallel('can return a provider', async () => {
+      const organization = await createTestOrganization(db)
       const { fetch, health_worker } = await addTestEmployeeWithSession(
         db,
         {
           role: 'nurse',
           specialty: 'Primary care',
+          organization_id: organization.id,
         },
       )
       const response = await fetch(

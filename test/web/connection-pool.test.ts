@@ -12,8 +12,10 @@ describeParallel.skip('Connection Pool Management', () => {
   afterAll(() => db.destroy())
 
   itParallel('returns connections to pool after failed POST requests', async () => {
+    const organization = await createTestOrganization(db)
     const mock = await addTestEmployeeWithSession(db, {
       role: 'admin',
+      organization_id: organization.id,
     })
 
     const failing_requests = Array.from({ length: 150 }, () =>

@@ -3,6 +3,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { notifications } from '../../db/models/notifications.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
+import { createTestOrganization } from '../_helpers/organizations.ts'
 import { timeout } from '../../util/timeout.ts'
 
 function insertTestNotification(health_worker_id: string, row_id: string) {
@@ -20,7 +21,9 @@ function insertTestNotification(health_worker_id: string, row_id: string) {
 }
 
 describe('db/models/notifications.ts', () => {
+  let organization_id: string
   before(async () => {
+    organization_id = (await createTestOrganization(db)).id
     await notifications.initializeNotificationsPubSub()
   })
   afterAll(async () => {
@@ -32,8 +35,8 @@ describe('db/models/notifications.ts', () => {
     it(
       'notifies global and matching health worker subscribers when a notification is inserted',
       async () => {
-        const health_worker = await addTestEmployee(db, { role: 'nurse' })
-        const other_health_worker = await addTestEmployee(db, { role: 'nurse' })
+        const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
+        const other_health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
         const pub_sub = await notifications.initializeNotificationsPubSub()
         const global_received = Promise.withResolvers<{ id: string; health_worker_id: string }>()
         const matching_received = Promise.withResolvers<string>()
@@ -82,7 +85,7 @@ describe('db/models/notifications.ts', () => {
     it(
       'still notifies other subscribers when one subscriber throws',
       async () => {
-        const health_worker = await addTestEmployee(db, { role: 'nurse' })
+        const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
         const pub_sub = await notifications.initializeNotificationsPubSub()
         const received = Promise.withResolvers<string>()
         const throwingCallback = () => {
@@ -121,7 +124,7 @@ describe('db/models/notifications.ts', () => {
 
   describe('markSeen', () => {
     it('marks unread notifications belonging to the specified health worker', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
       const first = await insertTestNotification(
         health_worker.id,
         '00000000-0000-1000-8000-000000000081',
@@ -146,8 +149,8 @@ describe('db/models/notifications.ts', () => {
     })
 
     it("does not mark another health worker's notification", async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
-      const other_health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
+      const other_health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
       const others = await insertTestNotification(
         other_health_worker.id,
         '00000000-0000-1000-8000-000000000083',
@@ -168,7 +171,7 @@ describe('db/models/notifications.ts', () => {
     })
 
     it('does not overwrite an existing seen_at', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
       const notification = await insertTestNotification(
         health_worker.id,
         '00000000-0000-1000-8000-000000000084',
@@ -195,7 +198,7 @@ describe('db/models/notifications.ts', () => {
     })
 
     it('is idempotent when called twice', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
       const notification = await insertTestNotification(
         health_worker.id,
         '00000000-0000-1000-8000-000000000085',
@@ -215,7 +218,7 @@ describe('db/models/notifications.ts', () => {
     })
 
     it('returns 0 for an empty notification_ids array', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
 
       const updated = await notifications.markSeen(db, {
         health_worker_id: health_worker.id,
@@ -225,7 +228,7 @@ describe('db/models/notifications.ts', () => {
     })
 
     it('countAll only_unread reflects notifications marked as seen', async () => {
-      const health_worker = await addTestEmployee(db, { role: 'nurse' })
+      const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
       const first = await insertTestNotification(
         health_worker.id,
         '00000000-0000-1000-8000-000000000086',
@@ -262,7 +265,7 @@ describe('db/models/notifications.ts', () => {
     it(
       'countAll only_unread reflects unread notifications and excludes seen ones',
       async () => {
-        const health_worker = await addTestEmployee(db, { role: 'nurse' })
+        const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
 
         assertEquals(
           await notifications.countAll(db, {
@@ -308,7 +311,7 @@ describe('db/models/notifications.ts', () => {
     it(
       'highestUnreadPriority returns null when there are no unread encounter-linked notifications',
       async () => {
-        const health_worker = await addTestEmployee(db, { role: 'nurse' })
+        const health_worker = await addTestEmployee(db, { role: 'nurse', organization_id })
 
         assertEquals(
           await notifications.highestUnreadPriority(db, {

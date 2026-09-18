@@ -17,6 +17,7 @@ import { Stub, stub } from 'std/testing/mock.ts'
 import { GCalEvent } from '../../../../../../../../types.ts'
 import randomPhoneNumber from '../../../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../../../_helpers/employees.ts'
+import { createTestOrganization } from '../../../../../../../_helpers/organizations.ts'
 import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
 import { patient_chatbot_users } from '../../../../../../../../db/models/patient_chatbot_users.ts'
 
@@ -59,7 +60,11 @@ describe.skip('patient chatbot', () => {
         reason: 'pain',
       })
 
-      const health_worker = await addTestEmployee(db, { role: 'doctor' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, {
+        role: 'doctor',
+        organization_id: organization.id,
+      })
       assert(health_worker)
 
       //  Insert google calender
