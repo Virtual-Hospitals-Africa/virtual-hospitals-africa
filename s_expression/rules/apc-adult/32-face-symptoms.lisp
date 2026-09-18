@@ -3,13 +3,13 @@
   "Check for urgent face symptom conditions"
   adult
   (clinical_finding (finding_site (snomed_concept "Face structure" "body structure"))
-    (excluding (clinical_finding (snomed_concept "Eye / vision finding" "finding")))
-    (excluding (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure"))))
-    (excluding (clinical_finding (finding_site (snomed_concept "Ear structure" "body structure"))))
-    (excluding (clinical_finding (snomed_concept "Nose finding" "finding")))
-    (excluding (clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure"))))
-    (excluding (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure"))))
-    (excluding (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
+    ;; (excluding (clinical_finding (snomed_concept "Eye / vision finding" "finding")))
+    ;; (excluding (clinical_finding (finding_site (snomed_concept "Structure of eye proper" "body structure"))))
+    ;; (excluding (clinical_finding (finding_site (snomed_concept "Ear structure" "body structure"))))
+    ;; (excluding (clinical_finding (snomed_concept "Nose finding" "finding")))
+    ;; (excluding (clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure"))))
+    ;; (excluding (clinical_finding (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure"))))
+    ;; (excluding (clinical_finding (finding_site (snomed_concept "Tooth, gum, and/or supporting structure" "body structure"))))
   )
   (check_for
     (clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))

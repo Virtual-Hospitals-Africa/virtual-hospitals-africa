@@ -3114,24 +3114,14 @@ export type NewRecordsToConsider = {
   procedure_id?: string
   patient_id: string
   patient_encounter_id: string
-  patient_age_determination: AgeDetermination | null
+  patient_age_determination: AgeDetermination
   records: {
     id: string
     existence: 'Yes' | 'No' | 'Unknown'
   }[]
 }
 
-export type RecordsSatisfyingDueToIds = {
-  id: string
-  existence: 'Yes' | 'No' | 'Unknown'
-  satisfying_due_to_ids: string[]
-}[]
-
-export type NewRecordsToConsiderWithSatisfyingDueToIds = Omit<NewRecordsToConsider, 'records'> & {
-  patient_age_determination: AgeDetermination
-  records: RecordsSatisfyingDueToIds
-}
-
+export type NewRecordsToConsiderWithSatisfyingDueToIds = NewRecordsToConsider
 export type ApplicableRuleEffectTask = {
   type: 'task'
 }
@@ -3226,6 +3216,12 @@ export type OpenEncounterContext<T = Record<never, never>> = LoggedInHealthWorke
 export type OpenEncounterWorkflowContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
   OpenEncounterWorkflowState & T
 >
+
+export type TriageState<T = Record<never, never>> = OpenEncounterWorkflowState & T & {
+  patient_age_determination: AgeDetermination
+}
+
+export type TriageContext<T = Record<never, never>> = LoggedInHealthWorkerContext<TriageState<T>>
 
 export type FindingRelatedModifiers = {
   predefined_attributes: {

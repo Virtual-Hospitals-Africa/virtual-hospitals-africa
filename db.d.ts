@@ -384,7 +384,6 @@ export interface DueToFindings {
 
 export interface DueToFindingSites {
   id: string
-  is_somehow_qualified: boolean
   value_snomed_concept_id: Int8
 }
 
@@ -394,6 +393,16 @@ export interface DueToMeasurements {
   root_snomed_concept_id: Int8 | null
   specific_snomed_concept_id: Int8
   value: Numeric
+}
+
+export interface DueToQualifiers {
+  created_at: Generated<Timestamp>
+  due_to_id: string
+  id: Generated<string>
+  root_snomed_concept_id: Int8 | null
+  specific_snomed_concept_id: Int8
+  updated_at: Generated<Timestamp>
+  value_snomed_concept_id: Int8 | null
 }
 
 export interface Employment {
@@ -1924,6 +1933,7 @@ export interface DB {
   due_to_finding_sites: DueToFindingSites
   due_to_findings: DueToFindings
   due_to_measurements: DueToMeasurements
+  due_to_qualifiers: DueToQualifiers
   employment: Employment
   employment_calendars: EmploymentCalendars
   employment_presence: EmploymentPresence

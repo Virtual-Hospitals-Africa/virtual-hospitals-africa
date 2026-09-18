@@ -48,8 +48,9 @@ const AdHocFindingsSchema = z.object({
 export const handler = postHandler(
   AdHocFindingsSchema,
   async (ctx: OpenEncounterContext, { findings_text }) => {
-    const { trx, patient_id, patient_encounter_id, employment_id, encounter_employee_presence } = ctx.state
+    const { trx, patient_id, patient_encounter_id, employment_id, encounter_employee_presence, patient_age_determination } = ctx.state
     assertOr400(encounter_employee_presence, 'You must be present with the patient to submit findings')
+    assertOr400(patient_age_determination, 'Need patient age to insert finding')
     const { patient_encounter_employee_id } = encounter_employee_presence
 
     const stripped = stripComments(findings_text)
@@ -61,6 +62,7 @@ export const handler = postHandler(
       patient_encounter_id,
       patient_encounter_employee_id,
       employment_id,
+      patient_age_determination,
       procedure: {
         create_with_specific_snomed_concept_id: exists(ADMINISTRATIVE_PROCEDURE.id),
       },

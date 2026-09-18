@@ -1,5 +1,5 @@
-import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure } from '../_middleware.tsx'
+import type { TriageContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
@@ -18,7 +18,7 @@ import entries from '../../../../../../../../util/entries.ts'
 import compact from '../../../../../../../../util/compact.ts'
 import { measurement_comparator } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
+import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 
 export const TriageHeightAndWeightSchema = z.object({
   measurements: z.record(
@@ -32,13 +32,14 @@ export const TriageHeightAndWeightSchema = z.object({
 
 export const handler = postHandler(
   TriageHeightAndWeightSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: TriageContext, form_values) => {
     const {
       trx,
       employment_id,
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      patient_age_determination,
       workflow_step_snomed_concept,
     } = ctx.state
 
@@ -69,6 +70,7 @@ export const handler = postHandler(
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
+      patient_age_determination,
       employment_id,
       procedure: completed_procedure || {
         create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
@@ -82,7 +84,7 @@ export const handler = postHandler(
 )
 
 export async function TriageHeightAndWeightPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
   redirectToRoutePatientIfEmergency(ctx)
   assertAllPriorStepsCompleted(ctx, {
@@ -110,4 +112,4 @@ export async function TriageHeightAndWeightPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(TriageHeightAndWeightPage)
+export default TriagePage(TriageHeightAndWeightPage)

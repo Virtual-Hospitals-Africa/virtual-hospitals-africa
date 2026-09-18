@@ -1,6 +1,6 @@
 import { IdSelectable, IdSelection, InsertRows, Priority, TrxOrDbOrQueryCreator } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { blankSelection, idSelection, jsonArrayFrom } from '../helpers.ts'
+import { idSelection, jsonArrayFrom, literalBoolean } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_record_qualifiers } from './patient_record_qualifiers.ts'
 import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
@@ -34,93 +34,22 @@ type RecordInsert = {
   specific_snomed_concept: Lang['snomed_concept']
   value_snomed_concept: Lang['snomed_concept'] | null
   qualifiers?: Lang['qualifier'][]
-  attributes?: Lang['attribute'][]
 }
 
 export function baseInsert(
   trx: TrxOrDbOrQueryCreator,
-  insert: RecordInsert,
+  { patient_id, patient_encounter_id, record_id = generateUUID(), root_snomed_concept, specific_snomed_concept, value_snomed_concept, qualifiers }:
+    RecordInsert,
 ) {
-  const {
+  return baseInsertMany(trx, [{
     patient_id,
     patient_encounter_id,
-    record_id = generateUUID(),
+    record_id,
     root_snomed_concept,
     specific_snomed_concept,
     value_snomed_concept,
-    qualifiers = [],
-  } = insert
-
-  let query = trx.with(
-    `inserting_record`,
-    (qb) =>
-      qb.insertInto('patient_records')
-        .values({
-          id: record_id,
-          patient_id,
-          patient_encounter_id,
-          root_snomed_concept_id: snomedConceptBase(trx, root_snomed_concept),
-          specific_snomed_concept_id: snomedConceptBase(
-            trx,
-            specific_snomed_concept,
-          ),
-          value_snomed_concept_id: maybeSnomedConceptBase(
-            trx,
-            value_snomed_concept,
-          ),
-        })
-        .returningAll(),
-  )
-
-  function qualifierCte(
-    qb: typeof query,
-    qualifier: Lang['qualifier'],
-    qualifies_record_id: string,
-  ) {
-    assertHasProperty(qualifier, 'specific_snomed_concept')
-    const qualifier_id = generateUUID()
-    const id_token = qualifier_id.replaceAll('-', '_')
-
-    let next_query = qb.with(
-      `inserting_qualifier_record_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_records')
-          .values({
-            id: qualifier_id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: QUALIFIER_VALUE.id,
-            specific_snomed_concept_id: snomedConceptBase(
-              trx,
-              qualifier.specific_snomed_concept,
-            ),
-          }),
-    ).with(
-      `inserting_qualifiers_${id_token}`,
-      (qb) =>
-        qb.insertInto('patient_record_qualifiers')
-          .values({
-            id: qualifier_id,
-            qualifies_record_id,
-          }),
-    ) as unknown as typeof query
-
-    for (const sub_qualifier of qualifier.qualifiers) {
-      next_query = qualifierCte(
-        next_query,
-        sub_qualifier,
-        qualifier_id,
-      ) as unknown as typeof query
-    }
-
-    return next_query
-  }
-
-  for (const qualifier of qualifiers) {
-    query = qualifierCte(query, qualifier, record_id)
-  }
-
-  return query
+    qualifiers,
+  }])
 }
 
 type RecordInsertMany = {
@@ -213,25 +142,27 @@ export function baseInsertMany(
     }
   }
 
-  // Build query with one CTE per table
+  /*
+    Build query with one CTE per table. Each CTE returns the rows it inserted (or an empty
+    selection of the same shape) so that later CTEs in the same statement can see the new
+    rows: sibling CTEs all share one snapshot, so reading the tables themselves would miss them.
+  */
   return trx.with(
     'inserting_records',
-    (qb) =>
-      qb.insertInto('patient_records').values(patient_record_rows).returning(
-        'id',
-      ),
+    (qb) => qb.insertInto('patient_records').values(patient_record_rows).returningAll(),
   )
     .with(
       'inserting_qualifier_records',
-      (qb) => qualifier_record_rows.length ? qb.insertInto('patient_records').values(qualifier_record_rows) : blankSelection(qb),
+      (qb) =>
+        qualifier_record_rows.length
+          ? qb.insertInto('patient_records').values(qualifier_record_rows).returningAll()
+          : qb.selectFrom('patient_records').selectAll().where(literalBoolean(false)),
     ).with(
       'inserting_qualifier_links',
       (qb) =>
         qualifier_record_rows.length
-          ? qb.insertInto('patient_record_qualifiers').values(
-            qualifier_link_rows,
-          )
-          : blankSelection(qb),
+          ? qb.insertInto('patient_record_qualifiers').values(qualifier_link_rows).returningAll()
+          : qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)),
     )
 }
 

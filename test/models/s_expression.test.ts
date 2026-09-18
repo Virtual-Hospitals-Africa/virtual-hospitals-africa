@@ -1,11 +1,12 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
+import { asNode, parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { findingQueryExpression, KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { buildExpression } from '../../db/models/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from '../_helpers/workflows.ts'
 import { patient_findings } from '../../db/models/patient_findings.ts'
+import { patient_records } from '../../db/models/patient_records.ts'
 import { WORKFLOW_SNOMED_CONCEPTS, WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
 import z from 'zod'
@@ -17,6 +18,45 @@ import assertLength from '../../util/assertLength.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { check_for } from '../../db/models/check_for.ts'
 import { createTestOrganization } from 'test/_helpers/organizations.ts'
+import { TrxOrDbOrQueryCreator } from '../../types.ts'
+import assertHasProperty from '../../util/assertHasProperty.ts'
+import generateUUID from '../../util/uuid.ts'
+import { literalString } from '../../db/helpers.ts'
+
+async function insertFindingForTest(
+  trx: TrxOrDbOrQueryCreator,
+  { patient_id, patient_encounter_id, patient_encounter_employee_id, procedure_id, finding }: {
+    patient_id: string
+    patient_encounter_id: string
+    patient_encounter_employee_id: string
+    procedure_id: string
+    finding: string
+  },
+) {
+  const finding_node = asNode(finding, 'finding')
+  assertHasProperty(finding_node, 'root_snomed_concept')
+  assertHasProperty(finding_node, 'specific_snomed_concept')
+
+  const finding_id = generateUUID()
+
+  await patient_records.baseInsert(trx, {
+    patient_id,
+    patient_encounter_id,
+    record_id: finding_id,
+    ...finding_node,
+  }).with(
+    'inserting_findings',
+    (qb) =>
+      qb.insertInto('patient_findings').values({
+        id: finding_id,
+        procedure_id,
+        patient_encounter_employee_id,
+      }),
+  ).selectNoFrom(literalString(finding_id).as('finding_id'))
+    .executeTakeFirstOrThrow()
+
+  return finding_id
+}
 
 describeParallel('db/models/s_expression.ts', () => {
   afterAll(() => db.destroy())
@@ -48,7 +88,7 @@ describeParallel('db/models/s_expression.ts', () => {
         ),
       })
 
-      await patient_findings.insertOneNested(db, {
+      await insertFindingForTest(db, {
         patient_id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
@@ -149,7 +189,7 @@ describeParallel('db/models/s_expression.ts', () => {
         ),
       })
 
-      await patient_findings.insertOneNested(db, {
+      await insertFindingForTest(db, {
         patient_id: encounter.patient.id,
         patient_encounter_id: encounter.patient_encounter_id,
         patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
@@ -219,6 +259,7 @@ describeParallel('db/models/s_expression.ts', () => {
         patient_encounter_id,
         patient_encounter_employee_id: employee.patient_encounter_employee_id,
         employment_id: employee.employee_id,
+        patient_age_determination: 'adult',
         procedure: {
           create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
         },
@@ -254,6 +295,7 @@ describeParallel('db/models/s_expression.ts', () => {
         patient_encounter_id,
         patient_encounter_employee_id: employee.patient_encounter_employee_id,
         employment_id: employee.employee_id,
+        patient_age_determination: 'adult',
         procedure: {
           create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
         },

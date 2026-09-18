@@ -119,39 +119,44 @@ export const system_diagnosis_rules = {
       patient_encounter_id,
       evaluation: diagnosis_node,
       by_system: true,
-    }).with(
-      'inserting_relation_patient_records',
-      (qb) =>
-        relations.length
-          ? qb.insertInto('patient_records').values(relations.map(({ id }) => ({
-            id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: RELATIONSHIP.id,
-            specific_snomed_concept_id: EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id,
-          })))
-          : blankSelection(qb),
-    ).with(
-      'inserting_relations',
-      (qb) => relations.length ? qb.insertInto('patient_record_relations').values(relations) : blankSelection(qb),
-    )
-      .selectFrom('inserting_record')
+      patient_age_determination,
+    })
+      .with(
+        'inserting_relation_patient_records',
+        (qb) =>
+          relations.length
+            ? qb.insertInto('patient_records').values(relations.map(({ id }) => ({
+              id,
+              patient_id,
+              patient_encounter_id,
+              root_snomed_concept_id: RELATIONSHIP.id,
+              specific_snomed_concept_id: EVIDENCE_OF_CONTEXTUAL_QUALIFIER.id,
+            })))
+            : blankSelection(qb),
+      ).with(
+        'inserting_relations',
+        (qb) => relations.length ? qb.insertInto('patient_record_relations').values(relations) : blankSelection(qb),
+      )
+      .selectFrom('inserting_records')
       .select((eb) => [
         success_true,
-        'inserting_record.id as record_id',
-        'inserting_record.specific_snomed_concept_id',
-        eb.ref('inserting_record.value_snomed_concept_id').$notNull().as('value_snomed_concept_id'),
+        'inserting_records.id as record_id',
+        'inserting_records.specific_snomed_concept_id',
+        eb.ref('inserting_records.value_snomed_concept_id').$notNull().as('value_snomed_concept_id'),
       ]).executeTakeFirstOrThrow()
 
     await events.insert(
       trx,
       {
-        type: 'SystemDiagnosisCreated',
+        type: 'RecordsAdded',
         data: {
           patient_id,
           patient_encounter_id,
           patient_age_determination: exists(patient_age_determination),
-          evaluation_id,
+          records: [{
+            id: evaluation_id,
+            existence: 'Yes',
+          }],
         },
       },
     )
@@ -315,7 +320,7 @@ export const system_diagnosis_rules = {
   async insertSystemDiagnosesIfNotAlreadyIdentified(
     trx: TrxOrDb,
     input: RuleRunnerInput & {
-      procedure_id?: string
+      task_completed_id?: string
     },
   ) {
     const rules_result = await rules.getApplicableBasedOnNewRecords(trx, input, 'system_diagnosis_rule')

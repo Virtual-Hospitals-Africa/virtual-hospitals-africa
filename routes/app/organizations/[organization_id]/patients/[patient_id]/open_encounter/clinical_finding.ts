@@ -27,6 +27,7 @@ export const handler = postHandler(
     const { patient_encounter_employee_id } = encounter_employee_presence
 
     assertOr400(s_expression.existence === 'Yes', 'Only positive findings may be added through this route')
+    assertOr400(patient_age_determination, 'Need patient age to insert finding')
 
     const { workflow, step } = workflowStepFromReferer(ctx)
 
@@ -55,6 +56,7 @@ export const handler = postHandler(
         patient_id,
         employment_id,
         patient_encounter_id,
+        patient_age_determination,
         patient_encounter_employee_id,
         findings: [finding_to_insert],
         procedure: {
@@ -79,15 +81,16 @@ export const handler = postHandler(
     }
 
     await events.insert(trx, {
-      type: 'SinglePositiveFindingAdded',
+      type: 'RecordsAdded',
       data: {
-        workflow,
-        step,
         patient_id,
         patient_encounter_id,
         patient_age_determination,
         procedure_id,
-        positive_finding_id: finding_id,
+        records: [{
+          id: finding_id,
+          existence: 'Yes',
+        }],
       },
     })
 

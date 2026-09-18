@@ -1,7 +1,6 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
@@ -44,16 +43,19 @@ async function insertFindingForTest(s_expression: string) {
     ),
   })
 
-  const { finding_id, inserted_new } = await patient_findings.insertOneNested(db, {
+  const { findings: [finding] } = await patient_findings.insertMany(db, {
     patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
+    employment_id: nurse.employee_id,
     patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
-    procedure_id: procedure.procedure_id,
-    finding: s_expression,
+    patient_age_determination: 'adult',
+    procedure: {
+      procedure_id: procedure.procedure_id,
+    },
+    findings: [s_expression],
   })
-  assert(inserted_new)
 
-  return patient_findings_with_modifiers.getById(db, finding_id)
+  return patient_findings_with_modifiers.getById(db, finding.id)
 }
 
 function qualifier(name: string, category = 'qualifier value') {

@@ -43,6 +43,23 @@ export async function up(db: Kysely<DB>) {
       .addColumn('history', 'boolean', (col) => col.notNull())
       .addColumn('age_determinations', sql`age_determination[]`, (col) => col.notNull()))
 
+  await createStandardTable(db, 'due_to_qualifiers', (qb) =>
+    qb
+      .addColumn('due_to_id', 'uuid', (col) => col.notNull().references('due_to.id').onDelete('cascade'))
+      .addColumn('root_snomed_concept_id', 'bigint', (col) => col.references('snomed_concept.id').onDelete('cascade'))
+      .addColumn('specific_snomed_concept_id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade'))
+      .addColumn('value_snomed_concept_id', 'bigint', (col) => col.references('snomed_concept.id').onDelete('cascade')))
+
+  await db.schema.createIndex('due_to_qualifiers_due_to_id_idx')
+    .on('due_to_qualifiers')
+    .column('due_to_id')
+    .execute()
+
+  await db.schema.createIndex('due_to_qualifiers_specific_snomed_concept_id_idx')
+    .on('due_to_qualifiers')
+    .column('specific_snomed_concept_id')
+    .execute()
+
   await createPointerTable(db, 'due_to_findings', { references: 'due_to', primary_key_type: 'uuid' }, (qb) =>
     qb
       .addColumn('root_snomed_concept_id', 'bigint', (col) => col.references('snomed_concept.id').onDelete('cascade'))
@@ -57,8 +74,7 @@ export async function up(db: Kysely<DB>) {
 
   await createPointerTable(db, 'due_to_finding_sites', { references: 'due_to', primary_key_type: 'uuid' }, (qb) =>
     qb
-      .addColumn('value_snomed_concept_id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade'))
-      .addColumn('is_somehow_qualified', 'boolean', (col) => col.notNull()))
+      .addColumn('value_snomed_concept_id', 'bigint', (col) => col.notNull().references('snomed_concept.id').onDelete('cascade')))
 
   await db.schema.createIndex('rule_due_to_finding_sites_value_snomed_concept_id_idx')
     .on('due_to_finding_sites')
@@ -90,6 +106,7 @@ export async function down(db: Kysely<DB>) {
   await db.schema.dropTable('due_to_measurements').execute()
   await db.schema.dropTable('due_to_findings').execute()
   await db.schema.dropTable('due_to_finding_sites').execute()
+  await db.schema.dropTable('due_to_qualifiers').execute()
   await db.schema.dropTable('due_to').execute()
   await db.schema.dropTable('system_priority_evaluations').execute()
   await db.schema.dropTable('system_diagnosis_rules').execute()

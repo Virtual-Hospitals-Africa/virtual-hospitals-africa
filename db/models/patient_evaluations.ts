@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
-import { IdSelection, RenderedEvaluationRelativeToHealthWorker, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
+import { AgeDetermination, IdSelection, RenderedEvaluationRelativeToHealthWorker, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalBoolean, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { patient_records, PatientRecordsSearch } from './patient_records.ts'
@@ -12,6 +12,7 @@ import { formatRecord } from '../../shared/patient_records.ts'
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 import { asResult } from '../../util/asResult.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
+import { withTaggingOfInsertedRecords } from './due_to.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -24,6 +25,11 @@ export type PatientEvaluationInsert =
       type: 'task'
       task_id: string
     }
+    /*
+      When given, the evaluation is tagged with the due_tos it satisfies as part of the insert,
+      so rules due to it (e.g. tasks due to a possible diagnosis) can find it.
+    */
+    patient_age_determination?: AgeDetermination
   }
   & (
     {
@@ -45,6 +51,11 @@ function sExpressionAsEvaluationNode(
   return diagnosisToEvaluation(diagnosis_result.value)
 }
 
+/*
+  The insert of the evaluation, tagged with the due_tos it satisfies when
+  patient_age_determination is given. An evaluation has no attributes, events or
+  measurements, so those DueToInputCtes are empty selections of the right shape.
+*/
 export function insertOneNestedQuery(
   trx: TrxOrDbOrQueryCreator,
   {
@@ -56,13 +67,14 @@ export function insertOneNestedQuery(
     employment_id,
     by_system,
     value,
+    patient_age_determination,
   }: PatientEvaluationInsert,
 ) {
   const evaluation_node = isString(evaluation) ? sExpressionAsEvaluationNode(evaluation) : evaluation
   assertHasProperty(evaluation_node, 'root_snomed_concept')
   assertHasProperty(evaluation_node, 'specific_snomed_concept')
 
-  return patient_records.baseInsert(
+  const query = patient_records.baseInsert(
     trx,
     {
       patient_id,
@@ -92,6 +104,13 @@ export function insertOneNestedQuery(
             })
           : blankSelection(qb),
     )
+    .with('inserting_attribute_records', (qb) => qb.selectFrom('patient_records').selectAll().where(literalBoolean(false)))
+    .with('inserting_attribute_qualifier_links', (qb) => qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)))
+    .with('inserting_patient_events', (qb) => qb.selectFrom('patient_events').selectAll().where(literalBoolean(false)))
+    .with('inserting_patient_measurements', (qb) => qb.selectFrom('patient_measurements').selectAll().where(literalBoolean(false)))
+
+  if (!patient_age_determination) return query
+  return withTaggingOfInsertedRecords(query, { patient_age_determination })
 }
 
 export function insertOneNested(

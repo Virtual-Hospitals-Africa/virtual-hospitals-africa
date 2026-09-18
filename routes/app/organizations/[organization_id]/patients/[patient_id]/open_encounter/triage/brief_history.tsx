@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, completedProcedure } from '../_middleware.tsx'
+import type { TriageContext } from '../../../../../../../../types.ts'
 import { patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { snomed_category, snomed_concept_id, yes_no_unknown } from '../../../../../../../../util/validators.ts'
@@ -17,7 +17,7 @@ import { exists } from '../../../../../../../../util/exists.ts'
 import { BriefHistorySection } from '../../../../../../../../components/triage/BriefHistorySection.tsx'
 import { patient_record_providers } from '../../../../../../../../db/models/patient_record_providers.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
-import { redirectToRoutePatientIfEmergency } from './_middleware.tsx'
+import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 import { events } from '../../../../../../../../db/models/events.ts'
 import { parseWithSchema } from '../../../../../../../../shared/s_expression.ts'
 import { insertable_finding_base, InsertableFindingBase } from '../../../../../../../../shared/s_expression_schemas.ts'
@@ -67,7 +67,7 @@ export const TriageBriefHistorySchema = z.object({
   allergies: AllergiesSchema.optional(),
 })
 
-function mostRecentRecords({ state }: OpenEncounterWorkflowContext) {
+function mostRecentRecords({ state }: TriageContext) {
   const { trx, encounter, patient_id, health_worker_id } = state
   return brief_history.renderedMostRecentRecords(trx, {
     encounter,
@@ -77,7 +77,7 @@ function mostRecentRecords({ state }: OpenEncounterWorkflowContext) {
   })
 }
 
-function additionalChronicConditions({ state }: OpenEncounterWorkflowContext) {
+function additionalChronicConditions({ state }: TriageContext) {
   const { trx, encounter, patient_id, health_worker_id } = state
   return patient_records_any_top_level.findAll(trx, {
     patient_id,
@@ -91,7 +91,7 @@ function additionalChronicConditions({ state }: OpenEncounterWorkflowContext) {
   )
 }
 
-function existingAllergies({ state }: OpenEncounterWorkflowContext) {
+function existingAllergies({ state }: TriageContext) {
   const { trx, encounter, patient_id, health_worker_id } = state
   return patient_findings.findAll(trx, {
     patient_id,
@@ -123,16 +123,14 @@ function selfReportedStatusSExpression(
 
 export const handler = postHandler(
   TriageBriefHistorySchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: TriageContext, form_values) => {
     const {
       trx,
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
       employment_id,
-      workflow,
       workflow_step_snomed_concept,
-      step,
       patient_age_determination,
     } = ctx.state
 
@@ -189,10 +187,8 @@ export const handler = postHandler(
 
     if (insert_result) {
       await events.insert(trx, {
-        type: 'ProcedureCompleted',
+        type: 'RecordsAdded',
         data: {
-          workflow,
-          step,
           patient_id,
           patient_encounter_id,
           patient_age_determination,
@@ -218,6 +214,7 @@ export const handler = postHandler(
         employment_id,
         patient_encounter_id,
         patient_encounter_employee_id,
+        patient_age_determination,
         findings: findings_to_insert,
         procedure: completed_procedure || {
           create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
@@ -246,7 +243,7 @@ export const handler = postHandler(
 )
 
 export async function TriageBriefHistoryPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: TriageContext,
 ) {
   redirectToRoutePatientIfEmergency(ctx)
   assertAllPriorStepsCompleted(ctx, {
@@ -274,4 +271,4 @@ export async function TriageBriefHistoryPage(
   )
 }
 
-export default OpenEncounterWorkflowPage(TriageBriefHistoryPage)
+export default TriagePage(TriageBriefHistoryPage)

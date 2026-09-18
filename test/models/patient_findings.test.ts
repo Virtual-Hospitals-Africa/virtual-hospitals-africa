@@ -57,19 +57,17 @@ describeParallel('db/models/patient_findings.ts', () => {
                    (snomed_concept "Left upper arm structure" "body structure")))
     `
 
-      const { finding_id, inserted_new } = await patient_findings
-        .insertOneNested(
-          db,
-          {
-            patient_id,
-            patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
-            procedure_id: procedure.procedure_id,
-            finding: burn_of_left_arm_by_attribute_s_expression,
-          },
-        )
-
-      assert(inserted_new)
+      const { findings: [inserted_finding] } = await patient_findings.insertMany(db, {
+        patient_id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        employment_id: nurse.employee_id,
+        patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
+        patient_age_determination: 'adult',
+        procedure: { procedure_id: procedure.procedure_id },
+        findings: [burn_of_left_arm_by_attribute_s_expression],
+      })
+      assert(inserted_finding)
+      const finding_id = inserted_finding.id
 
       const [finding] = await patient_findings.getById(db, finding_id)
         .then((f) =>
@@ -178,19 +176,17 @@ describeParallel('db/models/patient_findings.ts', () => {
                    "2025-12-28 19:51:18.275362-05"))
     `
 
-    const { finding_id, inserted_new } = await patient_findings
-      .insertOneNested(
-        db,
-        {
-          patient_id,
-          patient_encounter_id: encounter.patient_encounter_id,
-          patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
-          procedure_id: procedure.procedure_id,
-          finding: common_cold_attribute_s_expression,
-        },
-      )
-
-    assert(inserted_new)
+    const { findings: [inserted_finding] } = await patient_findings.insertMany(db, {
+      patient_id,
+      patient_encounter_id: encounter.patient_encounter_id,
+      employment_id: nurse.employee_id,
+      patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
+      patient_age_determination: 'adult',
+      procedure: { procedure_id: procedure.procedure_id },
+      findings: [common_cold_attribute_s_expression],
+    })
+    assert(inserted_finding)
+    const finding_id = inserted_finding.id
 
     const raw_finding = await patient_findings.getById(db, finding_id)
 
@@ -269,19 +265,17 @@ describeParallel('db/models/patient_findings.ts', () => {
             (qualifier (snomed_concept "Age" "qualifier value"))))
       `
 
-      const { finding_id, inserted_new } = await patient_findings
-        .insertOneNested(
-          db,
-          {
-            patient_id,
-            patient_encounter_id: encounter.patient_encounter_id,
-            patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
-            procedure_id: procedure.procedure_id,
-            finding: normal_for_age_s_expression,
-          },
-        )
-
-      assert(inserted_new)
+      const { findings: [inserted_finding] } = await patient_findings.insertMany(db, {
+        patient_id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        employment_id: nurse.employee_id,
+        patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
+        patient_age_determination: 'adult',
+        procedure: { procedure_id: procedure.procedure_id },
+        findings: [normal_for_age_s_expression],
+      })
+      assert(inserted_finding)
+      const finding_id = inserted_finding.id
 
       const raw_finding = await patient_findings.getById(db, finding_id)
       assertEquals(raw_finding.displays.full, 'Ability to move For Age: Normal')

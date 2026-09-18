@@ -1,9 +1,11 @@
 import { ComponentChildren, JSX } from 'preact'
 import { assert } from 'std/assert/assert.ts'
 import {
+  LoggedInHealthWorkerContext,
   OpenEncounterContext,
   OpenEncounterState,
   OpenEncounterWorkflowContext,
+  OpenEncounterWorkflowState,
   OrganizationContext,
   RenderedPatientOpenEncounter,
   WorkflowState,
@@ -429,23 +431,28 @@ export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, c
   )
 }
 
+// Parameterized by state rather than by context because Fresh's Context is
+// invariant in its state (state shows up in the `app` component's props), so
+// `TriageContext<T> extends OpenEncounterWorkflowContext` does not hold.
+export type Render<State extends OpenEncounterWorkflowState = OpenEncounterWorkflowState> = (
+  ctx: LoggedInHealthWorkerContext<State>,
+) =>
+  | JSX.Element
+  | Promise<JSX.Element>
+  | Promise<{ next_step_text: string; children: JSX.Element }>
+  | Promise<{ buttons: ComponentChild; children: JSX.Element }>
+  | Promise<Response>
+  | Promise<Response | JSX.Element>
+
 export function OpenEncounterWorkflowPage<
-  Context extends OpenEncounterWorkflowContext = OpenEncounterWorkflowContext,
+  State extends OpenEncounterWorkflowState = OpenEncounterWorkflowState,
 >(
-  render: (
-    ctx: Context,
-  ) =>
-    | JSX.Element
-    | Promise<JSX.Element>
-    | Promise<{ next_step_text: string; children: JSX.Element }>
-    | Promise<{ buttons: ComponentChild; children: JSX.Element }>
-    | Promise<Response>
-    | Promise<Response | JSX.Element>,
+  render: Render<State>,
 ) {
   return async function (
     ctx: OpenEncounterWorkflowContext,
   ) {
-    const rendered = await render(ctx as Context)
+    const rendered = await render(ctx as unknown as LoggedInHealthWorkerContext<State>)
 
     if (rendered instanceof Response) {
       return rendered
