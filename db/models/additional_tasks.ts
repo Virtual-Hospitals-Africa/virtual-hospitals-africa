@@ -4,6 +4,7 @@ import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
 import {
+  AgeDetermination,
   NewRecordsToConsiderWithSatisfyingDueToIds,
   RecordValueMeasurement,
   RenderedEvaluationRelativeToHealthWorker,
@@ -43,6 +44,7 @@ import compact from '../../util/compact.ts'
 
 import uniq from '../../util/uniq.ts'
 import { rules } from './rules.ts'
+import { events } from './events.ts'
 import { getTaskById } from '../../shared/tasks.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { patient_procedures } from './patient_procedures.ts'
@@ -481,9 +483,10 @@ export const additional_tasks = {
   */
   async markTaskDone(
     trx: TrxOrDbOrQueryCreator,
-    { patient_id, patient_encounter_id, procedure_id, task_id }: {
+    { patient_id, patient_encounter_id, patient_age_determination, procedure_id, task_id }: {
       patient_id: string
       patient_encounter_id: string
+      patient_age_determination: AgeDetermination
       procedure_id: string
       task_id: string
     },
@@ -516,18 +519,26 @@ export const additional_tasks = {
     await additional_tasks.procedureCompletedTasks(trx, {
       patient_id,
       patient_encounter_id,
+      patient_age_determination,
       procedure_id,
       evaluation_ids,
     })
     return `Marked task "${task_id}" done by procedure ${procedure_id}`
   },
+  /*
+    Records the DONE relations tying a procedure to the task evaluations it completed, and
+    dispatches a TaskDone per evaluation. Every path that completes a task goes through here,
+    so TaskDone is the single signal that a task has been answered, whether from the additional
+    tasks page or from markTaskDone elsewhere.
+  */
   async procedureCompletedTasks(
     trx: TrxOrDbOrQueryCreator,
-    { procedure_id, evaluation_ids, patient_id, patient_encounter_id }: {
+    { procedure_id, evaluation_ids, patient_id, patient_encounter_id, patient_age_determination }: {
       procedure_id: string
       evaluation_ids: string[]
       patient_id: string
       patient_encounter_id: string
+      patient_age_determination: AgeDetermination
     },
   ) {
     if (!evaluation_ids.length) return
@@ -554,6 +565,18 @@ export const additional_tasks = {
     ).selectNoFrom([
       success_true,
     ]).executeTakeFirstOrThrow()
+
+    await pMap(evaluation_ids, (evaluation_id) =>
+      events.insert(trx, {
+        type: 'TaskDone',
+        data: {
+          patient_id,
+          patient_encounter_id,
+          patient_age_determination,
+          procedure_id,
+          task_completed_id: evaluation_id,
+        },
+      }))
   },
 }
 

@@ -4,7 +4,7 @@ import { workflowStepFromReferer } from '../../../../../../../backend/workflowSt
 import type { OpenEncounterContext } from '../../../../../../../types.ts'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../db/models/patient_findings.ts'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
-import { existingFindingsMatching, isCheckFor } from '../../../../../../../db/models/additional_tasks.ts'
+import { additional_tasks, existingFindingsMatching, isCheckFor } from '../../../../../../../db/models/additional_tasks.ts'
 import { events } from '../../../../../../../db/models/events.ts'
 import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { getTaskById } from '../../../../../../../shared/tasks.ts'
@@ -14,6 +14,7 @@ import { NoneOfTheAboveFindingsResponse, NoneOfTheAboveFindingsSchema } from '..
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
 import { json } from '../../../../../../../util/responses.ts'
 import { asResult } from '../../../../../../../util/asResult.ts'
+import { promiseProps } from '../../../../../../../util/promiseProps.ts'
 import generateUUID from '../../../../../../../util/uuid.ts'
 import type { InsertableFindingBase, MatchingFinding } from '../../../../../../../shared/s_expression_schemas.ts'
 
@@ -21,7 +22,11 @@ import type { InsertableFindingBase, MatchingFinding } from '../../../../../../.
   The health worker has looked at the findings a check_for task asked them to check for and
   none of those still unchecked apply. Each is recorded as a negative finding under the
   procedure for the step they are on, identified from the referer as the sibling
-  clinical_finding route does, and the task is then marked done by the event listener.
+  clinical_finding route does, and that same procedure marks the task done.
+
+  The step's procedure already exists: the follow ups a check_for task is shown in only
+  appear once a sign has been saved through the clinical_finding route, which creates the
+  procedure for the step under the same workflow step concept.
 
   Findings that already have a record in this encounter, positive or negative, are left
   alone so that a repeated click or a finding checked in the meantime records nothing new.
@@ -81,32 +86,37 @@ export const handler = postHandler(
         return { id, s_expression, finding }
       })
 
-    const previously_completed_workflow_step_procedure_query = patient_procedures.previouslyCompletedWorkflowStepQuery(trx, {
+    const procedure = await patient_procedures.previouslyCompletedWorkflowStepQuery(trx, {
       patient_encounter_id,
       workflow_step_snomed_concept,
-    })
+    }).executeTakeFirst()
+    assertOr400(procedure, `No ${step} procedure to record these findings under`)
+    const procedure_id = procedure.id
 
-    const procedure_id = to_insert.length ? await insertNegatives() : await existingProcedureId()
-
-    // With no procedure for this step nothing was ever recorded from it, so there is no task to mark done either
-    if (!procedure_id) {
-      return json({ success: true, records: [] } satisfies NoneOfTheAboveFindingsResponse)
-    }
-
-    // Dispatched even when every finding already had a record, as the task may still need marking done
-    await events.insert(trx, {
-      type: 'NoneOfTheAboveFindings',
-      data: {
-        workflow,
-        step,
+    // Nothing here depends on the other: the task is answered by this procedure either way
+    await promiseProps({
+      inserted: to_insert.length ? insertNegatives() : Promise.resolve(),
+      marked: additional_tasks.markTaskDone(trx, {
         patient_id,
         patient_encounter_id,
         patient_age_determination,
         procedure_id,
         task_id,
-        negative_finding_ids: to_insert.map(({ id }) => id),
-      },
+      }),
     })
+
+    if (to_insert.length) {
+      await events.insert(trx, {
+        type: 'RecordsAdded',
+        data: {
+          patient_id,
+          patient_encounter_id,
+          patient_age_determination,
+          procedure_id,
+          records: to_insert.map(({ id }) => ({ id, existence: 'No' as const })),
+        },
+      })
+    }
 
     return json(
       {
@@ -115,8 +125,8 @@ export const handler = postHandler(
       } satisfies NoneOfTheAboveFindingsResponse,
     )
 
-    async function insertNegatives(): Promise<string> {
-      const { success, procedure_id, findings } = await patient_findings.insertMany(
+    async function insertNegatives(): Promise<void> {
+      const { success, findings } = await patient_findings.insertMany(
         trx,
         {
           patient_id,
@@ -125,22 +135,11 @@ export const handler = postHandler(
           patient_age_determination,
           patient_encounter_employee_id,
           findings: to_insert.map(({ finding }) => finding),
-          procedure: {
-            procedure_id: previously_completed_workflow_step_procedure_query,
-            create_with_specific_snomed_concept_id: workflow_step_snomed_concept!.id,
-            if_not_already_exists: true,
-          },
+          procedure: { procedure_id },
         },
       )
       assert(success)
-      assert(procedure_id)
       assert(findings.length === to_insert.length)
-      return procedure_id
-    }
-
-    async function existingProcedureId(): Promise<string | null> {
-      const procedure = await previously_completed_workflow_step_procedure_query.executeTakeFirst()
-      return procedure?.id || null
     }
   },
 )

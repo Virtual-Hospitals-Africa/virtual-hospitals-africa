@@ -17,10 +17,15 @@ export async function up(db: Kysely<DB>) {
             .onDelete('cascade'))
         .addColumn('role', 'varchar(255)', (col) => col.notNull())
         .addColumn('is_admin', 'boolean', (col) => col.notNull())
+        .addColumn('seniority_order', 'integer', (col) => col.notNull())
         .addUniqueConstraint('only_employed_once_per_organization', [
           'health_worker_id',
           'organization_id',
-        ]),
+        ])
+        .addUniqueConstraint(
+          'unique_organization_seniority_order',
+          ['organization_id', 'seniority_order'],
+        ),
   )
 
   await db.schema

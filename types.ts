@@ -157,6 +157,8 @@ export type Failure = {
 
 export type Result<T> = Success<T> | Failure
 
+export type VoidResult = { success: true } | Failure
+
 export type SqlRow<T> = {
   id: Generated<number>
   created_at: ColumnType<Date, undefined, never>

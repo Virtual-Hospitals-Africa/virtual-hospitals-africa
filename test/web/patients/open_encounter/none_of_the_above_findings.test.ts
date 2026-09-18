@@ -108,6 +108,15 @@ function taskEvaluationIds(patient_encounter_id: string, task_id: string) {
     .then((rows) => rows.map(({ id }) => id))
 }
 
+function eventsOfType(patient_encounter_id: string, type: 'TaskDone' | 'RecordsAdded') {
+  return db.selectFrom('events')
+    .select('data')
+    .where('type', '=', type)
+    .where('patient_encounter_id', '=', patient_encounter_id)
+    .orderBy('created_at')
+    .execute()
+}
+
 function doneRelations(procedure_id: string, evaluation_id: string) {
   return db.selectFrom('patient_record_relations')
     .innerJoin('patient_records', 'patient_records.id', 'patient_record_relations.id')
@@ -155,7 +164,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       },
     )
 
-    itParallel('dispatches NoneOfTheAboveFindings whose listener marks the task done and downgrades the possible diagnosis', async () => {
+    itParallel('marks the task done, dispatching TaskDone and RecordsAdded, and downgrades the possible diagnosis', async () => {
       const setup = await setupWithPossibleAnaphylaxis()
       const { patient_id, patient_encounter_id, triageRoute } = setup
       await events.allProcessedForEncounter(db, { patient_encounter_id })
@@ -174,27 +183,27 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       assert(negative?.as_part_of_procedure)
       const procedure_id = negative.as_part_of_procedure.id
 
-      await events.allProcessedForEncounter(db, { patient_encounter_id })
+      // One TaskDone per evaluation the task had been materialised as, all from the one procedure
+      const task_done_events = await eventsOfType(patient_encounter_id, 'TaskDone')
+      assertEquals(
+        sortBy(task_done_events.map((event) => (event.data as { task_completed_id: string }).task_completed_id), (id) => id),
+        sortBy(evaluation_ids, (id) => id),
+      )
+      for (const event of task_done_events) {
+        assertMatches(event.data, { patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id })
+      }
 
-      const inserted_events = (await db.selectFrom('events')
-        .selectAll()
-        .where('type', '=', 'NoneOfTheAboveFindings')
-        .execute())
-        .filter((event) => (event.data as { patient_encounter_id?: string }).patient_encounter_id === patient_encounter_id)
-      assertMatches(inserted_events, [
-        {
-          data: {
-            workflow: 'triage',
-            step: 'warning_signs',
-            patient_id,
-            patient_encounter_id,
-            patient_age_determination: 'adult',
-            procedure_id,
-            task_id: CHECK_FOR_ANAPHYLAXIS,
-            negative_finding_ids: records.map((record) => record.id),
-          },
-        },
-      ])
+      // The warning signs page recorded its own findings under this procedure, so find ours by its records
+      const records_added = await eventsOfType(patient_encounter_id, 'RecordsAdded')
+      const ours = records_added.find((event) => {
+        const data = event.data as { procedure_id?: string; records: { id: string; existence: string }[] }
+        return data.procedure_id === procedure_id &&
+          data.records.length === records.length &&
+          records.every((record) => data.records.some((added) => added.id === record.id && added.existence === 'No'))
+      })
+      assert(ours, 'no RecordsAdded carrying exactly the negative findings under this procedure')
+
+      await events.allProcessedForEncounter(db, { patient_encounter_id })
 
       for (const evaluation_id of evaluation_ids) {
         assertEquals((await doneRelations(procedure_id, evaluation_id)).length, 1)
@@ -213,6 +222,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       await events.allProcessedForEncounter(db, { patient_encounter_id })
       const referer = `${route}${triageRoute('warning_signs')}`
       const s_expressions = uncheckedAnaphylaxisSExpressions()
+      const evaluation_ids = await taskEvaluationIds(patient_encounter_id, CHECK_FOR_ANAPHYLAXIS)
 
       const first = await postNoneOfTheAboveOk(
         setup,
@@ -233,18 +243,13 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       const all_findings = await patient_findings.findAll(db, { patient_id, include_negative: true })
       assertEquals(all_findings.filter((finding) => first_record_ids.has(finding.id)).length, s_expressions.length)
 
-      // The task may still need marking done, so the event is dispatched regardless
+      // The second click marks nothing done again, so the evaluations keep the one DONE relation each
       await events.allProcessedForEncounter(db, { patient_encounter_id })
-      const inserted_events = (await db.selectFrom('events')
-        .select('data')
-        .where('type', '=', 'NoneOfTheAboveFindings')
-        .orderBy('created_at')
-        .execute())
-        .filter((event) => (event.data as { patient_encounter_id?: string }).patient_encounter_id === patient_encounter_id)
-      assertMatches(inserted_events, [
-        { data: { negative_finding_ids: first.records.map((record) => record.id) } },
-        { data: { negative_finding_ids: [] } },
-      ])
+      const [negative] = all_findings.filter((finding) => finding.id === first.records[0].id)
+      assert(negative?.as_part_of_procedure)
+      for (const evaluation_id of evaluation_ids) {
+        assertEquals((await doneRelations(negative.as_part_of_procedure.id, evaluation_id)).length, 1)
+      }
     })
 
     itParallel('responds 400 when the referer is missing', async () => {

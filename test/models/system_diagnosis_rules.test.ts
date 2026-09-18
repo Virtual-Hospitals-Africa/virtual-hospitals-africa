@@ -34,6 +34,17 @@ function asRuleRunnerInput(
   return { listener_id: 'test', listener_name: 'test', patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records }
 }
 
+// The evaluations materialised for a task, which insertImprobable is told about one at a time
+function taskEvaluationIds(patient_encounter_id: string, task_id: string): Promise<string[]> {
+  return db.selectFrom('patient_record_tasks')
+    .innerJoin('patient_records', 'patient_records.id', 'patient_record_tasks.id')
+    .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
+    .where('patient_record_tasks.task_id', '=', task_id)
+    .select('patient_record_tasks.id')
+    .execute()
+    .then((rows) => rows.map(({ id }) => id))
+}
+
 describeParallel('db/models/system_diagnosis_rules.ts', () => {
   afterAll(() => db.destroy())
 
@@ -618,18 +629,25 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
       await additional_tasks.procedureCompletedTasks(db, {
         patient_id,
         patient_encounter_id,
+        patient_age_determination: 'adult',
         procedure_id: inserted_additional_task_findings.procedure_id,
         evaluation_ids: task_groups.evaluation_ids,
       })
 
-      const improbable_diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
+      const [check_for_anaphylaxis_evaluation_id] = await taskEvaluationIds(patient_encounter_id, 'Check for Anaphylaxis')
+      assert(check_for_anaphylaxis_evaluation_id)
+
+      const improbable_diagnoses_result = await system_diagnosis_rules.insertImprobable(
         db,
-        asRuleRunnerInput({
+        {
+          listener_id: 'test',
+          listener_name: 'test',
           patient_id,
           patient_encounter_id,
+          patient_age_determination: 'adult',
           procedure_id: inserted_additional_task_findings.procedure_id,
-          records: inserted_additional_task_findings.findings,
-        }),
+          task_completed_id: check_for_anaphylaxis_evaluation_id,
+        },
       )
       assert(improbable_diagnoses_result.startsWith('Inserted 1 improbable diagnosis(es): '))
 

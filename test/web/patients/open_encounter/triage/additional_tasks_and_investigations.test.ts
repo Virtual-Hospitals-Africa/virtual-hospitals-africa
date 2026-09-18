@@ -21,7 +21,7 @@ import { z } from 'zod'
 import randomDemographics from '../../../../../mocks/randomDemographics.ts'
 import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from '../../../../../db/models/patient_evaluations.ts'
-import { DIAGNOSIS } from '../../../../../shared/snomed_concepts.ts'
+import { DIAGNOSIS, IMPROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER } from '../../../../../shared/snomed_concepts.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { getFormLabels, getFormValues } from 'test/_helpers/form.ts'
 import { getTableDisplay } from 'test/_helpers/table.ts'
@@ -835,7 +835,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
     'upgrades a possible diagnosis for anaphylaxis to a probable diagnosis after meeting prompted for checks',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))'
-      const { $, patient_encounter_id, postStep } = await setupTriageNewPatient({
+      const { $, patient_id, patient_encounter_id, postStep } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -895,6 +895,36 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
         'Reference Range': '',
         'Priority / Score': 'Urgent',
       }, { strict: true })
+
+      /*
+        This submission answered "Check for Anaphylaxis" with a mix of Yes and No, so it both
+        satisfies the probable rule and completes the task. The TaskDone and RecordsAdded that
+        come of it are processed concurrently, so insertImprobable has to see the probable
+        diagnosis however the two are interleaved, and leave the diagnosis alone.
+      */
+      await events.allProcessedForEncounter(db, { patient_encounter_id })
+
+      const evaluations = await patient_evaluations.findAll(db, { patient_id })
+      const anaphylaxis_diagnoses = evaluations.filter((evaluation) => evaluation.specific_snomed_concept_name === 'Anaphylaxis')
+      assertEquals(
+        anaphylaxis_diagnoses.filter((evaluation) => (evaluation.value as { name?: string } | null)?.name === IMPROBABLE_DIAGNOSIS_CONTEXTUAL_QUALIFIER.name),
+        [],
+        'the possible diagnosis was ruled out even though the checks were met',
+      )
+
+      // The listener has to have run and said so, not merely have left the data looking right
+      const insert_improbable = await db.selectFrom('event_listeners')
+        .innerJoin('events', 'events.id', 'event_listeners.event_id')
+        .where('events.patient_encounter_id', '=', patient_encounter_id)
+        .where('events.type', '=', 'TaskDone')
+        .where('event_listeners.listener_name', '=', 'insertImprobable')
+        .select(['event_listeners.success_message', 'event_listeners.error_message'])
+        .execute()
+      assert(insert_improbable.length, 'no insertImprobable listener ran for this encounter')
+      for (const listener of insert_improbable) {
+        assertEquals(listener.error_message, null)
+        assertEquals(listener.success_message, 'No possible diagnosis ruled out by this task')
+      }
     },
   )
 

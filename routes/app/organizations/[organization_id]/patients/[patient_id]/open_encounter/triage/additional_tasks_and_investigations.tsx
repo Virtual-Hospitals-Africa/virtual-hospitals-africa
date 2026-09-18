@@ -82,6 +82,7 @@ export const handler = postHandler(
       _: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges ? Promise.resolve() : additional_tasks.procedureCompletedTasks(trx, {
         patient_id,
         patient_encounter_id,
+        patient_age_determination: exists(patient_age_determination),
         procedure_id: inserted.procedure_id,
         evaluation_ids: form_values.evaluation_ids,
       }),

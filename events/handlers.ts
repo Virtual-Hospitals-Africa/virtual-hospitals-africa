@@ -17,7 +17,6 @@ import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, TRIAGE_INDEX } from '../shared/snomed_concepts.ts'
 import { triageLevelFromTEWSTotal } from '../shared/vitals.ts'
 import { system_diagnosis_rules } from '../db/models/system_diagnosis_rules.ts'
-import { events } from '../db/models/events.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -68,44 +67,6 @@ export const EVENTS = {
       workflow_step: z.string(),
     }),
     {},
-  ),
-  /*
-    The health worker said none of a check_for task's remaining findings apply, recording
-    them as negatives. The task is marked done before RecordsAdded is dispatched so that by the
-    time insertImprobableDiagnoses runs it sees the DONE relation. Both steps run in one
-    listener, and so one transaction, to keep that ordering. The task's evaluation is
-    materialised by the RecordsAdded listener of the record it is due to, so this may run
-    before it exists, in which case markTaskDone throws and the listener is retried.
-  */
-  NoneOfTheAboveFindings: defineEvent(
-    z.object({
-      workflow: z.enum(WORKFLOWS),
-      step: z.string(),
-      patient_id: z.string().uuid(),
-      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
-      patient_encounter_id: z.string().uuid(),
-      procedure_id: z.string().uuid(),
-      task_id: z.string(),
-      negative_finding_ids: z.string().uuid().array(),
-    }),
-    {
-      async markTaskDoneThenDispatchRecordsAdded(trx, { data: { workflow: _workflow, step: _step, task_id, negative_finding_ids, ...data } }) {
-        const marked = await additional_tasks.markTaskDone(trx, {
-          patient_id: data.patient_id,
-          patient_encounter_id: data.patient_encounter_id,
-          procedure_id: data.procedure_id,
-          task_id,
-        })
-        await events.insert(trx, {
-          type: 'RecordsAdded',
-          data: {
-            ...data,
-            records: negative_finding_ids.map((id) => ({ id, existence: 'No' as const })),
-          },
-        })
-        return `${marked}. Dispatched RecordsAdded with ${negative_finding_ids.length} negative finding(s)`
-      },
-    },
   ),
   SingleFindingMarkedAsError: defineEvent(
     z.object({
@@ -165,6 +126,34 @@ export const EVENTS = {
       },
     },
   ),
+  /*
+    A procedure answered a task, dispatched by additional_tasks.procedureCompletedTasks for each
+    task evaluation it marked done, wherever the answering happened: the additional tasks page,
+    or the warning signs page when the health worker says none of a check_for task's findings
+    apply. Ruling a possible diagnosis out follows from the task being answered rather than from
+    the records that answered it, so it hangs off this event and not RecordsAdded.
+  */
+  TaskDone: defineEvent(
+    z.object({
+      procedure_id: z.string().uuid(),
+      patient_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
+      patient_encounter_id: z.string().uuid(),
+      task_completed_id: z.string().uuid(),
+    }),
+    {
+      insertImprobable(trx, payload) {
+        return system_diagnosis_rules.insertImprobable(
+          trx,
+          {
+            ...payload.data,
+            listener_id: payload.listener_id,
+            listener_name: payload.listener_name,
+          },
+        )
+      },
+    },
+  ),
   RecordsAdded: defineEvent(
     z.object({
       procedure_id: z.string().uuid().optional(),
@@ -175,7 +164,6 @@ export const EVENTS = {
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
-      task_completed_id: z.string().uuid().optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, payload) {

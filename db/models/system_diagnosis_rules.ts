@@ -1,9 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
+import { sql } from 'kysely'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression, EXPRESSION_BUILDERS } from './s_expression.ts'
-import { ApplicableRule, ApplicableRuleEffectSystemSystemDiagnosisRule, RecordValueTask, RuleRunnerInput, TrxOrDb } from '../../types.ts'
+import { AgeDetermination, ApplicableRule, ApplicableRuleEffectSystemSystemDiagnosisRule, RecordValueTask, RuleRunnerInput, TrxOrDb } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
-import { DONE, EVIDENCE_OF_CONTEXTUAL_QUALIFIER, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
+import { EVIDENCE_OF_CONTEXTUAL_QUALIFIER, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
 
 import { Lang } from '../../shared/s_expression_schemas.ts'
 
@@ -23,8 +24,6 @@ import { groupBy } from '../../util/groupBy.ts'
 
 import { getTaskById } from '../../shared/tasks.ts'
 import { s_expression_evidence } from './s_expression_evidence.ts'
-
-import partition from '../../util/partition.ts'
 
 const concept_to_certainty_qualifier_map = Object.fromEntries(
   Object.entries(CERTAINTY_QUALIFIER_TO_CONCEPT).map(([certainty, concept]) => [concept.name, certainty]),
@@ -228,19 +227,43 @@ export const system_diagnosis_rules = {
       }
     }).then(compact)
   },
-  async insertImprobableDiagnoses(
+  /*
+    A check_for task asked the health worker to look for the findings of a possible diagnosis.
+    Now that the task is done, if nothing has raised that diagnosis above possible then the
+    findings answered No are the evidence that it is improbable.
+
+    Dispatched from TaskDone, which the event processor runs concurrently with the RecordsAdded
+    of the same submission, so first wait for that submission's diagnosis rules to have run.
+    Without the wait a task answered with a mix of Yes and No could have its diagnosis marked
+    improbable before the rules got the chance to make it probable. A submission that recorded
+    nothing has no such RecordsAdded to wait for, and processedListenerForEncounter returns
+    straight away.
+
+    The task being done is what the event asserts, so unlike the positive pass this reads the
+    task evaluation directly rather than looking for the DONE relation tying it to a procedure.
+  */
+  async insertImprobable(
     trx: TrxOrDb,
-    input: RuleRunnerInput & {
+    input: {
+      patient_id: string
+      patient_encounter_id: string
+      patient_age_determination: AgeDetermination
       procedure_id: string
+      task_completed_id: string
+      listener_id: string
+      listener_name: string
     },
-    _inserted_diagnoses_results: InsertDiagnosisResult[],
-  ) {
-    const possible_diagnosis_tasks_now_completed_with_no_other_diagnoses = await trx
-      .selectFrom('patient_record_relations as done_relations')
-      .innerJoin('patient_records_aggregated as done_records', 'done_relations.id', 'done_records.id')
-      .innerJoin('patient_records_aggregated as task_records', 'done_relations.destination_id', 'task_records.id')
+  ): Promise<string> {
+    await events.processedListenerForEncounter(trx, {
+      patient_encounter_id: input.patient_encounter_id,
+      event_type: 'RecordsAdded',
+      listener_name: 'insertSystemDiagnosesIfNotAlreadyIdentified',
+      modifyQuery: (query) => query.where(sql<string>`events.data->>'procedure_id'`, '=', input.procedure_id),
+    })
+
+    const possible_diagnoses_this_task_was_due_to = await trx
+      .selectFrom('patient_records_aggregated as task_records')
       .innerJoin('patient_record_relations as due_to_relations', 'due_to_relations.source_id', 'task_records.id')
-      .innerJoin('patient_records_aggregated as due_to_records', 'due_to_records.id', 'due_to_relations.id')
       .innerJoin('patient_records_aggregated as diagnosis_records', 'diagnosis_records.id', 'due_to_relations.destination_id')
       .leftJoin('patient_records_aggregated as other_diagnosis', (join) =>
         join
@@ -253,9 +276,8 @@ export const system_diagnosis_rules = {
               .union(buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'equivocal' })))
               .union(buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'definite' }))),
           ))
+      .where('task_records.id', '=', input.task_completed_id)
       .where('task_records.specific_snomed_concept_id', '=', TO_BE_DONE.id)
-      .where('done_relations.source_id', '=', input.procedure_id)
-      .where('done_records.specific_snomed_concept_id', '=', DONE.id)
       .where(
         'diagnosis_records.id',
         'in',
@@ -272,15 +294,14 @@ export const system_diagnosis_rules = {
       ])
       .execute()
 
-    const [check_fors, others] = partition(
-      possible_diagnosis_tasks_now_completed_with_no_other_diagnoses,
-      (task) => task.task_value.task_id.startsWith('Check for'),
-    )
-    for (const task of others) {
+    // One task can be due to several possible diagnoses, each of which this rules out
+    const check_fors = possible_diagnoses_this_task_was_due_to.filter((task) => {
+      if (task.task_value.task_id.startsWith('Check for')) return true
       assert(task.task_value.task_id.startsWith('Display medical guidance'))
-    }
+      return false
+    })
 
-    return pMap(check_fors, async (check_for) => {
+    const improbable_diagnoses = await pMap(check_fors, async (check_for) => {
       // While we do have record_ids of "No" records on hand,
       // The user could have entered "No" records at any point
       // So more accurate to go and find any that _could_ have contributed
@@ -316,25 +337,20 @@ export const system_diagnosis_rules = {
         matching_finding_ids: explicit_no_findings.contributing_records,
       })
     })
+
+    if (!improbable_diagnoses.length) return 'No possible diagnosis ruled out by this task'
+    return `Inserted ${improbable_diagnoses.length} improbable diagnosis(es): ${improbable_diagnoses.map((d) => d.record_id).join(', ')}`
   },
   async insertSystemDiagnosesIfNotAlreadyIdentified(
     trx: TrxOrDb,
-    input: RuleRunnerInput & {
-      task_completed_id?: string
-    },
+    input: RuleRunnerInput,
   ) {
     const rules_result = await rules.getApplicableBasedOnNewRecords(trx, input, 'system_diagnosis_rule')
     const inserted_diagnoses = await system_diagnosis_rules.insertPositiveDiagnoses(trx, input, rules_result)
-    const improbable_diagnoses = input.procedure_id
-      ? await system_diagnosis_rules.insertImprobableDiagnoses(trx, { ...input, procedure_id: input.procedure_id }, inserted_diagnoses)
-      : []
 
-    return compact([
-      inserted_diagnoses.length && `Inserted ${inserted_diagnoses.length} diagnosis(es): ${inserted_diagnoses.map((d) => d.record_id).join(', ')}`,
-      improbable_diagnoses.length &&
-      `Inserted ${improbable_diagnoses.length} improbable diagnosis(es): ${improbable_diagnoses.map((d) => d.record_id).join(', ')}`,
-    ]).join('\n') || (
-      isString(rules_result) ? rules_result : 'No new system diagnoses to insert'
-    )
+    if (!inserted_diagnoses.length) {
+      return isString(rules_result) ? rules_result : 'No new system diagnoses to insert'
+    }
+    return `Inserted ${inserted_diagnoses.length} diagnosis(es): ${inserted_diagnoses.map((d) => d.record_id).join(', ')}`
   },
 }
