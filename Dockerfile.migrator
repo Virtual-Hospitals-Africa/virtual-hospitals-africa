@@ -3,6 +3,11 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates postgresql-client && rm -rf /var/lib/apt/lists/*
 RUN touch .env
 
+# .git is excluded from the build context (see .dockerignore), so the commit
+# must be passed in explicitly, e.g. --build-arg GIT_COMMIT=$(git rev-parse HEAD)
+ARG GIT_COMMIT
+ENV GIT_COMMIT=${GIT_COMMIT}
+
 COPY deno.lock ./
 COPY deno.json ./
 RUN deno install --allow-scripts

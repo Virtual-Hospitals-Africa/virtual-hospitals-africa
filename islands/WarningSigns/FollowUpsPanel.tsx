@@ -1,12 +1,103 @@
 import { createPortal } from 'preact/compat'
+import { useState } from 'preact/hooks'
 import { XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { CheckboxList } from '../../components/library/CheckboxList.tsx'
+import { Spinner } from '../../components/library/Spinner.tsx'
 import { FindingToCheckFor } from '../../types.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
-import cls from '../../util/cls.ts'
+import { SelectedChip } from '../SelectedRecordChip.tsx'
 import { asFollowUpSign, findCheckedFollowUp, followUpDisplay, FollowUpGroup, isUnanswered } from './follow_ups.ts'
 import { CheckedWarningSign, OnToggle } from './shared.ts'
+
+type Item = {
+  id: string
+  label: string
+  checked: boolean
+  previously_absent: boolean
+  finding: FindingToCheckFor
+  checked_sign?: CheckedWarningSign
+}
+
+function asItem(group: FollowUpGroup, checked_signs: CheckedWarningSign[], finding: FindingToCheckFor): Item {
+  const checked_sign = findCheckedFollowUp(checked_signs, finding)
+  const display = followUpDisplay(finding.s_expression)
+  return {
+    id: `follow-up.${group.key}.${hyphenate(display)}`,
+    label: display,
+    checked: !!checked_sign,
+    previously_absent: !checked_sign && finding.existing_record?.existence === 'No',
+    finding,
+    checked_sign,
+  }
+}
+
+/*
+  The follow ups for one sign: what is still to check for as checkboxes, what has been checked
+  as record pills like those atop the page, and whatever was already recorded as absent rolled
+  up behind a count so the still-open questions are what the eye lands on.
+*/
+function FollowUpGroupSection({ group, checked_signs, onCheck, onOpenDetails }: {
+  group: FollowUpGroup
+  checked_signs: CheckedWarningSign[]
+  onCheck: OnToggle
+  onOpenDetails(sign: CheckedWarningSign): void
+}) {
+  const [showing_previously_absent, setShowingPreviouslyAbsent] = useState(false)
+
+  const items = group.findings_to_check_for.map((finding) => asItem(group, checked_signs, finding))
+  const checked = items.filter((item) => item.checked)
+  const to_check = items.filter((item) => !item.checked && !item.previously_absent)
+  const previously_absent = items.filter((item) => item.previously_absent)
+
+  return (
+    <div className='flex flex-col gap-2'>
+      <div className='text-sm leading-5' data-due-to={hyphenate(group.due_to.display)}>
+        <span className='font-semibold text-gray-600 mr-1'>Due to</span>
+        <span className='text-gray-900'>{group.due_to.display}</span>
+      </div>
+      {!!checked.length && (
+        <div className='flex flex-wrap gap-1' id={`follow-ups-checked-${group.key}`}>
+          {checked.map((item) => (
+            <SelectedChip
+              key={item.id}
+              item={item.checked_sign!}
+              click_action='edit'
+              onClick={() => onOpenDetails(item.checked_sign!)}
+            />
+          ))}
+        </div>
+      )}
+      {!!to_check.length && (
+        <CheckboxList
+          id={`follow-ups-${group.key}`}
+          items={to_check}
+          onCheck={(item) => onCheck(asFollowUpSign(item.finding))}
+        />
+      )}
+      {!!previously_absent.length && (
+        <>
+          <button
+            type='button'
+            id={`follow-ups-previously-absent-${group.key}`}
+            aria-expanded={showing_previously_absent}
+            className='self-start text-sm text-gray-500 underline hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded'
+            onClick={() => setShowingPreviouslyAbsent(!showing_previously_absent)}
+          >
+            {previously_absent.length} negative finding{previously_absent.length === 1 ? '' : 's'} previously recorded
+          </button>
+          {showing_previously_absent && (
+            <CheckboxList
+              id={`follow-ups-previously-absent-list-${group.key}`}
+              items={previously_absent}
+              onCheck={(item) => onCheck(asFollowUpSign(item.finding))}
+            />
+          )}
+        </>
+      )}
+    </div>
+  )
+}
 
 /*
   Shown as soon as a finding is saved to the record, listing what to check for as a
@@ -17,7 +108,7 @@ import { CheckedWarningSign, OnToggle } from './shared.ts'
   (w-60 xl:w-84) and capped in height so the Next button stays visible.
 
   Checking a follow up behaves exactly like checking a warning sign. "None of the above"
-  records every follow up still unanswered as absent and closes the panel.
+  closes the panel at once, leaving a spinner in its place while the negatives save.
 */
 export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, onNoneOfTheAbove, none_of_the_above_saving, onDismiss }: {
   groups: FollowUpGroup[]
@@ -28,25 +119,24 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
   none_of_the_above_saving: boolean
   onDismiss(): void
 }) {
-  if (!groups.length || typeof document === 'undefined') return null
+  if (typeof document === 'undefined') return null
+
+  if (none_of_the_above_saving) {
+    return createPortal(
+      <div
+        id='follow-ups-saving'
+        className='fixed top-20 right-64 xl:right-88 z-40 flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-xl border border-gray-200 text-sm text-gray-600'
+      >
+        <Spinner className='text-indigo-700' aria-hidden='true' />
+        Saving…
+      </div>,
+      document.body,
+    )
+  }
+
+  if (!groups.length) return null
 
   const any_unanswered = groups.some((group) => group.findings_to_check_for.some((finding) => isUnanswered(checked_signs, finding)))
-
-  type Item = { id: string; label: string; description: string | null; checked: boolean; finding: FindingToCheckFor; checked_sign?: CheckedWarningSign }
-
-  function asItem(group: FollowUpGroup, finding: FindingToCheckFor): Item {
-    const checked_sign = findCheckedFollowUp(checked_signs, finding)
-    const display = followUpDisplay(finding.s_expression)
-    const recorded_absent = !checked_sign && finding.existing_record?.existence === 'No'
-    return {
-      id: `follow-up.${group.key}.${hyphenate(display)}`,
-      label: display,
-      description: recorded_absent ? 'Previously recorded as absent' : null,
-      checked: !!checked_sign,
-      finding,
-      checked_sign,
-    }
-  }
 
   return createPortal(
     <div
@@ -66,31 +156,26 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
       </div>
       <div className='overflow-y-auto px-5 pb-3 flex flex-col gap-4'>
         {groups.map((group) => (
-          <CheckboxList
+          <FollowUpGroupSection
             key={group.key}
-            id={`follow-ups-${group.key}`}
-            items={group.findings_to_check_for.map((finding) => asItem(group, finding))}
-            onCheck={(item) => onCheck(asFollowUpSign(item.finding))}
-            onOpenChecked={(item) => item.checked_sign && onOpenDetails(item.checked_sign)}
-          >
-            <div className='text-sm leading-5' data-due-to={hyphenate(group.due_to.display)}>
-              <span className='font-semibold text-gray-600 mr-1'>Due to</span>
-              <span className='text-gray-900'>{group.due_to.display}</span>
-            </div>
-          </CheckboxList>
+            group={group}
+            checked_signs={checked_signs}
+            onCheck={onCheck}
+            onOpenDetails={onOpenDetails}
+          />
         ))}
       </div>
       {onNoneOfTheAbove && (
-        <div className={cls('flex justify-end px-5 pb-4 pt-2 border-t border-gray-100', { 'opacity-60': none_of_the_above_saving })}>
+        <div className='flex justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
           <Button
             type='button'
             variant='secondary'
             size='sm'
             id='follow-ups-none-of-the-above'
-            disabled={!any_unanswered || none_of_the_above_saving}
+            disabled={!any_unanswered}
             onClick={onNoneOfTheAbove}
           >
-            {none_of_the_above_saving ? 'Saving…' : 'None of the above'}
+            None of the above
           </Button>
         </div>
       )}

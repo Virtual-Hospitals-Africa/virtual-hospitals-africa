@@ -27,7 +27,7 @@ import negate from '../../util/negate.ts'
 import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../../util/debounce.ts'
-import { accumulateFollowUps, asCheckedFollowUpSign, findCheckedFollowUp, FollowUpGroup, noneOfTheAboveRequests } from './follow_ups.ts'
+import { accumulateFollowUps, asCheckedFollowUpSign, findCheckedFollowUp, FollowUpGroup, isUnanswered, noneOfTheAboveRequests } from './follow_ups.ts'
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
 import { exists } from '../../util/exists.ts'
 import { showAlertMessage } from '../alert/AlertListener.tsx'
@@ -99,12 +99,16 @@ export default function WarningSignsInnerContent({
   const follow_ups_needed = useSignal<FollowUpGroup[]>([])
   const none_of_the_above_saving = useSignal(false)
 
+  /*
+    Only follow ups still unanswered hold up the page. Ones being saved, whether a checked
+    finding or a round of negatives, are answered already and may finish after submitting.
+  */
   useEffect(() => {
     const warning_signs_form = exists(document.getElementById('warning_signs'))
-    console.log({ warning_signs_form })
     function callback(event: SubmitEvent) {
-      console.log('in here', follow_ups_needed.value)
-      if (follow_ups_needed.value.length) {
+      const unanswered = !none_of_the_above_saving.value &&
+        follow_ups_needed.value.some((group) => group.findings_to_check_for.some((finding) => isUnanswered(checked_signs.value, finding)))
+      if (unanswered) {
         event.preventDefault()
         event.stopPropagation()
         showAlertMessage({
@@ -331,9 +335,15 @@ export default function WarningSignsInnerContent({
     })
   }
 
+  /*
+    The panel closes at once, leaving a spinner in its place. The groups answered stay in
+    follow_ups_needed until their negatives are recorded, so a failure reopens the panel,
+    while a group arriving from a save made meanwhile is left alone.
+  */
   async function onNoneOfTheAbove() {
     if (!none_of_the_above_findings_route || none_of_the_above_saving.value) return
     none_of_the_above_saving.value = true
+    const answered = new Set(follow_ups_needed.value.map((group) => group.key))
 
     try {
       // One after another so a finding checked for by two tasks is only recorded once
@@ -347,9 +357,9 @@ export default function WarningSignsInnerContent({
         const json = await response.json()
         assert(json.success)
       }
-      follow_ups_needed.value = []
+      follow_ups_needed.value = follow_ups_needed.value.filter((group) => !answered.has(group.key))
     } catch (error) {
-      // The panel stays open so the health worker can try again
+      // The panel reopens so the health worker can try again
       console.error(error)
     } finally {
       none_of_the_above_saving.value = false

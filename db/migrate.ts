@@ -1,4 +1,4 @@
-import { Migration, MigrationResult, MigrationResultSet, Migrator } from 'kysely'
+import { Migration, MigrationResult, MigrationResultSet, Migrator, sql } from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -6,6 +6,7 @@ import createMigration from './createMigration.ts'
 import { spinner } from '../util/spinner.ts'
 import { Maybe } from '../types.ts'
 import { exists } from '../util/exists.ts'
+import { getCurrentCommit } from './getCurrentCommit.ts'
 
 const migrations: Record<
   string,
@@ -176,6 +177,23 @@ export async function migrateCommand(
   const command = migrate[cmd]
   assert(command, `Unknown migration command: ${cmd}`)
   logMigrationResults(await command(target!))
+
+  if (cmd !== 'create') {
+    await recordMigrationCommit()
+  }
+}
+
+// Stores the commit that last ran migrations as a database-level GUC (a
+// Postgres global variable), rather than a table, so it's readable with
+// `SHOW vha.migration_commit` / `current_setting('vha.migration_commit')`
+// without a schema migration of its own.
+async function recordMigrationCommit() {
+  const commit_sha = await getCurrentCommit()
+  const { rows } = await sql<
+    { current_database: string }
+  >`select current_database()`.execute(db)
+  const database_name = rows[0].current_database
+  await sql`alter database ${sql.id(database_name)} set vha.migration_commit = ${sql.lit(commit_sha)}`.execute(db)
 }
 
 if (import.meta.main) {

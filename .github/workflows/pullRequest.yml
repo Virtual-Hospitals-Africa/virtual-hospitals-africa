@@ -161,6 +161,7 @@ jobs:
           docker build \
             -f Dockerfile.migrator \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:pr-$PR_NUMBER-$SHA-migrator \
+            --build-arg GIT_COMMIT=$SHA \
             --cache-from type=gha,scope=pr-$PR_NUMBER-migrator \
             --cache-to type=gha,mode=max,scope=pr-$PR_NUMBER-migrator \
             --push . > migrator.log 2>&1 &
