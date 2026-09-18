@@ -1,10 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
-import { sql, SqlBool } from 'kysely'
 import { patient_evaluations } from './patient_evaluations.ts'
-import { buildExpression, EXPRESSION_BUILDERS } from './s_expression.ts'
-import { AgeDetermination, ApplicableRule, ApplicableRuleEffectSystemSystemDiagnosisRule, RecordValueTask, RuleRunnerInput, TrxOrDb } from '../../types.ts'
+import { EXPRESSION_BUILDERS } from './s_expression.ts'
+import { ApplicableRule, ApplicableRuleEffectSystemSystemDiagnosisRule, RuleRunnerInput, TrxOrDb } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
-import { EVIDENCE_OF_CONTEXTUAL_QUALIFIER, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
+import { EVIDENCE_OF_CONTEXTUAL_QUALIFIER, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 
 import { Lang } from '../../shared/s_expression_schemas.ts'
 
@@ -23,8 +22,8 @@ import uniq from '../../util/uniq.ts'
 import { groupBy } from '../../util/groupBy.ts'
 
 import { getTaskById } from '../../shared/tasks.ts'
+import { isCheckFor } from './additional_tasks.ts'
 import { s_expression_evidence } from './s_expression_evidence.ts'
-import compactMap from '../../util/compactMap.ts'
 
 const concept_to_certainty_qualifier_map = Object.fromEntries(
   Object.entries(CERTAINTY_QUALIFIER_TO_CONCEPT).map(([certainty, concept]) => [concept.name, certainty]),
@@ -225,124 +224,94 @@ export const system_diagnosis_rules = {
       }
     }).then(compact)
   },
+  /*
+    Rules a possible diagnosis out once the health worker has answered the check_for task it
+    prompted. The task is named on the FindingsAdded of the submission that answered it, as
+    when none of the remaining findings apply from the warning signs page. Nothing is ruled
+    out while the latest diagnosis of the concept is anything but possible: a probable or
+    definite diagnosis, whether inserted by this run's rules or by an earlier submission,
+    stands, and an improbable one means the task was already answered.
+  */
   async insertImprobable(
     trx: TrxOrDb,
     input: RuleRunnerInput,
+    positive_diagnoses: InsertDiagnosisResult[],
   ): Promise<string> {
-    if (!input.tasks_completed?.length) {
-      return "No tasks completed"
+    const { task_description_completed } = input
+    if (!task_description_completed) return 'No task completed'
+
+    const task = getTaskById(task_description_completed)
+    const { due_to } = task
+    if (!(due_to.atom === 'diagnosis' && due_to.certainty_qualifier === 'possible')) {
+      return `Task "${task_description_completed}" is not due to a possible diagnosis`
     }
-    const tasks_due_to_possible_diagnoses = input.tasks_completed.filter(task_description => {
-      const task = getTaskById(task_description)
-      if (task.due_to.atom === 'diagnosis' && task.due_to.certainty_qualifier === 'possible') {
-        return true
-      }
-      return false
-    })
-    if (!tasks_due_to_possible_diagnoses) {
-      return "Tasks completed not due to a possible diagnosis"
+    assert(isCheckFor(task.to_be_done), `Task "${task_description_completed}" due to a possible diagnosis is not a check_for task`)
+
+    const { snomed_concept } = due_to
+
+    const settled_by_this_submission = positive_diagnoses.find((diagnosis) =>
+      diagnosis.specific_snomed_concept.name === snomed_concept.name &&
+      CERTAINTY_ORDER[diagnosis.certainty] > CERTAINTY_ORDER.possible
+    )
+    if (settled_by_this_submission) {
+      return `${snomed_concept.name} is ${settled_by_this_submission.certainty}, so not ruled out by task "${task_description_completed}"`
     }
 
-    const possible_diagnoses_this_task_was_due_to = await trx
-      .selectFrom('patient_records_aggregated as task_records')
-      .innerJoin('patient_record_relations as due_to_relations', 'due_to_relations.source_id', 'task_records.id')
-      .innerJoin('patient_records_aggregated as diagnosis_records', 'diagnosis_records.id', 'due_to_relations.destination_id')
-      .leftJoin('patient_records_aggregated as other_diagnosis', (join) =>
-        join
-          .onRef('other_diagnosis.specific_snomed_concept_id', '=', 'diagnosis_records.specific_snomed_concept_id')
-          .on(
-            'other_diagnosis.id',
-            'in',
-            buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'probable' }))
-              .union(buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'improbable' })))
-              .union(buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'equivocal' })))
-              .union(buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'definite' }))),
-          ))
-      .where('task_records.id', 'in', tasks_due_to_possible_diagnoses)
-      .where('task_records.specific_snomed_concept_id', '=', TO_BE_DONE.id)
-      .where(
-        'diagnosis_records.id',
-        'in',
-        buildExpression(
-          trx,
-          input,
-          diagnosisToEvaluation({ certainty_qualifier: 'possible' }),
-        ),
-      )
-      .where('other_diagnosis.id', 'is', null)
-      .selectAll('diagnosis_records')
-      .select((eb) => [
-        eb.ref('task_records.value').$castTo<RecordValueTask>().as('task_value'),
-      ])
-      .execute()
+    const latest_diagnosis = await EXPRESSION_BUILDERS.evaluation(
+      trx,
+      input,
+      diagnosisToEvaluation({ snomed_concept }),
+    )
+      .select(['patient_records_aggregated.value'])
+      .orderBy('patient_records_aggregated.created_at', 'desc')
+      .limit(1)
+      .executeTakeFirst()
+      .then(presentDiagnosis)
 
-    // One task can be due to several possible diagnoses, each of which this rules out
-    const check_fors = possible_diagnoses_this_task_was_due_to.filter((task) => {
-      if (task.task_value.task_id.startsWith('Check for')) return true
-      assert(task.task_value.task_id.startsWith('Display medical guidance'))
-      return false
+    if (!latest_diagnosis) return `No possible ${snomed_concept.name} diagnosis to rule out`
+    if (latest_diagnosis.certainty !== 'possible') {
+      return `${snomed_concept.name} is ${latest_diagnosis.certainty}, so not ruled out by task "${task_description_completed}"`
+    }
+
+    // While we do have record_ids of "No" records on hand, the health worker could have
+    // entered "No" records at any point, so find every finding that could have contributed.
+    const explicit_no_findings = await s_expression_evidence.evaluate(
+      trx,
+      input,
+      {
+        atom: 'or' as const,
+        expressions: task.to_be_done.value.map((finding): Lang['finding'] => ({ ...finding, existence: 'No' })),
+      },
+    )
+    assert(
+      explicit_no_findings.satisfies,
+      `Task "${task_description_completed}" was answered without any of its findings being recorded as No`,
+    )
+
+    const improbable_diagnosis = await system_diagnosis_rules.insertOne(trx, {
+      ...input,
+      diagnosis_node: diagnosisToEvaluation({ snomed_concept, certainty_qualifier: 'improbable' }),
+      matching_finding_ids: explicit_no_findings.contributing_records,
     })
 
-    const improbable_diagnoses = await pMap(check_fors, async (check_for) => {
-      // While we do have record_ids of "No" records on hand,
-      // The user could have entered "No" records at any point
-      // So more accurate to go and find any that _could_ have contributed
-      // explicitly
-      const task = getTaskById(check_for.task_value.task_id)
-      const explicit_no_finding_nodes: Lang['finding'][] = []
-      for (const finding of task.to_be_done.value as unknown as Lang['finding'][]) {
-        explicit_no_finding_nodes.push({ ...finding, existence: 'No' })
-      }
-      assert(explicit_no_finding_nodes.length)
-      const explicit_no_findings = await s_expression_evidence.evaluate(
-        trx,
-        input,
-        {
-          atom: 'or' as const,
-          expressions: explicit_no_finding_nodes,
-        },
-      )
-      assert(explicit_no_findings.satisfies)
-
-      const diagnosis_node = diagnosisToEvaluation({
-        snomed_concept: {
-          atom: 'snomed_concept',
-          name: check_for.specific_snomed_concept_name,
-          category: check_for.specific_snomed_concept_category,
-        },
-        certainty_qualifier: 'improbable',
-      })
-
-      return system_diagnosis_rules.insertOne(trx, {
-        ...input,
-        diagnosis_node,
-        matching_finding_ids: explicit_no_findings.contributing_records,
-      })
-    })
-
-    if (!improbable_diagnoses.length) return 'No possible diagnosis ruled out by this task'
-    return `Inserted ${improbable_diagnoses.length} improbable diagnosis(es): ${improbable_diagnoses.map((d) => d.record_id).join(', ')}`
+    return `Inserted 1 improbable diagnosis(es): ${improbable_diagnosis.record_id}`
   },
   async insertSystemDiagnosesIfNotAlreadyIdentified(
     trx: TrxOrDb,
     input: RuleRunnerInput,
-  ) {
+  ): Promise<string> {
     const rules_result = await rules.getApplicableBasedOnNewRecords(trx, input, 'system_diagnosis_rule')
     const inserted_diagnoses = await system_diagnosis_rules.insertPositiveDiagnoses(trx, input, rules_result)
-    const improbable_diagnoses = await system_diagnosis_rules.insertImprobable(trx, input)
 
-    return compact([
-      inserted_diagnoses.length && `Inserted ${inserted_diagnoses.length} diagnosis(es): ${inserted_diagnoses.map((d) => d.record_id).join(', ')}`,
-      improbable_diagnoses.length &&
-      `Inserted ${improbable_diagnoses.length} improbable diagnosis(es): ${improbable_diagnoses.map((d) => d.record_id).join(', ')}`,
-    ]).join('\n') || (
-      isString(rules_result) ? rules_result : 'No new system diagnoses to insert'
-    )
+    const positive_message = inserted_diagnoses.length
+      ? `Inserted ${inserted_diagnoses.length} diagnosis(es): ${inserted_diagnoses.map((d) => d.record_id).join(', ')}`
+      : isString(rules_result)
+      ? rules_result
+      : 'No new system diagnoses to insert'
 
+    if (!input.task_description_completed) return positive_message
 
-    if (!inserted_diagnoses.length) {
-      return isString(rules_result) ? rules_result : 'No new system diagnoses to insert'
-    }
-    return `Inserted ${inserted_diagnoses.length} diagnosis(es): ${inserted_diagnoses.map((d) => d.record_id).join(', ')}`
+    const improbable_message = await system_diagnosis_rules.insertImprobable(trx, input, inserted_diagnoses)
+    return `${positive_message}\n${improbable_message}`
   },
 }

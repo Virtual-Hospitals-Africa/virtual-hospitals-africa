@@ -128,23 +128,10 @@ export const EVENTS = {
     },
   ),
   /*
-    A procedure answered a task, dispatched by additional_tasks.procedureCompletedTasks for each
-    task evaluation it marked done, wherever the answering happened: the additional tasks page,
-    or the warning signs page when the health worker says none of a check_for task's findings
-    apply. Ruling a possible diagnosis out follows from the task being answered rather than from
-    the records that answered it, so it hangs off this event and not FindingsAdded.
+    Records made by one submission. task_description_completed names the task the health worker
+    said they were done with in making them, as when none of a check_for task's findings apply,
+    so that the diagnosis rules can rule the possible diagnosis behind the task out.
   */
-  // TaskDone: defineEvent(
-  //   z.object({
-  //     procedure_id: z.string().uuid(),
-  //     patient_id: z.string().uuid(),
-  //     patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
-  //     patient_encounter_id: z.string().uuid(),
-  //     task_completed: task_description_validator,
-  //   }),
-  //   {
-  //   },
-  // ),
   FindingsAdded: defineEvent(
     z.object({
       procedure_id: z.string().uuid().optional(),
@@ -155,7 +142,7 @@ export const EVENTS = {
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
-      tasks_completed: task_description_validator.array().optional(),
+      task_description_completed: task_description_validator.optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, payload) {
@@ -195,10 +182,10 @@ export const EVENTS = {
       patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
       patient_encounter_id: z.string().uuid(),
       record_id: z.string().uuid(),
-      tasks_completed: z.never().optional(),
+      task_description_completed: z.never().optional(),
     }),
     {
-      insertTasksIfNotAlreadyIdentified(trx, { data: { record_id, ... data }}) {
+      insertTasksIfNotAlreadyIdentified(trx, { data: { record_id, ...data } }) {
         return additional_tasks.insertTasksIfNotAlreadyIdentified(
           trx,
           {
@@ -207,7 +194,7 @@ export const EVENTS = {
           },
         )
       },
-      insertSystemDiagnosesIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ... data }}) {
+      insertSystemDiagnosesIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ...data } }) {
         return system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
           trx,
           {
@@ -218,7 +205,7 @@ export const EVENTS = {
           },
         )
       },
-      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ... data }}) {
+      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ...data } }) {
         return system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
           trx,
           {

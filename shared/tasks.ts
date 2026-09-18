@@ -100,7 +100,7 @@ export const TASKS = [
 */
 
 export const task_description_validator = z.enum(
-  TASKS.map(task => task.description)
+  TASKS.map((task) => task.description),
 )
 
 // id is synonymous with description for now.

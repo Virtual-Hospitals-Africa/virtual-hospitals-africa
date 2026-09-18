@@ -4,7 +4,7 @@ import { workflowStepFromReferer } from '../../../../../../../backend/workflowSt
 import type { OpenEncounterContext } from '../../../../../../../types.ts'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../db/models/patient_findings.ts'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
-import { additional_tasks, existingFindingsMatching, isCheckFor } from '../../../../../../../db/models/additional_tasks.ts'
+import { existingFindingsMatching, isCheckFor } from '../../../../../../../db/models/additional_tasks.ts'
 import { events } from '../../../../../../../db/models/events.ts'
 import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { getTaskById } from '../../../../../../../shared/tasks.ts'
@@ -21,7 +21,12 @@ import type { InsertableFindingBase, MatchingFinding } from '../../../../../../.
   The health worker has looked at the findings a check_for task asked them to check for and
   none of those still unchecked apply. Each is recorded as a negative finding under the
   procedure for the step they are on, identified from the referer as the sibling
-  clinical_finding route does, and that same procedure marks the task done.
+  clinical_finding route does. With every finding it asks about recorded, the task is complete.
+
+  The FindingsAdded dispatched names the task, so that the diagnosis rules can rule out the
+  possible diagnosis it was due to. It is dispatched even when every finding already had a
+  record, since a finding checked in the meantime may have left the task answered without
+  anyone having said so.
 
   The step's procedure already exists: the follow ups a check_for task is shown in only
   appear once a sign has been saved through the clinical_finding route, which creates the
@@ -52,8 +57,8 @@ export const handler = postHandler(
       assertOr400(s_expression.existence === 'Yes', 'Send the findings to check for as positive findings, they are recorded as negative here')
     }
 
-    const task = asResult(() => getTaskById(task_id))
-    assertOr400(task.success && isCheckFor(task.value.to_be_done), `"${task_id}" is not a check_for task`)
+    const task = asResult(() => getTaskById(task_description))
+    assertOr400(task.success && isCheckFor(task.value.to_be_done), `"${task_description}" is not a check_for task`)
 
     const { workflow, step } = workflowStepFromReferer(ctx)
 
@@ -92,33 +97,19 @@ export const handler = postHandler(
     assertOr400(procedure, `No ${step} procedure to record these findings under`)
     const procedure_id = procedure.id
 
-    await to_insert.length ? insertNegatives() : Promise.resolve()
-    const marked = await additional_tasks.markTaskDone(trx, {
-      patient_id,
-      patient_encounter_id,
-      patient_age_determination,
-      procedure_id,
-      task_description,
-    })
+    if (to_insert.length) await insertNegatives()
 
-    /*
-      Carries the evaluations just marked done, as the TaskDone of each waits for this event's
-      diagnosis rules before ruling the possible diagnosis out. Dispatched whenever there is
-      either kind of news, so no TaskDone is left waiting on an event that was never sent.
-    */
-    if (to_insert.length || marked.evaluation_ids.length) {
-      await events.insert(trx, {
-        type: 'FindingsAdded',
-        data: {
-          patient_id,
-          patient_encounter_id,
-          patient_age_determination,
-          procedure_id,
-          records: to_insert.map(({ id }) => ({ id, existence: 'No' as const })),
-          tasks_completed: [task_description],
-        },
-      })
-    }
+    await events.insert(trx, {
+      type: 'FindingsAdded',
+      data: {
+        patient_id,
+        patient_encounter_id,
+        patient_age_determination,
+        procedure_id,
+        records: to_insert.map(({ id }) => ({ id, existence: 'No' as const })),
+        task_description_completed: task_description,
+      },
+    })
 
     return json(
       {

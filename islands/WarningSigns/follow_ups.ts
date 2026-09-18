@@ -125,8 +125,8 @@ export function noneOfTheAboveRequests(
       }
     }
   }
-  return [...by_task.entries()].map(([task_id, s_expressions]) => ({
-    task_id,
+  return [...by_task.entries()].map(([task_description, s_expressions]) => ({
+    task_description,
     s_expressions: `(${[...s_expressions].join(' ')})`,
   }))
 }

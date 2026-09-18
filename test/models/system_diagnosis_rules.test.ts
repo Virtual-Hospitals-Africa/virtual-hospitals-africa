@@ -17,7 +17,6 @@ import { additional_tasks } from '../../db/models/additional_tasks.ts'
 import { patient_encounters } from '../../db/models/patient_encounters.ts'
 import assertLength from '../../util/assertLength.ts'
 import { check_for } from '../../db/models/check_for.ts'
-import { events } from '../../db/models/events.ts'
 import { exists } from '../../util/exists.ts'
 
 /*
@@ -25,50 +24,31 @@ import { exists } from '../../util/exists.ts'
   runners need only be told which records are new.
 */
 function asRuleRunnerInput(
-  { patient_id, patient_encounter_id, procedure_id, records }: {
+  { patient_id, patient_encounter_id, procedure_id, records, task_description_completed }: {
     patient_id: string
     patient_encounter_id: string
     procedure_id?: string
     records: InsertedRecord[]
+    task_description_completed?: string
   },
 ): RuleRunnerInput & { procedure_id?: string } {
-  return { listener_id: 'test', listener_name: 'test', patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records }
+  return {
+    listener_id: 'test',
+    listener_name: 'test',
+    patient_id,
+    patient_encounter_id,
+    patient_age_determination: 'adult',
+    procedure_id,
+    records,
+    task_description_completed,
+  }
 }
 
-/*
-  insertImprobable waits for the diagnosis rules of the submission that answered the task, which
-  in the app is a FindingsAdded listener run by the event processor. No processor runs in a model
-  test, so stand in for one: dispatch the event the route would have and mark that listener done.
-*/
-async function asIfTheDiagnosisRulesHadRun(
-  { patient_id, patient_encounter_id, procedure_id, task_completed_ids }: {
-    patient_id: string
-    patient_encounter_id: string
-    procedure_id: string
-    task_completed_ids: string[]
-  },
-) {
-  const { id: event_id } = await events.insert(db, {
-    type: 'FindingsAdded',
-    data: { patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records: [], task_completed_ids },
-  })
-  const listener = await db.selectFrom('event_listeners')
-    .where('event_id', '=', event_id)
-    .where('listener_name', '=', 'insertSystemDiagnosesIfNotAlreadyIdentified')
-    .select('id')
-    .executeTakeFirstOrThrow()
-  await events.processedListener(db, { event_listener_id: listener.id, success_message: 'stood in for the event processor' })
-}
-
-// The evaluations materialised for a task, which insertImprobable is told about one at a time
-function taskEvaluationIds(patient_encounter_id: string, task_id: string): Promise<string[]> {
-  return db.selectFrom('patient_record_tasks')
-    .innerJoin('patient_records', 'patient_records.id', 'patient_record_tasks.id')
-    .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
-    .where('patient_record_tasks.task_id', '=', task_id)
-    .select('patient_record_tasks.id')
-    .execute()
-    .then((rows) => rows.map(({ id }) => id))
+function latestAnaphylaxisDiagnosisId(patient_id: string): Promise<string> {
+  return patient_evaluations.findOne(db, {
+    patient_id,
+    s_expression: `(diagnosis (snomed_concept "Anaphylaxis" "disorder") improbable)`,
+  }).then((evaluation) => evaluation.id)
 }
 
 describeParallel('db/models/system_diagnosis_rules.ts', () => {
@@ -660,37 +640,34 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           ],
         },
       )
-      await additional_tasks.procedureCompletedTasks(db, {
-        patient_id,
-        patient_encounter_id,
-        patient_age_determination: 'adult',
-        procedure_id: inserted_additional_task_findings.procedure_id,
-        evaluation_ids: task_groups.evaluation_ids,
-      })
-
-      const [check_for_anaphylaxis_evaluation_id] = await taskEvaluationIds(patient_encounter_id, 'Check for Anaphylaxis')
-      assert(check_for_anaphylaxis_evaluation_id)
-
-      await asIfTheDiagnosisRulesHadRun({
-        patient_id,
-        patient_encounter_id,
-        procedure_id: inserted_additional_task_findings.procedure_id,
-        task_completed_ids: [check_for_anaphylaxis_evaluation_id],
-      })
-
-      const improbable_diagnoses_result = await system_diagnosis_rules.insertImprobable(
+      // The submission that recorded the negatives names the task it answered
+      const improbable_diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
-        {
-          listener_id: 'test',
-          listener_name: 'test',
+        asRuleRunnerInput({
           patient_id,
           patient_encounter_id,
-          patient_age_determination: 'adult',
           procedure_id: inserted_additional_task_findings.procedure_id,
-          task_completed_id: check_for_anaphylaxis_evaluation_id,
-        },
+          records: inserted_additional_task_findings.findings,
+          task_description_completed: 'Check for Anaphylaxis',
+        }),
       )
-      assert(improbable_diagnoses_result.startsWith('Inserted 1 improbable diagnosis(es): '))
+      assert(
+        improbable_diagnoses_result.endsWith(`Inserted 1 improbable diagnosis(es): ${await latestAnaphylaxisDiagnosisId(patient_id)}`),
+        improbable_diagnoses_result,
+      )
+
+      // Answering the task again rules nothing out anew
+      const repeated_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
+        db,
+        asRuleRunnerInput({
+          patient_id,
+          patient_encounter_id,
+          procedure_id: inserted_additional_task_findings.procedure_id,
+          records: [],
+          task_description_completed: 'Check for Anaphylaxis',
+        }),
+      )
+      assert(repeated_result.endsWith('Anaphylaxis is improbable, so not ruled out by task "Check for Anaphylaxis"'), repeated_result)
 
       const improbable_diagnosis_evaluation = await patient_evaluations.findOne(db, {
         patient_id,
