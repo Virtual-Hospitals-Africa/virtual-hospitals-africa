@@ -17,6 +17,7 @@ import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, TRIAGE_INDEX } from '../shared/snomed_concepts.ts'
 import { triageLevelFromTEWSTotal } from '../shared/vitals.ts'
 import { system_diagnosis_rules } from '../db/models/system_diagnosis_rules.ts'
+import { task_description_validator } from '../shared/tasks.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -131,30 +132,20 @@ export const EVENTS = {
     task evaluation it marked done, wherever the answering happened: the additional tasks page,
     or the warning signs page when the health worker says none of a check_for task's findings
     apply. Ruling a possible diagnosis out follows from the task being answered rather than from
-    the records that answered it, so it hangs off this event and not RecordsAdded.
+    the records that answered it, so it hangs off this event and not FindingsAdded.
   */
-  TaskDone: defineEvent(
-    z.object({
-      procedure_id: z.string().uuid(),
-      patient_id: z.string().uuid(),
-      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
-      patient_encounter_id: z.string().uuid(),
-      task_completed_id: z.string().uuid(),
-    }),
-    {
-      insertImprobable(trx, payload) {
-        return system_diagnosis_rules.insertImprobable(
-          trx,
-          {
-            ...payload.data,
-            listener_id: payload.listener_id,
-            listener_name: payload.listener_name,
-          },
-        )
-      },
-    },
-  ),
-  RecordsAdded: defineEvent(
+  // TaskDone: defineEvent(
+  //   z.object({
+  //     procedure_id: z.string().uuid(),
+  //     patient_id: z.string().uuid(),
+  //     patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
+  //     patient_encounter_id: z.string().uuid(),
+  //     task_completed: task_description_validator,
+  //   }),
+  //   {
+  //   },
+  // ),
+  FindingsAdded: defineEvent(
     z.object({
       procedure_id: z.string().uuid().optional(),
       patient_id: z.string().uuid(),
@@ -164,12 +155,7 @@ export const EVENTS = {
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
-      /*
-        The task evaluations the procedure that added these records marked done, so that the
-        TaskDone of each can wait for this event's diagnosis rules before ruling a possible
-        diagnosis out. Set by whoever dispatches this alongside marking tasks done.
-      */
-      task_completed_ids: z.string().uuid().array().optional(),
+      tasks_completed: task_description_validator.array().optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, payload) {
@@ -177,8 +163,6 @@ export const EVENTS = {
           trx,
           {
             ...payload.data,
-            // listener_id: payload.listener_id,
-            // listener_name: payload.listener_name,
           },
         )
       },
@@ -199,6 +183,49 @@ export const EVENTS = {
             ...payload.data,
             listener_id: payload.listener_id,
             listener_name: payload.listener_name,
+          },
+        )
+      },
+    },
+  ),
+  EvaluationAdded: defineEvent(
+    z.object({
+      procedure_id: z.string().uuid().optional(),
+      patient_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
+      patient_encounter_id: z.string().uuid(),
+      record_id: z.string().uuid(),
+      tasks_completed: z.never().optional(),
+    }),
+    {
+      insertTasksIfNotAlreadyIdentified(trx, { data: { record_id, ... data }}) {
+        return additional_tasks.insertTasksIfNotAlreadyIdentified(
+          trx,
+          {
+            ...data,
+            records: [{ id: record_id, existence: 'Yes' }],
+          },
+        )
+      },
+      insertSystemDiagnosesIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ... data }}) {
+        return system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
+          trx,
+          {
+            listener_id,
+            listener_name,
+            records: [{ id: record_id, existence: 'Yes' }],
+            ...data,
+          },
+        )
+      },
+      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ... data }}) {
+        return system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
+          trx,
+          {
+            listener_id,
+            listener_name,
+            records: [{ id: record_id, existence: 'Yes' }],
+            ...data,
           },
         )
       },

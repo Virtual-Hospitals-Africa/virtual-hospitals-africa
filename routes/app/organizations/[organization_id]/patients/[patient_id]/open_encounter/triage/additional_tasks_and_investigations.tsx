@@ -20,20 +20,21 @@ import type { TriageContext } from '../../../../../../../../types.ts'
 import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 
 export const TriageAdditionalTasksAndInvestigationsSchema = z.object({
-  evaluation_ids: z.string().uuid().array().optional().default([]),
   just_do_it_tasks: z.record(
     z.string(),
     z.object({
+      evaluation_id: z.string().uuid(),
       s_expression: sExpressionZodValidator(to_be_done),
     }),
   ).optional().default({}).transform(values),
-  check_for: z.record(
-    z.string(),
-    CheckForSchema,
-  ).optional().default({}).transform(values),
+  // check_for: z.record(
+  //   z.string(),
+  //   CheckForSchema,
+  // ).optional().default({}).transform(values),
   measurements: z.record(
     z.string(),
     z.object({
+      evaluation_id: z.string().uuid(),
       s_expression: sExpressionZodValidator(measurement),
       value: positive_decimal,
       units: z.string().min(1),
@@ -134,7 +135,7 @@ export const handler = postHandler(
     ) {
       if (inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges) return
       return events.insert(trx, {
-        type: 'RecordsAdded',
+        type: 'FindingsAdded',
         data: {
           patient_id,
           patient_encounter_id,

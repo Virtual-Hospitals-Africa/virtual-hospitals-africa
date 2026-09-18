@@ -32,7 +32,7 @@ import type { InsertableFindingBase, MatchingFinding } from '../../../../../../.
 */
 export const handler = postHandler(
   NoneOfTheAboveFindingsSchema,
-  async (ctx: OpenEncounterContext, { task_id, s_expressions }) => {
+  async (ctx: OpenEncounterContext, { task_description, s_expressions }) => {
     const {
       trx,
       patient_id,
@@ -108,14 +108,14 @@ export const handler = postHandler(
     */
     if (to_insert.length || marked.evaluation_ids.length) {
       await events.insert(trx, {
-        type: 'RecordsAdded',
+        type: 'FindingsAdded',
         data: {
           patient_id,
           patient_encounter_id,
           patient_age_determination,
           procedure_id,
           records: to_insert.map(({ id }) => ({ id, existence: 'No' as const })),
-          task_completed_ids: marked.evaluation_ids,
+          tasks_completed: [task_description],
         },
       })
     }

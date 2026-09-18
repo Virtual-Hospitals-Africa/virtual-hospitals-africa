@@ -24,6 +24,7 @@ import { groupBy } from '../../util/groupBy.ts'
 
 import { getTaskById } from '../../shared/tasks.ts'
 import { s_expression_evidence } from './s_expression_evidence.ts'
+import compactMap from '../../util/compactMap.ts'
 
 const concept_to_certainty_qualifier_map = Object.fromEntries(
   Object.entries(CERTAINTY_QUALIFIER_TO_CONCEPT).map(([certainty, concept]) => [concept.name, certainty]),
@@ -147,15 +148,12 @@ export const system_diagnosis_rules = {
     await events.insert(
       trx,
       {
-        type: 'RecordsAdded',
+        type: 'EvaluationAdded',
         data: {
           patient_id,
           patient_encounter_id,
           patient_age_determination: exists(patient_age_determination),
-          records: [{
-            id: evaluation_id,
-            existence: 'Yes',
-          }],
+          record_id: evaluation_id,
         },
       },
     )
@@ -227,43 +225,23 @@ export const system_diagnosis_rules = {
       }
     }).then(compact)
   },
-  /*
-    A check_for task asked the health worker to look for the findings of a possible diagnosis.
-    Now that the task is done, if nothing has raised that diagnosis above possible then the
-    findings answered No are the evidence that it is improbable.
-
-    Dispatched from TaskDone, which the event processor runs concurrently with the RecordsAdded
-    of the same submission, so first wait for that submission's diagnosis rules to have run.
-    Without the wait a task answered with a mix of Yes and No could have its diagnosis marked
-    improbable before the rules got the chance to make it probable. Whoever marks a task done
-    names its evaluation on that RecordsAdded, which is how the two are paired up here; without
-    a match this throws rather than rule a diagnosis out on a half-read submission.
-
-    The task being done is what the event asserts, so unlike the positive pass this reads the
-    task evaluation directly rather than looking for the DONE relation tying it to a procedure.
-  */
   async insertImprobable(
     trx: TrxOrDb,
-    input: {
-      patient_id: string
-      patient_encounter_id: string
-      patient_age_determination: AgeDetermination
-      procedure_id: string
-      task_completed_id: string
-      listener_id: string
-      listener_name: string
-    },
+    input: RuleRunnerInput,
   ): Promise<string> {
-    await events.processedListenerForEncounter(trx, {
-      patient_encounter_id: input.patient_encounter_id,
-      event_type: 'RecordsAdded',
-      listener_name: 'insertSystemDiagnosesIfNotAlreadyIdentified',
-      // The submission that answered this task named it among the tasks it marked done
-      modifyQuery: (query) =>
-        query.where(
-          sql<SqlBool>`events.data->'task_completed_ids' @> to_jsonb(${input.task_completed_id}::text)`,
-        ),
+    if (!input.tasks_completed?.length) {
+      return "No tasks completed"
+    }
+    const tasks_due_to_possible_diagnoses = input.tasks_completed.filter(task_description => {
+      const task = getTaskById(task_description)
+      if (task.due_to.atom === 'diagnosis' && task.due_to.certainty_qualifier === 'possible') {
+        return true
+      }
+      return false
     })
+    if (!tasks_due_to_possible_diagnoses) {
+      return "Tasks completed not due to a possible diagnosis"
+    }
 
     const possible_diagnoses_this_task_was_due_to = await trx
       .selectFrom('patient_records_aggregated as task_records')
@@ -280,7 +258,7 @@ export const system_diagnosis_rules = {
               .union(buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'equivocal' })))
               .union(buildExpression(trx, input, diagnosisToEvaluation({ certainty_qualifier: 'definite' }))),
           ))
-      .where('task_records.id', '=', input.task_completed_id)
+      .where('task_records.id', 'in', tasks_due_to_possible_diagnoses)
       .where('task_records.specific_snomed_concept_id', '=', TO_BE_DONE.id)
       .where(
         'diagnosis_records.id',

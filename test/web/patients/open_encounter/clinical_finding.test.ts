@@ -58,7 +58,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
 
   describeParallel('POST', () => {
     itParallel(
-      'saves a positive finding with the supplied id under a new procedure for the referring step and dispatches RecordsAdded',
+      'saves a positive finding with the supplied id under a new procedure for the referring step and dispatches FindingsAdded',
       async () => {
         const setup = await setupTriageNewPatient({ patient_demographics: {} })
         const { patient_id, patient_encounter_id, triageRoute } = setup
@@ -89,7 +89,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
         await events.allProcessedForEncounter(db, { patient_encounter_id })
         const inserted_events = (await db.selectFrom('events')
           .selectAll()
-          .where('type', '=', 'RecordsAdded')
+          .where('type', '=', 'FindingsAdded')
           .execute())
           .filter((event) => (event.data as { records?: { id: string }[] }).records?.some((record) => record.id === finding_id))
         assertMatches(inserted_events, [

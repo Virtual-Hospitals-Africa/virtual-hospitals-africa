@@ -3121,6 +3121,7 @@ export type NewRecordsToConsider = {
     id: string
     existence: 'Yes' | 'No' | 'Unknown'
   }[]
+  tasks_completed?: string[]
 }
 
 export type NewRecordsToConsiderWithSatisfyingDueToIds = NewRecordsToConsider

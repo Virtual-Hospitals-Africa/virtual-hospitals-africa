@@ -1,4 +1,4 @@
-import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDbOrQueryCreator, VoidResult } from '../../types.ts'
+import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { EventInsertAny, EVENTS } from '../../events/handlers.ts'
 import { Client } from 'pg'
@@ -511,10 +511,12 @@ export const events = {
    * by `modifyQuery`. Throws if there is no such listener, if it errored, or if it has not been
    * processed within `timeout_ms`.
    *
-   * Notifications only say which (event_type, listener_name) was processed, and several events in
-   * an encounter can carry the same pair, so each notification re-reads the listener rather than
-   * being taken as the answer. Nothing is missed in the window before the first read either, as
-   * that read is what decides whether to keep waiting at all.
+   * Several listeners in an encounter can share an (event_type, listener_name): inserting a
+   * diagnosis dispatches a FindingsAdded of its own, carrying the same pair as the submission that
+   * prompted it. Notifications say no more than that pair, so the read below is what picks out
+   * the listener to wait on and notifications naming any other are ignored. Ones arriving while
+   * that read is in flight are held onto rather than dropped, as a listener commits before it
+   * notifies but the read may have taken its snapshot just beforehand.
    */
   async processedListenerForEncounter<EventName extends keyof typeof EVENTS>(
     trx: TrxOrDbOrQueryCreator,
@@ -530,39 +532,24 @@ export const events = {
     const timer = timeout(timeout_ms)
 
     const processed_a_matching_listener = Promise.withResolvers<void>()
-    let event_listener_result: EventResultShared
-    function setListenerResult(to_set: EventResultShared): VoidResult {
-      if (event_listener_result) {
-        if (event_listener_result.id !== to_set.id) {
-          return {
-            success: false,
-            error: new Error(
-              `Multiple distinct events listened to but with the same parameters were returned ${
-                JSON.stringify({ patient_encounter_id, event_type, listener_name })
-              }`,
-            ),
-          }
-        }
-      }
-      event_listener_result = to_set
-      return { success: true }
-    }
+    let waiting_on: EventResultShared | undefined
+    const arrived_before_the_read: ListenerResult[] = []
 
-    function callback(result: ListenerResult) {
-      if (result.event_type !== event_type) return
-      if (result.listener_name !== listener_name) return
-      if (result.processing) {
-        const set_result = setListenerResult(result)
-        if (!set_result.success) {
-          processed_a_matching_listener.reject(set_result.error)
-        }
-        return
-      }
-      if (result.id !== event_listener_result?.id) return
+    function settle(result: ListenerResult) {
+      if (result.processing) return
       if (result.success) return processed_a_matching_listener.resolve()
       return processed_a_matching_listener.reject(result.error)
     }
-    // Subscribe BEFORE querying to avoid missing notifications./
+
+    function callback(result: ListenerResult) {
+      if (result.processing) return
+      if (result.event_type !== event_type) return
+      if (result.listener_name !== listener_name) return
+      if (!waiting_on) return void arrived_before_the_read.push(result)
+      if (result.id !== waiting_on.id) return
+      settle(result)
+    }
+    // Subscribe BEFORE querying to avoid missing notifications
     pub_sub.by_event_listener_encounter.subscribe(patient_encounter_id, callback)
 
     try {
@@ -585,8 +572,10 @@ export const events = {
 
           if (event_listener.processed_at) return
 
-          const set_result = setListenerResult(event_listener)
-          if (!set_result.success) throw set_result.error
+          waiting_on = event_listener
+          for (const arrived of arrived_before_the_read) {
+            if (arrived.id === event_listener.id) settle(arrived)
+          }
 
           await processed_a_matching_listener.promise
         })(),

@@ -13,6 +13,7 @@ import findMatching from '../util/findMatching.ts'
 import { RenderedTaskToBeDone } from '../types.ts'
 import memoize from '../util/memoize.ts'
 import compactMap from '../util/compactMap.ts'
+import z from 'zod'
 
 function asTask(task_s_expression: string) {
   return parseWithSchema(task_s_expression, task)
@@ -97,6 +98,10 @@ export const TASKS = [
   The tasks must be done even if the triage nurse can't do them.
   In fact, this is the _reason_ for transfer
 */
+
+export const task_description_validator = z.enum(
+  TASKS.map(task => task.description)
+)
 
 // id is synonymous with description for now.
 // TODO: We may need to distinguish these for management tasks where the same task is done for different conditions

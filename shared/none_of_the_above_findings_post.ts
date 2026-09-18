@@ -1,6 +1,7 @@
 import z from 'zod'
 import { sExpressionsZodValidator } from './s_expression.ts'
 import { insertable_finding_base } from './s_expression_schemas.ts'
+import { task_description_validator } from './tasks.ts'
 
 export type NoneOfTheAboveFindingsPostBody = z.input<typeof NoneOfTheAboveFindingsSchema>
 
@@ -10,7 +11,7 @@ export type NoneOfTheAboveFindingsPostBody = z.input<typeof NoneOfTheAboveFindin
   they were listed to check for rather than negating them itself.
 */
 export const NoneOfTheAboveFindingsSchema = z.object({
-  task_id: z.string(),
+  task_description: task_description_validator,
   s_expressions: sExpressionsZodValidator(insertable_finding_base),
 })
 

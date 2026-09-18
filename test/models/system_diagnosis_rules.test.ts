@@ -37,7 +37,7 @@ function asRuleRunnerInput(
 
 /*
   insertImprobable waits for the diagnosis rules of the submission that answered the task, which
-  in the app is a RecordsAdded listener run by the event processor. No processor runs in a model
+  in the app is a FindingsAdded listener run by the event processor. No processor runs in a model
   test, so stand in for one: dispatch the event the route would have and mark that listener done.
 */
 async function asIfTheDiagnosisRulesHadRun(
@@ -49,7 +49,7 @@ async function asIfTheDiagnosisRulesHadRun(
   },
 ) {
   const { id: event_id } = await events.insert(db, {
-    type: 'RecordsAdded',
+    type: 'FindingsAdded',
     data: { patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records: [], task_completed_ids },
   })
   const listener = await db.selectFrom('event_listeners')
@@ -119,26 +119,6 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         'value': {
           'name': 'Possible diagnosis (contextual qualifier)',
         },
-        'destination_relations': [
-          {
-            'root_snomed_concept_name': 'Measurement finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Systolic blood pressure',
-            'specific_snomed_concept_category': 'observable entity',
-            'existence': 'Yes',
-            'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
-            'relation_name': 'Evidence of',
-          },
-          {
-            'root_snomed_concept_name': 'Clinical finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Insect bite - wound',
-            'specific_snomed_concept_category': 'disorder',
-            'existence': 'Yes',
-            'value': null,
-            'relation_name': 'Evidence of',
-          },
-        ],
         'type': 'evaluation',
         'employment_id': null,
         'by_system': true,
@@ -152,6 +132,30 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         },
         'modifiers': [],
       })
+
+      // The evidence comes back in no particular order, so sort it
+      const sorted_evidence = [...evaluation.destination_relations]
+        .sort((a, b) => a.specific_snomed_concept_name.localeCompare(b.specific_snomed_concept_name))
+      assertMatches(sorted_evidence, [
+        {
+          'root_snomed_concept_name': 'Clinical finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Insect bite - wound',
+          'specific_snomed_concept_category': 'disorder',
+          'existence': 'Yes',
+          'value': null,
+          'relation_name': 'Evidence of',
+        },
+        {
+          'root_snomed_concept_name': 'Measurement finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Systolic blood pressure',
+          'specific_snomed_concept_category': 'observable entity',
+          'existence': 'Yes',
+          'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
+          'relation_name': 'Evidence of',
+        },
+      ])
     },
   )
 
@@ -227,26 +231,6 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         'value': {
           'name': 'Possible diagnosis (contextual qualifier)',
         },
-        'destination_relations': [
-          {
-            'root_snomed_concept_name': 'Measurement finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Systolic blood pressure',
-            'specific_snomed_concept_category': 'observable entity',
-            'existence': 'Yes',
-            'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
-            'relation_name': 'Evidence of',
-          },
-          {
-            'root_snomed_concept_name': 'Clinical finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Fly bite',
-            'specific_snomed_concept_category': 'disorder',
-            'existence': 'Yes',
-            'value': null,
-            'relation_name': 'Evidence of',
-          },
-        ],
         'type': 'evaluation',
         'employment_id': null,
         'by_system': true,
@@ -260,6 +244,30 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         },
         'modifiers': [],
       })
+
+      // The evidence comes back in no particular order, so sort it
+      const sorted_evidence = [...evaluation.destination_relations]
+        .sort((a, b) => a.specific_snomed_concept_name.localeCompare(b.specific_snomed_concept_name))
+      assertMatches(sorted_evidence, [
+        {
+          'root_snomed_concept_name': 'Clinical finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Fly bite',
+          'specific_snomed_concept_category': 'disorder',
+          'existence': 'Yes',
+          'value': null,
+          'relation_name': 'Evidence of',
+        },
+        {
+          'root_snomed_concept_name': 'Measurement finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Systolic blood pressure',
+          'specific_snomed_concept_category': 'observable entity',
+          'existence': 'Yes',
+          'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
+          'relation_name': 'Evidence of',
+        },
+      ])
     },
   )
 

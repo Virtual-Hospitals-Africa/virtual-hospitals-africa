@@ -483,12 +483,12 @@ export const additional_tasks = {
   */
   async markTaskDone(
     trx: TrxOrDbOrQueryCreator,
-    { patient_id, patient_encounter_id, patient_age_determination, procedure_id, task_id }: {
+    { patient_id, patient_encounter_id, patient_age_determination, procedure_id, task_description }: {
       patient_id: string
       patient_encounter_id: string
       patient_age_determination: AgeDetermination
       procedure_id: string
-      task_id: string
+      task_description: string
     },
   ): Promise<{ evaluation_ids: string[]; message: string }> {
     const evaluations = await trx.selectFrom('patient_record_tasks')
@@ -505,17 +505,18 @@ export const additional_tasks = {
         (join) => join.onRef('already_done.destination_id', '=', 'patient_record_tasks.id'),
       )
       .where('patient_records.patient_encounter_id', '=', patient_encounter_id)
-      .where('patient_record_tasks.task_id', '=', task_id)
+      .where('patient_record_tasks.task_id', '=', task_description)
       .select(['patient_record_tasks.id', 'already_done.destination_id as already_done'])
       .execute()
+    
     assert(
       evaluations.length,
-      `No evaluation for task "${task_id}" in encounter ${patient_encounter_id}. The task pipeline for the record it is due to may not have run yet`,
+      `No evaluation for task "${task_description}" in encounter ${patient_encounter_id}. The task pipeline for the record it is due to may not have run yet`,
     )
 
     const evaluation_ids = compactMap(evaluations, (evaluation) => !evaluation.already_done && evaluation.id)
     if (!evaluation_ids.length) {
-      return { evaluation_ids, message: `Task "${task_id}" was already marked done by procedure ${procedure_id}` }
+      return { evaluation_ids, message: `Task "${task_description}" was already marked done by procedure ${procedure_id}` }
     }
 
     await additional_tasks.procedureCompletedTasks(trx, {
@@ -525,7 +526,7 @@ export const additional_tasks = {
       procedure_id,
       evaluation_ids,
     })
-    return { evaluation_ids, message: `Marked task "${task_id}" done by procedure ${procedure_id}` }
+    return { evaluation_ids, message: `Marked task "${task_description}" done by procedure ${procedure_id}` }
   },
   /*
     Records the DONE relations tying a procedure to the task evaluations it completed, and
@@ -567,18 +568,6 @@ export const additional_tasks = {
     ).selectNoFrom([
       success_true,
     ]).executeTakeFirstOrThrow()
-
-    await pMap(evaluation_ids, (evaluation_id) =>
-      events.insert(trx, {
-        type: 'TaskDone',
-        data: {
-          patient_id,
-          patient_encounter_id,
-          patient_age_determination,
-          procedure_id,
-          task_completed_id: evaluation_id,
-        },
-      }))
   },
 }
 

@@ -898,7 +898,7 @@ describeParallel('triage/additional_tasks_and_investigations', () => {
 
       /*
         This submission answered "Check for Anaphylaxis" with a mix of Yes and No, so it both
-        satisfies the probable rule and completes the task. The TaskDone and RecordsAdded that
+        satisfies the probable rule and completes the task. The TaskDone and FindingsAdded that
         come of it are processed concurrently, so insertImprobable has to see the probable
         diagnosis however the two are interleaved, and leave the diagnosis alone.
       */

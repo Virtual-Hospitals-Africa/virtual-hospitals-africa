@@ -33,6 +33,7 @@ import matching from '../../util/matching.ts'
 /*
   The modifiers the finding modal offers for each finding, looked up by its specific concept
   the same way the warning signs search does for its results.
+  TODO: batch?
 */
 async function modifiersOf(
   trx: TrxOrDbOrQueryCreator,

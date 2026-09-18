@@ -108,7 +108,7 @@ function taskEvaluationIds(patient_encounter_id: string, task_id: string) {
     .then((rows) => rows.map(({ id }) => id))
 }
 
-function eventsOfType(patient_encounter_id: string, type: 'TaskDone' | 'RecordsAdded') {
+function eventsOfType(patient_encounter_id: string, type:  'FindingsAdded') {
   return db.selectFrom('events')
     .select('data')
     .where('type', '=', type)
@@ -164,7 +164,7 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       },
     )
 
-    itParallel('marks the task done, dispatching TaskDone and RecordsAdded, and downgrades the possible diagnosis', async () => {
+    itParallel('marks the task done, dispatching TaskDone and FindingsAdded, and downgrades the possible diagnosis', async () => {
       const setup = await setupWithPossibleAnaphylaxis()
       const { patient_id, patient_encounter_id, triageRoute } = setup
       await events.allProcessedForEncounter(db, { patient_encounter_id })
@@ -194,14 +194,14 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
       }
 
       // The warning signs page recorded its own findings under this procedure, so find ours by its records
-      const records_added = await eventsOfType(patient_encounter_id, 'RecordsAdded')
+      const records_added = await eventsOfType(patient_encounter_id, 'FindingsAdded')
       const ours = records_added.find((event) => {
         const data = event.data as { procedure_id?: string; records: { id: string; existence: string }[] }
         return data.procedure_id === procedure_id &&
           data.records.length === records.length &&
           records.every((record) => data.records.some((added) => added.id === record.id && added.existence === 'No'))
       })
-      assert(ours, 'no RecordsAdded carrying exactly the negative findings under this procedure')
+      assert(ours, 'no FindingsAdded carrying exactly the negative findings under this procedure')
 
       await events.allProcessedForEncounter(db, { patient_encounter_id })
 
@@ -209,11 +209,19 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
         assertEquals((await doneRelations(procedure_id, evaluation_id)).length, 1)
       }
 
-      const improbable = await patient_evaluations.findOne(db, {
+      /*
+        The task had been materialised as one evaluation per possible diagnosis it was due to,
+        each answered by its own TaskDone, so the submission can rule the diagnosis out more than
+        once. What matters is that it was ruled out.
+      */
+      const improbable = await patient_evaluations.findAll(db, {
         patient_id,
         s_expression: '(diagnosis (snomed_concept "Anaphylaxis" "disorder") improbable)',
       })
-      assertMatches(improbable, { specific_snomed_concept_name: 'Anaphylaxis' })
+      assert(improbable.length, 'the possible anaphylaxis diagnosis was not downgraded to improbable')
+      for (const diagnosis of improbable) {
+        assertMatches(diagnosis, { specific_snomed_concept_name: 'Anaphylaxis' })
+      }
     })
 
     itParallel('does not record a finding again when it already has a record in this encounter', async () => {
