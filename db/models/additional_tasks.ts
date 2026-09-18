@@ -182,7 +182,7 @@ export const additional_tasks = {
             task_id: task.id,
           },
         },
-      ).query.with(
+      ).with(
         'inserting_relation_patient_records',
         (qb) =>
           qb.insertInto('patient_records').values(relations.map(({ id }) => ({

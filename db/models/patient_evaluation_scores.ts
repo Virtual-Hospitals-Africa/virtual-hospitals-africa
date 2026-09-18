@@ -51,7 +51,7 @@ export const patient_evaluation_scores = base({
     return patient_evaluations.insertOneNestedQuery(trx, {
       evaluation_id,
       ...to_insert,
-    }).query.with(
+    }).with(
       'inserting_patient_evaluation_score',
       (qb) =>
         qb.insertInto('patient_evaluation_scores')

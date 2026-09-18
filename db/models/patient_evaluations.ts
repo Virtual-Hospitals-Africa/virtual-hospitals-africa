@@ -1,6 +1,6 @@
-import { type QueryCreator, sql } from 'kysely'
+import { sql } from 'kysely'
 import { AgeDetermination, IdSelection, RenderedEvaluationRelativeToHealthWorker, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalBoolean, literalString, success_true } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { patient_records, PatientRecordsSearch } from './patient_records.ts'
@@ -13,7 +13,6 @@ import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 import { asResult } from '../../util/asResult.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 import { withTaggingOfInsertedRecords } from './due_to.ts'
-import { asExistence } from '../../shared/existence.ts'
 
 export type PatientEvaluationInsert =
   & {
@@ -52,60 +51,11 @@ function sExpressionAsEvaluationNode(
   return diagnosisToEvaluation(diagnosis_result.value)
 }
 
-export type EvaluationInsertQuery = ReturnType<typeof insertOneNestedBase>
-
-export function insertOneNestedBase(
-  trx: TrxOrDbOrQueryCreator,
-  {
-    evaluation_id = generateUUID(),
-    patient_id,
-    patient_encounter_id,
-    evaluates_record_id,
-    evaluation,
-    employment_id,
-    by_system,
-    value,
-    patient_age_determination,
-  }: PatientEvaluationInsert,
-) {
-  const evaluation_node = isString(evaluation) ? sExpressionAsEvaluationNode(evaluation) : evaluation
-  assertHasProperty(evaluation_node, 'root_snomed_concept')
-  assertHasProperty(evaluation_node, 'specific_snomed_concept')
-
-  return patient_records.baseInsert(
-    trx,
-    {
-      patient_id,
-      patient_encounter_id,
-      record_id: evaluation_id,
-      ...evaluation_node,
-    },
-  ).with(
-    'inserting_evaluation',
-    (qb) =>
-      qb.insertInto('patient_evaluations')
-        .values({
-          id: evaluation_id,
-          employment_id,
-          evaluates_record_id,
-          by_system: by_system || false,
-        }).returning('id'),
-  )
-    .with(
-      'inserting_task',
-      (qb) =>
-        value
-          ? qb.insertInto('patient_record_tasks')
-            .values({
-              id: evaluation_id,
-              task_id: value.task_id,
-            })
-          : blankSelection(qb),
-    )
-    .with('inserting_patient_events', qb => blankSelection(qb))
-    .with('inserting_patient_measurements', qb => blankSelection(qb))
-}
-
+/*
+  The insert of the evaluation, tagged with the due_tos it satisfies when
+  patient_age_determination is given. An evaluation has no attributes, events or
+  measurements, so those DueToInputCtes are empty selections of the right shape.
+*/
 export function insertOneNestedQuery(
   trx: TrxOrDbOrQueryCreator,
   {
@@ -154,8 +104,13 @@ export function insertOneNestedQuery(
             })
           : blankSelection(qb),
     )
+    .with('inserting_attribute_records', (qb) => qb.selectFrom('patient_records').selectAll().where(literalBoolean(false)))
+    .with('inserting_attribute_qualifier_links', (qb) => qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)))
+    .with('inserting_patient_events', (qb) => qb.selectFrom('patient_events').selectAll().where(literalBoolean(false)))
+    .with('inserting_patient_measurements', (qb) => qb.selectFrom('patient_measurements').selectAll().where(literalBoolean(false)))
 
-    return withTaggingOfInsertedRecords(query, trx)
+  if (!patient_age_determination) return query
+  return withTaggingOfInsertedRecords(query, { patient_age_determination })
 }
 
 export function insertOneNested(

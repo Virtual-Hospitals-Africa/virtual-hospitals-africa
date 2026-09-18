@@ -5,7 +5,7 @@ import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient
 import { sql } from 'kysely'
 import { base, QueryResult } from './_base.ts'
 
-import { maybeSnomedConceptBase, satisfyingSExpression, snomedConceptBase } from './s_expression.ts'
+import { maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
 import { Priority, PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
@@ -99,8 +99,7 @@ function insertedRecord(
   }
 }
 
-export type FindingsInsertQuery = ReturnType<typeof insertSansDueTo>
-
+// The insert of the findings and everything hanging off them, before due_to tagging
 function insertSansDueTo(
   trx: TrxOrDbOrQueryCreator,
   {
@@ -108,7 +107,6 @@ function insertSansDueTo(
     patient_encounter_id,
     employment_id,
     patient_encounter_employee_id,
-    patient_age_determination,
     procedure,
     findings,
     measurements = [],
@@ -310,7 +308,7 @@ function insertSansDueTo(
     }
   }
 
-  return baseInsertMany(trx, records_to_insert)
+  const query = baseInsertMany(trx, records_to_insert)
     .with(
       'maybe_inserting_procedure_record',
       (qb) =>
@@ -384,11 +382,12 @@ function insertSansDueTo(
         ),
     )
     /*
-      The CTEs below return what they insert (or an empty selection of the same shape) so the
-      due_to tagging further down can see the new rows. See the shadow CTEs before inserting_due_tos.
+      The CTEs below return what they insert, or an empty selection of the same shape, so the
+      due_to tagging can see the new rows: sibling CTEs share one snapshot, so RETURNING output is
+      the only view of them. Their names are the DueToInputCtes contract in due_to.ts.
     */
     .with(
-      'inserting_measurements',
+      'inserting_patient_measurements',
       (qb) =>
         measurements_to_insert.length
           ? qb.insertInto('patient_measurements').values(
@@ -413,7 +412,7 @@ function insertSansDueTo(
           ? qb.insertInto('patient_record_qualifiers').values(attribute_qualifiers).returningAll()
           : qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)),
     ).with(
-      'inserting_events',
+      'inserting_patient_events',
       (qb) =>
         event_values.length
           ? qb.insertInto('patient_events').values(event_values).returningAll()
@@ -453,6 +452,8 @@ function insertSansDueTo(
       'inserting_scores',
       (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
     )
+
+  return { query, findings_to_insert, measurements_to_insert }
 }
 
 export const patient_findings = base({
@@ -547,10 +548,9 @@ export const patient_findings = base({
     trx: TrxOrDbOrQueryCreator,
     findings_insert: FindingsInsert,
   ) {
-    const query = insertSansDueTo(trx, findings_insert)
-    const qb = insertSansDueTo()
+    const { query, findings_to_insert, measurements_to_insert } = insertSansDueTo(trx, findings_insert)
 
-    return withTaggingOfInsertedRecords(query, trx)
+    return withTaggingOfInsertedRecords(query, { patient_age_determination: findings_insert.patient_age_determination })
       .selectFrom('inserting_records')
       .innerJoin('procedure_record', (join) => join.onTrue())
       .groupBy('procedure_record.id')

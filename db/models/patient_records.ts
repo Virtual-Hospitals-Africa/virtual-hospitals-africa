@@ -13,7 +13,6 @@ import { ExpressionBuilder, RawBuilder, sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import isString from '../../util/isString.ts'
 import { DB } from '../../db.d.ts'
-import type { InsertedRecordCtes } from './due_to.ts'
 
 export type PatientRecordsSearch = {
   patient_id?: string | IdSelection
@@ -39,7 +38,7 @@ type RecordInsert = {
 
 export function baseInsert(
   trx: TrxOrDbOrQueryCreator,
-  { patient_id, patient_encounter_id, record_id = generateUUID(), root_snomed_concept, specific_snomed_concept, value_snomed_concept, qualifiers, attributes }:
+  { patient_id, patient_encounter_id, record_id = generateUUID(), root_snomed_concept, specific_snomed_concept, value_snomed_concept, qualifiers }:
     RecordInsert,
 ) {
   return baseInsertMany(trx, [{

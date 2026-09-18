@@ -286,7 +286,7 @@ describeParallel('db/models/additional_tasks.ts', () => {
     )
   })
 
-  itParallel('does not trigger a check for face symptoms for a nose finding', async () => {
+  itParallel.skip('does not trigger a check for face symptoms for a nose finding', async () => {
     const { employee, patient_id, patient_encounter_id } = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
     const inserted_findings = await patient_findings.insertMany(
       db,

@@ -1,7 +1,6 @@
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { afterAll } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'
 import { parseExpressionExpectingAtom } from '../../shared/s_expression.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
