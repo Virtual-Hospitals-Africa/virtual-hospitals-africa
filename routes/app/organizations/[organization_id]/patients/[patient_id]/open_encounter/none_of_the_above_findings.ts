@@ -98,7 +98,7 @@ export const handler = postHandler(
       patient_encounter_id,
       patient_age_determination,
       procedure_id,
-      task_id,
+      task_description,
     })
 
     /*

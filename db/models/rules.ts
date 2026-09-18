@@ -137,9 +137,9 @@ export const rules = base({
     { patient_id, patient_encounter_id, patient_age_determination, /*procedure_id, */ records }: NewRecordsToConsiderWithSatisfyingDueToIds,
     type?: RuleType,
   ): Promise<string | ApplicableRule[]> {
-    const positive_records: string[] = records
-      .filter((r) => r.existence === 'Yes')
-      .map((r) => r.id)
+    const positive_records: string[] = compactMap(records, r => {
+      if (r.existence === 'Yes') return r.id
+    })
 
     if (arrayIsEmpty(positive_records)) return 'Skipped: no positive findings'
 

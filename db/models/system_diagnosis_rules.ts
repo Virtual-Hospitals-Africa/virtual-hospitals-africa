@@ -329,6 +329,16 @@ export const system_diagnosis_rules = {
   ) {
     const rules_result = await rules.getApplicableBasedOnNewRecords(trx, input, 'system_diagnosis_rule')
     const inserted_diagnoses = await system_diagnosis_rules.insertPositiveDiagnoses(trx, input, rules_result)
+    const improbable_diagnoses = await system_diagnosis_rules.insertImprobable(trx, input)
+
+    return compact([
+      inserted_diagnoses.length && `Inserted ${inserted_diagnoses.length} diagnosis(es): ${inserted_diagnoses.map((d) => d.record_id).join(', ')}`,
+      improbable_diagnoses.length &&
+      `Inserted ${improbable_diagnoses.length} improbable diagnosis(es): ${improbable_diagnoses.map((d) => d.record_id).join(', ')}`,
+    ]).join('\n') || (
+      isString(rules_result) ? rules_result : 'No new system diagnoses to insert'
+    )
+
 
     if (!inserted_diagnoses.length) {
       return isString(rules_result) ? rules_result : 'No new system diagnoses to insert'
