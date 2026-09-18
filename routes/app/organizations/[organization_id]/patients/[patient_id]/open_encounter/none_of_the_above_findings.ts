@@ -94,7 +94,7 @@ export const handler = postHandler(
     const procedure_id = procedure.id
 
     // Nothing here depends on the other: the task is answered by this procedure either way
-    await promiseProps({
+    const { marked } = await promiseProps({
       inserted: to_insert.length ? insertNegatives() : Promise.resolve(),
       marked: additional_tasks.markTaskDone(trx, {
         patient_id,
@@ -105,7 +105,12 @@ export const handler = postHandler(
       }),
     })
 
-    if (to_insert.length) {
+    /*
+      Carries the evaluations just marked done, as the TaskDone of each waits for this event's
+      diagnosis rules before ruling the possible diagnosis out. Dispatched whenever there is
+      either kind of news, so no TaskDone is left waiting on an event that was never sent.
+    */
+    if (to_insert.length || marked.evaluation_ids.length) {
       await events.insert(trx, {
         type: 'RecordsAdded',
         data: {
@@ -114,7 +119,7 @@ export const handler = postHandler(
           patient_age_determination,
           procedure_id,
           records: to_insert.map(({ id }) => ({ id, existence: 'No' as const })),
-          task_completed_id: task_id,
+          task_completed_ids: marked.evaluation_ids,
         },
       })
     }

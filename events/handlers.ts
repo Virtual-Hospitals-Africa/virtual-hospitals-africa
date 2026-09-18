@@ -164,7 +164,12 @@ export const EVENTS = {
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
-      task_completed_id: z.string().uuid().optional(),
+      /*
+        The task evaluations the procedure that added these records marked done, so that the
+        TaskDone of each can wait for this event's diagnosis rules before ruling a possible
+        diagnosis out. Set by whoever dispatches this alongside marking tasks done.
+      */
+      task_completed_ids: z.string().uuid().array().optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, payload) {

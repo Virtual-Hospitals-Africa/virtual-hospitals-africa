@@ -139,6 +139,8 @@ export const handler = postHandler(
           patient_id,
           patient_encounter_id,
           patient_age_determination,
+          // The same evaluations procedureCompletedTasks marks done above, whose TaskDone waits on this
+          task_completed_ids: form_values.evaluation_ids,
           ...inserted,
         },
       })

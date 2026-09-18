@@ -515,16 +515,24 @@ export const events = {
             .selectAll('event_listeners')
             .orderBy('event_listeners.created_at', 'desc')
 
-            // Taken before the read, so a notification arriving during it still counts
-            event_listener = await modifyQuery(query).executeTakeFirstOrThrow()
+          event_listener = await modifyQuery(query).executeTakeFirstOrThrow()
+          throwIfErrored(event_listener)
+          if (event_listener.processed_at) return
 
-            if (event_listener.error_message) {
-              throw new Error(`[${event_listener.listener_name}] ${event_listener.error_message}`)
-            }
-            if (event_listener.processed_at) return
+          /*
+            Which listener to match notifications against was only known once the read above
+            returned, so a notification arriving during it was dropped by the callback. Reading
+            that row once more closes the window: the listener commits before it notifies, so
+            anything missed is already visible here.
+          */
+          const read_again = await trx.selectFrom('event_listeners')
+            .where('event_listeners.id', '=', event_listener.id)
+            .selectAll('event_listeners')
+            .executeTakeFirstOrThrow()
+          throwIfErrored(read_again)
+          if (read_again.processed_at) return
 
-            await processed_a_matching_listener.promise
-          
+          await processed_a_matching_listener.promise
         })(),
       ])
     } finally {
@@ -532,6 +540,11 @@ export const events = {
       timer.cancel()
     }
   },
+}
+
+function throwIfErrored(event_listener: Pick<ReturnedEventListener, 'listener_name' | 'error_message'>) {
+  if (!event_listener.error_message) return
+  throw new Error(`[${event_listener.listener_name}] ${event_listener.error_message}`)
 }
 
 type ReturnedEventListener = {

@@ -490,7 +490,7 @@ export const additional_tasks = {
       procedure_id: string
       task_id: string
     },
-  ): Promise<string> {
+  ): Promise<{ evaluation_ids: string[]; message: string }> {
     const evaluations = await trx.selectFrom('patient_record_tasks')
       .innerJoin('patient_records', 'patient_records.id', 'patient_record_tasks.id')
       .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
@@ -514,7 +514,9 @@ export const additional_tasks = {
     )
 
     const evaluation_ids = compactMap(evaluations, (evaluation) => !evaluation.already_done && evaluation.id)
-    if (!evaluation_ids.length) return `Task "${task_id}" was already marked done by procedure ${procedure_id}`
+    if (!evaluation_ids.length) {
+      return { evaluation_ids, message: `Task "${task_id}" was already marked done by procedure ${procedure_id}` }
+    }
 
     await additional_tasks.procedureCompletedTasks(trx, {
       patient_id,
@@ -523,7 +525,7 @@ export const additional_tasks = {
       procedure_id,
       evaluation_ids,
     })
-    return `Marked task "${task_id}" done by procedure ${procedure_id}`
+    return { evaluation_ids, message: `Marked task "${task_id}" done by procedure ${procedure_id}` }
   },
   /*
     Records the DONE relations tying a procedure to the task evaluations it completed, and

@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { sql } from 'kysely'
+import { sql, SqlBool } from 'kysely'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression, EXPRESSION_BUILDERS } from './s_expression.ts'
 import { AgeDetermination, ApplicableRule, ApplicableRuleEffectSystemSystemDiagnosisRule, RecordValueTask, RuleRunnerInput, TrxOrDb } from '../../types.ts'
@@ -235,9 +235,9 @@ export const system_diagnosis_rules = {
     Dispatched from TaskDone, which the event processor runs concurrently with the RecordsAdded
     of the same submission, so first wait for that submission's diagnosis rules to have run.
     Without the wait a task answered with a mix of Yes and No could have its diagnosis marked
-    improbable before the rules got the chance to make it probable. A submission that recorded
-    nothing has no such RecordsAdded to wait for, and processedListenerForEncounter returns
-    straight away.
+    improbable before the rules got the chance to make it probable. Whoever marks a task done
+    names its evaluation on that RecordsAdded, which is how the two are paired up here; without
+    a match this throws rather than rule a diagnosis out on a half-read submission.
 
     The task being done is what the event asserts, so unlike the positive pass this reads the
     task evaluation directly rather than looking for the DONE relation tying it to a procedure.
@@ -258,10 +258,11 @@ export const system_diagnosis_rules = {
       patient_encounter_id: input.patient_encounter_id,
       event_type: 'RecordsAdded',
       listener_name: 'insertSystemDiagnosesIfNotAlreadyIdentified',
-      modifyQuery: (query) => 
-        query
-          .where(sql<string>`events.data->>'procedure_id'`, '=', input.procedure_id)
-          .where(sql<string>`events.data->>'task_completed_id'`, '=', input.task_completed_id),
+      // The submission that answered this task named it among the tasks it marked done
+      modifyQuery: (query) =>
+        query.where(
+          sql<SqlBool>`events.data->'task_completed_ids' @> to_jsonb(${input.task_completed_id}::text)`,
+        ),
     })
 
     const possible_diagnoses_this_task_was_due_to = await trx

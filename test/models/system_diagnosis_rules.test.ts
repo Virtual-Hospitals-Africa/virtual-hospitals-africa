@@ -41,11 +41,16 @@ function asRuleRunnerInput(
   test, so stand in for one: dispatch the event the route would have and mark that listener done.
 */
 async function asIfTheDiagnosisRulesHadRun(
-  { patient_id, patient_encounter_id, procedure_id }: { patient_id: string; patient_encounter_id: string; procedure_id: string },
+  { patient_id, patient_encounter_id, procedure_id, task_completed_ids }: {
+    patient_id: string
+    patient_encounter_id: string
+    procedure_id: string
+    task_completed_ids: string[]
+  },
 ) {
   const { id: event_id } = await events.insert(db, {
     type: 'RecordsAdded',
-    data: { patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records: [] },
+    data: { patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records: [], task_completed_ids },
   })
   const listener = await db.selectFrom('event_listeners')
     .where('event_id', '=', event_id)
@@ -662,6 +667,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         patient_id,
         patient_encounter_id,
         procedure_id: inserted_additional_task_findings.procedure_id,
+        task_completed_ids: [check_for_anaphylaxis_evaluation_id],
       })
 
       const improbable_diagnoses_result = await system_diagnosis_rules.insertImprobable(
