@@ -17,6 +17,7 @@ import { additional_tasks } from '../../db/models/additional_tasks.ts'
 import { patient_encounters } from '../../db/models/patient_encounters.ts'
 import assertLength from '../../util/assertLength.ts'
 import { check_for } from '../../db/models/check_for.ts'
+import { events } from '../../db/models/events.ts'
 import { exists } from '../../util/exists.ts'
 
 /*
@@ -32,6 +33,26 @@ function asRuleRunnerInput(
   },
 ): RuleRunnerInput & { procedure_id?: string } {
   return { listener_id: 'test', listener_name: 'test', patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records }
+}
+
+/*
+  insertImprobable waits for the diagnosis rules of the submission that answered the task, which
+  in the app is a RecordsAdded listener run by the event processor. No processor runs in a model
+  test, so stand in for one: dispatch the event the route would have and mark that listener done.
+*/
+async function asIfTheDiagnosisRulesHadRun(
+  { patient_id, patient_encounter_id, procedure_id }: { patient_id: string; patient_encounter_id: string; procedure_id: string },
+) {
+  const { id: event_id } = await events.insert(db, {
+    type: 'RecordsAdded',
+    data: { patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records: [] },
+  })
+  const listener = await db.selectFrom('event_listeners')
+    .where('event_id', '=', event_id)
+    .where('listener_name', '=', 'insertSystemDiagnosesIfNotAlreadyIdentified')
+    .select('id')
+    .executeTakeFirstOrThrow()
+  await events.processedListener(db, { event_listener_id: listener.id, success_message: 'stood in for the event processor' })
 }
 
 // The evaluations materialised for a task, which insertImprobable is told about one at a time
@@ -636,6 +657,12 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
 
       const [check_for_anaphylaxis_evaluation_id] = await taskEvaluationIds(patient_encounter_id, 'Check for Anaphylaxis')
       assert(check_for_anaphylaxis_evaluation_id)
+
+      await asIfTheDiagnosisRulesHadRun({
+        patient_id,
+        patient_encounter_id,
+        procedure_id: inserted_additional_task_findings.procedure_id,
+      })
 
       const improbable_diagnoses_result = await system_diagnosis_rules.insertImprobable(
         db,

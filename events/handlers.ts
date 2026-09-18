@@ -164,6 +164,7 @@ export const EVENTS = {
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
+      task_completed_id: z.string().uuid().optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, payload) {

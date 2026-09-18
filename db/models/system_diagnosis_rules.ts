@@ -258,7 +258,10 @@ export const system_diagnosis_rules = {
       patient_encounter_id: input.patient_encounter_id,
       event_type: 'RecordsAdded',
       listener_name: 'insertSystemDiagnosesIfNotAlreadyIdentified',
-      modifyQuery: (query) => query.where(sql<string>`events.data->>'procedure_id'`, '=', input.procedure_id),
+      modifyQuery: (query) => 
+        query
+          .where(sql<string>`events.data->>'procedure_id'`, '=', input.procedure_id)
+          .where(sql<string>`events.data->>'task_completed_id'`, '=', input.task_completed_id),
     })
 
     const possible_diagnoses_this_task_was_due_to = await trx

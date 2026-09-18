@@ -118,20 +118,20 @@ export const initializeAllProcessedPubSub = once(
     // TODO stop accepting new subscriptions after shutdown
     const instance = {
       by_event_listener_encounter: {
-        subscribe(patient_encounter_id: string, callback: () => void) {
+        subscribe(patient_encounter_id: string, callback: (listener: ListenerResult) => void) {
           assert(isUUID(patient_encounter_id))
-          if (!all_settled_for_encounter_subscribers.has(patient_encounter_id)) {
-            all_settled_for_encounter_subscribers.set(patient_encounter_id, new Set())
+          if (!event_listener_by_patient_encounter_id_subscribers.has(patient_encounter_id)) {
+            event_listener_by_patient_encounter_id_subscribers.set(patient_encounter_id, new Set())
           }
-          const subscriptions = exists(all_settled_for_encounter_subscribers.get(patient_encounter_id))
+          const subscriptions = exists(event_listener_by_patient_encounter_id_subscribers.get(patient_encounter_id))
           subscriptions.add(callback)
         },
-        unsubscribe(patient_encounter_id: string, callback: () => void) {
+        unsubscribe(patient_encounter_id: string, callback: (listener: ListenerResult) => void) {
           assert(isUUID(patient_encounter_id))
-          const subscriptions = all_settled_for_encounter_subscribers.get(patient_encounter_id)
+          const subscriptions = event_listener_by_patient_encounter_id_subscribers.get(patient_encounter_id)
           subscriptions?.delete(callback)
           if (!subscriptions?.size) {
-            all_settled_for_encounter_subscribers.delete(patient_encounter_id)
+            event_listener_by_patient_encounter_id_subscribers.delete(patient_encounter_id)
           }
         },
       },
@@ -468,7 +468,14 @@ export const events = {
     }
   },
   /**
-   * Waits until all events for a given patient encounter have been fully processed.
+   * Waits until one listener of one event in an encounter has been processed, the event picked out
+   * by `modifyQuery`. Throws if there is no such listener, if it errored, or if it has not been
+   * processed within `timeout_ms`.
+   *
+   * Notifications only say which (event_type, listener_name) was processed, and several events in
+   * an encounter can carry the same pair, so each notification re-reads the listener rather than
+   * being taken as the answer. Nothing is missed in the window before the first read either, as
+   * that read is what decides whether to keep waiting at all.
    */
   async processedListenerForEncounter<EventName extends keyof typeof EVENTS>(
     trx: TrxOrDbOrQueryCreator,
@@ -482,45 +489,42 @@ export const events = {
   ): Promise<void> {
     const pub_sub = await initializeAllProcessedPubSub()
     const timer = timeout(timeout_ms)
-    let existing_event_listener: ReturnedEventListener
 
-    // Subscribe BEFORE querying to avoid missing notifications
-    const settled = Promise.withResolvers<void>()
+    const processed_a_matching_listener = Promise.withResolvers<void>()
+    let event_listener: ReturnedEventListener
     function callback(result: ListenerResult) {
       if (result.event_type !== event_type) return
       if (result.listener_name !== listener_name) return
-      if (result.listener_id !== existing_event_listener?.id) return
-      if (result.success) return settled.resolve()
-      return settled.reject(result.error)
+      if (result.listener_id !== event_listener?.id) return
+      if (result.success) return processed_a_matching_listener.resolve()
+      return processed_a_matching_listener.reject(result.error)
     }
+    // Subscribe BEFORE querying to avoid missing notifications
     pub_sub.by_event_listener_encounter.subscribe(patient_encounter_id, callback)
 
     try {
       await Promise.race([
-        settled.promise,
         timer,
-        // Getting existing
         (async () => {
           const query: EventListenerQuery = trx
             .selectFrom('events')
             .innerJoin('event_listeners', 'event_listeners.event_id', 'events.id')
             .where('events.patient_encounter_id', '=', patient_encounter_id)
-            .where('events.all_processed_at', 'is', null)
             .where('events.type', '=', event_type)
             .where('event_listeners.listener_name', '=', listener_name as string)
             .selectAll('event_listeners')
             .orderBy('event_listeners.created_at', 'desc')
 
-          existing_event_listener = await modifyQuery(query).executeTakeFirstOrThrow()
+            // Taken before the read, so a notification arriving during it still counts
+            event_listener = await modifyQuery(query).executeTakeFirstOrThrow()
 
-          if (existing_event_listener.error_message) {
-            throw new Error(`[${existing_event_listener.listener_name}] ${existing_event_listener.error_message}`)
-          }
-          if (existing_event_listener.processed_at) {
-            return
-          }
+            if (event_listener.error_message) {
+              throw new Error(`[${event_listener.listener_name}] ${event_listener.error_message}`)
+            }
+            if (event_listener.processed_at) return
 
-          await settled.promise
+            await processed_a_matching_listener.promise
+          
         })(),
       ])
     } finally {

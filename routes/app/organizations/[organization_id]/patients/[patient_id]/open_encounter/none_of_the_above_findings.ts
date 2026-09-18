@@ -114,6 +114,7 @@ export const handler = postHandler(
           patient_age_determination,
           procedure_id,
           records: to_insert.map(({ id }) => ({ id, existence: 'No' as const })),
+          task_completed_id: task_id,
         },
       })
     }
