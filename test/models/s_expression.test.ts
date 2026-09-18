@@ -44,7 +44,7 @@ async function insertFindingForTest(
     patient_encounter_id,
     record_id: finding_id,
     ...finding_node,
-  }).query.with(
+  }).with(
     'inserting_findings',
     (qb) =>
       qb.insertInto('patient_findings').values({

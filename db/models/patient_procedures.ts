@@ -79,7 +79,7 @@ export function insertOneQuery(
       value_snomed_concept: null,
       ...procedure,
     },
-  ).query.with(
+  ).with(
     'inserting_procedure',
     (qb) =>
       qb.insertInto('patient_procedures')

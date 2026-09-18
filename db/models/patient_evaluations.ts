@@ -52,12 +52,60 @@ function sExpressionAsEvaluationNode(
   return diagnosisToEvaluation(diagnosis_result.value)
 }
 
-/*
-  Returns the query alongside `tag`, which adds the due_to tagging of the evaluation to a query
-  built on it. Tagging must come after every other CTE that writes patient records (see
-  withTaggingOfInsertedRecords), so callers that add their own CTEs apply it last themselves.
-  It is a no-op unless patient_age_determination was given.
-*/
+export type EvaluationInsertQuery = ReturnType<typeof insertOneNestedBase>
+
+export function insertOneNestedBase(
+  trx: TrxOrDbOrQueryCreator,
+  {
+    evaluation_id = generateUUID(),
+    patient_id,
+    patient_encounter_id,
+    evaluates_record_id,
+    evaluation,
+    employment_id,
+    by_system,
+    value,
+    patient_age_determination,
+  }: PatientEvaluationInsert,
+) {
+  const evaluation_node = isString(evaluation) ? sExpressionAsEvaluationNode(evaluation) : evaluation
+  assertHasProperty(evaluation_node, 'root_snomed_concept')
+  assertHasProperty(evaluation_node, 'specific_snomed_concept')
+
+  return patient_records.baseInsert(
+    trx,
+    {
+      patient_id,
+      patient_encounter_id,
+      record_id: evaluation_id,
+      ...evaluation_node,
+    },
+  ).with(
+    'inserting_evaluation',
+    (qb) =>
+      qb.insertInto('patient_evaluations')
+        .values({
+          id: evaluation_id,
+          employment_id,
+          evaluates_record_id,
+          by_system: by_system || false,
+        }).returning('id'),
+  )
+    .with(
+      'inserting_task',
+      (qb) =>
+        value
+          ? qb.insertInto('patient_record_tasks')
+            .values({
+              id: evaluation_id,
+              task_id: value.task_id,
+            })
+          : blankSelection(qb),
+    )
+    .with('inserting_patient_events', qb => blankSelection(qb))
+    .with('inserting_patient_measurements', qb => blankSelection(qb))
+}
+
 export function insertOneNestedQuery(
   trx: TrxOrDbOrQueryCreator,
   {
@@ -76,7 +124,7 @@ export function insertOneNestedQuery(
   assertHasProperty(evaluation_node, 'root_snomed_concept')
   assertHasProperty(evaluation_node, 'specific_snomed_concept')
 
-  const { query: base_query, inserted } = patient_records.baseInsert(
+  const query = patient_records.baseInsert(
     trx,
     {
       patient_id,
@@ -84,20 +132,7 @@ export function insertOneNestedQuery(
       record_id: evaluation_id,
       ...evaluation_node,
     },
-  )
-
-  // deno-lint-ignore no-explicit-any
-  function tag<Q extends QueryCreator<any>>(query: Q): Q {
-    if (!patient_age_determination) return query
-    return withTaggingOfInsertedRecords(query, trx, {
-      patient_id,
-      patient_age_determination,
-      positive_record_ids: asExistence(evaluation_node.value_snomed_concept) === 'Yes' ? [evaluation_id] : [],
-      inserted,
-    })
-  }
-
-  const query = base_query.with(
+  ).with(
     'inserting_evaluation',
     (qb) =>
       qb.insertInto('patient_evaluations')
@@ -120,15 +155,14 @@ export function insertOneNestedQuery(
           : blankSelection(qb),
     )
 
-  return { query, tag }
+    return withTaggingOfInsertedRecords(query, trx)
 }
 
 export function insertOneNested(
   trx: TrxOrDbOrQueryCreator,
   to_insert: PatientEvaluationInsert,
 ) {
-  const { query, tag } = insertOneNestedQuery(trx, to_insert)
-  return tag(query)
+  return insertOneNestedQuery(trx, to_insert)
     .selectFrom('inserting_evaluation')
     .select([
       success_true,

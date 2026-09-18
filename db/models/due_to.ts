@@ -10,6 +10,8 @@ import { base, identity } from './_base.ts'
 import { assert } from 'std/assert/assert.ts'
 import { snomedConceptBase } from './s_expression.ts'
 import compact from '../../util/compact.ts'
+import { FindingsInsertQuery } from './patient_findings.ts'
+import { EvaluationInsertQuery } from './patient_evaluations.ts'
 
 type DueToMatchType = 'finding' | 'measurement' | 'finding_site' | 'event_time_comparison'
 
@@ -66,9 +68,10 @@ function snomedDefinedAttribute(
     .select('snomed_relationship.source_id')
 }
 
-export const due_to = base({
-  top_level_table: 'due_to',
-  baseQuery(trx: TrxOrDbOrQueryCreator, {
+
+export const due_to = {
+  baseQuery(query: FindingsInsertQuery | EvaluationInsertQuery | HypotheticalWithCTEs,
+  trx: TrxOrDbOrQueryCreator, {
     // patient_id,
     patient_age_determination,
     positive_records,
@@ -144,7 +147,6 @@ export const due_to = base({
       .$if(!!by_id, (qb) =>
         qb
           .innerJoin('patient_records', 'patient_records.specific_snomed_concept_id', 'specific_descendants.descendant_id')
-          .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
           .where('patient_records.id', ...idSelection(by_id!.ids))
           .whereRef('patient_records.root_snomed_concept_id', '=', 'due_to_findings.root_snomed_concept_id')
           .where((eb) =>
@@ -302,7 +304,6 @@ export const due_to = base({
       .$if(!!by_id, (qb) =>
         qb
           .innerJoin('patient_records', (join) => join.onTrue())
-          .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
           .where('patient_records.id', ...idSelection(by_id!.ids))
           .where((eb) =>
             eb.or([
@@ -366,7 +367,6 @@ export const due_to = base({
       .$if(!!by_id, (qb) =>
         qb
           .innerJoin('patient_records', 'patient_records.specific_snomed_concept_id', 'due_to_measurements.specific_snomed_concept_id')
-          .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
           .innerJoin('patient_measurements', 'patient_records.id', 'patient_measurements.id')
           .where('patient_records.id', ...idSelection(by_id!.ids))
           .where((eb) =>
@@ -410,7 +410,6 @@ export const due_to = base({
       .$if(!!by_id, (qb) =>
         qb
           .innerJoin('patient_records', 'patient_records.specific_snomed_concept_id', 'specific_descendants.descendant_id')
-          .innerJoin('patient_records_still_valid', 'patient_records_still_valid.id', 'patient_records.id')
           .where('patient_records.id', ...idSelection(by_id!.ids))
           // root is null when the subject was an active_condition
           .where((eb) =>
@@ -507,7 +506,8 @@ export const due_to = base({
       by_findings_query
         .unionAll(by_finding_sites_query)
         .unionAll(by_measurements_query)
-        .unionAll(by_event_time_comparisons_query)).selectFrom('matching_due_tos')
+        .unionAll(by_event_time_comparisons_query)
+    ).selectFrom('matching_due_tos')
       .selectAll('matching_due_tos')
   },
 
@@ -532,62 +532,14 @@ export const due_to = base({
       positive_records: { type: 'explicit', finding },
     })
   },
-})
-
-/*
-  Names of the CTEs in a statement that return the rows it inserts into each table, i.e. the
-  RETURNING output of its INSERTs. Every table the by_id due_to match reads for a new record.
-*/
-export type InsertedRecordCtes = {
-  patient_records: string[]
-  patient_record_qualifiers: string[]
-  patient_events?: string[]
-  patient_measurements?: string[]
 }
 
-/*
-  Tag records inserted earlier in `query`, in that same statement, with the due_tos they satisfy.
-
-  Every CTE in a statement shares one snapshot, so due_to.baseQuery cannot see the rows the
-  inserting CTEs write by reading the tables: it would find nothing. The only thing one CTE can
-  see of another is its RETURNING output. PostgreSQL resolves an unqualified table name against
-  the WITH list before the catalog, so the CTEs added here, named exactly like the tables the
-  due_to query reads, stand in for those tables for the rest of the statement, each built from
-  the RETURNING output of the inserting CTEs named in `inserted`. Every row the by_id match
-  needs for a new record (its qualifiers, attributes, events and measurement) is itself new in
-  the statement, so the shadows are complete.
-
-  Because the shadows hide the real tables, PostgreSQL will refuse a later INSERT into a table
-  of the same name, so this must come after every other CTE that writes to these tables.
-*/
-// deno-lint-ignore no-explicit-any
-export function withTaggingOfInsertedRecords<Q extends QueryCreator<any>>(
-  query: Q,
+export function withTaggingOfInsertedRecords(
+  query: FindingsInsertQuery | EvaluationInsertQuery,
   trx: TrxOrDbOrQueryCreator,
-  { patient_id, patient_age_determination, positive_record_ids, inserted }: {
-    patient_id: string
-    patient_age_determination: AgeDetermination
-    // Only a positive record can satisfy a due_to
-    positive_record_ids: string[]
-    inserted: InsertedRecordCtes
-  },
-): Q {
-  if (!positive_record_ids.length) return query
+) {
 
-  // A raw CTE body is not parenthesised by Kysely, so each shadow does so itself
-  function shadow(table: string, ctes: string[] = []): RawBuilder<Record<string, unknown>> {
-    if (!ctes.length) return sql<Record<string, unknown>>`(select * from ${sql.table(table)} where false)`
-    return sql<Record<string, unknown>>`(${sql.join(ctes.map((cte) => sql`select * from ${sql.ref(cte)}`), sql` union all `)})`
-  }
-
-  return query
-    .with('patient_records', () => shadow('patient_records', inserted.patient_records))
-    // Nothing has had the chance to invalidate a record inserted in this statement
-    .with('patient_records_still_valid', () => sql<Record<string, unknown>>`(select id from patient_records)`)
-    .with('patient_record_qualifiers', () => shadow('patient_record_qualifiers', inserted.patient_record_qualifiers))
-    .with('patient_events', () => shadow('patient_events', inserted.patient_events))
-    .with('patient_measurements', () => shadow('patient_measurements', inserted.patient_measurements))
-    .with('inserting_due_tos', (qb) =>
+  return query.with('inserting_due_tos', (qb) =>
       qb.insertInto('patient_record_satisfying_due_tos')
         .columns(['due_to_id', 'patient_record_id'])
         .expression(() =>
@@ -598,5 +550,5 @@ export function withTaggingOfInsertedRecords<Q extends QueryCreator<any>>(
           })
             .clearSelect()
             .select(['due_to_id', 'patient_record_id'])
-        )) as unknown as Q
+        ))
 }

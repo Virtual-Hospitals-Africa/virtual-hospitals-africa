@@ -99,6 +99,362 @@ function insertedRecord(
   }
 }
 
+export type FindingsInsertQuery = ReturnType<typeof insertSansDueTo>
+
+function insertSansDueTo(
+  trx: TrxOrDbOrQueryCreator,
+  {
+    patient_id,
+    patient_encounter_id,
+    employment_id,
+    patient_encounter_employee_id,
+    patient_age_determination,
+    procedure,
+    findings,
+    measurements = [],
+  }: FindingsInsert,
+) {
+  if (findings.length === 0 && measurements.length === 0) {
+    throw new Error('insertMany requires at least one finding or measurement')
+  }
+
+  /*
+    With if_not_already_exists, procedure.procedure_id is a query for a procedure that may or may
+    not exist yet. The procedure_record CTE below resolves to either that existing record or the one
+    inserted here, so dependent rows reference it via a subquery rather than a fixed id.
+  */
+  const procedure_id = procedure.if_not_already_exists ? sql<string>`(select id from procedure_record)` : procedure.procedure_id || generateUUID()
+  const new_procedure_id = generateUUID()
+
+  // Parse findings and generate IDs
+  const findings_to_insert = findings.map((finding) => {
+    const finding_node = asNode(finding, 'finding')
+    assertHasProperty(finding_node, 'root_snomed_concept')
+    assertHasProperty(finding_node, 'specific_snomed_concept')
+    const priority = typeof finding === 'object' && 'priority' in finding ? finding.priority : undefined
+    const score = typeof finding === 'object' && 'score' in finding ? finding.score : undefined
+    const record_id = typeof finding === 'object' && finding.id ? finding.id : generateUUID()
+    return {
+      patient_id,
+      patient_encounter_id,
+      record_id,
+      ...finding_node,
+      priority,
+      score,
+    }
+  })
+
+  const measurements_to_insert = measurements.map((measurement) => {
+    const priority = 'priority' in measurement ? measurement.priority : undefined
+    const score = 'score' in measurement ? measurement.score : undefined
+    const { measurement: { snomed_concept, units }, value } = measurement as MeasurementComparison
+    return {
+      patient_id,
+      patient_encounter_id,
+      record_id: generateUUID(),
+      root_snomed_concept: { atom: 'snomed_concept' as const, ...MEASUREMENT_FINDING } as Lang['snomed_concept'],
+      specific_snomed_concept: snomed_concept,
+      value_snomed_concept: null,
+      measurement_node: { snomed_concept, units },
+      measurement_value: value,
+      attributes: [],
+      priority,
+      score,
+    }
+  })
+
+  const records_to_insert = [...findings_to_insert, ...measurements_to_insert]
+
+  // Only a positive record can satisfy a due_to
+  // const positive_record_ids = records_to_insert
+  //   .filter((record) => asExistence(record.value_snomed_concept) === 'Yes')
+  //   .map((record) => record.record_id)
+
+  const attribute_records: InsertRows<'patient_records'> = []
+  const attribute_qualifiers: InsertRows<'patient_record_qualifiers'> = []
+  const event_values: InsertRows<'patient_events'> = []
+  const triage_level_records: InsertRows<'patient_records'> = []
+  const triage_level_evaluations: InsertRows<'patient_evaluations'> = []
+  const triage_level_values: InsertRows<'patient_triage_level'> = []
+  const triage_relation_records: InsertRows<'patient_records'> = []
+  const triage_relations: InsertRows<'patient_record_relations'> = []
+  const score_records: InsertRows<'patient_records'> = []
+  const score_evaluations: InsertRows<'patient_evaluations'> = []
+  const score_values: InsertRows<'patient_evaluation_scores'> = []
+
+  for (const record of records_to_insert) {
+    const { record_id, attributes, priority, score } = record
+    // Collect attributes
+    for (const attribute of attributes) {
+      const attribute_id = generateUUID()
+      const { value } = attribute
+
+      if (value?.atom === 'event') {
+        attribute_records.push({
+          id: attribute_id,
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: EVENT.id,
+          specific_snomed_concept_id: snomedConceptBase(
+            trx,
+            attribute.specific_snomed_concept,
+          ),
+          value_snomed_concept_id: null,
+        })
+
+        attribute_qualifiers.push({
+          id: attribute_id,
+          qualifies_record_id: record_id,
+        })
+
+        event_values.push({
+          id: attribute_id,
+          datetime: value.datetime,
+        })
+      } else {
+        attribute_records.push({
+          id: attribute_id,
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: snomedConceptBase(
+            trx,
+            attribute.root_snomed_concept,
+          ),
+          specific_snomed_concept_id: snomedConceptBase(
+            trx,
+            attribute.specific_snomed_concept,
+          ),
+          value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
+        })
+
+        attribute_qualifiers.push({
+          id: attribute_id,
+          qualifies_record_id: record_id,
+        })
+      }
+    }
+
+    // Collect priority/triage level
+    if (priority) {
+      const triage_level_evaluation_id = generateUUID()
+      const relation_id = generateUUID()
+      const value_snomed_concept_id = PRIORITY_SNOMED_CODES[priority.level]
+      const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[priority.level]
+
+      triage_level_records.push({
+        id: triage_level_evaluation_id,
+        patient_id,
+        patient_encounter_id,
+        root_snomed_concept_id: EVALUATION_ACTION.id,
+        specific_snomed_concept_id: PRIORITY.id,
+        value_snomed_concept_id,
+      })
+
+      triage_level_evaluations.push({
+        id: triage_level_evaluation_id,
+        employment_id: priority.by_system ? null : employment_id,
+        by_system: priority.by_system,
+        procedure_id,
+      })
+
+      triage_level_values.push({
+        id: triage_level_evaluation_id,
+        target_treatment_time: sql<Date>`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
+      })
+
+      triage_relation_records.push({
+        id: relation_id,
+        patient_id,
+        patient_encounter_id,
+        root_snomed_concept_id: RELATIONSHIP.id,
+        specific_snomed_concept_id: DUE_TO.id,
+      })
+
+      triage_relations.push({
+        id: relation_id,
+        source_id: triage_level_evaluation_id,
+        destination_id: record_id,
+      })
+    }
+
+    // Collect score
+    if (score != null) {
+      const score_value = typeof score === 'object' ? score.value : score
+      const evaluation_snomed_concept_id = typeof score === 'object' ? score.evaluation_snomed_concept_id : SEVERITY_SCORE.id
+
+      if (score_value != null) {
+        const score_evaluation_id = generateUUID()
+
+        score_records.push({
+          id: score_evaluation_id,
+          patient_id,
+          patient_encounter_id,
+          root_snomed_concept_id: EVALUATION_ACTION.id,
+          specific_snomed_concept_id: evaluation_snomed_concept_id,
+          value_snomed_concept_id: null,
+        })
+
+        score_evaluations.push({
+          id: score_evaluation_id,
+          evaluates_record_id: record_id,
+          employment_id: null,
+          by_system: true,
+          procedure_id,
+        })
+
+        score_values.push({
+          id: score_evaluation_id,
+          score: score_value,
+        })
+      }
+    }
+  }
+
+  return baseInsertMany(trx, records_to_insert)
+    .with(
+      'maybe_inserting_procedure_record',
+      (qb) =>
+        procedure.if_not_already_exists
+          ? qb.insertInto('patient_records')
+            .columns(['id', 'patient_id', 'patient_encounter_id', 'root_snomed_concept_id', 'specific_snomed_concept_id'])
+            .expression(
+              qb.selectNoFrom([
+                literalString(new_procedure_id).as('id'),
+                literalString(patient_id).as('patient_id'),
+                literalString(patient_encounter_id).as('patient_encounter_id'),
+                literalString(PROCEDURE.id).as('root_snomed_concept_id'),
+                literalString(procedure.create_with_specific_snomed_concept_id).as('specific_snomed_concept_id'),
+              ]).where(({ not, exists }) => not(exists(procedure.procedure_id))),
+            ).returning('id')
+          : procedure.create_with_specific_snomed_concept_id
+          ? qb.insertInto('patient_records')
+            .values({
+              id: procedure_id,
+              patient_id,
+              patient_encounter_id,
+              root_snomed_concept_id: PROCEDURE.id,
+              specific_snomed_concept_id: procedure.create_with_specific_snomed_concept_id,
+            }).returning('id')
+          : qb.selectNoFrom([
+            literalString(procedure.procedure_id!).as('id'),
+          ]),
+    ).with(
+      'procedure_record',
+      (qb) => {
+        const maybe_inserted = qb.selectFrom('maybe_inserting_procedure_record').select('id')
+        // All CTEs share one snapshot, so at most one side of this union yields a row
+        return procedure.if_not_already_exists ? maybe_inserted.unionAll(procedure.procedure_id).limit(1) : maybe_inserted
+      },
+    ).with(
+      'inserting_procedure',
+      (qb) =>
+        procedure.if_not_already_exists
+          ? qb.insertInto('patient_procedures')
+            .columns(['id', 'employment_id'])
+            .expression(
+              qb.selectFrom('maybe_inserting_procedure_record').select([
+                'id',
+                literalString(employment_id).as('employment_id'),
+              ]),
+            )
+          : procedure.create_with_specific_snomed_concept_id
+          ? qb.insertInto('patient_procedures')
+            .values({
+              id: procedure_id,
+              employment_id,
+            })
+          : blankSelection(qb),
+    )
+    .with(
+      'inserting_findings',
+      (qb) =>
+        qb.insertInto('patient_findings').values(
+          [
+            ...findings_to_insert.map(({ record_id }) => ({
+              id: record_id,
+              procedure_id,
+              patient_encounter_employee_id,
+            })),
+            ...measurements_to_insert.map(({ record_id }) => ({
+              id: record_id,
+              procedure_id,
+              patient_encounter_employee_id,
+            })),
+          ],
+        ),
+    )
+    /*
+      The CTEs below return what they insert (or an empty selection of the same shape) so the
+      due_to tagging further down can see the new rows. See the shadow CTEs before inserting_due_tos.
+    */
+    .with(
+      'inserting_measurements',
+      (qb) =>
+        measurements_to_insert.length
+          ? qb.insertInto('patient_measurements').values(
+            measurements_to_insert.map((m) => ({
+              id: m.record_id,
+              units: m.measurement_node.units,
+              value: m.measurement_value.toFixed(),
+            })),
+          ).returningAll()
+          : qb.selectFrom('patient_measurements').selectAll().where(literalBoolean(false)),
+    )
+    .with(
+      'inserting_attribute_records',
+      (qb) =>
+        attribute_records.length
+          ? qb.insertInto('patient_records').values(attribute_records).returningAll()
+          : qb.selectFrom('patient_records').selectAll().where(literalBoolean(false)),
+    ).with(
+      'inserting_attribute_qualifier_links',
+      (qb) =>
+        attribute_records.length
+          ? qb.insertInto('patient_record_qualifiers').values(attribute_qualifiers).returningAll()
+          : qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)),
+    ).with(
+      'inserting_events',
+      (qb) =>
+        event_values.length
+          ? qb.insertInto('patient_events').values(event_values).returningAll()
+          : qb.selectFrom('patient_events').selectAll().where(literalBoolean(false)),
+    ).with(
+      'inserting_triage_level_records',
+      (qb) => triage_level_records.length ? qb.insertInto('patient_records').values(triage_level_records) : blankSelection(qb),
+    ).with(
+      'inserting_triage_level_evaluations',
+      (qb) =>
+        triage_level_evaluations.length
+          ? qb.insertInto('patient_evaluations').values(
+            triage_level_evaluations,
+          )
+          : blankSelection(qb),
+    ).with(
+      'inserting_triage_levels',
+      (qb) => triage_level_values.length ? qb.insertInto('patient_triage_level').values(triage_level_values) : blankSelection(qb),
+    ).with(
+      'inserting_triage_relation_records',
+      (qb) => triage_relation_records.length ? qb.insertInto('patient_records').values(triage_relation_records) : blankSelection(qb),
+    ).with(
+      'inserting_triage_relations',
+      (qb) => triage_relations.length ? qb.insertInto('patient_record_relations').values(triage_relations) : blankSelection(qb),
+    ).with(
+      'inserting_score_records',
+      (qb) => score_records.length ? qb.insertInto('patient_records').values(score_records) : blankSelection(qb),
+    ).with(
+      'inserting_score_evaluations',
+      (qb) =>
+        score_evaluations.length
+          ? qb.insertInto('patient_evaluations').values(
+            score_evaluations,
+          )
+          : blankSelection(qb),
+    ).with(
+      'inserting_scores',
+      (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
+    )
+}
+
 export const patient_findings = base({
   top_level_table: 'patient_findings',
   baseQuery(
@@ -189,369 +545,12 @@ export const patient_findings = base({
   },
   insertMany(
     trx: TrxOrDbOrQueryCreator,
-    {
-      patient_id,
-      patient_encounter_id,
-      employment_id,
-      patient_encounter_employee_id,
-      patient_age_determination,
-      procedure,
-      findings,
-      measurements = [],
-    }: FindingsInsert,
+    findings_insert: FindingsInsert,
   ) {
-    if (findings.length === 0 && measurements.length === 0) {
-      throw new Error('insertMany requires at least one finding or measurement')
-    }
+    const query = insertSansDueTo(trx, findings_insert)
+    const qb = insertSansDueTo()
 
-    /*
-      With if_not_already_exists, procedure.procedure_id is a query for a procedure that may or may
-      not exist yet. The procedure_record CTE below resolves to either that existing record or the one
-      inserted here, so dependent rows reference it via a subquery rather than a fixed id.
-    */
-    const procedure_id = procedure.if_not_already_exists ? sql<string>`(select id from procedure_record)` : procedure.procedure_id || generateUUID()
-    const new_procedure_id = generateUUID()
-
-    // Parse findings and generate IDs
-    const findings_to_insert = findings.map((finding) => {
-      const finding_node = asNode(finding, 'finding')
-      assertHasProperty(finding_node, 'root_snomed_concept')
-      assertHasProperty(finding_node, 'specific_snomed_concept')
-      const priority = typeof finding === 'object' && 'priority' in finding ? finding.priority : undefined
-      const score = typeof finding === 'object' && 'score' in finding ? finding.score : undefined
-      const record_id = typeof finding === 'object' && finding.id ? finding.id : generateUUID()
-      return {
-        patient_id,
-        patient_encounter_id,
-        record_id,
-        ...finding_node,
-        priority,
-        score,
-      }
-    })
-
-    const measurements_to_insert = measurements.map((measurement) => {
-      const priority = 'priority' in measurement ? measurement.priority : undefined
-      const score = 'score' in measurement ? measurement.score : undefined
-      const { measurement: { snomed_concept, units }, value } = measurement as MeasurementComparison
-      return {
-        patient_id,
-        patient_encounter_id,
-        record_id: generateUUID(),
-        root_snomed_concept: { atom: 'snomed_concept' as const, ...MEASUREMENT_FINDING } as Lang['snomed_concept'],
-        specific_snomed_concept: snomed_concept,
-        value_snomed_concept: null,
-        measurement_node: { snomed_concept, units },
-        measurement_value: value,
-        attributes: [],
-        priority,
-        score,
-      }
-    })
-
-    const records_to_insert = [...findings_to_insert, ...measurements_to_insert]
-
-    // Only a positive record can satisfy a due_to
-    const positive_record_ids = records_to_insert
-      .filter((record) => asExistence(record.value_snomed_concept) === 'Yes')
-      .map((record) => record.record_id)
-
-    const attribute_records: InsertRows<'patient_records'> = []
-    const attribute_qualifiers: InsertRows<'patient_record_qualifiers'> = []
-    const event_values: InsertRows<'patient_events'> = []
-    const triage_level_records: InsertRows<'patient_records'> = []
-    const triage_level_evaluations: InsertRows<'patient_evaluations'> = []
-    const triage_level_values: InsertRows<'patient_triage_level'> = []
-    const triage_relation_records: InsertRows<'patient_records'> = []
-    const triage_relations: InsertRows<'patient_record_relations'> = []
-    const score_records: InsertRows<'patient_records'> = []
-    const score_evaluations: InsertRows<'patient_evaluations'> = []
-    const score_values: InsertRows<'patient_evaluation_scores'> = []
-
-    for (const record of records_to_insert) {
-      const { record_id, attributes, priority, score } = record
-      // Collect attributes
-      for (const attribute of attributes) {
-        const attribute_id = generateUUID()
-        const { value } = attribute
-
-        if (value?.atom === 'event') {
-          attribute_records.push({
-            id: attribute_id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: EVENT.id,
-            specific_snomed_concept_id: snomedConceptBase(
-              trx,
-              attribute.specific_snomed_concept,
-            ),
-            value_snomed_concept_id: null,
-          })
-
-          attribute_qualifiers.push({
-            id: attribute_id,
-            qualifies_record_id: record_id,
-          })
-
-          event_values.push({
-            id: attribute_id,
-            datetime: value.datetime,
-          })
-        } else {
-          attribute_records.push({
-            id: attribute_id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: snomedConceptBase(
-              trx,
-              attribute.root_snomed_concept,
-            ),
-            specific_snomed_concept_id: snomedConceptBase(
-              trx,
-              attribute.specific_snomed_concept,
-            ),
-            value_snomed_concept_id: maybeSnomedConceptBase(trx, value),
-          })
-
-          attribute_qualifiers.push({
-            id: attribute_id,
-            qualifies_record_id: record_id,
-          })
-        }
-      }
-
-      // Collect priority/triage level
-      if (priority) {
-        const triage_level_evaluation_id = generateUUID()
-        const relation_id = generateUUID()
-        const value_snomed_concept_id = PRIORITY_SNOMED_CODES[priority.level]
-        const target_treatment_minutes = TARGET_TIME_TO_TREATMENT_MINUTES[priority.level]
-
-        triage_level_records.push({
-          id: triage_level_evaluation_id,
-          patient_id,
-          patient_encounter_id,
-          root_snomed_concept_id: EVALUATION_ACTION.id,
-          specific_snomed_concept_id: PRIORITY.id,
-          value_snomed_concept_id,
-        })
-
-        triage_level_evaluations.push({
-          id: triage_level_evaluation_id,
-          employment_id: priority.by_system ? null : employment_id,
-          by_system: priority.by_system,
-          procedure_id,
-        })
-
-        triage_level_values.push({
-          id: triage_level_evaluation_id,
-          target_treatment_time: sql<Date>`now() + interval '${sql.raw(target_treatment_minutes.toString())} minutes'`,
-        })
-
-        triage_relation_records.push({
-          id: relation_id,
-          patient_id,
-          patient_encounter_id,
-          root_snomed_concept_id: RELATIONSHIP.id,
-          specific_snomed_concept_id: DUE_TO.id,
-        })
-
-        triage_relations.push({
-          id: relation_id,
-          source_id: triage_level_evaluation_id,
-          destination_id: record_id,
-        })
-      }
-
-      // Collect score
-      if (score != null) {
-        const score_value = typeof score === 'object' ? score.value : score
-        const evaluation_snomed_concept_id = typeof score === 'object' ? score.evaluation_snomed_concept_id : SEVERITY_SCORE.id
-
-        if (score_value != null) {
-          const score_evaluation_id = generateUUID()
-
-          score_records.push({
-            id: score_evaluation_id,
-            patient_id,
-            patient_encounter_id,
-            root_snomed_concept_id: EVALUATION_ACTION.id,
-            specific_snomed_concept_id: evaluation_snomed_concept_id,
-            value_snomed_concept_id: null,
-          })
-
-          score_evaluations.push({
-            id: score_evaluation_id,
-            evaluates_record_id: record_id,
-            employment_id: null,
-            by_system: true,
-            procedure_id,
-          })
-
-          score_values.push({
-            id: score_evaluation_id,
-            score: score_value,
-          })
-        }
-      }
-    }
-
-    const inserting = baseInsertMany(trx, records_to_insert)
-      .with(
-        'maybe_inserting_procedure_record',
-        (qb) =>
-          procedure.if_not_already_exists
-            ? qb.insertInto('patient_records')
-              .columns(['id', 'patient_id', 'patient_encounter_id', 'root_snomed_concept_id', 'specific_snomed_concept_id'])
-              .expression(
-                qb.selectNoFrom([
-                  literalString(new_procedure_id).as('id'),
-                  literalString(patient_id).as('patient_id'),
-                  literalString(patient_encounter_id).as('patient_encounter_id'),
-                  literalString(PROCEDURE.id).as('root_snomed_concept_id'),
-                  literalString(procedure.create_with_specific_snomed_concept_id).as('specific_snomed_concept_id'),
-                ]).where(({ not, exists }) => not(exists(procedure.procedure_id))),
-              ).returning('id')
-            : procedure.create_with_specific_snomed_concept_id
-            ? qb.insertInto('patient_records')
-              .values({
-                id: procedure_id,
-                patient_id,
-                patient_encounter_id,
-                root_snomed_concept_id: PROCEDURE.id,
-                specific_snomed_concept_id: procedure.create_with_specific_snomed_concept_id,
-              }).returning('id')
-            : qb.selectNoFrom([
-              literalString(procedure.procedure_id!).as('id'),
-            ]),
-      ).with(
-        'procedure_record',
-        (qb) => {
-          const maybe_inserted = qb.selectFrom('maybe_inserting_procedure_record').select('id')
-          // All CTEs share one snapshot, so at most one side of this union yields a row
-          return procedure.if_not_already_exists ? maybe_inserted.unionAll(procedure.procedure_id).limit(1) : maybe_inserted
-        },
-      ).with(
-        'inserting_procedure',
-        (qb) =>
-          procedure.if_not_already_exists
-            ? qb.insertInto('patient_procedures')
-              .columns(['id', 'employment_id'])
-              .expression(
-                qb.selectFrom('maybe_inserting_procedure_record').select([
-                  'id',
-                  literalString(employment_id).as('employment_id'),
-                ]),
-              )
-            : procedure.create_with_specific_snomed_concept_id
-            ? qb.insertInto('patient_procedures')
-              .values({
-                id: procedure_id,
-                employment_id,
-              })
-            : blankSelection(qb),
-      )
-      .with(
-        'inserting_findings',
-        (qb) =>
-          qb.insertInto('patient_findings').values(
-            [
-              ...findings_to_insert.map(({ record_id }) => ({
-                id: record_id,
-                procedure_id,
-                patient_encounter_employee_id,
-              })),
-              ...measurements_to_insert.map(({ record_id }) => ({
-                id: record_id,
-                procedure_id,
-                patient_encounter_employee_id,
-              })),
-            ],
-          ),
-      )
-      /*
-        The CTEs below return what they insert (or an empty selection of the same shape) so the
-        due_to tagging further down can see the new rows. See the shadow CTEs before inserting_due_tos.
-      */
-      .with(
-        'inserting_measurements',
-        (qb) =>
-          measurements_to_insert.length
-            ? qb.insertInto('patient_measurements').values(
-              measurements_to_insert.map((m) => ({
-                id: m.record_id,
-                units: m.measurement_node.units,
-                value: m.measurement_value.toFixed(),
-              })),
-            ).returningAll()
-            : qb.selectFrom('patient_measurements').selectAll().where(literalBoolean(false)),
-      )
-      .with(
-        'inserting_attribute_records',
-        (qb) =>
-          attribute_records.length
-            ? qb.insertInto('patient_records').values(attribute_records).returningAll()
-            : qb.selectFrom('patient_records').selectAll().where(literalBoolean(false)),
-      ).with(
-        'inserting_attribute_qualifier_links',
-        (qb) =>
-          attribute_records.length
-            ? qb.insertInto('patient_record_qualifiers').values(attribute_qualifiers).returningAll()
-            : qb.selectFrom('patient_record_qualifiers').selectAll().where(literalBoolean(false)),
-      ).with(
-        'inserting_events',
-        (qb) =>
-          event_values.length
-            ? qb.insertInto('patient_events').values(event_values).returningAll()
-            : qb.selectFrom('patient_events').selectAll().where(literalBoolean(false)),
-      ).with(
-        'inserting_triage_level_records',
-        (qb) => triage_level_records.length ? qb.insertInto('patient_records').values(triage_level_records) : blankSelection(qb),
-      ).with(
-        'inserting_triage_level_evaluations',
-        (qb) =>
-          triage_level_evaluations.length
-            ? qb.insertInto('patient_evaluations').values(
-              triage_level_evaluations,
-            )
-            : blankSelection(qb),
-      ).with(
-        'inserting_triage_levels',
-        (qb) => triage_level_values.length ? qb.insertInto('patient_triage_level').values(triage_level_values) : blankSelection(qb),
-      ).with(
-        'inserting_triage_relation_records',
-        (qb) => triage_relation_records.length ? qb.insertInto('patient_records').values(triage_relation_records) : blankSelection(qb),
-      ).with(
-        'inserting_triage_relations',
-        (qb) => triage_relations.length ? qb.insertInto('patient_record_relations').values(triage_relations) : blankSelection(qb),
-      ).with(
-        'inserting_score_records',
-        (qb) => score_records.length ? qb.insertInto('patient_records').values(score_records) : blankSelection(qb),
-      ).with(
-        'inserting_score_evaluations',
-        (qb) =>
-          score_evaluations.length
-            ? qb.insertInto('patient_evaluations').values(
-              score_evaluations,
-            )
-            : blankSelection(qb),
-      ).with(
-        'inserting_scores',
-        (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
-      )
-
-    // Must come last: it shadows the tables written above (see withTaggingOfInsertedRecords)
-    return withTaggingOfInsertedRecords(inserting, trx, {
-      patient_id,
-      patient_age_determination,
-      positive_record_ids,
-      inserted: {
-        patient_records: ['inserting_records', 'inserting_qualifier_records', 'inserting_attribute_records'],
-        patient_record_qualifiers: ['inserting_qualifier_links', 'inserting_attribute_qualifier_links'],
-        patient_events: ['inserting_events'],
-        patient_measurements: ['inserting_measurements'],
-      },
-    })
+    return withTaggingOfInsertedRecords(query, trx)
       .selectFrom('inserting_records')
       .innerJoin('procedure_record', (join) => join.onTrue())
       .groupBy('procedure_record.id')
