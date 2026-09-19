@@ -11,7 +11,7 @@ import generateUUID from '../../util/uuid.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isKeyOf from '../../util/isKeyOf.ts'
 import { events } from './events.ts'
-import { CERTAINTY_QUALIFIER_TO_CONCEPT, diagnosisToEvaluation } from '../../shared/diagnosis.ts'
+import { CERTAINTY_ORDER, CERTAINTY_QUALIFIER_TO_CONCEPT, diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 import { rules } from './rules.ts'
 import isString from '../../util/isString.ts'
 import { JsonValue, SnomedCategory } from '../../db.d.ts'
@@ -28,14 +28,6 @@ import { s_expression_evidence } from './s_expression_evidence.ts'
 const concept_to_certainty_qualifier_map = Object.fromEntries(
   Object.entries(CERTAINTY_QUALIFIER_TO_CONCEPT).map(([certainty, concept]) => [concept.name, certainty]),
 ) as Record<string, keyof typeof CERTAINTY_QUALIFIER_TO_CONCEPT>
-
-const CERTAINTY_ORDER: Record<ApplicableRuleEffectSystemDiagnosisRule['certainty'], number> = {
-  definite: 4,
-  probable: 3,
-  equivocal: 2,
-  possible: 1,
-  improbable: 0,
-}
 
 type PresentDiagnosis = {
   id: string
