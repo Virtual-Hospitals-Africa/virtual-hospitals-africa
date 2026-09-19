@@ -157,6 +157,8 @@ export type Failure = {
 
 export type Result<T> = Success<T> | Failure
 
+export type VoidResult = { success: true } | Failure
+
 export type SqlRow<T> = {
   id: Generated<number>
   created_at: ColumnType<Date, undefined, never>
@@ -2835,7 +2837,7 @@ export type EnteredFinding = {
   priority?: Maybe<Priority>
 }
 
-export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record'>) & {
+export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record' | 'Follow up'>) & {
   existing_record?: {
     id: string
     existence: Existence
@@ -3119,6 +3121,9 @@ export type NewRecordsToConsider = {
     id: string
     existence: 'Yes' | 'No' | 'Unknown'
   }[]
+  // The task the health worker said they were done with when these records were made, as when
+  // none of a check_for task's findings apply. EvaluationAdded never carries one.
+  task_description_completed?: string
 }
 
 export type NewRecordsToConsiderWithSatisfyingDueToIds = NewRecordsToConsider
@@ -3233,9 +3238,17 @@ export type FindingRelatedModifiers = {
   onset_required: boolean
 }
 
-export type FindingToCheckFor = {
+/*
+  A finding the health worker is prompted to check for, carrying what the warning signs
+  page needs to treat it like a sign: the modifiers for the finding modal and the tasks it
+  belongs to, so that saying none of them apply can mark those tasks done.
+*/
+export type FindingToCheckFor = FindingRelatedModifiers & {
   s_expression: string
+  name: string
+  task_ids: string[]
   existing_record: null | {
+    id: string
     s_expression: string
     existence: Existence
   }

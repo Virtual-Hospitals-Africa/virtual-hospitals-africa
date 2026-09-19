@@ -274,7 +274,7 @@ export const handler = postHandler(
 
     await Promise.all([
       events.insert(trx, {
-        type: 'RecordsAdded',
+        type: 'FindingsAdded',
         data: {
           patient_id,
           patient_encounter_id,

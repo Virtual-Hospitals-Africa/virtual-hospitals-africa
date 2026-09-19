@@ -10,10 +10,9 @@ import {
 } from '../../../../_helpers/workflows.ts'
 import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
-import {
-  TriageWarningSignSchema,
-  TriageWarningSignsSchema,
-} from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
+import { TriageWarningSignsPostBody } from '../../../../../shared/warning_signs_post.ts'
+import { ClinicalFindingPostBody } from '../../../../../shared/clinical_finding_post.ts'
+import { route } from '../../../../_route.ts'
 import { TriageBriefHistorySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/brief_history.tsx'
 import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
 import { TriageMeasureVitalsSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/measure_vitals.tsx'
@@ -30,12 +29,34 @@ import generateUUID from '../../../../../util/uuid.ts'
 import { VitalAssessment } from '../../../../../db.d.ts'
 import { assessmentOptionSExpression, VITAL_MEASUREMENTS_UNITS, VitalMeasurement } from '../../../../../shared/vitals.ts'
 import { AgeDetermination } from '../../../../../types.ts'
+import { Priority } from '../../../../../shared/priorities.ts'
 import mapEntries from '../../../../../util/mapEntries.ts'
 import { TestEmployee } from '../../../../../mocks/testEmployee.ts'
 import { promiseProps } from '../../../../../util/promiseProps.ts'
+import partition from '../../../../../util/partition.ts'
+import values from '../../../../../util/values.ts'
+
+/*
+  Tests describe the warning signs page as the health worker experiences it: every sign
+  listed, each either checked (Yes) or not. Posting the step saves the checked ones through
+  the clinical_finding route one at a time, as the page does, then submits the page with
+  their ids and the unchecked signs. The raw form the page itself submits is accepted too.
+*/
+export type WarningSignInput = {
+  s_expression: string
+  existence?: 'Yes' | 'No'
+  warning_sign_key?: string
+  priority_level?: Priority
+}
+
+export type WarningSignsInput = {
+  warning_signs: Record<string, WarningSignInput>
+}
+
+export type WarningSignsStepInput = WarningSignsInput | TriageWarningSignsPostBody
 
 export type TriageSteps = {
-  warning_signs?: z.input<typeof TriageWarningSignsSchema>
+  warning_signs?: WarningSignsStepInput
   brief_history?: z.input<typeof TriageBriefHistorySchema>
   height_and_weight?: z.input<
     typeof TriageHeightAndWeightSchema
@@ -61,19 +82,17 @@ export function asWarningSignsAdult(
   sign_keys: Array<keyof typeof KEYED_WARNING_SIGNS>,
   opts: { pregnant: boolean },
   ...other_finding_s_expressions: string[]
-): z.input<typeof TriageWarningSignsSchema> {
+): WarningSignsInput {
   return { warning_signs: fromEntries(applicableWarningSigns()) }
 
-  function* applicableWarningSigns(): Generator<
-    [string, z.input<typeof TriageWarningSignSchema>]
-  > {
+  function* applicableWarningSigns(): Generator<[string, WarningSignInput]> {
     for (const sign of WARNING_SIGNS.adult) {
       if (
         isKeyOf(sign.key, ONLY_WHEN_PREGNANCY_STATUS) &&
         ONLY_WHEN_PREGNANCY_STATUS[sign.key] !== opts.pregnant
       ) continue
 
-      const field: z.input<typeof TriageWarningSignSchema> = {
+      const field: WarningSignInput = {
         warning_sign_key: sign.key,
         priority_level: sign.priority,
         s_expression: sign.clinical_finding_s_expression,
@@ -96,14 +115,12 @@ export function asWarningSignsAdult(
 export function asWarningSignsOlderChild(
   sign_keys: string[],
   ...other_finding_s_expressions: string[]
-): z.input<typeof TriageWarningSignsSchema> {
+): WarningSignsInput {
   return { warning_signs: fromEntries(applicableWarningSigns()) }
 
-  function* applicableWarningSigns(): Generator<
-    [string, z.input<typeof TriageWarningSignSchema>]
-  > {
+  function* applicableWarningSigns(): Generator<[string, WarningSignInput]> {
     for (const sign of WARNING_SIGNS['older child']) {
-      const field: z.input<typeof TriageWarningSignSchema> = {
+      const field: WarningSignInput = {
         warning_sign_key: sign.key,
         priority_level: sign.priority,
         s_expression: sign.clinical_finding_s_expression,
@@ -148,20 +165,65 @@ export async function setupTriage({
     return nurse.fetchCheerio(triageRoute(step))
   }
 
+  /*
+    As the warning signs page does when a sign is checked and saved in the modal.
+    Responds with the id the record was given.
+  */
+  async function postClinicalFinding(
+    { s_expression, priority_level }: Pick<WarningSignInput, 's_expression' | 'priority_level'>,
+    { referer_step = 'warning_signs' }: { referer_step?: keyof TriageSteps } = {},
+  ): Promise<string> {
+    const finding_id = generateUUID()
+    const body: ClinicalFindingPostBody = { finding_id, s_expression, priority_level }
+    const response = await nurse.fetch(openEncounterRoute('clinical_finding'), {
+      method: 'POST',
+      body: asFormData(body),
+      headers: { Accept: 'application/json', Referer: `${route}${triageRoute(referer_step)}` },
+    })
+    const json = await response.json()
+    assert(response.status === 200, `clinical_finding responded ${response.status}: ${JSON.stringify(json)}`)
+    return finding_id
+  }
+
+  /*
+    As the warning signs page does when a checked sign is removed in the modal.
+  */
+  async function postMarkAsError(record_id: string, { referer_step = 'warning_signs' }: { referer_step?: keyof TriageSteps } = {}) {
+    const response = await nurse.fetch(openEncounterRoute(`clinical_finding/${record_id}/mark_as_error`), {
+      method: 'POST',
+      headers: { Accept: 'application/json', Referer: `${route}${triageRoute(referer_step)}` },
+    })
+    const json = await response.json()
+    assert(response.status === 200, `mark_as_error responded ${response.status}: ${JSON.stringify(json)}`)
+  }
+
+  async function asWarningSignsForm(data: WarningSignsStepInput): Promise<TriageWarningSignsPostBody> {
+    if (!('warning_signs' in data)) return data
+    const [checked, unchecked] = partition(values(data.warning_signs), (sign) => sign.existence === 'Yes')
+    const saved_record_ids: string[] = []
+    for (const sign of checked) {
+      saved_record_ids.push(await postClinicalFinding(sign))
+    }
+    return {
+      saved_record_ids,
+      none_of_these: {
+        s_expressions: `(${unchecked.map((sign) => sign.s_expression).join(' ')})`,
+      },
+    }
+  }
+
   async function postStep(
     steps: Partial<NonNullable<Omit<TriageScenarioNewPatient, 'patient_demographics'>>>,
   ) {
     let $!: CheerioAPI & { url: string }
-    for (const [step, data] of entries(steps)) {
-      if (!data) continue
-      const step_name = step === 'early_brief_history' ? 'brief_history' : step
-      $ = await nurse.fetchCheerio(
-        triageRoute(step_name),
-        {
-          method: 'POST',
-          body: asFormData(data),
-        },
-      )
+    async function post(step_name: keyof TriageSteps, body: Record<string, unknown>) {
+      $ = await nurse.fetchCheerio(triageRoute(step_name), { method: 'POST', body: asFormData(body) })
+    }
+    const { early_brief_history, warning_signs, ...other_steps } = steps
+    if (early_brief_history) await post('brief_history', early_brief_history)
+    if (warning_signs) await post('warning_signs', await asWarningSignsForm(warning_signs))
+    for (const [step, data] of entries(other_steps)) {
+      if (data) await post(step, data)
     }
     assert($)
     return $
@@ -183,6 +245,8 @@ export async function setupTriage({
     patient_encounter_id: encounter.patient_encounter_id,
     getStep,
     postStep,
+    postClinicalFinding,
+    postMarkAsError,
     openEncounterRoute,
     triageRoute,
   }

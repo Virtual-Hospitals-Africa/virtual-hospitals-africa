@@ -9,5 +9,5 @@ export const ClinicalFindingSchema = z.object({
   finding_id: z.string().uuid(),
   s_expression: sExpressionZodValidator(insertable_finding_base),
   priority_level: z.enum(ORDERED_PRIORITIES).nullish(),
-  entered_in_error_record_id: z.string().uuid().optional(),
+  altered_record_id: z.string().uuid().optional(),
 })

@@ -4,7 +4,7 @@ import { workflowStepFromReferer } from '../../../../../../../backend/workflowSt
 import type { OpenEncounterContext } from '../../../../../../../types.ts'
 import { FindingNodeToInsert, patient_findings } from '../../../../../../../db/models/patient_findings.ts'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
-import { markEnteredInError } from '../../../../../../../db/models/patient_records_base.ts'
+import { markAltered } from '../../../../../../../db/models/patient_records_base.ts'
 import { events } from '../../../../../../../db/models/events.ts'
 import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
@@ -13,7 +13,7 @@ import { ClinicalFindingSchema } from '../../../../../../../shared/clinical_find
 
 export const handler = postHandler(
   ClinicalFindingSchema,
-  async (ctx: OpenEncounterContext, { finding_id, s_expression, priority_level, entered_in_error_record_id }) => {
+  async (ctx: OpenEncounterContext, { finding_id, s_expression, priority_level, altered_record_id }) => {
     const {
       trx,
       patient_id,
@@ -70,18 +70,18 @@ export const handler = postHandler(
     assert(procedure_id)
     assert(findings.length === 1 && findings[0].id === finding_id)
 
-    if (entered_in_error_record_id) {
-      await markEnteredInError(trx, {
+    if (altered_record_id) {
+      await markAltered(trx, {
         patient_id,
         employment_id,
         patient_encounter_id,
         procedure_id,
-        altered_record_ids: [entered_in_error_record_id],
+        altered_record_ids: [altered_record_id],
       })
     }
 
     await events.insert(trx, {
-      type: 'RecordsAdded',
+      type: 'FindingsAdded',
       data: {
         patient_id,
         patient_encounter_id,

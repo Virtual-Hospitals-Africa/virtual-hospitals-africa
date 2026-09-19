@@ -11,20 +11,21 @@ import { asMaybeNames, asNames } from '../util/asNames.ts'
 import testCalendars from './testCalendars.ts'
 import { health_worker_licences } from '../db/models/health_worker_licences.ts'
 
-export type TestHealthWorkerOpts = {
-  role?:
-    | 'doctor'
-    | 'admin'
-    | 'nurse'
-    | 'receptionist'
-    | 'none'
-  specialty?: string
-  is_admin?: boolean
-  organization_id?: string
-  seniority_order?: number
-  country?: string
-  health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
-}
+export type TestHealthWorkerOpts =
+  | {
+    role: 'none'
+    country?: string
+    health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
+  }
+  | {
+    role?: 'doctor' | 'admin' | 'nurse' | 'receptionist'
+    specialty?: string
+    is_admin?: boolean
+    organization_id: string
+    seniority_order?: number
+    country?: string
+    health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
+  }
 
 export type TestEmployee = Names & {
   organization_id: string
@@ -43,19 +44,9 @@ export type TestEmployee = Names & {
 
 export async function addTestEmployee(
   trx: TrxOrDb,
-  {
-    role = 'nurse',
-    organization_id = '00000000-0000-1000-8000-000000000001',
-    country = 'ZA',
-    health_worker_attrs = {},
-    specialty,
-    is_admin,
-    seniority_order,
-  }: TestHealthWorkerOpts = {},
+  opts: TestHealthWorkerOpts,
 ): Promise<TestEmployee> {
-  if (!specialty && ['nurse', 'doctor'].includes(role)) {
-    specialty = 'Primary care'
-  }
+  const { country = 'ZA', health_worker_attrs = {} } = opts
 
   const health_worker: HealthWorkerWithGoogleTokens = await insertHealthWorker(
     trx,
@@ -65,8 +56,7 @@ export async function addTestEmployee(
       ...asMaybeNames(health_worker_attrs),
     },
   )
-  if (role === 'none') {
-    assert(!is_admin)
+  if (opts.role === 'none') {
     return {
       ...health_worker,
       get organization_id() {
@@ -86,6 +76,10 @@ export async function addTestEmployee(
       },
     } as unknown as TestEmployee
   }
+
+  const { role = 'nurse', organization_id, is_admin, seniority_order } = opts
+  const specialty = opts.specialty ??
+    (['nurse', 'doctor'].includes(role) ? 'Primary care' : undefined)
 
   const organization = await organizations_with_departments.getById(trx, organization_id)
   const department_ids = organizationDepartmentIdsOfProfession(

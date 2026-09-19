@@ -12,28 +12,32 @@ import { measurement, to_be_done } from '../../../../../../../../shared/s_expres
 import { events } from '../../../../../../../../db/models/events.ts'
 import values from '../../../../../../../../util/values.ts'
 import { assert } from 'std/assert/assert.ts'
-import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
+// import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import compactMap from '../../../../../../../../util/compactMap.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-import { check_for, CheckForSchema } from '../../../../../../../../db/models/check_for.ts'
+// import { check_for, CheckForSchema } from '../../../../../../../../db/models/check_for.ts'
 import type { TriageContext } from '../../../../../../../../types.ts'
 import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 
 export const TriageAdditionalTasksAndInvestigationsSchema = z.object({
+  // The evaluations of every task shown on the page, which the submission marks done
   evaluation_ids: z.string().uuid().array().optional().default([]),
   just_do_it_tasks: z.record(
     z.string(),
     z.object({
+      evaluation_id: z.string().uuid(),
       s_expression: sExpressionZodValidator(to_be_done),
     }),
   ).optional().default({}).transform(values),
-  check_for: z.record(
-    z.string(),
-    CheckForSchema,
-  ).optional().default({}).transform(values),
+  // check_for: z.record(
+  //   z.string(),
+  //   CheckForSchema,
+  // ).optional().default({}).transform(values),
   measurements: z.record(
     z.string(),
     z.object({
+      // The form posts the page's evaluation_ids as one hidden field rather than one per measurement
+      evaluation_id: z.string().uuid().optional(),
       s_expression: sExpressionZodValidator(measurement),
       value: positive_decimal,
       units: z.string().min(1),
@@ -78,6 +82,10 @@ export const handler = postHandler(
       inserted: markAlteredRecords().then(() => insertFindings()),
     })
 
+    /*
+      The DONE relations record that this procedure answered the tasks on the page. Nothing
+      downstream relies on them, so FindingsAdded is dispatched alongside rather than after.
+    */
     await promiseProps({
       _: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges ? Promise.resolve() : additional_tasks.procedureCompletedTasks(trx, {
         patient_id,
@@ -91,7 +99,8 @@ export const handler = postHandler(
     return response
 
     async function insertFindings(): Promise<InsertedSummary> {
-      const findings_to_insert: FindingNodeToInsert[] = check_for.asInsertableFindings(form_values.check_for)
+      // const findings_to_insert: FindingNodeToInsert[] = check_for.asInsertableFindings(form_values.check_for)
+      const findings_to_insert: FindingNodeToInsert[] = []
 
       const measurements_to_insert: MeasurementToInsert[] = compactMap(form_values.measurements, (measurement) => {
         if (measurement.existing_record && measurement.existing_record.value.equals(measurement.value)) return
@@ -133,7 +142,7 @@ export const handler = postHandler(
     ) {
       if (inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges) return
       return events.insert(trx, {
-        type: 'RecordsAdded',
+        type: 'FindingsAdded',
         data: {
           patient_id,
           patient_encounter_id,
@@ -144,19 +153,21 @@ export const handler = postHandler(
     }
 
     function markAlteredRecords() {
-      if (!completed_procedure) return Promise.resolve()
-      const altered_record_ids = compactMap(
-        form_values.check_for,
-        ({ existence, existing_record }) => (existing_record && existing_record.existence != existence) && existing_record.id,
-      )
+      // check_for findings are no longer altered from this page
+      return Promise.resolve()
+      // if (!completed_procedure) return Promise.resolve()
+      // const altered_record_ids = compactMap(
+      //   form_values.check_for,
+      //   ({ existence, existing_record }) => (existing_record && existing_record.existence != existence) && existing_record.id,
+      // )
 
-      return markEnteredInError(trx, {
-        patient_id,
-        employment_id,
-        patient_encounter_id,
-        altered_record_ids,
-        procedure_id: completed_procedure.procedure_id,
-      })
+      // return markEnteredInError(trx, {
+      //   patient_id,
+      //   employment_id,
+      //   patient_encounter_id,
+      //   altered_record_ids,
+      //   procedure_id: completed_procedure.procedure_id,
+      // })
     }
   },
 )

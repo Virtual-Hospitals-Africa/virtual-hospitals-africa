@@ -24,16 +24,42 @@ export async function up(db: Kysely<DB>) {
       .addUniqueConstraint('single_listener', ['event_id', 'listener_name']))
 
   await sql`
-    CREATE OR REPLACE FUNCTION check_event_all_processed_on_event_listener_processed()
+    CREATE OR REPLACE FUNCTION on_event_listener_update()
     RETURNS TRIGGER AS $$
     DECLARE
+      patient_encounter_id uuid;
+      event_type varchar(255);
       unprocessed_count integer;
     BEGIN
+      SELECT events.patient_encounter_id, events.type INTO patient_encounter_id, event_type
+        FROM events
+        WHERE events.id = NEW.event_id;
+
+      IF OLD.error_message IS NULL AND NEW.error_message IS NOT NULL THEN
+        PERFORM pg_notify('event_listener_failure', json_build_object(
+          'id', NEW.id,
+          'event_id', NEW.event_id,
+          'event_type', event_type,
+          'listener_name', NEW.listener_name,
+          'error_message', NEW.error_message,
+          'patient_encounter_id', patient_encounter_id
+        )::text);
+      END IF;
+
       -- Only fire when processed_at is set (was null, now not null)
       IF OLD.processed_at IS NULL AND NEW.processed_at IS NOT NULL THEN
+
         -- Use advisory lock to prevent deadlock when multiple listeners
         -- for the same event are processed concurrently
         PERFORM pg_advisory_xact_lock(hashtext(NEW.event_id::text));
+
+        -- PERFORM pg_notify('event_listener_processed', json_build_object(
+        --   'id', NEW.id,
+        --   'event_id', NEW.event_id,
+        --   'event_type', event_type,
+        --   'listener_name', NEW.listener_name,
+        --   'patient_encounter_id', patient_encounter_id
+        -- )::text);
 
         SELECT COUNT(*) INTO unprocessed_count
           FROM event_listeners
@@ -46,7 +72,7 @@ export async function up(db: Kysely<DB>) {
           WHERE events.id = NEW.event_id
             AND events.all_processed_at IS NULL;
 
-          PERFORM pg_notify('event_all_processed', NEW.event_id::text);
+          -- PERFORM pg_notify('event_all_processed', NEW.event_id::text);
         END IF;
       END IF;
       RETURN NEW;
@@ -58,7 +84,7 @@ export async function up(db: Kysely<DB>) {
     CREATE TRIGGER event_listener_processed_trigger
     AFTER UPDATE ON event_listeners
     FOR EACH ROW
-    EXECUTE FUNCTION check_event_all_processed_on_event_listener_processed();
+    EXECUTE FUNCTION on_event_listener_update();
   `.execute(db)
 
   await sql`
@@ -121,8 +147,15 @@ export async function up(db: Kysely<DB>) {
         INSERT INTO event_listeners (id, event_id, listener_name, created_at, updated_at)
         VALUES (new_event_listener_id, NEW.id, listener_name, now(), now());
 
-        PERFORM pg_notify('event_listener_to_be_processed', new_event_listener_id::text);
+        PERFORM pg_notify('event_listener_to_be_processed', json_build_object(
+          'id', new_event_listener_id,
+          'event_id', NEW.id,
+          'event_type', NEW.type,
+          'listener_name', listener_name,
+          'patient_encounter_id', NEW.patient_encounter_id
+        )::text);
       END LOOP;
+
       PERFORM pg_notify('event_inserted', json_build_object('id', NEW.id, 'data', NEW.data)::text);
       RETURN NEW;
     END;
@@ -164,7 +197,7 @@ export async function down(db: Kysely<DB>) {
     .execute(db)
   await sql`DROP TRIGGER IF EXISTS event_listener_processed_trigger ON event_listeners`
     .execute(db)
-  await sql`DROP FUNCTION IF EXISTS check_event_all_processed_on_event_listener_processed`
+  await sql`DROP FUNCTION IF EXISTS on_event_listener_update`
     .execute(db)
   await db.schema.dropTable('event_listeners').execute()
   await db.schema.dropTable('events').execute()

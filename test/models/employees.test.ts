@@ -188,8 +188,10 @@ describeParallel('db/models/employees.ts', () => {
     )
 
     itParallel('searches by profession', async () => {
+      const test_clinic = await createTestOrganization(db)
       const health_worker = await addTestEmployee(db, {
         role: 'nurse',
+        organization_id: test_clinic.id,
       })
 
       const doctor_search = await employees.search(db, {

@@ -17,6 +17,19 @@ import assertHasProperty from '../../util/assertHasProperty.ts'
 // 'notification' event listener).
 const _PUBSUB_GLOBAL_KEY = '__vha_allProcessedPubSub__'
 
+type ListenerResult =
+  & {
+    id: string
+    listener_name: string
+    event_id: string
+    event_type: string
+  }
+  & (
+    | { success: true; processing: false }
+    | { success: false; error: Error; processing: false }
+    | { success: null; processing: true }
+  )
+
 /**
  * We need a dedicated query for the listener.
  * Provides the ability to subscribe to processed events by id or in general
@@ -31,41 +44,37 @@ export const initializeAllProcessedPubSub = once(
       return (globalThis as any)[_PUBSUB_GLOBAL_KEY]
     }
 
-    const by_patient_encounter_id_subscribers = new Map<string, Set<(event_id: string) => void>>()
-    const by_event_id_subscribers = new Map<string, Set<(err?: Error) => void>>()
-    const any_subscribers = new Set<(event_id: string, err?: Error) => void>()
-    const all_settled_for_encounter_subscribers = new Map<string, Set<() => void>>()
+    const all_settled_for_encounter_subscribers = new Map<string, Set<(err?: Error) => void>>()
 
     const client = new Client(opts || {})
     await client.connect()
-    await client.query(`LISTEN event_inserted`)
-    await client.query(`LISTEN event_all_processed`)
     await client.query(`LISTEN event_listener_failure`)
     await client.query(`LISTEN all_events_settled_for_patient_encounter`)
+    // await client.query(`LISTEN event_inserted`)
+    // await client.query(`LISTEN event_all_processed`)
+    // await client.query(`LISTEN event_listener_processed`)
+    // await client.query(`LISTEN event_listener_to_be_processed`)
     client.on('notification', function (event) {
       switch (event.channel) {
-        case 'event_inserted': {
+        case 'event_listener_failure': {
           assert(event.payload)
-          const { id, data } = JSON.parse(event.payload)
-          if (!data.patient_encounter_id) break
-          const by_patient_encounter_id_subscriptions = by_patient_encounter_id_subscribers.get(data.patient_encounter_id)
-          if (!by_patient_encounter_id_subscriptions?.size) break
-          for (const subscription of by_patient_encounter_id_subscriptions) {
-            subscription(id)
+          const event_listener = JSON.parse(event.payload)
+          assertHasProperty(event_listener, 'id')
+          assertHasProperty(event_listener, 'event_id')
+          assertHasProperty(event_listener, 'event_type')
+          assertHasProperty(event_listener, 'listener_name')
+          assertHasProperty(event_listener, 'patient_encounter_id')
+          assertHasProperty(event_listener, 'error_message')
+
+          const error = new Error(`Listener ${event_listener.listener_name} with id ${event_listener.id} failed with message ${event_listener.error_message}`)
+
+          const all_settled_subscriptions = all_settled_for_encounter_subscribers.get(event_listener.patient_encounter_id)
+          if (all_settled_subscriptions?.size) {
+            for (const subscription of all_settled_subscriptions) {
+              subscription(error)
+            }
           }
-          break
-        }
-        case 'event_all_processed': {
-          const event_id = event.payload
-          assert(isUUID(event_id))
-          const by_id_subscriptions = by_event_id_subscribers.get(event_id)
-          if (!by_id_subscriptions?.size) return
-          for (const subscription of by_id_subscriptions) {
-            subscription()
-          }
-          for (const subscription of any_subscribers) {
-            subscription(event_id)
-          }
+
           break
         }
         case 'all_events_settled_for_patient_encounter': {
@@ -78,70 +87,13 @@ export const initializeAllProcessedPubSub = once(
           }
           break
         }
-        case 'event_listener_failure': {
-          assert(event.payload)
-          const event_listener = JSON.parse(event.payload)
-          assertHasProperty(event_listener, 'id')
-          assertHasProperty(event_listener, 'listener_name')
-          assertHasProperty(event_listener, 'event_id')
-          assertHasProperty(event_listener, 'error_message')
-
-          const error = new Error(`Listener ${event_listener.listener_name} with id ${event_listener.id} failed with message ${event_listener.error_message}`)
-          const by_id_subscriptions = by_event_id_subscribers.get(event_listener.event_id)
-          if (!by_id_subscriptions?.size) return
-          for (const subscription of by_id_subscriptions) {
-            subscription(error)
-          }
-          for (const subscription of any_subscribers) {
-            subscription(event_listener.event_id, error)
-          }
-          break
-        }
       }
     })
 
     // TODO stop accepting new subscriptions after shutdown
     const instance = {
-      by_patient_encounter_id: {
-        subscribe(patient_encounter_id: string, callback: (event_id: string) => void) {
-          // console.log('subscribing', event_id)
-          assert(isUUID(patient_encounter_id))
-          if (!by_patient_encounter_id_subscribers.has(patient_encounter_id)) {
-            by_patient_encounter_id_subscribers.set(patient_encounter_id, new Set())
-          }
-          const subscriptions = exists(by_patient_encounter_id_subscribers.get(patient_encounter_id))
-          subscriptions.add(callback)
-        },
-        unsubscribe(patient_encounter_id: string, callback: (event_id: string) => void) {
-          assert(isUUID(patient_encounter_id))
-          const subscriptions = by_patient_encounter_id_subscribers.get(patient_encounter_id)
-          subscriptions?.delete(callback)
-          if (!subscriptions?.size) {
-            by_patient_encounter_id_subscribers.delete(patient_encounter_id)
-          }
-        },
-      },
-      by_event_id: {
-        subscribe(event_id: string, callback: (err?: Error) => void) {
-          // console.log('subscribing', event_id)
-          assert(isUUID(event_id))
-          if (!by_event_id_subscribers.has(event_id)) {
-            by_event_id_subscribers.set(event_id, new Set())
-          }
-          const subscriptions = exists(by_event_id_subscribers.get(event_id))
-          subscriptions.add(callback)
-        },
-        unsubscribe(event_id: string, callback: (err?: Error) => void) {
-          assert(isUUID(event_id))
-          const subscriptions = by_event_id_subscribers.get(event_id)
-          subscriptions?.delete(callback)
-          if (!subscriptions?.size) {
-            by_event_id_subscribers.delete(event_id)
-          }
-        },
-      },
       all_settled_for_encounter: {
-        subscribe(patient_encounter_id: string, callback: () => void) {
+        subscribe(patient_encounter_id: string, callback: (err?: Error) => void) {
           assert(isUUID(patient_encounter_id))
           if (!all_settled_for_encounter_subscribers.has(patient_encounter_id)) {
             all_settled_for_encounter_subscribers.set(patient_encounter_id, new Set())
@@ -149,21 +101,13 @@ export const initializeAllProcessedPubSub = once(
           const subscriptions = exists(all_settled_for_encounter_subscribers.get(patient_encounter_id))
           subscriptions.add(callback)
         },
-        unsubscribe(patient_encounter_id: string, callback: () => void) {
+        unsubscribe(patient_encounter_id: string, callback: (err?: Error) => void) {
           assert(isUUID(patient_encounter_id))
           const subscriptions = all_settled_for_encounter_subscribers.get(patient_encounter_id)
           subscriptions?.delete(callback)
           if (!subscriptions?.size) {
             all_settled_for_encounter_subscribers.delete(patient_encounter_id)
           }
-        },
-      },
-      any: {
-        subscribe(callback: (event_id: string) => void) {
-          any_subscribers.add(callback)
-        },
-        unsubscribe(callback: (event_id: string) => void) {
-          any_subscribers.delete(callback)
         },
       },
       // am I a pythonista? 🐍
@@ -433,7 +377,11 @@ export const events = {
 
     // Subscribe BEFORE querying to avoid missing notifications
     const settled = Promise.withResolvers<void>()
-    const callback = () => settled.resolve()
+    function callback(err?: Error) {
+      if (err) return settled.reject(err)
+      settled.resolve()
+    }
+
     pub_sub.all_settled_for_encounter.subscribe(patient_encounter_id, callback)
 
     try {

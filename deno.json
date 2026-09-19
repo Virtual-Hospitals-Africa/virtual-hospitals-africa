@@ -14,6 +14,7 @@
     "db:codegen": "./db/codegen.sh",
     "db:local": "./db/local.sh",
     "db:docker": "./db/docker.sh",
+    "postgres:fresh": "docker compose down -v && docker compose up -d && sleep 3",
     "db:migrate": "SLOW_QUERY_THRESHOLD_MS=30000 deno task run:trusted db/migrate.ts",
     "db:seed": "SLOW_QUERY_THRESHOLD_MS=30000 deno task run:trusted db/seed/run.ts",
     "db:drop": "deno task run:trusted db/drop.ts",

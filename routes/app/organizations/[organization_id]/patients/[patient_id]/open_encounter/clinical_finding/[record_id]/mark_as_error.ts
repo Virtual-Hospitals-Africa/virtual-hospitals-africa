@@ -64,7 +64,7 @@ export const handler = postHandler(
         patient_encounter_id,
         patient_age_determination,
         procedure_id: procedure.id,
-        entered_in_error_record_id: record_id,
+        altered_record_id: record_id,
       },
     })
 

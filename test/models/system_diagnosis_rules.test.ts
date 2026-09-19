@@ -24,14 +24,31 @@ import { exists } from '../../util/exists.ts'
   runners need only be told which records are new.
 */
 function asRuleRunnerInput(
-  { patient_id, patient_encounter_id, procedure_id, records }: {
+  { patient_id, patient_encounter_id, procedure_id, records, task_description_completed }: {
     patient_id: string
     patient_encounter_id: string
     procedure_id?: string
     records: InsertedRecord[]
+    task_description_completed?: string
   },
 ): RuleRunnerInput & { procedure_id?: string } {
-  return { listener_id: 'test', listener_name: 'test', patient_id, patient_encounter_id, patient_age_determination: 'adult', procedure_id, records }
+  return {
+    listener_id: 'test',
+    listener_name: 'test',
+    patient_id,
+    patient_encounter_id,
+    patient_age_determination: 'adult',
+    procedure_id,
+    records,
+    task_description_completed,
+  }
+}
+
+function latestAnaphylaxisDiagnosisId(patient_id: string): Promise<string> {
+  return patient_evaluations.findOne(db, {
+    patient_id,
+    s_expression: `(diagnosis (snomed_concept "Anaphylaxis" "disorder") improbable)`,
+  }).then((evaluation) => evaluation.id)
 }
 
 describeParallel('db/models/system_diagnosis_rules.ts', () => {
@@ -82,26 +99,6 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         'value': {
           'name': 'Possible diagnosis (contextual qualifier)',
         },
-        'destination_relations': [
-          {
-            'root_snomed_concept_name': 'Measurement finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Systolic blood pressure',
-            'specific_snomed_concept_category': 'observable entity',
-            'existence': 'Yes',
-            'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
-            'relation_name': 'Evidence of',
-          },
-          {
-            'root_snomed_concept_name': 'Clinical finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Insect bite - wound',
-            'specific_snomed_concept_category': 'disorder',
-            'existence': 'Yes',
-            'value': null,
-            'relation_name': 'Evidence of',
-          },
-        ],
         'type': 'evaluation',
         'employment_id': null,
         'by_system': true,
@@ -115,6 +112,30 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         },
         'modifiers': [],
       })
+
+      // The evidence comes back in no particular order, so sort it
+      const sorted_evidence = [...evaluation.destination_relations]
+        .sort((a, b) => a.specific_snomed_concept_name.localeCompare(b.specific_snomed_concept_name))
+      assertMatches(sorted_evidence, [
+        {
+          'root_snomed_concept_name': 'Clinical finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Insect bite - wound',
+          'specific_snomed_concept_category': 'disorder',
+          'existence': 'Yes',
+          'value': null,
+          'relation_name': 'Evidence of',
+        },
+        {
+          'root_snomed_concept_name': 'Measurement finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Systolic blood pressure',
+          'specific_snomed_concept_category': 'observable entity',
+          'existence': 'Yes',
+          'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
+          'relation_name': 'Evidence of',
+        },
+      ])
     },
   )
 
@@ -190,26 +211,6 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         'value': {
           'name': 'Possible diagnosis (contextual qualifier)',
         },
-        'destination_relations': [
-          {
-            'root_snomed_concept_name': 'Measurement finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Systolic blood pressure',
-            'specific_snomed_concept_category': 'observable entity',
-            'existence': 'Yes',
-            'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
-            'relation_name': 'Evidence of',
-          },
-          {
-            'root_snomed_concept_name': 'Clinical finding',
-            'root_snomed_concept_category': 'finding',
-            'specific_snomed_concept_name': 'Fly bite',
-            'specific_snomed_concept_category': 'disorder',
-            'existence': 'Yes',
-            'value': null,
-            'relation_name': 'Evidence of',
-          },
-        ],
         'type': 'evaluation',
         'employment_id': null,
         'by_system': true,
@@ -223,6 +224,30 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
         },
         'modifiers': [],
       })
+
+      // The evidence comes back in no particular order, so sort it
+      const sorted_evidence = [...evaluation.destination_relations]
+        .sort((a, b) => a.specific_snomed_concept_name.localeCompare(b.specific_snomed_concept_name))
+      assertMatches(sorted_evidence, [
+        {
+          'root_snomed_concept_name': 'Clinical finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Fly bite',
+          'specific_snomed_concept_category': 'disorder',
+          'existence': 'Yes',
+          'value': null,
+          'relation_name': 'Evidence of',
+        },
+        {
+          'root_snomed_concept_name': 'Measurement finding',
+          'root_snomed_concept_category': 'finding',
+          'specific_snomed_concept_name': 'Systolic blood pressure',
+          'specific_snomed_concept_category': 'observable entity',
+          'existence': 'Yes',
+          'value': { 'type': 'measurement', 'units': 'mmHg', 'value': '85' },
+          'relation_name': 'Evidence of',
+        },
+      ])
     },
   )
 
@@ -615,13 +640,7 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           ],
         },
       )
-      await additional_tasks.procedureCompletedTasks(db, {
-        patient_id,
-        patient_encounter_id,
-        procedure_id: inserted_additional_task_findings.procedure_id,
-        evaluation_ids: task_groups.evaluation_ids,
-      })
-
+      // The submission that recorded the negatives names the task it answered
       const improbable_diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
         db,
         asRuleRunnerInput({
@@ -629,9 +648,26 @@ describeParallel('db/models/system_diagnosis_rules.ts', () => {
           patient_encounter_id,
           procedure_id: inserted_additional_task_findings.procedure_id,
           records: inserted_additional_task_findings.findings,
+          task_description_completed: 'Check for Anaphylaxis',
         }),
       )
-      assert(improbable_diagnoses_result.startsWith('Inserted 1 improbable diagnosis(es): '))
+      assert(
+        improbable_diagnoses_result.endsWith(`Inserted 1 improbable diagnosis(es): ${await latestAnaphylaxisDiagnosisId(patient_id)}`),
+        improbable_diagnoses_result,
+      )
+
+      // Answering the task again rules nothing out anew
+      const repeated_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
+        db,
+        asRuleRunnerInput({
+          patient_id,
+          patient_encounter_id,
+          procedure_id: inserted_additional_task_findings.procedure_id,
+          records: [],
+          task_description_completed: 'Check for Anaphylaxis',
+        }),
+      )
+      assert(repeated_result.endsWith('Anaphylaxis is improbable, so not ruled out by task "Check for Anaphylaxis"'), repeated_result)
 
       const improbable_diagnosis_evaluation = await patient_evaluations.findOne(db, {
         patient_id,

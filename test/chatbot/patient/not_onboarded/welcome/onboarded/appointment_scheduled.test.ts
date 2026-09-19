@@ -10,6 +10,7 @@ import { patient_chatbot_users } from '../../../../../../db/models/patient_chatb
 import generateUUID from '../../../../../../util/uuid.ts'
 import randomPhoneNumber from '../../../../../../mocks/randomPhoneNumber.ts'
 import { addTestEmployee } from '../../../../../_helpers/employees.ts'
+import { createTestOrganization } from '../../../../../_helpers/organizations.ts'
 import { mockWhatsApp } from 'test/_helpers/mockWhatsApp.ts'
 import { getRequestsToGoogle } from '../../../../../../external-clients/google.ts'
 
@@ -40,7 +41,11 @@ describe('patient chatbot', () => {
         reason: 'pain',
       })
 
-      const health_worker = await addTestEmployee(db, { role: 'doctor' })
+      const organization = await createTestOrganization(db)
+      const health_worker = await addTestEmployee(db, {
+        role: 'doctor',
+        organization_id: organization.id,
+      })
 
       assert(health_worker)
 

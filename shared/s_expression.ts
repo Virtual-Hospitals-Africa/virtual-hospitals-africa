@@ -263,8 +263,10 @@ export function parseArrayWithSchema<Schema extends Values<typeof schemas>>(
   expression: string,
   schema: Schema,
 ): z.infer<Schema>[] {
-  assert(expression.startsWith('(('), 'Expression must start with (( to be interpreted as an array of s expressions')
-  const parsed = s_expression(expression)
+  const trimmed = expression.trim()
+  if (trimmed.replaceAll(/\s/g, '') === '()') return []
+  assert(trimmed.startsWith('(('), 'Expression must start with (( to be interpreted as an array of s expressions')
+  const parsed = s_expression(trimmed)
   assert(Array.isArray(parsed))
   return parsed.map((s_expression) => parseWithSchema(s_expression, schema))
 }
@@ -324,6 +326,12 @@ export function sExpressionZodValidator<Schema extends Values<typeof schemas>>(
   schema: Schema,
 ) {
   return z.string().transform((expression) => parseWithSchema(expression, schema))
+}
+
+export function sExpressionsZodValidator<Schema extends Values<typeof schemas>>(
+  schema: Schema,
+) {
+  return z.string().transform((expression) => parseArrayWithSchema(expression, schema))
 }
 
 export function normalForm(s_expression: string): string {

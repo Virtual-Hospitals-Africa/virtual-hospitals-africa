@@ -7,7 +7,7 @@ import { exists } from '../../util/exists.ts'
 import assertSome from '../../util/assertSome.ts'
 import assertLength from '../../util/assertLength.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
-import { TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
+import { createTestOrganization, TEST_ORGANIZATION_UUIDS } from '../_helpers/organizations.ts'
 import { healthWorkerOrganizationDepartmentNames } from '../../shared/departments.ts'
 import { organizations_with_departments } from '../../db/models/organizations_with_departments.ts'
 import { assertMatches } from '../../util/assertMatches.ts'
@@ -19,8 +19,10 @@ describe('db/models/health_workers.ts', () => {
     it(
       'returns the health worker and their employment information',
       async () => {
+        const organization = await createTestOrganization(db)
         const health_worker = await addTestEmployee(db, {
           role: 'nurse',
+          organization_id: organization.id,
         })
 
         const result = await health_workers.getById(db, health_worker.id)
@@ -62,10 +64,11 @@ describe('db/models/health_workers.ts', () => {
     it(
       'handles a health worker who is both a nurse and admin at one organization',
       async () => {
+        const organization = await createTestOrganization(db)
         const health_worker = await addTestEmployee(db, {
           role: 'nurse',
-
           is_admin: true,
+          organization_id: organization.id,
         })
 
         const result = await health_workers.getById(db, health_worker.id)
@@ -97,7 +100,6 @@ describe('db/models/health_workers.ts', () => {
 
         const health_worker = await addTestEmployee(db, {
           role: 'doctor',
-
           organization_id: TEST_ORGANIZATION_UUIDS.ZA.hospital,
         })
 

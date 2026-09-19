@@ -167,8 +167,10 @@ describeParallel('/login', () => {
     itParallel(
       "doesn't allow access to employees if you are employed at a different organization",
       async () => {
+        const organization = await createTestOrganization(db)
         const mock = await addTestEmployeeWithSession(db, {
           role: 'doctor',
+          organization_id: organization.id,
         })
         const response = await mock.fetch(
           `${route}/app/organizations/00000000-0000-1000-8000-000000000002/employees?expectedTestError=1`,

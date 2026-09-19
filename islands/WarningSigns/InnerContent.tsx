@@ -1,5 +1,5 @@
 import { computed, Signal, useSignal } from '@preact/signals'
-import { useMemo, useRef } from 'preact/hooks'
+import { useEffect, useMemo, useRef } from 'preact/hooks'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
 import {
@@ -12,13 +12,13 @@ import {
 } from '../../types.ts'
 import compactMap from '../../util/compactMap.ts'
 import { groupBy } from '../../util/groupBy.ts'
-import { uniqBy } from '../../util/uniqBy.ts'
 import { FindingModal } from '../finding/Modal.tsx'
 import Search from '../Search.tsx'
 import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
 import { CATEGORIES, CheckedWarningSign, sameSign, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
+import { savedRecordId, warningSignsFormValues } from './form_values.ts'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
@@ -27,8 +27,10 @@ import negate from '../../util/negate.ts'
 import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../../util/debounce.ts'
-import { accumulateFollowUps, FollowUpGroup } from './follow_ups.ts'
+import { accumulateFollowUps, asCheckedFollowUpSign, findCheckedFollowUp, FollowUpGroup, isUnanswered, noneOfTheAboveRequests } from './follow_ups.ts'
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
+import { exists } from '../../util/exists.ts'
+import { showAlertMessage } from '../alert/AlertListener.tsx'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
@@ -73,12 +75,14 @@ function asFindingModalMetadata({
 export default function WarningSignsInnerContent({
   post_route,
   findings_to_check_for_route,
+  none_of_the_above_findings_route,
   search_results,
   snomed_warning_signs_async_search,
   warning_signs,
 }: {
   post_route: string // /app/organizations/[organization_id]/patients/[patient_id]/open_encounter/clinical_finding
   findings_to_check_for_route: string | null // .../open_encounter/findings_to_check_for, null skips prefetching (tutorial)
+  none_of_the_above_findings_route: string | null // .../open_encounter/none_of_the_above_findings, null hides the button (tutorial)
   search_results: Signal<null | WarningSignWithMaybeRecord[]>
   snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
   warning_signs: WarningSignWithMaybeRecord[]
@@ -93,12 +97,37 @@ export default function WarningSignsInnerContent({
   )
 
   const follow_ups_needed = useSignal<FollowUpGroup[]>([])
+  const none_of_the_above_saving = useSignal(false)
+
+  /*
+    Only follow ups still unanswered hold up the page. Ones being saved, whether a checked
+    finding or a round of negatives, are answered already and may finish after submitting.
+  */
+  useEffect(() => {
+    const warning_signs_form = exists(document.getElementById('warning_signs'))
+    function callback(event: SubmitEvent) {
+      const unanswered = !none_of_the_above_saving.value &&
+        follow_ups_needed.value.some((group) => group.findings_to_check_for.some((finding) => isUnanswered(checked_signs.value, finding)))
+      if (unanswered) {
+        event.preventDefault()
+        event.stopPropagation()
+        showAlertMessage({
+          message: 'Please answer follow up questions before continuing',
+          level: 'warning',
+        })
+      }
+    }
+    warning_signs_form.addEventListener('submit', callback)
+    return () => warning_signs_form.removeEventListener('submit', callback)
+  })
 
   // Dry-run results keyed by the exact s_expression, held as promises so a save
   // can await a request still in flight. Failed requests are evicted.
   const follow_ups_cache = useRef(new Map<string, Promise<FindingToCheckFor[]>>())
   // The first onChange from an opened modal fetches immediately, subsequent edits are debounced
   const modal_prefetched = useRef(false)
+  // Records removed on this visit. The signs as rendered still name them, so rechecking one starts afresh
+  const retracted_record_ids = useRef(new Set<string>())
 
   function fetchFollowUps(s_expression: string): Promise<FindingToCheckFor[]> {
     if (!findings_to_check_for_route) return Promise.resolve([])
@@ -140,12 +169,7 @@ export default function WarningSignsInnerContent({
 
   const grouped = computed(() => groupBy(table_signs_with_checked.value, 'category'))
 
-  const signs_to_send_to_server = computed(() =>
-    uniqBy([
-      ...checked_signs.value,
-      ...table_signs_with_checked.value,
-    ], uniqueIdentifier)
-  )
+  const form_values = computed(() => warningSignsFormValues({ warning_signs, checked_signs: checked_signs.value }))
 
   const active_modal = useSignal<
     null | {
@@ -156,9 +180,11 @@ export default function WarningSignsInnerContent({
   >(null)
 
   function onCheck(sign: ToggleableWarningSign) {
+    const existing_record = sign.existing_record && !retracted_record_ids.current.has(sign.existing_record.id) ? sign.existing_record : undefined
     const checked_sign = {
       ...sign,
-      entered: sign.entered || asEntered(sign),
+      existing_record,
+      entered: sign.entered || asEntered({ ...sign, existing_record }),
       saving: false as const,
     }
     checked_signs.value = [
@@ -187,12 +213,37 @@ export default function WarningSignsInnerContent({
     }
   }
 
+  /*
+    Removal retracts the record at the id it has, or will have if its save is still in
+    flight. Should that fail the sign stays checked so the page still vouches for it.
+  */
+  function markAsError(sign: CheckedWarningSign, record_id: string) {
+    retracted_record_ids.current.add(record_id)
+    fetch(`${post_route}/${record_id}/mark_as_error`, {
+      method: 'POST',
+      headers: { accept: 'application/json' },
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`mark_as_error responded ${response.status}: ${await response.text()}`)
+        const json = await response.json()
+        assert(json.success)
+      })
+      .catch((error) => {
+        console.error(error)
+        retracted_record_ids.current.delete(record_id)
+        if (checked_signs.value.some((checked) => sameSign(checked, sign))) return
+        checked_signs.value = [...checked_signs.value, { ...sign, saving: false }]
+      })
+  }
+
   function updateSigns(finding: EnteredFinding | typeof RemoveFindingSymbol) {
     const active_modal_sign = active_modal.value!.sign
     const isActiveSign = (sign: CheckedWarningSign) => sameSign(sign, active_modal_sign)
 
     if (finding === RemoveFindingSymbol) {
       checked_signs.value = checked_signs.value.filter(negate(isActiveSign))
+      const record_id = savedRecordId(active_modal_sign)
+      if (record_id) markAsError(active_modal_sign, record_id)
       return
     }
 
@@ -201,20 +252,21 @@ export default function WarningSignsInnerContent({
       if (!isActiveSign(sign)) return sign
       assert(!edited)
 
-      // TODO
-      // if (sign.existing_record) {
-      //   if (sign.existing_record.augmented.s_expression === finding.s_expression) {
-      //     ...
-      //   }
-      // }
+      // Reopening a saved sign and saving it as it was makes no new record
+      if (savedRecordId(sign) && sign.entered.s_expression === finding.s_expression) {
+        return edited = { ...sign, entered: finding }
+      }
+
+      // Whatever record the sign has is superseded: a positive being edited, one still
+      // saving, or a negative from an earlier submission that checking the sign overturns
+      const altered_record_id = sign.saving ? sign.saving.as_finding_id : sign.existing_record?.id
 
       const as_finding_id = crypto.randomUUID()
       const to_post: ClinicalFindingPostBody = {
         finding_id: as_finding_id,
         s_expression: finding.s_expression,
         priority_level: finding.priority,
-        // TODO
-        // entered_in_error_record_id
+        altered_record_id,
       }
       fetch(post_route, {
         method: 'POST',
@@ -227,7 +279,6 @@ export default function WarningSignsInnerContent({
           assert(json.success)
           checked_signs.value = checked_signs.value.map((sign) => {
             if (!isActiveSign(sign)) return sign
-            // TODO consider assert(sign.saving) ?
             if (!sign.saving) return sign
             if (sign.saving.as_finding_id !== as_finding_id) return sign
             return {
@@ -272,7 +323,47 @@ export default function WarningSignsInnerContent({
     // Usually already resolved having been prefetched while the modal was open
     fetchFollowUps(finding.s_expression).then((findings_to_check_for) => {
       follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, findings_to_check_for })
+
+      // Follow ups already recorded as present in this encounter start out checked
+      const already_present = compactMap(findings_to_check_for, (follow_up) => {
+        if (findCheckedFollowUp(checked_signs.value, follow_up)) return
+        return asCheckedFollowUpSign(follow_up)
+      })
+      if (already_present.length) {
+        checked_signs.value = [...checked_signs.value, ...already_present]
+      }
     })
+  }
+
+  /*
+    The panel closes at once, leaving a spinner in its place. The groups answered stay in
+    follow_ups_needed until their negatives are recorded, so a failure reopens the panel,
+    while a group arriving from a save made meanwhile is left alone.
+  */
+  async function onNoneOfTheAbove() {
+    if (!none_of_the_above_findings_route || none_of_the_above_saving.value) return
+    none_of_the_above_saving.value = true
+    const answered = new Set(follow_ups_needed.value.map((group) => group.key))
+
+    try {
+      // One after another so a finding checked for by two tasks is only recorded once
+      for (const request of noneOfTheAboveRequests(follow_ups_needed.value, checked_signs.value)) {
+        const response = await fetch(none_of_the_above_findings_route, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify(request),
+        })
+        if (!response.ok) throw new Error(`none_of_the_above_findings responded ${response.status}: ${await response.text()}`)
+        const json = await response.json()
+        assert(json.success)
+      }
+      follow_ups_needed.value = follow_ups_needed.value.filter((group) => !answered.has(group.key))
+    } catch (error) {
+      // The panel reopens so the health worker can try again
+      console.error(error)
+    } finally {
+      none_of_the_above_saving.value = false
+    }
   }
 
   return (
@@ -310,9 +401,7 @@ export default function WarningSignsInnerContent({
           signs={grouped.value.get(config.category) || []}
         />
       ))}
-      <WarningSignsHiddenInputs
-        signs_to_send_to_server={signs_to_send_to_server.value}
-      />
+      <WarningSignsHiddenInputs form_values={form_values.value} />
       <FindingModal
         finding={active_modal.value && {
           metadata: active_modal.value.metadata,
@@ -325,6 +414,11 @@ export default function WarningSignsInnerContent({
       />
       <FollowUpsPanel
         groups={follow_ups_needed.value}
+        checked_signs={checked_signs.value}
+        onCheck={onCheck}
+        onOpenDetails={onOpenDetails}
+        onNoneOfTheAbove={none_of_the_above_findings_route ? onNoneOfTheAbove : null}
+        none_of_the_above_saving={none_of_the_above_saving.value}
         onDismiss={() => follow_ups_needed.value = []}
       />
     </div>

@@ -18,7 +18,7 @@ export type TestEmployeeWithSession = Awaited<ReturnType<typeof addTestEmployeeW
 
 export async function addTestEmployeeWithSession(
   trx: TrxOrDb,
-  opts?: TestHealthWorkerOpts,
+  opts: TestHealthWorkerOpts,
 ) {
   const health_worker = await addTestEmployee(trx, opts)
   return addSessionForEmployee(trx, health_worker)

@@ -1,0 +1,7 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+Never `await` in a loop. Use Promise.all or pMap if the number of items is large. If available, use a single operation that operates in bulk.

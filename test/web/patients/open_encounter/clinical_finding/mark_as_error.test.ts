@@ -102,25 +102,25 @@ describeParallel('/app/organizations/[organization_id]/patients/[patient_id]/ope
         ])
 
         await events.allProcessedForEncounter(db, { patient_encounter_id })
-        const inserted_events = await db.selectFrom('events')
+        const inserted_event = await db.selectFrom('events')
           .selectAll()
           .where('type', '=', 'SingleFindingMarkedAsError')
-          .execute()
+          .where('patient_encounter_id', '=', patient_encounter_id)
+          .executeTakeFirstOrThrow()
+
         assertMatches(
-          inserted_events.filter((event) => (event.data as { entered_in_error_record_id?: string }).entered_in_error_record_id === cardiac_arrest.id),
-          [
-            {
-              data: {
-                workflow: 'triage',
-                step: 'warning_signs',
-                patient_id,
-                patient_encounter_id,
-                patient_age_determination: 'adult',
-                procedure_id,
-                entered_in_error_record_id: cardiac_arrest.id,
-              },
+          inserted_event,
+          {
+            data: {
+              workflow: 'triage',
+              step: 'warning_signs',
+              patient_id,
+              patient_encounter_id,
+              patient_age_determination: 'adult',
+              procedure_id,
+              altered_record_id: cardiac_arrest.id,
             },
-          ],
+          },
         )
       },
     )

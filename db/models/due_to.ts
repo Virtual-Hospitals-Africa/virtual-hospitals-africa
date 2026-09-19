@@ -367,8 +367,6 @@ function matchingQuery<Q extends AnyQueryCreator>(
         .unionAll(by_measurements_query)
         .unionAll(by_event_time_comparisons_query)
     })
-    .selectFrom('matching_due_tos')
-    .selectAll('matching_due_tos')
 }
 
 /*
@@ -379,14 +377,14 @@ export function withTaggingOfInsertedRecords<Q extends AnyQueryCreator>(
   query: Q & WithDueToInputs<Q>,
   { patient_age_determination }: { patient_age_determination: AgeDetermination },
 ): Q {
-  return query.with('inserting_due_tos', (qb: AnyQueryCreator) =>
-    qb.insertInto('patient_record_satisfying_due_tos')
-      .columns(['due_to_id', 'patient_record_id'])
-      .expression(
-        matchingQuery(qb, { patient_age_determination })
-          .clearSelect()
-          .select(['matching_due_tos.due_to_id', 'matching_due_tos.patient_record_id']),
-      )) as unknown as Q
+  return matchingQuery(query, { patient_age_determination })
+    .with('inserting_patient_record_satisfying_due_tos', (qb) =>
+      qb.insertInto('patient_record_satisfying_due_tos')
+        .columns(['due_to_id', 'patient_record_id'])
+        .expression((eb) =>
+          eb.selectFrom('matching_due_tos')
+            .select(['matching_due_tos.due_to_id', 'matching_due_tos.patient_record_id'])
+        )) as unknown as Q
 }
 
 /*
@@ -530,6 +528,9 @@ export const due_to = {
   ): Promise<HypotheticalDueToMatch[]> {
     if (finding.existence !== 'Yes') return Promise.resolve([])
 
-    return matchingQuery(hypotheticalInputs(trx, finding), { patient_age_determination }).execute()
+    return matchingQuery(hypotheticalInputs(trx, finding), { patient_age_determination })
+      .selectFrom('matching_due_tos')
+      .selectAll('matching_due_tos')
+      .execute()
   },
 }

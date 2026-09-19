@@ -17,6 +17,7 @@ import { patient_triage } from '../db/models/patient_triage.ts'
 import { EVALUATION_ACTION, TRIAGE_INDEX } from '../shared/snomed_concepts.ts'
 import { triageLevelFromTEWSTotal } from '../shared/vitals.ts'
 import { system_diagnosis_rules } from '../db/models/system_diagnosis_rules.ts'
+import { task_description_validator } from '../shared/tasks.ts'
 
 export const EVENTS = {
   HealthWorkerLogin: defineEvent(
@@ -76,7 +77,7 @@ export const EVENTS = {
       patient_age_determination: z.enum(['adult', 'older child', 'younger child']).nullable(),
       patient_encounter_id: z.string().uuid(),
       procedure_id: z.string().uuid(),
-      entered_in_error_record_id: z.string().uuid(),
+      altered_record_id: z.string().uuid(),
     }),
     {},
   ),
@@ -126,7 +127,12 @@ export const EVENTS = {
       },
     },
   ),
-  RecordsAdded: defineEvent(
+  /*
+    Records made by one submission. task_description_completed names the task the health worker
+    said they were done with in making them, as when none of a check_for task's findings apply,
+    so that the diagnosis rules can rule the possible diagnosis behind the task out.
+  */
+  FindingsAdded: defineEvent(
     z.object({
       procedure_id: z.string().uuid().optional(),
       patient_id: z.string().uuid(),
@@ -136,7 +142,7 @@ export const EVENTS = {
         id: z.string().uuid(),
         existence: z.enum(['Yes', 'No', 'Unknown']),
       }).array(),
-      task_completed_id: z.string().uuid().optional(),
+      task_description_completed: task_description_validator.optional(),
     }),
     {
       insertTasksIfNotAlreadyIdentified(trx, payload) {
@@ -144,8 +150,6 @@ export const EVENTS = {
           trx,
           {
             ...payload.data,
-            // listener_id: payload.listener_id,
-            // listener_name: payload.listener_name,
           },
         )
       },
@@ -166,6 +170,49 @@ export const EVENTS = {
             ...payload.data,
             listener_id: payload.listener_id,
             listener_name: payload.listener_name,
+          },
+        )
+      },
+    },
+  ),
+  EvaluationAdded: defineEvent(
+    z.object({
+      procedure_id: z.string().uuid().optional(),
+      patient_id: z.string().uuid(),
+      patient_age_determination: z.enum(['adult', 'older child', 'younger child']),
+      patient_encounter_id: z.string().uuid(),
+      record_id: z.string().uuid(),
+      task_description_completed: z.never().optional(),
+    }),
+    {
+      insertTasksIfNotAlreadyIdentified(trx, { data: { record_id, ...data } }) {
+        return additional_tasks.insertTasksIfNotAlreadyIdentified(
+          trx,
+          {
+            ...data,
+            records: [{ id: record_id, existence: 'Yes' }],
+          },
+        )
+      },
+      insertSystemDiagnosesIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ...data } }) {
+        return system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(
+          trx,
+          {
+            listener_id,
+            listener_name,
+            records: [{ id: record_id, existence: 'Yes' }],
+            ...data,
+          },
+        )
+      },
+      insertSystemPriorityEvaluationsIfNotAlreadyIdentified(trx, { listener_id, listener_name, data: { record_id, ...data } }) {
+        return system_priority_evaluations.insertSystemPriorityEvaluationsIfNotAlreadyIdentified(
+          trx,
+          {
+            listener_id,
+            listener_name,
+            records: [{ id: record_id, existence: 'Yes' }],
+            ...data,
           },
         )
       },

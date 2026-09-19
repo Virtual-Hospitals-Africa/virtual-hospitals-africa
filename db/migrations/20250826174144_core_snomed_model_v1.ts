@@ -251,12 +251,6 @@ export async function up(db: Kysely<DB>) {
     .execute()
 
   await db.schema
-    .createIndex('idx_patient_records_value_snomed_concept_id')
-    .on('patient_records')
-    .column('value_snomed_concept_id')
-    .execute()
-
-  await db.schema
     .createIndex('idx_patient_procedures_employment_id')
     .on('patient_procedures')
     .column('employment_id')

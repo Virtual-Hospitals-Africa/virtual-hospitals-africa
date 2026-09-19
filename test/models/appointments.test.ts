@@ -5,6 +5,7 @@ import { patients } from '../../db/models/patients.ts'
 import generateUUID from '../../util/uuid.ts'
 import db from '../../db/db.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
+import { createTestOrganization } from '../_helpers/organizations.ts'
 import { itUsesTrxAnd } from '../_helpers/transaction.ts'
 import randomDemographics from '../../mocks/randomDemographics.ts'
 
@@ -15,8 +16,10 @@ describe('db/models/appointments.ts', () => {
       'does not add an offered time if employee_id is an admin',
       async (trx) => {
         const patient = await patients.insert(trx, { name: generateUUID() })
+        const organization = await createTestOrganization(trx)
         const health_worker = await addTestEmployee(trx, {
           role: 'admin',
+          organization_id: organization.id,
         })
         const patient_appointment_request = await appointments.createNewRequest(
           trx,
@@ -42,8 +45,10 @@ describe('db/models/appointments.ts', () => {
       'adds an offered time if employee_id is a doctor',
       async (trx) => {
         const patient = await patients.insert(trx, randomDemographics())
+        const organization = await createTestOrganization(trx)
         const health_worker = await addTestEmployee(trx, {
           role: 'doctor',
+          organization_id: organization.id,
         })
         const patient_appointment_request = await appointments.createNewRequest(
           trx,

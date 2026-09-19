@@ -3,11 +3,16 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { health_worker_web_push_subscriptions } from '../../db/models/health_worker_web_push_subscriptions.ts'
 import { addTestEmployee } from '../_helpers/employees.ts'
+import { createTestOrganization } from '../_helpers/organizations.ts'
 
 describe('db/models/health_worker_web_push_subscriptions.ts', () => {
   afterAll(() => db.destroy())
   it('upserts, lists, and deletes subscriptions by endpoint', async () => {
-    const health_worker = await addTestEmployee(db, { role: 'nurse' })
+    const organization = await createTestOrganization(db)
+    const health_worker = await addTestEmployee(db, {
+      role: 'nurse',
+      organization_id: organization.id,
+    })
     const endpoint = 'https://push.example.test/subscription/1'
 
     const subscription = await health_worker_web_push_subscriptions.upsertForHealthWorker(

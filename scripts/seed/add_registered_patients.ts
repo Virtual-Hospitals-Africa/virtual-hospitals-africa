@@ -25,6 +25,7 @@ async function findOrCreateReceptionist() {
   if (receptionist) return receptionist
 
   return addTestEmployee(db, {
+    organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
     role: 'receptionist',
   })
 }
