@@ -60,11 +60,8 @@ import { patient_record_providers } from '../../../../../../../db/models/patient
 import { buildPriorityRecord } from '../../../../../../../db/models/priority.ts'
 import { patient_evaluation_scores } from '../../../../../../../db/models/patient_evaluation_scores.ts'
 import { employees_presence } from '../../../../../../../db/models/employees_presence.ts'
-import { organizations } from '../../../../../../../db/models/organizations.ts'
 import { logToFileIfOnServer } from '../../../../../../../util/logToFileIfOnServer.ts'
-import { TEST_ORGANIZATION_UUIDS } from 'test/_helpers/organizations.ts'
 import { nearest_organizations } from '../../../../../../../db/models/nearest_organizations.ts'
-import { exists } from '../../../../../../../util/exists.ts'
 
 export function completeLastStep(
   { state: { trx, workflow, step, workflow_status, patient_encounter_employee_id } }: OpenEncounterWorkflowContext,
@@ -260,7 +257,7 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
       ? nearest_organizations.findFirst(
         trx,
         {
-          category: 'Hospital',
+          is_hospital: true,
           location: organization.location,
           excluding_id: organization.id,
         },

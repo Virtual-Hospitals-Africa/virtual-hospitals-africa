@@ -2493,6 +2493,8 @@ export type PatientDrawerV4Props = {
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
+  escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
+  nearest_hospital: RenderedOrganization | null
 }
 
 export type RenderedSidebarWorkflowStep = {

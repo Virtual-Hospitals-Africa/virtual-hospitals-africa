@@ -6,14 +6,14 @@ import { Button } from '../../components/library/Button.tsx'
 import { BuildingOffice2Icon, XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { ChevronDownIcon } from '../../components/library/icons/heroicons/mini.tsx'
 import OnlineIndicator from '../../components/library/OnlineIndicator.tsx'
-import { RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../../types.ts'
+import { Maybe, Priority, RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../../types.ts'
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
-import type { PriorityEscalation } from './PriorityEscalationListener.tsx'
 
 type PriorityEscalationModalProps = {
-  escalation: PriorityEscalation | null
+  priority: Maybe<Priority>
   escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
   nearest_hospital: RenderedOrganization | null
+  open: boolean
   onClose(): void
 }
 
@@ -60,14 +60,14 @@ const SENIOR_ACTION_CARD_CLASS =
   'w-full text-left cursor-pointer rounded-lg border-2 border-indigo-600 bg-indigo-50 px-4 py-4 shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-600'
 
 export function PriorityEscalationModal(
-  { escalation, escalation_candidates, nearest_hospital, onClose }: PriorityEscalationModalProps,
+  { priority, open, escalation_candidates, nearest_hospital, onClose }: PriorityEscalationModalProps,
 ) {
   const senior_provider = escalation_candidates.find((candidate) => candidate.senior_on_duty) ??
     escalation_candidates.find((candidate) => candidate.senior_on_staff)
   const remaining_candidates = escalation_candidates.filter((candidate) => candidate.employee_id !== senior_provider?.employee_id)
 
   return (
-    <Transition.Root show={escalation !== null} as={Fragment}>
+    <Transition.Root show={open} as={Fragment}>
       <Dialog className='relative z-50' onClose={onClose}>
         <Transition.Child
           as={Fragment}
@@ -93,7 +93,7 @@ export function PriorityEscalationModal(
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
               <Dialog.Panel className='relative w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all'>
-                {escalation && (
+                {open && (
                   <div className='flex flex-col max-h-[90vh]'>
                     <div className='relative px-6 pt-8 pb-4 text-center'>
                       <button
@@ -109,7 +109,7 @@ export function PriorityEscalationModal(
                     </div>
                     <div className='overflow-y-auto flex-1 px-6 pb-4 flex flex-col gap-5'>
                       <div>
-                        Priority: {escalation.priority}
+                        Priority: {priority}
                       </div>
                       <button
                         type='button'

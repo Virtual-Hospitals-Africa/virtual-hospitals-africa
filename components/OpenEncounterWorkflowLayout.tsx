@@ -7,7 +7,6 @@ import { Button } from './library/Button.tsx'
 
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { PriorityEscalationListener } from '../islands/PriorityEscalation/PriorityEscalationListener.tsx'
 import { PatientDrawerV4Props, RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../types.ts'
 import { Workflow } from '../db.d.ts'
 import { hyphenate } from '../util/hyphenate.ts'
@@ -83,14 +82,12 @@ export function OpenEncounterWorkflowLayout({
             this_visit_diagnoses={this_visit_diagnoses}
             patient_history={patient_history}
             care_team={care_team}
+            escalation_candidates={escalation_candidates}
+            nearest_hospital={nearest_hospital}
           />
         )
         : undefined}
     >
-      <PriorityEscalationListener
-        escalation_candidates={escalation_candidates}
-        nearest_hospital={nearest_hospital}
-      />
       <ContainerTag method='POST' className='h-full flex flex-col' id={id}>
         <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>
           {children}

@@ -39,6 +39,8 @@ import {
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
 import { exists } from '../../util/exists.ts'
 import { showAlertMessage } from '../alert/AlertListener.tsx'
+import { higherPriority } from '../../shared/priorities.ts'
+import { priorityUpdate } from '../DrawerPatientCard.tsx'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
   const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
@@ -330,6 +332,12 @@ export default function WarningSignsInnerContent({
     // Usually already resolved having been prefetched while the modal was open
     fetchFollowUps(finding.s_expression).then((dry_run) => {
       follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, dry_run })
+      const priority_update = higherPriority(finding.priority, dry_run.would_indicate_priority)
+      if (priority_update) {
+        priorityUpdate({
+          priority: priority_update,
+        })
+      }
 
       // Follow ups already recorded as present in this encounter start out checked
       const already_present = compactMap(dry_run.findings_to_check_for, (follow_up) => {

@@ -13,6 +13,7 @@ export type OrganizationSearch = {
   kind?: 'physical' | 'virtual' | null
   name?: string
   is_test?: boolean
+  is_hospital?: boolean
   category?: string
   country?: string
   include_all_countries?: boolean
@@ -101,6 +102,9 @@ export const organizations = base({
     }
     if (opts.country) {
       qb = qb.where('organizations.country', '=', opts.country)
+    }
+    if (opts.is_hospital) {
+      qb = qb.where('organizations.category', 'in', HOSPITAL_CATEGORIES)
     }
     return qb
   },
@@ -202,3 +206,65 @@ export const organizations = base({
 })
 
 export type OrganizationSearchResult = SearchResult<typeof organizations>
+
+export const HOSPITAL_CATEGORIES = [
+  'Refferal Hospital',
+  'District Hospital',
+  'Community Hospital',
+  'University Teaching Hospital',
+  'State Hospital',
+  'Level 1 Hospital',
+  'Zonal Hospital',
+  'Teaching Hospital',
+  'Centre Hospitalier Universitaire National',
+  'Centre National Hospitalier Universitaire',
+  'Type D Hospital',
+  'National Referral Hospital',
+  'Type A Hospital',
+  'Intermediate Hospital',
+  'General Hospital Hospital',
+  'Rural Hospital',
+  'National Hospital',
+  'Natonal Hospital',
+  'Hospital Medical Center',
+  'Tertiary Hospital',
+  'Provincial Hospital',
+  'Centre Hospitalier R├®gional',
+  'Primary Hospital',
+  'Mission Hospital',
+  'Central Hospital',
+  'Referral Hospital',
+  'Hospitalier R├®gional',
+  'Level 2 Hospital',
+  'Centre Hospitalier D├®partemental',
+  'National Central Hospital',
+  'Hospital Geral',
+  'General Hospital',
+  'Cottage Hospital',
+  'Hospital Provincial',
+  'Centre Hospitalier Universitaire',
+  'Hospital Rural',
+  'Regional Referral Hospital',
+  'University Hospital',
+  'Provincial Tertiary Hospital',
+  'Hospital Central',
+  'Sub-district Hospital',
+  'Designated District Hospital',
+  'Municipal Hospital',
+  'Regional Hospital',
+  'County Hospital',
+  'Hospital Medical Centre',
+  'Centre Hospitalier Pr├®fectoral',
+  'Type C Hospital',
+  'Provincial General Hospital',
+  'County Referral Hospital',
+  'Centre Hospitalier Urbain',
+  'Hospitalier Universitaire',
+  'Type B Hospital',
+  'Hospital Distrital',
+  'District/provincial Hospital',
+  'Level 3 Hospital',
+  'Mini Hospital',
+  'Hospital',
+  'Centre Hospitalier National',
+]
