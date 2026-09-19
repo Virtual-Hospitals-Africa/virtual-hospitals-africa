@@ -46,6 +46,7 @@ export const organizations = base({
   baseQuery(trx: TrxOrDbOrQueryCreator, opts: OrganizationSearch) {
     let qb = trx
       .selectFrom('organizations')
+      .leftJoin('addresses', 'addresses.id', 'organizations.address_id')
       .select((eb) => [
         'organizations.id',
         'organizations.name',
@@ -55,10 +56,7 @@ export const organizations = base({
         'organizations.ownership',
         'organizations.inactive_reason',
         'organizations.most_common_language_code',
-        eb.selectFrom('addresses')
-          .whereRef('addresses.id', '=', 'organizations.address_id')
-          .select('addresses.formatted')
-          .as('formatted_address'),
+        'addresses.formatted as formatted_address',
         eb.selectFrom('organization_rooms')
           .whereRef('organization_rooms.organization_id', '=', 'organizations.id')
           .where('organization_rooms.name', '=', 'Waiting room')
@@ -69,6 +67,12 @@ export const organizations = base({
           .where('organization_rooms.name', '=', 'Reception')
           .select('organization_rooms.id')
           .as('reception_id'),
+        eb.exists(
+          trx.selectFrom('employment')
+            .where('employment.is_admin', '=', true)
+            .where('employment.organization_id', '=', eb.ref('organizations.id'))
+            .select(success_true),
+        ).as('using_vha'),
         jsonBuildNullableObject(eb.ref('location'), {
           longitude: sql<number>`ST_X(location::geometry)`,
           latitude: sql<number>`ST_Y(location::geometry)`,

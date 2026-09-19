@@ -184,9 +184,9 @@ const conversation_states: ConversationStates<
       const organizations = nearest_facilities.map((organization) => {
         const distance_in_km = organization.walking_distance ||
           (organization.distance_meters / 1000).toFixed(1) + ' km'
-        const description = distance_in_km ? `${organization.address} (${distance_in_km})` : organization.address
+        const description = distance_in_km ? `${organization.formatted_address} (${distance_in_km})` : organization.formatted_address
 
-        const organization_name = organization.admins.length ? `${organization.name} (VHA)` : organization.name
+        const organization_name = organization.using_vha ? `${organization.name} (VHA)` : organization.name
         return {
           section: organization.locality || '[Unknown Location]',
           row: {
@@ -248,7 +248,7 @@ const conversation_states: ConversationStates<
           longitude: selected_organization.location.longitude,
           latitude: selected_organization.location.latitude,
           name: selected_organization.name,
-          address: selected_organization.address,
+          address: selected_organization.formatted_address,
         },
       }
 

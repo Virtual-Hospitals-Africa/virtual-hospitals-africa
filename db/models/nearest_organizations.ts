@@ -1,8 +1,9 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { Coordinates, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { base, identity, SearchResult } from './_base.ts'
+import { base, SearchResult } from './_base.ts'
 import { organizations, OrganizationSearch } from './organizations.ts'
+import assertHasProperty from '../../util/assertHasProperty.ts'
 
 export type SearchOpts = OrganizationSearch & {
   location: Coordinates
@@ -73,6 +74,7 @@ export const nearest_organizations = base({
       .where('inactive_reason', 'is', null)
       .where('location', 'is not', null)
       .select([
+        'addresses.locality',
         distance_sql.as('distance_meters'),
         sql<string>`'https://maps.google.com'`.as('google_maps_link'),
         sql<string>`'Open'`.as('status'),
@@ -139,7 +141,18 @@ export const nearest_organizations = base({
         'asc',
       )
   },
-  formatResult: identity<RenderedOrganization>,
+  formatResult(organization): RenderedOrganization & {
+    location: Coordinates
+    locality: string
+    formatted_address: string
+    distance_meters: number
+    google_maps_link: string
+  } {
+    assertHasProperty(organization, 'location')
+    assertHasProperty(organization, 'locality')
+    assertHasProperty(organization, 'formatted_address')
+    return organization
+  },
   // formatResult: (organization) => ({
   //   ...organization,
   //   business_hours: 'M-F 9am-5pm',
