@@ -36,6 +36,7 @@ export function OpenEncounterWorkflowLayout({
   onSubmit,
   escalation_candidates,
   nearest_hospital,
+  refer_route,
 }: {
   id: string
   url: URL
@@ -84,6 +85,7 @@ export function OpenEncounterWorkflowLayout({
             care_team={care_team}
             escalation_candidates={escalation_candidates}
             nearest_hospital={nearest_hospital}
+            refer_route={refer_route}
           />
         )
         : undefined}

@@ -1,5 +1,5 @@
 import { computed, Signal, useSignal } from '@preact/signals'
-import { useEffect, useMemo, useRef } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
 import {
@@ -26,7 +26,6 @@ import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
 import negate from '../../util/negate.ts'
 import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
 import { assert } from 'std/assert/assert.ts'
-import debounce from '../../util/debounce.ts'
 import {
   accumulateFollowUps,
   asCheckedFollowUpSign,
@@ -159,10 +158,8 @@ export default function WarningSignsInnerContent({
     return request
   }
 
-  const debounced_fetch_follow_ups = useMemo(() => debounce(fetchFollowUps, 220), [rules_dry_run_route])
-
   function onModalChange(finding: EnteredFinding) {
-    if (modal_prefetched.current) return debounced_fetch_follow_ups(finding.s_expression)
+    if (modal_prefetched.current) return fetchFollowUps(finding.s_expression)
     modal_prefetched.current = true
     fetchFollowUps(finding.s_expression)
   }
@@ -322,7 +319,6 @@ export default function WarningSignsInnerContent({
     const key = uniqueIdentifier(active_modal.value!.sign)
     updateSigns(finding)
     active_modal.value = null
-    debounced_fetch_follow_ups.cancel()
 
     if (finding === RemoveFindingSymbol) {
       follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: null, dry_run: EMPTY_RULES_DRY_RUN })
@@ -331,8 +327,16 @@ export default function WarningSignsInnerContent({
 
     // Usually already resolved having been prefetched while the modal was open
     fetchFollowUps(finding.s_expression).then((dry_run) => {
-      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, dry_run })
       const priority_update = higherPriority(finding.priority, dry_run.would_indicate_priority)
+      // TODO: super edge case, but if the would_indicate_priority is based on a combination of findings
+      // and one of those depencies is subsequently removed this will then be wrong.
+      // The previous priority has already been saved to the backend via POST clinical_finding
+      // with only the record_id confirmed on POST of the warning_signs page, so this value will only live
+      // on the frontend and if it is indeed later wrong the backend should sort it out
+      if (priority_update && priority_update !== finding.priority) {
+        finding.priority = priority_update
+      }
+      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, dry_run })
       if (priority_update) {
         priorityUpdate({
           priority: priority_update,

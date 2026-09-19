@@ -16,6 +16,7 @@ export default function PatientDrawerV4({
   organization_id,
   escalation_candidates,
   nearest_hospital,
+  refer_route,
 }: PatientDrawerV4Props) {
   return (
     <div
@@ -29,6 +30,7 @@ export default function PatientDrawerV4({
         priority_evaluation={priority_evaluation}
         escalation_candidates={escalation_candidates}
         nearest_hospital={nearest_hospital}
+        refer_route={refer_route}
       />
       <DrawerThisVisit
         current_workflow={current_workflow}

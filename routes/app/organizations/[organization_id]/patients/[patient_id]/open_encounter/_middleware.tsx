@@ -438,6 +438,7 @@ export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, c
       care_team={[]}
       sidebar_bottom={<HealthWorkerSidebarBottom employee={ctx.state.employee} />}
       current_workflow={ctx.state.workflow}
+      refer_route={`${ctx.state.open_encounter_pathname}/refer`}
       {
         // care_team={ctx.state.patient.primary_doctor
         //   ? [{ ...ctx.state.patient.primary_doctor, role: 'doctor' }]
