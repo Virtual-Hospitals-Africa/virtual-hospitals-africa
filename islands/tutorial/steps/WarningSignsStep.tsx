@@ -63,7 +63,7 @@ export function WarningSignsStep() {
   return (
     <WarningSignsInnerContent
       post_route='/tutorial/unused'
-      findings_to_check_for_route={null}
+      rules_dry_run_route={null}
       none_of_the_above_findings_route={null}
       warning_signs={TUTORIAL_WARNING_SIGNS}
       search_results={search_results}

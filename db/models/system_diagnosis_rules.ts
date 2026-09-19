@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { patient_evaluations } from './patient_evaluations.ts'
 import { EXPRESSION_BUILDERS } from './s_expression.ts'
-import { ApplicableRule, ApplicableRuleEffectSystemSystemDiagnosisRule, RuleRunnerInput, TrxOrDb } from '../../types.ts'
+import { ApplicableRule, ApplicableRuleEffectSystemDiagnosisRule, RuleRunnerInput, TrxOrDb } from '../../types.ts'
 import { blankSelection, success_true } from '../helpers.ts'
 import { EVIDENCE_OF_CONTEXTUAL_QUALIFIER, RELATIONSHIP } from '../../shared/snomed_concepts.ts'
 
@@ -29,7 +29,7 @@ const concept_to_certainty_qualifier_map = Object.fromEntries(
   Object.entries(CERTAINTY_QUALIFIER_TO_CONCEPT).map(([certainty, concept]) => [concept.name, certainty]),
 ) as Record<string, keyof typeof CERTAINTY_QUALIFIER_TO_CONCEPT>
 
-const CERTAINTY_ORDER: Record<ApplicableRuleEffectSystemSystemDiagnosisRule['certainty'], number> = {
+const CERTAINTY_ORDER: Record<ApplicableRuleEffectSystemDiagnosisRule['certainty'], number> = {
   definite: 4,
   probable: 3,
   equivocal: 2,
@@ -64,7 +64,7 @@ function presentDiagnosis(
 
 function shouldInsertNewDiagnosisAsPresentDiagnosisIsNonExistentOrLowerCertainty(
   present_diagnosis: PresentDiagnosis | undefined,
-  rule_effect: ApplicableRuleEffectSystemSystemDiagnosisRule,
+  rule_effect: ApplicableRuleEffectSystemDiagnosisRule,
 ) {
   if (!present_diagnosis) return true
   switch (present_diagnosis.certainty) {
@@ -169,7 +169,7 @@ export const system_diagnosis_rules = {
   ): Promise<InsertDiagnosisResult[]> {
     if (isString(rules_result)) return Promise.resolve([])
 
-    const diagnosis_rules = rules_result.filter((r): r is ApplicableRule & { rule_effect: ApplicableRuleEffectSystemSystemDiagnosisRule } =>
+    const diagnosis_rules = rules_result.filter((r): r is ApplicableRule & { rule_effect: ApplicableRuleEffectSystemDiagnosisRule } =>
       r.rule_effect.type === 'system_diagnosis_rule'
     )
     const rules_grouped = groupBy(diagnosis_rules, (rule) => rule.rule_effect.snomed_concept.id)

@@ -7,8 +7,9 @@ import { Spinner } from '../../components/library/Spinner.tsx'
 import { FindingToCheckFor } from '../../types.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
 import { SelectedChip } from '../SelectedRecordChip.tsx'
-import { asFollowUpSign, findCheckedFollowUp, followUpDisplay, FollowUpGroup, isUnanswered } from './follow_ups.ts'
+import { asFollowUpSign, findCheckedFollowUp, followUpDisplay, FollowUpGroup } from './follow_ups.ts'
 import { CheckedWarningSign, OnToggle } from './shared.ts'
+import { pluralize } from '../../util/pluralize.ts'
 
 type Item = {
   id: string
@@ -84,7 +85,7 @@ function FollowUpGroupSection({ group, checked_signs, onCheck, onOpenDetails }: 
             className='self-start text-sm text-gray-500 underline hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded'
             onClick={() => setShowingPreviouslyAbsent(!showing_previously_absent)}
           >
-            {previously_absent.length} negative finding{previously_absent.length === 1 ? '' : 's'} previously recorded
+            {previously_absent.length} negative {pluralize('finding', previously_absent.length)} previously recorded
           </button>
           {showing_previously_absent && (
             <CheckboxList
@@ -113,10 +114,10 @@ function FollowUpGroupSection({ group, checked_signs, onCheck, onOpenDetails }: 
 export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, onNoneOfTheAbove, none_of_the_above_saving, onDismiss }: {
   groups: FollowUpGroup[]
   checked_signs: CheckedWarningSign[]
+  none_of_the_above_saving: boolean
   onCheck: OnToggle
   onOpenDetails(sign: CheckedWarningSign): void
-  onNoneOfTheAbove: null | (() => void)
-  none_of_the_above_saving: boolean
+  onNoneOfTheAbove(): void
   onDismiss(): void
 }) {
   if (typeof document === 'undefined') return null
@@ -135,8 +136,6 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
   }
 
   if (!groups.length) return null
-
-  const any_unanswered = groups.some((group) => group.findings_to_check_for.some((finding) => isUnanswered(checked_signs, finding)))
 
   return createPortal(
     <div
@@ -165,20 +164,17 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
           />
         ))}
       </div>
-      {onNoneOfTheAbove && (
-        <div className='flex justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
-          <Button
-            type='button'
-            variant='secondary'
-            size='sm'
-            id='follow-ups-none-of-the-above'
-            disabled={!any_unanswered}
-            onClick={onNoneOfTheAbove}
-          >
-            None of the above
-          </Button>
-        </div>
-      )}
+      <div className='flex justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
+        <Button
+          type='button'
+          variant='secondary'
+          size='sm'
+          id='follow-ups-none-of-the-above'
+          onClick={onNoneOfTheAbove}
+        >
+          None of the above
+        </Button>
+      </div>
     </div>,
     document.body,
   )

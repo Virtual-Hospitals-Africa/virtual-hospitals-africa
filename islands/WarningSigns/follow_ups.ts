@@ -1,4 +1,4 @@
-import { EnteredFinding, FindingToCheckFor, WarningSignWithMaybeRecord } from '../../types.ts'
+import { EnteredFinding, FindingToCheckFor, RulesDryRun, WarningSignWithMaybeRecord } from '../../types.ts'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
@@ -13,25 +13,34 @@ import { CheckedWarningSign } from './shared.ts'
   `key` is the sign's uniqueIdentifier rather than the finding's s_expression, as
   editing a sign (adding a finding site, say) changes its s_expression but should
   replace that sign's group rather than add another.
+
+  A group carries the whole dry run of the sign that caused it. Only findings_to_check_for
+  is rendered today; would_indicate_diagnoses and would_indicate_priority ride along so the
+  page can show what the sign implies without another request.
 */
-export type FollowUpGroup = {
+export type FollowUpGroup = RulesDryRun & {
   key: string
   due_to: EnteredFinding
-  findings_to_check_for: FindingToCheckFor[]
   saving?: boolean
+}
+
+export const EMPTY_RULES_DRY_RUN: RulesDryRun = {
+  findings_to_check_for: [],
+  would_indicate_diagnoses: [],
+  would_indicate_priority: null,
 }
 
 export function accumulateFollowUps(
   groups: FollowUpGroup[],
-  { key, due_to, findings_to_check_for }: {
+  { key, due_to, dry_run }: {
     key: string
     due_to: EnteredFinding | null
-    findings_to_check_for: FindingToCheckFor[]
+    dry_run: RulesDryRun
   },
 ): FollowUpGroup[] {
   const without_sign = groups.filter((group) => group.key !== key)
-  if (!due_to || !findings_to_check_for.length) return without_sign
-  return [...without_sign, { key, due_to, findings_to_check_for }]
+  if (!due_to || !dry_run.findings_to_check_for.length) return without_sign
+  return [...without_sign, { key, due_to, ...dry_run }]
 }
 
 export function followUpDisplay(s_expression: string): string {

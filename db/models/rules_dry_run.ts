@@ -1,4 +1,4 @@
-import type { AgeDetermination, FindingRelatedModifiers, FindingToCheckFor, TrxOrDbOrQueryCreator } from '../../types.ts'
+import type { AgeDetermination, FindingRelatedModifiers, RulesDryRun, TrxOrDbOrQueryCreator } from '../../types.ts'
 import type { InsertableFindingBase, Lang } from '../../shared/s_expression_schemas.ts'
 import { snomed_predefined_attributes } from './snomed_predefined_attributes.ts'
 import { snomed_relevant_qualifiers } from './snomed_relevant_qualifiers.ts'
@@ -17,10 +17,14 @@ import { asNormalFormSExpression, formatRecord } from '../../shared/patient_reco
 import { arrayIsEmpty } from '../../util/arraySize.ts'
 import sortBy from '../../util/sortBy.ts'
 import matching from '../../util/matching.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { higherPriority } from '../../shared/priorities.ts'
+import { exists } from '../../util/exists.ts'
 
 /*
-  A dry run of the task pipeline: which check_for findings would a health worker be
-  prompted for if `finding` were recorded for this patient in this encounter?
+  A dry run of the rules pipeline: what would happen if `finding` were recorded for this
+  patient in this encounter? Which check_for findings would the health worker be prompted
+  for, which diagnoses would be indicated and what priority would triage be raised to?
 
   Follows the same three steps that run when a finding is actually inserted
   (due_to tagging → rule evaluation → task materialisation) but reads only:
@@ -28,7 +32,8 @@ import matching from '../../util/matching.ts'
     2. rules.getApplicableForHypotheticalRecord evaluates rules with the node as
        in-memory evidence alongside the patient's real evidence
     3. the check_for tasks of the applicable rules are flattened to findings, each
-       annotated with the record already made for it in this encounter, if any
+       annotated with the record already made for it in this encounter, if any,
+       while the diagnosis and priority rule effects are collected as they are
 */
 /*
   The modifiers the finding modal offers for each finding, looked up by its specific concept
@@ -52,7 +57,9 @@ async function modifiersOf(
   return new Map(entries)
 }
 
-export const findings_to_check_for = {
+const EMPTY_DRY_RUN: RulesDryRun = { findings_to_check_for: [], would_indicate_diagnoses: [], would_indicate_priority: null }
+
+export const rules_dry_run = {
   async forHypotheticalFinding(
     trx: TrxOrDbOrQueryCreator,
     { patient_id, patient_encounter_id, patient_age_determination, finding }: {
@@ -61,40 +68,50 @@ export const findings_to_check_for = {
       patient_age_determination: AgeDetermination
       finding: InsertableFindingBase
     },
-  ): Promise<FindingToCheckFor[]> {
-    if (finding.existence !== 'Yes') return []
+  ): Promise<RulesDryRun> {
+    assertEquals(finding.existence, 'Yes', 'dry run only used to test against hypothetical positive findings')
 
     const matched_due_tos = await due_to.forHypotheticalFinding(trx, { patient_age_determination, finding })
-    if (arrayIsEmpty(matched_due_tos)) return []
+    if (arrayIsEmpty(matched_due_tos)) return EMPTY_DRY_RUN
 
     const applicable_rules = await rules.getApplicableForHypotheticalRecord(trx, {
       patient_id,
       patient_encounter_id,
       patient_age_determination,
       matched_due_tos,
-      type: 'task',
     })
 
+    const would_indicate_diagnoses: RulesDryRun['would_indicate_diagnoses'] = []
+    let would_indicate_priority: RulesDryRun['would_indicate_priority'] = null
     // The same finding may be checked for by more than one task
     const nodes = new Map<string, Lang['finding']>()
     const task_ids_by_s_expression = new Map<string, string[]>()
     for (const rule of sortBy(applicable_rules, 'description')) {
-      const { to_be_done } = getTaskById(rule.id)
-      if (!isCheckFor(to_be_done)) continue
-      for (const node of to_be_done.value) {
-        const s_expression = inverseSExpression(node)
-        nodes.set(s_expression, node)
-        task_ids_by_s_expression.set(s_expression, uniq([...(task_ids_by_s_expression.get(s_expression) || []), rule.id]))
+      if (rule.rule_effect.type === 'task') {
+        const { to_be_done } = getTaskById(rule.id)
+        if (!isCheckFor(to_be_done)) continue
+        for (const node of to_be_done.value) {
+          const s_expression = inverseSExpression(node)
+          nodes.set(s_expression, node)
+          task_ids_by_s_expression.set(s_expression, uniq([...(task_ids_by_s_expression.get(s_expression) || []), rule.id]))
+        }
+      }
+      if (rule.rule_effect.type === 'system_diagnosis_rule') {
+        would_indicate_diagnoses.push(rule.rule_effect)
+      }
+      if (rule.rule_effect.type === 'system_priority_evaluation') {
+        would_indicate_priority = exists(higherPriority(rule.rule_effect.priority, would_indicate_priority))
       }
     }
-    if (!nodes.size) return []
+    // Rules may have indicated a diagnosis or a priority without checking for anything
+    if (!nodes.size) return { findings_to_check_for: [], would_indicate_diagnoses, would_indicate_priority }
 
     const { existing_findings, modifiers } = await promiseProps({
       existing_findings: existingFindingsMatching(trx, { patient_id, patient_encounter_id, nodes }),
       modifiers: modifiersOf(trx, nodes),
     })
 
-    return [...nodes.entries()].map(([s_expression, node]) => {
+    const findings_to_check_for = [...nodes.entries()].map(([s_expression, node]) => {
       const existing = existing_findings.find(matching({ s_expression }))
       assertHasProperty(node, 'specific_snomed_concept')
       return {
@@ -111,5 +128,7 @@ export const findings_to_check_for = {
           : null,
       }
     })
+
+    return { findings_to_check_for, would_indicate_diagnoses, would_indicate_priority }
   },
 }

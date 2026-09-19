@@ -3136,7 +3136,7 @@ export type ApplicableRuleEffectSystemPriorityEvaluation = {
   priority: WarningSignPriority
 }
 
-export type ApplicableRuleEffectSystemSystemDiagnosisRule = {
+export type ApplicableRuleEffectSystemDiagnosisRule = {
   type: 'system_diagnosis_rule'
   snomed_concept: {
     id: string
@@ -3149,7 +3149,7 @@ export type ApplicableRuleEffectSystemSystemDiagnosisRule = {
 export type ApplicableRuleEffect =
   | ApplicableRuleEffectTask
   | ApplicableRuleEffectSystemPriorityEvaluation
-  | ApplicableRuleEffectSystemSystemDiagnosisRule
+  | ApplicableRuleEffectSystemDiagnosisRule
 
 export type ApplicableRule = {
   id: string
@@ -3252,19 +3252,14 @@ export type FindingToCheckFor = FindingRelatedModifiers & {
     s_expression: string
     existence: Existence
   }
-  // could_indicate_priority: Priority | null
-  // could_indicate_diagnoses: {
-  //   s_expression: string
-  // }[]
 }
 
-// findings_to_check_for: []
-// could_indicate_diagnoses: {
-//   s_expression: string
-//   only_if_matching_one_of_qualifiers: {
-//     s_expression: string
-//   }[]
-// }[]
+export type RulesDryRun = {
+  findings_to_check_for: FindingToCheckFor[]
+  would_indicate_diagnoses: ApplicableRuleEffectSystemDiagnosisRule[]
+  would_indicate_priority: null | Priority
+}
+
 export type TasksDividedByPermission = {
   tasks_i_can_do_without_approval_needed: RenderedManageTaskToBeDone[]
   tasks_i_can_do_with_approval: RenderedManageTaskToBeDone[]
