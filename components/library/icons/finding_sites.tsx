@@ -102,7 +102,7 @@ function MouthOrThroat(props: IconProps) {
 }
 
 // A molar, its crown above the gum line
-function GumsAndTeeth(props: IconProps) {
+function TeethAndGums(props: IconProps) {
   return (
     <FindingSiteSvg {...props}>
       <path d='M12 3.4c-1.9 0-2.5-.8-4.2-.8C5.3 2.6 4.1 4.4 4.1 7c0 2.9 1.2 4.3 1.8 6.9.5 2.3.7 5.2 2.2 5.2 1.4 0 1.5-2.5 2-4.7.3-1.3.9-2.1 1.9-2.1s1.6.8 1.9 2.1c.5 2.2.6 4.7 2 4.7 1.5 0 1.7-2.9 2.2-5.2.6-2.6 1.8-4 1.8-6.9 0-2.6-1.2-4.4-3.7-4.4-1.7 0-2.3.8-4.2.8Z' />
@@ -312,7 +312,7 @@ export const FINDING_SITE_ICONS = {
   'Ear': Ear,
   'Nose': Nose,
   'Mouth or throat': MouthOrThroat,
-  'Teeth & gums': GumsAndTeeth,
+  'Teeth & gums': TeethAndGums,
   'Chest': Chest,
   'Breast': Breast,
   'Abdomen': Abdomen,

@@ -105,7 +105,7 @@ describeParallel('triage/route_patient', () => {
       const associated_findings = await patient_triage.associatedFindings(db, encounter_after_reported_yes_to_all_anaphylaxis_findings.priority!)
       const anaphylaxis_diagnosis = findMatching(associated_findings, {
         'root_snomed_concept_name': 'Diagnosis',
-        'specific_snomed_concept_name': 'Anaphylaxis',
+      'specific_snomed_concept_name': 'Anaphylaxis',
       })
       assert(
         isObjectLike(anaphylaxis_diagnosis.value),

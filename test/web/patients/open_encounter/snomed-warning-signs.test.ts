@@ -168,7 +168,7 @@ describeParallel('/app/snomed/warning-signs', () => {
         assert(!results.some((result: { name: string }) => result.name === 'Chest pain'))
 
         // Headache sits in the head, which contains the ear, so the ear is the more specific site
-        const headache = byName('Headache')
+        const headache = byName('Headache (Ear structure)')
         assertMatches(headache, {
           'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Headache" "finding") ${EAR_SITE})`,
           'finding_site': { name: 'Ear structure', category: 'body structure' },
@@ -202,7 +202,7 @@ describeParallel('/app/snomed/warning-signs', () => {
         assertEquals(results.length, 1)
         assertMatches(results[0], {
           'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Pain" "finding") ${EAR_SITE})`,
-          'name': 'Pain',
+          'name': 'Pain (Ear structure)',
           'finding_site': { name: 'Ear structure', category: 'body structure' },
         })
       },
@@ -244,7 +244,7 @@ describeParallel('/app/snomed/warning-signs', () => {
         )
 
         // Hearing difficulty sits in the auditory system, of which the ear is a part
-        const hearing_difficulty = results.find((result: { name: string }) => result.name === 'Hearing difficulty')
+        const hearing_difficulty = results.find((result: { name: string }) => result.name === 'Hearing difficulty (Ear structure)')
         assertMatches(hearing_difficulty, {
           'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Hearing difficulty" "finding") ${EAR_SITE})`,
           'finding_site': { name: 'Ear structure', category: 'body structure' },
