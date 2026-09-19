@@ -26,7 +26,7 @@ import sortBy from '../../util/sortBy.ts'
 import uniq from '../../util/uniq.ts'
 import { pMap } from '../../util/inParallel.ts'
 import matching from '../../util/matching.ts'
-import { NewRecordsToConsider } from '../../types.ts'
+import { NewRecordsToConsider, RulesDryRun } from '../../types.ts'
 
 const URGENT_BITE_STING_CHECK_FORS = [
   '(clinical_finding (snomed_concept "Generalized muscle weakness" "finding"))',
@@ -57,6 +57,18 @@ const NOSE_CHECK_FORS = [
 // The s_expression the due_to table stores for a (diagnosis ...) rule clause
 function diagnosisDueToSExpression(s_expression: string) {
   return inverseSExpression(diagnosisToEvaluation(parseWithSchema(s_expression, diagnosis_schema)))
+}
+
+// A direct disjunct of "Diagnose possible anaphylaxis"
+const ITCHING_SUDDEN_ONSET = '(clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))'
+
+function indicatedDiagnosis(result: RulesDryRun, name: string) {
+  const entry = result.would_indicate_diagnoses.find((d) => d.diagnosis[0].snomed_concept.name === name)
+  assert(
+    entry,
+    `Expected ${name} among ${JSON.stringify(result.would_indicate_diagnoses.map((d) => d.diagnosis.map((e) => `${e.snomed_concept.name} ${e.certainty}`)))}`,
+  )
+  return entry
 }
 
 function asFinding(s_expression: string) {
@@ -261,8 +273,11 @@ describeParallel('db/models/rules_dry_run.ts', () => {
       assert(matched.some(matching({ s_expression: possible })), `Expected ${possible} among ${JSON.stringify(matched)}`)
       assert(!matched.some(matching({ s_expression: probable })), `Did not expect ${probable} among ${JSON.stringify(matched)}`)
 
-      const evaluations = await patient_evaluations.findAll(db, { patient_id: encounter.patient_id })
-      assertEquals(evaluations.filter((e) => e.by_system), [], 'Dry run must not insert any diagnosis')
+      const diagnoses = await patient_evaluations.findAll(db, {
+        patient_id: encounter.patient_id,
+        s_expression: '(diagnosis (snomed_concept "Anaphylaxis" "disorder") possible)',
+      })
+      assertEquals(diagnoses, [], 'Dry run must not insert any diagnosis')
     })
 
     itParallel('matches active_condition due_tos for a probable diagnosis', async () => {
@@ -295,6 +310,25 @@ describeParallel('db/models/rules_dry_run.ts', () => {
       const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
       const result = await dryRun(encounter, '(clinical_finding (snomed_concept "Hangnail" "disorder"))')
       assertEquals(result, { findings_to_check_for: [], would_indicate_diagnoses: [], would_indicate_priority: null })
+    })
+  })
+
+  describeParallel('would_indicate_diagnoses', () => {
+    itParallel('groups the diagnosis rules a finding would satisfy by concept', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const result = await dryRun(encounter, ITCHING_SUDDEN_ONSET)
+
+      const anaphylaxis = indicatedDiagnosis(result, 'Anaphylaxis')
+      assertMatches(anaphylaxis.diagnosis, [
+        { type: 'system_diagnosis_rule', snomed_concept: { name: 'Anaphylaxis', category: 'disorder' }, certainty: 'possible' },
+      ])
+
+      // One entry per concept
+      const names = result.would_indicate_diagnoses.map((d) => d.diagnosis[0].snomed_concept.name)
+      assertEquals(names, uniq(names).toSorted())
+      for (const entry of result.would_indicate_diagnoses) {
+        assertEquals(uniq(entry.diagnosis.map((e) => e.snomed_concept.id)).length, 1, 'Every effect in an entry indicates the same concept')
+      }
     })
   })
 
