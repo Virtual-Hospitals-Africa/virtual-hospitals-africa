@@ -16,7 +16,7 @@ import { pMap } from '../../util/inParallel.ts'
 import { promiseProps } from '../../util/promiseProps.ts'
 import uniq from '../../util/uniq.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
-import { due_to } from './due_to.ts'
+import { due_to, type HypotheticalDueToMatch } from './due_to.ts'
 import { rules } from './rules.ts'
 import { existingFindingsMatching, isCheckFor } from './additional_tasks.ts'
 import { getTaskById } from '../../shared/tasks.ts'
@@ -28,7 +28,7 @@ import matching from '../../util/matching.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { higherPriority, type Priority } from '../../shared/priorities.ts'
 import { exists } from '../../util/exists.ts'
-import { groupDiagnosisEffectsByConcept } from '../../shared/diagnosis.ts'
+import { type DiagnosisEffectGroup, groupDiagnosisEffectsByConcept } from '../../shared/diagnosis.ts'
 
 /*
   A dry run of the rules pipeline: what would happen if `finding` were recorded for this
@@ -43,6 +43,9 @@ import { groupDiagnosisEffectsByConcept } from '../../shared/diagnosis.ts'
     3. the check_for tasks of the applicable rules are flattened to findings, each
        annotated with the record already made for it in this encounter, if any,
        while the diagnosis and priority rule effects are collected as they are
+    4. for each diagnosis the rules would record, steps 1–3 run again for the diagnosis
+       (at the highest certainty given it) with the finding's matches alongside, over
+       task and priority rules only, reporting what the diagnosis adds
 */
 /*
   The modifiers the finding modal offers for each finding, looked up by its specific concept
@@ -142,6 +145,62 @@ async function findingsToCheckFor(
   })
 }
 
+/*
+  What recording the diagnosis the rules would make of `group` adds on top of what the finding
+  does by itself. The task and priority rules due to the diagnosis are evaluated with the
+  finding's own due_to matches alongside, so an (and (finding ...) (diagnosis ...)) rule can be
+  satisfied, and the rules the finding already made applicable are left out.
+
+  Diagnosis rules are not evaluated again, so a diagnosis never indicates further diagnoses
+  here. The real pipeline does chain them: EvaluationAdded in events/handlers.ts runs
+  insertSystemDiagnosesIfNotAlreadyIdentified for the diagnosis record too. In practice the only
+  diagnoses other diagnosis rules are due to are Fever, which is diagnosed from a body
+  temperature measurement alone and so can never follow from a hypothetical finding, and
+  Cellulitis of face, which also needs a temperature measurement and so can follow from a finding
+  only when one is already on record (orbital cellulitis is due to it). If a diagnosis rule due to
+  another finding-only diagnosis is ever added, this dry run will under-report and this pass
+  needs to recurse over system_diagnosis_rule as well.
+
+  The certainty is the highest any applicable rule gives the concept, as insertPositiveDiagnoses
+  records it, and it decides which due_tos match: a possible diagnosis satisfies a check_for task
+  due to (diagnosis X possible) but not a priority rule due to (active_condition X).
+*/
+async function consequencesOfDiagnosis(
+  trx: TrxOrDbOrQueryCreator,
+  { patient_id, patient_encounter_id, patient_age_determination, finding_due_tos, directly_applicable_rule_ids, group }: {
+    patient_id: string
+    patient_encounter_id: string
+    patient_age_determination: AgeDetermination
+    finding_due_tos: HypotheticalDueToMatch[]
+    directly_applicable_rule_ids: Set<string>
+    group: DiagnosisEffectGroup<ApplicableRuleEffectSystemDiagnosisRule>
+  },
+): Promise<RulesDryRun['would_indicate_diagnoses'][number]> {
+  const { strongest } = group
+  const diagnosis_due_tos = await due_to.forHypotheticalDiagnosis(trx, {
+    patient_age_determination,
+    diagnosis: {
+      snomed_concept: { atom: 'snomed_concept', ...strongest.snomed_concept },
+      certainty_qualifier: strongest.certainty,
+    },
+  })
+
+  const applicable_rules = arrayIsEmpty(diagnosis_due_tos) ? [] : await rules.getApplicableForHypotheticalRecord(trx, {
+    patient_id,
+    patient_encounter_id,
+    patient_age_determination,
+    matched_due_tos: [...finding_due_tos, ...diagnosis_due_tos],
+    type: ['task', 'system_priority_evaluation'],
+  })
+  const effects = collectRuleEffects(applicable_rules.filter((rule) => !directly_applicable_rule_ids.has(rule.id)))
+
+  return {
+    diagnosis: group.diagnosis,
+    would_indicate_priority: effects.priority,
+    findings_to_check_for: await findingsToCheckFor(trx, { patient_id, patient_encounter_id, ...effects }),
+  }
+}
+
 export const rules_dry_run = {
   async forHypotheticalFinding(
     trx: TrxOrDbOrQueryCreator,
@@ -165,8 +224,19 @@ export const rules_dry_run = {
     })
     const effects = collectRuleEffects(applicable_rules)
 
-    const would_indicate_diagnoses: RulesDryRun['would_indicate_diagnoses'] = groupDiagnosisEffectsByConcept(effects.diagnoses)
-      .map(({ diagnosis }) => ({ diagnosis, would_indicate_priority: null, findings_to_check_for: [] }))
+    const directly_applicable_rule_ids = new Set(applicable_rules.map((rule) => rule.id))
+    const would_indicate_diagnoses = await pMap(
+      groupDiagnosisEffectsByConcept(effects.diagnoses),
+      (group) =>
+        consequencesOfDiagnosis(trx, {
+          patient_id,
+          patient_encounter_id,
+          patient_age_determination,
+          finding_due_tos,
+          directly_applicable_rule_ids,
+          group,
+        }),
+    )
 
     return {
       findings_to_check_for: await findingsToCheckFor(trx, { patient_id, patient_encounter_id, ...effects }),

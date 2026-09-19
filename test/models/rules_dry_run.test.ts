@@ -16,6 +16,9 @@ import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { normalForm, parseWithSchema } from '../../shared/s_expression.ts'
 import { diagnosis as diagnosis_schema, insertable_finding_base } from '../../shared/s_expression_schemas.ts'
 import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
+import { getTaskById } from '../../shared/tasks.ts'
+import { system_diagnosis_rules } from '../../db/models/system_diagnosis_rules.ts'
+import { higherPriority, type Priority } from '../../shared/priorities.ts'
 import { patient_evaluations } from '../../db/models/patient_evaluations.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
@@ -61,6 +64,13 @@ function diagnosisDueToSExpression(s_expression: string) {
 
 // A direct disjunct of "Diagnose possible anaphylaxis"
 const ITCHING_SUDDEN_ONSET = '(clinical_finding (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))'
+
+const CHECK_FOR_ANAPHYLAXIS_CHECK_FORS = (() => {
+  const { to_be_done } = getTaskById('Check for Anaphylaxis')
+  assert(isCheckFor(to_be_done))
+  // The task lists Peanut twice; the dry run keys check_fors by s_expression
+  return uniq(to_be_done.value.map((f) => inverseSExpression(f))).toSorted()
+})()
 
 function indicatedDiagnosis(result: RulesDryRun, name: string) {
   const entry = result.would_indicate_diagnoses.find((d) => d.diagnosis[0].snomed_concept.name === name)
@@ -329,6 +339,105 @@ describeParallel('db/models/rules_dry_run.ts', () => {
       for (const entry of result.would_indicate_diagnoses) {
         assertEquals(uniq(entry.diagnosis.map((e) => e.snomed_concept.id)).length, 1, 'Every effect in an entry indicates the same concept')
       }
+    })
+
+    itParallel('lists the additional check_for findings the tasks due to the diagnosis would prompt for', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const result = await dryRun(encounter, ITCHING_SUDDEN_ONSET)
+
+      const anaphylaxis = indicatedDiagnosis(result, 'Anaphylaxis')
+      assertEquals(
+        sortBy(anaphylaxis.findings_to_check_for, 's_expression').map((f) => f.s_expression),
+        CHECK_FOR_ANAPHYLAXIS_CHECK_FORS,
+      )
+      assert(anaphylaxis.findings_to_check_for.every((f) => f.task_ids.includes('Check for Anaphylaxis')))
+      assert(anaphylaxis.findings_to_check_for.every((f) => f.existing_record === null))
+
+      // Check for Anaphylaxis is due to the diagnosis, not the finding, so it is not among the finding's own prompts
+      assert(!result.findings_to_check_for.some((f) => f.task_ids.includes('Check for Anaphylaxis')))
+    })
+
+    itParallel('reports an existing record for check_for findings the diagnosis prompts for', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      await insertFindings(encounter, ['(no (clinical_finding (snomed_concept "Insect sting" "disorder")))'])
+
+      const anaphylaxis = indicatedDiagnosis(await dryRun(encounter, ITCHING_SUDDEN_ONSET), 'Anaphylaxis')
+      assertMatches(
+        anaphylaxis.findings_to_check_for.filter((f) => f.existing_record),
+        [{
+          s_expression: normalForm('(clinical_finding (snomed_concept "Insect sting" "disorder"))'),
+          existing_record: { existence: 'No' },
+        }],
+      )
+    })
+
+    itParallel('does not raise the priority for a certainty the priority rule is not due to', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      // Urgent: Anaphylaxis is due to (active_condition Anaphylaxis): probable or definite, not possible
+      const anaphylaxis = indicatedDiagnosis(await dryRun(encounter, ITCHING_SUDDEN_ONSET), 'Anaphylaxis')
+      assertMatches(anaphylaxis.diagnosis, [{ certainty: 'possible' }])
+      assertEquals(anaphylaxis.would_indicate_priority, null)
+    })
+
+    itParallel('raises the priority a probable diagnosis is due to, combining the finding with recorded evidence', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const drowsy = '(clinical_finding (snomed_concept "Drowsy" "finding"))'
+
+      // Diagnose probable meningitis based on fever needs a stiff neck and nausea alongside drowsiness
+      const before = await dryRun(encounter, drowsy)
+      assert(!before.would_indicate_diagnoses.some((d) => d.diagnosis[0].snomed_concept.name === 'Meningitis'))
+
+      await insertFindings(encounter, [
+        '(clinical_finding (snomed_concept "Stiff neck" "finding"))',
+        '(clinical_finding (snomed_concept "Nausea" "finding"))',
+      ])
+
+      const meningitis = indicatedDiagnosis(await dryRun(encounter, drowsy), 'Meningitis')
+      assertMatches(meningitis.diagnosis, [{ certainty: 'probable' }])
+      // Urgent: probable meningitis is due to (active_condition Meningitis)
+      assertEquals(meningitis.would_indicate_priority, 'Urgent')
+    })
+
+    itParallel('matches what the real pipeline does once the diagnosis is recorded', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const { patient_id, patient_encounter_id } = encounter
+
+      const dry_run = indicatedDiagnosis(await dryRun(encounter, ITCHING_SUDDEN_ONSET), 'Anaphylaxis')
+
+      const { new_records } = await insertFindings(encounter, [ITCHING_SUDDEN_ONSET])
+      const diagnoses_result = await system_diagnosis_rules.insertSystemDiagnosesIfNotAlreadyIdentified(db, {
+        ...new_records,
+        listener_id: 'test',
+        listener_name: 'test',
+      })
+      assert(diagnoses_result.startsWith('Inserted '), diagnoses_result)
+      const recorded = await patient_evaluations.findOne(db, {
+        patient_id,
+        s_expression: '(diagnosis (snomed_concept "Anaphylaxis" "disorder") possible)',
+      })
+      const from_diagnosis: NewRecordsToConsider = {
+        patient_id,
+        patient_encounter_id,
+        patient_age_determination: 'adult',
+        records: [{ id: recorded.id, existence: 'Yes' }],
+      }
+
+      // What EvaluationAdded's insertTasksIfNotAlreadyIdentified would insert
+      const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, from_diagnosis)
+      assert(!isString(tasks_to_insert))
+      const actual_check_fors = uniq(
+        tasks_to_insert.flatMap((task) => isCheckFor(task.to_be_done) ? task.to_be_done.value.map((f) => inverseSExpression(f)) : []),
+      ).toSorted()
+      assertEquals(sortBy(dry_run.findings_to_check_for, 's_expression').map((f) => f.s_expression), actual_check_fors)
+
+      // What EvaluationAdded's insertSystemPriorityEvaluationsIfNotAlreadyIdentified would raise triage to
+      const priority_rules = await rules.getApplicableBasedOnNewRecords(db, from_diagnosis, 'system_priority_evaluation')
+      assert(!isString(priority_rules))
+      const actual_priority = priority_rules.reduce<null | Priority>((acc, rule) => {
+        assert(rule.rule_effect.type === 'system_priority_evaluation')
+        return higherPriority(rule.rule_effect.priority, acc) ?? null
+      }, null)
+      assertEquals(dry_run.would_indicate_priority, actual_priority)
     })
   })
 
