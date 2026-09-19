@@ -86,7 +86,6 @@ export function createTestOrganization(
     category,
     name: `Test ${generateUUID()} ${category}`,
     country: 'ZA',
-    using_vha: true,
     departments: testOrganizationDepartments(category).map((name) => ({
       name,
       room_names: testOrganizationRoomNames(name),

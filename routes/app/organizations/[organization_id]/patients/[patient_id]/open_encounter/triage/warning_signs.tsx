@@ -10,7 +10,14 @@ import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 import { assert } from 'std/assert/assert.ts'
 
-import { AgeDetermination, CommonSymptom, TrxOrDb, WarningSign, WarningSignWithMaybeRecord } from '../../../../../../../../types.ts'
+import {
+  AgeDetermination,
+  CommonSymptom,
+  FindingSiteWithMaybeRecords,
+  TrxOrDb,
+  WarningSign,
+  WarningSignWithMaybeRecord,
+} from '../../../../../../../../types.ts'
 import { normalForm } from '../../../../../../../../shared/s_expression.ts'
 import { asNormalFormSExpression } from '../../../../../../../../shared/patient_records.ts'
 import partition from '../../../../../../../../util/partition.ts'
@@ -23,6 +30,7 @@ import { assertOr400, assertOr409 } from '../../../../../../../../util/assertOr.
 import { now } from '../../../../../../../../db/helpers.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
 import { COMMON_SYMPTOMS } from '../../../../../../../../shared/common_symptoms.ts'
+import { FINDING_SITES } from '../../../../../../../../shared/finding_site_signs.ts'
 
 import sortBy from '../../../../../../../../util/sortBy.ts'
 import type { InsertableFindingBase, MatchingFinding } from '../../../../../../../../shared/s_expression_schemas.ts'
@@ -208,32 +216,27 @@ export async function getWarningSignsForPatient(
   }
 }
 
-function* signsMatchedWithPriorRecords(
-  prior_findings: SearchResult<typeof patient_findings_with_modifiers>[],
-  warning_signs_for_patient: WarningSign[],
-  common_symptoms: CommonSymptom[],
-): Generator<WarningSignWithMaybeRecord> {
-  const prior_findings_remaining = new Set(prior_findings)
-  const prior_findings_map = new Map<string, SearchResult<typeof patient_findings_with_modifiers>>()
+type PriorFinding = SearchResult<typeof patient_findings_with_modifiers>
 
-  // We don't use the value when calculating the normal form
-  // of the s_expression here so that negative findings match.
-  // That is if a previous submission found no chest pain,
-  // then that should match and be the finding corresponding to
-  // the chest pain warning sign.
-  function normalFormOf(
-    prior_finding: SearchResult<typeof patient_findings_with_modifiers>,
-    modifiers: typeof prior_finding.modifiers,
-    attributes: typeof prior_finding.attributes,
-  ) {
+/*
+  Prior findings by every normal form they could be matched under. We don't use the value when
+  calculating the normal form here so that negative findings match. That is if a previous
+  submission found no chest pain, then that should match and be the finding corresponding to
+  the chest pain warning sign.
+
+  Findings may add qualifiers or attributes. So we look for any subset of them when looking for matches
+  With a modest size of these, this should not get out of hand.
+  Several findings can produce the same key (Burn, and Moderate Burn without its qualifier), so a
+  finding as recorded in full claims a key ahead of any finding's subset, and positive ahead of
+  negative. Otherwise the negative Moderate Burn could stand in for the sign matching the positive Burn.
+*/
+function priorFindingsByNormalForm(prior_findings: PriorFinding[]): Map<string, PriorFinding> {
+  const prior_findings_map = new Map<string, PriorFinding>()
+
+  function normalFormOf(prior_finding: PriorFinding, modifiers: PriorFinding['modifiers'], attributes: PriorFinding['attributes']) {
     return asNormalFormSExpression({ ...prior_finding, modifiers, attributes, existence: 'Yes', value: null })
   }
 
-  // Findings may add qualifiers or attributes. So we look for any subset of them when looking for matches
-  // With a modest size of these, this should not get out of hand.
-  // Several findings can produce the same key (Burn, and Moderate Burn without its qualifier), so a
-  // finding as recorded in full claims a key ahead of any finding's subset, and positive ahead of
-  // negative. Otherwise the negative Moderate Burn could stand in for the sign matching the positive Burn.
   const prior_findings_positive_first = sortBy(prior_findings, (finding) => finding.existence === 'Yes' ? 0 : 1)
   for (const prior_finding of prior_findings_positive_first) {
     const in_full = normalFormOf(prior_finding, prior_finding.modifiers, prior_finding.attributes)
@@ -247,6 +250,65 @@ function* signsMatchedWithPriorRecords(
       }
     }
   }
+  return prior_findings_map
+}
+
+/*
+  The sign with the prior finding that stands for it, if any. Normalize the sign's s_expression
+  (WARNING_SIGNS use 'clinical_finding' atom, map keys use 'finding' atom from asNormalFormSExpression)
+*/
+function signWithPriorRecord(
+  sign: WarningSign | CommonSymptom | WarningSignWithMaybeRecord,
+  prior_findings_map: Map<string, PriorFinding>,
+): { sign: WarningSignWithMaybeRecord; matching_prior_finding: PriorFinding | undefined } {
+  const normalized_sign_s_expression = normalForm(sign.clinical_finding_s_expression)
+  const matching_prior_finding = prior_findings_map.get(normalized_sign_s_expression)
+  if (!matching_prior_finding) return { sign: { ...sign, existing_record: undefined }, matching_prior_finding }
+
+  const existing_record: WarningSignWithMaybeRecord['existing_record'] = {
+    id: matching_prior_finding.id,
+    existence: matching_prior_finding.existence,
+  }
+  if (matching_prior_finding.existence === 'Yes') {
+    const canonical_normal_form = asNormalFormSExpression({
+      ...matching_prior_finding,
+      value: null,
+    })
+    if (canonical_normal_form !== normalized_sign_s_expression) {
+      existing_record.augmented = {
+        s_expression: canonical_normal_form,
+        display: matching_prior_finding.displays.full,
+        priority: matching_prior_finding.priority,
+      }
+    }
+  }
+  return { sign: { ...sign, existing_record }, matching_prior_finding }
+}
+
+/*
+  The finding sites the page can be filtered by, each sign carrying the prior record standing for it.
+  Unlike the warning signs, these do not claim a record: the same headache recorded earlier also shows
+  under Common Symptoms. Only adults are covered, as the pages are from the adult guide.
+*/
+export function findingSitesWithPriorRecords(
+  prior_findings: PriorFinding[],
+  patient_age_determination: AgeDetermination | null,
+): FindingSiteWithMaybeRecords[] {
+  if ((patient_age_determination || 'adult') !== 'adult') return []
+  const prior_findings_map = priorFindingsByNormalForm(prior_findings)
+  return FINDING_SITES.map((site) => ({
+    ...site,
+    signs: site.signs.map((sign) => signWithPriorRecord(sign, prior_findings_map).sign),
+  }))
+}
+
+function* signsMatchedWithPriorRecords(
+  prior_findings: PriorFinding[],
+  warning_signs_for_patient: WarningSign[],
+  common_symptoms: CommonSymptom[],
+): Generator<WarningSignWithMaybeRecord> {
+  const prior_findings_remaining = new Set(prior_findings)
+  const prior_findings_map = priorFindingsByNormalForm(prior_findings)
 
   const warning_signs_and_common_symptoms: Array<WarningSign | CommonSymptom> = [
     ...warning_signs_for_patient,
@@ -257,43 +319,16 @@ function* signsMatchedWithPriorRecords(
   // s_expressions, removing them as we go. Any that are left
   // over we send as well (these were the result of search)
   for (const sign of warning_signs_and_common_symptoms) {
-    let existing_record: WarningSignWithMaybeRecord['existing_record']
-    // Normalize the sign's s_expression (WARNING_SIGNS use 'clinical_finding' atom,
-    // map keys use 'finding' atom from asNormalFormSExpression)
-    const normalized_sign_s_expression = normalForm(sign.clinical_finding_s_expression)
-    const matching_prior_finding = prior_findings_map.get(normalized_sign_s_expression)
-
-    if (matching_prior_finding) {
-      existing_record = {
-        id: matching_prior_finding.id,
-        existence: matching_prior_finding.existence,
-      }
-      if (matching_prior_finding.existence === 'Yes') {
-        const canonical_normal_form = asNormalFormSExpression({
-          ...matching_prior_finding,
-          value: null,
-        })
-        if (canonical_normal_form !== normalized_sign_s_expression) {
-          existing_record!.augmented = {
-            s_expression: canonical_normal_form,
-            display: matching_prior_finding.displays.full,
-            priority: matching_prior_finding.priority,
-          }
-        }
-      }
-      prior_findings_remaining.delete(matching_prior_finding)
-    }
-    yield {
-      ...sign,
-      existing_record,
-    }
+    const { sign: with_record, matching_prior_finding } = signWithPriorRecord(sign, prior_findings_map)
+    if (matching_prior_finding) prior_findings_remaining.delete(matching_prior_finding)
+    yield with_record
   }
 
   for (const finding of prior_findings_remaining) {
     yield {
       priority: finding.priority,
       // As with every sign, the s_expression is of the finding itself; whether it was present is existing_record's to say
-      clinical_finding_s_expression: normalFormOf(finding, finding.modifiers, finding.attributes),
+      clinical_finding_s_expression: asNormalFormSExpression({ ...finding, existence: 'Yes', value: null }),
       name: finding.specific_snomed_concept_name,
       description: finding.specific_snomed_concept_category,
       existing_record: {
@@ -340,6 +375,7 @@ export async function TriageWarningSignsPage(
     warning_signs_for_patient,
     COMMON_SYMPTOMS,
   )
+  const finding_sites = findingSitesWithPriorRecords(prior_findings, ctx.state.patient_age_determination)
 
   const warning_signs_search_params = new URLSearchParams()
   warning_signs_search_params.set('age_determination', exists(ctx.state.patient_age_determination))
@@ -354,6 +390,7 @@ export async function TriageWarningSignsPage(
       rules_dry_run_route={`${ctx.state.open_encounter_pathname}/rules_dry_run`}
       none_of_the_above_findings_route={`${ctx.state.open_encounter_pathname}/none_of_the_above_findings`}
       warning_signs={Array.from(warning_signs)}
+      finding_sites={finding_sites}
     />
   )
 }
