@@ -63,10 +63,10 @@ function EscalationCandidateRow(
 }
 
 const ACTION_CARD_CLASS =
-  'w-full text-left cursor-pointer rounded-lg border border-gray-300 bg-white px-4 py-3 shadow-sm hover:border-indigo-600 hover:ring-2 hover:ring-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600'
+  'w-full text-left cursor-pointer rounded-lg border-2 border-gray-300 bg-white px-4 py-3 shadow-sm hover:border-indigo-600 hover:ring-2 hover:ring-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600'
 
 const SELECTED_ACTION_CARD_CLASS =
-  'w-full text-left cursor-pointer rounded-lg border-2 border-indigo-600 bg-indigo-50 px-4 py-4 shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-600'
+  'w-full text-left cursor-pointer rounded-lg border-2 border-indigo-600 bg-indigo-50 px-4 py-3 shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-600'
 
 /*
   Not a modal: appears as a panel just above the follow-ups panel
@@ -144,7 +144,7 @@ export function PriorityEscalationPanel(
   return createPortal(
     <div
       id='priority-escalation-panel'
-      className={cls(SIDE_PANEL_CLASS, SIDE_PANEL_ORDER.priority_escalation)}
+      className={cls(SIDE_PANEL_CLASS, 'shrink-0', SIDE_PANEL_ORDER.priority_escalation)}
     >
       <div className='shrink-0 flex items-center justify-between px-5 pt-4 pb-3'>
         <h2 className='text-lg font-bold text-gray-900'>Priority Escalation</h2>

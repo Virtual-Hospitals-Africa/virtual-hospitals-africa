@@ -34,6 +34,8 @@ import {
   EMPTY_RULES_DRY_RUN,
   findCheckedFollowUp,
   FollowUpGroup,
+  indicatedDiagnosisFollowUp,
+  indicatedDiagnosisNode,
   isUnanswered,
   noneOfTheAboveRequests,
 } from './follow_ups.ts'
@@ -41,6 +43,8 @@ import { FollowUpsPanel } from './FollowUpsPanel.tsx'
 import { exists } from '../../util/exists.ts'
 import { showAlertMessage } from '../alert/AlertListener.tsx'
 import { higherPriority } from '../../shared/priorities.ts'
+import { buildPriorityEvaluation, dueToHypotheticalRelation } from '../../shared/priority_evaluation.ts'
+import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
 import { priorityUpdate } from '../DrawerPatientCard.tsx'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
@@ -323,13 +327,18 @@ export default function WarningSignsInnerContent({
     active_modal.value = null
 
     if (finding === RemoveFindingSymbol) {
-      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: null, dry_run: EMPTY_RULES_DRY_RUN })
+      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: null, findings_to_check_for: [] })
       return
     }
 
     // Usually already resolved having been prefetched while the modal was open
     fetchFollowUps(finding.s_expression).then((dry_run) => {
-      const priority_update = higherPriority(finding.priority, dry_run.would_indicate_priority)
+      const finding_base_priority = higherPriority(finding.priority, dry_run.would_indicate_priority)
+      const priority_update = [
+        finding_base_priority,
+        ...dry_run.would_indicate_diagnoses.map((d) => d.would_indicate_priority),
+      ].reduce(higherPriority)
+
       // TODO: super edge case, but if the would_indicate_priority is based on a combination of findings
       // and one of those depencies is subsequently removed this will then be wrong.
       // The previous priority has already been saved to the backend via POST clinical_finding
@@ -338,10 +347,31 @@ export default function WarningSignsInnerContent({
       if (priority_update && priority_update !== finding.priority) {
         finding.priority = priority_update
       }
-      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, dry_run })
+      // The sign's own group first, so that folding it in sweeps the diagnosis groups of its last save
+      follow_ups_needed.value = [
+        { key, due_to: finding, findings_to_check_for: dry_run.findings_to_check_for },
+        ...dry_run.would_indicate_diagnoses.map((indicated) => indicatedDiagnosisFollowUp(key, indicated)),
+      ].reduce(accumulateFollowUps, follow_ups_needed.value)
+
       if (priority_update) {
+        // The priority is due to whichever of the sign and the diagnoses it would indicate raise triage this high
+        const due_to = [
+          ...(finding_base_priority === priority_update ? [parseSExpressionAsInsertableFinding(finding.s_expression)] : []),
+          ...compactMap(
+            dry_run.would_indicate_diagnoses,
+            (indicated) =>
+              indicated.would_indicate_priority === priority_update &&
+              diagnosisToEvaluation(indicatedDiagnosisNode(indicated.diagnosis)),
+          ),
+        ].map(dueToHypotheticalRelation)
+
         priorityUpdate({
           priority: priority_update,
+          priority_evaluation: buildPriorityEvaluation({
+            priority: priority_update,
+            created_at: new Date(),
+            due_to,
+          }),
         })
       }
 

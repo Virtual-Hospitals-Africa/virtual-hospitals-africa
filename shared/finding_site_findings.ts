@@ -272,7 +272,7 @@ export const FINDING_SITE_FINDINGS: FindingSiteFindings[] = [
   },
   {
     // Gum/teeth symptoms ⇢ 36
-    label: 'Gums and teeth',
+    label: 'Teeth & gums',
     finding_site_structure: 'Tooth, gum, and/or supporting structure',
     excluding_structures: [],
     clinical_finding_s_expressions: [

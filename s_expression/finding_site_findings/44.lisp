@@ -1,0 +1,48 @@
+;; Abdominal pain ⇢ 44. The structure's "content of abdominopelvic cavity" covers the stomach
+(finding_site_findings
+  "Abdomen"
+  (finding_site_structure (snomed_concept "Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall" "body structure"))
+  (excluding_structures
+    (snomed_concept "Structure of anus and/or rectum" "body structure")
+    (snomed_concept "Genital structure" "body structure")
+    (snomed_concept "Urinary system structure" "body structure")
+  )
+  (clinical_findings
+    (clinical_finding (snomed_concept "Abdominal pain" "finding"))
+    (clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))
+    (clinical_finding (snomed_concept "Right lower quadrant pain" "finding"))
+    (clinical_finding (snomed_concept "Right upper quadrant pain" "finding"))
+    (clinical_finding (snomed_concept "Abdominal discomfort" "finding"))
+    (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
+    (clinical_finding (snomed_concept "Abdominal mass" "finding"))
+    (clinical_finding (snomed_concept "Pelvic swelling" "finding"))
+    (clinical_finding (snomed_concept "Abdominal guarding" "finding"))
+    (clinical_finding (snomed_concept "Abdominal rigidity" "finding"))
+    (clinical_finding (snomed_concept "Rebound tenderness" "finding"))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+    (clinical_finding (snomed_concept "Jaundice" "finding"))
+    (clinical_finding (snomed_concept "Retention of urine" "disorder"))
+    (clinical_finding (snomed_concept "Nausea" "finding"))
+    (clinical_finding (snomed_concept "Finding of vomiting" "finding"))
+    (clinical_finding (snomed_concept "Persistent vomiting" "disorder"))
+    (clinical_finding (snomed_concept "Fever" "finding"))
+    (clinical_finding (snomed_concept "Loss of appetite" "finding"))
+    (clinical_finding (snomed_concept "Constipation" "finding"))
+    (clinical_finding (snomed_concept "Diarrhea" "finding"))
+    ;; Sudden abdominal pain with generalised itch/rash, face/tongue swelling, etc.
+    (clinical_finding (snomed_concept "Generalized pruritus" "finding"))
+    (clinical_finding (snomed_concept "Generalized rash" "disorder"))
+    (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
+    (clinical_finding (snomed_concept "Dizziness" "finding"))
+    (clinical_finding (snomed_concept "Collapse" "finding"))
+    ;; Lower abdominal pain in a woman
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding") (qualifier (snomed_concept "Abnormal" "qualifier value")))
+    ;; Epigastric pain worse with eating, hunger or lying down/bending forward
+    (clinical_finding (snomed_concept "Heartburn" "finding"))
+    (clinical_finding (snomed_concept "Difficulty swallowing" "finding"))
+    (clinical_finding (snomed_concept "Melena" "disorder"))
+    (clinical_finding (snomed_concept "Abnormal weight loss" "finding"))
+  )
+)

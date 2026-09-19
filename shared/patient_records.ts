@@ -138,8 +138,9 @@ function attributeToDisplayableRecord(
   }
 }
 
+// An evaluation displays like a finding: only the concepts, qualifiers and attributes they share are read
 export function findingToDisplayableRecord(
-  finding: Lang['finding'],
+  finding: Lang['finding' | 'evaluation'],
 ): FormattableRecord {
   assert(finding.root_snomed_concept, 'Expected root_snomed_concept')
   assert(finding.specific_snomed_concept, 'Expected specific_snomed_concept')
@@ -598,4 +599,8 @@ export function findingFullDisplay(node: Lang['finding']) {
 
 export function insertableFindingFullDisplay(s_expression: string) {
   return findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
+}
+
+export function evaluationFullDisplay(node: Lang['evaluation']) {
+  return formatRecord(findingToDisplayableRecord(node)).displays.full
 }

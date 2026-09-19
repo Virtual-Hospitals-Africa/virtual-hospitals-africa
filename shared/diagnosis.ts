@@ -104,6 +104,11 @@ export type DiagnosisEffectGroup<E extends DiagnosisEffect> = {
   strongest: E
 }
 
+// The effect the pipeline would record for a concept every rule effect given indicates
+export function strongestDiagnosisEffect<E extends DiagnosisEffect>(effects: E[]): E {
+  return effects.reduce((best, effect) => CERTAINTY_ORDER[effect.certainty] > CERTAINTY_ORDER[best.certainty] ? effect : best)
+}
+
 /*
   The real pipeline records one diagnosis per concept, at the highest certainty any applicable
   rule gives it (system_diagnosis_rules.insertPositiveDiagnoses). Groups are sorted by concept
@@ -118,6 +123,6 @@ export function groupDiagnosisEffectsByConcept<E extends DiagnosisEffect>(effect
   }
   return sortBy([...by_concept.values()], (group) => group[0].snomed_concept.name).map((diagnosis) => ({
     diagnosis,
-    strongest: diagnosis.reduce((best, effect) => CERTAINTY_ORDER[effect.certainty] > CERTAINTY_ORDER[best.certainty] ? effect : best),
+    strongest: strongestDiagnosisEffect(diagnosis),
   }))
 }

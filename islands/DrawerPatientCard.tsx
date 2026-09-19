@@ -15,6 +15,7 @@ import { PriorityEscalationPanel } from './PriorityEscalation/PriorityEscalation
 
 export type PriorityEscalation = {
   priority: Priority
+  priority_evaluation: RenderedEvaluationRelativeToHealthWorker
 }
 
 const PRIORITY_UPDATE_EVENT = 'priority-update-event'
@@ -22,11 +23,8 @@ const PRIORITY_UPDATE_EVENT = 'priority-update-event'
 export function priorityUpdate(
   detail: PriorityEscalation,
 ) {
-  self.dispatchEvent(
-    new CustomEvent(PRIORITY_UPDATE_EVENT, {
-      detail,
-    }),
-  )
+  const event = new CustomEvent(PRIORITY_UPDATE_EVENT, { detail })
+  self.dispatchEvent(event)
 }
 
 // Patient's drawer card component with avatar, name, DOB, and triage
@@ -43,6 +41,8 @@ export function DrawerPatientCard(
 ) {
   const open_escalation_modal = useSignal(false)
   const priority = useSignal(original_priority?.name)
+  // The escalating record replaces the one rendered by the server until the page is next loaded
+  const current_priority_evaluation = useSignal(priority_evaluation)
   const priority_color = priority.value ? PRIORITY_COLORS[priority.value] : { bg: 'bg-gray-100', text: 'text-gray-800' }
 
   const href = patient.completed_registration ? `/app/organizations/${organization_id}/patients/${patient.id}/profile` : undefined
@@ -54,6 +54,7 @@ export function DrawerPatientCard(
       const next_priority = higherPriority(event.detail.priority, priority.value)
       if (!!next_priority && next_priority !== priority.value) {
         priority.value = next_priority
+        current_priority_evaluation.value = event.detail.priority_evaluation
         open_escalation_modal.value = true
       }
     }
@@ -98,7 +99,7 @@ export function DrawerPatientCard(
           ? (
             <PriorityChipWithPopover
               priority={priority.value}
-              priority_evaluation={priority_evaluation!}
+              priority_evaluation={current_priority_evaluation.value!}
               organization_id={organization_id}
             />
           )

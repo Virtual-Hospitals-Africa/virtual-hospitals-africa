@@ -222,6 +222,19 @@ export function inverseSExpression(node: AnyNode): string {
       return `(system_diagnosis_rule ${quoted(node.description)} ${inverseSExpression(node.diagnosis)} ${ages(node)} ${inverseSExpression(node.due_to)})`
     }
 
+    case 'finding_site_findings': {
+      const parts: string[] = [
+        'finding_site_findings',
+        quoted(node.label),
+        `(finding_site_structure ${snomedConceptToString(node.finding_site_structure)})`,
+      ]
+      if (node.excluding_structures.length) {
+        parts.push(`(excluding_structures ${node.excluding_structures.map(snomedConceptToString).join(' ')})`)
+      }
+      parts.push(`(clinical_findings ${node.clinical_findings.map(inverseSExpression).join(' ')})`)
+      return `(${parts.join(' ')})`
+    }
+
     default: {
       const _exhaustive: never = node
       throw new Error(`Unknown node type: ${(_exhaustive as AnyNode).atom}`)

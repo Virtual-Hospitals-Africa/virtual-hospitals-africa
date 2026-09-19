@@ -128,10 +128,11 @@ export const rules = base({
       .$if(!!type, (qb) => {
         const types = Array.isArray(type) ? type : [type!]
         assert(types.length)
-        return qb.where(eb => eb.or(
-          types.map((type) =>
-            eb(sql`${sql.table(`${type}s`)}.id`, 'is not', null)
-        )))
+        return qb.where((eb) =>
+          eb.or(
+            types.map((type) => eb(sql`${sql.table(`${type}s`)}.id`, 'is not', null)),
+          )
+        )
       })
   },
 

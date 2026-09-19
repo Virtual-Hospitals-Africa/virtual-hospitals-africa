@@ -312,7 +312,7 @@ export const FINDING_SITE_ICONS = {
   'Ear': Ear,
   'Nose': Nose,
   'Mouth or throat': MouthOrThroat,
-  'Gums and teeth': GumsAndTeeth,
+  'Teeth & gums': GumsAndTeeth,
   'Chest': Chest,
   'Breast': Breast,
   'Abdomen': Abdomen,

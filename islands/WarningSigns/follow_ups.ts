@@ -1,27 +1,32 @@
 import { EnteredFinding, FindingToCheckFor, RulesDryRun, WarningSignWithMaybeRecord } from '../../types.ts'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
-import { findingFullDisplay } from '../../shared/patient_records.ts'
+import { evaluationFullDisplay, findingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { NoneOfTheAboveFindingsPostBody } from '../../shared/none_of_the_above_findings_post.ts'
 import { CheckedWarningSign } from './shared.ts'
+import { diagnosisToEvaluation, strongestDiagnosisEffect } from '../../shared/diagnosis.ts'
+import { Lang } from '../../shared/s_expression_schemas.ts'
 
 /*
   Follow ups accumulate across saves within a visit to the warning signs page,
-  grouped by the sign that caused them, mirroring how the additional tasks page
-  groups check_for tasks by their due_to.
+  grouped by what caused them, mirroring how the additional tasks page groups
+  check_for tasks by their due_to.
+
+  A save raises a group for the sign itself and one for each diagnosis the sign would
+  indicate, as the findings a diagnosis has us check for are due to the diagnosis rather
+  than to the sign behind it.
 
   `key` is the sign's uniqueIdentifier rather than the finding's s_expression, as
   editing a sign (adding a finding site, say) changes its s_expression but should
-  replace that sign's group rather than add another.
-
-  A group carries the whole dry run of the sign that caused it. Only findings_to_check_for
-  is rendered today; would_indicate_diagnoses and would_indicate_priority ride along so the
-  page can show what the sign implies without another request.
+  replace that sign's group rather than add another. A diagnosis's group is keyed by the
+  sign's key and the diagnosed concept, so that saving the sign again replaces the groups
+  its diagnoses raised before, including those it no longer indicates.
 */
-export type FollowUpGroup = RulesDryRun & {
+export type FollowUpGroup = {
   key: string
   due_to: EnteredFinding
   saving?: boolean
+  findings_to_check_for: FindingToCheckFor[]
 }
 
 export const EMPTY_RULES_DRY_RUN: RulesDryRun = {
@@ -30,17 +35,57 @@ export const EMPTY_RULES_DRY_RUN: RulesDryRun = {
   would_indicate_priority: null,
 }
 
+const DIAGNOSIS_KEY_PREFIX = '.diagnosis.'
+
+/*
+  Folding a sign's own group in first sweeps the diagnosis groups of its previous save,
+  so the diagnosis groups folded in after it are the ones this save indicates.
+*/
 export function accumulateFollowUps(
   groups: FollowUpGroup[],
-  { key, due_to, dry_run }: {
+  { key, due_to, findings_to_check_for }: {
     key: string
     due_to: EnteredFinding | null
-    dry_run: RulesDryRun
+    findings_to_check_for: FindingToCheckFor[]
   },
 ): FollowUpGroup[] {
-  const without_sign = groups.filter((group) => group.key !== key)
-  if (!due_to || !dry_run.findings_to_check_for.length) return without_sign
-  return [...without_sign, { key, due_to, ...dry_run }]
+  const without_sign = groups.filter((group) => group.key !== key && !group.key.startsWith(key + DIAGNOSIS_KEY_PREFIX))
+  if (!due_to || !findings_to_check_for.length) return without_sign
+  return [...without_sign, { key, due_to, findings_to_check_for }]
+}
+
+/*
+  A diagnosis the sign would indicate, as the pipeline would record it: one per concept at
+  the highest certainty any applicable rule gives it, displayed as the diagnosis itself
+  would be, "Anaphylaxis Diagnosis: Possible diagnosis".
+*/
+export function indicatedDiagnosisNode(diagnosis: RulesDryRun['would_indicate_diagnoses'][number]['diagnosis']): Lang['diagnosis'] {
+  const { snomed_concept, certainty } = strongestDiagnosisEffect(diagnosis)
+  return {
+    atom: 'diagnosis',
+    snomed_concept: { atom: 'snomed_concept', name: snomed_concept.name, category: snomed_concept.category },
+    certainty_qualifier: certainty,
+  }
+}
+
+export function asIndicatedDiagnosis(diagnosis: RulesDryRun['would_indicate_diagnoses'][number]['diagnosis']): EnteredFinding {
+  const node = indicatedDiagnosisNode(diagnosis)
+  return {
+    s_expression: inverseSExpression(node),
+    display: evaluationFullDisplay(diagnosisToEvaluation(node)),
+  }
+}
+
+// The group for one of a sign's indicated diagnoses, to fold in after the sign's own group
+export function indicatedDiagnosisFollowUp(
+  sign_key: string,
+  { diagnosis, findings_to_check_for }: RulesDryRun['would_indicate_diagnoses'][number],
+): { key: string; due_to: EnteredFinding; findings_to_check_for: FindingToCheckFor[] } {
+  return {
+    key: `${sign_key}${DIAGNOSIS_KEY_PREFIX}${strongestDiagnosisEffect(diagnosis).snomed_concept.id}`,
+    due_to: asIndicatedDiagnosis(diagnosis),
+    findings_to_check_for,
+  }
 }
 
 export function followUpDisplay(s_expression: string): string {

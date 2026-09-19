@@ -25,8 +25,12 @@ export const SIDE_PANEL_HOST_CLASS =
   'fixed top-20 bottom-20 right-64 xl:right-88 z-40 w-[30rem] xl:w-[44rem] max-w-[calc(100vw-20rem)] flex flex-col items-stretch justify-start gap-3 pointer-events-none'
 
 /*
-  min-h-0 so that two open panels shrink to share the column rather than
-  overflowing it; each panel scrolls its own body.
+  min-h-0 lets a panel shrink below its content height, which is what allows
+  its own internal overflow-y-auto body to actually scroll rather than push
+  past the column's bottom edge. Priority escalation additionally sets
+  shrink-0 (see PriorityEscalationPanel) so it always keeps its full content
+  height; follow ups is the one left free to shrink and scroll when both
+  panels together don't fit the column.
 */
 export const SIDE_PANEL_CLASS = 'pointer-events-auto flex flex-col min-h-0 rounded-2xl bg-white shadow-xl border border-gray-200'
 

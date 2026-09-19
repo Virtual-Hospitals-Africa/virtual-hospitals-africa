@@ -22,7 +22,7 @@ describe('shared/finding_site_signs.ts', () => {
         ['Ear', 'Ear structure'],
         ['Nose', 'Nasal structure'],
         ['Mouth or throat', 'Structure of mouth and/or pharynx'],
-        ['Gums and teeth', 'Tooth, gum, and/or supporting structure'],
+        ['Teeth & gums', 'Tooth, gum, and/or supporting structure'],
         ['Chest', 'Thoracic structure'],
         ['Breast', 'Breast structure'],
         [

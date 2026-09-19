@@ -1,13 +1,23 @@
 import { afterAll, describe, it } from 'std/testing/bdd.ts'
 import { normalForm, parseWithSchema } from '../../shared/s_expression.ts'
 import { TASKS_LISP } from '../../s_expression/tasks.ts'
-import { insertable_finding_base, type Lang, system_diagnosis_rule, system_priority_evaluation, task } from '../../shared/s_expression_schemas.ts'
+import {
+  finding_site_findings,
+  insertable_finding_base,
+  type Lang,
+  system_diagnosis_rule,
+  system_priority_evaluation,
+  task,
+} from '../../shared/s_expression_schemas.ts'
 import db from '../../db/db.ts'
 import { collect, filter } from '../../util/inParallel.ts'
 import { assertArrayEmpty } from '../../util/arraySize.ts'
 import { SYSTEM_PRIORITY_EVALUATIONS_LISP } from '../../s_expression/system_priority_evaluations.ts'
 import { SYSTEM_DIAGNOSIS_RULES_LISP } from '../../s_expression/system_diagnosis_rules.ts'
-import { parseLispFile, walkDirectory } from '../../s_expression/compile.ts'
+import { parseFindingSiteFindingsLispFile, parseLispFile, walkDirectory } from '../../s_expression/compile.ts'
+import { FINDING_SITE_FINDINGS_LISP } from '../../s_expression/finding_site_findings.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import { allEvidenceToLookFor } from '../../db/models/s_expression_evidence.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { ALL_ASSESSMENT_OPTIONS_PARSED, VITALS_ADULT_SNOMED_CONCEPT_NAMES } from '../../shared/vitals.ts'
@@ -33,6 +43,20 @@ function* nodesAndConceptsSystemPriorityEvaluations() {
     const node = parseWithSchema(s_expression, system_priority_evaluation)
     for (const concept of allConceptsToLookFor(node)) {
       yield { concept, node }
+    }
+  }
+}
+
+function* nodesAndConceptsFindingSiteFindings() {
+  for (const s_expression of FINDING_SITE_FINDINGS_LISP) {
+    const node = parseWithSchema(s_expression, finding_site_findings)
+    for (const concept of [node.finding_site_structure, ...node.excluding_structures]) {
+      yield { concept, node }
+    }
+    for (const clinical_finding of node.clinical_findings) {
+      for (const concept of allConceptsToLookFor(clinical_finding)) {
+        yield { concept, node }
+      }
     }
   }
 }
@@ -333,6 +357,35 @@ describe('s_expression', () => {
           }
         }
       }
+    })
+  })
+
+  describe('FINDING_SITE_FINDINGS_LISP', () => {
+    it('is one parseable (finding_site_findings) declaration per lisp file', async () => {
+      const filepaths = await collect(walkDirectory('s_expression/finding_site_findings'))
+      assert(filepaths.length, 'No finding site findings lisp files found')
+      for (const filepath of filepaths) {
+        // parseFindingSiteFindingsLispFile parses with the schema and asserts the file holds one declaration
+        await parseFindingSiteFindingsLispFile(filepath)
+      }
+    })
+
+    it('is up to date with the lisp files it was compiled from', async () => {
+      const filepaths = await collect(walkDirectory('s_expression/finding_site_findings'))
+      const compiled = new Set(FINDING_SITE_FINDINGS_LISP)
+      for (const filepath of filepaths) {
+        const node = await parseFindingSiteFindingsLispFile(filepath)
+        assert(
+          compiled.has(inverseSExpression(node)),
+          `${filepath} is not in s_expression/finding_site_findings.ts, rerun deno task compile:s_expressions`,
+        )
+      }
+      assertEquals(FINDING_SITE_FINDINGS_LISP.length, filepaths.length)
+    })
+
+    it('has valid snomed concepts', async () => {
+      const not_found = await filter(nodesAndConceptsFindingSiteFindings(), conceptDoesNotExist)
+      assertArrayEmpty(not_found)
     })
   })
 
