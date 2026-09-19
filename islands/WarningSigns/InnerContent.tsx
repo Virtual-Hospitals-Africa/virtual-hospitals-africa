@@ -1,11 +1,12 @@
 import { computed, Signal, useSignal } from '@preact/signals'
-import { useEffect, useMemo, useRef } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 import { EmptyState } from '../../components/library/EmptyState.tsx'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/mini.tsx'
 import {
   AsyncSearchHookResult,
   EnteredFinding,
   FindingModalMetadata,
+  FindingSiteWithMaybeRecords,
   RulesDryRun,
   SnomedWarningSignSearchResult,
   WarningSignWithMaybeRecord,
@@ -17,7 +18,8 @@ import Search from '../Search.tsx'
 import { SelectedChips } from '../SelectedRecordChip.tsx'
 import { WarningSignsHiddenInputs } from './HiddenInputs.tsx'
 import { WarningSignsPriorityTable } from './PriorityTable.tsx'
-import { CATEGORIES, CheckedWarningSign, sameSign, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
+import { CheckedWarningSign, findChecked, sameSign, signsToDisplay, tableCategories, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
+import { FindingSiteFilter } from './FindingSiteFilter.tsx'
 import { savedRecordId, warningSignsFormValues } from './form_values.ts'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
 import { findingFullDisplay } from '../../shared/patient_records.ts'
@@ -26,7 +28,6 @@ import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
 import negate from '../../util/negate.ts'
 import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
 import { assert } from 'std/assert/assert.ts'
-import debounce from '../../util/debounce.ts'
 import {
   accumulateFollowUps,
   asCheckedFollowUpSign,
@@ -89,6 +90,8 @@ export default function WarningSignsInnerContent({
   search_results,
   snomed_warning_signs_async_search,
   warning_signs,
+  finding_sites,
+  finding_site,
 }: {
   post_route: string // /app/organizations/[organization_id]/patients/[patient_id]/open_encounter/clinical_finding
   rules_dry_run_route: string | null // .../open_encounter/rules_dry_run, null skips prefetching (tutorial)
@@ -96,6 +99,8 @@ export default function WarningSignsInnerContent({
   search_results: Signal<null | WarningSignWithMaybeRecord[]>
   snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
   warning_signs: WarningSignWithMaybeRecord[]
+  finding_sites: FindingSiteWithMaybeRecords[] // The body sites the page can be filtered by, none for children
+  finding_site: Signal<null | FindingSiteWithMaybeRecords>
 }) {
   const checked_signs = useSignal<CheckedWarningSign[]>(
     compactMap(warning_signs, (sign) =>
@@ -159,24 +164,18 @@ export default function WarningSignsInnerContent({
     return request
   }
 
-  const debounced_fetch_follow_ups = useMemo(() => debounce(fetchFollowUps, 220), [rules_dry_run_route])
-
   function onModalChange(finding: EnteredFinding) {
-    if (modal_prefetched.current) return debounced_fetch_follow_ups(finding.s_expression)
+    if (modal_prefetched.current) return fetchFollowUps(finding.s_expression)
     modal_prefetched.current = true
     fetchFollowUps(finding.s_expression)
   }
 
-  const table_signs_to_display = computed(() => search_results.value || warning_signs)
+  const table_signs_to_display = computed(() => signsToDisplay({ search_results: search_results.value, finding_site: finding_site.value, warning_signs }))
 
-  const table_signs_with_checked = computed(() =>
-    table_signs_to_display.value.map((sign) => {
-      const checked = checked_signs.value.find((checked_sign) => sameSign(checked_sign, sign))
-      return checked || sign
-    })
-  )
+  const table_signs_with_checked = computed(() => table_signs_to_display.value.map((sign) => findChecked(checked_signs.value, sign) || sign))
 
   const grouped = computed(() => groupBy(table_signs_with_checked.value, 'category'))
+  const categories = computed(() => tableCategories(finding_site.value))
 
   const form_values = computed(() => warningSignsFormValues({ warning_signs, checked_signs: checked_signs.value }))
 
@@ -322,7 +321,6 @@ export default function WarningSignsInnerContent({
     const key = uniqueIdentifier(active_modal.value!.sign)
     updateSigns(finding)
     active_modal.value = null
-    debounced_fetch_follow_ups.cancel()
 
     if (finding === RemoveFindingSymbol) {
       follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: null, dry_run: EMPTY_RULES_DRY_RUN })
@@ -331,8 +329,16 @@ export default function WarningSignsInnerContent({
 
     // Usually already resolved having been prefetched while the modal was open
     fetchFollowUps(finding.s_expression).then((dry_run) => {
-      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, dry_run })
       const priority_update = higherPriority(finding.priority, dry_run.would_indicate_priority)
+      // TODO: super edge case, but if the would_indicate_priority is based on a combination of findings
+      // and one of those depencies is subsequently removed this will then be wrong.
+      // The previous priority has already been saved to the backend via POST clinical_finding
+      // with only the record_id confirmed on POST of the warning_signs page, so this value will only live
+      // on the frontend and if it is indeed later wrong the backend should sort it out
+      if (priority_update && priority_update !== finding.priority) {
+        finding.priority = priority_update
+      }
+      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, dry_run })
       if (priority_update) {
         priorityUpdate({
           priority: priority_update,
@@ -384,16 +390,25 @@ export default function WarningSignsInnerContent({
   return (
     <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs'>
       <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1'>
-        <Search
-          id='warning-signs-search'
-          placeholder='Chief complaint'
-          data-searchroute={snomed_warning_signs_async_search.search_route}
-          options={snomed_warning_signs_async_search.results}
-          onQuery={snomed_warning_signs_async_search.setQuery}
-          loading_options={snomed_warning_signs_async_search.loading}
-          do_not_render_built_in_options
-          is_async
-        />
+        <div className='flex gap-2 items-stretch'>
+          <Search
+            id='warning-signs-search'
+            placeholder='Chief complaint'
+            data-searchroute={snomed_warning_signs_async_search.search_route}
+            options={snomed_warning_signs_async_search.results}
+            onQuery={snomed_warning_signs_async_search.setQuery}
+            loading_options={snomed_warning_signs_async_search.loading}
+            do_not_render_built_in_options
+            is_async
+          />
+          {finding_sites.length > 0 && (
+            <FindingSiteFilter
+              finding_sites={finding_sites}
+              selected={finding_site.value}
+              onSelect={(selected) => finding_site.value = selected}
+            />
+          )}
+        </div>
         <SelectedChips
           id='warning-signs-selected-chips'
           items={checked_signs.value}
@@ -407,7 +422,7 @@ export default function WarningSignsInnerContent({
           icon={<MagnifyingGlassIcon className='h-5 w-5' />}
         />
       )}
-      {CATEGORIES.map((config) => (
+      {categories.value.map((config) => (
         <WarningSignsPriorityTable
           {...config}
           onCheck={onCheck}

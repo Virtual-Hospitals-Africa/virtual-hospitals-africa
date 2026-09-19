@@ -11,7 +11,7 @@ import cls from '../util/cls.ts'
 import { PriorityChipWithPopover } from './PriorityChipWithPopover.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { useEffect } from 'preact/hooks'
-import { PriorityEscalationModal } from './PriorityEscalation/PriorityEscalationModal.tsx'
+import { PriorityEscalationPanel } from './PriorityEscalation/PriorityEscalationPanel.tsx'
 
 export type PriorityEscalation = {
   priority: Priority
@@ -31,13 +31,14 @@ export function priorityUpdate(
 
 // Patient's drawer card component with avatar, name, DOB, and triage
 export function DrawerPatientCard(
-  { patient, organization_id, priority: original_priority, priority_evaluation, escalation_candidates, nearest_hospital }: {
+  { patient, organization_id, priority: original_priority, priority_evaluation, escalation_candidates, nearest_hospital, refer_route }: {
     patient: RenderedPatient
     organization_id: string
     priority: RenderedPatientEncounter['priority']
     priority_evaluation: RenderedEvaluationRelativeToHealthWorker | null
     escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
     nearest_hospital: RenderedOrganization | null
+    refer_route: string
   },
 ) {
   const open_escalation_modal = useSignal(false)
@@ -112,9 +113,10 @@ export function DrawerPatientCard(
             </span>
           )}
       </div>
-      <PriorityEscalationModal
+      <PriorityEscalationPanel
         escalation_candidates={escalation_candidates}
         nearest_hospital={nearest_hospital}
+        refer_route={refer_route}
         priority={priority.value}
         open={open_escalation_modal.value}
         onClose={() => open_escalation_modal.value = false}
