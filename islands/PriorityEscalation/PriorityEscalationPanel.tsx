@@ -10,6 +10,8 @@ import { Maybe, Priority, RenderedEmployeeWithPresenceAndSeniority, RenderedOrga
 import { employeeDisplay } from '../../util/healthWorkerDisplay.ts'
 import { ReferPostBody, ReferPostResponse } from '../../shared/refer_post.ts'
 import { ReferralRecipients } from '../referral/ReferralRecipients.tsx'
+import { SIDE_PANEL_CLASS, SIDE_PANEL_ORDER, sidePanelHost } from '../../components/library/layout/side_panels.ts'
+import cls from '../../util/cls.ts'
 
 type PriorityEscalationPanelProps = {
   priority: Maybe<Priority>
@@ -67,13 +69,12 @@ const SELECTED_ACTION_CARD_CLASS =
   'w-full text-left cursor-pointer rounded-lg border-2 border-indigo-600 bg-indigo-50 px-4 py-4 shadow-sm hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-600'
 
 /*
-  Not a modal: appears as a panel of the same width as, and just above, the
-  follow-ups panel (islands/WarningSigns/FollowUpsPanel.tsx), so both can be
-  visible together. Positioned by anchoring its bottom edge to the follow-ups
-  panel's top (top-20 = 5rem) so it grows upward as options are added.
+  Not a modal: appears as a panel just above the follow-ups panel
+  (islands/WarningSigns/FollowUpsPanel.tsx), so both can be visible together.
 
-  Rendered into document.body like the follow-ups panel, for the same reason:
-  it lives outside the workflow's form.
+  Both portal into the shared column left of the patient drawer, which owns the
+  position and width (components/library/layout/side_panels.ts). That column
+  also keeps this panel's inputs outside the workflow's form.
 */
 export function PriorityEscalationPanel(
   { priority, open, escalation_candidates, nearest_hospital, refer_route, onClose }: PriorityEscalationPanelProps,
@@ -85,7 +86,8 @@ export function PriorityEscalationPanel(
   // that referral's state rather than the escalation options.
   const referral = useSignal<ReferPostResponse | null>(null)
 
-  if (typeof document === 'undefined' || !open) return null
+  const host = sidePanelHost()
+  if (!host || !open) return null
 
   const senior_provider = escalation_candidates.find((candidate) => candidate.senior_on_duty) ??
     escalation_candidates.find((candidate) => candidate.senior_on_staff)
@@ -142,9 +144,9 @@ export function PriorityEscalationPanel(
   return createPortal(
     <div
       id='priority-escalation-panel'
-      className='fixed right-64 xl:right-88 bottom-[calc(100vh-5rem)] z-50 w-[30rem] xl:w-[44rem] max-w-[calc(100vw-20rem)] max-h-[calc(100vh-8rem)] flex flex-col rounded-2xl bg-white shadow-xl border border-gray-200'
+      className={cls(SIDE_PANEL_CLASS, SIDE_PANEL_ORDER.priority_escalation)}
     >
-      <div className='flex items-center justify-between px-5 pt-4 pb-3'>
+      <div className='shrink-0 flex items-center justify-between px-5 pt-4 pb-3'>
         <h2 className='text-lg font-bold text-gray-900'>Priority Escalation</h2>
         <button
           type='button'
@@ -155,7 +157,7 @@ export function PriorityEscalationPanel(
           <XMarkIcon className='h-5 w-5' />
         </button>
       </div>
-      <div className='overflow-y-auto px-5 pb-3 flex flex-col gap-4'>
+      <div className='min-h-0 overflow-y-auto px-5 pb-3 flex flex-col gap-4'>
         <div className='text-sm text-gray-900'>
           Priority: {priority}
         </div>
@@ -239,7 +241,7 @@ export function PriorityEscalationPanel(
           </div>
         )}
       </div>
-      <div className='flex gap-3 justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
+      <div className='shrink-0 flex gap-3 justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
         <Button
           variant='tertiary'
           type='button'
@@ -259,6 +261,6 @@ export function PriorityEscalationPanel(
         )}
       </div>
     </div>,
-    document.body,
+    host,
   )
 }

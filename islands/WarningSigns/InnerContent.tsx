@@ -22,7 +22,7 @@ import { CheckedWarningSign, findChecked, sameSign, signsToDisplay, tableCategor
 import { FindingSiteFilter } from './FindingSiteFilter.tsx'
 import { savedRecordId, warningSignsFormValues } from './form_values.ts'
 import { parseSExpressionAsInsertableFinding } from '../../shared/parseSExpressionAsInsertableFinding.ts'
-import { findingFullDisplay } from '../../shared/patient_records.ts'
+import { findingFullDisplay, insertableFindingFullDisplay } from '../../shared/patient_records.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { RemoveFindingSymbol } from '../finding/RemoveFindingSymbol.tsx'
 import negate from '../../util/negate.ts'
@@ -44,7 +44,7 @@ import { higherPriority } from '../../shared/priorities.ts'
 import { priorityUpdate } from '../DrawerPatientCard.tsx'
 
 function asEntered({ priority, clinical_finding_s_expression: s_expression }: WarningSignWithMaybeRecord) {
-  const display = findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
+  const display = insertableFindingFullDisplay(s_expression)
   return { s_expression, priority, display }
 }
 

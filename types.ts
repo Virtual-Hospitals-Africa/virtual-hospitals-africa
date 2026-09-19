@@ -2844,6 +2844,8 @@ export type FindingSiteSign = SignShared<string> & { key: string }
 export type FindingSite = {
   label: string
   snomed_concept: { name: string; category: 'body structure' }
+  // The sites a patient presenting with this one does not mean. Nothing reads it yet.
+  excluding_structures: string[]
   signs: FindingSiteSign[]
 }
 
@@ -3279,7 +3281,11 @@ export type FindingToCheckFor = FindingRelatedModifiers & {
 
 export type RulesDryRun = {
   findings_to_check_for: FindingToCheckFor[]
-  would_indicate_diagnoses: ApplicableRuleEffectSystemDiagnosisRule[]
+  would_indicate_diagnoses: {
+    diagnosis: ApplicableRuleEffectSystemDiagnosisRule[]
+    would_indicate_priority: null | Priority
+    findings_to_check_for: FindingToCheckFor[]
+  }[]
   would_indicate_priority: null | Priority
 }
 

@@ -8,6 +8,7 @@ import { snomed_onset_required } from './snomed_onset_required.ts'
 import { snomed_predefined_attributes } from './snomed_predefined_attributes.ts'
 import { snomed_relevant_qualifiers } from './snomed_relevant_qualifiers.ts'
 import { sql } from 'kysely'
+import { insertableFindingFullDisplay } from '../../shared/patient_records.ts'
 
 type SearchTerms = {
   search?: string
@@ -128,6 +129,7 @@ export const snomed_warning_signs = base({
     const clinical_finding_s_expression = `(clinical_finding ${concept_s_expression}${site_s_expression})`
     return {
       ...result,
+      name: insertableFindingFullDisplay(clinical_finding_s_expression),
       clinical_finding_s_expression,
       snomed_concept_id,
       finding_site,

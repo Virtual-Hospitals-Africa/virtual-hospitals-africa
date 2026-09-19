@@ -91,6 +91,23 @@ describeParallel('triage/warning_signs', () => {
 
   describeParallel('GET', () => {
     itParallel(
+      'renders the host the floating side panels portal into, left of the patient drawer',
+      async () => {
+        const { $ } = await setupTriageNewPatient({
+          patient_demographics: {},
+        })
+
+        // Both the priority escalation panel and the follow-ups panel are client-only and
+        // portal into this host, so without it in the server-rendered page neither appears.
+        // See components/library/layout/side_panels.ts
+        assertEquals($('#drawer-side-panels').length, 1)
+        // Outside the workflow's form, so that the panels' inputs are never submitted with it
+        assertEquals($('form #drawer-side-panels').length, 0)
+        assertEquals($('#patient-drawer').length, 1)
+      },
+    )
+
+    itParallel(
       'renders a warning signs page when patient not known to be pregnant',
       async () => {
         const { $ } = await setupTriageNewPatient({
@@ -191,7 +208,7 @@ describeParallel('triage/warning_signs', () => {
           include_negative: true,
         })
         const finding_sites = findingSitesWithPriorRecords(prior_findings, 'adult')
-        assertEquals(finding_sites.length, 15)
+        assertEquals(finding_sites.length, 23)
         const ear = finding_sites.find((site) => site.label === 'Ear')!
         assertMatches(ear, {
           label: 'Ear',

@@ -27,7 +27,7 @@ type RuleSearchTerms =
     patient_id: string
     patient_encounter_id: string
     patient_age_determination: AgeDetermination
-    type?: RuleType
+    type?: RuleType | RuleType[]
   }
   & (
     // Rules linked to due_tos that inserted records have been tagged as satisfying
@@ -125,9 +125,14 @@ export const rules = base({
           }))
           .end().$notNull().as('rule_effect'),
       ])
-      .$if(type === 'task', (qb) => qb.where('tasks.id', 'is not', null))
-      .$if(type === 'system_diagnosis_rule', (qb) => qb.where('system_diagnosis_rules.id', 'is not', null))
-      .$if(type === 'system_priority_evaluation', (qb) => qb.where('system_priority_evaluations.id', 'is not', null))
+      .$if(!!type, (qb) => {
+        const types = Array.isArray(type) ? type : [type!]
+        assert(types.length)
+        return qb.where(eb => eb.or(
+          types.map((type) =>
+            eb(sql`${sql.table(`${type}s`)}.id`, 'is not', null)
+        )))
+      })
   },
 
   formatResult: identity,
@@ -167,7 +172,7 @@ export const rules = base({
       patient_encounter_id: string
       patient_age_determination: AgeDetermination
       matched_due_tos: HypotheticalDueToMatch[]
-      type?: RuleType
+      type?: RuleType | RuleType[]
     },
   ): Promise<ApplicableRule[]> {
     if (arrayIsEmpty(matched_due_tos)) return []

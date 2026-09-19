@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'
 import { snomed_onset_required } from '../../db/models/snomed_onset_required.ts'
 import { snomed_predefined_attributes } from '../../db/models/snomed_predefined_attributes.ts'
@@ -6,14 +7,16 @@ import { pMap } from '../../util/inParallel.ts'
 import fromEntries from '../../util/fromEntries.ts'
 import { FindingRelatedModifiers } from '../../types.ts'
 import { TASKS } from '../../shared/tasks.ts'
-import { Lang } from '../../shared/s_expression_schemas.ts'
+import { FINDING_SITE_FINDINGS } from '../../shared/finding_site_findings.ts'
+import { finding, Lang } from '../../shared/s_expression_schemas.ts'
+import { parseWithSchema } from '../../shared/s_expression.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 
 /*
-  Modifiers for every finding any adult task checks for, keyed by the finding's specific
-  concept, which is all the modifiers depend on. This is a superset of what
-  shared/finding_site_signs.ts needs, so adding a page needs no regeneration
-  unless it checks for a concept no other page does.
+  Modifiers for every finding a finding site page names, plus every finding any adult task
+  checks for, keyed by the finding's specific concept, which is all the modifiers depend on.
+  Keeping the tasks in makes this a superset of what shared/finding_site_signs.ts needs, so
+  a page that reaches for a concept some rule already names needs no regeneration.
 */
 async function findingSiteSignsModifiers() {
   const concepts = new Map<string, Lang['snomed_concept']>()
@@ -23,6 +26,14 @@ async function findingSiteSignsModifiers() {
     if (!Array.isArray(value)) continue
     for (const node of value) {
       if (node.atom !== 'finding') continue
+      concepts.set(inverseSExpression(node.specific_snomed_concept), node.specific_snomed_concept)
+    }
+  }
+
+  for (const { clinical_finding_s_expressions } of FINDING_SITE_FINDINGS) {
+    for (const s_expression of clinical_finding_s_expressions) {
+      const node = parseWithSchema(s_expression, finding)
+      assert(node.specific_snomed_concept, `${s_expression} names no specific concept`)
       concepts.set(inverseSExpression(node.specific_snomed_concept), node.specific_snomed_concept)
     }
   }

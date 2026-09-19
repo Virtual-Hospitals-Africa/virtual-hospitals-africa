@@ -82,6 +82,35 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Abnormal sensation" "finding")': {
+    'predefined_attributes': [],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Abnormal urinary stream" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Altered" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Flow of urine" "observable entity"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Pattern of urination" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Abnormal urogenital discharge" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of genitourinary system" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Abnormal vaginal bleeding" "finding")': {
     'predefined_attributes': [
       {
@@ -114,6 +143,24 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Visual function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Abnormal weight loss" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Abnormal" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Decreased relative to previous" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Weight change" "observable entity"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Weight loss (amount)" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -162,6 +209,34 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Respiratory effort" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Acne" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Lesion" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Pilosebaceous apparatus structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Acquired trigger finger" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Deformity" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of flexor tendon within finger" "body structure"))',
+      },
+      {
+        's_expression':
+          '(attribute (snomed_concept "Occurrence" "attribute") (snomed_concept "Period of life beginning after birth and ending before death" "qualifier value"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -282,6 +357,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Anal fissure" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Fissure" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Anal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Anal pain" "finding")': {
     'predefined_attributes': [
       {
@@ -298,6 +385,24 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Anal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Anal warts" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Verruca" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Human papillomavirus" "organism"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure of anus" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Pathological process" "attribute") (snomed_concept "Infectious process" "qualifier value"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -331,6 +436,25 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Appearance of pupil" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Anogenital warts" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Verruca" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Human papillomavirus" "organism"))',
+      },
+      {
+        's_expression':
+          '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of skin and/or skin-associated mucous membrane of anogenital area" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Pathological process" "attribute") (snomed_concept "Infectious process" "qualifier value"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -417,6 +541,41 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Bleeding between periods" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Female genital tract structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Abnormal" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Regularity of menstrual cycle" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Bleeding from nose" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Hemorrhage" "morphologic abnormality"))',
+      },
+      {
+        's_expression':
+          '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of blood vessel of internal nose" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Excessive" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
   '(snomed_concept "Bleeding from vagina" "finding")': {
     'predefined_attributes': [
       {
@@ -424,6 +583,25 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Vaginal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Excessive" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Bleeding gums" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Hemorrhage" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Gingival structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [
@@ -464,6 +642,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Blister of skin AND/OR mucosa" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Blister" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of skin and/or mucous membrane" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Blister of skin" "disorder")': {
     'predefined_attributes': [
       {
@@ -486,6 +676,25 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Bloody nipple discharge" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Bloody discharge" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nipple structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Excessive" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
   '(snomed_concept "Blurring of visual image" "finding")': {
     'predefined_attributes': [
       {
@@ -496,6 +705,49 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Clarity of visual image" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Breast lump" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Mass" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Breast structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Breath smells unpleasant" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression':
+          '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of region of internal part of mouth" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Smell of breath" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Bright red tympanic membrane" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tympanic membrane structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Bulging tympanic membrane" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tympanic membrane structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -547,6 +799,37 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Burning feet" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Foot structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Callosity" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Hyperkeratosis" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Friction" "physical force"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Cardiac arrhythmia" "disorder")': {
     'predefined_attributes': [
       {
@@ -570,6 +853,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of central nervous system space" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Cervical excitation present" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Cervix uteri structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Cervical excitation" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -698,6 +993,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Clearing throat - hawking" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Respiratory tract structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Respiratory function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Clouded consciousness" "finding")': {
     'predefined_attributes': [
       {
@@ -724,6 +1031,26 @@ export default {
   },
   '(snomed_concept "Collapse" "finding")': {
     'predefined_attributes': [],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Comedo" "morphologic abnormality")': {
+    'predefined_attributes': [],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Common cold" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Virus" "organism"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Upper respiratory tract structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Pathological process" "attribute") (snomed_concept "Infectious process" "qualifier value"))',
+      },
+    ],
     'relevant_qualifiers': [],
     'onset_required': false,
   },
@@ -775,6 +1102,51 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Corneal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Cough" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Respiratory tract structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Respiratory function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Cracked lips" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Lip structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Appearance of lip" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Cramp" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skeletal muscle structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Crust on skin" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Crust" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -852,6 +1224,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Depth of respiration" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Deformity of foot" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Deformity" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Foot structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -965,6 +1349,21 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Dilated pupil" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Dilatation" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Pupil structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Size of pupil" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Diplopia" "disorder")': {
     'predefined_attributes': [
       {
@@ -978,6 +1377,45 @@ export default {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Sputum observable" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Discharge from eye" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Discharge" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Eye region structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Discharge from nipple" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Discharge" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nipple structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Discoloration of skin" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Abnormal" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Color of skin" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -1031,6 +1469,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Does not defecate" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Intestinal structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Ability to defecate" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Drowsy" "finding")': {
     'predefined_attributes': [
       {
@@ -1051,6 +1501,15 @@ export default {
   },
   '(snomed_concept "Drug or medicament" "substance")': {
     'predefined_attributes': [],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Dry eyes" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of eye proper" "body structure"))',
+      },
+    ],
     'relevant_qualifiers': [],
     'onset_required': false,
   },
@@ -1084,6 +1543,15 @@ export default {
         's_expression': '(qualifier (snomed_concept "Sudden" "qualifier value"))',
       },
     ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Dysuria" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Lower urinary tract structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
     'onset_required': false,
   },
   '(snomed_concept "Ear discharge" "finding")': {
@@ -1174,6 +1642,24 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Enlarged tonsil" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Enlargement" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Entire palatine tonsil" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Enlarged" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Size of tonsil" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Eruption caused by drug" "disorder")': {
     'predefined_attributes': [
       {
@@ -1196,6 +1682,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure of scalp" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Eruption of skin" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Eruption" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -1229,6 +1727,27 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Method" "attribute") (snomed_concept "Administration - action" "qualifier value"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Excessive sweating" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Sweating, function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Exudate on tonsils" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Palatine tonsillar structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -1339,6 +1858,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Fever" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Above reference range" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Body temperature" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Finding of chest resonance to percussion" "finding")': {
     'predefined_attributes': [
       {
@@ -1388,6 +1919,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Fissure of nipple" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Fissure" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nipple structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Flank pain" "finding")': {
     'predefined_attributes': [
       {
@@ -1423,6 +1966,18 @@ export default {
         's_expression': '(qualifier (snomed_concept "Sudden" "qualifier value"))',
       },
     ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Foreign body in ear" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Foreign body" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Ear structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
     'onset_required': false,
   },
   '(snomed_concept "Frequent headache" "finding")': {
@@ -1490,6 +2045,11 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Generalized aches and pains" "finding")': {
+    'predefined_attributes': [],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Generalized muscle weakness" "finding")': {
     'predefined_attributes': [
       {
@@ -1543,6 +2103,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Gingival recession" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Recession" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Gingival structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Groin mass" "finding")': {
     'predefined_attributes': [
       {
@@ -1557,6 +2129,21 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Hallux valgus AND bunion" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "External hyperostosis" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Valgus deformity" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "First metatarsophalangeal joint structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
     'onset_required': false,
   },
   '(snomed_concept "Hand pain" "finding")': {
@@ -1620,6 +2207,31 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Heartburn" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Esophageal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Heel pain" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Heel structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Severe (severity modifier)" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
   '(snomed_concept "Hematemesis" "disorder")': {
     'predefined_attributes': [
       {
@@ -1678,6 +2290,18 @@ export default {
         's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
       },
     ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Hemorrhoids" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Uneven venous ectasia" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of hemorrhoidal plexus" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
     'onset_required': false,
   },
   '(snomed_concept "Herpes zoster involving tip of nose" "disorder")': {
@@ -1755,6 +2379,27 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Herpes zoster" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "After" "attribute") (snomed_concept "Varicella" "disorder"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Inflammatory morphology" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Varicellovirus humanalpha3" "organism"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nerve structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Pathological process" "attribute") (snomed_concept "Infectious process" "qualifier value"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "High suicide risk" "finding")': {
     'predefined_attributes': [
       {
@@ -1781,6 +2426,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Method" "attribute") (snomed_concept "Administration - action" "qualifier value"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Hirsutism" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Growth alteration" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Hair structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -1904,6 +2561,24 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Impacted cerumen" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Impaction" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Cerumen" "substance"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "External auditory canal structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Contents of ear canal" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Impaired fasting glycemia" "disorder")': {
     'predefined_attributes': [
       {
@@ -1955,6 +2630,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Increased frequency of urination" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Increased" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Frequency of urination" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Indian origin" "finding")': {
     'predefined_attributes': [
       {
@@ -1996,6 +2683,33 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Infestation caused by Phthirus pubis" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Pthirus pubis" "organism"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of hair of skin region" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Pathological process" "attribute") (snomed_concept "Parasitic process" "qualifier value"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Inflammation of vulva" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Inflammatory morphology" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Vulval structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Inguinal pain" "finding")': {
     'predefined_attributes': [
       {
@@ -2034,6 +2748,15 @@ export default {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of musculoskeletal system" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Injury of nail" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nail unit structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2130,6 +2853,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Irregular bowel habits" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Intestinal structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Bowel action" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Irregular outline of pigmented skin lesion" "disorder")': {
     'predefined_attributes': [
       {
@@ -2137,6 +2872,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Irregular periods" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Female genital tract structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Regularity of menstrual cycle" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2168,6 +2915,23 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Ear sensations" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Itching of eye" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression':
+          '(attribute (snomed_concept "Finding informer" "attribute") (snomed_concept "Subject of record or other provider of history" "person"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of eye proper" "body structure"))',
       },
     ],
     'relevant_qualifiers': [
@@ -2375,10 +3139,50 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Lip swelling" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Swelling" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Lip structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Entire" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "New" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pain" "finding"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Red color" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
   '(snomed_concept "Loss of appetite" "finding")': {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Quantity of appetite" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Loss of hair" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Hair structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Hair growth observable" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2414,6 +3218,42 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Mass of axilla" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Mass" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Axillary region structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Mass of body region" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Mass" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Body region structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Mass of neck" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Mass" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Neck structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Mass of pelvic structure" "finding")': {
     'predefined_attributes': [
       {
@@ -2426,10 +3266,49 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Mass of scrotum" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Mass" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Scrotal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Maternal breastfeeding" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Breast structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Occurrence" "attribute") (snomed_concept "Maternal postnatal period" "qualifier value"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Melena" "disorder")': {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of digestive system" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Menorrhagia" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Female genital tract structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Female reproductive function" "observable entity"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Quantity of menstrual blood loss" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2472,6 +3351,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Pattern of menstrual cycle" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Mobile tooth" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tooth structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Tooth mobility" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2571,6 +3462,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Nasal congestion" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Congestion" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nasal cavity structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Nasal discharge" "finding")': {
     'predefined_attributes': [
       {
@@ -2604,6 +3507,27 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Neck pain" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Neck structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Night sweats" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Sweating, function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Nitrite detected in urine" "finding")': {
     'predefined_attributes': [
       {
@@ -2616,10 +3540,58 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Numbness and tingling sensation of skin" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nerve structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Absent" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Sensory perception function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Numbness of face" "finding")': {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure of face" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Absent" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Sensory perception function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Numbness of finger" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure of finger" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Absent" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Sensory perception function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Numbness of foot" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure of foot" "body structure"))',
       },
       {
         's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Absent" "qualifier value"))',
@@ -2750,6 +3722,15 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Pain in face" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Face structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Pain in left arm" "finding")': {
     'predefined_attributes': [
       {
@@ -2763,6 +3744,15 @@ export default {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Lower limb structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Pain in pelvis" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of pelvic segment of trunk" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2795,6 +3785,15 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Pain in thumb" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Thumb structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Pain in upper limb" "finding")': {
     'predefined_attributes': [
       {
@@ -2802,6 +3801,22 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Pain of breast" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Breast structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "At rest" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Unilateral" "qualifier value"))',
+      },
+    ],
     'onset_required': false,
   },
   '(snomed_concept "Pain of ear" "finding")': {
@@ -2817,6 +3832,15 @@ export default {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Joint structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Pain of skin" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2878,6 +3902,25 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Painless rectal bleeding" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Hemorrhage" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Rectum structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Excessive" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
   '(snomed_concept "Pale complexion" "finding")': {
     'predefined_attributes': [
       {
@@ -2930,6 +3973,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Awareness of heart beat" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Paresthesia of foot" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nerve structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure of foot" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -2988,6 +4043,21 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Pediculosis capitis" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Causative agent" "attribute") (snomed_concept "Pediculus humanus capitis" "organism"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of hair of scalp" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Pathological process" "attribute") (snomed_concept "Parasitic process" "qualifier value"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Peeling of skin" "finding")': {
     'predefined_attributes': [
       {
@@ -2998,6 +4068,34 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Pelvic swelling" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Swelling" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of pelvis" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Entire" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "New" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pain" "finding"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Red color" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
     'onset_required': false,
   },
   '(snomed_concept "Penetrating wound of eye" "disorder")': {
@@ -3048,6 +4146,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Penile structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Perforation of tympanic membrane" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Perforation" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tympanic membrane structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -3189,6 +4299,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Pitting of nails" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Dystrophy" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nail unit structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Planning suicide" "finding")': {
     'predefined_attributes': [
       {
@@ -3224,6 +4346,40 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Ovarian endocrine structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Postcoital bleeding" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Hemorrhage" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Female genital structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Sexual function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Excessive" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pulsatile" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Posterior rhinorrhea" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Discharge" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nasal structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -3276,6 +4432,41 @@ export default {
       },
     ],
     'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Pruritus ani" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of skin and/or mucosa of anus" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Present" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Itch of skin" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Pruritus of vulva" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of skin and/or mucosa of vulva" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
     'onset_required': false,
   },
   '(snomed_concept "Ptosis of eyelid" "disorder")': {
@@ -3370,6 +4561,11 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Pustule" "morphologic abnormality")': {
+    'predefined_attributes': [],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Radiating chest pain" "finding")': {
     'predefined_attributes': [
       {
@@ -3411,10 +4607,31 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Rectal discharge" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Rectum structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Red eye" "finding")': {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of eye proper" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Retention of urine" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Urine retention" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Urinary bladder structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -3427,6 +4644,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Testis structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Retraction of nipple" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Retracted structure" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nipple structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -3488,6 +4717,51 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Scaly scalp" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure of scalp" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Skin texture" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Scaly skin" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Skin texture" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Sciatica" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of sciatic nerve" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Scleral icterus" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Scleral structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Color of sclera" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Sedentary lifestyle" "finding")': {
     'predefined_attributes': [
       {
@@ -3537,6 +4811,30 @@ export default {
     'predefined_attributes': [
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Nutritional status" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Skin lesion" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Lesion" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Skin ulcer" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Ulcer" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Skin structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -3593,6 +4891,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Sneezing" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nasal cavity structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Respiratory function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Soft tissue crepitus" "finding")': {
     'predefined_attributes': [
       {
@@ -3600,6 +4910,31 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of soft tissue" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Sore nipple" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Nipple structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "At rest" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Unilateral" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Sore throat" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of pharynx and/or larynx" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -3785,6 +5120,62 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Swelling of breast" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Swelling" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Breast structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Entire" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "New" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pain" "finding"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Red color" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Swelling of ear" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Swelling" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Ear structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Entire" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "New" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pain" "finding"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Red color" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
   '(snomed_concept "Swelling of eyelid" "finding")': {
     'predefined_attributes': [
       {
@@ -3792,6 +5183,34 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Eyelid structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Entire" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "New" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pain" "finding"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Red color" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
+  '(snomed_concept "Swelling of hand" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Swelling" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Hand structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [
@@ -3954,6 +5373,15 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Swelling over mastoid" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Mastoid structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Swelling" "finding")': {
     'predefined_attributes': [
       {
@@ -4007,8 +5435,93 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Swollen gums" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Swelling" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Gingival structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [
+      {
+        's_expression': '(qualifier (snomed_concept "Entire" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "New" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Pain" "finding"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Red color" "qualifier value"))',
+      },
+      {
+        's_expression': '(qualifier (snomed_concept "Sudden onset" "qualifier value"))',
+      },
+    ],
+    'onset_required': false,
+  },
   '(snomed_concept "Taking medication" "observable entity")': {
     'predefined_attributes': [],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Taste sense altered" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Taste, function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Tenderness in ear canal" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding method" "attribute") (snomed_concept "Palpation" "procedure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "External auditory canal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Tenderness of chest wall" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding method" "attribute") (snomed_concept "Palpation" "procedure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Chest wall structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Tenderness of joint" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding method" "attribute") (snomed_concept "Palpation" "procedure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Joint structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Tenderness of prostate" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding method" "attribute") (snomed_concept "Palpation" "procedure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of prostate" "body structure"))',
+      },
+    ],
     'relevant_qualifiers': [],
     'onset_required': false,
   },
@@ -4033,6 +5546,15 @@ export default {
       {
         's_expression':
           '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of right upper quadrant of abdomen" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Tenesmus of anus and/or rectum" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Structure of anus and/or rectum" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -4081,6 +5603,21 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Hearing, function" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Tooth absent" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Tooth structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Absent" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Tooth presence" "observable entity"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -4153,6 +5690,18 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Ulcer of anus" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Ulcer" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Anal structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Ulcer of foot" "disorder")': {
     'predefined_attributes': [
       {
@@ -4160,6 +5709,18 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Foot structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Ulcer of mouth" "disorder")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Ulcer" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Mouth region structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],
@@ -4181,6 +5742,18 @@ export default {
     ],
     'relevant_qualifiers': [],
     'onset_required': true,
+  },
+  '(snomed_concept "Unable to close eyes" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Eyelid structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Ability to close eyes" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
   },
   '(snomed_concept "Unable to complete a sentence in one breath" "finding")': {
     'predefined_attributes': [
@@ -4335,6 +5908,27 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': false,
   },
+  '(snomed_concept "Urethral discharge" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Urethral structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Urgent desire to urinate" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Altered" "qualifier value"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Pattern of urination" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Urinary incontinence" "finding")': {
     'predefined_attributes': [
       {
@@ -4347,6 +5941,23 @@ export default {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Urinary tract function" "observable entity"))',
       },
     ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Vaginal discharge" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Vaginal structure" "body structure"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Vaginal discharge feature" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "Vertigo" "finding")': {
+    'predefined_attributes': [],
     'relevant_qualifiers': [],
     'onset_required': false,
   },
@@ -4420,6 +6031,15 @@ export default {
     ],
     'onset_required': false,
   },
+  '(snomed_concept "Weakness of hand" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Hand structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
   '(snomed_concept "Weakness of muscle of lower limb" "finding")': {
     'predefined_attributes': [
       {
@@ -4436,6 +6056,15 @@ export default {
       },
       {
         's_expression': '(attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Respiratory sounds" "observable entity"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
+  '(snomed_concept "White patches on oral mucosa" "finding")': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Oral mucous membrane structure" "body structure"))',
       },
     ],
     'relevant_qualifiers': [],

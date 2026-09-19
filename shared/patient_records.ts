@@ -30,6 +30,7 @@ import words from '../util/words.ts'
 import { exists } from '../util/exists.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 import { getTaskById } from './tasks.ts'
+import { parseSExpressionAsInsertableFinding } from './parseSExpressionAsInsertableFinding.ts'
 
 type DisplayableRecord = IntermediateBaseRecord & {
   qualifiers?: DisplayableRecord[]
@@ -593,4 +594,8 @@ export function asNormalFormSExpression<Rest>(
 
 export function findingFullDisplay(node: Lang['finding']) {
   return formatRecord(findingToDisplayableRecord(node)).displays.full
+}
+
+export function insertableFindingFullDisplay(s_expression: string) {
+  return findingFullDisplay(parseSExpressionAsInsertableFinding(s_expression))
 }

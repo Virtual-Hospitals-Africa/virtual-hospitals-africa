@@ -29,6 +29,7 @@ const pain_of_ear = sign('Ear', 'Pain of ear')
 const ear: FindingSiteWithMaybeRecords = {
   label: 'Ear',
   snomed_concept: { name: 'Ear structure', category: 'body structure' },
+  excluding_structures: [],
   signs: [pain_of_ear, sign('Ear', 'Tinnitus')],
 }
 

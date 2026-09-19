@@ -117,6 +117,14 @@ export const COMMON_SYMPTOMS_DEFS: Omit<CommonSymptom, keyof FindingRelatedModif
     'description': null,
     'category': 'Common Symptoms' as const,
   },
+  // Lump/swelling in neck, axilla or groin ⇢ 25, which sits at no one body site
+  {
+    'key': 'Mass of body region' as const,
+    'clinical_finding_s_expression': normalForm(`(clinical_finding (snomed_concept "Mass of body region" "finding"))`),
+    'name': 'Lump',
+    'description': null,
+    'category': 'Common Symptoms' as const,
+  },
   // {
   //   'key': 'COVID-19' as const,
   //   'clinical_finding_s_expression': normalForm(
