@@ -13,6 +13,7 @@ export type OrganizationSearch = {
   kind?: 'physical' | 'virtual' | null
   name?: string
   is_test?: boolean
+  is_hospital?: boolean
   category?: string
   country?: string
   include_all_countries?: boolean
@@ -45,6 +46,7 @@ export const organizations = base({
   baseQuery(trx: TrxOrDbOrQueryCreator, opts: OrganizationSearch) {
     let qb = trx
       .selectFrom('organizations')
+      .leftJoin('addresses', 'addresses.id', 'organizations.address_id')
       .select((eb) => [
         'organizations.id',
         'organizations.name',
@@ -54,10 +56,7 @@ export const organizations = base({
         'organizations.ownership',
         'organizations.inactive_reason',
         'organizations.most_common_language_code',
-        eb.selectFrom('addresses')
-          .whereRef('addresses.id', '=', 'organizations.address_id')
-          .select('addresses.formatted')
-          .as('formatted_address'),
+        'addresses.formatted as formatted_address',
         eb.selectFrom('organization_rooms')
           .whereRef('organization_rooms.organization_id', '=', 'organizations.id')
           .where('organization_rooms.name', '=', 'Waiting room')
@@ -68,6 +67,12 @@ export const organizations = base({
           .where('organization_rooms.name', '=', 'Reception')
           .select('organization_rooms.id')
           .as('reception_id'),
+        eb.exists(
+          trx.selectFrom('employment')
+            .where('employment.is_admin', '=', true)
+            .where('employment.organization_id', '=', eb.ref('organizations.id'))
+            .select(success_true),
+        ).as('using_vha'),
         jsonBuildNullableObject(eb.ref('location'), {
           longitude: sql<number>`ST_X(location::geometry)`,
           latitude: sql<number>`ST_Y(location::geometry)`,
@@ -101,6 +106,9 @@ export const organizations = base({
     }
     if (opts.country) {
       qb = qb.where('organizations.country', '=', opts.country)
+    }
+    if (opts.is_hospital) {
+      qb = qb.where('organizations.category', 'in', HOSPITAL_CATEGORIES)
     }
     return qb
   },
@@ -202,3 +210,65 @@ export const organizations = base({
 })
 
 export type OrganizationSearchResult = SearchResult<typeof organizations>
+
+export const HOSPITAL_CATEGORIES = [
+  'Refferal Hospital',
+  'District Hospital',
+  'Community Hospital',
+  'University Teaching Hospital',
+  'State Hospital',
+  'Level 1 Hospital',
+  'Zonal Hospital',
+  'Teaching Hospital',
+  'Centre Hospitalier Universitaire National',
+  'Centre National Hospitalier Universitaire',
+  'Type D Hospital',
+  'National Referral Hospital',
+  'Type A Hospital',
+  'Intermediate Hospital',
+  'General Hospital Hospital',
+  'Rural Hospital',
+  'National Hospital',
+  'Natonal Hospital',
+  'Hospital Medical Center',
+  'Tertiary Hospital',
+  'Provincial Hospital',
+  'Centre Hospitalier R├®gional',
+  'Primary Hospital',
+  'Mission Hospital',
+  'Central Hospital',
+  'Referral Hospital',
+  'Hospitalier R├®gional',
+  'Level 2 Hospital',
+  'Centre Hospitalier D├®partemental',
+  'National Central Hospital',
+  'Hospital Geral',
+  'General Hospital',
+  'Cottage Hospital',
+  'Hospital Provincial',
+  'Centre Hospitalier Universitaire',
+  'Hospital Rural',
+  'Regional Referral Hospital',
+  'University Hospital',
+  'Provincial Tertiary Hospital',
+  'Hospital Central',
+  'Sub-district Hospital',
+  'Designated District Hospital',
+  'Municipal Hospital',
+  'Regional Hospital',
+  'County Hospital',
+  'Hospital Medical Centre',
+  'Centre Hospitalier Pr├®fectoral',
+  'Type C Hospital',
+  'Provincial General Hospital',
+  'County Referral Hospital',
+  'Centre Hospitalier Urbain',
+  'Hospitalier Universitaire',
+  'Type B Hospital',
+  'Hospital Distrital',
+  'District/provincial Hospital',
+  'Level 3 Hospital',
+  'Mini Hospital',
+  'Hospital',
+  'Centre Hospitalier National',
+]

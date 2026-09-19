@@ -76,6 +76,8 @@ export function ExamplePatientView({ url, route, mock_patient }: Props) {
         </a>
       }
       onSubmit={(e) => e.preventDefault()}
+      escalation_candidates={[]}
+      nearest_hospital={null}
     >
       <WarningSignsContent mock_patient={mock_patient} />
     </OpenEncounterWorkflowLayout>

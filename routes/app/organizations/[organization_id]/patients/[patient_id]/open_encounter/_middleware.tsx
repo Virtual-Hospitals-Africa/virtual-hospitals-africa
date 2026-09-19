@@ -59,7 +59,9 @@ import { patient_findings } from '../../../../../../../db/models/patient_finding
 import { patient_record_providers } from '../../../../../../../db/models/patient_record_providers.ts'
 import { buildPriorityRecord } from '../../../../../../../db/models/priority.ts'
 import { patient_evaluation_scores } from '../../../../../../../db/models/patient_evaluation_scores.ts'
+import { employees_presence } from '../../../../../../../db/models/employees_presence.ts'
 import { logToFileIfOnServer } from '../../../../../../../util/logToFileIfOnServer.ts'
+import { nearest_organizations } from '../../../../../../../db/models/nearest_organizations.ts'
 
 export function completeLastStep(
   { state: { trx, workflow, step, workflow_status, patient_encounter_employee_id } }: OpenEncounterWorkflowContext,
@@ -188,7 +190,7 @@ export function getWorkflowStatus(
 export const workflowHandler = timeMiddlewareCallNext(async function workflowHandlerInner(
   ctx: OpenEncounterContext,
 ) {
-  const { trx, encounter, encounter_employee_presence, health_worker_id } = ctx.state
+  const { trx, encounter, encounter_employee_presence, health_worker_id, organization, organization_employment } = ctx.state
   const { workflow, step } = workflowStepFromUrl(ctx)
 
   const workflow_status = getWorkflowStatus(ctx, workflow)
@@ -243,6 +245,24 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
         workflow_step_snomed_concept,
       },
     ),
+    escalation_candidates: employees_presence.getAllAtOrganization(trx, {
+      organization_id: organization.id,
+      excluding_health_worker: {
+        health_worker_id: health_worker_id,
+        at_work: true,
+        seniority_order: organization_employment.seniority_order,
+      },
+    }),
+    nearest_hospital: organization.location
+      ? nearest_organizations.findFirst(
+        trx,
+        {
+          is_hospital: true,
+          location: organization.location,
+          excluding_id: organization.id,
+        },
+      )
+      : Promise.resolve(null),
   })
 
   const previously_completed_step = arrayIsNonEmpty(workflow_status.steps_completed) && workflow_status.steps_completed.includes(

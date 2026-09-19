@@ -1590,12 +1590,12 @@ export type OrganizationWithAddress =
 export type PatientNearestOrganization = {
   id: string
   name: string
-  address: string
-  locality: string | null
   location: Coordinates
-  walking_distance: null | string
+  locality: string | null
+  formatted_address: string
   distance_meters: number
-  admins: RenderedEmployee[]
+  walking_distance: null | string
+  using_vha: SqlBool
 }
 
 export type GoogleAddressComponent = {
@@ -1757,6 +1757,7 @@ export type PatientAllergies = {
 export type RenderedOrganization = HasStringId<Organization> & {
   waiting_room_id: string | null
   reception_id: string | null
+  using_vha: SqlBool
   hrefs: {
     regulator_view: string
     health_worker_view: string
@@ -2493,6 +2494,8 @@ export type PatientDrawerV4Props = {
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
+  escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
+  nearest_hospital: RenderedOrganization | null
 }
 
 export type RenderedSidebarWorkflowStep = {
@@ -3210,6 +3213,8 @@ export type WorkflowState = {
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   priority_evaluation: null | RenderedEvaluationRelativeToHealthWorker
   patient_history: RenderedPatientHistory
+  escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
+  nearest_hospital: RenderedOrganization | null
 }
 
 export type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState

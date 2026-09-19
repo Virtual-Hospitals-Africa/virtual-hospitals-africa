@@ -7,7 +7,7 @@ import { Button } from './library/Button.tsx'
 
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { PatientDrawerV4Props } from '../types.ts'
+import { PatientDrawerV4Props, RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../types.ts'
 import { Workflow } from '../db.d.ts'
 import { hyphenate } from '../util/hyphenate.ts'
 import { StepsSidebar } from './library/sidebar/Steps.tsx'
@@ -34,6 +34,8 @@ export function OpenEncounterWorkflowLayout({
   workflow,
   care_team,
   onSubmit,
+  escalation_candidates,
+  nearest_hospital,
 }: {
   id: string
   url: URL
@@ -51,6 +53,8 @@ export function OpenEncounterWorkflowLayout({
   children: ComponentChildren
   ContainerTag: 'form' | 'div'
   onSubmit?: (event: TargetedSubmitEvent<HTMLButtonElement>) => void
+  escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
+  nearest_hospital: RenderedOrganization | null
 } & PatientDrawerV4Props): JSX.Element {
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
@@ -78,6 +82,8 @@ export function OpenEncounterWorkflowLayout({
             this_visit_diagnoses={this_visit_diagnoses}
             patient_history={patient_history}
             care_team={care_team}
+            escalation_candidates={escalation_candidates}
+            nearest_hospital={nearest_hospital}
           />
         )
         : undefined}

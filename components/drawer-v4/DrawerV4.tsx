@@ -1,7 +1,7 @@
+import { DrawerPatientCard } from '../../islands/DrawerPatientCard.tsx'
 import { PatientDrawerV4Props } from '../../types.ts'
 import { DrawerCareTeam } from './CareTeam.tsx'
 import { DrawerHistory } from './History.tsx'
-import { DrawerPatientCard } from './PatientCard.tsx'
 import { DrawerThisVisit } from './ThisVisit.tsx'
 
 export default function PatientDrawerV4({
@@ -14,6 +14,8 @@ export default function PatientDrawerV4({
   patient_history,
   care_team,
   organization_id,
+  escalation_candidates,
+  nearest_hospital,
 }: PatientDrawerV4Props) {
   return (
     <div
@@ -25,6 +27,8 @@ export default function PatientDrawerV4({
         organization_id={organization_id}
         priority={priority}
         priority_evaluation={priority_evaluation}
+        escalation_candidates={escalation_candidates}
+        nearest_hospital={nearest_hospital}
       />
       <DrawerThisVisit
         current_workflow={current_workflow}

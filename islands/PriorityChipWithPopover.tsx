@@ -1,6 +1,6 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 import { RecordPanel } from '../components/library/RecordPanel.tsx'
-import { RenderedEvaluationRelativeToHealthWorker, RenderedPatientEncounter } from '../types.ts'
+import { Priority, RenderedEvaluationRelativeToHealthWorker } from '../types.ts'
 import { PRIORITY_COLORS } from '../shared/priorities.ts'
 import cls from '../util/cls.ts'
 
@@ -9,11 +9,11 @@ export function PriorityChipWithPopover({
   priority_evaluation,
   organization_id,
 }: {
-  priority: NonNullable<RenderedPatientEncounter['priority']>
+  priority: Priority
   priority_evaluation: RenderedEvaluationRelativeToHealthWorker
   organization_id: string
 }) {
-  const colors = PRIORITY_COLORS[priority.name]
+  const colors = PRIORITY_COLORS[priority]
 
   return (
     <Popover className='relative'>
@@ -23,7 +23,7 @@ export function PriorityChipWithPopover({
           colors.text,
         )}
       >
-        {priority.name}
+        {priority}
       </PopoverButton>
       <PopoverPanel anchor={{ to: 'bottom start', gap: 8, padding: 8 }} className='panel z-50 transition duration-100 ease-out'>
         <RecordPanel record={priority_evaluation} organization_id={organization_id} />
