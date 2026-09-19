@@ -14,7 +14,9 @@ import { additional_tasks, isCheckFor } from '../../db/models/additional_tasks.t
 import { patient_findings } from '../../db/models/patient_findings.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { normalForm, parseWithSchema } from '../../shared/s_expression.ts'
-import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
+import { diagnosis as diagnosis_schema, insertable_finding_base } from '../../shared/s_expression_schemas.ts'
+import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
+import { patient_evaluations } from '../../db/models/patient_evaluations.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { COMMON_SYMPTOMS } from '../../shared/common_symptoms.ts'
@@ -51,6 +53,11 @@ const NOSE_CHECK_FORS = [
   '(clinical_finding (snomed_concept "Cerebrospinal fluid rhinorrhea" "disorder"))',
   '(clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))',
 ].map(normalForm)
+
+// The s_expression the due_to table stores for a (diagnosis ...) rule clause
+function diagnosisDueToSExpression(s_expression: string) {
+  return inverseSExpression(diagnosisToEvaluation(parseWithSchema(s_expression, diagnosis_schema)))
+}
 
 function asFinding(s_expression: string) {
   return parseWithSchema(s_expression, insertable_finding_base)
@@ -232,6 +239,42 @@ describeParallel('db/models/rules_dry_run.ts', () => {
       await insertFindings(encounter, ['(clinical_finding (snomed_concept "Bite - wound" "disorder"))'])
 
       assert((await applicableDescriptions()).includes('Urgent: bite with danger signs'))
+    })
+  })
+
+  describeParallel('due_to.forHypotheticalDiagnosis', () => {
+    itParallel('matches the due_to of exactly the stated certainty, without inserting anything', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+
+      const matched = await due_to.forHypotheticalDiagnosis(db, {
+        patient_age_determination: 'adult',
+        diagnosis: {
+          snomed_concept: { atom: 'snomed_concept', name: 'Anaphylaxis', category: 'disorder' },
+          certainty_qualifier: 'possible',
+        },
+      })
+
+      // Check for Anaphylaxis is due to (diagnosis Anaphylaxis possible)
+      const possible = diagnosisDueToSExpression('(diagnosis (snomed_concept "Anaphylaxis" "disorder") possible)')
+      // Urgent: Anaphylaxis is due to (active_condition Anaphylaxis), which expands to probable and definite only
+      const probable = diagnosisDueToSExpression('(diagnosis (snomed_concept "Anaphylaxis" "disorder") probable)')
+      assert(matched.some(matching({ s_expression: possible })), `Expected ${possible} among ${JSON.stringify(matched)}`)
+      assert(!matched.some(matching({ s_expression: probable })), `Did not expect ${probable} among ${JSON.stringify(matched)}`)
+
+      const evaluations = await patient_evaluations.findAll(db, { patient_id: encounter.patient_id })
+      assertEquals(evaluations.filter((e) => e.by_system), [], 'Dry run must not insert any diagnosis')
+    })
+
+    itParallel('matches active_condition due_tos for a probable diagnosis', async () => {
+      const matched = await due_to.forHypotheticalDiagnosis(db, {
+        patient_age_determination: 'adult',
+        diagnosis: {
+          snomed_concept: { atom: 'snomed_concept', name: 'Meningitis', category: 'disorder' },
+          certainty_qualifier: 'probable',
+        },
+      })
+      const probable = diagnosisDueToSExpression('(diagnosis (snomed_concept "Meningitis" "disorder") probable)')
+      assert(matched.some(matching({ s_expression: probable })), `Expected ${probable} among ${JSON.stringify(matched)}`)
     })
   })
 
