@@ -6,13 +6,13 @@ import WarningSignsInnerContent from './InnerContent.tsx'
 export default function WarningSigns({
   search_route,
   post_route,
-  findings_to_check_for_route,
+  rules_dry_run_route,
   none_of_the_above_findings_route,
   warning_signs,
 }: {
   search_route: string
   post_route: string
-  findings_to_check_for_route: string
+  rules_dry_run_route: string
   none_of_the_above_findings_route: string
   warning_signs: WarningSignWithMaybeRecord[]
 }) {
@@ -33,7 +33,7 @@ export default function WarningSigns({
   return (
     <WarningSignsInnerContent
       post_route={post_route}
-      findings_to_check_for_route={findings_to_check_for_route}
+      rules_dry_run_route={rules_dry_run_route}
       none_of_the_above_findings_route={none_of_the_above_findings_route}
       warning_signs={warning_signs}
       search_results={search_results}

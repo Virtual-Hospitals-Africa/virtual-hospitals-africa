@@ -6,7 +6,7 @@ import {
   AsyncSearchHookResult,
   EnteredFinding,
   FindingModalMetadata,
-  FindingToCheckFor,
+  RulesDryRun,
   SnomedWarningSignSearchResult,
   WarningSignWithMaybeRecord,
 } from '../../types.ts'
@@ -27,7 +27,15 @@ import negate from '../../util/negate.ts'
 import { ClinicalFindingPostBody } from '../../shared/clinical_finding_post.ts'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../../util/debounce.ts'
-import { accumulateFollowUps, asCheckedFollowUpSign, findCheckedFollowUp, FollowUpGroup, isUnanswered, noneOfTheAboveRequests } from './follow_ups.ts'
+import {
+  accumulateFollowUps,
+  asCheckedFollowUpSign,
+  EMPTY_RULES_DRY_RUN,
+  findCheckedFollowUp,
+  FollowUpGroup,
+  isUnanswered,
+  noneOfTheAboveRequests,
+} from './follow_ups.ts'
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
 import { exists } from '../../util/exists.ts'
 import { showAlertMessage } from '../alert/AlertListener.tsx'
@@ -74,14 +82,14 @@ function asFindingModalMetadata({
 
 export default function WarningSignsInnerContent({
   post_route,
-  findings_to_check_for_route,
+  rules_dry_run_route,
   none_of_the_above_findings_route,
   search_results,
   snomed_warning_signs_async_search,
   warning_signs,
 }: {
   post_route: string // /app/organizations/[organization_id]/patients/[patient_id]/open_encounter/clinical_finding
-  findings_to_check_for_route: string | null // .../open_encounter/findings_to_check_for, null skips prefetching (tutorial)
+  rules_dry_run_route: string | null // .../open_encounter/rules_dry_run, null skips prefetching (tutorial)
   none_of_the_above_findings_route: string | null // .../open_encounter/none_of_the_above_findings, null hides the button (tutorial)
   search_results: Signal<null | WarningSignWithMaybeRecord[]>
   snomed_warning_signs_async_search: AsyncSearchHookResult<SnomedWarningSignSearchResult>
@@ -123,34 +131,33 @@ export default function WarningSignsInnerContent({
 
   // Dry-run results keyed by the exact s_expression, held as promises so a save
   // can await a request still in flight. Failed requests are evicted.
-  const follow_ups_cache = useRef(new Map<string, Promise<FindingToCheckFor[]>>())
+  const follow_ups_cache = useRef(new Map<string, Promise<RulesDryRun>>())
   // The first onChange from an opened modal fetches immediately, subsequent edits are debounced
   const modal_prefetched = useRef(false)
   // Records removed on this visit. The signs as rendered still name them, so rechecking one starts afresh
   const retracted_record_ids = useRef(new Set<string>())
 
-  function fetchFollowUps(s_expression: string): Promise<FindingToCheckFor[]> {
-    if (!findings_to_check_for_route) return Promise.resolve([])
+  function fetchFollowUps(s_expression: string): Promise<RulesDryRun> {
+    if (!rules_dry_run_route) return Promise.resolve(EMPTY_RULES_DRY_RUN)
     const cached = follow_ups_cache.current.get(s_expression)
     if (cached) return cached
 
     const params = new URLSearchParams({ s_expression })
-    const request = fetch(`${findings_to_check_for_route}?${params}`, { headers: { accept: 'application/json' } })
+    const request = fetch(`${rules_dry_run_route}?${params}`, { headers: { accept: 'application/json' } })
       .then(async (response) => {
-        if (!response.ok) throw new Error(`findings_to_check_for responded ${response.status}`)
-        const json = await response.json()
-        return json.findings_to_check_for as FindingToCheckFor[]
+        if (!response.ok) throw new Error(`rules_dry_run responded ${response.status}`)
+        return await response.json() as RulesDryRun
       })
       .catch((error) => {
         console.error(error)
         follow_ups_cache.current.delete(s_expression)
-        return []
+        return EMPTY_RULES_DRY_RUN
       })
     follow_ups_cache.current.set(s_expression, request)
     return request
   }
 
-  const debounced_fetch_follow_ups = useMemo(() => debounce(fetchFollowUps, 220), [findings_to_check_for_route])
+  const debounced_fetch_follow_ups = useMemo(() => debounce(fetchFollowUps, 220), [rules_dry_run_route])
 
   function onModalChange(finding: EnteredFinding) {
     if (modal_prefetched.current) return debounced_fetch_follow_ups(finding.s_expression)
@@ -316,16 +323,16 @@ export default function WarningSignsInnerContent({
     debounced_fetch_follow_ups.cancel()
 
     if (finding === RemoveFindingSymbol) {
-      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: null, findings_to_check_for: [] })
+      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: null, dry_run: EMPTY_RULES_DRY_RUN })
       return
     }
 
     // Usually already resolved having been prefetched while the modal was open
-    fetchFollowUps(finding.s_expression).then((findings_to_check_for) => {
-      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, findings_to_check_for })
+    fetchFollowUps(finding.s_expression).then((dry_run) => {
+      follow_ups_needed.value = accumulateFollowUps(follow_ups_needed.value, { key, due_to: finding, dry_run })
 
       // Follow ups already recorded as present in this encounter start out checked
-      const already_present = compactMap(findings_to_check_for, (follow_up) => {
+      const already_present = compactMap(dry_run.findings_to_check_for, (follow_up) => {
         if (findCheckedFollowUp(checked_signs.value, follow_up)) return
         return asCheckedFollowUpSign(follow_up)
       })
@@ -417,7 +424,7 @@ export default function WarningSignsInnerContent({
         checked_signs={checked_signs.value}
         onCheck={onCheck}
         onOpenDetails={onOpenDetails}
-        onNoneOfTheAbove={none_of_the_above_findings_route ? onNoneOfTheAbove : null}
+        onNoneOfTheAbove={onNoneOfTheAbove}
         none_of_the_above_saving={none_of_the_above_saving.value}
         onDismiss={() => follow_ups_needed.value = []}
       />

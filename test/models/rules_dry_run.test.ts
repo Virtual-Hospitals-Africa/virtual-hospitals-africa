@@ -1,11 +1,13 @@
 import { afterAll } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertRejects } from 'std/assert/assert_rejects.ts'
+import { AssertionError } from 'std/assert/assertion_error.ts'
 import z from 'zod'
 import db from '../../db/db.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
-import { findings_to_check_for } from '../../db/models/findings_to_check_for.ts'
+import { rules_dry_run } from '../../db/models/rules_dry_run.ts'
 import { due_to } from '../../db/models/due_to.ts'
 import { rules } from '../../db/models/rules.ts'
 import { additional_tasks, isCheckFor } from '../../db/models/additional_tasks.ts'
@@ -58,13 +60,22 @@ async function dryRun(
   { patient_id, patient_encounter_id }: { patient_id: string; patient_encounter_id: string },
   s_expression: string,
 ) {
-  const result = await findings_to_check_for.forHypotheticalFinding(db, {
+  const result = await rules_dry_run.forHypotheticalFinding(db, {
     patient_id,
     patient_encounter_id,
     patient_age_determination: 'adult',
     finding: asFinding(s_expression),
   })
-  return sortBy(result, 's_expression')
+  return { ...result, findings_to_check_for: sortBy(result.findings_to_check_for, 's_expression') }
+}
+
+// The check_for findings of a dry run, sorted by s_expression
+async function checkFors(
+  encounter: { patient_id: string; patient_encounter_id: string },
+  s_expression: string,
+) {
+  const { findings_to_check_for } = await dryRun(encounter, s_expression)
+  return findings_to_check_for
 }
 
 // insertMany tags the findings with the due_tos they satisfy as part of the insert
@@ -93,13 +104,13 @@ async function insertFindings(
   return { inserted, new_records }
 }
 
-describeParallel('db/models/findings_to_check_for.ts', () => {
+describeParallel('db/models/rules_dry_run.ts', () => {
   afterAll(() => db.destroy())
 
   itParallel('lists the check_for findings a matching task would prompt for, without inserting anything', async () => {
     const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
 
-    const result = await dryRun(encounter, '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))')
+    const result = await checkFors(encounter, '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))')
 
     assertEquals(
       result.map((r) => r.s_expression),
@@ -118,12 +129,12 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
   itParallel('matches a finding_site due_to via an explicit finding_site attribute', async () => {
     const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
 
-    const without_site = await dryRun(encounter, '(clinical_finding (snomed_concept "Swelling" "finding"))')
+    const without_site = await checkFors(encounter, '(clinical_finding (snomed_concept "Swelling" "finding"))')
     for (const s_expression of NOSE_CHECK_FORS) {
       assert(!without_site.some(matching({ s_expression })), `Did not expect ${s_expression}`)
     }
 
-    const with_site = await dryRun(
+    const with_site = await checkFors(
       encounter,
       '(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Nasal structure" "body structure")))',
     )
@@ -143,7 +154,7 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
     const s_expression = normalForm('(clinical_finding (finding_site (snomed_concept "Nasal structure" "body structure")))')
     assert(matched_due_tos.some(matching({ s_expression })), `Expected ${s_expression} among ${JSON.stringify(matched_due_tos)}`)
 
-    const result = await dryRun(
+    const result = await checkFors(
       await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db),
       '(clinical_finding (snomed_concept "Stenosis of nostril" "disorder"))',
     )
@@ -159,7 +170,7 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
       '(clinical_finding (snomed_concept "Diplopia" "disorder"))',
     ])
 
-    const result = await dryRun(encounter, '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))')
+    const result = await checkFors(encounter, '(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))')
 
     assertMatches(
       result.filter((r) => r.existing_record),
@@ -182,15 +193,18 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
     )
   })
 
-  itParallel('returns nothing for a negative finding', async () => {
+  itParallel('rejects a negative finding, as only positives are dry run', async () => {
     const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
-    const result = await dryRun(encounter, '(no (clinical_finding (snomed_concept "Insect bite - wound" "disorder")))')
-    assertEquals(result, [])
+    await assertRejects(
+      () => checkFors(encounter, '(no (clinical_finding (snomed_concept "Insect bite - wound" "disorder")))'),
+      AssertionError,
+      'dry run only used to test against hypothetical positive findings',
+    )
   })
 
   itParallel('returns nothing for a finding no task is due to', async () => {
     const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
-    const result = await dryRun(encounter, '(clinical_finding (snomed_concept "Hangnail" "disorder"))')
+    const result = await checkFors(encounter, '(clinical_finding (snomed_concept "Hangnail" "disorder"))')
     assertEquals(result, [])
   })
 
@@ -221,6 +235,26 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
     })
   })
 
+  describeParallel('would_indicate_priority', () => {
+    itParallel('reports the priority the finding would raise triage to', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const muscle_weakness = '(clinical_finding (snomed_concept "Generalized muscle weakness" "finding"))'
+
+      // 'Urgent: bite with danger signs' needs a bite on record alongside the danger sign
+      assertEquals((await dryRun(encounter, muscle_weakness)).would_indicate_priority, null)
+
+      await insertFindings(encounter, ['(clinical_finding (snomed_concept "Bite - wound" "disorder"))'])
+
+      assertEquals((await dryRun(encounter, muscle_weakness)).would_indicate_priority, 'Urgent')
+    })
+
+    itParallel('is null, alongside no diagnoses, for a finding no rule is due to', async () => {
+      const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
+      const result = await dryRun(encounter, '(clinical_finding (snomed_concept "Hangnail" "disorder"))')
+      assertEquals(result, { findings_to_check_for: [], would_indicate_diagnoses: [], would_indicate_priority: null })
+    })
+  })
+
   describeParallel('parity with the real pipeline', () => {
     const s_expressions = uniq([
       ...WARNING_SIGNS.adult.map((sign) => sign.clinical_finding_s_expression),
@@ -231,7 +265,7 @@ describeParallel('db/models/findings_to_check_for.ts', () => {
       const mismatches = await pMap(s_expressions, async (s_expression) => {
         const encounter = await insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest(db)
 
-        const dry_run = await dryRun(encounter, s_expression)
+        const dry_run = await checkFors(encounter, s_expression)
 
         const { new_records } = await insertFindings(encounter, [s_expression])
         const tasks_to_insert = await additional_tasks.getTasksToInsertUsingPreComputedTables(db, new_records)

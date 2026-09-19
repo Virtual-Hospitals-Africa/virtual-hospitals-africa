@@ -10,7 +10,7 @@ import { nameAndCategorySnomedConceptBase } from './s_expression.ts'
   database is consulted only for SNOMED hierarchy facts (descendants and
   defining relationships), never for patient data.
 
-  test/models/findings_to_check_for.test.ts has a parity test that runs the real
+  test/models/rules_dry_run.test.ts has a parity test that runs the real
   insert pipeline alongside this matcher for every warning sign and common
   symptom, so semantic drift between the two shows up there.
 */
