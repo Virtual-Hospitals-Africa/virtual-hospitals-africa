@@ -2496,6 +2496,7 @@ export type PatientDrawerV4Props = {
   care_team: RenderedCareTeamHealthWorker[]
   escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
   nearest_hospital: RenderedOrganization | null
+  refer_route: string
 }
 
 export type RenderedSidebarWorkflowStep = {
