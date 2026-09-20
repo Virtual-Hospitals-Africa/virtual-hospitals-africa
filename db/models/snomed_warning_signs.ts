@@ -98,7 +98,7 @@ export const snomed_warning_signs = base({
           .when(predefined_is_more_specific).then(eb.ref('predefined_site.name'))
           .else(eb.ref('chosen_site.name'))
           .end()
-          .as('finding_site_name'),
+          .as('chosen_finding_site_name'),
         sql<boolean>`coalesce(${predefined_within_chosen}, false)`.as('finding_site_is_predefined'),
         jsonArrayFrom(
           snomed_predefined_attributes.baseQuery(trx, {
@@ -122,17 +122,17 @@ export const snomed_warning_signs = base({
       )
       .orderBy('results.best_similarity', 'desc')
   },
-  formatResult({ id: snomed_concept_id, finding_site_name, finding_site_is_predefined, ...result }): SnomedWarningSignSearchResult {
+  formatResult({ id: snomed_concept_id, chosen_finding_site_name, finding_site_is_predefined, ...result }): SnomedWarningSignSearchResult {
     const concept_s_expression = asConceptSExpression(result)
-    const finding_site = finding_site_name ? { name: finding_site_name, category: 'body structure' as const } : null
-    const site_s_expression = finding_site && !finding_site_is_predefined ? ` (finding_site ${asConceptSExpression(finding_site)})` : ''
+    const chosen_finding_site = chosen_finding_site_name ? { name: chosen_finding_site_name, category: 'body structure' as const } : null
+    const site_s_expression = chosen_finding_site && !finding_site_is_predefined ? ` (finding_site ${asConceptSExpression(chosen_finding_site)})` : ''
     const clinical_finding_s_expression = `(clinical_finding ${concept_s_expression}${site_s_expression})`
     return {
       ...result,
       name: insertableFindingFullDisplay(clinical_finding_s_expression),
       clinical_finding_s_expression,
       snomed_concept_id,
-      finding_site,
+      chosen_finding_site,
       category: 'Search Results' as const,
       description: result.category,
     }

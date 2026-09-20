@@ -6,8 +6,8 @@ import { EnteredFinding, FindingModalMetadata, Maybe, RenderedSnomedConcept } fr
 import { FindingSite } from './FindingSite.tsx'
 import { PainLevelSelect } from './PainLevel.tsx'
 import { QualifierSearch } from './QualifierSearch.tsx'
-import { ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
-import { attribute, Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
+import { asConceptSExpression, ATTRIBUTE, EVENT, FINDING_SITE, PAIN_LEVEL, RESOLVED, TIME_OF_ONSET } from '../../shared/snomed_concepts.ts'
+import { attribute, finding_site as finding_site_schema, Lang, SnomedConceptAttribute } from '../../shared/s_expression_schemas.ts'
 import { assert } from 'std/assert/assert.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
 import { OnsetRow } from './Onset.tsx'
@@ -41,7 +41,9 @@ export function FindingModalContents(
 ) {
   const node = parseSExpressionAsInsertableFinding(entered.s_expression)
   const predefined_attributes = metadata.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
-  const search_within_finding_site = predefined_attributes.find(isFindingSite)
+  const search_within_finding_site = metadata.chosen_finding_site
+    ? parseWithSchema(`(finding_site ${asConceptSExpression(metadata.chosen_finding_site)})`, finding_site_schema)
+    : predefined_attributes.find(isFindingSite)
 
   const dates = useSignal<{ onset: string | null; resolved: string | null } | null>(null)
   let initial_finding_sites = node.attributes.filter(isFindingSite)

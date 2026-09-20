@@ -2818,6 +2818,7 @@ type SignShared<Category> = FindingRelatedModifiers & {
   category: Category
   key?: string
   priority?: Maybe<Priority>
+  chosen_finding_site?: Maybe<{ name: string; category: 'body structure' }>
 }
 
 export type WarningSignDef<Priority extends 'Urgent' | 'Very urgent' | 'Emergency'> = SignShared<Priority> & {
@@ -3090,7 +3091,7 @@ export type SnomedWarningSignSearchResult = FindingRelatedModifiers & {
   priority: Maybe<'Urgent' | 'Very urgent' | 'Emergency'>
   priority_by_virtue_of_matching_warning_sign: Maybe<string>
   // Set when the search was filtered by a finding site: the more specific of that and the concept's own
-  finding_site: Maybe<{ name: string; category: 'body structure' }>
+  chosen_finding_site: Maybe<{ name: string; category: 'body structure' }>
   best_similarity: number
   category: 'Search Results'
 }
@@ -3402,4 +3403,8 @@ export type FindingModalMetadata = {
   }[]
   priority?: Maybe<Priority>
   onset_required: boolean
+  chosen_finding_site?: Maybe<{
+    name: string
+    category: SnomedCategory
+  }>
 }

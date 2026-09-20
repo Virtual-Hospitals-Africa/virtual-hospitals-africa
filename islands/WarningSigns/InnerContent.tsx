@@ -57,6 +57,7 @@ function asEntered({ priority, clinical_finding_s_expression: s_expression }: Wa
 // TODO when working on making a FindingsModal that's actually reusable we may want to make aspects of this logic more portable
 function asFindingModalMetadata({
   priority,
+  chosen_finding_site,
   relevant_qualifiers,
   predefined_attributes,
   clinical_finding_s_expression,
@@ -79,6 +80,7 @@ function asFindingModalMetadata({
 
   return {
     priority,
+    chosen_finding_site,
     predefined_attributes,
     inherent_qualifiers,
     optional_relevant_qualifiers,

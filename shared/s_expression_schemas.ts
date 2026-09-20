@@ -675,7 +675,7 @@ const excluding: z.ZodType<Lang['excluding']> = z.lazy(() =>
   }))
 ).describe('excluding')
 
-const finding_site: z.ZodType<Lang['attribute']> = z.lazy(() =>
+export const finding_site: z.ZodType<SnomedConceptAttribute> = z.lazy(() =>
   z.object({
     atom: z.literal('finding_site'),
     args: z.tuple([snomed_concept]),
