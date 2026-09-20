@@ -12,6 +12,11 @@ import { assert } from 'std/assert/assert.ts'
 import z from 'zod'
 import { TriageWarningSignsPostBody } from '../../../../../shared/warning_signs_post.ts'
 import { ClinicalFindingPostBody } from '../../../../../shared/clinical_finding_post.ts'
+import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
+import { events } from '../../../../../db/models/events.ts'
+import { noneOfTheAboveRequests } from '../../../../../islands/FollowUps/follow_ups.ts'
+import { normalForm } from '../../../../../shared/s_expression.ts'
+import type { RecordedFinding } from '../../../../../types.ts'
 import { route } from '../../../../_route.ts'
 import { TriageBriefHistorySchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/brief_history.tsx'
 import { TriageHeightAndWeightSchema } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/height_and_weight.tsx'
@@ -197,6 +202,42 @@ export async function setupTriage({
     assert(response.status === 200, `mark_as_error responded ${response.status}: ${JSON.stringify(json)}`)
   }
 
+  /*
+    As the follow ups panel or the check_for section of the additional tasks page does: the
+    findings in `yes` are saved one at a time through the clinical_finding route, then "None of
+    the above" records every other finding the outstanding check_for tasks ask about as absent,
+    one request per task, marking the tasks done. `yes` is matched against the tasks' findings
+    by s_expression, so pass them as the tasks list them.
+  */
+  async function answerCheckForTasks(
+    { yes = [], referer_step }: { yes?: string[]; referer_step: keyof TriageSteps },
+  ): Promise<{ recorded: RecordedFinding[]; absent: { id: string; s_expression: string }[] }> {
+    await events.allProcessedForEncounter(db, { patient_encounter_id: encounter.patient_encounter_id })
+    const { check_for_follow_ups } = await additional_tasks.getTasksGroups(db, { health_worker_id: nurse.health_worker.id, encounter })
+    const findings = check_for_follow_ups.flatMap((group) => group.findings_to_check_for)
+
+    const recorded: RecordedFinding[] = []
+    for (const s_expression of yes) {
+      const finding = findings.find((finding) => normalForm(finding.s_expression) === normalForm(s_expression))
+      assert(finding, `No outstanding check_for task asks about ${s_expression}`)
+      const record_id = await postClinicalFinding({ s_expression: finding.s_expression }, { referer_step })
+      recorded.push({ key: finding.s_expression, entered: { s_expression: finding.s_expression, display: finding.name }, record_id, saving: false })
+    }
+
+    const absent: { id: string; s_expression: string }[] = []
+    for (const request of noneOfTheAboveRequests(check_for_follow_ups, recorded)) {
+      const response = await nurse.fetch(openEncounterRoute('none_of_the_above_findings'), {
+        method: 'POST',
+        body: asFormData(request),
+        headers: { Accept: 'application/json', Referer: `${route}${triageRoute(referer_step)}` },
+      })
+      const json = await response.json()
+      assert(response.status === 200, `none_of_the_above_findings responded ${response.status}: ${JSON.stringify(json)}`)
+      absent.push(...json.records)
+    }
+    return { recorded, absent }
+  }
+
   async function asWarningSignsForm(data: WarningSignsStepInput): Promise<TriageWarningSignsPostBody> {
     if (!('warning_signs' in data)) return data
     const [checked, unchecked] = partition(values(data.warning_signs), (sign) => sign.existence === 'Yes')
@@ -247,6 +288,7 @@ export async function setupTriage({
     postStep,
     postClinicalFinding,
     postMarkAsError,
+    answerCheckForTasks,
     openEncounterRoute,
     triageRoute,
   }

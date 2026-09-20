@@ -9,11 +9,13 @@ import { NoFindings } from './NoFindings.tsx'
 import { RecordChips } from './RecordChips.tsx'
 
 export function WorkflowStep(
-  { workflow, step, organization_id, Icon }: {
+  { workflow, step, organization_id, Icon, after }: {
     workflow: string
     step: RenderedSidebarWorkflowStep
     organization_id: string
     Icon?: () => ComponentChild
+    // Rendered after the step's records, for chips of findings still being saved
+    after?: ComponentChild
   },
 ) {
   return (
@@ -38,6 +40,7 @@ export function WorkflowStep(
         records={step.records}
         organization_id={organization_id}
       />
+      {after}
     </div>
   )
 }

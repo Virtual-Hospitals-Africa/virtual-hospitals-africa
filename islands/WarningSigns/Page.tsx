@@ -4,18 +4,17 @@ import { searchRouteFor } from './shared.ts'
 import useAsyncSearch from '../useAsyncSearch.tsx'
 import WarningSignsInnerContent from './InnerContent.tsx'
 
+/*
+  Recording a checked sign, the follow ups it raises and the drawer are the page layout's
+  (islands/finding/Recorder.tsx, islands/FollowUps/Panel.tsx); this island only lists the
+  signs and vouches for what was recorded when the page is submitted.
+*/
 export default function WarningSigns({
   search_route,
-  post_route,
-  rules_dry_run_route,
-  none_of_the_above_findings_route,
   warning_signs,
   finding_sites,
 }: {
   search_route: string
-  post_route: string
-  rules_dry_run_route: string
-  none_of_the_above_findings_route: string
   warning_signs: WarningSignWithMaybeRecord[]
   finding_sites: FindingSiteWithMaybeRecords[]
 }) {
@@ -37,9 +36,6 @@ export default function WarningSigns({
 
   return (
     <WarningSignsInnerContent
-      post_route={post_route}
-      rules_dry_run_route={rules_dry_run_route}
-      none_of_the_above_findings_route={none_of_the_above_findings_route}
       warning_signs={warning_signs}
       finding_sites={finding_sites}
       finding_site={finding_site}

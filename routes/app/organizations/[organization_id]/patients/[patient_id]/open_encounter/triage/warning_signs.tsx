@@ -386,9 +386,6 @@ export async function TriageWarningSignsPage(
   return (
     <WarningSignsPage
       search_route={`/app/snomed/warning-signs?${warning_signs_search_params}`}
-      post_route={`${ctx.state.open_encounter_pathname}/clinical_finding`}
-      rules_dry_run_route={`${ctx.state.open_encounter_pathname}/rules_dry_run`}
-      none_of_the_above_findings_route={`${ctx.state.open_encounter_pathname}/none_of_the_above_findings`}
       warning_signs={Array.from(warning_signs)}
       finding_sites={finding_sites}
     />

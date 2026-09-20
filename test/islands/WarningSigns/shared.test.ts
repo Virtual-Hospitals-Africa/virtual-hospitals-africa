@@ -1,7 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { CATEGORIES, CheckedWarningSign, findChecked, searchRouteFor, signsToDisplay, tableCategories } from '../../../islands/WarningSigns/shared.ts'
-import { FindingSiteWithMaybeRecords, WarningSignWithMaybeRecord } from '../../../types.ts'
+import { CATEGORIES, findRecorded, searchRouteFor, signsToDisplay, tableCategories, uniqueIdentifier } from '../../../islands/WarningSigns/shared.ts'
+import { FindingSiteWithMaybeRecords, RecordedFinding, WarningSignWithMaybeRecord } from '../../../types.ts'
 
 const finding = (name: string) => `(clinical_finding (snomed_concept "${name}" "finding"))`
 
@@ -19,8 +19,9 @@ function sign(category: string, name: string, existing_record?: WarningSignWithM
   }
 }
 
-function checked(base: WarningSignWithMaybeRecord): CheckedWarningSign {
-  return { ...base, entered: { s_expression: base.clinical_finding_s_expression, display: base.name }, saving: false }
+// The sign as recorded on this visit: keyed by the sign, entered as the sign names it
+function recorded(base: WarningSignWithMaybeRecord, record_id = `${base.name}-id`, s_expression = base.clinical_finding_s_expression): RecordedFinding {
+  return { key: uniqueIdentifier(base), entered: { s_expression, display: base.name }, record_id, saving: false }
 }
 
 const headache = sign('Common Symptoms', 'Headache')
@@ -71,17 +72,30 @@ describe('islands/WarningSigns/shared.ts', () => {
     })
   })
 
-  describe('findChecked', () => {
-    it('finds the checked sign that is the same sign', () => {
-      const checked_headache = checked(headache)
-      assertEquals(findChecked([checked_headache], headache), checked_headache)
-      assertEquals(findChecked([checked_headache], fever), undefined)
+  describe('findRecorded', () => {
+    it('finds the finding recorded under the sign itself', () => {
+      const recorded_headache = recorded(headache)
+      assertEquals(findRecorded([recorded_headache], headache), recorded_headache)
+      assertEquals(findRecorded([recorded_headache], fever), undefined)
     })
-    it('finds a checked sign of another category standing for the same saved record', () => {
-      const prior = checked(sign('Prior record', 'Pain of ear', { id: 'record-1', existence: 'Yes' }))
+    it('finds a finding recorded under a sign of another category standing for the same saved record', () => {
+      const prior = recorded(sign('Prior record', 'Pain of ear', { id: 'record-1', existence: 'Yes' }), 'record-1')
       const in_ear_table = { ...pain_of_ear, existing_record: { id: 'record-1', existence: 'Yes' as const } }
-      assertEquals(findChecked([prior], in_ear_table), prior)
-      assertEquals(findChecked([prior], pain_of_ear), undefined)
+      assertEquals(findRecorded([prior], in_ear_table), prior)
+    })
+    it('finds a finding entered as the very finding the sign names, as a follow up checked from the panel is', () => {
+      const from_panel: RecordedFinding = {
+        key: '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Pain of ear" "finding"))',
+        entered: { s_expression: pain_of_ear.clinical_finding_s_expression, display: 'Pain of ear' },
+        record_id: 'record-2',
+        saving: false,
+      }
+      assertEquals(findRecorded([from_panel], pain_of_ear), from_panel)
+      assertEquals(findRecorded([from_panel], headache), undefined)
+    })
+    it('does not take a sign with a record for a finding recorded under another sign', () => {
+      const prior = recorded(sign('Prior record', 'Tinnitus'), 'record-1')
+      assertEquals(findRecorded([prior], pain_of_ear), undefined)
     })
   })
 })

@@ -1,13 +1,15 @@
 /*
   The floating panels that sit in the column just left of the patient drawer:
   the priority escalation panel (islands/PriorityEscalation/PriorityEscalationPanel.tsx)
-  and the warning signs follow-ups panel (islands/WarningSigns/FollowUpsPanel.tsx).
+  and the follow-ups panel (islands/FollowUps/Panel.tsx).
 
   They are rendered by two separate islands that know nothing of each other, so
-  rather than each guessing at the other's position they portal into one host
-  element rendered by HealthWorkerContentsWithSidebarAndDrawer, which owns the
-  geometry. Whichever panels are open then stack in that column, sharing its
-  width and its edges.
+  rather than each guessing at the other's position they share one host element
+  rendered by HealthWorkerContentsWithSidebarAndDrawer, which owns the geometry.
+  The follow-ups panel is rendered inside it by the page layout, so that it is in
+  the page as served; the escalation panel, which lives in the drawer's island,
+  portals into it. Whichever panels are open then stack in that column, sharing
+  its width and its edges.
 
   Stacking is by `order`, not by DOM insertion, because which island hydrates
   first is not something we control.

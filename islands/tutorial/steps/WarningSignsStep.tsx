@@ -61,11 +61,9 @@ export function WarningSignsStep() {
     }
   })
 
+  // The finding modal a checked sign opens is the layout's (OpenEncounterWorkflowLayout), which posts nothing in the tutorial
   return (
     <WarningSignsInnerContent
-      post_route='/tutorial/unused'
-      rules_dry_run_route={null}
-      none_of_the_above_findings_route={null}
       warning_signs={TUTORIAL_WARNING_SIGNS}
       finding_sites={[]}
       finding_site={finding_site}

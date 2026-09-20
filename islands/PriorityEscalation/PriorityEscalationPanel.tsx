@@ -70,7 +70,7 @@ const SELECTED_ACTION_CARD_CLASS =
 
 /*
   Not a modal: appears as a panel just above the follow-ups panel
-  (islands/WarningSigns/FollowUpsPanel.tsx), so both can be visible together.
+  (islands/FollowUps/Panel.tsx), so both can be visible together.
 
   Both portal into the shared column left of the patient drawer, which owns the
   position and width (components/library/layout/side_panels.ts). That column

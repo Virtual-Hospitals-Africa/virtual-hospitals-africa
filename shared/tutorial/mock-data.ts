@@ -5,6 +5,8 @@
 
 import type {
   Existence,
+  FindingToCheckFor,
+  FollowUpGroup,
   HealthWorkerOrganization,
   MostRecentBriefHistoryFindings,
   OptionalUndefinedFields,
@@ -1589,6 +1591,37 @@ export function getTutorialTaskGroups(): TaskGroup[] {
   }))
 }
 
+/**
+ * The check_for tasks of the tutorial task groups as the additional tasks page lists them,
+ * mirroring checkForFollowUps in db/models/additional_tasks.ts without the modifier lookup.
+ */
+export function getTutorialCheckForFollowUps(): FollowUpGroup[] {
+  return TUTORIAL_TASK_GROUPS.flatMap((group): FollowUpGroup[] => {
+    const check_for_tasks = group.tasks.filter((task) => task.atom === 'finding')
+    if (!check_for_tasks.length) return []
+    return [{
+      key: group.key,
+      due_to: {
+        s_expression: `(clinical_finding (snomed_concept "${group.due_to[0].specific_snomed_concept_name}" "${
+          group.due_to[0].specific_snomed_concept_category
+        }"))`,
+        display: group.due_to.map((record) => record.displays.full).join(', '),
+      },
+      findings_to_check_for: check_for_tasks.map((task): FindingToCheckFor => ({
+        s_expression: task.s_expression,
+        name: task.displays.finding,
+        task_ids: [task.description],
+        predefined_attributes: [],
+        relevant_qualifiers: [],
+        onset_required: false,
+        existing_record: task.existing_record
+          ? { id: task.existing_record.id, s_expression: task.s_expression, existence: task.existing_record.existence }
+          : null,
+      })),
+    }]
+  })
+}
+
 // =============================================================================
 // ASSIGN PRIORITY - TEWS scoring and priority table
 // =============================================================================
@@ -2315,6 +2348,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
 
 export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
   {
+    'key': 'task.tutorial-1',
     'completed': false,
     'due_to': [
       {
@@ -2697,6 +2731,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
     ],
   },
   {
+    'key': 'task.tutorial-2',
     'completed': false,
     'due_to': [
       {
@@ -5608,6 +5643,7 @@ export const TUTORIAL_MANAGE_PATIENT_TASKS: Array<
 // Anaphylaxis due_to from TUTORIAL_TASK_GROUPS.
 export const TUTORIAL_MANAGE_PATIENT_TASK_GROUPS: TaskGroup[] = [
   {
+    key: 'task.tutorial-manage',
     completed: false,
     due_to: TUTORIAL_TASK_GROUPS[1].due_to,
     tasks: TUTORIAL_MANAGE_PATIENT_TASKS,

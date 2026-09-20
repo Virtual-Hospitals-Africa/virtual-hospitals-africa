@@ -1,7 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { accumulateFollowUps, FollowUpGroup, indicatedDiagnosisFollowUp } from '../../../islands/WarningSigns/follow_ups.ts'
-import { ApplicableRuleEffectSystemDiagnosisRule, EnteredFinding, FindingToCheckFor, RulesDryRun } from '../../../types.ts'
+import { accumulateFollowUps, indicatedDiagnosisFollowUp } from '../../../islands/FollowUps/follow_ups.ts'
+import { ApplicableRuleEffectSystemDiagnosisRule, EnteredFinding, FindingToCheckFor, FollowUpGroup, RulesDryRun } from '../../../types.ts'
 import { DiagnosisCertainty } from '../../../db.d.ts'
 
 const insect_bite: EnteredFinding = {
@@ -48,7 +48,7 @@ const indicated = (
   findings_to_check_for: names.map(check_for),
 })
 
-describe('islands/WarningSigns/follow_ups.ts', () => {
+describe('islands/FollowUps/follow_ups.ts', () => {
   describe('accumulateFollowUps', () => {
     it('appends a group for a newly saved sign', () => {
       const result = accumulateFollowUps([], group('insect-bite', insect_bite, 'Diplopia'))

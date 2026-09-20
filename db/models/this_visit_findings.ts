@@ -9,7 +9,7 @@ import {
 } from '../../types.ts'
 import { arrayIsNonEmpty } from '../../util/arraySize.ts'
 import { groupBy } from '../../util/groupBy.ts'
-import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import { humanReadableJson, logReadableJson } from '../../util/humanReadableJson.ts'
 import { patient_findings } from './patient_findings.ts'
 import { patient_record_providers } from './patient_record_providers.ts'
 import compactMap from '../../util/compactMap.ts'
@@ -75,11 +75,14 @@ export function groupRecordsByWorkflows(
     current_workflow_state: null | CurrentWorkflowState
   },
 ): RenderedSidebarWorkflow[] {
+  if (current_workflow_state?.workflow === 'registration') return []
+
   const records_by_procedure = groupBy(
     records,
     (record) => record.as_part_of_procedure.specific_snomed_concept_id,
   )
 
+  console.log({current_workflow_state})
   const grouped_records = compactMap(WORKFLOWS, (workflow) => {
     const workflow_status = encounter.workflows[workflow]
     if (!workflow_status) return null
@@ -87,31 +90,47 @@ export function groupRecordsByWorkflows(
 
     const workflow_steps = WORKFLOW_STEPS[workflow]
 
+    // console.log({workflow_steps, })
+
     return {
       workflow,
       status: workflow_status.status,
       steps: workflow_steps.map((workflow_step) => {
         const workflow_step_snomed_concept = workflowStepSnomedConcept(workflow, workflow_step)
-
+        
         const records_of_concept = (workflow_step_snomed_concept &&
           records_by_procedure.get(workflow_step_snomed_concept.id)) || []
-
-        const completed = arrayIsNonEmpty(workflow_status.steps_completed) ? workflow_status.steps_completed.includes(workflow_step) : false
-
-        const in_progress = current_workflow_state?.workflow === workflow &&
-          current_workflow_state?.step === workflow_step
+        
+        const status = () => {
+          // logReadableJson({workflow_step_snomed_concept, workflow_step, records_of_concept, z: combineAndSortRecords(records_of_concept)})
+          const completed = arrayIsNonEmpty(workflow_status.steps_completed) ? workflow_status.steps_completed.includes(workflow_step) : false
+          if (completed) return 'completed' as const
+          if (records_of_concept.length) return 'in progress' as const
+          if (
+            current_workflow_state?.workflow === workflow &&
+            current_workflow_state?.step === workflow_step
+          ) return 'in progress' as const
+          return 'not started' as const
+        }
 
         return {
           workflow_step,
           title: prettyStepName(workflow_step),
-          status: completed ? 'completed' as const : in_progress ? 'in progress' as const : 'not started' as const,
+          status: status(),
           records: combineAndSortRecords(records_of_concept),
         }
-      }).filter((step) => step.status !== 'not started'),
+      }).filter((step) => 
+        step.status !== 'not started'
+      ),
     }
   })
 
-  const remaining_records = new Set(records)
+  const remaining_records = new Set(
+    records.filter(record => 
+      record.displays.finding !== 'Diastolic blood pressure' &&
+      record.displays.finding !== 'Systolic blood pressure'
+    )
+  )
   for (const workflow of grouped_records) {
     for (const step of workflow.steps) {
       for (const record of step.records) {
@@ -119,9 +138,8 @@ export function groupRecordsByWorkflows(
       }
     }
   }
-  for (const remaining_record of remaining_records) {
-    if (remaining_record.displays.finding === 'Diastolic blood pressure') continue
-    if (remaining_record.displays.finding === 'Systolic blood pressure') continue
+  if (remaining_records.size) {
+    console.error({grouped_records})
     throw new Error(
       `Expected all records to be accounted for\n${humanReadableJson(Array.from(remaining_records))}`,
     )

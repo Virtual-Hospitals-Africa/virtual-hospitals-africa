@@ -2490,6 +2490,8 @@ export type PatientDrawerV4Props = {
   priority_evaluation: RenderedEvaluationRelativeToHealthWorker | null
   organization_id: string
   current_workflow: Workflow
+  // The step being worked on, under which findings recorded on this page appear as they are saved
+  current_step: string | null
   this_visit_findings: RenderedSidebarWorkflow[]
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
@@ -2911,6 +2913,8 @@ export type RenderedTaskToBeDone =
 export type RenderedManageTaskToBeDone = RenderedTaskToBeDone & { atom: 'procedure' }
 
 export type TaskGroup = {
+  // The records the group is due to, joined, so that the group has one identity across pages
+  key: string
   completed: boolean
   due_to: Array<RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker>
   tasks: RenderedTaskToBeDone[]
@@ -3235,6 +3239,9 @@ export type WorkflowState = {
   patient_history: RenderedPatientHistory
   escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
   nearest_hospital: RenderedOrganization | null
+  // The encounter's outstanding tasks, so that check_for tasks can be answered from any page
+  task_groups: TaskGroup[]
+  check_for_follow_ups: FollowUpGroup[]
 }
 
 export type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState
@@ -3277,6 +3284,45 @@ export type FindingToCheckFor = FindingRelatedModifiers & {
     s_expression: string
     existence: Existence
   }
+}
+
+/*
+  Follow ups accumulate across saves within a visit to a workflow page, grouped by what
+  caused them, mirroring how the additional tasks page groups check_for tasks by their due_to.
+
+  `key` is the sign's uniqueIdentifier rather than the finding's s_expression, as editing a
+  sign (adding a finding site, say) changes its s_expression but should replace that sign's
+  group rather than add another. A diagnosis's group is keyed by the sign's key and the
+  diagnosed concept. A check_for task materialised before the page loaded is keyed by the
+  records it is due to.
+*/
+export type FollowUpGroup = {
+  key: string
+  due_to: EnteredFinding
+  findings_to_check_for: FindingToCheckFor[]
+}
+
+/*
+  A finding recorded, or being recorded, on this page, as every island that lists findings
+  keeps track of it: the warning signs tables, the follow ups panel, the check_for section of
+  the additional tasks page and the drawer. Kept deliberately small: what was entered, the id
+  it has (or will have while its save is in flight) and a key the islands agree on.
+  See shared/finding_events.ts
+*/
+export type RecordedFinding = {
+  key: string
+  entered: EnteredFinding
+  record_id: string
+  saving: boolean
+  // The save failed: the finding stays entered, but the page does not vouch for its record
+  failed?: boolean
+}
+
+// The open_encounter routes the finding recorder and follow ups panel post to
+export type FindingRoutes = {
+  post_route: string // .../open_encounter/clinical_finding
+  rules_dry_run_route: string // .../open_encounter/rules_dry_run
+  none_of_the_above_findings_route: string // .../open_encounter/none_of_the_above_findings
 }
 
 export type RulesDryRun = {

@@ -60,6 +60,7 @@ export function ExamplePatientView({ url, route, mock_patient }: Props) {
       ContainerTag='div'
       workflow='triage'
       current_workflow='triage'
+      open_encounter_pathname={null}
       care_team={mock_patient.care_team}
       sidebar_bottom={
         <div className='space-y-3'>

@@ -9,7 +9,10 @@ import { events } from '../../../../../../../db/models/events.ts'
 import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
 import { json } from '../../../../../../../util/responses.ts'
-import { ClinicalFindingSchema } from '../../../../../../../shared/clinical_finding_post.ts'
+import { ClinicalFindingPostResponse, ClinicalFindingSchema } from '../../../../../../../shared/clinical_finding_post.ts'
+import { patient_record_providers } from '../../../../../../../db/models/patient_record_providers.ts'
+import { promiseProps } from '../../../../../../../util/promiseProps.ts'
+import { exists } from '../../../../../../../util/exists.ts'
 
 export const handler = postHandler(
   ClinicalFindingSchema,
@@ -21,6 +24,8 @@ export const handler = postHandler(
       patient_encounter_id,
       patient_age_determination,
       encounter_employee_presence,
+      encounter,
+      health_worker_id,
     } = ctx.state
 
     assertOr400(encounter_employee_presence, 'You must be present with the patient to submit findings')
@@ -80,20 +85,32 @@ export const handler = postHandler(
       })
     }
 
-    await events.insert(trx, {
-      type: 'FindingsAdded',
-      data: {
-        patient_id,
-        patient_encounter_id,
-        patient_age_determination,
-        procedure_id,
-        records: [{
-          id: finding_id,
-          existence: 'Yes',
-        }],
-      },
+    // The record is returned as the drawer renders it, so the page can show it without reloading
+    const { record } = await promiseProps({
+      dispatched: events.insert(trx, {
+        type: 'FindingsAdded',
+        data: {
+          patient_id,
+          patient_encounter_id,
+          patient_age_determination,
+          procedure_id,
+          records: [{
+            id: finding_id,
+            existence: 'Yes',
+          }],
+        },
+      }),
+      record: patient_findings.getByIds(trx, [finding_id])
+        .then((findings) =>
+          patient_record_providers.hydrateIntermediateRecords(trx, {
+            records: findings,
+            encounter,
+            health_worker_id,
+          })
+        )
+        .then(([record]) => exists(record)),
     })
 
-    return json({ success: true })
+    return json({ success: true, record } satisfies ClinicalFindingPostResponse)
   },
 )

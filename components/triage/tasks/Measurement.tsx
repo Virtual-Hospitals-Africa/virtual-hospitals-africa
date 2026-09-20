@@ -29,6 +29,11 @@ export function MeasurementTask({ organization_id, task }: { organization_id: st
         name={`${name}.s_expression`}
         value={task.s_expression}
       />
+      {/* Names the task so that submitting the measurement marks it done */}
+      <HiddenInput
+        name={`${name}.task_description`}
+        value={task.description}
+      />
       <HiddenInput
         name={`${name}.existing_record.id`}
         value={task.existing_record?.id}

@@ -97,10 +97,12 @@ describeParallel('triage/warning_signs', () => {
           patient_demographics: {},
         })
 
-        // Both the priority escalation panel and the follow-ups panel are client-only and
-        // portal into this host, so without it in the server-rendered page neither appears.
+        // The follow-ups panel is rendered in this host and the priority escalation panel
+        // portals into it, so without it in the server-rendered page neither appears.
         // See components/library/layout/side_panels.ts
         assertEquals($('#drawer-side-panels').length, 1)
+        // Nothing to check for yet, so no panel
+        assertEquals($('#follow-ups-panel').length, 0)
         // Outside the workflow's form, so that the panels' inputs are never submitted with it
         assertEquals($('form #drawer-side-panels').length, 0)
         assertEquals($('#patient-drawer').length, 1)

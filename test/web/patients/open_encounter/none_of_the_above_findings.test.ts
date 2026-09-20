@@ -113,7 +113,7 @@ async function postClinicalFindingOk(
   })
   const json = await response.json()
   assertEquals(response.status, 200, JSON.stringify(json))
-  assertEquals(json, { success: true })
+  assertEquals(json.success, true)
 }
 
 async function expect400(response_promise: Promise<Response>) {

@@ -1,7 +1,8 @@
-import { EnteredFinding, FindingSiteWithMaybeRecords, Maybe, WarningSignWithMaybeRecord } from '../../types.ts'
+import { FindingSiteWithMaybeRecords, Maybe, RecordedFinding, WarningSignWithMaybeRecord } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
 import memoize from '../../util/memoize.ts'
+import { normalized } from '../FollowUps/follow_ups.ts'
 
 export const CATEGORIES = [
   {
@@ -60,12 +61,11 @@ export function searchRouteFor(search_route: string, finding_site: Maybe<Finding
   return `${search_route}${search_route.includes('?') ? '&' : '?'}${params}`
 }
 
-export type CheckedWarningSign = WarningSignWithMaybeRecord & { entered: EnteredFinding; saving: false | { as_finding_id: string } }
-export type UncheckedWarningSign = WarningSignWithMaybeRecord & { entered?: never }
+// A sign as the tables render it, with the recorded finding standing for it if any
+export type SignWithRecorded = WarningSignWithMaybeRecord & { recorded?: RecordedFinding }
 
-export type ToggleableWarningSign = CheckedWarningSign | UncheckedWarningSign
-
-export type OnToggle = (sign: ToggleableWarningSign) => void
+export type OnCheckSign = (sign: WarningSignWithMaybeRecord) => void
+export type OnOpenSignDetails = (sign: WarningSignWithMaybeRecord, recorded: RecordedFinding) => void
 
 export const uniqueIdentifier = memoize(
   function uniqueIdentifier({ key, category, name, description }: WarningSignWithMaybeRecord) {
@@ -76,10 +76,31 @@ export const uniqueIdentifier = memoize(
 
 export const sameSign = (sign1: WarningSignWithMaybeRecord, sign2: WarningSignWithMaybeRecord) => uniqueIdentifier(sign1) === uniqueIdentifier(sign2)
 
+const normalizedSign = memoize(
+  function normalizedSign(sign: WarningSignWithMaybeRecord) {
+    return normalized(sign.clinical_finding_s_expression)
+  },
+)
+
 /*
-  A sign is checked when it is itself among the checked signs, or when a checked sign of
-  another category stands for the record it has, as a prior record does for a finding-site sign.
+  The recorded finding standing for a sign, if any: one recorded under the sign's own key,
+  one for the record the sign was rendered with (as a prior record is shared by a warning sign
+  and a finding-site sign), or one entered as the very finding the sign names, as a follow up
+  checked from the panel may be.
 */
-export function findChecked(checked_signs: CheckedWarningSign[], sign: WarningSignWithMaybeRecord): CheckedWarningSign | undefined {
-  return checked_signs.find((checked) => sameSign(checked, sign) || (!!sign.existing_record && checked.existing_record?.id === sign.existing_record.id))
+export function findRecorded(recorded: RecordedFinding[], sign: WarningSignWithMaybeRecord): RecordedFinding | undefined {
+  const key = uniqueIdentifier(sign)
+  return recorded.find((candidate) =>
+    candidate.key === key ||
+    (!!sign.existing_record && candidate.record_id === sign.existing_record.id) ||
+    normalized(candidate.entered.s_expression) === normalizedSign(sign)
+  )
+}
+
+/*
+  The sign a recorded finding was checked as, if it is one of the page's, for its modifiers
+  when reopening the modal from a chip.
+*/
+export function signOf(signs: WarningSignWithMaybeRecord[], recorded: RecordedFinding): WarningSignWithMaybeRecord | undefined {
+  return signs.find((sign) => findRecorded([recorded], sign))
 }
