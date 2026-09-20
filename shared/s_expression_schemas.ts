@@ -23,6 +23,7 @@ import {
   PROCEDURE,
   TIME_OF_ONSET,
 } from './snomed_concepts.ts'
+import isString from '../util/isString.ts'
 
 export type Comparisons = '>' | '<' | '>=' | '<=' | '='
 
@@ -678,7 +679,7 @@ const excluding: z.ZodType<Lang['excluding']> = z.lazy(() =>
 export const finding_site: z.ZodType<SnomedConceptAttribute> = z.lazy(() =>
   z.object({
     atom: z.literal('finding_site'),
-    args: z.tuple([snomed_concept]),
+    args: z.tuple([snomed_concept.or(z.string())]),
   }).transform((
     { args: [value] },
   ) => ({
@@ -693,9 +694,43 @@ export const finding_site: z.ZodType<SnomedConceptAttribute> = z.lazy(() =>
       name: 'Finding site',
       category: 'attribute' as const,
     },
-    value,
+    value: isString(value)
+      ? {
+        atom: 'snomed_concept' as const,
+        name: value,
+        category: 'body structure' as const,
+      }
+      : value,
   }))
 ).describe('finding_site')
+
+const interprets: z.ZodType<SnomedConceptAttribute> = z.lazy(() =>
+  z.object({
+    atom: z.literal('interprets'),
+    args: z.tuple([snomed_concept.or(z.string())]),
+  }).transform((
+    { args: [value] },
+  ) => ({
+    atom: 'attribute' as const,
+    root_snomed_concept: {
+      atom: 'snomed_concept' as const,
+      name: ATTRIBUTE.name,
+      category: ATTRIBUTE.category,
+    },
+    specific_snomed_concept: {
+      atom: 'snomed_concept' as const,
+      name: 'Interprets',
+      category: 'attribute' as const,
+    },
+    value: isString(value)
+      ? {
+        atom: 'snomed_concept' as const,
+        name: value,
+        category: 'observable entity' as const,
+      }
+      : value,
+  }))
+).describe('interprets')
 
 export const event: z.ZodType<Lang['attribute']> = z.lazy(() =>
   z.object({
@@ -756,7 +791,7 @@ export const insertable_timestamp_of_event: z.ZodType<InsertableTimestampOfEvent
     .transform((node) => node as InsertableTimestampOfEvent)
 ).describe('insertable_timestamp_of_event')
 
-export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() => z.union([attribute_base, finding_site, event])).describe('attribute')
+export const attribute: z.ZodType<Lang['attribute']> = z.lazy(() => z.union([attribute_base, finding_site, interprets, event])).describe('attribute')
 
 export const measurement: z.ZodType<Lang['measurement']> = z.lazy(() =>
   z.object({
@@ -1287,6 +1322,7 @@ export const any_query_single: z.ZodType<QueryableSingleNode> = z.lazy(() =>
     measurement_comparator,
     event_time_comparison,
     qualifier,
+    attribute,
     exact,
   ])
 ).describe('any_query_single')

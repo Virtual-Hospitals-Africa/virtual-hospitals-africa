@@ -32,7 +32,7 @@ function asSign({ s_expression, label }: { s_expression: string; label: string }
 }
 
 export const FINDING_SITES: FindingSite[] = FINDING_SITE_FINDINGS.map(
-  ({ label, finding_site_structure, excluding_structures, clinical_finding_s_expressions }) => {
+  ({ label, finding_site_structure, excluding_structures, including_s_expressions, clinical_finding_s_expressions }) => {
     const signs = clinical_finding_s_expressions.map((s_expression) => asSign({ s_expression, label }))
     const keys = new Set(signs.map((sign) => sign.key))
     assert(keys.size === signs.length, `Duplicate signs for finding site ${finding_site_structure}`)
@@ -40,6 +40,7 @@ export const FINDING_SITES: FindingSite[] = FINDING_SITE_FINDINGS.map(
       label,
       snomed_concept: { name: finding_site_structure, category: 'body structure' as const },
       excluding_structures,
+      including_s_expressions,
       signs,
     }
   },

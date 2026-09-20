@@ -2848,6 +2848,7 @@ export type FindingSite = {
   snomed_concept: { name: string; category: 'body structure' }
   // The sites a patient presenting with this one does not mean, sent along with a search so findings sited there are dropped
   excluding_structures: string[]
+  including_s_expressions?: string[]
   signs: FindingSiteSign[]
 }
 

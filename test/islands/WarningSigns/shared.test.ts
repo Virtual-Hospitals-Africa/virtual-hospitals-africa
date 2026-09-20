@@ -84,6 +84,24 @@ describe('islands/WarningSigns/shared.ts', () => {
     })
   })
 
+  describe('searchRouteFor including_s_expressions', () => {
+    it("sends the site's including_s_expressions as JSON under their own name", () => {
+      const eye: FindingSiteWithMaybeRecords = {
+        label: 'Eye',
+        snomed_concept: { name: 'Structure of eye proper', category: 'body structure' },
+        excluding_structures: [],
+        including_s_expressions: ['(finding (finding_site "Structure of visual system"))', '(finding (interprets "Visual function"))'],
+        signs: [],
+      }
+      const params = new URL(searchRouteFor('/app/snomed/warning-signs?age_determination=adult', eye), 'https://example.com').searchParams
+      assertEquals(
+        params.get('including_s_expressions'),
+        '["(finding (finding_site \\"Structure of visual system\\"))","(finding (interprets \\"Visual function\\"))"]',
+      )
+      assertEquals(params.get('excluding_structures'), null)
+    })
+  })
+
   describe('findChecked', () => {
     it('finds the checked sign that is the same sign', () => {
       const checked_headache = checked(headache)

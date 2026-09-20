@@ -253,6 +253,83 @@ describeParallel('db/models/snomed_warning_signs.ts', () => {
       assertEquals(pain_of_ear.chosen_finding_site, { name: 'Ear structure', category: 'body structure' })
     })
 
+    itParallel('keeps a finding an including_s_expression claims though its site lies outside the chosen site', async () => {
+      // Optic neuritis is sited in the optic nerve, which is not within the eye proper, so the eye alone drops it
+      const { results: without_inclusion } = await snomed_warning_signs.search(db, {
+        search: 'optic neuritis',
+        age_determination: 'adult',
+        finding_site: 'Structure of eye proper',
+      })
+      assert(!without_inclusion.some((result) => result.name === 'Optic neuritis'))
+
+      // The optic nerve is part of the visual system, which the eye page claims for itself
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'optic neuritis',
+        age_determination: 'adult',
+        finding_site: 'Structure of eye proper',
+        including_s_expressions: ['(finding (finding_site "Structure of visual system"))'],
+      })
+
+      // Its own site stands: naming the chosen eye would misplace it, so the s_expression leaves the site implied
+      const optic_neuritis = findMatching(results, { name: 'Optic neuritis' })
+      assertEquals(optic_neuritis.chosen_finding_site, { name: 'Optic nerve structure', category: 'body structure' })
+      assertEquals(
+        optic_neuritis.clinical_finding_s_expression,
+        '(clinical_finding (snomed_concept "Optic neuritis" "disorder"))',
+      )
+    })
+
+    itParallel('ranks an included finding alongside those sited within the chosen site', async () => {
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'neuritis',
+        age_determination: 'adult',
+        finding_site: 'Structure of eye proper',
+        including_s_expressions: ['(finding (finding_site "Structure of visual system"))'],
+      }, { rows_per_page: 20 })
+
+      const names = results.map((r) => r.name)
+      const indexOf = (name: string) => {
+        const index = names.indexOf(name)
+        assert(index !== -1, `${name} not among ${JSON.stringify(names)}`)
+        return index
+      }
+
+      const included = indexOf('Retrobulbar optic neuritis of bilateral eyes')
+      const unsited = indexOf('Infantile poisoning caused by mercury (Structure of eye proper)')
+      assert(included < unsited, 'an included finding outranks one with no site')
+      // Despite the unsited finding being the closer match by name
+      assert(Number(results[unsited].best_similarity) > Number(results[included].best_similarity))
+    })
+
+    itParallel('still drops an included finding sited within an excluding_structure', async () => {
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'optic neuritis',
+        age_determination: 'adult',
+        finding_site: 'Structure of eye proper',
+        including_s_expressions: ['(finding (finding_site "Structure of visual system"))'],
+        excluding_structures: ['Optic nerve structure'],
+      })
+
+      assert(!results.some((result) => result.name === 'Optic neuritis'))
+      // The optic nerve sheath is not within the optic nerve, so its neuritis stays
+      assert(results.some((result) => result.name === 'Optic perineuritis'))
+    })
+
+    itParallel('leaves the results alone when no including_s_expression matches', async () => {
+      const { results: plain } = await snomed_warning_signs.search(db, {
+        search: 'earache',
+        age_determination: 'adult',
+        finding_site: 'Ear structure',
+      })
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'earache',
+        age_determination: 'adult',
+        finding_site: 'Ear structure',
+        including_s_expressions: ['(finding (finding_site "Structure of visual system"))'],
+      })
+      assertEquals(results.map((r) => r.name), plain.map((r) => r.name))
+    })
+
     itParallel('ignores a finding_site that names no body structure', async () => {
       const { results } = await snomed_warning_signs.search(db, {
         search: 'earache',

@@ -61,6 +61,10 @@ export function searchRouteFor(search_route: string, finding_site: Maybe<Finding
   if (finding_site.excluding_structures.length) {
     params.set('excluding_structures', JSON.stringify(finding_site.excluding_structures))
   }
+  // Other ways a finding can belong to this site, as s_expressions the server evaluates against each concept
+  if (finding_site.including_s_expressions?.length) {
+    params.set('including_s_expressions', JSON.stringify(finding_site.including_s_expressions))
+  }
   return `${search_route}${search_route.includes('?') ? '&' : '?'}${params}`
 }
 

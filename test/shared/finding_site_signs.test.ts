@@ -8,6 +8,7 @@ import { FINDING_SITE_FINDINGS } from '../../shared/finding_site_findings.ts'
 import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
+import { searchSnomedConceptsMatching } from '../../db/models/s_expression_snomed_concepts.ts'
 
 describe('shared/finding_site_signs.ts', () => {
   afterAll(() => db.destroy())
@@ -107,6 +108,17 @@ describe('shared/finding_site_signs.ts', () => {
       for (const excluded of site.excluding_structures) {
         assert(structures.has(excluded), `${site.label} excludes ${excluded}, which is no finding site`)
         assert(excluded !== site.snomed_concept.name, `${site.label} excludes itself`)
+      }
+    }
+  })
+
+  it("carries each page's including_s_expressions, and every one of them claims some concept", async () => {
+    for (const site of FINDING_SITES) {
+      const page = FINDING_SITE_FINDINGS.find((page) => page.finding_site_structure === site.snomed_concept.name)!
+      assertEquals(site.including_s_expressions, page.including_s_expressions)
+      for (const s_expression of site.including_s_expressions ?? []) {
+        const matching = await searchSnomedConceptsMatching(db, s_expression)
+        assert(matching.length, `${site.label} includes ${s_expression}, which no concept matches`)
       }
     }
   })

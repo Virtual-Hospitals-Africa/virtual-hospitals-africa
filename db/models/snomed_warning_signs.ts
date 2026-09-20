@@ -9,6 +9,7 @@ import { snomed_predefined_attributes } from './snomed_predefined_attributes.ts'
 import { snomed_relevant_qualifiers } from './snomed_relevant_qualifiers.ts'
 import { sql } from 'kysely'
 import { insertableFindingFullDisplay } from '../../shared/patient_records.ts'
+import { buildExpressionPredicate } from './s_expression_snomed_concepts.ts'
 
 type SearchTerms = {
   search?: string
@@ -19,6 +20,9 @@ type SearchTerms = {
   finding_site?: string
   // The names of body structures the patient does not mean by the chosen site. Findings sited within one are dropped
   excluding_structures?: string[]
+  // Other ways a finding can belong to the chosen site, as s_expressions evaluated against each concept.
+  // A finding matching one is kept and ranked as if sited within the chosen site
+  including_s_expressions?: string[]
 }
 
 /*
@@ -32,18 +36,41 @@ type SearchTerms = {
   excluding_structures names the sites the patient does not mean by the chosen one — by "head"
   they do not mean their eye, ear, nose, mouth or teeth. A finding whose predefined site lies
   within one of them is dropped, however well it otherwise matches.
+
+  including_s_expressions names other ways a finding belongs to the chosen site, as SNOMED
+  defines the concept — by "eye" a patient also means findings interpreting visual function,
+  or sited anywhere in the visual system. A finding matching one is kept even when its
+  predefined site lies outside the chosen site, and ranks alongside those sited within it.
+  Its own site then stands, since naming the chosen site would misplace it. An excluded
+  structure still drops it.
 */
 export const snomed_warning_signs = base({
   top_level_table: 'snomed_concept_finding_like',
-  baseQuery(trx: TrxOrDbOrQueryCreator, { age_determination, pregnancy, finding_site, excluding_structures, ...terms }: SearchTerms) {
+  baseQuery(
+    trx: TrxOrDbOrQueryCreator,
+    { age_determination, pregnancy, finding_site, excluding_structures, including_s_expressions, ...terms }: SearchTerms,
+  ) {
     const predefined_within_chosen = sql<boolean>`predefined_within_chosen.descendant_id is not null`
     const chosen_within_predefined = sql<boolean>`chosen_within_predefined.descendant_id is not null`
     const predefined_is_more_specific = sql<boolean>`(${predefined_within_chosen} and predefined_site.id != chosen_site.id)`
+    const included = sql<boolean>`coalesce(included.matched, false)`
+    // A finding sited outside the chosen site that an including s_expression nonetheless claims for it
+    const included_from_elsewhere = sql<boolean>`(${included} and predefined_site.id is not null and not ${chosen_within_predefined})`
 
-    return trx.selectFrom(
+    const query = trx.selectFrom(
       snomed_concept_finding_like.baseQuery(trx, terms)
         .as('results'),
     )
+      // Whether any including s_expression claims the concept, false when there are none. Lateral so it can look at results.id
+      .leftJoinLateral(
+        (eb) =>
+          trx.selectNoFrom(
+            eb.or((including_s_expressions ?? []).map((s_expression) => buildExpressionPredicate(eb, 'results.id', s_expression))).as('matched'),
+          ).as('included'),
+        (join) => join.onTrue(),
+      )
+
+    return query
       .leftJoin(
         'snomed_concept_prioritizations',
         (join) =>
@@ -110,6 +137,7 @@ export const snomed_warning_signs = base({
           eb('predefined_site.id', 'is', null),
           predefined_within_chosen,
           chosen_within_predefined,
+          included,
         ])
       )
       .where('excluded.id', 'is', null)
@@ -120,10 +148,11 @@ export const snomed_warning_signs = base({
         eb.case()
           .when('chosen_site.id', 'is', null).then(sql<string | null>`null`)
           .when(predefined_is_more_specific).then(eb.ref('predefined_site.name'))
+          .when(included_from_elsewhere).then(eb.ref('predefined_site.name'))
           .else(eb.ref('chosen_site.name'))
           .end()
           .as('chosen_finding_site_name'),
-        sql<boolean>`coalesce(${predefined_within_chosen}, false)`.as('finding_site_is_predefined'),
+        sql<boolean>`(${predefined_within_chosen} or ${included_from_elsewhere})`.as('finding_site_is_predefined'),
         jsonArrayFrom(
           snomed_predefined_attributes.baseQuery(trx, {
             snomed_concept: eb.ref('results.id'),
@@ -141,7 +170,7 @@ export const snomed_warning_signs = base({
         ).$castTo<boolean>().as('onset_required'),
       ])
       .orderBy(
-        sql`(case when chosen_site.id is null or predefined_site.id is null then 0 when ${predefined_within_chosen} then 2 else 1 end)`,
+        sql`(case when chosen_site.id is null then 0 when ${included} or ${predefined_within_chosen} then 2 when predefined_site.id is null then 0 else 1 end)`,
         'desc',
       )
       .orderBy('results.best_similarity', 'desc')

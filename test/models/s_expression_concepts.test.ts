@@ -2,9 +2,10 @@ import { afterAll } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import { findingQueryExpression, KEYED_WARNING_SIGNS } from '../../shared/warning_signs.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
-import { buildExpressionPredicate } from '../../db/models/s_expression_snomed_concepts.ts'
+import { buildExpressionPredicate, searchSnomedConceptsMatching } from '../../db/models/s_expression_snomed_concepts.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import assertLength from '../../util/assertLength.ts'
+import { assert } from 'std/assert/assert.ts'
 
 describeParallel('db/models/s_expression_concepts.ts', () => {
   afterAll(() => db.destroy())
@@ -88,6 +89,67 @@ describeParallel('db/models/s_expression_concepts.ts', () => {
       // Inhalation burn - excluded by the expression
       assertEquals(results[3].name, 'Inhalation burn due to hot gas')
       assertEquals(results[3].is_burn_other, false)
+    },
+  )
+  itParallel(
+    'searches for the concepts that SNOMED itself defines with every attribute of a finding',
+    async () => {
+      const results = await searchSnomedConceptsMatching(
+        db,
+        `(finding
+          (attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Ability to speak" "observable entity"))
+          (attribute (snomed_concept "Has interpretation" "attribute") (snomed_concept "Able with difficulty" "qualifier value"))
+        )`,
+      )
+
+      const names = results.map((r) => r.name)
+      assert(names.includes('Difficulty talking'), `Expected Difficulty talking in ${names}`)
+      assert(!names.includes('Unable to speak'), `Did not expect Unable to speak in ${names}`)
+      assertEquals(results.find((r) => r.name === 'Difficulty talking')!.id, '286378009')
+    },
+  )
+
+  itParallel(
+    'a single attribute matches every concept SNOMED defines with that attribute',
+    async () => {
+      const results = await searchSnomedConceptsMatching(
+        db,
+        `(finding (attribute (snomed_concept "Interprets" "attribute") (snomed_concept "Ability to speak" "observable entity")))`,
+      )
+
+      const names = results.map((r) => r.name)
+      assert(names.includes('Difficulty talking'), `Expected Difficulty talking in ${names}`)
+      assert(names.includes('Unable to speak'), `Expected Unable to speak in ${names}`)
+      assert(!names.includes('Abdominal pain'), `Did not expect Abdominal pain in ${names}`)
+    },
+  )
+
+  itParallel(
+    'the interprets shorthand names the Interprets attribute with an observable entity',
+    async () => {
+      const results = await searchSnomedConceptsMatching(db, `(finding (interprets "Ability to speak"))`)
+
+      const names = results.map((r) => r.name)
+      assert(names.includes('Difficulty talking'), `Expected Difficulty talking in ${names}`)
+      assert(names.includes('Unable to speak'), `Expected Unable to speak in ${names}`)
+      assert(!names.includes('Abdominal pain'), `Did not expect Abdominal pain in ${names}`)
+    },
+  )
+
+  itParallel(
+    'a specific concept restricts the search to its descendants and excluding drops the excluded concepts',
+    async () => {
+      const results = await searchSnomedConceptsMatching(
+        db,
+        `(clinical_finding (snomed_concept "Finding related to ability to speak" "finding")
+          (excluding (clinical_finding (snomed_concept "Unable to speak" "finding"))))`,
+      )
+
+      const names = results.map((r) => r.name)
+      assert(names.includes('Finding related to ability to speak'), `Expected the concept itself in ${names}`)
+      assert(names.includes('Difficulty talking'), `Expected Difficulty talking in ${names}`)
+      assert(!names.includes('Unable to speak'), `Did not expect Unable to speak in ${names}`)
+      assert(!names.includes('Abdominal pain'), `Did not expect Abdominal pain in ${names}`)
     },
   )
 })
