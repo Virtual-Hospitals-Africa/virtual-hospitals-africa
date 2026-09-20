@@ -14,7 +14,6 @@ import { TRIAGE_ROUTE_PATIENT_NEXT_STEPS, triageNextStepRecommendations } from '
 import { startWorkflow } from '../start-workflow/[workflow].tsx'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { redirectToFirstIncompleteStep } from '../index.tsx'
-import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { applyPermissions, applyPrescriberPermissions } from '../../../../../../../../shared/permissions.ts'
 import { buildCarePlanGroups } from '../../../../../../../../shared/care_plan.ts'
@@ -110,12 +109,10 @@ export const handler = postHandler(
   },
 )
 
-// While we have the evaluation_ids, this is not the time we do those tasks so we do not include them
-async function managePatientTaskGroups(
+function managePatientTaskGroups(
   ctx: TriageContext,
-): Promise<TaskGroup[]> {
-  const { trx, health_worker_id, encounter, open_encounter_pathname } = ctx.state
-  const { task_groups } = await additional_tasks.getTasksGroups(trx, { health_worker_id, encounter })
+): TaskGroup[] {
+  const { task_groups, encounter, open_encounter_pathname } = ctx.state
   const some_non_manage_task_incomplete = task_groups.some((task_group) =>
     !task_group.completed && task_group.tasks.some((task) => task.atom === 'finding' || task.atom === 'measurement')
   )
@@ -169,7 +166,7 @@ export async function PatientTriageRoutePatientPage(
         seniority_order: organization_employment.seniority_order,
       },
     }),
-    manage_patient_task_groups: managePatientTaskGroups(ctx),
+    manage_patient_task_groups: Promise.resolve(managePatientTaskGroups(ctx)),
     recommended_medicine_groups: patient_case.success
       ? recommended_dose_calculator.lookup(
         trx,

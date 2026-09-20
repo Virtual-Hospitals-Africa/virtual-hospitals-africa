@@ -2490,12 +2490,15 @@ export type PatientDrawerV4Props = {
   priority_evaluation: RenderedEvaluationRelativeToHealthWorker | null
   organization_id: string
   current_workflow: Workflow
+  // The step being worked on, under which findings recorded on this page appear as they are saved
+  current_step: string | null
   this_visit_findings: RenderedSidebarWorkflow[]
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   patient_history: RenderedPatientHistory
   care_team: RenderedCareTeamHealthWorker[]
   escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
   nearest_hospital: RenderedOrganization | null
+  refer_route: string
 }
 
 export type RenderedSidebarWorkflowStep = {
@@ -2834,19 +2837,36 @@ export type WarningSign = Omit<WarningSignDef<'Urgent' | 'Very urgent' | 'Emerge
 
 export type CommonSymptom = SignShared<'Common Symptoms'> & { key: string }
 
+/*
+  A finding the adult guide lists on a page gated on a body site, such as the ear page's
+  "Pain of ear". Its category is the site's label, which heads its table on the warning signs page.
+*/
+export type FindingSiteSign = SignShared<string> & { key: string }
+
+export type FindingSite = {
+  label: string
+  snomed_concept: { name: string; category: 'body structure' }
+  // The sites a patient presenting with this one does not mean. Nothing reads it yet.
+  excluding_structures: string[]
+  signs: FindingSiteSign[]
+}
+
 export type EnteredFinding = {
   s_expression: string
   display: string
   priority?: Maybe<Priority>
 }
 
-export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record' | 'Follow up'>) & {
+export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | FindingSiteSign | SignShared<'Search Results' | 'Prior record' | 'Follow up'>) & {
   existing_record?: {
     id: string
     existence: Existence
     augmented?: EnteredFinding
   }
 }
+
+// A finding site as the warning signs page receives it, its signs matched with the encounter's prior records
+export type FindingSiteWithMaybeRecords = Omit<FindingSite, 'signs'> & { signs: WarningSignWithMaybeRecord[] }
 
 export type IntermediateProcedureRecord = {
   created_at: Date
@@ -2893,6 +2913,8 @@ export type RenderedTaskToBeDone =
 export type RenderedManageTaskToBeDone = RenderedTaskToBeDone & { atom: 'procedure' }
 
 export type TaskGroup = {
+  // The records the group is due to, joined, so that the group has one identity across pages
+  key: string
   completed: boolean
   due_to: Array<RenderedFindingRelativeToHealthWorker | RenderedEvaluationRelativeToHealthWorker>
   tasks: RenderedTaskToBeDone[]
@@ -3071,6 +3093,8 @@ export type SnomedWarningSignSearchResult = FindingRelatedModifiers & {
   description: SnomedCategory
   priority: Maybe<'Urgent' | 'Very urgent' | 'Emergency'>
   priority_by_virtue_of_matching_warning_sign: Maybe<string>
+  // Set when the search was filtered by a finding site: the more specific of that and the concept's own
+  finding_site: Maybe<{ name: string; category: 'body structure' }>
   best_similarity: number
   category: 'Search Results'
 }
@@ -3215,6 +3239,9 @@ export type WorkflowState = {
   patient_history: RenderedPatientHistory
   escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
   nearest_hospital: RenderedOrganization | null
+  // The encounter's outstanding tasks, so that check_for tasks can be answered from any page
+  task_groups: TaskGroup[]
+  check_for_follow_ups: FollowUpGroup[]
 }
 
 export type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState
@@ -3259,9 +3286,52 @@ export type FindingToCheckFor = FindingRelatedModifiers & {
   }
 }
 
+/*
+  Follow ups accumulate across saves within a visit to a workflow page, grouped by what
+  caused them, mirroring how the additional tasks page groups check_for tasks by their due_to.
+
+  `key` is the sign's uniqueIdentifier rather than the finding's s_expression, as editing a
+  sign (adding a finding site, say) changes its s_expression but should replace that sign's
+  group rather than add another. A diagnosis's group is keyed by the sign's key and the
+  diagnosed concept. A check_for task materialised before the page loaded is keyed by the
+  records it is due to.
+*/
+export type FollowUpGroup = {
+  key: string
+  due_to: EnteredFinding
+  findings_to_check_for: FindingToCheckFor[]
+}
+
+/*
+  A finding recorded, or being recorded, on this page, as every island that lists findings
+  keeps track of it: the warning signs tables, the follow ups panel, the check_for section of
+  the additional tasks page and the drawer. Kept deliberately small: what was entered, the id
+  it has (or will have while its save is in flight) and a key the islands agree on.
+  See shared/finding_events.ts
+*/
+export type RecordedFinding = {
+  key: string
+  entered: EnteredFinding
+  record_id: string
+  saving: boolean
+  // The save failed: the finding stays entered, but the page does not vouch for its record
+  failed?: boolean
+}
+
+// The open_encounter routes the finding recorder and follow ups panel post to
+export type FindingRoutes = {
+  post_route: string // .../open_encounter/clinical_finding
+  rules_dry_run_route: string // .../open_encounter/rules_dry_run
+  none_of_the_above_findings_route: string // .../open_encounter/none_of_the_above_findings
+}
+
 export type RulesDryRun = {
   findings_to_check_for: FindingToCheckFor[]
-  would_indicate_diagnoses: ApplicableRuleEffectSystemDiagnosisRule[]
+  would_indicate_diagnoses: {
+    diagnosis: ApplicableRuleEffectSystemDiagnosisRule[]
+    would_indicate_priority: null | Priority
+    findings_to_check_for: FindingToCheckFor[]
+  }[]
   would_indicate_priority: null | Priority
 }
 

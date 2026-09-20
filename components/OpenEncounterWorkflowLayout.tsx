@@ -7,10 +7,12 @@ import { Button } from './library/Button.tsx'
 
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
 import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWorkerContentsWithSidebarAndDrawer.tsx'
-import { PatientDrawerV4Props, RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../types.ts'
+import { FollowUpGroup, PatientDrawerV4Props, RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../types.ts'
 import { Workflow } from '../db.d.ts'
 import { hyphenate } from '../util/hyphenate.ts'
 import { StepsSidebar } from './library/sidebar/Steps.tsx'
+import FindingRecorder from '../islands/finding/Recorder.tsx'
+import FollowUpsPanel from '../islands/FollowUps/Panel.tsx'
 
 export function OpenEncounterWorkflowLayout({
   id,
@@ -36,6 +38,10 @@ export function OpenEncounterWorkflowLayout({
   onSubmit,
   escalation_candidates,
   nearest_hospital,
+  refer_route,
+  step = null,
+  open_encounter_pathname,
+  follow_ups = [],
 }: {
   id: string
   url: URL
@@ -55,7 +61,14 @@ export function OpenEncounterWorkflowLayout({
   onSubmit?: (event: TargetedSubmitEvent<HTMLButtonElement>) => void
   escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
   nearest_hospital: RenderedOrganization | null
-} & PatientDrawerV4Props): JSX.Element {
+  step?: string | null
+  // null (the tutorial, the example pages) records nothing: the finding modal opens but no
+  // request is made and there is no follow ups panel
+  open_encounter_pathname: string | null
+  // The check_for tasks to start the follow ups panel with. See islands/FollowUps/Panel.tsx
+  follow_ups?: FollowUpGroup[]
+} & Omit<PatientDrawerV4Props, 'current_step'>): JSX.Element {
+  const with_drawer = workflow !== 'registration'
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       url={url}
@@ -70,7 +83,14 @@ export function OpenEncounterWorkflowLayout({
           bottom={sidebar_bottom}
         />
       }
-      drawer={workflow !== 'registration'
+      side_panels={with_drawer && open_encounter_pathname && (
+        <FollowUpsPanel
+          initial_groups={follow_ups}
+          none_of_the_above_findings_route={`${open_encounter_pathname}/none_of_the_above_findings`}
+          form_id={id}
+        />
+      )}
+      drawer={with_drawer
         ? (
           <PatientDrawerV4
             patient={patient}
@@ -78,12 +98,14 @@ export function OpenEncounterWorkflowLayout({
             priority_evaluation={priority_evaluation}
             organization_id={organization_id}
             current_workflow={workflow}
+            current_step={step}
             this_visit_findings={this_visit_findings}
             this_visit_diagnoses={this_visit_diagnoses}
             patient_history={patient_history}
             care_team={care_team}
             escalation_candidates={escalation_candidates}
             nearest_hospital={nearest_hospital}
+            refer_route={refer_route}
           />
         )
         : undefined}
@@ -111,6 +133,18 @@ export function OpenEncounterWorkflowLayout({
           )}
         </ButtonsContainer>
       </ContainerTag>
+      {/* The one finding modal of the page, outside the form. See shared/finding_events.ts */}
+      {with_drawer && (
+        <FindingRecorder
+          routes={open_encounter_pathname
+            ? {
+              post_route: `${open_encounter_pathname}/clinical_finding`,
+              rules_dry_run_route: `${open_encounter_pathname}/rules_dry_run`,
+              none_of_the_above_findings_route: `${open_encounter_pathname}/none_of_the_above_findings`,
+            }
+            : null}
+        />
+      )}
     </HealthWorkerContentsWithSidebarAndDrawer>
   )
 }

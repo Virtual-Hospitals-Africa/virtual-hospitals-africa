@@ -2,7 +2,7 @@ import cls from '../../util/cls.ts'
 import { priorityColors } from '../../shared/priorities.ts'
 import { hyphenate } from '../../util/hyphenate.ts'
 import { KeyedWarningSignCheckbox } from './KeyedCheckbox.tsx'
-import { CategoryConfig, CheckedWarningSign, EMERGENCY_SUBCATEGORY_ORDER, OnToggle, ToggleableWarningSign, uniqueIdentifier } from './shared.ts'
+import { CategoryConfig, EMERGENCY_SUBCATEGORY_ORDER, OnCheckSign, OnOpenSignDetails, SignWithRecorded, uniqueIdentifier } from './shared.ts'
 
 export function WarningSignsPriorityTable({
   priority,
@@ -11,9 +11,9 @@ export function WarningSignsPriorityTable({
   onCheck,
   onOpenDetails,
 }: CategoryConfig & {
-  signs: ToggleableWarningSign[]
-  onCheck: OnToggle
-  onOpenDetails(sign: CheckedWarningSign): void
+  signs: SignWithRecorded[]
+  onCheck: OnCheckSign
+  onOpenDetails: OnOpenSignDetails
 }) {
   if (!signs.length) return null
   const colors = priorityColors(priority)

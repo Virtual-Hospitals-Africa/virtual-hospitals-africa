@@ -4,6 +4,8 @@ import { patient_evaluations } from './patient_evaluations.ts'
 import { buildExpression } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
 import {
+  FindingToCheckFor,
+  FollowUpGroup,
   NewRecordsToConsiderWithSatisfyingDueToIds,
   RecordValueMeasurement,
   RenderedEvaluationRelativeToHealthWorker,
@@ -24,7 +26,7 @@ import { patient_record_providers } from './patient_record_providers.ts'
 import { ACTION_STATUS, DONE, DUE_TO, RELATIONSHIP, TO_BE_DONE } from '../../shared/snomed_concepts.ts'
 import { assert } from 'std/assert/assert.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { formatRecord, toDisplayableRecord } from '../../shared/patient_records.ts'
+import { asNormalFormSExpression, formatRecord, toDisplayableRecord } from '../../shared/patient_records.ts'
 import { patient_findings } from './patient_findings.ts'
 import {
   Lang,
@@ -43,7 +45,8 @@ import compact from '../../util/compact.ts'
 
 import uniq from '../../util/uniq.ts'
 import { rules } from './rules.ts'
-import { getTaskById } from '../../shared/tasks.ts'
+import { getTaskById, isFinding } from '../../shared/tasks.ts'
+import { modifiersOf } from './snomed_finding_modifiers.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { patient_procedures } from './patient_procedures.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
@@ -122,6 +125,54 @@ export function existingFindingsMatching(
     .selectAll('join_against')
 
   return existing_findings_query.execute()
+}
+
+/*
+  The check_for tasks of each group as one FollowUpGroup, for the follow ups panel to show
+  on whichever page the health worker is on. Only groups with a finding still lacking any
+  record are included: a finding recorded as absent counts as answered, as it does in the
+  panel (isUnanswered in islands/FollowUps/follow_ups.ts). Findings already recorded start
+  out checked there, so they are kept.
+*/
+async function checkForFollowUps(
+  trx: TrxOrDbOrQueryCreator,
+  task_groups: TaskGroup[],
+): Promise<FollowUpGroup[]> {
+  const groups = compactMap(task_groups, (group) => {
+    const check_for_tasks = group.tasks.filter(isFinding)
+    if (!check_for_tasks.some((task) => !task.existing_record)) return
+    return { ...group, check_for_tasks }
+  })
+  if (!groups.length) return []
+
+  const nodes = new Map<string, Lang['finding']>()
+  for (const group of groups) {
+    for (const task of group.check_for_tasks) {
+      nodes.set(task.s_expression, task)
+    }
+  }
+  const modifiers = await modifiersOf(trx, nodes)
+
+  return groups.map(({ key, due_to, check_for_tasks }): FollowUpGroup => ({
+    key,
+    due_to: {
+      s_expression: asNormalFormSExpression(due_to[0]),
+      display: due_to.map((record) => record.displays.full).join(', '),
+    },
+    findings_to_check_for: check_for_tasks.map((task): FindingToCheckFor => ({
+      s_expression: task.s_expression,
+      name: task.displays.finding,
+      task_ids: [task.description],
+      ...exists(modifiers.get(task.s_expression)),
+      existing_record: task.existing_record
+        ? {
+          id: task.existing_record.id,
+          s_expression: asNormalFormSExpression(task.existing_record),
+          existence: task.existing_record.existence,
+        }
+        : null,
+    })),
+  }))
 }
 
 export const additional_tasks = {
@@ -212,8 +263,9 @@ export const additional_tasks = {
       encounter: RenderedPatientEncounter
     },
   ): Promise<{
-    evaluation_ids: string[]
     task_groups: TaskGroup[]
+    // The incomplete check_for tasks as the follow ups panel shows them
+    check_for_follow_ups: FollowUpGroup[]
   }> {
     const { patient, patient_encounter_id } = encounter
     const patient_id = patient.id
@@ -225,7 +277,7 @@ export const additional_tasks = {
     })
 
     if (arrayIsEmpty(evaluations)) {
-      return { evaluation_ids: [], task_groups: [] }
+      return { task_groups: [], check_for_follow_ups: [] }
     }
 
     const task_atom_order = { 'link': 0, 'procedure': 1, 'finding': 2, 'measurement': 3 }
@@ -351,7 +403,6 @@ export const additional_tasks = {
       (evaluation) => evaluation.destination_relations.map((relation) => relation.id).join(';'),
     )
 
-    const evaluation_ids: string[] = []
     const unsorted_task_groups_with_potentially_duplicative_findings: TaskGroup[] = []
 
     for (const [record_ids_joined, evaluations] of task_group_map) {
@@ -363,7 +414,6 @@ export const additional_tasks = {
       )
 
       const tasks: RenderedTaskToBeDone[] = evaluations.flatMap((evaluation): RenderedTaskToBeDone[] => {
-        evaluation_ids.push(evaluation.id)
         const { to_be_done } = evaluation.task
 
         if (isLink(to_be_done)) {
@@ -428,6 +478,7 @@ export const additional_tasks = {
       const completed = tasks.every((task) => task.atom === 'link' || task.existing_record)
 
       unsorted_task_groups_with_potentially_duplicative_findings.push({
+        key: `task.${record_ids_joined}`,
         due_to,
         completed,
         tasks: sortBy(
@@ -466,9 +517,10 @@ export const additional_tasks = {
     }))
 
     // incomplete first
+    const task_groups = task_groups_complete_first.toReversed()
     return {
-      evaluation_ids,
-      task_groups: task_groups_complete_first.toReversed(),
+      task_groups,
+      check_for_follow_ups: await checkForFollowUps(trx, task_groups),
     }
   },
   /*

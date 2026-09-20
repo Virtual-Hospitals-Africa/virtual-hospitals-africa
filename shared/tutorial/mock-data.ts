@@ -5,6 +5,8 @@
 
 import type {
   Existence,
+  FindingToCheckFor,
+  FollowUpGroup,
   HealthWorkerOrganization,
   MostRecentBriefHistoryFindings,
   OptionalUndefinedFields,
@@ -100,6 +102,7 @@ export const TUTORIAL_EMPLOYEE: RenderedEmployee = {
       most_common_language_code: 'eng',
       waiting_room_id: null,
       reception_id: null,
+      using_vha: true,
       employment_id: 'tutorial-emp-001',
       seniority_order: 1,
       role: 'nurse',
@@ -170,6 +173,7 @@ export const TUTORIAL_OTHER_EMPLOYEE: RenderedEmployee = {
       most_common_language_code: 'eng',
       waiting_room_id: null,
       reception_id: null,
+      using_vha: true,
       employment_id: 'tutorial-emp-001',
       seniority_order: 1,
       role: 'nurse',
@@ -265,6 +269,7 @@ function makeMockWaitingRoomEmployee(data: {
         most_common_language_code: 'eng',
         waiting_room_id: null,
         reception_id: null,
+        using_vha: true,
         employment_id: data.employee_id,
         seniority_order: 1,
         role: data.role,
@@ -782,6 +787,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
           'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
           'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+          'using_vha': true,
           'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
           'hrefs': {
             'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -899,6 +905,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
           'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
           'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+          'using_vha': true,
           'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
           'hrefs': {
             'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -1016,6 +1023,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
           'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
           'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+          'using_vha': true,
           'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
           'hrefs': {
             'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -1129,6 +1137,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
           'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
           'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+          'using_vha': true,
           'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
           'hrefs': {
             'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -1242,6 +1251,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
           'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
           'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+          'using_vha': true,
           'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
           'hrefs': {
             'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -1359,6 +1369,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
           'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
           'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+          'using_vha': true,
           'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
           'hrefs': {
             'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -1472,6 +1483,7 @@ const TUTORIAL_SIDEBAR_VITALS: RenderedFindingRelativeToHealthWorker[] = [
           'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
           'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
           'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+          'using_vha': true,
           'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
           'hrefs': {
             'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -1577,6 +1589,37 @@ export function getTutorialTaskGroups(): TaskGroup[] {
       provider: MOCK_PROVIDER_IS_ME,
     })),
   }))
+}
+
+/**
+ * The check_for tasks of the tutorial task groups as the additional tasks page lists them,
+ * mirroring checkForFollowUps in db/models/additional_tasks.ts without the modifier lookup.
+ */
+export function getTutorialCheckForFollowUps(): FollowUpGroup[] {
+  return TUTORIAL_TASK_GROUPS.flatMap((group): FollowUpGroup[] => {
+    const check_for_tasks = group.tasks.filter((task) => task.atom === 'finding')
+    if (!check_for_tasks.length) return []
+    return [{
+      key: group.key,
+      due_to: {
+        s_expression: `(clinical_finding (snomed_concept "${group.due_to[0].specific_snomed_concept_name}" "${
+          group.due_to[0].specific_snomed_concept_category
+        }"))`,
+        display: group.due_to.map((record) => record.displays.full).join(', '),
+      },
+      findings_to_check_for: check_for_tasks.map((task): FindingToCheckFor => ({
+        s_expression: task.s_expression,
+        name: task.displays.finding,
+        task_ids: [task.description],
+        predefined_attributes: [],
+        relevant_qualifiers: [],
+        onset_required: false,
+        existing_record: task.existing_record
+          ? { id: task.existing_record.id, s_expression: task.s_expression, existence: task.existing_record.existence }
+          : null,
+      })),
+    }]
+  })
 }
 
 // =============================================================================
@@ -1921,6 +1964,7 @@ function makeMockClinicEmployee(data: {
         most_common_language_code: 'eng',
         waiting_room_id: null,
         reception_id: null,
+        using_vha: true,
         employment_id: data.employee_id,
         seniority_order: data.seniority_order,
         role: data.role,
@@ -2304,6 +2348,7 @@ export const MIGRAINE_SEARCH_RESPONSE: {
 
 export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
   {
+    'key': 'task.tutorial-1',
     'completed': false,
     'due_to': [
       {
@@ -2360,6 +2405,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -2685,6 +2731,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
     ],
   },
   {
+    'key': 'task.tutorial-2',
     'completed': false,
     'due_to': [
       {
@@ -2907,6 +2954,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
                 'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
                 'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
                 'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+                'using_vha': true,
                 'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
                 'hrefs': {
                   'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -3110,6 +3158,7 @@ export const TUTORIAL_TASK_GROUPS: TaskGroup[] = [
                 'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
                 'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
                 'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+                'using_vha': true,
                 'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
                 'hrefs': {
                   'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -3569,6 +3618,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -3698,6 +3748,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -3833,6 +3884,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -3964,6 +4016,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4095,6 +4148,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4233,6 +4287,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4372,6 +4427,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4508,6 +4564,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4631,6 +4688,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4748,6 +4806,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4861,6 +4920,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -4993,6 +5053,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -5118,6 +5179,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -5229,6 +5291,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -5340,6 +5403,7 @@ export const TUTORIAL_ASSIGN_PRIORITY = {
               'formatted_address': '123 Main St, Polokwane, South Africa, 23456',
               'waiting_room_id': '430421a3-72e2-4adf-8c54-ea2b8c583862',
               'reception_id': '8bd00d57-3fd2-480c-90a8-752facc0a441',
+              'using_vha': true,
               'location': { 'longitude': 29.7739353, 'latitude': -19.4554096 },
               'hrefs': {
                 'regulator_view': '/regulator/organizations/00000000-0000-1000-8000-000000000001',
@@ -5579,6 +5643,7 @@ export const TUTORIAL_MANAGE_PATIENT_TASKS: Array<
 // Anaphylaxis due_to from TUTORIAL_TASK_GROUPS.
 export const TUTORIAL_MANAGE_PATIENT_TASK_GROUPS: TaskGroup[] = [
   {
+    key: 'task.tutorial-manage',
     completed: false,
     due_to: TUTORIAL_TASK_GROUPS[1].due_to,
     tasks: TUTORIAL_MANAGE_PATIENT_TASKS,

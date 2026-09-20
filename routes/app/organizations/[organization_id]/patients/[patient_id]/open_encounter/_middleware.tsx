@@ -62,6 +62,7 @@ import { patient_evaluation_scores } from '../../../../../../../db/models/patien
 import { employees_presence } from '../../../../../../../db/models/employees_presence.ts'
 import { logToFileIfOnServer } from '../../../../../../../util/logToFileIfOnServer.ts'
 import { nearest_organizations } from '../../../../../../../db/models/nearest_organizations.ts'
+import { additional_tasks } from '../../../../../../../db/models/additional_tasks.ts'
 
 export function completeLastStep(
   { state: { trx, workflow, step, workflow_status, patient_encounter_employee_id } }: OpenEncounterWorkflowContext,
@@ -263,7 +264,10 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
         },
       )
       : Promise.resolve(null),
+    // So that check_for tasks can be answered from the follow ups panel on any page
+    tasks: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }),
   })
+  const { tasks, ...fetched_state } = fetched
 
   const previously_completed_step = arrayIsNonEmpty(workflow_status.steps_completed) && workflow_status.steps_completed.includes(
     step,
@@ -295,7 +299,8 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
     workflow_snomed_concept: WORKFLOW_SNOMED_CONCEPTS[workflow],
     priority_evaluation: encounter.priority &&
       buildPriorityRecord(encounter.priority, fetched.hydrated_findings, fetched.this_visit_diagnoses, fetched.total_scores),
-    ...fetched,
+    ...fetched_state,
+    ...tasks,
   }
 
   Object.assign(ctx.state, workflow_props)
@@ -418,10 +423,12 @@ export function assertAllPriorStepsCompleted(
   assertOrRedirect(false, `${url}?warning=${warning}`)
 }
 
-export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, children }: {
+export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, check_for_in_page, children }: {
   ctx: OpenEncounterWorkflowContext
   next_step_text?: string
   buttons?: ComponentChild
+  // The page shows the outstanding check_for tasks itself, so the panel starts empty
+  check_for_in_page?: boolean
   children: ComponentChildren
 }): JSX.Element {
   const id = last(ctx.route!.split('/'))!
@@ -432,12 +439,14 @@ export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, c
       ContainerTag='form'
       next_step_text={next_step_text}
       buttons={buttons}
+      follow_ups={check_for_in_page ? [] : ctx.state.check_for_follow_ups}
       priority={ctx.state.encounter.priority}
       nav_links={WORKFLOW_NAV_LINKS[ctx.state.workflow]}
       steps_completed={ctx.state.workflow_status.steps_completed}
       care_team={[]}
       sidebar_bottom={<HealthWorkerSidebarBottom employee={ctx.state.employee} />}
       current_workflow={ctx.state.workflow}
+      refer_route={`${ctx.state.open_encounter_pathname}/refer`}
       {
         // care_team={ctx.state.patient.primary_doctor
         //   ? [{ ...ctx.state.patient.primary_doctor, role: 'doctor' }]
@@ -458,9 +467,11 @@ export type Render<State extends OpenEncounterWorkflowState = OpenEncounterWorkf
   ctx: LoggedInHealthWorkerContext<State>,
 ) =>
   | JSX.Element
+  | { check_for_in_page: true; children: JSX.Element }
   | Promise<JSX.Element>
   | Promise<{ next_step_text: string; children: JSX.Element }>
   | Promise<{ buttons: ComponentChild; children: JSX.Element }>
+  | Promise<{ check_for_in_page: true; children: JSX.Element }>
   | Promise<Response>
   | Promise<Response | JSX.Element>
 
@@ -480,6 +491,7 @@ export function OpenEncounterWorkflowPage<
 
     let next_step_text: string | undefined
     let buttons: ComponentChild | undefined
+    let check_for_in_page = false
     let children = rendered
     if ('next_step_text' in rendered) {
       next_step_text = rendered.next_step_text as string
@@ -489,12 +501,17 @@ export function OpenEncounterWorkflowPage<
       buttons = rendered.buttons as string
       children = rendered.children
     }
+    if ('check_for_in_page' in rendered) {
+      check_for_in_page = true
+      children = rendered.children
+    }
 
     return (
       <OpenEncounterWorkflowLayoutCtx
         ctx={ctx}
         next_step_text={next_step_text}
         buttons={buttons}
+        check_for_in_page={check_for_in_page}
       >
         {children}
       </OpenEncounterWorkflowLayoutCtx>

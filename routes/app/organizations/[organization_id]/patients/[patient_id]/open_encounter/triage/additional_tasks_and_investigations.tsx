@@ -12,32 +12,29 @@ import { measurement, to_be_done } from '../../../../../../../../shared/s_expres
 import { events } from '../../../../../../../../db/models/events.ts'
 import values from '../../../../../../../../util/values.ts'
 import { assert } from 'std/assert/assert.ts'
-// import { markEnteredInError } from '../../../../../../../../db/models/patient_records_base.ts'
 import compactMap from '../../../../../../../../util/compactMap.ts'
 import { exists } from '../../../../../../../../util/exists.ts'
-// import { check_for, CheckForSchema } from '../../../../../../../../db/models/check_for.ts'
+import uniq from '../../../../../../../../util/uniq.ts'
+import { task_description_validator } from '../../../../../../../../shared/tasks.ts'
 import type { TriageContext } from '../../../../../../../../types.ts'
 import { redirectToRoutePatientIfEmergency, TriagePage } from './_middleware.tsx'
 
+/*
+  check_for tasks are not submitted with the page: their findings are recorded as they are
+  answered through the clinical_finding and none_of_the_above_findings routes, which mark the
+  tasks done. Measurements are submitted here, each naming its task so that it can be marked done.
+*/
 export const TriageAdditionalTasksAndInvestigationsSchema = z.object({
-  // The evaluations of every task shown on the page, which the submission marks done
-  evaluation_ids: z.string().uuid().array().optional().default([]),
   just_do_it_tasks: z.record(
     z.string(),
     z.object({
-      evaluation_id: z.string().uuid(),
       s_expression: sExpressionZodValidator(to_be_done),
     }),
   ).optional().default({}).transform(values),
-  // check_for: z.record(
-  //   z.string(),
-  //   CheckForSchema,
-  // ).optional().default({}).transform(values),
   measurements: z.record(
     z.string(),
     z.object({
-      // The form posts the page's evaluation_ids as one hidden field rather than one per measurement
-      evaluation_id: z.string().uuid().optional(),
+      task_description: task_description_validator,
       s_expression: sExpressionZodValidator(measurement),
       value: positive_decimal,
       units: z.string().min(1),
@@ -63,8 +60,6 @@ export const handler = postHandler(
   async (ctx: TriageContext, form_values) => {
     const {
       trx,
-      health_worker_id,
-      encounter,
       employment_id,
       patient_age_determination,
       patient_id,
@@ -78,28 +73,21 @@ export const handler = postHandler(
 
     const { response, inserted } = await promiseProps({
       response: completeAndProceedToNextStep(ctx),
-      task_groups: additional_tasks.getTasksGroups(trx, { health_worker_id, encounter }),
-      inserted: markAlteredRecords().then(() => insertFindings()),
+      inserted: insertFindings(),
     })
 
     /*
-      The DONE relations record that this procedure answered the tasks on the page. Nothing
-      downstream relies on them, so FindingsAdded is dispatched alongside rather than after.
+      The DONE relations record that this procedure answered the measurement tasks on the page.
+      Nothing downstream relies on them, so FindingsAdded is dispatched alongside rather than after.
     */
     await promiseProps({
-      _: inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges ? Promise.resolve() : additional_tasks.procedureCompletedTasks(trx, {
-        patient_id,
-        patient_encounter_id,
-        procedure_id: inserted.procedure_id,
-        evaluation_ids: form_values.evaluation_ids,
-      }),
+      marked_done: markMeasurementTasksDone(inserted),
       dispatched: dispatchEvent(inserted),
     })
 
     return response
 
     async function insertFindings(): Promise<InsertedSummary> {
-      // const findings_to_insert: FindingNodeToInsert[] = check_for.asInsertableFindings(form_values.check_for)
       const findings_to_insert: FindingNodeToInsert[] = []
 
       const measurements_to_insert: MeasurementToInsert[] = compactMap(form_values.measurements, (measurement) => {
@@ -152,46 +140,42 @@ export const handler = postHandler(
       })
     }
 
-    function markAlteredRecords() {
-      // check_for findings are no longer altered from this page
-      return Promise.resolve()
-      // if (!completed_procedure) return Promise.resolve()
-      // const altered_record_ids = compactMap(
-      //   form_values.check_for,
-      //   ({ existence, existing_record }) => (existing_record && existing_record.existence != existence) && existing_record.id,
-      // )
-
-      // return markEnteredInError(trx, {
-      //   patient_id,
-      //   employment_id,
-      //   patient_encounter_id,
-      //   altered_record_ids,
-      //   procedure_id: completed_procedure.procedure_id,
-      // })
+    // Each measurement task submitted is marked done by the page's procedure, as the tasks
+    // answered from the follow ups panel are by none_of_the_above_findings
+    async function markMeasurementTasksDone(inserted: InsertedSummary) {
+      const procedure_id = inserted === NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges ? completed_procedure?.procedure_id : inserted.procedure_id
+      if (!procedure_id) return
+      for (const task_description of uniq(form_values.measurements.map((measurement) => measurement.task_description))) {
+        await additional_tasks.markTaskDone(trx, { patient_id, patient_encounter_id, procedure_id, task_description })
+      }
     }
   },
 )
 
-export async function TriageAdditionalTasksAndInvestigationsPage(
+export function TriageAdditionalTasksAndInvestigationsPage(
   ctx: TriageContext,
 ) {
   redirectToRoutePatientIfEmergency(ctx)
   assertAllPriorStepsCompleted(ctx, {
     attempting_to_complete_workflow: false,
   })
-  const { trx, encounter, health_worker_id, organization_id } = ctx.state
-  const { evaluation_ids, task_groups } = await additional_tasks.getTasksGroups(trx, { health_worker_id, encounter })
+  const { task_groups, check_for_follow_ups, organization_id, open_encounter_pathname } = ctx.state
 
   const use_pdf_viewer = getCookies(ctx.req.headers)['twa'] === '1'
 
-  return (
-    <AdditionalTasks
-      organization_id={organization_id}
-      evaluation_ids={evaluation_ids}
-      task_groups={task_groups}
-      use_pdf_viewer={use_pdf_viewer}
-    />
-  )
+  // The check_for tasks are shown in the page rather than the follow ups panel
+  return {
+    check_for_in_page: true as const,
+    children: (
+      <AdditionalTasks
+        organization_id={organization_id}
+        task_groups={task_groups}
+        check_for_follow_ups={check_for_follow_ups}
+        none_of_the_above_findings_route={`${open_encounter_pathname}/none_of_the_above_findings`}
+        use_pdf_viewer={use_pdf_viewer}
+      />
+    ),
+  }
 }
 
 export default TriagePage(

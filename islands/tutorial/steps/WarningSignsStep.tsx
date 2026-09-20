@@ -5,12 +5,13 @@
 
 import { useSignal } from '@preact/signals'
 import { MIGRAINE_SEARCH_RESPONSE, TUTORIAL_WARNING_SIGNS } from '../../../shared/tutorial/mock-data.ts'
-import { AsyncSearchHookResult, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../../types.ts'
+import { AsyncSearchHookResult, FindingSiteWithMaybeRecords, SnomedWarningSignSearchResult, WarningSignWithMaybeRecord } from '../../../types.ts'
 import WarningSignsInnerContent from '../../WarningSigns/InnerContent.tsx'
 import { useEffect } from 'preact/hooks'
 
 export function WarningSignsStep() {
   const search_results = useSignal<null | WarningSignWithMaybeRecord[]>(null)
+  const finding_site = useSignal<null | FindingSiteWithMaybeRecords>(null)
 
   const initial_search = {
     query: '',
@@ -60,12 +61,12 @@ export function WarningSignsStep() {
     }
   })
 
+  // The finding modal a checked sign opens is the layout's (OpenEncounterWorkflowLayout), which posts nothing in the tutorial
   return (
     <WarningSignsInnerContent
-      post_route='/tutorial/unused'
-      rules_dry_run_route={null}
-      none_of_the_above_findings_route={null}
       warning_signs={TUTORIAL_WARNING_SIGNS}
+      finding_sites={[]}
+      finding_site={finding_site}
       search_results={search_results}
       snomed_warning_signs_async_search={mock_snomed_warning_signs_async_search.value}
     />

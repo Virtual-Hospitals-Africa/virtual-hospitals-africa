@@ -9,7 +9,8 @@ import { events } from '../../../../../../../db/models/events.ts'
 import { workflowStepSnomedConcept } from '../../../../../../../shared/workflow.ts'
 import { getTaskById } from '../../../../../../../shared/tasks.ts'
 import { inverseSExpression } from '../../../../../../../shared/s_expression_inverse.ts'
-import { NO_QUALIFIER } from '../../../../../../../shared/snomed_concepts.ts'
+import { NO_QUALIFIER, PROCEDURE } from '../../../../../../../shared/snomed_concepts.ts'
+import { parseExpressionExpectingAtom } from '../../../../../../../shared/s_expression.ts'
 import { NoneOfTheAboveFindingsResponse, NoneOfTheAboveFindingsSchema } from '../../../../../../../shared/none_of_the_above_findings_post.ts'
 import { assertOr400 } from '../../../../../../../util/assertOr.ts'
 import { json } from '../../../../../../../util/responses.ts'
@@ -29,9 +30,9 @@ import type { InsertableFindingBase, MatchingFinding } from '../../../../../../.
   record, since a finding checked in the meantime may have left the task answered without
   anyone having said so, and it does not wait on the task having been marked done.
 
-  The step's procedure already exists: the follow ups a check_for task is shown in only
-  appear once a sign has been saved through the clinical_finding route, which creates the
-  procedure for the step under the same workflow step concept.
+  The step's procedure is created if the step has none yet, as the clinical_finding route
+  does: the follow ups panel starts out with the encounter's outstanding check_for tasks, so
+  "None of the above" may be the first thing recorded from a page.
 
   Findings that already have a record in this encounter, positive or negative, are left
   alone so that a repeated click or a finding checked in the meantime records nothing new.
@@ -91,12 +92,15 @@ export const handler = postHandler(
         return { id, s_expression, finding }
       })
 
-    const procedure = await patient_procedures.previouslyCompletedWorkflowStepQuery(trx, {
+    const { procedure_id } = await patient_procedures.insertOneIfNotAlreadyExistsForThisEncounter(trx, {
+      patient_id,
       patient_encounter_id,
-      workflow_step_snomed_concept,
-    }).executeTakeFirst()
-    assertOr400(procedure, `No ${step} procedure to record these findings under`)
-    const procedure_id = procedure.id
+      employment_id,
+      procedure: parseExpressionExpectingAtom(
+        `(procedure ${PROCEDURE.s_expression} ${workflow_step_snomed_concept.s_expression})`,
+        'procedure',
+      ),
+    })
 
     if (to_insert.length) await insertNegatives()
 

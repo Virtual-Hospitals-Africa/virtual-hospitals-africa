@@ -11,6 +11,8 @@ import {
 import { RenderedEvaluationRelativeToHealthWorker } from '../types.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertUnreachable } from '../util/assertUnreachable.ts'
+import type { DiagnosisCertainty } from '../db.d.ts'
+import sortBy from '../util/sortBy.ts'
 
 export const CERTAINTY_QUALIFIER_TO_CONCEPT = {
   'definite': DEFINITE,
@@ -80,4 +82,47 @@ export function diagnosisToEvaluation(diagnosis: {
     qualifiers: [],
     attributes: [],
   }
+}
+
+export const CERTAINTY_ORDER: Record<DiagnosisCertainty, number> = {
+  definite: 4,
+  probable: 3,
+  equivocal: 2,
+  possible: 1,
+  improbable: 0,
+}
+
+type DiagnosisEffect = {
+  snomed_concept: { id: string; name: string }
+  certainty: DiagnosisCertainty
+}
+
+export type DiagnosisEffectGroup<E extends DiagnosisEffect> = {
+  // Every rule effect indicating this concept, in the order given
+  diagnosis: E[]
+  // The one the pipeline would record: the highest certainty among them
+  strongest: E
+}
+
+// The effect the pipeline would record for a concept every rule effect given indicates
+export function strongestDiagnosisEffect<E extends DiagnosisEffect>(effects: E[]): E {
+  return effects.reduce((best, effect) => CERTAINTY_ORDER[effect.certainty] > CERTAINTY_ORDER[best.certainty] ? effect : best)
+}
+
+/*
+  The real pipeline records one diagnosis per concept, at the highest certainty any applicable
+  rule gives it (system_diagnosis_rules.insertPositiveDiagnoses). Groups are sorted by concept
+  name so callers are deterministic.
+*/
+export function groupDiagnosisEffectsByConcept<E extends DiagnosisEffect>(effects: E[]): DiagnosisEffectGroup<E>[] {
+  const by_concept = new Map<string, E[]>()
+  for (const effect of effects) {
+    const group = by_concept.get(effect.snomed_concept.id)
+    if (group) group.push(effect)
+    else by_concept.set(effect.snomed_concept.id, [effect])
+  }
+  return sortBy([...by_concept.values()], (group) => group[0].snomed_concept.name).map((diagnosis) => ({
+    diagnosis,
+    strongest: strongestDiagnosisEffect(diagnosis),
+  }))
 }

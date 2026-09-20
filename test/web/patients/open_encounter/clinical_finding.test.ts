@@ -42,7 +42,8 @@ async function postClinicalFindingOk(
   const response = await postClinicalFinding(setup, body, opts)
   const json = await response.json()
   assertEquals(response.status, 200, JSON.stringify(json))
-  assertEquals(json, { success: true })
+  // The record as the drawer renders it, so the page can show it without reloading
+  assertMatches(json, { success: true, record: { id: body.finding_id, existence: 'Yes', type: 'finding' } })
 }
 
 async function expect400(response_promise: Promise<Response>) {

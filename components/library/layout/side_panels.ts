@@ -1,0 +1,47 @@
+/*
+  The floating panels that sit in the column just left of the patient drawer:
+  the priority escalation panel (islands/PriorityEscalation/PriorityEscalationPanel.tsx)
+  and the follow-ups panel (islands/FollowUps/Panel.tsx).
+
+  They are rendered by two separate islands that know nothing of each other, so
+  rather than each guessing at the other's position they share one host element
+  rendered by HealthWorkerContentsWithSidebarAndDrawer, which owns the geometry.
+  The follow-ups panel is rendered inside it by the page layout, so that it is in
+  the page as served; the escalation panel, which lives in the drawer's island,
+  portals into it. Whichever panels are open then stack in that column, sharing
+  its width and its edges.
+
+  Stacking is by `order`, not by DOM insertion, because which island hydrates
+  first is not something we control.
+*/
+export const SIDE_PANEL_HOST_ID = 'drawer-side-panels'
+
+/*
+  A fixed column running from just below the header to just above the Next
+  button, flush to the left edge of the drawer (w-60 xl:w-84, so right-64
+  xl:right-88 leaves a 1rem gutter). pointer-events-none because the column
+  spans most of the viewport and would otherwise swallow clicks on the form
+  behind it; each panel turns pointer events back on for itself.
+*/
+export const SIDE_PANEL_HOST_CLASS =
+  'fixed top-20 bottom-20 right-64 xl:right-88 z-40 w-[30rem] xl:w-[44rem] max-w-[calc(100vw-20rem)] flex flex-col items-stretch justify-start gap-3 pointer-events-none'
+
+/*
+  min-h-0 lets a panel shrink below its content height, which is what allows
+  its own internal overflow-y-auto body to actually scroll rather than push
+  past the column's bottom edge. Priority escalation additionally sets
+  shrink-0 (see PriorityEscalationPanel) so it always keeps its full content
+  height; follow ups is the one left free to shrink and scroll when both
+  panels together don't fit the column.
+*/
+export const SIDE_PANEL_CLASS = 'pointer-events-auto flex flex-col min-h-0 rounded-2xl bg-white shadow-xl border border-gray-200'
+
+export const SIDE_PANEL_ORDER = {
+  priority_escalation: 'order-1',
+  follow_ups: 'order-2',
+}
+
+export function sidePanelHost(): HTMLElement | null {
+  if (typeof document === 'undefined') return null
+  return document.getElementById(SIDE_PANEL_HOST_ID)
+}

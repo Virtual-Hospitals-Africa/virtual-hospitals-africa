@@ -30,7 +30,7 @@ describeParallel('triage/route_patient', () => {
     'routes to the referral placed page after referring an anaphylaxis case, creating a notification for another health worker',
     async () => {
       const insect_bite_s_expr = '(clinical_finding (snomed_concept "Itching" "finding"))'
-      const { $: $additional_tasks, patient_encounter_id, shcp, postStep, getStep } = await setupTriageNewPatient({
+      const { $: $additional_tasks, patient_encounter_id, shcp, postStep, getStep, answerCheckForTasks } = await setupTriageNewPatient({
         patient_demographics: randomDemographics('ZA', 'female', 'adult'),
         warning_signs: asWarningSignsAdult([], { pregnant: false }, insect_bite_s_expr),
         brief_history: {
@@ -76,22 +76,20 @@ describeParallel('triage/route_patient', () => {
         'Reported itching with low blood pressure alone should not raise the priority above Non-urgent before the additional tasks are answered',
       )
 
-      // deno-lint-ignore no-explicit-any
-      const additional_tasks_form_values: any = getFormValues($additional_tasks)
-
       // Set sudden-onset itching to Yes (satisfies probable anaphylaxis rule with existing low BP),
-      // everything else to No (avoid triggering cascading tasks like mouth/throat)
-      const additional_tasks_post_data = structuredClone(additional_tasks_form_values)
-      for (const key in additional_tasks_post_data.check_for) {
-        if (key === 'finding-sudden-onset-itching') {
-          additional_tasks_post_data.check_for[key].existence = 'Yes'
-        } else if (!additional_tasks_post_data.check_for[key].existence) {
-          additional_tasks_post_data.check_for[key].existence = 'No'
-        }
-      }
+      // everything else to No (avoid triggering cascading tasks like mouth/throat), as the
+      // check_for section of the additional tasks page records them
+      assertEquals($additional_tasks('#check-for-section').length, 1)
+      await answerCheckForTasks({
+        yes: [
+          '(finding (snomed_concept "Clinical finding" "finding") (snomed_concept "Itching" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+        ],
+        referer_step: 'additional_tasks_and_investigations',
+      })
 
       await postStep({
-        additional_tasks_and_investigations: additional_tasks_post_data,
+        // deno-lint-ignore no-explicit-any
+        additional_tasks_and_investigations: getFormValues($additional_tasks) as any,
         assign_priority: {},
       })
 
