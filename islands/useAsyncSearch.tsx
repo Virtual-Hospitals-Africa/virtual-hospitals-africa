@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { AsyncSearchProps } from './AsyncSearch.tsx'
 import { OptionLike } from './Search.tsx'
 import { AsyncSearchHookResult } from '../types.ts'
@@ -10,10 +10,12 @@ export default function useAsyncSearch<
   search_route,
   value,
   skip_blank_search,
-  debounce_milliseconds = 220,
+  debounce_milliseconds = 2000,
   onSearchResults,
   onQueryBlanked,
 }: AsyncSearchProps<T>): AsyncSearchHookResult<T> {
+  const previous_search_route = useRef(search_route)
+
   const [search, setSearch] = useState({
     query: value?.name ?? '',
     page: 1,
@@ -26,10 +28,12 @@ export default function useAsyncSearch<
 
   // Make a cancellable request when the query changes
   useEffect(() => {
+    // A new search route invalidates every page we've accumulated so far
+    const search_route_changed = previous_search_route.current !== search_route
+    previous_search_route.current = search_route
+
     if (skip_blank_search && !search.query) {
-      if (search.active_request) {
-        search.active_request.abort()
-      }
+      search.active_request?.abort()
       onQueryBlanked?.()
       return setSearch((search) => ({
         ...search,
@@ -42,13 +46,11 @@ export default function useAsyncSearch<
     }
 
     const url = new URL(search_route, location.href)
-    url.searchParams.set('page', String(search.page))
+    url.searchParams.set('page', String(search_route_changed ? 1 : search.page))
     if (search.query) {
       url.searchParams.set('search', search.query)
     }
-    if (search.active_request) {
-      search.active_request.abort()
-    }
+    search.active_request?.abort()
     if (search.delay) {
       clearTimeout(search.delay)
     }
@@ -113,10 +115,15 @@ export default function useAsyncSearch<
         delay: null,
         active_request: request,
       }))
-    }, debounce_milliseconds)
+    }, search_route_changed ? 0 : debounce_milliseconds)
 
     setSearch((search) => ({
       ...search,
+      ...(search_route_changed && {
+        page: 1,
+        pages: [],
+        has_next_page: false,
+      }),
       delay,
       active_request: null,
     }))

@@ -1,6 +1,21 @@
 import { json } from '../util/responses.ts'
 import type { LoggedInHealthWorkerContext, SearchResults, TrxOrDb } from '../types.ts'
 
+/*
+  An array search term, spelled either as a JSON array or, for want of quoting, as a bare
+  comma-separated list in brackets. The JSON form is what to reach for: it is the only one
+  that survives a value containing a comma.
+*/
+function parseArrayParam(value: string): string[] {
+  try {
+    const parsed = JSON.parse(value)
+    if (Array.isArray(parsed)) return parsed
+  } catch {
+    // Not JSON, so it is the bare form
+  }
+  return value.slice(1, -1).split(',')
+}
+
 export function jsonSearchHandler<
   SearchTerms,
   RenderedResult,
@@ -48,7 +63,7 @@ export function jsonSearchHandler<
         } else if (value === 'true' || value === 'false') {
           search_terms[key] = value === 'true'
         } else if (value.startsWith('[')) {
-          search_terms[key] = value.slice(1, -1).split(',')
+          search_terms[key] = parseArrayParam(value)
         } else {
           search_terms[key] = value
           // TODO use zod to parse all this?

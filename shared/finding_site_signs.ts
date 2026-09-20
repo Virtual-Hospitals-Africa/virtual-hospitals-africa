@@ -13,7 +13,7 @@ import finding_site_signs_modifiers from './finding_site_signs_modifiers.ts'
   the two the same way. Maintained in shared/finding_site_findings.ts and joined here with
   the modifiers every finding carries.
 */
-function asSign(s_expression: string, label: string): FindingSiteSign {
+function asSign({ s_expression, label, name }: { s_expression: string; label: string; name: string }): FindingSiteSign {
   const node = parseWithSchema(s_expression, finding)
   assert(node.specific_snomed_concept, `${s_expression} names no specific concept`)
   const matching = node as MatchingFinding
@@ -27,13 +27,17 @@ function asSign(s_expression: string, label: string): FindingSiteSign {
     name: display,
     description: null,
     category: label,
+    chosen_finding_site: {
+      name,
+      category: 'body structure',
+    },
     ...modifiers,
   }
 }
 
 export const FINDING_SITES: FindingSite[] = FINDING_SITE_FINDINGS.map(
   ({ label, finding_site_structure, excluding_structures, clinical_finding_s_expressions }) => {
-    const signs = clinical_finding_s_expressions.map((s_expression) => asSign(s_expression, label))
+    const signs = clinical_finding_s_expressions.map((s_expression) => asSign({ s_expression, label, name: finding_site_structure }))
     const keys = new Set(signs.map((sign) => sign.key))
     assert(keys.size === signs.length, `Duplicate signs for finding site ${finding_site_structure}`)
     return {
