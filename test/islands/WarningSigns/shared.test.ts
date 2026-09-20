@@ -69,6 +69,19 @@ describe('islands/WarningSigns/shared.ts', () => {
         '/app/snomed/warning-signs?age_determination=adult&finding_site=Ear+structure',
       )
     })
+    it("sends the site's excluding_structures as JSON, so a name with a comma survives", () => {
+      const head: FindingSiteWithMaybeRecords = {
+        label: 'Head',
+        snomed_concept: { name: 'Head structure', category: 'body structure' },
+        excluding_structures: ['Ear structure', 'Tooth, gum, and/or supporting structure'],
+        signs: [headache],
+      }
+      const route = searchRouteFor('/app/snomed/warning-signs?age_determination=adult', head)
+      assertEquals(
+        new URL(route, 'https://example.com').searchParams.get('excluding_structures'),
+        '["Ear structure","Tooth, gum, and/or supporting structure"]',
+      )
+    })
   })
 
   describe('findChecked', () => {

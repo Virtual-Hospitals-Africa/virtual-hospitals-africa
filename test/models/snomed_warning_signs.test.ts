@@ -198,6 +198,61 @@ describeParallel('db/models/snomed_warning_signs.ts', () => {
       assert(Number(results[around].best_similarity) > Number(results[within].best_similarity))
     })
 
+    itParallel('drops a finding sited within an excluding_structure', async () => {
+      // Pain of ear is sited in the ear, which is within the chosen head, so it comes back
+      // under the head alone. A patient presenting with head symptoms does not mean their ear.
+      const { results: without_exclusion } = await snomed_warning_signs.search(db, {
+        search: 'earache',
+        age_determination: 'adult',
+        finding_site: 'Head structure',
+      })
+      assert(without_exclusion.some((result) => result.name === 'Pain of ear'))
+
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'earache',
+        age_determination: 'adult',
+        finding_site: 'Head structure',
+        excluding_structures: ['Ear structure'],
+      })
+      assert(!results.some((result) => result.name === 'Pain of ear'))
+    })
+
+    itParallel('keeps a finding with no predefined site of its own when structures are excluded', async () => {
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'headache',
+        age_determination: 'adult',
+        finding_site: 'Head structure',
+        excluding_structures: ['Ear structure', 'Structure of eye proper'],
+      })
+
+      const headache = findMatching(results, { name: 'Headache' })
+      assertEquals(headache.chosen_finding_site, { name: 'Head structure', category: 'body structure' })
+    })
+
+    itParallel('drops a finding sited within a descendant of an excluding_structure', async () => {
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'earache',
+        age_determination: 'adult',
+        finding_site: 'Head structure',
+        excluding_structures: ['Ear structure'],
+      })
+
+      // Otalgia of left ear is sited in the left ear, which is within the excluded ear
+      assert(!results.some((result) => result.name === 'Otalgia of left ear'))
+    })
+
+    itParallel('ignores an excluding_structure that names no body structure', async () => {
+      const { results } = await snomed_warning_signs.search(db, {
+        search: 'earache',
+        age_determination: 'adult',
+        finding_site: 'Ear structure',
+        excluding_structures: ['Not a real body structure'],
+      })
+
+      const pain_of_ear = findMatching(results, { name: 'Pain of ear' })
+      assertEquals(pain_of_ear.chosen_finding_site, { name: 'Ear structure', category: 'body structure' })
+    })
+
     itParallel('ignores a finding_site that names no body structure', async () => {
       const { results } = await snomed_warning_signs.search(db, {
         search: 'earache',

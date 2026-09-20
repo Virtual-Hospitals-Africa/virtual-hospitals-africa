@@ -17,6 +17,8 @@ type SearchTerms = {
   pregnancy?: boolean
   // The name of a body structure. Only findings sited within it, around it, or nowhere in particular are returned
   finding_site?: string
+  // The names of body structures the patient does not mean by the chosen site. Findings sited within one are dropped
+  excluding_structures?: string[]
 }
 
 /*
@@ -26,10 +28,14 @@ type SearchTerms = {
   it, then those with no site. The result's finding_site is
   the more specific of the two, and the s_expression names the chosen site only when that is
   the more specific, as a predefined site is already implied by the concept.
+
+  excluding_structures names the sites the patient does not mean by the chosen one — by "head"
+  they do not mean their eye, ear, nose, mouth or teeth. A finding whose predefined site lies
+  within one of them is dropped, however well it otherwise matches.
 */
 export const snomed_warning_signs = base({
   top_level_table: 'snomed_concept_finding_like',
-  baseQuery(trx: TrxOrDbOrQueryCreator, { age_determination, pregnancy, finding_site, ...terms }: SearchTerms) {
+  baseQuery(trx: TrxOrDbOrQueryCreator, { age_determination, pregnancy, finding_site, excluding_structures, ...terms }: SearchTerms) {
     const predefined_within_chosen = sql<boolean>`predefined_within_chosen.descendant_id is not null`
     const chosen_within_predefined = sql<boolean>`chosen_within_predefined.descendant_id is not null`
     const predefined_is_more_specific = sql<boolean>`(${predefined_within_chosen} and predefined_site.id != chosen_site.id)`
@@ -81,6 +87,23 @@ export const snomed_warning_signs = base({
             .onRef('chosen_within_predefined.ancestor_id', '=', 'predefined_site.id')
             .onRef('chosen_within_predefined.descendant_id', '=', 'chosen_site.id'),
       )
+      .leftJoinLateral(
+        (eb) =>
+          eb.selectFrom('snomed_inferred_canonical_name_and_category as excluding_structure')
+            .innerJoin(
+              'snomed_concept_active_descendants_realized as within_excluding',
+              'within_excluding.ancestor_id',
+              'excluding_structure.id',
+            )
+            .whereRef('within_excluding.descendant_id', '=', 'predefined_site.id')
+            .where('excluding_structure.category', '=', 'body structure')
+            // An empty list is spelled as a name no structure has, so the join is always shaped the same
+            .where('excluding_structure.name', 'in', excluding_structures?.length ? excluding_structures : [''])
+            .select('excluding_structure.id')
+            .limit(1)
+            .as('excluded'),
+        (join) => join.onTrue(),
+      )
       .where((eb) =>
         eb.or([
           eb('chosen_site.id', 'is', null),
@@ -89,6 +112,7 @@ export const snomed_warning_signs = base({
           chosen_within_predefined,
         ])
       )
+      .where('excluded.id', 'is', null)
       .selectAll('results')
       .select((eb) => [
         'snomed_concept_prioritizations.priority',

@@ -57,6 +57,10 @@ export function signsToDisplay({ search_results, finding_site, warning_signs }: 
 export function searchRouteFor(search_route: string, finding_site: Maybe<FindingSiteWithMaybeRecords>): string {
   if (!finding_site) return search_route
   const params = new URLSearchParams({ finding_site: finding_site.snomed_concept.name })
+  // The sites the patient does not mean by this one, as JSON because a structure's name can contain a comma
+  if (finding_site.excluding_structures.length) {
+    params.set('excluding_structures', JSON.stringify(finding_site.excluding_structures))
+  }
   return `${search_route}${search_route.includes('?') ? '&' : '?'}${params}`
 }
 

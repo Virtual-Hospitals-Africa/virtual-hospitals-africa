@@ -12,8 +12,8 @@
   measurements and not as signs.
 
   excluding_structures names the sites a patient does not mean when they present with this
-  one — by "face symptoms" they do not mean their eye, ear, nose, mouth or teeth. Nothing
-  reads it yet.
+  one — by "face symptoms" they do not mean their eye, ear, nose, mouth or teeth. A search
+  under this site drops the findings sited within any of them.
 
   Every concept named here needs modifiers, so rerun
   scripts/data-munging/finding-site-signs-modifiers.ts after editing this file.

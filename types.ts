@@ -2845,7 +2845,7 @@ export type FindingSiteSign = SignShared<string> & { key: string }
 export type FindingSite = {
   label: string
   snomed_concept: { name: string; category: 'body structure' }
-  // The sites a patient presenting with this one does not mean. Nothing reads it yet.
+  // The sites a patient presenting with this one does not mean, sent along with a search so findings sited there are dropped
   excluding_structures: string[]
   signs: FindingSiteSign[]
 }
