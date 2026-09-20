@@ -10,7 +10,7 @@ export default function useAsyncSearch<
   search_route,
   value,
   skip_blank_search,
-  debounce_milliseconds = 220,
+  debounce_milliseconds = 2000,
   onSearchResults,
   onQueryBlanked,
 }: AsyncSearchProps<T>): AsyncSearchHookResult<T> {
@@ -33,9 +33,7 @@ export default function useAsyncSearch<
     previous_search_route.current = search_route
 
     if (skip_blank_search && !search.query) {
-      if (search.active_request) {
-        search.active_request.abort()
-      }
+      search.active_request?.abort()
       onQueryBlanked?.()
       return setSearch((search) => ({
         ...search,
@@ -52,9 +50,7 @@ export default function useAsyncSearch<
     if (search.query) {
       url.searchParams.set('search', search.query)
     }
-    if (search.active_request) {
-      search.active_request.abort()
-    }
+    search.active_request?.abort()
     if (search.delay) {
       clearTimeout(search.delay)
     }
@@ -119,7 +115,7 @@ export default function useAsyncSearch<
         delay: null,
         active_request: request,
       }))
-    }, debounce_milliseconds)
+    }, search_route_changed ? 0 : debounce_milliseconds)
 
     setSearch((search) => ({
       ...search,
