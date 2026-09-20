@@ -2,7 +2,7 @@ import { DialogTitle } from '@headlessui/react'
 import { useComputed, useSignal, useSignalEffect } from '@preact/signals'
 import { Button } from '../../components/library/Button.tsx'
 import { PaperAirplaneIcon, XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
-import { EnteredFinding, FindingModalMetadata, Maybe, RenderedSnomedConcept } from '../../types.ts'
+import { EnteredFinding, FindingModalMetadata, FindingSiteSnomedConcept, Maybe, RenderedSnomedConcept } from '../../types.ts'
 import { FindingSite } from './FindingSite.tsx'
 import { PainLevelSelect } from './PainLevel.tsx'
 import { QualifierSearch } from './QualifierSearch.tsx'
@@ -29,8 +29,9 @@ function isPainLevel(attribute: Lang['attribute']): attribute is SnomedConceptAt
 }
 
 export function FindingModalContents(
-  { metadata, entered, just_checked, onSave, onChange, onClose }: {
+  { metadata, selected_finding_site, entered, just_checked, onSave, onChange, onClose }: {
     metadata: FindingModalMetadata
+    selected_finding_site?: FindingSiteSnomedConcept
     entered: EnteredFinding
     just_checked: boolean
     onSave(finding: EnteredFinding | typeof RemoveFindingSymbol): void
@@ -41,9 +42,9 @@ export function FindingModalContents(
 ) {
   const node = parseSExpressionAsInsertableFinding(entered.s_expression)
   const predefined_attributes = metadata.predefined_attributes.map(({ s_expression }) => parseWithSchema(s_expression, attribute))
-  const search_within_finding_site = metadata.chosen_finding_site
-    ? parseWithSchema(`(finding_site ${asConceptSExpression(metadata.chosen_finding_site)})`, finding_site_schema)
-    : predefined_attributes.find(isFindingSite)
+  const search_within_finding_site = predefined_attributes.find(isFindingSite) || (
+    selected_finding_site && parseWithSchema(`(finding_site ${asConceptSExpression(selected_finding_site)})`, finding_site_schema)
+  )
 
   const dates = useSignal<{ onset: string | null; resolved: string | null } | null>(null)
   let initial_finding_sites = node.attributes.filter(isFindingSite)

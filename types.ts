@@ -2592,10 +2592,12 @@ export type RecordDisplays = {
   full: string
 }
 
-export type SnomedConceptShort = {
+export type SnomedConceptShort<Category extends SnomedCategory = SnomedCategory> = {
   name: string
-  category: SnomedCategory
+  category: Category
 }
+
+export type FindingSiteSnomedConcept = SnomedConceptShort<'body structure'>
 
 export type RenderedSnomedConcept = {
   snomed_concept_id: string
@@ -2818,7 +2820,6 @@ type SignShared<Category> = FindingRelatedModifiers & {
   category: Category
   key?: string
   priority?: Maybe<Priority>
-  chosen_finding_site?: Maybe<{ name: string; category: 'body structure' }>
 }
 
 export type WarningSignDef<Priority extends 'Urgent' | 'Very urgent' | 'Emergency'> = SignShared<Priority> & {
@@ -3091,7 +3092,7 @@ export type SnomedWarningSignSearchResult = FindingRelatedModifiers & {
   priority: Maybe<'Urgent' | 'Very urgent' | 'Emergency'>
   priority_by_virtue_of_matching_warning_sign: Maybe<string>
   // Set when the search was filtered by a finding site: the more specific of that and the concept's own
-  chosen_finding_site: Maybe<{ name: string; category: 'body structure' }>
+  chosen_finding_site: Maybe<FindingSiteSnomedConcept>
   best_similarity: number
   category: 'Search Results'
 }
@@ -3403,8 +3404,4 @@ export type FindingModalMetadata = {
   }[]
   priority?: Maybe<Priority>
   onset_required: boolean
-  chosen_finding_site?: Maybe<{
-    name: string
-    category: SnomedCategory
-  }>
 }

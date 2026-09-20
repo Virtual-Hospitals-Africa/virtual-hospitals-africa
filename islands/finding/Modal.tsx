@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'preact'
 import { FindingModalContents } from './ModalContents.tsx'
-import { EnteredFinding, FindingModalMetadata } from '../../types.ts'
+import { EnteredFinding, FindingModalMetadata, FindingSiteSnomedConcept } from '../../types.ts'
 import { RemoveFindingSymbol } from './RemoveFindingSymbol.tsx'
 
 type FindingModalProps = {
@@ -10,13 +10,14 @@ type FindingModalProps = {
     entered: EnteredFinding
     just_checked: boolean
   }
+  selected_finding_site?: FindingSiteSnomedConcept
   onSave(finding: EnteredFinding | typeof RemoveFindingSymbol): void
   onChange?(finding: EnteredFinding): void
   onClose: () => void
 }
 
 export function FindingModal(
-  { finding, onSave, onChange, onClose }: FindingModalProps,
+  { finding, selected_finding_site, onSave, onChange, onClose }: FindingModalProps,
 ) {
   return (
     <Transition.Root show={finding !== null} as={Fragment}>
@@ -48,6 +49,7 @@ export function FindingModal(
                 {finding && (
                   <FindingModalContents
                     {...finding}
+                    selected_finding_site={selected_finding_site}
                     onSave={onSave}
                     onChange={onChange}
                     onClose={onClose}
