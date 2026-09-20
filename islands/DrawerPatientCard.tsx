@@ -11,10 +11,11 @@ import cls from '../util/cls.ts'
 import { PriorityChipWithPopover } from './PriorityChipWithPopover.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { useEffect } from 'preact/hooks'
-import { PriorityEscalationModal } from './PriorityEscalation/PriorityEscalationModal.tsx'
+import { PriorityEscalationPanel } from './PriorityEscalation/PriorityEscalationPanel.tsx'
 
 export type PriorityEscalation = {
   priority: Priority
+  priority_evaluation: RenderedEvaluationRelativeToHealthWorker
 }
 
 const PRIORITY_UPDATE_EVENT = 'priority-update-event'
@@ -22,26 +23,26 @@ const PRIORITY_UPDATE_EVENT = 'priority-update-event'
 export function priorityUpdate(
   detail: PriorityEscalation,
 ) {
-  self.dispatchEvent(
-    new CustomEvent(PRIORITY_UPDATE_EVENT, {
-      detail,
-    }),
-  )
+  const event = new CustomEvent(PRIORITY_UPDATE_EVENT, { detail })
+  self.dispatchEvent(event)
 }
 
 // Patient's drawer card component with avatar, name, DOB, and triage
 export function DrawerPatientCard(
-  { patient, organization_id, priority: original_priority, priority_evaluation, escalation_candidates, nearest_hospital }: {
+  { patient, organization_id, priority: original_priority, priority_evaluation, escalation_candidates, nearest_hospital, refer_route }: {
     patient: RenderedPatient
     organization_id: string
     priority: RenderedPatientEncounter['priority']
     priority_evaluation: RenderedEvaluationRelativeToHealthWorker | null
     escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
     nearest_hospital: RenderedOrganization | null
+    refer_route: string
   },
 ) {
   const open_escalation_modal = useSignal(false)
   const priority = useSignal(original_priority?.name)
+  // The escalating record replaces the one rendered by the server until the page is next loaded
+  const current_priority_evaluation = useSignal(priority_evaluation)
   const priority_color = priority.value ? PRIORITY_COLORS[priority.value] : { bg: 'bg-gray-100', text: 'text-gray-800' }
 
   const href = patient.completed_registration ? `/app/organizations/${organization_id}/patients/${patient.id}/profile` : undefined
@@ -53,6 +54,7 @@ export function DrawerPatientCard(
       const next_priority = higherPriority(event.detail.priority, priority.value)
       if (!!next_priority && next_priority !== priority.value) {
         priority.value = next_priority
+        current_priority_evaluation.value = event.detail.priority_evaluation
         open_escalation_modal.value = true
       }
     }
@@ -97,7 +99,7 @@ export function DrawerPatientCard(
           ? (
             <PriorityChipWithPopover
               priority={priority.value}
-              priority_evaluation={priority_evaluation!}
+              priority_evaluation={current_priority_evaluation.value!}
               organization_id={organization_id}
             />
           )
@@ -112,9 +114,10 @@ export function DrawerPatientCard(
             </span>
           )}
       </div>
-      <PriorityEscalationModal
+      <PriorityEscalationPanel
         escalation_candidates={escalation_candidates}
         nearest_hospital={nearest_hospital}
+        refer_route={refer_route}
         priority={priority.value}
         open={open_escalation_modal.value}
         onClose={() => open_escalation_modal.value = false}

@@ -10,6 +10,8 @@ import { SelectedChip } from '../SelectedRecordChip.tsx'
 import { asFollowUpSign, findCheckedFollowUp, followUpDisplay, FollowUpGroup } from './follow_ups.ts'
 import { CheckedWarningSign, OnToggle } from './shared.ts'
 import { pluralize } from '../../util/pluralize.ts'
+import { SIDE_PANEL_CLASS, SIDE_PANEL_ORDER, sidePanelHost } from '../../components/library/layout/side_panels.ts'
+import cls from '../../util/cls.ts'
 
 type Item = {
   id: string
@@ -104,9 +106,10 @@ function FollowUpGroupSection({ group, checked_signs, onCheck, onOpenDetails }: 
   Shown as soon as a finding is saved to the record, listing what to check for as a
   result. Not a modal: no backdrop, no focus trap, the page stays usable behind it.
 
-  Rendered into document.body so that its inputs sit outside the workflow's form and
-  are not submitted with the page. Positioned top right, clear of the patient drawer
-  (w-60 xl:w-84) and capped in height so the Next button stays visible.
+  Portalled into the shared column left of the patient drawer, so that its inputs sit
+  outside the workflow's form and are not submitted with the page. That column owns the
+  position, width and height cap, and is where the priority escalation panel stacks
+  above this one (components/library/layout/side_panels.ts).
 
   Checking a follow up behaves exactly like checking a warning sign. "None of the above"
   closes the panel at once, leaving a spinner in its place while the negatives save.
@@ -120,18 +123,22 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
   onNoneOfTheAbove(): void
   onDismiss(): void
 }) {
-  if (typeof document === 'undefined') return null
+  const host = sidePanelHost()
+  if (!host) return null
 
   if (none_of_the_above_saving) {
     return createPortal(
       <div
         id='follow-ups-saving'
-        className='fixed top-20 right-64 xl:right-88 z-40 flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-xl border border-gray-200 text-sm text-gray-600'
+        className={cls(
+          'pointer-events-auto self-start flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-xl border border-gray-200 text-sm text-gray-600',
+          SIDE_PANEL_ORDER.follow_ups,
+        )}
       >
         <Spinner className='text-indigo-700' aria-hidden='true' />
         Saving…
       </div>,
-      document.body,
+      host,
     )
   }
 
@@ -140,9 +147,9 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
   return createPortal(
     <div
       id='follow-ups-panel'
-      className='fixed top-20 right-64 xl:right-88 z-40 w-[30rem] xl:w-[44rem] max-w-[calc(100vw-20rem)] max-h-[calc(100vh-10rem)] flex flex-col rounded-2xl bg-white shadow-xl border border-gray-200'
+      className={cls(SIDE_PANEL_CLASS, SIDE_PANEL_ORDER.follow_ups)}
     >
-      <div className='flex items-center justify-between px-5 pt-4 pb-3'>
+      <div className='shrink-0 flex items-center justify-between px-5 pt-4 pb-3'>
         <h2 className='text-lg font-bold text-gray-900'>Follow ups to check for</h2>
         <button
           type='button'
@@ -153,7 +160,7 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
           <XMarkIcon className='h-5 w-5' />
         </button>
       </div>
-      <div className='overflow-y-auto px-5 pb-3 flex flex-col gap-4'>
+      <div className='min-h-0 overflow-y-auto px-5 pb-3 flex flex-col gap-4'>
         {groups.map((group) => (
           <FollowUpGroupSection
             key={group.key}
@@ -164,7 +171,7 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
           />
         ))}
       </div>
-      <div className='flex justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
+      <div className='shrink-0 flex justify-end px-5 pb-4 pt-2 border-t border-gray-100'>
         <Button
           type='button'
           variant='secondary'
@@ -176,6 +183,6 @@ export function FollowUpsPanel({ groups, checked_signs, onCheck, onOpenDetails, 
         </Button>
       </div>
     </div>,
-    document.body,
+    host,
   )
 }

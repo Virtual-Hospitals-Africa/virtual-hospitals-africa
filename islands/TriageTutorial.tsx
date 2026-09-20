@@ -159,6 +159,7 @@ export function TriageTutorial({ url, route, patient, employee }: Props) {
         onSubmit={(e) => e.preventDefault()}
         escalation_candidates={[]}
         nearest_hospital={null}
+        refer_route='#'
       >
         <StepRenderer
           step={current_step}

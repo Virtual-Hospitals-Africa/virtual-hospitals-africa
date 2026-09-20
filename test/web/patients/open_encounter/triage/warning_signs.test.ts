@@ -20,7 +20,7 @@ import { COMMON_CONDITIONS } from '../../../../../shared/brief_history.ts'
 import { CLINICAL_FINDING, PAIN_LEVEL, SEVERE_PAIN, STATUS_ATTRIBUTE } from '../../../../../shared/snomed_concepts.ts'
 import assertIncludes from '../../../../../util/assertIncludes.ts'
 import { additional_tasks } from '../../../../../db/models/additional_tasks.ts'
-import { asWarningSignsAdult, asWarningSignsOlderChild, setupTriageNewPatient } from './_setup.ts'
+import { asWarningSignsAdult, asWarningSignsOlderChild, dateOfBirth, setupTriageNewPatient } from './_setup.ts'
 import { events } from '../../../../../db/models/events.ts'
 import { asResultAsync } from '../../../../../util/asResult.ts'
 import values from '../../../../../util/values.ts'
@@ -36,8 +36,32 @@ import { normalForm, parseArrayWithSchema } from '../../../../../shared/s_expres
 import { insertable_finding_base } from '../../../../../shared/s_expression_schemas.ts'
 import { inverseSExpression } from '../../../../../shared/s_expression_inverse.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import { patient_findings_with_modifiers } from '../../../../../db/models/patient_findings_with_modifiers.ts'
+import { findingSitesWithPriorRecords } from '../../../../../routes/app/organizations/[organization_id]/patients/[patient_id]/open_encounter/triage/warning_signs.tsx'
 
 const COUGH = '(clinical_finding (snomed_concept "Cough" "finding"))'
+
+/*
+  Fresh hands the islands their props inside the boot script as one flat array of values
+  indexed from one another, so the string literals in it are what can be read easily.
+  Enough to see what the page handed the island.
+*/
+function islandStateStrings($: CheerioAPI): Set<string> {
+  const scripts = $('script').toArray().map((script) => $(script).html() || '')
+  const boot = scripts.find((text) => text.includes('boot('))
+  assert(boot, `No boot script found in the page among scripts: ${scripts.map((text) => text.slice(0, 80)).join(' | ')}`)
+  // The state is the longest string literal handed to boot, itself JSON
+  const literals = [...boot.matchAll(/"(?:[^"\\]|\\.)*"/g)].map(([literal]) => JSON.parse(literal) as string)
+  const state = literals.reduce((longest, literal) => literal.length > longest.length ? literal : longest, '')
+  const strings = new Set<string>()
+  const walk = (value: unknown) => {
+    if (typeof value === 'string') strings.add(value)
+    else if (Array.isArray(value)) value.forEach(walk)
+    else if (isObjectLike(value)) values(value).forEach(walk)
+  }
+  walk(JSON.parse(state))
+  return strings
+}
 
 /* The hidden inputs the warning signs page submits, see islands/WarningSigns/form_values.ts */
 const WarningSignsForm = z.object({
@@ -66,6 +90,23 @@ describeParallel('triage/warning_signs', () => {
   afterAll(() => events.closeAllProcessedPubSub({ graceful: false }))
 
   describeParallel('GET', () => {
+    itParallel(
+      'renders the host the floating side panels portal into, left of the patient drawer',
+      async () => {
+        const { $ } = await setupTriageNewPatient({
+          patient_demographics: {},
+        })
+
+        // Both the priority escalation panel and the follow-ups panel are client-only and
+        // portal into this host, so without it in the server-rendered page neither appears.
+        // See components/library/layout/side_panels.ts
+        assertEquals($('#drawer-side-panels').length, 1)
+        // Outside the workflow's form, so that the panels' inputs are never submitted with it
+        assertEquals($('form #drawer-side-panels').length, 0)
+        assertEquals($('#patient-drawer').length, 1)
+      },
+    )
+
     itParallel(
       'renders a warning signs page when patient not known to be pregnant',
       async () => {
@@ -139,6 +180,58 @@ describeParallel('triage/warning_signs', () => {
         }
 
         assertEquals(actual, expected)
+      },
+    )
+
+    itParallel(
+      'offers adults a filter by finding site, whose signs come from the guide page for that site and carry prior records',
+      async () => {
+        const { $, patient_id, patient_encounter_id, getStep, postClinicalFinding } = await setupTriageNewPatient({
+          patient_demographics: {},
+        })
+        assertEquals($('#warning-signs-finding-site-filter button').length, 1)
+        const strings = islandStateStrings($)
+        assert(strings.has('Ear structure'), 'The ear should be among the sites handed to the island')
+        assert(strings.has('Loss of scalp hair'), "The scalp page's findings should be handed to the island")
+
+        // A finding recorded from a site's table shows as the record of that sign, without claiming it from the warning signs
+        const record_id = await postClinicalFinding({
+          s_expression: '(clinical_finding (snomed_concept "Pain of ear" "finding"))',
+          priority_level: 'Non-urgent',
+        })
+        const $again = await getStep('warning_signs')
+        assert(islandStateStrings($again).has(record_id))
+
+        const prior_findings = await patient_findings_with_modifiers.findAll(db, {
+          patient_id,
+          patient_encounter_id,
+          include_negative: true,
+        })
+        const finding_sites = findingSitesWithPriorRecords(prior_findings, 'adult')
+        assertEquals(finding_sites.length, 23)
+        const ear = finding_sites.find((site) => site.label === 'Ear')!
+        assertMatches(ear, {
+          label: 'Ear',
+          snomed_concept: { name: 'Ear structure', category: 'body structure' },
+          signs: z.array(z.object({ name: z.string(), category: z.literal('Ear') })),
+        })
+        assertMatches(ear.signs.find((sign) => sign.name === 'Pain of ear'), {
+          key: 'Pain of ear',
+          existing_record: { id: record_id, existence: 'Yes' },
+        })
+        assertEquals(ear.signs.find((sign) => sign.name === 'Tinnitus')!.existing_record, undefined)
+      },
+    )
+
+    itParallel(
+      'offers older children no filter by finding site, as the guide pages are for adults',
+      async () => {
+        const { $ } = await setupTriageNewPatient({
+          patient_demographics: { date_of_birth: dateOfBirth('older child') },
+        })
+        assertEquals($('#warning-signs-finding-site-filter').length, 0)
+        assert(!islandStateStrings($).has('Ear structure'))
+        assertEquals(findingSitesWithPriorRecords([], 'older child'), [])
       },
     )
 
@@ -777,6 +870,7 @@ describeParallel('triage/warning_signs', () => {
           description: 'finding',
           priority: 'Very urgent',
           priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
+          finding_site: null,
           best_similarity: 1.4,
           onset_required: false,
           predefined_attributes: [

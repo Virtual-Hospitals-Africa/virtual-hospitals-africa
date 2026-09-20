@@ -1,10 +1,12 @@
 import { type Expression, type QueryCreator, type RawBuilder, type Selectable, sql } from 'kysely'
 import type { IPostgresInterval } from 'postgres-interval'
 import type { DB, PatientEvents, PatientMeasurements, PatientRecordQualifiers, PatientRecords } from '../../db.d.ts'
-import { AgeDetermination, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { AgeDetermination, NonNullableProperty, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { literalBoolean, literalString } from '../helpers.ts'
 import { EVENT, FINDING_SITE, NO_QUALIFIER, QUALIFIER_VALUE, UNKNOWN_QUALIFIER } from '../../shared/snomed_concepts.ts'
-import { InsertableFindingBase } from '../../shared/s_expression_schemas.ts'
+import { InsertableFindingBase, Lang } from '../../shared/s_expression_schemas.ts'
+import { diagnosisToEvaluation } from '../../shared/diagnosis.ts'
+import assertHasProperty from '../../util/assertHasProperty.ts'
 import { assert } from 'std/assert/assert.ts'
 import { snomedConceptBase } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
@@ -393,8 +395,13 @@ export function withTaggingOfInsertedRecords<Q extends AnyQueryCreator>(
   qualifier, an attribute record per attribute and an event per event-valued attribute. Only
   the finding's direct qualifiers count, as with an inserted finding.
 */
-function hypotheticalInputs(trx: TrxOrDbOrQueryCreator, finding: InsertableFindingBase) {
-  assert(finding.existence === 'Yes', 'Only a positive finding can satisfy a due_to')
+// A record that has not been inserted, matched against due_to as if it had been: a positive
+// finding, or an evaluation such as the diagnosis a system_diagnosis_rule would record
+export type HypotheticalEvaluation = NonNullableProperty<Lang['evaluation'], 'root_snomed_concept' | 'specific_snomed_concept'>
+export type HypotheticalRecord = InsertableFindingBase | HypotheticalEvaluation
+
+function hypotheticalInputs(trx: TrxOrDbOrQueryCreator, record: HypotheticalRecord) {
+  if (record.atom === 'finding') assert(record.existence === 'Yes', 'Only a positive finding can satisfy a due_to')
 
   const record_id = generateUUID()
   const uuid = (id: string) => sql<string>`${sql.lit(id)}::uuid`
@@ -413,7 +420,7 @@ function hypotheticalInputs(trx: TrxOrDbOrQueryCreator, finding: InsertableFindi
     qualifies_record_id: string
   }
 
-  const qualifiers: RecordLiteral[] = finding.qualifiers.map((qualifier) => ({
+  const qualifiers: RecordLiteral[] = record.qualifiers.map((qualifier) => ({
     id: generateUUID(),
     root_snomed_concept_id: concept_id(QUALIFIER_VALUE.id),
     specific_snomed_concept_id: snomedConceptBase(trx, qualifier.specific_snomed_concept),
@@ -421,7 +428,7 @@ function hypotheticalInputs(trx: TrxOrDbOrQueryCreator, finding: InsertableFindi
     qualifies_record_id: record_id,
   }))
 
-  const attributes = finding.attributes.map((attribute) => {
+  const attributes = record.attributes.map((attribute) => {
     const record: RecordLiteral = {
       id: generateUUID(),
       root_snomed_concept_id: attribute.value.atom === 'event' ? concept_id(EVENT.id) : snomedConceptBase(trx, attribute.root_snomed_concept),
@@ -493,9 +500,9 @@ function hypotheticalInputs(trx: TrxOrDbOrQueryCreator, finding: InsertableFindi
     .with('inserting_records', (qb) =>
       recordRows(qb, [{
         id: record_id,
-        root_snomed_concept_id: snomedConceptBase(trx, finding.root_snomed_concept),
-        specific_snomed_concept_id: snomedConceptBase(trx, finding.specific_snomed_concept),
-        value_snomed_concept_id: finding.value_snomed_concept ? snomedConceptBase(trx, finding.value_snomed_concept) : null_concept_id,
+        root_snomed_concept_id: snomedConceptBase(trx, record.root_snomed_concept),
+        specific_snomed_concept_id: snomedConceptBase(trx, record.specific_snomed_concept),
+        value_snomed_concept_id: record.value_snomed_concept ? snomedConceptBase(trx, record.value_snomed_concept) : null_concept_id,
         qualifies_record_id: record_id,
       }]))
     .with('inserting_qualifier_records', (qb) => recordRows(qb, qualifiers))
@@ -503,7 +510,7 @@ function hypotheticalInputs(trx: TrxOrDbOrQueryCreator, finding: InsertableFindi
     .with('inserting_attribute_records', (qb) => recordRows(qb, attributes.map((a) => a.record)))
     .with('inserting_attribute_qualifier_links', (qb) => linkRows(qb, attributes.map((a) => a.record)))
     .with('inserting_patient_events', (qb) => eventRows(qb, events))
-    // A clinical finding is never a measurement
+    // Neither a clinical finding nor a diagnosis is a measurement
     .with('inserting_patient_measurements', (qb) =>
       qb.selectFrom('patient_measurements')
         .select(['id', 'value'])
@@ -529,6 +536,29 @@ export const due_to = {
     if (finding.existence !== 'Yes') return Promise.resolve([])
 
     return matchingQuery(hypotheticalInputs(trx, finding), { patient_age_determination })
+      .selectFrom('matching_due_tos')
+      .selectAll('matching_due_tos')
+      .execute()
+  },
+
+  /*
+    Which due_tos a diagnosis the rules would record, but have not, would satisfy. The certainty
+    is part of the match: (diagnosis X possible) and (diagnosis X probable) are different due_tos,
+    and an active_condition due_to expands to probable and definite (and possible, equivocal only
+    when flagged), see shared/s_expression_active_condition_as_or.ts.
+  */
+  forHypotheticalDiagnosis(
+    trx: TrxOrDbOrQueryCreator,
+    { patient_age_determination, diagnosis }: {
+      patient_age_determination: AgeDetermination
+      diagnosis: Pick<Lang['diagnosis'], 'snomed_concept' | 'certainty_qualifier'>
+    },
+  ): Promise<HypotheticalDueToMatch[]> {
+    const evaluation = diagnosisToEvaluation(diagnosis)
+    assertHasProperty(evaluation, 'root_snomed_concept')
+    assertHasProperty(evaluation, 'specific_snomed_concept')
+
+    return matchingQuery(hypotheticalInputs(trx, evaluation), { patient_age_determination })
       .selectFrom('matching_due_tos')
       .selectAll('matching_due_tos')
       .execute()

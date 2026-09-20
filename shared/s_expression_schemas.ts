@@ -83,6 +83,14 @@ type NonQueryableBaseLang = {
     due_to: QueryableEvidenceNode
     diagnosis: Lang['diagnosis']
   }
+  // A body site the warning signs page can be filtered by, together with the findings its
+  // guide page tells the nurse to check for. Declared in s_expression/finding_site_findings.
+  finding_site_findings: {
+    label: string
+    finding_site_structure: Lang['snomed_concept']
+    excluding_structures: Lang['snomed_concept'][]
+    clinical_findings: Lang['finding'][]
+  }
 }
 
 type QueryableMultiBaseLang = {
@@ -1211,6 +1219,58 @@ export const system_diagnosis_rule: z.ZodType<Lang['system_diagnosis_rule']> = z
     due_to,
   }))
 ).describe('system_diagnosis_rule')
+
+const finding_site_structure: z.ZodType<Lang['snomed_concept']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('finding_site_structure'),
+    args: z.tuple([snomed_concept]),
+  }).transform(({ args: [structure] }) => structure)
+).describe('finding_site_structure')
+
+// Both keep their atom so that finding_site_findings can tell the two apart in whichever
+// order they are given, and leave excluding_structures out altogether when a site excludes nothing
+const excluding_structures = z.lazy(() =>
+  z.object({
+    atom: z.literal('excluding_structures'),
+    args: z.array(snomed_concept),
+  }).transform(({ atom, args }) => ({ atom, snomed_concepts: args }))
+).describe('excluding_structures')
+
+const clinical_findings = z.lazy(() =>
+  z.object({
+    atom: z.literal('clinical_findings'),
+    // positive_finding rather than clinical_finding, so that the compiled output, which
+    // writes every clinical_finding back in its normal (finding ...) form, reparses
+    args: z.array(positive_finding),
+  }).transform(({ atom, args }) => ({ atom, findings: args }))
+).describe('clinical_findings')
+
+export const finding_site_findings: z.ZodType<Lang['finding_site_findings']> = z.lazy(() =>
+  z.object({
+    atom: z.literal('finding_site_findings'),
+    args: z.tuple([z.string(), finding_site_structure], z.union([excluding_structures, clinical_findings])),
+  }).transform(({ atom, args: [label, finding_site_structure, ...rest] }) => {
+    let excluding_structures: Lang['snomed_concept'][] = []
+    let clinical_findings: Lang['finding'][] | null = null
+    for (const node of rest) {
+      if (node.atom === 'excluding_structures') {
+        assert(!excluding_structures.length, `${label} declares excluding_structures twice`)
+        excluding_structures = node.snomed_concepts
+      } else {
+        assert(!clinical_findings, `${label} declares clinical_findings twice`)
+        clinical_findings = node.findings
+      }
+    }
+    assert(clinical_findings, `${label} declares no clinical_findings`)
+    return {
+      atom,
+      label,
+      finding_site_structure,
+      excluding_structures,
+      clinical_findings,
+    }
+  })
+).describe('finding_site_findings')
 
 export const any_rule = z.lazy(() => task.or(system_diagnosis_rule).or(system_priority_evaluation)).describe('any_rule')
 

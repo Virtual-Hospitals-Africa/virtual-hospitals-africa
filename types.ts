@@ -2496,6 +2496,7 @@ export type PatientDrawerV4Props = {
   care_team: RenderedCareTeamHealthWorker[]
   escalation_candidates: RenderedEmployeeWithPresenceAndSeniority[]
   nearest_hospital: RenderedOrganization | null
+  refer_route: string
 }
 
 export type RenderedSidebarWorkflowStep = {
@@ -2834,19 +2835,36 @@ export type WarningSign = Omit<WarningSignDef<'Urgent' | 'Very urgent' | 'Emerge
 
 export type CommonSymptom = SignShared<'Common Symptoms'> & { key: string }
 
+/*
+  A finding the adult guide lists on a page gated on a body site, such as the ear page's
+  "Pain of ear". Its category is the site's label, which heads its table on the warning signs page.
+*/
+export type FindingSiteSign = SignShared<string> & { key: string }
+
+export type FindingSite = {
+  label: string
+  snomed_concept: { name: string; category: 'body structure' }
+  // The sites a patient presenting with this one does not mean. Nothing reads it yet.
+  excluding_structures: string[]
+  signs: FindingSiteSign[]
+}
+
 export type EnteredFinding = {
   s_expression: string
   display: string
   priority?: Maybe<Priority>
 }
 
-export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | SignShared<'Search Results' | 'Prior record' | 'Follow up'>) & {
+export type WarningSignWithMaybeRecord = (WarningSign | CommonSymptom | FindingSiteSign | SignShared<'Search Results' | 'Prior record' | 'Follow up'>) & {
   existing_record?: {
     id: string
     existence: Existence
     augmented?: EnteredFinding
   }
 }
+
+// A finding site as the warning signs page receives it, its signs matched with the encounter's prior records
+export type FindingSiteWithMaybeRecords = Omit<FindingSite, 'signs'> & { signs: WarningSignWithMaybeRecord[] }
 
 export type IntermediateProcedureRecord = {
   created_at: Date
@@ -3071,6 +3089,8 @@ export type SnomedWarningSignSearchResult = FindingRelatedModifiers & {
   description: SnomedCategory
   priority: Maybe<'Urgent' | 'Very urgent' | 'Emergency'>
   priority_by_virtue_of_matching_warning_sign: Maybe<string>
+  // Set when the search was filtered by a finding site: the more specific of that and the concept's own
+  finding_site: Maybe<{ name: string; category: 'body structure' }>
   best_similarity: number
   category: 'Search Results'
 }
@@ -3261,7 +3281,11 @@ export type FindingToCheckFor = FindingRelatedModifiers & {
 
 export type RulesDryRun = {
   findings_to_check_for: FindingToCheckFor[]
-  would_indicate_diagnoses: ApplicableRuleEffectSystemDiagnosisRule[]
+  would_indicate_diagnoses: {
+    diagnosis: ApplicableRuleEffectSystemDiagnosisRule[]
+    would_indicate_priority: null | Priority
+    findings_to_check_for: FindingToCheckFor[]
+  }[]
   would_indicate_priority: null | Priority
 }
 

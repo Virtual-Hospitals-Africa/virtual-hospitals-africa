@@ -4,6 +4,7 @@
 // =============================================================================
 
 import type {
+  HealthWorkerOrganization,
   Priority,
   RecordValueLink,
   RenderedCareTeamHealthWorker,
@@ -25,7 +26,7 @@ function createMockOrganization(
   specialty: string,
   profession: string,
   licence_number: string,
-) {
+): HealthWorkerOrganization {
   return {
     id: 'mock-org-001',
     name: 'Virtual Hospitals Africa Demo Clinic',
@@ -39,6 +40,7 @@ function createMockOrganization(
     most_common_language_code: 'eng',
     waiting_room_id: null,
     reception_id: null,
+    using_vha: 1 as 0 | 1,
     employment_id,
     seniority_order: 1,
     role,
@@ -66,7 +68,7 @@ function createMockOrganization(
       regulator_view: '/mock',
       health_worker_view: '/mock',
     },
-  }
+  } as HealthWorkerOrganization
 }
 
 // Primary care Nurse - handles triage and general assessments

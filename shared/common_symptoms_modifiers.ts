@@ -180,4 +180,16 @@ export default {
     'relevant_qualifiers': [],
     'onset_required': true,
   },
+  'Mass of body region': {
+    'predefined_attributes': [
+      {
+        's_expression': '(attribute (snomed_concept "Associated morphology" "attribute") (snomed_concept "Mass" "morphologic abnormality"))',
+      },
+      {
+        's_expression': '(attribute (snomed_concept "Finding site" "attribute") (snomed_concept "Body region structure" "body structure"))',
+      },
+    ],
+    'relevant_qualifiers': [],
+    'onset_required': false,
+  },
 } as Record<string, FindingRelatedModifiers>

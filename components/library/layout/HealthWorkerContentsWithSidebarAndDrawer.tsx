@@ -2,6 +2,7 @@ import { ComponentChild, ComponentChildren } from 'preact'
 import { Header } from '../Header.tsx'
 import { AlertListener } from '../../../islands/alert/AlertListener.tsx'
 import { Notifications } from '../../../islands/Notifications.tsx'
+import { SIDE_PANEL_HOST_CLASS, SIDE_PANEL_HOST_ID } from './side_panels.ts'
 
 export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   title: string
@@ -36,6 +37,8 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
         </section>
         {drawer}
       </div>
+      {/* The column the floating side panels portal into. See ./side_panels.ts */}
+      {drawer && <div id={SIDE_PANEL_HOST_ID} className={SIDE_PANEL_HOST_CLASS} />}
       <Notifications />
     </div>
   )

@@ -1,0 +1,53 @@
+;; Genital symptoms ⇢ 49, in a man ⇢ 50, vaginal discharge ⇢ 51, vaginal bleeding ⇢ 57
+(finding_site_findings
+  "Genital"
+  (finding_site_structure (snomed_concept "Genital structure" "body structure"))
+  (excluding_structures
+    (snomed_concept "Urinary system structure" "body structure")
+    (snomed_concept "Structure of anus and/or rectum" "body structure")
+  )
+  (clinical_findings
+    ;; Assess the patient with genital symptoms ⇢ 49
+    (clinical_finding (snomed_concept "Abnormal urogenital discharge" "finding"))
+    (clinical_finding (snomed_concept "Ulcer" "morphologic abnormality") (finding_site (snomed_concept "Genital structure" "body structure")))
+    (clinical_finding (snomed_concept "Rash of genitalia" "disorder"))
+    (clinical_finding (snomed_concept "Itching" "finding") (finding_site (snomed_concept "Genital structure" "body structure")))
+    (clinical_finding (snomed_concept "Mass of body region" "finding") (finding_site (snomed_concept "Genital structure" "body structure")))
+    (clinical_finding (snomed_concept "Anogenital warts" "disorder"))
+    (clinical_finding (snomed_concept "Infestation caused by Phthirus pubis" "disorder"))
+    (clinical_finding (snomed_concept "Pain in pelvis" "finding"))
+    ;; Genital symptoms in a man ⇢ 50
+    (clinical_finding (snomed_concept "Swelling of scrotum" "finding"))
+    (clinical_finding (snomed_concept "Pain in scrotum" "finding"))
+    (clinical_finding (snomed_concept "Acute pain of scrotum" "finding"))
+    (clinical_finding (snomed_concept "Severe pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))
+    (clinical_finding (snomed_concept "Retractile testis" "disorder"))
+    (clinical_finding (snomed_concept "Mass of scrotum" "finding"))
+    (clinical_finding (snomed_concept "Urethral discharge" "finding"))
+    (clinical_finding (snomed_concept "Dysuria" "finding"))
+    (clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Glans penis structure" "body structure")) (qualifier (snomed_concept "Pain" "finding")))
+    (clinical_finding (snomed_concept "Severe pain" "finding") (finding_site (snomed_concept "Glans penis structure" "body structure")))
+    (clinical_finding (snomed_concept "Tightly retracted foreskin" "finding"))
+    (clinical_finding (snomed_concept "Pain in penis" "finding"))
+    (clinical_finding (snomed_concept "Penile swelling" "disorder"))
+    (clinical_finding (snomed_concept "Priapism" "disorder"))
+    ;; Abnormal vaginal discharge ⇢ 51
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding"))
+    (clinical_finding (snomed_concept "Vaginal discharge" "finding") (qualifier (snomed_concept "Abnormal" "qualifier value")))
+    (clinical_finding (snomed_concept "Pruritus of vulva" "disorder"))
+    (clinical_finding (snomed_concept "Inflammation of vulva" "disorder"))
+    (clinical_finding (snomed_concept "Cervical excitation present" "finding"))
+    (clinical_finding (snomed_concept "Abdominal mass" "finding"))
+    (clinical_finding (snomed_concept "Fever" "finding"))
+    ;; Abnormal vaginal bleeding ⇢ 57
+    (clinical_finding (snomed_concept "Bleeding from vagina" "finding"))
+    (clinical_finding (snomed_concept "Menorrhagia" "finding"))
+    (clinical_finding (snomed_concept "Irregular periods" "finding"))
+    (clinical_finding (snomed_concept "Bleeding between periods" "finding"))
+    (clinical_finding (snomed_concept "Postcoital bleeding" "finding"))
+    (clinical_finding (snomed_concept "Pelvic swelling" "finding"))
+    (clinical_finding (snomed_concept "Pale complexion" "finding"))
+    (clinical_finding (snomed_concept "Dizziness" "finding"))
+    (clinical_finding (snomed_concept "Chest pain" "finding"))
+  )
+)
