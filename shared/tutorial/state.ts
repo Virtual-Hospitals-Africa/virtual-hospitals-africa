@@ -3,8 +3,9 @@
 // Pure functions for tutorial state navigation
 // =============================================================================
 
-import type { ScriptItem, TutorialHashState, TutorialStep } from './types.ts'
+import type { ScriptItem, TutorialHashState } from './types.ts'
 import { TUTORIAL_STEPS } from './types.ts'
+import type { TutorialStep } from './types.ts'
 
 // -----------------------------------------------------------------------------
 // State Factory
@@ -13,7 +14,7 @@ import { TUTORIAL_STEPS } from './types.ts'
 /**
  * Create hash state for given step and index.
  */
-export function makeState(step: TutorialStep, index: number): TutorialHashState {
+export function makeState(step: string, index: number): TutorialHashState {
   return {
     step,
     index: String(index),
