@@ -109,6 +109,7 @@ export function TutorialDialogue({
             ? (
               <button
                 type='button'
+                data-tutorial-action='next'
                 onClick={onNext}
                 className={TUTORIAL_BUTTON_CLASSNAME}
               >

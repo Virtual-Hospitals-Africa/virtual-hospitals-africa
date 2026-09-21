@@ -33,6 +33,7 @@ const TUTORIAL_ORG = {
   inactive_reason: null,
   formatted_address: null,
   most_common_language_code: 'eng',
+  using_vha: true,
   waiting_room_id: null,
   reception_id: null,
 }
@@ -141,6 +142,7 @@ const EXTERNAL_ORG_BASE = {
   inactive_reason: null,
   formatted_address: null,
   most_common_language_code: 'eng',
+  using_vha: true,
   waiting_room_id: null,
   reception_id: null,
   seniority_order: 1,
@@ -728,9 +730,13 @@ export function getConsultationWarningSignsData(): WarningSignWithMaybeRecord[] 
     (name) => !base_signs.some((s) => s.name === name),
   ).map((name) => ({
     clinical_finding_s_expression: normalForm(`(clinical_finding (snomed_concept "${name}" "finding"))`),
+    key: name,
     name,
     description: null,
     category: 'Common Symptoms' as const,
+    predefined_attributes: [],
+    relevant_qualifiers: [],
+    onset_required: false,
   }))
 
   const all_signs = [...base_signs, ...custom_symptoms]

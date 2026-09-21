@@ -168,12 +168,16 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
           priority={null}
           priority_evaluation={null}
           organization_id='consult-tutorial-org-001'
+          escalation_candidates={[]}
+          nearest_hospital={null}
           this_visit_findings={[]}
           this_visit_diagnoses={[]}
           steps_completed={registration_steps_completed}
           patient_history={EMPTY_CONSULTATION_HISTORY}
           ContainerTag='div'
           workflow='registration'
+          current_workflow='registration'
+          refer_route='#'
           care_team={[]}
           sidebar_bottom={sidebar_bottom}
           onSubmit={(e) => e.preventDefault()}
@@ -197,7 +201,7 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
       <>
         <RotateWarning />
         <OpenEncounterWorkflowLayout
-          id='triage-tutorial'
+          id={active_triage_step}
           url={url}
           route={`/consultation-tutorial/triage/${active_triage_step}`}
           params={{}}
@@ -215,12 +219,16 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
             : null}
           priority_evaluation={null}
           organization_id='consult-tutorial-org-001'
+          escalation_candidates={[]}
+          nearest_hospital={null}
           this_visit_findings={[]}
           this_visit_diagnoses={[]}
           steps_completed={triage_steps_completed}
           patient_history={EMPTY_CONSULTATION_HISTORY}
           ContainerTag='div'
           workflow='triage'
+          current_workflow='triage'
+          refer_route='#'
           care_team={[]}
           sidebar_bottom={sidebar_bottom}
           onSubmit={(e) => e.preventDefault()}
@@ -266,12 +274,16 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
         }}
         priority_evaluation={null}
         organization_id='consult-tutorial-org-001'
+        escalation_candidates={[]}
+        nearest_hospital={null}
         this_visit_findings={sidebar_findings}
         this_visit_diagnoses={sidebar_diagnoses}
         steps_completed={steps_completed}
         patient_history={patient_history}
         ContainerTag='div'
         workflow='consultation'
+        current_workflow='consultation'
+        refer_route='#'
         care_team={CONSULTATION_CARE_TEAM}
         sidebar_bottom={sidebar_bottom}
         onSubmit={(e) => e.preventDefault()}
