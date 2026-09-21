@@ -13,17 +13,12 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "I'm Lindiwe Nkosi. This time I'll walk you through a patient consultation \u2014 from registration all the way through to billing.",
+    text: "I'm Lindiwe Nkosi. This we'll walk through a patient consultation, playing the role of Dr. Lufuno Zungu, a primary care doctor.",
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "You'll play the role of Dr. Lufuno Zungu, a primary care doctor at Pretoria East Medical Centre.",
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'Our platform connects patients, clinicians, labs, pharmacists, and insurers on a single digital health system.',
+    text: "Along the way we'll see how we can connect with labs, specialists, and insurers all seamlessly through a shared digital health system.",
   },
   {
     type: 'dialogue',
@@ -54,35 +49,13 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text: 'Before the consultation begins, our receptionist registers the patient and captures their insurance details.',
+    highlight: '#current-insurance'
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Patients can also use the patient app to declare their symptoms ahead of time, so the clinician is prepared before they even walk in.',
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Let's look at Nomsa's insurance information.",
-    highlight: CONSULTATION_TARGETS.INSURANCE_SECTION,
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'She is covered by Discovery Health on the KeyCare Plus plan.',
-    highlight: [CONSULTATION_TARGETS.INSURANCE_PROVIDER, CONSULTATION_TARGETS.INSURANCE_PLAN],
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: 'Her membership number is recorded so claims can be submitted directly to the insurer later.',
-    highlight: CONSULTATION_TARGETS.INSURANCE_MEMBERSHIP,
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text:
-      "The system supports multiple insurance policies per patient \u2014 they simply choose which one to use for each visit. Now let's review Nomsa's triage results.",
+    text: "The system can keep track of covered services under that private and/or public insurer and bill accordingly, as we'll see later",
+    highlight: '#current-insurance'
   },
 
   // =========================================================================
@@ -95,36 +68,18 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Nomsa has already been triaged. The triage nurse recorded her presenting symptoms using the warning signs checklist.',
+    text: 'Prior to the consultation, the triage nurse conducted triage, recording the patient\u2019s presenting symptoms.',
+    highlight: '#warning-signs',
+    link: {
+      title: 'See our tutorial outlining the whole triage process.',
+      href: '/tutorial',
+    },
   },
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'You can see that fatigue, bone pain, polyuria, and muscle weakness have been checked off. These are the symptoms Nomsa reported when she arrived.',
-  },
-
-  // =========================================================================
-  // SECTION 3b: TRIAGE — ASSIGN PRIORITY
-  // =========================================================================
-  {
-    type: 'step_transition',
-    to_step: 'triage_assign_priority',
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Her vitals were taken \u2014 blood pressure is slightly elevated at 145/92, but otherwise she's stable.",
-    highlight: "[data-tutorial='assign-priority-table']",
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "She's been assigned a Non-urgent priority \u2014 uncomfortable but not in immediate danger.",
-  },
-  {
-    type: 'dialogue',
-    speaker: 'guide',
-    text: "Now let's begin the consultation. As Dr. Zungu, you'll examine Nomsa and investigate her symptoms.",
+    text: 'Nomsa reported fatigue, bone pain, polyuria, and muscle weakness. These have been recorded as her chief complaint.',
+    highlight: '#warning-signs-selected-chips',
   },
 
   // =========================================================================
@@ -138,8 +93,8 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text:
-      "We're now in the consultation workflow. Notice the sidebar \u2014 the earlier steps from triage (chief complaint, vitals, symptoms, history) are already marked as completed.",
-    position: 'bottom-right',
+      "We're now in the consultation workflow where the doctor can enter anything related to the visit.",
+    highlight: CONSULTATION_TARGETS.EXAM_FINDINGS,
   },
   {
     type: 'dialogue',

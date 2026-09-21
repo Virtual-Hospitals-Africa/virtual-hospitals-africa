@@ -44,17 +44,17 @@ import { SidebarHealthWorkerMenu } from './sidebar/HealthWorkerMenu.tsx'
 
 const CONSULTATION_NAV_LINKS = WORKFLOW_NAV_LINKS.consultation.map((link) => ({
   ...link,
-  route: '#',
+  route: `/consultation-tutorial/consultation/${link.step}`,
 }))
 
 const REGISTRATION_NAV_LINKS = WORKFLOW_NAV_LINKS.registration.map((link) => ({
   ...link,
-  route: '#',
+  route: `/consultation-tutorial/registration/${link.step}`,
 }))
 
 const TRIAGE_NAV_LINKS = WORKFLOW_NAV_LINKS.triage.map((link) => ({
   ...link,
-  route: '#',
+  route: `/consultation-tutorial/triage/${link.step}`,
 }))
 
 // Steps that use the consultation OpenEncounterWorkflowLayout
@@ -161,7 +161,7 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
         <OpenEncounterWorkflowLayout
           id='registration-tutorial'
           url={url}
-          route={route}
+          route='/consultation-tutorial/registration/primary_care'
           params={{}}
           nav_links={REGISTRATION_NAV_LINKS}
           patient={patient}
@@ -189,7 +189,9 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
   if (current_step === 'triage_warning_signs' || current_step === 'triage_assign_priority') {
     const triage_steps_completed = current_step === 'triage_assign_priority'
       ? ['warning_signs', 'brief_history', 'height_and_weight', 'measure_vitals', 'additional_tasks_and_investigations']
-      : ['warning_signs']
+      : []
+
+    const active_triage_step = current_step === 'triage_warning_signs' ? 'warning_signs' : 'assign_priority'
 
     return (
       <>
@@ -197,7 +199,7 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
         <OpenEncounterWorkflowLayout
           id='triage-tutorial'
           url={url}
-          route={route}
+          route={`/consultation-tutorial/triage/${active_triage_step}`}
           params={{}}
           nav_links={TRIAGE_NAV_LINKS}
           patient={patient}
@@ -233,13 +235,24 @@ export function ConsultationTutorial({ url, route, patient, employee }: Props) {
   // Consultation steps: full encounter layout with drawer
   const patient_history = CONSULTATION_ENCOUNTER_STEPS.includes(current_step) ? CONSULTATION_PATIENT_HISTORY : EMPTY_CONSULTATION_HISTORY
 
+  // Map tutorial step to consultation workflow step for sidebar highlighting
+  const consultation_step_map: Partial<Record<ConsultationTutorialStep, string>> = {
+    examinations: 'examinations',
+    diagnostic_tests: 'diagnostic_tests',
+    diagnoses: 'diagnoses',
+    referral: 'close_visit',
+    billing: 'close_visit',
+    complete: 'close_visit',
+  }
+  const active_consultation_step = consultation_step_map[current_step] ?? 'examinations'
+
   return (
     <>
       <RotateWarning />
       <OpenEncounterWorkflowLayout
         id='consultation-tutorial'
         url={url}
-        route={route}
+        route={`/consultation-tutorial/consultation/${active_consultation_step}`}
         params={{}}
         nav_links={CONSULTATION_NAV_LINKS}
         patient={patient}

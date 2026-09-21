@@ -5,7 +5,7 @@ import { CONSULTATION_INSURANCE } from '../../../shared/consultation-tutorial/mo
 
 export function RegistrationStep() {
   return (
-    <div>
+    <div class='flex flex-col gap-3'>
       <FormSection header='Primary care'>
         <FormGrid columns={2}>
           <div>
