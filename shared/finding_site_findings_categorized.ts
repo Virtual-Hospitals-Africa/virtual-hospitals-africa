@@ -9,7 +9,7 @@ import type { FindingSiteFindings } from './finding_site_findings.ts'
   including_s_expressions claims anyway, so the search surfaces them by that route instead.
   ask_about: the rest, which the page has to ask the nurse about outright.
 */
-export type FindingSiteFindingsCategorized = Omit<FindingSiteFindings, 'clinical_finding_s_expressions'> & {
+export type FindingSiteFindingsCategorized = FindingSiteFindings & {
   matches: {
     by_top_level_finding_site: string[]
     by_including_s_expressions: string[]
@@ -29,6 +29,17 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
       'Structure of mouth and/or pharynx',
       'Tooth, gum, and/or supporting structure',
       'Scalp structure',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Headache" "finding"))',
+      '(clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))',
+      '(clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Symptom is continuous" "finding")))',
+      '(clinical_finding (snomed_concept "Morning headache" "finding"))',
+      '(clinical_finding (snomed_concept "Frequent headache" "finding"))',
+      '(clinical_finding (snomed_concept "Frequent headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Seizure" "finding"))',
+      '(clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -81,6 +92,24 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
       '(finding (interprets "Vision observable"))',
     ],
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Red eye" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in eye" "finding"))',
+      '(clinical_finding (snomed_concept "Sees haloes around lights" "finding"))',
+      '(clinical_finding (snomed_concept "Dilated pupil" "finding"))',
+      '(clinical_finding (snomed_concept "Itching of eye" "finding"))',
+      '(clinical_finding (snomed_concept "Scleral icterus" "finding"))',
+      '(clinical_finding (snomed_concept "Penetrating wound of eye" "disorder"))',
+      '(clinical_finding (snomed_concept "Penetration of eyeball with magnetic foreign body" "disorder"))',
+      '(clinical_finding (snomed_concept "Burn of cornea" "disorder"))',
+      '(clinical_finding (snomed_concept "Corneal ulcer" "disorder"))',
+      '(clinical_finding (snomed_concept "Corneal haze" "disorder"))',
+      '(clinical_finding (snomed_concept "Swelling of eyelid" "finding") (qualifier (snomed_concept "Entire" "qualifier value")) (qualifier (snomed_concept "Red color" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))',
+      '(clinical_finding (snomed_concept "Swelling of eyelid" "finding"))',
+      '(clinical_finding (snomed_concept "Edema of eyelid" "disorder") (qualifier (snomed_concept "New" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Laceration of eyelid" "disorder"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Red eye" "finding"))',
@@ -133,6 +162,14 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
       'Structure of mouth and/or pharynx',
       'Tooth, gum, and/or supporting structure',
     ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Numbness of face" "finding"))',
+      '(clinical_finding (snomed_concept "Swelling of eyelid" "finding") (qualifier (snomed_concept "Entire" "qualifier value")) (qualifier (snomed_concept "Red color" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))',
+      '(clinical_finding (snomed_concept "Pain in face" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in face" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Unable to close eyes" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))',
@@ -178,6 +215,20 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'label': 'Ear',
     'finding_site_structure': 'Ear structure',
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Itching of ear" "finding"))',
+      '(clinical_finding (snomed_concept "Ear discharge" "finding"))',
+      '(clinical_finding (snomed_concept "Pain of ear" "finding"))',
+      '(clinical_finding (snomed_concept "Pain of ear" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))',
+      '(clinical_finding (snomed_concept "Tinnitus" "finding"))',
+      '(clinical_finding (snomed_concept "Swelling of ear" "finding") (qualifier (snomed_concept "Red color" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))',
+      '(clinical_finding (snomed_concept "Tenderness in ear canal" "finding"))',
+      '(clinical_finding (snomed_concept "Perforation of tympanic membrane" "disorder"))',
+      '(clinical_finding (snomed_concept "Bulging tympanic membrane" "finding"))',
+      '(clinical_finding (snomed_concept "Bright red tympanic membrane" "finding"))',
+      '(clinical_finding (snomed_concept "Foreign body in ear" "disorder"))',
+      '(clinical_finding (snomed_concept "Impacted cerumen" "disorder"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Itching of ear" "finding"))',
@@ -211,6 +262,15 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
       '(finding (interprets "Sense of smell, function"))',
     ],
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Nasal discharge" "finding"))',
+      '(clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Thick" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Nasal congestion" "finding"))',
+      '(clinical_finding (snomed_concept "Bleeding from nose" "finding"))',
+      '(clinical_finding (snomed_concept "Sneezing" "finding"))',
+      '(clinical_finding (snomed_concept "Posterior rhinorrhea" "disorder"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Nasal discharge" "finding"))',
@@ -244,6 +304,14 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'finding_site_structure': 'Structure of mouth and/or pharynx',
     'excluding_structures': [
       'Tooth, gum, and/or supporting structure',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Pharyngeal swelling" "finding"))',
+      '(clinical_finding (snomed_concept "Enlarged tonsil" "finding"))',
+      '(clinical_finding (snomed_concept "Exudate on tonsils" "finding"))',
+      '(clinical_finding (snomed_concept "White patches on oral mucosa" "finding"))',
+      '(clinical_finding (snomed_concept "Ulcer of mouth" "disorder") (qualifier (snomed_concept "Pain" "finding")))',
+      '(clinical_finding (snomed_concept "Cracked lips" "finding"))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -285,6 +353,17 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
       '(finding (finding_site "Jaw region structure"))',
       '(finding (interprets "Eating, feeding and drinking abilities"))',
     ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Toothache" "finding"))',
+      '(clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Spontaneous" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))',
+      '(clinical_finding (snomed_concept "Bleeding gums" "finding"))',
+      '(clinical_finding (snomed_concept "Swollen gums" "finding"))',
+      '(clinical_finding (snomed_concept "Gingival recession" "disorder"))',
+      '(clinical_finding (snomed_concept "Mobile tooth" "finding"))',
+      '(clinical_finding (snomed_concept "Tooth absent" "finding"))',
+      '(clinical_finding (snomed_concept "Swelling of lower jaw region" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Toothache" "finding"))',
@@ -313,6 +392,15 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'finding_site_structure': 'Thoracic structure',
     'excluding_structures': [
       'Breast structure',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Chest pain" "finding"))',
+      '(clinical_finding (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "New" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Chest discomfort" "finding"))',
+      '(clinical_finding (snomed_concept "Radiating chest pain" "finding"))',
+      '(clinical_finding (snomed_concept "Chest pain on breathing" "finding"))',
+      '(clinical_finding (snomed_concept "Tenderness of chest wall" "finding"))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -354,6 +442,21 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'label': 'Breast',
     'finding_site_structure': 'Breast structure',
     'excluding_structures': [],
+    'including_s_expressions': [
+      '(finding (finding_site "Axillary region structure"))',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Breast lump" "finding"))',
+      '(clinical_finding (snomed_concept "Pain of breast" "finding"))',
+      '(clinical_finding (snomed_concept "Discharge from nipple" "disorder"))',
+      '(clinical_finding (snomed_concept "Bloody nipple discharge" "disorder"))',
+      '(clinical_finding (snomed_concept "Retraction of nipple" "finding"))',
+      '(clinical_finding (snomed_concept "Swelling of breast" "finding"))',
+      '(clinical_finding (snomed_concept "Maternal breastfeeding" "finding"))',
+      '(clinical_finding (snomed_concept "Sore nipple" "finding"))',
+      '(clinical_finding (snomed_concept "Fissure of nipple" "disorder"))',
+      '(clinical_finding (snomed_concept "Mass of axilla" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Breast lump" "finding"))',
@@ -366,10 +469,11 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
         '(clinical_finding (snomed_concept "Sore nipple" "finding"))',
         '(clinical_finding (snomed_concept "Fissure of nipple" "disorder"))',
       ],
-      'by_including_s_expressions': [],
+      'by_including_s_expressions': [
+        '(clinical_finding (snomed_concept "Mass of axilla" "finding"))',
+      ],
     },
     'ask_about': [
-      '(clinical_finding (snomed_concept "Mass of axilla" "finding"))',
       '(clinical_finding (snomed_concept "Fever" "finding"))',
       '(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))',
     ],
@@ -381,6 +485,18 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
       'Structure of anus and/or rectum',
       'Genital structure',
       'Urinary system structure',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Abdominal pain" "finding"))',
+      '(clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Right lower quadrant pain" "finding"))',
+      '(clinical_finding (snomed_concept "Right upper quadrant pain" "finding"))',
+      '(clinical_finding (snomed_concept "Abdominal discomfort" "finding"))',
+      '(clinical_finding (snomed_concept "Distension of abdomen" "finding"))',
+      '(clinical_finding (snomed_concept "Abdominal mass" "finding"))',
+      '(clinical_finding (snomed_concept "Abdominal rigidity" "finding"))',
+      '(clinical_finding (snomed_concept "Rebound tenderness" "finding"))',
+      '(clinical_finding (snomed_concept "Constipation" "finding"))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -427,6 +543,17 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'label': 'Anal & rectal',
     'finding_site_structure': 'Structure of anus and/or rectum',
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Anal pain" "finding"))',
+      '(clinical_finding (snomed_concept "Painless rectal bleeding" "finding"))',
+      '(clinical_finding (snomed_concept "Rectal discharge" "finding"))',
+      '(clinical_finding (snomed_concept "Tenesmus of anus and/or rectum" "finding"))',
+      '(clinical_finding (snomed_concept "Anal fissure" "disorder"))',
+      '(clinical_finding (snomed_concept "Hemorrhoids" "disorder"))',
+      '(clinical_finding (snomed_concept "Ulcer of anus" "disorder"))',
+      '(clinical_finding (snomed_concept "Anal warts" "disorder"))',
+      '(clinical_finding (snomed_concept "Pruritus ani" "disorder"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Anal pain" "finding"))',
@@ -459,6 +586,28 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'excluding_structures': [
       'Urinary system structure',
       'Structure of anus and/or rectum',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Rash of genitalia" "disorder"))',
+      '(clinical_finding (snomed_concept "Swelling of scrotum" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in scrotum" "finding"))',
+      '(clinical_finding (snomed_concept "Acute pain of scrotum" "finding"))',
+      '(clinical_finding (snomed_concept "Retractile testis" "disorder"))',
+      '(clinical_finding (snomed_concept "Mass of scrotum" "finding"))',
+      '(clinical_finding (snomed_concept "Tightly retracted foreskin" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in penis" "finding"))',
+      '(clinical_finding (snomed_concept "Penile swelling" "disorder"))',
+      '(clinical_finding (snomed_concept "Priapism" "disorder"))',
+      '(clinical_finding (snomed_concept "Vaginal discharge" "finding"))',
+      '(clinical_finding (snomed_concept "Vaginal discharge" "finding") (qualifier (snomed_concept "Abnormal" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Pruritus of vulva" "disorder"))',
+      '(clinical_finding (snomed_concept "Inflammation of vulva" "disorder"))',
+      '(clinical_finding (snomed_concept "Cervical excitation present" "finding"))',
+      '(clinical_finding (snomed_concept "Bleeding from vagina" "finding"))',
+      '(clinical_finding (snomed_concept "Menorrhagia" "finding"))',
+      '(clinical_finding (snomed_concept "Irregular periods" "finding"))',
+      '(clinical_finding (snomed_concept "Bleeding between periods" "finding"))',
+      '(clinical_finding (snomed_concept "Postcoital bleeding" "finding"))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -512,6 +661,13 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'excluding_structures': [
       'Genital structure',
     ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Dysuria" "finding"))',
+      '(clinical_finding (snomed_concept "Retention of urine" "disorder"))',
+      '(clinical_finding (snomed_concept "Urinary incontinence" "finding"))',
+      '(clinical_finding (snomed_concept "Oliguria" "finding"))',
+      '(clinical_finding (snomed_concept "Urethral discharge" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Dysuria" "finding"))',
@@ -545,6 +701,14 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'label': 'Joint',
     'finding_site_structure': 'Joint structure',
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Pain of joint" "finding"))',
+      '(clinical_finding (snomed_concept "Pain of joint" "finding") (qualifier (snomed_concept "Acute pain" "finding")))',
+      '(clinical_finding (snomed_concept "Pain of joint" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Joint swelling" "finding"))',
+      '(clinical_finding (snomed_concept "Joint warm" "finding"))',
+      '(clinical_finding (snomed_concept "Tenderness of joint" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Pain of joint" "finding"))',
@@ -572,6 +736,10 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'finding_site_structure': 'Structure of posterior region of trunk',
     'excluding_structures': [
       'Neck structure',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Backache" "finding"))',
+      '(clinical_finding (snomed_concept "Backache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -607,6 +775,13 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'label': 'Neck',
     'finding_site_structure': 'Neck structure',
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Neck pain" "finding"))',
+      '(clinical_finding (snomed_concept "Neck pain" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Stiff neck" "finding"))',
+      '(clinical_finding (snomed_concept "Injury of neck" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Mass of neck" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Neck pain" "finding"))',
@@ -638,6 +813,14 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'excluding_structures': [
       'Hand structure',
     ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Pain in upper limb" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in left arm" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in right arm" "finding"))',
+      '(clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Swelling of upper arm" "finding"))',
+      '(clinical_finding (snomed_concept "Deformity of upper limb" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Pain in upper limb" "finding"))',
@@ -668,6 +851,15 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'excluding_structures': [
       'Nail unit structure',
     ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Hand pain" "finding"))',
+      '(clinical_finding (snomed_concept "Swelling of hand" "finding"))',
+      '(clinical_finding (snomed_concept "Hand pain" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))',
+      '(clinical_finding (snomed_concept "Numbness of finger" "finding"))',
+      '(clinical_finding (snomed_concept "Weakness of hand" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in thumb" "finding"))',
+      '(clinical_finding (snomed_concept "Acquired trigger finger" "disorder"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Hand pain" "finding"))',
@@ -697,6 +889,16 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'finding_site_structure': 'Lower limb structure',
     'excluding_structures': [
       'Foot structure',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Pain in lower limb" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Pain in calf" "finding"))',
+      '(clinical_finding (snomed_concept "Pain in calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Swollen calf" "finding"))',
+      '(clinical_finding (snomed_concept "Swollen calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Injury of lower limb" "disorder"))',
+      '(clinical_finding (snomed_concept "Sciatica" "disorder"))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -743,6 +945,18 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'excluding_structures': [
       'Nail unit structure',
     ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Foot pain" "finding"))',
+      '(clinical_finding (snomed_concept "Foot pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Ulcer of foot" "disorder"))',
+      '(clinical_finding (snomed_concept "Gangrene of foot" "disorder"))',
+      '(clinical_finding (snomed_concept "Burning feet" "finding"))',
+      '(clinical_finding (snomed_concept "Paresthesia of foot" "finding"))',
+      '(clinical_finding (snomed_concept "Numbness of foot" "finding"))',
+      '(clinical_finding (snomed_concept "Heel pain" "finding"))',
+      '(clinical_finding (snomed_concept "Deformity of foot" "finding"))',
+      '(clinical_finding (snomed_concept "Hallux valgus AND bunion" "disorder"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Foot pain" "finding"))',
@@ -781,6 +995,26 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'excluding_structures': [
       'Nail unit structure',
       'Scalp structure',
+    ],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Generalized pruritus" "finding"))',
+      '(clinical_finding (snomed_concept "Generalized rash" "disorder"))',
+      '(clinical_finding (snomed_concept "Purpuric rash" "disorder"))',
+      '(clinical_finding (snomed_concept "Eruption caused by drug" "disorder"))',
+      '(clinical_finding (snomed_concept "Perioral dermatitis" "disorder"))',
+      '(clinical_finding (snomed_concept "Periocular dermatitis" "disorder"))',
+      '(clinical_finding (snomed_concept "Rash of genitalia" "disorder"))',
+      '(clinical_finding (snomed_concept "Blister of skin" "disorder"))',
+      '(clinical_finding (snomed_concept "Peeling of skin" "finding"))',
+      '(clinical_finding (snomed_concept "Pain of skin" "finding"))',
+      '(clinical_finding (snomed_concept "Itching of skin" "finding"))',
+      '(clinical_finding (snomed_concept "Eruption of skin" "disorder"))',
+      '(clinical_finding (snomed_concept "Skin lesion" "disorder"))',
+      '(clinical_finding (snomed_concept "Acne" "disorder"))',
+      '(clinical_finding (snomed_concept "Skin ulcer" "disorder"))',
+      '(clinical_finding (snomed_concept "Crust on skin" "finding"))',
+      '(clinical_finding (snomed_concept "Scaly skin" "finding"))',
+      '(clinical_finding (snomed_concept "Discoloration of skin" "finding"))',
     ],
     'matches': {
       'by_top_level_finding_site': [
@@ -828,6 +1062,12 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'label': 'Hair & scalp',
     'finding_site_structure': 'Scalp structure',
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Eruption of scalp" "disorder"))',
+      '(clinical_finding (snomed_concept "Pediculosis capitis" "disorder"))',
+      '(clinical_finding (snomed_concept "Scaly scalp" "finding"))',
+      '(clinical_finding (snomed_concept "Loss of scalp hair" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Eruption of scalp" "disorder"))',
@@ -854,6 +1094,16 @@ export const FINDING_SITE_FINDINGS_CATEGORIZED: FindingSiteFindingsCategorized[]
     'label': 'Nail',
     'finding_site_structure': 'Nail unit structure',
     'excluding_structures': [],
+    'clinical_finding_s_expressions': [
+      '(clinical_finding (snomed_concept "Nail deformity" "disorder"))',
+      '(clinical_finding (snomed_concept "Nail fold finding" "finding") (finding_site (snomed_concept "Structure of cuticle of nail" "body structure")))',
+      '(clinical_finding (snomed_concept "Yellow nails" "finding"))',
+      '(clinical_finding (snomed_concept "Nails crumble" "finding"))',
+      '(clinical_finding (snomed_concept "Nail discoloration" "finding"))',
+      '(clinical_finding (snomed_concept "Injury of nail" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))',
+      '(clinical_finding (snomed_concept "Beau\'s lines" "disorder"))',
+      '(clinical_finding (snomed_concept "Nails dirty" "finding"))',
+    ],
     'matches': {
       'by_top_level_finding_site': [
         '(clinical_finding (snomed_concept "Nail deformity" "disorder"))',

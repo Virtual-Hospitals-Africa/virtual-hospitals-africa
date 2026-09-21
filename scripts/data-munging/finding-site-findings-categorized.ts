@@ -29,7 +29,7 @@ import { TrxOrDbOrQueryCreator } from '../../types.ts'
   claims is sited within the page; what only the second run adds the including_s_expressions
   claim; and whatever neither run claims is left to ask about.
 */
-type FindingSiteFindingsCategorized = Omit<FindingSiteFindings, 'clinical_finding_s_expressions'> & {
+type FindingSiteFindingsCategorized = FindingSiteFindings & {
   matches: {
     by_top_level_finding_site: string[]
     by_including_s_expressions: string[]
@@ -99,7 +99,15 @@ export async function categorize(trx: TrxOrDbOrQueryCreator, site: FindingSiteFi
     const bucket = by_site.has(id) ? by_top_level_finding_site : by_including.has(id) ? by_including_s_expressions : ask_about
     bucket.push(s_expression)
   }
-  return { ...rest, matches: { by_top_level_finding_site, by_including_s_expressions }, ask_about }
+  return {
+    ...rest,
+    clinical_finding_s_expressions: [
+      ...by_top_level_finding_site,
+      ...by_including_s_expressions,
+    ],
+    matches: { by_top_level_finding_site, by_including_s_expressions },
+    ask_about,
+  }
 }
 
 if (import.meta.main) {
@@ -118,7 +126,7 @@ import type { FindingSiteFindings } from './finding_site_findings.ts'
   including_s_expressions claims anyway, so the search surfaces them by that route instead.
   ask_about: the rest, which the page has to ask the nurse about outright.
 */
-export type FindingSiteFindingsCategorized = Omit<FindingSiteFindings, 'clinical_finding_s_expressions'> & {
+export type FindingSiteFindingsCategorized = FindingSiteFindings & {
   matches: {
     by_top_level_finding_site: string[]
     by_including_s_expressions: string[]

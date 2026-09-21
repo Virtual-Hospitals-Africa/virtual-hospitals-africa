@@ -354,6 +354,9 @@ export const FINDING_SITE_FINDINGS: FindingSiteFindings[] = [
     label: 'Breast',
     finding_site_structure: 'Breast structure',
     excluding_structures: [],
+    including_s_expressions: [
+      '(finding (finding_site "Axillary region structure"))',
+    ],
     clinical_finding_s_expressions: [
       // The patient who is not breastfeeding
       '(clinical_finding (snomed_concept "Breast lump" "finding"))',

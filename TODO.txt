@@ -1,3 +1,8 @@
+Face
+  '(clinical_finding (snomed_concept "Difficulty talking" "finding"))',
+
+abdominal pain from follow ups didn't get priority
+
 TODO
 - collapsible drawer?
 - word wrapping on drawer

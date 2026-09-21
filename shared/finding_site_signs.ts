@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { FindingSite, FindingSiteSign } from '../types.ts'
-import { FINDING_SITE_FINDINGS } from './finding_site_findings.ts'
+import { FINDING_SITE_FINDINGS_CATEGORIZED } from './finding_site_findings_categorized.ts'
 import { finding, MatchingFinding } from './s_expression_schemas.ts'
 import { parseWithSchema } from './s_expression.ts'
 import { inverseSExpression } from './s_expression_inverse.ts'
@@ -31,7 +31,7 @@ function asSign({ s_expression, label }: { s_expression: string; label: string }
   }
 }
 
-export const FINDING_SITES: FindingSite[] = FINDING_SITE_FINDINGS.map(
+export const FINDING_SITES: FindingSite[] = FINDING_SITE_FINDINGS_CATEGORIZED.map(
   ({ label, finding_site_structure, excluding_structures, including_s_expressions, clinical_finding_s_expressions }) => {
     const signs = clinical_finding_s_expressions.map((s_expression) => asSign({ s_expression, label }))
     const keys = new Set(signs.map((sign) => sign.key))

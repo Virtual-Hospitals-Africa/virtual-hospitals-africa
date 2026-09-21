@@ -4,7 +4,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { nameAndCategorySnomedConceptBase } from '../../db/models/s_expression.ts'
 import { FINDING_SITES } from '../../shared/finding_site_signs.ts'
-import { FINDING_SITE_FINDINGS } from '../../shared/finding_site_findings.ts'
+import { FINDING_SITE_FINDINGS_CATEGORIZED } from '../../shared/finding_site_findings_categorized.ts'
 import { insertable_finding_base } from '../../shared/s_expression_schemas.ts'
 import { parseWithSchema } from '../../shared/s_expression.ts'
 import { humanReadableJson } from '../../util/humanReadableJson.ts'
@@ -102,7 +102,7 @@ describe('shared/finding_site_signs.ts', () => {
   })
 
   it('excludes only sites it also lists, so a page never excludes something unrecognised', () => {
-    const structures = new Set(FINDING_SITE_FINDINGS.map((site) => site.finding_site_structure))
+    const structures = new Set(FINDING_SITE_FINDINGS_CATEGORIZED.map((site) => site.finding_site_structure))
     for (const site of FINDING_SITES) {
       assert(Array.isArray(site.excluding_structures))
       for (const excluded of site.excluding_structures) {
@@ -114,7 +114,7 @@ describe('shared/finding_site_signs.ts', () => {
 
   it("carries each page's including_s_expressions, and every one of them claims some concept", async () => {
     for (const site of FINDING_SITES) {
-      const page = FINDING_SITE_FINDINGS.find((page) => page.finding_site_structure === site.snomed_concept.name)!
+      const page = FINDING_SITE_FINDINGS_CATEGORIZED.find((page) => page.finding_site_structure === site.snomed_concept.name)!
       assertEquals(site.including_s_expressions, page.including_s_expressions)
       for (const s_expression of site.including_s_expressions ?? []) {
         const matching = await searchSnomedConceptsMatching(db, s_expression)
