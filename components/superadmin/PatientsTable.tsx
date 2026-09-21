@@ -11,7 +11,8 @@ export default function PatientsTable({ patients }: { patients: RenderedPatient[
     {
       label: 'Patient',
       data(row) {
-        return <Person person={{ ...row, display_name: row.name || 'Unnamed' }} />
+        const href = row.completed_registration ? `/app/patients/${row.id}` : undefined
+        return <Person person={{ ...row, display_name: row.name || 'Unnamed', href }} />
       },
     },
     {

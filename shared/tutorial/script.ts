@@ -666,7 +666,7 @@ export function getStepAtIndex(idx: number): TutorialStep {
   for (let i = 0; i <= idx && i < TUTORIAL_SCRIPT.length; i++) {
     const item = TUTORIAL_SCRIPT[i]
     if (item.type === 'step_transition') {
-      current_step = item.to_step
+      current_step = item.to_step as TutorialStep
     }
   }
 

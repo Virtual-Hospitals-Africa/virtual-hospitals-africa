@@ -82,6 +82,7 @@ export function TutorialModal({ message, button_text, onAction }: Props) {
           <div className='flex justify-center'>
             <button
               type='button'
+              data-tutorial-action='modal'
               onClick={onAction}
               className='px-6 md:px-8 py-3 md:py-4 text-base md:text-xl font-bold text-white transition-transform active:translate-y-0.5 hover:brightness-110'
               style={{

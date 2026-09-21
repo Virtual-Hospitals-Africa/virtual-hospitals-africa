@@ -21,7 +21,7 @@ export function HealthInsuranceSection(
   )
 
   return (
-    <FormSection header='Current Insurance'>
+    <FormSection header='Current Insurance' id='current-insurance'>
       <CheckboxInput
         name='insurance.has_no_insurance'
         label='Patient is not currently covered by insurance'
