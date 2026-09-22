@@ -1,6 +1,6 @@
 export const INSURANCE_COMPANIES = {
   ZA: [
-    'Discovery Health',
+    'First Mutual Life',
     'Momentum Health',
     'Netcare Medical Scheme',
     'FedHealth',

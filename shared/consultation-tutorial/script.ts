@@ -270,7 +270,7 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'The remaining R1,720 is the insurer\u2019s liability and will be claimed from Discovery Health.',
+    text: 'The remaining R1,720 is the insurer\u2019s liability and will be claimed from First Mutual Life.',
     highlight: CONSULTATION_TARGETS.BILLING_INSURER_LIABLE,
   },
   {
@@ -287,7 +287,7 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
   {
     type: 'wait_click',
     target: CONSULTATION_TARGETS.BILLING_SUBMIT_BUTTON,
-    text: 'Click "Submit to Insurer" to send the claim to Discovery Health.',
+    text: 'Click "Submit to Insurer" to send the claim to First Mutual Life.',
   },
   {
     type: 'dialogue',

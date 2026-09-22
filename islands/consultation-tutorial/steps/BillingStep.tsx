@@ -36,7 +36,7 @@ export function BillingStep() {
                   clip-rule='evenodd'
                 />
               </svg>
-              Claim submitted to Discovery Health
+              Claim submitted to First Mutual Life
             </div>
           )}
       />

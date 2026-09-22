@@ -214,7 +214,7 @@ export const CONSULTATION_CARE_TEAM: RenderedCareTeamHealthWorker[] = [
 
 export const CONSULTATION_INSURANCE = {
   id: 'consult-insurance-001',
-  insurance_provider: 'Discovery Health',
+  insurance_provider: 'First Mutual Life',
   plan_name: 'KeyCare Plus',
   membership_number: 'DH-2024-889012',
   valid_from: '2024-01-01',
@@ -807,7 +807,7 @@ export const CONSULTATION_BILLING_CLAIM: BillingClaim = {
   id: 'consult-claim-001',
   patient_name: 'Nomsa Ndlovu',
   encounter_date: new Date().toISOString().split('T')[0],
-  insurance_provider: 'Discovery Health',
+  insurance_provider: 'First Mutual Life',
   plan_name: 'KeyCare Plus',
   membership_number: 'DH-2024-889012',
   status: 'ready_for_review',

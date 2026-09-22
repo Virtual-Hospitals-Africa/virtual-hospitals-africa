@@ -140,7 +140,7 @@ describeParallel(
               primary_doctor_name: 'Dr. Johnson',
               nearest_organization_id: organization.id,
               insurance: {
-                insurance_provider: 'Discovery Health',
+                insurance_provider: 'First Mutual Life',
                 plan_name: 'Executive Plan',
                 membership_number: '123456789',
                 valid_from,
