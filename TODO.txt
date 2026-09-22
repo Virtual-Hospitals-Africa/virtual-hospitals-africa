@@ -45,3 +45,23 @@ Triage Route Patient Next Steps
     breathing worsens.
     If persistent wheeze or difficulty breathing despite adrenaline2, also give 1mL salbutamol 0.5% solution and 2mL ipratropium bromide solution in 4mL sodium chloride 0.9% via nebuliser every
 
+
+Common Symptoms (grouped by finding site) ->
+  findings to check for + possible diagnoses
+
+possible diagnoses ->
+  findings to check for = findings which, if present, would indicate the diagnosis
+
+(system_diagnosis_rule
+  probable = likely
+  ()
+)
+
+
+
+Screen for disease x / exposure
+  => 
+
+If someone is a miner =>
+  check for exposure to certain metals
+

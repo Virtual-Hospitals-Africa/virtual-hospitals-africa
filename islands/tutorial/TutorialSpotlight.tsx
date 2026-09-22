@@ -58,9 +58,11 @@ export function TutorialSpotlight({ target, clickable = false, portal = false }:
       target_bounds.value = combinedBounds(getElements())
     }
 
+    // A selector matching nothing contributes no bounds, as in combinedBounds, so look past it
     const elementNeedingScrollingIntoView = (): Element | undefined => {
       for (const elements of getElements()) {
         const [bounds] = combinedBounds([elements])
+        if (!bounds) continue
         const fills_page = bounds.height >= globalThis.innerHeight
         if (fills_page) return
         return elements[0]

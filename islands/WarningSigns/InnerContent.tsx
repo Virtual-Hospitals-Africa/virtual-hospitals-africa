@@ -40,7 +40,6 @@ import {
   noneOfTheAboveRequests,
 } from './follow_ups.ts'
 import { FollowUpsPanel } from './FollowUpsPanel.tsx'
-import { exists } from '../../util/exists.ts'
 import { showAlertMessage } from '../alert/AlertListener.tsx'
 import { higherPriority } from '../../shared/priorities.ts'
 import { buildPriorityEvaluation, dueToHypotheticalRelation } from '../../shared/priority_evaluation.ts'
@@ -118,12 +117,16 @@ export default function WarningSignsInnerContent({
   const follow_ups_needed = useSignal<FollowUpGroup[]>([])
   const none_of_the_above_saving = useSignal(false)
 
+  const root = useRef<HTMLDivElement>(null)
+
   /*
     Only follow ups still unanswered hold up the page. Ones being saved, whether a checked
     finding or a round of negatives, are answered already and may finish after submitting.
+    The tutorial renders this page outside a form, so there is nothing to hold up there.
   */
   useEffect(() => {
-    const warning_signs_form = exists(document.getElementById('warning_signs'))
+    const warning_signs_form = root.current?.closest('form')
+    if (!warning_signs_form) return
     function callback(event: SubmitEvent) {
       const unanswered = !none_of_the_above_saving.value &&
         follow_ups_needed.value.some((group) => group.findings_to_check_for.some((finding) => isUnanswered(checked_signs.value, finding)))
@@ -418,7 +421,7 @@ export default function WarningSignsInnerContent({
   }
 
   return (
-    <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs'>
+    <div className='flex flex-col gap-1.25 2xl:gap-4 w-full' id='warning-signs' ref={root}>
       <div className='sticky top-0 z-10 bg-white flex flex-col gap-1 pb-1'>
         <div className='flex gap-2 items-stretch'>
           <Search

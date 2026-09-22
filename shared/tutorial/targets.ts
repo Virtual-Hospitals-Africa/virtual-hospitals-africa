@@ -17,7 +17,10 @@ export const TUTORIAL_TARGETS = {
   WARNING_SIGNS_URGENT: '#priority-table-urgent',
   WARNING_SIGNS_COMMON_SYMPTOMS: '#priority-table-common-symptoms',
   WARNING_SIGNS_SEARCH: '#warning-signs-search',
+  // The Search island puts its id on the field wrapper, so the input itself is reached through it
+  WARNING_SIGNS_SEARCH_INPUT: '#warning-signs-search input',
   INSECT_BITE_CHECKBOX: 'label:has(#common-symptoms-insect-bite)', // from uniqueIdentifier() in WarningSigns
+  FINDING_MODAL_SAVE: 'button#finding-modal-save', // the modal checking a sign opens
   PATIENT_DRAWER: '#patient-drawer',
   PATIENT_DRAWER_THIS_VISIT: '#patient-drawer-this-visit',
   PATIENT_DRAWER_HISTORY: '#patient-drawer-history',
@@ -53,6 +56,8 @@ export const TUTORIAL_TARGETS = {
 
   // Route Patient step
   ROUTE_PATIENT_PANEL: "[data-tutorial='route-patient']",
+  // The next step triageNextStepRecommendations picks for Duduzile's urgent case
+  ROUTE_PATIENT_RECOMMENDED_NEXT_STEP: '#route_patient_next_step [data-option-value="check_with_colleague"]',
 } as const
 
 export type TutorialTarget = (typeof TUTORIAL_TARGETS)[keyof typeof TUTORIAL_TARGETS]

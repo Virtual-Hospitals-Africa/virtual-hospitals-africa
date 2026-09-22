@@ -242,6 +242,7 @@ export function FindingModalContents(
           {just_checked ? 'Cancel' : 'Remove'}
         </Button>
         <Button
+          id='finding-modal-save'
           variant='primary'
           className='flex-1'
           type='submit'

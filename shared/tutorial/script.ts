@@ -141,7 +141,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     text: "and we can search for any other finding that isn't a warning sign",
     highlight: [TUTORIAL_TARGETS.WARNING_SIGNS_SEARCH, '#priority-table-search-results'],
     input: {
-      field: 'input[aria-label="findings search"]',
+      field: TUTORIAL_TARGETS.WARNING_SIGNS_SEARCH_INPUT,
       value: 'migraine',
     },
     link: {
@@ -164,7 +164,7 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     speaker: 'guide',
     text: `Let's ask, "Duduzile what brings you in today?"`,
     input: {
-      field: 'input[aria-label="findings search"]',
+      field: TUTORIAL_TARGETS.WARNING_SIGNS_SEARCH_INPUT,
       value: '',
     },
   },
@@ -178,6 +178,12 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
     type: 'wait_click',
     target: TUTORIAL_TARGETS.INSECT_BITE_CHECKBOX,
     text: 'Click "Insect bite" under Common Symptoms to record it.',
+    position: 'top-left',
+  },
+  {
+    type: 'wait_click',
+    target: TUTORIAL_TARGETS.FINDING_MODAL_SAVE,
+    text: 'Checking a sign opens its details, where onset, severity and body site can be added. Click "Save to Record".',
     position: 'top-left',
   },
   {
@@ -583,15 +589,15 @@ export const TUTORIAL_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: 'Based on the anaphylaxis diagnosis, we are recommended to manage and refer the case',
-    highlight: '#route_patient_next_step [data-option-value="manage_and_refer"]',
+    text: 'Based on the anaphylaxis diagnosis, we are recommended to check with a colleague while we manage the case',
+    highlight: TUTORIAL_TARGETS.ROUTE_PATIENT_RECOMMENDED_NEXT_STEP,
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text:
       'The system identified tasks for us to do, namely raise their legs, provide face oxygen, and to administer epinephrine, sodium chloride 0.9%, hydrocortisone, and promethazine.',
-    highlight: '#route_patient_next_step [data-option-value="manage_and_refer"]',
+    highlight: TUTORIAL_TARGETS.ROUTE_PATIENT_RECOMMENDED_NEXT_STEP,
   },
   {
     type: 'dialogue',
