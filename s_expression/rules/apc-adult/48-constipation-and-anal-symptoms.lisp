@@ -6,7 +6,6 @@
   (check_for
     (clinical_finding (snomed_concept "Abdominal pain" "finding"))
     (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
-    (clinical_finding (snomed_concept "Distension of abdomen" "finding"))
     (clinical_finding (snomed_concept "Unable to break wind" "finding"))
   )
 )
