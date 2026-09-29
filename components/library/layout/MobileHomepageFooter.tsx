@@ -56,8 +56,8 @@ export function MobileHomepageFooter({
   })
 
   return (
-    <nav className="md:hidden shrink-0 border-t-[1.5px] border-gray-300 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_10px_rgba(30,27,24,0.06)]">
-      <ul className="flex h-[60px] items-end justify-between px-6 pb-1">
+    <nav className='md:hidden shrink-0 border-t-[1.5px] border-gray-300 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_10px_rgba(30,27,24,0.06)]'>
+      <ul className='flex h-[60px] items-end justify-between px-6 pb-1'>
         {MOBILE_FOOTER_ITEMS.map((item) => {
           const link = linkByTitle(nav_links, item.source_title)
           const item_route = 'route' in item ? item.route : link.route
@@ -82,9 +82,7 @@ export function MobileHomepageFooter({
         <li>
           <form
             method='POST'
-            action={tutorial
-              ? undefined
-              : `/app/organizations/${employee.organization_id}/patients/start-emergency-escalation`}
+            action={tutorial ? undefined : `/app/organizations/${employee.organization_id}/patients/start-emergency-escalation`}
           >
             <button
               type={tutorial ? 'button' : 'submit'}

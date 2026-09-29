@@ -2,10 +2,7 @@ import { useSignal } from '@preact/signals'
 import { useEffect } from 'preact/hooks'
 import Avatar from '../components/library/Avatar.tsx'
 import { LogoWithFullText } from '../components/library/Logo.tsx'
-import {
-  ArrowRightOnRectangleIcon,
-  UserIcon,
-} from '../components/library/icons/heroicons/outline.tsx'
+import { ArrowRightOnRectangleIcon, UserIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { Maybe } from '../types.ts'
 
 export function MobileAccountMenu({
