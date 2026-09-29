@@ -16,6 +16,7 @@ import { attachTrx } from '../../backend/attachTrx.ts'
 import { assert } from 'std/assert/assert.ts'
 import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 import { HealthWorkerHomePageLayout } from '../../components/library/layout/HealthWorkerHomePage.tsx'
+import { MobileHomepageFooter } from '../../components/library/layout/MobileHomepageFooter.tsx'
 import { getHealthWorkerCookie, getSessionCookie, session_key } from '../../shared/session_cookie.ts'
 import { __local_storage__ } from '../../backend/local_storage.ts'
 import { exists } from '../../util/exists.ts'
@@ -211,22 +212,35 @@ export function HealthWorkerHomePage<
       rendered = rendered.children
     }
 
+    const employee = employees.fromHealthWorker(
+      ctx.state.health_worker,
+      ctx.params.organization_id,
+    )
+    const params = ctx.params && 'organization_id' in ctx.params ? ctx.params : {
+      ...ctx.params,
+      organization_id: defaultOrganizationId(ctx.state.health_worker),
+    }
+
     return (
       <HealthWorkerHomePageLayout
         title={title as string}
         url={ctx.url}
         route={ctx.route!}
-        employee={employees.fromHealthWorker(
-          ctx.state.health_worker,
-          ctx.params.organization_id,
-        )}
-        params={ctx.params && 'organization_id' in ctx.params ? ctx.params : {
-          ...ctx.params,
-          organization_id: defaultOrganizationId(ctx.state.health_worker),
-        }}
+        employee={employee}
+        params={params}
         health_worker_notification_count={health_worker_notification_count}
         health_worker_notification_priority={health_worker_notification_priority}
         drawer={drawer}
+        footer={
+          <MobileHomepageFooter
+            route={ctx.route!}
+            params={params}
+            url_search_params={ctx.url.searchParams}
+            employee={employee}
+            health_worker_notification_count={health_worker_notification_count}
+            health_worker_notification_priority={health_worker_notification_priority}
+          />
+        }
       >
         {rendered}
       </HealthWorkerHomePageLayout>

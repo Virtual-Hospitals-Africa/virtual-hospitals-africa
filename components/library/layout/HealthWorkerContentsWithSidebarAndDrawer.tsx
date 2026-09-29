@@ -9,7 +9,7 @@ export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   sidebar: ComponentChild
   avatar_url?: HeaderProps['avatar_url']
   mobile_account?: HeaderProps['mobile_account']
-  footer?: ComponentChild
+  footer: ComponentChild
   drawer?: ComponentChild
   children: ComponentChildren
   url: URL
