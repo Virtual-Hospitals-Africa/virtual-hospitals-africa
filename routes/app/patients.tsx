@@ -7,6 +7,7 @@ import Pagination from '../../components/library/Pagination.tsx'
 import { SearchInput } from '../../islands/form/inputs/search.tsx'
 import FilterBar from '../../components/dashboard/FilterBar.tsx'
 import SelectInput from '../../components/dashboard/filters/SelectInput.tsx'
+import { MobilePatientSearch } from '../../components/patients/MobilePatientSearch.tsx'
 import type { LoggedInHealthWorkerContext } from '../../types.ts'
 
 const json_handler = jsonSearchHandler(patients, {})
@@ -47,11 +48,21 @@ export default HealthWorkerHomePage(async function Patients(ctx: LoggedInHealthW
     title: 'Patients',
     children: (
       <>
-        <FilterBar action={ctx.url.pathname}>
-          <SearchInput value={search} />
-          <SelectInput param='sex' value={sex} options={SEX_OPTIONS} />
-          <SelectInput param='registration_status' value={registration_status} options={REGISTRATION_OPTIONS} placeholder='All' />
-        </FilterBar>
+        <MobilePatientSearch
+          action={ctx.url.pathname}
+          search={search}
+          sex={sex}
+          registration_status={registration_status}
+          sex_options={SEX_OPTIONS}
+          registration_options={REGISTRATION_OPTIONS}
+        />
+        <div className='hidden md:block'>
+          <FilterBar action={ctx.url.pathname}>
+            <SearchInput value={search} />
+            <SelectInput param='sex' value={sex} options={SEX_OPTIONS} />
+            <SelectInput param='registration_status' value={registration_status} options={REGISTRATION_OPTIONS} placeholder='All' />
+          </FilterBar>
+        </div>
         <PatientsTable patients={results} />
         <Pagination page={page} has_next_page={has_next_page} />
       </>

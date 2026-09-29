@@ -5,6 +5,7 @@ import HealthWorkerContentsWithSidebarAndDrawer from './HealthWorkerContentsWith
 import { HealthWorkerSidebarBottom } from '../HealthWorkerSidebarBottom.tsx'
 import { HealthWorkerHomePageSidebar } from '../sidebar/HealthWorkerHomePage.tsx'
 import { MobileHomepageFooter } from './MobileHomepageFooter.tsx'
+import { employeeDisplay } from '../../../util/healthWorkerDisplay.ts'
 
 /**
  * Standalone layout component for health worker home pages.
@@ -33,10 +34,20 @@ export function HealthWorkerHomePageLayout({
   health_worker_notification_priority?: Priority | null
   children: ComponentChildren
 }) {
+  const account = employeeDisplay(employee)
   return (
     <HealthWorkerContentsWithSidebarAndDrawer
       title={title}
       url={url}
+      avatar_url={account.avatar_url}
+      mobile_account={{
+        avatar_url: account.avatar_url,
+        display_name: account.display_name,
+        description: account.description,
+        profile_href: tutorial
+          ? '#'
+          : `/app/organizations/${employee.organization_id}/employees/${employee.id}`,
+      }}
       sidebar={
         <div className='hidden h-full md:block'>
           <HealthWorkerHomePageSidebar
