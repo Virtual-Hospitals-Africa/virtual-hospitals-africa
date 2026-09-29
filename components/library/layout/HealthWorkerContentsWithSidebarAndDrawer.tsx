@@ -7,6 +7,7 @@ import { SIDE_PANEL_HOST_CLASS, SIDE_PANEL_HOST_ID } from './side_panels.ts'
 export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   title: string
   sidebar: ComponentChild
+  footer?: ComponentChild
   drawer?: ComponentChild
   children: ComponentChildren
   url: URL
@@ -16,6 +17,7 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
   {
     title,
     sidebar,
+    footer,
     drawer,
     children,
     url,
@@ -34,6 +36,7 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
           <div className='flex-1 flex flex-col overflow-y-auto'>
             {children}
           </div>
+          {footer}
         </section>
         {drawer}
       </div>

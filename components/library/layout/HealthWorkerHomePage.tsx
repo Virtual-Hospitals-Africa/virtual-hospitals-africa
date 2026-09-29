@@ -4,6 +4,7 @@ import type { RenderedEmployee } from '../../../types.ts'
 import HealthWorkerContentsWithSidebarAndDrawer from './HealthWorkerContentsWithSidebarAndDrawer.tsx'
 import { HealthWorkerSidebarBottom } from '../HealthWorkerSidebarBottom.tsx'
 import { HealthWorkerHomePageSidebar } from '../sidebar/HealthWorkerHomePage.tsx'
+import { MobileHomepageFooter } from './MobileHomepageFooter.tsx'
 
 /**
  * Standalone layout component for health worker home pages.
@@ -37,14 +38,27 @@ export function HealthWorkerHomePageLayout({
       title={title}
       url={url}
       sidebar={
-        <HealthWorkerHomePageSidebar
+        <div className='hidden h-full md:block'>
+          <HealthWorkerHomePageSidebar
+            route={route}
+            params={params}
+            urlSearchParams={url.searchParams}
+            health_worker_notification_count={health_worker_notification_count}
+            health_worker_notification_priority={health_worker_notification_priority}
+            bottom={<HealthWorkerSidebarBottom employee={employee} />}
+            tutorial={tutorial}
+          />
+        </div>
+      }
+      footer={
+        <MobileHomepageFooter
           route={route}
           params={params}
-          urlSearchParams={url.searchParams}
+          url_search_params={url.searchParams}
+          employee={employee}
+          tutorial={tutorial}
           health_worker_notification_count={health_worker_notification_count}
           health_worker_notification_priority={health_worker_notification_priority}
-          bottom={<HealthWorkerSidebarBottom employee={employee} />}
-          tutorial={tutorial}
         />
       }
       drawer={drawer}
