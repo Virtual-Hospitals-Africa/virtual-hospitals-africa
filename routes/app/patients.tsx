@@ -27,6 +27,7 @@ export const handler = {
     if (!accept.includes('text/html')) {
       return json_handler.GET(ctx)
     }
+    return { data: undefined }
   },
 }
 
