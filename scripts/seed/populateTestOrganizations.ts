@@ -15,6 +15,7 @@ import { healthWorkerIdOfEmploymentId } from '../../db/models/health_worker_id.t
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
 import { EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS } from '../../shared/snomed_concepts.ts'
 import { exists } from '../../util/exists.ts'
+import { patientAgeDetermination } from '../../shared/patient_age_determination.ts'
 
 const CLINIC_ID = TEST_ORGANIZATION_UUIDS.ZA.clinic
 const HOSPITAL_ID = TEST_ORGANIZATION_UUIDS.ZA.hospital
@@ -718,6 +719,15 @@ function consultationDoctorForOrg(staff: Staff, organization_id: string, index: 
   return staff.hospital.doctors[index % staff.hospital.doctors.length]
 }
 
+function narrativeAgeDetermination({ date_of_birth }: PatientNarrative) {
+  const dob = new Date(date_of_birth)
+  const now = new Date()
+  const had_birthday_this_year = now.getMonth() > dob.getMonth() ||
+    (now.getMonth() === dob.getMonth() && now.getDate() >= dob.getDate())
+  const age_years = now.getFullYear() - dob.getFullYear() - (had_birthday_this_year ? 0 : 1)
+  return patientAgeDetermination({ age_years })
+}
+
 // ---------------------------------------------------------------------------
 // Phase 3: Create a patient with historical encounters
 // ---------------------------------------------------------------------------
@@ -760,6 +770,7 @@ async function createPatientWithHistory(
       patient_encounter_id: initial_encounter.patient_encounter_id,
       patient_encounter_employee_id: initial_encounter.employee.patient_encounter_employee_id,
       employment_id: initial_encounter.employee.employee_id,
+      patient_age_determination: narrativeAgeDetermination(narrative),
       procedure: {
         create_with_specific_snomed_concept_id: EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS.id,
       },
@@ -814,6 +825,7 @@ async function createPatientWithHistory(
         patient_encounter_id: encounter_id,
         patient_encounter_employee_id: encounter.all_employees_seen[0].patient_encounter_employee_id,
         employment_id: encounter.all_employees_seen[0].employee_id,
+        patient_age_determination: narrativeAgeDetermination(narrative),
         procedure: {
           create_with_specific_snomed_concept_id: EVALUATION_FOR_SIGNS_AND_SYMPTOMS_OF_PHYSICAL_HEALTH_PROBLEMS.id,
         },
@@ -954,6 +966,7 @@ async function createOpenEncounter(
         patient_encounter_id: encounter_id,
         patient_encounter_employee_id: triage_pee_id,
         employment_id: triage_employee.employee_id,
+        patient_age_determination: narrativeAgeDetermination(narrative),
         procedure: {
           create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
         },
@@ -980,6 +993,7 @@ async function createOpenEncounter(
       patient_encounter_id: encounter_id,
       patient_encounter_employee_id: triage_pee_id,
       employment_id: triage_employee.employee_id,
+      patient_age_determination: narrativeAgeDetermination(narrative),
       procedure: {
         create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.warning_signs.snomed_concept_id,
       },

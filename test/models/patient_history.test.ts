@@ -38,25 +38,20 @@ async function setup() {
 }
 
 // Records a finding for the patient (findings must hang off a procedure).
-async function insertHistoryFinding(
+function insertHistoryFinding(
   { nurse, encounter }: Awaited<ReturnType<typeof setup>>,
   finding: string,
 ) {
-  const procedure = await patient_procedures.insertOneNested(db, {
-    patient_id: encounter.patient.id,
-    patient_encounter_id: encounter.patient_encounter_id,
-    employment_id: nurse.employee_id,
-    procedure: parseExpressionExpectingAtom(
-      `(procedure ${PROCEDURE.s_expression} ${WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.s_expression})`,
-      'procedure',
-    ),
-  })
-  return patient_findings.insertOneNested(db, {
+  return patient_findings.insertMany(db, {
     patient_id: encounter.patient.id,
     patient_encounter_id: encounter.patient_encounter_id,
     patient_encounter_employee_id: encounter.employee.patient_encounter_employee_id,
-    procedure_id: procedure.procedure_id,
-    finding,
+    employment_id: nurse.employee_id,
+    patient_age_determination: 'adult',
+    procedure: {
+      create_with_specific_snomed_concept_id: WORKFLOW_STEP_SNOMED_CONCEPTS.triage!.measure_vitals.snomed_concept_id,
+    },
+    findings: [finding],
   })
 }
 
