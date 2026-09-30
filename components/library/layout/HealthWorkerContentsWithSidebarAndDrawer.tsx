@@ -1,5 +1,5 @@
 import { ComponentChild, ComponentChildren } from 'preact'
-import { Header } from '../Header.tsx'
+import { Header, HeaderProps } from '../Header.tsx'
 import { AlertListener } from '../../../islands/alert/AlertListener.tsx'
 import { Notifications } from '../../../islands/Notifications.tsx'
 import { SIDE_PANEL_HOST_CLASS, SIDE_PANEL_HOST_ID } from './side_panels.ts'
@@ -7,6 +7,9 @@ import { SIDE_PANEL_HOST_CLASS, SIDE_PANEL_HOST_ID } from './side_panels.ts'
 export type HealthWorkerContentsWithSidebarAndDrawerProps<T> = {
   title: string
   sidebar: ComponentChild
+  avatar_url?: HeaderProps['avatar_url']
+  mobile_account?: HeaderProps['mobile_account']
+  footer: ComponentChild
   drawer?: ComponentChild
   children: ComponentChildren
   url: URL
@@ -16,6 +19,9 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
   {
     title,
     sidebar,
+    avatar_url,
+    mobile_account,
+    footer,
     drawer,
     children,
     url,
@@ -30,10 +36,13 @@ export default function HealthWorkerContentsWithSidebarAndDrawer<T>(
           <Header
             title={title}
             variant='home page'
+            avatar_url={avatar_url}
+            mobile_account={mobile_account}
           />
           <div className='flex-1 flex flex-col overflow-y-auto'>
             {children}
           </div>
+          {footer}
         </section>
         {drawer}
       </div>
