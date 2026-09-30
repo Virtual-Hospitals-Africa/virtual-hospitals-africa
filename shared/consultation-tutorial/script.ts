@@ -49,13 +49,13 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
     type: 'dialogue',
     speaker: 'guide',
     text: 'Before the consultation begins, our receptionist registers the patient and captures their insurance details.',
-    highlight: '#current-insurance',
+    highlight: '#current-insurance'
   },
   {
     type: 'dialogue',
     speaker: 'guide',
     text: "The system can keep track of covered services under that private and/or public insurer and bill accordingly, as we'll see later",
-    highlight: '#current-insurance',
+    highlight: '#current-insurance'
   },
 
   // =========================================================================
@@ -92,7 +92,8 @@ export const CONSULTATION_SCRIPT: ScriptItem[] = [
   {
     type: 'dialogue',
     speaker: 'guide',
-    text: "We're now in the consultation workflow where the doctor can enter anything related to the visit.",
+    text:
+      "We're now in the consultation workflow where the doctor can enter anything related to the visit.",
     highlight: CONSULTATION_TARGETS.EXAM_FINDINGS,
   },
   {

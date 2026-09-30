@@ -59,7 +59,12 @@ export function MobileAccountDrawer({
               open.value = false
             }}
           />
-          <aside className='fixed top-0 right-0 z-50 flex h-full w-[200px] flex-col rounded-l-2xl border-l border-gray-200 bg-white pt-2 pb-4 shadow-[0_60px_45px_rgba(72,85,99,0.1)]'>
+          <aside
+            role='dialog'
+            aria-modal='true'
+            aria-label='Account'
+            className='fixed top-0 right-0 z-50 flex h-full w-[200px] flex-col rounded-l-2xl border-l border-gray-200 bg-white pt-2 pb-4 shadow-[0_60px_45px_rgba(72,85,99,0.1)]'
+          >
             <a href='/app' className='flex justify-center px-2'>
               <LogoWithFullText variant='indigo' className='h-[72px] w-[160px]' />
             </a>
