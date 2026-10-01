@@ -2542,6 +2542,12 @@ export type RenderedPatientInsurance = {
   is_dependent: boolean
 }
 
+export type InsuranceNetworkSearchOption = {
+  id: string
+  business_name: string
+  avatar_media_id?: Maybe<string>
+}
+
 export type Names = {
   name: string
   first_names: string
