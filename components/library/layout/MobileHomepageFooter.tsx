@@ -1,24 +1,22 @@
 import { assert } from 'std/assert/assert.ts'
 import type { Priority } from '../../../shared/priorities.ts'
 import type { LinkDef, RenderedEmployee } from '../../../types.ts'
-import { CalendarIcon, EmergencyIcon, FacilityIcon, MessagesIcon, PatientsIcon } from '../icons/mobile_footer.tsx'
+import { EmergencyIcon } from '../icons/mobile_footer.tsx'
 import { practitionerHomePageNavLinks } from '../sidebar/home_page_links/health_worker.ts'
 import { replaceParams } from '../../../util/replaceParams.ts'
 import cls from '../../../util/cls.ts'
 
 const MOBILE_FOOTER_ITEMS = [
-  { source_title: 'Patients', label: 'Patients', Icon: PatientsIcon },
+  { source_title: 'Patients', label: 'Patients' },
   {
     source_title: 'Organizations',
     label: 'Facility',
     route: '/app/organizations/:organization_id',
-    Icon: FacilityIcon,
   },
-  { source_title: 'Messaging', label: 'Messages', Icon: MessagesIcon },
+  { source_title: 'Messaging', label: 'Messages' },
   {
     source_title: 'Calendar',
     label: 'Calendar',
-    Icon: CalendarIcon,
     active_routes: ['/app/organizations/:organization_id/availability'],
   },
 ] as const
@@ -26,8 +24,9 @@ const MOBILE_FOOTER_ITEMS = [
 function linkByTitle(nav_links: LinkDef[], title: string) {
   const link = nav_links.find((item) => item.title === title)
   assert(link, `Missing nav link ${title}`)
-  assert(link.Icon, `Missing icon for ${title}`)
-  return { route: link.route }
+  const { Icon } = link
+  assert(Icon, `Missing icon for ${title}`)
+  return { route: link.route, Icon }
 }
 
 function routeMatches(link_route: string, current_route: string) {
@@ -73,6 +72,7 @@ export function MobileHomepageFooter({
     const match_routes = 'active_routes' in item ? [item_route, ...item.active_routes] : [item_route]
     return {
       ...item,
+      Icon: link.Icon,
       item_route,
       matched_route: longestMatchingRoute(match_routes, route),
     }
