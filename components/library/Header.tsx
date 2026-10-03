@@ -65,7 +65,7 @@ function MobileHomeHeader(
   return (
     <header className='flex items-center justify-between px-4 pt-4 pb-2 md:hidden'>
       <div className='size-9 shrink-0' />
-      <h1 className="min-w-0 flex-1 text-center font-['Inter'] text-[22px] font-semibold leading-[30px] text-[#1e1b18]">
+      <h1 className="min-w-0 flex-1 text-center font-['Inter'] text-[18px] font-semibold leading-6 text-[#1e1b18]">
         {title}
       </h1>
       <MobileAccountDrawer {...mobile_account} />

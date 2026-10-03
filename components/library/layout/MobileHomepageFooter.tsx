@@ -84,7 +84,7 @@ export function MobileHomepageFooter({
 
   return (
     <nav className='md:hidden shrink-0 border-t-[1.5px] border-gray-300 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_10px_rgba(30,27,24,0.06)]'>
-      <ul className='flex h-[60px] items-end justify-between px-6 pb-1'>
+      <ul className='flex h-[60px] items-center justify-between px-6 py-1'>
         {footer_items.map((item) => {
           const active = item.matched_route.length > 0 && item.matched_route.length === active_route_length
           const { Icon } = item
