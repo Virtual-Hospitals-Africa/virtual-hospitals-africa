@@ -4,13 +4,19 @@ import { LogoWithFullText } from './Logo.tsx'
 import { Maybe } from '../../types.ts'
 import { RenderedNotification } from '../../types.ts'
 import { HEADER_HEIGHT_PX } from './HeaderHeight.ts'
-// import Avatar from './Avatar.tsx'
+import { MobileAccountDrawer } from '../../islands/MobileAccountDrawer.tsx'
 // import { NotificationsButton } from '../../islands/Notifications.tsx'
 
 export type HeaderProps = {
   title: string
   variant: 'home page' | 'form' | 'just logo'
   avatar_url?: Maybe<string>
+  mobile_account?: {
+    avatar_url: Maybe<string>
+    display_name: string
+    description: string
+    profile_href: string
+  }
   notifications?: RenderedNotification[]
 }
 
@@ -50,8 +56,25 @@ function HeaderWithoutNav() {
   )
 }
 
+function MobileHomeHeader(
+  { title, mobile_account }: {
+    title: string
+    mobile_account: NonNullable<HeaderProps['mobile_account']>
+  },
+) {
+  return (
+    <header className='flex items-center justify-between px-4 pt-4 pb-2 md:hidden'>
+      <div className='size-9 shrink-0' />
+      <h1 className="min-w-0 flex-1 text-center font-['Inter'] text-[18px] font-semibold leading-6 text-[#1e1b18]">
+        {title}
+      </h1>
+      <MobileAccountDrawer {...mobile_account} />
+    </header>
+  )
+}
+
 export function Header(
-  { title, variant /*, notifications, avatar_url */ }: HeaderProps,
+  { title, variant, avatar_url, mobile_account /*, notifications */ }: HeaderProps,
 ) {
   if (variant === 'just logo') return <HeaderWithoutNav />
   const right = null
@@ -64,11 +87,21 @@ export function Header(
   //   )
   //   : null
 
-  return (
+  const desktop_header = (
     <HeaderBase>
       <HeaderLeft title={title} />
       {right}
     </HeaderBase>
+  )
+  if (variant !== 'home page' || avatar_url === undefined || !mobile_account) return desktop_header
+
+  return (
+    <>
+      <MobileHomeHeader title={title} mobile_account={mobile_account} />
+      <div className='hidden w-full md:block'>
+        {desktop_header}
+      </div>
+    </>
   )
 }
 
