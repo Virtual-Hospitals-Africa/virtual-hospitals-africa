@@ -1,4 +1,5 @@
 import { ComponentChild } from 'preact'
+import { ScrollActiveTabIntoView } from '../../islands/ScrollActiveTabIntoView.tsx'
 import cls from '../../util/cls.ts'
 import words from '../../util/words.ts'
 
@@ -32,21 +33,25 @@ export function Tab(
 }
 
 export function Tabs(
-  { tabs }: {
+  { tabs, navClassName, scroll_active_into_view }: {
     tabs: TabProps[]
+    navClassName?: string
+    scroll_active_into_view?: boolean
   },
 ) {
+  const class_name = navClassName ?? '-mb-px flex px-5 flex-wrap gap-x-8 gap-y-2'
+  const links = tabs.map((props) => (
+    <Tab
+      key={props.tab}
+      {...props}
+    />
+  ))
   return (
     <div className='border-b border-gray-200 pb-5 sm:pb-0 mb-4'>
       <div className='mt-3 sm:mt-4'>
-        <nav className='-mb-px flex px-5 flex-wrap gap-x-8 gap-y-2'>
-          {tabs.map((props) => (
-            <Tab
-              key={props.tab}
-              {...props}
-            />
-          ))}
-        </nav>
+        {scroll_active_into_view
+          ? <ScrollActiveTabIntoView className={class_name}>{links}</ScrollActiveTabIntoView>
+          : <nav className={class_name}>{links}</nav>}
       </div>
     </div>
   )

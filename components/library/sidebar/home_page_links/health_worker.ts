@@ -35,7 +35,12 @@ export function practitionerHomePageNavLinks({
       title: 'Open Encounters',
       Icon: ClockIcon,
     },
-    { route: '/app/employees', title: 'Employees', Icon: IdentificationIcon },
+    {
+      route: '/app/employees',
+      active_routes: ['/app/organizations/:organization_id/employees'],
+      title: 'Employees',
+      Icon: IdentificationIcon,
+    },
     { route: '/app/health_workers', title: 'Health Workers', Icon: UserGroupIcon },
     { route: '/app/patients', title: 'Patients', Icon: UsersIcon },
     { route: '/app/organizations', title: 'Organizations', Icon: HospitalIcon },

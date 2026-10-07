@@ -11,7 +11,8 @@ const MOBILE_FOOTER_ITEMS = [
   {
     source_title: 'Organizations',
     label: 'Facility',
-    route: '/app/organizations/:organization_id',
+    route: '/app/organizations/:organization_id/waiting_room',
+    active_routes: ['/app/organizations/:organization_id'],
   },
   { source_title: 'Messaging', label: 'Messages' },
   {
