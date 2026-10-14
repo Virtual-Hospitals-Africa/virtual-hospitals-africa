@@ -5,7 +5,6 @@ import { HealthWorkerHomePage } from '../../_middleware.tsx'
 import type { OrganizationContext } from '../../../../types.ts'
 
 export default HealthWorkerHomePage(
-  'Open Encounters',
   async function WaitingRoomPage(
     ctx: OrganizationContext,
   ) {
@@ -13,15 +12,18 @@ export default HealthWorkerHomePage(
     const can_register_patients = !!organization.location
     const open_encounters = await waiting_room.get(trx, health_worker, organization_employment)
 
-    return (
-      <>
-        <OrganizationTabs organization_id={organization.id} active_tab='open_encounters' />
-        <WaitingRoomView
-          organization_id={organization.id}
-          waiting_room={open_encounters}
-          can_register_patients={can_register_patients}
-        />
-      </>
-    )
+    return {
+      title: organization.name,
+      children: (
+        <>
+          <OrganizationTabs organization_id={organization.id} active_tab='open_encounters' />
+          <WaitingRoomView
+            organization_id={organization.id}
+            waiting_room={open_encounters}
+            can_register_patients={can_register_patients}
+          />
+        </>
+      ),
+    }
   },
 )
