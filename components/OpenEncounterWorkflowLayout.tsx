@@ -89,6 +89,7 @@ export function OpenEncounterWorkflowLayout({
           />
         )
         : undefined}
+      footer={<div>TODO</div>}
     >
       <ContainerTag method='POST' className='h-full flex flex-col' id={id}>
         <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>

@@ -35,6 +35,7 @@ export function SuperadminPage(
             urlSearchParams={ctx.url.searchParams}
           />
         }
+        footer={<div>TODO</div>}
       >
         <div className='px-4'>{children}</div>
       </HealthWorkerContentsWithSidebarAndDrawer>

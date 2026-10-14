@@ -1630,6 +1630,7 @@ export type LinkProps = {
 
 export type LinkDef = {
   route: string
+  active_routes?: string[]
   title: string
   count?: number
   notification_priority?: Priority | null

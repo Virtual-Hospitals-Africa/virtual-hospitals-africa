@@ -33,6 +33,7 @@ import {
 } from './tutorial/steps/index.ts'
 import { RotateWarning } from '../components/RotateWarning.tsx'
 import { HealthWorkerHomePageLayout } from '../components/library/layout/HealthWorkerHomePage.tsx'
+import { MobileHomepageFooter } from '../components/library/layout/MobileHomepageFooter.tsx'
 import { TUTORIAL_WAITING_ROOM } from '../shared/tutorial/mock-data.ts'
 import WaitingRoomView from '../components/waiting_room/View.tsx'
 import { EmergencyCallButton } from './EmergencyCallButton.tsx'
@@ -234,6 +235,17 @@ function WaitingRoomLayout({ url, route, employee }: { url: URL; route: string; 
       params={{}}
       employee={employee}
       tutorial
+      footer={
+        <MobileHomepageFooter
+          route={route}
+          params={{}}
+          url_search_params={url.searchParams}
+          employee={employee}
+          tutorial
+          health_worker_notification_count={0}
+          health_worker_notification_priority={null}
+        />
+      }
     >
       <div data-tutorial='waiting-room-table'>
         <WaitingRoomView

@@ -17,7 +17,7 @@ export default HealthWorkerHomePage<OrganizationContext>(
       title: organization.name,
       children: (
         <>
-          <OrganizationTabs organization_id={organization.id} active_tab='overview' />
+          <OrganizationTabs organization_id={organization.id} active_tab='information' />
           <OrganizationOverview organization={org_with_departments} />
         </>
       ),

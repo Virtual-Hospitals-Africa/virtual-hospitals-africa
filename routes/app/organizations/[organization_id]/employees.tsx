@@ -15,7 +15,7 @@ export default HealthWorkerHomePage<OrganizationContext>(
     })
 
     return {
-      title: `${organization.name} Employees`,
+      title: organization.name,
       children: (
         <>
           <OrganizationTabs organization_id={organization.id} active_tab='employees' />

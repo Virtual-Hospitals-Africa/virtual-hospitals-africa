@@ -2800,6 +2800,33 @@ export function HomeIcon(
   )
 }
 
+export function HospitalIcon(
+  props: JSX.SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <HeroIconOutline {...props}>
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        d='M3 21V3h18v18h-6.75M3 21h6.75'
+      >
+      </path>
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        d='M12 6.375v6.75M8.625 9.75h6.75'
+      >
+      </path>
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        d='M9.75 21V16.5h4.5v4.5'
+      >
+      </path>
+    </HeroIconOutline>
+  )
+}
+
 export function IdentificationIcon(
   props: JSX.SVGAttributes<SVGSVGElement>,
 ) {
