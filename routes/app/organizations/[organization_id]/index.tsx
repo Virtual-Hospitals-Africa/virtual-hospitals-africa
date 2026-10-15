@@ -1,26 +1,6 @@
-import { HealthWorkerHomePage } from '../../_middleware.tsx'
-import type { OrganizationContext } from '../../../../types.ts'
-import { organizations_with_departments } from '../../../../db/models/organizations_with_departments.ts'
-import OrganizationTabs from '../../../../components/organizations/OrganizationTabs.tsx'
-import OrganizationOverview from '../../../../components/organizations/OrganizationOverview.tsx'
-
-export default HealthWorkerHomePage<OrganizationContext>(
-  async function OrganizationPage(ctx) {
-    const { organization } = ctx.state
-
-    const org_with_departments = await organizations_with_departments.getById(
-      ctx.state.trx,
-      organization.id,
-    )
-
-    return {
-      title: organization.name,
-      children: (
-        <>
-          <OrganizationTabs organization_id={organization.id} active_tab='information' />
-          <OrganizationOverview organization={org_with_departments} />
-        </>
-      ),
-    }
-  },
-)
+// Fresh only runs ./_middleware.tsx for URLs that match a route, so this route
+// has to exist for the middleware to redirect /app/organizations/:organization_id
+// to /app/organizations/:organization_id/info. It is never actually rendered.
+export default function OrganizationRoot() {
+  return null
+}

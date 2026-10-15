@@ -1,7 +1,11 @@
+import type { JSX } from 'preact'
 import { OrganizationContext, OrganizationState, RenderedEmployee } from '../../../../types.ts'
 import { organizations } from '../../../../db/models/organizations.ts'
 import { assertOr403 } from '../../../../util/assertOr.ts'
 import { timeMiddlewareCallNext } from '../../../../backend/timeMiddleware.ts'
+import redirect from '../../../../util/redirect.ts'
+import OrganizationTabs from '../../../../components/organizations/OrganizationTabs.tsx'
+import { HealthWorkerHomePage } from '../../_middleware.tsx'
 
 export const handler = timeMiddlewareCallNext(async function attachOrganization(
   ctx: OrganizationContext,
@@ -22,6 +26,10 @@ export const handler = timeMiddlewareCallNext(async function attachOrganization(
   )
 
   const organization_pathname = `/app/organizations/${organization_id}`
+
+  if (ctx.url.pathname.replace(/\/+$/, '') === organization_pathname) {
+    return redirect(`${organization_pathname}/info`)
+  }
 
   const employee: RenderedEmployee = {
     ...health_worker,
@@ -45,3 +53,32 @@ export const handler = timeMiddlewareCallNext(async function attachOrganization(
 
   Object.assign(ctx.state, organization_state)
 })
+
+/**
+ * Wraps a page of the organization with the organization's name as the title
+ * and the organization tabs.
+ */
+export const OrganizationLayout = <
+  // deno-lint-ignore no-explicit-any
+  Context extends OrganizationContext<any> = OrganizationContext,
+>(
+  render: (ctx: Context) => JSX.Element | Promise<JSX.Element>,
+) =>
+  HealthWorkerHomePage<Context>(
+    async function OrganizationLayoutPage(ctx) {
+      const { organization } = ctx.state
+      const rendered = await render(ctx)
+      return {
+        title: organization.name,
+        children: (
+          <>
+            <OrganizationTabs
+              organization_id={organization.id}
+              pathname={ctx.url.pathname}
+            />
+            {rendered}
+          </>
+        ),
+      }
+    },
+  )
