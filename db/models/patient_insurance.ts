@@ -43,7 +43,8 @@ export const patient_insurance = {
     trx: TrxOrDbOrQueryCreator,
     insert: {
       patient_id: string
-      insurance_provider: string
+      insurance_provider_id?: string
+      insurance_provider_name: string
       plan_name?: Maybe<string>
       membership_number: string
       valid_from: string
