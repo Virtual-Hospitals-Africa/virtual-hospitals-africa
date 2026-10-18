@@ -50,7 +50,7 @@ export const handler = postHandler(
         : null,
     }
 
-    const { success, procedure_id, findings } = await patient_findings.insertMany(
+    const { procedure_id, records } = await patient_findings.insertOnePositive(
       trx,
       {
         patient_id,
@@ -58,7 +58,7 @@ export const handler = postHandler(
         patient_encounter_id,
         patient_age_determination,
         patient_encounter_employee_id,
-        findings: [finding_to_insert],
+        finding: finding_to_insert,
         procedure: {
           procedure_id: previously_completed_workflow_step_procedure_id,
           create_with_specific_snomed_concept_id: workflow_step_snomed_concept.id,
@@ -66,9 +66,7 @@ export const handler = postHandler(
         },
       },
     )
-    assert(success)
-    assert(procedure_id)
-    assert(findings.length === 1 && findings[0].id === finding_id)
+    assert(records.length === 1 && records.every(({ id }) => id === finding_id))
 
     if (altered_record_id) {
       await markAltered(trx, {

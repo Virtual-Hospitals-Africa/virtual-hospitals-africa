@@ -107,7 +107,7 @@ async function checkFors(
   return findings_to_check_for
 }
 
-// insertMany tags the findings with the due_tos they satisfy as part of the insert
+// insertMany tags the positive findings and measurements with the due_tos they satisfy as part of the insert
 async function insertFindings(
   encounter: Awaited<ReturnType<typeof insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest>>,
   findings: string[],

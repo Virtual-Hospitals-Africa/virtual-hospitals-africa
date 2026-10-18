@@ -7,7 +7,7 @@ import { buildExpression, maybeSnomedConceptBase, snomedConceptBase } from './s_
 import { Lang, QueryableSingleNode } from '../../shared/s_expression_schemas.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
-import { QUALIFIER_VALUE } from '../../shared/snomed_concepts.ts'
+import { NO_QUALIFIER, QUALIFIER_VALUE, UNKNOWN_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import { IntermediateBaseRecord, nonGroupedBaseQuery } from './patient_records_base.ts'
 import { ExpressionBuilder, RawBuilder, sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
@@ -60,6 +60,20 @@ type RecordInsertMany = {
   specific_snomed_concept: Lang['snomed_concept']
   value_snomed_concept: Lang['snomed_concept'] | null
   qualifiers?: Lang['qualifier'][]
+}
+
+/*
+  No and Unknown are written as their ids rather than looked up by name and category: a statement
+  of negative findings would otherwise carry a lookup per record for the same two values.
+*/
+function valueSnomedConceptId(
+  trx: TrxOrDbOrQueryCreator,
+  value_snomed_concept: Lang['snomed_concept'] | null,
+) {
+  const static_concept = [NO_QUALIFIER, UNKNOWN_QUALIFIER].find((concept) =>
+    concept.name === value_snomed_concept?.name && concept.category === value_snomed_concept?.category
+  )
+  return static_concept ? static_concept.id : maybeSnomedConceptBase(trx, value_snomed_concept)
 }
 
 export function baseInsertMany(
@@ -131,10 +145,7 @@ export function baseInsertMany(
         trx,
         specific_snomed_concept,
       ),
-      value_snomed_concept_id: maybeSnomedConceptBase(
-        trx,
-        value_snomed_concept,
-      ),
+      value_snomed_concept_id: valueSnomedConceptId(trx, value_snomed_concept),
     })
 
     for (const qualifier of qualifiers) {

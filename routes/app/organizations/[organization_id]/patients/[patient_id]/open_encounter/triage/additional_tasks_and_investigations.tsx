@@ -6,7 +6,7 @@ import AdditionalTasks from '../../../../../../../../components/triage/Additiona
 import { additional_tasks } from '../../../../../../../../db/models/additional_tasks.ts'
 import { positive_decimal } from '../../../../../../../../util/validators.ts'
 import { sExpressionZodValidator } from '../../../../../../../../shared/s_expression.ts'
-import { FindingNodeToInsert, InsertedRecord, MeasurementToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
+import { InsertedRecord, MeasurementToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 import { measurement, to_be_done } from '../../../../../../../../shared/s_expression_schemas.ts'
 import { events } from '../../../../../../../../db/models/events.ts'
@@ -99,9 +99,6 @@ export const handler = postHandler(
     return response
 
     async function insertFindings(): Promise<InsertedSummary> {
-      // const findings_to_insert: FindingNodeToInsert[] = check_for.asInsertableFindings(form_values.check_for)
-      const findings_to_insert: FindingNodeToInsert[] = []
-
       const measurements_to_insert: MeasurementToInsert[] = compactMap(form_values.measurements, (measurement) => {
         if (measurement.existing_record && measurement.existing_record.value.equals(measurement.value)) return
         return {
@@ -112,11 +109,11 @@ export const handler = postHandler(
         }
       })
 
-      if (!findings_to_insert.length && !measurements_to_insert.length) {
+      if (!measurements_to_insert.length) {
         return NoInsertOnAccountOfPreviouslyCompletedProcedureWithNoChanges
       }
 
-      const { success, procedure_id, findings, measurements } = await patient_findings.insertMany(
+      return await patient_findings.insertMeasurements(
         trx,
         {
           patient_id,
@@ -124,17 +121,12 @@ export const handler = postHandler(
           patient_encounter_id,
           patient_encounter_employee_id,
           patient_age_determination: exists(patient_age_determination),
-          findings: findings_to_insert,
           measurements: measurements_to_insert,
           procedure: completed_procedure || {
             create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
           },
         },
       )
-      assert(success)
-      assert(procedure_id)
-
-      return { procedure_id, records: [...findings, ...measurements] }
     }
 
     function dispatchEvent(
