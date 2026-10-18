@@ -1,4 +1,5 @@
-import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { sql } from 'kysely'
+import { RenderedEventListenerStatus, RenderedEventRow, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { EventInsertAny, EVENTS } from '../../events/handlers.ts'
 import { Client } from 'pg'
@@ -10,6 +11,9 @@ import { timeout } from '../../util/timeout.ts'
 import keys from '../../util/keys.ts'
 import { exists } from '../../util/exists.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
+
+// Arbitrary constant naming the advisory lock namespace of lockEncounterForRulesEngine
+const RULES_ENGINE_LOCK_CLASS = 7001
 
 // Key used to persist the pub/sub instance across HMR re-evaluations.
 // Without this, each HMR reload creates a new pg client while the old one
@@ -245,11 +249,25 @@ export const events = {
 
     const event = await trx
       .selectFrom('events')
-      .select(['type', 'data'])
+      .select(['type', 'data', 'patient_encounter_id'])
       .where('id', '=', listener.event_id)
       .executeTakeFirstOrThrow()
 
     return { ...listener, ...event }
+  },
+  /*
+    Held until the end of the transaction. Patient records are append-only, so health workers
+    never need this; it serialises the listeners that derive records from them (diagnoses,
+    tasks, priorities), which check what exists before inserting what is missing. It relies
+    on read committed: once the lock is granted, the next statement sees what the previous
+    holder committed. The two-int form keeps it apart from the single-key
+    hashtext(patient_encounter_id) locks taken by the triggers in the events migration.
+  */
+  async lockEncounterForRulesEngine(
+    trx: TrxOrDb,
+    { patient_encounter_id }: { patient_encounter_id: string },
+  ) {
+    await sql`SELECT pg_advisory_xact_lock(${RULES_ENGINE_LOCK_CLASS}, hashtext(${patient_encounter_id}))`.execute(trx)
   },
   // selectUnprocessedListeners(
   //   trx: TrxOrDbOrQueryCreator,

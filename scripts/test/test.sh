@@ -4,7 +4,6 @@ set -eo pipefail
 # shellcheck source=.env disable=SC1091
 source .env
 HTTP_SERVER_PORT=${HTTP_SERVER_PORT:-8004}
-HTTPS_PROXY_SERVER_PORT=${HTTPS_PROXY_SERVER_PORT:-8005}
 
 fail() {
   >&2 echo "$@"
@@ -128,14 +127,13 @@ else
   done
 fi
 
-if lsof -i "tcp:$HTTP_SERVER_PORT" > /dev/null && lsof -i "tcp:$HTTPS_PROXY_SERVER_PORT" > /dev/null; then
+if lsof -i "tcp:$HTTP_SERVER_PORT" > /dev/null; then
   test_servers_were_already_running=true
 fi
 
 cleanup() {
   if ! [ -z $test_servers_pid ]; then
     ./scripts/general-bash/kill_process_on_port.sh "$HTTP_SERVER_PORT" || true
-    ./scripts/general-bash/kill_process_on_port.sh "$HTTPS_PROXY_SERVER_PORT" || true
     kill $test_servers_pid > /dev/null || true
   fi
 }
@@ -143,7 +141,6 @@ cleanup() {
 run_tests() {
   DENO_TLS_CA_STORE=system \
   IS_TEST=true \
-  HTTPS_PROXY_SERVER_PORT=$HTTPS_PROXY_SERVER_PORT \
   MAX_PARALLEL_TESTS=$MAX_PARALLEL_TESTS \
   deno test \
     -A \
@@ -163,7 +160,6 @@ if $use_test_servers; then
     test_servers_pid="$!"
   else
     : >"/tmp/vha_server.log"
-    : >"/tmp/vha_proxy.log"
     : >"/tmp/vha_events.log"
   fi
 fi

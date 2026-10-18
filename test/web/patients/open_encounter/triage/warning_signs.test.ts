@@ -168,6 +168,7 @@ describeParallel('triage/warning_signs', () => {
             'Insect bite',
             'Back pain',
             'Constipation',
+            'Lump',
           ],
         }
 
@@ -380,6 +381,7 @@ describeParallel('triage/warning_signs', () => {
             'Insect bite',
             'Back pain',
             'Constipation',
+            'Lump',
           ],
         }
 
@@ -870,7 +872,7 @@ describeParallel('triage/warning_signs', () => {
           description: 'finding',
           priority: 'Very urgent',
           priority_by_virtue_of_matching_warning_sign: 'Pregnancy and abdominal pain',
-          finding_site: null,
+          chosen_finding_site: null,
           best_similarity: 1.4,
           onset_required: false,
           predefined_attributes: [

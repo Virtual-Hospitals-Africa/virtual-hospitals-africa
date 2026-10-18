@@ -22,7 +22,7 @@ describeParallel('/login', () => {
     assert(redirect_location, `Is self_url the issue? ${selfUrl()}`)
     assert(
       redirect_location.startsWith(
-        `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A${port}%2Flogged-in`,
+        `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=http%3A%2F%2Flocalhost%3A${port}%2Flogged-in`,
       ),
       redirect_location,
     )

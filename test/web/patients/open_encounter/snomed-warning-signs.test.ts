@@ -160,7 +160,7 @@ describeParallel('/app/snomed/warning-signs', () => {
         const pain_of_ear = byName('Pain of ear')
         assertMatches(pain_of_ear, {
           'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Pain of ear" "finding"))',
-          'finding_site': { name: 'Ear structure', category: 'body structure' },
+          'chosen_finding_site': { name: 'Ear structure', category: 'body structure' },
           'category': 'Search Results',
         })
 
@@ -171,7 +171,7 @@ describeParallel('/app/snomed/warning-signs', () => {
         const headache = byName('Headache (Ear structure)')
         assertMatches(headache, {
           'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Headache" "finding") ${EAR_SITE})`,
-          'finding_site': { name: 'Ear structure', category: 'body structure' },
+          'chosen_finding_site': { name: 'Ear structure', category: 'body structure' },
         })
 
         // Findings within the ear rank ahead of those around it, which rank ahead of those sited nowhere
@@ -203,7 +203,7 @@ describeParallel('/app/snomed/warning-signs', () => {
         assertMatches(results[0], {
           'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Pain" "finding") ${EAR_SITE})`,
           'name': 'Pain (Ear structure)',
-          'finding_site': { name: 'Ear structure', category: 'body structure' },
+          'chosen_finding_site': { name: 'Ear structure', category: 'body structure' },
         })
       },
     )
@@ -225,7 +225,7 @@ describeParallel('/app/snomed/warning-signs', () => {
         const left = results.find((result: { name: string }) => result.name === 'Otalgia of left ear')
         assertMatches(left, {
           'clinical_finding_s_expression': '(clinical_finding (snomed_concept "Otalgia of left ear" "finding"))',
-          'finding_site': { name: 'Left ear structure', category: 'body structure' },
+          'chosen_finding_site': { name: 'Left ear structure', category: 'body structure' },
         })
       },
     )
@@ -247,13 +247,13 @@ describeParallel('/app/snomed/warning-signs', () => {
         const hearing_difficulty = results.find((result: { name: string }) => result.name === 'Hearing difficulty (Ear structure)')
         assertMatches(hearing_difficulty, {
           'clinical_finding_s_expression': `(clinical_finding (snomed_concept "Hearing difficulty" "finding") ${EAR_SITE})`,
-          'finding_site': { name: 'Ear structure', category: 'body structure' },
+          'chosen_finding_site': { name: 'Ear structure', category: 'body structure' },
         })
       },
     )
 
     itParallel(
-      'sends no finding_site when none was chosen',
+      'sends no chosen_finding_site when none was chosen',
       async () => {
         const clinic = await createTestOrganization(db)
         const { fetchJSON } = await addTestEmployeeWithSession(db, {
@@ -267,7 +267,7 @@ describeParallel('/app/snomed/warning-signs', () => {
 
         assertMatches(results[0], {
           'name': 'Chest pain',
-          'finding_site': null,
+          'chosen_finding_site': null,
         })
       },
     )

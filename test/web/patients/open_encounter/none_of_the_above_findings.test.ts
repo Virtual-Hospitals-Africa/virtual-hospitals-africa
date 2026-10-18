@@ -4,7 +4,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../../../db/db.ts'
 import { describeParallel, itParallel } from 'test/_helpers/testParallel.ts'
 import waitUntilTestServerUp from 'test/_helpers/waitUntilTestServerUp.ts'
-import { asWarningSignsAdult, setupTriageNewPatient } from './triage/_setup.ts'
+import { setupTriageNewPatient } from './triage/_setup.ts'
 import { patient_findings } from '../../../../db/models/patient_findings.ts'
 import { patient_evaluations } from '../../../../db/models/patient_evaluations.ts'
 import { events } from '../../../../db/models/events.ts'
@@ -39,11 +39,11 @@ type Setup = Awaited<ReturnType<typeof setupTriageNewPatient>>
   prompts the "Check for Anaphylaxis" task. Both are recorded on the warning signs page, so
   the panel would list the remaining check_for findings of that task as unchecked.
 */
-function setupWithPossibleAnaphylaxis() {
-  return setupTriageNewPatient({
-    patient_demographics: {},
-    warning_signs: asWarningSignsAdult([], { pregnant: false }, INSECT_BITE, DIZZINESS),
-  })
+async function setupWithPossibleAnaphylaxis() {
+  const setup = await setupTriageNewPatient({ patient_demographics: {} })
+  await setup.postClinicalFinding({ s_expression: INSECT_BITE })
+  await setup.postClinicalFinding({ s_expression: DIZZINESS })
+  return setup
 }
 
 /*

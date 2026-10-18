@@ -64,14 +64,21 @@ async function onEventListener(event_listener_id: string) {
   try {
     console.log(event_listener.listener_name, event_listener.id, 'starting trx')
     const success_message = await db.transaction().setIsolationLevel('read committed').execute(
-      (trx) =>
-        listener(trx, {
+      async (trx) => {
+        // Listeners derive records from what exists, so two of an encounter's must not interleave
+        if (event_listener.patient_encounter_id) {
+          await events.lockEncounterForRulesEngine(trx, {
+            patient_encounter_id: event_listener.patient_encounter_id,
+          })
+        }
+        return listener(trx, {
           event_id: event_listener.event_id,
           listener_id: event_listener.id,
           listener_name: event_listener.listener_name,
           // deno-lint-ignore no-explicit-any
           data: parse_result.data as any,
-        }),
+        })
+      },
     )
     console.log(event_listener.listener_name, event_listener.id, 'events.processedListener')
     await events.processedListener(db, {

@@ -1,15 +1,14 @@
 import { readPositiveIntegerEnvironmentVariable } from './env.ts'
-import { exists } from './exists.ts'
 import memoize from './memoize.ts'
 
 export const selfUrl = memoize(function getSelfUrl(): string {
   if (Deno.env.has('SELF_URL')) {
     return Deno.env.get('SELF_URL')!
   }
-  const HTTPS_PROXY_SERVER_PORT = exists(
-    readPositiveIntegerEnvironmentVariable('HTTPS_PROXY_SERVER_PORT'),
-  )
-  return `https://localhost:${HTTPS_PROXY_SERVER_PORT}`
+  const port = readPositiveIntegerEnvironmentVariable('HTTP_SERVER_PORT') ||
+    readPositiveIntegerEnvironmentVariable('PORT') ||
+    (Deno.env.get('IS_TEST') ? 8004 : 8000)
+  return `http://localhost:${port}`
 })
 
 export default selfUrl
