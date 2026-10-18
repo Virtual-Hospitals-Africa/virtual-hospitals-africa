@@ -55,7 +55,18 @@
     "util": "deno task run:trusted ./util.ts",
     "rules:rebuild": "deno task compile:s_expressions && deno task docker db:seed recreate 31_rules",
     "rules:rebuild:prod": "deno task prod db:seed recreate 31_rules",
-    "dummyx": "triggerdockerrebuild"
+    "dummyx": "triggerdockerrebuild",
+    "bot:setup": "bash bot/setup.sh",
+    "bot:deploy": "bash bot/deploy.sh",
+    "bot:start": "bash bot/run.sh start",
+    "bot:stop": "bash bot/run.sh stop",
+    "bot:status": "bash bot/status.sh",
+    "bot:watch": "bash bot/watch.sh",
+    "bot:kill": "bash bot/kill.sh",
+    "bot:clearall": "bash bot/clearall.sh",
+    "bot:resume": "bash bot/resume.sh",
+    "bot:attach": "bash bot/attach.sh",
+    "bot:test": "bash bot/test.sh"
   },
   "compilerOptions": {
     "lib": [
@@ -142,6 +153,7 @@
     "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@1.1.2",
     "s-expression": "npm:s-expression@3.1.1",
     "@negrel/webpush": "jsr:@negrel/webpush@0.5.0",
+    "@notionhq/client": "npm:@notionhq/client@5.27.0",
     "vite": "npm:vite@^7.1.3",
     "tailwindcss": "npm:tailwindcss@4.1.18",
     "tailwindcss/plugin": "npm:/tailwindcss@4.1.10/plugin.js",

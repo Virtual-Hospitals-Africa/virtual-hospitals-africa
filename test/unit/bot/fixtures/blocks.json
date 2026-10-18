@@ -1,0 +1,73 @@
+[
+  {
+    "block": {
+      "object": "block",
+      "id": "b1",
+      "type": "heading_2",
+      "has_children": false,
+      "heading_2": { "rich_text": [{ "type": "text", "plain_text": "What happens", "href": null }], "color": "default", "is_toggleable": false }
+    },
+    "children": []
+  },
+  {
+    "block": {
+      "object": "block",
+      "id": "b2",
+      "type": "paragraph",
+      "has_children": false,
+      "paragraph": {
+        "rich_text": [
+          { "type": "text", "plain_text": "The join link ", "href": null },
+          { "type": "text", "plain_text": "404s", "href": "https://vha.example/join" }
+        ],
+        "color": "default"
+      }
+    },
+    "children": []
+  },
+  {
+    "block": {
+      "object": "block",
+      "id": "b3",
+      "type": "bulleted_list_item",
+      "has_children": true,
+      "bulleted_list_item": { "rich_text": [{ "type": "text", "plain_text": "Android", "href": null }], "color": "default" }
+    },
+    "children": [
+      {
+        "block": {
+          "object": "block",
+          "id": "b4",
+          "type": "to_do",
+          "has_children": false,
+          "to_do": { "rich_text": [{ "type": "text", "plain_text": "Pixel 8", "href": null }], "checked": true, "color": "default" }
+        },
+        "children": []
+      }
+    ]
+  },
+  {
+    "block": {
+      "object": "block",
+      "id": "b5",
+      "type": "code",
+      "has_children": false,
+      "code": { "rich_text": [{ "type": "text", "plain_text": "adb logcat", "href": null }], "language": "shell", "caption": [] }
+    },
+    "children": []
+  },
+  {
+    "block": {
+      "object": "block",
+      "id": "b6",
+      "type": "image",
+      "has_children": false,
+      "image": { "type": "file", "file": { "url": "https://files.notion.so/shot.png", "expiry_time": "2026-10-06T12:00:00.000Z" }, "caption": [] }
+    },
+    "children": []
+  },
+  {
+    "block": { "object": "block", "id": "b7", "type": "table_of_contents", "has_children": false, "table_of_contents": { "color": "default" } },
+    "children": []
+  }
+]
