@@ -41,7 +41,7 @@ async function runTestCases(
   const failures: Array<Failure & { name: string }> = []
 
   await forEach(cases_to_run, async ([name, fn]) => {
-    console.log('starting '+name)
+    console.log('starting ' + name)
     const result = await asResultAsync(() => Promise.resolve().then(fn))
     if (isSuccess(result)) return
     if (fail_fast) throw result.error

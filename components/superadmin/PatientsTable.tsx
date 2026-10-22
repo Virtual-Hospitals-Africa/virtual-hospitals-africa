@@ -6,13 +6,30 @@ import { EmptyState } from '../library/EmptyState.tsx'
 import { UsersIcon } from '../library/icons/heroicons/outline.tsx'
 import Badge from '../library/Badge.tsx'
 
-export default function PatientsTable({ patients }: { patients: RenderedPatient[] }): JSX.Element {
+function patientHref(patient: RenderedPatient, organization_id?: string) {
+  if (organization_id) {
+    return `/app/organizations/${organization_id}/patients/${patient.id}/case`
+  }
+  if (patient.completed_registration) return `/app/patients/${patient.id}`
+  return undefined
+}
+
+export default function PatientsTable(
+  { patients, organization_id }: { patients: RenderedPatient[]; organization_id?: string },
+): JSX.Element {
   const columns: TableColumn<RenderedPatient>[] = [
     {
       label: 'Patient',
       data(row) {
-        const href = row.completed_registration ? `/app/patients/${row.id}` : undefined
-        return <Person person={{ ...row, display_name: row.name || 'Unnamed', href }} />
+        return (
+          <Person
+            person={{
+              ...row,
+              display_name: row.name || 'Unnamed',
+              href: patientHref(row, organization_id),
+            }}
+          />
+        )
       },
     },
     {
