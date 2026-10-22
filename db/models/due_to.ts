@@ -11,7 +11,24 @@ import { assert } from 'std/assert/assert.ts'
 import { snomedConceptBase } from './s_expression.ts'
 import generateUUID from '../../util/uuid.ts'
 
-type DueToMatchType = 'finding' | 'measurement' | 'finding_site' | 'event_time_comparison'
+export type DueToMatchType = 'finding' | 'measurement' | 'finding_site' | 'event_time_comparison'
+
+export const ALL_DUE_TO_MATCH_TYPES: readonly DueToMatchType[] = ['finding', 'finding_site', 'measurement', 'event_time_comparison']
+
+/*
+  A match type can be left out when the records being matched cannot satisfy it, so that the
+  planner is not left to price a branch that can never return a row. A left out branch is
+  kept in the query, with a constant false condition that makes the planner treat it as empty.
+
+  - Measurements are only matched by the measurement branch. This relies on a data invariant,
+    checked by a test in test/models/patient_findings_insert.test.ts: no due_to is rooted at a
+    Measurement finding and no vital has a Finding site, so a measurement matches no
+    finding, finding_site or event_time_comparison due_to.
+  - Findings never match the measurement branch: it joins inserting_patient_measurements, which
+    is empty for them.
+*/
+export const MEASUREMENT_MATCH_TYPES: readonly DueToMatchType[] = ['measurement']
+export const FINDING_MATCH_TYPES: readonly DueToMatchType[] = ['finding', 'finding_site', 'event_time_comparison']
 
 export type HypotheticalDueToMatch = {
   due_to_id: string
@@ -106,9 +123,13 @@ function snomedDefinedAttribute(
 */
 function matchingQuery<Q extends AnyQueryCreator>(
   query: Q & WithDueToInputs<Q>,
-  { patient_age_determination }: { patient_age_determination: AgeDetermination },
+  { patient_age_determination, match_types = ALL_DUE_TO_MATCH_TYPES }: {
+    patient_age_determination: AgeDetermination
+    match_types?: readonly DueToMatchType[]
+  },
 ) {
   const qb = query as DueToInputQuery
+  const left_out = (type: DueToMatchType) => !match_types.includes(type)
   const age_filter = sql<AgeDetermination[]>`ARRAY[${patient_age_determination}]::age_determination[]`
 
   return qb
@@ -229,6 +250,7 @@ function matchingQuery<Q extends AnyQueryCreator>(
             )),
           ])
         )
+        .$if(left_out('finding'), (qb) => qb.where(literalBoolean(false)))
         .select([
           literalString('finding' as DueToMatchType).as('type'),
           'due_to.id as due_to_id',
@@ -267,6 +289,7 @@ function matchingQuery<Q extends AnyQueryCreator>(
             ),
           ])
         )
+        .$if(left_out('finding_site'), (qb) => qb.where(literalBoolean(false)))
         .select([
           literalString('finding_site' as DueToMatchType).as('type'),
           'due_to.id as due_to_id',
@@ -300,6 +323,7 @@ function matchingQuery<Q extends AnyQueryCreator>(
             ]),
           ])
         )
+        .$if(left_out('measurement'), (qb) => qb.where(literalBoolean(false)))
         .select([
           literalString('measurement' as DueToMatchType).as('type'),
           'due_to.id as due_to_id',
@@ -356,6 +380,7 @@ function matchingQuery<Q extends AnyQueryCreator>(
             ]),
           ])
         })
+        .$if(left_out('event_time_comparison'), (qb) => qb.where(literalBoolean(false)))
         .select([
           literalString('event_time_comparison' as DueToMatchType).as('type'),
           'due_to.id as due_to_id',
@@ -377,9 +402,12 @@ function matchingQuery<Q extends AnyQueryCreator>(
 */
 export function withTaggingOfInsertedRecords<Q extends AnyQueryCreator>(
   query: Q & WithDueToInputs<Q>,
-  { patient_age_determination }: { patient_age_determination: AgeDetermination },
+  { patient_age_determination, match_types }: {
+    patient_age_determination: AgeDetermination
+    match_types?: readonly DueToMatchType[]
+  },
 ): Q {
-  return matchingQuery(query, { patient_age_determination })
+  return matchingQuery(query, { patient_age_determination, match_types })
     .with('inserting_patient_record_satisfying_due_tos', (qb) =>
       qb.insertInto('patient_record_satisfying_due_tos')
         .columns(['due_to_id', 'patient_record_id'])
@@ -391,7 +419,7 @@ export function withTaggingOfInsertedRecords<Q extends AnyQueryCreator>(
 
 /*
   The DueToInputCtes for a finding that has not been inserted, built from literals exactly as
-  patient_findings.insertMany would insert it: the finding itself, a qualifier record per
+  patient_findings.insertOnePositive would insert it: the finding itself, a qualifier record per
   qualifier, an attribute record per attribute and an event per event-valued attribute. Only
   the finding's direct qualifiers count, as with an inserted finding.
 */

@@ -19,8 +19,9 @@ function hoursAgo(hours: number): string {
 }
 
 /*
-  insertMany tags the records it inserts with the due_tos they satisfy as part of the same
-  statement, so the rows are expected to be there as soon as the insert returns.
+  insertMany (through insertOnePositive and insertMeasurements) tags the records it inserts with
+  the due_tos they satisfy as part of the same statement, so the rows are expected to be there
+  as soon as the insert returns.
 */
 async function insertFindingAndReadSatisfiedDueTos(
   trx: TrxOrDb,

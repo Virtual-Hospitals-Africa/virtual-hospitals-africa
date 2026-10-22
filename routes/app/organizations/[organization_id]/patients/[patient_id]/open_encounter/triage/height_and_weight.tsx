@@ -66,7 +66,7 @@ export const handler = postHandler(
       ))
     }
 
-    await patient_findings.insertMany(trx, {
+    await patient_findings.insertMeasurements(trx, {
       patient_id,
       patient_encounter_id,
       patient_encounter_employee_id,
@@ -75,7 +75,6 @@ export const handler = postHandler(
       procedure: completed_procedure || {
         create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
       },
-      findings: [],
       measurements: measurements_to_insert,
     })
 

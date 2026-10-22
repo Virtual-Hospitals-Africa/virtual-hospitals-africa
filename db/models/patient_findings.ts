@@ -1,5 +1,5 @@
 import { AgeDetermination, Existence, ExtantProcedureOrCreationIntent, IdSelection, InsertRows, Maybe, TrxOrDbOrQueryCreator } from '../../types.ts'
-import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalBoolean, literalJsonArray, literalString, success_true } from '../helpers.ts'
+import { asText, blankSelection, caseWhenMatching, jsonBuildObject, literalBoolean, literalJsonArray, literalString } from '../helpers.ts'
 import generateUUID from '../../util/uuid.ts'
 import { baseInsertMany, patient_records, PatientRecordsSearch } from './patient_records.ts'
 import { sql } from 'kysely'
@@ -9,8 +9,8 @@ import { maybeSnomedConceptBase, snomedConceptBase } from './s_expression.ts'
 import { Priority, PRIORITY_SNOMED_CODES, TARGET_TIME_TO_TREATMENT_MINUTES } from '../../shared/priorities.ts'
 import { tews_component } from '../../util/validators.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
-import { InsertableFindingBase, Lang, MeasurementComparison } from '../../shared/s_expression_schemas.ts'
-import { asNode } from '../../shared/s_expression.ts'
+import { insertable_finding_base, InsertableFindingBase, Lang, MeasurementComparison } from '../../shared/s_expression_schemas.ts'
+import { asNode, parseWithSchema } from '../../shared/s_expression.ts'
 import { asExistence } from '../../shared/existence.ts'
 import { formatRecord } from '../../shared/patient_records.ts'
 import {
@@ -27,9 +27,14 @@ import {
   YES_QUALIFIER,
 } from '../../shared/snomed_concepts.ts'
 import isString from '../../util/isString.ts'
+import compact from '../../util/compact.ts'
+import { assert } from 'std/assert/assert.ts'
 
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
-import { withTaggingOfInsertedRecords } from './due_to.ts'
+import { FINDING_MATCH_TYPES, MEASUREMENT_MATCH_TYPES, withTaggingOfInsertedRecords } from './due_to.ts'
+import { patient_procedures } from './patient_procedures.ts'
+import { pMap } from '../../util/inParallel.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export type PatientFindingsSearch = PatientRecordsSearch & {
   procedure_id?: string | IdSelection
@@ -66,16 +71,43 @@ export type MeasurementToInsert = MeasurementComparison & {
   score?: number | null
 }
 
-type FindingInsert = InsertCommon & {
-  procedure_id: string
-  finding: FindingNodeToInsert | string
-}
 type FindingsInsert = InsertCommon & {
   employment_id: string
   patient_age_determination: AgeDetermination
   procedure: ExtantProcedureOrCreationIntent
   findings: Array<FindingNodeToInsert | string>
   measurements?: Array<MeasurementToInsert>
+}
+
+export type NegativeFindingToInsert = FindingNodeToInsert & {
+  existence: 'No'
+  priority?: null
+  score?: undefined
+}
+
+type InsertProcedureCommon = InsertCommon & {
+  employment_id: string
+  procedure: ExtantProcedureOrCreationIntent
+}
+
+type InsertNegativeInput = InsertProcedureCommon & {
+  findings: Array<NegativeFindingToInsert | string>
+}
+
+type InsertOnePositiveInput = InsertProcedureCommon & {
+  patient_age_determination: AgeDetermination
+  finding: FindingNodeToInsert | string
+}
+
+type InsertMeasurementsInput = InsertProcedureCommon & {
+  patient_age_determination: AgeDetermination
+  measurements: MeasurementToInsert[]
+}
+
+// The result of the precise methods, which spreads straight into the data of a FindingsAdded event
+export type InsertResult = {
+  procedure_id: string
+  records: InsertedRecord[]
 }
 
 export type InsertedRecord = {
@@ -99,6 +131,62 @@ function insertedRecord(
   }
 }
 
+// A finding as the node it is parsed to, ready for the insert
+function prepareFinding(
+  { patient_id, patient_encounter_id }: Pick<InsertCommon, 'patient_id' | 'patient_encounter_id'>,
+  finding: FindingNodeToInsert | string,
+) {
+  const finding_node = asNode(finding, 'finding')
+  assertHasProperty(finding_node, 'root_snomed_concept')
+  assertHasProperty(finding_node, 'specific_snomed_concept')
+  const priority = typeof finding === 'object' && 'priority' in finding ? finding.priority : undefined
+  const score = typeof finding === 'object' && 'score' in finding ? finding.score : undefined
+  const record_id = typeof finding === 'object' && finding.id ? finding.id : generateUUID()
+  return {
+    patient_id,
+    patient_encounter_id,
+    record_id,
+    ...finding_node,
+    priority,
+    score,
+  }
+}
+
+function prepareMeasurement(
+  { patient_id, patient_encounter_id }: Pick<InsertCommon, 'patient_id' | 'patient_encounter_id'>,
+  measurement: MeasurementToInsert,
+) {
+  const priority = 'priority' in measurement ? measurement.priority : undefined
+  const score = 'score' in measurement ? measurement.score : undefined
+  const { measurement: { snomed_concept, units }, value } = measurement as MeasurementComparison
+  return {
+    patient_id,
+    patient_encounter_id,
+    record_id: generateUUID(),
+    root_snomed_concept: { atom: 'snomed_concept' as const, ...MEASUREMENT_FINDING } as Lang['snomed_concept'],
+    specific_snomed_concept: snomed_concept,
+    value_snomed_concept: null,
+    measurement_node: { snomed_concept, units },
+    measurement_value: value,
+    attributes: [],
+    priority,
+    score,
+  }
+}
+
+type PreparedFinding = ReturnType<typeof prepareFinding>
+type PreparedMeasurement = ReturnType<typeof prepareMeasurement>
+
+function isNegativeValue(value_snomed_concept: Maybe<Lang['snomed_concept']>) {
+  return asExistence(value_snomed_concept) === 'No'
+}
+
+
+export function isNegativeFinding(finding: FindingNodeToInsert): finding is NegativeFindingToInsert {
+  const existence = asExistence(finding.value_snomed_concept)
+  return existence === 'No' && !finding.priority && finding.score == null
+}
+
 // The insert of the findings and everything hanging off them, before due_to tagging
 function insertSansDueTo(
   trx: TrxOrDbOrQueryCreator,
@@ -108,14 +196,13 @@ function insertSansDueTo(
     employment_id,
     patient_encounter_employee_id,
     procedure,
-    findings,
-    measurements = [],
-  }: FindingsInsert,
+    findings_to_insert,
+    measurements_to_insert,
+  }: InsertProcedureCommon & {
+    findings_to_insert: PreparedFinding[]
+    measurements_to_insert: PreparedMeasurement[]
+  },
 ) {
-  if (findings.length === 0 && measurements.length === 0) {
-    throw new Error('insertMany requires at least one finding or measurement')
-  }
-
   /*
     With if_not_already_exists, procedure.procedure_id is a query for a procedure that may or may
     not exist yet. The procedure_record CTE below resolves to either that existing record or the one
@@ -124,49 +211,7 @@ function insertSansDueTo(
   const procedure_id = procedure.if_not_already_exists ? sql<string>`(select id from procedure_record)` : procedure.procedure_id || generateUUID()
   const new_procedure_id = generateUUID()
 
-  // Parse findings and generate IDs
-  const findings_to_insert = findings.map((finding) => {
-    const finding_node = asNode(finding, 'finding')
-    assertHasProperty(finding_node, 'root_snomed_concept')
-    assertHasProperty(finding_node, 'specific_snomed_concept')
-    const priority = typeof finding === 'object' && 'priority' in finding ? finding.priority : undefined
-    const score = typeof finding === 'object' && 'score' in finding ? finding.score : undefined
-    const record_id = typeof finding === 'object' && finding.id ? finding.id : generateUUID()
-    return {
-      patient_id,
-      patient_encounter_id,
-      record_id,
-      ...finding_node,
-      priority,
-      score,
-    }
-  })
-
-  const measurements_to_insert = measurements.map((measurement) => {
-    const priority = 'priority' in measurement ? measurement.priority : undefined
-    const score = 'score' in measurement ? measurement.score : undefined
-    const { measurement: { snomed_concept, units }, value } = measurement as MeasurementComparison
-    return {
-      patient_id,
-      patient_encounter_id,
-      record_id: generateUUID(),
-      root_snomed_concept: { atom: 'snomed_concept' as const, ...MEASUREMENT_FINDING } as Lang['snomed_concept'],
-      specific_snomed_concept: snomed_concept,
-      value_snomed_concept: null,
-      measurement_node: { snomed_concept, units },
-      measurement_value: value,
-      attributes: [],
-      priority,
-      score,
-    }
-  })
-
   const records_to_insert = [...findings_to_insert, ...measurements_to_insert]
-
-  // Only a positive record can satisfy a due_to
-  // const positive_record_ids = records_to_insert
-  //   .filter((record) => asExistence(record.value_snomed_concept) === 'Yes')
-  //   .map((record) => record.record_id)
 
   const attribute_records: InsertRows<'patient_records'> = []
   const attribute_qualifiers: InsertRows<'patient_record_qualifiers'> = []
@@ -453,7 +498,25 @@ function insertSansDueTo(
       (qb) => score_values.length ? qb.insertInto('patient_evaluation_scores').values(score_values) : blankSelection(qb),
     )
 
-  return { query, findings_to_insert, measurements_to_insert }
+  return query
+}
+
+type InsertStatement = ReturnType<typeof insertSansDueTo>
+
+// What the statement inserted, with the id of the procedure it is under
+function selectInsertResult(
+  query: InsertStatement,
+  records: Array<PreparedFinding | PreparedMeasurement>,
+): Promise<InsertResult> {
+  return query
+    .selectFrom('inserting_records')
+    .innerJoin('procedure_record', (join) => join.onTrue())
+    .groupBy('procedure_record.id')
+    .select([
+      'procedure_record.id as procedure_id',
+      literalJsonArray(records.map(insertedRecord)).as('records'),
+    ])
+    .executeTakeFirstOrThrow()
 }
 
 export const patient_findings = base({
@@ -544,23 +607,147 @@ export const patient_findings = base({
 
     return formatRecord(finding)
   },
-  insertMany(
+  /*
+    Inserts negative findings (value No or Unknown) in one statement. None can satisfy a due_to, so
+    no due_to matching is in the statement: that matching cannot know the candidate set is empty,
+    and costs as if it were not. Throws on a finding that is positive or carries a priority or score.
+  */
+  async insertManyNegative(
     trx: TrxOrDbOrQueryCreator,
-    findings_insert: FindingsInsert,
-  ) {
-    const { query, findings_to_insert, measurements_to_insert } = insertSansDueTo(trx, findings_insert)
+    { findings, ...common }: InsertNegativeInput,
+  ): Promise<InsertResult> {
+    if (findings.length === 0) {
+      throw new Error('insertManyNegative requires at least one finding')
+    }
+    const findings_to_insert = findings.map((finding) => {
+      const prepared = prepareFinding(common, finding)
+      const existence = asExistence(prepared.value_snomed_concept)
+      assertEquals(existence, 'No', `insertManyNegative only inserts negative findings (value No or Unknown), but ${prepared.specific_snomed_concept.name} has value ${
+        prepared.value_snomed_concept?.name ?? 'null'
+      }`)
+      assertEquals(prepared.existence, existence, `insertManyNegative got existence ${prepared.existence} for a finding with value ${prepared.value_snomed_concept?.name}`)
+      assert(!prepared.priority)
+      assert(prepared.score == null)
+      
+      return prepared
+    })
 
-    return withTaggingOfInsertedRecords(query, { patient_age_determination: findings_insert.patient_age_determination })
-      .selectFrom('inserting_records')
-      .innerJoin('procedure_record', (join) => join.onTrue())
-      .groupBy('procedure_record.id')
-      .select([
-        success_true,
-        'procedure_record.id as procedure_id',
-        literalJsonArray(findings_to_insert.map(insertedRecord)).as('findings'),
-        literalJsonArray(measurements_to_insert.map(insertedRecord)).as('measurements'),
-      ])
-      .executeTakeFirstOrThrow()
+    const query = insertSansDueTo(trx, { ...common, findings_to_insert, measurements_to_insert: [] })
+    return await selectInsertResult(query, findings_to_insert)
+  },
+
+  /*
+    Inserts one positive finding, tagging it with the due_tos it satisfies in the same statement.
+    One at a time because a positive finding is matched against every due_to: the cost grows with
+    the number of candidates in the statement, and nothing is gained by batching, since a record
+    only ever matches a due_to through itself and its own qualifiers and attributes.
+  */
+  async insertOnePositive(
+    trx: TrxOrDbOrQueryCreator,
+    { finding, patient_age_determination, ...common }: InsertOnePositiveInput,
+  ): Promise<InsertResult> {
+    const prepared = prepareFinding(common, finding)
+    if (isNegativeValue(prepared.value_snomed_concept)) {
+      throw new Error(
+        `insertOnePositive only inserts positive findings, but ${prepared.specific_snomed_concept.name} has value ${prepared.value_snomed_concept?.name}, use insertManyNegative`,
+      )
+    }
+
+    const query = insertSansDueTo(trx, { ...common, findings_to_insert: [prepared], measurements_to_insert: [] })
+    return await selectInsertResult(
+      withTaggingOfInsertedRecords(query, { patient_age_determination, match_types: FINDING_MATCH_TYPES }),
+      [prepared],
+    )
+  },
+
+  // Inserts measurements, tagging them with the due_tos they satisfy in the same statement
+  async insertMeasurements(
+    trx: TrxOrDbOrQueryCreator,
+    { measurements, patient_age_determination, ...common }: InsertMeasurementsInput,
+  ): Promise<InsertResult> {
+    if (measurements.length === 0) {
+      throw new Error('insertMeasurements requires at least one measurement')
+    }
+    const measurements_to_insert = measurements.map((measurement) => prepareMeasurement(common, measurement))
+
+    const query = insertSansDueTo(trx, { ...common, findings_to_insert: [], measurements_to_insert })
+    return await selectInsertResult(
+      withTaggingOfInsertedRecords(query, { patient_age_determination, match_types: MEASUREMENT_MATCH_TYPES }),
+      measurements_to_insert,
+    )
+  },
+
+  /*
+    Inserts any mix of findings and measurements by dispatching to insertManyNegative (one
+    statement for every negative finding), insertMeasurements (one statement) and
+    insertOnePositive (one statement per positive finding), then merges the results.
+
+    Prefer calling the precise method when the kind of record is known up front: a large batch
+    of positive findings here silently becomes one statement per finding.
+
+    Whenever that is more than one statement the procedure is resolved first, once, and every
+    statement is linked to it. A single statement gets the caller's procedure as it is.
+
+    The statements are not atomic with each other unless `trx` is a transaction, as it is in a
+    request (backend/postHandler.ts), so a caller passing a plain `db` that fails part way is left
+    with the statements that completed.
+  */
+  async insertMany(
+    trx: TrxOrDbOrQueryCreator,
+    { findings, measurements = [], procedure, ...common }: FindingsInsert,
+  ) {
+    if (findings.length === 0 && measurements.length === 0) {
+      throw new Error('insertMany requires at least one finding or measurement')
+    }
+
+    // Each finding gets its id now, to find its result among the others and keep submission order
+    const finding_nodes = findings.map((finding) => {
+      const node: FindingNodeToInsert = typeof finding === 'string' ? parseWithSchema(finding, insertable_finding_base) : finding
+      return { ...node, id: node.id || generateUUID() }
+    })
+    const negatives: NegativeFindingToInsert[] = []
+    const positives: FindingNodeToInsert[] = []
+    for (const node of finding_nodes) {
+      if (isNegativeFinding(node)) negatives.push(node)
+      else positives.push(node)
+    }
+
+    const statements = (negatives.length ? 1 : 0) + (measurements.length ? 1 : 0) + positives.length
+    const shared = statements > 1
+      ? await patient_procedures.ensureForWorkflowStep(trx, {
+        patient_id: common.patient_id,
+        patient_encounter_id: common.patient_encounter_id,
+        employment_id: common.employment_id,
+        procedure,
+      })
+      : null
+    const insert_with = { ...common, procedure: shared ?? procedure }
+
+    const [negative_result, measurements_result, positive_results] = await Promise.all([
+      negatives.length ? patient_findings.insertManyNegative(trx, { ...insert_with, findings: negatives }) : null,
+      measurements.length ? patient_findings.insertMeasurements(trx, { ...insert_with, measurements }) : null,
+      pMap(positives, (finding) => patient_findings.insertOnePositive(trx, { ...insert_with, finding })),
+    ])
+
+    const results = compact([negative_result, measurements_result, ...positive_results])
+    const first_result = results.find(() => true)
+    assert(first_result)
+    const { procedure_id } = first_result
+    assert(results.every((result) => result.procedure_id === procedure_id), 'Every record is expected to be inserted under the same procedure')
+
+    const finding_results = new Map(
+      [negative_result, ...positive_results].flatMap((result) => result?.records ?? []).map((record) => [record.id, record]),
+    )
+    return {
+      success: true as const,
+      procedure_id,
+      findings: finding_nodes.map(({ id }) => {
+        const record = finding_results.get(id)
+        assert(record, `No result for the finding ${id}`)
+        return record
+      }),
+      measurements: measurements_result?.records ?? [],
+    }
   },
   QUALIFIERS_BY_EXISTENCE: {
     Yes: YES_QUALIFIER,

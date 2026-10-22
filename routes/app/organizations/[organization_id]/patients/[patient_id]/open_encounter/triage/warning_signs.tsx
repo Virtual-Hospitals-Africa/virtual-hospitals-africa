@@ -2,7 +2,7 @@ import { completeAndProceedToNextStep, completedProcedure } from '../_middleware
 import type { TriageContext } from '../../../../../../../../types.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import WarningSignsPage from '../../../../../../../../islands/WarningSigns/Page.tsx'
-import { FindingNodeToInsert, InsertedRecord, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
+import { InsertedRecord, NegativeFindingToInsert, patient_findings } from '../../../../../../../../db/models/patient_findings.ts'
 import { filter } from '../../../../../../../../util/inParallel.ts'
 import { WARNING_SIGNS } from '../../../../../../../../shared/warning_signs.ts'
 import { satisfyingSExpression } from '../../../../../../../../db/models/s_expression.ts'
@@ -127,7 +127,7 @@ export const handler = postHandler(
 
       const findings_to_insert = [...nodes.entries()]
         .filter(([s_expression]) => !already_recorded.has(s_expression))
-        .map(([, node]): FindingNodeToInsert => ({
+        .map(([, node]): NegativeFindingToInsert => ({
           ...node,
           existence: 'No',
           value_snomed_concept: { atom: 'snomed_concept', ...NO_QUALIFIER },
@@ -135,24 +135,19 @@ export const handler = postHandler(
 
       if (!findings_to_insert.length) return NoInsertOnAccountOfEveryUncheckedSignAlreadyRecorded
 
-      const { success, procedure_id, findings } = await patient_findings.insertMany(
+      return await patient_findings.insertManyNegative(
         trx,
         {
           patient_id,
           employment_id,
           patient_encounter_id,
           patient_encounter_employee_id,
-          patient_age_determination,
           findings: findings_to_insert,
           procedure: completed_procedure || {
             create_with_specific_snomed_concept_id: exists(workflow_step_snomed_concept?.id),
           },
         },
       )
-      assert(success)
-      assert(procedure_id)
-
-      return { records: findings, procedure_id }
     }
 
     function dispatchEvent(
