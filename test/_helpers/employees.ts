@@ -4,6 +4,8 @@ import { Falsy, Maybe, TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import { route } from '../_route.ts'
 import { addTestEmployee, TestHealthWorkerOpts } from '../../mocks/testEmployee.ts'
+import { logReadableJson } from '../../util/humanReadableJson.ts'
+import { logToFile } from '../../util/logToFile.ts'
 export { addTestEmployee }
 export type { TestHealthWorkerOpts }
 
@@ -62,12 +64,18 @@ export async function addSessionForEmployee<HealthWorker extends { id: string }>
 
     const method = init?.method || 'GET'
     const content_type = response.headers.get('content-type')
-    const include_response_text = !content_type?.startsWith('text/html')
-    const response_text = include_response_text && await response.text()
+    const is_html = content_type?.startsWith('text/html')
+    const response_text = await response.text()
+
+    let text_to_include = response_text
+    if (is_html) {
+      const filename = logToFile(response_text)
+      text_to_include = `(response logged to ${filename})`
+    }
 
     throw new Error(
       compact([
-        compact([`[${response.status}]`, response_text]).join(': '),
+        compact([`[${response.status}]`, text_to_include]).join(': '),
         maybeIndent(`${method} ${url}`),
         maybeIndent(prettyPrintBody(init?.body)),
       ]).join('\n'),

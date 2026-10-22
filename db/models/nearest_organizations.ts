@@ -1,62 +1,28 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { Coordinates, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { Coordinates, RenderedOrganization, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, SearchResult } from './_base.ts'
 import { organizations, OrganizationSearch } from './organizations.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'
+import { LRU } from 'tiny-lru'
+import db from '../db.ts'
 
 export type SearchOpts = OrganizationSearch & {
   location: Coordinates
   excluding_id?: string
 }
 
+export type NearestOrganization = RenderedOrganization & {
+    location: Coordinates
+    locality: string
+    formatted_address: string
+    distance_meters: number
+    google_maps_link: string
+  }
+
 export type NearestOrganizationSearchResult = SearchResult<
   typeof nearest_organizations
 >
-
-// type Wait = {
-//   status: 'open (short wait)'
-//   minutes: number
-//   display: string
-// } | {
-//   status: 'open (long wait)'
-//   minutes: number
-//   display: string
-// } | {
-//   status: 'closing soon'
-//   minutes: number
-//   display: string
-// } | {
-//   status: 'closed'
-// }
-
-// function randomWait(): Wait {
-//   const seed = Math.random()
-//   if (seed < .7) {
-//     return {
-//       status: 'open (short wait)',
-//       minutes: 57,
-//       display: '1 hour',
-//     }
-//   }
-//   if (seed < .8) {
-//     return {
-//       status: 'open (long wait)',
-//       minutes: 235,
-//       display: '4 hours',
-//     }
-//   }
-//   if (seed < .9) {
-//     return {
-//       status: 'closing soon',
-//       minutes: 110,
-//       display: '2 hours',
-//     }
-//   }
-//   return {
-//     status: 'closed',
-//   }
-// }
 
 export const nearest_organizations = base({
   top_level_table: 'organizations',
@@ -78,81 +44,19 @@ export const nearest_organizations = base({
         distance_sql.as('distance_meters'),
         sql<string>`'https://maps.google.com'`.as('google_maps_link'),
         sql<string>`'Open'`.as('status'),
-        // jsonArrayFrom(
-        //   employees.baseQuery(trx, {})
-        //     .where('employment.is_admin', '=', true)
-        //     .where('employment.organization_id', '=', eb.ref('organizations.id')),
-        // ).as('admins'),
-        // jsonArrayFrom(
-        //   employees.baseQuery(trx, {})
-        //     .where('employment.role', '=', 'doctor')
-        //     .where('employment.organization_id', '=', eb.ref('organizations.id')),
-        // ).as('doctors'),
-        // jsonArrayFrom(
-        //   eb.selectFrom('organization_departments')
-        //     .innerJoin(
-        //       'departments',
-        //       'departments.name',
-        //       'organization_departments.name',
-        //     )
-        //     .select([
-        //       'organization_departments.id',
-        //       'organization_departments.name',
-        //       'departments.requires_triage',
-        //     ])
-        //     .whereRef(
-        //       'organization_departments.organization_id',
-        //       '=',
-        //       'organizations.id',
-        //     ),
-        // ).as('departments'),
       ])
-      // .$if(
-      //   search.kind === 'hospital',
-      //   (qb) => qb.where('category', 'ilike', '%hospital%'),
-      // )
-      // .$if(
-      //   !!search.search,
-      //   (qb) => qb.where('organizations.name', 'ilike', `%${search.search}%`),
-      // )
-      // .$if(
-      //   !!search.excluding_id,
-      //   (qb) => qb.where('organizations.id', '!=', search.excluding_id!),
-      // )
-      // .$if(
-      //   !!search.has_doctors,
-      //   (qb) =>
-      //     qb.where(
-      //       (eb) =>
-      //         eb.selectFrom('employment as doctor_employment')
-      //           .whereRef(
-      //             'doctor_employment.organization_id',
-      //             '=',
-      //             'organizations.id',
-      //           )
-      //           .where('doctor_employment.role', '=', 'doctor')
-      //           .select((eb2) => eb2.fn.count('doctor_employment.id').as('doctor_count')),
-      //       '>',
-      //       0,
-      //     ),
-      // )
       .orderBy(
         distance_sql,
         'asc',
       )
   },
-  formatResult(organization): RenderedOrganization & {
-    location: Coordinates
-    locality: string
-    formatted_address: string
-    distance_meters: number
-    google_maps_link: string
-  } {
+  formatResult(organization): NearestOrganization {
     assertHasProperty(organization, 'location')
     assertHasProperty(organization, 'locality')
     assertHasProperty(organization, 'formatted_address')
     return organization
   },
+  nearestHospital,
   // formatResult: (organization) => ({
   //   ...organization,
   //   business_hours: 'M-F 9am-5pm',
@@ -162,3 +66,20 @@ export const nearest_organizations = base({
   //   },
   // }),
 })
+
+const lru = new LRU<NearestOrganization>(100)
+
+async function nearestHospital(organization: { id: string, location: Coordinates | null }): Promise<NearestOrganization | null> {
+  if (!organization.location) return null
+  if (lru.has(organization.id)) return lru.get(organization.id)!
+  const result = await nearest_organizations.findFirst(
+    db,
+    {
+      is_hospital: true,
+      location: organization.location,
+      excluding_id: organization.id,
+    },
+  )
+  lru.set(organization.id, result)
+  return result ?? null
+}

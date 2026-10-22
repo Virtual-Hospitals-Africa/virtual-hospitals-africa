@@ -34,6 +34,7 @@ import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
 import { FINDING_MATCH_TYPES, MEASUREMENT_MATCH_TYPES, withTaggingOfInsertedRecords } from './due_to.ts'
 import { patient_procedures } from './patient_procedures.ts'
 import { pMap } from '../../util/inParallel.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export type PatientFindingsSearch = PatientRecordsSearch & {
   procedure_id?: string | IdSelection
@@ -78,13 +79,8 @@ type FindingsInsert = InsertCommon & {
   measurements?: Array<MeasurementToInsert>
 }
 
-/*
-  A negative finding is one whose value is No or Unknown. Neither can satisfy a due_to, so
-  nothing needs tagging. It carries no priority or score: those are about positive findings
-  and measurements, so insertOnePositive and insertMeasurements are where they belong.
-*/
 export type NegativeFindingToInsert = FindingNodeToInsert & {
-  existence: 'No' | 'Unknown'
+  existence: 'No'
   priority?: null
   score?: undefined
 }
@@ -182,17 +178,13 @@ type PreparedFinding = ReturnType<typeof prepareFinding>
 type PreparedMeasurement = ReturnType<typeof prepareMeasurement>
 
 function isNegativeValue(value_snomed_concept: Maybe<Lang['snomed_concept']>) {
-  return asExistence(value_snomed_concept) !== 'Yes'
+  return asExistence(value_snomed_concept) === 'No'
 }
 
-/*
-  Classified by value, never by the existence field alone or by a null value: Yes can be stored as
-  a value (brief_history stores the Yes qualifier), and existence is derived from the value.
-  A negative-looking finding that carries a priority or score is not negative here.
-*/
+
 export function isNegativeFinding(finding: FindingNodeToInsert): finding is NegativeFindingToInsert {
   const existence = asExistence(finding.value_snomed_concept)
-  return existence !== 'Yes' && finding.existence === existence && !finding.priority && finding.score == null
+  return existence === 'No' && !finding.priority && finding.score == null
 }
 
 // The insert of the findings and everything hanging off them, before due_to tagging
@@ -630,19 +622,13 @@ export const patient_findings = base({
     const findings_to_insert = findings.map((finding) => {
       const prepared = prepareFinding(common, finding)
       const existence = asExistence(prepared.value_snomed_concept)
-      if (existence === 'Yes') {
-        throw new Error(
-          `insertManyNegative only inserts negative findings (value No or Unknown), but ${prepared.specific_snomed_concept.name} has value ${
-            prepared.value_snomed_concept?.name ?? 'null'
-          }`,
-        )
-      }
-      if (prepared.existence !== existence) {
-        throw new Error(`insertManyNegative got existence ${prepared.existence} for a finding with value ${prepared.value_snomed_concept?.name}`)
-      }
-      if (prepared.priority || prepared.score != null) {
-        throw new Error('insertManyNegative does not insert a priority or score, use insertOnePositive for a finding that has them')
-      }
+      assertEquals(existence, 'No', `insertManyNegative only inserts negative findings (value No or Unknown), but ${prepared.specific_snomed_concept.name} has value ${
+        prepared.value_snomed_concept?.name ?? 'null'
+      }`)
+      assertEquals(prepared.existence, existence, `insertManyNegative got existence ${prepared.existence} for a finding with value ${prepared.value_snomed_concept?.name}`)
+      assert(!prepared.priority)
+      assert(prepared.score == null)
+      
       return prepared
     })
 

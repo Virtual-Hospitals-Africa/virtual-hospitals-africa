@@ -88,7 +88,7 @@ export async function requestAsRecord(
     values_map.delete(key)
   }
 
-  assertOr400(values_map)
+  assertOr400(values_map, 'No values map')
 
   const files: { [key: string]: File } = {}
   values_map.forEach((value, key) => {
