@@ -56,6 +56,20 @@ async function referringEmployee(
   return employees.getById(trx, referral.employment_id)
 }
 
+async function referringEmployeeHasSession(
+  trx: TrxOrDbOrQueryCreator,
+  health_worker_id: string,
+): Promise<boolean> {
+  const session = await trx
+    .selectFrom('sessions')
+    .select('id')
+    .where('entity_type', '=', 'health_worker')
+    .where('entity_id', '=', health_worker_id)
+    .limit(1)
+    .executeTakeFirst()
+  return session != null
+}
+
 function currentWorkflowState(
   encounter: RenderedPatientOpenEncounter,
 ): CurrentWorkflowState | null {
@@ -112,6 +126,9 @@ export default async function PatientCasePage(ctx: OrganizationContext) {
       : Promise.resolve(null),
   })
 
+  const referring_employee = loaded.referring_employee
+  const referring_employee_online = referring_employee ? await referringEmployeeHasSession(trx, referring_employee.id) : false
+
   const case_href = `/app/organizations/${organization.id}/patients/${patient.id}/case`
   const back_href = patient.completed_registration
     ? `/app/organizations/${organization.id}/patients/${patient.id}/profile`
@@ -129,7 +146,8 @@ export default async function PatientCasePage(ctx: OrganizationContext) {
       this_visit_findings={loaded.this_visit_findings}
       this_visit_diagnoses={loaded.this_visit_diagnoses}
       history={loaded.history}
-      referring_employee={loaded.referring_employee}
+      referring_employee={referring_employee}
+      referring_employee_online={referring_employee_online}
     />
   )
 }

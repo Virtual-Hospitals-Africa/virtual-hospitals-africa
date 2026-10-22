@@ -1,5 +1,6 @@
 import type { ComponentChildren } from 'preact'
 import Avatar from '../../library/Avatar.tsx'
+import OnlineIndicator from '../../library/OnlineIndicator.tsx'
 import { EllipsisVerticalIcon, PhoneIcon } from '../../library/icons/heroicons/outline.tsx'
 import { organizationOf } from '../../../shared/employees.ts'
 import type { RenderedEmployee } from '../../../types.ts'
@@ -22,7 +23,13 @@ function ReferralAction(
 }
 
 export function ReferralCard(
-  { referring_employee }: { referring_employee: RenderedEmployee },
+  {
+    referring_employee,
+    referring_employee_online,
+  }: {
+    referring_employee: RenderedEmployee
+    referring_employee_online: boolean
+  },
 ) {
   return (
     <section
@@ -30,7 +37,10 @@ export function ReferralCard(
       className='flex w-full items-center justify-between gap-2 rounded-b-lg bg-white px-4 pb-4 pt-2.5'
     >
       <div className='flex min-w-0 flex-1 items-start gap-3'>
-        <Avatar src={referring_employee.avatar_url} size='lg' />
+        <div id='patient-case-referrer-avatar' className='relative shrink-0'>
+          <Avatar src={referring_employee.avatar_url} size='lg' />
+          <OnlineIndicator online={referring_employee_online} />
+        </div>
         <div className='flex min-w-0 flex-col'>
           <p id='patient-case-referral-label' className='truncate text-sm font-semibold leading-5 text-gray-800'>
             Referred by

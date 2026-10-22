@@ -6,10 +6,20 @@ import db from '../../../db/db.ts'
 import { organizations } from '../../../db/models/organizations.ts'
 import { patients } from '../../../db/models/patients.ts'
 import { referrals } from '../../../db/models/referrals.ts'
-import { addTestEmployeeWithSession } from '../../_helpers/employees.ts'
+import { sessions } from '../../../db/models/sessions.ts'
+import { addTestEmployee, addTestEmployeeWithSession } from '../../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../../_helpers/organizations.ts'
 import { insertReturningSeekingTreatmentWithEmployeeForTest } from '../../_helpers/workflows.ts'
 import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
+
+function assertReferrerStatus(html: string, online: boolean) {
+  const status_at = html.indexOf('patient-case-referrer-avatar')
+  assert(status_at !== -1)
+  const avatar_html = html.slice(status_at, html.indexOf('patient-case-referral-label'))
+  assert(avatar_html.includes('absolute right-0 bottom-0'))
+  assert(avatar_html.includes(online ? 'bg-green-400' : 'bg-gray-300'))
+  assert(!avatar_html.includes(online ? 'bg-gray-300' : 'bg-green-400'))
+}
 
 function assertReferralPrecedesTabs(html: string) {
   const referral_at = html.indexOf('patient-case-referral')
@@ -57,6 +67,7 @@ describeParallel(
       assert($overview('#patient-case-panel-overview').text().includes('Pre Existing Conditions'))
       assert($overview('#patient-case-panel-overview').text().includes('No findings entered'))
       assert(!$overview.text().includes('Referred by'))
+      assertEquals($overview('#patient-case-referrer-avatar').length, 0)
       assert(!$overview.text().includes('Lukman'))
       assert($overview('#patient-case-final-diagnosis').is(':disabled'))
       assert($overview('#patient-case-order-test').is(':disabled'))
@@ -158,6 +169,7 @@ describeParallel(
       assertEquals($recipient('#patient-case-referral-label').text(), 'Referred by')
       assertEquals($recipient('#patient-case-referrer-name').text(), later_referrer.health_worker.name)
       assertEquals($recipient('#patient-case-referrer-organization').text(), organization.name)
+      assertReferrerStatus($recipient.html(), true)
       assert($recipient('#patient-case-referral-call').is(':disabled'))
       assert($recipient('#patient-case-referral-more').is(':disabled'))
       assertEquals($recipient('#patient-case-name').text(), 'Referred Case Patient')
@@ -188,6 +200,14 @@ describeParallel(
       const $originator = await self_pickup.fetchCheerio(case_path)
       assertEquals($originator('#patient-case-referral').length, 0)
 
+      await sessions.insertOne(db, {
+        entity_type: 'health_worker',
+        entity_id: later_referrer.health_worker.id,
+      })
+      const $multiple_sessions = await recipient.fetchCheerio(case_path)
+      assertEquals($multiple_sessions('#patient-case-referrer-name').text(), later_referrer.health_worker.name)
+      assertReferrerStatus($multiple_sessions.html(), true)
+
       const tied_created_at = new Date('2024-06-01T00:00:00.000Z')
       const tied_matches = await referrals.findAll(db, {
         patient_encounter_id: encounter.patient_encounter_id,
@@ -208,6 +228,49 @@ describeParallel(
         : earlier_referrer.health_worker.name
       const $tied = await recipient.fetchCheerio(case_path)
       assertEquals($tied('#patient-case-referrer-name').text(), tied_referrer_name)
+    })
+
+    itParallel('shows the referring clinician offline when they have no session', async () => {
+      const organization_id = TEST_ORGANIZATION_UUIDS.ZA.clinic
+      const organization = await organizations.getById(db, organization_id)
+      const referrer = await addTestEmployee(db, {
+        role: 'nurse',
+        organization_id,
+      })
+      const recipient = await addTestEmployeeWithSession(db, {
+        role: 'doctor',
+        organization_id,
+      })
+
+      const inserted = await patients.insert(db, {
+        name: 'Offline Referrer Patient',
+        sex: 'female',
+        gender: 'woman',
+        date_of_birth: '1988-03-03',
+      })
+      await patients.completeRegistration(db, inserted.id)
+      const encounter = await insertReturningSeekingTreatmentWithEmployeeForTest(db, organization_id, {
+        patient_id: inserted.id,
+        employment_id: referrer.employee_id,
+      })
+      await referrals.insert(db, {
+        patient_id: inserted.id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        organization_id,
+        employment_id: referrer.employee_id,
+        originator_health_worker_id: referrer.id,
+        originator_avatar_url: `/health_workers/${referrer.id}/avatar`,
+        health_worker_ids_to_be_notified: [recipient.health_worker.id],
+      })
+
+      const $recipient = await recipient.fetchCheerio(
+        `/app/organizations/${organization_id}/patients/${inserted.id}/case`,
+      )
+      assertEquals($recipient('#patient-case-referrer-name').text(), referrer.name)
+      assertEquals($recipient('#patient-case-referrer-organization').text(), organization.name)
+      assertReferrerStatus($recipient.html(), false)
+      assert($recipient('#patient-case-referral-call').is(':disabled'))
+      assert($recipient('#patient-case-panel-overview').text().includes('Medications'))
     })
   },
 )

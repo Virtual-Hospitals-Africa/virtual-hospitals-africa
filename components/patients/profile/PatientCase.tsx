@@ -52,6 +52,7 @@ export function PatientCase(
     this_visit_diagnoses,
     history,
     referring_employee,
+    referring_employee_online,
   }: {
     patient: RenderedPatient
     priority_name: Priority | null
@@ -64,6 +65,7 @@ export function PatientCase(
     this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
     history: RenderedPatientHistory
     referring_employee: RenderedEmployee | null
+    referring_employee_online: boolean
   },
 ) {
   const priority_color = priorityColors(priority_name)
@@ -117,7 +119,12 @@ export function PatientCase(
               )}
             </div>
           </section>
-          {referring_employee && <ReferralCard referring_employee={referring_employee} />}
+          {referring_employee && (
+            <ReferralCard
+              referring_employee={referring_employee}
+              referring_employee_online={referring_employee_online}
+            />
+          )}
         </div>
 
         <div id='patient-case-tabs'>
