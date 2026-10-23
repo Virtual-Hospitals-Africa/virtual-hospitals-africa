@@ -1,0 +1,20 @@
+# The paths a dev-bot branch may not change (docs/bot.md#security): a `done` or `run` on a branch that
+# touches one is refused with the list, and a human makes the change. Read by scripts/protected-gate.sh,
+# and by host/sandbox-settings.sh, which turns each line into the worker's Edit(...) deny rules and
+# sandbox denyWrite paths, the part that stops the worker writing them at all. One list, so the
+# gate and the sandbox cannot drift.
+#
+# One path a line, relative to the repo root: a file, or `dir/**` for everything under a directory.
+# `#` starts a comment. deno.json is deliberately not here: cards legitimately add imports.
+
+# the gates themselves
+scripts/code-quality/check.sh
+scripts/code-quality/hygiene.sh
+.github/**
+
+# the bot, its bats tests (bot/test, covered by bot/**), its unit tests, and the gate that guards it
+bot/**
+host/**
+test/unit/bot/**
+scripts/protected-gate.sh
+scripts/protected-paths.txt

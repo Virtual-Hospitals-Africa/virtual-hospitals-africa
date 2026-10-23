@@ -1,0 +1,14 @@
+# What a dev-bot machine needs (host/setup.sh). deno is not here: runtime.txt pins a version, which
+# deno's own installer can give and Homebrew's formula cannot.
+brew "bash"          # the bot needs bash 5; macOS ships 3.2
+brew "jq"
+brew "tmux"          # the bot's session, a window for each worker
+brew "gh"            # PRs and CI status (the bot's, with GH_TOKEN)
+brew "ripgrep"       # scripts/code-quality/hygiene.sh needs rg
+brew "node"          # deno task db:codegen runs kysely-codegen under npm
+brew "libpq"         # psql and pg_restore, which restore each card's databases from db/dumps/latest
+brew "colima"        # Docker, for the Postgres in docker-compose.yml
+brew "docker"
+brew "docker-compose"
+brew "bats-core"     # the bot's shell tests (bot/test)
+brew "shellcheck"

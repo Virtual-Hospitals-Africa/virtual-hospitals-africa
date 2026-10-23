@@ -1,0 +1,155 @@
+{
+  "object": "page",
+  "id": "5f0a7c21-4b6e-4d3a-9c18-2e7d90b1a3c4",
+  "url": "https://www.notion.so/5f0a7c214b6e4d3a9c182e7d90b1a3c4",
+  "created_time": "2026-10-01T12:00:00.000Z",
+  "last_edited_time": "2026-10-06T12:00:00.000Z",
+  "properties": {
+    "Name": {
+      "id": "title",
+      "type": "title",
+      "title": [
+        {
+          "type": "text",
+          "plain_text": "Fix join link on Android",
+          "text": {
+            "content": "Fix join link on Android",
+            "link": null
+          },
+          "annotations": {},
+          "href": null
+        }
+      ]
+    },
+    "Status": {
+      "id": "s",
+      "type": "status",
+      "status": {
+        "id": "x",
+        "name": "In progress",
+        "color": "blue"
+      }
+    },
+    "Assignee": {
+      "id": "asg",
+      "type": "people",
+      "people": [
+        {
+          "object": "user",
+          "id": "a1a1a1a1-0000-4000-8000-000000000002"
+        }
+      ]
+    },
+    "Deadline": {
+      "id": "dl",
+      "type": "date",
+      "date": {
+        "start": "2026-10-20",
+        "end": null,
+        "time_zone": null
+      }
+    },
+    "Priority": {
+      "id": "p",
+      "type": "select",
+      "select": {
+        "id": "y",
+        "name": "High",
+        "color": "red"
+      }
+    },
+    "Files & media": {
+      "id": "fm",
+      "type": "files",
+      "files": []
+    },
+    "Modules": {
+      "id": "mod",
+      "type": "relation",
+      "relation": [
+        {
+          "id": "6f1c2b7a-0000-4000-8000-0000000000aa"
+        }
+      ],
+      "has_more": false
+    },
+    "Scenarios": {
+      "id": "scn",
+      "type": "formula",
+      "formula": {
+        "type": "string",
+        "string": "1 scenario"
+      }
+    },
+    "URL": {
+      "id": "url",
+      "type": "url",
+      "url": "https://vha.example/join"
+    },
+    "Bot state": {
+      "id": "bs",
+      "type": "select",
+      "select": {
+        "id": "z",
+        "name": "Waiting on you",
+        "color": "gray"
+      }
+    },
+    "Bot session": {
+      "id": "bses",
+      "type": "rich_text",
+      "rich_text": [
+        {
+          "type": "text",
+          "plain_text": "sess-1",
+          "text": {
+            "content": "sess-1",
+            "link": null
+          },
+          "annotations": {},
+          "href": null
+        }
+      ]
+    },
+    "Worktree": {
+      "id": "wt",
+      "type": "rich_text",
+      "rich_text": [
+        {
+          "type": "text",
+          "plain_text": "bot_fix_join_link_on_android_5f0a",
+          "text": {
+            "content": "bot_fix_join_link_on_android_5f0a",
+            "link": null
+          },
+          "annotations": {},
+          "href": null
+        }
+      ]
+    },
+    "Last comment": {
+      "id": "lc",
+      "type": "date",
+      "date": {
+        "start": "2026-10-06T09:00:00.000Z",
+        "end": null,
+        "time_zone": null
+      }
+    },
+    "PR": {
+      "id": "pr",
+      "type": "url",
+      "url": null
+    },
+    "Bot hold": {
+      "id": "bh",
+      "type": "checkbox",
+      "checkbox": false
+    },
+    "Bot": {
+      "id": "bot",
+      "type": "checkbox",
+      "checkbox": true
+    }
+  }
+}

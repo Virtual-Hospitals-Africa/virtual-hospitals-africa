@@ -84,3 +84,6 @@ manifest-checksum.txt
 /app
 
 !scripts/build
+# dev bot (bot/): its own state at the checkout, and each card worktree's state dir
+/.bot/
+.vha/
