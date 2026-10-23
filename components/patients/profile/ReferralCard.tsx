@@ -1,7 +1,8 @@
 import type { ComponentChildren } from 'preact'
 import Avatar from '../../library/Avatar.tsx'
 import OnlineIndicator from '../../library/OnlineIndicator.tsx'
-import { EllipsisVerticalIcon, PhoneIcon } from '../../library/icons/heroicons/outline.tsx'
+import { PhoneIcon } from '../../library/icons/heroicons/outline.tsx'
+import { ReferralActionsMenu } from '../../../islands/patients/ReferralActionsMenu.tsx'
 import { organizationOf } from '../../../shared/employees.ts'
 import type { RenderedEmployee } from '../../../types.ts'
 
@@ -31,6 +32,10 @@ export function ReferralCard(
     referring_employee_online: boolean
   },
 ) {
+  const organization_id = referring_employee.organization_id
+  const health_worker_id = referring_employee.id
+  const employee_id = referring_employee.employee_id
+
   return (
     <section
       id='patient-case-referral'
@@ -57,9 +62,10 @@ export function ReferralCard(
         <ReferralAction id='patient-case-referral-call' label='Call referring clinician'>
           <PhoneIcon />
         </ReferralAction>
-        <ReferralAction id='patient-case-referral-more' label='More referral actions'>
-          <EllipsisVerticalIcon />
-        </ReferralAction>
+        <ReferralActionsMenu
+          profile_href={`/app/organizations/${organization_id}/employees/${health_worker_id}`}
+          message_href={`/app/messaging/employee/${employee_id}`}
+        />
       </div>
     </section>
   )

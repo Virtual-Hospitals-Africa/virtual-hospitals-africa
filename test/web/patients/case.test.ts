@@ -2,7 +2,11 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { describeParallel, itParallel } from '../../_helpers/testParallel.ts'
 import { afterAll, before } from 'std/testing/bdd.ts'
+import type { CheerioAPI } from 'cheerio'
+import puppeteer, { type Page } from 'puppeteer'
 import db from '../../../db/db.ts'
+import { route } from '../../_route.ts'
+import { delay } from '../../../util/delay.ts'
 import { organizations } from '../../../db/models/organizations.ts'
 import { patients } from '../../../db/models/patients.ts'
 import { referrals } from '../../../db/models/referrals.ts'
@@ -19,6 +23,33 @@ function assertReferrerStatus(html: string, online: boolean) {
   assert(avatar_html.includes('absolute right-0 bottom-0'))
   assert(avatar_html.includes(online ? 'bg-green-400' : 'bg-gray-300'))
   assert(!avatar_html.includes(online ? 'bg-gray-300' : 'bg-green-400'))
+}
+
+function assertReferralMenu(
+  $: CheerioAPI,
+  {
+    organization_id,
+    health_worker_id,
+    employee_id,
+  }: {
+    organization_id: string
+    health_worker_id: string
+    employee_id: string
+  },
+) {
+  const profile_href = `/app/organizations/${organization_id}/employees/${health_worker_id}`
+  const message_href = `/app/messaging/employee/${employee_id}`
+  assertEquals($('#patient-case-referral a').length, 2)
+  assertEquals($(`#patient-case-referral a[href="${profile_href}"]`).text().trim(), 'Profile')
+  assertEquals($(`#patient-case-referral a[href="${message_href}"]`).text().trim(), 'Message')
+  assert($('#patient-case-referral-call').is(':disabled'))
+  const more = $('#patient-case-referral-more')
+  assertEquals(more.length, 1)
+  assert(!more.is(':disabled'))
+  assertEquals(more.attr('type'), 'button')
+  assertEquals(more.attr('aria-label'), 'More referral actions')
+  assertEquals(more.attr('aria-haspopup'), 'menu')
+  assertEquals(more.attr('aria-expanded'), 'false')
 }
 
 function assertReferralPrecedesTabs(html: string) {
@@ -170,8 +201,11 @@ describeParallel(
       assertEquals($recipient('#patient-case-referrer-name').text(), later_referrer.health_worker.name)
       assertEquals($recipient('#patient-case-referrer-organization').text(), organization.name)
       assertReferrerStatus($recipient.html(), true)
-      assert($recipient('#patient-case-referral-call').is(':disabled'))
-      assert($recipient('#patient-case-referral-more').is(':disabled'))
+      assertReferralMenu($recipient, {
+        organization_id,
+        health_worker_id: later_referrer.health_worker.id,
+        employee_id: later_referrer.health_worker.employee_id,
+      })
       assertEquals($recipient('#patient-case-name').text(), 'Referred Case Patient')
       assertEquals($recipient('#patient-case-sex').text(), 'Female')
       assert($recipient('#patient-case-panel-overview').text().includes('Medications'))
@@ -269,8 +303,165 @@ describeParallel(
       assertEquals($recipient('#patient-case-referrer-name').text(), referrer.name)
       assertEquals($recipient('#patient-case-referrer-organization').text(), organization.name)
       assertReferrerStatus($recipient.html(), false)
-      assert($recipient('#patient-case-referral-call').is(':disabled'))
+      assertReferralMenu($recipient, {
+        organization_id,
+        health_worker_id: referrer.id,
+        employee_id: referrer.employee_id,
+      })
       assert($recipient('#patient-case-panel-overview').text().includes('Medications'))
+    })
+
+    itParallel('opens the referral menu from click and keyboard', async () => {
+      const organization_id = TEST_ORGANIZATION_UUIDS.ZA.clinic
+      const referrer = await addTestEmployeeWithSession(db, {
+        role: 'nurse',
+        organization_id,
+      })
+      const recipient = await addTestEmployeeWithSession(db, {
+        role: 'doctor',
+        organization_id,
+      })
+      const inserted = await patients.insert(db, {
+        name: 'Referral Menu Patient',
+        sex: 'male',
+        gender: 'man',
+        date_of_birth: '1992-07-07',
+      })
+      await patients.completeRegistration(db, inserted.id)
+      const encounter = await insertReturningSeekingTreatmentWithEmployeeForTest(db, organization_id, {
+        patient_id: inserted.id,
+        employment_id: referrer.health_worker.employee_id,
+      })
+      await referrals.insert(db, {
+        patient_id: inserted.id,
+        patient_encounter_id: encounter.patient_encounter_id,
+        organization_id,
+        employment_id: referrer.health_worker.employee_id,
+        originator_health_worker_id: referrer.health_worker.id,
+        originator_avatar_url: `/health_workers/${referrer.health_worker.id}/avatar`,
+        health_worker_ids_to_be_notified: [recipient.health_worker.id],
+      })
+
+      const profile_href = `/app/organizations/${organization_id}/employees/${referrer.health_worker.id}`
+      const message_href = `/app/messaging/employee/${referrer.health_worker.employee_id}`
+      const case_path = `/app/organizations/${organization_id}/patients/${inserted.id}/case`
+      const browser = await puppeteer.launch({
+        args: ['--ignore-certificate-errors', '--no-sandbox'],
+        headless: true,
+      })
+      try {
+        const page = await browser.newPage()
+        const page_errors: string[] = []
+        page.on('pageerror', (error) => {
+          page_errors.push(error instanceof Error ? error.message : String(error))
+        })
+        page.on('console', (message) => {
+          if (message.type() === 'error') page_errors.push(message.text())
+        })
+        await page.setViewport({ width: 390, height: 844 })
+        await page.setCookie(
+          { name: 'session_id', value: recipient.session_id, url: route },
+          { name: 'health_worker_id', value: recipient.health_worker.id, url: route },
+        )
+        await page.goto(`${route}${case_path}`, { waitUntil: 'networkidle0' })
+
+        assert(await page.$eval('#patient-case-referral-call', (button) => button instanceof HTMLButtonElement && button.disabled))
+        assert(await page.$eval('#patient-case-final-diagnosis', (button) => button instanceof HTMLButtonElement && button.disabled))
+        assertEquals(await page.$eval('#patient-case-referrer-name', (node) => node.textContent), referrer.health_worker.name)
+
+        await page.click('#patient-case-referral-more')
+        await waitForReferralMenu(page, profile_href, true, page_errors)
+        assertEquals(await menuHitTarget(page, profile_href), profile_href)
+        await page.keyboard.press('Escape')
+        await waitForReferralMenu(page, profile_href, false, page_errors)
+
+        await page.click('#patient-case-referral-more')
+        await waitForReferralMenu(page, profile_href, true, page_errors)
+        await page.click('#patient-case-name')
+        await waitForReferralMenu(page, profile_href, false, page_errors)
+
+        await page.click('#patient-case-referral-more')
+        await waitForReferralMenu(page, profile_href, true, page_errors)
+        await page.keyboard.press('ArrowDown')
+        await page.keyboard.press('Enter')
+        await page.waitForFunction((pathname) => location.pathname === pathname, {}, profile_href)
+        assert(page.url().includes(profile_href))
+        await page.waitForNetworkIdle()
+        await page.click('#employee-profile-back')
+        await page.waitForFunction((pathname) => location.pathname === pathname, {}, case_path)
+
+        await page.goto(`${route}${case_path}`, { waitUntil: 'networkidle0' })
+        await Promise.all([
+          page.waitForNavigation({ waitUntil: 'networkidle0' }),
+          page.click(`a[href="${case_path}?tab=this_visit"]`),
+        ])
+        await page.waitForSelector('#patient-drawer-this-visit')
+        assertEquals(await page.$eval('#patient-case-referrer-name', (node) => node.textContent), referrer.health_worker.name)
+
+        await page.click('#patient-case-referral-more')
+        await waitForReferralMenu(page, message_href, true, page_errors)
+        await page.click(`a[href="${message_href}"]`)
+        await page.waitForSelector('#employee-messaging-placeholder')
+        const placeholder = await page.$eval('#employee-messaging-placeholder', (node) => node.textContent ?? '')
+        assert(placeholder.includes('Coming soon'))
+        assert(placeholder.includes('TODO'))
+        assert(!placeholder.includes(referrer.health_worker.name))
+        assert(!placeholder.includes(referrer.health_worker.email))
+        await page.waitForNetworkIdle()
+        await page.click('#employee-messaging-back')
+        await page.waitForFunction((pathname) => location.pathname === pathname, {}, case_path)
+        assertEquals(page_errors, [])
+      } finally {
+        await browser.close()
+      }
     })
   },
 )
+
+function referralMenuOpen(page: Page, href: string): Promise<boolean> {
+  return page.evaluate((target_href) => {
+    const link = document.querySelector<HTMLAnchorElement>(`a[href="${target_href}"]`)
+    if (!link) return false
+    const style = getComputedStyle(link)
+    const rect = link.getBoundingClientRect()
+    return style.display !== 'none' && style.visibility !== 'hidden' && rect.height > 0
+  }, href)
+}
+
+async function waitForReferralMenu(page: Page, href: string, open: boolean, page_errors: string[] = []) {
+  for (let attempt = 0; attempt < 30; attempt++) {
+    if (await referralMenuOpen(page, href) === open) return
+    await delay(50)
+  }
+  const debug = await page.evaluate((target_href) => {
+    const button = document.querySelector('#patient-case-referral-more')
+    const links = Array.from(document.querySelectorAll('a'))
+      .filter((link) => {
+        const href_value = link.getAttribute('href') ?? ''
+        return href_value.includes('/employees/') || href_value.includes('/messaging/')
+      })
+      .map((link) => ({
+        href: link.getAttribute('href'),
+        display: getComputedStyle(link).display,
+        hidden: link.hidden,
+      }))
+    return {
+      url: location.pathname,
+      button_tag: button?.tagName ?? null,
+      expanded: button?.getAttribute('aria-expanded') ?? null,
+      target_href,
+      links,
+    }
+  }, href)
+  assert(false, `referral menu did not ${open ? 'open' : 'close'}: ${JSON.stringify({ ...debug, page_errors })}`)
+}
+
+function menuHitTarget(page: Page, href: string): Promise<string | null> {
+  return page.evaluate((target_href) => {
+    const link = document.querySelector<HTMLAnchorElement>(`a[href="${target_href}"]`)
+    if (!link) return null
+    const rect = link.getBoundingClientRect()
+    const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2)
+    return hit?.closest('a')?.getAttribute('href') ?? null
+  }, href)
+}
