@@ -13,12 +13,12 @@ export type SearchOpts = OrganizationSearch & {
 }
 
 export type NearestOrganization = RenderedOrganization & {
-    location: Coordinates
-    locality: string
-    formatted_address: string
-    distance_meters: number
-    google_maps_link: string
-  }
+  location: Coordinates
+  locality: string
+  formatted_address: string
+  distance_meters: number
+  google_maps_link: string
+}
 
 export type NearestOrganizationSearchResult = SearchResult<
   typeof nearest_organizations
@@ -69,7 +69,7 @@ export const nearest_organizations = base({
 
 const lru = new LRU<NearestOrganization>(100)
 
-async function nearestHospital(organization: { id: string, location: Coordinates | null }): Promise<NearestOrganization | null> {
+async function nearestHospital(organization: { id: string; location: Coordinates | null }): Promise<NearestOrganization | null> {
   if (!organization.location) return null
   if (lru.has(organization.id)) return lru.get(organization.id)!
   const result = await nearest_organizations.findFirst(
