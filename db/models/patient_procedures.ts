@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { PreviouslyCompletedProcedures, SnomedConcept, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { ExtantProcedureOrCreationIntent, PreviouslyCompletedProcedures, SnomedConcept, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { asText, blankSelection, caseWhenMatching, jsonBuildNullableObject, literalString, success_true } from '../helpers.ts'
 import { base } from './_base.ts'
 import { patient_records, PatientRecordsSearch } from './patient_records.ts'
@@ -11,6 +11,7 @@ import { Lang } from '../../shared/s_expression_schemas.ts'
 import { inverseSExpressions } from '../../shared/s_expression_inverse.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { SNOMED_CONCEPT_IDS_TO_WORKFLOW_NAMES } from '../../shared/workflow.ts'
+import { PROCEDURE } from '../../shared/snomed_concepts.ts'
 
 export type ProcedureInsert = {
   patient_id: string
@@ -190,6 +191,46 @@ export const patient_procedures = base({
         literalString(procedure_id).as('procedure_id'),
       ])
       .executeTakeFirstOrThrow()
+  },
+
+  /*
+    The id of the procedure that the records of a workflow step are inserted under, inserting it
+    when the intent is to create it. Resolving it once up front lets any number of statements
+    share it, where each handed the same creation intent would insert a procedure of its own.
+  */
+  async ensureForWorkflowStep(
+    trx: TrxOrDbOrQueryCreator,
+    { patient_id, patient_encounter_id, employment_id, procedure }: {
+      patient_id: string
+      patient_encounter_id: string
+      employment_id: string
+      procedure: ExtantProcedureOrCreationIntent
+    },
+  ): Promise<{ procedure_id: string }> {
+    if (procedure.if_not_already_exists) {
+      const existing = await procedure.procedure_id.executeTakeFirst()
+      if (existing) return { procedure_id: existing.id }
+    } else if (procedure.create_with_specific_snomed_concept_id === undefined) {
+      return { procedure_id: procedure.procedure_id }
+    }
+
+    const procedure_id = generateUUID()
+    await trx
+      .with(
+        'inserting_procedure_record',
+        (qb) =>
+          qb.insertInto('patient_records').values({
+            id: procedure_id,
+            patient_id,
+            patient_encounter_id,
+            root_snomed_concept_id: PROCEDURE.id,
+            specific_snomed_concept_id: procedure.create_with_specific_snomed_concept_id,
+          }),
+      )
+      .insertInto('patient_procedures')
+      .values({ id: procedure_id, employment_id })
+      .execute()
+    return { procedure_id }
   },
 
   // TODO: consider doing these in parallel

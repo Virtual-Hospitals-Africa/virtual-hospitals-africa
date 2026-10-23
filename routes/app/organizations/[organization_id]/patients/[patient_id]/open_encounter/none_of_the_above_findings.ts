@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { postHandler } from '../../../../../../../backend/postHandler.ts'
 import { workflowStepFromReferer } from '../../../../../../../backend/workflowStepFromReferer.ts'
 import type { OpenEncounterContext } from '../../../../../../../types.ts'
-import { FindingNodeToInsert, patient_findings } from '../../../../../../../db/models/patient_findings.ts'
+import { NegativeFindingToInsert, patient_findings } from '../../../../../../../db/models/patient_findings.ts'
 import { patient_procedures } from '../../../../../../../db/models/patient_procedures.ts'
 import { additional_tasks, existingFindingsMatching, isCheckFor } from '../../../../../../../db/models/additional_tasks.ts'
 import { events } from '../../../../../../../db/models/events.ts'
@@ -82,7 +82,7 @@ export const handler = postHandler(
       .filter(([s_expression]) => !already_recorded.has(s_expression))
       .map(([s_expression, node]) => {
         const id = generateUUID()
-        const finding: FindingNodeToInsert = {
+        const finding: NegativeFindingToInsert = {
           ...node,
           id,
           existence: 'No',
@@ -127,20 +127,18 @@ export const handler = postHandler(
     )
 
     async function insertNegatives(): Promise<void> {
-      const { success, findings } = await patient_findings.insertMany(
+      const { records } = await patient_findings.insertManyNegative(
         trx,
         {
           patient_id,
           employment_id,
           patient_encounter_id,
-          patient_age_determination,
           patient_encounter_employee_id,
           findings: to_insert.map(({ finding }) => finding),
           procedure: { procedure_id },
         },
       )
-      assert(success)
-      assert(findings.length === to_insert.length)
+      assert(records.length === to_insert.length)
     }
   },
 )
