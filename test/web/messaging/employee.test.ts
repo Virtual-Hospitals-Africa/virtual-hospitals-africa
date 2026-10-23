@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { describeParallel, itParallel } from '../../_helpers/testParallel.ts'
-import { afterAll, before } from 'std/testing/bdd.ts'
+import { afterAll, before, describe, it } from 'std/testing/bdd.ts'
 import db from '../../../db/db.ts'
 import { addTestEmployeeWithSession } from '../../_helpers/employees.ts'
 import { TEST_ORGANIZATION_UUIDS } from '../../_helpers/organizations.ts'
@@ -9,11 +8,11 @@ import { route } from '../../_route.ts'
 import generateUUID from '../../../util/uuid.ts'
 import waitUntilTestServerUp from '../../_helpers/waitUntilTestServerUp.ts'
 
-describeParallel('/app/messaging/employee/[employee_id]', () => {
+describe('/app/messaging/employee/[employee_id]', () => {
   before(waitUntilTestServerUp)
   afterAll(() => db.destroy())
 
-  itParallel('shows a coming soon message without employee details', async () => {
+  it('shows a coming soon message without employee details', async () => {
     const target = await addTestEmployeeWithSession(db, {
       role: 'nurse',
       organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
@@ -33,7 +32,7 @@ describeParallel('/app/messaging/employee/[employee_id]', () => {
     assert(!$.html().includes(target.health_worker.email))
   })
 
-  itParallel('rejects a missing employee and a non-uuid', async () => {
+  it('rejects a missing employee and a non-uuid', async () => {
     const viewer = await addTestEmployeeWithSession(db, {
       role: 'nurse',
       organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
@@ -48,7 +47,7 @@ describeParallel('/app/messaging/employee/[employee_id]', () => {
     await invalid.body?.cancel()
   })
 
-  itParallel('requires a signed-in health worker', async () => {
+  it('requires a signed-in health worker', async () => {
     const target = await addTestEmployeeWithSession(db, {
       role: 'nurse',
       organization_id: TEST_ORGANIZATION_UUIDS.ZA.clinic,
