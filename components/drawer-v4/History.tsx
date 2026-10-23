@@ -144,9 +144,15 @@ const history_items = [
 
 // History component with medical history sections
 export function DrawerHistory(
-  { organization_id, history }: { organization_id: string; history: RenderedPatientHistory },
+  { organization_id, history, keys, show_header = true }: {
+    organization_id: string
+    history: RenderedPatientHistory
+    keys?: Array<keyof RenderedPatientHistory>
+    show_header?: boolean
+  },
 ) {
-  const populated_sections = compact(history_items.map((history_item) => (
+  const items = keys ? history_items.filter((history_item) => keys.some((key) => key === history_item.key)) : history_items
+  const populated_sections = compact(items.map((history_item) => (
     <WorkflowStep
       key={history_item.key}
       workflow='history'
@@ -168,7 +174,7 @@ export function DrawerHistory(
       id='patient-drawer-history'
       className={section_class_name}
     >
-      <Header>History</Header>
+      {show_header && <Header>History</Header>}
       <div className='flex flex-col gap-2.5'>
         {populated_sections}
       </div>

@@ -8,6 +8,7 @@ import { SearchInput } from '../../islands/form/inputs/search.tsx'
 import FilterBar from '../../components/dashboard/FilterBar.tsx'
 import SelectInput from '../../components/dashboard/filters/SelectInput.tsx'
 import { MobilePatientSearch } from '../../components/patients/MobilePatientSearch.tsx'
+import { defaultOrganizationId } from '../../shared/defaultOrganizationId.ts'
 import type { LoggedInHealthWorkerContext } from '../../types.ts'
 
 const json_handler = jsonSearchHandler(patients, {})
@@ -37,6 +38,7 @@ export default HealthWorkerHomePage(async function Patients(ctx: LoggedInHealthW
   const sex = ctx.url.searchParams.get('sex') || null
   const registration_status = ctx.url.searchParams.get('registration_status') as 'complete' | 'incomplete' | null
   const page = searchPage(ctx)
+  const organization_id = defaultOrganizationId(ctx.state.health_worker)
 
   const { results, has_next_page } = await patients.search(
     ctx.state.trx,
@@ -63,7 +65,7 @@ export default HealthWorkerHomePage(async function Patients(ctx: LoggedInHealthW
             <SelectInput param='registration_status' value={registration_status} options={REGISTRATION_OPTIONS} placeholder='All' />
           </FilterBar>
         </div>
-        <PatientsTable patients={results} />
+        <PatientsTable patients={results} organization_id={organization_id} />
         <Pagination page={page} has_next_page={has_next_page} />
       </>
     ),

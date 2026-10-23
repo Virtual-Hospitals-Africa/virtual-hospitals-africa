@@ -1,4 +1,5 @@
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
+import { PageBackButton } from '../../../../../islands/PageBackButton.tsx'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../../../../../types.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
@@ -29,6 +30,9 @@ export default HealthWorkerHomePage<OrganizationContext>(
       title: employee.name,
       children: (
         <>
+          <div className='mt-4'>
+            <PageBackButton id='employee-profile-back' />
+          </div>
           <div className='mt-4 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
             <div className='my-6 overflow-hidden bg-slate-50'>
               <img
