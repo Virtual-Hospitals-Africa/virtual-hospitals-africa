@@ -1,0 +1,527 @@
+label	finding_site_structure	clinical_finding_s_expression	display
+Head	Head structure	(clinical_finding (snomed_concept "Headache" "finding"))	Headache
+Head	Head structure	(clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Sudden onset Severe Headache
+Head	Head structure	(clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))	Wakes up during night Headache
+Head	Head structure	(clinical_finding (snomed_concept "Headache" "finding") (qualifier (snomed_concept "Symptom is continuous" "finding")))	Symptom is continuous Headache
+Head	Head structure	(clinical_finding (snomed_concept "Morning headache" "finding"))	Morning headache
+Head	Head structure	(clinical_finding (snomed_concept "Frequent headache" "finding"))	Frequent headache
+Head	Head structure	(clinical_finding (snomed_concept "Frequent headache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))	Worsening Frequent headache
+Head	Head structure	(clinical_finding (snomed_concept "Decreased level of consciousness" "finding"))	Decreased level of consciousness
+Head	Head structure	(clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Weakness of face muscles
+Head	Head structure	(clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Muscle weakness of upper limb
+Head	Head structure	(clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Weakness of muscle of lower limb
+Head	Head structure	(clinical_finding (snomed_concept "Numbness of face" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Numbness of face
+Head	Head structure	(clinical_finding (snomed_concept "Numbness of limbs" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Numbness of limbs
+Head	Head structure	(clinical_finding (snomed_concept "Speech problem" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Speech problem
+Head	Head structure	(clinical_finding (snomed_concept "Visual symptoms" "finding") (qualifier (snomed_concept "New" "qualifier value")))	New Visual symptoms
+Head	Head structure	(clinical_finding (snomed_concept "Pain in eye" "finding") (qualifier (snomed_concept "New" "qualifier value")))	New Pain in eye
+Head	Head structure	(clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Sudden onset Severe Dizziness
+Head	Head structure	(clinical_finding (snomed_concept "Stiff neck" "finding"))	Stiff neck
+Head	Head structure	(clinical_finding (snomed_concept "Drowsy" "finding"))	Drowsy
+Head	Head structure	(clinical_finding (snomed_concept "Clouded consciousness" "finding"))	Clouded consciousness
+Head	Head structure	(clinical_finding (snomed_concept "Purpuric rash" "disorder"))	Purpuric rash
+Head	Head structure	(clinical_finding (snomed_concept "Persistent vomiting" "disorder"))	Persistent vomiting
+Head	Head structure	(clinical_finding (snomed_concept "Nausea" "finding") (qualifier (snomed_concept "Symptom is continuous" "finding")))	Symptom is continuous Nausea
+Head	Head structure	(clinical_finding (snomed_concept "Nausea and vomiting" "disorder"))	Nausea and vomiting
+Head	Head structure	(clinical_finding (snomed_concept "Highly active antiretroviral therapy" "procedure"))	Highly active antiretroviral therapy
+Head	Head structure	(clinical_finding (snomed_concept "Seizure" "finding"))	Seizure
+Head	Head structure	(clinical_finding (snomed_concept "Injury of head" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Injury of head
+Head	Head structure	(clinical_finding (snomed_concept "Anisocoria" "disorder"))	Anisocoria
+Head	Head structure	(clinical_finding (snomed_concept "Visual disturbance" "disorder"))	Visual disturbance
+Head	Head structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Head	Head structure	(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))	Generalized aches and pains
+Head	Head structure	(clinical_finding (snomed_concept "Common cold" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Common cold
+Head	Head structure	(clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Thick" "qualifier value")))	Thick Nasal discharge
+Head	Head structure	(clinical_finding (snomed_concept "Posterior rhinorrhea" "disorder") (qualifier (snomed_concept "Thick" "qualifier value")))	Thick Posterior rhinorrhea
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Red eye" "finding"))	Red eye
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Pain in eye" "finding"))	Pain in eye
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Sudden visual loss" "disorder"))	Sudden visual loss
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Abnormal vision" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Abnormal vision
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Blurring of visual image" "finding"))	Blurring of visual image
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Visual disturbance" "disorder"))	Visual disturbance
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Sees haloes around lights" "finding"))	Sees haloes around lights
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Dilated pupil" "finding"))	Dilated pupil
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Discharge from eye" "finding"))	Discharge from eye
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Itching of eye" "finding"))	Itching of eye
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Scleral icterus" "finding"))	Scleral icterus
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))	Sudden onset New Asymmetry Weakness of face muscles
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))	Sudden onset New Asymmetry Muscle weakness of upper limb
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))	Sudden onset New Asymmetry Weakness of muscle of lower limb
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Numbness of face" "finding"))	Numbness of face
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Numbness of limbs" "finding"))	Numbness of limbs
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Difficulty talking" "finding"))	Difficulty talking
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Swelling of eyelid" "finding") (qualifier (snomed_concept "Entire" "qualifier value")) (qualifier (snomed_concept "Red color" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))	Entire Red color Pain Swelling of eyelid
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Swelling of eyelid" "finding"))	Swelling of eyelid
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Edema of eyelid" "disorder") (qualifier (snomed_concept "New" "qualifier value")))	New Edema of eyelid
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Ptosis of eyelid" "disorder") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Ptosis of eyelid
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Herpes zoster ophthalmicus" "disorder"))	Herpes zoster ophthalmicus
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Herpes zoster involving tip of nose" "disorder"))	Herpes zoster involving tip of nose
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Penetrating wound of eye" "disorder"))	Penetrating wound of eye
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Laceration of eyelid" "disorder"))	Laceration of eyelid
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Metal foreign body in eye region" "disorder"))	Metal foreign body in eye region
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Penetration of eyeball with magnetic foreign body" "disorder"))	Penetration of eyeball with magnetic foreign body
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Chemical burn" "disorder") (finding_site (snomed_concept "Structure of eye proper" "body structure")))	Chemical burn (Structure of eye proper)
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Burn of cornea" "disorder"))	Burn of cornea
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Corneal ulcer" "disorder"))	Corneal ulcer
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Corneal haze" "disorder"))	Corneal haze
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Headache" "finding"))	Headache
+Eye	Structure of eye proper	(clinical_finding (snomed_concept "Nausea and vomiting" "disorder"))	Nausea and vomiting
+Face	Face structure	(clinical_finding (snomed_concept "Weakness of face muscles" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))	Sudden onset New Asymmetry Weakness of face muscles
+Face	Face structure	(clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))	Sudden onset New Asymmetry Muscle weakness of upper limb
+Face	Face structure	(clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")) (qualifier (snomed_concept "Asymmetry" "qualifier value")))	Sudden onset New Asymmetry Weakness of muscle of lower limb
+Face	Face structure	(clinical_finding (snomed_concept "Numbness of face" "finding"))	Numbness of face
+Face	Face structure	(clinical_finding (snomed_concept "Numbness of limbs" "finding"))	Numbness of limbs
+Face	Face structure	(clinical_finding (snomed_concept "Difficulty talking" "finding"))	Difficulty talking
+Face	Face structure	(clinical_finding (snomed_concept "Visual disturbance" "disorder"))	Visual disturbance
+Face	Face structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))	Swelling (Face structure)
+Face	Face structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Swelling (Face structure)
+Face	Face structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "New" "qualifier value")))	New Swelling (Face structure)
+Face	Face structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Red color" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))	Red color Pain Swelling (Face structure)
+Face	Face structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Swelling (Tongue structure)
+Face	Face structure	(clinical_finding (snomed_concept "Difficulty breathing" "finding"))	Difficulty breathing
+Face	Face structure	(clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Sudden onset Severe Dizziness
+Face	Face structure	(clinical_finding (snomed_concept "Collapse" "finding"))	Collapse
+Face	Face structure	(clinical_finding (snomed_concept "Abdominal pain" "finding"))	Abdominal pain
+Face	Face structure	(clinical_finding (snomed_concept "Finding of vomiting" "finding"))	Vomiting
+Face	Face structure	(clinical_finding (snomed_concept "Blood in urine" "finding"))	Blood in urine
+Face	Face structure	(clinical_finding (snomed_concept "Proteinuria" "finding"))	Proteinuria
+Face	Face structure	(clinical_finding (snomed_concept "Swelling of eyelid" "finding") (qualifier (snomed_concept "Entire" "qualifier value")) (qualifier (snomed_concept "Red color" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))	Entire Red color Pain Swelling of eyelid
+Face	Face structure	(clinical_finding (snomed_concept "Pain in face" "finding"))	Pain in face
+Face	Face structure	(clinical_finding (snomed_concept "Pain in face" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))	Unilateral Pain in face
+Face	Face structure	(clinical_finding (snomed_concept "Herpes zoster" "disorder") (qualifier (snomed_concept "Previous" "qualifier value")))	Previous Herpes zoster
+Face	Face structure	(clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Thick" "qualifier value")))	Thick Nasal discharge
+Face	Face structure	(clinical_finding (snomed_concept "Posterior rhinorrhea" "disorder") (qualifier (snomed_concept "Thick" "qualifier value")))	Thick Posterior rhinorrhea
+Face	Face structure	(clinical_finding (snomed_concept "Common cold" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Common cold
+Face	Face structure	(clinical_finding (snomed_concept "Unable to close eyes" "finding"))	Unable to close eyes
+Face	Face structure	(clinical_finding (snomed_concept "Taste sense altered" "finding"))	Taste sense altered
+Face	Face structure	(clinical_finding (snomed_concept "Dry eyes" "finding"))	Dry eyes
+Face	Face structure	(clinical_finding (snomed_concept "Lip swelling" "finding"))	Lip swelling
+Face	Face structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Face	Face structure	(clinical_finding (snomed_concept "Headache" "finding"))	Headache
+Face	Face structure	(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))	Generalized aches and pains
+Ear	Ear structure	(clinical_finding (snomed_concept "Itching of ear" "finding"))	Itching of ear
+Ear	Ear structure	(clinical_finding (snomed_concept "Ear discharge" "finding"))	Ear discharge
+Ear	Ear structure	(clinical_finding (snomed_concept "Pain of ear" "finding"))	Pain of ear
+Ear	Ear structure	(clinical_finding (snomed_concept "Pain of ear" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))	Wakes up during night Pain of ear
+Ear	Ear structure	(clinical_finding (snomed_concept "Hearing difficulty" "finding"))	Hearing difficulty
+Ear	Ear structure	(clinical_finding (snomed_concept "Tinnitus" "finding"))	Tinnitus
+Ear	Ear structure	(clinical_finding (snomed_concept "Swelling of ear" "finding") (qualifier (snomed_concept "Red color" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))	Red color Pain Swelling of ear
+Ear	Ear structure	(clinical_finding (snomed_concept "Tenderness in ear canal" "finding"))	Tenderness in ear canal
+Ear	Ear structure	(clinical_finding (snomed_concept "Perforation of tympanic membrane" "disorder"))	Perforation of tympanic membrane
+Ear	Ear structure	(clinical_finding (snomed_concept "Bulging tympanic membrane" "finding"))	Bulging tympanic membrane
+Ear	Ear structure	(clinical_finding (snomed_concept "Bright red tympanic membrane" "finding"))	Bright red tympanic membrane
+Ear	Ear structure	(clinical_finding (snomed_concept "Foreign body in ear" "disorder"))	Foreign body in ear
+Ear	Ear structure	(clinical_finding (snomed_concept "Impacted cerumen" "disorder"))	Impacted cerumen
+Ear	Ear structure	(clinical_finding (snomed_concept "Swelling over mastoid" "finding") (qualifier (snomed_concept "Pain" "finding")))	Pain Swelling over mastoid
+Ear	Ear structure	(clinical_finding (snomed_concept "Stiff neck" "finding"))	Stiff neck
+Ear	Ear structure	(clinical_finding (snomed_concept "Vertigo" "finding"))	Vertigo
+Ear	Ear structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Nose	Nasal structure	(clinical_finding (snomed_concept "Nasal discharge" "finding"))	Nasal discharge
+Nose	Nasal structure	(clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Clear" "qualifier value")))	Clear Nasal discharge
+Nose	Nasal structure	(clinical_finding (snomed_concept "Nasal discharge" "finding") (qualifier (snomed_concept "Thick" "qualifier value")))	Thick Nasal discharge
+Nose	Nasal structure	(clinical_finding (snomed_concept "Nasal congestion" "finding"))	Nasal congestion
+Nose	Nasal structure	(clinical_finding (snomed_concept "Bleeding from nose" "finding"))	Bleeding from nose
+Nose	Nasal structure	(clinical_finding (snomed_concept "Sneezing" "finding"))	Sneezing
+Nose	Nasal structure	(clinical_finding (snomed_concept "Itching" "finding") (finding_site (snomed_concept "Nasal structure" "body structure")))	Itching (Nasal structure)
+Nose	Nasal structure	(clinical_finding (snomed_concept "Itching of eye" "finding"))	Itching of eye
+Nose	Nasal structure	(clinical_finding (snomed_concept "Itching of ear" "finding"))	Itching of ear
+Nose	Nasal structure	(clinical_finding (snomed_concept "Posterior rhinorrhea" "disorder"))	Posterior rhinorrhea
+Nose	Nasal structure	(clinical_finding (snomed_concept "Clearing throat - hawking" "finding"))	Clearing throat - hawking
+Nose	Nasal structure	(clinical_finding (snomed_concept "Injury of head" "disorder"))	Injury of head
+Nose	Nasal structure	(clinical_finding (snomed_concept "Cerebrospinal fluid rhinorrhea" "disorder"))	Cerebrospinal fluid rhinorrhea
+Nose	Nasal structure	(clinical_finding (snomed_concept "Sore throat" "finding"))	Sore throat
+Nose	Nasal structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Nose	Nasal structure	(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))	Generalized aches and pains
+Nose	Nasal structure	(clinical_finding (snomed_concept "Common cold" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Common cold
+Nose	Nasal structure	(clinical_finding (snomed_concept "Headache" "finding"))	Headache
+Nose	Nasal structure	(clinical_finding (snomed_concept "Cough" "finding"))	Cough
+Nose	Nasal structure	(clinical_finding (snomed_concept "Stiff neck" "finding"))	Stiff neck
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Pharyngeal swelling" "finding"))	Pharyngeal swelling
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Upper respiratory tract obstruction" "disorder"))	Upper respiratory tract obstruction
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Unable to open mouth" "finding"))	Unable to open mouth
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Unable to swallow" "finding"))	Unable to swallow
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Difficulty swallowing" "finding"))	Difficulty swallowing
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Swelling (Face structure)
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Swelling (Tongue structure)
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Wheezing" "finding"))	Wheezing
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Difficulty breathing" "finding"))	Difficulty breathing
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Dizziness" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Sudden onset Severe Dizziness
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Collapse" "finding"))	Collapse
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Abdominal pain" "finding"))	Abdominal pain
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Finding of vomiting" "finding"))	Vomiting
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Sore throat" "finding"))	Sore throat
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Enlarged tonsil" "finding"))	Enlarged tonsil
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Exudate on tonsils" "finding"))	Exudate on tonsils
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "White patches on oral mucosa" "finding"))	White patches on oral mucosa
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Ulcer of mouth" "disorder") (qualifier (snomed_concept "Pain" "finding")))	Pain Ulcer of mouth
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Blister of skin AND/OR mucosa" "disorder") (finding_site (snomed_concept "Structure of mouth and/or pharynx" "body structure")) (qualifier (snomed_concept "Pain" "finding")))	Pain Blister of skin and/or mucosa (Structure of mouth and/or pharynx)
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Cracked lips" "finding"))	Cracked lips
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Xerostomia" "finding"))	Xerostomia
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Taste sense altered" "finding"))	Taste sense altered
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Cough" "finding"))	Cough
+Mouth or throat	Structure of mouth and/or pharynx	(clinical_finding (snomed_concept "Nasal discharge" "finding"))	Nasal discharge
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Toothache" "finding"))	Toothache
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Spontaneous" "qualifier value")))	Spontaneous Toothache
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Toothache" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))	Wakes up during night Toothache
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))	Swelling (Face structure)
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Swelling of lower jaw region" "finding"))	Swelling of lower jaw region
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Unable to eat" "finding"))	Unable to eat
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Unable to drink" "finding"))	Unable to drink
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Bleeding gums" "finding"))	Bleeding gums
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Swollen gums" "finding"))	Swollen gums
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Gingival recession" "disorder"))	Gingival recession
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Mobile tooth" "finding"))	Mobile tooth
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Tooth absent" "finding"))	Tooth absent
+Teeth & gums	Tooth, gum, and/or supporting structure	(clinical_finding (snomed_concept "Breath smells unpleasant" "finding"))	Breath smells unpleasant
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Chest pain" "finding"))	Chest pain
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Severe Chest pain
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Chest pain" "finding") (qualifier (snomed_concept "New" "qualifier value")))	New Chest pain
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Chest discomfort" "finding"))	Chest discomfort
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Difficulty breathing" "finding"))	Difficulty breathing
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Radiating chest pain" "finding"))	Radiating chest pain
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Pain radiating to neck" "finding"))	Pain radiating to neck
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Pain radiating to jaw" "finding"))	Pain radiating to jaw
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Pain radiating to left arm" "finding"))	Pain radiating to left arm
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Pain radiating to right arm" "finding"))	Pain radiating to right arm
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Pain radiating to left shoulder" "finding"))	Pain radiating to left shoulder
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Pain radiating to right shoulder" "finding"))	Pain radiating to right shoulder
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Nausea" "finding"))	Nausea
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Finding of vomiting" "finding"))	Vomiting
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Pale complexion" "finding"))	Pale complexion
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Excessive sweating" "finding"))	Excessive sweating
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Chest pain on breathing" "finding"))	Chest pain on breathing
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Tenderness of chest wall" "finding"))	Tenderness of chest wall
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Decreased breath sounds" "finding"))	Decreased breath sounds
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Trachea displaced" "disorder"))	Trachea displaced
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Cough" "finding"))	Cough
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Heartburn" "finding"))	Heartburn
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Difficulty swallowing" "finding"))	Difficulty swallowing
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Persistent vomiting" "disorder"))	Persistent vomiting
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Abdominal mass" "finding"))	Abdominal mass
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Melena" "disorder"))	Melena
+Chest	Thoracic structure	(clinical_finding (snomed_concept "Abnormal weight loss" "finding"))	Abnormal weight loss
+Breast	Breast structure	(clinical_finding (snomed_concept "Breast lump" "finding"))	Breast lump
+Breast	Breast structure	(clinical_finding (snomed_concept "Pain of breast" "finding"))	Pain of breast
+Breast	Breast structure	(clinical_finding (snomed_concept "Discharge from nipple" "disorder"))	Discharge from nipple
+Breast	Breast structure	(clinical_finding (snomed_concept "Bloody nipple discharge" "disorder"))	Bloody nipple discharge
+Breast	Breast structure	(clinical_finding (snomed_concept "Retraction of nipple" "finding"))	Retraction of nipple
+Breast	Breast structure	(clinical_finding (snomed_concept "Swelling of breast" "finding"))	Swelling of breast
+Breast	Breast structure	(clinical_finding (snomed_concept "Mass of axilla" "finding"))	Mass of axilla
+Breast	Breast structure	(clinical_finding (snomed_concept "Maternal breastfeeding" "finding"))	Maternal breastfeeding
+Breast	Breast structure	(clinical_finding (snomed_concept "Sore nipple" "finding"))	Sore nipple
+Breast	Breast structure	(clinical_finding (snomed_concept "Fissure of nipple" "disorder"))	Fissure of nipple
+Breast	Breast structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Breast	Breast structure	(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))	Generalized aches and pains
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Abdominal pain" "finding"))	Abdominal pain
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Severe Abdominal pain
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Right lower quadrant pain" "finding"))	Right lower quadrant pain
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Right upper quadrant pain" "finding"))	Right upper quadrant pain
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Abdominal discomfort" "finding"))	Abdominal discomfort
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Distension of abdomen" "finding"))	Distension of abdomen
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Abdominal mass" "finding"))	Abdominal mass
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Pelvic swelling" "finding"))	Pelvic swelling
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Abdominal guarding" "finding"))	Abdominal guarding
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Abdominal rigidity" "finding"))	Abdominal rigidity
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Rebound tenderness" "finding"))	Rebound tenderness
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Chest pain" "finding"))	Chest pain
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Jaundice" "finding"))	Jaundice
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Retention of urine" "disorder"))	Retention of urine
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Nausea" "finding"))	Nausea
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Finding of vomiting" "finding"))	Vomiting
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Persistent vomiting" "disorder"))	Persistent vomiting
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Loss of appetite" "finding"))	Loss of appetite
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Constipation" "finding"))	Constipation
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Diarrhea" "finding"))	Diarrhea
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Generalized pruritus" "finding"))	Generalized pruritus
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Generalized rash" "disorder"))	Generalized rash
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Swelling (Face structure)
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")) (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Swelling (Tongue structure)
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Difficulty breathing" "finding"))	Difficulty breathing
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Dizziness" "finding"))	Dizziness
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Collapse" "finding"))	Collapse
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Vaginal discharge" "finding") (qualifier (snomed_concept "Abnormal" "qualifier value")))	Abnormal Vaginal discharge
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Heartburn" "finding"))	Heartburn
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Difficulty swallowing" "finding"))	Difficulty swallowing
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Melena" "disorder"))	Melena
+Abdomen	Structure of abdominopelvic cavity and/or content of abdominopelvic cavity and/or anterior abdominal wall	(clinical_finding (snomed_concept "Abnormal weight loss" "finding"))	Abnormal weight loss
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Constipation" "finding"))	Constipation
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Abdominal pain" "finding"))	Abdominal pain
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Distension of abdomen" "finding"))	Distension of abdomen
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Irregular bowel habits" "finding"))	Irregular bowel habits
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Anal pain" "finding"))	Anal pain
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Perianal lump" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")) (qualifier (snomed_concept "Pain" "finding")))	Severe Pain Perianal lump
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Does not defecate" "finding"))	Does not defecate
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Painless rectal bleeding" "finding"))	Painless rectal bleeding
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Rectal discharge" "finding"))	Rectal discharge
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Tenesmus of anus and/or rectum" "finding"))	Tenesmus of anus and/or rectum
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Anal fissure" "disorder"))	Anal fissure
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Hemorrhoids" "disorder"))	Hemorrhoids
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Ulcer of anus" "disorder"))	Ulcer of anus
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Anal warts" "disorder"))	Anal warts
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Erythema" "finding") (finding_site (snomed_concept "Anal structure" "body structure")))	Erythema (Anal structure)
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Pruritus ani" "disorder"))	Pruritus ani
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Melena" "disorder"))	Melena
+Anal & rectal	Structure of anus and/or rectum	(clinical_finding (snomed_concept "Abnormal weight loss" "finding"))	Abnormal weight loss
+Genital	Genital structure	(clinical_finding (snomed_concept "Abnormal urogenital discharge" "finding"))	Abnormal urogenital discharge
+Genital	Genital structure	(clinical_finding (snomed_concept "Ulcer" "morphologic abnormality") (finding_site (snomed_concept "Genital structure" "body structure")))	Ulcer (Genital structure)
+Genital	Genital structure	(clinical_finding (snomed_concept "Rash of genitalia" "disorder"))	Rash of genitalia
+Genital	Genital structure	(clinical_finding (snomed_concept "Itching" "finding") (finding_site (snomed_concept "Genital structure" "body structure")))	Itching (Genital structure)
+Genital	Genital structure	(clinical_finding (snomed_concept "Mass of body region" "finding") (finding_site (snomed_concept "Genital structure" "body structure")))	Mass of body region (Genital structure)
+Genital	Genital structure	(clinical_finding (snomed_concept "Anogenital warts" "disorder"))	Anogenital warts
+Genital	Genital structure	(clinical_finding (snomed_concept "Infestation caused by Phthirus pubis" "disorder"))	Infestation caused by phthirus pubis
+Genital	Genital structure	(clinical_finding (snomed_concept "Pain in pelvis" "finding"))	Pain in pelvis
+Genital	Genital structure	(clinical_finding (snomed_concept "Swelling of scrotum" "finding"))	Swelling of scrotum
+Genital	Genital structure	(clinical_finding (snomed_concept "Pain in scrotum" "finding"))	Pain in scrotum
+Genital	Genital structure	(clinical_finding (snomed_concept "Acute pain of scrotum" "finding"))	Acute pain of scrotum
+Genital	Genital structure	(clinical_finding (snomed_concept "Severe pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")))	Sudden onset Severe pain
+Genital	Genital structure	(clinical_finding (snomed_concept "Retractile testis" "disorder"))	Retractile testis
+Genital	Genital structure	(clinical_finding (snomed_concept "Mass of scrotum" "finding"))	Mass of scrotum
+Genital	Genital structure	(clinical_finding (snomed_concept "Urethral discharge" "finding"))	Urethral discharge
+Genital	Genital structure	(clinical_finding (snomed_concept "Dysuria" "finding"))	Dysuria
+Genital	Genital structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Glans penis structure" "body structure")) (qualifier (snomed_concept "Pain" "finding")))	Pain Swelling (Glans penis structure)
+Genital	Genital structure	(clinical_finding (snomed_concept "Severe pain" "finding") (finding_site (snomed_concept "Glans penis structure" "body structure")))	Severe pain (Glans penis structure)
+Genital	Genital structure	(clinical_finding (snomed_concept "Tightly retracted foreskin" "finding"))	Tightly retracted foreskin
+Genital	Genital structure	(clinical_finding (snomed_concept "Pain in penis" "finding"))	Pain in penis
+Genital	Genital structure	(clinical_finding (snomed_concept "Penile swelling" "disorder"))	Penile swelling
+Genital	Genital structure	(clinical_finding (snomed_concept "Priapism" "disorder"))	Priapism
+Genital	Genital structure	(clinical_finding (snomed_concept "Vaginal discharge" "finding"))	Vaginal discharge
+Genital	Genital structure	(clinical_finding (snomed_concept "Vaginal discharge" "finding") (qualifier (snomed_concept "Abnormal" "qualifier value")))	Abnormal Vaginal discharge
+Genital	Genital structure	(clinical_finding (snomed_concept "Pruritus of vulva" "disorder"))	Pruritus of vulva
+Genital	Genital structure	(clinical_finding (snomed_concept "Inflammation of vulva" "disorder"))	Inflammation of vulva
+Genital	Genital structure	(clinical_finding (snomed_concept "Cervical excitation present" "finding"))	Cervical excitation present
+Genital	Genital structure	(clinical_finding (snomed_concept "Abdominal mass" "finding"))	Abdominal mass
+Genital	Genital structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Genital	Genital structure	(clinical_finding (snomed_concept "Bleeding from vagina" "finding"))	Bleeding from vagina
+Genital	Genital structure	(clinical_finding (snomed_concept "Menorrhagia" "finding"))	Menorrhagia
+Genital	Genital structure	(clinical_finding (snomed_concept "Irregular periods" "finding"))	Irregular periods
+Genital	Genital structure	(clinical_finding (snomed_concept "Bleeding between periods" "finding"))	Bleeding between periods
+Genital	Genital structure	(clinical_finding (snomed_concept "Postcoital bleeding" "finding"))	Postcoital bleeding
+Genital	Genital structure	(clinical_finding (snomed_concept "Pelvic swelling" "finding"))	Pelvic swelling
+Genital	Genital structure	(clinical_finding (snomed_concept "Pale complexion" "finding"))	Pale complexion
+Genital	Genital structure	(clinical_finding (snomed_concept "Dizziness" "finding"))	Dizziness
+Genital	Genital structure	(clinical_finding (snomed_concept "Chest pain" "finding"))	Chest pain
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Dysuria" "finding"))	Dysuria
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Increased frequency of urination" "finding"))	Increased frequency of urination
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Urgent desire to urinate" "finding"))	Urgent desire to urinate
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Retention of urine" "disorder"))	Retention of urine
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Urinary incontinence" "finding"))	Urinary incontinence
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Abnormal urinary stream" "finding"))	Abnormal urinary stream
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Oliguria" "finding"))	Oliguria
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Blood in urine" "finding"))	Blood in urine
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Proteinuria" "finding"))	Proteinuria
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Abdominal discomfort" "finding"))	Abdominal discomfort
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Distension of abdomen" "finding"))	Distension of abdomen
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")) (qualifier (snomed_concept "New" "qualifier value")))	New Swelling (Face structure)
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Foot structure" "body structure")) (qualifier (snomed_concept "New" "qualifier value")))	New Swelling (Foot structure)
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Flank pain" "finding"))	Flank pain
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Flank pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")) (qualifier (snomed_concept "Unilateral" "qualifier value")))	Sudden onset Severe Unilateral Flank pain
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Pain" "finding") (finding_site (snomed_concept "Inguinal region structure" "body structure")))	Pain (Inguinal region structure)
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Finding of vomiting" "finding"))	Vomiting
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Urethral discharge" "finding"))	Urethral discharge
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Tenderness of prostate" "finding"))	Tenderness of prostate
+Urinary	Urinary system structure	(clinical_finding (snomed_concept "Generalized aches and pains" "finding"))	Generalized aches and pains
+Joint	Joint structure	(clinical_finding (snomed_concept "Pain of joint" "finding"))	Pain of joint
+Joint	Joint structure	(clinical_finding (snomed_concept "Pain of joint" "finding") (qualifier (snomed_concept "Acute pain" "finding")))	Acute pain Pain of joint
+Joint	Joint structure	(clinical_finding (snomed_concept "Pain of joint" "finding") (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Severe Pain of joint
+Joint	Joint structure	(clinical_finding (snomed_concept "Joint swelling" "finding"))	Joint swelling
+Joint	Joint structure	(clinical_finding (snomed_concept "Joint warm" "finding"))	Joint warm
+Joint	Joint structure	(clinical_finding (snomed_concept "Tenderness of joint" "finding"))	Tenderness of joint
+Joint	Joint structure	(clinical_finding (snomed_concept "Erythema" "finding") (finding_site (snomed_concept "Joint structure" "body structure")))	Erythema (Joint structure)
+Joint	Joint structure	(clinical_finding (snomed_concept "Limitation of joint movement" "finding"))	Limitation of joint movement
+Joint	Joint structure	(clinical_finding (snomed_concept "Deformity" "finding"))	Deformity
+Joint	Joint structure	(clinical_finding (snomed_concept "Unable to weight-bear" "finding"))	Unable to weight-bear
+Joint	Joint structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Joint	Joint structure	(clinical_finding (snomed_concept "Injury of musculoskeletal system" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Injury of musculoskeletal system
+Joint	Joint structure	(clinical_finding (snomed_concept "Abnormal urogenital discharge" "finding") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Abnormal urogenital discharge
+Joint	Joint structure	(clinical_finding (snomed_concept "Eruption of skin" "disorder"))	Eruption of skin
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Backache" "finding"))	Backache
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Backache" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))	Worsening Backache
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Retention of urine" "disorder"))	Retention of urine
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Urinary incontinence" "finding"))	Urinary incontinence
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Incontinence of feces" "finding"))	Incontinence of feces
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Numbness" "finding") (finding_site (snomed_concept "Buttock structure" "body structure")))	Numbness (Buttock structure)
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Numbness" "finding") (finding_site (snomed_concept "Perineal structure" "body structure")))	Numbness (Perineal structure)
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Numbness of limbs" "finding"))	Numbness of limbs
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding"))	Weakness of muscle of lower limb
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Difficulty walking" "finding"))	Difficulty walking
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Injury of musculoskeletal system" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Injury of musculoskeletal system
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Abdominal pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Sudden onset Severe Abdominal pain
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Nausea" "finding"))	Nausea
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Finding of vomiting" "finding"))	Vomiting
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Abdominal mass" "finding") (qualifier (snomed_concept "Pulsatile" "qualifier value")))	Pulsatile Abdominal mass
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Flank pain" "finding"))	Flank pain
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Blood in urine" "finding"))	Blood in urine
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Cough" "finding"))	Cough
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Abnormal weight loss" "finding"))	Abnormal weight loss
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Night sweats" "finding"))	Night sweats
+Back	Structure of posterior region of trunk	(clinical_finding (snomed_concept "Deformity" "finding"))	Deformity
+Neck	Neck structure	(clinical_finding (snomed_concept "Neck pain" "finding"))	Neck pain
+Neck	Neck structure	(clinical_finding (snomed_concept "Neck pain" "finding") (qualifier (snomed_concept "Worsening" "qualifier value")))	Worsening Neck pain
+Neck	Neck structure	(clinical_finding (snomed_concept "Stiff neck" "finding"))	Stiff neck
+Neck	Neck structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Neck	Neck structure	(clinical_finding (snomed_concept "Headache" "finding"))	Headache
+Neck	Neck structure	(clinical_finding (snomed_concept "Drowsy" "finding"))	Drowsy
+Neck	Neck structure	(clinical_finding (snomed_concept "Clouded consciousness" "finding"))	Clouded consciousness
+Neck	Neck structure	(clinical_finding (snomed_concept "Purpuric rash" "disorder"))	Purpuric rash
+Neck	Neck structure	(clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding"))	Muscle weakness of upper limb
+Neck	Neck structure	(clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding"))	Weakness of muscle of lower limb
+Neck	Neck structure	(clinical_finding (snomed_concept "Numbness of limbs" "finding"))	Numbness of limbs
+Neck	Neck structure	(clinical_finding (snomed_concept "Clumsiness" "finding"))	Clumsiness
+Neck	Neck structure	(clinical_finding (snomed_concept "Abnormal gait" "finding"))	Abnormal gait
+Neck	Neck structure	(clinical_finding (snomed_concept "Decreased coordination" "finding"))	Decreased coordination
+Neck	Neck structure	(clinical_finding (snomed_concept "Injury of neck" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Injury of neck
+Neck	Neck structure	(clinical_finding (snomed_concept "Abnormal weight loss" "finding"))	Abnormal weight loss
+Neck	Neck structure	(clinical_finding (snomed_concept "Mass of neck" "finding"))	Mass of neck
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Pain in upper limb" "finding"))	Pain in upper limb
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Pain in left arm" "finding"))	Pain in left arm
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Pain in right arm" "finding"))	Pain in right arm
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Chest pain" "finding"))	Chest pain
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Muscle weakness of upper limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "New" "qualifier value")))	Sudden onset New Muscle weakness of upper limb
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Difficulty talking" "finding"))	Difficulty talking
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Visual disturbance" "disorder"))	Visual disturbance
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Injury of musculoskeletal system" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Injury of musculoskeletal system
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Severe pain" "finding"))	Severe pain
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Swelling of upper arm" "finding"))	Swelling of upper arm
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Deformity of upper limb" "finding"))	Deformity of upper limb
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Joint swelling" "finding"))	Joint swelling
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Joint warm" "finding"))	Joint warm
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Tenderness of joint" "finding"))	Tenderness of joint
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Pain" "finding") (finding_site (snomed_concept "Shoulder region structure" "body structure")))	Pain (Shoulder region structure)
+Arm	Upper limb structure	(clinical_finding (snomed_concept "Pain" "finding") (finding_site (snomed_concept "Elbow region structure" "body structure")))	Pain (Elbow region structure)
+Hand	Hand structure	(clinical_finding (snomed_concept "Hand pain" "finding"))	Hand pain
+Hand	Hand structure	(clinical_finding (snomed_concept "Pain" "finding") (finding_site (snomed_concept "Wrist region structure" "body structure")))	Pain (Wrist region structure)
+Hand	Hand structure	(clinical_finding (snomed_concept "Chest pain" "finding"))	Chest pain
+Hand	Hand structure	(clinical_finding (snomed_concept "Injury of musculoskeletal system" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Injury of musculoskeletal system
+Hand	Hand structure	(clinical_finding (snomed_concept "Severe pain" "finding"))	Severe pain
+Hand	Hand structure	(clinical_finding (snomed_concept "Swelling of hand" "finding"))	Swelling of hand
+Hand	Hand structure	(clinical_finding (snomed_concept "Deformity of upper limb" "finding"))	Deformity of upper limb
+Hand	Hand structure	(clinical_finding (snomed_concept "Joint swelling" "finding"))	Joint swelling
+Hand	Hand structure	(clinical_finding (snomed_concept "Joint warm" "finding"))	Joint warm
+Hand	Hand structure	(clinical_finding (snomed_concept "Tenderness of joint" "finding"))	Tenderness of joint
+Hand	Hand structure	(clinical_finding (snomed_concept "Hand pain" "finding") (qualifier (snomed_concept "Wakes up during night" "finding")))	Wakes up during night Hand pain
+Hand	Hand structure	(clinical_finding (snomed_concept "Numbness of finger" "finding"))	Numbness of finger
+Hand	Hand structure	(clinical_finding (snomed_concept "Numbness and tingling sensation of skin" "finding") (finding_site (snomed_concept "Hand structure" "body structure")))	Numbness and tingling sensation of skin (Hand structure)
+Hand	Hand structure	(clinical_finding (snomed_concept "Weakness of hand" "finding"))	Weakness of hand
+Hand	Hand structure	(clinical_finding (snomed_concept "Pain in thumb" "finding"))	Pain in thumb
+Hand	Hand structure	(clinical_finding (snomed_concept "Acquired trigger finger" "disorder"))	Acquired trigger finger
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Pain in lower limb" "finding"))	Pain in lower limb
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Pain in lower limb" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Sudden onset Severe Pain in lower limb
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Pain in calf" "finding"))	Pain in calf
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Pain in calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))	Unilateral Pain in calf
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Swollen calf" "finding"))	Swollen calf
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Swollen calf" "finding") (qualifier (snomed_concept "Unilateral" "qualifier value")))	Unilateral Swollen calf
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Lower limb structure" "body structure")))	Swelling (Lower limb structure)
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Numbness of limbs" "finding"))	Numbness of limbs
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Muscle weakness of limb" "finding"))	Muscle weakness of limb
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Pale complexion" "finding"))	Pale complexion
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Peripheral pulse absent" "finding"))	Peripheral pulse absent
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Absent pulse" "finding"))	Absent pulse
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Intermittent claudication" "finding"))	Intermittent claudication
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Intermittent claudication" "finding") (finding_site (snomed_concept "Buttock structure" "body structure")))	Intermittent claudication (Buttock structure)
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Gangrene" "morphologic abnormality"))	Gangrene
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Ulcer" "morphologic abnormality"))	Ulcer
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Unable to weight-bear" "finding"))	Unable to weight-bear
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Injury of lower limb" "disorder"))	Injury of lower limb
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Orthopnea" "finding"))	Orthopnea
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Blood in urine" "finding"))	Blood in urine
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Proteinuria" "finding"))	Proteinuria
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Sciatica" "disorder"))	Sciatica
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Cramp" "finding"))	Cramp
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Retention of urine" "disorder"))	Retention of urine
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Urinary incontinence" "finding"))	Urinary incontinence
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Incontinence of feces" "finding"))	Incontinence of feces
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Numbness" "finding") (finding_site (snomed_concept "Buttock structure" "body structure")))	Numbness (Buttock structure)
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Difficulty walking" "finding"))	Difficulty walking
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Skin ulcer" "disorder"))	Skin ulcer
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Skin lesion" "disorder"))	Skin lesion
+Leg	Lower limb structure	(clinical_finding (snomed_concept "Groin mass" "finding"))	Groin mass
+Foot	Foot structure	(clinical_finding (snomed_concept "Foot pain" "finding"))	Foot pain
+Foot	Foot structure	(clinical_finding (snomed_concept "Foot pain" "finding") (qualifier (snomed_concept "Sudden onset" "qualifier value")) (qualifier (snomed_concept "Severe (severity modifier)" "qualifier value")))	Sudden onset Severe Foot pain
+Foot	Foot structure	(clinical_finding (snomed_concept "Unable to weight-bear" "finding"))	Unable to weight-bear
+Foot	Foot structure	(clinical_finding (snomed_concept "Injury of lower limb" "disorder"))	Injury of lower limb
+Foot	Foot structure	(clinical_finding (snomed_concept "Numbness of lower limb" "finding"))	Numbness of lower limb
+Foot	Foot structure	(clinical_finding (snomed_concept "Weakness of muscle of lower limb" "finding"))	Weakness of muscle of lower limb
+Foot	Foot structure	(clinical_finding (snomed_concept "Pale complexion" "finding"))	Pale complexion
+Foot	Foot structure	(clinical_finding (snomed_concept "Peripheral pulse absent" "finding"))	Peripheral pulse absent
+Foot	Foot structure	(clinical_finding (snomed_concept "Absent pulse" "finding") (finding_site (snomed_concept "Lower limb structure" "body structure")))	Absent pulse (Lower limb structure)
+Foot	Foot structure	(clinical_finding (snomed_concept "Intermittent claudication" "finding"))	Intermittent claudication
+Foot	Foot structure	(clinical_finding (snomed_concept "Intermittent claudication" "finding") (finding_site (snomed_concept "Buttock structure" "body structure")))	Intermittent claudication (Buttock structure)
+Foot	Foot structure	(clinical_finding (snomed_concept "Ulcer of foot" "disorder"))	Ulcer of foot
+Foot	Foot structure	(clinical_finding (snomed_concept "Gangrene of foot" "disorder"))	Gangrene of foot
+Foot	Foot structure	(clinical_finding (snomed_concept "Peeling of skin" "finding") (finding_site (snomed_concept "Foot structure" "body structure")))	Peeling of skin (Foot structure)
+Foot	Foot structure	(clinical_finding (snomed_concept "Scaly skin" "finding") (finding_site (snomed_concept "Foot structure" "body structure")))	Scaly skin (Foot structure)
+Foot	Foot structure	(clinical_finding (snomed_concept "Burning feet" "finding"))	Burning feet
+Foot	Foot structure	(clinical_finding (snomed_concept "Paresthesia of foot" "finding"))	Paresthesia of foot
+Foot	Foot structure	(clinical_finding (snomed_concept "Numbness of foot" "finding"))	Numbness of foot
+Foot	Foot structure	(clinical_finding (snomed_concept "Heel pain" "finding"))	Heel pain
+Foot	Foot structure	(clinical_finding (snomed_concept "Deformity of foot" "finding"))	Deformity of foot
+Foot	Foot structure	(clinical_finding (snomed_concept "Hallux valgus AND bunion" "disorder"))	Hallux valgus and bunion
+Foot	Foot structure	(clinical_finding (snomed_concept "Callosity" "disorder"))	Callosity
+Foot	Foot structure	(clinical_finding (snomed_concept "Blister of skin" "disorder") (finding_site (snomed_concept "Foot structure" "body structure")))	Blister of skin (Foot structure)
+Foot	Foot structure	(clinical_finding (snomed_concept "Abnormal sensation" "finding") (finding_site (snomed_concept "Foot structure" "body structure")))	Abnormal sensation (Foot structure)
+Skin	Skin structure	(clinical_finding (snomed_concept "Generalized pruritus" "finding"))	Generalized pruritus
+Skin	Skin structure	(clinical_finding (snomed_concept "Generalized rash" "disorder"))	Generalized rash
+Skin	Skin structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Face structure" "body structure")))	Swelling (Face structure)
+Skin	Skin structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Tongue structure" "body structure")))	Swelling (Tongue structure)
+Skin	Skin structure	(clinical_finding (snomed_concept "Wheezing" "finding"))	Wheezing
+Skin	Skin structure	(clinical_finding (snomed_concept "Difficulty breathing" "finding"))	Difficulty breathing
+Skin	Skin structure	(clinical_finding (snomed_concept "Dizziness" "finding"))	Dizziness
+Skin	Skin structure	(clinical_finding (snomed_concept "Collapse" "finding"))	Collapse
+Skin	Skin structure	(clinical_finding (snomed_concept "Abdominal pain" "finding"))	Abdominal pain
+Skin	Skin structure	(clinical_finding (snomed_concept "Finding of vomiting" "finding"))	Vomiting
+Skin	Skin structure	(clinical_finding (snomed_concept "Purpuric rash" "disorder"))	Purpuric rash
+Skin	Skin structure	(clinical_finding (snomed_concept "Stiff neck" "finding"))	Stiff neck
+Skin	Skin structure	(clinical_finding (snomed_concept "Drowsy" "finding"))	Drowsy
+Skin	Skin structure	(clinical_finding (snomed_concept "Clouded consciousness" "finding"))	Clouded consciousness
+Skin	Skin structure	(clinical_finding (snomed_concept "Fever" "finding"))	Fever
+Skin	Skin structure	(clinical_finding (snomed_concept "Headache" "finding"))	Headache
+Skin	Skin structure	(clinical_finding (snomed_concept "Eruption caused by drug" "disorder"))	Eruption caused by drug
+Skin	Skin structure	(clinical_finding (snomed_concept "Perioral dermatitis" "disorder"))	Perioral dermatitis
+Skin	Skin structure	(clinical_finding (snomed_concept "Periocular dermatitis" "disorder"))	Periocular dermatitis
+Skin	Skin structure	(clinical_finding (snomed_concept "Rash of genitalia" "disorder"))	Rash of genitalia
+Skin	Skin structure	(clinical_finding (snomed_concept "Blister of skin" "disorder"))	Blister of skin
+Skin	Skin structure	(clinical_finding (snomed_concept "Peeling of skin" "finding"))	Peeling of skin
+Skin	Skin structure	(clinical_finding (snomed_concept "Jaundice" "finding"))	Jaundice
+Skin	Skin structure	(clinical_finding (snomed_concept "Diarrhea" "finding"))	Diarrhea
+Skin	Skin structure	(clinical_finding (snomed_concept "Pain of skin" "finding"))	Pain of skin
+Skin	Skin structure	(clinical_finding (snomed_concept "Itching of skin" "finding"))	Itching of skin
+Skin	Skin structure	(clinical_finding (snomed_concept "Eruption of skin" "disorder"))	Eruption of skin
+Skin	Skin structure	(clinical_finding (snomed_concept "Skin lesion" "disorder"))	Skin lesion
+Skin	Skin structure	(clinical_finding (snomed_concept "Acne" "disorder"))	Acne
+Skin	Skin structure	(clinical_finding (snomed_concept "Comedo" "morphologic abnormality"))	Comedo
+Skin	Skin structure	(clinical_finding (snomed_concept "Skin ulcer" "disorder"))	Skin ulcer
+Skin	Skin structure	(clinical_finding (snomed_concept "Crust on skin" "finding"))	Crust on skin
+Skin	Skin structure	(clinical_finding (snomed_concept "Scaly skin" "finding"))	Scaly skin
+Skin	Skin structure	(clinical_finding (snomed_concept "Discoloration of skin" "finding"))	Discoloration of skin
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Itching of skin" "finding") (finding_site (snomed_concept "Scalp structure" "body structure")))	Itching of skin (Scalp structure)
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Eruption of scalp" "disorder"))	Eruption of scalp
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Pediculosis capitis" "disorder"))	Pediculosis capitis
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Scaly scalp" "finding"))	Scaly scalp
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Erythema" "finding") (finding_site (snomed_concept "Scalp structure" "body structure")))	Erythema (Scalp structure)
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Scalp structure" "body structure")))	Swelling (Scalp structure)
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Blister of skin" "disorder") (finding_site (snomed_concept "Scalp structure" "body structure")))	Blister of skin (Scalp structure)
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Pustule" "morphologic abnormality") (finding_site (snomed_concept "Scalp structure" "body structure")))	Pustule (Scalp structure)
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Pitting of nails" "disorder"))	Pitting of nails
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Loss of scalp hair" "finding"))	Loss of scalp hair
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Loss of hair" "finding"))	Loss of hair
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Hirsutism" "disorder"))	Hirsutism
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Irregular periods" "finding"))	Irregular periods
+Hair & scalp	Scalp structure	(clinical_finding (snomed_concept "Abnormal weight loss" "finding"))	Abnormal weight loss
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Nail deformity" "disorder"))	Nail deformity
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Nail bed structure" "body structure")))	Swelling (Nail bed structure)
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Nail fold finding" "finding") (finding_site (snomed_concept "Structure of cuticle of nail" "body structure")))	Nail fold finding (Structure of cuticle of nail)
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Pain" "finding") (finding_site (snomed_concept "Nail unit structure" "body structure")))	Pain (Nail unit structure)
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Swelling" "finding") (finding_site (snomed_concept "Structure of proximal nail fold" "body structure")))	Swelling (Structure of proximal nail fold)
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Purulent discharge" "morphologic abnormality") (finding_site (snomed_concept "Nail unit structure" "body structure")))	Purulent discharge (Nail unit structure)
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Yellow nails" "finding"))	Yellow nails
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Nails crumble" "finding"))	Nails crumble
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Nail discoloration" "finding"))	Nail discoloration
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Injury of nail" "disorder") (qualifier (snomed_concept "Recent" "qualifier value")))	Recent Injury of nail
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Beau's lines" "disorder"))	Beau's lines
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Nails dirty" "finding"))	Nails dirty
+Nail	Nail unit structure	(clinical_finding (snomed_concept "Unkempt appearance" "finding"))	Unkempt appearance
