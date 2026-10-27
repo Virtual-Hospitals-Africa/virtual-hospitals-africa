@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@plugin "@tailwindcss/typography";
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 /* @theme references vars so Tailwind registers utilities at build time;
    actual values are set in :root and overridden by media query at runtime. */
@@ -36,6 +36,8 @@
 }
 
 :root {
+  --patient-sheet-collapsed-height: 6.5rem;
+
   --text-xs: 0.625rem;
   --text-xs--line-height: 1rem;
 
@@ -65,6 +67,24 @@
 
   --text-heading-5: 0.75rem;
   --text-heading-5--line-height: 1.125rem;
+}
+
+/* Mobile patient drawer. Desktop keeps the in-flow side column via md:contents. */
+@media (width < 48rem) {
+  .patient-drawer-sheet {
+    top: calc(100dvh - var(--patient-sheet-collapsed-height));
+    transition: top 300ms ease-out;
+  }
+
+  .patient-drawer-sheet[data-expanded='true'] {
+    top: 5dvh;
+  }
+}
+
+@media (width < 48rem) and (prefers-reduced-motion: reduce) {
+  .patient-drawer-sheet {
+    transition: none;
+  }
 }
 
 /* Scale all font sizes down ~85.7% on narrow screens (text-sm: 14px → 12px) */
