@@ -6,6 +6,7 @@ import SExpressionPlayground from '../islands/SExpressionPlayground.tsx'
 import { allConceptsToLookFor } from '../shared/s_expression_concepts.ts'
 import { conceptDoesNotExist } from '../db/models/snomed_concept_exists.ts'
 import { stripComments } from '../s_expression/compile.ts'
+import { findingFullDisplay } from '../shared/patient_records.ts'
 
 function countInstances(str: string, needle: string): number {
   if (needle.length === 0) return 0
@@ -54,7 +55,10 @@ export const handler = {
           )
         }
       }
-      return json({ ok: true })
+      return json({
+        ok: true,
+        finding_displays: node.atom === 'finding_site_findings' ? node.clinical_findings.map(findingFullDisplay) : null,
+      })
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
       return json({ ok: false, error: message })

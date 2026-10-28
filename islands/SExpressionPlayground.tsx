@@ -45,6 +45,7 @@ export default function SExpressionPlayground() {
   const [error, setError] = useState<string | null>(null)
   const [valid, setValid] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [finding_displays, setFindingDisplays] = useState<string[] | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -80,6 +81,7 @@ export default function SExpressionPlayground() {
   async function validate() {
     setError(null)
     setValid(false)
+    setFindingDisplays(null)
     setSubmitting(true)
     try {
       const expression = editor_ref.current?.getValue() ?? textarea_ref.current?.value ?? ''
@@ -88,9 +90,10 @@ export default function SExpressionPlayground() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ expression }),
       })
-      const data = await res.json() as { ok: boolean; error?: string }
+      const data = await res.json() as { ok: boolean; error?: string; finding_displays?: string[] | null }
       if (data.ok) {
         setValid(true)
+        setFindingDisplays(data.finding_displays ?? null)
       } else {
         setError(data.error || 'Unknown error')
       }
@@ -122,6 +125,11 @@ export default function SExpressionPlayground() {
         </button>
         {valid && <span class='text-green-700 font-medium'>Valid</span>}
       </div>
+      {finding_displays && (
+        <ul class='mt-3 list-disc pl-6'>
+          {finding_displays.map((display) => <li key={display}>{display}</li>)}
+        </ul>
+      )}
       {error && (
         <pre class='mt-3 p-3 bg-red-50 border border-red-200 text-red-700 whitespace-pre-wrap text-sm overflow-auto'>
           {error}
