@@ -25,13 +25,13 @@ services:
       - ./db:/db
       - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
 
-  adminer:
-    image: adminer
-    container_name: vha_adminer
-    ports:
-      - '8888:8080'
-    networks:
-      - mylocalnetwork
+  # adminer:
+  #   image: adminer
+  #   container_name: vha_adminer
+  #   ports:
+  #     - '8888:8080'
+  #   networks:
+  #     - mylocalnetwork
 
 networks:
   mylocalnetwork:

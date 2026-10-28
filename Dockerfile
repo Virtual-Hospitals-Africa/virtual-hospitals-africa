@@ -27,6 +27,9 @@ COPY --from=build /app/_fresh ./_fresh
 # Copy db files needed at runtime (models, db.ts, helpers.ts)
 COPY --from=build /app/db ./db
 
+# Copy s_expression files read from disk at runtime (the playground lists the .lisp files)
+COPY --from=build /app/s_expression ./s_expression
+
 # Copy deno module cache to avoid re-downloading at startup
 COPY --from=build /deno-dir /deno-dir
 
