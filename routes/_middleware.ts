@@ -21,10 +21,13 @@ async function attachTraceParent(ctx: Context<any>) {
   const traceparent = generateTraceparent()
   ctx.state.traceparent = traceparent
   console.time(`${ctx.req.method} ${ctx.req.url} ${traceparent} Response`)
-  const response = await ctx.next()
-  console.timeEnd(`${ctx.req.method} ${ctx.req.url} ${traceparent} Response`)
-  response.headers.set('traceparent', traceparent)
-  return response
+  try {
+    const response = await ctx.next()
+    response.headers.set('traceparent', traceparent)
+    return response
+  } finally {
+    console.timeEnd(`${ctx.req.method} ${ctx.req.url} ${traceparent} Response`)
+  }
 }
 
 function createAsyncContext(ctx: Context<{ traceparent: string }>) {
@@ -36,7 +39,7 @@ async function handleError(ctx: Context<any>) {
   try {
     return await ctx.next()
   } catch (error) {
-    console.error(error)
+    console.error(`${ctx.req.method} ${ctx.req.url} ${ctx.state.traceparent} Error`, error)
     // deno-lint-ignore no-explicit-any
     logToFileIfOnServer((error as any).stack || (error as any).message || error, {
       file_prefix: 'error',
