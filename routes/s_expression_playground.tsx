@@ -1,6 +1,6 @@
 import { PageProps } from 'fresh'
 import { formatExpressionWithErrorAt, parseWithSchema } from '../shared/s_expression.ts'
-import { any_rule } from '../shared/s_expression_schemas.ts'
+import { any_rule, finding_site_findings } from '../shared/s_expression_schemas.ts'
 import { json } from '../util/responses.ts'
 import SExpressionPlayground from '../islands/SExpressionPlayground.tsx'
 import { allConceptsToLookFor } from '../shared/s_expression_concepts.ts'
@@ -35,8 +35,10 @@ export const handler = {
       return json({ ok: false, error: 'Cannot use “ character. Replace with "' })
     }
 
+    const is_finding_site_findings = /^\s*\(\s*finding_site_findings\b/.test(sans_comments)
+
     try {
-      const node = parseWithSchema(sans_comments, any_rule)
+      const node = is_finding_site_findings ? parseWithSchema(sans_comments, finding_site_findings) : parseWithSchema(sans_comments, any_rule)
       for (const concept of allConceptsToLookFor(node)) {
         console.log({ concept })
         if (await conceptDoesNotExist({ concept })) {
@@ -65,7 +67,9 @@ export default function SExpressionPlaygroundPage(_props: PageProps) {
     <div class='p-6 max-w-5xl mx-auto'>
       <h1 class='text-2xl font-semibold mb-1'>S-Expression Playground</h1>
       <p class='text-gray-600 mb-4'>
-        Validate an expression against <code>any_rule</code> from <code>shared/s_expression_schemas.ts</code>.
+        Validate an expression against <code>any_rule</code> or <code>finding_site_findings</code> from{' '}
+        <code>shared/s_expression_schemas.ts</code>. An expression starting with <code>(finding_site_findings</code>{' '}
+        is validated as a finding site page, anything else as a rule.
       </p>
       <SExpressionPlayground />
     </div>

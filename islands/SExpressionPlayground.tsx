@@ -120,7 +120,7 @@ export default function SExpressionPlayground() {
         >
           {submitting ? 'Validating…' : 'Validate'}
         </button>
-        {valid && <span class='text-green-700 font-medium'>Valid any_rule</span>}
+        {valid && <span class='text-green-700 font-medium'>Valid</span>}
       </div>
       {error && (
         <pre class='mt-3 p-3 bg-red-50 border border-red-200 text-red-700 whitespace-pre-wrap text-sm overflow-auto'>

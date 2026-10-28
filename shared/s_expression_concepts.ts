@@ -2,9 +2,16 @@ import { Lang, QueryableEvidenceNode, SnomedConcept } from './s_expression_schem
 import { assertUnreachable } from '../util/assertUnreachable.ts'
 
 export function* allConceptsToLookFor(
-  node: QueryableEvidenceNode | Lang['task' | 'system_diagnosis_rule' | 'system_priority_evaluation'],
+  node: QueryableEvidenceNode | Lang['task' | 'system_diagnosis_rule' | 'system_priority_evaluation' | 'finding_site_findings'],
 ): Generator<SnomedConcept> {
   switch (node.atom) {
+    case 'finding_site_findings':
+      yield node.finding_site_structure
+      yield* node.excluding_structures
+      for (const finding of node.clinical_findings) {
+        yield* allConceptsToLookFor(finding)
+      }
+      break
     case 'qualifier':
       if (node.specific_snomed_concept) yield node.specific_snomed_concept
       for (const qualifier of node.qualifiers) {
