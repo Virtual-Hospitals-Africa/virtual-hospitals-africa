@@ -38,10 +38,53 @@ function loadScript(src: string): Promise<void> {
   })
 }
 
-export default function SExpressionPlayground() {
+export type FindingSiteSample = { label: string; source: string }
+
+const DRAFTS_KEY = 's_expression_playground_drafts'
+const AUTOSAVE_INTERVAL_MS = 5000
+const MAX_DRAFTS = 50
+
+type Draft = { name: string; source: string; saved_at: number }
+
+/*
+  Drafts are named for what is being worked on, the top-level atom and its description,
+  e.g. `finding_site_findings Nose` or `task Raise legs`, so re-saving the same piece of
+  work replaces its draft rather than piling up copies
+*/
+function draftName(source: string): string {
+  const match = source.replace(/;;.*$/gm, '').match(/^\s*\(\s*(\w+)(?:\s+"((?:[^"\\]|\\.)*)")?/)
+  if (!match) return 'untitled'
+  return match[2] ? `${match[1]} ${match[2]}` : match[1]
+}
+
+function readDrafts(): Draft[] {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(DRAFTS_KEY) ?? '[]')
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function saveDraft(source: string): Draft[] {
+  const name = draftName(source)
+  const drafts = [{ name, source, saved_at: Date.now() }, ...readDrafts().filter((draft) => draft.name !== name)]
+    .slice(0, MAX_DRAFTS)
+  try {
+    localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts))
+  } catch (err) {
+    console.error(err)
+  }
+  return drafts
+}
+
+export default function SExpressionPlayground({ finding_site_samples }: { finding_site_samples: FindingSiteSample[] }) {
   const textarea_ref = useRef<HTMLTextAreaElement>(null)
   // deno-lint-ignore no-explicit-any
   const editor_ref = useRef<any>(null)
+  // What the editor held when it was last saved or loaded, so that only edits get autosaved
+  const last_seen_ref = useRef(SAMPLE)
+  const [drafts, setDrafts] = useState<Draft[]>([])
   const [error, setError] = useState<string | null>(null)
   const [valid, setValid] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -78,6 +121,31 @@ export default function SExpressionPlayground() {
     }
   }, [])
 
+  useEffect(() => {
+    setDrafts(readDrafts())
+    function autosave() {
+      const source: string = editor_ref.current?.getValue() ?? textarea_ref.current?.value ?? ''
+      if (!source.trim() || source === last_seen_ref.current) return
+      last_seen_ref.current = source
+      setDrafts(saveDraft(source))
+    }
+    const interval = setInterval(autosave, AUTOSAVE_INTERVAL_MS)
+    addEventListener('pagehide', autosave)
+    return () => {
+      clearInterval(interval)
+      removeEventListener('pagehide', autosave)
+    }
+  }, [])
+
+  function setSource(source: string) {
+    last_seen_ref.current = source
+    if (editor_ref.current) editor_ref.current.setValue(source)
+    else if (textarea_ref.current) textarea_ref.current.value = source
+    setError(null)
+    setValid(false)
+    setFindingDisplays(null)
+  }
+
   async function validate() {
     setError(null)
     setValid(false)
@@ -106,6 +174,44 @@ export default function SExpressionPlayground() {
 
   return (
     <div>
+      {(finding_site_samples.length > 0 || drafts.length > 0) && (
+        <div class='mb-3 flex justify-end gap-2 md:absolute md:top-6 md:right-6 md:mb-0'>
+          {drafts.length > 0 && (
+            <select
+              aria-label='Restore an autosaved draft'
+              value=''
+              onChange={(e) => {
+                const index = parseInt(e.currentTarget.value)
+                if (!isNaN(index)) setSource(drafts[index].source)
+                e.currentTarget.value = ''
+              }}
+              class='border border-gray-300 rounded px-2 py-1 text-sm bg-white'
+            >
+              <option value=''>Autosaved drafts…</option>
+              {drafts.map((draft, i) => (
+                <option key={draft.name} value={i}>
+                  {draft.name} · {new Date(draft.saved_at).toLocaleString()}
+                </option>
+              ))}
+            </select>
+          )}
+          {finding_site_samples.length > 0 && (
+            <select
+              aria-label='Load a finding site page'
+              value=''
+              onChange={(e) => {
+                const index = parseInt(e.currentTarget.value)
+                if (!isNaN(index)) setSource(finding_site_samples[index].source)
+                e.currentTarget.value = ''
+              }}
+              class='border border-gray-300 rounded px-2 py-1 text-sm bg-white'
+            >
+              <option value=''>Load a finding site page…</option>
+              {finding_site_samples.map((sample, i) => <option key={sample.label} value={i}>{sample.label}</option>)}
+            </select>
+          )}
+        </div>
+      )}
       <div class='border border-gray-300 rounded'>
         <textarea
           ref={textarea_ref}

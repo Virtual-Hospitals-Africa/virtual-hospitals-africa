@@ -68,7 +68,7 @@ const FINDING_SITE_FINDINGS_DIR = 's_expression/finding_site_findings'
   Sorted by the guide page the file is named for, so the sites come out in the order the
   guide presents them rather than in whatever order the directory is read
 */
-async function findingSiteFindingsLispFiles() {
+export async function findingSiteFindingsLispFiles() {
   const paths = await collect(walkDirectory(FINDING_SITE_FINDINGS_DIR))
   return paths.sort((a, b) => {
     const page = pageNumber(a) - pageNumber(b)
