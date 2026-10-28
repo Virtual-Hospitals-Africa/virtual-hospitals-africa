@@ -43,7 +43,7 @@ export const handler = {
         console.log({ concept })
         if (await conceptDoesNotExist({ concept })) {
           const formatted = formatExpressionWithErrorAt(
-            expression,
+            sans_comments,
             (n) =>
               n[0] === 'snomed_concept' &&
               String(n[1]) === concept.name &&

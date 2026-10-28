@@ -27,3 +27,4 @@
     (clinical_finding (snomed_concept "Stiff neck" "finding"))
   )
 )
+

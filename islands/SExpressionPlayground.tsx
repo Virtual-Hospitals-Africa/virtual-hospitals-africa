@@ -92,7 +92,7 @@ export default function SExpressionPlayground() {
       if (data.ok) {
         setValid(true)
       } else {
-        setError(data.error ?? 'Unknown error')
+        setError(data.error || 'Unknown error')
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
