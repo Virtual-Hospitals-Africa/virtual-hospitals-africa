@@ -1158,6 +1158,7 @@ export interface PatientInsurance {
   expire_date: Timestamp
   id: Generated<string>
   insurance_provider: string
+  insurance_provider_id: string | null
   is_dependent: boolean
   membership_number: string
   patient_id: string
