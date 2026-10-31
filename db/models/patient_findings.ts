@@ -181,7 +181,6 @@ function isNegativeValue(value_snomed_concept: Maybe<Lang['snomed_concept']>) {
   return asExistence(value_snomed_concept) === 'No'
 }
 
-
 export function isNegativeFinding(finding: FindingNodeToInsert): finding is NegativeFindingToInsert {
   const existence = asExistence(finding.value_snomed_concept)
   return existence === 'No' && !finding.priority && finding.score == null
@@ -622,13 +621,21 @@ export const patient_findings = base({
     const findings_to_insert = findings.map((finding) => {
       const prepared = prepareFinding(common, finding)
       const existence = asExistence(prepared.value_snomed_concept)
-      assertEquals(existence, 'No', `insertManyNegative only inserts negative findings (value No or Unknown), but ${prepared.specific_snomed_concept.name} has value ${
-        prepared.value_snomed_concept?.name ?? 'null'
-      }`)
-      assertEquals(prepared.existence, existence, `insertManyNegative got existence ${prepared.existence} for a finding with value ${prepared.value_snomed_concept?.name}`)
+      assertEquals(
+        existence,
+        'No',
+        `insertManyNegative only inserts negative findings (value No or Unknown), but ${prepared.specific_snomed_concept.name} has value ${
+          prepared.value_snomed_concept?.name ?? 'null'
+        }`,
+      )
+      assertEquals(
+        prepared.existence,
+        existence,
+        `insertManyNegative got existence ${prepared.existence} for a finding with value ${prepared.value_snomed_concept?.name}`,
+      )
       assert(!prepared.priority)
       assert(prepared.score == null)
-      
+
       return prepared
     })
 

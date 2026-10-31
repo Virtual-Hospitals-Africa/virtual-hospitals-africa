@@ -18,7 +18,7 @@ export type PriorityEscalation = {
   priority_evaluation: RenderedEvaluationRelativeToHealthWorker
 }
 
-const PRIORITY_UPDATE_EVENT = 'priority-update-event'
+export const PRIORITY_UPDATE_EVENT = 'priority-update-event'
 
 export function priorityUpdate(
   detail: PriorityEscalation,

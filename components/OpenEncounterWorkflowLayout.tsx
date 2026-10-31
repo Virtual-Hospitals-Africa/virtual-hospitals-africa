@@ -2,7 +2,7 @@ import { JSX } from 'preact/compat/jsx-dev-runtime'
 import { ComponentChild, ComponentChildren, TargetedSubmitEvent } from 'preact'
 import { ButtonsContainer } from '../islands/form/buttons.tsx'
 import capitalize from '../util/capitalize.ts'
-import PatientDrawerV4 from './drawer-v4/DrawerV4.tsx'
+import { PatientDrawerV4 } from '../islands/Drawer.tsx'
 import { Button } from './library/Button.tsx'
 
 import { ArrowRightIcon } from './library/icons/heroicons/solid.tsx'
@@ -10,6 +10,7 @@ import HealthWorkerContentsWithSidebarAndDrawer from './library/layout/HealthWor
 import { PatientDrawerV4Props, RenderedEmployeeWithPresenceAndSeniority, RenderedOrganization } from '../types.ts'
 import { Workflow } from '../db.d.ts'
 import { hyphenate } from '../util/hyphenate.ts'
+import cls from '../util/cls.ts'
 import { StepsSidebar } from './library/sidebar/Steps.tsx'
 
 export function OpenEncounterWorkflowLayout({
@@ -91,7 +92,15 @@ export function OpenEncounterWorkflowLayout({
         : undefined}
       footer={<div>TODO</div>}
     >
-      <ContainerTag method='POST' className='h-full flex flex-col' id={id}>
+      <ContainerTag
+        method='POST'
+        id={id}
+        className={cls(
+          'h-full flex flex-col',
+          // Reserves the collapsed sheet so the workflow actions stay above it.
+          workflow !== 'registration' && 'max-md:pb-[var(--patient-sheet-collapsed-height)]',
+        )}
+      >
         <div className='px-4 flex-1 overflow-y-auto flex flex-col gap-8'>
           {children}
         </div>
