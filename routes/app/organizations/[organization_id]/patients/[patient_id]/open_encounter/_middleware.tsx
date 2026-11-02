@@ -252,7 +252,7 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
         seniority_order: organization_employment.seniority_order,
       },
     }),
-    nearest_hospital: nearest_organizations.nearestHospital(organization)
+    nearest_hospital: nearest_organizations.nearestHospital(organization),
   })
 
   const previously_completed_step = arrayIsNonEmpty(workflow_status.steps_completed) && workflow_status.steps_completed.includes(
