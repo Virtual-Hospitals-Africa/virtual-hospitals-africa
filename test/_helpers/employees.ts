@@ -4,7 +4,6 @@ import { Falsy, Maybe, TrxOrDb } from '../../types.ts'
 import compact from '../../util/compact.ts'
 import { route } from '../_route.ts'
 import { addTestEmployee, TestHealthWorkerOpts } from '../../mocks/testEmployee.ts'
-import { logReadableJson } from '../../util/humanReadableJson.ts'
 import { logToFile } from '../../util/logToFile.ts'
 export { addTestEmployee }
 export type { TestHealthWorkerOpts }

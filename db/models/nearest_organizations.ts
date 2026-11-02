@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { Coordinates, RenderedOrganization, TrxOrDb, TrxOrDbOrQueryCreator } from '../../types.ts'
+import { Coordinates, RenderedOrganization, TrxOrDbOrQueryCreator } from '../../types.ts'
 import { base, SearchResult } from './_base.ts'
 import { organizations, OrganizationSearch } from './organizations.ts'
 import assertHasProperty from '../../util/assertHasProperty.ts'

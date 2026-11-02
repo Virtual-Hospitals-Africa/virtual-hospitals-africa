@@ -607,7 +607,7 @@ export const patient_findings = base({
     return formatRecord(finding)
   },
   /*
-    Inserts negative findings (value No or Unknown) in one statement. None can satisfy a due_to, so
+    Inserts negative findings (value No) in one statement. None can satisfy a due_to, so
     no due_to matching is in the statement: that matching cannot know the candidate set is empty,
     and costs as if it were not. Throws on a finding that is positive or carries a priority or score.
   */
@@ -624,7 +624,7 @@ export const patient_findings = base({
       assertEquals(
         existence,
         'No',
-        `insertManyNegative only inserts negative findings (value No or Unknown), but ${prepared.specific_snomed_concept.name} has value ${
+        `insertManyNegative only inserts negative findings (value No), but ${prepared.specific_snomed_concept.name} has value ${
           prepared.value_snomed_concept?.name ?? 'null'
         }`,
       )
@@ -633,8 +633,10 @@ export const patient_findings = base({
         existence,
         `insertManyNegative got existence ${prepared.existence} for a finding with value ${prepared.value_snomed_concept?.name}`,
       )
-      assert(!prepared.priority)
-      assert(prepared.score == null)
+      assert(
+        !prepared.priority && prepared.score == null,
+        `insertManyNegative does not take a priority or score, but ${prepared.specific_snomed_concept.name} has one, use insertOnePositive`,
+      )
 
       return prepared
     })

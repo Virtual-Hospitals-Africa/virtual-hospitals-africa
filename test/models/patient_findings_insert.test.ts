@@ -9,7 +9,7 @@ import { FindingNodeToInsert, NegativeFindingToInsert, patient_findings } from '
 import { patient_procedures } from '../../db/models/patient_procedures.ts'
 import { insertPatientSeekingTreatmentWithEmployeeAndCompleteRegistrationForTest } from 'test/_helpers/workflows.ts'
 import { WORKFLOW_STEP_SNOMED_CONCEPTS } from '../../shared/workflow.ts'
-import { FINDING_SITE, MEASUREMENT_FINDING, SEVERITY_SCORE, UNKNOWN_QUALIFIER, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
+import { FINDING_SITE, MEASUREMENT_FINDING, SEVERITY_SCORE, YES_QUALIFIER } from '../../shared/snomed_concepts.ts'
 import { normalForm, parseWithSchema } from '../../shared/s_expression.ts'
 import { insertable_finding_base, measurement_comparator } from '../../shared/s_expression_schemas.ts'
 import { VITAL_MEASUREMENTS_SNOMED_CONCEPTS, VITALS_COMPUTED_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
@@ -48,16 +48,6 @@ function positive(s_expression: string): FindingNodeToInsert {
 function negative(s_expression: string): NegativeFindingToInsert {
   const node = parseWithSchema(`(no ${s_expression})`, insertable_finding_base)
   return { ...node, existence: 'No', priority: null, score: undefined }
-}
-
-function unknown(s_expression: string): NegativeFindingToInsert {
-  return {
-    ...positive(s_expression),
-    existence: 'Unknown',
-    value_snomed_concept: { atom: 'snomed_concept', ...UNKNOWN_QUALIFIER },
-    priority: null,
-    score: undefined,
-  }
 }
 
 function measurement(s_expression: string) {
@@ -136,14 +126,14 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
   afterAll(() => db.destroy())
 
   describeParallel('insertManyNegative', () => {
-    itParallel('inserts negative findings, existence No and Unknown, tagging nothing', async () => {
+    itParallel('inserts negative findings, existence No tagging nothing', async () => {
       const s = await setup()
       const { procedure_id, records } = await patient_findings.insertManyNegative(db, {
         ...common(s),
-        findings: [negative(BITE_WOUND_S_EXPRESSION), unknown(COUGH_S_EXPRESSION), `(no ${FEVER_S_EXPRESSION})`],
+        findings: [negative(BITE_WOUND_S_EXPRESSION), `(no ${FEVER_S_EXPRESSION})`],
       })
       assert(procedure_id)
-      assertEquals(records.map((r) => r.existence), ['No', 'Unknown', 'No'])
+      assertEquals(records.map((r) => r.existence), ['No', 'No'])
 
       const tagged = await db.selectFrom('patient_record_satisfying_due_tos')
         .where('patient_record_id', 'in', records.map((r) => r.id))
@@ -226,7 +216,7 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
       const { recording_db, statements } = recordingDb()
       await patient_findings.insertManyNegative(recording_db, {
         ...common(s),
-        findings: [negative(BITE_WOUND_S_EXPRESSION), unknown(COUGH_S_EXPRESSION)],
+        findings: [negative(BITE_WOUND_S_EXPRESSION)],
       })
       assertEquals(statements.length, 1)
       const [statement] = statements
@@ -235,7 +225,7 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
       assert(!statement.includes('finding_site'), 'a negative statement must not join the finding_site tables')
       // Only the root and the specific concept of each of the two findings are looked up, not the value
       const concept_lookups = statement.split('snomed_inferred_canonical_name_and_category').length - 1
-      assertEquals(concept_lookups, 4)
+      assertEquals(concept_lookups, 2)
     })
   })
 
@@ -265,11 +255,6 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
       const s = await setup()
       await assertRejects(
         () => patient_findings.insertOnePositive(db, { ...common(s), finding: `(no ${BITE_WOUND_S_EXPRESSION})` }),
-        Error,
-        'only inserts positive findings',
-      )
-      await assertRejects(
-        () => patient_findings.insertOnePositive(db, { ...common(s), finding: unknown(COUGH_S_EXPRESSION) }),
         Error,
         'only inserts positive findings',
       )
@@ -435,9 +420,9 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
       const { recording_db, statements } = recordingDb()
       const { findings } = await patient_findings.insertMany(recording_db, {
         ...common(s),
-        findings: [`(no ${BITE_WOUND_S_EXPRESSION})`, unknown(COUGH_S_EXPRESSION), negative(FEVER_S_EXPRESSION)],
+        findings: [`(no ${BITE_WOUND_S_EXPRESSION})`, negative(FEVER_S_EXPRESSION)],
       })
-      assertEquals(findings.map((f) => f.existence), ['No', 'Unknown', 'No'])
+      assertEquals(findings.map((f) => f.existence), ['No', 'No'])
       assertEquals(statements.length, 1)
       assert(!statements.join().includes('due_to'))
     })
@@ -496,7 +481,6 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
         findings: [
           { ...negative(BITE_WOUND_S_EXPRESSION), id: a },
           { ...positive(COUGH_S_EXPRESSION), id: b },
-          { ...unknown(FEVER_S_EXPRESSION), id: c },
           { ...positive(CONSTIPATION_FINDING), id: d },
           { ...negative(CONSTIPATION_FINDING), id: e },
         ],
@@ -505,7 +489,6 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
       assertEquals(result.findings, [
         { id: a, existence: 'No' },
         { id: b, existence: 'Yes' },
-        { id: c, existence: 'Unknown' },
         { id: d, existence: 'Yes' },
         { id: e, existence: 'No' },
       ])
