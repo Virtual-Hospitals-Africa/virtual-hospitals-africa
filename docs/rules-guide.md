@@ -1,22 +1,31 @@
 # Clinical Rules Guide
 
-This document explains how to write clinical decision rules using the s-expression language used in this codebase. Rules are written as Lisp-style s-expressions in `.lisp` files under `s_expression/`. The system compiles these into database queries that run against patient records.
+This document explains how to write clinical decision rules using the s-expression language used in this codebase. Rules are written as Lisp-style s-expressions in `.lisp` files under `s_expression/rules/`. The system compiles these into database queries that run against patient records.
 
 ---
 
 ## Overview
 
-There are three categories of rule file, each in its own subdirectory:
+All rule files live under `s_expression/rules/`: page-numbered files in `s_expression/rules/apc-adult/` (e.g. `20-anaphylaxis.lisp`), plus a few cro ss-cutting files (`pain.lisp`, `sats.lisp`, `other.lisp`). Directories do not determine the rule type — the top-level atom of each expression does. There are three rule types:
 
-| Directory | Purpose |
+| Top-level atom | Purpose |
 |---|---|
-| `s_expression/tasks/` | Define clinical tasks: what a health worker should check for or do, given some trigger condition |
-| `s_expression/system_diagnosis_rules/` | Define automated diagnostic reasoning: given patient evidence, what diagnosis should be assigned and with what certainty |
-| `s_expression/system_priority_evaluations/` | Define triage priority: given a diagnosis or condition, what urgency level applies |
+| `task` | Defines a clinical task: what a health worker should check for or do, given some trigger condition |
+| `system_diagnosis_rule` | Defines automated diagnostic reasoning: given patient evidence, what diagnosis should be assigned and with what certainty |
+| `system_priority_evaluation` | Defines triage priority: given a diagnosis or condition, what urgency level applies |
 
-Files are named by page number and topic (e.g. `20-anaphylaxis.lisp`). A single file may contain multiple rule expressions.
+Files are named by page number and topic (e.g. `20-anaphylaxis.lisp`). A single file may contain multiple rule expressions, of any mix of the three types.
 
 Comments use Lisp syntax: `;;`.
+
+### Compiling rules
+
+Only `.lisp` files are read (other extensions, such as `.xlisp`, are ignored). The `.lisp` files are not read at runtime. `s_expression/compile.ts` parses them and writes the auto-generated `s_expression/tasks.ts`, `s_expression/system_diagnosis_rules.ts` and `s_expression/system_priority_evaluations.ts` (do not edit these by hand). After changing any `.lisp` file, run:
+
+```bash
+deno task compile:s_expressions   # regenerate the .ts files
+deno task rules:rebuild           # compile, then re-seed the rules into the database
+```
 
 ---
 
@@ -35,7 +44,7 @@ A task tells a health worker what to do (check for findings, take measurements, 
 )
 ```
 
-**Age groups:** `adult` | `all_ages` (children not yet implemented in apc-adult rules)
+**Age groups** (the same slot in all three rule types): `adult` | `older child` | `younger child` | `all_ages` (shorthand for all three) | `(ages "older child" "younger child")` (an explicit list, as used in `s_expression/rules/sats.lisp`). The apc-adult rule files only contain `adult` rules.
 
 **Actions:**
 
@@ -105,7 +114,7 @@ A diagnosis rule specifies that when certain patient evidence is present, a part
     <certainty>
   )
   adult
-  <evidence>   ;; s-expression — the logical rule body
+  <due_to>     ;; s-expression — the logical rule body (the evidence)
 )
 ```
 
@@ -150,7 +159,7 @@ A diagnosis rule specifies that when certain patient evidence is present, a part
   (diagnosis (snomed_concept "Anaphylaxis" "disorder") possible)
   adult
   (any2
-    (clinical_finding (snomed_concept "Insect sting" "disorder"))
+    (clinical_finding (snomed_concept "Insect bite - wound" "disorder"))
     (clinical_finding (snomed_concept "Itching" "finding"))
     (clinical_finding (snomed_concept "Difficulty breathing" "finding"))
     (clinical_finding (snomed_concept "Collapse" "finding"))
@@ -169,9 +178,9 @@ Assigns a triage priority level when condition(s) are present.
 ```lisp
 (system_priority_evaluation
   "Human-readable description"
-  all_ages
+  all_ages                      ;; age group (see above)
   <priority>
-  <condition>
+  <due_to>                      ;; s-expression — the condition that triggers this priority
 )
 ```
 
@@ -205,7 +214,7 @@ All clinical concepts reference SNOMED CT by name and category:
 
 **Common categories:** `"finding"` | `"disorder"` | `"observable entity"` | `"body structure"` | `"qualifier value"` | `"morphologic abnormality"` | `"substance"` | `"procedure"` | `"medicinal product"` | `"clinical drug"`
 
-SNOMED concept names are matched against the database. When part of the <due_to> concepts will also matches *descendants* in the SNOMED hierarchy — so querying `"Nasal discharge"` will also match more specific findings like `"Purulent nasal discharge"`.
+SNOMED concept names are matched against the database. When a rule's `due_to` is evaluated, a concept also matches its *descendants* in the SNOMED hierarchy (unless an exact match is required) — so querying `"Nasal discharge"` will also match more specific findings like `"Purulent nasal discharge"`.
 
 ---
 
@@ -278,7 +287,7 @@ Used to match numeric measurements recorded against a patient.
 (measurement (snomed_concept "Systolic blood pressure" "observable entity") mmHg)
 ```
 
-**Available units:** `%` | `bpm` | `°C` | `cm` | `kg` | `mmol/L` | `mmHg` | `mm`
+**Available units:** `%` | `bpm` | `°C` | `cm` | `kg` | `kg/m²` | `mmol/L` | `mmHg` | `mm`
 
 Measurements are used inside comparison expressions:
 
@@ -294,7 +303,7 @@ Operators: `>` | `<` | `>=` | `<=` | `=`
 
 ### `diagnosis`
 
-Asserts that a patient has been diagnosed with a condition at a given certainty level. In rule bodies (the `<evidence>` or `due_to` position), this compiles to a query against patient evaluation records.
+Asserts that a patient has been diagnosed with a condition at a given certainty level. In rule bodies (the `<due_to>` position), this compiles to a query against patient evaluation records.
 
 ```lisp
 (diagnosis (snomed_concept "Anaphylaxis" "disorder") probable)
@@ -347,7 +356,7 @@ Wraps a `clinical_finding` or `finding` to search the patient's full history (al
 
 ### `no`
 
-Wraps a `clinical_finding`, `finding`, or `history` to indicate that there is a negative record corresponding to that concept. The lack of a positive record is not sufficient to trigger a rule looking for `(no)`, the health worker has to have marked "No".
+Wraps a `clinical_finding`, `finding`, `allergy`, or `history` to indicate that there is a negative record corresponding to that concept. The lack of a positive record is not sufficient to trigger a rule looking for `(no)`, the health worker has to have marked "No".
 
 ```lisp
 (no (clinical_finding (snomed_concept "Asthma" "disorder")))
@@ -539,13 +548,13 @@ patient_records_aggregated
 
 ### How `due_to` makes rules fire
 
-Tasks, diagnosis rules, and priority evaluations only execute when their `due_to` (or `condition`) expression is satisfied by the patient's current records. If the s-expression in `due_to` refers to a concept that is never recorded, the rule never fires — no matter how well the rule body is written.
+Tasks, diagnosis rules, and priority evaluations only execute when their `due_to` expression is satisfied by the patient's current records. If the s-expression in `due_to` refers to a concept that is never recorded, the rule never fires — no matter how well the rule body is written.
 
 The most reliable way to ensure a rule fires is to anchor its `due_to` to a concept that the system is already recording for the right patients. Three places in the codebase define the canonical s-expressions for the concepts the system tracks:
 
 ---
 
-### `shared/warning_signs.ts` — [WARNING_SIGN_DEFS](https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa/blob/4de4ab69e8d8278809383350dc535239b361896d/shared/warning_signs.ts#L133)
+### `shared/warning_signs.ts` — [WARNING_SIGN_DEFS](../shared/warning_signs.ts)
 
 Warning signs are the first things recorded for a patient at triage. Each entry has a `clinical_finding_s_expression` — the exact s-expression used to record that finding. Rules that should fire immediately for high-acuity patients must reference these concepts in their `due_to`.
 
@@ -563,7 +572,6 @@ Selected entries:
 | `Focal neurology` | `(clinical_finding (snomed_concept "Cerebrovascular accident" "disorder"))` | Very urgent |
 | `Poisoning` | `(clinical_finding (snomed_concept "Poisoning" "disorder"))` | Very urgent |
 | `Haemorrhage Uncontrolled` | `(clinical_finding (snomed_concept "Bleeding" "finding") (qualifier (snomed_concept "Uncontrolled" "qualifier value")))` | Very urgent |
-| `Severe pain` | `(clinical_finding (snomed_concept "Severe pain" "finding"))` | Very urgent |
 | `Vomiting fresh blood` | `(clinical_finding (snomed_concept "Vomiting blood - fresh" "disorder"))` | Very urgent |
 | `Coughing blood` | `(clinical_finding (snomed_concept "Hemoptysis" "finding"))` | Very urgent |
 | `Burn Circumferential` | `(clinical_finding (snomed_concept "Burn" "disorder") (qualifier (snomed_concept "Circumferential" "qualifier value")))` | Very urgent |
@@ -578,7 +586,7 @@ not a paraphrase. The exact concept name must match.
 
 ---
 
-### `shared/common_symptoms.ts` — [COMMON_SYMPTOMS](https://github.com/Virtual-Hospitals-Africa/virtual-hospitals-africa/blob/4de4ab69e8d8278809383350dc535239b361896d/shared/common_symptoms.ts#L4)
+### `shared/common_symptoms.ts` — [COMMON_SYMPTOMS_DEFS](../shared/common_symptoms.ts)
 
 Common symptoms are the self-reported presenting complaints collected via the chatbot. These are what most APC patients arrive with. Rules for routine conditions (non-emergency) should anchor their `due_to` to these symptoms.
 
@@ -599,14 +607,15 @@ Common symptoms are the self-reported presenting complaints collected via the ch
 | `Insect bite` | `(clinical_finding (snomed_concept "Insect bite - wound" "disorder"))` |
 | `Backache` | `(clinical_finding (snomed_concept "Backache" "finding"))` |
 | `Constipation` | `(clinical_finding (snomed_concept "Constipation" "finding"))` |
+| `Mass of body region` | `(clinical_finding (snomed_concept "Mass of body region" "finding"))` |
 
-The `Fever` task file (`s_expression/tasks/apc-adult/24-fever.lisp`) is a good example: it uses `(active_condition (snomed_concept "Fever" "finding"))` in `due_to`, matching exactly the concept recorded by the common symptom.
+The `Fever` task file (`s_expression/rules/apc-adult/24-fever.lisp`) is a good example: it uses `(active_condition (snomed_concept "Fever" "finding"))` in `due_to`, matching exactly the concept recorded by the common symptom.
 
 ---
 
-### `shared/snomed_concepts.ts` — [source](shared/snomed_concepts.ts)
+### `shared/snomed_concepts.ts` — [source](../shared/snomed_concepts.ts)
 
-This file defines named TypeScript constants for all SNOMED concepts that have special meaning somewhere in the rest of the application. 
+This file defines named TypeScript constants for SNOMED concepts that have special meaning somewhere in the rest of the application. The tables below list a selection.
 
 **Vital sign observables** (use in `measurement`):
 
@@ -647,8 +656,8 @@ This file defines named TypeScript constants for all SNOMED concepts that have s
 - **Use `active_condition` in task `due_to` for ongoing conditions** — it checks history and diagnosis. Use raw `clinical_finding` only when you specifically mean a finding in the current encounter.
 - **Prefer `clinical_finding` over `finding`** — `clinical_finding` is clearer and covers the vast majority of cases.
 - **Use `allergy` for substance allergies** — don't try to hand-write the equivalent `finding`; `allergy` is the canonical form and will keep the compiled query correct.
-- **Anchor `due_to` to recorded concepts** — check `WARNING_SIGN_DEFS`, `COMMON_SYMPTOMS`, and `shared/snomed_concepts.ts` first. If your trigger concept isn't in one of those, the rule may never fire in practice.
+- **Anchor `due_to` to recorded concepts** — check `WARNING_SIGN_DEFS`, `COMMON_SYMPTOMS_DEFS`, and `shared/snomed_concepts.ts` first. If your trigger concept isn't in one of those, the rule may never fire in practice.
 - **Add `;;` comments** to explain clinical rationale, especially for non-obvious thresholds or `any2` counts.
 - **File naming convention** — match the page number from the clinical protocol and use a descriptive slug: `132-hypertension.lisp`.
 - **Multiple rules per file are fine** — tasks and diagnosis rules that belong to the same clinical topic can coexist in one file.
-- **Test SNOMED names against the database** — concept names are matched exactly (case-sensitive). Run `deno task test ./test/shared/compiled_s_expressions.test.ts` to validate all concepts in `.lisp` files exist in the database.
+- **Test SNOMED names against the database** — concept names are matched exactly (case-sensitive). The test validates the *compiled* output (`s_expression/tasks.ts`, `system_diagnosis_rules.ts`, `system_priority_evaluations.ts`, `finding_site_findings.ts`), not the `.lisp` files directly, so run `deno task compile:s_expressions` first, then `deno task test ./test/shared/compiled_s_expressions.test.ts` to validate that every concept exists in the database.
