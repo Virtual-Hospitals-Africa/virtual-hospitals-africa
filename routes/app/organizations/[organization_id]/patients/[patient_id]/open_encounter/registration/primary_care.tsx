@@ -1,5 +1,5 @@
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { NearestHealthCareSection } from '../../../../../../../../islands/NearestHealthCare.tsx'
 import { HealthInsuranceSection } from '../../../../../../../../islands/HealthInsurance.tsx'
@@ -27,7 +27,7 @@ export const PatientRegistrationPrimaryCareSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationPrimaryCareSchema,
-  async (ctx: OpenEncounterWorkflowContext, {
+  async (ctx: OpenEncounterWorkflowPostContext, {
     primary_doctor_id,
     nearest_organization_id,
     insurance,
@@ -61,7 +61,7 @@ export const handler = postHandler(
 )
 
 export async function PatientRegistrationPrimaryCarePage(
-  { state: { trx, patient, previously_completed_step } }: OpenEncounterWorkflowContext,
+  { state: { trx, patient, previously_completed_step } }: OpenEncounterWorkflowPostContext,
 ) {
   const { primary_care, current_insurance } = await promiseProps({
     primary_care: patient_primary_care.getById(trx, {

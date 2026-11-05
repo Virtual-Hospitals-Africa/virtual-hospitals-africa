@@ -6,7 +6,7 @@ import redirect from '../../../../../../../../util/redirect.ts'
 import InviteParticipantsList from '../../../../../../../../islands/InviteParticipantsList.tsx'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { assertOr400 } from '../../../../../../../../util/assertOr.ts'
 import { employees_presence } from '../../../../../../../../db/models/employees_presence.ts'
 import { pluralize } from '../../../../../../../../util/pluralize.ts'
@@ -68,7 +68,7 @@ export const handler = postHandler(
 )
 
 async function CreateGoogleMeetInviteParticipantsPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const url = new URL(ctx.req.url)
   const hangout_link = url.searchParams.get('hangout_link')

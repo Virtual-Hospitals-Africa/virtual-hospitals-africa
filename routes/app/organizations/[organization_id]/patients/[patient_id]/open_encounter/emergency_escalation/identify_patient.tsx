@@ -1,6 +1,6 @@
 import z from 'zod'
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { patients } from '../../../../../../../../db/models/patients.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
@@ -27,7 +27,7 @@ export const EmergencyEscalationIdentifyPatientSchema = z.object({
 
 export const handler = postHandler(
   EmergencyEscalationIdentifyPatientSchema,
-  async (ctx: OpenEncounterWorkflowContext, { patient_id: identified_patient_id, ...form_values }) => {
+  async (ctx: OpenEncounterWorkflowPostContext, { patient_id: identified_patient_id, ...form_values }) => {
     const { trx, organization, organization_employment, workflow, step, organization_id } = ctx.state
     const newly_created_patient = ctx.state.patient_id
 
@@ -79,7 +79,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function EmergencyEscalationIdentifyPatientPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   return (
     <>

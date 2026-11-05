@@ -15,7 +15,7 @@ export const handler = function generalAssessmentsHandler() {
 //   next_incomplete_assessment?: RenderedPatientExamination
 // }
 
-// export type GeneralAssessmentsContext = OpenEncounterWorkflowContext & {
+// export type GeneralAssessmentsContext = OpenEncounterWorkflowPostContext & {
 //   state: GeneralAssessmentsState
 // }
 
@@ -51,7 +51,7 @@ export const handler = function generalAssessmentsHandler() {
 // }
 
 // export type GeneralAssessmentsPageChildProps = {
-//   ctx: OpenEncounterWorkflowContext
+//   ctx: OpenEncounterWorkflowPostContext
 //   previously_completed: boolean
 // }
 

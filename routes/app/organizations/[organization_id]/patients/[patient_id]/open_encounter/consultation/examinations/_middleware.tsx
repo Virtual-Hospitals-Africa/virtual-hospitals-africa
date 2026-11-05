@@ -17,7 +17,7 @@ export const handler = function examinationsHandler() {
 //   next_incomplete_examination?: RenderedPatientExamination
 // }
 
-// export type ExaminationContext = OpenEncounterWorkflowContext & {
+// export type ExaminationContext = OpenEncounterWorkflowPostContext & {
 //   state: ExaminationState
 // }
 
@@ -52,7 +52,7 @@ export const handler = function examinationsHandler() {
 // }
 
 // export type ExaminationPageChildProps = {
-//   ctx: OpenEncounterWorkflowContext
+//   ctx: OpenEncounterWorkflowPostContext
 //   previously_completed: boolean
 // }
 

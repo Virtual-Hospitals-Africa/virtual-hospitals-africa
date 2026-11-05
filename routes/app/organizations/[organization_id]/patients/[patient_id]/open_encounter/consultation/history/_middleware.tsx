@@ -15,7 +15,7 @@ export const handler = function historyHandler() {
 //   next_incomplete_assessment?: RenderedPatientExamination
 // }
 
-// export type HistoryContext = OpenEncounterWorkflowContext & {
+// export type HistoryContext = OpenEncounterWorkflowPostContext & {
 //   state: HistoryState
 // }
 
@@ -51,7 +51,7 @@ export const handler = function historyHandler() {
 // }
 
 // export type HistoryPageChildProps = {
-//   ctx: OpenEncounterWorkflowContext
+//   ctx: OpenEncounterWorkflowPostContext
 //   previously_completed: boolean
 // }
 

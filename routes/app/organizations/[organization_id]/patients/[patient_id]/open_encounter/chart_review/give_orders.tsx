@@ -3,7 +3,7 @@ import { success } from '../../../../../../../../util/alerts.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { completeLastStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { preferredName } from '../../../../../../../../util/asNames.ts'
 import { patient_presence } from '../../../../../../../../db/models/patient_presence.ts'
 
@@ -11,7 +11,7 @@ const ChartReviewGiveOrdersSchema = z.object({})
 
 export const handler = postHandler(
   ChartReviewGiveOrdersSchema,
-  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, _form_values) => {
     const { trx, patient, organization_pathname, organization_employment } = ctx.state
 
     await completeLastStep(ctx)
@@ -39,7 +39,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 async function ChartReviewGiveOrdersPage(
-  _ctx: OpenEncounterWorkflowContext,
+  _ctx: OpenEncounterWorkflowPostContext,
 ) {
   // TODO display a form for giving orders to the colleague awaiting them
   return {

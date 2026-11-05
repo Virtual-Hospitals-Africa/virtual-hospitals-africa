@@ -1,17 +1,17 @@
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 
 const ChartReviewReviewCaseSchema = z.object({})
 
 export const handler = postHandler(
   ChartReviewReviewCaseSchema,
-  (ctx: OpenEncounterWorkflowContext, _form_values) => completeAndProceedToNextStep(ctx),
+  (ctx: OpenEncounterWorkflowPostContext, _form_values) => completeAndProceedToNextStep(ctx),
 )
 
 function ChartReviewReviewCasePage(
-  _ctx: OpenEncounterWorkflowContext,
+  _ctx: OpenEncounterWorkflowPostContext,
 ) {
   // TODO display the case information relevant to the reviewer
   return (

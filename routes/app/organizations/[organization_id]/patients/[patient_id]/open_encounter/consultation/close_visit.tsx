@@ -1,12 +1,12 @@
 import { assertAllPriorStepsCompleted, completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 
 import { patient_encounters } from '../../../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
 import { promiseProps } from '../../../../../../../../util/promiseProps.ts'
 
 export const handler = {
-  async POST(ctx: OpenEncounterWorkflowContext) {
+  async POST(ctx: OpenEncounterWorkflowPostContext) {
     const { trx, encounter } = ctx.state
     await promiseProps({
       completing_step: completeAndProceedToNextStep(ctx),
