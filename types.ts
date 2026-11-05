@@ -3228,7 +3228,10 @@ export type OpenEncounterState = OrganizationState & {
   open_encounter_pathname: string
 }
 
-export type WorkflowState = {
+/**
+ * What the workflow middleware attaches for every request, GET or POST.
+ */
+export type WorkflowPostState = {
   workflow: Workflow
   step: string
   workflow_snomed_concept: SnomedConcept
@@ -3238,6 +3241,13 @@ export type WorkflowState = {
   previously_completed_procedures: PreviouslyCompletedProcedures
   encounter_employee_presence: EncounterEmployeePresence
   patient_encounter_employee_id: string
+}
+
+/**
+ * What the patient drawer needs. Fetched by OpenEncounterWorkflowPage only,
+ * so POST handlers do not pay for it.
+ */
+export type WorkflowGetState = WorkflowPostState & {
   this_visit_findings: RenderedSidebarWorkflow[]
   this_visit_diagnoses: RenderedEvaluationRelativeToHealthWorker[]
   priority_evaluation: null | RenderedEvaluationRelativeToHealthWorker
@@ -3246,21 +3256,34 @@ export type WorkflowState = {
   nearest_hospital: RenderedOrganization | null
 }
 
-export type OpenEncounterWorkflowState = OpenEncounterState & WorkflowState
+export type OpenEncounterWorkflowPostState = OpenEncounterState & WorkflowPostState
+export type OpenEncounterWorkflowGetState = OpenEncounterState & WorkflowGetState
 
 export type OpenEncounterContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
   OpenEncounterState & T
 >
 
-export type OpenEncounterWorkflowContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
-  OpenEncounterWorkflowState & T
+export type OpenEncounterWorkflowPostContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
+  OpenEncounterWorkflowPostState & T
 >
 
-export type TriageState<T = Record<never, never>> = OpenEncounterWorkflowState & T & {
+// Fresh's Context is invariant in its state, so this does not extend OpenEncounterWorkflowPostContext
+// even though its state extends the post state.
+export type OpenEncounterWorkflowGetContext<T = Record<never, never>> = LoggedInHealthWorkerContext<
+  OpenEncounterWorkflowGetState & T
+>
+
+export type TriageState<T = Record<never, never>> = OpenEncounterWorkflowPostState & T & {
+  patient_age_determination: AgeDetermination
+}
+
+export type TriageGetState<T = Record<never, never>> = OpenEncounterWorkflowGetState & T & {
   patient_age_determination: AgeDetermination
 }
 
 export type TriageContext<T = Record<never, never>> = LoggedInHealthWorkerContext<TriageState<T>>
+
+export type TriageGetContext<T = Record<never, never>> = LoggedInHealthWorkerContext<TriageGetState<T>>
 
 export type FindingRelatedModifiers = {
   predefined_attributes: {

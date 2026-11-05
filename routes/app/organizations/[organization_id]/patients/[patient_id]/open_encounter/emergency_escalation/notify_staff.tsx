@@ -1,5 +1,5 @@
 import { assertAllPriorStepsCompleted, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import { success } from '../../../../../../../../util/alerts.ts'
@@ -17,7 +17,7 @@ export const EmergencyEscalationNotifyStaffSchema = z.object({
 
 export const handler = postHandler(
   EmergencyEscalationNotifyStaffSchema,
-  async (ctx: OpenEncounterWorkflowContext, form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, form_values) => {
     const { encounter } = ctx.state
     console.log(form_values)
 
@@ -41,7 +41,7 @@ export const handler = postHandler(
 )
 
 export async function EmergencyEscalationNotifyStaffPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   assertAllPriorStepsCompleted(ctx, {
     attempting_to_complete_workflow: false,

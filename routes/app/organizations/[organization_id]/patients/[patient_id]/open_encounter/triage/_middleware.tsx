@@ -1,4 +1,4 @@
-import { TriageContext, TriageState } from '../../../../../../../../types.ts'
+import { TriageContext, TriageGetState, TriageState } from '../../../../../../../../types.ts'
 import { assertOr400, assertOrRedirect } from '../../../../../../../../util/assertOr.ts'
 import { OpenEncounterWorkflowPage, type Render, workflowHandler } from '../_middleware.tsx'
 
@@ -11,7 +11,7 @@ export function redirectToRoutePatientIfEmergency(ctx: TriageContext) {
   )
 }
 
-export function TriagePage<State extends TriageState = TriageState>(
+export function TriagePage<State extends TriageState = TriageGetState>(
   render: Render<State>,
 ) {
   return OpenEncounterWorkflowPage<State>((ctx) => {

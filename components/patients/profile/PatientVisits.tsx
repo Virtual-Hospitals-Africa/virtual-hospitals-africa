@@ -6,6 +6,7 @@ import { ClockIcon } from '../../library/icons/heroicons/outline.tsx'
 import words from '../../../util/words.ts'
 import FilterBar from '../../dashboard/FilterBar.tsx'
 import SelectInput from '../../dashboard/filters/SelectInput.tsx'
+import PriorityBadge from '../../PriorityBadge.tsx'
 
 type OrgLookup = Record<string, string>
 
@@ -49,15 +50,7 @@ export default function PatientVisits(
     {
       label: 'Priority',
       data(row) {
-        if (!row.priority) return null
-        const colors: Record<string, 'red' | 'yellow' | 'green' | 'gray'> = {
-          Emergency: 'red',
-          'Very urgent': 'red',
-          Urgent: 'yellow',
-          'Non-urgent': 'green',
-          Deceased: 'gray',
-        }
-        return <Badge color={colors[row.priority.name] ?? 'gray'} content={row.priority.name} />
+        return <PriorityBadge priority={row.priority?.name ?? null} />
       },
     },
     {

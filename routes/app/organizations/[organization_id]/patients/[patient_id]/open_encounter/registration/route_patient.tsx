@@ -4,7 +4,7 @@ import {
   // nextRouteAfterCompletingWorkflow,
   OpenEncounterWorkflowPage,
 } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
@@ -44,7 +44,7 @@ export const PatientRegistrationRoutePatientSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationRoutePatientSchema,
-  async (ctx: OpenEncounterWorkflowContext, { next_workflow /*, notes */ }) => {
+  async (ctx: OpenEncounterWorkflowPostContext, { next_workflow /*, notes */ }) => {
     const { trx, patient, encounter, organization, organization_employment } = ctx.state
 
     assertEquals(next_workflow, 'await_triage')
@@ -189,7 +189,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function PatientRegistrationRoutePatientPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const {
     patient,

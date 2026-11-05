@@ -1,5 +1,5 @@
 import { completeAndProceedToNextStep, completeStep, OpenEncounterWorkflowPage } from '../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 import { z } from 'zod'
 import ThisVisitSection from '../../../../../../../../components/patient-registration/ThisVisitSection.tsx'
 import { postHandler } from '../../../../../../../../backend/postHandler.ts'
@@ -34,7 +34,7 @@ export const PatientRegistrationThisVisitSchema = z.object({
 
 export const handler = postHandler(
   PatientRegistrationThisVisitSchema,
-  async (ctx: OpenEncounterWorkflowContext, { next_workflow, notes }) => {
+  async (ctx: OpenEncounterWorkflowPostContext, { next_workflow, notes }) => {
     const { trx, patient, encounter, organization, organization_employment } = ctx.state
     const can_do_triage = canPerform(organization_employment, 'triage')
 
@@ -139,7 +139,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function PatientRegistrationThisVisitPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const {
     patient,

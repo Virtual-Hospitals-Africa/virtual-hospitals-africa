@@ -11,7 +11,7 @@ import {
   vitalMeasurementFromSnomedConceptId,
 } from '../../../../../../../../shared/vitals.ts'
 import { patient_vitals } from '../../../../../../../../db/models/patient_vitals.ts'
-import { OpenEncounterWorkflowContext, RenderedFindingRelativeToHealthWorker, TriageAssignPriorityTableRow } from '../../../../../../../../types.ts'
+import { OpenEncounterWorkflowPostContext, RenderedFindingRelativeToHealthWorker, TriageAssignPriorityTableRow } from '../../../../../../../../types.ts'
 import { TriageAssignPriorityTable } from '../../../../../../../../components/triage/AssignPriorityTable.tsx'
 import { patientAgeDetermination } from '../../../../../../../../shared/patient_age_determination.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -41,7 +41,7 @@ export const TriageAssignPrioritySchema = z.object({})
 export const handler = postHandler(
   TriageAssignPrioritySchema,
   // deno-lint-ignore require-await
-  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, _form_values) => {
     return completeAndProceedToNextStep(ctx)
   },
 )
@@ -55,7 +55,7 @@ async function findingsFromWarningSignsOrAdditionalTasksAndInvestigations(
       patient_encounter_id,
       health_worker_id,
     },
-  }: OpenEncounterWorkflowContext,
+  }: OpenEncounterWorkflowPostContext,
 ): Promise<RenderedFindingRelativeToHealthWorker[]> {
   const findings = await patient_findings.findAll(
     trx,
@@ -91,7 +91,7 @@ async function totalScore(
       patient_id,
       patient_encounter_id,
     },
-  }: OpenEncounterWorkflowContext,
+  }: OpenEncounterWorkflowPostContext,
 ) {
   assert(completedPersonal(patient))
   const age_determination = patientAgeDetermination(patient)
@@ -114,7 +114,7 @@ async function totalScore(
 async function sortedVitals(
   {
     state: { trx, organization_id, patient, patient_id, patient_encounter_id, health_worker_id },
-  }: OpenEncounterWorkflowContext,
+  }: OpenEncounterWorkflowPostContext,
 ): Promise<TriageAssignPriorityTableRow[]> {
   assert(completedPersonal(patient))
 
@@ -223,7 +223,7 @@ async function sortedVitals(
 }
 
 async function redirectIfIncompleteNonManageTasks(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const { trx, health_worker_id, encounter, open_encounter_pathname } = ctx.state
   const { task_groups } = await additional_tasks.getTasksGroups(trx, { health_worker_id, encounter })
@@ -236,7 +236,7 @@ async function redirectIfIncompleteNonManageTasks(
 }
 
 export async function TriageAssignPriorityPage(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   assertAllPriorStepsCompleted(ctx, {
     attempting_to_complete_workflow: false,

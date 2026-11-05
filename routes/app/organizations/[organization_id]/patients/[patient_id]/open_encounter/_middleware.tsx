@@ -4,11 +4,14 @@ import {
   LoggedInHealthWorkerContext,
   OpenEncounterContext,
   OpenEncounterState,
-  OpenEncounterWorkflowContext,
-  OpenEncounterWorkflowState,
+  OpenEncounterWorkflowGetContext,
+  OpenEncounterWorkflowGetState,
+  OpenEncounterWorkflowPostContext,
+  OpenEncounterWorkflowPostState,
   OrganizationContext,
   RenderedPatientOpenEncounter,
-  WorkflowState,
+  WorkflowGetState,
+  WorkflowPostState,
 } from '../../../../../../../types.ts'
 import { patient_encounters } from '../../../../../../../db/models/patient_encounters.ts'
 import { groupRecordsByWorkflows } from '../../../../../../../db/models/this_visit_findings.ts'
@@ -64,7 +67,7 @@ import { logToFileIfOnServer } from '../../../../../../../util/logToFileIfOnServ
 import { nearest_organizations } from '../../../../../../../db/models/nearest_organizations.ts'
 
 export function completeLastStep(
-  { state: { trx, workflow, step, workflow_status, patient_encounter_employee_id } }: OpenEncounterWorkflowContext,
+  { state: { trx, workflow, step, workflow_status, patient_encounter_employee_id } }: OpenEncounterWorkflowPostContext,
 ) {
   assertEquals(
     step,
@@ -94,7 +97,7 @@ export function completeLastStep(
 }
 
 export async function completeStep(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const {
     workflow,
@@ -140,7 +143,7 @@ export async function completeStep(
 }
 
 export async function completeAndProceedToNextStep(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const { workflow } = ctx.state
   const { first_incomplete_step } = await completeStep(ctx)
@@ -189,7 +192,7 @@ export function getWorkflowStatus(
 export const workflowHandler = timeMiddlewareCallNext(async function workflowHandlerInner(
   ctx: OpenEncounterContext,
 ) {
-  const { trx, encounter, encounter_employee_presence, health_worker_id, organization, organization_employment } = ctx.state
+  const { trx, encounter, encounter_employee_presence } = ctx.state
   const { workflow, step } = workflowStepFromUrl(ctx)
 
   const workflow_status = getWorkflowStatus(ctx, workflow)
@@ -208,6 +211,44 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
     workflow,
     step,
   )
+
+  const previously_completed_procedures = await patient_procedures.previouslyCompleted(
+    trx,
+    {
+      patient_encounter_id,
+      workflow_snomed_concept,
+      workflow_step_snomed_concept,
+    },
+  )
+
+  const previously_completed_step = arrayIsNonEmpty(workflow_status.steps_completed) && workflow_status.steps_completed.includes(
+    step,
+  )
+
+  const workflow_props: WorkflowPostState = {
+    workflow,
+    step,
+    workflow_status,
+    previously_completed_step,
+    previously_completed_procedures,
+    encounter_employee_presence,
+    patient_encounter_employee_id,
+    workflow_step_snomed_concept,
+    workflow_snomed_concept,
+  }
+
+  Object.assign(ctx.state, workflow_props)
+})
+
+/**
+ * The patient drawer is rendered on every workflow page but no POST handler reads
+ * any of this, so it is fetched here rather than in workflowHandler.
+ */
+async function fetchWorkflowGetState(
+  ctx: OpenEncounterWorkflowPostContext,
+): Promise<Omit<WorkflowGetState, keyof WorkflowPostState>> {
+  const { trx, encounter, health_worker_id, organization, organization_employment, workflow, step, workflow_status } = ctx.state
+  const { workflow_snomed_concept, workflow_step_snomed_concept } = ctx.state
 
   const fetched = await promiseProps({
     hydrated_findings: patient_findings.findAll(trx, {
@@ -236,14 +277,6 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
       health_worker_id,
       patient_id: encounter.patient.id,
     }),
-    previously_completed_procedures: patient_procedures.previouslyCompleted(
-      trx,
-      {
-        patient_encounter_id,
-        workflow_snomed_concept,
-        workflow_step_snomed_concept,
-      },
-    ),
     escalation_candidates: employees_presence.getAllAtOrganization(trx, {
       organization_id: organization.id,
       excluding_health_worker: {
@@ -254,10 +287,6 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
     }),
     nearest_hospital: nearest_organizations.nearestHospital(organization),
   })
-
-  const previously_completed_step = arrayIsNonEmpty(workflow_status.steps_completed) && workflow_status.steps_completed.includes(
-    step,
-  )
 
   const this_visit_findings = groupRecordsByWorkflows(
     {
@@ -273,23 +302,16 @@ export const workflowHandler = timeMiddlewareCallNext(async function workflowHan
     },
   )
 
-  const workflow_props: WorkflowState = {
-    workflow,
-    step,
-    workflow_status,
-    previously_completed_step,
-    encounter_employee_presence,
-    patient_encounter_employee_id,
-    workflow_step_snomed_concept,
+  return {
     this_visit_findings,
-    workflow_snomed_concept: WORKFLOW_SNOMED_CONCEPTS[workflow],
+    this_visit_diagnoses: fetched.this_visit_diagnoses,
     priority_evaluation: encounter.priority &&
       buildPriorityRecord(encounter.priority, fetched.hydrated_findings, fetched.this_visit_diagnoses, fetched.total_scores),
-    ...fetched,
+    patient_history: fetched.patient_history,
+    escalation_candidates: fetched.escalation_candidates,
+    nearest_hospital: fetched.nearest_hospital,
   }
-
-  Object.assign(ctx.state, workflow_props)
-})
+}
 
 const REQUIRE_EVENTS_ALL_PROCESSED_FOR_PATHS: string[] = [
   workflowStepPath('triage', 'additional_tasks_and_investigations'),
@@ -373,7 +395,7 @@ export const handler = timeMiddlewareCallNext(async function attachOpenEncounter
 })
 
 export function assertAllPriorStepsCompleted(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
   { attempting_to_complete_workflow }: {
     attempting_to_complete_workflow: boolean
   },
@@ -409,7 +431,7 @@ export function assertAllPriorStepsCompleted(
 }
 
 export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, children }: {
-  ctx: OpenEncounterWorkflowContext
+  ctx: OpenEncounterWorkflowGetContext
   next_step_text?: string
   buttons?: ComponentChild
   children: ComponentChildren
@@ -444,8 +466,9 @@ export function OpenEncounterWorkflowLayoutCtx({ ctx, next_step_text, buttons, c
 
 // Parameterized by state rather than by context because Fresh's Context is
 // invariant in its state (state shows up in the `app` component's props), so
-// `TriageContext<T> extends OpenEncounterWorkflowContext` does not hold.
-export type Render<State extends OpenEncounterWorkflowState = OpenEncounterWorkflowState> = (
+// `TriageContext<T> extends OpenEncounterWorkflowPostContext` does not hold.
+// A render function receives the get state; those that only need the post state may declare so.
+export type Render<State extends OpenEncounterWorkflowPostState = OpenEncounterWorkflowGetState> = (
   ctx: LoggedInHealthWorkerContext<State>,
 ) =>
   | JSX.Element
@@ -456,14 +479,17 @@ export type Render<State extends OpenEncounterWorkflowState = OpenEncounterWorkf
   | Promise<Response | JSX.Element>
 
 export function OpenEncounterWorkflowPage<
-  State extends OpenEncounterWorkflowState = OpenEncounterWorkflowState,
+  State extends OpenEncounterWorkflowPostState = OpenEncounterWorkflowGetState,
 >(
   render: Render<State>,
 ) {
   return async function (
-    ctx: OpenEncounterWorkflowContext,
+    ctx: OpenEncounterWorkflowPostContext,
   ) {
-    const rendered = await render(ctx as unknown as LoggedInHealthWorkerContext<State>)
+    const additional_fetches = await fetchWorkflowGetState(ctx)
+    Object.assign(ctx.state, additional_fetches)
+    const get_ctx = ctx as unknown as OpenEncounterWorkflowGetContext
+    const rendered = await render(get_ctx as unknown as LoggedInHealthWorkerContext<State>)
 
     if (rendered instanceof Response) {
       return rendered
@@ -483,7 +509,7 @@ export function OpenEncounterWorkflowPage<
 
     return (
       <OpenEncounterWorkflowLayoutCtx
-        ctx={ctx}
+        ctx={get_ctx}
         next_step_text={next_step_text}
         buttons={buttons}
       >
@@ -511,7 +537,7 @@ export function WorkflowRedirectPage(
 }
 
 export function nextRouteAfterCompletingWorkflow(
-  { state: { workflow, organization, patient } }: OpenEncounterWorkflowContext,
+  { state: { workflow, organization, patient } }: OpenEncounterWorkflowPostContext,
   next_patient_presence: Pick<
     PatientPresence,
     'department_name' | 'current_workflow' | 'next_workflow'
@@ -544,7 +570,7 @@ export function nextRouteAfterCompletingWorkflow(
 }
 
 export function completedProcedure(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const { workflow_step_snomed_concept, previously_completed_procedures } = ctx.state
 
@@ -561,7 +587,7 @@ export function completedProcedure(
 }
 
 export function createProcedureIfNotAlreadyCompleted(
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const completed_procedure = completedProcedure(ctx)
   if (completed_procedure) return Promise.resolve(completed_procedure)
