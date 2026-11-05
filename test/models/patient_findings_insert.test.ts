@@ -475,22 +475,21 @@ describeParallel('db/models/patient_findings.ts insert methods', () => {
       const b = generateUUID()
       const c = generateUUID()
       const d = generateUUID()
-      const e = generateUUID()
       const result = await patient_findings.insertMany(db, {
         ...common(s),
         findings: [
           { ...negative(BITE_WOUND_S_EXPRESSION), id: a },
           { ...positive(COUGH_S_EXPRESSION), id: b },
-          { ...positive(CONSTIPATION_FINDING), id: d },
-          { ...negative(CONSTIPATION_FINDING), id: e },
+          { ...positive(CONSTIPATION_FINDING), id: c },
+          { ...negative(CONSTIPATION_FINDING), id: d },
         ],
         measurements: [measurement(RESPIRATORY_RATE_8)],
       })
       assertEquals(result.findings, [
         { id: a, existence: 'No' },
         { id: b, existence: 'Yes' },
-        { id: d, existence: 'Yes' },
-        { id: e, existence: 'No' },
+        { id: c, existence: 'Yes' },
+        { id: d, existence: 'No' },
       ])
     })
 
