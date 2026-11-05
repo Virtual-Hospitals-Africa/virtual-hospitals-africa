@@ -1,5 +1,5 @@
 import { OpenEncounterWorkflowPage } from '../../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../../backend/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
@@ -32,7 +32,7 @@ const VitalsMeasurementSchema = z.object({
 export const handler = postHandler(
   VitalsMeasurementSchema,
   // deno-lint-ignore require-await
-  async (_ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (_ctx: OpenEncounterWorkflowPostContext, _form_values) => {
     throw new Error('TODO: consultation/vitals')
 
     // const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
@@ -76,7 +76,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function VitalsMeasurementsPage(
-  _ctx: OpenEncounterWorkflowContext,
+  _ctx: OpenEncounterWorkflowPostContext,
 ) {
   return <>TODO: reimplement, maybe</>
   // const vital_measurements_for_this_encounter = await vitals

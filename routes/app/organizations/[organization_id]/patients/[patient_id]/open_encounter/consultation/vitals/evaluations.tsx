@@ -1,5 +1,5 @@
 import { completeAndProceedToNextStep, OpenEncounterWorkflowPage } from '../../_middleware.tsx'
-import type { OpenEncounterWorkflowContext } from '../../../../../../../../../types.ts'
+import type { OpenEncounterWorkflowPostContext } from '../../../../../../../../../types.ts'
 import { z } from 'zod'
 import { postHandler } from '../../../../../../../../../backend/postHandler.ts'
 import { snomed_concept_id } from '../../../../../../../../../util/validators.ts'
@@ -22,7 +22,7 @@ const VitalsEvaluationSchema = z.object({
 export const handler = postHandler(
   VitalsEvaluationSchema,
   // deno-lint-ignore require-await
-  async (ctx: OpenEncounterWorkflowContext, _form_values) => {
+  async (ctx: OpenEncounterWorkflowPostContext, _form_values) => {
     // await patient_evaluations.insertMany(ctx.state.trx, {
     //   patient_id,
     //   patient_encounter_id: ctx.state.encounter.patient_encounter_id,
@@ -37,7 +37,7 @@ export const handler = postHandler(
 
 // deno-lint-ignore require-await
 export async function VitalsEvaluationsPage(
-  _ctx: OpenEncounterWorkflowContext,
+  _ctx: OpenEncounterWorkflowPostContext,
 ) {
   return <>TODO: reimplement</>
   // const patient_id = getRequiredUUIDParam(ctx, 'patient_id')

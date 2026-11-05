@@ -1,10 +1,10 @@
 import { assertOr405 } from '../../../../../../../../util/assertOr.ts'
 import redirect from '../../../../../../../../util/redirect.ts'
-import { OpenEncounterWorkflowContext } from '../../../../../../../../types.ts'
+import { OpenEncounterWorkflowPostContext } from '../../../../../../../../types.ts'
 
 // deno-lint-ignore require-await
 export default async function (
-  ctx: OpenEncounterWorkflowContext,
+  ctx: OpenEncounterWorkflowPostContext,
 ) {
   const req = ctx.req
 
