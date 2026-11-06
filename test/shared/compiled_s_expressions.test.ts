@@ -72,7 +72,7 @@ function* nodesAndConceptsSystemDiagnosisRules() {
 }
 
 function* allFindingsToLookFor(rule: Lang['system_priority_evaluation' | 'system_diagnosis_rule']) {
-  for (const evidence of allEvidenceToLookFor(rule.due_to)) {
+  for (const evidence of allPositiveEvidenceToLookFor(rule.due_to)) {
     switch (evidence.atom) {
       case '>':
       case '<':
@@ -82,7 +82,7 @@ function* allFindingsToLookFor(rule: Lang['system_priority_evaluation' | 'system
         yield evidence.measurement
         break
       default: {
-        yield { ...evidence, existence: 'Yes' as const }
+        yield evidence
         break
       }
     }
@@ -290,21 +290,18 @@ describe('s_expression', () => {
         systemPriorityEvaluationsWithNoCheckForNorDiagnosisNorTakenAsWarningSignsNorVitals(),
       )
       if (rules_without_corresponding_check_for_system_diagnosis_rule.length) {
-        const x = groupBy(rules_without_corresponding_check_for_system_diagnosis_rule, r => r.file_path)
-        const top_level: string[] = []
-        for (const [y, z] of x.entries()) {
-          const error_messages = [
-            `${y}`,
-          ]
-          for (const [a, b] of groupBy(z, m => m.description)) {
-            error_messages.push(`\t${a}`)
-            for (const c of b) {
-              error_messages.push(`\t\t${c.didnt_check_for}`)
-            }
-          }
-          top_level.push(error_messages.join('\n'))
-        }
-        throw new Error(top_level.join('\n\n'))
+        const rules_by_file_path = groupBy(rules_without_corresponding_check_for_system_diagnosis_rule, (rule) => rule.file_path)
+        const file_path_error_messages = Array.from(rules_by_file_path, ([file_path, rules_in_file]) => {
+          const description_error_messages = Array.from(
+            groupBy(rules_in_file, (rule) => rule.description),
+            ([description, rules_with_description]) => [
+              `\t${description}`,
+              ...rules_with_description.map((rule) => `\t\t${rule.didnt_check_for}`),
+            ],
+          )
+          return [file_path, ...description_error_messages.flat()].join('\n')
+        })
+        throw new Error(file_path_error_messages.join('\n\n'))
       }
       assertArrayEmpty(rules_without_corresponding_check_for_system_diagnosis_rule)
 
