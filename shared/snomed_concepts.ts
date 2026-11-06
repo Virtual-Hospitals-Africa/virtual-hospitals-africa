@@ -291,11 +291,6 @@ export const TRAUMA_SCORE = asConcept({
   name: 'Trauma score',
   category: 'assessment scale' as const,
 })
-export const MEASUREMENT_OF_BODY_MASS_INDEX = asConcept({
-  id: '698094009',
-  name: 'Measurement of body mass index',
-  category: 'procedure' as const,
-})
 export const MEAN_BLOOD_PRESSURE = asConcept({
   id: '6797001',
   name: 'Mean blood pressure',
@@ -755,4 +750,9 @@ export const SEVERE_PAIN = asConcept({
   id: '76948002',
   name: 'Severe pain',
   category: 'finding' as const,
+})
+export const BODY_MASS_INDEX = asConcept({
+  id: '60621009',
+  name: 'Body mass index',
+  category: 'observable entity' as const,
 })

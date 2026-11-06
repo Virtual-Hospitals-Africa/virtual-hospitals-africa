@@ -41,7 +41,8 @@ export async function up(db: Kysely<DB>) {
           'event_id', NEW.event_id,
           'event_type', event_type,
           'listener_name', NEW.listener_name,
-          'error_message', NEW.error_message,
+          -- pg_notify payloads are capped at 8000 bytes; the full message stays in event_listeners.error_message
+          'error_message', left(NEW.error_message, 2000),
           'patient_encounter_id', patient_encounter_id
         )::text);
       END IF;
