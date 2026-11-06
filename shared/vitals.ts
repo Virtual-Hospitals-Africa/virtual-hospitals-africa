@@ -63,10 +63,10 @@ import {
   UNABLE_TO_WALK,
   UNRESPONSIVE,
 } from './snomed_concepts.ts'
-import omit from '../util/omit.ts'
 import values from '../util/values.ts'
 
-export const VITAL_MEASUREMENTS_SNOMED_CONCEPTS = {
+
+export const VITAL_MEASUREMENTS_SHARED_SNOMED_CONCEPTS = {
   height: BODY_HEIGHT,
   weight: BODY_WEIGHT,
   temperature: BODY_TEMPERATURE,
@@ -76,17 +76,18 @@ export const VITAL_MEASUREMENTS_SNOMED_CONCEPTS = {
   blood_pressure_diastolic: DIASTOLIC_BLOOD_PRESSURE,
   blood_oxygen_saturation: HEMOGLOBIN_SATURATION_WITH_OXYGEN,
   blood_glucose: BLOOD_GLUCOSE_STATUS,
+}
+
+
+export const VITAL_MEASUREMENTS_SNOMED_CONCEPTS = {
+  ...VITAL_MEASUREMENTS_SHARED_SNOMED_CONCEPTS,
   midarm_circumference: MID_UPPER_ARM_CIRCUMFERENCE,
   triceps_skinfold: TRICEPS_SKIN_FOLD_THICKNESS,
   head_circumference: HEAD_CIRCUMFERENCE,
 }
 
-export const VITALS_ADULT_SNOMED_CONCEPT_NAMES = new Set(
-  values(omit(VITAL_MEASUREMENTS_SNOMED_CONCEPTS, [
-    'midarm_circumference',
-    'triceps_skinfold',
-    'head_circumference',
-  ])).map((concept) => concept.name),
+export const VITALS_SHARED_SNOMED_CONCEPT_NAMES = new Set(
+  values(VITAL_MEASUREMENTS_SHARED_SNOMED_CONCEPTS).map((concept) => concept.name),
 )
 
 export const VITALS_COMPUTED_SNOMED_CONCEPTS = {
@@ -94,6 +95,10 @@ export const VITALS_COMPUTED_SNOMED_CONCEPTS = {
   mean_arterial_pressure: MEAN_BLOOD_PRESSURE,
   blood_pressure: BLOOD_PRESSURE,
 }
+
+export const VITALS_COMPUTED_SNOMED_CONCEPT_NAMES = new Set(
+  values(VITALS_COMPUTED_SNOMED_CONCEPTS).map((concept) => concept.name),
+)
 
 export const VITAL_ASSESSMENTS_EVALUATION_SNOMED_CONCEPTS = {
   consciousness: ALERT_CONFUSION_VOICE_PAIN_UNRESPONSIVE_SCALE_SCORE,

@@ -20,7 +20,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { allEvidenceToLookFor, allPositiveEvidenceToLookFor } from '../../db/models/s_expression_evidence.ts'
 import { inverseSExpression } from '../../shared/s_expression_inverse.ts'
-import { ALL_ASSESSMENT_OPTIONS_PARSED, VITALS_ADULT_SNOMED_CONCEPT_NAMES, VITALS_COMPUTED_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
+import { ALL_ASSESSMENT_OPTIONS_PARSED, VITALS_SHARED_SNOMED_CONCEPT_NAMES, VITALS_COMPUTED_SNOMED_CONCEPT_NAMES, VITALS_COMPUTED_SNOMED_CONCEPTS } from '../../shared/vitals.ts'
 import { isCheckFor } from '../../db/models/additional_tasks.ts'
 import compactMap from '../../util/compactMap.ts'
 import { allConceptsToLookFor } from '../../shared/s_expression_concepts.ts'
@@ -142,21 +142,14 @@ function isApcKnownIssue(file_path: string, s_expression: string): boolean {
   return !!page && APC_KNOWN_ISSUES.some((issue) => issue.page === page && issue.s_expression === s_expression)
 }
 
-// The rules refer to BMI as the "Body mass index" observable entity, while the vitals form
-// stores the computed value under the "Measurement of body mass index" procedure concept.
-const BMI_CONCEPT_NAMES = new Set([
-  'Body mass index',
-  VITALS_COMPUTED_SNOMED_CONCEPTS.body_mass_index.name,
-])
-
 function evidenceCollectedDuringWarningSignsOrVitals(
   finding: EvidenceFinding,
   rule: Lang['system_priority_evaluation' | 'system_diagnosis_rule'],
 ) {
   if (finding.atom === 'measurement') {
-    // Height and weight are in VITALS_ADULT_SNOMED_CONCEPT_NAMES; BMI is computed from them
-    return VITALS_ADULT_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name) ||
-      BMI_CONCEPT_NAMES.has(finding.snomed_concept.name)
+    // Height and weight are in VITALS_SHARED_SNOMED_CONCEPT_NAMES; BMI is computed from them
+    return VITALS_SHARED_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name) ||
+      VITALS_COMPUTED_SNOMED_CONCEPT_NAMES.has(finding.snomed_concept.name)
   }
   if (finding.atom === 'active_condition' && finding.snomed_concept.name === 'Fever') {
     return true
