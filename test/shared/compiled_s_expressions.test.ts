@@ -115,60 +115,9 @@ type EvidenceFinding = Yielded<typeof allFindingsToLookFor>
 // check_for findings are excluded from the coverage checks below so that the tests stay green
 // for the pages that have been completed. Remove a page number from this set once its rules
 // file has been brought up to standard.
-const APC_PAGES_NOT_YET_REVIEWED = new Set<string>([
-  '16',
-  '17',
-  '19',
-  '21',
-  '22',
-  '24',
-  '25',
-  '26',
-  '27',
-  '28',
-  '29',
-  '30',
-  '31',
-  '32',
-  '33',
-  '34',
-  '35',
-  '36',
-  '37',
-  '38',
-  '39',
-  '40',
-  '41',
-  '42',
-  '44',
-  '45',
-  '46',
-  '48',
-  '50',
-  '51',
-  '57',
-  '59',
-  '62',
-  '63',
-  '64',
-  '65',
-  '66',
-  '67',
-  '73',
-  '74',
-  '75',
-  '78',
-  '79',
-  '80',
-  '82',
-  '83',
-  '86',
-  '132',
-  '137',
-  '139',
-  '159',
-  '164',
-])
+// Emptied for the APC 2026 rule set: the list held APC 2023 page numbers, which would skip
+// unrelated 2026 pages, so every 2026 page now gets every check.
+const APC_PAGES_NOT_YET_REVIEWED = new Set<string>([])
 
 // Individual known issues that survive a page review. Every entry MUST be explained in
 // s_expression/rules/apc-adult/<page>-<slug>-remaining-questions.md. Keyed by page number and
