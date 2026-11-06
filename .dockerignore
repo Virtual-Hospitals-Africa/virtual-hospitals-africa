@@ -19,3 +19,6 @@ db/**
 !db/models/*
 !db/db.ts
 !db/helpers.ts
+
+# APC 2026 conversion run record (not part of the app)
+apc-2026-run/
